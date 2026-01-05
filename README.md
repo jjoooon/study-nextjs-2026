@@ -16,34 +16,34 @@ A modern, scalable Next.js application with Redux Toolkit, featuring a feature-b
 
 ```
 src/
-├── app/                    # Next.js App Router
+├── app/                   # Next.js App Router
 │   ├── (auth)/            # Auth route group
 │   ├── (dashboard)/       # Dashboard route group
 │   └── (marketing)/       # Marketing route group
 │
 ├── features/              # Feature-based modules ✨
-│   ├── auth/             # Authentication feature
-│   ├── dashboard/        # Dashboard feature
-│   ├── posts/            # Posts feature
-│   ├── ui/               # UI state management
-│   └── users/            # Users feature
+│   ├── auth/              # Authentication feature
+│   ├── dashboard/         # Dashboard feature
+│   ├── posts/             # Posts feature
+│   ├── ui/                # UI state management
+│   └── users/             # Users feature
 │
-├── shared/               # Truly shared code
-│   ├── components/       # Reusable components
-│   │   ├── common/       # ContentLoader, ErrorBoundary, etc.
-│   │   ├── layout/       # Navigation, layout components
-│   │   └── ui/           # Button, primitives
-│   └── utils/           # Logger, performance utilities
+├── shared/                # Truly shared code
+│   ├── components/        # Reusable components
+│   │   ├── common/        # ContentLoader, ErrorBoundary, etc.
+│   │   ├── layout/        # Navigation, layout components
+│   │   └── ui/            # Button, primitives
+│   └── utils/             # Logger, performance utilities
 │
-└── store/                # Redux store configuration
-    ├── hooks.ts         # Typed hooks (useAppDispatch, useAppSelector)
-    ├── index.ts         # Store setup
-    ├── middleware/      # Custom middleware
+└── store/                 # Redux store configuration
+    ├── hooks.ts           # Typed hooks (useAppDispatch, useAppSelector)
+    ├── index.ts           # Store setup
+    ├── middleware/        # Custom middleware
     │   ├── performance.ts
     │   └── registry.ts
-    ├── selectors/       # Optimized selectors
-    ├── slices/          # API type definitions
-    └── testing.tsx      # Test utilities
+    ├── selectors/         # Optimized selectors
+    ├── slices/            # API type definitions
+    └── testing.tsx        # Test utilities
 ```
 
 ## 🏗️ Architecture
@@ -56,14 +56,14 @@ Each feature is self-contained with its own components, hooks, and store logic:
 features/
 ├── auth/
 │   ├── components/      # Auth-specific components
-│   ├── hooks/          # Auth hooks (useAuth, useIsAuthenticated)
-│   ├── store/          # Redux slices & API
-│   └── index.ts        # Public API
+│   ├── hooks/           # Auth hooks (useAuth, useIsAuthenticated)
+│   ├── store/           # Redux slices & API
+│   └── index.ts         # Public API
 └── users/
-    ├── components/     # UserList, UserForm
-    ├── hooks/         # User hooks
-    ├── store/         # Users API slice
-    └── index.ts       # Public API
+    ├── components/      # UserList, UserForm
+    ├── hooks/           # User hooks
+    ├── store/           # Users API slice
+    └── index.ts         # Public API
 ```
 
 ### Redux Store Configuration
