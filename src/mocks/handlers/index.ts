@@ -1,0 +1,14 @@
+/**
+ * MSW 핸들러 통합
+ *
+ * 이 파일은 모든 MSW 핸들러를 통합하여 내보냅니다.
+ * 새로운 핸들러를 추가할 때 여기에 import하여 등록하세요.
+ */
+
+import { usersHandlers } from './users';
+import { errorHandlers } from './errors';
+
+export const handlers = [
+  ...usersHandlers,
+  ...errorHandlers,
+];

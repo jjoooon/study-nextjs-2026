@@ -1,0 +1,81 @@
+'use client';
+
+import { Provider } from 'react-redux';
+import { store } from '@/store';
+import { useEffect, useState } from 'react';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    /**
+     * Enable MSW mocking in development.
+     * This follows the official MSW browser integration pattern:
+     * https://mswjs.io/docs/integrations/browser/
+     */
+    async function enableMocking() {
+      // In production, MSW is not used
+      if (process.env.NODE_ENV !== 'development') {
+        setIsReady(true);
+        return;
+      }
+
+      // Dynamically import MSW worker to avoid bundling in production
+      const { worker } = await import('@/mocks/browser');
+
+      // Start the worker and wait for it to be ready
+      // This is CRITICAL to prevent race conditions
+      try {
+        await worker.start({
+          onUnhandledRequest: 'bypass',
+        });
+        console.log('[MSW] Mocking enabled');
+      } catch (error) {
+        console.error('[MSW] Failed to start worker:', error);
+      }
+
+      // Mark as ready regardless of MSW success/failure
+      setIsReady(true);
+    }
+
+    enableMocking();
+  }, []);
+
+  // Show loading while MSW initializes (development only)
+  if (!isReady) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          flexDirection: 'column',
+          gap: '1rem',
+        }}
+      >
+        <div
+          style={{
+            width: '40px',
+            height: '40px',
+            border: '4px solid #e5e7eb',
+            borderTopColor: '#3b82f6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }}
+        />
+        <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+          Initializing development environment...
+        </p>
+        <style>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  return <Provider store={store}>{children}</Provider>;
+}
+
