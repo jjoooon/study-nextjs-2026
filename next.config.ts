@@ -1,4 +1,10 @@
 import type { NextConfig } from 'next';
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+// Bundle analyzer configuration (Next.js 16.1)
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig: NextConfig = {
   // Performance optimizations
@@ -6,6 +12,7 @@ const nextConfig: NextConfig = {
 
   // Speed optimizations
   compiler: {
+    // Remove console in production
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
@@ -15,11 +22,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
 
-  // Bundle analysis
+  // Experimental features
   experimental: {
+    // Optimize CSS
     optimizeCss: true,
-    optimizePackageImports: ['@reduxjs/toolkit', 'react-redux'],
+
+    // Optimize package imports (Next.js 16)
+    optimizePackageImports: ['@reduxjs/toolkit', 'react-redux', 'lucide-react'],
   },
 };
 
-export default nextConfig;
+// Export with bundle analyzer
+export default withBundleAnalyzer(nextConfig);
