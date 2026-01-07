@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npx storybook@latest init:*)",
+      "WebSearch",
+      "Bash(done)",
+      "Bash(tree:*)",
+      "Bash(npm test:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next build:*)",
+      "Bash(grep:*)",
+      "Bash(dir:*)",
+      "Bash(npm run dev)",
+      "Bash(npm view:*)",
+      "Bash(npm outdated:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run test)",
+      "Bash(npm uninstall:*)"
+    ]
+  }
+}
