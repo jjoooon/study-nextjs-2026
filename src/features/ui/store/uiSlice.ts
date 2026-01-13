@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { REHYDRATE } from 'redux-persist';
 
 export interface SidebarState {
   isOpen: boolean;
@@ -74,6 +75,36 @@ export const uiSlice = createSlice({
     clearToast: (state) => {
       state.toast = null;
     },
+  },
+  extraReducers: (builder) => {
+    /**
+     * REHYDRATE Handler
+     *
+     * @description
+     * Handles state rehydration from sessionStorage.
+     *
+     * @ux-improvement
+     * - Only theme and sidebar state are persisted
+     * - Modal and toast states are reset to defaults
+     * - Prevents showing stale modals/toasts after page refresh
+     */
+    builder.addCase(REHYDRATE, (state, action: any) => {
+      const payload = action.payload as { ui?: UIState } | undefined;
+
+      if (payload?.ui) {
+        // Restore persisted UI preferences
+        state.theme = payload.ui.theme;
+        state.sidebar = payload.ui.sidebar;
+      }
+
+      // Always reset ephemeral states to defaults
+      state.modal = {
+        isOpen: false,
+        type: null,
+        data: null,
+      };
+      state.toast = null;
+    });
   },
 });
 

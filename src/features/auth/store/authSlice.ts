@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { REHYDRATE } from 'redux-persist';
 
 export interface AuthUser {
   id: string | null;
@@ -56,6 +57,41 @@ export const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+  },
+  extraReducers: (builder) => {
+    /**
+     * REHYDRATE Handler
+     *
+     * @description
+     * Handles state rehydration from sessionStorage.
+     *
+     * @security
+     * - Token is never persisted (filtered by transform)
+     * - After rehydration, token will be null
+     * - isAuthenticated will be restored from persisted state
+     * - UI should handle token==null + isAuthenticated==true by:
+     *   1. Checking httpOnly cookie for token, OR
+     *   2. Redirecting to login
+     *
+     * @note
+     * In production with httpOnly cookies, the server validates the cookie
+     * and the token field remains null on client side.
+     */
+    builder.addCase(REHYDRATE, (state, action: any) => {
+      const payload = action.payload as { auth?: AuthState } | undefined;
+
+      if (payload?.auth) {
+        // Restore persisted non-sensitive state
+        state.isAuthenticated = payload.auth.isAuthenticated;
+        state.user = payload.auth.user;
+        // Token remains null (never persisted)
+        state.token = null;
+      }
+
+      // Always reset temporary states
+      state.isLoading = false;
+      state.error = null;
+    });
   },
 });
 

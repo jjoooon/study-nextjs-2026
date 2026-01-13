@@ -2,11 +2,14 @@ import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import type { UnknownAction } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 
 import { authReducer } from '@/features/auth';
 import { uiReducer } from '@/features/ui';
 import log from '@/shared/utils/logger';
+
+// 🔒 Secure storage configuration
+import { secureStorage } from './storage';
+import { transforms } from './transforms';
 
 // ✅ Centralized API Registry - 모든 API를 한 곳에서 관리
 import { performanceMiddleware } from './middleware/performance';
@@ -61,21 +64,30 @@ middlewareRegistry.register('performance', performanceMiddleware, 10);
 // ============================================================================
 
 /**
- * Redux Persist Configuration
+ * Redux Persist Configuration (🔒 Security Hardened)
  *
- * @description
- * - localStorage를 사용하여 상태 지속성 저장
- * - auth, ui reducer만 지속 (API reducers는 제외 - 일시적 데이터)
- * - 페이지 새로고침 후에도 인증 상태와 UI 설정 유지
+ * @security
+ * - sessionStorage 사용: 탭 닫으면 자동 삭제 (localStorage보다 안전)
+ * - transforms로 민감 데이터 필터링: 토큰 저장 X
+ * - XSS 공격 방지: 토큰이 브라우저 스토리지에 노출되지 않음
  *
- * @note persist: REHYDRATE 액션은 serializableCheck에서 이미 무시됨
+ * @ux-improvement
+ * - UI 상태 최적화: theme, sidebar만 저장 (modal, toast 제외)
+ * - 일시적 상태는 새로고침 후 초기화
+ *
+ * @note
+ * - 프로덕션에서는 httpOnly 쿠키 사용 권장 (서버 사이드)
+ * - 현재 구현은 클라이언트 사이드 보안 강화
  */
 const persistConfig = {
   key: 'root',
-  storage,
-  // 지속성을 적용할 리듀서만 지정 (API reducers 제외)
+  storage: secureStorage, // 🔒 sessionStorage 사용
+  version: 1, // 향후 마이그레이션을 위한 버전 관리
+  // 지속성을 적용할 리듀서
   whitelist: ['auth', 'ui'],
-  // 블랙리스트: 특정 리듀서 제외 (필요한 경우 사용)
+  // 🔒 transforms로 토큰 및 민감 데이터 자동 필터링
+  transforms,
+  // 블랙리스트: 특정 리듀서 제외
   blacklist: [],
 };
 
@@ -286,7 +298,7 @@ export const persistor = persistStore(store);
 // ============================================================================
 
 /**
- * RTK Query의 자동 리패칭 활성화
+ * RTK Query의 자동 리패칭 활성
  * - refetchOnFocus: 윈도우 포커스 시 리패치
  * - refetchOnReconnect: 네트워크 재연결 시 리패치
  */
