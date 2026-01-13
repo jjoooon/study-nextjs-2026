@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import log from '@/shared/utils/logger';
 import { store } from '@/store';
-import { injectReducer, ejectReducer } from '@/store/reducers/registry';
+import { injectReducer, ejectReducer } from '@/store/registry/reducer';
 
 // ============================================================================
 // DYNAMIC REDUCER HOOKS

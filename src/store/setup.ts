@@ -20,7 +20,7 @@ import log from '@/shared/utils/logger';
 
 import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';
 import { persistConfig } from './config';
-import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './reducers/registry';
+import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './registry/reducer';
 
 // ============================================================================
 // INITIAL REDUCER REGISTRATION

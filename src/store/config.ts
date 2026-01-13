@@ -12,7 +12,7 @@
 import type { Middleware } from '@reduxjs/toolkit';
 
 import { performanceMiddleware } from './middleware/performance';
-import { middlewareRegistry } from './middleware/registry';
+import { middlewareRegistry } from './registry/middleware';
 import { secureStorage } from './storage';
 import { transforms } from './transforms';
 

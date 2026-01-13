@@ -91,8 +91,8 @@ setupListeners(store.dispatch);
  * - Prevents accidental modifications
  * - Runtime injection still available via actions
  */
-import { middlewareRegistry } from './middleware/registry';
-import { reducerRegistry } from './reducers/registry';
+import { middlewareRegistry } from './registry/middleware';
+import { reducerRegistry } from './registry/reducer';
 import { createPersistedReducer, getApiMiddleware } from './setup';
 
 // Lock registries
@@ -198,5 +198,5 @@ export { useAppDispatch, useAppSelector } from './hooks';
  * // Inject lazy-loaded reducer
  * store.dispatch(injectReducer('analytics', analyticsReducer));
  */
-export { ejectReducer, injectReducer } from './reducers/registry';
-export type { EjectReducerAction, InjectReducerAction } from './reducers/registry';
+export { ejectReducer, injectReducer } from './registry/reducer';
+export type { EjectReducerAction, InjectReducerAction } from './registry/reducer';

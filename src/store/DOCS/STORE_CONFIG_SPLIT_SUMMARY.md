@@ -107,7 +107,7 @@ export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export { useAppDispatch, useAppSelector } from './hooks';
-export { injectReducer, ejectReducer } from './reducers/registry';
+export { injectReducer, ejectReducer } from './registry/reducer';
 ```
 
 **Purpose:** Clean entry point with only store creation and exports

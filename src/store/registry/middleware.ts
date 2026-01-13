@@ -1,6 +1,6 @@
 import { Middleware } from '@reduxjs/toolkit';
 
-import { BaseRegistry, RegistryEntry } from '../registry/base';
+import { BaseRegistry, RegistryEntry } from './base';
 
 // ============================================================================
 // DYNAMIC MIDDLEWARE REGISTRY
