@@ -1,16 +1,15 @@
 import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-import { authApiSlice, authReducer } from '@/features/auth';
-import { dashboardApiSlice } from '@/features/dashboard';
-import { postsApiSlice } from '@/features/posts';
+import { authReducer } from '@/features/auth';
 import { uiReducer } from '@/features/ui';
-import { usersApiSlice } from '@/features/users';
 import log from '@/shared/utils/logger';
 
+// ✅ Centralized API Registry - 모든 API를 한 곳에서 관리
 import { performanceMiddleware } from './middleware/performance';
 import { middlewareRegistry } from './middleware/registry';
 import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './reducers/registry';
+import { getAllApiMiddleware, registerAllApiReducers } from './slices/api/registry';
 
 // ============================================================================
 // REDUX STORE CONFIGURATION
@@ -58,13 +57,12 @@ middlewareRegistry.register('performance', performanceMiddleware, 10);
  * @note Optional features는 런타임에 지연 로딩 가능
  * @note RTK Query API 슬라이스는 middleware가 필요하므로 항상 초기에 로드
  */
-reducerRegistry.register('usersApi', usersApiSlice.reducer, 10);
-reducerRegistry.register('postsApi', postsApiSlice.reducer, 11);
-reducerRegistry.register('authApi', authApiSlice.reducer, 12);
-reducerRegistry.register('dashboardApi', dashboardApiSlice.reducer, 13); // ✅ API는 항상 초기 로드
+// ✅ UI Reducers
 reducerRegistry.register('auth', authReducer, 20);
 reducerRegistry.register('ui', uiReducer, 21);
-// dashboard UI reducer는 동적으로 주입됨
+
+// ✅ API Reducers - Centralized Registry에서 자동 등록
+registerAllApiReducers(reducerRegistry);
 
 /**
  * 동적 리듀서를 지원하는 커스텀 루트 리듀서
@@ -163,14 +161,13 @@ export const store = configureStore({
     });
 
     // Registry에서 등록된 미들웨어 합체
-    // RTK-Query API middleware를 포함해야 함
     const registryMiddleware = middlewareRegistry.getAll();
 
+    // ✅ API Middlewares - Centralized Registry에서 자동 로드
+    const apiMiddleware = getAllApiMiddleware();
+
     return coreMiddleware
-      .concat(usersApiSlice.middleware) // usersApi middleware 추가
-      .concat(postsApiSlice.middleware) // postsApi middleware 추가
-      .concat(authApiSlice.middleware) // authApi middleware 추가
-      .concat(dashboardApiSlice.middleware) // dashboardApi middleware 추가 (API는 항상 필요)
+      .concat(...apiMiddleware) // ✅ 모든 API middleware 자동 추가
       .concat(...registryMiddleware); // 그 외 등록된 미들웨어
   },
 
