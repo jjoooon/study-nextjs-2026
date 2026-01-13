@@ -97,7 +97,7 @@ class MiddlewareRegistry extends BaseRegistry<MiddlewareEntry> {
   }
 }
 
-// Singleton instance
+// 싱글톤 인스턴스
 export const middlewareRegistry = new MiddlewareRegistry();
 
 // ============================================================================
@@ -109,11 +109,11 @@ export const middlewareRegistry = new MiddlewareRegistry();
  * (store 초기화 전에 실행됨)
  */
 
-// Priority 0-9: Core checks (serializable, immutable)
-// Priority 10-29: Performance & Monitoring
-// Priority 30-49: Logging
-// Priority 50-99: API middlewares (usersApi, postsApi, etc.)
-// Priority 100+: Error handling, analytics
+// 우선순위 0-9: 핵심 체크 (직렬화, 불변성)
+// 우선순위 10-29: 성능 및 모니터링
+// 우선순위 30-49: 로깅
+// 우선순위 50-99: API 미들웨어 (usersApi, postsApi 등)
+// 우선순위 100+: 에러 처리, 분석
 
 if (process.env.NODE_ENV === 'development') {
   // 개발 모드에서만 실행

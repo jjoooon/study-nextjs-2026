@@ -1,19 +1,19 @@
 /**
- * Secure Storage Configuration
+ * 보안 스토리지 설정
  *
  * @description
- * Uses sessionStorage instead of localStorage for better security.
- * SessionStorage clears when tab/window closes, reducing attack surface.
+ * 더 나은 보안을 위해 localStorage 대신 sessionStorage 사용
+ * SessionStorage는 탭/창이 닫히면 지워지므로 공격 표면 감소
  *
  * @security
- * - sessionStorage: cleared on tab close (better than localStorage)
- * - No sensitive tokens should be persisted long-term
- * - Consider httpOnly cookies for production (server-side)
+ * - sessionStorage: 탭 닫을 시 지워짐 (localStorage보다 안전)
+ * - 민감한 토큰은 장기간 저장되면 안 됨
+ * - 프로덕션에서는 httpOnly 쿠키 고려 (서버 사이드)
  */
 
 export const createSecureStorage = () => {
   if (typeof window === 'undefined') {
-    // SSR fallback
+    // SSR 대체 처리
     return {
       getItem: (_key: string) => Promise.resolve(null),
       setItem: (_key: string, _value: string) => Promise.resolve(),

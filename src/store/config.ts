@@ -62,7 +62,7 @@ export const persistConfig = {
  * 100+: Error handling, analytics
  */
 
-// Register core middleware
+// 핵심 미들웨어 등록
 middlewareRegistry.registerMiddleware('performance', performanceMiddleware, 10);
 
 /**
@@ -72,7 +72,7 @@ middlewareRegistry.registerMiddleware('performance', performanceMiddleware, 10);
  * @returns Configured middleware array
  */
 export const configureMiddleware = (getDefaultMiddleware: (...args: unknown[]) => Middleware[]) => {
-  // Core middleware with optimizations
+  // 최적화가 적용된 핵심 미들웨어
   const coreMiddleware = getDefaultMiddleware({
     // 직렬화 체크 최적화
     serializableCheck: {

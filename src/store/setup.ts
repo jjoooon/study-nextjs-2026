@@ -38,11 +38,11 @@ export const initializeReducers = () => {
   reducerRegistry.register('auth', authReducer, 20);
   reducerRegistry.register('ui', uiReducer, 21);
 
-  // ✅ API Reducers - Centralized Registry에서 자동 등록
+  // ✅ API Reducers - 중앙 집중식 레지스트리에서 자동 등록
   registerAllApiReducers(reducerRegistry);
 };
 
-// Initialize reducers immediately
+// 리듀서 즉시 초기화
 initializeReducers();
 
 /**

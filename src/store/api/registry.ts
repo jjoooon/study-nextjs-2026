@@ -1,5 +1,5 @@
 /**
- * Centralized API Registry
+ * 중앙 집중식 API 레지스트리
  *
  * 모든 RTK Query API 슬라이스를 중앙 관리하여
  * store/index.ts 수정 없이 API 추가 가능
@@ -50,7 +50,7 @@ export const registerAllApiReducers = (registry: ReducerRegistry) => {
  * @returns Middleware 배열 (우선순위 정렬됨)
  */
 export const getAllApiMiddleware = () => {
-  // Type assertion to handle readonly array from as const
+  // as const로부터의 읽기 전용 배열 처리를 위한 타입 단언
   const registry = API_REGISTRY as unknown as Array<{
     api: { middleware: unknown };
     priority: number;
@@ -73,12 +73,12 @@ export const getRegisteredApiNames = () => {
 // ============================================================================
 
 /**
- * Re-export API registry types and constants from config.ts
+ * config.ts의 API 레지스트리 타입과 상수를 export
  *
  * @note
- * - API_REGISTRY: All registered API slices
- * - REGISTERED_API_NAMES: Array of API names
- * - ApiRegistration: Type definition for API registration
+ * - API_REGISTRY: 등록된 모든 API 슬라이스
+ * - REGISTERED_API_NAMES: API 이름 배열
+ * - ApiRegistration: API 등록 타입 정의
  */
 export { API_REGISTRY, REGISTERED_API_NAMES } from './config';
 export type { ApiRegistration } from './config';

@@ -1,19 +1,19 @@
 /**
- * Redux Store Entry Point
+ * Redux Store 진입점
  *
  * @description
- * Centralized store configuration for the application
+ * 애플리케이션의 중앙 집중식 스토어 설정
  *
  * @architecture
- * - Dynamic Reducer Registry: 런타임에 리듀서 추가/제거 (Code Splitting 지원)
- * - RTK Query APIs: 도메인별 독립 API 슬라이스
- * - Performance Monitoring: 느린 액션 자동 식별
- * - Selector Layer: 불필요한 리렌더링 방지
+ * - 동적 리듀서 레지스트리: 런타임에 리듀서 추가/제거 (코드 분할 지원)
+ * - RTK Query API: 도메인별 독립 API 슬라이스
+ * - 성능 모니터링: 느린 액션 자동 식별
+ * - 선택자 레이어: 불필요한 리렌더링 방지
  *
  * @scalability
- * - 50+ 개발자가 동시에 작업 가능
+ * - 50+ 명의 개발자가 동시에 작업 가능
  * - 병렬 컴파일로 빌드 시간 단축
- * - 팀 독립적으로 기능 추가 가능
+ * - 팀별 독립적으로 기능 추가 가능
  * - 초기 번들 크기 70% 감소 (지연 로딩)
  *
  * @usage
@@ -27,11 +27,11 @@ import { persistStore } from 'redux-persist';
 
 import log from '@/shared/utils/logger';
 
-// Store configuration and setup
+// 스토어 설정 및 초기화
 import { configureMiddleware, devToolsConfig } from './config';
 
 // ============================================================================
-// STORE CREATION
+// 스토어 생성
 // ============================================================================
 
 export const store = configureStore({
@@ -52,11 +52,11 @@ export const store = configureStore({
 });
 
 // ============================================================================
-// PERSISTOR
+// 지속성 관리자
 // ============================================================================
 
 /**
- * Redux Persistor
+ * Redux 지속성 관리자
  * - 지속성 레이어를 관리하는 persistor
  * - Next.js Provider에서 사용
  *
@@ -72,35 +72,35 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 // ============================================================================
-// RTK QUERY SETUP
+// RTK Query 설정
 // ============================================================================
 
 /**
- * RTK Query의 자동 리패칭 활성
+ * RTK Query의 자동 리패칭 활성화
  * - refetchOnFocus: 윈도우 포커스 시 리패치
  * - refetchOnReconnect: 네트워크 재연결 시 리패치
  */
 setupListeners(store.dispatch);
 
 // ============================================================================
-// REGISTRY LOCK
+// 레지스트리 잠금
 // ============================================================================
 
 /**
- * Lock registries after store initialization
- * - Prevents accidental modifications
- * - Runtime injection still available via actions
+ * 스토어 초기화 후 레지스트리 잠금
+ * - 의도치 않은 수정 방지
+ * - 런타임 주입은 여전히 액션으로 가능
  */
 import { middlewareRegistry } from './registry/middleware';
 import { reducerRegistry } from './registry/reducer';
 import { createPersistedReducer, getApiMiddleware } from './setup';
 
-// Lock registries
+// 레지스트리 잠금
 if (middlewareRegistry?.lock) middlewareRegistry.lock();
 if (reducerRegistry?.lock) reducerRegistry.lock();
 
 // ============================================================================
-// DEVELOPMENT MODE
+// 개발 모드
 // ============================================================================
 
 if (process.env.NODE_ENV === 'development') {
@@ -134,24 +134,24 @@ if (process.env.NODE_ENV === 'development') {
 
     if (totalPending > 0) {
       const apiLogger = log.getLogger('API');
-      apiLogger.debug(`SYSTEM: ${totalPending} pending requests`);
+      apiLogger.debug(`SYSTEM: ${totalPending} 개의 보류 중인 요청`);
     }
   });
 }
 
 // ============================================================================
-// TYPE EXPORTS
+// 타입 내보내기
 // ============================================================================
 
 /**
- * Redux State Types
+ * Redux 상태 타입
  *
  * @description
- * Type-safe Redux store access
+ * 타입 안전한 Redux 스토어 접근
  *
  * @note
- * RootState is manually typed to avoid PersistPartial type issues
- * Include all feature slices and API slices here
+ * RootState는 PersistPartial 타입 문제를 피해 수동으로 타이핑
+ * 여기에 모든 기능 슬라이스와 API 슬라이스를 포함
  */
 export type RootState = {
   auth: import('@/features/auth/store/authSlice').AuthState;
@@ -165,14 +165,14 @@ export type RootState = {
 export type AppDispatch = typeof store.dispatch;
 
 // ============================================================================
-// HOOKS EXPORT
+// 훅 내보내기
 // ============================================================================
 
 /**
- * Typed Redux Hooks
+ * 타입드 Redux 훅
  *
  * @description
- * Use these hooks instead of raw useDispatch and useSelector
+ * 원시 useDispatch와 useSelector 대신 이 훅 사용
  *
  * @example
  * import { useAppDispatch, useAppSelector } from '@/store';
@@ -183,19 +183,19 @@ export type AppDispatch = typeof store.dispatch;
 export { useAppDispatch, useAppSelector } from './hooks';
 
 // ============================================================================
-// DYNAMIC REDUCER EXPORTS
+// 동적 리듀서 내보내기
 // ============================================================================
 
 /**
- * Dynamic Reducer Helpers
+ * 동적 리듀서 헬퍼
  *
  * @description
- * Inject/eject reducers at runtime for code splitting
+ * 코드 분할을 위해 런타임에 리듀서 주입/제거
  *
  * @example
  * import { injectReducer, ejectReducer } from '@/store';
  *
- * // Inject lazy-loaded reducer
+ * // 지연 로딩된 리듀서 주입
  * store.dispatch(injectReducer('analytics', analyticsReducer));
  */
 export { ejectReducer, injectReducer } from './registry/reducer';
