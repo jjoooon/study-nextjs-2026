@@ -3,6 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { usersApiSlice } from '@/features/users';
 import { postsApiSlice } from '@/features/posts';
 import { authApiSlice } from '@/features/auth';
+import { dashboardApiSlice } from '@/features/dashboard';
 import { authReducer } from '@/features/auth';
 import { uiReducer } from '@/features/ui';
 import { dashboardReducer } from '@/features/dashboard';
@@ -59,9 +60,9 @@ middlewareRegistry.register('performance', performanceMiddleware, 10);
 reducerRegistry.register('usersApi', usersApiSlice.reducer, 10);
 reducerRegistry.register('postsApi', postsApiSlice.reducer, 11);
 reducerRegistry.register('authApi', authApiSlice.reducer, 12);
+// dashboardApi and dashboard reducers are injected dynamically in /dashboard page
 reducerRegistry.register('auth', authReducer, 20);
 reducerRegistry.register('ui', uiReducer, 21);
-reducerRegistry.register('dashboard', dashboardReducer, 22);
 
 /**
  * 동적 리듀서를 지원하는 커스텀 루트 리듀서
@@ -80,7 +81,9 @@ const createRootReducer = (): Reducer<any, any> => {
       const { key, reducer, priority = 50 } = action.payload;
 
       if (!reducerRegistry.has(key)) {
-        reducerRegistry.register(key, reducer, priority);
+        // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 추가
+        (reducerRegistry as any).entries.set(key, { name: key, reducer, priority });
+        (reducerRegistry as any).combinedReducer = null;
 
         const apiLogger = log.getLogger('ReducerRegistry');
         apiLogger.info(`✅ Injected reducer: ${key}`);
@@ -100,7 +103,9 @@ const createRootReducer = (): Reducer<any, any> => {
       const { key } = action.payload;
 
       if (reducerRegistry.has(key)) {
-        reducerRegistry.unregister(key);
+        // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 제거
+        (reducerRegistry as any).entries.delete(key);
+        (reducerRegistry as any).combinedReducer = null;
 
         const apiLogger = log.getLogger('ReducerRegistry');
         apiLogger.info(`🗑️  Ejected reducer: ${key}`);
@@ -114,8 +119,9 @@ const createRootReducer = (): Reducer<any, any> => {
       return rootReducer(remainingState, action);
     }
 
-    // 기본 액션 처리
-    const rootReducer = combineReducers(initialReducers);
+    // 기본 액션 처리 - 현재 레지스트리의 모든 리듀서 사용
+    const currentReducers = reducerRegistry.getReducersMap();
+    const rootReducer = combineReducers(currentReducers);
     return rootReducer(state, action);
   };
 };
@@ -130,8 +136,13 @@ export const store = configureStore({
       // 직렬화 체크 최적화
       serializableCheck: {
         // 모든 RTK Query 내부 액션 무시 (자동 생성됨)
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'] as string[],
-        ignoredPaths: ['usersApi', 'postsApi', 'authApi'],
+        ignoredActions: [
+          'persist/PERSIST',
+          'persist/REHYDRATE',
+          'reducer/inject',  // Dynamic reducer injection (함수 포함)
+          'reducer/eject',   // Dynamic reducer ejection
+        ] as string[],
+        ignoredPaths: ['usersApi', 'postsApi', 'authApi', 'dashboardApi'],
         // warnAfter: 128, // milliseconds
       },
 
@@ -139,7 +150,7 @@ export const store = configureStore({
       immutableCheck: process.env.NODE_ENV === 'development'
         ? {
             // RTK Query 캐시 무시
-            ignoredPaths: ['usersApi', 'postsApi', 'authApi'],
+            ignoredPaths: ['usersApi', 'postsApi', 'authApi', 'dashboardApi'],
           }
         : false,
     });
@@ -149,10 +160,11 @@ export const store = configureStore({
     const registryMiddleware = middlewareRegistry.getAll();
 
     return coreMiddleware
-      .concat(usersApiSlice.middleware)  // usersApi middleware 추가
-      .concat(postsApiSlice.middleware)  // postsApi middleware 추가
-      .concat(authApiSlice.middleware)   // authApi middleware 추가
-      .concat(...registryMiddleware);    // 그 외 등록된 미들웨어
+      .concat(usersApiSlice.middleware)     // usersApi middleware 추가
+      .concat(postsApiSlice.middleware)     // postsApi middleware 추가
+      .concat(authApiSlice.middleware)      // authApi middleware 추가
+      .concat(dashboardApiSlice.middleware) // dashboardApi middleware 추가
+      .concat(...registryMiddleware);      // 그 외 등록된 미들웨어
   },
 
   // DevTools 설정
@@ -200,6 +212,18 @@ export const store = configureStore({
                 .replace('/rejected', '❌'),
             };
           }
+          // Dashboard API 액션
+          if (action.type.startsWith('dashboardApi/')) {
+            return {
+              ...action,
+              type: action.type
+                .replace('dashboardApi/', '[Dashboard] ')
+                .replace('/execute', '')
+                .replace('/pending', '⏳')
+                .replace('/fulfilled', '✅')
+                .replace('/rejected', '❌'),
+            };
+          }
           return action;
         },
 
@@ -207,7 +231,7 @@ export const store = configureStore({
         stateSanitizer: (state) => {
           const sanitized = { ...state } as Record<string, unknown>;
           // 불필요한 RTK Query 내부 상태 제거
-          ['usersApi', 'postsApi', 'authApi'].forEach((api) => {
+          ['usersApi', 'postsApi', 'authApi', 'dashboardApi'].forEach((api) => {
             const apiState = sanitized[api] as Record<string, unknown> | undefined;
             if (apiState?.subscriptions) {
               delete apiState.subscriptions;

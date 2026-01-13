@@ -7,8 +7,10 @@
 
 import { usersHandlers } from './users';
 import { errorHandlers } from './errors';
+import { dashboardHandlers } from './dashboard';
 
 export const handlers = [
   ...usersHandlers,
+  ...dashboardHandlers,
   ...errorHandlers,
 ];

@@ -1,33 +1,54 @@
 import { useAppDispatch, useAppSelector } from '@/store';
 import * as dashboardActions from '@/features/dashboard/store/dashboardSlice';
-import { fetchDashboardData } from '@/features/dashboard/store/dashboardSlice';
+import {
+  toggleWidget,
+  reorderWidgets,
+} from '@/features/dashboard/store/dashboardSlice';
+import { useGetDashboardQuery } from '@/features/dashboard/store/apiSlice';
 import * as dashboardSelectors from '@/store/selectors/dashboard';
 import type { Widget } from '@/features/dashboard/store/dashboardSlice';
 
 // ============================================================================
-// DASHBOARD HOOKS (Selector-based)
+// DASHBOARD HOOKS (RTK Query + Selector-based)
 // ============================================================================
 
 /**
  * Dashboard 상태 관리 Hook
+ *
+ * RTK Query를 사용한 API 데이터 fetching + Redux Slice의 UI 상태 관리
+ *
+ * @note Conditional Rendering으로 인해 방어 로직 불필요
  */
 export const useDashboard = () => {
   const dispatch = useAppDispatch();
 
-  // Selector 기반으로 개별 상태 구독
+  // ✅ RTK Query hook (리듀서가 항상 존재하므로 안전)
+  const {
+    data: dashboardData,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetDashboardQuery();
+
+  // ✅ Selector 기반 UI 상태 구독
   const widgets = useAppSelector(dashboardSelectors.selectWidgets);
-  const isLoading = useAppSelector(dashboardSelectors.selectDashboardLoading);
-  const lastUpdated = useAppSelector(dashboardSelectors.selectLastUpdated);
 
   return {
-    widgets,
+    // API 데이터
+    stats: dashboardData?.stats,
+    recentActivity: dashboardData?.recentActivity,
     isLoading,
-    lastUpdated,
-    toggleWidget: (id: string) => dispatch(dashboardActions.toggleWidget(id)),
+    isError,
+    lastUpdated: dashboardData ? new Date().toISOString() : null,
+
+    // UI 상태
+    widgets,
+
+    // Actions
+    toggleWidget: (id: string) => dispatch(toggleWidget(id)),
     reorderWidgets: (sourceIndex: number, destIndex: number) =>
-      dispatch(dashboardActions.reorderWidgets({ sourceIndex, destIndex })),
-    fetchData: () => dispatch(fetchDashboardData()),
-    updateLastUpdated: () => dispatch(dashboardActions.updateLastUpdated()),
+      dispatch(reorderWidgets({ sourceIndex, destIndex })),
+    refetchData: () => refetch(),
   };
 };
 
@@ -60,8 +81,41 @@ export const useWidgetCount = () => {
 };
 
 /**
- * Dashboard 상태 요약
+ * Dashboard API 데이터 상태 요약
  */
-export const useDashboardStatus = () => {
-  return useAppSelector(dashboardSelectors.selectDashboardStatus);
+export const useDashboardApiStatus = () => {
+  const { isLoading, isError, data } = useGetDashboardQuery();
+
+  return {
+    isLoading,
+    isError,
+    hasData: !!data,
+    dataUpdatedAt: data ? new Date(data.widgets[0]?.position || Date.now()) : null,
+  };
+};
+
+/**
+ * Dashboard Statistics 전용 Hook
+ */
+export const useDashboardStats = () => {
+  const { data, isLoading, isError } = useGetDashboardQuery();
+
+  return {
+    stats: data?.stats,
+    isLoading,
+    isError,
+  };
+};
+
+/**
+ * Recent Activity 전용 Hook
+ */
+export const useRecentActivity = () => {
+  const { data, isLoading, isError } = useGetDashboardQuery();
+
+  return {
+    activities: data?.recentActivity || [],
+    isLoading,
+    isError,
+  };
 };

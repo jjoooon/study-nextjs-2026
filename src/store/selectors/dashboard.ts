@@ -8,6 +8,8 @@ import type { Widget } from '@/features/dashboard/store/dashboardSlice';
 
 /**
  * Dashboard domain의 모든 selector
+ *
+ * @note Conditional Rendering으로 인해 방어 로직 불필요
  */
 
 // Base selectors

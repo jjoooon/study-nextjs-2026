@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Widget {
   id: string;
@@ -7,10 +7,8 @@ export interface Widget {
   isVisible: boolean;
 }
 
-interface DashboardState {
+export interface DashboardState {
   widgets: Widget[];
-  isLoading: boolean;
-  lastUpdated: string | null;
 }
 
 const initialState: DashboardState = {
@@ -18,20 +16,14 @@ const initialState: DashboardState = {
     { id: 'stats', type: 'stats', position: 1, isVisible: true },
     { id: 'activity', type: 'activity', position: 2, isVisible: true },
   ],
-  isLoading: false,
-  lastUpdated: null,
 };
 
-// Async thunks
-export const fetchDashboardData = createAsyncThunk(
-  'dashboard/fetchData',
-  async () => {
-    // Simulate API call
-    const response = await fetch('/api/dashboard');
-    return response.json();
-  }
-);
-
+/**
+ * Dashboard UI State Slice
+ *
+ * Widget configuration 등 UI 상태만 관리합니다.
+ * API 데이터는 RTK Query (dashboardApiSlice)에서 관리합니다.
+ */
 export const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
@@ -46,24 +38,8 @@ export const dashboardSlice = createSlice({
       const [removed] = state.widgets.splice(action.payload.sourceIndex, 1);
       state.widgets.splice(action.payload.destIndex, 0, removed);
     },
-    updateLastUpdated: (state) => {
-      state.lastUpdated = new Date().toISOString();
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchDashboardData.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(fetchDashboardData.fulfilled, (state) => {
-        state.isLoading = false;
-        state.lastUpdated = new Date().toISOString();
-      })
-      .addCase(fetchDashboardData.rejected, (state) => {
-        state.isLoading = false;
-      });
   },
 });
 
-export const { toggleWidget, reorderWidgets, updateLastUpdated } = dashboardSlice.actions;
+export const { toggleWidget, reorderWidgets } = dashboardSlice.actions;
 export default dashboardSlice.reducer;
