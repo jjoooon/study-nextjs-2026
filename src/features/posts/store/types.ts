@@ -1,3 +1,21 @@
+/**
+ * Posts Domain Types
+ *
+ * @description
+ * Type definitions for posts API contracts
+ *
+ * @architecture
+ * - Feature-First: Types co-located with posts feature
+ * - API Contracts: Request/Response types for backend communication
+ */
+
+// ============================================================================
+// ENTITY TYPES
+// ============================================================================
+
+/**
+ * Post entity
+ */
 export interface Post {
   id: string | number;
   title: string;
@@ -15,18 +33,31 @@ export interface Post {
   updatedAt?: string;
 }
 
+// ============================================================================
+// REQUEST TYPES
+// ============================================================================
+
+/**
+ * Create post request payload
+ */
 export interface CreatePostInput {
   title: string;
   content: string;
   status?: 'draft' | 'published' | 'archived';
 }
 
+/**
+ * Update post request payload
+ */
 export interface UpdatePostInput {
   title?: string;
   content?: string;
   status?: 'draft' | 'published' | 'archived';
 }
 
+/**
+ * Post filters for list queries
+ */
 export interface PostFilters {
   search?: string;
   status?: string;
@@ -37,6 +68,9 @@ export interface PostFilters {
   dateTo?: string;
 }
 
+/**
+ * Post list query parameters
+ */
 export interface PostListParams {
   page?: number;
   pageSize?: number;

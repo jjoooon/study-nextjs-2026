@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import log from '@/shared/utils/logger';
 
+import type { CreateUserInput, UpdateUserInput, UserListParams } from './types';
+
 // ============================================================================
 // USERS API SLICE
 // ============================================================================
@@ -10,7 +12,6 @@ import log from '@/shared/utils/logger';
  */
 
 // Custom baseQuery (auth token injection)
-import type { CreateUserInput, UpdateUserInput, UserListParams } from '@/store/api/types/users';
 
 const customBaseQuery = fetchBaseQuery({
   baseUrl: '/api',
