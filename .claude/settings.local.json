@@ -22,7 +22,8 @@
       "Bash(npm run test)",
       "Bash(npm uninstall:*)",
       "Bash(npx:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(wc:*)"
     ]
   }
 }
