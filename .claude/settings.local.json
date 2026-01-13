@@ -20,7 +20,8 @@
       "Bash(npm outdated:*)",
       "Bash(npm run lint)",
       "Bash(npm run test)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(npx:*)"
     ]
   }
 }

@@ -54,7 +54,7 @@ export const selectActiveWidgets = createSelector(
 export const selectWidgetsByType = (widgetType: Widget['type']) =>
   createSelector(
     [selectWidgets],
-    (widgets) => widgets.filter(widget => widget.type === widgetType)
+    (widgets) => widgets.filter((widget: Widget) => widget.type === widgetType)
   );
 
 /**

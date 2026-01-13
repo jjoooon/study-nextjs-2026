@@ -27,7 +27,7 @@ export function renderWithProviders(
         usersApi: (state = {}) => state,
         postsApi: (state = {}) => state,
         authApi: (state = {}) => state,
-      },
+      } as any, // Type assertion for test store
       preloadedState,
     }),
     ...renderOptions

@@ -63,7 +63,7 @@ export const selectUserInitials = createSelector(
   (user) => {
     if (!user || !user.name) return '?';
     const names = user.name.split(' ');
-    return names.map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    return names.map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
   }
 );
 

@@ -21,7 +21,7 @@ export const selectUsersQueries = createSelector(
 export const selectIsUsersLoading = createSelector(
   [selectUsersQueries],
   (queries) =>
-    Object.values(queries).some(query => query?.status === 'pending')
+    Object.values(queries).some((query: any) => query?.status === 'pending')
 );
 
 // Posts API selectors
@@ -35,7 +35,7 @@ export const selectPostsQueries = createSelector(
 export const selectIsPostsLoading = createSelector(
   [selectPostsQueries],
   (queries) =>
-    Object.values(queries).some(query => query?.status === 'pending')
+    Object.values(queries).some((query: any) => query?.status === 'pending')
 );
 
 // Auth API selectors
@@ -49,7 +49,7 @@ export const selectAuthQueries = createSelector(
 export const selectIsAuthApiLoading = createSelector(
   [selectAuthQueries],
   (queries) =>
-    Object.values(queries).some(query => query?.status === 'pending')
+    Object.values(queries).some((query: any) => query?.status === 'pending')
 );
 
 // ============================================================================
@@ -77,19 +77,19 @@ export const selectApiRequestCount = createSelector(
   ],
   (usersQueries, postsQueries, authQueries) => {
     const pendingCount =
-      Object.values(usersQueries).filter(q => q?.status === 'pending').length +
-      Object.values(postsQueries).filter(q => q?.status === 'pending').length +
-      Object.values(authQueries).filter(q => q?.status === 'pending').length;
+      Object.values(usersQueries).filter((q: any) => q?.status === 'pending').length +
+      Object.values(postsQueries).filter((q: any) => q?.status === 'pending').length +
+      Object.values(authQueries).filter((q: any) => q?.status === 'pending').length;
 
     const fulfilledCount =
-      Object.values(usersQueries).filter(q => q?.status === 'fulfilled').length +
-      Object.values(postsQueries).filter(q => q?.status === 'fulfilled').length +
-      Object.values(authQueries).filter(q => q?.status === 'fulfilled').length;
+      Object.values(usersQueries).filter((q: any) => q?.status === 'fulfilled').length +
+      Object.values(postsQueries).filter((q: any) => q?.status === 'fulfilled').length +
+      Object.values(authQueries).filter((q: any) => q?.status === 'fulfilled').length;
 
     const rejectedCount =
-      Object.values(usersQueries).filter(q => q?.status === 'rejected').length +
-      Object.values(postsQueries).filter(q => q?.status === 'rejected').length +
-      Object.values(authQueries).filter(q => q?.status === 'rejected').length;
+      Object.values(usersQueries).filter((q: any) => q?.status === 'rejected').length +
+      Object.values(postsQueries).filter((q: any) => q?.status === 'rejected').length +
+      Object.values(authQueries).filter((q: any) => q?.status === 'rejected').length;
 
     return {
       pending: pendingCount,
