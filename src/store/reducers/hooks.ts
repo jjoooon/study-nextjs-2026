@@ -1,4 +1,4 @@
-import type { Reducer } from '@reduxjs/toolkit';
+import type { Reducer, AnyAction } from '@reduxjs/toolkit';
 import { useEffect, useRef } from 'react';
 
 import log from '@/shared/utils/logger';
@@ -51,7 +51,7 @@ export const useInjectReducer = (key: string, reducer: Reducer, options: UseInje
   useEffect(() => {
     if (!isInjected.current) {
       try {
-        store.dispatch(injectReducer(key, reducer, priority) as any);
+        store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Reducer injected via hook: ${key}`);
@@ -67,7 +67,7 @@ export const useInjectReducer = (key: string, reducer: Reducer, options: UseInje
     if (ejectOnUnmount) {
       return () => {
         try {
-          store.dispatch(ejectReducer(key) as any);
+          store.dispatch(ejectReducer(key) as unknown as AnyAction);
 
           const logger = log.getLogger('ReducerRegistry');
           logger.debug(`🗑️  Reducer ejected via hook: ${key}`);
@@ -151,7 +151,7 @@ export const useLazyReducer = (
         const reducer = await reducerPromise;
 
         if (mounted) {
-          store.dispatch(injectReducer(key, reducer, priority) as any);
+          store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
 
           result.current = {
             loading: false,
@@ -220,7 +220,7 @@ export const useConditionalReducer = (
   useEffect(() => {
     if (enabled) {
       try {
-        store.dispatch(injectReducer(key, reducer, options.priority) as any);
+        store.dispatch(injectReducer(key, reducer, options.priority) as unknown as AnyAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Conditional reducer enabled: ${key}`);
@@ -274,7 +274,7 @@ export const useRoleBasedReducer = (
 
     if (isAuthorized) {
       try {
-        store.dispatch(injectReducer(key, reducer, options.priority) as any);
+        store.dispatch(injectReducer(key, reducer, options.priority) as unknown as AnyAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Role-based reducer authorized: ${key} (${userRole})`);
@@ -318,7 +318,7 @@ export const useBatchReducers = (reducers: BatchReducersMap, options: UseInjectR
   useEffect(() => {
     Object.entries(reducers).forEach(([key, reducer]) => {
       try {
-        store.dispatch(injectReducer(key, reducer, priority) as any);
+        store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Batch reducer injected: ${key}`);

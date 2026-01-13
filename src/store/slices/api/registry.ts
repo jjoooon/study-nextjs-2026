@@ -14,7 +14,20 @@
  * 3. store/index.ts는 자동으로 모든 API를 로드
  */
 
+import type { Reducer } from '@reduxjs/toolkit';
+
 import { API_REGISTRY, REGISTERED_API_NAMES } from './config';
+
+// ============================================================================
+// REDUCER REGISTRY INTERFACE
+// ============================================================================
+
+/**
+ * 리듀서 레지스트리 인터페이스
+ */
+export interface ReducerRegistry {
+  register: (name: string, reducer: Reducer, priority?: number) => void;
+}
 
 // ============================================================================
 // API REGISTRATION HELPERS
@@ -25,7 +38,7 @@ import { API_REGISTRY, REGISTERED_API_NAMES } from './config';
  *
  * @param registry - Reducer registry
  */
-export const registerAllApiReducers = (registry: any) => {
+export const registerAllApiReducers = (registry: ReducerRegistry) => {
   API_REGISTRY.forEach(({ api, priority }) => {
     registry.register(api.reducerPath, api.reducer, priority);
   });

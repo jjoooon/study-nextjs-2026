@@ -3,8 +3,9 @@ import { renderHook, act } from '@testing-library/react';
 import { setupStore } from '@/store';
 import { Provider } from 'react-redux';
 import { useUI, useSidebar, useModal } from '@/features/ui';
+import type { ReactNode } from 'react';
 
-function wrapper({ children }: { children: React.ReactNode }) {
+function wrapper({ children }: { children: ReactNode }) {
   const store = setupStore();
   return <Provider store={store}>{children}</Provider>;
 }

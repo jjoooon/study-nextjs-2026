@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { ContentLoader, PageLoader, CardLoader, AsyncContent } from './ContentLoader';
+import { ContentLoader } from './ContentLoader';
 
 const meta = {
   title: 'Shared/ContentLoader',

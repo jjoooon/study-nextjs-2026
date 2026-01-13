@@ -3,6 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { setupStore } from '@/store';
 import { Provider } from 'react-redux';
 import { useAuth, useIsAuthenticated, useCurrentUser } from '@/features/auth';
+import type { ReactNode } from 'react';
 
 // Mock fetch
 global.fetch = jest.fn(() =>
@@ -15,7 +16,7 @@ global.fetch = jest.fn(() =>
   })
 ) as jest.MockedFunction<typeof fetch>;
 
-function wrapper({ children }: { children: React.ReactNode }) {
+function wrapper({ children }: { children: ReactNode }) {
   const store = setupStore();
   return <Provider store={store}>{children}</Provider>;
 }
@@ -66,7 +67,9 @@ describe('Auth Hooks', () => {
       });
 
       const { result } = renderHook(() => useAuth(), {
-        wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <Provider store={store}>{children}</Provider>
+        ),
       });
 
       act(() => {

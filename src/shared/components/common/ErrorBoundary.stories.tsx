@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from './ErrorBoundary';
 
 const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
   if (shouldThrow) {

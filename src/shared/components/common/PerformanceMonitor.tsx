@@ -183,10 +183,12 @@ export function PerformanceMonitor({ enabled = false }: { enabled?: boolean }) {
 
 // Hook for performance monitoring
 export function usePerformanceMonitor() {
-  const [metrics, setMetrics] = useState<any>(null);
+  const [metrics, setMetrics] = useState<PerformanceData | null>(null);
 
   useEffect(() => {
-    measureWebVitals().then(setMetrics);
+    measureWebVitals().then((webVitals) => {
+      setMetrics({ webVitals });
+    });
   }, []);
 
   return metrics;

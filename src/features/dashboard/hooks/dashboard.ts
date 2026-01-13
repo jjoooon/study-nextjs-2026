@@ -1,5 +1,6 @@
+import { useMemo } from 'react';
+
 import { useGetDashboardQuery } from '@/features/dashboard/store/apiSlice';
-import * as dashboardActions from '@/features/dashboard/store/dashboardSlice';
 import { toggleWidget, reorderWidgets } from '@/features/dashboard/store/dashboardSlice';
 import type { Widget } from '@/features/dashboard/store/dashboardSlice';
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -77,11 +78,17 @@ export const useWidgetCount = () => {
 export const useDashboardApiStatus = () => {
   const { isLoading, isError, data } = useGetDashboardQuery();
 
+  // Use dataUpdatedAt from API response if available
+  const dataUpdatedAt = useMemo(() => {
+    if (!data || !data.widgets[0]?.position) return null;
+    return new Date(data.widgets[0].position);
+  }, [data]);
+
   return {
     isLoading,
     isError,
     hasData: !!data,
-    dataUpdatedAt: data ? new Date(data.widgets[0]?.position || Date.now()) : null,
+    dataUpdatedAt,
   };
 };
 

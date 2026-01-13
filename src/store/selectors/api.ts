@@ -3,6 +3,19 @@ import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 // ============================================================================
+// RTK QUERY STATE TYPES
+// ============================================================================
+
+/**
+ * RTK Query 쿼리 상태 타입
+ */
+interface QueryState {
+  status: 'pending' | 'fulfilled' | 'rejected';
+  error?: unknown;
+  data?: unknown;
+}
+
+// ============================================================================
 // API STATE SELECTORS
 // ============================================================================
 
@@ -17,7 +30,7 @@ export const selectUsersApiState = (state: RootState) => state.usersApi;
 export const selectUsersQueries = createSelector([selectUsersApiState], (usersApi) => usersApi?.queries || {});
 
 export const selectIsUsersLoading = createSelector([selectUsersQueries], (queries) =>
-  Object.values(queries).some((query: any) => query?.status === 'pending')
+  (Object.values(queries) as (QueryState | undefined)[]).some((query) => query?.status === 'pending')
 );
 
 // Posts API selectors
@@ -26,7 +39,7 @@ export const selectPostsApiState = (state: RootState) => state.postsApi;
 export const selectPostsQueries = createSelector([selectPostsApiState], (postsApi) => postsApi?.queries || {});
 
 export const selectIsPostsLoading = createSelector([selectPostsQueries], (queries) =>
-  Object.values(queries).some((query: any) => query?.status === 'pending')
+  (Object.values(queries) as (QueryState | undefined)[]).some((query) => query?.status === 'pending')
 );
 
 // Auth API selectors
@@ -35,7 +48,7 @@ export const selectAuthApiState = (state: RootState) => state.authApi;
 export const selectAuthQueries = createSelector([selectAuthApiState], (authApi) => authApi?.queries || {});
 
 export const selectIsAuthApiLoading = createSelector([selectAuthQueries], (queries) =>
-  Object.values(queries).some((query: any) => query?.status === 'pending')
+  (Object.values(queries) as (QueryState | undefined)[]).some((query) => query?.status === 'pending')
 );
 
 // ============================================================================
@@ -58,19 +71,19 @@ export const selectApiRequestCount = createSelector(
   [selectUsersQueries, selectPostsQueries, selectAuthQueries],
   (usersQueries, postsQueries, authQueries) => {
     const pendingCount =
-      Object.values(usersQueries).filter((q: any) => q?.status === 'pending').length +
-      Object.values(postsQueries).filter((q: any) => q?.status === 'pending').length +
-      Object.values(authQueries).filter((q: any) => q?.status === 'pending').length;
+      (Object.values(usersQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'pending').length +
+      (Object.values(postsQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'pending').length +
+      (Object.values(authQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'pending').length;
 
     const fulfilledCount =
-      Object.values(usersQueries).filter((q: any) => q?.status === 'fulfilled').length +
-      Object.values(postsQueries).filter((q: any) => q?.status === 'fulfilled').length +
-      Object.values(authQueries).filter((q: any) => q?.status === 'fulfilled').length;
+      (Object.values(usersQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'fulfilled').length +
+      (Object.values(postsQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'fulfilled').length +
+      (Object.values(authQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'fulfilled').length;
 
     const rejectedCount =
-      Object.values(usersQueries).filter((q: any) => q?.status === 'rejected').length +
-      Object.values(postsQueries).filter((q: any) => q?.status === 'rejected').length +
-      Object.values(authQueries).filter((q: any) => q?.status === 'rejected').length;
+      (Object.values(usersQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'rejected').length +
+      (Object.values(postsQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'rejected').length +
+      (Object.values(authQueries) as (QueryState | undefined)[]).filter((q) => q?.status === 'rejected').length;
 
     return {
       pending: pendingCount,

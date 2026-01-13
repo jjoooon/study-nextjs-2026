@@ -1,3 +1,4 @@
+import type { AnyAction } from '@reduxjs/toolkit';
 import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
@@ -10,6 +11,13 @@ import { performanceMiddleware } from './middleware/performance';
 import { middlewareRegistry } from './middleware/registry';
 import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './reducers/registry';
 import { getAllApiMiddleware, registerAllApiReducers } from './slices/api/registry';
+
+// ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
+
+// RootState and AppDispatch are defined after store creation (line 284)
+// RootAction is defined as AnyAction for dynamic reducer compatibility
 
 // ============================================================================
 // REDUX STORE CONFIGURATION
@@ -72,17 +80,21 @@ registerAllApiReducers(reducerRegistry);
  * - 런타임에 injectReducer/ejectReducer 액션으로 리듀서 추가/제거
  * - 새로 추가된 리듀서의 초기 state 자동 병합
  */
-const createRootReducer = (): Reducer<any, any> => {
-  const initialReducers = reducerRegistry.getReducersMap();
-
-  return (state: any, action: any) => {
+const createRootReducer = (): Reducer<Record<string, unknown>, AnyAction> => {
+  return (state: Record<string, unknown> | undefined, action: AnyAction) => {
     // 리듀서 주입 액션 처리
     if (action.type === INJECT_REDUCER) {
-      const { key, reducer, priority = 50 } = action.payload;
+      const {
+        key,
+        reducer,
+        priority = 50,
+      } = action.payload as { key: string; reducer: Reducer<unknown, AnyAction>; priority?: number };
 
       if (!reducerRegistry.has(key)) {
         // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 추가
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (reducerRegistry as any).entries.set(key, { name: key, reducer, priority });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (reducerRegistry as any).combinedReducer = null;
 
         const apiLogger = log.getLogger('ReducerRegistry');
@@ -91,28 +103,32 @@ const createRootReducer = (): Reducer<any, any> => {
 
       // 새로운 리듀서의 초기 state 병합
       const newReducers = reducerRegistry.getReducersMap();
-      const mergedState = reducerRegistry.mergeInitialState(state, newReducers);
+      const mergedState = reducerRegistry.mergeInitialState(state ?? {}, newReducers);
 
       // 업데이트된 리듀서로 상태 갱신
       const rootReducer = combineReducers(newReducers);
-      return rootReducer(mergedState, action);
+      return rootReducer(mergedState as Record<string, unknown>, action);
     }
 
     // 리듀서 제거 액션 처리
     if (action.type === EJECT_REDUCER) {
-      const { key } = action.payload;
+      const { key } = action.payload as { key: string };
 
       if (reducerRegistry.has(key)) {
         // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 제거
-        (reducerRegistry as any).entries.delete(key);
-        (reducerRegistry as any).combinedReducer = null;
+
+        (reducerRegistry as unknown as { entries: Map<string, unknown>; combinedReducer: unknown }).entries.delete(key);
+
+        (reducerRegistry as unknown as { entries: Map<string, unknown>; combinedReducer: unknown }).combinedReducer =
+          null;
 
         const apiLogger = log.getLogger('ReducerRegistry');
         apiLogger.info(`🗑️  Ejected reducer: ${key}`);
       }
 
       // 제거된 리듀서를 제외하고 상태 복원
-      const { [key]: removed, ...remainingState } = state;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [key]: removed, ...remainingState } = state as Record<string, unknown>;
       const remainingReducers = reducerRegistry.getReducersMap();
       const rootReducer = combineReducers(remainingReducers);
 
@@ -168,7 +184,7 @@ export const store = configureStore({
 
     return coreMiddleware
       .concat(...apiMiddleware) // ✅ 모든 API middleware 자동 추가
-      .concat(...registryMiddleware); // 그 외 등록된 미들웨어
+      .concat(...registryMiddleware) as ReturnType<typeof getDefaultMiddleware>; // 그 외 등록된 미들웨어
   },
 
   // DevTools 설정

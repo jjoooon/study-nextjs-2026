@@ -29,11 +29,11 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
       try {
         const fcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          const fcp = entries[0] as any;
+          const fcp = entries[0] as PerformancePaintTiming;
           metrics.fcp = fcp.startTime;
         });
         fcpObserver.observe({ entryTypes: ['paint'] });
-      } catch (e) {
+      } catch {
         console.warn('FCP observation not supported');
       }
 
@@ -41,11 +41,11 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
       try {
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          const lastEntry = entries[entries.length - 1] as any;
+          const lastEntry = entries[entries.length - 1] as PerformanceEntry;
           metrics.lcp = lastEntry.startTime;
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-      } catch (e) {
+      } catch {
         console.warn('LCP observation not supported');
       }
 
@@ -53,11 +53,11 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
       try {
         const fidObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          const fid = entries[0] as any;
+          const fid = entries[0] as unknown as { processingStart: number; startTime: number };
           metrics.fid = fid.processingStart - fid.startTime;
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
-      } catch (e) {
+      } catch {
         console.warn('FID observation not supported');
       }
 
@@ -65,7 +65,7 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
       try {
         let clsValue = 0;
         const clsObserver = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries() as any[]) {
+          for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) {
             if (!entry.hadRecentInput) {
               clsValue += entry.value;
             }
@@ -73,7 +73,7 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
           metrics.cls = clsValue;
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
-      } catch (e) {
+      } catch {
         console.warn('CLS observation not supported');
       }
     }
@@ -88,7 +88,11 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
 // Measure memory usage (Chrome only)
 export function getMemoryUsage() {
   if ('memory' in performance) {
-    const memory = (performance as any).memory;
+    const memory = (
+      performance as Performance & {
+        memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number };
+      }
+    ).memory;
     return {
       usedJSHeapSize: memory.usedJSHeapSize,
       totalJSHeapSize: memory.totalJSHeapSize,
@@ -124,15 +128,18 @@ export function measurePerformance(name: string, startMark: string) {
       const measure = performance.getEntriesByName(name)[0];
       console.log(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
       return measure.duration;
-    } catch (e) {
-      console.warn('Performance measure failed:', e);
+    } catch {
+      console.warn('Performance measure failed');
     }
   }
   return 0;
 }
 
 // Debounce utility for performance optimization
-export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: unknown[]) => unknown>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null;
   return (...args: Parameters<T>) => {
     if (timeout) clearTimeout(timeout);
@@ -141,7 +148,10 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
 }
 
 // Throttle utility for performance optimization
-export function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void {
+export function throttle<T extends (...args: unknown[]) => unknown>(
+  func: T,
+  limit: number
+): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
@@ -153,7 +163,7 @@ export function throttle<T extends (...args: any[]) => any>(func: T, limit: numb
 }
 
 // Request animation frame throttle
-export function rafThrottle<T extends (...args: any[]) => any>(func: T): (...args: Parameters<T>) => void {
+export function rafThrottle<T extends (...args: unknown[]) => unknown>(func: T): (...args: Parameters<T>) => void {
   let rafId: number | null = null;
   return (...args: Parameters<T>) => {
     if (rafId === null) {
@@ -166,8 +176,8 @@ export function rafThrottle<T extends (...args: any[]) => any>(func: T): (...arg
 }
 
 // Measure function execution time
-export function measureFunction<T extends (...args: any[]) => any>(func: T, functionName: string): T {
-  return ((...args: any[]) => {
+export function measureFunction<T extends (...args: unknown[]) => unknown>(func: T, functionName: string): T {
+  return ((...args: Parameters<T>) => {
     const start = performance.now();
     const result = func(...args);
     const end = performance.now();

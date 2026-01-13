@@ -9,6 +9,8 @@
  * 2. API_REGISTRY 배열에 { api, priority, name } 추가
  */
 
+import type { Reducer, Middleware } from '@reduxjs/toolkit';
+
 import { authApiSlice } from '@/features/auth';
 import { dashboardApiSlice } from '@/features/dashboard';
 import { postsApiSlice } from '@/features/posts';
@@ -21,8 +23,8 @@ export interface ApiRegistration {
   /** RTK Query API 슬라이스 */
   api: {
     reducerPath: string;
-    reducer: any;
-    middleware: any;
+    reducer: Reducer;
+    middleware: Middleware<object, object>;
   };
   /** 실행 우선순위 (낮을수록 먼저 실행) */
   priority: number;

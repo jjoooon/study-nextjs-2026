@@ -1,7 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { AuthUser } from '@/features/auth/store/authSlice';
-
 import type { RootState } from '../index';
 
 // ============================================================================

@@ -1,10 +1,10 @@
 import * as uiActions from '@/features/ui/store/uiSlice';
-import type { UIState } from '@/features/ui/store/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/store';
+import * as uiSelectors from '@/store/selectors/ui';
 
 export const useUI = () => {
   const dispatch = useAppDispatch();
-  const ui = useAppSelector((state) => state.ui);
+  const ui = useAppSelector(uiSelectors.selectUIState) as Record<string, unknown>;
 
   return {
     ...ui,
@@ -20,7 +20,7 @@ export const useUI = () => {
 };
 
 export const useSidebar = () => {
-  const sidebar = useAppSelector((state) => state.ui.sidebar);
+  const sidebar = useAppSelector(uiSelectors.selectSidebar);
   const dispatch = useAppDispatch();
 
   return {
@@ -31,7 +31,7 @@ export const useSidebar = () => {
 };
 
 export const useModal = () => {
-  const modal = useAppSelector((state) => state.ui.modal);
+  const modal = useAppSelector(uiSelectors.selectModal);
   const dispatch = useAppDispatch();
 
   return {

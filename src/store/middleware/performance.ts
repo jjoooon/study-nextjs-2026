@@ -33,7 +33,7 @@ const metrics: PerformanceMetrics = {
 /**
  * 성능 미들웨어
  */
-export const performanceMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: unknown) => {
+export const performanceMiddleware: Middleware<object, RootState> = (_store) => (next) => (action: unknown) => {
   // 개발 모드에서만 실행
   if (process.env.NODE_ENV !== 'development') {
     return next(action);

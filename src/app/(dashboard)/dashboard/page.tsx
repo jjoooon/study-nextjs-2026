@@ -20,6 +20,7 @@
 import { useEffect, useState } from 'react';
 
 import { dashboardReducer, DashboardStats, RecentActivity, useDashboard } from '@/features/dashboard';
+import type { Widget } from '@/features/dashboard/store/dashboardSlice';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 /**
@@ -50,8 +51,8 @@ function DashboardContent() {
     await refetchData();
   };
 
-  const statsWidget = widgets.find((w) => w.id === 'stats');
-  const activityWidget = widgets.find((w) => w.id === 'activity');
+  const statsWidget = widgets.find((w: Widget) => w.id === 'stats');
+  const activityWidget = widgets.find((w: Widget) => w.id === 'activity');
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -179,7 +180,7 @@ function DashboardContent() {
         <div className="mt-6 bg-gray-100 border border-gray-300 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">📊 Current Widget Configuration</h3>
           <div className="space-y-2">
-            {widgets.map((widget) => (
+            {widgets.map((widget: Widget) => (
               <div key={widget.id} className="flex items-center justify-between text-sm">
                 <span className="font-medium">{widget.id}</span>
                 <div className="flex items-center space-x-4">

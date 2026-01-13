@@ -52,7 +52,6 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
       'error',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-        'newlines-between': 'always',
         alphabetize: { order: 'asc' }
       }
     ]
