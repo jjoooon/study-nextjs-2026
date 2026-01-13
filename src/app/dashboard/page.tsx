@@ -17,13 +17,9 @@
  * - 깨끗한 코드 구조
  */
 
-import { useEffect, useState } from 'react';
-import { useDashboard } from '@/features/dashboard';
+import { dashboardReducer, DashboardStats, RecentActivity, useDashboard } from '@/features/dashboard';
 import { useInjectReducer } from '@/store/reducers/hooks';
-import { dashboardReducer } from '@/features/dashboard';
-import { dashboardApiSlice } from '@/features/dashboard/store/apiSlice';
-import { DashboardStats } from '@/features/dashboard';
-import { RecentActivity } from '@/features/dashboard';
+import { useEffect, useState } from 'react';
 
 /**
  * Dashboard 컴포넌트 (실제 내용)
@@ -220,14 +216,9 @@ function DashboardContent() {
 export default function DashboardDynamicPage() {
   const [isReady, setIsReady] = useState(false);
 
-  // 1️⃣ 먼저 리듀서 주입
+  // 1️⃣ UI 리듀서만 동적 주입 (dashboardApi는 이미 초기에 로드됨)
   useInjectReducer('dashboard', dashboardReducer, {
     priority: 22,
-    ejectOnUnmount: false,
-  });
-
-  useInjectReducer('dashboardApi', dashboardApiSlice.reducer, {
-    priority: 13,
     ejectOnUnmount: false,
   });
 

@@ -1,16 +1,14 @@
-import { configureStore, Reducer, combineReducers } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { usersApiSlice } from '@/features/users';
-import { postsApiSlice } from '@/features/posts';
-import { authApiSlice } from '@/features/auth';
+import { authApiSlice, authReducer } from '@/features/auth';
 import { dashboardApiSlice } from '@/features/dashboard';
-import { authReducer } from '@/features/auth';
+import { postsApiSlice } from '@/features/posts';
 import { uiReducer } from '@/features/ui';
-import { dashboardReducer } from '@/features/dashboard';
+import { usersApiSlice } from '@/features/users';
+import log from '@/shared/utils/logger';
+import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import { performanceMiddleware } from './middleware/performance';
 import { middlewareRegistry } from './middleware/registry';
-import { reducerRegistry, INJECT_REDUCER, EJECT_REDUCER, InjectReducerAction, EjectReducerAction } from './reducers/registry';
-import log from '@/shared/utils/logger';
+import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './reducers/registry';
 
 // ============================================================================
 // REDUX STORE CONFIGURATION
@@ -56,13 +54,15 @@ middlewareRegistry.register('performance', performanceMiddleware, 10);
  *
  * @note Core features는 초기에 로드하여 SEO, 초기 렌더링 최적화
  * @note Optional features는 런타임에 지연 로딩 가능
+ * @note RTK Query API 슬라이스는 middleware가 필요하므로 항상 초기에 로드
  */
 reducerRegistry.register('usersApi', usersApiSlice.reducer, 10);
 reducerRegistry.register('postsApi', postsApiSlice.reducer, 11);
 reducerRegistry.register('authApi', authApiSlice.reducer, 12);
-// dashboardApi and dashboard reducers are injected dynamically in /dashboard page
+reducerRegistry.register('dashboardApi', dashboardApiSlice.reducer, 13); // ✅ API는 항상 초기 로드
 reducerRegistry.register('auth', authReducer, 20);
 reducerRegistry.register('ui', uiReducer, 21);
+// dashboard UI reducer는 동적으로 주입됨
 
 /**
  * 동적 리듀서를 지원하는 커스텀 루트 리듀서
@@ -142,15 +142,19 @@ export const store = configureStore({
           'reducer/inject',  // Dynamic reducer injection (함수 포함)
           'reducer/eject',   // Dynamic reducer ejection
         ] as string[],
-        ignoredPaths: ['usersApi', 'postsApi', 'authApi', 'dashboardApi'],
-        // warnAfter: 128, // milliseconds
+        // 정규식으로 모든 API 슬라이스 자동 무시
+        ignoredPaths: [
+          (/^.*Api$/),  // 'Api'로 끝나는 모든 경로
+        ],
       },
 
       // Immutable 체크: 개발 모드에서만 실행
       immutableCheck: process.env.NODE_ENV === 'development'
         ? {
-            // RTK Query 캐시 무시
-            ignoredPaths: ['usersApi', 'postsApi', 'authApi', 'dashboardApi'],
+            // 정규식으로 모든 API 슬라이스 자동 무시
+            ignoredPaths: [
+              (/^.*Api$/),  // 'Api'로 끝나는 모든 경로
+            ],
           }
         : false,
     });
@@ -163,8 +167,8 @@ export const store = configureStore({
       .concat(usersApiSlice.middleware)     // usersApi middleware 추가
       .concat(postsApiSlice.middleware)     // postsApi middleware 추가
       .concat(authApiSlice.middleware)      // authApi middleware 추가
-      .concat(dashboardApiSlice.middleware) // dashboardApi middleware 추가
-      .concat(...registryMiddleware);      // 그 외 등록된 미들웨어
+      .concat(dashboardApiSlice.middleware) // dashboardApi middleware 추가 (API는 항상 필요)
+      .concat(...registryMiddleware);       // 그 외 등록된 미들웨어
   },
 
   // DevTools 설정
@@ -174,50 +178,15 @@ export const store = configureStore({
         trace: true,
         traceLimit: 25,
 
-        // 액션 이름을 더 읽기 쉽게 변환
+        // 액션 이름을 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
         actionSanitizer: (action) => {
-          // Users API 액션
-          if (action.type.startsWith('usersApi/')) {
+          // 모든 API 액션 자동 처리 (예: usersApi, postsApi, dashboardApi 등)
+          const apiMatch = action.type.match(/^(\w+)Api\/(.+)$/);
+          if (apiMatch) {
+            const [, apiName, rest] = apiMatch;
             return {
               ...action,
-              type: action.type
-                .replace('usersApi/', '[Users] ')
-                .replace('/execute', '')
-                .replace('/pending', '⏳')
-                .replace('/fulfilled', '✅')
-                .replace('/rejected', '❌'),
-            };
-          }
-          // Posts API 액션
-          if (action.type.startsWith('postsApi/')) {
-            return {
-              ...action,
-              type: action.type
-                .replace('postsApi/', '[Posts] ')
-                .replace('/execute', '')
-                .replace('/pending', '⏳')
-                .replace('/fulfilled', '✅')
-                .replace('/rejected', '❌'),
-            };
-          }
-          // Auth API 액션
-          if (action.type.startsWith('authApi/')) {
-            return {
-              ...action,
-              type: action.type
-                .replace('authApi/', '[Auth] ')
-                .replace('/execute', '')
-                .replace('/pending', '⏳')
-                .replace('/fulfilled', '✅')
-                .replace('/rejected', '❌'),
-            };
-          }
-          // Dashboard API 액션
-          if (action.type.startsWith('dashboardApi/')) {
-            return {
-              ...action,
-              type: action.type
-                .replace('dashboardApi/', '[Dashboard] ')
+              type: `[${apiName}] ${rest}`
                 .replace('/execute', '')
                 .replace('/pending', '⏳')
                 .replace('/fulfilled', '✅')
@@ -227,14 +196,16 @@ export const store = configureStore({
           return action;
         },
 
-        // 상태를 더 읽기 쉽게 변환
+        // 상태를 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
         stateSanitizer: (state) => {
           const sanitized = { ...state } as Record<string, unknown>;
-          // 불필요한 RTK Query 내부 상태 제거
-          ['usersApi', 'postsApi', 'authApi', 'dashboardApi'].forEach((api) => {
-            const apiState = sanitized[api] as Record<string, unknown> | undefined;
-            if (apiState?.subscriptions) {
-              delete apiState.subscriptions;
+          // 불필요한 RTK Query 내부 상태 제거 (모든 API 자동 처리)
+          Object.keys(sanitized).forEach((key) => {
+            if (key.endsWith('Api')) {
+              const apiState = sanitized[key] as Record<string, unknown> | undefined;
+              if (apiState?.subscriptions) {
+                delete apiState.subscriptions;
+              }
             }
           });
           return sanitized as typeof state;
@@ -273,18 +244,19 @@ if (process.env.NODE_ENV === 'development') {
   store.subscribe(() => {
     const state = store.getState();
 
-    // API 요청 상태 모니터링
-    const apiStates = ['usersApi', 'postsApi', 'authApi'] as const;
+    // API 요청 상태 모니터링 (동적으로 모든 API 처리)
     let totalPending = 0;
 
-    apiStates.forEach((apiName) => {
-      const apiState = (state as Record<string, unknown>)[apiName] as Record<string, unknown> | undefined;
-      if (apiState?.queries) {
-        const queries = apiState.queries as Record<string, { status: string }>;
-        const pendingRequests = Object.values(queries)
-          .filter((query) => query.status === 'pending')
-          .length;
-        totalPending += pendingRequests;
+    Object.keys(state).forEach((key) => {
+      if (key.endsWith('Api')) {
+        const apiState = (state as Record<string, unknown>)[key] as Record<string, unknown> | undefined;
+        if (apiState?.queries) {
+          const queries = apiState.queries as Record<string, { status: string }>;
+          const pendingRequests = Object.values(queries)
+            .filter((query) => query.status === 'pending')
+            .length;
+          totalPending += pendingRequests;
+        }
       }
     });
 
@@ -321,5 +293,6 @@ export { useAppDispatch, useAppSelector } from './hooks';
  * // 지연 로딩된 feature에서 리듀서 추가
  * store.dispatch(injectReducer('analytics', analyticsReducer));
  */
-export { injectReducer, ejectReducer } from './reducers/registry';
-export type { InjectReducerAction, EjectReducerAction } from './reducers/registry';
+export { ejectReducer, injectReducer } from './reducers/registry';
+export type { EjectReducerAction, InjectReducerAction } from './reducers/registry';
+
