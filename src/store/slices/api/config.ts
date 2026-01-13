@@ -49,11 +49,11 @@ export const API_REGISTRY = [
   { api: authApiSlice, priority: 10, name: 'authApi' },
 
   // ✅ 새로운 API를 여기에 추가
-  { api: usersApiSlice, name: 'usersApi' },
-  { api: postsApiSlice, name: 'postsApi' },
-  { api: dashboardApiSlice, name: 'dashboardApi' },
-  // { api: analyticsApiSlice, name: 'analyticsApi' },
-  // { api: reportingApiSlice, name: 'reportingApi' },
+  { api: usersApiSlice, priority: 50, name: 'usersApi' },
+  { api: postsApiSlice, priority: 51, name: 'postsApi' },
+  { api: dashboardApiSlice, priority: 52, name: 'dashboardApi' },
+  // { api: analyticsApiSlice, priority: 53, name: 'analyticsApi' },
+  // { api: reportingApiSlice, priority: 54, name: 'reportingApi' },
 ] as const;
 
 /**

@@ -66,5 +66,13 @@ export const getRegisteredApiNames = () => {
 // RE-EXPORTS
 // ============================================================================
 
+/**
+ * Re-export API registry types and constants from config.ts
+ *
+ * @note
+ * - API_REGISTRY: All registered API slices
+ * - REGISTERED_API_NAMES: Array of API names
+ * - ApiRegistration: Type definition for API registration
+ */
 export { API_REGISTRY, REGISTERED_API_NAMES } from './config';
 export type { ApiRegistration } from './config';
