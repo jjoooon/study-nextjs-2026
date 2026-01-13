@@ -1,6 +1,8 @@
 import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import type { UnknownAction } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import { authReducer } from '@/features/auth';
 import { uiReducer } from '@/features/ui';
@@ -55,6 +57,29 @@ import { getAllApiMiddleware, registerAllApiReducers } from './slices/api/regist
 middlewareRegistry.register('performance', performanceMiddleware, 10);
 
 // ============================================================================
+// PERSISTENCE CONFIGURATION
+// ============================================================================
+
+/**
+ * Redux Persist Configuration
+ *
+ * @description
+ * - localStorage를 사용하여 상태 지속성 저장
+ * - auth, ui reducer만 지속 (API reducers는 제외 - 일시적 데이터)
+ * - 페이지 새로고침 후에도 인증 상태와 UI 설정 유지
+ *
+ * @note persist: REHYDRATE 액션은 serializableCheck에서 이미 무시됨
+ */
+const persistConfig = {
+  key: 'root',
+  storage,
+  // 지속성을 적용할 리듀서만 지정 (API reducers 제외)
+  whitelist: ['auth', 'ui'],
+  // 블랙리스트: 특정 리듀서 제외 (필요한 경우 사용)
+  blacklist: [],
+};
+
+// ============================================================================
 // INITIAL REDUCER REGISTRATION
 // ============================================================================
 
@@ -79,6 +104,7 @@ registerAllApiReducers(reducerRegistry);
  * - 초기 reducerRegistry의 리듀서로 상태 관리
  * - 런타임에 injectReducer/ejectReducer 액션으로 리듀서 추가/제거
  * - 새로 추가된 리듀서의 초기 state 자동 병합
+ * - persistReducer로 감싸서 지속성 지원
  */
 const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAction> => {
   return (state: Record<string, unknown> | undefined, action: UnknownAction) => {
@@ -142,8 +168,14 @@ const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAction> =>
   };
 };
 
+/**
+ * Persisted Root Reducer
+ * - 지속성 레이어로 감싼 루트 리듀서
+ */
+const persistedReducer = persistReducer(persistConfig, createRootReducer());
+
 export const store = configureStore({
-  reducer: createRootReducer(),
+  reducer: persistedReducer,
 
   // 미들웨어 설정 (Registry 사용)
   middleware: (getDefaultMiddleware) => {
@@ -155,6 +187,7 @@ export const store = configureStore({
         ignoredActions: [
           'persist/PERSIST',
           'persist/REHYDRATE',
+          'persist/REGISTER', // redux-persist 내부 액션
           'reducer/inject', // Dynamic reducer injection (함수 포함)
           'reducer/eject', // Dynamic reducer ejection
         ] as string[],
@@ -234,6 +267,26 @@ export const store = configureStore({
 // Registry 잠금 (store 초기화 후 추가 등록 방지)
 middlewareRegistry.lock();
 reducerRegistry.lock();
+
+// ============================================================================
+// PERSISTOR EXPORT
+// ============================================================================
+
+/**
+ * Redux Persistor
+ * - 지속성 레이어를 관리하는 persistor
+ * - Next.js Provider에서 사용
+ *
+ * @usage
+ * import { persistor } from '@/store';
+ *
+ * <Provider store={store}>
+ *   <PersistGate loading={null} persistor={persistor}>
+ *     <App />
+ *   </PersistGate>
+ * </Provider>
+ */
+export const persistor = persistStore(store);
 
 // ============================================================================
 // RTK QUERY SETUP LISTENERS
