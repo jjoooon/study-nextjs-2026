@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { UnknownAction } from '@reduxjs/toolkit';
 import { REHYDRATE } from 'redux-persist';
 
 export interface AuthUser {
@@ -8,7 +9,7 @@ export interface AuthUser {
   role?: string;
 }
 
-interface AuthState {
+export interface AuthState {
   isAuthenticated: boolean;
   user: AuthUser;
   token: string | null;
@@ -77,7 +78,7 @@ export const authSlice = createSlice({
      * In production with httpOnly cookies, the server validates the cookie
      * and the token field remains null on client side.
      */
-    builder.addCase(REHYDRATE, (state, action: any) => {
+    builder.addCase(REHYDRATE, (state, action: UnknownAction) => {
       const payload = action.payload as { auth?: AuthState } | undefined;
 
       if (payload?.auth) {

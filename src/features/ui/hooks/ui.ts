@@ -1,10 +1,10 @@
+import * as uiSelectors from '@/features/ui/store/uiSelectors';
 import * as uiActions from '@/features/ui/store/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/store';
-import * as uiSelectors from '@/store/selectors/ui';
 
 export const useUI = () => {
   const dispatch = useAppDispatch();
-  const ui = useAppSelector(uiSelectors.selectUIState) as Record<string, unknown>;
+  const ui = useAppSelector(uiSelectors.selectUIState);
 
   return {
     ...ui,

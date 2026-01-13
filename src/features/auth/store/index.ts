@@ -1,5 +1,5 @@
 // ============================================================================
-// AUTH SLICE - 통합 내보내기
+// AUTH FEATURE - 통합 내보내기
 // ============================================================================
 
 /**
@@ -15,3 +15,6 @@ export * from './authSlice';
 // API Slice
 export { authApiSlice } from './apiSlice';
 export * from './apiSlice';
+
+// Selectors (Feature-First pattern)
+export * from './authSelectors';

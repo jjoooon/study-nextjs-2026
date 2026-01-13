@@ -50,7 +50,13 @@ export const registerAllApiReducers = (registry: ReducerRegistry) => {
  * @returns Middleware 배열 (우선순위 정렬됨)
  */
 export const getAllApiMiddleware = () => {
-  return API_REGISTRY.sort((a, b) => a.priority - b.priority).map(({ api }) => api.middleware);
+  // Type assertion to handle readonly array from as const
+  const registry = API_REGISTRY as unknown as Array<{
+    api: { middleware: unknown };
+    priority: number;
+  }>;
+
+  return registry.sort((a, b) => a.priority - b.priority).map(({ api }) => api.middleware);
 };
 
 /**

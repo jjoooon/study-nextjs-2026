@@ -22,9 +22,10 @@ const authTransform = createTransform(
   // inbound: state -> storage (before saving)
   (inboundState: Record<string, unknown>, key) => {
     if (key === 'auth') {
-      const { token, ...rest } = inboundState;
       // Don't store token or temporary loading states
-      const { isLoading, error, ...safeState } = rest as {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { token, isLoading, error, ...safeState } = inboundState as {
+        token: string;
         isLoading: boolean;
         error: string | null;
         [key: string]: unknown;

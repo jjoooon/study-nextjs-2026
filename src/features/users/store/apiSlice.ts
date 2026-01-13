@@ -10,7 +10,7 @@ import log from '@/shared/utils/logger';
  */
 
 // Custom baseQuery (auth token injection)
-import type { CreateUserInput, UpdateUserInput, UserListParams } from '@/store/slices/api/types/users';
+import type { CreateUserInput, UpdateUserInput, UserListParams } from '@/store/api/types/users';
 
 const customBaseQuery = fetchBaseQuery({
   baseUrl: '/api',

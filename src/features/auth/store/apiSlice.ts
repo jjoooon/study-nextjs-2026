@@ -6,7 +6,7 @@ import type {
   RefreshTokenInput,
   RegisterInput,
   UpdateProfileInput,
-} from '@/store/slices/api/types/auth';
+} from '@/store/api/types/auth';
 
 // ============================================================================
 // AUTH API SLICE

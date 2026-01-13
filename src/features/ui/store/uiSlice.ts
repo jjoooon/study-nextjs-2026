@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { UnknownAction } from '@reduxjs/toolkit';
 import { REHYDRATE } from 'redux-persist';
 
 export interface SidebarState {
@@ -88,7 +89,7 @@ export const uiSlice = createSlice({
      * - Modal and toast states are reset to defaults
      * - Prevents showing stale modals/toasts after page refresh
      */
-    builder.addCase(REHYDRATE, (state, action: any) => {
+    builder.addCase(REHYDRATE, (state, action: UnknownAction) => {
       const payload = action.payload as { ui?: UIState } | undefined;
 
       if (payload?.ui) {

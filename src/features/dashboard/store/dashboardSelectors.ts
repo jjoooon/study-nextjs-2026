@@ -1,8 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import type { Widget } from '@/features/dashboard/store/dashboardSlice';
-
-import type { RootState } from '../index';
+import type { RootState } from '@/store';
 
 // ============================================================================
 // DASHBOARD SELECTORS
@@ -19,10 +18,6 @@ export const selectDashboardState = (state: RootState) => state.dashboard;
 
 export const selectWidgets = createSelector([selectDashboardState], (dashboard) => dashboard.widgets);
 
-export const selectDashboardLoading = createSelector([selectDashboardState], (dashboard) => dashboard.isLoading);
-
-export const selectLastUpdated = createSelector([selectDashboardState], (dashboard) => dashboard.lastUpdated);
-
 // ============================================================================
 // COMPOSED SELECTORS
 // ============================================================================
@@ -35,9 +30,8 @@ export const selectWidgetCount = createSelector([selectWidgets], (widgets) => wi
 /**
  * 활성화된 위젯만 필터링
  */
-export const selectActiveWidgets = createSelector(
-  [selectWidgets],
-  (widgets) => widgets // 모든 위젯 반환 (enabled 속성이 없으므로)
+export const selectActiveWidgets = createSelector([selectWidgets], (widgets) =>
+  widgets.filter((widget: Widget) => widget.isVisible)
 );
 
 /**
@@ -49,14 +43,7 @@ export const selectWidgetsByType = (widgetType: Widget['type']) =>
 /**
  * 대시보드 상태 요약
  */
-export const selectDashboardStatus = createSelector(
-  [selectWidgetCount, selectDashboardLoading, selectLastUpdated],
-  (widgetCount, isLoading, lastUpdated) => ({
-    widgetCount,
-    isLoading,
-    lastUpdated,
-    isStale: lastUpdated
-      ? Date.now() - new Date(lastUpdated).getTime() > 5 * 60 * 1000 // 5분
-      : true,
-  })
-);
+export const selectDashboardStatus = createSelector([selectWidgetCount, selectWidgets], (widgetCount, widgets) => ({
+  widgetCount,
+  visibleWidgets: widgets.filter((w: Widget) => w.isVisible).length,
+}));

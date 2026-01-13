@@ -1,6 +1,6 @@
 import { Middleware } from '@reduxjs/toolkit';
 
-import log from '@/shared/utils/logger';
+import { BaseRegistry, RegistryEntry } from '../registry/base';
 
 // ============================================================================
 // DYNAMIC MIDDLEWARE REGISTRY
@@ -25,16 +25,25 @@ import log from '@/shared/utils/logger';
  *     .concat(...middlewareRegistry.getAll())
  */
 
-type MiddlewareEntry = {
+interface MiddlewareEntry extends RegistryEntry {
   name: string;
   middleware: Middleware;
   priority: number;
-};
+}
 
-class MiddlewareRegistry {
-  private entries: Map<string, MiddlewareEntry> = new Map();
-  private isLocked = false;
-  private logger = log.getLogger('MiddlewareRegistry');
+/**
+ * Middleware Registry Class
+ *
+ * @extends BaseRegistry<MiddlewareEntry>
+ */
+class MiddlewareRegistry extends BaseRegistry<MiddlewareEntry> {
+  constructor() {
+    super({
+      name: 'MiddlewareRegistry',
+      validateKeys: true,
+      warnOnDuplicate: true,
+    });
+  }
 
   /**
    * 미들웨어 등록
@@ -43,103 +52,48 @@ class MiddlewareRegistry {
    * @param middleware - 미들웨어 인스턴스
    * @param priority - 우선순위 (낮을수록 먼저 실행, 기본값: 50)
    */
-  register(name: string, middleware: Middleware, priority: number = 50) {
-    if (this.isLocked) {
-      this.logger.warn(
-        `Cannot register "${name}" - registry is locked. Register middleware before store initialization.`,
-        { name, priority }
-      );
-      return;
-    }
-
-    if (this.entries.has(name)) {
-      this.logger.warn(`Overriding middleware: ${name}`, { name, existingPriority: this.entries.get(name)?.priority });
-    }
-
-    this.entries.set(name, { name, middleware, priority });
+  registerMiddleware(name: string, middleware: Middleware, priority: number = 50): void {
+    const entry: MiddlewareEntry = { name, middleware, priority };
+    super.register(name, entry);
   }
 
   /**
    * 미들웨어 등록 해제
+   *
+   * @param name - 제거할 미들웨어 이름
    */
-  unregister(name: string) {
-    if (this.isLocked) {
-      this.logger.warn(`Cannot unregister "${name}" - registry is locked`, { name });
-      return false;
-    }
-
-    return this.entries.delete(name);
+  unregister(name: string): boolean {
+    return super.unregister(name);
   }
 
   /**
    * 모든 미들웨어 가져오기 (우선순위 정렬됨)
+   *
+   * @returns Middleware 배열
    */
-  getAll(): Middleware[] {
-    return Array.from(this.entries.values())
-      .sort((a, b) => a.priority - b.priority)
-      .map((entry) => entry.middleware);
+  getAllMiddleware(): Middleware[] {
+    return super.getAll().map((entry) => entry.middleware);
   }
 
   /**
    * 등록된 미들웨어 이름 목록
    */
   getNames(): string[] {
-    return Array.from(this.entries.keys());
+    return super.getKeys();
   }
 
   /**
    * 미들웨어 개수
    */
   getCount(): number {
-    return this.entries.size;
+    return super.getCount();
   }
 
   /**
    * 특정 미들웨어가 등록되어 있는지 확인
    */
   has(name: string): boolean {
-    return this.entries.has(name);
-  }
-
-  /**
-   * 레지스트리 잠금 (store 초기화 후 호출)
-   */
-  lock() {
-    this.isLocked = true;
-    this.logger.info(`Locked (${this.getCount()} middlewares registered)`);
-  }
-
-  /**
-   * 레지스트리 잠금 해제 (테스트용)
-   */
-  unlock() {
-    this.isLocked = false;
-    this.logger.info('Unlocked');
-  }
-
-  /**
-   * 모든 미들웨어 제거 (테스트용)
-   */
-  clear() {
-    if (this.isLocked) {
-      this.logger.warn('Cannot clear - registry is locked');
-      return;
-    }
-
-    this.entries.clear();
-    this.logger.info('Cleared');
-  }
-
-  /**
-   * 등록된 미들웨어 정보 출력 (디버깅용)
-   */
-  printInfo() {
-    const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
-
-    this.logger.debug('Registered middlewares:', {
-      count: sorted.length,
-      middlewares: sorted.map((entry) => ({ priority: entry.priority, name: entry.name })),
-    });
+    return super.has(name);
   }
 }
 
