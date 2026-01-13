@@ -194,6 +194,40 @@ class ReducerRegistry {
   }
 
   /**
+   * 런타임에 리듀서 주입 (잠긴 레지스트리에서도 작동)
+   *
+   * @param name - 리듀서 고유 키
+   * @param reducer - 리듀서 함수
+   * @param priority - 실행 우선순위
+   *
+   * @internal store/index.ts의 createRootReducer에서만 사용
+   */
+  inject(name: string, reducer: Reducer, priority: number = 50): void {
+    if (this.options.validateKeys) {
+      this.validateKey(name);
+    }
+
+    if (!this.entries.has(name)) {
+      this.entries.set(name, { name, reducer, priority });
+      this.combinedReducer = null;
+    }
+  }
+
+  /**
+   * 런타임에 리듀서 제거 (잠긴 레지스트리에서도 작동)
+   *
+   * @param name - 제거할 리듀서 키
+   *
+   * @internal store/index.ts의 createRootReducer에서만 사용
+   */
+  eject(name: string): void {
+    if (this.entries.has(name)) {
+      this.entries.delete(name);
+      this.combinedReducer = null;
+    }
+  }
+
+  /**
    * 모든 리듀서 제거 (테스트용)
    */
   clear() {

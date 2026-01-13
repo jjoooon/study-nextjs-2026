@@ -117,11 +117,8 @@ const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAction> =>
       } = action.payload as { key: string; reducer: Reducer<unknown, UnknownAction>; priority?: number };
 
       if (!reducerRegistry.has(key)) {
-        // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 추가
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (reducerRegistry as any).entries.set(key, { name: key, reducer, priority });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (reducerRegistry as any).combinedReducer = null;
+        // 타입 안전한 inject 메서드 사용 (잠긴 레지스트리에서도 작동)
+        reducerRegistry.inject(key, reducer, priority);
 
         const apiLogger = log.getLogger('ReducerRegistry');
         apiLogger.info(`✅ Injected reducer: ${key}`);
@@ -141,12 +138,8 @@ const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAction> =>
       const { key } = action.payload as { key: string };
 
       if (reducerRegistry.has(key)) {
-        // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 제거
-
-        (reducerRegistry as unknown as { entries: Map<string, unknown>; combinedReducer: unknown }).entries.delete(key);
-
-        (reducerRegistry as unknown as { entries: Map<string, unknown>; combinedReducer: unknown }).combinedReducer =
-          null;
+        // 타입 안전한 eject 메서드 사용 (잠긴 레지스트리에서도 작동)
+        reducerRegistry.eject(key);
 
         const apiLogger = log.getLogger('ReducerRegistry');
         apiLogger.info(`🗑️  Ejected reducer: ${key}`);
