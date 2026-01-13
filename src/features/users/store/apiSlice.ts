@@ -1,9 +1,6 @@
-import type {
-  CreateUserInput,
-  UpdateUserInput,
-  UserListParams
-} from '@/store/slices/api/types/users';
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import log from '@/shared/utils/logger';
 
 // ============================================================================
@@ -15,7 +12,7 @@ import log from '@/shared/utils/logger';
  */
 
 // Custom baseQuery (auth token injection)
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { CreateUserInput, UpdateUserInput, UserListParams } from '@/store/slices/api/types/users';
 
 const customBaseQuery = fetchBaseQuery({
   baseUrl: '/api',
@@ -120,10 +117,7 @@ export const usersApiSlice = createApi({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: (_result, _error, { id }) => [
-        'User-LIST',
-        { type: 'User-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, { id }) => ['User-LIST', { type: 'User-ITEM', id }],
     }),
 
     /**
@@ -135,10 +129,7 @@ export const usersApiSlice = createApi({
         url: `/users/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [
-        'User-LIST',
-        { type: 'User-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, id) => ['User-LIST', { type: 'User-ITEM', id }],
     }),
 
     /**
@@ -175,10 +166,7 @@ export const usersApiSlice = createApi({
         url: `/users/${id}/toggle-status`,
         method: 'PATCH',
       }),
-      invalidatesTags: (_result, _error, id) => [
-        'User-LIST',
-        { type: 'User-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, id) => ['User-LIST', { type: 'User-ITEM', id }],
     }),
   }),
 });

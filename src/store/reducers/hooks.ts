@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
 import type { Reducer } from '@reduxjs/toolkit';
+import { useEffect, useRef } from 'react';
+
+import log from '@/shared/utils/logger';
 import { store } from '@/store';
 import { injectReducer, ejectReducer } from '@/store/reducers/registry';
-import log from '@/shared/utils/logger';
 
 // ============================================================================
 // DYNAMIC REDUCER HOOKS
@@ -43,11 +44,7 @@ export interface UseInjectReducerOptions {
   ejectOnUnmount?: boolean;
 }
 
-export const useInjectReducer = (
-  key: string,
-  reducer: Reducer,
-  options: UseInjectReducerOptions = {}
-) => {
+export const useInjectReducer = (key: string, reducer: Reducer, options: UseInjectReducerOptions = {}) => {
   const { priority = 50, ejectOnUnmount = false } = options;
   const isInjected = useRef(false);
 
@@ -83,7 +80,6 @@ export const useInjectReducer = (
       };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {};
   }, [key, reducer, priority, ejectOnUnmount]);
 };
@@ -234,7 +230,6 @@ export const useConditionalReducer = (
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {};
   }, [key, reducer, enabled, options]);
 };
@@ -289,7 +284,6 @@ export const useRoleBasedReducer = (
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {};
   }, [key, reducer, userRole, allowedRoles, options]);
 };
@@ -318,10 +312,7 @@ export interface BatchReducersMap {
   [key: string]: Reducer;
 }
 
-export const useBatchReducers = (
-  reducers: BatchReducersMap,
-  options: UseInjectReducerOptions = {}
-) => {
+export const useBatchReducers = (reducers: BatchReducersMap, options: UseInjectReducerOptions = {}) => {
   const { priority = 50 } = options;
 
   useEffect(() => {
@@ -337,7 +328,6 @@ export const useBatchReducers = (
       }
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {};
   }, [reducers, priority]);
 };

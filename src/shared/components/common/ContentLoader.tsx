@@ -6,11 +6,7 @@ interface ContentLoaderProps {
   className?: string;
 }
 
-export function ContentLoader({
-  type = 'spinner',
-  size = 'md',
-  className = '',
-}: ContentLoaderProps) {
+export function ContentLoader({ type = 'spinner', size = 'md', className = '' }: ContentLoaderProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
@@ -75,13 +71,7 @@ interface AsyncContentProps {
   errorFallback?: ReactNode;
 }
 
-export function AsyncContent({
-  children,
-  loading = false,
-  error = null,
-  fallback,
-  errorFallback,
-}: AsyncContentProps) {
+export function AsyncContent({ children, loading = false, error = null, fallback, errorFallback }: AsyncContentProps) {
   if (error) {
     return (
       errorFallback || (

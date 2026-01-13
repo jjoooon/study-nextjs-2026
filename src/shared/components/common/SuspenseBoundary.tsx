@@ -1,15 +1,12 @@
-import { Suspense as ReactSuspense, ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
+import { Suspense as ReactSuspense, ReactNode } from 'react';
 
 interface SuspenseBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
 }
 
-export function SuspenseBoundary({
-  children,
-  fallback,
-}: SuspenseBoundaryProps) {
+export function SuspenseBoundary({ children, fallback }: SuspenseBoundaryProps) {
   return (
     <ReactSuspense
       fallback={

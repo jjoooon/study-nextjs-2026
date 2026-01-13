@@ -92,11 +92,7 @@ export const dashboardApiSlice = createApi({
 });
 
 // Hooks 자동 생성
-export const {
-  useGetDashboardQuery,
-  useGetDashboardStatsQuery,
-  useGetRecentActivityQuery,
-} = dashboardApiSlice;
+export const { useGetDashboardQuery, useGetDashboardStatsQuery, useGetRecentActivityQuery } = dashboardApiSlice;
 
 // Selectors
 export const selectDashboardData = dashboardApiSlice.endpoints.getDashboard.select();

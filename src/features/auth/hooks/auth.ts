@@ -1,11 +1,5 @@
+import { loginStart, loginSuccess, loginFailure, logout, clearError } from '@/features/auth/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store';
-import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  logout,
-  clearError,
-} from '@/features/auth/store/authSlice';
 import * as authSelectors from '@/store/selectors/auth';
 
 // ============================================================================

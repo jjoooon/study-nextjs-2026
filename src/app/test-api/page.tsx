@@ -69,7 +69,9 @@ export default function TestAPIPage() {
               <div className="mt-4 text-sm text-red-600">
                 <p className="font-semibold">해결 방법:</p>
                 <ol className="list-decimal list-inside mt-2 space-y-1">
-                  <li>개발 서버가 실행 중인지 확인 (<code className="bg-red-100 px-1 rounded">npm run dev</code>)</li>
+                  <li>
+                    개발 서버가 실행 중인지 확인 (<code className="bg-red-100 px-1 rounded">npm run dev</code>)
+                  </li>
                   <li>브라우저 콘솔에서 [MSW] 메시지 확인</li>
                   <li>네트워크 탭에서 /api/users 요청 확인</li>
                 </ol>
@@ -94,11 +96,15 @@ export default function TestAPIPage() {
                         <p className="text-sm text-gray-600">{user.email}</p>
                       </div>
                       <div className="text-right">
-                        <span className={`inline-block px-2 py-1 text-xs font-medium rounded ${
-                          user.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                          user.role === 'moderator' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
+                        <span
+                          className={`inline-block px-2 py-1 text-xs font-medium rounded ${
+                            user.role === 'admin'
+                              ? 'bg-purple-100 text-purple-800'
+                              : user.role === 'moderator'
+                                ? 'bg-blue-100 text-blue-800'
+                                : 'bg-gray-100 text-gray-800'
+                          }`}
+                        >
                           {user.role}
                         </span>
                         <p className="text-xs text-gray-500 mt-1">ID: {user.id}</p>
@@ -115,8 +121,12 @@ export default function TestAPIPage() {
         <div className="p-4 bg-gray-100 border border-gray-300 rounded-lg">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">🔍 디버깅 팁</h2>
           <ul className="space-y-2 text-sm text-gray-700">
-            <li>• <strong>개발자 도구 &gt; Console</strong>: [MSW] 메시지 확인</li>
-            <li>• <strong>개발자 도구 &gt; Network</strong>: /api/users 요청 확인</li>
+            <li>
+              • <strong>개발자 도구 &gt; Console</strong>: [MSW] 메시지 확인
+            </li>
+            <li>
+              • <strong>개발자 도구 &gt; Network</strong>: /api/users 요청 확인
+            </li>
             <li>• MSW가 요청을 가로챘다면 Network 탭에서 요청이 보이지 않을 수 있습니다</li>
           </ul>
         </div>

@@ -1,12 +1,9 @@
-import { useAppDispatch, useAppSelector } from '@/store';
-import * as dashboardActions from '@/features/dashboard/store/dashboardSlice';
-import {
-  toggleWidget,
-  reorderWidgets,
-} from '@/features/dashboard/store/dashboardSlice';
 import { useGetDashboardQuery } from '@/features/dashboard/store/apiSlice';
-import * as dashboardSelectors from '@/store/selectors/dashboard';
+import * as dashboardActions from '@/features/dashboard/store/dashboardSlice';
+import { toggleWidget, reorderWidgets } from '@/features/dashboard/store/dashboardSlice';
 import type { Widget } from '@/features/dashboard/store/dashboardSlice';
+import { useAppDispatch, useAppSelector } from '@/store';
+import * as dashboardSelectors from '@/store/selectors/dashboard';
 
 // ============================================================================
 // DASHBOARD HOOKS (RTK Query + Selector-based)
@@ -23,12 +20,7 @@ export const useDashboard = () => {
   const dispatch = useAppDispatch();
 
   // ✅ RTK Query hook (리듀서가 항상 존재하므로 안전)
-  const {
-    data: dashboardData,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetDashboardQuery();
+  const { data: dashboardData, isLoading, isError, refetch } = useGetDashboardQuery();
 
   // ✅ Selector 기반 UI 상태 구독
   const widgets = useAppSelector(dashboardSelectors.selectWidgets);
@@ -46,8 +38,7 @@ export const useDashboard = () => {
 
     // Actions
     toggleWidget: (id: string) => dispatch(toggleWidget(id)),
-    reorderWidgets: (sourceIndex: number, destIndex: number) =>
-      dispatch(reorderWidgets({ sourceIndex, destIndex })),
+    reorderWidgets: (sourceIndex: number, destIndex: number) => dispatch(reorderWidgets({ sourceIndex, destIndex })),
     refetchData: () => refetch(),
   };
 };

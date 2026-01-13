@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SuspenseBoundary } from './SuspenseBoundary';
 import { useState, useEffect } from 'react';
+
+import { SuspenseBoundary } from './SuspenseBoundary';
 
 const SlowComponent = ({ delay = 2000 }: { delay?: number }) => {
   const [ready, setReady] = useState(false);

@@ -77,14 +77,7 @@ export const uiSlice = createSlice({
   },
 });
 
-export const {
-  toggleSidebar,
-  setSidebarOpen,
-  openModal,
-  closeModal,
-  setTheme,
-  showToast,
-  clearToast,
-} = uiSlice.actions;
+export const { toggleSidebar, setSidebarOpen, openModal, closeModal, setTheme, showToast, clearToast } =
+  uiSlice.actions;
 
 export default uiSlice.reducer;

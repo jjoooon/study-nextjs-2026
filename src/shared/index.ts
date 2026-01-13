@@ -12,4 +12,3 @@ export { useAppDispatch, useAppSelector } from '@/store';
 
 // Utils
 export { default as log } from './utils/logger';
-

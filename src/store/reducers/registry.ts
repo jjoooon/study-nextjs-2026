@@ -82,7 +82,7 @@ class ReducerRegistry {
     if (this.isLocked) {
       throw new Error(
         `[ReducerRegistry] Cannot register "${name}" - registry is locked. ` +
-        `Register reducers before store initialization or use injectReducer action.`
+          `Register reducers before store initialization or use injectReducer action.`
       );
     }
 
@@ -92,10 +92,7 @@ class ReducerRegistry {
 
     if (this.entries.has(name)) {
       if (this.options.warnOnDuplicate) {
-        console.warn(
-          `[ReducerRegistry] Overriding reducer: ${name}. ` +
-          `This may cause unexpected behavior.`
-        );
+        console.warn(`[ReducerRegistry] Overriding reducer: ${name}. ` + `This may cause unexpected behavior.`);
       }
     }
 
@@ -114,8 +111,7 @@ class ReducerRegistry {
   unregister(name: string): boolean {
     if (this.isLocked) {
       console.warn(
-        `[ReducerRegistry] Cannot unregister "${name}" - registry is locked. ` +
-        `Use ejectReducer action instead.`
+        `[ReducerRegistry] Cannot unregister "${name}" - registry is locked. ` + `Use ejectReducer action instead.`
       );
       return false;
     }
@@ -134,11 +130,10 @@ class ReducerRegistry {
    * 모든 리듀서 Map 객체 반환 (우선순위 정렬됨)
    */
   getReducersMap(): ReducersMapObject {
-    const sorted = Array.from(this.entries.values())
-      .sort((a, b) => a.priority - b.priority);
+    const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
 
     const map: ReducersMapObject = {};
-    sorted.forEach(entry => {
+    sorted.forEach((entry) => {
       map[entry.name] = entry.reducer;
     });
 
@@ -187,9 +182,7 @@ class ReducerRegistry {
    */
   lock() {
     this.isLocked = true;
-    console.log(
-      `[ReducerRegistry] Locked (${this.getCount()} reducers registered)`
-    );
+    console.log(`[ReducerRegistry] Locked (${this.getCount()} reducers registered)`);
   }
 
   /**
@@ -218,11 +211,10 @@ class ReducerRegistry {
    * 등록된 리듀서 정보 출력 (디버깅용)
    */
   printInfo() {
-    const sorted = Array.from(this.entries.values())
-      .sort((a, b) => a.priority - b.priority);
+    const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
 
     console.log('[ReducerRegistry] Registered reducers:');
-    sorted.forEach(entry => {
+    sorted.forEach((entry) => {
       console.log(`  ${entry.priority}: ${entry.name}`);
     });
   }
@@ -243,7 +235,9 @@ class ReducerRegistry {
     }
 
     if (name.startsWith('_')) {
-      throw new Error(`[ReducerRegistry] Invalid key: ${name}. Key cannot start with underscore (reserved for internal use).`);
+      throw new Error(
+        `[ReducerRegistry] Invalid key: ${name}. Key cannot start with underscore (reserved for internal use).`
+      );
     }
 
     if (name.length > 50) {
@@ -259,14 +253,14 @@ class ReducerRegistry {
 
     if (this.options.mergeStrategy === 'mergeDeep') {
       // Deep merge strategy (복잡한 객체에 적합)
-      Object.keys(newReducers).forEach(key => {
+      Object.keys(newReducers).forEach((key) => {
         if (!(key in merged)) {
           merged[key] = newReducers[key](undefined, { type: '@@INIT' });
         }
       });
     } else {
       // Replace strategy (기본값)
-      Object.keys(newReducers).forEach(key => {
+      Object.keys(newReducers).forEach((key) => {
         if (!(key in merged)) {
           merged[key] = newReducers[key](undefined, { type: '@@INIT' });
         }
@@ -333,11 +327,7 @@ export interface EjectReducerAction {
  * @example
  * store.dispatch(injectReducer('analytics', analyticsReducer));
  */
-export const injectReducer = (
-  key: string,
-  reducer: Reducer,
-  priority: number = 50
-): InjectReducerAction => ({
+export const injectReducer = (key: string, reducer: Reducer, priority: number = 50): InjectReducerAction => ({
   type: INJECT_REDUCER,
   payload: { key, reducer, priority },
 });

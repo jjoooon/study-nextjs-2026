@@ -44,15 +44,13 @@ class MiddlewareRegistry {
     if (this.isLocked) {
       console.warn(
         `[MiddlewareRegistry] Cannot register "${name}" - registry is locked. ` +
-        `Register middleware before store initialization.`
+          `Register middleware before store initialization.`
       );
       return;
     }
 
     if (this.entries.has(name)) {
-      console.warn(
-        `[MiddlewareRegistry] Overriding middleware: ${name}`
-      );
+      console.warn(`[MiddlewareRegistry] Overriding middleware: ${name}`);
     }
 
     this.entries.set(name, { name, middleware, priority });
@@ -63,9 +61,7 @@ class MiddlewareRegistry {
    */
   unregister(name: string) {
     if (this.isLocked) {
-      console.warn(
-        `[MiddlewareRegistry] Cannot unregister "${name}" - registry is locked`
-      );
+      console.warn(`[MiddlewareRegistry] Cannot unregister "${name}" - registry is locked`);
       return false;
     }
 
@@ -78,7 +74,7 @@ class MiddlewareRegistry {
   getAll(): Middleware[] {
     return Array.from(this.entries.values())
       .sort((a, b) => a.priority - b.priority)
-      .map(entry => entry.middleware);
+      .map((entry) => entry.middleware);
   }
 
   /**
@@ -107,9 +103,7 @@ class MiddlewareRegistry {
    */
   lock() {
     this.isLocked = true;
-    console.log(
-      `[MiddlewareRegistry] Locked (${this.getCount()} middlewares registered)`
-    );
+    console.log(`[MiddlewareRegistry] Locked (${this.getCount()} middlewares registered)`);
   }
 
   /**
@@ -137,11 +131,10 @@ class MiddlewareRegistry {
    * 등록된 미들웨어 정보 출력 (디버깅용)
    */
   printInfo() {
-    const sorted = Array.from(this.entries.values())
-      .sort((a, b) => a.priority - b.priority);
+    const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
 
     console.log('[MiddlewareRegistry] Registered middlewares:');
-    sorted.forEach(entry => {
+    sorted.forEach((entry) => {
       console.log(`  ${entry.priority}: ${entry.name}`);
     });
   }

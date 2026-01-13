@@ -1,6 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '../index';
+
 import type { Widget } from '@/features/dashboard/store/dashboardSlice';
+
+import type { RootState } from '../index';
 
 // ============================================================================
 // DASHBOARD SELECTORS
@@ -15,20 +17,11 @@ import type { Widget } from '@/features/dashboard/store/dashboardSlice';
 // Base selectors
 export const selectDashboardState = (state: RootState) => state.dashboard;
 
-export const selectWidgets = createSelector(
-  [selectDashboardState],
-  (dashboard) => dashboard.widgets
-);
+export const selectWidgets = createSelector([selectDashboardState], (dashboard) => dashboard.widgets);
 
-export const selectDashboardLoading = createSelector(
-  [selectDashboardState],
-  (dashboard) => dashboard.isLoading
-);
+export const selectDashboardLoading = createSelector([selectDashboardState], (dashboard) => dashboard.isLoading);
 
-export const selectLastUpdated = createSelector(
-  [selectDashboardState],
-  (dashboard) => dashboard.lastUpdated
-);
+export const selectLastUpdated = createSelector([selectDashboardState], (dashboard) => dashboard.lastUpdated);
 
 // ============================================================================
 // COMPOSED SELECTORS
@@ -37,10 +30,7 @@ export const selectLastUpdated = createSelector(
 /**
  * 대시보드 위젯 개수
  */
-export const selectWidgetCount = createSelector(
-  [selectWidgets],
-  (widgets) => widgets.length
-);
+export const selectWidgetCount = createSelector([selectWidgets], (widgets) => widgets.length);
 
 /**
  * 활성화된 위젯만 필터링
@@ -54,10 +44,7 @@ export const selectActiveWidgets = createSelector(
  * 특정 타입의 위젯만 필터링
  */
 export const selectWidgetsByType = (widgetType: Widget['type']) =>
-  createSelector(
-    [selectWidgets],
-    (widgets) => widgets.filter((widget: Widget) => widget.type === widgetType)
-  );
+  createSelector([selectWidgets], (widgets) => widgets.filter((widget: Widget) => widget.type === widgetType));
 
 /**
  * 대시보드 상태 요약

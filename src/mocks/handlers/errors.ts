@@ -15,10 +15,7 @@ export const errorHandlers = [
   // 500 에러 시뮬레이션
   http.get('/api/error/server-error', async () => {
     await delay(200);
-    return HttpResponse.json(
-      { message: 'Internal server error' },
-      { status: 500 }
-    );
+    return HttpResponse.json({ message: 'Internal server error' }, { status: 500 });
   }),
 
   // 네트워크 에러 시뮬레이션
@@ -31,10 +28,7 @@ export const errorHandlers = [
   // 인증 에러 시뮬레이션
   http.get('/api/error/unauthorized', async () => {
     await delay(200);
-    return HttpResponse.json(
-      { message: 'Unauthorized access' },
-      { status: 401 }
-    );
+    return HttpResponse.json({ message: 'Unauthorized access' }, { status: 401 });
   }),
 
   // 타임아웃 시뮬레이션

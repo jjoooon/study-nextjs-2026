@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { measureWebVitals, getMemoryUsage, getBundleSize } from '@/shared/utils/performance';
 
 interface PerformanceData {
@@ -75,25 +76,49 @@ export function PerformanceMonitor({ enabled = false }: { enabled?: boolean }) {
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
                 <span>FCP:</span>
-                <span className={performanceData.webVitals.fcp && performanceData.webVitals.fcp < 1800 ? 'text-green-600' : 'text-red-600'}>
+                <span
+                  className={
+                    performanceData.webVitals.fcp && performanceData.webVitals.fcp < 1800
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }
+                >
                   {performanceData.webVitals.fcp?.toFixed(0)}ms
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>LCP:</span>
-                <span className={performanceData.webVitals.lcp && performanceData.webVitals.lcp < 2500 ? 'text-green-600' : 'text-red-600'}>
+                <span
+                  className={
+                    performanceData.webVitals.lcp && performanceData.webVitals.lcp < 2500
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }
+                >
                   {performanceData.webVitals.lcp?.toFixed(0)}ms
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>FID:</span>
-                <span className={performanceData.webVitals.fid && performanceData.webVitals.fid < 100 ? 'text-green-600' : 'text-red-600'}>
+                <span
+                  className={
+                    performanceData.webVitals.fid && performanceData.webVitals.fid < 100
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }
+                >
                   {performanceData.webVitals.fid?.toFixed(0)}ms
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>CLS:</span>
-                <span className={performanceData.webVitals.cls && performanceData.webVitals.cls < 0.1 ? 'text-green-600' : 'text-red-600'}>
+                <span
+                  className={
+                    performanceData.webVitals.cls && performanceData.webVitals.cls < 0.1
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }
+                >
                   {performanceData.webVitals.cls?.toFixed(3)}
                 </span>
               </div>
@@ -139,9 +164,7 @@ export function PerformanceMonitor({ enabled = false }: { enabled?: boolean }) {
           {performanceData.bundle && (
             <div>
               <h4 className="font-semibold text-sm mb-2">Bundle Size</h4>
-              <div className="text-xs mb-2">
-                Total: {(performanceData.bundle.total / 1024).toFixed(1)} KB
-              </div>
+              <div className="text-xs mb-2">Total: {(performanceData.bundle.total / 1024).toFixed(1)} KB</div>
               <div className="max-h-32 overflow-auto text-xs space-y-1">
                 {performanceData.bundle.files.map((file, i) => (
                   <div key={i} className="flex justify-between">

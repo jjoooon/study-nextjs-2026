@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+
 import { UserList } from '@/features/users';
 import { ContentLoader, Navigation } from '@/shared/components';
 
@@ -11,12 +12,8 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h1 className="text-4xl font-bold mb-4 text-gray-900">
-              🚀 Next.js 16.1.1 + Redux Toolkit + MSW
-            </h1>
-            <p className="text-lg text-gray-600">
-              대규모 프로젝트를 위한 현대적인 Next.js 아키텍처
-            </p>
+            <h1 className="text-4xl font-bold mb-4 text-gray-900">🚀 Next.js 16.1.1 + Redux Toolkit + MSW</h1>
+            <p className="text-lg text-gray-600">대규모 프로젝트를 위한 현대적인 Next.js 아키텍처</p>
           </div>
 
           <div className="space-y-8">
@@ -55,9 +52,7 @@ export default function Home() {
             <section className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">
                 👥 사용자 데이터
-                <span className="text-sm font-normal text-gray-500 ml-2">
-                  (MSW로 목킹된 API)
-                </span>
+                <span className="text-sm font-normal text-gray-500 ml-2">(MSW로 목킹된 API)</span>
               </h2>
               <Suspense
                 fallback={

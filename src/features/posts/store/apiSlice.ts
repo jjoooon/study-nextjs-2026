@@ -1,12 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import type {
-  Post,
-  CreatePostInput,
-  UpdatePostInput,
-  PostListParams,
-} from '@/store/slices/api/types/posts';
-import type { PaginatedResponse, BulkOperationResult } from '@/store/slices/api/types/common';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import log from '@/shared/utils/logger';
+import type { PaginatedResponse, BulkOperationResult } from '@/store/slices/api/types/common';
+import type { Post, CreatePostInput, UpdatePostInput, PostListParams } from '@/store/slices/api/types/posts';
 
 // ============================================================================
 // POSTS API SLICE
@@ -27,7 +24,6 @@ import log from '@/shared/utils/logger';
  */
 
 // Custom baseQuery (auth token injection)
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const customBaseQuery = fetchBaseQuery({
   baseUrl: '/api',
@@ -138,10 +134,7 @@ export const postsApiSlice = createApi({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: (_result, _error, { id }) => [
-        'Post-LIST',
-        { type: 'Post-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, { id }) => ['Post-LIST', { type: 'Post-ITEM', id }],
     }),
 
     /**
@@ -153,10 +146,7 @@ export const postsApiSlice = createApi({
         url: `/posts/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [
-        'Post-LIST',
-        { type: 'Post-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, id) => ['Post-LIST', { type: 'Post-ITEM', id }],
     }),
 
     /**
@@ -193,10 +183,7 @@ export const postsApiSlice = createApi({
         url: `/posts/${id}/publish`,
         method: 'PATCH',
       }),
-      invalidatesTags: (_result, _error, id) => [
-        'Post-LIST',
-        { type: 'Post-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, id) => ['Post-LIST', { type: 'Post-ITEM', id }],
     }),
 
     /**
@@ -208,10 +195,7 @@ export const postsApiSlice = createApi({
         url: `/posts/${id}/archive`,
         method: 'PATCH',
       }),
-      invalidatesTags: (_result, _error, id) => [
-        'Post-LIST',
-        { type: 'Post-ITEM', id },
-      ],
+      invalidatesTags: (_result, _error, id) => ['Post-LIST', { type: 'Post-ITEM', id }],
     }),
   }),
 });

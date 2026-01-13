@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+
 import { Button } from '@/shared/components';
 
 interface ErrorBoundaryProps {
@@ -14,10 +15,7 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -61,12 +59,7 @@ export class ErrorBoundary extends Component<
       return (
         <div className="min-h-[400px] flex items-center justify-center bg-gray-50 px-4">
           <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 text-center">
-            <svg
-              className="mx-auto h-12 w-12 text-red-500 mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+            <svg className="mx-auto h-12 w-12 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -75,34 +68,23 @@ export class ErrorBoundary extends Component<
               />
             </svg>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Something went wrong
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Something went wrong</h3>
 
-            <p className="text-sm text-gray-600 mb-4">
-              {this.state.error?.message || 'An unexpected error occurred'}
-            </p>
+            <p className="text-sm text-gray-600 mb-4">{this.state.error?.message || 'An unexpected error occurred'}</p>
 
             <div className="flex gap-2 justify-center">
               <Button onClick={this.handleReset} variant="default">
                 Try again
               </Button>
-              <Button
-                onClick={() => window.location.reload()}
-                variant="outline"
-              >
+              <Button onClick={() => window.location.reload()} variant="outline">
                 Reload page
               </Button>
             </div>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 text-left">
-                <summary className="cursor-pointer text-xs font-medium text-gray-700">
-                  Error details
-                </summary>
-                <pre className="mt-2 text-xs bg-gray-100 p-3 rounded overflow-auto">
-                  {this.state.error.stack}
-                </pre>
+                <summary className="cursor-pointer text-xs font-medium text-gray-700">Error details</summary>
+                <pre className="mt-2 text-xs bg-gray-100 p-3 rounded overflow-auto">{this.state.error.stack}</pre>
               </details>
             )}
           </div>

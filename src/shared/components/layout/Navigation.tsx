@@ -101,12 +101,7 @@ export function Navigation() {
                   stroke="currentColor"
                   aria-hidden="true"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               ) : (
                 <svg
@@ -117,12 +112,7 @@ export function Navigation() {
                   stroke="currentColor"
                   aria-hidden="true"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               )}
             </button>
@@ -139,20 +129,14 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={`block px-4 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                  isActive(item.href)
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-700 hover:bg-gray-100'
+                  isActive(item.href) ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <div className="flex items-center justify-between">
                   <span>{item.name}</span>
                   {isActive(item.href) && (
-                    <svg
-                      className="w-4 h-4 text-blue-600"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -161,9 +145,7 @@ export function Navigation() {
                     </svg>
                   )}
                 </div>
-                {item.description && (
-                  <p className="text-xs text-gray-500 mt-0.5 ml-1">{item.description}</p>
-                )}
+                {item.description && <p className="text-xs text-gray-500 mt-0.5 ml-1">{item.description}</p>}
               </Link>
             ))}
           </div>

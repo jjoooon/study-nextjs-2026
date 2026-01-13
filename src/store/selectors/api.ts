@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import type { RootState } from '../index';
 
 // ============================================================================
@@ -13,43 +14,28 @@ import type { RootState } from '../index';
 // Users API selectors
 export const selectUsersApiState = (state: RootState) => state.usersApi;
 
-export const selectUsersQueries = createSelector(
-  [selectUsersApiState],
-  (usersApi) => usersApi?.queries || {}
-);
+export const selectUsersQueries = createSelector([selectUsersApiState], (usersApi) => usersApi?.queries || {});
 
-export const selectIsUsersLoading = createSelector(
-  [selectUsersQueries],
-  (queries) =>
-    Object.values(queries).some((query: any) => query?.status === 'pending')
+export const selectIsUsersLoading = createSelector([selectUsersQueries], (queries) =>
+  Object.values(queries).some((query: any) => query?.status === 'pending')
 );
 
 // Posts API selectors
 export const selectPostsApiState = (state: RootState) => state.postsApi;
 
-export const selectPostsQueries = createSelector(
-  [selectPostsApiState],
-  (postsApi) => postsApi?.queries || {}
-);
+export const selectPostsQueries = createSelector([selectPostsApiState], (postsApi) => postsApi?.queries || {});
 
-export const selectIsPostsLoading = createSelector(
-  [selectPostsQueries],
-  (queries) =>
-    Object.values(queries).some((query: any) => query?.status === 'pending')
+export const selectIsPostsLoading = createSelector([selectPostsQueries], (queries) =>
+  Object.values(queries).some((query: any) => query?.status === 'pending')
 );
 
 // Auth API selectors
 export const selectAuthApiState = (state: RootState) => state.authApi;
 
-export const selectAuthQueries = createSelector(
-  [selectAuthApiState],
-  (authApi) => authApi?.queries || {}
-);
+export const selectAuthQueries = createSelector([selectAuthApiState], (authApi) => authApi?.queries || {});
 
-export const selectIsAuthApiLoading = createSelector(
-  [selectAuthQueries],
-  (queries) =>
-    Object.values(queries).some((query: any) => query?.status === 'pending')
+export const selectIsAuthApiLoading = createSelector([selectAuthQueries], (queries) =>
+  Object.values(queries).some((query: any) => query?.status === 'pending')
 );
 
 // ============================================================================
@@ -62,19 +48,14 @@ export const selectIsAuthApiLoading = createSelector(
  */
 export const selectIsAnyApiLoading = createSelector(
   [selectIsUsersLoading, selectIsPostsLoading, selectIsAuthApiLoading],
-  (usersLoading, postsLoading, authLoading) =>
-    usersLoading || postsLoading || authLoading
+  (usersLoading, postsLoading, authLoading) => usersLoading || postsLoading || authLoading
 );
 
 /**
  * API 요청 개수 집계
  */
 export const selectApiRequestCount = createSelector(
-  [
-    selectUsersQueries,
-    selectPostsQueries,
-    selectAuthQueries,
-  ],
+  [selectUsersQueries, selectPostsQueries, selectAuthQueries],
   (usersQueries, postsQueries, authQueries) => {
     const pendingCount =
       Object.values(usersQueries).filter((q: any) => q?.status === 'pending').length +

@@ -1,11 +1,13 @@
+import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+
 import { authApiSlice, authReducer } from '@/features/auth';
 import { dashboardApiSlice } from '@/features/dashboard';
 import { postsApiSlice } from '@/features/posts';
 import { uiReducer } from '@/features/ui';
 import { usersApiSlice } from '@/features/users';
 import log from '@/shared/utils/logger';
-import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
+
 import { performanceMiddleware } from './middleware/performance';
 import { middlewareRegistry } from './middleware/registry';
 import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './reducers/registry';
@@ -139,24 +141,25 @@ export const store = configureStore({
         ignoredActions: [
           'persist/PERSIST',
           'persist/REHYDRATE',
-          'reducer/inject',  // Dynamic reducer injection (함수 포함)
-          'reducer/eject',   // Dynamic reducer ejection
+          'reducer/inject', // Dynamic reducer injection (함수 포함)
+          'reducer/eject', // Dynamic reducer ejection
         ] as string[],
         // 정규식으로 모든 API 슬라이스 자동 무시
         ignoredPaths: [
-          (/^.*Api$/),  // 'Api'로 끝나는 모든 경로
+          /^.*Api$/, // 'Api'로 끝나는 모든 경로
         ],
       },
 
       // Immutable 체크: 개발 모드에서만 실행
-      immutableCheck: process.env.NODE_ENV === 'development'
-        ? {
-            // 정규식으로 모든 API 슬라이스 자동 무시
-            ignoredPaths: [
-              (/^.*Api$/),  // 'Api'로 끝나는 모든 경로
-            ],
-          }
-        : false,
+      immutableCheck:
+        process.env.NODE_ENV === 'development'
+          ? {
+              // 정규식으로 모든 API 슬라이스 자동 무시
+              ignoredPaths: [
+                /^.*Api$/, // 'Api'로 끝나는 모든 경로
+              ],
+            }
+          : false,
     });
 
     // Registry에서 등록된 미들웨어 합체
@@ -164,54 +167,55 @@ export const store = configureStore({
     const registryMiddleware = middlewareRegistry.getAll();
 
     return coreMiddleware
-      .concat(usersApiSlice.middleware)     // usersApi middleware 추가
-      .concat(postsApiSlice.middleware)     // postsApi middleware 추가
-      .concat(authApiSlice.middleware)      // authApi middleware 추가
+      .concat(usersApiSlice.middleware) // usersApi middleware 추가
+      .concat(postsApiSlice.middleware) // postsApi middleware 추가
+      .concat(authApiSlice.middleware) // authApi middleware 추가
       .concat(dashboardApiSlice.middleware) // dashboardApi middleware 추가 (API는 항상 필요)
-      .concat(...registryMiddleware);       // 그 외 등록된 미들웨어
+      .concat(...registryMiddleware); // 그 외 등록된 미들웨어
   },
 
   // DevTools 설정
-  devTools: process.env.NODE_ENV === 'development'
-    ? {
-        // DevTools의 액션 추적 기능 확장
-        trace: true,
-        traceLimit: 25,
+  devTools:
+    process.env.NODE_ENV === 'development'
+      ? {
+          // DevTools의 액션 추적 기능 확장
+          trace: true,
+          traceLimit: 25,
 
-        // 액션 이름을 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
-        actionSanitizer: (action) => {
-          // 모든 API 액션 자동 처리 (예: usersApi, postsApi, dashboardApi 등)
-          const apiMatch = action.type.match(/^(\w+)Api\/(.+)$/);
-          if (apiMatch) {
-            const [, apiName, rest] = apiMatch;
-            return {
-              ...action,
-              type: `[${apiName}] ${rest}`
-                .replace('/execute', '')
-                .replace('/pending', '⏳')
-                .replace('/fulfilled', '✅')
-                .replace('/rejected', '❌'),
-            };
-          }
-          return action;
-        },
-
-        // 상태를 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
-        stateSanitizer: (state) => {
-          const sanitized = { ...state } as Record<string, unknown>;
-          // 불필요한 RTK Query 내부 상태 제거 (모든 API 자동 처리)
-          Object.keys(sanitized).forEach((key) => {
-            if (key.endsWith('Api')) {
-              const apiState = sanitized[key] as Record<string, unknown> | undefined;
-              if (apiState?.subscriptions) {
-                delete apiState.subscriptions;
-              }
+          // 액션 이름을 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
+          actionSanitizer: (action) => {
+            // 모든 API 액션 자동 처리 (예: usersApi, postsApi, dashboardApi 등)
+            const apiMatch = action.type.match(/^(\w+)Api\/(.+)$/);
+            if (apiMatch) {
+              const [, apiName, rest] = apiMatch;
+              return {
+                ...action,
+                type: `[${apiName}] ${rest}`
+                  .replace('/execute', '')
+                  .replace('/pending', '⏳')
+                  .replace('/fulfilled', '✅')
+                  .replace('/rejected', '❌'),
+              };
             }
-          });
-          return sanitized as typeof state;
-        },
-      }
-    : false, // 프로덕션에서는 비활성화
+            return action;
+          },
+
+          // 상태를 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
+          stateSanitizer: (state) => {
+            const sanitized = { ...state } as Record<string, unknown>;
+            // 불필요한 RTK Query 내부 상태 제거 (모든 API 자동 처리)
+            Object.keys(sanitized).forEach((key) => {
+              if (key.endsWith('Api')) {
+                const apiState = sanitized[key] as Record<string, unknown> | undefined;
+                if (apiState?.subscriptions) {
+                  delete apiState.subscriptions;
+                }
+              }
+            });
+            return sanitized as typeof state;
+          },
+        }
+      : false, // 프로덕션에서는 비활성화
 });
 
 // Registry 잠금 (store 초기화 후 추가 등록 방지)
@@ -252,9 +256,7 @@ if (process.env.NODE_ENV === 'development') {
         const apiState = (state as Record<string, unknown>)[key] as Record<string, unknown> | undefined;
         if (apiState?.queries) {
           const queries = apiState.queries as Record<string, { status: string }>;
-          const pendingRequests = Object.values(queries)
-            .filter((query) => query.status === 'pending')
-            .length;
+          const pendingRequests = Object.values(queries).filter((query) => query.status === 'pending').length;
           totalPending += pendingRequests;
         }
       }
@@ -295,4 +297,3 @@ export { useAppDispatch, useAppSelector } from './hooks';
  */
 export { ejectReducer, injectReducer } from './reducers/registry';
 export type { EjectReducerAction, InjectReducerAction } from './reducers/registry';
-

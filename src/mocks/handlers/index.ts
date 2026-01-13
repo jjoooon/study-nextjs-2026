@@ -5,12 +5,8 @@
  * 새로운 핸들러를 추가할 때 여기에 import하여 등록하세요.
  */
 
-import { usersHandlers } from './users';
-import { errorHandlers } from './errors';
 import { dashboardHandlers } from './dashboard';
+import { errorHandlers } from './errors';
+import { usersHandlers } from './users';
 
-export const handlers = [
-  ...usersHandlers,
-  ...dashboardHandlers,
-  ...errorHandlers,
-];
+export const handlers = [...usersHandlers, ...dashboardHandlers, ...errorHandlers];

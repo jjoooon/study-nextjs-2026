@@ -1,8 +1,9 @@
 'use client';
 
-import { Provider } from 'react-redux';
-import { store } from '@/store';
 import { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+
+import { store } from '@/store';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
@@ -69,9 +70,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             animation: 'spin 1s linear infinite',
           }}
         />
-        <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>
-          Initializing development environment...
-        </p>
+        <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>Initializing development environment...</p>
         <style>{`
           @keyframes spin {
             to { transform: rotate(360deg); }
@@ -83,4 +82,3 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return <Provider store={store}>{children}</Provider>;
 }
-

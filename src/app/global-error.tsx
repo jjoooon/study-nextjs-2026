@@ -35,13 +35,11 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               </svg>
             </div>
 
-            <h1 className="text-3xl font-bold text-red-900 mb-4">
-              Critical Error
-            </h1>
+            <h1 className="text-3xl font-bold text-red-900 mb-4">Critical Error</h1>
 
             <p className="text-red-700 mb-6">
-              A critical error has occurred. The application cannot recover.
-              Please refresh the page or contact support if the problem persists.
+              A critical error has occurred. The application cannot recover. Please refresh the page or contact support
+              if the problem persists.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -52,7 +50,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 Reload Application
               </button>
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => (window.location.href = '/')}
                 className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
                 Go to Homepage
@@ -61,9 +59,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
             {process.env.NODE_ENV === 'development' && (
               <details className="mt-6 text-left">
-                <summary className="cursor-pointer text-sm font-medium text-red-700">
-                  Technical details
-                </summary>
+                <summary className="cursor-pointer text-sm font-medium text-red-700">Technical details</summary>
                 <pre className="mt-2 text-xs bg-red-50 p-4 rounded overflow-auto text-red-900">
                   {error.stack || error.message}
                 </pre>

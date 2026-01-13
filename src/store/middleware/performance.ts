@@ -1,4 +1,5 @@
 import { Middleware, AnyAction } from '@reduxjs/toolkit';
+
 import type { RootState } from '@/store';
 
 // ============================================================================
@@ -32,44 +33,41 @@ const metrics: PerformanceMetrics = {
 /**
  * 성능 미들웨어
  */
-export const performanceMiddleware: Middleware<{}, RootState> =
-  (store) => (next) => (action: unknown) => {
-    // 개발 모드에서만 실행
-    if (process.env.NODE_ENV !== 'development') {
-      return next(action);
+export const performanceMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: unknown) => {
+  // 개발 모드에서만 실행
+  if (process.env.NODE_ENV !== 'development') {
+    return next(action);
+  }
+
+  const startTime = performance.now();
+  const actionType = (action as AnyAction).type;
+
+  const result = next(action);
+
+  const duration = performance.now() - startTime;
+
+  // 액션 카운트 추적
+  const count = metrics.actionCount.get(actionType) || 0;
+  metrics.actionCount.set(actionType, count + 1);
+
+  // 느린 액션 추적 (16ms = 1프레임 초과)
+  if (duration > 16) {
+    metrics.slowActions.push({
+      action: actionType,
+      duration,
+      timestamp: Date.now(),
+    });
+
+    // 최근 100개만 유지
+    if (metrics.slowActions.length > 100) {
+      metrics.slowActions.shift();
     }
 
-    const startTime = performance.now();
-    const actionType = (action as AnyAction).type;
+    console.warn(`[Perf] Slow action detected: ${actionType} (${duration.toFixed(2)}ms)`);
+  }
 
-    const result = next(action);
-
-    const duration = performance.now() - startTime;
-
-    // 액션 카운트 추적
-    const count = metrics.actionCount.get(actionType) || 0;
-    metrics.actionCount.set(actionType, count + 1);
-
-    // 느린 액션 추적 (16ms = 1프레임 초과)
-    if (duration > 16) {
-      metrics.slowActions.push({
-        action: actionType,
-        duration,
-        timestamp: Date.now(),
-      });
-
-      // 최근 100개만 유지
-      if (metrics.slowActions.length > 100) {
-        metrics.slowActions.shift();
-      }
-
-      console.warn(
-        `[Perf] Slow action detected: ${actionType} (${duration.toFixed(2)}ms)`
-      );
-    }
-
-    return result;
-  };
+  return result;
+};
 
 /**
  * 성능 리포트 가져오기

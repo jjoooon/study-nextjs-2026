@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -36,13 +36,9 @@ export default function Error({ error, reset }: ErrorProps) {
           </svg>
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">
-          Something went wrong!
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong!</h1>
 
-        <p className="text-gray-600 mb-6">
-          {error.message || 'An unexpected error occurred. Please try again.'}
-        </p>
+        <p className="text-gray-600 mb-6">{error.message || 'An unexpected error occurred. Please try again.'}</p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
@@ -61,12 +57,8 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {process.env.NODE_ENV === 'development' && error.digest && (
           <details className="mt-6 text-left">
-            <summary className="cursor-pointer text-sm font-medium text-gray-700">
-              Error details
-            </summary>
-            <pre className="mt-2 text-xs bg-gray-100 p-4 rounded overflow-auto">
-              {error.stack}
-            </pre>
+            <summary className="cursor-pointer text-sm font-medium text-gray-700">Error details</summary>
+            <pre className="mt-2 text-xs bg-gray-100 p-4 rounded overflow-auto">{error.stack}</pre>
           </details>
         )}
       </div>

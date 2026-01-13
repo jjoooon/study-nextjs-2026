@@ -6,4 +6,9 @@
 
 // Store
 export { postsApiSlice } from './store/apiSlice';
-export { useGetPostsQuery, useCreatePostMutation, useUpdatePostMutation, useDeletePostMutation } from './store/apiSlice';
+export {
+  useGetPostsQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+} from './store/apiSlice';

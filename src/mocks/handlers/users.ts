@@ -6,6 +6,7 @@
  */
 
 import { http, HttpResponse, delay } from 'msw';
+
 import { mockUsers } from '@/mocks/data/users';
 import { User, CreateUserRequest, UpdateUserRequest } from '@/mocks/types';
 
@@ -54,10 +55,7 @@ export const usersHandlers = [
     const user = mockUsers.find((u) => u.id === userId);
 
     if (!user) {
-      return HttpResponse.json(
-        { message: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
     return HttpResponse.json(user, { status: 200 });
@@ -105,10 +103,7 @@ export const usersHandlers = [
     const userIndex = mockUsers.findIndex((u) => u.id === userId);
 
     if (userIndex === -1) {
-      return HttpResponse.json(
-        { message: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
     // 사용자 업데이트
@@ -137,18 +132,12 @@ export const usersHandlers = [
     const userIndex = mockUsers.findIndex((u) => u.id === userId);
 
     if (userIndex === -1) {
-      return HttpResponse.json(
-        { message: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
     // 사용자 삭제
     mockUsers.splice(userIndex, 1);
 
-    return HttpResponse.json(
-      { message: 'User deleted successfully' },
-      { status: 200 }
-    );
+    return HttpResponse.json({ message: 'User deleted successfully' }, { status: 200 });
   }),
 ];

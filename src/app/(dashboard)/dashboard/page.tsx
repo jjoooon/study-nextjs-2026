@@ -17,9 +17,10 @@
  * - 깨끗한 코드 구조
  */
 
+import { useEffect, useState } from 'react';
+
 import { dashboardReducer, DashboardStats, RecentActivity, useDashboard } from '@/features/dashboard';
 import { useInjectReducer } from '@/store/reducers/hooks';
-import { useEffect, useState } from 'react';
 
 /**
  * Dashboard 컴포넌트 (실제 내용)
@@ -57,12 +58,10 @@ function DashboardContent() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Dashboard (Dynamic Reducer Pattern)
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard (Dynamic Reducer Pattern)</h1>
           <p className="text-gray-600">
-            이 페이지는 공통 <code className="bg-gray-100 px-2 py-1 rounded">useInjectReducer</code> hook을
-            사용하여 Dashboard feature를 보여줍니다.
+            이 페이지는 공통 <code className="bg-gray-100 px-2 py-1 rounded">useInjectReducer</code> hook을 사용하여
+            Dashboard feature를 보여줍니다.
           </p>
         </div>
 
@@ -91,9 +90,7 @@ function DashboardContent() {
           </div>
 
           {lastUpdated && (
-            <div className="mt-4 text-sm text-gray-500">
-              Last Updated: {new Date(lastUpdated).toLocaleString()}
-            </div>
+            <div className="mt-4 text-sm text-gray-500">Last Updated: {new Date(lastUpdated).toLocaleString()}</div>
           )}
         </div>
 
@@ -150,9 +147,7 @@ function DashboardContent() {
 
         {/* Technical Details */}
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-3">
-            🔧 Technical Details
-          </h3>
+          <h3 className="text-lg font-semibold text-blue-900 mb-3">🔧 Technical Details</h3>
           <ul className="space-y-2 text-sm text-blue-800">
             <li>
               <strong>Dynamic Reducer Injection:</strong> 공통{' '}
@@ -182,9 +177,7 @@ function DashboardContent() {
 
         {/* Widget Configuration */}
         <div className="mt-6 bg-gray-100 border border-gray-300 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">
-            📊 Current Widget Configuration
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">📊 Current Widget Configuration</h3>
           <div className="space-y-2">
             {widgets.map((widget) => (
               <div key={widget.id} className="flex items-center justify-between text-sm">
@@ -192,11 +185,7 @@ function DashboardContent() {
                 <div className="flex items-center space-x-4">
                   <span className="text-gray-600">Type: {widget.type}</span>
                   <span className="text-gray-600">Position: {widget.position}</span>
-                  <span
-                    className={`font-semibold ${
-                      widget.isVisible ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
+                  <span className={`font-semibold ${widget.isVisible ? 'text-green-600' : 'text-red-600'}`}>
                     {widget.isVisible ? 'Visible' : 'Hidden'}
                   </span>
                 </div>

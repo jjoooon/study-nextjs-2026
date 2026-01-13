@@ -56,9 +56,7 @@ export default function RecentActivity() {
           <div key={activity.id} className="flex items-start space-x-4">
             <div className="flex-shrink-0">
               <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <span className="text-blue-600 font-semibold">
-                  {activity.user.name.charAt(0)}
-                </span>
+                <span className="text-blue-600 font-semibold">{activity.user.name.charAt(0)}</span>
               </div>
             </div>
             <div className="flex-1">
@@ -66,9 +64,7 @@ export default function RecentActivity() {
                 <span className="font-medium">{activity.user.name}</span>{' '}
                 <span className="text-gray-600">{activity.message}</span>
               </p>
-              <p className="text-xs text-gray-500 mt-1">
-                {formatRelativeTime(activity.timestamp)}
-              </p>
+              <p className="text-xs text-gray-500 mt-1">{formatRelativeTime(activity.timestamp)}</p>
             </div>
           </div>
         ))}
