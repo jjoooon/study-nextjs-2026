@@ -66,5 +66,5 @@ export const getRegisteredApiNames = () => {
 // RE-EXPORTS
 // ============================================================================
 
-export { API_REGISTRY, REGISTERED_API_NAMES } from './registry';
-export type { ApiRegistration } from './registry';
+export { API_REGISTRY, REGISTERED_API_NAMES } from './config';
+export type { ApiRegistration } from './config';
