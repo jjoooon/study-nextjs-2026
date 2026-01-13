@@ -1,5 +1,5 @@
-import type { AnyAction } from '@reduxjs/toolkit';
 import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
+import type { UnknownAction } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 import { authReducer } from '@/features/auth';
@@ -17,7 +17,7 @@ import { getAllApiMiddleware, registerAllApiReducers } from './slices/api/regist
 // ============================================================================
 
 // RootState and AppDispatch are defined after store creation (line 284)
-// RootAction is defined as AnyAction for dynamic reducer compatibility
+// UnknownAction is used for dynamic reducer compatibility
 
 // ============================================================================
 // REDUX STORE CONFIGURATION
@@ -80,15 +80,15 @@ registerAllApiReducers(reducerRegistry);
  * - 런타임에 injectReducer/ejectReducer 액션으로 리듀서 추가/제거
  * - 새로 추가된 리듀서의 초기 state 자동 병합
  */
-const createRootReducer = (): Reducer<Record<string, unknown>, AnyAction> => {
-  return (state: Record<string, unknown> | undefined, action: AnyAction) => {
+const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAction> => {
+  return (state: Record<string, unknown> | undefined, action: UnknownAction) => {
     // 리듀서 주입 액션 처리
     if (action.type === INJECT_REDUCER) {
       const {
         key,
         reducer,
         priority = 50,
-      } = action.payload as { key: string; reducer: Reducer<unknown, AnyAction>; priority?: number };
+      } = action.payload as { key: string; reducer: Reducer<unknown, UnknownAction>; priority?: number };
 
       if (!reducerRegistry.has(key)) {
         // 레지스트리가 잠겨있어도 직접 entries를 조작하여 리듀서 추가
