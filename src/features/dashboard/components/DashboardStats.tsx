@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useGetDashboardStatsQuery } from '@/features/dashboard/store/apiSlice';
 
 interface Stat {
   id: number;
@@ -9,23 +9,14 @@ interface Stat {
   change: string;
 }
 
+/**
+ * Dashboard Statistics Component
+ *
+ * RTK Query를 사용하여 통계 데이터를 가져옵니다
+ */
 export default function DashboardStats() {
-  const [stats, setStats] = useState<Stat[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate data fetching
-    const timer = setTimeout(() => {
-      setStats([
-        { id: 1, label: 'Total Users', value: '1,234', change: '+12%' },
-        { id: 2, label: 'Active Sessions', value: '456', change: '+5%' },
-        { id: 3, label: 'Revenue', value: '$12,345', change: '+18%' },
-      ]);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // ✅ RTK Query 사용
+  const { data: stats, isLoading, isError } = useGetDashboardStatsQuery();
 
   if (isLoading) {
     return (
@@ -39,9 +30,45 @@ export default function DashboardStats() {
     );
   }
 
+  if (isError) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+        <p className="text-red-600">Failed to load statistics</p>
+      </div>
+    );
+  }
+
+  // ✅ API 데이터 객체를 UI에 맞는 배열로 변환
+  const statsArray: Stat[] = stats ? [
+    {
+      id: 1,
+      label: 'Total Users',
+      value: stats.totalUsers.toLocaleString(),
+      change: `+${stats.growthRate}%`,
+    },
+    {
+      id: 2,
+      label: 'Active Users',
+      value: stats.activeUsers.toLocaleString(),
+      change: `${Math.round((stats.activeUsers / stats.totalUsers) * 100)}% of total`,
+    },
+    {
+      id: 3,
+      label: 'Total Posts',
+      value: stats.totalPosts.toLocaleString(),
+      change: `↑ ${Math.round(stats.totalPosts / stats.activeUsers)} per user`,
+    },
+    {
+      id: 4,
+      label: 'Revenue',
+      value: `$${stats.revenue.toLocaleString()}`,
+      change: `+${Math.round(stats.revenue / stats.totalUsers)} per user`,
+    },
+  ] : [];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {stats.map((stat) => (
+      {statsArray.map((stat) => (
         <div
           key={stat.id}
           className="bg-white p-6 rounded-lg shadow-sm border border-gray-200"
