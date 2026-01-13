@@ -58,6 +58,7 @@ class ReducerRegistry {
   private entries: Map<string, ReducerEntry> = new Map();
   private isLocked = false;
   private combinedReducer: Reducer | null = null;
+  private reducersMapCache: ReducersMapObject | null = null; // 캐싱 추가
   private options: Required<ReducerRegistryOptions>;
   private logger = log.getLogger('ReducerRegistry');
 
@@ -105,8 +106,9 @@ class ReducerRegistry {
 
     this.entries.set(name, { name, reducer, priority });
 
-    // Combined reducer 캐시 무효화
+    // 캐시 무효화
     this.combinedReducer = null;
+    this.reducersMapCache = null;
   }
 
   /**
@@ -126,8 +128,9 @@ class ReducerRegistry {
     const deleted = this.entries.delete(name);
 
     if (deleted) {
-      // Combined reducer 캐시 무효화
+      // 캐시 무효화
       this.combinedReducer = null;
+      this.reducersMapCache = null;
     }
 
     return deleted;
@@ -135,16 +138,24 @@ class ReducerRegistry {
 
   /**
    * 모든 리듀서 Map 객체 반환 (우선순위 정렬됨)
+   *
+   * @performance
+   * - 캐싱을 통해 불필요한 정렬 방지
+   * - 리듀서 추가/제거 시에만 캐시 무효화
    */
   getReducersMap(): ReducersMapObject {
-    const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
+    if (!this.reducersMapCache) {
+      const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
 
-    const map: ReducersMapObject = {};
-    sorted.forEach((entry) => {
-      map[entry.name] = entry.reducer;
-    });
+      const map: ReducersMapObject = {};
+      sorted.forEach((entry) => {
+        map[entry.name] = entry.reducer;
+      });
 
-    return map;
+      this.reducersMapCache = map;
+    }
+
+    return this.reducersMapCache;
   }
 
   /**
@@ -216,7 +227,9 @@ class ReducerRegistry {
 
     if (!this.entries.has(name)) {
       this.entries.set(name, { name, reducer, priority });
+      // 캐시 무효화
       this.combinedReducer = null;
+      this.reducersMapCache = null;
     }
   }
 
@@ -230,7 +243,9 @@ class ReducerRegistry {
   eject(name: string): void {
     if (this.entries.has(name)) {
       this.entries.delete(name);
+      // 캐시 무효화
       this.combinedReducer = null;
+      this.reducersMapCache = null;
     }
   }
 
@@ -244,7 +259,9 @@ class ReducerRegistry {
     }
 
     this.entries.clear();
+    // 캐시 무효화
     this.combinedReducer = null;
+    this.reducersMapCache = null;
     this.logger.info('Cleared');
   }
 

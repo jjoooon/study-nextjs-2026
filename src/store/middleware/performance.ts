@@ -106,7 +106,7 @@ export const getPerformanceReport = () => {
   const topActions = Object.entries(actionCounts)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 10)
-    .map(([action, count]) => ({ action, count }));
+    .map(([action, count]) => ({ action, count, estimatedTotal: Math.round(count / SAMPLING_RATE) }));
 
   // 가장 느린 액션 Top 10
   const slowestActions = [...metrics.slowActions]
@@ -120,7 +120,9 @@ export const getPerformanceReport = () => {
 
   return {
     uptime: Date.now() - metrics.lastReset,
-    totalActions: Object.values(actionCounts).reduce((sum, count) => sum + count, 0),
+    totalActions: metrics.totalActions,
+    sampledActions: Object.values(actionCounts).reduce((sum, count) => sum + count, 0),
+    samplingRate: SAMPLING_RATE,
     uniqueActions: Object.keys(actionCounts).length,
     slowActionsCount: metrics.slowActions.length,
     topActions,
@@ -134,6 +136,7 @@ export const getPerformanceReport = () => {
 export const resetMetrics = () => {
   metrics.actionCount.clear();
   metrics.slowActions = [];
+  metrics.totalActions = 0;
   metrics.lastReset = Date.now();
 };
 
@@ -147,7 +150,9 @@ export const usePerformanceMonitor = () => {
       const report = getPerformanceReport();
       perfLogger.info('Performance Report', {
         uptime: `${(report.uptime / 1000).toFixed(1)}s`,
+        samplingRate: `${(report.samplingRate * 100).toFixed(0)}%`,
         totalActions: report.totalActions,
+        sampledActions: report.sampledActions,
         uniqueActions: report.uniqueActions,
         slowActions: report.slowActionsCount,
         topActions: report.topActions.slice(0, 5),
