@@ -1,5 +1,7 @@
 import { Middleware } from '@reduxjs/toolkit';
 
+import log from '@/shared/utils/logger';
+
 // ============================================================================
 // DYNAMIC MIDDLEWARE REGISTRY
 // ============================================================================
@@ -32,6 +34,7 @@ type MiddlewareEntry = {
 class MiddlewareRegistry {
   private entries: Map<string, MiddlewareEntry> = new Map();
   private isLocked = false;
+  private logger = log.getLogger('MiddlewareRegistry');
 
   /**
    * 미들웨어 등록
@@ -42,15 +45,15 @@ class MiddlewareRegistry {
    */
   register(name: string, middleware: Middleware, priority: number = 50) {
     if (this.isLocked) {
-      console.warn(
-        `[MiddlewareRegistry] Cannot register "${name}" - registry is locked. ` +
-          `Register middleware before store initialization.`
+      this.logger.warn(
+        `Cannot register "${name}" - registry is locked. Register middleware before store initialization.`,
+        { name, priority }
       );
       return;
     }
 
     if (this.entries.has(name)) {
-      console.warn(`[MiddlewareRegistry] Overriding middleware: ${name}`);
+      this.logger.warn(`Overriding middleware: ${name}`, { name, existingPriority: this.entries.get(name)?.priority });
     }
 
     this.entries.set(name, { name, middleware, priority });
@@ -61,7 +64,7 @@ class MiddlewareRegistry {
    */
   unregister(name: string) {
     if (this.isLocked) {
-      console.warn(`[MiddlewareRegistry] Cannot unregister "${name}" - registry is locked`);
+      this.logger.warn(`Cannot unregister "${name}" - registry is locked`, { name });
       return false;
     }
 
@@ -103,7 +106,7 @@ class MiddlewareRegistry {
    */
   lock() {
     this.isLocked = true;
-    console.log(`[MiddlewareRegistry] Locked (${this.getCount()} middlewares registered)`);
+    this.logger.info(`Locked (${this.getCount()} middlewares registered)`);
   }
 
   /**
@@ -111,7 +114,7 @@ class MiddlewareRegistry {
    */
   unlock() {
     this.isLocked = false;
-    console.log('[MiddlewareRegistry] Unlocked');
+    this.logger.info('Unlocked');
   }
 
   /**
@@ -119,12 +122,12 @@ class MiddlewareRegistry {
    */
   clear() {
     if (this.isLocked) {
-      console.warn('[MiddlewareRegistry] Cannot clear - registry is locked');
+      this.logger.warn('Cannot clear - registry is locked');
       return;
     }
 
     this.entries.clear();
-    console.log('[MiddlewareRegistry] Cleared');
+    this.logger.info('Cleared');
   }
 
   /**
@@ -133,9 +136,9 @@ class MiddlewareRegistry {
   printInfo() {
     const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
 
-    console.log('[MiddlewareRegistry] Registered middlewares:');
-    sorted.forEach((entry) => {
-      console.log(`  ${entry.priority}: ${entry.name}`);
+    this.logger.debug('Registered middlewares:', {
+      count: sorted.length,
+      middlewares: sorted.map((entry) => ({ priority: entry.priority, name: entry.name })),
     });
   }
 }

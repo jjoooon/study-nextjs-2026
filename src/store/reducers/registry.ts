@@ -1,5 +1,7 @@
 import { Reducer, ReducersMapObject, combineReducers } from '@reduxjs/toolkit';
 
+import log from '@/shared/utils/logger';
+
 // ============================================================================
 // DYNAMIC REDUCER REGISTRY
 // ============================================================================
@@ -57,6 +59,7 @@ class ReducerRegistry {
   private isLocked = false;
   private combinedReducer: Reducer | null = null;
   private options: Required<ReducerRegistryOptions>;
+  private logger = log.getLogger('ReducerRegistry');
 
   constructor(options: ReducerRegistryOptions = {}) {
     this.options = {
@@ -92,7 +95,11 @@ class ReducerRegistry {
 
     if (this.entries.has(name)) {
       if (this.options.warnOnDuplicate) {
-        console.warn(`[ReducerRegistry] Overriding reducer: ${name}. ` + `This may cause unexpected behavior.`);
+        this.logger.warn(`Overriding reducer: ${name}. This may cause unexpected behavior.`, {
+          name,
+          priority,
+          existingPriority: this.entries.get(name)?.priority,
+        });
       }
     }
 
@@ -110,9 +117,9 @@ class ReducerRegistry {
    */
   unregister(name: string): boolean {
     if (this.isLocked) {
-      console.warn(
-        `[ReducerRegistry] Cannot unregister "${name}" - registry is locked. ` + `Use ejectReducer action instead.`
-      );
+      this.logger.warn(`Cannot unregister "${name}" - registry is locked. Use ejectReducer action instead.`, {
+        name,
+      });
       return false;
     }
 
@@ -182,7 +189,7 @@ class ReducerRegistry {
    */
   lock() {
     this.isLocked = true;
-    console.log(`[ReducerRegistry] Locked (${this.getCount()} reducers registered)`);
+    this.logger.info(`Locked (${this.getCount()} reducers registered)`);
   }
 
   /**
@@ -190,7 +197,7 @@ class ReducerRegistry {
    */
   unlock() {
     this.isLocked = false;
-    console.log('[ReducerRegistry] Unlocked');
+    this.logger.info('Unlocked');
   }
 
   /**
@@ -232,13 +239,13 @@ class ReducerRegistry {
    */
   clear() {
     if (this.isLocked) {
-      console.warn('[ReducerRegistry] Cannot clear - registry is locked');
+      this.logger.warn('Cannot clear - registry is locked');
       return;
     }
 
     this.entries.clear();
     this.combinedReducer = null;
-    console.log('[ReducerRegistry] Cleared');
+    this.logger.info('Cleared');
   }
 
   /**
@@ -247,9 +254,9 @@ class ReducerRegistry {
   printInfo() {
     const sorted = Array.from(this.entries.values()).sort((a, b) => a.priority - b.priority);
 
-    console.log('[ReducerRegistry] Registered reducers:');
-    sorted.forEach((entry) => {
-      console.log(`  ${entry.priority}: ${entry.name}`);
+    this.logger.debug('Registered reducers:', {
+      count: sorted.length,
+      reducers: sorted.map((entry) => ({ priority: entry.priority, name: entry.name })),
     });
   }
 
