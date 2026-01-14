@@ -13,11 +13,18 @@ import { useAppDispatch, useAppSelector } from '@/store';
  * RTK Query를 사용한 API 데이터 fetching + Redux Slice의 UI 상태 관리
  *
  * @note Conditional Rendering으로 인해 방어 로직 불필요
+ * @note Redux Store의 filters, sort를 RTK Query 쿼리 파라미터로 연결하여 자동 refetch
  */
 export const useProducts = () => {
   const dispatch = useAppDispatch();
 
-  // ✅ RTK Query hook (리듀서가 항상 존재하므로 안전)
+  // ✅ Selector 기반 UI 상태 구독 (먼저 읽기)
+  const filters = useAppSelector(productsSelectors.selectFilters);
+  const sort = useAppSelector(productsSelectors.selectSort);
+  const selectedProducts = useAppSelector(productsSelectors.selectSelectedProducts);
+  const viewMode = useAppSelector(productsSelectors.selectViewMode);
+
+  // ✅ RTK Query hook - filters, sort를 쿼리 파라미터로 전달하여 자동 refetch
   const {
     data: productsData,
     isLoading,
@@ -27,13 +34,12 @@ export const useProducts = () => {
   } = useGetProductsQuery({
     page: 1,
     pageSize: 10,
+    search: filters.search || undefined,
+    status: filters.status || undefined,
+    category: filters.category || undefined,
+    sortBy: sort.sortBy,
+    sortOrder: sort.sortOrder,
   });
-
-  // ✅ Selector 기반 UI 상태 구독
-  const filters = useAppSelector(productsSelectors.selectFilters);
-  const sort = useAppSelector(productsSelectors.selectSort);
-  const selectedProducts = useAppSelector(productsSelectors.selectSelectedProducts);
-  const viewMode = useAppSelector(productsSelectors.selectViewMode);
 
   return {
     // API 데이터

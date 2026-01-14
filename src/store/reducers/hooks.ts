@@ -65,12 +65,12 @@ export const useInjectReducer = (
 ): UseInjectReducerResult => {
   const { priority = 50, ejectOnUnmount = false } = options;
   const isInjected = useRef(false);
+  const readySetRef = useRef(false);
   const [isReady, setIsReady] = useState(false);
 
+  // Reducer injection
   useEffect(() => {
     if (!isInjected.current) {
-      let timer: number;
-
       try {
         store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
 
@@ -80,45 +80,59 @@ export const useInjectReducer = (
         isInjected.current = true;
 
         // 다음 tick에서 렌더링 준비 완료
-        timer = requestAnimationFrame(() => {
-          setIsReady(true);
+        requestAnimationFrame(() => {
+          if (!readySetRef.current) {
+            readySetRef.current = true;
+            setIsReady(true);
+          }
         });
+
+        // 성공 시 cleanup 반환 안 함 (RAF 콜백이 실행되어야 함)
+        return undefined;
       } catch (error) {
         const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject reducer: ${key}`, error);
-        // 에러가 발생해도 isReady를 true로 설정하여 무한 로딩 방지
-        timer = requestAnimationFrame(() => {
-          setIsReady(true);
-        });
-      }
 
-      return () => {
-        if (timer) cancelAnimationFrame(timer);
-      };
+        // 에러 발생 시 즉시 isReady를 true로 설정
+        if (!readySetRef.current) {
+          readySetRef.current = true;
+          requestAnimationFrame(() => {
+            setIsReady(true);
+          });
+        }
+
+        // 실패 시 cleanup 반환 (필요 없음)
+        return undefined;
+      }
     }
 
-    return () => {};
+    // 이미 주입된 경우 아무것도 하지 않음
+    return undefined;
   }, [key, reducer, priority]);
 
   // Cleanup function for ejectOnUnmount
   useEffect(() => {
-    if (ejectOnUnmount && isInjected.current) {
+    if (ejectOnUnmount) {
       return () => {
-        try {
-          store.dispatch(ejectReducer(key) as unknown as AnyAction);
+        if (isInjected.current) {
+          try {
+            store.dispatch(ejectReducer(key) as unknown as AnyAction);
 
-          const logger = log.getLogger('ReducerRegistry');
-          logger.debug(`🗑️  Reducer ejected via hook: ${key}`);
+            const logger = log.getLogger('ReducerRegistry');
+            logger.debug(`🗑️  Reducer ejected via hook: ${key}`);
 
-          isInjected.current = false;
-        } catch (error) {
-          const logger = log.getLogger('ReducerRegistry');
-          logger.error(`❌ Failed to eject reducer: ${key}`, error);
+            isInjected.current = false;
+            readySetRef.current = false;
+            setIsReady(false);
+          } catch (error) {
+            const logger = log.getLogger('ReducerRegistry');
+            logger.error(`❌ Failed to eject reducer: ${key}`, error);
+          }
         }
       };
     }
 
-    return () => {};
+    return undefined;
   }, [key, ejectOnUnmount]);
 
   return { isReady };
@@ -168,6 +182,7 @@ export interface UseLazyReducerResult {
   loading: boolean;
   error: Error | null;
   injected: boolean;
+  isReady: boolean;
 }
 
 export const useLazyReducer = (
@@ -181,6 +196,7 @@ export const useLazyReducer = (
     loading: true,
     error: null,
     injected: false,
+    isReady: false,
   });
 
   useEffect(() => {
@@ -197,6 +213,7 @@ export const useLazyReducer = (
             loading: false,
             error: null,
             injected: true,
+            isReady: true,
           };
 
           const logger = log.getLogger('ReducerRegistry');
@@ -208,6 +225,7 @@ export const useLazyReducer = (
             loading: false,
             error: error as Error,
             injected: false,
+            isReady: false,
           };
 
           const logger = log.getLogger('ReducerRegistry');
@@ -242,36 +260,81 @@ export const useLazyReducer = (
  * @param reducer - 리듀서 함수
  * @param enabled - Feature flag (true면 로드)
  * @param options - 옵션
+ * @returns { isReady } - 리듀서 주입 후 렌더링 준비 완료 여부
  *
  * @example
  * const ANALYTICS_ENABLED = process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true';
  *
  * function Dashboard() {
- *   useConditionalReducer('analytics', analyticsReducer, ANALYTICS_ENABLED);
+ *   const { isReady } = useConditionalReducer('analytics', analyticsReducer, ANALYTICS_ENABLED);
+ *
+ *   if (!isReady) {
+ *     return <LoadingSpinner />;
+ *   }
+ *
  *   return <div>...</div>;
  * }
  */
+export type UseConditionalReducerResult = UseInjectReducerResult;
+
 export const useConditionalReducer = (
   key: string,
   reducer: Reducer,
   enabled: boolean,
   options: UseInjectReducerOptions = {}
-) => {
+): UseConditionalReducerResult => {
+  const isInjected = useRef(false);
+  const readySetRef = useRef(false);
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
-    if (enabled) {
+    // enabled가 false인 경우 즉시 ready로 처리 (최초 1회만)
+    if (!enabled && !readySetRef.current) {
+      readySetRef.current = true;
+      requestAnimationFrame(() => {
+        setIsReady(true);
+      });
+      return undefined;
+    }
+
+    if (enabled && !isInjected.current) {
       try {
         store.dispatch(injectReducer(key, reducer, options.priority) as unknown as AnyAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Conditional reducer enabled: ${key}`);
+
+        isInjected.current = true;
+
+        // 다음 tick에서 렌더링 준비 완료
+        requestAnimationFrame(() => {
+          if (!readySetRef.current) {
+            readySetRef.current = true;
+            setIsReady(true);
+          }
+        });
+
+        return undefined;
       } catch (error) {
         const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject conditional reducer: ${key}`, error);
+
+        // 에러 발생 시 즉시 isReady를 true로 설정
+        if (!readySetRef.current) {
+          readySetRef.current = true;
+          requestAnimationFrame(() => {
+            setIsReady(true);
+          });
+        }
+
+        return undefined;
       }
     }
 
-    return () => {};
+    return undefined;
   }, [key, reducer, enabled, options]);
+
+  return { isReady };
 };
 
 // ============================================================================
@@ -289,43 +352,87 @@ export const useConditionalReducer = (
  * @param userRole - 사용자 역할
  * @param allowedRoles - 허용된 역할 목록
  * @param options - 옵션
+ * @returns { isReady } - 리듀서 주입 후 렌더링 준비 완료 여부
  *
  * @example
  * function AdminPanel({ userRole }) {
- *   useRoleBasedReducer(
+ *   const { isReady } = useRoleBasedReducer(
  *     'admin',
  *     adminReducer,
  *     userRole,
  *     ['admin', 'superadmin']
  *   );
  *
+ *   if (!isReady) {
+ *     return <LoadingSpinner />;
+ *   }
+ *
  *   return <div>Admin Panel</div>;
  * }
  */
+export type UseRoleBasedReducerResult = UseInjectReducerResult;
+
 export const useRoleBasedReducer = (
   key: string,
   reducer: Reducer,
   userRole: string | null,
   allowedRoles: string[],
   options: UseInjectReducerOptions = {}
-) => {
+): UseRoleBasedReducerResult => {
+  const isInjected = useRef(false);
+  const readySetRef = useRef(false);
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
     const isAuthorized = userRole && allowedRoles.includes(userRole);
 
-    if (isAuthorized) {
+    // 권한이 없는 경우 즉시 ready로 처리 (최초 1회만)
+    if (!isAuthorized && !readySetRef.current) {
+      readySetRef.current = true;
+      requestAnimationFrame(() => {
+        setIsReady(true);
+      });
+      return undefined;
+    }
+
+    if (isAuthorized && !isInjected.current) {
       try {
         store.dispatch(injectReducer(key, reducer, options.priority) as unknown as AnyAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Role-based reducer authorized: ${key} (${userRole})`);
+
+        isInjected.current = true;
+
+        // 다음 tick에서 렌더링 준비 완료
+        requestAnimationFrame(() => {
+          if (!readySetRef.current) {
+            readySetRef.current = true;
+            setIsReady(true);
+          }
+        });
+
+        return undefined;
       } catch (error) {
         const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject role-based reducer: ${key}`, error);
+
+        // 에러 발생 시 즉시 isReady를 true로 설정
+        if (!readySetRef.current) {
+          readySetRef.current = true;
+          requestAnimationFrame(() => {
+            setIsReady(true);
+          });
+        }
+
+        return undefined;
       }
     }
 
-    return () => {};
+    return undefined;
   }, [key, reducer, userRole, allowedRoles, options]);
+
+  return { isReady };
 };
 
 // ============================================================================
@@ -340,36 +447,79 @@ export const useRoleBasedReducer = (
  *
  * @param reducers - 리듀서 Map { key: reducer }
  * @param options - 공통 옵션
+ * @returns { isReady } - 모든 리듀서 주입 후 렌더링 준비 완료 여부
  *
  * @example
- * useBatchReducers({
- *   analytics: analyticsReducer,
- *   reporting: reportingReducer,
- *   insights: insightsReducer
- * }, { priority: 30 });
+ * function Dashboard() {
+ *   const { isReady } = useBatchReducers({
+ *     analytics: analyticsReducer,
+ *     reporting: reportingReducer,
+ *     insights: insightsReducer
+ *   }, { priority: 30 });
+ *
+ *   if (!isReady) {
+ *     return <LoadingSpinner />;
+ *   }
+ *
+ *   return <div>Dashboard</div>;
+ * }
  */
 export interface BatchReducersMap {
   [key: string]: Reducer;
 }
 
-export const useBatchReducers = (reducers: BatchReducersMap, options: UseInjectReducerOptions = {}) => {
+export type UseBatchReducersResult = UseInjectReducerResult;
+
+export const useBatchReducers = (
+  reducers: BatchReducersMap,
+  options: UseInjectReducerOptions = {}
+): UseBatchReducersResult => {
   const { priority = 50 } = options;
+  const isInjected = useRef(false);
+  const readySetRef = useRef(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    Object.entries(reducers).forEach(([key, reducer]) => {
+    if (!isInjected.current && Object.keys(reducers).length > 0) {
       try {
-        store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
+        Object.entries(reducers).forEach(([key, reducer]) => {
+          store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
 
-        const logger = log.getLogger('ReducerRegistry');
-        logger.debug(`✅ Batch reducer injected: ${key}`);
+          const logger = log.getLogger('ReducerRegistry');
+          logger.debug(`✅ Batch reducer injected: ${key}`);
+        });
+
+        isInjected.current = true;
+
+        // 다음 tick에서 렌더링 준비 완료
+        requestAnimationFrame(() => {
+          if (!readySetRef.current) {
+            readySetRef.current = true;
+            setIsReady(true);
+          }
+        });
+
+        return undefined;
       } catch (error) {
         const logger = log.getLogger('ReducerRegistry');
-        logger.error(`❌ Failed to inject batch reducer: ${key}`, error);
-      }
-    });
+        logger.error(`❌ Failed to inject batch reducers`, error);
 
-    return () => {};
+        // 에러 발생 시 즉시 isReady를 true로 설정
+        if (!readySetRef.current) {
+          readySetRef.current = true;
+          requestAnimationFrame(() => {
+            setIsReady(true);
+          });
+        }
+
+        return undefined;
+      }
+    }
+
+    return undefined;
   }, [reducers, priority]);
+
+  return { isReady };
 };
 
 // ============================================================================
