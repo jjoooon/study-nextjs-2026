@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import log from '@/shared/utils/logger';
 
-import type { CreateUserInput, UpdateUserInput, UserListParams } from './types';
+import type { CreateUserInput, UpdateUserInput, UserListParams } from '../types';
 
 // ============================================================================
 // USERS API SLICE

@@ -15,3 +15,6 @@ export * from './apiSlice';
 // Slices (동기 상태)
 // 추후 추가: export { usersSlice } from './slice';
 // 추후 추가: export * from './selectors';
+
+// Types (모든 타입 통합 내보내기)
+export * from '../types';

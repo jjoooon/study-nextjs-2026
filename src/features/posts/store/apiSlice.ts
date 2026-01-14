@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import log from '@/shared/utils/logger';
-import type { CreatePostInput, UpdatePostInput, PostListParams } from './types';
+import type { CreatePostInput, UpdatePostInput, PostListParams } from '../types';
 
 // ============================================================================
 // POSTS API SLICE

@@ -7,75 +7,11 @@
  * @architecture
  * - Feature-First: Types co-located with posts feature
  * - API Contracts: Request/Response types for backend communication
+ *
+ * @deprecated
+ * 이 파일은 더 이상 사용되지 않습니다.
+ * 대신 @/features/posts/types를 사용하세요.
  */
 
-// ============================================================================
-// ENTITY TYPES
-// ============================================================================
-
-/**
- * Post entity
- */
-export interface Post {
-  id: string | number;
-  title: string;
-  content: string;
-  slug?: string;
-  authorId: string | number;
-  authorName?: string;
-  status?: 'draft' | 'published' | 'archived';
-  categoryId?: number;
-  tags?: string[];
-  viewCount?: number;
-  likeCount?: number;
-  commentCount?: number;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-// ============================================================================
-// REQUEST TYPES
-// ============================================================================
-
-/**
- * Create post request payload
- */
-export interface CreatePostInput {
-  title: string;
-  content: string;
-  status?: 'draft' | 'published' | 'archived';
-}
-
-/**
- * Update post request payload
- */
-export interface UpdatePostInput {
-  title?: string;
-  content?: string;
-  status?: 'draft' | 'published' | 'archived';
-}
-
-/**
- * Post filters for list queries
- */
-export interface PostFilters {
-  search?: string;
-  status?: string;
-  categoryId?: number;
-  authorId?: number;
-  tags?: string[];
-  dateFrom?: string;
-  dateTo?: string;
-}
-
-/**
- * Post list query parameters
- */
-export interface PostListParams {
-  page?: number;
-  pageSize?: number;
-  limit?: number;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
-  filters?: PostFilters;
-}
+// 모든 타입을 새로운 types/ 디렉토리에서 내보내기
+export * from '../types';

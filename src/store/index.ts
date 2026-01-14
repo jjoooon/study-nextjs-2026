@@ -157,6 +157,8 @@ export type RootState = {
   auth: import('@/features/auth/types').AuthState;
   ui: import('@/features/ui/store/uiSlice').UIState;
   dashboard: import('@/features/dashboard/types').DashboardState;
+  users: import('@/features/users/types').UsersState;
+  posts: import('@/features/posts/types').PostsState;
   usersApi: unknown;
   postsApi: unknown;
   dashboardApi: unknown;
