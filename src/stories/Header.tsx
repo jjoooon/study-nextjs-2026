@@ -39,7 +39,11 @@ export const Header = ({ user, onLogin, onLogout, onCreateAccount }: HeaderProps
             <button type="button" className="storybook-button storybook-button--small" onClick={onLogin}>
               Log in
             </button>
-            <button type="button" className="storybook-button storybook-button--primary storybook-button--small" onClick={onCreateAccount}>
+            <button
+              type="button"
+              className="storybook-button storybook-button--primary storybook-button--small"
+              onClick={onCreateAccount}
+            >
               Sign up
             </button>
           </>

@@ -4,9 +4,6 @@
  * Exports all shared/common components
  */
 
-// UI Primitives
-export { Button } from './ui/Button';
-
 // Layout
 export { Navigation } from './layout/Navigation';
 

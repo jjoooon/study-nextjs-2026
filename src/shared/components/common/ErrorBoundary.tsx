@@ -2,8 +2,6 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
-import { Button } from '@/shared/components';
-
 interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
@@ -73,12 +71,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <p className="text-sm text-gray-600 mb-4">{this.state.error?.message || 'An unexpected error occurred'}</p>
 
             <div className="flex gap-2 justify-center">
-              <Button onClick={this.handleReset} variant="default">
-                Try again
-              </Button>
-              <Button onClick={() => window.location.reload()} variant="outline">
-                Reload page
-              </Button>
+              <button onClick={this.handleReset}>Try again</button>
+              <button onClick={() => window.location.reload()}>Reload page</button>
             </div>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
