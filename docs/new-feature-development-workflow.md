@@ -1149,7 +1149,7 @@ export { ProductFilters } from './components/ProductFilters';
  * @description
  * 제품 목록을 표시하고 필터링 및 정렬 기능을 제공
  * - Dynamic Reducer Pattern으로 products reducer lazy loading
- * - isReady 패턴으로 안전한 렌더링 보장
+ * - useInjectReducer가 isReady를 반환하여 간소화된 패턴
  * - useProducts 훅으로 상태 및 액션 관리
  * - ProductFilters, ProductList 컴포넌트 조합
  *
@@ -1157,8 +1157,6 @@ export { ProductFilters } from './components/ProductFilters';
  * Next.js App Router + Client Component Pattern
  * Dynamic Reducer Injection for code splitting
  */
-
-import { useEffect, useState } from 'react';
 
 import {
   ProductFilters,
@@ -1178,22 +1176,11 @@ import { useInjectReducer } from '@/store/reducers/hooks';
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
 export default function ProductsPage() {
-  const [isReady, setIsReady] = useState(false);
-
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
-  useInjectReducer('products', productsReducer, {
+  const { isReady } = useInjectReducer('products', productsReducer, {
     priority: 23,
     ejectOnUnmount: false,
   });
-
-  // 2️⃣ 리듀서 주입 후 렌더링
-  useEffect(() => {
-    // 다음 tick에서 컴포넌트 렌더링
-    const timer = requestAnimationFrame(() => {
-      setIsReady(true);
-    });
-    return () => cancelAnimationFrame(timer);
-  }, []);
 
   // 로딩 상태 표시
   if (!isReady) {
@@ -1207,7 +1194,7 @@ export default function ProductsPage() {
     );
   }
 
-  // 3️⃣ 준비되면 실제 컨텐츠 렌더링
+  // 2️⃣ 준비되면 실제 컨텐츠 렌더링
   return <ProductsPageContent />;
 }
 
@@ -1349,7 +1336,7 @@ function ProductsPageContent() {
 
 1. **Import 경로**: `@/store/reducers/hooks`에서 `useInjectReducer`를 가져와야 합니다
 2. **UI Reducer만 주입**: `productsApi` reducer는 이미 전역에서 로드되므로 UI reducer만 주입합니다
-3. **isReady 패턴**: 리듀서 주입 후 다음 tick에 컨텐츠를 렌더링하여 안전성 보장
+3. **useInjectReducer 반환값**: `useInjectReducer`가 `{ isReady }`를 반환하므로 바로 사용 가능
 4. **Priority 설정**: dashboard(22), products(23) 등으로 우선순위를 다르게 설정
 5. **MSW 제외**: MSW worker는 `src/app/providers.tsx`에서 이미 시작되므로 페이지에서 별도로 시작할 필요 없음
 
@@ -1688,7 +1675,7 @@ API 정의 없이 MSW로 먼저 목킹 → 프론트엔드 독립 개발 가능
 ### 4. **Code Splitting**
 - **API Reducers**: 초기에 전역 로드 (`src/store/api/config.ts`)
 - **UI Reducers**: 페이지 진입 시 지연 로딩 (`useInjectReducer`)
-- **isReady 패턴**: 안전한 렌더링 보장
+- **통합 API**: `useInjectReducer`가 `isReady`를 반환하여 별도 훅 불필요
 - 초기 번들 크기 최적화
 
 ### 5. **Consistent Structure**

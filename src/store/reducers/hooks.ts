@@ -1,5 +1,5 @@
 import type { Reducer, AnyAction } from '@reduxjs/toolkit';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import log from '@/shared/utils/logger';
 import { store } from '@/store';
@@ -14,16 +14,23 @@ import { injectReducer, ejectReducer } from '@/store/registry/reducer';
  *
  * @description
  * 컴포넌트 마운트 시 리듀서를 주입하고, 언마운트 시 자동 정리
+ * 리듀서 주입 후 안전한 렌더링을 위해 isReady 상태를 반환
  *
  * @param key - 리듀서 고유 키
  * @param reducer - 리듀서 함수
  * @param options - 옵션 (우선순위, 자동 제거 등)
+ * @returns { isReady } - 리듀서 주입 후 렌더링 준비 완료 여부
  *
  * @example
  * const analyticsReducer = (state = { events: [] }, action) => { ... };
  *
  * function AnalyticsPage() {
- *   useInjectReducer('analytics', analyticsReducer, { priority: 30 });
+ *   const { isReady } = useInjectReducer('analytics', analyticsReducer, { priority: 30 });
+ *
+ *   if (!isReady) {
+ *     return <LoadingSpinner />;
+ *   }
+ *
  *   return <div>...</div>;
  * }
  */
@@ -44,12 +51,26 @@ export interface UseInjectReducerOptions {
   ejectOnUnmount?: boolean;
 }
 
-export const useInjectReducer = (key: string, reducer: Reducer, options: UseInjectReducerOptions = {}) => {
+export interface UseInjectReducerResult {
+  /**
+   * 리듀서 주입 후 렌더링 준비 완료 여부
+   */
+  isReady: boolean;
+}
+
+export const useInjectReducer = (
+  key: string,
+  reducer: Reducer,
+  options: UseInjectReducerOptions = {}
+): UseInjectReducerResult => {
   const { priority = 50, ejectOnUnmount = false } = options;
   const isInjected = useRef(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!isInjected.current) {
+      let timer: number;
+
       try {
         store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
 
@@ -57,14 +78,31 @@ export const useInjectReducer = (key: string, reducer: Reducer, options: UseInje
         logger.debug(`✅ Reducer injected via hook: ${key}`);
 
         isInjected.current = true;
+
+        // 다음 tick에서 렌더링 준비 완료
+        timer = requestAnimationFrame(() => {
+          setIsReady(true);
+        });
       } catch (error) {
         const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject reducer: ${key}`, error);
+        // 에러가 발생해도 isReady를 true로 설정하여 무한 로딩 방지
+        timer = requestAnimationFrame(() => {
+          setIsReady(true);
+        });
       }
+
+      return () => {
+        if (timer) cancelAnimationFrame(timer);
+      };
     }
 
-    // Cleanup function
-    if (ejectOnUnmount) {
+    return () => {};
+  }, [key, reducer, priority]);
+
+  // Cleanup function for ejectOnUnmount
+  useEffect(() => {
+    if (ejectOnUnmount && isInjected.current) {
       return () => {
         try {
           store.dispatch(ejectReducer(key) as unknown as AnyAction);
@@ -81,7 +119,9 @@ export const useInjectReducer = (key: string, reducer: Reducer, options: UseInje
     }
 
     return () => {};
-  }, [key, reducer, priority, ejectOnUnmount]);
+  }, [key, ejectOnUnmount]);
+
+  return { isReady };
 };
 
 // ============================================================================

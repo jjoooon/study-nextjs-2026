@@ -1,9 +1,9 @@
 'use client';
 
 // TODO: @YunJunmo
-// 1. 에러 처리 처리
-// 2. 리듀서 주입 후 렌더링 부분 공통 훅 처리
-// 3. 상세, 등록, 수정 페이지
+// - useInjectReducer 형제들도 동일하게 처리
+// - 에러 처리 처리
+// - 상세, 등록, 수정 페이지
 
 /**
  * Products Page
@@ -24,8 +24,6 @@
  * /products route에서 자동으로 렌더링됨
  */
 
-import { useEffect, useState } from 'react';
-
 import { ProductFilters, ProductList, productsReducer, useProducts } from '@/features/products';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -39,22 +37,11 @@ import { useInjectReducer } from '@/store/reducers/hooks';
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
 export default function ProductsPage() {
-  const [isReady, setIsReady] = useState(false);
-
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
-  useInjectReducer('products', productsReducer, {
+  const { isReady } = useInjectReducer('products', productsReducer, {
     priority: 23,
     ejectOnUnmount: false,
   });
-
-  // 2️⃣ 리듀서 주입 후 렌더링
-  useEffect(() => {
-    // 다음 tick에서 컴포넌트 렌더링
-    const timer = requestAnimationFrame(() => {
-      setIsReady(true);
-    });
-    return () => cancelAnimationFrame(timer);
-  }, []);
 
   // 로딩 상태 표시
   if (!isReady) {
@@ -68,7 +55,7 @@ export default function ProductsPage() {
     );
   }
 
-  // 3️⃣ 준비되면 실제 컨텐츠 렌더링
+  // 2️⃣ 준비되면 실제 컨텐츠 렌더링
   return <ProductsPageContent />;
 }
 

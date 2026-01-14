@@ -204,22 +204,11 @@ function DashboardContent() {
  * 리듀서를 주입하고 준비되면 실제 컨텐츠를 렌더링합니다.
  */
 export default function Page() {
-  const [isReady, setIsReady] = useState(false);
-
   // 1️⃣ UI 리듀서만 동적 주입 (dashboardApi는 이미 초기에 로드됨)
-  useInjectReducer('dashboard', dashboardReducer, {
+  const { isReady } = useInjectReducer('dashboard', dashboardReducer, {
     priority: 22,
     ejectOnUnmount: false,
   });
-
-  // 2️⃣ 리듀서 주입 후 렌더링
-  useEffect(() => {
-    // 다음 tick에서 컴포넌트 렌더링
-    const timer = requestAnimationFrame(() => {
-      setIsReady(true);
-    });
-    return () => cancelAnimationFrame(timer);
-  }, []);
 
   // 로딩 상태 표시
   if (!isReady) {
@@ -233,6 +222,6 @@ export default function Page() {
     );
   }
 
-  // 3️⃣ 준비되면 실제 컨텐츠 렌더링
+  // 2️⃣ 준비되면 실제 컨텐츠 렌더링
   return <DashboardContent />;
 }
