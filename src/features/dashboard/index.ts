@@ -8,7 +8,7 @@ export { toggleWidget, reorderWidgets } from './store/dashboardSlice';
 export { dashboardApiSlice } from './store/apiSlice';
 
 // Hooks
-export * from './hooks/dashboard';
+export * from './hooks/useDashboard';
 
 // Types
 export * from './types';

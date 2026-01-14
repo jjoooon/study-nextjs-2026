@@ -13,6 +13,7 @@ import type { Reducer, Middleware } from '@reduxjs/toolkit';
 
 import { authApiSlice } from '@/features/auth';
 import { dashboardApiSlice } from '@/features/dashboard';
+import { productsApiSlice } from '@/features/products';
 
 /**
  * 개별 API 등록 정보 타입
@@ -46,10 +47,12 @@ export const API_REGISTRY = [
   // Core APIs (우선순위 10-19)
   { api: authApiSlice, priority: 10, name: 'authApi' },
 
-  // ✅ 새로운 API를 여기에 추가
+  // Feature APIs (우선순위 50-59)
   { api: dashboardApiSlice, priority: 52, name: 'dashboardApi' },
-  // { api: analyticsApiSlice, priority: 53, name: 'analyticsApi' },
-  // { api: reportingApiSlice, priority: 54, name: 'reportingApi' },
+  { api: productsApiSlice, priority: 53, name: 'productsApi' },
+  // ✅ 새로운 API를 여기에 추가
+  // { api: analyticsApiSlice, priority: 54, name: 'analyticsApi' },
+  // { api: reportingApiSlice, priority: 55, name: 'reportingApi' },
 ] as const;
 
 /**

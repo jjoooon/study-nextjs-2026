@@ -902,39 +902,94 @@ export function ProductFilters({ filters, onFilterChange }: ProductFiltersProps)
 
 ## 6단계: Hooks 생성
 
+### 6.1 Selectors 파일 생성 (먼저 생성)
+
+**`src/features/products/store/productsSelectors.ts`**
+
+```typescript
+import { createSelector } from '@reduxjs/toolkit';
+
+import type { RootState } from '@/store';
+
+// ============================================================================
+// PRODUCTS SELECTORS
+// ============================================================================
+
+/**
+ * Products domain의 모든 selector
+ *
+ * @note Conditional Rendering으로 인해 방어 로직 불필요
+ */
+
+// Base selectors
+export const selectProductsState = (state: RootState) => state.products;
+
+export const selectFilters = createSelector([selectProductsState], (products) => products.filters);
+
+export const selectSort = createSelector([selectProductsState], (products) => products.sort);
+
+export const selectSelectedProducts = createSelector([selectProductsState], (products) => products.selectedProducts);
+
+export const selectViewMode = createSelector([selectProductsState], (products) => products.viewMode);
+
+// ============================================================================
+// COMPOSED SELECTORS
+// ============================================================================
+
+/**
+ * 선택된 제품 개수
+ */
+export const selectSelectedProductsCount = createSelector(
+  [selectSelectedProducts],
+  (selectedProducts) => selectedProducts.length
+);
+
+/**
+ * 현재 정렬 상태 요약
+ */
+export const selectSortSummary = createSelector([selectSort], (sort) => ({
+  sortBy: sort.sortBy,
+  sortOrder: sort.sortOrder,
+  label: `${sort.sortBy} ${sort.sortOrder === 'asc' ? '오름차순' : '내림차순'}`,
+}));
+
+/**
+ * Products 상태 요약
+ */
+export const selectProductsStatus = createSelector(
+  [selectSelectedProductsCount, selectSortSummary],
+  (selectedCount, sortSummary) => ({
+    selectedCount,
+    sortLabel: sortSummary.label,
+  })
+);
+```
+
+### 6.2 Hooks 파일 작성
+
 **`src/features/products/hooks/useProducts.ts`**
 
 ```typescript
+import { useGetProductsQuery } from '@/features/products/store/apiSlice';
+import * as productsSelectors from '@/features/products/store/productsSelectors';
+import { setFilters, setSort } from '@/features/products/store/productsSlice';
+import { useAppDispatch, useAppSelector } from '@/store';
+
+// ============================================================================
+// PRODUCTS HOOKS (RTK Query + Selector-based)
+// ============================================================================
+
 /**
- * useProducts Hook
+ * Products 상태 관리 Hook
  *
- * 제품 관련 기능을 통합하는 커스텀 훅
+ * RTK Query를 사용한 API 데이터 fetching + Redux Slice의 UI 상태 관리
+ *
+ * @note Conditional Rendering으로 인해 방어 로직 불필요
  */
-
-import { useDispatch, useSelector } from 'react-redux';
-import type { TypedUseSelectorHook } from 'react-redux';
-
-import type { RootState } from '@/store';
-import { useGetProductsQuery } from '../store/apiSlice';
-import { setFilters, setSort } from '../store/productsSlice';
-
-// Typed hooks
-export const useAppDispatch = () => useDispatch();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-/**
- * Products 통합 Hook
- */
-export function useProducts() {
+export const useProducts = () => {
   const dispatch = useAppDispatch();
 
-  // Redux 상태
-  const filters = useAppSelector((state) => state.products.filters);
-  const sort = useAppSelector((state) => state.products.sort);
-  const selectedProducts = useAppSelector((state) => state.products.selectedProducts);
-  const viewMode = useAppSelector((state) => state.products.viewMode);
-
-  // RTK Query
+  // ✅ RTK Query hook (리듀서가 항상 존재하므로 안전)
   const {
     data: productsData,
     isLoading,
@@ -944,42 +999,71 @@ export function useProducts() {
   } = useGetProductsQuery({
     page: 1,
     pageSize: 10,
-    ...filters,
-    ...sort,
   });
 
-  // 액션 핸들러
-  const updateFilters = (newFilters: Partial<typeof filters>) => {
-    dispatch(setFilters(newFilters));
-  };
-
-  const updateSort = (newSort: { sortBy: string; sortOrder: 'asc' | 'desc' }) => {
-    dispatch(setSort(newSort));
-  };
+  // ✅ Selector 기반 UI 상태 구독
+  const filters = useAppSelector(productsSelectors.selectFilters);
+  const sort = useAppSelector(productsSelectors.selectSort);
+  const selectedProducts = useAppSelector(productsSelectors.selectSelectedProducts);
+  const viewMode = useAppSelector(productsSelectors.selectViewMode);
 
   return {
-    // 데이터
+    // API 데이터
     products: productsData?.products || [],
     total: productsData?.total || 0,
+    isLoading,
+    isError,
+    error,
 
-    // 상태
+    // UI 상태
     filters,
     sort,
     selectedProducts,
     viewMode,
 
-    // 로딩 상태
+    // Actions
+    updateFilters: (newFilters: Partial<typeof filters>) => dispatch(setFilters(newFilters)),
+    updateSort: (newSort: { sortBy: string; sortOrder: 'asc' | 'desc' }) => dispatch(setSort(newSort)),
+    refetch,
+  };
+};
+
+/**
+ * Products 필터 상태만 가져오는 Hook
+ */
+export const useProductsFilters = () => {
+  return useAppSelector(productsSelectors.selectFilters);
+};
+
+/**
+ * 선택된 제품 개수
+ */
+export const useSelectedProductsCount = () => {
+  return useAppSelector(productsSelectors.selectSelectedProductsCount);
+};
+
+/**
+ * Products API 데이터 상태 요약
+ */
+export const useProductsApiStatus = () => {
+  const { isLoading, isError, error, data } = useGetProductsQuery();
+
+  return {
     isLoading,
     isError,
     error,
-
-    // 액션
-    updateFilters,
-    updateSort,
-    refetch,
+    hasData: !!data,
+    productCount: data?.products.length || 0,
+    totalCount: data?.total || 0,
   };
-}
+};
 ```
+
+### ⚠️ 중요 사항
+
+1. **Selector 파일 분리**: `store/{feature}Selectors.ts`에 selector를 별도로 정의
+2. **@/store에서 Hooks 가져오기**: `useAppDispatch`, `useAppSelector`는 feature에서 재정의하지 않고 `@/store`에서 가져옴
+3. **다중 Hooks Export**: `useProducts` 외에도 `useProductsFilters`, `useSelectedProductsCount` 등 부수적 hooks 함께 export
 
 ---
 
@@ -992,23 +1076,61 @@ export function useProducts() {
  * Products Feature - 통합 내보내기
  *
  * 제품 관리 기능의 진입점
+ *
+ * @description
+ * Products 도메인의 모든 기능을 내보내는 바럴 파일
+ * - Store: RTK Query API, Redux Toolkit UI state
+ * - Types: API, UI, Store, Components 타입
+ * - Hooks: useProducts 통합 훅
+ * - Components: ProductList, ProductFilters
+ *
+ * @architecture
+ * Feature-based architecture로 products 도메인의 모든 계층을 통합 제공
+ *
+ * @usage
+ * ```typescript
+ * import { useProducts, ProductList, ProductFilters } from '@/features/products';
+ * ```
  */
 
-// Store
+// ============================================================================
+// STORE EXPORTS
+// ============================================================================
+
+// RTK Query API Slice
 export { productsApiSlice } from './store/apiSlice';
+
+// Redux Toolkit UI Slice
 export { default as productsReducer } from './store/productsSlice';
 export * from './store/productsSlice';
 
-// Types
+// ============================================================================
+// TYPES EXPORTS
+// ============================================================================
+
 export * from './types';
 
-// Hooks
-export { useProducts, useAppDispatch, useAppSelector } from './hooks/useProducts';
+// ============================================================================
+// HOOKS EXPORTS
+// ============================================================================
 
-// Components
+export { useProducts } from './hooks/useProducts';
+
+// ⚠️ 주의: useAppDispatch, useAppSelector는 @/store에서 가져와야 합니다
+
+// ============================================================================
+// COMPONENTS EXPORTS
+// ============================================================================
+
 export { ProductList } from './components/ProductList';
 export { ProductFilters } from './components/ProductFilters';
 ```
+
+### ⚠️ 주의사항
+
+1. **존재하지 않는 타입 제거**: `ProductsApi`와 같이 API Slice에 정의되지 않은 타입은 export하지 않습니다
+2. **훅 재정의 제거**: `useAppDispatch`, `useAppSelector`는 `@/store`에서 가져와야 합니다 (feature에서 재정의하지 않음)
+3. **명확한 Export**: 각 섹션을 명확히 분리하여 무엇이 export되는지 쉽게 파악할 수 있습니다
 
 ---
 
@@ -1020,93 +1142,71 @@ export { ProductFilters } from './components/ProductFilters';
 'use client';
 
 /**
- * Products Page - Dynamic Reducer Pattern
+ * Products Page with Dynamic Reducer Pattern
  *
- * 제품 관리 페이지
+ * 제품 목록 페이지 컴포넌트
+ *
+ * @description
+ * 제품 목록을 표시하고 필터링 및 정렬 기능을 제공
+ * - Dynamic Reducer Pattern으로 products reducer lazy loading
+ * - isReady 패턴으로 안전한 렌더링 보장
+ * - useProducts 훅으로 상태 및 액션 관리
+ * - ProductFilters, ProductList 컴포넌트 조합
+ *
+ * @architecture
+ * Next.js App Router + Client Component Pattern
+ * Dynamic Reducer Injection for code splitting
  */
 
 import { useEffect, useState } from 'react';
 
-import { productsReducer, useProducts, ProductList, ProductFilters } from '@/features/products';
+import {
+  ProductFilters,
+  ProductList,
+  productsReducer,
+  useProducts,
+} from '@/features/products';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
-/**
- * Products 컴포넌트 (실제 내용)
- */
-function ProductsContent() {
-  const {
-    products,
-    filters,
-    sort,
-    isLoading,
-    updateFilters,
-    updateSort,
-    refetch,
-  } = useProducts();
-
-  return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Products</h1>
-          <p className="text-gray-600">제품 관리 페이지</p>
-        </div>
-
-        {/* Filters */}
-        <ProductFilters
-          filters={filters}
-          onFilterChange={updateFilters}
-        />
-
-        {/* Actions */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">
-              총 {products.length}개의 제품
-            </span>
-            <div className="space-x-2">
-              <button
-                onClick={() => refetch()}
-                disabled={isLoading}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-              >
-                {isLoading ? '로딩 중...' : '새로고침'}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Product List */}
-        <ProductList
-          products={products}
-          isLoading={isLoading}
-        />
-      </div>
-    </div>
-  );
-}
+// ============================================================================
+// DYNAMIC REDUCER INJECTION
+// ============================================================================
 
 /**
- * 메인 페이지 컴포넌트
+ * Products Page 컴포넌트
+ *
+ * Dynamic Reducer Pattern으로 products reducer를 주입
  */
-export default function Page() {
+export default function ProductsPage() {
   const [isReady, setIsReady] = useState(false);
 
-  // Dynamic Reducer Injection
+  // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   useInjectReducer('products', productsReducer, {
     priority: 23,
     ejectOnUnmount: false,
   });
 
-  // 리듀서 주입 후 렌더링
+  // 2️⃣ 리듀서 주입 후 렌더링
   useEffect(() => {
+    // 다음 tick에서 컴포넌트 렌더링
     const timer = requestAnimationFrame(() => {
       setIsReady(true);
     });
     return () => cancelAnimationFrame(timer);
   }, []);
 
+  // MSW worker 시작 (개발 환경)
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+      import('@/mocks/browser').then(({ worker }) => {
+        worker.start({
+          onUnhandledRequest: 'bypass',
+        });
+      });
+    }
+  }, []);
+
+  // 로딩 상태 표시
   if (!isReady) {
     return (
       <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
@@ -1118,38 +1218,362 @@ export default function Page() {
     );
   }
 
-  return <ProductsContent />;
+  // 3️⃣ 준비되면 실제 컨텐츠 렌더링
+  return <ProductsPageContent />;
+}
+
+// ============================================================================
+// PRODUCTS PAGE CONTENT
+// ============================================================================
+
+/**
+ * Products 페이지 실제 컨텐츠
+ *
+ * reducer 주입 후 렌더링되는 컴포넌트
+ */
+function ProductsPageContent() {
+  // Products 훅
+  const {
+    products,
+    total,
+    filters,
+    sort,
+    isLoading,
+    isError,
+    error,
+    updateFilters,
+    updateSort,
+    refetch,
+  } = useProducts();
+
+  // 핸들러
+  const handleFilterChange = (newFilters: typeof filters) => {
+    updateFilters(newFilters);
+  };
+
+  const handleSortChange = (sortBy: string) => {
+    const sortOrder: 'asc' | 'desc' = sort.sortBy === sortBy && sort.sortOrder === 'asc' ? 'desc' : 'asc';
+    updateSort({ sortBy, sortOrder });
+  };
+
+  const handleProductClick = (product: (typeof products)[0]) => {
+    console.log('Product clicked:', product);
+    // TODO: 제품 상세 페이지로 이동 또는 모달 표시
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* 페이지 헤더 */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">제품 관리</h1>
+        <p className="text-gray-600">총 {total}개의 제품</p>
+      </div>
+
+      {/* 에러 상태 */}
+      {isError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <p className="font-medium">오류가 발생했습니다</p>
+          <p className="text-sm">{error as string}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 text-sm underline hover:no-underline"
+          >
+            다시 시도
+          </button>
+        </div>
+      )}
+
+      {/* 필터 */}
+      <ProductFilters filters={filters} onFilterChange={handleFilterChange} />
+
+      {/* 정렬 컨트롤 */}
+      <div className="bg-white rounded-lg shadow p-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <span className="text-sm font-medium text-gray-700">정렬:</span>
+            <button
+              type="button"
+              onClick={() => handleSortChange('name')}
+              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                sort.sortBy === 'name'
+                  ? 'bg-blue-100 text-blue-800'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              이름 {sort.sortBy === 'name' && (sort.sortOrder === 'asc' ? '↑' : '↓')}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSortChange('price')}
+              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                sort.sortBy === 'price'
+                  ? 'bg-blue-100 text-blue-800'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              가격 {sort.sortBy === 'price' && (sort.sortOrder === 'asc' ? '↑' : '↓')}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSortChange('createdAt')}
+              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                sort.sortBy === 'createdAt'
+                  ? 'bg-blue-100 text-blue-800'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              등록일 {sort.sortBy === 'createdAt' && (sort.sortOrder === 'asc' ? '↑' : '↓')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 제품 목록 */}
+      <ProductList
+        products={products}
+        isLoading={isLoading}
+        onProductClick={handleProductClick}
+      />
+
+      {/* 빈 상태 */}
+      {products.length === 0 && !isLoading && (
+        <div className="bg-white rounded-lg shadow p-12 text-center">
+          <p className="text-gray-500 mb-4">등록된 제품이 없습니다.</p>
+          <button
+            type="button"
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            onClick={() => {
+              /* TODO: 제품 생성 모달 열기 */
+            }}
+          >
+            제품 등록하기
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 ```
+
+### ⚠️ 주의사항
+
+1. **Import 경로**: `@/store/reducers/hooks`에서 `useInjectReducer`를 가져와야 합니다
+2. **MSW 초기화**: 개발 환경에서만 MSW worker를 시작합니다
+3. **UI Reducer만 주입**: `productsApi` reducer는 이미 전역에서 로드되므로 UI reducer만 주입합니다
+4. **isReady 패턴**: 리듀서 주입 후 다음 tick에 컨텐츠를 렌더링하여 안전성 보장
+5. **Priority 설정**: dashboard(22), products(23) 등으로 우선순위를 다르게 설정
 
 ---
 
 ## 9단계: Redux Store 등록
 
-### 9.1 리듀서 등록
+### 9.1 UI 리듀서 등록
 
-**`src/store/reducers.ts`**
+**`src/store/setup.ts`**
 
 ```typescript
+import { authReducer } from '@/features/auth';
 import { productsReducer } from '@/features/products';  // 추가
+import log from '@/shared/utils/logger';
 
-export const asyncReducers = {
-  // 기존 리듀서...
-  products: productsReducer,  // UI 리듀서
+// ... existing imports
+
+export const initializeReducers = () => {
+  // ✅ UI Reducers
+  reducerRegistry.register('auth', authReducer, 20);
+  reducerRegistry.register('products', productsReducer, 22);  // 추가
+
+  // ✅ API Reducers - 중앙 집중식 레지스트리에서 자동 등록
+  registerAllApiReducers(reducerRegistry);
 };
 ```
 
 ### 9.2 API Slice 등록
 
-**`src/store/configureStore.ts`** (또는 해당 설정 파일)
+**`src/store/api/config.ts`**
 
 ```typescript
+import { authApiSlice } from '@/features/auth';
+import { dashboardApiSlice } from '@/features/dashboard';
 import { productsApiSlice } from '@/features/products';  // 추가
 
-export const apiSlices = [
-  dashboardApiSlice,
-  productsApiSlice,  // API 리듀서
-];
+/**
+ * 개별 API 등록 정보 타입
+ */
+export interface ApiRegistration {
+  /** RTK Query API 슬라이스 */
+  api: {
+    reducerPath: string;
+    reducer: Reducer;
+    middleware: Middleware<object, object>;
+  };
+  /** 실행 우선순위 (낮을수록 먼저 실행) */
+  priority: number;
+  /** API 이름 (로깅 및 디버깅용) */
+  name: string;
+}
+
+/**
+ * 모든 RTK Query API 슬라이스 등록 정보
+ */
+export const API_REGISTRY = [
+  // Core APIs (우선순위 10-19)
+  { api: authApiSlice, priority: 10, name: 'authApi' },
+
+  // Feature APIs (우선순위 50-59)
+  { api: dashboardApiSlice, priority: 52, name: 'dashboardApi' },
+  { api: productsApiSlice, priority: 53, name: 'productsApi' },  // 추가
+  // ✅ 새로운 API를 여기에 추가
+] as const;
+
+/**
+ * 등록된 모든 API 이름 목록
+ */
+export const REGISTERED_API_NAMES = API_REGISTRY.map(({ name }) => name);
+```
+
+### 9.3 RootState 타입 업데이트
+
+**`src/store/index.ts`**
+
+```typescript
+export type RootState = {
+  auth: import('@/features/auth/types').AuthState;
+  dashboard: import('@/features/dashboard/types').DashboardState;
+  dashboardApi: unknown;
+  products: import('@/features/products/types').ProductsUIState;  // 추가
+  productsApi: unknown;  // 추가
+};
+```
+
+### ⚠️ 주의사항
+
+1. **등록 위치**:
+   - **UI 리듀서**: `src/store/setup.ts`의 `initializeReducers` 함수에 등록
+   - **API 리듀서**: `src/store/api/config.ts`의 `API_REGISTRY` 배열에 등록
+   - API 리듀서는 자동으로 전역 리듀서에 포함되므로 Page에서 주입할 필요 없음
+
+2. **우선순위 (Priority)**:
+   - **Core APIs**: 10-19 (auth, 등)
+   - **Feature APIs**: 50-59 (dashboard: 52, products: 53, 등)
+   - **UI Reducers**: 20-29 (auth: 20, dashboard: 22, products: 23)
+   - 낮을수록 먼저 실행됨
+
+3. **RootState 타입**: 새로운 feature 추가 시 반드시 `src/store/index.ts`의 `RootState` 타입을 업데이트해야 TypeScript 오류가 발생하지 않습니다
+
+4. **자동 등록**: API Slice는 `API_REGISTRY`에 등록하면 자동으로 리듀서와 미들웨어가 등록됩니다
+
+5. **Page에서는 UI Reducer만 주입**: API reducer는 이미 초기화되어 있으므로 Page에서는 UI reducer만 `useInjectReducer`로 주입합니다
+
+---
+
+## 🔧 빌드 에러 해결 가이드
+
+실제 구현 중 발생한 빌드 에러와 해결 방법입니다.
+
+### 에러 1: JSX 문법 오류
+
+**에러 메시지**:
+```
+SyntaxError: Expected corresponding JSX closing tag for <div>
+```
+
+**원인**: 주석 처리된 코드가 불완전한 JSX 구조
+
+**해결**:
+```typescript
+// ❌ 잘못된 주석 처리
+{/* 빈 상태 && products.length === 0 && !isLoading && (
+  <div>...</div>
+)}
+
+// ✅ 올바른 주석과 코드
+{/* 빈 상태 */}
+{products.length === 0 && !isLoading && (
+  <div>...</div>
+)}
+```
+
+### 에러 2: Import 경로 오류
+
+**에러 메시지**:
+```
+Module not found: Can't resolve '@/store/reducers'
+```
+
+**원인**: `useInjectReducer` import 경로가 잘못됨
+
+**해결**:
+```typescript
+// ❌ 잘못된 경로
+import { useInjectReducer } from '@/store/reducers';
+
+// ✅ 올바른 경로
+import { useInjectReducer } from '@/store/reducers/hooks';
+```
+
+### 에러 3: TypeScript 타입 오류
+
+**에러 메시지**:
+```
+Type 'ThunkDispatch<PersistPartial, undefined, UnknownAction>' does not satisfy the constraint 'Action<string>'
+```
+
+**원인**: `useAppDispatch()`를 Store로 잘못 사용
+
+**해결**:
+```typescript
+// ❌ 잘못된 패턴
+const storeRef = useRef<Store<RootState, AppDispatch> | null>(null);
+if (!storeRef.current) {
+  const store = useAppDispatch(); // ❌ useAppDispatch는 dispatch 함수 반환
+  storeRef.current = store as unknown as Store<RootState, AppDispatch>;
+}
+
+// ✅ 올바른 패턴 (단순화)
+useInjectReducer('products', productsReducer);
+useInjectReducer('productsApi', productsApiSlice.reducer);
+```
+
+### 에러 4: RootState 타입 누락
+
+**에러 메시지**:
+```
+Property 'products' does not exist on type 'RootState'
+```
+
+**원인**: 새 feature 추가 시 `RootState` 타입 업데이트 누락
+
+**해결**:
+```typescript
+// src/store/index.ts
+export type RootState = {
+  auth: import('@/features/auth/types').AuthState;
+  dashboard: import('@/features/dashboard/types').DashboardState;
+  dashboardApi: unknown;
+  products: import('@/features/products/types').ProductsUIState;  // 추가
+  productsApi: unknown;  // 추가
+};
+```
+
+### 에러 5: 존재하지 않는 타입 Export
+
+**에러 메시지**:
+```
+Module '"./store/apiSlice"' has no exported member 'ProductsApi'
+```
+
+**원인**: Feature Index에서 존재하지 않는 타입 export
+
+**해결**:
+```typescript
+// ❌ 잘못된 export
+export { productsApiSlice } from './store/apiSlice';
+export type { ProductsApi } from './store/apiSlice';  // ❌ 존재하지 않음
+
+// ✅ 올바른 export
+export { productsApiSlice } from './store/apiSlice';
 ```
 
 ---
@@ -1264,15 +1688,24 @@ API 정의 없이 MSW로 먼저 목킹 → 프론트엔드 독립 개발 가능
 모든 레이어에서 TypeScript 타입 정의 → 컴파일 타임 에러 방지
 
 ### 3. **Separation of Concerns**
-- API Slice: 서버 데이터 (RTK Query)
-- UI Slice: 클라이언트 상태 (Redux Toolkit)
+- **API Slice**: 서버 데이터 (RTK Query) - 전역 로드
+- **UI Slice**: 클라이언트 상태 (Redux Toolkit) - 페이지 주입
+- **Selectors**: 별도 파일 분리 (`store/{feature}Selectors.ts`)
 - 분리된 관심사 → 유지보수성 향상
 
 ### 4. **Code Splitting**
-Dynamic Reducer Injection → 초기 번들 크기 최적화
+- **API Reducers**: 초기에 전역 로드 (`src/store/api/config.ts`)
+- **UI Reducers**: 페이지 진입 시 지연 로딩 (`useInjectReducer`)
+- **isReady 패턴**: 안전한 렌더링 보장
+- 초기 번들 크기 최적화
 
 ### 5. **Consistent Structure**
 모든 Feature가 동일한 패턴 따름 → 온보딩 및 협업 효율화
+
+### 6. **Selector-Based Hooks**
+- Inline selectors 대신 별도 selector 파일 사용
+- `createSelector`로 메모이제이션 자동화
+- 다중 재사용 가능한 hooks export (`useProducts`, `useProductsFilters`, 등)
 
 ---
 

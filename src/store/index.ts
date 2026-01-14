@@ -157,6 +157,8 @@ export type RootState = {
   auth: import('@/features/auth/types').AuthState;
   dashboard: import('@/features/dashboard/types').DashboardState;
   dashboardApi: unknown;
+  products: import('@/features/products/types').ProductsUIState;
+  productsApi: unknown;
 };
 
 export type AppDispatch = typeof store.dispatch;

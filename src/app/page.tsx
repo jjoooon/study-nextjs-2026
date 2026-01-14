@@ -52,7 +52,14 @@ export default function Home() {
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
                 >
                   <div className="font-semibold text-gray-900 mb-1">대시보드</div>
-                  <div className="text-sm text-gray-600">기능 체험하기</div>
+                  <div className="text-sm text-gray-600">상세 설명</div>
+                </a>
+                <a
+                  href="/products"
+                  className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
+                >
+                  <div className="font-semibold text-gray-900 mb-1">상품</div>
+                  <div className="text-sm text-gray-600">상세 설명</div>
                 </a>
               </div>
             </section>

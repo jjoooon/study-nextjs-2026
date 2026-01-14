@@ -7,5 +7,6 @@
 
 import { dashboardHandlers } from './dashboard';
 import { errorHandlers } from './errors';
+import { productsHandlers } from './products';
 
-export const handlers = [...dashboardHandlers, ...errorHandlers];
+export const handlers = [...dashboardHandlers, ...productsHandlers, ...errorHandlers];
