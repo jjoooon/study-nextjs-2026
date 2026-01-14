@@ -203,7 +203,7 @@ function DashboardContent() {
  * 메인 페이지 컴포넌트
  * 리듀서를 주입하고 준비되면 실제 컨텐츠를 렌더링합니다.
  */
-export default function DashboardDynamicPage() {
+export default function Page() {
   const [isReady, setIsReady] = useState(false);
 
   // 1️⃣ UI 리듀서만 동적 주입 (dashboardApi는 이미 초기에 로드됨)
