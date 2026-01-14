@@ -3,8 +3,7 @@
 // TODO: @YunJunmo
 // - 에러 처리 처리
 // - 상세, 등록, 수정 페이지
-// - useProducts hook naming도 이상
-// - EditProductPageContent.tsx, ProductDetailPageContent.tsx 위치 이상(params 쓰려고 이렇게 이상하게?)
+// - index.ts 남발로 import문의 간결함을 얻고 문맥 가독성을 잃음
 
 /**
  * Products Page
