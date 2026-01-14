@@ -71,7 +71,7 @@ src/mocks/
  * Products Feature Mock Data
  */
 
-import { Product } from '@/features/products/types';
+import type { Product } from '@/features/products/types/api';
 
 export const mockProducts: Product[] = [
   {
@@ -467,19 +467,19 @@ export interface ProductFiltersProps {
 }
 ```
 
-### 2.5 타입 통합
+### 2.5 타입 파일 구조
 
-**`src/features/products/types/index.ts`**
+**`src/features/products/types/` 디렉토리**
+
+**⚠️ 중요**: barrel 파일(`index.ts`)을 생성하지 않고 직접 import합니다.
 
 ```typescript
-/**
- * Products Feature Types
- */
+// ❌ barrel 파일 생성 금지
+// types/index.ts - 생성하지 마세요
 
-export * from './api';
-export * from './ui';
-export * from './store';
-export * from './components';
+// ✅ 직접 import 사용
+import type { Product } from '@/features/products/types/api';
+import type { ProductsFilters } from '@/features/products/types/ui';
 ```
 
 ---
@@ -502,7 +502,7 @@ import type {
   CreateProductInput,
   ProductListParams,
   UpdateProductInput,
-} from '../types';
+} from '../types/api';
 
 // ============================================================================
 // PRODUCTS API SLICE
@@ -641,7 +641,7 @@ export const {
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import type { ProductsFilters, ProductsSort, ProductsUIState } from '../types';
+import type { ProductsFilters, ProductsSort, ProductsUIState } from '../types/ui';
 
 // ============================================================================
 // INITIAL STATE
@@ -775,7 +775,7 @@ export default productsSlice.reducer;
  * 제품 목록을 표시하는 컴포넌트
  */
 
-import type { ProductListProps } from '../types';
+import type { ProductListProps } from '../types/components';
 
 export function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
   if (isLoading) {
@@ -840,7 +840,7 @@ export function ProductList({ products, isLoading, onProductClick }: ProductList
  * 제품 필터 UI 컴포넌트
  */
 
-import type { ProductFiltersProps } from '../types';
+import type { ProductFiltersProps } from '../types/components';
 
 export function ProductFilters({ filters, onFilterChange }: ProductFiltersProps) {
   return (
@@ -909,7 +909,7 @@ export function ProductFilters({ filters, onFilterChange }: ProductFiltersProps)
 ```typescript
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '@/store';
+import type { RootState } from '@/store/index';
 
 // ============================================================================
 // PRODUCTS SELECTORS
@@ -973,7 +973,7 @@ export const selectProductsStatus = createSelector(
 import { useGetProductsQuery } from '@/features/products/store/apiSlice';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
 import { setFilters, setSort } from '@/features/products/store/productsSlice';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 // ============================================================================
 // PRODUCTS HOOKS (RTK Query + Selector-based)
@@ -1051,77 +1051,86 @@ export const useProducts = () => {
 
 ---
 
-## 7단계: Feature Index 통합
+## 7단계: Import 경로 관리
 
-**`src/features/products/index.ts`**
+**⚠️ 중요**: barrel 파일(`index.ts`)을 사용하지 않고 직접 경로로 import합니다.
 
+### 7.1 Import 패턴
+
+**❌ 피해야 할 패턴 (barrel 사용)**:
 ```typescript
-/**
- * Products Feature - 통합 내보내기
- *
- * 제품 관리 기능의 진입점
- *
- * @description
- * Products 도메인의 모든 기능을 내보내는 바럴 파일
- * - Store: RTK Query API, Redux Toolkit UI state
- * - Types: API, UI, Store, Components 타입
- * - Hooks: useProducts 통합 훅
- * - Components: ProductList, ProductFilters
- *
- * @architecture
- * Feature-based architecture로 products 도메인의 모든 계층을 통합 제공
- * 하위 디렉토리의 index.ts는 생성하지 않고 루트 index.ts만 유지
- *
- * @usage
- * ```typescript
- * import { useProducts, ProductList, ProductFilters } from '@/features/products';
- * ```
- */
+// Barrel import - 피하세요
+import { useProducts, ProductList, ProductFilters } from '@/features/products';
+import type { Product } from '@/features/products/types';
+```
 
-// ============================================================================
-// STORE EXPORTS
-// ============================================================================
+**✅ 권장 패턴 (직접 import)**:
+```typescript
+// 직접 경로 import
+import { useProducts } from '@/features/products/hooks/useProducts';
+import { ProductList } from '@/features/products/components/ProductList';
+import { ProductFilters } from '@/features/products/components/ProductFilters';
+import type { Product } from '@/features/products/types/api';
+```
 
-// RTK Query API Slice
-export { productsApiSlice } from './store/apiSlice';
+### 7.2 Import 경로 가이드
 
-// Redux Toolkit UI Slice
-export { default as productsReducer } from './store/productsSlice';
-export * from './store/productsSlice';
+**Store/Redux 관련**:
+```typescript
+// Reducer
+import { productsReducer } from '@/features/products/store/productsSlice';
 
-// ============================================================================
-// TYPES EXPORTS
-// ============================================================================
+// API Slice
+import { productsApiSlice } from '@/features/products/store/apiSlice';
 
-export * from './types';
+// Selectors
+import * as productsSelectors from '@/features/products/store/productsSelectors';
+```
 
-// ============================================================================
-// HOOKS EXPORTS
-// ============================================================================
+**타입 관련**:
+```typescript
+// API 타입
+import type { Product, CreateProductInput } from '@/features/products/types/api';
 
-export { useProducts } from './hooks/useProducts';
-export { useProduct } from './hooks/useProduct';
-export { useProductForm } from './hooks/useProductForm';
+// UI 타입
+import type { ProductsFilters } from '@/features/products/types/ui';
 
-// ============================================================================
-// COMPONENTS EXPORTS
-// ============================================================================
+// Store 타입
+import type { ProductsState } from '@/features/products/types/store';
 
-export { ProductList } from './components/ProductList';
-export { ProductFilters } from './components/ProductFilters';
+// 컴포넌트 Props 타입
+import type { ProductListProps } from '@/features/products/types/components';
+```
+
+**컴포넌트 관련**:
+```typescript
+// 개별 컴포넌트
+import { ProductList } from '@/features/products/components/ProductList';
+import { ProductFilters } from '@/features/products/components/ProductFilters';
+import { ProductDetail } from '@/features/products/components/ProductDetail';
+import { ProductForm } from '@/features/products/components/ProductForm';
+```
+
+**Hooks 관련**:
+```typescript
+// 개별 훅
+import { useProducts } from '@/features/products/hooks/useProducts';
+import { useProduct } from '@/features/products/hooks/useProduct';
+import { useProductForm } from '@/features/products/hooks/useProductForm';
 ```
 
 ### ⚠️ 주의사항
 
-1. **하위 디렉토리 index.ts 생성 금지**: `hooks/index.ts`, `components/index.ts` 등을 생성하지 마세요.
-   - ✅ 루트 `index.ts`만 유지
-   - ❌ 하위 디렉토리 barrel export는 불필요한 추상화 계층
+1. **모든 barrel 파일 제거**: `index.ts` barrel 파일을 생성하지 않습니다
+   - ❌ `features/products/index.ts` 생성 금지
+   - ❌ `hooks/index.ts`, `components/index.ts` 생성 금지
+   - ❌ `types/index.ts` 생성 금지
 
-2. **존재하지 않는 타입 제거**: API Slice에 정의되지 않은 타입은 export하지 않습니다
+2. **명확한 Import 경로**: import만 보고 어디서 오는지 바로 파악 가능
 
-3. **훅 재정의 제거**: `useAppDispatch`, `useAppSelector`는 `@/store`에서 가져와야 합니다
+3. **IDE 지원 개선**: "Go to Definition"이 정확한 파일로 이동
 
-4. **명확한 Export**: 각 섹션을 명확히 분리하여 무엇이 export되는지 쉽게 파악
+4. **순환 의존성 방지**: barrel 간 의존성 문제 완전히 제거
 
 ### 📁 파일 구조
 
@@ -1130,23 +1139,21 @@ features/products/
 ├── components/
 │   ├── ProductList.tsx       ✅
 │   ├── ProductFilters.tsx    ✅
-│   └── (index.ts ❌ 생성 금지)
+│   ├── ProductDetail.tsx     ✅
+│   └── ProductForm.tsx       ✅
 ├── hooks/
 │   ├── useProducts.ts        ✅
 │   ├── useProduct.ts         ✅
 │   └── useProductForm.ts     ✅
-│   └── (index.ts ❌ 생성 금지)
 ├── store/
 │   ├── apiSlice.ts           ✅
 │   ├── productsSlice.ts      ✅
 │   └── productsSelectors.ts  ✅
-├── types/
-│   ├── api.ts                ✅
-│   ├── ui.ts                 ✅
-│   ├── store.ts              ✅
-│   ├── components.ts         ✅
-│   └── index.ts              ✅ (유지 - 타입 통합용)
-└── index.ts                  ✅ (루트 진입점만 유지)
+└── types/
+    ├── api.ts                ✅
+    ├── ui.ts                 ✅
+    ├── store.ts              ✅
+    └── components.ts         ✅
 ```
 
 ---
@@ -1175,12 +1182,10 @@ features/products/
  * Dynamic Reducer Injection for code splitting
  */
 
-import {
-  ProductFilters,
-  ProductList,
-  productsReducer,
-  useProducts,
-} from '@/features/products';
+import { ProductFilters } from '@/features/products/components/ProductFilters';
+import { ProductList } from '@/features/products/components/ProductList';
+import { productsReducer } from '@/features/products/store/productsSlice';
+import { useProducts } from '@/features/products/hooks/useProducts';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================
@@ -1389,7 +1394,9 @@ function ProductsPageContent() {
  */
 
 import { useParams, useRouter } from 'next/navigation';
-import { ProductDetail, productsReducer, useProduct } from '@/features/products';
+import { ProductDetail } from '@/features/products/components/ProductDetail';
+import { productsReducer } from '@/features/products/store/productsSlice';
+import { useProduct } from '@/features/products/hooks/useProduct';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -1553,8 +1560,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
 **`src/store/setup.ts`**
 
 ```typescript
-import { authReducer } from '@/features/auth';
-import log from '@/shared/utils/logger';
+import authReducer from '@/features/auth/store/authSlice';
 
 // ... existing imports
 
@@ -1577,9 +1583,9 @@ export const initializeReducers = () => {
 **`src/store/api/config.ts`**
 
 ```typescript
-import { authApiSlice } from '@/features/auth';
-import { dashboardApiSlice } from '@/features/dashboard';
-import { productsApiSlice } from '@/features/products';  // 추가
+import { authApiSlice } from '@/features/auth/store/apiSlice';
+import dashboardApiSlice from '@/features/dashboard/store/apiSlice';
+import { productsApiSlice } from '@/features/products/store/apiSlice';
 
 /**
  * 개별 API 등록 정보 타입
@@ -1622,11 +1628,11 @@ export const REGISTERED_API_NAMES = API_REGISTRY.map(({ name }) => name);
 
 ```typescript
 export type RootState = {
-  auth: import('@/features/auth/types').AuthState;
-  dashboard: import('@/features/dashboard/types').DashboardState;
+  auth: import('@/features/auth/store/authSlice').AuthState;
+  dashboard: import('@/features/dashboard/store/dashboardSlice').DashboardState;
   dashboardApi: unknown;
-  products: import('@/features/products/types').ProductsUIState;  // 추가
-  productsApi: unknown;  // 추가
+  products: import('@/features/products/store/productsSlice').ProductsState;
+  productsApi: unknown;
 };
 ```
 
@@ -1644,6 +1650,7 @@ export type RootState = {
    - 낮을수록 먼저 실행됨
 
 3. **RootState 타입**: 새로운 feature 추가 시 반드시 `src/store/index.ts`의 `RootState` 타입을 업데이트해야 TypeScript 오류가 발생하지 않습니다
+   - 타입 import 경로: `import('@/features/{feature}/store/{feature}Slice').{Feature}State`
 
 4. **자동 등록**: API Slice는 `API_REGISTRY`에 등록하면 자동으로 리듀서와 미들웨어가 등록됩니다
 
@@ -1778,7 +1785,7 @@ export { productsApiSlice } from './store/apiSlice';
    - ui.ts (UI 상태 타입)
    - store.ts (Redux 상태 타입)
    - components.ts (컴포넌트 Props 타입)
-   - index.ts (타입 통합)
+   - ❌ index.ts 생성 금지 (barrel 파일 사용 안 함)
 
 ✅ 3. API Slice 작성 (RTK Query)
    - endpoints 정의
@@ -1799,8 +1806,10 @@ export { productsApiSlice } from './store/apiSlice';
    - Redux 상태 연동
    - RTK Query 연동
 
-✅ 7. Feature Index 통합
-   - Store, Types, Hooks, Components export
+✅ 7. Import 경로 관리
+   - 직접 경로로 import (barrel 미사용)
+   - 명확한 의존성 확보
+   - ❌ index.ts barrel 파일 생성 금지
 
 ✅ 8. Page 작성
    - Dynamic Reducer Pattern 적용
@@ -1891,10 +1900,12 @@ API 정의 없이 MSW로 먼저 목킹 → 프론트엔드 독립 개발 가능
 - ✅ `useProduct`, `useProductForm`: 필요시 추가
 - ❌ `useProductsFilters`, `useProductsSort` 등: 과도한 분리로 실제 미사용
 
-### 7. **Barrel Export 최소화**
-- ✅ 루트 `index.ts`만 유지
-- ❌ 하위 디렉토리 `hooks/index.ts`, `components/index.ts` 생성 금지
-- 불필요한 추상화 계층 제거 → IDE "Go to Definition" 개선
+### 7. **Barrel 파일 완전 제거**
+- ✅ 모든 barrel 파일(`index.ts`) 제거
+- ✅ 직접 경로로 import: `import { ProductList } from '@/features/products/components/ProductList'`
+- ✅ 명확한 의존성: import만 보고 출처 바로 파악
+- ✅ IDE "Go to Definition" 개선
+- ✅ 순환 의존성 위험 완전 제거
 
 ### 8. **Next.js 15+ Dynamic Routes**
 - `useParams()`로 클라이언트 컴포넌트에서 params 추출

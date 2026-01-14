@@ -2,7 +2,7 @@
 
 // TODO: @YunJunmo
 // - 에러 처리 처리
-// - 상세, 등록, 수정 페이지
+// - Component는 default export
 
 /**
  * Products Page
