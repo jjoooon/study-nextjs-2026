@@ -5,7 +5,7 @@
  */
 
 // UI Primitives
-export { Button } from './ui/button';
+export { Button } from './ui/Button';
 
 // Layout
 export { Navigation } from './layout/Navigation';
