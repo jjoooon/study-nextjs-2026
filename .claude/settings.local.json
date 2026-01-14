@@ -28,7 +28,8 @@
       "Bash(npm run lint:fix:*)",
       "Bash(timeout:*)",
       "Bash(awk:*)",
-      "mcp__context7__query-docs"
+      "mcp__context7__query-docs",
+      "Bash(npm run storybook)"
     ]
   }
 }
