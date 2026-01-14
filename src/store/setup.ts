@@ -15,7 +15,6 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 
 import { authReducer } from '@/features/auth';
-import { uiReducer } from '@/features/ui';
 import log from '@/shared/utils/logger';
 
 import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';
@@ -36,7 +35,6 @@ import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './registry/reduc
 export const initializeReducers = () => {
   // ✅ UI Reducers
   reducerRegistry.register('auth', authReducer, 20);
-  reducerRegistry.register('ui', uiReducer, 21);
 
   // ✅ API Reducers - 중앙 집중식 레지스트리에서 자동 등록
   registerAllApiReducers(reducerRegistry);

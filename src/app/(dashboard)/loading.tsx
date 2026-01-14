@@ -2,16 +2,6 @@ export default function DashboardLoading() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
-        {/* Sidebar skeleton */}
-        <aside className="w-64 bg-white shadow-md min-h-screen p-4">
-          <div className="animate-pulse space-y-3">
-            <div className="h-8 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-          </div>
-        </aside>
-
         {/* Main content skeleton */}
         <main className="flex-1 p-8">
           <div className="animate-pulse space-y-6">

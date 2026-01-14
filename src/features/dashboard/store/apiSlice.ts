@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { axiosBaseQuery } from '@/shared/api';
+import { axiosBaseQuery } from '@/shared/lib/axios';
 import type { ActivityItem, DashboardData, DashboardStats } from '../types';
 
 // ============================================================================

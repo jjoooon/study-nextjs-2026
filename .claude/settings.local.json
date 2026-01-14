@@ -29,7 +29,9 @@
       "Bash(timeout:*)",
       "Bash(awk:*)",
       "mcp__context7__query-docs",
-      "Bash(npm run storybook)"
+      "Bash(npm run storybook)",
+      "Bash(ls:*)",
+      "Bash(git rm:*)"
     ]
   }
 }

@@ -12,10 +12,7 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { name: '홈', href: '/', description: '메인 페이지' },
-  { name: '소개', href: '/about', description: '서비스 소개' },
-  { name: '가격', href: '/pricing', description: '가격 안내' },
   { name: '대시보드', href: '/dashboard', description: '사용자 대시보드' },
-  { name: '설정', href: '/settings', description: '계정 설정' },
 ];
 
 const authNavigation: NavItem[] = [
