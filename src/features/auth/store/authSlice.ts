@@ -1,21 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { UnknownAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { REHYDRATE } from 'redux-persist';
-
-export interface AuthUser {
-  id: string | null;
-  name: string | null;
-  email: string | null;
-  role?: string;
-}
-
-export interface AuthState {
-  isAuthenticated: boolean;
-  user: AuthUser;
-  token: string | null;
-  isLoading: boolean;
-  error: string | null;
-}
+import type { AuthState } from '../types';
 
 const initialState: AuthState = {
   isAuthenticated: false,

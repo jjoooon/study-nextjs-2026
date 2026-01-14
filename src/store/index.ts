@@ -154,7 +154,7 @@ if (process.env.NODE_ENV === 'development') {
  * 여기에 모든 기능 슬라이스와 API 슬라이스를 포함
  */
 export type RootState = {
-  auth: import('@/features/auth/store/authSlice').AuthState;
+  auth: import('@/features/auth/types').AuthState;
   ui: import('@/features/ui/store/uiSlice').UIState;
   dashboard: import('@/features/dashboard/types').DashboardState;
   usersApi: unknown;

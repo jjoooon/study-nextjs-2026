@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import type { ChangePasswordInput, LoginInput, RefreshTokenInput, RegisterInput, UpdateProfileInput } from './types';
+import type { ChangePasswordInput, LoginInput, RefreshTokenInput, RegisterInput, UpdateProfileInput } from '../types';
 
 // ============================================================================
 // AUTH API SLICE
