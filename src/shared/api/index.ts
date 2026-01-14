@@ -13,4 +13,3 @@ export { axiosInstance, default as axios } from './axiosInstance';
 
 // Axios BaseQuery for RTK Query
 export { axiosBaseQuery, baseQuery } from './axiosBaseQuery';
-export type { AxiosBaseQueryArgs, AxiosBaseQueryResult, AxiosBaseQueryMeta } from './axiosBaseQuery';

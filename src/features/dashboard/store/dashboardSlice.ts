@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { DashboardState } from '../types';
+import { last30DaysRange } from '../utils/dateUtils';
 
 const initialState: DashboardState = {
   widgets: [
@@ -11,10 +12,7 @@ const initialState: DashboardState = {
     selectedWidget: null,
   },
   filters: {
-    dateRange: {
-      start: new Date(),
-      end: new Date(),
-    },
+    dateRange: last30DaysRange(), // 최근 30일을 기본값으로 사용
   },
 };
 

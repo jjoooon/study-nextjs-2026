@@ -35,8 +35,10 @@ export interface DashboardState {
   filters: {
     /** 날짜 범위 */
     dateRange: {
-      start: Date;
-      end: Date;
+      /** 시작 날짜 (ISO 8601 문자열) */
+      start: string;
+      /** 종료 날짜 (ISO 8601 문자열) */
+      end: string;
     };
   };
 }
