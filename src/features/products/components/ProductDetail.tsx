@@ -15,7 +15,7 @@ interface ProductDetailProps {
   onBack?: () => void;
 }
 
-export function ProductDetail({ product, onEdit, onDelete, onBack }: ProductDetailProps) {
+export default function ProductDetail({ product, onEdit, onDelete, onBack }: ProductDetailProps) {
   const getStatusBadgeClass = (status: Product['status']) => {
     switch (status) {
       case 'active':

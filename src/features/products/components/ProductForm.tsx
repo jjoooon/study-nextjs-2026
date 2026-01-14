@@ -17,7 +17,7 @@ interface ProductFormProps {
   isSubmitting?: boolean;
 }
 
-export function ProductForm({ initialData, mode, onSubmit, onCancel, isSubmitting = false }: ProductFormProps) {
+export default function ProductForm({ initialData, mode, onSubmit, onCancel, isSubmitting = false }: ProductFormProps) {
   const [formData, setFormData] = useState<CreateProductInput>({
     name: '',
     price: 0,

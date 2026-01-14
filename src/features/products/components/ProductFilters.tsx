@@ -8,7 +8,7 @@
 
 import type { ProductFiltersProps } from '../types/ui';
 
-export function ProductFilters({ filters, onFilterChange }: ProductFiltersProps) {
+export default function ProductFilters({ filters, onFilterChange }: ProductFiltersProps) {
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

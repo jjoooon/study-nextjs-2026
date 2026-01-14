@@ -8,7 +8,7 @@
 
 import type { ProductListProps } from '../types/ui';
 
-export function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
+export default function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">

@@ -21,7 +21,7 @@
  */
 
 import { useParams } from 'next/navigation';
-import { ProductForm } from '@/features/products/components/ProductForm';
+import ProductForm from '@/features/products/components/ProductForm';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsSlice';
 import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/api';

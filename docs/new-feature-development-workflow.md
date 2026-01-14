@@ -777,7 +777,7 @@ export default productsSlice.reducer;
 
 import type { ProductListProps } from '../types/components';
 
-export function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
+export default function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -842,7 +842,7 @@ export function ProductList({ products, isLoading, onProductClick }: ProductList
 
 import type { ProductFiltersProps } from '../types/components';
 
-export function ProductFilters({ filters, onFilterChange }: ProductFiltersProps) {
+export default function ProductFilters({ filters, onFilterChange }: ProductFiltersProps) {
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1068,8 +1068,8 @@ import type { Product } from '@/features/products/types';
 ```typescript
 // 직접 경로 import
 import { useProducts } from '@/features/products/hooks/useProducts';
-import { ProductList } from '@/features/products/components/ProductList';
-import { ProductFilters } from '@/features/products/components/ProductFilters';
+import ProductList from '@/features/products/components/ProductList';
+import ProductFilters from '@/features/products/components/ProductFilters';
 import type { Product } from '@/features/products/types/api';
 ```
 
@@ -1104,11 +1104,11 @@ import type { ProductListProps } from '@/features/products/types/components';
 
 **컴포넌트 관련**:
 ```typescript
-// 개별 컴포넌트
-import { ProductList } from '@/features/products/components/ProductList';
-import { ProductFilters } from '@/features/products/components/ProductFilters';
-import { ProductDetail } from '@/features/products/components/ProductDetail';
-import { ProductForm } from '@/features/products/components/ProductForm';
+// 개별 컴포넌트 (default export)
+import ProductList from '@/features/products/components/ProductList';
+import ProductFilters from '@/features/products/components/ProductFilters';
+import ProductDetail from '@/features/products/components/ProductDetail';
+import ProductForm from '@/features/products/components/ProductForm';
 ```
 
 **Hooks 관련**:
@@ -1182,8 +1182,8 @@ features/products/
  * Dynamic Reducer Injection for code splitting
  */
 
-import { ProductFilters } from '@/features/products/components/ProductFilters';
-import { ProductList } from '@/features/products/components/ProductList';
+import ProductFilters from '@/features/products/components/ProductFilters';
+import ProductList from '@/features/products/components/ProductList';
 import { productsReducer } from '@/features/products/store/productsSlice';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import { useInjectReducer } from '@/store/reducers/hooks';
@@ -1394,7 +1394,7 @@ function ProductsPageContent() {
  */
 
 import { useParams, useRouter } from 'next/navigation';
-import { ProductDetail } from '@/features/products/components/ProductDetail';
+import ProductDetail from '@/features/products/components/ProductDetail';
 import { productsReducer } from '@/features/products/store/productsSlice';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import { getErrorMessage } from '@/shared/utils/error';
