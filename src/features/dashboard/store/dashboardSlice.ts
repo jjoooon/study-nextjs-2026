@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { Widget, DashboardState } from '../types';
+import type { DashboardState } from '../types';
 
 const initialState: DashboardState = {
   widgets: [

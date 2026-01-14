@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { DashboardStats, ActivityItem, DashboardData, Widget } from '../types';
+import type { ActivityItem, DashboardData, DashboardStats } from '../types';
 
 // ============================================================================
 // DASHBOARD API SLICE
