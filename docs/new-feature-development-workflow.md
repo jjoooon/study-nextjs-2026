@@ -49,7 +49,7 @@
 
 ---
 
-## 1단계: MSW 정의 (API Mock Data)
+## 1단계: MSW 정의 (API Mocking 용도이며 실제 API가 있는 경우 이 단계 건너뛰기)
 
 ### 파일 구조
 
