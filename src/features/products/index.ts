@@ -41,6 +41,8 @@ export * from './types';
 // ============================================================================
 
 export { useProducts } from './hooks/useProducts';
+export { useProduct } from './hooks/useProduct';
+export { useProductForm } from './hooks/useProductForm';
 
 // ============================================================================
 // COMPONENTS EXPORTS
@@ -48,3 +50,5 @@ export { useProducts } from './hooks/useProducts';
 
 export { ProductList } from './components/ProductList';
 export { ProductFilters } from './components/ProductFilters';
+export { ProductDetail } from './components/ProductDetail';
+export { ProductForm } from './components/ProductForm';

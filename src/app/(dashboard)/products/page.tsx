@@ -3,6 +3,8 @@
 // TODO: @YunJunmo
 // - 에러 처리 처리
 // - 상세, 등록, 수정 페이지
+// - useProducts hook naming도 이상
+// - EditProductPageContent.tsx, ProductDetailPageContent.tsx 위치 이상(params 쓰려고 이렇게 이상하게?)
 
 /**
  * Products Page
@@ -23,7 +25,9 @@
  * /products route에서 자동으로 렌더링됨
  */
 
+import { useRouter } from 'next/navigation';
 import { ProductFilters, ProductList, productsReducer, useProducts } from '@/features/products';
+import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================
@@ -68,6 +72,8 @@ export default function ProductsPage() {
  * reducer 주입 후 렌더링되는 컴포넌트
  */
 function ProductsPageContent() {
+  const router = useRouter();
+
   // Products 훅
   const { products, total, filters, sort, isLoading, isError, error, updateFilters, updateSort, refetch } =
     useProducts();
@@ -83,23 +89,31 @@ function ProductsPageContent() {
   };
 
   const handleProductClick = (product: (typeof products)[0]) => {
-    console.log('Product clicked:', product);
-    // TODO: 제품 상세 페이지로 이동 또는 모달 표시
+    router.push(`/products/${product.id}`);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* 페이지 헤더 */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">제품 관리</h1>
-        <p className="text-gray-600">총 {total}개의 제품</p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">제품 관리</h1>
+          <p className="text-gray-600">총 {total}개의 제품</p>
+        </div>
+        <button
+          type="button"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+          onClick={() => router.push('/products/new')}
+        >
+          제품 등록
+        </button>
       </div>
 
       {/* 에러 상태 */}
       {isError && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
           <p className="font-medium">오류가 발생했습니다</p>
-          <p className="text-sm">{error as string}</p>
+          <p className="text-sm">{getErrorMessage(error)}</p>
           <button type="button" onClick={() => refetch()} className="mt-2 text-sm underline hover:no-underline">
             다시 시도
           </button>
@@ -157,9 +171,7 @@ function ProductsPageContent() {
           <button
             type="button"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            onClick={() => {
-              /* TODO: 제품 생성 모달 열기 */
-            }}
+            onClick={() => router.push('/products/new')}
           >
             제품 등록하기
           </button>
