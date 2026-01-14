@@ -5,5 +5,5 @@ module.exports = {
   trailingComma: 'es5',
   printWidth: 120,
   arrowParens: 'always',
-  endOfLine: 'lf'
+  endOfLine: 'auto'
 }
