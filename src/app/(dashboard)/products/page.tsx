@@ -1,7 +1,6 @@
 'use client';
 
 // TODO: @YunJunmo
-// - useInjectReducer 형제들도 동일하게 처리
 // - 에러 처리 처리
 // - 상세, 등록, 수정 페이지
 
