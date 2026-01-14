@@ -6,7 +6,7 @@
  * 제품 목록을 표시하는 컴포넌트
  */
 
-import type { ProductListProps } from '../types';
+import type { ProductListProps } from '../types/ui';
 
 export function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
   if (isLoading) {

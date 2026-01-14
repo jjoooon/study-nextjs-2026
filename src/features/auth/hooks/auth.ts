@@ -1,6 +1,6 @@
 import * as authSelectors from '@/features/auth/store/authSelectors';
 import { loginStart, loginSuccess, loginFailure, logout, clearError } from '@/features/auth/store/authSlice';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 // ============================================================================
 // AUTH HOOKS (Selector-based)

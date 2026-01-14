@@ -19,8 +19,11 @@
 
 import { useEffect, useState } from 'react';
 
-import { dashboardReducer, DashboardStats, RecentActivity, useDashboard } from '@/features/dashboard';
-import type { Widget } from '@/features/dashboard/types';
+import DashboardStats from '@/features/dashboard/components/DashboardStats';
+import RecentActivity from '@/features/dashboard/components/RecentActivity';
+import { useDashboard } from '@/features/dashboard/hooks/useDashboard';
+import dashboardReducer from '@/features/dashboard/store/dashboardSlice';
+import type { Widget } from '@/features/dashboard/types/ui';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 /**

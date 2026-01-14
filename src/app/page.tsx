@@ -27,7 +27,7 @@
  * @see https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts
  */
 
-import { Navigation } from '@/shared/components';
+import { Navigation } from '@/shared/components/layout/Navigation';
 
 export default function Home() {
   return (

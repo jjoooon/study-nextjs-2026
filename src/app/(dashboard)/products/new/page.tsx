@@ -18,8 +18,10 @@
  * /products/new route에서 자동으로 렌더링됨
  */
 
-import { ProductForm, productsReducer, useProductForm } from '@/features/products';
-import type { CreateProductInput, UpdateProductInput } from '@/features/products';
+import { ProductForm } from '@/features/products/components/ProductForm';
+import { useProductForm } from '@/features/products/hooks/useProductForm';
+import productsReducer from '@/features/products/store/productsSlice';
+import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/api';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================

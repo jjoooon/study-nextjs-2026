@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import type { CreateProductInput, Product, UpdateProductInput } from '../types';
+import type { CreateProductInput, Product, UpdateProductInput } from '../types/api';
 
 interface ProductFormProps {
   initialData?: Product;

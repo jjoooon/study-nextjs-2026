@@ -5,7 +5,7 @@ import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from '@/features/products/store/apiSlice';
-import type { CreateProductInput, Product, UpdateProductInput } from '@/features/products/types';
+import type { CreateProductInput, Product, UpdateProductInput } from '@/features/products/types/api';
 
 // ============================================================================
 // PRODUCT FORM HOOKS

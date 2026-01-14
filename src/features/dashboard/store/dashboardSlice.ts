@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { DashboardState } from '../types';
+import type { DashboardState } from '../types/store';
 import { last30DaysRange } from '../utils/dateUtils';
+
+// Re-export the state type for consumers
+export type { DashboardState } from '../types/store';
 
 const initialState: DashboardState = {
   widgets: [

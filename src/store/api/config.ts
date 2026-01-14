@@ -11,9 +11,9 @@
 
 import type { Reducer, Middleware } from '@reduxjs/toolkit';
 
-import { authApiSlice } from '@/features/auth';
-import { dashboardApiSlice } from '@/features/dashboard';
-import { productsApiSlice } from '@/features/products';
+import { authApiSlice } from '@/features/auth/store/apiSlice';
+import dashboardApiSlice from '@/features/dashboard/store/apiSlice';
+import { productsApiSlice } from '@/features/products/store/apiSlice';
 
 /**
  * 개별 API 등록 정보 타입

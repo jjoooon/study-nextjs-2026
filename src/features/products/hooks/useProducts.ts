@@ -1,7 +1,7 @@
 import { useGetProductsQuery } from '@/features/products/store/apiSlice';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
 import { setFilters, setSort } from '@/features/products/store/productsSlice';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 // ============================================================================
 // PRODUCTS HOOKS (RTK Query + Selector-based)

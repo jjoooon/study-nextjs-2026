@@ -24,7 +24,10 @@
  */
 
 import { useRouter } from 'next/navigation';
-import { ProductFilters, ProductList, productsReducer, useProducts } from '@/features/products';
+import { ProductFilters } from '@/features/products/components/ProductFilters';
+import { ProductList } from '@/features/products/components/ProductList';
+import { useProducts } from '@/features/products/hooks/useProducts';
+import productsReducer from '@/features/products/store/productsSlice';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 

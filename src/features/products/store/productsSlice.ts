@@ -6,7 +6,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import type { ProductsFilters, ProductsSort, ProductsUIState } from '../types';
+import type { ProductsFilters, ProductsSort, ProductsUIState } from '../types/store';
 
 // ============================================================================
 // INITIAL STATE
@@ -121,3 +121,13 @@ export const {
 // ============================================================================
 
 export default productsSlice.reducer;
+
+// ============================================================================
+// TYPES EXPORT
+// ============================================================================
+
+/**
+ * Products Slice State Type
+ * This is the actual state type stored in Redux for the products slice
+ */
+export type ProductsState = ProductsUIState;

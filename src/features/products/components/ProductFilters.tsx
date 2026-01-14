@@ -6,7 +6,7 @@
  * 제품 필터 UI 컴포넌트
  */
 
-import type { ProductFiltersProps } from '../types';
+import type { ProductFiltersProps } from '../types/ui';
 
 export function ProductFilters({ filters, onFilterChange }: ProductFiltersProps) {
   return (

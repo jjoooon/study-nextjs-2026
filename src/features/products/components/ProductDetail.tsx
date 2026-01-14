@@ -6,7 +6,7 @@
  * 제품 상세 정보를 표시하는 컴포넌트
  */
 
-import type { Product } from '../types';
+import type { Product } from '../types/api';
 
 interface ProductDetailProps {
   product: Product;
