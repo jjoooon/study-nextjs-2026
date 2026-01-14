@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useGetDashboardQuery } from '@/features/dashboard/store/apiSlice';
 import * as dashboardSelectors from '@/features/dashboard/store/dashboardSelectors';
 import { toggleWidget, reorderWidgets } from '@/features/dashboard/store/dashboardSlice';
@@ -41,79 +39,5 @@ export const useDashboard = () => {
     toggleWidget: (id: string) => dispatch(toggleWidget(id)),
     reorderWidgets: (sourceIndex: number, destIndex: number) => dispatch(reorderWidgets({ sourceIndex, destIndex })),
     refetchData: () => refetch(),
-  };
-};
-
-/**
- * Dashboard 위젯 목록만 가져오는 Hook
- */
-export const useDashboardWidgets = () => {
-  return useAppSelector(dashboardSelectors.selectWidgets);
-};
-
-/**
- * 활성화된 위젯만 가져오는 Hook
- */
-export const useActiveWidgets = () => {
-  return useAppSelector(dashboardSelectors.selectActiveWidgets);
-};
-
-/**
- * 특정 타입의 위젯만 가져오는 Hook
- */
-export const useWidgetsByType = (widgetType: Widget['type']) => {
-  return useAppSelector(dashboardSelectors.selectWidgetsByType(widgetType));
-};
-
-/**
- * 위젯 개수
- */
-export const useWidgetCount = () => {
-  return useAppSelector(dashboardSelectors.selectWidgetCount);
-};
-
-/**
- * Dashboard API 데이터 상태 요약
- */
-export const useDashboardApiStatus = () => {
-  const { isLoading, isError, data } = useGetDashboardQuery();
-
-  // Use dataUpdatedAt from API response if available
-  const dataUpdatedAt = useMemo(() => {
-    if (!data || !data.widgets[0]?.position) return null;
-    return new Date(data.widgets[0].position);
-  }, [data]);
-
-  return {
-    isLoading,
-    isError,
-    hasData: !!data,
-    dataUpdatedAt,
-  };
-};
-
-/**
- * Dashboard Statistics 전용 Hook
- */
-export const useDashboardStats = () => {
-  const { data, isLoading, isError } = useGetDashboardQuery();
-
-  return {
-    stats: data?.stats,
-    isLoading,
-    isError,
-  };
-};
-
-/**
- * Recent Activity 전용 Hook
- */
-export const useRecentActivity = () => {
-  const { data, isLoading, isError } = useGetDashboardQuery();
-
-  return {
-    activities: data?.recentActivity || [],
-    isLoading,
-    isError,
   };
 };

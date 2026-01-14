@@ -985,11 +985,18 @@ import { useAppDispatch, useAppSelector } from '@/store';
  * RTK Query를 사용한 API 데이터 fetching + Redux Slice의 UI 상태 관리
  *
  * @note Conditional Rendering으로 인해 방어 로직 불필요
+ * @note Redux Store의 filters, sort를 RTK Query 쿼리 파라미터로 연결하여 자동 refetch
  */
 export const useProducts = () => {
   const dispatch = useAppDispatch();
 
-  // ✅ RTK Query hook (리듀서가 항상 존재하므로 안전)
+  // ✅ Selector 기반 UI 상태 구독 (먼저 읽기)
+  const filters = useAppSelector(productsSelectors.selectFilters);
+  const sort = useAppSelector(productsSelectors.selectSort);
+  const selectedProducts = useAppSelector(productsSelectors.selectSelectedProducts);
+  const viewMode = useAppSelector(productsSelectors.selectViewMode);
+
+  // ✅ RTK Query hook - filters, sort를 쿼리 파라미터로 전달하여 자동 refetch
   const {
     data: productsData,
     isLoading,
@@ -999,13 +1006,12 @@ export const useProducts = () => {
   } = useGetProductsQuery({
     page: 1,
     pageSize: 10,
+    search: filters.search || undefined,
+    status: filters.status || undefined,
+    category: filters.category || undefined,
+    sortBy: sort.sortBy,
+    sortOrder: sort.sortOrder,
   });
-
-  // ✅ Selector 기반 UI 상태 구독
-  const filters = useAppSelector(productsSelectors.selectFilters);
-  const sort = useAppSelector(productsSelectors.selectSort);
-  const selectedProducts = useAppSelector(productsSelectors.selectSelectedProducts);
-  const viewMode = useAppSelector(productsSelectors.selectViewMode);
 
   return {
     // API 데이터
@@ -1027,43 +1033,21 @@ export const useProducts = () => {
     refetch,
   };
 };
-
-/**
- * Products 필터 상태만 가져오는 Hook
- */
-export const useProductsFilters = () => {
-  return useAppSelector(productsSelectors.selectFilters);
-};
-
-/**
- * 선택된 제품 개수
- */
-export const useSelectedProductsCount = () => {
-  return useAppSelector(productsSelectors.selectSelectedProductsCount);
-};
-
-/**
- * Products API 데이터 상태 요약
- */
-export const useProductsApiStatus = () => {
-  const { isLoading, isError, error, data } = useGetProductsQuery();
-
-  return {
-    isLoading,
-    isError,
-    error,
-    hasData: !!data,
-    productCount: data?.products.length || 0,
-    totalCount: data?.total || 0,
-  };
-};
 ```
 
 ### ⚠️ 중요 사항
 
-1. **Selector 파일 분리**: `store/{feature}Selectors.ts`에 selector를 별도로 정의
-2. **@/store에서 Hooks 가져오기**: `useAppDispatch`, `useAppSelector`는 feature에서 재정의하지 않고 `@/store`에서 가져옴
-3. **다중 Hooks Export**: `useProducts` 외에도 `useProductsFilters`, `useSelectedProductsCount` 등 부수적 hooks 함께 export
+1. **필수 Hooks만 작성**: 실제로 사용되는 hooks만 작성합니다. 과도한 분리는 피해야 합니다.
+   - ✅ `useProducts`: 메인 통합 hook (필수)
+   - ✅ `useProduct`: 단일 조회 hook (필요시)
+   - ✅ `useProductForm`: 폼 관리 hook (필요시)
+   - ❌ `useProductsFilters`, `useProductsSort` 등: 과도한 분리로 실제 사용되지 않음
+
+2. **Selector 파일 분리**: `store/{feature}Selectors.ts`에 selector를 별도로 정의
+
+3. **@/store에서 Hooks 가져오기**: `useAppDispatch`, `useAppSelector`는 feature에서 재정의하지 않고 `@/store`에서 가져옴
+
+4. **Filters와 Query 연동**: UI 상태(filters, sort)를 RTK Query 쿼리 파라미터로 전달하여 자동 refetch
 
 ---
 
@@ -1086,6 +1070,7 @@ export const useProductsApiStatus = () => {
  *
  * @architecture
  * Feature-based architecture로 products 도메인의 모든 계층을 통합 제공
+ * 하위 디렉토리의 index.ts는 생성하지 않고 루트 index.ts만 유지
  *
  * @usage
  * ```typescript
@@ -1115,8 +1100,8 @@ export * from './types';
 // ============================================================================
 
 export { useProducts } from './hooks/useProducts';
-
-// ⚠️ 주의: useAppDispatch, useAppSelector는 @/store에서 가져와야 합니다
+export { useProduct } from './hooks/useProduct';
+export { useProductForm } from './hooks/useProductForm';
 
 // ============================================================================
 // COMPONENTS EXPORTS
@@ -1128,9 +1113,41 @@ export { ProductFilters } from './components/ProductFilters';
 
 ### ⚠️ 주의사항
 
-1. **존재하지 않는 타입 제거**: `ProductsApi`와 같이 API Slice에 정의되지 않은 타입은 export하지 않습니다
-2. **훅 재정의 제거**: `useAppDispatch`, `useAppSelector`는 `@/store`에서 가져와야 합니다 (feature에서 재정의하지 않음)
-3. **명확한 Export**: 각 섹션을 명확히 분리하여 무엇이 export되는지 쉽게 파악할 수 있습니다
+1. **하위 디렉토리 index.ts 생성 금지**: `hooks/index.ts`, `components/index.ts` 등을 생성하지 마세요.
+   - ✅ 루트 `index.ts`만 유지
+   - ❌ 하위 디렉토리 barrel export는 불필요한 추상화 계층
+
+2. **존재하지 않는 타입 제거**: API Slice에 정의되지 않은 타입은 export하지 않습니다
+
+3. **훅 재정의 제거**: `useAppDispatch`, `useAppSelector`는 `@/store`에서 가져와야 합니다
+
+4. **명확한 Export**: 각 섹션을 명확히 분리하여 무엇이 export되는지 쉽게 파악
+
+### 📁 파일 구조
+
+```
+features/products/
+├── components/
+│   ├── ProductList.tsx       ✅
+│   ├── ProductFilters.tsx    ✅
+│   └── (index.ts ❌ 생성 금지)
+├── hooks/
+│   ├── useProducts.ts        ✅
+│   ├── useProduct.ts         ✅
+│   └── useProductForm.ts     ✅
+│   └── (index.ts ❌ 생성 금지)
+├── store/
+│   ├── apiSlice.ts           ✅
+│   ├── productsSlice.ts      ✅
+│   └── productsSelectors.ts  ✅
+├── types/
+│   ├── api.ts                ✅
+│   ├── ui.ts                 ✅
+│   ├── store.ts              ✅
+│   ├── components.ts         ✅
+│   └── index.ts              ✅ (유지 - 타입 통합용)
+└── index.ts                  ✅ (루트 진입점만 유지)
+```
 
 ---
 
@@ -1339,6 +1356,193 @@ function ProductsPageContent() {
 3. **useInjectReducer 반환값**: `useInjectReducer`가 `{ isReady }`를 반환하므로 바로 사용 가능
 4. **Priority 설정**: dashboard(22), products(23) 등으로 우선순위를 다르게 설정
 5. **MSW 제외**: MSW worker는 `src/app/providers.tsx`에서 이미 시작되므로 페이지에서 별도로 시작할 필요 없음
+
+---
+
+### 8.1 Dynamic Route 페이지 (useParams 패턴)
+
+**Next.js 15+**에서는 params가 `Promise`이므로, 동적 라우트에서는 `useParams`를 사용하여 클라이언트 컴포넌트에서 직접 params를 추출합니다.
+
+**`src/app/(dashboard)/products/[id]/page.tsx`**
+
+```typescript
+'use client';
+
+/**
+ * Product Detail Page
+ *
+ * 제품 상세 페이지 컴포넌트
+ *
+ * @description
+ * 제품 상세 정보를 표시하고 수정/삭제 기능 제공
+ * - Dynamic Reducer Pattern으로 products reducer lazy loading
+ * - useProduct 훅으로 제품 조회 및 삭제
+ * - ProductDetail 컴포넌트로 상세 정보 표시
+ *
+ * @architecture
+ * Next.js App Router + Client Component Pattern
+ * Dynamic Route [id] 사용
+ * Next.js 15+: useParams로 id 추출
+ *
+ * @usage
+ * /products/123 route에서 자동으로 렌더링됨
+ */
+
+import { useParams, useRouter } from 'next/navigation';
+import { ProductDetail, productsReducer, useProduct } from '@/features/products';
+import { getErrorMessage } from '@/shared/utils/error';
+import { useInjectReducer } from '@/store/reducers/hooks';
+
+// ============================================================================
+// PRODUCT DETAIL PAGE
+// ============================================================================
+
+/**
+ * Product Detail Page 컴포넌트
+ *
+ * Dynamic Reducer Pattern으로 products reducer를 주입
+ */
+export default function ProductDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
+
+  // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
+  const { isReady } = useInjectReducer('products', productsReducer, {
+    priority: 23,
+    ejectOnUnmount: false,
+  });
+
+  // 로딩 상태 표시
+  if (!isReady) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2️⃣ 준비되면 실제 컨텐츠 렌더링
+  return <ProductDetailPageContent id={id} />;
+}
+
+// ============================================================================
+// PRODUCT DETAIL PAGE CONTENT
+// ============================================================================
+
+/**
+ * Product Detail 페이지 실제 컨텐츠
+ *
+ * reducer 주입 후 렌더링되는 컴포넌트
+ */
+function ProductDetailPageContent({ id }: { id: string }) {
+  const router = useRouter();
+  const { product, isLoading, isError, error, isDeleting, deleteProduct } = useProduct(id);
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">제품 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded max-w-md">
+          <p className="font-medium">오류가 발생했습니다</p>
+          <p className="text-sm mt-2">{getErrorMessage(error)}</p>
+          <button
+            type="button"
+            onClick={() => router.push('/products')}
+            className="mt-4 text-sm underline hover:no-underline"
+          >
+            목록으로 돌아가기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 제품을 찾을 수 없음
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="bg-white border border-gray-200 px-4 py-3 rounded max-w-md">
+          <p className="font-medium text-gray-900">제품을 찾을 수 없습니다</p>
+          <button
+            type="button"
+            onClick={() => router.push('/products')}
+            className="mt-4 text-sm text-blue-600 underline hover:no-underline"
+          >
+            목록으로 돌아가기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 핸들러
+  const handleEdit = (_productId: number) => {
+    router.push(`/products/${product.id}/edit`);
+  };
+
+  const handleDelete = (_productId: number) => {
+    deleteProduct();
+  };
+
+  const handleBack = () => {
+    router.push('/products');
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* 페이지 헤더 */}
+      <div className="mb-8">
+        <nav className="text-sm text-gray-600 mb-2">
+          <ol className="flex items-center space-x-2">
+            <li>
+              <button type="button" onClick={() => router.push('/products')} className="hover:text-blue-600">
+                제품 관리
+              </button>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900">{product.name}</li>
+          </ol>
+        </nav>
+      </div>
+
+      {/* 제품 상세 */}
+      <ProductDetail product={product} onEdit={handleEdit} onDelete={handleDelete} onBack={handleBack} />
+
+      {/* 삭제 중 로딩 표시 */}
+      {isDeleting && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p className="text-gray-900">제품을 삭제하는 중...</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### ⚠️ Dynamic Route 주의사항
+
+1. **useParams 사용**: Next.js 15+에서는 `useParams()`로 클라이언트 컴포넌트에서 params 추출
+2. **단일 파일 패턴**: 서버/클라이언트 분리하지 않고 단일 파일로 구현
+3. **타입 캐스팅**: `params.id as string`으로 타입 안전성 확보
+4. **다른 라우트와 동일한 패턴**: `/products`, `/products/new`와 동일한 구조 유지
 
 ---
 
@@ -1681,10 +1885,25 @@ API 정의 없이 MSW로 먼저 목킹 → 프론트엔드 독립 개발 가능
 ### 5. **Consistent Structure**
 모든 Feature가 동일한 패턴 따름 → 온보딩 및 협업 효율화
 
-### 6. **Selector-Based Hooks**
-- Inline selectors 대신 별도 selector 파일 사용
-- `createSelector`로 메모이제이션 자동화
-- 다중 재사용 가능한 hooks export (`useProducts`, `useProductsFilters`, 등)
+### 6. **필요한 Hooks만 작성**
+- 실제로 사용되는 hooks만 작성 (과도한 분리 피하기)
+- ✅ `useProducts`: 메인 통합 hook (필수)
+- ✅ `useProduct`, `useProductForm`: 필요시 추가
+- ❌ `useProductsFilters`, `useProductsSort` 등: 과도한 분리로 실제 미사용
+
+### 7. **Barrel Export 최소화**
+- ✅ 루트 `index.ts`만 유지
+- ❌ 하위 디렉토리 `hooks/index.ts`, `components/index.ts` 생성 금지
+- 불필요한 추상화 계층 제거 → IDE "Go to Definition" 개선
+
+### 8. **Next.js 15+ Dynamic Routes**
+- `useParams()`로 클라이언트 컴포넌트에서 params 추출
+- 단일 파일 패턴 (서버/클라이언트 분리하지 않음)
+- 모든 라우트 동일한 구조 유지
+
+### 9. **Filters와 Query 연동**
+UI 상태(filters, sort)를 RTK Query 쿼리 파라미터로 전달하여 자동 refetch
+- Selector로 UI 상태 읽기 → RTK Query에 전달 → 자동 데이터 갱신
 
 ---
 
