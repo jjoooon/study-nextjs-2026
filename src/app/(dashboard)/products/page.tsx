@@ -1,5 +1,9 @@
 'use client';
 
+// TODO: @YunJunmo
+// 1. 에러 처리 처리
+// 2. 리듀서 주입 후 렌더링 부분 공통 훅 처리
+
 /**
  * Products Page
  *
@@ -49,17 +53,6 @@ export default function ProductsPage() {
       setIsReady(true);
     });
     return () => cancelAnimationFrame(timer);
-  }, []);
-
-  // MSW worker 시작 (개발 환경)
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-      import('@/mocks/browser').then(({ worker }) => {
-        worker.start({
-          onUnhandledRequest: 'bypass',
-        });
-      });
-    }
   }, []);
 
   // 로딩 상태 표시

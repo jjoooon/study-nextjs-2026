@@ -1195,17 +1195,6 @@ export default function ProductsPage() {
     return () => cancelAnimationFrame(timer);
   }, []);
 
-  // MSW worker 시작 (개발 환경)
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-      import('@/mocks/browser').then(({ worker }) => {
-        worker.start({
-          onUnhandledRequest: 'bypass',
-        });
-      });
-    }
-  }, []);
-
   // 로딩 상태 표시
   if (!isReady) {
     return (
@@ -1359,10 +1348,10 @@ function ProductsPageContent() {
 ### ⚠️ 주의사항
 
 1. **Import 경로**: `@/store/reducers/hooks`에서 `useInjectReducer`를 가져와야 합니다
-2. **MSW 초기화**: 개발 환경에서만 MSW worker를 시작합니다
-3. **UI Reducer만 주입**: `productsApi` reducer는 이미 전역에서 로드되므로 UI reducer만 주입합니다
-4. **isReady 패턴**: 리듀서 주입 후 다음 tick에 컨텐츠를 렌더링하여 안전성 보장
-5. **Priority 설정**: dashboard(22), products(23) 등으로 우선순위를 다르게 설정
+2. **UI Reducer만 주입**: `productsApi` reducer는 이미 전역에서 로드되므로 UI reducer만 주입합니다
+3. **isReady 패턴**: 리듀서 주입 후 다음 tick에 컨텐츠를 렌더링하여 안전성 보장
+4. **Priority 설정**: dashboard(22), products(23) 등으로 우선순위를 다르게 설정
+5. **MSW 제외**: MSW worker는 `src/app/providers.tsx`에서 이미 시작되므로 페이지에서 별도로 시작할 필요 없음
 
 ---
 
@@ -1374,20 +1363,23 @@ function ProductsPageContent() {
 
 ```typescript
 import { authReducer } from '@/features/auth';
-import { productsReducer } from '@/features/products';  // 추가
 import log from '@/shared/utils/logger';
 
 // ... existing imports
 
 export const initializeReducers = () => {
-  // ✅ UI Reducers
+  // ✅ Core UI Reducers - 항상 초기 로드
   reducerRegistry.register('auth', authReducer, 20);
-  reducerRegistry.register('products', productsReducer, 22);  // 추가
+
+  // ⚠️ Optional UI Reducers - 페이지에서 지연 로딩
+  // dashboard, products는 각 페이지에서 useInjectReducer로 주입
 
   // ✅ API Reducers - 중앙 집중식 레지스트리에서 자동 등록
   registerAllApiReducers(reducerRegistry);
 };
 ```
+
+**⚠️ 중요**: Core features만 초기에 등록합니다. Dashboard, Products 같은 optional features는 페이지 컴포넌트에서 `useInjectReducer`로 지연 로딩합니다.
 
 ### 9.2 API Slice 등록
 

@@ -1,5 +1,7 @@
 /**
  * MSW Handlers for Products API
+ *
+ * Products 관련 API 요청을 모킹합니다.
  */
 
 import { http, HttpResponse, delay } from 'msw';

@@ -1,5 +1,7 @@
 /**
  * Products Feature Mock Data
+ *
+ * Products API 응답을 모킹하기 위한 데이터입니다.
  */
 
 import type { Product } from '@/features/products/types';

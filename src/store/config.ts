@@ -41,7 +41,7 @@ export const persistConfig = {
   storage: secureStorage, // 🔒 sessionStorage 사용
   version: 1, // 향후 마이그레이션을 위한 버전 관리
   // 지속성을 적용할 리듀서
-  whitelist: ['auth', 'ui'],
+  whitelist: ['auth'],
   // 🔒 transforms로 토큰 및 민감 데이터 자동 필터링
   transforms,
   // 블랙리스트: 특정 리듀서 제외
