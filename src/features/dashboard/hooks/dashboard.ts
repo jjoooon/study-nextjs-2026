@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useGetDashboardQuery } from '@/features/dashboard/store/apiSlice';
 import * as dashboardSelectors from '@/features/dashboard/store/dashboardSelectors';
 import { toggleWidget, reorderWidgets } from '@/features/dashboard/store/dashboardSlice';
-import type { Widget } from '@/features/dashboard/store/dashboardSlice';
+import type { Widget } from '@/features/dashboard/types';
 import { useAppDispatch, useAppSelector } from '@/store';
 
 // ============================================================================

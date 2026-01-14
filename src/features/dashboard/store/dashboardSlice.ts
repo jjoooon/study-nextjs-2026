@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface Widget {
-  id: string;
-  type: 'stats' | 'chart' | 'activity';
-  position: number;
-  isVisible: boolean;
-}
-
-export interface DashboardState {
-  widgets: Widget[];
-}
+import type { Widget, DashboardState } from '../types';
 
 const initialState: DashboardState = {
   widgets: [
     { id: 'stats', type: 'stats', position: 1, isVisible: true },
     { id: 'activity', type: 'activity', position: 2, isVisible: true },
   ],
+  layout: {
+    isDragging: false,
+    selectedWidget: null,
+  },
+  filters: {
+    dateRange: {
+      start: new Date(),
+      end: new Date(),
+    },
+  },
 };
 
 /**

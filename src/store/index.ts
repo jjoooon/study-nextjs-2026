@@ -156,7 +156,7 @@ if (process.env.NODE_ENV === 'development') {
 export type RootState = {
   auth: import('@/features/auth/store/authSlice').AuthState;
   ui: import('@/features/ui/store/uiSlice').UIState;
-  dashboard: import('@/features/dashboard/store/dashboardSlice').DashboardState;
+  dashboard: import('@/features/dashboard/types').DashboardState;
   usersApi: unknown;
   postsApi: unknown;
   dashboardApi: unknown;

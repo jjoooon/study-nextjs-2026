@@ -1,40 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-// ============================================================================
-// DASHBOARD API TYPES
-// ============================================================================
-
-export interface DashboardStats {
-  totalUsers: number;
-  activeUsers: number;
-  totalPosts: number;
-  revenue: number;
-  growthRate: number;
-}
-
-export interface ActivityItem {
-  id: string;
-  type: 'user' | 'post' | 'comment';
-  message: string;
-  timestamp: string;
-  user: {
-    name: string;
-    email: string;
-  };
-}
-
-export interface DashboardData {
-  stats: DashboardStats;
-  recentActivity: ActivityItem[];
-  widgets: Widget[];
-}
-
-export interface Widget {
-  id: string;
-  type: 'stats' | 'chart' | 'activity';
-  position: number;
-  isVisible: boolean;
-}
+import type { DashboardStats, ActivityItem, DashboardData, Widget } from '../types';
 
 // ============================================================================
 // DASHBOARD API SLICE

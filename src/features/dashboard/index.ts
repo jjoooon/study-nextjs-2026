@@ -1,7 +1,12 @@
 /**
  * Dashboard Feature
  *
- * Exports all dashboard-related components and store
+ * @description
+ * 대시보드 기능의 통합 내보내기
+ *
+ * @usage
+ * import { DashboardStats, RecentActivity } from '@/features/dashboard';
+ * import { useDashboard } from '@/features/dashboard/hooks/dashboard';
  */
 
 // Components
@@ -15,3 +20,6 @@ export { dashboardApiSlice } from './store/apiSlice';
 
 // Hooks
 export * from './hooks/dashboard';
+
+// Types
+export * from './types';

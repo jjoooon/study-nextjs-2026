@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { Widget } from '@/features/dashboard/store/dashboardSlice';
+import type { Widget } from '../types';
 import type { RootState } from '@/store';
 
 // ============================================================================

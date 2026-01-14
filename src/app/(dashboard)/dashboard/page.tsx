@@ -20,7 +20,7 @@
 import { useEffect, useState } from 'react';
 
 import { dashboardReducer, DashboardStats, RecentActivity, useDashboard } from '@/features/dashboard';
-import type { Widget } from '@/features/dashboard/store/dashboardSlice';
+import type { Widget } from '@/features/dashboard/types';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 /**
