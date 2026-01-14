@@ -3,7 +3,6 @@
 // TODO: @YunJunmo
 // - 에러 처리 처리
 // - 상세, 등록, 수정 페이지
-// - index.ts 남발로 import문의 간결함을 얻고 문맥 가독성을 잃음
 
 /**
  * Products Page
