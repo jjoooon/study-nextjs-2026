@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { axiosBaseQuery } from '@/shared/api';
 import log from '@/shared/utils/logger';
 import type { CreatePostInput, UpdatePostInput, PostListParams } from '../types';
 
@@ -11,35 +11,12 @@ import type { CreatePostInput, UpdatePostInput, PostListParams } from '../types'
 /**
  * Posts 도메인 전용 API Slice
  *
- * @architecture
- * - 독립적인 reducerPath: 'postsApi'
- * - Posts 엔드포인트만 포함
- * - 다른 도메인과의 순환 의존성 제거
- *
- * @scalability
- * - Posts 팀이 독립적으로 개발 가능
- * - 빌드 시간 단축 (병렬 컴파일)
- * - 테스트 용이성 향상
+ * @description
+ * RTK Query + Axios 조합으로 게시물 관리 기능 구현
  */
-
-// Custom baseQuery (auth token injection)
-
-const customBaseQuery = fetchBaseQuery({
-  baseUrl: '/api',
-  prepareHeaders: (headers, { getState }) => {
-    // Auth state에서 token 가져오기
-    const state = getState() as { auth?: { token?: string | null } };
-    const token = state.auth?.token;
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
-
 export const postsApiSlice = createApi({
   reducerPath: 'postsApi',
-  baseQuery: customBaseQuery,
+  baseQuery: axiosBaseQuery(),
 
   // Posts 도메인 전용 캐시 태그
   tagTypes: ['Post-LIST', 'Post-ITEM'] as const,

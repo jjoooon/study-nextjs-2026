@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { axiosBaseQuery } from '@/shared/api';
 import type { ActivityItem, DashboardData, DashboardStats } from '../types';
 
 // ============================================================================
@@ -7,12 +8,23 @@ import type { ActivityItem, DashboardData, DashboardStats } from '../types';
 
 /**
  * Dashboard 도메인 전용 API Slice
+ *
+ * @description
+ * RTK Query + Axios 조합으로 대시보드 데이터 관리
+ *
+ * @architecture
+ * - axiosBaseQuery: Axios의 강력한 기능 활용
+ * - RTK Query: 자동 캐싱, 리패칭, 태그 무효화
+ *
+ * @benefits
+ * ✅ Axios 인터셉터로 자동 토큰 주입
+ * ✅ 통일된 에러 처리
+ * ✅ 타임아웃 및 재시도 설정
+ * ✅ RTK Query의 자동화 기능 유지
  */
 export const dashboardApiSlice = createApi({
   reducerPath: 'dashboardApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
-  }),
+  baseQuery: axiosBaseQuery(),
 
   // Dashboard 도메인 전용 캐시 태그
   tagTypes: ['Dashboard'] as const,

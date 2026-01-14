@@ -1,5 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 
+import { axiosBaseQuery } from '@/shared/api';
 import type { ChangePasswordInput, LoginInput, RefreshTokenInput, RegisterInput, UpdateProfileInput } from '../types';
 
 // ============================================================================
@@ -8,26 +9,13 @@ import type { ChangePasswordInput, LoginInput, RefreshTokenInput, RegisterInput,
 
 /**
  * Auth 도메인 전용 API Slice
+ *
+ * @description
+ * RTK Query + Axios 조합으로 인증 기능 관리
  */
-
-// Custom baseQuery with auth token
-const baseQuery = fetchBaseQuery({
-  baseUrl: '/api',
-  prepareHeaders: (headers, { getState }) => {
-    const state = getState() as { auth?: { token?: string | null } };
-    const token = state.auth?.token;
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
-
 export const authApiSlice = createApi({
-  // 리듀서 경로 (Redux Store에서의 키)
   reducerPath: 'authApi',
-  // 기본 쿼리 함수
-  baseQuery: baseQuery,
+  baseQuery: axiosBaseQuery(),
 
   // Auth 도메인 전용 캐시 태그
   // 캐시 태그 (데이터 무효화용)

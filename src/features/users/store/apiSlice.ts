@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { axiosBaseQuery } from '@/shared/api';
 import log from '@/shared/utils/logger';
 
 import type { CreateUserInput, UpdateUserInput, UserListParams } from '../types';
@@ -9,26 +10,13 @@ import type { CreateUserInput, UpdateUserInput, UserListParams } from '../types'
 
 /**
  * Users 도메인 전용 API Slice
+ *
+ * @description
+ * RTK Query + Axios 조합으로 사용자 관리 기능 구현
  */
-
-// Custom baseQuery (auth token injection)
-
-const customBaseQuery = fetchBaseQuery({
-  baseUrl: '/api',
-  prepareHeaders: (headers, { getState }) => {
-    // Auth state에서 token 가져오기
-    const state = getState() as { auth?: { token?: string | null } };
-    const token = state.auth?.token;
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
-
 export const usersApiSlice = createApi({
   reducerPath: 'usersApi',
-  baseQuery: customBaseQuery,
+  baseQuery: axiosBaseQuery(),
 
   // Users 도메인 전용 캐시 태그
   tagTypes: ['User-LIST', 'User-ITEM'] as const,
