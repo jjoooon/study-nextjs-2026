@@ -24,13 +24,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import type { ProductsFilters, ProductsSort } from '../types/ui';
-import {
-  DEFAULT_FILTERS,
-  DEFAULT_SORT,
-  parseFiltersFromURL,
-  parseSortFromURL,
-  buildQueryString,
-} from '../utils/urlParams';
+import { DEFAULT_FILTERS, parseFiltersFromURL, parseSortFromURL, buildQueryString } from '../utils/urlParams';
 
 // ============================================================================
 // PRODUCTS URL STATE HOOK

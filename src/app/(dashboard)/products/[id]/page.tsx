@@ -20,10 +20,11 @@
  * /products/123 route에서 자동으로 렌더링됨
  */
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProductDetail from '@/features/products/components/ProductDetail';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import productsReducer from '@/features/products/store/productsSlice';
+import { getReturnURL } from '@/features/products/utils/urlParams';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -72,7 +73,11 @@ export default function ProductDetailPage() {
  */
 function ProductDetailPageContent({ id }: { id: string }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { product, isLoading, isError, error, isDeleting, deleteProduct } = useProduct(id);
+
+  // ✅ 쿼리 파라미터를 보존한 복귀 URL
+  const returnURL = getReturnURL(searchParams);
 
   // 로딩 상태
   if (isLoading) {
@@ -95,7 +100,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
           <p className="text-sm mt-2">{getErrorMessage(error)}</p>
           <button
             type="button"
-            onClick={() => router.push('/products')}
+            onClick={() => router.push(returnURL)}
             className="mt-4 text-sm underline hover:no-underline"
           >
             목록으로 돌아가기
@@ -113,7 +118,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
           <p className="font-medium text-gray-900">제품을 찾을 수 없습니다</p>
           <button
             type="button"
-            onClick={() => router.push('/products')}
+            onClick={() => router.push(returnURL)}
             className="mt-4 text-sm text-blue-600 underline hover:no-underline"
           >
             목록으로 돌아가기
@@ -125,7 +130,8 @@ function ProductDetailPageContent({ id }: { id: string }) {
 
   // 핸들러
   const handleEdit = (_productId: number) => {
-    router.push(`/products/${product.id}/edit`);
+    // ✅ 쿼리 파라미터 보존하면서 수정 페이지로 이동
+    router.push(`/products/${product.id}/edit?${searchParams.toString()}`);
   };
 
   const handleDelete = (_productId: number) => {
@@ -133,7 +139,8 @@ function ProductDetailPageContent({ id }: { id: string }) {
   };
 
   const handleBack = () => {
-    router.push('/products');
+    // ✅ 쿼리 파라미터 보존하면서 목록으로 복귀
+    router.push(returnURL);
   };
 
   return (
@@ -143,7 +150,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
         <nav className="text-sm text-gray-600 mb-2">
           <ol className="flex items-center space-x-2">
             <li>
-              <button type="button" onClick={() => router.push('/products')} className="hover:text-blue-600">
+              <button type="button" onClick={() => router.push(returnURL)} className="hover:text-blue-600">
                 제품 관리
               </button>
             </li>

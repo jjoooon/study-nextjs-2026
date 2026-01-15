@@ -18,9 +18,11 @@
  * /products/new route에서 자동으로 렌더링됨
  */
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import ProductForm from '@/features/products/components/ProductForm';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsSlice';
+import { getReturnURL } from '@/features/products/utils/urlParams';
 import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/api';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -65,11 +67,27 @@ export default function NewProductPage() {
  * reducer 주입 후 렌더링되는 컴포넌트
  */
 function NewProductPageContent() {
-  const { createProduct, isSubmitting, cancel } = useProductForm();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { createProduct, isSubmitting } = useProductForm();
+
+  // ✅ 쿼리 파라미터를 보존한 복귀 URL
+  const returnURL = getReturnURL(searchParams);
 
   // 제출 핸들러
   const handleSubmit = async (data: CreateProductInput | UpdateProductInput) => {
-    return await createProduct(data as CreateProductInput);
+    const result = await createProduct(data as CreateProductInput);
+    // 등록 성공 후 필터 상태 유지하면서 목록으로 복귀
+    if (result) {
+      router.push(returnURL);
+    }
+    return result;
+  };
+
+  // 취소 핸들러
+  const handleCancel = () => {
+    // ✅ 쿼리 파라미터 보존하면서 목록으로 복귀
+    router.push(returnURL);
   };
 
   return (
@@ -79,9 +97,9 @@ function NewProductPageContent() {
         <nav className="text-sm text-gray-600 mb-2">
           <ol className="flex items-center space-x-2">
             <li>
-              <a href="/products" className="hover:text-blue-600">
+              <button type="button" onClick={() => router.push(returnURL)} className="hover:text-blue-600">
                 제품 관리
-              </a>
+              </button>
             </li>
             <li>/</li>
             <li className="text-gray-900">신규 등록</li>
@@ -93,7 +111,7 @@ function NewProductPageContent() {
 
       {/* 등록 폼 */}
       <div className="bg-white rounded-lg shadow p-6">
-        <ProductForm mode="create" onSubmit={handleSubmit} onCancel={cancel} isSubmitting={isSubmitting} />
+        <ProductForm mode="create" onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isSubmitting} />
       </div>
     </div>
   );

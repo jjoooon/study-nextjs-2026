@@ -2,6 +2,7 @@
 
 // TODO: @YunJunmo
 // - 에러 처리 처리
+// - sort 기능
 
 /**
  * Products Page
@@ -33,11 +34,12 @@
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsSlice';
+import { preserveQueryParams } from '@/features/products/utils/urlParams';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -83,6 +85,7 @@ export default function ProductsPage() {
  */
 function ProductsPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Products 훅
   const { products, total, filters, sort, isLoading, isError, error, updateFilters, updateSort, refetch } =
@@ -99,7 +102,15 @@ function ProductsPageContent() {
   };
 
   const handleProductClick = (product: (typeof products)[0]) => {
-    router.push(`/products/${product.id}`);
+    // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 이동
+    const url = preserveQueryParams(`/products/${product.id}`, searchParams);
+    router.push(url);
+  };
+
+  const handleNewProductClick = () => {
+    // ✅ 쿼리 파라미터 보존하면서 등록 페이지로 이동
+    const url = preserveQueryParams('/products/new', searchParams);
+    router.push(url);
   };
 
   return (
@@ -120,7 +131,7 @@ function ProductsPageContent() {
         <button
           type="button"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
-          onClick={() => router.push('/products/new')}
+          onClick={handleNewProductClick}
         >
           제품 등록
         </button>
@@ -188,7 +199,7 @@ function ProductsPageContent() {
           <button
             type="button"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            onClick={() => router.push('/products/new')}
+            onClick={handleNewProductClick}
           >
             제품 등록하기
           </button>

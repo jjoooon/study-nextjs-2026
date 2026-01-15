@@ -20,10 +20,11 @@
  * /products/123/edit route에서 자동으로 렌더링됨
  */
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProductForm from '@/features/products/components/ProductForm';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsSlice';
+import { getReturnURL } from '@/features/products/utils/urlParams';
 import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/api';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -71,7 +72,12 @@ export default function EditProductPage() {
  * reducer 주입 후 렌더링되는 컴포넌트
  */
 function EditProductPageContent({ id }: { id: string }) {
-  const { initialData, isLoading, isSubmitting, updateProduct, cancel } = useProductForm(id);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { initialData, isLoading, isSubmitting, updateProduct } = useProductForm(id);
+
+  // ✅ 쿼리 파라미터를 보존한 복귀 URL
+  const returnURL = getReturnURL(searchParams);
 
   // 로딩 상태
   if (isLoading) {
@@ -87,7 +93,18 @@ function EditProductPageContent({ id }: { id: string }) {
 
   // 제출 핸들러
   const handleSubmit = async (data: CreateProductInput | UpdateProductInput) => {
-    return await updateProduct(data as UpdateProductInput);
+    const result = await updateProduct(data as UpdateProductInput);
+    // 수정 성공 후 필터 상태 유지하면서 목록으로 복귀
+    if (result) {
+      router.push(returnURL);
+    }
+    return result;
+  };
+
+  // 취소 핸들러
+  const handleCancel = () => {
+    // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 복귀
+    router.push(`/products/${id}?${searchParams.toString()}`);
   };
 
   return (
@@ -97,15 +114,19 @@ function EditProductPageContent({ id }: { id: string }) {
         <nav className="text-sm text-gray-600 mb-2">
           <ol className="flex items-center space-x-2">
             <li>
-              <a href="/products" className="hover:text-blue-600">
+              <button type="button" onClick={() => router.push(returnURL)} className="hover:text-blue-600">
                 제품 관리
-              </a>
+              </button>
             </li>
             <li>/</li>
             <li>
-              <a href={`/products/${id}`} className="hover:text-blue-600">
+              <button
+                type="button"
+                onClick={() => router.push(`/products/${id}?${searchParams.toString()}`)}
+                className="hover:text-blue-600"
+              >
                 {initialData?.name || '제품'}
-              </a>
+              </button>
             </li>
             <li>/</li>
             <li className="text-gray-900">수정</li>
@@ -122,18 +143,19 @@ function EditProductPageContent({ id }: { id: string }) {
             initialData={initialData}
             mode="update"
             onSubmit={handleSubmit}
-            onCancel={cancel}
+            onCancel={handleCancel}
             isSubmitting={isSubmitting}
           />
         ) : (
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">제품을 찾을 수 없습니다.</p>
-            <a
-              href="/products"
+            <button
+              type="button"
+              onClick={() => router.push(returnURL)}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors inline-block"
             >
               목록으로
-            </a>
+            </button>
           </div>
         )}
       </div>
