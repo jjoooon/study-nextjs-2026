@@ -4,27 +4,24 @@
  * ProductList Component
  *
  * 제품 목록을 표시하는 컴포넌트
+ *
+ * @description
+ * Shared UI 컴포넌트를 사용하여 로딩/빈 상태 표시
  */
 
+import { EmptyList } from '@/shared/components/ui/EmptyState';
+import { SkeletonList } from '@/shared/components/ui/Skeleton';
 import type { ProductListProps } from '../types/ui';
 
 export default function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
+  // 로딩 상태 - shared SkeletonList 사용
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-24 bg-gray-200 rounded-lg animate-pulse" />
-        ))}
-      </div>
-    );
+    return <SkeletonList count={5} />;
   }
 
+  // 빈 상태 - shared EmptyList 사용
   if (products.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">제품이 없습니다.</p>
-      </div>
-    );
+    return <EmptyList message="등록된 제품이 없습니다." />;
   }
 
   return (

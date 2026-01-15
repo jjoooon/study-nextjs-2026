@@ -10,27 +10,31 @@
  * - 새로고침해도 상태 유지
  * - 브라우저 뒤로/앞으로 가기 지원
  *
+ * @architecture
+ * Shared URL utilities를 사용하며, Products 전용 설정만 추가
+ *
  * @example
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
+import { last30DaysRange } from '@/shared/utils/date/dateRange';
+import { URL_PARAMS as SHARED_URL_PARAMS } from '@/shared/utils/url/urlParams';
 import type { ProductsFilters, ProductsSort } from '../types/ui';
 
 // ============================================================================
-// URL PARAMETER KEYS
+// PRODUCTS URL PARAMETER KEYS
 // ============================================================================
 
 /**
- * URL 파라미터 키 상수
+ * Products 전용 URL 파라미터 키
+ *
+ * @description
+ * Shared URL 파라미터 + Products 전용 파라미터
  */
 export const URL_PARAMS = {
-  SEARCH: 'search',
+  ...SHARED_URL_PARAMS,
   STATUS: 'status',
   CATEGORY: 'category',
-  SORT_BY: 'sortBy',
-  SORT_ORDER: 'sortOrder',
-  DATE_START: 'dateStart',
-  DATE_END: 'dateEnd',
 } as const;
 
 // ============================================================================
@@ -44,10 +48,7 @@ export const DEFAULT_FILTERS: ProductsFilters = {
   search: '',
   status: '',
   category: '',
-  dateRange: {
-    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-    end: new Date().toISOString(),
-  },
+  dateRange: last30DaysRange(), // Shared date range preset 사용
 };
 
 /**
@@ -98,41 +99,6 @@ export function parseSortFromURL(searchParams: URLSearchParams): ProductsSort {
 // ============================================================================
 
 /**
- * 필터 상태를 URL 쿼리 문자열로 변환
- *
- * @param filters - ProductsFilters 상태 객체
- * @returns URL 쿼리 문자열 (예: "?search=laptop&category=electronics")
- */
-export function buildFiltersQueryString(filters: ProductsFilters): string {
-  const params = new URLSearchParams();
-
-  // 빈 값은 제외
-  if (filters.search) params.set(URL_PARAMS.SEARCH, filters.search);
-  if (filters.status) params.set(URL_PARAMS.STATUS, filters.status);
-  if (filters.category) params.set(URL_PARAMS.CATEGORY, filters.category);
-  if (filters.dateRange?.start) params.set(URL_PARAMS.DATE_START, filters.dateRange.start);
-  if (filters.dateRange?.end) params.set(URL_PARAMS.DATE_END, filters.dateRange.end);
-
-  const queryString = params.toString();
-  return queryString ? `?${queryString}` : '';
-}
-
-/**
- * 정렬 상태를 URL 쿼리 문자열로 변환
- *
- * @param sort - ProductsSort 상태 객체
- * @returns URL 쿼리 문자열 (예: "?sortBy=price&sortOrder=asc")
- */
-export function buildSortQueryString(sort: ProductsSort): string {
-  const params = new URLSearchParams();
-
-  params.set(URL_PARAMS.SORT_BY, sort.sortBy);
-  params.set(URL_PARAMS.SORT_ORDER, sort.sortOrder);
-
-  return `?${params.toString()}`;
-}
-
-/**
  * 필터와 정렬 상태를 통합한 URL 쿼리 문자열로 변환
  *
  * @param filters - ProductsFilters 상태 객체
@@ -152,35 +118,6 @@ export function buildQueryString(filters: ProductsFilters, sort: ProductsSort): 
   // 정렬 파라미터 추가
   params.set(URL_PARAMS.SORT_BY, sort.sortBy);
   params.set(URL_PARAMS.SORT_ORDER, sort.sortOrder);
-
-  const queryString = params.toString();
-  return queryString ? `?${queryString}` : '';
-}
-
-// ============================================================================
-// URL UPDATE HELPERS
-// ============================================================================
-
-/**
- * 현재 URL에서 특정 파라미터만 업데이트
- *
- * @param searchParams - 현재 URLSearchParams
- * @param updates - 업데이트할 파라미터들
- * @returns 업데이트된 URL 쿼리 문자열
- */
-export function updateURLParams(
-  searchParams: URLSearchParams,
-  updates: Partial<Record<(typeof URL_PARAMS)[keyof typeof URL_PARAMS], string | null>>
-): string {
-  const params = new URLSearchParams(searchParams);
-
-  Object.entries(updates).forEach(([key, value]) => {
-    if (value === null || value === '') {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
-  });
 
   const queryString = params.toString();
   return queryString ? `?${queryString}` : '';

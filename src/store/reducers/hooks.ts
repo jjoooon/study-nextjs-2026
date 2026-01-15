@@ -5,9 +5,6 @@ import log from '@/shared/utils/logger';
 import { store } from '@/store';
 import { ejectReducer, injectReducer } from '@/store/registry/reducer';
 
-// TODO: @YunJunmo
-// - logger 매번 getLogger 할 필요 있는지 검토
-
 // ============================================================================
 // DYNAMIC REDUCER HOOKS
 // ============================================================================
@@ -54,6 +51,8 @@ export interface UseInjectReducerOptions {
   ejectOnUnmount?: boolean;
 }
 
+const logger = log.getLogger('ReducerRegistry');
+
 export interface UseInjectReducerResult {
   /**
    * 리듀서 주입 후 렌더링 준비 완료 여부
@@ -77,7 +76,6 @@ export const useInjectReducer = (
       try {
         store.dispatch(injectReducer(key, reducer, priority) as unknown as UnknownAction);
 
-        const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Reducer injected via hook: ${key}`);
 
         isInjected.current = true;
@@ -93,7 +91,6 @@ export const useInjectReducer = (
         // 성공 시 cleanup 반환 안 함 (RAF 콜백이 실행되어야 함)
         return undefined;
       } catch (error) {
-        const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject reducer: ${key}`, error);
 
         // 에러 발생 시 즉시 isReady를 true로 설정
@@ -121,14 +118,12 @@ export const useInjectReducer = (
           try {
             store.dispatch(ejectReducer(key) as unknown as UnknownAction);
 
-            const logger = log.getLogger('ReducerRegistry');
             logger.debug(`🗑️  Reducer ejected via hook: ${key}`);
 
             isInjected.current = false;
             readySetRef.current = false;
             setIsReady(false);
           } catch (error) {
-            const logger = log.getLogger('ReducerRegistry');
             logger.error(`❌ Failed to eject reducer: ${key}`, error);
           }
         }
@@ -219,7 +214,6 @@ export const useLazyReducer = (
             isReady: true,
           };
 
-          const logger = log.getLogger('ReducerRegistry');
           logger.debug(`✅ Lazy reducer loaded: ${key}`);
         }
       } catch (error) {
@@ -231,7 +225,6 @@ export const useLazyReducer = (
             isReady: false,
           };
 
-          const logger = log.getLogger('ReducerRegistry');
           logger.error(`❌ Failed to load lazy reducer: ${key}`, error);
         }
       }
@@ -304,7 +297,6 @@ export const useConditionalReducer = (
       try {
         store.dispatch(injectReducer(key, reducer, options.priority) as unknown as UnknownAction);
 
-        const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Conditional reducer enabled: ${key}`);
 
         isInjected.current = true;
@@ -319,7 +311,6 @@ export const useConditionalReducer = (
 
         return undefined;
       } catch (error) {
-        const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject conditional reducer: ${key}`, error);
 
         // 에러 발생 시 즉시 isReady를 true로 설정
@@ -402,7 +393,6 @@ export const useRoleBasedReducer = (
       try {
         store.dispatch(injectReducer(key, reducer, options.priority) as unknown as UnknownAction);
 
-        const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Role-based reducer authorized: ${key} (${userRole})`);
 
         isInjected.current = true;
@@ -417,7 +407,6 @@ export const useRoleBasedReducer = (
 
         return undefined;
       } catch (error) {
-        const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject role-based reducer: ${key}`, error);
 
         // 에러 발생 시 즉시 isReady를 true로 설정
@@ -488,7 +477,6 @@ export const useBatchReducers = (
         Object.entries(reducers).forEach(([key, reducer]) => {
           store.dispatch(injectReducer(key, reducer, priority) as unknown as UnknownAction);
 
-          const logger = log.getLogger('ReducerRegistry');
           logger.debug(`✅ Batch reducer injected: ${key}`);
         });
 
@@ -504,7 +492,6 @@ export const useBatchReducers = (
 
         return undefined;
       } catch (error) {
-        const logger = log.getLogger('ReducerRegistry');
         logger.error(`❌ Failed to inject batch reducers`, error);
 
         // 에러 발생 시 즉시 isReady를 true로 설정
