@@ -21,6 +21,9 @@ export const productsHandlers = [
     const pageSize = url.searchParams.get('pageSize') || '10';
     const search = url.searchParams.get('search') || '';
     const status = url.searchParams.get('status') || '';
+    const category = url.searchParams.get('category') || '';
+    const sortBy = url.searchParams.get('sortBy') || 'createdAt';
+    const sortOrder = url.searchParams.get('sortOrder') || 'desc';
 
     // 네트워크 지연 시뮬레이션 (100-300ms)
     await delay(Math.floor(Math.random() * 200) + 100);
@@ -35,6 +38,33 @@ export const productsHandlers = [
     if (status) {
       filteredProducts = filteredProducts.filter((p) => p.status === status);
     }
+
+    if (category) {
+      filteredProducts = filteredProducts.filter((p) => p.category === category);
+    }
+
+    // 정렬 로직
+    filteredProducts.sort((a, b) => {
+      let comparison = 0;
+
+      // 정렬 기준별 비교
+      switch (sortBy) {
+        case 'name':
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case 'price':
+          comparison = a.price - b.price;
+          break;
+        case 'createdAt':
+          comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          break;
+        default:
+          comparison = 0;
+      }
+
+      // 오름차순/내림차순 적용
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
 
     // 페이지네이션
     const startIndex = (parseInt(page) - 1) * parseInt(pageSize);
