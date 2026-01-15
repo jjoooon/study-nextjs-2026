@@ -2,7 +2,13 @@
 
 ## 📋 개요
 
-본 가이드는 Dashboard 예시를 기반으로 신규 Feature 개발의 전체 프로세스를 단계별로 설명합니다. MSW 정의부터 Page 생성까지 일관된 패턴을 따라 개발할 수 있습니다.
+본 가이드는 Products Feature 예시를 기반으로 신규 Feature 개발의 전체 프로세스를 단계별로 설명합니다. MSW 정의부터 Page 생성까지 일관된 패턴을 따라 개발할 수 있습니다.
+
+**최신 아키텍처 (2026)**:
+- **URL 기반 상태 관리**: filters, sort를 URL 쿼리 파라미터로 관리
+- **Redux UI 상태**: selectedProducts, viewMode만 Redux에서 관리
+- **Zod 검증**: 타입 안전성과 검증을 동시에 처리
+- **최소한의 Hooks**: 실제 사용되는 hooks만 작성 (과도한 분리 지양)
 
 ## 🎯 목차
 
@@ -44,8 +50,15 @@
 **기능 요구사항**:
 - 제품 목록 조회 (페이지네이션, 필터, 정렬)
 - 제품 상세 조회
-- 제품 생성/수정/ 삭제
+- 제품 생성/수정/삭제
 - MSW로 API 목킹
+- URL 기반 상태 관리 (filters, sort)
+- Redux UI 상태 관리 (selection, viewMode)
+- Zod 검증
+
+**핵심 아키텍처**:
+- **URL 상태 (영구적)**: filters, sort → 페이지 새로고침에도 유지, URL 공유 가능
+- **Redux 상태 (일시적)**: selectedProducts, viewMode → 컴포넌트간 공유 UI 상태
 
 ---
 
@@ -364,10 +377,15 @@ export interface ProductsListResponse {
 ```typescript
 /**
  * Products UI Types
+ *
+ * @description
+ * UI 컴포넌트에서 사용하는 타입 정의
+ * - filters, sort: URL 쿼리 파라미터로 관리
+ * - selectedProducts, viewMode: Redux에서 관리
  */
 
 /**
- * 제품 필터 상태
+ * 제품 필터 상태 (URL 관리)
  */
 export interface ProductsFilters {
   search: string;
@@ -380,7 +398,7 @@ export interface ProductsFilters {
 }
 
 /**
- * 제품 정렬 상태
+ * 제품 정렬 상태 (URL 관리)
  */
 export interface ProductsSort {
   sortBy: string;
@@ -388,15 +406,28 @@ export interface ProductsSort {
 }
 
 /**
- * 제품 UI 상태
+ * 컴포넌트 Props 타입
  */
-export interface ProductsUIState {
+export interface ProductListProps {
+  products: Product[];
+  isLoading?: boolean;
+  onProductClick?: (product: Product) => void;
+}
+
+export interface ProductFiltersProps {
   filters: ProductsFilters;
-  sort: ProductsSort;
-  selectedProducts: number[];
-  viewMode: 'table' | 'grid';
+  onFilterChange: (filters: ProductsFilters) => void;
+}
+
+export interface ProductDetailProps {
+  product: Product;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
+  onBack?: () => void;
 }
 ```
+
+**⚠️ 중요**: UI 타입에서 Redux 상태(`ProductsUIState`)를 제거하고 `types/store.ts`로 분리했습니다.
 
 ### 2.3 Store 타입
 
@@ -405,67 +436,30 @@ export interface ProductsUIState {
 ```typescript
 /**
  * Products Redux Store Types
+ *
+ * @description
+ * Products feature의 Redux Store 타입 정의
+ * - UI 상태는 productsUISlice에서 관리 (selectedProducts, viewMode)
+ * - 필터/정렬 상태는 URL 쿼리 파라미터로 관리
  */
-
-import type { ProductsUIState } from './ui';
 
 /**
- * Products Store State
+ * Products UI Slice State Type
+ *
+ * @description
+ * Redux에 저장되는 UI 상태 타입
+ * - selectedProducts: 선택된 제품 ID 배열
+ * - viewMode: 테이블/그리드 뷰 모드
+ *
+ * ⚠️ filters, sort는 URL에서 관리하므로 이 타입에 포함되지 않음
  */
-export interface ProductsState {
-  ui: ProductsUIState;
-  lastUpdated: string | null;
-}
-
-/**
- * Products Store Slice
- */
-export interface ProductsSlice extends ProductsState {
-  // 추가 상태가 필요한 경우
-}
+export type ProductsUIState = {
+  selectedProducts: number[];
+  viewMode: 'table' | 'grid';
+};
 ```
 
-### 2.4 컴포넌트 타입
-
-**`src/features/products/types/components.ts`**
-
-```typescript
-/**
- * Products Component Props Types
- */
-
-import type { Product } from './api';
-
-/**
- * ProductList Props
- */
-export interface ProductListProps {
-  products: Product[];
-  isLoading?: boolean;
-  onProductClick?: (product: Product) => void;
-}
-
-/**
- * ProductCard Props
- */
-export interface ProductCardProps {
-  product: Product;
-  onViewDetails?: (id: number) => void;
-  onEdit?: (id: number) => void;
-  onDelete?: (id: number) => void;
-}
-
-/**
- * ProductFilters Props
- */
-export interface ProductFiltersProps {
-  filters: {
-    search: string;
-    status: string;
-  };
-  onFilterChange: (filters: any) => void;
-}
-```
+**⚠️ 중요**: Redux UI 상태에서 `filters`, `sort`를 제거하고 URL 기반 관리로 변경했습니다.
 
 ### 2.5 타입 파일 구조
 
@@ -760,11 +754,13 @@ export default productsSlice.reducer;
 
 ---
 
-## 5단계: Components 생성
+## 9단계: Import 경로 관리
 
-### 5.1 ProductList 컴포넌트
+**⚠️ 중요**: barrel 파일(`index.ts`)을 사용하지 않고 직접 경로로 import합니다.
 
-**`src/features/products/components/ProductList.tsx`**
+### 9.1 Import 패턴
+
+**❌ 피해야 할 패턴 (barrel 사용)**:
 
 ```typescript
 'use client';
@@ -902,97 +898,272 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
 
 ## 6단계: Hooks 생성
 
-### 6.1 Selectors 파일 생성 (먼저 생성)
+### 6.1 URL Utils 생성 (먼저 생성)
+
+**`src/features/products/utils/urlParams.ts`**
+
+```typescript
+/**
+ * URL Parameters Utilities for Products Page
+ *
+ * Query Parameters 기반 상태 관리를 위한 유틸리티 함수
+ *
+ * @description
+ * URL 파라미터를 통한 상태 관리로 다음 이점 제공:
+ * - URL 공유 가능
+ * - 북마크/즐겨찾기 가능
+ * - 새로고침해도 상태 유지
+ * - 브라우저 뒤로/앞으로 가기 지원
+ */
+
+import type { ProductsFilters, ProductsSort } from '../types/ui';
+
+// ============================================================================
+// URL PARAMETER KEYS
+// ============================================================================
+
+export const URL_PARAMS = {
+  SEARCH: 'search',
+  STATUS: 'status',
+  CATEGORY: 'category',
+  SORT_BY: 'sortBy',
+  SORT_ORDER: 'sortOrder',
+  DATE_START: 'dateStart',
+  DATE_END: 'dateEnd',
+} as const;
+
+// ============================================================================
+// DEFAULT VALUES
+// ============================================================================
+
+export const DEFAULT_FILTERS: ProductsFilters = {
+  search: '',
+  status: '',
+  category: '',
+  dateRange: {
+    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    end: new Date().toISOString(),
+  },
+};
+
+export const DEFAULT_SORT: ProductsSort = {
+  sortBy: 'createdAt',
+  sortOrder: 'desc',
+};
+
+// ============================================================================
+// URL PARSE FUNCTIONS
+// ============================================================================
+
+export function parseFiltersFromURL(searchParams: URLSearchParams): ProductsFilters {
+  return {
+    search: searchParams.get(URL_PARAMS.SEARCH) || DEFAULT_FILTERS.search,
+    status: searchParams.get(URL_PARAMS.STATUS) || DEFAULT_FILTERS.status,
+    category: searchParams.get(URL_PARAMS.CATEGORY) || DEFAULT_FILTERS.category,
+    dateRange: {
+      start: searchParams.get(URL_PARAMS.DATE_START) || DEFAULT_FILTERS.dateRange.start,
+      end: searchParams.get(URL_PARAMS.DATE_END) || DEFAULT_FILTERS.dateRange.end,
+    },
+  };
+}
+
+export function parseSortFromURL(searchParams: URLSearchParams): ProductsSort {
+  const sortBy = searchParams.get(URL_PARAMS.SORT_BY) || DEFAULT_SORT.sortBy;
+  const sortOrder = (searchParams.get(URL_PARAMS.SORT_ORDER) || DEFAULT_SORT.sortOrder) as 'asc' | 'desc';
+
+  return { sortBy, sortOrder };
+}
+
+// ============================================================================
+// URL BUILD FUNCTIONS
+// ============================================================================
+
+export function buildQueryString(filters: ProductsFilters, sort: ProductsSort): string {
+  const params = new URLSearchParams();
+
+  // 필터 파라미터 추가
+  if (filters.search) params.set(URL_PARAMS.SEARCH, filters.search);
+  if (filters.status) params.set(URL_PARAMS.STATUS, filters.status);
+  if (filters.category) params.set(URL_PARAMS.CATEGORY, filters.category);
+  if (filters.dateRange?.start) params.set(URL_PARAMS.DATE_START, filters.dateRange.start);
+  if (filters.dateRange?.end) params.set(URL_PARAMS.DATE_END, filters.dateRange.end);
+
+  // 정렬 파라미터 추가
+  params.set(URL_PARAMS.SORT_BY, sort.sortBy);
+  params.set(URL_PARAMS.SORT_ORDER, sort.sortOrder);
+
+  const queryString = params.toString();
+  return queryString ? `?${queryString}` : '';
+}
+```
+
+### 6.2 URL State Hook 작성
+
+**`src/features/products/hooks/useProductsURLState.ts`**
+
+```typescript
+/**
+ * Products URL-based State Management Hook
+ *
+ * Query Parameters를 사용한 상태 관리 Hook
+ *
+ * @description
+ * Redux 대신 URL 파라미터를 사용하여 상태를 관리합니다.
+ * 이로 인해 다음 이점을 얻을 수 있습니다:
+ * - URL 공유 가능
+ * - 북마크/즐겨찾기 가능
+ * - 새로고침해도 상태 유지
+ * - 브라우저 뒤로/앞으로 가기 지원
+ * - 페이지 간 이동 시 상태 자동 유지
+ */
+
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useMemo } from 'react';
+import type { ProductsFilters, ProductsSort } from '../types/ui';
+import { DEFAULT_FILTERS, parseFiltersFromURL, parseSortFromURL, buildQueryString } from '../utils/urlParams';
+
+export function useProductsURLState() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // ============================================================================
+  // READ STATE FROM URL
+  // ============================================================================
+
+  const filters = useMemo<ProductsFilters>(() => {
+    return parseFiltersFromURL(searchParams);
+  }, [searchParams]);
+
+  const sort = useMemo<ProductsSort>(() => {
+    return parseSortFromURL(searchParams);
+  }, [searchParams]);
+
+  // ============================================================================
+  // UPDATE STATE IN URL
+  // ============================================================================
+
+  const updateFilters = useCallback(
+    (newFilters: Partial<ProductsFilters>) => {
+      const updatedFilters = { ...filters, ...newFilters };
+      const queryString = buildQueryString(updatedFilters, sort);
+      router.replace(`/products${queryString}`);
+    },
+    [filters, sort, router]
+  );
+
+  const updateSort = useCallback(
+    (newSort: ProductsSort) => {
+      const queryString = buildQueryString(filters, newSort);
+      router.replace(`/products${queryString}`);
+    },
+    [filters, router]
+  );
+
+  const resetFilters = useCallback(() => {
+    const queryString = buildQueryString(DEFAULT_FILTERS, sort);
+    router.replace(`/products${queryString}`);
+  }, [sort, router]);
+
+  return {
+    filters,
+    sort,
+    updateFilters,
+    updateSort,
+    resetFilters,
+  };
+}
+```
+
+### 6.3 Selectors 파일 생성
 
 **`src/features/products/store/productsSelectors.ts`**
 
 ```typescript
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '@/store/index';
+import type { RootState } from '@/store';
 
 // ============================================================================
-// PRODUCTS SELECTORS
+// PRODUCTS UI SELECTORS
 // ============================================================================
 
 /**
- * Products domain의 모든 selector
+ * Products UI domain의 selector
  *
- * @note Conditional Rendering으로 인해 방어 로직 불필요
+ * @description
+ * Redux에서 관리하는 UI 상태에 대한 selector
+ * - filters, sort: URL 쿼리 파라미터로 관리 (이 파일 X)
+ * - selectedProducts, viewMode: Redux에서 관리 (이 파일 O)
  */
 
 // Base selectors
 export const selectProductsState = (state: RootState) => state.products;
 
-export const selectFilters = createSelector([selectProductsState], (products) => products.filters);
+export const selectSelectedProducts = createSelector(
+  [selectProductsState],
+  (products) => products.selectedProducts
+);
 
-export const selectSort = createSelector([selectProductsState], (products) => products.sort);
-
-export const selectSelectedProducts = createSelector([selectProductsState], (products) => products.selectedProducts);
-
-export const selectViewMode = createSelector([selectProductsState], (products) => products.viewMode);
+export const selectViewMode = createSelector(
+  [selectProductsState],
+  (products) => products.viewMode
+);
 
 // ============================================================================
 // COMPOSED SELECTORS
 // ============================================================================
 
-/**
- * 선택된 제품 개수
- */
 export const selectSelectedProductsCount = createSelector(
   [selectSelectedProducts],
   (selectedProducts) => selectedProducts.length
 );
 
-/**
- * 현재 정렬 상태 요약
- */
-export const selectSortSummary = createSelector([selectSort], (sort) => ({
-  sortBy: sort.sortBy,
-  sortOrder: sort.sortOrder,
-  label: `${sort.sortBy} ${sort.sortOrder === 'asc' ? '오름차순' : '내림차순'}`,
-}));
-
-/**
- * Products 상태 요약
- */
-export const selectProductsStatus = createSelector(
-  [selectSelectedProductsCount, selectSortSummary],
-  (selectedCount, sortSummary) => ({
+export const selectProductsUIStatus = createSelector(
+  [selectSelectedProductsCount, selectViewMode],
+  (selectedCount, viewMode) => ({
     selectedCount,
-    sortLabel: sortSummary.label,
+    viewMode,
   })
 );
 ```
 
-### 6.2 Hooks 파일 작성
+### 6.4 Main Hook 작성 (통합)
 
 **`src/features/products/hooks/useProducts.ts`**
 
 ```typescript
 import { useGetProductsQuery } from '@/features/products/store/apiSlice';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
-import { toggleProductSelection, setViewMode } from '@/features/products/store/productsUISlice';
+import { useProductsURLState } from './useProductsURLState';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { toggleProductSelection, setViewMode } from '@/features/products/store/productsUISlice';
 
 // ============================================================================
-// PRODUCTS HOOKS (RTK Query + Selector-based)
+// PRODUCTS HOOK (RTK Query + URL State + Redux UI)
 // ============================================================================
 
 /**
  * Products 상태 관리 Hook
  *
- * RTK Query를 사용한 API 데이터 fetching + Redux Slice의 UI 상태 관리
+ * @description
+ * RTK Query를 사용한 API 데이터 fetching + URL 기반 필터/정렬 관리 + Redux UI 상태 관리
+ *
+ * @architecture
+ * - URL 상태: filters, sort (useProductsURLState)
+ * - Redux 상태: selectedProducts, viewMode (productsUISlice)
+ * - API 상태: products 데이터 (RTK Query)
  *
  * @note Conditional Rendering으로 인해 방어 로직 불필요
- * @note Redux Store의 filters, sort를 RTK Query 쿼리 파라미터로 연결하여 자동 refetch
  */
 export const useProducts = () => {
   const dispatch = useAppDispatch();
 
-  // ✅ Selector 기반 UI 상태 구독 (먼저 읽기)
-  const filters = useAppSelector(productsSelectors.selectFilters);
-  const sort = useAppSelector(productsSelectors.selectSort);
+  // ✅ URL 기반 필터/정렬 상태
+  const { filters, sort, updateFilters, updateSort } = useProductsURLState();
+
+  // ✅ Redux UI 상태 (선택, 뷰모드)
   const selectedProducts = useAppSelector(productsSelectors.selectSelectedProducts);
   const viewMode = useAppSelector(productsSelectors.selectViewMode);
 
@@ -1021,18 +1192,148 @@ export const useProducts = () => {
     isError,
     error,
 
-    // UI 상태
+    // URL 상태 (filters, sort)
     filters,
     sort,
+
+    // Redux UI 상태
     selectedProducts,
     viewMode,
 
     // Actions
-    updateFilters: (newFilters: Partial<typeof filters>) => dispatch(setFilters(newFilters)),
-    updateSort: (newSort: { sortBy: string; sortOrder: 'asc' | 'desc' }) => dispatch(setSort(newSort)),
+    updateFilters,      // URL 업데이트
+    updateSort,         // URL 업데이트
+    toggleSelection: (id: number) => dispatch(toggleProductSelection(id)),
+    setViewMode: (mode: 'table' | 'grid') => dispatch(setViewMode(mode)),
     refetch,
   };
 };
+```
+
+### ⚠️ 중요 사항
+
+1. **URL 상태 vs Redux 상태 분리**:
+   - ✅ **URL 상태** (`useProductsURLState`): filters, sort
+     - 페이지 새로고침에도 유지
+     - URL 공유 가능
+     - 브라우저 뒤로/앞으로 가기 지원
+   - ✅ **Redux 상태** (`productsUISlice`): selectedProducts, viewMode
+     - 일시적 UI 상태
+     - 컴포넌트 간 공유
+
+2. **필수 Hooks만 작성**: 실제로 사용되는 hooks만 작성합니다. 과도한 분리는 피해야 합니다.
+   - ✅ `useProducts`: 메인 통합 hook (필수)
+   - ✅ `useProduct`: 단일 조회 hook (필요시)
+   - ✅ `useProductForm`: 폼 관리 hook (필요시)
+   - ✅ `useProductsURLState`: URL 상태 관리 hook (필수)
+   - ❌ `useProductsFilters`, `useProductsSort` 등: 과도한 분리로 실제 사용되지 않음
+
+3. **Selector 파일 분리**: `store/{feature}Selectors.ts`에 selector를 별도로 정의
+
+4. **@/store에서 Hooks 가져오기**: `useAppDispatch`, `useAppSelector`는 feature에서 재정의하지 않고 `@/store`에서 가져옴
+
+---
+
+## 7단계: Utils 생성 (Validation)
+
+### 7.1 Zod Validation Schema
+
+**`src/features/products/utils/validation.ts`**
+
+```typescript
+/**
+ * Product Validation Schemas
+ *
+ * @description
+ * Zod 스키마를 사용한 제품 데이터 검증
+ */
+
+import { z } from 'zod';
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+export const ProductStatusEnum = z.enum(['active', 'inactive', 'archived'], {
+  message: '유효하지 않은 상태값입니다.',
+});
+
+export const ProductCategoryEnum = z.enum(['subscription', 'one-time'], {
+  message: '유효하지 않은 카테고리입니다.',
+});
+
+// ============================================================================
+// BASE PRODUCT SCHEMA
+// ============================================================================
+
+const baseProductSchema = {
+  name: z
+    .string({ message: '제품명은 문자열이어야 합니다.' })
+    .min(1, { message: '제품명을 입력해주세요.' })
+    .max(100, { message: '제품명은 100자 이하여야 합니다.' })
+    .trim(),
+
+  price: z
+    .number({ message: '가격은 숫자이어야 합니다.' })
+    .min(0, { message: '가격은 0보다 커야 합니다.' })
+    .max(999999999, { message: '가격이 너무 큽니다.' }),
+
+  description: z
+    .string({ message: '설명은 문자열이어야 합니다.' })
+    .min(1, { message: '설명을 입력해주세요.' })
+    .max(2000, { message: '설명은 2000자 이하여야 합니다.' })
+    .trim(),
+
+  status: ProductStatusEnum,
+  category: ProductCategoryEnum,
+};
+
+// ============================================================================
+// CREATE PRODUCT SCHEMA
+// ============================================================================
+
+export const createProductSchema = z.object({
+  ...baseProductSchema,
+});
+
+export type CreateProductSchema = z.infer<typeof createProductSchema>;
+
+// ============================================================================
+// UPDATE PRODUCT SCHEMA
+// ============================================================================
+
+export const updateProductSchema = z
+  .object({
+    name: baseProductSchema.name.optional(),
+    price: baseProductSchema.price.optional(),
+    description: baseProductSchema.description.optional(),
+    status: baseProductSchema.status.optional(),
+    category: baseProductSchema.category.optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: '최소한 하나의 필드는 수정해야 합니다.',
+  });
+
+export type UpdateProductSchema = z.infer<typeof updateProductSchema>;
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+export function zodToFieldErrors(error: unknown) {
+  if (!(error instanceof z.ZodError)) {
+    return { _form: '알 수 없는 검증 에러가 발생했습니다.' };
+  }
+
+  const fieldErrors: Record<string, string> = {};
+
+  error.issues.forEach((issue) => {
+    const path = issue.path.join('.');
+    fieldErrors[path] = issue.message;
+  });
+
+  return fieldErrors;
+}
 ```
 
 ### ⚠️ 중요 사항
@@ -1051,11 +1352,113 @@ export const useProducts = () => {
 
 ---
 
-## 7단계: Import 경로 관리
+## 8단계: UI Slice (Redux Toolkit)
 
-**⚠️ 중요**: barrel 파일(`index.ts`)을 사용하지 않고 직접 경로로 import합니다.
+**`src/features/products/store/productsUISlice.ts`**
 
-### 7.1 Import 패턴
+```typescript
+/**
+ * Products UI Slice
+ *
+ * 제품 관련 UI 상태 관리 (선택, 뷰 모드 등)
+ *
+ * @description
+ * Redux에서 관리하는 UI 전용 상태
+ * - filters, sort: URL 쿼리 파라미터로 관리 (useProductsURLState)
+ * - selectedProducts, viewMode: Redux에서 관리 (이 파일)
+ *
+ * @architecture
+ * URL 상태 (영구적) + Redux 상태 (일시적)
+ * - 필터/정렬: URL에 저장하여 페이지 새로고침에도 유지
+ * - 선택/뷰모드: Redux에 저장하여 일시적 UI 상태 관리
+ */
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProductsUIState } from '../types/store';
+
+// ============================================================================
+// INITIAL STATE
+// ============================================================================
+
+const initialState: ProductsUIState = {
+  selectedProducts: [] as number[],
+  viewMode: 'table' as 'table' | 'grid',
+};
+
+// ============================================================================
+// PRODUCTS UI SLICE
+// ============================================================================
+
+/**
+ * Products UI Slice
+ *
+ * UI 전용 상태만 관리하는 Redux Slice
+ */
+export const productsSlice = createSlice({
+  name: 'products',
+  initialState,
+
+  reducers: {
+    /**
+     * 제품 선택/해제 토글
+     *
+     * @param state - 현재 상태
+     * @param action - 선택/해제할 제품 ID
+     */
+    toggleProductSelection: (state, action: PayloadAction<number>) => {
+      const index = state.selectedProducts.indexOf(action.payload);
+      if (index === -1) {
+        state.selectedProducts.push(action.payload);
+      } else {
+        state.selectedProducts.splice(index, 1);
+      }
+    },
+
+    /**
+     * 모든 제품 선택
+     *
+     * @param state - 현재 상태
+     * @param action - 선택할 제품 ID 배열
+     */
+    selectAllProducts: (state, action: PayloadAction<number[]>) => {
+      state.selectedProducts = action.payload;
+    },
+
+    /**
+     * 모든 제품 선택 해제
+     *
+     * @param state - 현재 상태
+     */
+    clearProductSelection: (state) => {
+      state.selectedProducts = [];
+    },
+
+    /**
+     * 뷰 모드 변경
+     *
+     * @param state - 현재 상태
+     * @param action - 새로운 뷰 모드
+     */
+    setViewMode: (state, action: PayloadAction<'table' | 'grid'>) => {
+      state.viewMode = action.payload;
+    },
+  },
+});
+
+// ============================================================================
+// ACTIONS EXPORT
+// ============================================================================
+
+export const { toggleProductSelection, selectAllProducts, clearProductSelection, setViewMode } = productsSlice.actions;
+
+// ============================================================================
+// REDUCER EXPORT
+// ============================================================================
+
+export default productsSlice.reducer;
+```
+
+**⚠️ 중요**: UI Slice에서 `filters`, `sort` 관련 코드를 완전히 제거하고 URL 기반 관리로 변경했습니다.
 
 **❌ 피해야 할 패턴 (barrel 사용)**:
 ```typescript
@@ -1763,7 +2166,7 @@ export { productsApiSlice } from './store/apiSlice';
 
 ---
 
-## 완성 확인 체크리스트
+## 완성 확인 체크리스트 (2026 현행화)
 
 개발 완료 후 다음 사항을 확인합니다:
 
@@ -1777,49 +2180,62 @@ export { productsApiSlice } from './store/apiSlice';
 
 ✅ 2. Types 정의
    - api.ts (API 타입)
-   - ui.ts (UI 상태 타입)
-   - store.ts (Redux 상태 타입)
-   - components.ts (컴포넌트 Props 타입)
+   - ui.ts (UI 상태 타입 - 컴포넌트 Props)
+   - store.ts (Redux 상태 타입 - selectedProducts, viewMode만)
    - ❌ index.ts 생성 금지 (barrel 파일 사용 안 함)
 
 ✅ 3. API Slice 작성 (RTK Query)
    - endpoints 정의
    - 자동 생성된 hooks export
+   - 태그 기반 캐싱 무효화
 
 ✅ 4. UI Slice 작성 (Redux Toolkit)
-   - initial state 정의
-   - actions & reducers 작성
+   - initial state 정의 (filters, sort 제외)
+   - actions & reducers 작성 (selection, viewMode만)
    - reducer export
 
-✅ 5. Components 작성
+✅ 5. URL Utils 작성
+   - urlParams.ts (URL 파라미터 파싱/빌드)
+   - validation.ts (Zod 검증 스키마)
+
+✅ 6. URL State Hook 작성
+   - useProductsURLState (filters, sort 상태 관리)
+   - URL 업데이트 함수
+
+✅ 7. Main Hook 작성
+   - useProducts 통합 훅
+   - URL 상태 + Redux UI 상태 + RTK Query 연동
+   - 실제로 사용되는 hooks만 작성
+
+✅ 8. Components 작성
    - ProductList (목록 컴포넌트)
    - ProductFilters (필터 컴포넌트)
+   - ProductDetail (상세 컴포넌트)
+   - ProductForm (폼 컴포넌트)
    - 로딩/에러 상태 처리
 
-✅ 6. Custom Hook 작성
-   - useProducts 통합 훅
-   - Redux 상태 연동
-   - RTK Query 연동
-
-✅ 7. Import 경로 관리
+✅ 9. Import 경로 관리
    - 직접 경로로 import (barrel 미사용)
    - 명확한 의존성 확보
    - ❌ index.ts barrel 파일 생성 금지
 
-✅ 8. Page 작성
+✅ 10. Page 작성
    - Dynamic Reducer Pattern 적용
    - useInjectReducer 사용
+   - URL 상태 관리 통합
    - 컴포넌트 구조화
 
-✅ 9. Redux Store 등록
-   - UI 리듀서 등록
-   - API 리듀서 등록
+✅ 11. Redux Store 등록
+   - UI 리듀서 등록 (선택적으로 페이지에서 주입)
+   - API 리듀서 등록 (전역으로 초기 로드)
+   - RootState 타입 업데이트
 
-✅ 10. 빌드 및 테스트
+✅ 12. 빌드 및 테스트
    - npm run build 성공
    - 페이지 라우팅 정상 작동
    - MSW 목킹 데이터 표시
-   - 필터/정렬 기능 작동
+   - URL 기반 필터/정렬 기능 작동
+   - 페이지 새로고침에도 상태 유지 확인
 ```
 
 ---
@@ -1866,50 +2282,115 @@ http://localhost:3000/products
 
 ---
 
-## 🎯 핵심 패턴 요약
+## 🎯 핵심 패턴 요약 (2026 현행화)
 
 ### 1. **MSW First**
 API 정의 없이 MSW로 먼저 목킹 → 프론트엔드 독립 개발 가능
 
 ### 2. **Type Safety**
 모든 레이어에서 TypeScript 타입 정의 → 컴파일 타임 에러 방지
+- Zod 스키마로 런타임 검증과 타입 추론 동시에 처리
 
-### 3. **Separation of Concerns**
+### 3. **Hybrid State Management**
+**URL 상태 (영구적) + Redux 상태 (일시적)**
+- **URL 상태**: filters, sort → 페이지 새로고침에도 유지, URL 공유 가능
+- **Redux 상태**: selectedProducts, viewMode → 컴포넌트간 공유 UI 상태
+- **API 상태**: RTK Query로 서버 데이터 캐싱 및 관리
+
+### 4. **Separation of Concerns**
 - **API Slice**: 서버 데이터 (RTK Query) - 전역 로드
 - **UI Slice**: 클라이언트 상태 (Redux Toolkit) - 페이지 주입
+- **URL State**: 필터/정렬 상태 (useProductsURLState) - URL 기반
 - **Selectors**: 별도 파일 분리 (`store/{feature}Selectors.ts`)
-- 분리된 관심사 → 유지보수성 향상
+- **Utils**: 유틸리티 함수 분리 (`utils/urlParams`, `utils/validation`)
 
-### 4. **Code Splitting**
+### 5. **Code Splitting**
 - **API Reducers**: 초기에 전역 로드 (`src/store/api/config.ts`)
 - **UI Reducers**: 페이지 진입 시 지연 로딩 (`useInjectReducer`)
 - **통합 API**: `useInjectReducer`가 `isReady`를 반환하여 별도 훅 불필요
 - 초기 번들 크기 최적화
 
-### 5. **Consistent Structure**
+### 6. **Consistent Structure**
 모든 Feature가 동일한 패턴 따름 → 온보딩 및 협업 효율화
 
-### 6. **필요한 Hooks만 작성**
+### 7. **필요한 Hooks만 작성**
 - 실제로 사용되는 hooks만 작성 (과도한 분리 피하기)
 - ✅ `useProducts`: 메인 통합 hook (필수)
-- ✅ `useProduct`, `useProductForm`: 필요시 추가
+- ✅ `useProduct`: 단일 조회 hook (필요시)
+- ✅ `useProductForm`: 폼 관리 hook (필요시)
+- ✅ `useProductsURLState`: URL 상태 관리 hook (필수)
 - ❌ `useProductsFilters`, `useProductsSort` 등: 과도한 분리로 실제 미사용
 
-### 7. **Barrel 파일 완전 제거**
+### 8. **Barrel 파일 완전 제거**
 - ✅ 모든 barrel 파일(`index.ts`) 제거
 - ✅ 직접 경로로 import: `import { ProductList } from '@/features/products/components/ProductList'`
 - ✅ 명확한 의존성: import만 보고 출처 바로 파악
 - ✅ IDE "Go to Definition" 개선
 - ✅ 순환 의존성 위험 완전 제거
 
-### 8. **Next.js 15+ Dynamic Routes**
+### 9. **Next.js 15+ Dynamic Routes**
 - `useParams()`로 클라이언트 컴포넌트에서 params 추출
 - 단일 파일 패턴 (서버/클라이언트 분리하지 않음)
 - 모든 라우트 동일한 구조 유지
 
-### 9. **Filters와 Query 연동**
-UI 상태(filters, sort)를 RTK Query 쿼리 파라미터로 전달하여 자동 refetch
-- Selector로 UI 상태 읽기 → RTK Query에 전달 → 자동 데이터 갱신
+### 10. **URL State와 Query 연동**
+URL 상태(filters, sort)를 RTK Query 쿼리 파라미터로 전달하여 자동 refetch
+- URL 상태 읽기 (`useProductsURLState`) → RTK Query에 전달 → 자동 데이터 갱신
+- URL 변경 시 자동으로 API 재요청
+
+### 11. **Zod Validation Integration**
+- API 타입과 검증 스키마 분리
+- `createProductSchema`, `updateProductSchema`로 타입 안전성 확보
+- 폼 컴포넌트에서 Zod 에러를 UI 에러로 변환
+
+---
+
+## 📁 최신 파일 구조 (2026)
+
+```
+src/features/products/
+├── components/
+│   ├── ProductList.tsx       ✅ 목록 컴포넌트
+│   ├── ProductFilters.tsx    ✅ 필터 컴포넌트
+│   ├── ProductDetail.tsx     ✅ 상세 컴포넌트
+│   └── ProductForm.tsx       ✅ 폼 컴포넌트
+├── hooks/
+│   ├── useProducts.ts        ✅ 메인 통합 hook
+│   ├── useProduct.ts         ✅ 단일 조회 hook
+│   ├── useProductForm.ts     ✅ 폼 관리 hook
+│   └── useProductsURLState.ts ✅ URL 상태 관리 hook (신규)
+├── store/
+│   ├── apiSlice.ts           ✅ RTK Query API Slice
+│   ├── productsUISlice.ts    ✅ Redux UI Slice (filters/sort 제거됨)
+│   └── productsSelectors.ts  ✅ Redux Selectors
+├── types/
+│   ├── api.ts                ✅ API 타입
+│   ├── ui.ts                 ✅ UI 타입 (컴포넌트 Props)
+│   └── store.ts              ✅ Redux Store 타입 (신규)
+└── utils/
+    ├── urlParams.ts          ✅ URL 파라미터 유틸 (신규)
+    └── validation.ts         ✅ Zod 검증 스키마 (신규)
+```
+
+---
+
+## 🔑 주요 변경사항 (2025 → 2026)
+
+### ✅ 추가된 것들
+1. **URL 기반 상태 관리**: `useProductsURLState` hook 추가
+2. **URL 유틸리티**: `utils/urlParams.ts` 추가
+3. **Zod 검증**: `utils/validation.ts` 추가
+4. **타입 분리**: `types/store.ts`로 Redux 상태 타입 분리
+
+### ❌ 제거된 것들
+1. **Redux에서 filters, sort 제거**: URL 기반으로 이전
+2. **과도한 hooks 제거**: `useProductsFilters`, `useProductsSort` 등 실제 미사용 hooks 삭제
+3. **Barrel 파일 제거**: 모든 `index.ts` 파일 삭제
+
+### 🔄 변경된 것들
+1. **UI State 구조**: `ProductsUIState`에서 filters/sort 제거
+2. **Selectors 분리**: UI State만 관리하는 selector로 변경
+3. **Hook 구조**: URL 상태와 Redux 상태를 명확히 분리
 
 ---
 
