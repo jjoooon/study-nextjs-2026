@@ -90,21 +90,24 @@ function ProductsPageContent() {
   const { products, total, filters, sort, isLoading, isError, error, updateFilters, updateSort, refetch } =
     useProducts();
 
-  // 핸들러
+  // 검색 조건 변경 핸들러
   const handleFilterChange = (newFilters: typeof filters) => {
     updateFilters(newFilters);
   };
 
+  // 정렬 조건 변경 핸들러
   const handleSortChange = (sortBy: string) => {
     const sortOrder: 'asc' | 'desc' = sort.sortBy === sortBy && sort.sortOrder === 'asc' ? 'desc' : 'asc';
     updateSort({ sortBy, sortOrder });
   };
 
+  // 상품 클릭 핸들러
   const handleProductClick = (product: (typeof products)[0]) => {
     // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 이동
     router.push(`/products/${product.id}?${searchParams.toString()}`);
   };
 
+  // 제품 등록 버튼 클릭 핸들러
   const handleNewProductClick = () => {
     // ✅ 쿼리 파라미터 보존하면서 등록 페이지로 이동
     router.push(`/products/new?${searchParams.toString()}`);
