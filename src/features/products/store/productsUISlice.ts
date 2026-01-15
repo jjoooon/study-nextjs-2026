@@ -15,12 +15,13 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProductsUIState } from '../types/store';
 
 // ============================================================================
 // INITIAL STATE
 // ============================================================================
 
-const initialState = {
+const initialState: ProductsUIState = {
   selectedProducts: [] as number[],
   viewMode: 'table' as 'table' | 'grid',
 };
@@ -96,18 +97,3 @@ export const { toggleProductSelection, selectAllProducts, clearProductSelection,
 // ============================================================================
 
 export default productsSlice.reducer;
-
-// ============================================================================
-// TYPES EXPORT
-// ============================================================================
-
-/**
- * Products UI Slice State Type
- *
- * @description
- * Redux에 저장되는 UI 상태 타입
- */
-export type ProductsUIState = {
-  selectedProducts: number[];
-  viewMode: 'table' | 'grid';
-};

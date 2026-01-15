@@ -7,27 +7,13 @@
  * - 필터/정렬 상태는 URL 쿼리 파라미터로 관리
  */
 
-import type { ProductsUIState } from '../store/productsUISlice';
-
 /**
- * Products Store State
+ * Products UI Slice State Type
  *
- * @deprecated
- * 이 타입은 더 이상 사용되지 않습니다.
- * Redux store는 productsUISlice의 ProductsUIState 타입을 직접 사용하세요.
- *
- * @example
- * // Old way (deprecated)
- * import type { ProductsState } from '@/features/products/types/store';
- *
- * // New way
- * import type { ProductsUIState } from '@/features/products/store/productsUISlice';
+ * @description
+ * Redux에 저장되는 UI 상태 타입
  */
-export type ProductsState = {
-  ui: ProductsUIState;
-  lastUpdated: string | null;
+export type ProductsUIState = {
+  selectedProducts: number[];
+  viewMode: 'table' | 'grid';
 };
-
-// Re-export UI types for convenience
-export type { ProductsFilters, ProductsSort, ProductListProps, ProductFiltersProps, ProductCardProps } from './ui';
-export type { ProductsUIState } from '../store/productsUISlice';
