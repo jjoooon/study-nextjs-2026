@@ -282,7 +282,7 @@ export const LOGIN_PERSISTENCE_LABELS: Record<LoginPersistence, string> = {
  */
 export const PROFILE_IMAGE = {
   /** 최대 파일 크기 (2MB) */
-  MAX_SIZE: 2 * 1024 * 1024,
+  MAX_FILE_SIZE: 2 * 1024 * 1024,
 
   /** 지원되는 형식 */
   ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'] as const,
@@ -294,13 +294,13 @@ export const PROFILE_IMAGE = {
   },
 
   /** 최소 크기 (px) */
-  MIN_SIZE: {
+  MIN_DIMENSION: {
     WIDTH: 100,
     HEIGHT: 100,
   },
 
   /** 최대 크기 (px) */
-  MAX_SIZE: {
+  MAX_DIMENSION: {
     WIDTH: 1024,
     HEIGHT: 1024,
   },

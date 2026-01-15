@@ -147,7 +147,7 @@ export const PRODUCT_IMAGE = {
   ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'] as const,
 
   /** 최대 파일 크기 (5MB) */
-  MAX_SIZE: 5 * 1024 * 1024,
+  MAX_FILE_SIZE: 5 * 1024 * 1024,
 
   /** 권장 크기 (px) */
   RECOMMENDED_SIZE: {
@@ -156,13 +156,13 @@ export const PRODUCT_IMAGE = {
   },
 
   /** 최소 크기 (px) */
-  MIN_SIZE: {
+  MIN_DIMENSION: {
     WIDTH: 200,
     HEIGHT: 200,
   },
 
   /** 최대 크기 (px) */
-  MAX_SIZE: {
+  MAX_DIMENSION: {
     WIDTH: 4096,
     HEIGHT: 4096,
   },

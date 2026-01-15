@@ -54,14 +54,14 @@ const envSchema = z.object({
     .string()
     .transform((val) => parseInt(val, 10))
     .pipe(z.number().positive())
-    .default('10000'),
+    .default(10000),
 
   /** API 재시도 횟수 */
   NEXT_PUBLIC_API_RETRY_COUNT: z
     .string()
     .transform((val) => parseInt(val, 10))
     .pipe(z.number().int().min(0).max(10))
-    .default('3'),
+    .default(3),
 
   // ==========================================================================
   // 인증 설정 (공개)
@@ -72,14 +72,14 @@ const envSchema = z.object({
     .string()
     .transform((val) => parseInt(val, 10))
     .pipe(z.number().positive())
-    .default('15'),
+    .default(15),
 
   /** 리프레시 토큰 만료 시간 (일) */
   NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY: z
     .string()
     .transform((val) => parseInt(val, 10))
     .pipe(z.number().positive())
-    .default('7'),
+    .default(7),
 
   // ==========================================================================
   // OAuth 설정 (공개)
@@ -105,25 +105,25 @@ const envSchema = z.object({
   NEXT_PUBLIC_FEATURE_ADVANCED_FILTERS: z
     .string()
     .transform((val) => val === 'true')
-    .default('false'),
+    .default(false),
 
   /** 다크 모드 활성화 */
   NEXT_PUBLIC_FEATURE_DARK_MODE: z
     .string()
     .transform((val) => val === 'true')
-    .default('true'),
+    .default(true),
 
   /** 실시간 알림 활성화 */
   NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: z
     .string()
     .transform((val) => val === 'true')
-    .default('false'),
+    .default(false),
 
   /** 성능 모니터링 활성화 */
   NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: z
     .string()
     .transform((val) => val === 'true')
-    .default('true'),
+    .default(true),
 
   // ==========================================================================
   // 개발 도구 설정 (공개)
@@ -133,13 +133,13 @@ const envSchema = z.object({
   NEXT_PUBLIC_STORYBOOK_ENABLED: z
     .string()
     .transform((val) => val === 'true')
-    .default('true'),
+    .default(true),
 
   /** Redux DevTools 활성화 */
   NEXT_PUBLIC_REDUX_DEVTOOLS: z
     .string()
     .transform((val) => val === 'true')
-    .default('true'),
+    .default(true),
 
   /** 로깅 레벨 */
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
@@ -202,12 +202,12 @@ const validateEnv = () => {
     return envSchema.parse(process.env);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const missingVars = error.errors
-        .filter((e) => e.code === 'invalid_type')
-        .map((e) => `  - ${e.path.join('.')}: ${e.message}`);
+      const missingVars = error.issues
+        .filter((e: z.ZodIssue) => e.code === 'invalid_type')
+        .map((e: z.ZodIssue) => `  - ${e.path.join('.')}: ${e.message}`);
 
       console.error('❌ Invalid environment variables:');
-      missingVars.forEach((msg) => console.error(msg));
+      missingVars.forEach((msg: string) => console.error(msg));
       console.error('\nPlease check your .env file.');
     }
     throw error;
