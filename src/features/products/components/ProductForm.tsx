@@ -4,10 +4,20 @@
  * ProductForm Component
  *
  * 제품 등록/수정 폼 컴포넌트
+ *
+ * @description
+ * Zod 스키마를 사용한 폼 검증 구현
+ *
+ * @architecture
+ * - Zod 스키마: utils/validation.ts
+ * - 실시간 검증: 필드 변경 시 자동 검증
+ * - 제출 시 검증: 전체 폼 검증
  */
 
 import { useEffect, useState } from 'react';
+import { z } from 'zod';
 import type { CreateProductInput, Product, UpdateProductInput } from '../types/api';
+import { createProductSchema, zodToFieldErrors } from '../utils/validation';
 
 interface ProductFormProps {
   initialData?: Product;
@@ -26,7 +36,7 @@ export default function ProductForm({ initialData, mode, onSubmit, onCancel, isS
     category: 'subscription',
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof CreateProductInput, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
 
   // 초기 데이터 로드 (수정 모드)
   useEffect(() => {
@@ -45,39 +55,63 @@ export default function ProductForm({ initialData, mode, onSubmit, onCancel, isS
 
   /**
    * 입력 변경 핸들러
+   *
+   * @description
+   * Zod 스키마를 사용한 실시간 필드 검증
    */
   const handleChange = (field: keyof CreateProductInput, value: string | number) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    // 에러 clear
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    const newFormData = { ...formData, [field]: value };
+    setFormData(newFormData);
+
+    // 실시간 검증 (해당 필드만)
+    try {
+      // 부분 스키마 생성 (현재 필드만)
+      const fieldSchema = createProductSchema.shape[field];
+      if (fieldSchema) {
+        fieldSchema.parse(value);
+        // 검증 성공 시 에러 제거
+        if (errors[field]) {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[field];
+            return newErrors;
+          });
+        }
+      }
+    } catch (error) {
+      // Zod 에러를 메시지로 변환
+      if (error instanceof z.ZodError) {
+        const fieldError = zodToFieldErrors(error);
+        setErrors((prev) => ({ ...prev, ...fieldError }));
+      }
     }
   };
 
   /**
-   * 폼 검증
+   * 폼 전체 검증
+   *
+   * @description
+   * 제출 시 전체 폼 데이터를 Zod 스키마로 검증
+   * @returns 검증 통과 여부
    */
   const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof CreateProductInput, string>> = {};
+    const result = createProductSchema.safeParse(formData);
 
-    if (!formData.name.trim()) {
-      newErrors.name = '제품명을 입력해주세요.';
+    if (!result.success) {
+      const fieldErrors = zodToFieldErrors(result.error);
+      setErrors(fieldErrors);
+      return false;
     }
 
-    if (formData.price <= 0) {
-      newErrors.price = '가격은 0보다 커야 합니다.';
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = '설명을 입력해주세요.';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors({});
+    return true;
   };
 
   /**
    * 제출 핸들러
+   *
+   * @description
+   * Zod 검증 후 데이터 제출
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +120,7 @@ export default function ProductForm({ initialData, mode, onSubmit, onCancel, isS
       return;
     }
 
+    // Zod 검증 통과한 타입 안전한 데이터 사용
     await onSubmit(formData);
   };
 
