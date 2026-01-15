@@ -31,6 +31,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import log from '@/shared/utils/logger';
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -38,9 +39,11 @@ interface GlobalErrorProps {
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  const logger = log.getLogger('Global');
+
   useEffect(() => {
     // Log critical errors to error reporting service
-    console.error('Global application error:', error);
+    logger.error('Global application error:', error);
   }, [error]);
 
   return (

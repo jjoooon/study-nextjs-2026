@@ -24,7 +24,10 @@ import RecentActivity from '@/features/dashboard/components/RecentActivity';
 import { useDashboard } from '@/features/dashboard/hooks/useDashboard';
 import dashboardReducer from '@/features/dashboard/store/dashboardSlice';
 import type { Widget } from '@/features/dashboard/types/ui';
+import log from '@/shared/utils/logger';
 import { useInjectReducer } from '@/store/reducers/hooks';
+
+const logger = log.getLogger('Dashboard');
 
 /**
  * Dashboard 컴포넌트 (실제 내용)
@@ -42,7 +45,7 @@ function DashboardContent() {
         const endTime = performance.now();
         setInjectionTime(endTime - startTime);
         setHasLogged(true);
-        console.log('[Dashboard] Reducer injection time:', `${(endTime - startTime).toFixed(2)}ms`);
+        logger.log('[Dashboard] Reducer injection time:', `${(endTime - startTime).toFixed(2)}ms`);
       });
       return () => cancelAnimationFrame(timer);
     }

@@ -1,10 +1,13 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useGetProductByIdQuery, useDeleteProductMutation } from '@/features/products/store/apiSlice';
+import log from '@/shared/utils/logger';
 
 // ============================================================================
 // PRODUCT HOOKS (Single Product)
 // ============================================================================
+
+const logger = log.getLogger('Prodcuts');
 
 /**
  * Product 상세 관리 Hook
@@ -37,7 +40,7 @@ export const useProduct = (id: string) => {
       // 삭제 성공 시 리스트 페이지로 이동
       router.push('/products');
     } catch (error) {
-      console.error('Failed to delete product:', error);
+      logger.error('Failed to delete product:', error);
       alert('제품 삭제에 실패했습니다.');
     }
   }, [numericId, deleteProductMutation, router]);

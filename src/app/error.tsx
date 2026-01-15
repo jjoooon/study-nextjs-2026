@@ -28,6 +28,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import log from '@/shared/utils/logger';
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -35,11 +36,12 @@ interface ErrorProps {
 }
 
 export default function Error({ error, reset }: ErrorProps) {
+  const logger = log.getLogger('Global');
   const router = useRouter();
 
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error('Application error:', error);
+    logger.error('Application error:', error);
   }, [error]);
 
   return (

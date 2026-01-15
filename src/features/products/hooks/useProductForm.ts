@@ -6,10 +6,13 @@ import {
   useUpdateProductMutation,
 } from '@/features/products/store/apiSlice';
 import type { CreateProductInput, Product, UpdateProductInput } from '@/features/products/types/api';
+import log from '@/shared/utils/logger';
 
 // ============================================================================
 // PRODUCT FORM HOOKS
 // ============================================================================
+
+const logger = log.getLogger('Products');
 
 /**
  * Product Form Hook
@@ -46,7 +49,7 @@ export const useProductForm = (id?: string) => {
         router.push(`/products/${result.id}`);
         return result;
       } catch (error) {
-        console.error('Failed to create product:', error);
+        logger.error('Failed to create product:', error);
         alert('제품 생성에 실패했습니다.');
         return null;
       }
@@ -70,7 +73,7 @@ export const useProductForm = (id?: string) => {
         router.push(`/products/${numericId}`);
         return result;
       } catch (error) {
-        console.error('Failed to update product:', error);
+        logger.error('Failed to update product:', error);
         alert('제품 수정에 실패했습니다.');
         return null;
       }

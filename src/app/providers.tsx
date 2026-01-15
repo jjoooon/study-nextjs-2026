@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import log from '@/shared/utils/logger';
 import { persistor, store } from '@/store';
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const logger = log.getLogger('Global');
+
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -22,12 +25,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      console.log('[MSW] Initializing...');
+      logger.log('[MSW] Initializing...');
 
       // Dynamically import MSW worker to avoid bundling in production
       const { worker } = await import('@/mocks/browser');
 
-      console.log('[MSW] Worker loaded, starting...');
+      logger.log('[MSW] Worker loaded, starting...');
 
       // Start the worker and wait for it to be ready
       // This is CRITICAL to prevent race conditions
@@ -35,10 +38,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         await worker.start({
           onUnhandledRequest: 'bypass',
         });
-        console.log('[MSW] ✅ Mocking enabled - Service worker active');
-        console.log('[MSW] Registered handlers:', worker.listHandlers());
+        logger.log('[MSW] ✅ Mocking enabled - Service worker active');
+        logger.log('[MSW] Registered handlers:', worker.listHandlers());
       } catch (error) {
-        console.error('[MSW] ❌ Failed to start worker:', error);
+        logger.error('[MSW] ❌ Failed to start worker:', error);
       }
 
       // Mark as ready regardless of MSW success/failure

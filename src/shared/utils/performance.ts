@@ -1,4 +1,5 @@
 // Performance monitoring utilities
+import log from '@/shared/utils/logger';
 
 export interface PerformanceMetrics {
   fcp: number; // First Contentful Paint
@@ -8,6 +9,8 @@ export interface PerformanceMetrics {
   ttfb: number; // Time to First Byte
   loadTime: number; // Page load time
 }
+
+const logger = log.getLogger('Global');
 
 // Measure Web Vitals
 export function measureWebVitals(): Promise<PerformanceMetrics> {
@@ -34,7 +37,7 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
         });
         fcpObserver.observe({ entryTypes: ['paint'] });
       } catch {
-        console.warn('FCP observation not supported');
+        logger.warn('FCP observation not supported');
       }
 
       // Largest Contentful Paint
@@ -46,7 +49,7 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
       } catch {
-        console.warn('LCP observation not supported');
+        logger.warn('LCP observation not supported');
       }
 
       // First Input Delay
@@ -58,7 +61,7 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
       } catch {
-        console.warn('FID observation not supported');
+        logger.warn('FID observation not supported');
       }
 
       // Cumulative Layout Shift
@@ -74,7 +77,7 @@ export function measureWebVitals(): Promise<PerformanceMetrics> {
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
       } catch {
-        console.warn('CLS observation not supported');
+        logger.warn('CLS observation not supported');
       }
     }
 
@@ -109,7 +112,7 @@ export function measureRenderTime(componentName: string) {
   return () => {
     const endTime = performance.now();
     const duration = endTime - startTime;
-    console.log(`[Performance] ${componentName} rendered in ${duration.toFixed(2)}ms`);
+    logger.log(`[Performance] ${componentName} rendered in ${duration.toFixed(2)}ms`);
     return duration;
   };
 }
@@ -126,10 +129,10 @@ export function measurePerformance(name: string, startMark: string) {
     try {
       performance.measure(name, startMark);
       const measure = performance.getEntriesByName(name)[0];
-      console.log(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
+      logger.log(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
       return measure.duration;
     } catch {
-      console.warn('Performance measure failed');
+      logger.warn('Performance measure failed');
     }
   }
   return 0;
@@ -181,7 +184,7 @@ export function measureFunction<T extends (...args: unknown[]) => unknown>(func:
     const start = performance.now();
     const result = func(...args);
     const end = performance.now();
-    console.log(`[Performance] ${functionName} took ${(end - start).toFixed(2)}ms`);
+    logger.log(`[Performance] ${functionName} took ${(end - start).toFixed(2)}ms`);
     return result;
   }) as T;
 }
