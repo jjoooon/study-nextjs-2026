@@ -150,7 +150,7 @@ export const AUTH_FORM_MESSAGES = {
   PASSWORD_REQUIRED: '비밀번호를 입력해주세요.',
   PASSWORD_TOO_SHORT: `비밀번호는 ${AUTH_LIMITS.PASSWORD_MIN_LENGTH}자 이상 입력해주세요.`,
   PASSWORD_TOO_LONG: `비밀번호는 ${AUTH_LIMITS.PASSWORD_MAX_LENGTH}자 이하로 입력해주세요.`,
- _PASSWORD_INVALID: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
+  _PASSWORD_INVALID: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
   PASSWORD_MISMATCH: '비밀번호가 일치하지 않습니다.',
 
   /** 이름 */

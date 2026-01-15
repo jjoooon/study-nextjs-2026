@@ -240,13 +240,13 @@ export const GRID = {
  */
 export const SPACING = {
   0: 0,
-  1: 4,   // 4px
-  2: 8,   // 8px
-  3: 12,  // 12px
-  4: 16,  // 16px
-  5: 20,  // 20px
-  6: 24,  // 24px
-  8: 32,  // 32px
+  1: 4, // 4px
+  2: 8, // 8px
+  3: 12, // 12px
+  4: 16, // 16px
+  5: 20, // 20px
+  6: 24, // 24px
+  8: 32, // 32px
   10: 40, // 40px
   12: 48, // 48px
   16: 64, // 64px
@@ -258,15 +258,15 @@ export const SPACING = {
  * 폰트 크기 (rem)
  */
 export const FONT_SIZES = {
-  XS: '0.75rem',   // 12px
-  SM: '0.875rem',  // 14px
-  BASE: '1rem',    // 16px
-  LG: '1.125rem',  // 18px
-  XL: '1.25rem',   // 20px
+  XS: '0.75rem', // 12px
+  SM: '0.875rem', // 14px
+  BASE: '1rem', // 16px
+  LG: '1.125rem', // 18px
+  XL: '1.25rem', // 20px
   '2XL': '1.5rem', // 24px
   '3XL': '1.875rem', // 30px
-  '4XL': '2.25rem',  // 36px
-  '5XL': '3rem',     // 48px
+  '4XL': '2.25rem', // 36px
+  '5XL': '3rem', // 48px
 } as const;
 
 /**
@@ -289,14 +289,14 @@ export const FONT_WEIGHTS = {
  */
 export const RADIUS = {
   NONE: '0',
-  SM: '0.125rem',   // 2px
+  SM: '0.125rem', // 2px
   DEFAULT: '0.25rem', // 4px
-  MD: '0.375rem',   // 6px
-  LG: '0.5rem',     // 8px
-  XL: '0.75rem',    // 12px
-  '2XL': '1rem',    // 16px
-  '3XL': '1.5rem',  // 24px
-  FULL: '9999px',   // 원형
+  MD: '0.375rem', // 6px
+  LG: '0.5rem', // 8px
+  XL: '0.75rem', // 12px
+  '2XL': '1rem', // 16px
+  '3XL': '1.5rem', // 24px
+  FULL: '9999px', // 원형
 } as const;
 
 /**

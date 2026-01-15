@@ -27,9 +27,7 @@ const envSchema = z.object({
   // ==========================================================================
 
   /** Node.js 환경 (development | production | test) */
-  NODE_ENV: z
-    .enum(['development', 'production', 'test'])
-    .default('development'),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
   // ==========================================================================
   // 애플리케이션 설정 (공개)
@@ -144,9 +142,7 @@ const envSchema = z.object({
     .default('true'),
 
   /** 로깅 레벨 */
-  NEXT_PUBLIC_LOG_LEVEL: z
-    .enum(['error', 'warn', 'info', 'debug'])
-    .default('debug'),
+  NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
 
   // ==========================================================================
   // Sentry 설정 (공개)

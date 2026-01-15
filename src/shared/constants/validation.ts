@@ -14,7 +14,7 @@ export const REGEX = {
   EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 
   /** URL */
-  URL: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*)$/,
+  URL: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
 
   /** 전화번호 (한국) */
   PHONE: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
@@ -29,7 +29,7 @@ export const REGEX = {
   ALPHANUMERIC: /^[a-zA-Z0-9]+$/,
 
   /** 영문 + 숫자 + 특수문자 */
-  ALPHANUMERIC_SPECIAL: /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/,
+  ALPHANUMERIC_SPECIAL: /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+$/,
 
   /** 한글만 */
   KOREAN: /^[가-힣]+$/,
@@ -199,12 +199,7 @@ export const PASSWORD_POLICY = {
   } as const,
 
   /** 공통 비밀번호 금지 */
-  FORBIDDEN_PATTERNS: [
-    '123456',
-    'password',
-    'qwerty',
-    'abc123',
-  ] as const,
+  FORBIDDEN_PATTERNS: ['123456', 'password', 'qwerty', 'abc123'] as const,
 } as const;
 
 /**
