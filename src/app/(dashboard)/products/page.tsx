@@ -13,13 +13,24 @@
  * - Dynamic Reducer Pattern으로 products reducer lazy loading
  * - useProducts 훅으로 상태 및 액션 관리
  * - ProductFilters, ProductList 컴포넌트 조합
+ * - URL 기반 상태 관리로 페이지 이동 간 상태 유지
  *
  * @architecture
  * Next.js App Router + Client Component Pattern
  * Dynamic Reducer Injection for code splitting
+ * URL-based state management for cross-page persistence
  *
  * @usage
  * /products route에서 자동으로 렌더링됨
+ *
+ * @feature URL-based State Management
+ * - filters, sort 상태를 URL 쿼리 파라미터에 저장
+ * - 페이지 이동 간 상태 자동 유지
+ * - URL 공유, 북마크 가능
+ * - 새로고침해도 상태 유지
+ *
+ * @example
+ * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
 import { useRouter } from 'next/navigation';
@@ -40,9 +51,9 @@ import { useInjectReducer } from '@/store/reducers/hooks';
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
 export default function ProductsPage() {
-  // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
+  // 1️⃣ UI 리듀서 동적 주입 (URL 기반 상태 관리로 ejectOnUnmount: true 가능)
   const { isReady } = useInjectReducer('products', productsReducer, {
-    ejectOnUnmount: false,
+    ejectOnUnmount: true, // URL에 상태 저장되므로 안전하게 eject 가능
   });
 
   // 로딩 상태 표시
