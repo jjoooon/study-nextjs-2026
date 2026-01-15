@@ -19,14 +19,18 @@
  * - 반응형 디자인: Tailwind CSS로 모든 화면 크기 지원
  * - 접근성: 시맨틱 HTML 태그 사용 (main, section, h1, h2)
  * - 간편한 내비게이션: 대시보드로의 직관적인 링크 제공
+ * - 상태 유지: Next.js Link 컴포넌트로 Client-side Navigation 지원
  *
  * @routing
  * - / (현재 페이지): 메인 페이지
- * - /dashboard: 링크를 통해 이동 가능
+ * - /dashboard: Link 컴포넌트로 이동 (상태 유지)
+ * - /products: Link 컴포넌트로 이동 (상태 유지)
  *
  * @see https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts
+ * @see https://nextjs.org/docs/app/api-reference/components/link
  */
 
+import Link from 'next/link';
 import { Navigation } from '@/shared/components/layout/Navigation';
 
 export default function Home() {
@@ -47,20 +51,20 @@ export default function Home() {
             <section className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">🔗 링크</h2>
               <div className="grid md:grid-cols-3 gap-4">
-                <a
+                <Link
                   href="/dashboard"
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
                 >
                   <div className="font-semibold text-gray-900 mb-1">대시보드</div>
                   <div className="text-sm text-gray-600">상세 설명</div>
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/products"
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
                 >
                   <div className="font-semibold text-gray-900 mb-1">상품</div>
                   <div className="text-sm text-gray-600">상세 설명</div>
-                </a>
+                </Link>
               </div>
             </section>
           </div>
