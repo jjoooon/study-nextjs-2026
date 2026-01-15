@@ -89,12 +89,7 @@ export const productsSlice = createSlice({
 // ACTIONS EXPORT
 // ============================================================================
 
-export const {
-  toggleProductSelection,
-  selectAllProducts,
-  clearProductSelection,
-  setViewMode,
-} = productsSlice.actions;
+export const { toggleProductSelection, selectAllProducts, clearProductSelection, setViewMode } = productsSlice.actions;
 
 // ============================================================================
 // REDUCER EXPORT

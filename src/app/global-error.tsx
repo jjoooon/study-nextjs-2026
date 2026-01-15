@@ -38,9 +38,9 @@ interface GlobalErrorProps {
   reset: () => void;
 }
 
-export default function GlobalError({ error, reset }: GlobalErrorProps) {
-  const logger = log.getLogger('Global');
+const logger = log.getLogger('Global');
 
+export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
     // Log critical errors to error reporting service
     logger.error('Global application error:', error);

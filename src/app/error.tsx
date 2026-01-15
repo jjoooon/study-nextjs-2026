@@ -35,8 +35,9 @@ interface ErrorProps {
   reset: () => void;
 }
 
+const logger = log.getLogger('Global');
+
 export default function Error({ error, reset }: ErrorProps) {
-  const logger = log.getLogger('Global');
   const router = useRouter();
 
   useEffect(() => {

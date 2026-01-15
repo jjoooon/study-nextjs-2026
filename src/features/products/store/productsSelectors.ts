@@ -29,18 +29,12 @@ export const selectProductsState = (state: RootState) => state.products;
 /**
  * 선택된 제품 목록 선택자
  */
-export const selectSelectedProducts = createSelector(
-  [selectProductsState],
-  (products) => products.selectedProducts
-);
+export const selectSelectedProducts = createSelector([selectProductsState], (products) => products.selectedProducts);
 
 /**
  * 뷰 모드 선택자
  */
-export const selectViewMode = createSelector(
-  [selectProductsState],
-  (products) => products.viewMode
-);
+export const selectViewMode = createSelector([selectProductsState], (products) => products.viewMode);
 
 // ============================================================================
 // COMPOSED SELECTORS

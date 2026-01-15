@@ -7,9 +7,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import log from '@/shared/utils/logger';
 import { persistor, store } from '@/store';
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  const logger = log.getLogger('Global');
+const logger = log.getLogger('Global');
 
+export function Providers({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
