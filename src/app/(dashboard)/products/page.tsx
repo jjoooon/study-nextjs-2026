@@ -39,7 +39,6 @@ import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
-import { preserveQueryParams } from '@/features/products/utils/urlParams';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -53,9 +52,9 @@ import { useInjectReducer } from '@/store/reducers/hooks';
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
 export default function ProductsPage() {
-  // 1️⃣ UI 리듀서 동적 주입 (URL 기반 상태 관리로 ejectOnUnmount: true 가능)
+  // 1️⃣ UI 리듀서 동적 주입
   const { isReady } = useInjectReducer('products', productsReducer, {
-    ejectOnUnmount: true, // URL에 상태 저장되므로 안전하게 eject 가능
+    ejectOnUnmount: true,
   });
 
   // 로딩 상태 표시
@@ -103,14 +102,12 @@ function ProductsPageContent() {
 
   const handleProductClick = (product: (typeof products)[0]) => {
     // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 이동
-    const url = preserveQueryParams(`/products/${product.id}`, searchParams);
-    router.push(url);
+    router.push(`/products/${product.id}?${searchParams.toString()}`);
   };
 
   const handleNewProductClick = () => {
     // ✅ 쿼리 파라미터 보존하면서 등록 페이지로 이동
-    const url = preserveQueryParams('/products/new', searchParams);
-    router.push(url);
+    router.push(`/products/new?${searchParams.toString()}`);
   };
 
   return (

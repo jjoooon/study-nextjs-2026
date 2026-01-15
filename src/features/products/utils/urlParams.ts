@@ -185,19 +185,3 @@ export function updateURLParams(
   const queryString = params.toString();
   return queryString ? `?${queryString}` : '';
 }
-
-/**
- * 쿼리 파라미터를 보존하면서 새로운 경로로 이동
- *
- * @param basePath - 새로운 경로 (예: "/products/123")
- * @param searchParams - 현재 URLSearchParams
- * @returns 쿼리 파라미터가 포함된 전체 URL
- *
- * @example
- * preserveQueryParams("/products/123", searchParams)
- * // "/products/123?search=laptop&category=electronics"
- */
-export function preserveQueryParams(basePath: string, searchParams: URLSearchParams): string {
-  const queryString = searchParams.toString();
-  return queryString ? `${basePath}?${queryString}` : basePath;
-}

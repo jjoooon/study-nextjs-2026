@@ -1198,9 +1198,9 @@ import { useInjectReducer } from '@/store/reducers/hooks';
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
 export default function ProductsPage() {
-  // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
+  // 1️⃣ UI 리듀서 동적 주입
   const { isReady } = useInjectReducer('products', productsReducer, {
-    ejectOnUnmount: false,
+    ejectOnUnmount: true,
   });
 
   // 로딩 상태 표시
