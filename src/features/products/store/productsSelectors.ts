@@ -3,32 +3,51 @@ import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '@/store';
 
 // ============================================================================
-// PRODUCTS SELECTORS
+// PRODUCTS UI SELECTORS
 // ============================================================================
 
 /**
- * Products domain의 모든 selector
+ * Products UI domain의 selector
+ *
+ * @description
+ * Redux에서 관리하는 UI 상태에 대한 selector
+ * - filters, sort: URL 쿼리 파라미터로 관리 (이 파일 X)
+ * - selectedProducts, viewMode: Redux에서 관리 (이 파일 O)
  *
  * @note Conditional Rendering으로 인해 방어 로직 불필요
  */
 
-// Base selectors
+// ============================================================================
+// BASE SELECTORS
+// ============================================================================
+
+/**
+ * Products UI State 선택자
+ */
 export const selectProductsState = (state: RootState) => state.products;
 
-export const selectFilters = createSelector([selectProductsState], (products) => products.filters);
+/**
+ * 선택된 제품 목록 선택자
+ */
+export const selectSelectedProducts = createSelector(
+  [selectProductsState],
+  (products) => products.selectedProducts
+);
 
-export const selectSort = createSelector([selectProductsState], (products) => products.sort);
-
-export const selectSelectedProducts = createSelector([selectProductsState], (products) => products.selectedProducts);
-
-export const selectViewMode = createSelector([selectProductsState], (products) => products.viewMode);
+/**
+ * 뷰 모드 선택자
+ */
+export const selectViewMode = createSelector(
+  [selectProductsState],
+  (products) => products.viewMode
+);
 
 // ============================================================================
 // COMPOSED SELECTORS
 // ============================================================================
 
 /**
- * 필터링된 제품 개수
+ * 선택된 제품 개수
  */
 export const selectSelectedProductsCount = createSelector(
   [selectSelectedProducts],
@@ -36,32 +55,12 @@ export const selectSelectedProductsCount = createSelector(
 );
 
 /**
- * 현재 정렬 상태 요약
+ * Products UI 상태 요약
  */
-export const selectSortSummary = createSelector([selectSort], (sort) => ({
-  sortBy: sort.sortBy,
-  sortOrder: sort.sortOrder,
-  label: `${sort.sortBy} ${sort.sortOrder === 'asc' ? '오름차순' : '내림차순'}`,
-}));
-
-/**
- * 현재 필터 상태 요약
- */
-export const selectFiltersSummary = createSelector([selectFilters], (filters) => ({
-  hasSearch: !!filters.search,
-  hasStatus: !!filters.status,
-  hasCategory: !!filters.category,
-  activeFilterCount: [filters.search, filters.status, filters.category].filter(Boolean).length,
-}));
-
-/**
- * Products 상태 요약
- */
-export const selectProductsStatus = createSelector(
-  [selectSelectedProductsCount, selectFiltersSummary, selectSortSummary],
-  (selectedCount, filtersSummary, sortSummary) => ({
+export const selectProductsUIStatus = createSelector(
+  [selectSelectedProductsCount, selectViewMode],
+  (selectedCount, viewMode) => ({
     selectedCount,
-    activeFilterCount: filtersSummary.activeFilterCount,
-    sortLabel: sortSummary.label,
+    viewMode,
   })
 );

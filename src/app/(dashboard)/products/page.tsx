@@ -38,7 +38,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
 import { useProducts } from '@/features/products/hooks/useProducts';
-import productsReducer from '@/features/products/store/productsSlice';
+import productsReducer from '@/features/products/store/productsUISlice';
 import { preserveQueryParams } from '@/features/products/utils/urlParams';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';

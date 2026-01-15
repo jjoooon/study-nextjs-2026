@@ -1,45 +1,38 @@
 /**
  * Products UI Slice
  *
- * 제품 관련 UI 상태 관리 (필터, 정렬, 선택 등)
+ * 제품 관련 UI 상태 관리 (선택, 뷰 모드 등)
+ *
+ * @description
+ * Redux에서 관리하는 UI 전용 상태
+ * - filters, sort: URL 쿼리 파라미터로 관리 (useProductsURLState)
+ * - selectedProducts, viewMode: Redux에서 관리 (이 파일)
+ *
+ * @architecture
+ * URL 상태 (영구적) + Redux 상태 (일시적)
+ * - 필터/정렬: URL에 저장하여 페이지 새로고침에도 유지
+ * - 선택/뷰모드: Redux에 저장하여 일시적 UI 상태 관리
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import type { ProductsFilters, ProductsSort, ProductsUIState } from '../types/store';
 
 // ============================================================================
 // INITIAL STATE
 // ============================================================================
 
-const initialFilters: ProductsFilters = {
-  search: '',
-  status: '',
-  category: '',
-  dateRange: {
-    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-    end: new Date().toISOString(),
-  },
-};
-
-const initialSort: ProductsSort = {
-  sortBy: 'createdAt',
-  sortOrder: 'desc',
-};
-
-const initialState: ProductsUIState = {
-  filters: initialFilters,
-  sort: initialSort,
-  selectedProducts: [],
-  viewMode: 'table',
+const initialState = {
+  selectedProducts: [] as number[],
+  viewMode: 'table' as 'table' | 'grid',
 };
 
 // ============================================================================
-// PRODUCTS SLICE
+// PRODUCTS UI SLICE
 // ============================================================================
 
 /**
  * Products UI Slice
+ *
+ * UI 전용 상태만 관리하는 Redux Slice
  */
 export const productsSlice = createSlice({
   name: 'products',
@@ -47,28 +40,10 @@ export const productsSlice = createSlice({
 
   reducers: {
     /**
-     * 필터 업데이트
-     */
-    setFilters: (state, action: PayloadAction<Partial<ProductsFilters>>) => {
-      state.filters = { ...state.filters, ...action.payload };
-    },
-
-    /**
-     * 필터 초기화
-     */
-    resetFilters: (state) => {
-      state.filters = initialFilters;
-    },
-
-    /**
-     * 정렬 업데이트
-     */
-    setSort: (state, action: PayloadAction<ProductsSort>) => {
-      state.sort = action.payload;
-    },
-
-    /**
-     * 제품 선택/해제
+     * 제품 선택/해제 토글
+     *
+     * @param state - 현재 상태
+     * @param action - 선택/해제할 제품 ID
      */
     toggleProductSelection: (state, action: PayloadAction<number>) => {
       const index = state.selectedProducts.indexOf(action.payload);
@@ -81,13 +56,18 @@ export const productsSlice = createSlice({
 
     /**
      * 모든 제품 선택
+     *
+     * @param state - 현재 상태
+     * @param action - 선택할 제품 ID 배열
      */
     selectAllProducts: (state, action: PayloadAction<number[]>) => {
       state.selectedProducts = action.payload;
     },
 
     /**
-     * 모든 선택 해제
+     * 모든 제품 선택 해제
+     *
+     * @param state - 현재 상태
      */
     clearProductSelection: (state) => {
       state.selectedProducts = [];
@@ -95,6 +75,9 @@ export const productsSlice = createSlice({
 
     /**
      * 뷰 모드 변경
+     *
+     * @param state - 현재 상태
+     * @param action - 새로운 뷰 모드
      */
     setViewMode: (state, action: PayloadAction<'table' | 'grid'>) => {
       state.viewMode = action.payload;
@@ -107,9 +90,6 @@ export const productsSlice = createSlice({
 // ============================================================================
 
 export const {
-  setFilters,
-  resetFilters,
-  setSort,
   toggleProductSelection,
   selectAllProducts,
   clearProductSelection,
@@ -127,7 +107,12 @@ export default productsSlice.reducer;
 // ============================================================================
 
 /**
- * Products Slice State Type
- * This is the actual state type stored in Redux for the products slice
+ * Products UI Slice State Type
+ *
+ * @description
+ * Redux에 저장되는 UI 상태 타입
  */
-export type ProductsState = ProductsUIState;
+export type ProductsUIState = {
+  selectedProducts: number[];
+  viewMode: 'table' | 'grid';
+};

@@ -972,7 +972,7 @@ export const selectProductsStatus = createSelector(
 ```typescript
 import { useGetProductsQuery } from '@/features/products/store/apiSlice';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
-import { setFilters, setSort } from '@/features/products/store/productsSlice';
+import { toggleProductSelection, setViewMode } from '@/features/products/store/productsUISlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 // ============================================================================
@@ -1078,7 +1078,7 @@ import type { Product } from '@/features/products/types/api';
 **Store/Redux 관련**:
 ```typescript
 // Reducer
-import { productsReducer } from '@/features/products/store/productsSlice';
+import { productsReducer } from '@/features/products/store/productsUISlice';
 
 // API Slice
 import { productsApiSlice } from '@/features/products/store/apiSlice';
@@ -1184,7 +1184,7 @@ features/products/
 
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
-import { productsReducer } from '@/features/products/store/productsSlice';
+import { productsReducer } from '@/features/products/store/productsUISlice';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -1394,7 +1394,7 @@ function ProductsPageContent() {
 
 import { useParams, useRouter } from 'next/navigation';
 import ProductDetail from '@/features/products/components/ProductDetail';
-import { productsReducer } from '@/features/products/store/productsSlice';
+import { productsReducer } from '@/features/products/store/productsUISlice';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
@@ -1629,7 +1629,7 @@ export type RootState = {
   auth: import('@/features/auth/store/authSlice').AuthState;
   dashboard: import('@/features/dashboard/store/dashboardSlice').DashboardState;
   dashboardApi: unknown;
-  products: import('@/features/products/store/productsSlice').ProductsState;
+  products: import('@/features/products/store/productsUISlice').ProductsUIState;
   productsApi: unknown;
 };
 ```
