@@ -1,9 +1,12 @@
-import type { Reducer, AnyAction } from '@reduxjs/toolkit';
+import type { Reducer, UnknownAction } from '@reduxjs/toolkit';
 import { useEffect, useRef, useState } from 'react';
 
 import log from '@/shared/utils/logger';
 import { store } from '@/store';
-import { injectReducer, ejectReducer } from '@/store/registry/reducer';
+import { ejectReducer, injectReducer } from '@/store/registry/reducer';
+
+// TODO: @YunJunmo
+// - logger 매번 getLogger 할 필요 있는지 검토
 
 // ============================================================================
 // DYNAMIC REDUCER HOOKS
@@ -72,7 +75,7 @@ export const useInjectReducer = (
   useEffect(() => {
     if (!isInjected.current) {
       try {
-        store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
+        store.dispatch(injectReducer(key, reducer, priority) as unknown as UnknownAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Reducer injected via hook: ${key}`);
@@ -116,7 +119,7 @@ export const useInjectReducer = (
       return () => {
         if (isInjected.current) {
           try {
-            store.dispatch(ejectReducer(key) as unknown as AnyAction);
+            store.dispatch(ejectReducer(key) as unknown as UnknownAction);
 
             const logger = log.getLogger('ReducerRegistry');
             logger.debug(`🗑️  Reducer ejected via hook: ${key}`);
@@ -207,7 +210,7 @@ export const useLazyReducer = (
         const reducer = await reducerPromise;
 
         if (mounted) {
-          store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
+          store.dispatch(injectReducer(key, reducer, priority) as unknown as UnknownAction);
 
           result.current = {
             loading: false,
@@ -299,7 +302,7 @@ export const useConditionalReducer = (
 
     if (enabled && !isInjected.current) {
       try {
-        store.dispatch(injectReducer(key, reducer, options.priority) as unknown as AnyAction);
+        store.dispatch(injectReducer(key, reducer, options.priority) as unknown as UnknownAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Conditional reducer enabled: ${key}`);
@@ -397,7 +400,7 @@ export const useRoleBasedReducer = (
 
     if (isAuthorized && !isInjected.current) {
       try {
-        store.dispatch(injectReducer(key, reducer, options.priority) as unknown as AnyAction);
+        store.dispatch(injectReducer(key, reducer, options.priority) as unknown as UnknownAction);
 
         const logger = log.getLogger('ReducerRegistry');
         logger.debug(`✅ Role-based reducer authorized: ${key} (${userRole})`);
@@ -483,7 +486,7 @@ export const useBatchReducers = (
     if (!isInjected.current && Object.keys(reducers).length > 0) {
       try {
         Object.entries(reducers).forEach(([key, reducer]) => {
-          store.dispatch(injectReducer(key, reducer, priority) as unknown as AnyAction);
+          store.dispatch(injectReducer(key, reducer, priority) as unknown as UnknownAction);
 
           const logger = log.getLogger('ReducerRegistry');
           logger.debug(`✅ Batch reducer injected: ${key}`);

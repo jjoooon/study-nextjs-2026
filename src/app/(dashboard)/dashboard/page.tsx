@@ -209,7 +209,6 @@ function DashboardContent() {
 export default function Page() {
   // 1️⃣ UI 리듀서만 동적 주입 (dashboardApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('dashboard', dashboardReducer, {
-    priority: 22,
     ejectOnUnmount: false,
   });
 

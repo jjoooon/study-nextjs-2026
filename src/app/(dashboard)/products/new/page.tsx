@@ -36,7 +36,6 @@ import { useInjectReducer } from '@/store/reducers/hooks';
 export default function NewProductPage() {
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('products', productsReducer, {
-    priority: 23,
     ejectOnUnmount: false,
   });
 

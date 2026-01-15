@@ -39,7 +39,7 @@ export interface ReducerRegistry {
  * @param registry - Reducer registry
  */
 export const registerAllApiReducers = (registry: ReducerRegistry) => {
-  API_REGISTRY.forEach(({ api, priority }) => {
+  API_REGISTRY.forEach(({ api, priority = 50 }) => {
     registry.register(api.reducerPath, api.reducer, priority);
   });
 };

@@ -1200,7 +1200,6 @@ import { useInjectReducer } from '@/store/reducers/hooks';
 export default function ProductsPage() {
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('products', productsReducer, {
-    priority: 23,
     ejectOnUnmount: false,
   });
 
@@ -1359,7 +1358,7 @@ function ProductsPageContent() {
 1. **Import 경로**: `@/store/reducers/hooks`에서 `useInjectReducer`를 가져와야 합니다
 2. **UI Reducer만 주입**: `productsApi` reducer는 이미 전역에서 로드되므로 UI reducer만 주입합니다
 3. **useInjectReducer 반환값**: `useInjectReducer`가 `{ isReady }`를 반환하므로 바로 사용 가능
-4. **Priority 설정**: dashboard(22), products(23) 등으로 우선순위를 다르게 설정
+4. **Priority 설정**: 일반적인 경우 default 값 사용
 5. **MSW 제외**: MSW worker는 `src/app/providers.tsx`에서 이미 시작되므로 페이지에서 별도로 시작할 필요 없음
 
 ---
@@ -1415,7 +1414,6 @@ export default function ProductDetailPage() {
 
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('products', productsReducer, {
-    priority: 23,
     ejectOnUnmount: false,
   });
 
@@ -1610,9 +1608,9 @@ export const API_REGISTRY = [
   // Core APIs (우선순위 10-19)
   { api: authApiSlice, priority: 10, name: 'authApi' },
 
-  // Feature APIs (우선순위 50-59)
-  { api: dashboardApiSlice, priority: 52, name: 'dashboardApi' },
-  { api: productsApiSlice, priority: 53, name: 'productsApi' },  // 추가
+  // Feature APIs
+  { api: dashboardApiSlice, priority: 50, name: 'dashboardApi' },
+  { api: productsApiSlice, priority: 50, name: 'productsApi' },  // 추가
   // ✅ 새로운 API를 여기에 추가
 ] as const;
 

@@ -42,7 +42,6 @@ import { useInjectReducer } from '@/store/reducers/hooks';
 export default function ProductsPage() {
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('products', productsReducer, {
-    priority: 23,
     ejectOnUnmount: false,
   });
 
@@ -100,6 +99,13 @@ function ProductsPageContent() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">제품 관리</h1>
           <p className="text-gray-600">총 {total}개의 제품</p>
         </div>
+        <button
+          type="button"
+          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+          onClick={() => router.push('/')}
+        >
+          메인으로
+        </button>
         <button
           type="button"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
