@@ -24,8 +24,8 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProductForm from '@/features/products/components/ProductForm';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsSlice';
-import { getReturnURL } from '@/features/products/utils/urlParams';
 import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/api';
+import { preserveQueryParams } from '@/features/products/utils/urlParams';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================
@@ -77,7 +77,7 @@ function EditProductPageContent({ id }: { id: string }) {
   const { initialData, isLoading, isSubmitting, updateProduct } = useProductForm(id);
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
-  const returnURL = getReturnURL(searchParams);
+  const returnURL = preserveQueryParams('/products', searchParams);
 
   // 로딩 상태
   if (isLoading) {

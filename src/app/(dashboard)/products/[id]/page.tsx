@@ -24,7 +24,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProductDetail from '@/features/products/components/ProductDetail';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import productsReducer from '@/features/products/store/productsSlice';
-import { getReturnURL } from '@/features/products/utils/urlParams';
+import { preserveQueryParams } from '@/features/products/utils/urlParams';
 import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
@@ -77,7 +77,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
   const { product, isLoading, isError, error, isDeleting, deleteProduct } = useProduct(id);
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
-  const returnURL = getReturnURL(searchParams);
+  const returnURL = preserveQueryParams('/products', searchParams);
 
   // 로딩 상태
   if (isLoading) {

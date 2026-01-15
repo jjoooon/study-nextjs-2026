@@ -93,7 +93,7 @@ export function useProductsURLState() {
       // URL 업데이트
       router.replace(`/products${queryString}`);
     },
-    [filters, router]
+    [filters, sort, router] // ✅ sort 의존성 추가
   );
 
   /**

@@ -201,17 +201,3 @@ export function preserveQueryParams(basePath: string, searchParams: URLSearchPar
   const queryString = searchParams.toString();
   return queryString ? `${basePath}?${queryString}` : basePath;
 }
-
-/**
- * 쿼리 파라미터를 보존하면서 목록 페이지로 복귀
- *
- * @param searchParams - 현재 URLSearchParams
- * @returns 쿼리 파라미터가 포함된 목록 URL
- *
- * @example
- * getReturnURL(searchParams)
- * // "/products?search=laptop&category=electronics"
- */
-export function getReturnURL(searchParams: URLSearchParams): string {
-  return preserveQueryParams('/products', searchParams);
-}

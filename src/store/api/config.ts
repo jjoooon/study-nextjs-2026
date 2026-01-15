@@ -49,7 +49,7 @@ export const API_REGISTRY = [
 
   // Feature APIs (우선순위 50-59)
   { api: dashboardApiSlice, priority: 50, name: 'dashboardApi' },
-  { api: productsApiSlice, priority: 51, name: 'productsApi' },
+  { api: productsApiSlice, priority: 50, name: 'productsApi' },
   // ✅ 새로운 API를 여기에 추가
   // { api: analyticsApiSlice, priority: 54, name: 'analyticsApi' },
   // { api: reportingApiSlice, priority: 55, name: 'reportingApi' },
