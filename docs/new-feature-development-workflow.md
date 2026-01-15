@@ -1092,14 +1092,11 @@ import * as productsSelectors from '@/features/products/store/productsSelectors'
 // API 타입
 import type { Product, CreateProductInput } from '@/features/products/types/api';
 
-// UI 타입
-import type { ProductsFilters } from '@/features/products/types/ui';
+// UI 타입 (상태 + 컴포넌트 Props)
+import type { ProductsFilters, ProductListProps } from '@/features/products/types/ui';
 
 // Store 타입
 import type { ProductsState } from '@/features/products/types/store';
-
-// 컴포넌트 Props 타입
-import type { ProductListProps } from '@/features/products/types/components';
 ```
 
 **컴포넌트 관련**:

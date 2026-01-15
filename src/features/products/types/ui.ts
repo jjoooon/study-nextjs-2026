@@ -1,8 +1,14 @@
 /**
  * Products UI Types
+ *
+ * UI 상태와 컴포넌트 Props 타입 정의
  */
 
 import type { Product } from './api';
+
+// ============================================================================
+// UI STATE TYPES
+// ============================================================================
 
 /**
  * 제품 필터 상태
@@ -25,18 +31,12 @@ export interface ProductsSort {
   sortOrder: 'asc' | 'desc';
 }
 
-/**
- * 제품 UI 상태
- */
-export interface ProductsUIState {
-  filters: ProductsFilters;
-  sort: ProductsSort;
-  selectedProducts: number[];
-  viewMode: 'table' | 'grid';
-}
+// ============================================================================
+// COMPONENT PROP TYPES
+// ============================================================================
 
 /**
- * ProductList Props
+ * ProductList Component Props
  */
 export interface ProductListProps {
   products: Product[];
@@ -45,7 +45,17 @@ export interface ProductListProps {
 }
 
 /**
- * ProductFilters Props
+ * ProductCard Component Props
+ */
+export interface ProductCardProps {
+  product: Product;
+  onViewDetails?: (id: number) => void;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
+}
+
+/**
+ * ProductFilters Component Props
  */
 export interface ProductFiltersProps {
   filters: ProductsFilters;
