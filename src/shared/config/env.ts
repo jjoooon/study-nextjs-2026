@@ -124,41 +124,34 @@ const envSchema = z.object({
 });
 
 /**
- * 검증된 환경 변수
- */
-const validateEnv = () => {
-  try {
-    return envSchema.parse(process.env);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const missingVars = error.issues
-        .filter((e: z.ZodIssue) => e.code === 'invalid_type')
-        .map((e: z.ZodIssue) => `  - ${e.path.join('.')}: ${e.message}`);
-
-      console.error('❌ Invalid environment variables:');
-      missingVars.forEach((msg: string) => console.error(msg));
-      console.error('\nPlease check your .env file.');
-    }
-    throw error;
-  }
-};
-
-/**
  * 환경 설정 객체
  *
- * @example
- * ```typescript
- * import { config } from '@/shared/config/env';
- *
- * if (config.isDevelopment) {
- *   console.log('Development mode');
- * }
- *
- * const apiUrl = config.apiUrl;
- * ```
+ * @description
+ * validateEnv 함수를 사용하지 않고 직접 process.env에서 읽어옵니다.
+ * Zod 스키마를 사용하여 타입 안전성을 보장합니다.
  */
-const config = validateEnv();
-console.log('xxxxxx', config);
+const config = envSchema.parse({
+  NODE_ENV: process.env.NODE_ENV,
+
+  NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+  NEXT_PUBLIC_APP_VERSION: process.env.NEXT_PUBLIC_APP_VERSION,
+  NEXT_PUBLIC_APP_DESCRIPTION: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
+
+  NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  NEXT_PUBLIC_API_TIMEOUT: process.env.NEXT_PUBLIC_API_TIMEOUT,
+  NEXT_PUBLIC_API_RETRY_COUNT: process.env.NEXT_PUBLIC_API_RETRY_COUNT,
+
+  NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY: process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
+  NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY: process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
+
+  NEXT_PUBLIC_FEATURE_DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE,
+  NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: process.env.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
+  NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: process.env.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
+
+  NEXT_PUBLIC_STORYBOOK_ENABLED: process.env.NEXT_PUBLIC_STORYBOOK_ENABLED,
+  NEXT_PUBLIC_REDUX_DEVTOOLS: process.env.NEXT_PUBLIC_REDUX_DEVTOOLS,
+  NEXT_PUBLIC_LOG_LEVEL: process.env.NEXT_PUBLIC_LOG_LEVEL,
+});
 
 /**
  * 환경 설정 타입
