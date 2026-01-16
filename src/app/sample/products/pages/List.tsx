@@ -18,7 +18,7 @@
  * URL-based state management for cross-page persistence
  *
  * @usage
- * /products route에서 자동으로 렌더링됨
+ * /products/sample/products/List route에서 자동으로 렌더링됨
  *
  * @feature URL-based State Management
  * - filters, sort 상태를 URL 쿼리 파라미터에 저장
@@ -27,7 +27,7 @@
  * - 새로고침해도 상태 유지
  *
  * @example
- * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
+ * /sample/products/List?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
 import { List, LayoutGrid } from 'lucide-react';

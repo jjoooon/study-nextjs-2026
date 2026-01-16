@@ -24,7 +24,7 @@
  * @routing
  * - / (현재 페이지): 메인 페이지
  * - /dashboard: Link 컴포넌트로 이동 (상태 유지)
- * - /products: Link 컴포넌트로 이동 (상태 유지)
+ * - /sample/products/List: Link 컴포넌트로 이동 (상태 유지)
  *
  * @see https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts
  * @see https://nextjs.org/docs/app/api-reference/components/link
@@ -60,7 +60,7 @@ export default function Home() {
                   <div className="text-sm text-gray-600">상세 설명</div>
                 </Link>
                 <Link
-                  href="/products"
+                  href="/sample/products/List"
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
                 >
                   <div className="font-semibold text-gray-900 mb-1">상품</div>

@@ -15,7 +15,7 @@
  * Next.js App Router + Client Component Pattern
  *
  * @usage
- * /products/new route에서 자동으로 렌더링됨
+ * /sample/products/New route에서 자동으로 렌더링됨
  */
 
 import { useRouter, useSearchParams } from 'next/navigation';

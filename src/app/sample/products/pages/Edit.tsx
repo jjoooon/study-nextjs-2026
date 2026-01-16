@@ -17,7 +17,7 @@
  * Next.js 15+: useParams로 id 추출
  *
  * @usage
- * /products/123/edit route에서 자동으로 렌더링됨
+ * /sample/products/Edit?id=123 route에서 자동으로 렌더링됨
  */
 
 import { useRouter, useSearchParams } from 'next/navigation';
