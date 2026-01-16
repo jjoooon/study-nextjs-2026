@@ -74,7 +74,7 @@ export default function ProductDetailPage() {
 function ProductDetailPageContent({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { product, isLoading, isError, error, isDeleting, deleteProduct } = useProduct(id);
+  const { product, isLoading, isDeleting, deleteProduct } = useProduct(id);
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
   const returnURL = `/products?${searchParams.toString()}`;
@@ -86,25 +86,6 @@ function ProductDetailPageContent({ id }: { id: string }) {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">제품 정보를 불러오는 중...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // 에러 상태
-  if (isError) {
-    return (
-      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded max-w-md">
-          <p className="font-medium">오류가 발생했습니다</p>
-          <p className="text-sm mt-2">{getErrorMessage(error)}</p>
-          <button
-            type="button"
-            onClick={() => router.push(returnURL)}
-            className="mt-4 text-sm underline hover:no-underline"
-          >
-            목록으로 돌아가기
-          </button>
         </div>
       </div>
     );

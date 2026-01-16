@@ -95,7 +95,6 @@ function ProductsPageContent() {
     filters,
     sort,
     isLoading,
-    isError,
     error,
     viewMode,
     updateFilters,
@@ -150,17 +149,6 @@ function ProductsPageContent() {
           제품 등록
         </button>
       </div>
-
-      {/* 에러 상태 */}
-      {isError && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
-          <p className="font-medium">오류가 발생했습니다</p>
-          <p className="text-sm">{getErrorMessage(error)}</p>
-          <button type="button" onClick={() => refetch()} className="mt-2 text-sm underline hover:no-underline">
-            다시 시도
-          </button>
-        </div>
-      )}
 
       {/* 필터 */}
       <ProductFilters filters={filters} onFilterChange={handleFilterChange} />
