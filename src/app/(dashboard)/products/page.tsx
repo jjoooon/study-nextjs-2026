@@ -33,9 +33,11 @@
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
+import { List, LayoutGrid } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import ProductFilters from '@/features/products/components/ProductFilters';
+import ProductGrid from '@/features/products/components/ProductGrid';
 import ProductList from '@/features/products/components/ProductList';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
@@ -87,8 +89,20 @@ function ProductsPageContent() {
   const searchParams = useSearchParams();
 
   // Products 훅
-  const { products, total, filters, sort, isLoading, isError, error, updateFilters, updateSort, refetch } =
-    useProducts();
+  const {
+    products,
+    total,
+    filters,
+    sort,
+    isLoading,
+    isError,
+    error,
+    viewMode,
+    updateFilters,
+    updateSort,
+    setViewMode,
+    refetch,
+  } = useProducts();
 
   // 검색 조건 변경 핸들러
   const handleFilterChange = (newFilters: typeof filters) => {
@@ -151,7 +165,7 @@ function ProductsPageContent() {
       {/* 필터 */}
       <ProductFilters filters={filters} onFilterChange={handleFilterChange} />
 
-      {/* 정렬 컨트롤 */}
+      {/* 정렬 및 뷰 모드 컨트롤 */}
       <div className="bg-white rounded-lg shadow p-4 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -186,11 +200,42 @@ function ProductsPageContent() {
               등록일 {sort.sortBy === 'createdAt' && (sort.sortOrder === 'asc' ? '↑' : '↓')}
             </button>
           </div>
+
+          {/* 뷰 모드 전환 버튼 */}
+          <div className="flex items-center space-x-2 border-l pl-4 border-gray-300">
+            <span className="text-sm font-medium text-gray-700 mr-2">뷰 모드:</span>
+            <button
+              type="button"
+              onClick={() => setViewMode('table')}
+              className={`p-2 rounded transition-colors ${
+                viewMode === 'table' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+              title="테이블 뷰"
+            >
+              <List size={20} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded transition-colors ${
+                viewMode === 'grid' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+              title="그리드 뷰"
+            >
+              <LayoutGrid size={20} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 제품 목록 */}
-      <ProductList products={products} isLoading={isLoading} onProductClick={handleProductClick} />
+      {/* 제품 목록 - 뷰 모드에 따른 조건부 렌더링 */}
+      {viewMode === 'table' ? (
+        <ProductList products={products} isLoading={isLoading} onProductClick={handleProductClick} />
+      ) : (
+        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <ProductGrid products={products} onProductClick={handleProductClick} />
+        </div>
+      )}
 
       {/* 빈 상태 */}
       {products.length === 0 && !isLoading && (
