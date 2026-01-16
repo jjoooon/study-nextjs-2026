@@ -84,3 +84,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================================================
+ * AG GRID STYLES
+ * ============================================================================
+ */
+
+/**
+ * AG Grid 셀 수직 정렬
+ *
+ * @description
+ * 모든 AG Grid의 셀 컨텐츠를 수직 중앙 정렬
+ * - 제품명, 설명, 가격, 상태 등 모든 컬럼에 적용
+ * - flexbox를 사용한 수직 중앙 정렬
+ */
+.ag-row .ag-cell {
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
