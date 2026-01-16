@@ -212,20 +212,6 @@ function ProductsPageContent() {
           <ProductGrid products={products} onProductClick={handleProductClick} />
         </div>
       )}
-
-      {/* 빈 상태 */}
-      {products.length === 0 && !isLoading && (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
-          <p className="text-gray-500 mb-4">등록된 제품이 없습니다.</p>
-          <button
-            type="button"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            onClick={handleNewProductClick}
-          >
-            제품 등록하기
-          </button>
-        </div>
-      )}
     </div>
   );
 }
