@@ -5,7 +5,7 @@ import {
   useCreateProductMutation,
   useGetProductByIdQuery,
   useUpdateProductMutation,
-} from '@/features/products/store/apiSlice';
+} from '@/features/products/services/productService';
 import type { CreateProductInput, Product, UpdateProductInput } from '@/features/products/types/api';
 import log from '@/shared/utils/logger';
 

@@ -1,4 +1,4 @@
-import { useGetProductsQuery } from '@/features/products/store/apiSlice';
+import { useGetProductsQuery } from '@/features/products/services/productService';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 

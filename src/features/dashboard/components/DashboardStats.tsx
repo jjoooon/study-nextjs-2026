@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetDashboardStatsQuery } from '@/features/dashboard/store/apiSlice';
+import { useGetDashboardStatsQuery } from '@/features/dashboard/services/dashboardService';
 
 interface Stat {
   id: number;

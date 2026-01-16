@@ -1,4 +1,4 @@
-import { useGetDashboardQuery } from '@/features/dashboard/store/apiSlice';
+import { useGetDashboardQuery } from '@/features/dashboard/services/dashboardService';
 import * as dashboardSelectors from '@/features/dashboard/store/dashboardSelectors';
 import { reorderWidgets, toggleWidget } from '@/features/dashboard/store/dashboardSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';

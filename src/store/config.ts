@@ -84,9 +84,9 @@ export const configureMiddleware = (getDefaultMiddleware: (...args: unknown[]) =
         'reducer/inject', // Dynamic reducer injection (함수 포함)
         'reducer/eject', // Dynamic reducer ejection
       ] as string[],
-      // 정규식으로 모든 API 슬라이스 자동 무시
+      // 정규식으로 모든 API/Service 슬라이스 자동 무시
       ignoredPaths: [
-        /^.*Api$/, // 'Api'로 끝나는 모든 경로
+        /^.*(Api|Service)$/, // 'Api' 또는 'Service'로 끝나는 모든 경로
       ],
     },
 
@@ -94,9 +94,9 @@ export const configureMiddleware = (getDefaultMiddleware: (...args: unknown[]) =
     immutableCheck:
       process.env.NODE_ENV === 'development'
         ? {
-            // 정규식으로 모든 API 슬라이스 자동 무시
+            // 정규식으로 모든 API/Service 슬라이스 자동 무시
             ignoredPaths: [
-              /^.*Api$/, // 'Api'로 끝나는 모든 경로
+              /^.*(Api|Service)$/, // 'Api' 또는 'Service'로 끝나는 모든 경로
             ],
           }
         : false,
@@ -134,10 +134,10 @@ export const devToolsConfig:
         trace: true,
         traceLimit: 25,
 
-        // 액션 이름을 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
+        // 액션 이름을 더 읽기 쉽게 변환 (정규식으로 모든 API/Service 자동 처리)
         actionSanitizer: (action: { type: string }) => {
-          // 모든 API 액션 자동 처리 (예: usersApi, postsApi, dashboardApi 등)
-          const apiMatch = action.type.match(/^(\w+)Api\/(.+)$/);
+          // 모든 API/Service 액션 자동 처리 (예: usersApi, authService, dashboardService 등)
+          const apiMatch = action.type.match(/^(\w+)(Api|Service)\/(.+)$/);
           if (apiMatch) {
             const [, apiName, rest] = apiMatch;
             return {
@@ -152,13 +152,13 @@ export const devToolsConfig:
           return action;
         },
 
-        // 상태를 더 읽기 쉽게 변환 (정규식으로 모든 API 자동 처리)
+        // 상태를 더 읽기 쉽게 변환 (정규식으로 모든 API/Service 자동 처리)
         stateSanitizer: (state: Record<string, unknown>) => {
           const sanitized = { ...state };
 
-          // 불필요한 RTK Query 내부 상태 제거 (모든 API 자동 처리)
+          // 불필요한 RTK Query 내부 상태 제거 (모든 API/Service 자동 처리)
           Object.keys(sanitized).forEach((key) => {
-            if (key.endsWith('Api')) {
+            if (key.endsWith('Api') || key.endsWith('Service')) {
               const apiState = sanitized[key] as Record<string, unknown> | undefined;
               if (apiState?.subscriptions) {
                 delete apiState.subscriptions;

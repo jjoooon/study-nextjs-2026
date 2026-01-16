@@ -1,7 +1,13 @@
 /**
- * Products API Slice
+ * Product Service
  *
  * RTK Query로 제품 관련 API 요청 처리
+ *
+ * @description
+ * Products 도메인의 모든 API 호출을 담당하는 서비스 계층
+ * - 제품 목록 조회, 상세 조회
+ * - 제품 생성, 수정, 삭제
+ * - 자동 캐싱 및 재검증 전략
  */
 
 import { createApi } from '@reduxjs/toolkit/query/react';
@@ -11,14 +17,17 @@ import { axiosBaseQuery } from '@/shared/lib/axios/axiosBaseQuery';
 import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/api';
 
 // ============================================================================
-// PRODUCTS API SLICE
+// PRODUCT SERVICE
 // ============================================================================
 
 /**
- * Products 도메인 전용 API Slice
+ * Products 도메인 전용 API Service
+ *
+ * RTK Query를 사용하여 제품 관련 API 엔드포인트를 정의하고
+ * 자동으로 Redux hooks를 생성합니다.
  */
-export const productsApiSlice = createApi({
-  reducerPath: 'productsApi',
+export const productService = createApi({
+  reducerPath: 'productsService',
   baseQuery: axiosBaseQuery(),
 
   // Products 도메인 전용 캐시 태그
@@ -34,6 +43,9 @@ export const productsApiSlice = createApi({
     /**
      * 제품 목록 조회
      * GET /api/products
+     *
+     * @param params - 페이지네이션, 정렬, 필터링 파라미터
+     * @returns 제품 목록
      */
     getProducts: builder.query({
       query: (params: ProductListParams | void) => {
@@ -63,6 +75,9 @@ export const productsApiSlice = createApi({
     /**
      * 제품 상세 조회
      * GET /api/products/:id
+     *
+     * @param id - 제품 ID
+     * @returns 제품 상세 정보
      */
     getProductById: builder.query({
       query: (id: number) => `/products/${id}`,
@@ -73,6 +88,9 @@ export const productsApiSlice = createApi({
     /**
      * 제품 생성
      * POST /api/products
+     *
+     * @param product - 생성할 제품 데이터
+     * @returns 생성된 제품 정보
      */
     createProduct: builder.mutation({
       query: (product: CreateProductInput) => ({
@@ -86,6 +104,10 @@ export const productsApiSlice = createApi({
     /**
      * 제품 수정
      * PATCH /api/products/:id
+     *
+     * @param id - 제품 ID
+     * @param data - 수정할 제품 데이터
+     * @returns 수정된 제품 정보
      */
     updateProduct: builder.mutation({
       query: ({ id, data }: { id: number; data: UpdateProductInput }) => ({
@@ -99,6 +121,9 @@ export const productsApiSlice = createApi({
     /**
      * 제품 삭제
      * DELETE /api/products/:id
+     *
+     * @param id - 제품 ID
+     * @returns 삭제 결과
      */
     deleteProduct: builder.mutation({
       query: (id: number) => ({
@@ -115,7 +140,14 @@ export const productsApiSlice = createApi({
 // ============================================================================
 
 /**
- * Products API 자동 생성된 React Hooks
+ * Product Service 자동 생성된 React Hooks
+ *
+ * RTK Query가 자동으로 생성하는 hooks를 export 합니다:
+ * - useGetProductsQuery: 제품 목록 조회
+ * - useGetProductByIdQuery: 제품 상세 조회
+ * - useCreateProductMutation: 제품 생성
+ * - useUpdateProductMutation: 제품 수정
+ * - useDeleteProductMutation: 제품 삭제
  */
 export const {
   useGetProductsQuery,
@@ -123,4 +155,4 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-} = productsApiSlice;
+} = productService;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetRecentActivityQuery } from '@/features/dashboard/store/apiSlice';
+import { useGetRecentActivityQuery } from '@/features/dashboard/services/dashboardService';
 
 /**
  * Recent Activity Component
