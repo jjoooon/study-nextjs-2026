@@ -1,6 +1,7 @@
 import { useGetProductsQuery } from '@/features/products/store/apiSlice';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+
 import { useProductsURLState } from './useProductsURLState';
 
 // ============================================================================

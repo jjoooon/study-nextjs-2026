@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import log from '@/shared/utils/logger';
+
 import { persistor, store } from '@/store';
 
 const logger = log.getLogger('Global');

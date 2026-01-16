@@ -15,6 +15,7 @@
  */
 
 import axios, { type AxiosError, type InternalAxiosRequestConfig, type AxiosResponse } from 'axios';
+
 import log from '@/shared/utils/logger';
 
 // ============================================================================

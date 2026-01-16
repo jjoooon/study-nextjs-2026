@@ -11,6 +11,7 @@
  */
 
 import type { DateRange } from '@/shared/types/date';
+
 import { dateToISOString } from './dateSerialization';
 
 // ============================================================================

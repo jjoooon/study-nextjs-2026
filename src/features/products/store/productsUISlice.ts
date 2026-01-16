@@ -15,6 +15,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { ProductsUIState } from '../types/store';
 
 // ============================================================================

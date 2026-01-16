@@ -52,21 +52,78 @@ src/
 ### 의존성 방향
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    app/ (Presentation)                  │
-│         └───────┬────────┬────────┬────────┘            │
-│                 ↓        ↓        ↓                     │
-│  ┌─────────────────────────────────────────────┐        │
-│  │              shared/ (Public)               │        │
-│  │    components │ hooks │ lib │ types │ utils │        │
-│  └─────────────────────────────────────────────┘        │
-│           ↕          ↕          ↕                       │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐                 │
-│  │  auth    │ │dashboard │ │ products │                 │
-│  └──────────┘ └──────────┘ └──────────┘                 │
-│      Feature                                            │
-└─────────────────────────────────────────────────────────┘
+▼ 의존성 계층 구조 (위 → 아래로만 흐름)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[LAYER 1] app/ (Presentation Layer)
+           역할: Feature 컴포넌트를 조합하여 페이지 구성
+           ┃
+           ┃ ✅ 의존 가능: shared, Feature Component
+           ┃
+           ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[LAYER 2] shared/ (Common Layer)
+           역할: 모든 Feature가 공유하는 공통 코드
+           내용: components, hooks, lib, types, utils
+           ┃
+           ┃ ✅ 의존 가능: shared 내부
+           ┃ ❌ 금지: Feature 의존 불가 (순수 유지)
+           ┃
+           ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[LAYER 3] Feature/ (Independent Modules)
+           역할: 비즈니스 기능 단위 (독립적 개발)
+           예시: auth/, dashboard/, products/
+           ┃
+           ┃ ✅ 의존 가능: shared
+           ┃ ❌ 금지: 다른 Feature 직접 import 불가
+           ┃ ⚠️  예외: Redux Selector/Action만 허용
+           ┃
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+금지되는 의존성 (⚠️):
+  • Feature → Feature (직접 import)
+  • shared → Feature (순환 의존성 위험)
+  • Feature → app
 ```
+
+**의존성 규칙 요약:**
+
+```
+의존성 허용 매트릭스 (From → To)
+
+▶ shared가 의존 가능한 대상:
+  • shared 내부        → ✅ 허용
+  • Feature           → ❌ 금지
+  • app               → N/A
+
+▶ Feature가 의존 가능한 대상:
+  • shared            → ✅ 허용 (자유롭게 import)
+  • 다른 Feature      → ❌ 금지 (직접 import 불가)
+                       ⚠️ 예외: Redux Selector/Action만 허용
+  • app               → ❌ 금지
+
+▶ app이 의존 가능한 대상:
+  • shared            → ✅ 허용
+  • Feature Component → ✅ 허용 (page.tsx, layout.tsx에서만)
+  • app 내부          → N/A
+```
+
+**핵심 규칙 (3가지만 기억하세요):**
+
+1️⃣ Feature는 shared만 의존 가능 (다른 Feature 직접 import ❌)
+
+2️⃣ shared는 어떤 Feature도 의존 불가 (순수 유지)
+
+3️⃣ app Page에서만 Feature Component 조합 가능
+
+**데이터 흐름 이해:**
+1. **app** → Feature 컴포넌트를 조합하여 페이지 구성
+2. **shared** → 모든 Feature가 공통 코드를 재사용
+3. **Feature** → 다른 Feature를 직접 import 불가 (Redux Selector만 예외)
 
 ### 핵심 규칙
 

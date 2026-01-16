@@ -54,7 +54,25 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         alphabetize: { order: 'asc' }
       }
-    ]
+    ],
+    'import/no-restricted-paths': [
+      'error',
+      {
+        zones: [
+          {
+            target: './src/features/**/*.{ts,tsx}',
+            from: './src/features/**/components/**',
+            except: ['./src/shared/**'],
+            message: 'Feature는 다른 Feature의 Component를 직접 import할 수 없습니다. Shared Layer를 사용하세요.',
+          },
+          {
+            target: './src/shared/**/*.{ts,tsx}',
+            from: './src/features/**',
+            message: 'Shared Layer는 Feature를 import할 수 없습니다.',
+          },
+        ],
+      },
+    ],
   },
   settings: {
     react: {

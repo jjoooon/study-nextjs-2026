@@ -34,6 +34,7 @@
  */
 
 import { useRouter, useSearchParams } from 'next/navigation';
+
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
 import { useProducts } from '@/features/products/hooks/useProducts';

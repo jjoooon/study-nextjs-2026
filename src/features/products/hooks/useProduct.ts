@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+
 import { useGetProductByIdQuery, useDeleteProductMutation } from '@/features/products/store/apiSlice';
 import log from '@/shared/utils/logger';
 

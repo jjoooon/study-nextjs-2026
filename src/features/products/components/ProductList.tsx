@@ -11,6 +11,7 @@
 
 import { EmptyList } from '@/shared/components/ui/EmptyState';
 import { SkeletonList } from '@/shared/components/ui/Skeleton';
+
 import type { ProductListProps } from '../types/ui';
 
 export default function ProductList({ products, isLoading, onProductClick }: ProductListProps) {

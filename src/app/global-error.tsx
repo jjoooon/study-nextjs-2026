@@ -31,6 +31,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import log from '@/shared/utils/logger';
 
 interface GlobalErrorProps {

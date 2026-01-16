@@ -31,6 +31,7 @@
  */
 
 import Link from 'next/link';
+
 import { Navigation } from '@/shared/components/layout/Navigation';
 
 export default function Home() {

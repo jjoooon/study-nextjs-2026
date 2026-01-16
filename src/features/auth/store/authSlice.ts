@@ -1,6 +1,7 @@
 import type { UnknownAction } from '@reduxjs/toolkit';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { REHYDRATE } from 'redux-persist';
+
 import type { AuthState } from '../types/store';
 
 // Re-export the state type for consumers

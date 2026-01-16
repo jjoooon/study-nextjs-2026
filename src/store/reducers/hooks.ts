@@ -2,6 +2,7 @@ import type { Reducer, UnknownAction } from '@reduxjs/toolkit';
 import { useEffect, useRef, useState } from 'react';
 
 import log from '@/shared/utils/logger';
+
 import { store } from '@/store';
 import { ejectReducer, injectReducer } from '@/store/registry/reducer';
 
