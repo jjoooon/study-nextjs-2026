@@ -43,7 +43,8 @@ export const persistConfig = {
   // 지속성을 적용할 리듀서
   whitelist: ['auth'],
   // 🔒 transforms로 토큰 및 민감 데이터 자동 필터링
-  transforms,
+  // TODO: @YunJunmo auth 구현 후 주석 해제
+  // transforms,
   // 블랙리스트: 특정 리듀서 제외
   blacklist: [],
 } as const;
