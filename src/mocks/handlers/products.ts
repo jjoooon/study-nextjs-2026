@@ -27,8 +27,8 @@ export const productsHandlers = [
     const sortBy = url.searchParams.get('sortBy') || 'createdAt';
     const sortOrder = url.searchParams.get('sortOrder') || 'desc';
 
-    // 네트워크 지연 시뮬레이션 (100-300ms)
-    await delay(Math.floor(Math.random() * 200) + 100);
+    // 네트워크 지연 시뮬레이션 (30-60ms)
+    await delay(Math.floor(Math.random() * 30) + 30);
 
     // 필터링 로직
     let filteredProducts = [...mockProducts];
@@ -92,7 +92,8 @@ export const productsHandlers = [
     const { id } = params;
     const product = mockProducts.find((p) => p.id === parseInt(id as string));
 
-    await delay(Math.floor(Math.random() * 200) + 100);
+    // 네트워크 지연 시뮬레이션 (30-60ms)
+    await delay(Math.floor(Math.random() * 30) + 30);
 
     if (!product) {
       return HttpResponse.json({ message: 'Product not found' }, { status: 404 });
@@ -108,7 +109,8 @@ export const productsHandlers = [
   http.post('/api/products', async ({ request }) => {
     const body = (await request.json()) as CreateProductInput;
 
-    await delay(Math.floor(Math.random() * 200) + 100);
+    // 네트워크 지연 시뮬레이션 (30-60ms)
+    await delay(Math.floor(Math.random() * 30) + 30);
 
     const newProduct = {
       id: mockProducts.length + 1,
@@ -130,7 +132,8 @@ export const productsHandlers = [
     const { id } = params;
     const body = (await request.json()) as UpdateProductInput;
 
-    await delay(Math.floor(Math.random() * 200) + 100);
+    // 네트워크 지연 시뮬레이션 (30-60ms)
+    await delay(Math.floor(Math.random() * 30) + 30);
 
     const index = mockProducts.findIndex((p) => p.id === parseInt(id as string));
 
@@ -156,7 +159,8 @@ export const productsHandlers = [
   http.delete('/api/products/:id', async ({ params }) => {
     const { id } = params;
 
-    await delay(Math.floor(Math.random() * 200) + 100);
+    // 네트워크 지연 시뮬레이션 (30-60ms)
+    await delay(Math.floor(Math.random() * 30) + 30);
 
     const index = mockProducts.findIndex((p) => p.id === parseInt(id as string));
 
