@@ -42,7 +42,6 @@ const originalGetLogger = log.getLogger;
 log.getLogger = (name: string) => {
   const logger = originalGetLogger(name);
   // Ensure this instance respects global log level
-  console.log('xxx', globalLogLevel);
   logger.setLevel(globalLogLevel);
   return logger;
 };
