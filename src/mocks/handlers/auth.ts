@@ -49,7 +49,6 @@ export const authHandlers = [
           email: 'test@example.com',
           name: '테스트 사용자',
           role: 'user',
-          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
         },
       });
     }

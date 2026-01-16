@@ -65,11 +65,13 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
             except: ['./src/shared/**'],
             message: 'Feature는 다른 Feature의 Component를 직접 import할 수 없습니다. Shared Layer를 사용하세요.',
           },
-          {
-            target: './src/shared/**/*.{ts,tsx}',
-            from: './src/features/**',
-            message: 'Shared Layer는 Feature를 import할 수 없습니다.',
-          },
+          // Shared Layer가 Feature Layer import하는 것을 허용
+          // 단, Shared UI 컴포넌트가 Redux 상태(selector, slice)에 접근하는 것은 허용
+          // {
+          //   target: './src/shared/**/*.{ts,tsx}',
+          //   from: './src/features/**',
+          //   message: 'Shared Layer는 Feature를 import할 수 없습니다.',
+          // },
         ],
       },
     ],

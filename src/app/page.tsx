@@ -32,8 +32,8 @@
 
 import Link from 'next/link';
 
-import { Navigation } from '@/features/app/components/layout/Navigation';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
+import { Navigation } from '@/shared/components/layout/Navigation';
 
 export default function Home() {
   return (

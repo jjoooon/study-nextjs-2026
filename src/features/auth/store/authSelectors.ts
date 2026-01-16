@@ -80,11 +80,6 @@ export const selectUserEmail = createSelector([selectUser], (user) => user?.emai
 export const selectUserRole = createSelector([selectUser], (user) => user?.role ?? null);
 
 /**
- * 사용자 아바타 선택자
- */
-export const selectUserAvatar = createSelector([selectUser], (user) => user?.avatar ?? null);
-
-/**
  * 인증 상태 요약
  */
 export const selectAuthStatus = createSelector(

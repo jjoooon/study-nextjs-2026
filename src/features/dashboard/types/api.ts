@@ -56,7 +56,6 @@ export interface ActivityItem {
   user: {
     name: string;
     email: string;
-    avatar?: string;
   };
   /** 추가 메타데이터 */
   metadata?: Record<string, unknown>;
