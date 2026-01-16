@@ -104,9 +104,10 @@ export function parseSortFromURL(searchParams: URLSearchParams): ProductsSort {
  *
  * @param filters - ProductsFilters 상태 객체
  * @param sort - ProductsSort 상태 객체
+ * @param viewMode - 뷰 모드 ('table' | 'grid')
  * @returns URL 쿼리 문자열
  */
-export function buildQueryString(filters: ProductsFilters, sort: ProductsSort): string {
+export function buildQueryString(filters: ProductsFilters, sort: ProductsSort, viewMode?: 'table' | 'grid'): string {
   const params = new URLSearchParams();
 
   // 필터 파라미터 추가
@@ -119,6 +120,11 @@ export function buildQueryString(filters: ProductsFilters, sort: ProductsSort): 
   // 정렬 파라미터 추가
   params.set(URL_PARAMS.SORT_BY, sort.sortBy);
   params.set(URL_PARAMS.SORT_ORDER, sort.sortOrder);
+
+  // 뷰 모드 파라미터 추가 (grid인 경우에만)
+  if (viewMode === 'grid') {
+    params.set('view', 'grid');
+  }
 
   const queryString = params.toString();
   return queryString ? `?${queryString}` : '';

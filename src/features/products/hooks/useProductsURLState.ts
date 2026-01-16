@@ -59,6 +59,14 @@ export function useProductsURLState() {
     return parseSortFromURL(searchParams);
   }, [searchParams]);
 
+  /**
+   * URL에서 viewMode 읽기
+   */
+  const viewMode = useMemo<'table' | 'grid'>(() => {
+    const mode = searchParams.get('view');
+    return mode === 'grid' ? 'grid' : 'table';
+  }, [searchParams]);
+
   // ============================================================================
   // UPDATE STATE IN URL
   // ============================================================================
@@ -73,12 +81,12 @@ export function useProductsURLState() {
       const updatedFilters = { ...filters, ...newFilters };
 
       // URL 쿼리 문자열 생성
-      const queryString = buildQueryString(updatedFilters, sort);
+      const queryString = buildQueryString(updatedFilters, sort, viewMode);
 
       // URL 업데이트 (replace로 히스토리 쌓이지 않게)
       router.replace(`/products${queryString}`);
     },
-    [filters, sort, router]
+    [filters, sort, viewMode, router]
   );
 
   /**
@@ -89,21 +97,34 @@ export function useProductsURLState() {
   const updateSort = useCallback(
     (newSort: ProductsSort) => {
       // URL 쿼리 문자열 생성
-      const queryString = buildQueryString(filters, newSort);
+      const queryString = buildQueryString(filters, newSort, viewMode);
 
       // URL 업데이트
       router.replace(`/products${queryString}`);
     },
-    [filters, router] // ✅ sort 의존성 추가
+    [filters, viewMode, router]
   );
 
   /**
    * 모든 필터 초기화
    */
   const resetFilters = useCallback(() => {
-    const queryString = buildQueryString(DEFAULT_FILTERS, sort);
+    const queryString = buildQueryString(DEFAULT_FILTERS, sort, viewMode);
     router.replace(`/products${queryString}`);
-  }, [sort, router]);
+  }, [sort, viewMode, router]);
+
+  /**
+   * 뷰 모드 업데이트
+   *
+   * @param newViewMode - 새로운 뷰 모드 ('table' | 'grid')
+   */
+  const updateViewMode = useCallback(
+    (newViewMode: 'table' | 'grid') => {
+      const queryString = buildQueryString(filters, sort, newViewMode);
+      router.replace(`/products${queryString}`);
+    },
+    [filters, sort, router]
+  );
 
   /**
    * 특정 필터만 제거
@@ -122,10 +143,10 @@ export function useProductsURLState() {
         }
       });
 
-      const queryString = buildQueryString(updatedFilters, sort);
+      const queryString = buildQueryString(updatedFilters, sort, viewMode);
       router.replace(`/products${queryString}`);
     },
-    [filters, sort, router]
+    [filters, sort, viewMode, router]
   );
 
   // ============================================================================
@@ -136,10 +157,12 @@ export function useProductsURLState() {
     // 현재 상태
     filters,
     sort,
+    viewMode,
 
     // 상태 업데이트 함수
     updateFilters,
     updateSort,
+    updateViewMode,
     resetFilters,
     clearFilters,
   };

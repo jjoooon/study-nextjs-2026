@@ -41,7 +41,6 @@ import ProductGrid from '@/features/products/components/ProductGrid';
 import ProductList from '@/features/products/components/ProductList';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
-import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================
@@ -89,19 +88,8 @@ function ProductsPageContent() {
   const searchParams = useSearchParams();
 
   // Products 훅
-  const {
-    products,
-    total,
-    filters,
-    sort,
-    isLoading,
-    error,
-    viewMode,
-    updateFilters,
-    updateSort,
-    setViewMode,
-    refetch,
-  } = useProducts();
+  const { products, total, filters, sort, isLoading, viewMode, updateFilters, updateSort, updateViewMode } =
+    useProducts();
 
   // 검색 조건 변경 핸들러
   const handleFilterChange = (newFilters: typeof filters) => {
@@ -194,7 +182,7 @@ function ProductsPageContent() {
             <span className="text-sm font-medium text-gray-700 mr-2">뷰 모드:</span>
             <button
               type="button"
-              onClick={() => setViewMode('table')}
+              onClick={() => updateViewMode('table')}
               className={`p-2 rounded transition-colors ${
                 viewMode === 'table' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
@@ -204,7 +192,7 @@ function ProductsPageContent() {
             </button>
             <button
               type="button"
-              onClick={() => setViewMode('grid')}
+              onClick={() => updateViewMode('grid')}
               className={`p-2 rounded transition-colors ${
                 viewMode === 'grid' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}

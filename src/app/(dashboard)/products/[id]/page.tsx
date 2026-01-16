@@ -25,7 +25,6 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProductDetail from '@/features/products/components/ProductDetail';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import productsReducer from '@/features/products/store/productsUISlice';
-import { getErrorMessage } from '@/shared/utils/error';
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================

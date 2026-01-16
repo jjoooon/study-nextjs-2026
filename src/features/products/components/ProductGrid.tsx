@@ -180,6 +180,7 @@ export default function ProductGrid({ products, onProductClick }: ProductGridPro
         mode: 'singleRow' as const, // 단일 행 선택
         enableClickSelection: true, // 클릭으로 선택 가능
         enableSelectionWithoutKeys: true, // 키 없이 선택 가능
+        checkboxes: false, // ✅ 체크박스 숨기기
       },
     }),
     []
