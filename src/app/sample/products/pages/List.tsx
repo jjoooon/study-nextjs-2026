@@ -33,6 +33,7 @@
 import { List, LayoutGrid } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductGrid from '@/features/products/components/ProductGrid';
 import ProductList from '@/features/products/components/ProductList';
@@ -104,13 +105,13 @@ function ProductsPageContent() {
     // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 이동
     const params = new URLSearchParams(searchParams.toString());
     params.set('id', product.id);
-    router.push(`/sample/products/Detail?${params.toString()}`);
+    router.push(`${PRODUCTS_ROUTES.DETAIL}?${params.toString()}`);
   };
 
   // 제품 등록 버튼 클릭 핸들러
   const handleNewProductClick = () => {
     // ✅ 쿼리 파라미터 보존하면서 등록 페이지로 이동
-    router.push(`/sample/products/New?${searchParams.toString()}`);
+    router.push(`${PRODUCTS_ROUTES.NEW}?${searchParams.toString()}`);
   };
 
   return (

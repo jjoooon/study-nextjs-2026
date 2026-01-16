@@ -32,6 +32,7 @@
 
 import Link from 'next/link';
 
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { Navigation } from '@/shared/components/layout/Navigation';
 
 export default function Home() {
@@ -60,7 +61,7 @@ export default function Home() {
                   <div className="text-sm text-gray-600">상세 설명</div>
                 </Link>
                 <Link
-                  href="/sample/products/List"
+                  href={PRODUCTS_ROUTES.LIST}
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
                 >
                   <div className="font-semibold text-gray-900 mb-1">상품</div>

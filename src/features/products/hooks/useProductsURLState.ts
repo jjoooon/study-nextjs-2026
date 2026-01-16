@@ -24,6 +24,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 
+import { PRODUCTS_ROUTES } from '../constants/routes';
 import type { ProductsFilters, ProductsSort } from '../types/ui';
 import { DEFAULT_FILTERS, parseFiltersFromURL, parseSortFromURL, buildQueryString } from '../utils/urlParams';
 
@@ -84,7 +85,7 @@ export function useProductsURLState() {
       const queryString = buildQueryString(updatedFilters, sort, viewMode);
 
       // URL 업데이트 (replace로 히스토리 쌓이지 않게)
-      router.replace(`/sample/products/List${queryString}`);
+      router.replace(`${PRODUCTS_ROUTES.LIST}${queryString}`);
     },
     [filters, sort, viewMode, router]
   );
@@ -100,7 +101,7 @@ export function useProductsURLState() {
       const queryString = buildQueryString(filters, newSort, viewMode);
 
       // URL 업데이트
-      router.replace(`/sample/products/List${queryString}`);
+      router.replace(`${PRODUCTS_ROUTES.LIST}${queryString}`);
     },
     [filters, viewMode, router]
   );
@@ -110,7 +111,7 @@ export function useProductsURLState() {
    */
   const resetFilters = useCallback(() => {
     const queryString = buildQueryString(DEFAULT_FILTERS, sort, viewMode);
-    router.replace(`/sample/products/List${queryString}`);
+    router.replace(`${PRODUCTS_ROUTES.LIST}${queryString}`);
   }, [sort, viewMode, router]);
 
   /**
@@ -121,7 +122,7 @@ export function useProductsURLState() {
   const updateViewMode = useCallback(
     (newViewMode: 'table' | 'grid') => {
       const queryString = buildQueryString(filters, sort, newViewMode);
-      router.replace(`/sample/products/List${queryString}`);
+      router.replace(`${PRODUCTS_ROUTES.LIST}${queryString}`);
     },
     [filters, sort, router]
   );
@@ -144,7 +145,7 @@ export function useProductsURLState() {
       });
 
       const queryString = buildQueryString(updatedFilters, sort, viewMode);
-      router.replace(`/sample/products/List${queryString}`);
+      router.replace(`${PRODUCTS_ROUTES.LIST}${queryString}`);
     },
     [filters, sort, viewMode, router]
   );

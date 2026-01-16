@@ -22,6 +22,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductDetail from '@/features/products/components/ProductDetail';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import productsReducer from '@/features/products/store/productsUISlice';
@@ -76,7 +77,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
   const { product, isLoading, isDeleting, deleteProduct } = useProduct(id);
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
-  const returnURL = `/sample/products/List?${searchParams.toString()}`;
+  const returnURL = `${PRODUCTS_ROUTES.LIST}?${searchParams.toString()}`;
 
   // 로딩 상태
   if (isLoading) {
@@ -113,7 +114,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
     // ✅ 쿼리 파라미터 보존하면서 수정 페이지로 이동
     const params = new URLSearchParams(searchParams.toString());
     params.set('id', product.id);
-    router.push(`/sample/products/Edit?${params.toString()}`);
+    router.push(`${PRODUCTS_ROUTES.EDIT}?${params.toString()}`);
   };
 
   const handleDelete = (_productId: number) => {

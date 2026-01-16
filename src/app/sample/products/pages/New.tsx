@@ -20,6 +20,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductForm from '@/features/products/components/ProductForm';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsUISlice';
@@ -72,7 +73,7 @@ function NewProductPageContent() {
   const { createProduct, isSubmitting } = useProductForm();
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
-  const returnURL = `/sample/products/List?${searchParams.toString()}`;
+  const returnURL = `${PRODUCTS_ROUTES.LIST}?${searchParams.toString()}`;
 
   // 제출 핸들러
   const handleSubmit = async (data: CreateProductInput | UpdateProductInput) => {

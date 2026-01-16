@@ -22,6 +22,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductForm from '@/features/products/components/ProductForm';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsUISlice';
@@ -105,7 +106,7 @@ function EditProductPageContent({ id }: { id: string }) {
   const handleCancel = () => {
     // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 복귀
     const params = new URLSearchParams(searchParams.toString());
-    router.push(`/sample/products/Detail?${params.toString()}`);
+    router.push(`${PRODUCTS_ROUTES.DETAIL}?${params.toString()}`);
   };
 
   return (
