@@ -59,6 +59,8 @@ export const getApiMiddleware = () => {
 // DYNAMIC ROOT REDUCER
 // ============================================================================
 
+const logger = log.getLogger('ReducerRegistry');
+
 /**
  * 동적 리듀서를 지원하는 커스텀 루트 리듀서
  *
@@ -82,8 +84,7 @@ export const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAct
         // 타입 안전한 inject 메서드 사용 (잠긴 레지스트리에서도 작동)
         reducerRegistry.inject(key, reducer, priority);
 
-        const apiLogger = log.getLogger('ReducerRegistry');
-        apiLogger.info(`✅ Injected reducer: ${key}`);
+        logger.info(`✅ Injected reducer: ${key}`);
       }
 
       // 새로운 리듀서의 초기 state 병합
@@ -103,8 +104,7 @@ export const createRootReducer = (): Reducer<Record<string, unknown>, UnknownAct
         // 타입 안전한 eject 메서드 사용 (잠긴 레지스트리에서도 작동)
         reducerRegistry.eject(key);
 
-        const apiLogger = log.getLogger('ReducerRegistry');
-        apiLogger.info(`🗑️  Ejected reducer: ${key}`);
+        logger.info(`🗑️  Ejected reducer: ${key}`);
       }
 
       // 제거된 리듀서를 제외하고 상태 복원

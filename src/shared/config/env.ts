@@ -82,30 +82,8 @@ const envSchema = z.object({
     .default(7),
 
   // ==========================================================================
-  // OAuth 설정 (공개)
-  // ==========================================================================
-
-  /** Google OAuth Client ID */
-  NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID: z.string().optional(),
-
-  /** GitHub OAuth Client ID */
-  NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID: z.string().optional(),
-
-  /** Kakao OAuth Client ID */
-  NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID: z.string().optional(),
-
-  /** Naver OAuth Client ID */
-  NEXT_PUBLIC_NAVER_OAUTH_CLIENT_ID: z.string().optional(),
-
-  // ==========================================================================
   // Feature Flags (공개)
   // ==========================================================================
-
-  /** 고급 필터링 활성화 */
-  NEXT_PUBLIC_FEATURE_ADVANCED_FILTERS: z
-    .string()
-    .transform((val) => val === 'true')
-    .default(false),
 
   /** 다크 모드 활성화 */
   NEXT_PUBLIC_FEATURE_DARK_MODE: z
@@ -143,55 +121,6 @@ const envSchema = z.object({
 
   /** 로깅 레벨 */
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
-
-  // ==========================================================================
-  // Sentry 설정 (공개)
-  // ==========================================================================
-
-  /** Sentry DSN */
-  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
-
-  /** Sentry 환경 */
-  NEXT_PUBLIC_SENTRY_ENVIRONMENT: z.string().optional(),
-
-  // ==========================================================================
-  // Analytics 설정 (공개)
-  // ==========================================================================
-
-  /** Google Analytics ID */
-  NEXT_PUBLIC_GA_ID: z.string().optional(),
-
-  /** Google Tag Manager ID */
-  NEXT_PUBLIC_GTM_ID: z.string().optional(),
-
-  // ==========================================================================
-  // 기타 설정 (공개)
-  // ==========================================================================
-
-  /** 타임존 */
-  NEXT_PUBLIC_TIMEZONE: z.string().default('Asia/Seoul'),
-
-  /** 로케일 */
-  NEXT_PUBLIC_LOCALE: z.string().default('ko-KR'),
-
-  /** 통화 */
-  NEXT_PUBLIC_CURRENCY: z.string().default('KRW'),
-
-  // ==========================================================================
-  // 서버 전용 환경 변수 (비공개)
-  // ==========================================================================
-
-  /** 데이터베이스 URL */
-  DATABASE_URL: z.string().optional(),
-
-  /** Redis URL */
-  REDIS_URL: z.string().optional(),
-
-  /** OAuth 시크릿 (서버 전용) */
-  GOOGLE_OAUTH_CLIENT_SECRET: z.string().optional(),
-  GITHUB_OAUTH_CLIENT_SECRET: z.string().optional(),
-  KAKAO_OAUTH_CLIENT_SECRET: z.string().optional(),
-  NAVER_OAUTH_CLIENT_SECRET: z.string().optional(),
 });
 
 /**
@@ -228,7 +157,8 @@ const validateEnv = () => {
  * const apiUrl = config.apiUrl;
  * ```
  */
-export const config = validateEnv();
+const config = validateEnv();
+console.log('xxxxxx', config);
 
 /**
  * 환경 설정 타입
@@ -258,7 +188,6 @@ export const publicConfig = {
   refreshTokenExpiry: config.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
 
   features: {
-    advancedFilters: config.NEXT_PUBLIC_FEATURE_ADVANCED_FILTERS,
     darkMode: config.NEXT_PUBLIC_FEATURE_DARK_MODE,
     realtimeNotifications: config.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
     performanceMonitoring: config.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
@@ -269,36 +198,9 @@ export const publicConfig = {
     redux: config.NEXT_PUBLIC_REDUX_DEVTOOLS,
     logLevel: config.NEXT_PUBLIC_LOG_LEVEL,
   },
-
-  oauth: {
-    google: {
-      clientId: config.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID,
-    },
-    github: {
-      clientId: config.NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID,
-    },
-    kakao: {
-      clientId: config.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID,
-    },
-    naver: {
-      clientId: config.NEXT_PUBLIC_NAVER_OAUTH_CLIENT_ID,
-    },
-  },
-
-  timezone: config.NEXT_PUBLIC_TIMEZONE,
-  locale: config.NEXT_PUBLIC_LOCALE,
-  currency: config.NEXT_PUBLIC_CURRENCY,
 } as const;
 
 /**
  * 비공개 설정 (서버에서만 접근 가능)
  */
-export const serverConfig = {
-  databaseUrl: config.DATABASE_URL,
-  redisUrl: config.REDIS_URL,
-} as const;
-
-/**
- * 기본 export
- */
-export default config;
+export const serverConfig = {} as const;

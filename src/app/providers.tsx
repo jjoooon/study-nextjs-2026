@@ -26,12 +26,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      logger.log('[MSW] Initializing...');
+      logger.debug('[MSW] Initializing...');
 
       // Dynamically import MSW worker to avoid bundling in production
       const { worker } = await import('@/mocks/browser');
 
-      logger.log('[MSW] Worker loaded, starting...');
+      logger.debug('[MSW] Worker loaded, starting...');
 
       // Start the worker and wait for it to be ready
       // This is CRITICAL to prevent race conditions
@@ -39,8 +39,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
         await worker.start({
           onUnhandledRequest: 'bypass',
         });
-        logger.log('[MSW] ✅ Mocking enabled - Service worker active');
-        logger.log('[MSW] Registered handlers:', worker.listHandlers());
+        logger.debug('[MSW] ✅ Mocking enabled - Service worker active');
+        logger.debug('[MSW] Registered handlers:', worker.listHandlers());
       } catch (error) {
         logger.error('[MSW] ❌ Failed to start worker:', error);
       }

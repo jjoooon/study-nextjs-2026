@@ -24,6 +24,8 @@
 import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { publicConfig } from '@/shared/config/env';
+
 // ============================================================================
 // AXIOS BASE QUERY IMPLEMENTATION
 // ============================================================================
@@ -33,12 +35,26 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
  *
  * @description
  * fetchBaseQuery를 사용하되, prepareHeaders에서 Axios 인터셉터 활용
+ * 환경 변수에서 API URL을 자동으로 로드합니다
  *
- * @param baseUrl - 기본 URL (기본값: '/api')
+ * @param baseUrl - 기본 URL (기본값: 환경 변수의 NEXT_PUBLIC_API_URL)
  * @returns RTK Query 호환 baseQuery
+ *
+ * @example
+ * // 환경 변수에서 자동으로 URL 사용
+ * export const apiSlice = createApi({
+ *   baseQuery: axiosBaseQuery(),
+ *   endpoints: (builder) => ({ ... })
+ * });
+ *
+ * // 또는 명시적 URL 지정 (테스트 등)
+ * export const testApiSlice = createApi({
+ *   baseQuery: axiosBaseQuery({ baseUrl: 'http://localhost:3001/api' }),
+ *   endpoints: (builder) => ({ ... })
+ * });
  */
 export const axiosBaseQuery = ({
-  baseUrl = '/api',
+  baseUrl = publicConfig.apiUrl,
 }: {
   baseUrl?: string;
 } = {}): BaseQueryFn => {
@@ -67,6 +83,7 @@ export const axiosBaseQuery = ({
  *
  * @description
  * 대부분의 경우 이것을 사용하면 됩니다
+ * 환경 변수(config.apiUrl)에서 API URL을 자동으로 로드합니다
  */
 export default axiosBaseQuery;
 
@@ -75,5 +92,14 @@ export default axiosBaseQuery;
  *
  * @description
  * 추가 설정이 필요 없는 경우 사용
+ * 환경 변수의 NEXT_PUBLIC_API_URL을 기본 URL로 사용합니다
+ *
+ * @example
+ * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+ *
+ * export const myApi = createApi({
+ *   baseQuery,
+ *   endpoints: (builder) => ({ ... })
+ * });
  */
 export const baseQuery = axiosBaseQuery();

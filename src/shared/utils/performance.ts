@@ -112,7 +112,7 @@ export function measureRenderTime(componentName: string) {
   return () => {
     const endTime = performance.now();
     const duration = endTime - startTime;
-    logger.log(`[Performance] ${componentName} rendered in ${duration.toFixed(2)}ms`);
+    logger.debug(`[Performance] ${componentName} rendered in ${duration.toFixed(2)}ms`);
     return duration;
   };
 }
@@ -129,7 +129,7 @@ export function measurePerformance(name: string, startMark: string) {
     try {
       performance.measure(name, startMark);
       const measure = performance.getEntriesByName(name)[0];
-      logger.log(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
+      logger.debug(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
       return measure.duration;
     } catch {
       logger.warn('Performance measure failed');
@@ -184,7 +184,7 @@ export function measureFunction<T extends (...args: unknown[]) => unknown>(func:
     const start = performance.now();
     const result = func(...args);
     const end = performance.now();
-    logger.log(`[Performance] ${functionName} took ${(end - start).toFixed(2)}ms`);
+    logger.debug(`[Performance] ${functionName} took ${(end - start).toFixed(2)}ms`);
     return result;
   }) as T;
 }
