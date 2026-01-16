@@ -1,8 +1,5 @@
 'use client';
 
-// TODO: @YunJunmo
-// - 에러 처리 처리
-
 /**
  * Products Page
  *
@@ -105,13 +102,15 @@ function ProductsPageContent() {
   // 상품 클릭 핸들러
   const handleProductClick = (product: (typeof products)[0]) => {
     // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 이동
-    router.push(`/products/${product.id}?${searchParams.toString()}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('id', product.id);
+    router.push(`/sample/products/Detail?${params.toString()}`);
   };
 
   // 제품 등록 버튼 클릭 핸들러
   const handleNewProductClick = () => {
     // ✅ 쿼리 파라미터 보존하면서 등록 페이지로 이동
-    router.push(`/products/new?${searchParams.toString()}`);
+    router.push(`/sample/products/New?${searchParams.toString()}`);
   };
 
   return (

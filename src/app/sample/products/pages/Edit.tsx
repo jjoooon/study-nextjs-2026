@@ -1,21 +1,23 @@
 'use client';
 
 /**
- * New Product Page
+ * Edit Product Page
  *
- * 제품 등록 페이지 컴포넌트
+ * 제품 수정 페이지 컴포넌트
  *
  * @description
- * 신규 제품을 등록하는 폼 페이지
+ * 기존 제품을 수정하는 폼 페이지
  * - Dynamic Reducer Pattern으로 products reducer lazy loading
  * - useProductForm 훅으로 폼 상태 관리
- * - ProductForm 컴포넌트로 등록 폼 표시
+ * - ProductForm 컴포넌트로 수정 폼 표시
  *
  * @architecture
  * Next.js App Router + Client Component Pattern
+ * Dynamic Route [id] 사용
+ * Next.js 15+: useParams로 id 추출
  *
  * @usage
- * /products/new route에서 자동으로 렌더링됨
+ * /products/123/edit route에서 자동으로 렌더링됨
  */
 
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -27,15 +29,18 @@ import type { CreateProductInput, UpdateProductInput } from '@/features/products
 import { useInjectReducer } from '@/store/reducers/hooks';
 
 // ============================================================================
-// DYNAMIC REDUCER INJECTION
+// EDIT PRODUCT PAGE
 // ============================================================================
 
 /**
- * New Product Page 컴포넌트
+ * Edit Product Page 컴포넌트
  *
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
-export default function NewProductPage() {
+export default function EditProductPage() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id') as string;
+
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('products', productsReducer, {
     ejectOnUnmount: false,
@@ -54,30 +59,42 @@ export default function NewProductPage() {
   }
 
   // 2️⃣ 준비되면 실제 컨텐츠 렌더링
-  return <NewProductPageContent />;
+  return <EditProductPageContent id={id} />;
 }
 
 // ============================================================================
-// NEW PRODUCT PAGE CONTENT
+// EDIT PRODUCT PAGE CONTENT
 // ============================================================================
 
 /**
- * New Product 페이지 실제 컨텐츠
+ * Edit Product 페이지 실제 컨텐츠
  *
  * reducer 주입 후 렌더링되는 컴포넌트
  */
-function NewProductPageContent() {
+function EditProductPageContent({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { createProduct, isSubmitting } = useProductForm();
+  const { initialData, isLoading, isSubmitting, updateProduct } = useProductForm(id);
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
   const returnURL = `/products?${searchParams.toString()}`;
 
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">제품 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
   // 제출 핸들러
   const handleSubmit = async (data: CreateProductInput | UpdateProductInput) => {
-    const result = await createProduct(data as CreateProductInput);
-    // 등록 성공 후 필터 상태 유지하면서 목록으로 복귀
+    const result = await updateProduct(data as UpdateProductInput);
+    // 수정 성공 후 필터 상태 유지하면서 목록으로 복귀
     if (result) {
       router.push(returnURL);
     }
@@ -86,8 +103,9 @@ function NewProductPageContent() {
 
   // 취소 핸들러
   const handleCancel = () => {
-    // ✅ 쿼리 파라미터 보존하면서 목록으로 복귀
-    router.push(returnURL);
+    // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 복귀
+    const params = new URLSearchParams(searchParams.toString());
+    router.push(`/sample/products/Detail?${params.toString()}`);
   };
 
   return (
@@ -102,16 +120,45 @@ function NewProductPageContent() {
               </button>
             </li>
             <li>/</li>
-            <li className="text-gray-900">신규 등록</li>
+            <li>
+              <button
+                type="button"
+                onClick={() => router.push(`/products/${id}?${searchParams.toString()}`)}
+                className="hover:text-blue-600"
+              >
+                {initialData?.name || '제품'}
+              </button>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900">수정</li>
           </ol>
         </nav>
-        <h1 className="text-3xl font-bold text-gray-900">신규 제품 등록</h1>
-        <p className="text-gray-600 mt-2">새로운 제품 정보를 입력하세요.</p>
+        <h1 className="text-3xl font-bold text-gray-900">제품 수정</h1>
+        <p className="text-gray-600 mt-2">제품 정보를 수정하세요.</p>
       </div>
 
-      {/* 등록 폼 */}
+      {/* 수정 폼 */}
       <div className="bg-white rounded-lg shadow p-6">
-        <ProductForm mode="create" onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isSubmitting} />
+        {initialData ? (
+          <ProductForm
+            initialData={initialData}
+            mode="update"
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            isSubmitting={isSubmitting}
+          />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500 mb-4">제품을 찾을 수 없습니다.</p>
+            <button
+              type="button"
+              onClick={() => router.push(returnURL)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors inline-block"
+            >
+              목록으로
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

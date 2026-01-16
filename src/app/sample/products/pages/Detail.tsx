@@ -20,7 +20,7 @@
  * /products/123 route에서 자동으로 렌더링됨
  */
 
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import ProductDetail from '@/features/products/components/ProductDetail';
 import { useProduct } from '@/features/products/hooks/useProduct';
@@ -37,8 +37,8 @@ import { useInjectReducer } from '@/store/reducers/hooks';
  * Dynamic Reducer Pattern으로 products reducer를 주입
  */
 export default function ProductDetailPage() {
-  const params = useParams();
-  const id = params.id as string;
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id') as string;
 
   // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
   const { isReady } = useInjectReducer('products', productsReducer, {
@@ -76,7 +76,7 @@ function ProductDetailPageContent({ id }: { id: string }) {
   const { product, isLoading, isDeleting, deleteProduct } = useProduct(id);
 
   // ✅ 쿼리 파라미터를 보존한 복귀 URL
-  const returnURL = `/products?${searchParams.toString()}`;
+  const returnURL = `/sample/products/List?${searchParams.toString()}`;
 
   // 로딩 상태
   if (isLoading) {
@@ -111,7 +111,9 @@ function ProductDetailPageContent({ id }: { id: string }) {
   // 핸들러
   const handleEdit = (_productId: number) => {
     // ✅ 쿼리 파라미터 보존하면서 수정 페이지로 이동
-    router.push(`/products/${product.id}/edit?${searchParams.toString()}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('id', product.id);
+    router.push(`/sample/products/Edit?${params.toString()}`);
   };
 
   const handleDelete = (_productId: number) => {

@@ -84,7 +84,7 @@ export function useProductsURLState() {
       const queryString = buildQueryString(updatedFilters, sort, viewMode);
 
       // URL 업데이트 (replace로 히스토리 쌓이지 않게)
-      router.replace(`/products${queryString}`);
+      router.replace(`/sample/products/List${queryString}`);
     },
     [filters, sort, viewMode, router]
   );
@@ -100,7 +100,7 @@ export function useProductsURLState() {
       const queryString = buildQueryString(filters, newSort, viewMode);
 
       // URL 업데이트
-      router.replace(`/products${queryString}`);
+      router.replace(`/sample/products/List${queryString}`);
     },
     [filters, viewMode, router]
   );
@@ -110,7 +110,7 @@ export function useProductsURLState() {
    */
   const resetFilters = useCallback(() => {
     const queryString = buildQueryString(DEFAULT_FILTERS, sort, viewMode);
-    router.replace(`/products${queryString}`);
+    router.replace(`/sample/products/List${queryString}`);
   }, [sort, viewMode, router]);
 
   /**
@@ -121,7 +121,7 @@ export function useProductsURLState() {
   const updateViewMode = useCallback(
     (newViewMode: 'table' | 'grid') => {
       const queryString = buildQueryString(filters, sort, newViewMode);
-      router.replace(`/products${queryString}`);
+      router.replace(`/sample/products/List${queryString}`);
     },
     [filters, sort, router]
   );
@@ -144,7 +144,7 @@ export function useProductsURLState() {
       });
 
       const queryString = buildQueryString(updatedFilters, sort, viewMode);
-      router.replace(`/products${queryString}`);
+      router.replace(`/sample/products/List${queryString}`);
     },
     [filters, sort, viewMode, router]
   );
