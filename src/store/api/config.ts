@@ -11,6 +11,7 @@
 
 import type { Reducer, Middleware } from '@reduxjs/toolkit';
 
+import { authService } from '@/features/auth/services/authService';
 import dashboardService from '@/features/dashboard/services/dashboardService';
 import { productService } from '@/features/products/services/productService';
 
@@ -43,6 +44,9 @@ export interface ApiRegistration {
  * ] as const;
  */
 export const API_REGISTRY = [
+  // Core APIs (우선순위 10-19)
+  { api: authService, priority: 10, name: 'authService' },
+
   // Feature APIs (우선순위 50-59)
   { api: dashboardService, priority: 50, name: 'dashboardService' },
   { api: productService, priority: 50, name: 'productsService' },

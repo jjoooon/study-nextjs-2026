@@ -22,8 +22,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductForm from '@/features/products/components/ProductForm';
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsUISlice';
 import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/api';

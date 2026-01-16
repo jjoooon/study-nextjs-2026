@@ -48,4 +48,4 @@ export const PRODUCTS_ROUTES = {
  * @description
  * 모든 경로 상수의 유니온 타입
  */
-export type ProductsRoute = typeof PRODUCTS_ROUTES[keyof typeof PRODUCTS_ROUTES];
+export type ProductsRoute = (typeof PRODUCTS_ROUTES)[keyof typeof PRODUCTS_ROUTES];

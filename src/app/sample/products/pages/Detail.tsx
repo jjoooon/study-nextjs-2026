@@ -22,8 +22,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductDetail from '@/features/products/components/ProductDetail';
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProduct } from '@/features/products/hooks/useProduct';
 import productsReducer from '@/features/products/store/productsUISlice';
 import { useInjectReducer } from '@/store/reducers/hooks';

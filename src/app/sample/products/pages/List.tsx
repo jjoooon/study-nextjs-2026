@@ -33,10 +33,10 @@
 import { List, LayoutGrid } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductGrid from '@/features/products/components/ProductGrid';
 import ProductList from '@/features/products/components/ProductList';
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
 import { useInjectReducer } from '@/store/reducers/hooks';
