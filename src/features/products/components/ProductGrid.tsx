@@ -2,9 +2,9 @@
 
 import { ModuleRegistry } from 'ag-grid-community';
 import { AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, GridApi } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 // ✅ AG Grid v34+ Theming API 사용 (구버전 CSS 제거)
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
@@ -51,8 +51,6 @@ interface ProductGridProps {
  * - 가격 컬럼: 통화 포맷
  */
 export default function ProductGrid({ products, onProductClick }: ProductGridProps) {
-  const [gridApi, setGridApi] = useState<GridApi<Product> | null>(null);
-
   // ============================================================================
   // COLUMN DEFINITIONS
   // ============================================================================
@@ -192,13 +190,6 @@ export default function ProductGrid({ products, onProductClick }: ProductGridPro
   // ============================================================================
 
   /**
-   * Grid가 마운트될 때 API 저장
-   */
-  const onGridReady = (params: { api: GridApi<Product> }) => {
-    setGridApi(params.api);
-  };
-
-  /**
    * Row 클릭 핸들러
    */
   const onRowClicked = (event: { data?: Product }) => {
@@ -217,7 +208,6 @@ export default function ProductGrid({ products, onProductClick }: ProductGridPro
         rowData={products}
         columnDefs={columnDefs}
         gridOptions={gridOptions}
-        onGridReady={onGridReady}
         onRowClicked={onRowClicked}
       />
     </div>
