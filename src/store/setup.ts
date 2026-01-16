@@ -14,7 +14,6 @@ import { combineReducers, Reducer } from '@reduxjs/toolkit';
 import type { UnknownAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 
-import authReducer from '@/features/auth/store/authSlice';
 import log from '@/shared/utils/logger';
 
 import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';
@@ -28,14 +27,10 @@ import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './registry/reduc
 /**
  * 초기 리듀서 등록 (Store 생성 전)
  *
- * @note Core features (auth)는 초기에 로드하여 SEO, 초기 렌더링 최적화
  * @note Optional features (dashboard, products)는 런타임에 지연 로딩
  * @note RTK Query API 슬라이스는 middleware가 필요하므로 항상 초기에 로드
  */
 export const initializeReducers = () => {
-  // ✅ Core UI Reducers - 항상 초기 로드
-  reducerRegistry.register('auth', authReducer, 20);
-
   // ⚠️ Optional UI Reducers - 페이지에서 지연 로딩
   // dashboard, products는 각 페이지에서 useInjectReducer로 주입
 
