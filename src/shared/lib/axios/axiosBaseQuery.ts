@@ -21,6 +21,13 @@
  *   baseQuery,
  *   endpoints: (builder) => ({ ... })
  * });
+ *
+ * @see
+ * - authService: @/features/auth/services/authService - 사용 예시
+ * - authSlice: @/features/auth/store/authSlice - Auth 상태 관리
+ * - MSW Handlers: @/mocks/handlers/auth.ts - 개발용 API 모킹
+ * - RTK Query Docs: https://redux-toolkit.js.org/rtk-query/api/createApi
+ * - Axios Interceptors: https://axios-http.com/docs/interceptors
  */
 
 import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
@@ -33,6 +40,54 @@ import { publicConfig } from '@/shared/config/env';
 // TYPES
 // ============================================================================
 
+/**
+ * Extra Options 타입
+ */
+interface ReauthExtraOptions {
+  skipReauth?: boolean;
+}
+
+/**
+ * 확장된 Axios 요청 설정 타입
+ */
+interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+  _skipReauth?: boolean;
+}
+
+// ============================================================================
+// UTILITIES
+// ============================================================================
+
+/**
+ * 인증 쿠키 삭제
+ *
+ * @description
+ * 모든 인증 관련 쿠키를 삭제합니다
+ * - refreshToken: HttpOnly Cookie
+ * - 기타 인증 쿠키가 있다면 여기서 추가
+ *
+ * @example
+ * // 로그아웃, 리프레시 토큰 만료 등에서 사용
+ * deleteAuthCookies();
+ *
+ * @see
+ * - Called from: axiosBaseQueryWithReauth (401 에러 시)
+ * - Related: clearCredentials() in authSlice
+ * - MDN Cookie Docs: https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+ */
+export const deleteAuthCookies = (): void => {
+  if (typeof document !== 'undefined') {
+    // refreshToken 삭제
+    document.cookie = 'refreshToken=; Max-Age=0; Path=/; SameSite=lax';
+    // 필요시 다른 쿠키도 여기서 추가
+    // document.cookie = 'session=; Max-Age=0; Path=/;';
+  }
+};
+
+// ============================================================================
+// MUTEX (중복 토큰 갱신 방지)
+// ============================================================================
 /**
  * Extra Options 타입
  */
@@ -132,7 +187,6 @@ const getAxiosInstance = (getState: () => any): AxiosInstance => {
         // Redux 상태에서 토큰 추출
         const state = getState() as { auth?: { token?: string | null } };
         const token = state.auth?.token;
-        console.log('xxx token', token);
 
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
@@ -258,11 +312,15 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) =>
         api.dispatch(clearCredentials());
 
         // 쿠키 삭제
-        if (typeof document !== 'undefined') {
-          document.cookie = 'refreshToken=; Max-Age=0; Path=/';
-        }
+        deleteAuthCookies();
 
         // 로그인 페이지로 리다이렉트
+        //
+        // @note window.location.href 사용 이유
+        // - Redux/RTK Query 레이어에서는 Next.js router에 직접 접근 불가능
+        // - Component-level에서 auth 상태 변경을 감지하고 리다이렉트하는 것이 더 나음
+        // - 예: useEffect로 auth.user === null인 경우 router.push('/login')
+        // - 당장의 구현을 위해 window.location.href 사용 (상태 유지 안 됨)
         if (typeof window !== 'undefined') {
           window.location.href = '/login';
         }
@@ -343,6 +401,11 @@ const axiosBaseQuery = ({
  *   baseQuery,
  *   endpoints: (builder) => ({ ... })
  * });
+ *
+ * @see
+ * - authService: @/features/auth/services/authService - 실제 사용 예시
+ * - authService.refreshToken: skipReauth 옵션 사용 예시
+ * - RTK Query BaseQuery: https://redux-toolkit.js.org/rtk-query/api/createApi#basequery
  */
 export const baseQuery = axiosBaseQueryWithReauth;
 
@@ -361,6 +424,10 @@ export const baseQuery = axiosBaseQueryWithReauth;
  *   baseQuery: baseQueryWithoutReauth,
  *   endpoints: (builder) => ({ ... })
  * });
+ *
+ * @see
+ * - baseQuery: 일반적인 경우는 baseQuery 사용 권장
+ * - skipReauth option: 대신 baseQuery의 skipReauth 옵션 사용
  */
 export const baseQueryWithoutReauth = axiosBaseQuery;
 
