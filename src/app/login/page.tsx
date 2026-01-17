@@ -10,14 +10,14 @@
  * - 이메일/비밀번호 로그인
  * - accessToken은 Redux 상태로 관리
  * - refreshToken은 HttpOnly Cookie로 자동 설정
- * - 로그인 성공 시 메인 페이지로 리다이렉트
+ * - 로그인 성공 시 returnUrl 또는 메인 페이지로 리다이렉트
  * - 폼 유효성 검사
  *
  * @test
  * - 테스트 계정: test@example.com / password123
  */
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { useLoginMutation } from '@/features/auth/services/authService';
@@ -26,11 +26,15 @@ import { useAppDispatch } from '@/store/hooks';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
   const [email, setEmail] = useState('test@example.com');
   const [password, setPassword] = useState('password123');
+
+  // returnUrl 쿼리 파라미터 추출 (AuthGuard에서 전달됨)
+  const returnUrl = searchParams.get('returnUrl');
 
   /**
    * 로그인 핸들러
@@ -53,8 +57,9 @@ export default function LoginPage() {
         })
       );
 
-      // 메인 페이지로 리다이렉트
-      router.push('/');
+      // returnUrl이 있으면 해당 경로로, 없으면 메인 페이지로 리다이렉트
+      const redirectPath = returnUrl ? decodeURIComponent(returnUrl) : '/';
+      router.push(redirectPath);
     } catch (error) {
       // 에러 처리
       const errorMessage = error instanceof Error ? error.message : '로그인에 실패했습니다.';
