@@ -95,9 +95,12 @@ export const authHandlers = [
    *
    * @success
    * - Authorization: Bearer mock-jwt-token-12345
+   * - Authorization: Bearer new-mock-jwt-token-* (갱신된 토큰)
    *
-   * @failure
-   * - Authorization 헤더 없음 또는 잘못된 토큰
+   * @failure (401)
+   * - Authorization 헤더 없음
+   * - 잘못된 토큰
+   * - 만료된 토큰: expired-token-*
    */
   http.get('/api/auth/me', async ({ request }) => {
     const authHeader = request.headers.get('Authorization');
@@ -113,9 +116,24 @@ export const authHandlers = [
       );
     }
 
-    // 토큰 검증
+    // 토큰 추출
     const token = authHeader.split(' ')[1];
-    if (token !== 'mock-jwt-token-12345') {
+
+    // 만료된 토큰 시뮬레이션 (토큰 갱신 테스트용)
+    if (token.startsWith('expired-token-')) {
+      return HttpResponse.json(
+        {
+          error: 'TOKEN_EXPIRED',
+          message: '토큰이 만료되었습니다.',
+        },
+        { status: 401 }
+      );
+    }
+
+    // 유효한 토큰 검증
+    const isValidToken = token === 'mock-jwt-token-12345' || token.startsWith('new-mock-jwt-token-');
+
+    if (!isValidToken) {
       return HttpResponse.json(
         {
           error: 'INVALID_TOKEN',
@@ -146,10 +164,23 @@ export const authHandlers = [
    * - 새로운 accessToken만 응답 본문으로 반환
    */
   http.post('/api/auth/refresh', async ({ request }) => {
-    // 쿠키에서 refreshToken 추출
+    // MSW에서는 Cookie 헤더가 null일 수 있으므로 document.cookie 직접 읽기
+    let refreshToken = null;
+
+    // 1. 요청 헤더에서 쿠키 읽기 시도
     const cookieHeader = request.headers.get('Cookie');
-    const refreshTokenMatch = cookieHeader?.match(/refreshToken=([^;]+)/);
-    const refreshToken = refreshTokenMatch ? refreshTokenMatch[1] : null;
+
+    if (cookieHeader) {
+      const refreshTokenMatch = cookieHeader.match(/refreshToken=([^;]+)/);
+      refreshToken = refreshTokenMatch ? refreshTokenMatch[1] : null;
+    }
+
+    // 2. 헤더에 없으면 document.cookie에서 읽기 (MSW 환경)
+    if (!refreshToken && typeof document !== 'undefined') {
+      const cookies = document.cookie;
+      const refreshTokenMatch = cookies.match(/refreshToken=([^;]+)/);
+      refreshToken = refreshTokenMatch ? refreshTokenMatch[1] : null;
+    }
 
     if (refreshToken === 'mock-refresh-token-67890') {
       return HttpResponse.json({

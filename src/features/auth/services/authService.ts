@@ -17,7 +17,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { axiosBaseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
 
 // ============================================================================
 // AUTH SERVICE
@@ -28,10 +28,14 @@ import { axiosBaseQuery } from '@/shared/lib/axios/axiosBaseQuery';
  *
  * RTK Query를 사용하여 인증 관련 API 엔드포인트를 정의하고
  * 자동으로 Redux hooks를 생성합니다.
+ *
+ * @baseQueryStrategy
+ * - 모든 엔드포인트: baseQuery (자동 토큰 갱신)
+ * - refreshToken만: skipReauth 옵션으로 갱신 방지
  */
 export const authService = createApi({
   reducerPath: 'authService',
-  baseQuery: axiosBaseQuery(),
+  baseQuery,
 
   // Auth 도메인 전용 캐시 태그
   tagTypes: ['Auth'] as const,
@@ -85,6 +89,7 @@ export const authService = createApi({
      * @description
      * - refreshToken은 HttpOnly Cookie에서 자동 전송됨
      * - 별도로 파라미터 전달 불필요
+     * - skipReauth: true로 토큰 갱신 로직 건너뜀 (무한 루프 방지)
      *
      * @returns 새로운 accessToken
      */
@@ -93,8 +98,10 @@ export const authService = createApi({
         url: '/auth/refresh',
         method: 'POST',
         // 쿠키는 withCredentials: true로 자동 전송
-        // axiosBaseQuery 설정에서 credentials: 'include' 필요
       }),
+      extraOptions: {
+        skipReauth: true, // 토큰 갱신 엔드포인트는 재갱신하지 않음
+      },
     }),
 
     /**
