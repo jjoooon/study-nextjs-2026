@@ -82,14 +82,18 @@ export const authService = createApi({
      * 토큰 갱신
      * POST /api/auth/refresh
      *
-     * @param refreshToken - 리프레시 토큰
-     * @returns 새로운 토큰
+     * @description
+     * - refreshToken은 HttpOnly Cookie에서 자동 전송됨
+     * - 별도로 파라미터 전달 불필요
+     *
+     * @returns 새로운 accessToken
      */
     refreshToken: builder.mutation({
-      query: (refreshToken: string) => ({
+      query: () => ({
         url: '/auth/refresh',
         method: 'POST',
-        body: { refreshToken },
+        // 쿠키는 withCredentials: true로 자동 전송
+        // axiosBaseQuery 설정에서 credentials: 'include' 필요
       }),
     }),
 

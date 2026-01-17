@@ -38,7 +38,9 @@
       "Bash(git commit:*)",
       "Bash(findstr:*)",
       "Bash(find:*)",
-      "Bash(npm run analyze:*)"
+      "Bash(npm run analyze:*)",
+      "Bash(ping:*)",
+      "Bash(netstat:*)"
     ]
   }
 }

@@ -23,6 +23,8 @@ export const authHandlers = [
    *
    * @description
    * 사용자 자격증명을 검증하고 JWT 토큰 발급
+   * - accessToken은 응답 본문으로 반환
+   * - refreshToken은 HttpOnly Cookie로 설정
    *
    * @success
    * - email: test@example.com
@@ -40,9 +42,14 @@ export const authHandlers = [
 
     // ✅ 성공 시나리오: 올바른 자격증명
     if (email === 'test@example.com' && password === 'password123') {
+      // MSW에서 실제 브라우저 쿠키 설정을 위해 document.cookie 사용
+      // 참고: HttpOnly 속성은 JavaScript에서 설정 불가능하므로 개발용으로만 사용
+      if (typeof document !== 'undefined') {
+        document.cookie = 'refreshToken=mock-refresh-token-67890; Path=/; Max-Age=604800; SameSite=lax';
+      }
+
       return HttpResponse.json({
         token: 'mock-jwt-token-12345',
-        refreshToken: 'mock-refresh-token-67890',
         expiresIn: 3600, // 1시간
         user: {
           id: 1,
@@ -134,16 +141,19 @@ export const authHandlers = [
    * POST /api/auth/refresh
    *
    * @description
-   * 리프레시 토큰으로 새로운 액세스 토큰 발급
+   * 쿠키의 리프레시 토큰으로 새로운 액세스 토큰 발급
+   * - refreshToken은 HttpOnly Cookie에서 읽음
+   * - 새로운 accessToken만 응답 본문으로 반환
    */
   http.post('/api/auth/refresh', async ({ request }) => {
-    const body = (await request.json()) as { refreshToken: string };
-    const { refreshToken } = body;
+    // 쿠키에서 refreshToken 추출
+    const cookieHeader = request.headers.get('Cookie');
+    const refreshTokenMatch = cookieHeader?.match(/refreshToken=([^;]+)/);
+    const refreshToken = refreshTokenMatch ? refreshTokenMatch[1] : null;
 
     if (refreshToken === 'mock-refresh-token-67890') {
       return HttpResponse.json({
         token: 'new-mock-jwt-token-' + Date.now(),
-        refreshToken: 'new-mock-refresh-token-' + Date.now(),
         expiresIn: 3600,
       });
     }

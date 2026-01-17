@@ -8,7 +8,8 @@
  *
  * @features
  * - 이메일/비밀번호 로그인
- * - 토큰 저장 및 Redux 상태 관리
+ * - accessToken은 Redux 상태로 관리
+ * - refreshToken은 HttpOnly Cookie로 자동 설정
  * - 로그인 성공 시 메인 페이지로 리다이렉트
  * - 폼 유효성 검사
  *
@@ -42,10 +43,12 @@ export default function LoginPage() {
       const result = await login({ email, password }).unwrap();
 
       // Redux 상태 업데이트
+      // - accessToken과 user 정보만 저장
+      // - refreshToken은 HttpOnly Cookie로 자동 설정됨
       dispatch(
         setCredentials({
           token: result.token,
-          refreshToken: result.refreshToken,
+          refreshToken: null, // 쿠키에서 관리하므로 Redux에 저장하지 않음
           user: result.user,
         })
       );

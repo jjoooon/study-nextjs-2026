@@ -60,6 +60,8 @@ export const axiosBaseQuery = ({
 } = {}): BaseQueryFn => {
   return fetchBaseQuery({
     baseUrl,
+    // HttpOnly Cookie 자동 전송을 위한 credentials 설정
+    credentials: 'include',
     // Axios 인터셉터와 동일한 prepareHeaders 로직
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as { auth?: { token?: string | null } };
