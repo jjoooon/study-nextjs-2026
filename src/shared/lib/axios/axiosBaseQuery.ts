@@ -2,32 +2,31 @@
  * Axios BaseQuery for RTK Query
  *
  * @description
- * fetchBaseQuery + Axios 인터셉터 조합
- * - fetch API를 사용하되, Axios 인터셉터의 이점 활용
+ * Axios Interceptor 기반 RTK Query BaseQuery
+ * - Axios 인터셉터로 자동 토큰 주입 및 갱신
  * - TypeScript 완벽 호환
  * - RTK Query의 모든 기능 유지
  * - 401 에러 시 자동 토큰 갱신
  *
  * @architecture
- * - fetchBaseQuery 기반: RTK Query 표준 방식
- * - Axios 인터셉터: 자동 토큰 주입 및 에러 처리
- * - 타입 안전성: TypeScript 타입 정의
- * - 토큰 갱신: Mutex로 중복 요청 방지
+ * - Axios 인스턴스: 글로벌 설정
+ * - Request Interceptor: 자동 토큰 주입
+ * - Response Interceptor: 401 에러 처리 및 토큰 갱신
+ * - Mutex: 중복 갱신 방지
  *
  * @usage
- * import { axiosBaseQueryWithReauth } from '@/shared/api/axiosBaseQuery';
+ * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
  *
  * export const apiSlice = createApi({
- *   baseQuery: axiosBaseQueryWithReauth(),
+ *   baseQuery,
  *   endpoints: (builder) => ({ ... })
  * });
  */
 
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 
-import type { User } from '@/features/auth/store/authSlice';
-import { setCredentials, clearCredentials } from '@/features/auth/store/authSlice';
+import { clearCredentials } from '@/features/auth/store/authSlice';
 import { publicConfig } from '@/shared/config/env';
 
 // ============================================================================
@@ -42,9 +41,12 @@ interface ReauthExtraOptions {
 }
 
 /**
- * BaseQuery 타입 정의
+ * 확장된 Axios 요청 설정 타입
  */
-type BaseQueryType = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, object>;
+interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+  _skipReauth?: boolean;
+}
 
 // ============================================================================
 // MUTEX (중복 토큰 갱신 방지)
@@ -58,126 +60,201 @@ type BaseQueryType = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryErro
  * 토큰 갱신 요청이 중복되는 것을 방지하기 위한 Mutex
  */
 class Mutex {
-  private mutex: Promise<() => void> = Promise.resolve(() => {});
+  private mutex: Promise<void> = Promise.resolve();
 
   /**
    * Mutex 락 획득
    */
-  lock(): Promise<() => void> {
-    const current = this.mutex;
-    this.mutex = current.then(() => {
-      return new Promise<() => void>((resolve) => {
-        resolve(() => {});
-      });
+  async lock(): Promise<() => void> {
+    // 현재 락이 해제될 때까지 대기
+    await this.mutex;
+
+    // 새로운 락 생성
+    let release: () => void = () => {};
+    this.mutex = new Promise<void>(() => {
+      release = () => {};
     });
-    return current;
+
+    // 락 해제 함수 반환
+    return release;
   }
 }
 
 const mutex = new Mutex();
 
 // ============================================================================
+// AXIOS INSTANCE (토큰 갱신 없음)
+// ============================================================================
+
+/**
+ * Axios 인스턴스 생성 (토큰 갱신 없음)
+ *
+ * @description
+ * skipReauth 옵션을 사용하는 요청을 위한 Axios 인스턴스
+ */
+const axiosInstanceWithoutReauth: AxiosInstance = axios.create({
+  baseURL: publicConfig.apiUrl,
+  withCredentials: true, // 쿠키 자동 전송
+  timeout: 10000, // 10초 타임아웃
+});
+
+// ============================================================================
+// AXIOS INSTANCE WITH INTERCEPTORS (토큰 갱신 포함)
+// ============================================================================
+
+/**
+ * 메인 Axios 인스턴스
+ *
+ * @description
+ * 인터셉터가 포함된 Axios 인스턴스
+ * - 401 에러 시 자동 토큰 갱신
+ * - Mutex로 중복 갱신 방지
+ */
+let axiosInstance: AxiosInstance | null = null;
+
+/**
+ * Axios 인스턴스 생성 함수
+ *
+ * @description
+ * Redux store를 주입받아 인터셉터 설정
+ */
+const getAxiosInstance = (getState: () => any): AxiosInstance => {
+  if (!axiosInstance) {
+    axiosInstance = axios.create({
+      baseURL: publicConfig.apiUrl,
+      withCredentials: true, // 쿠키 자동 전송
+      timeout: 10000, // 10초 타임아웃
+    });
+
+    // Request Interceptor: 토큰 자동 주입
+    axiosInstance.interceptors.request.use(
+      (config) => {
+        // Redux 상태에서 토큰 추출
+        const state = getState() as { auth?: { token?: string | null } };
+        const token = state.auth?.token;
+        console.log('xxx token', token);
+
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    // Response Interceptor: 401 에러 처리 및 토큰 갱신
+    axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error: AxiosError) => {
+        const originalRequest = error.config as ExtendedAxiosRequestConfig;
+
+        // 401 에러이고 재시도하지 않은 경우
+        if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+          // skipReauth 옵션 체크
+          if (originalRequest._skipReauth) {
+            return Promise.reject(error);
+          }
+
+          // Mutex 락 획득
+          const release = await mutex.lock();
+
+          try {
+            // 토큰 갱신 요청
+            const refreshResponse = await axiosInstanceWithoutReauth.post('/auth/refresh');
+
+            if (refreshResponse.data?.token) {
+              const newToken = refreshResponse.data.token;
+
+              // 원래 요청 재시도
+              originalRequest._retry = true;
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+              // axiosInstance가 null이 아니면 재시도
+              if (axiosInstance) {
+                return axiosInstance(originalRequest);
+              }
+            } else {
+              // 갱신 실패
+              return Promise.reject(error);
+            }
+          } finally {
+            release();
+          }
+        }
+
+        return Promise.reject(error);
+      }
+    );
+  }
+
+  return axiosInstance;
+};
+
+// ============================================================================
 // BASE QUERY WITH REAUTH (토큰 갱신 지원)
 // ============================================================================
 
 /**
- * 내부 fetchBaseQuery 인스턴스
+ * 토큰 갱신을 지원하는 BaseQuery
  *
  * @description
- * axiosBaseQueryWithReauth 내부에서 사용하는 기본 fetchBaseQuery
+ * Axios Interceptor와 통합된 RTK Query BaseQuery
+ * - 401 에러 시 자동 토큰 갱신
+ * - 갱신 성공 시 Redux 상태 업데이트
+ * - 갱신 실패 시 로그아웃
  */
-const internalBaseQuery = fetchBaseQuery({
-  baseUrl: publicConfig.apiUrl,
-  // HttpOnly Cookie 자동 전송을 위한 credentials 설정
-  credentials: 'include',
-  // 토큰 자동 주입 + 쿠키 수동 추가 (MSW 호환)
-  prepareHeaders: (headers, { getState }) => {
-    // Redux 상태에서 토큰 추출
-    const state = getState() as { auth?: { token?: string | null } };
-    const token = state.auth?.token;
-
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-
-    // MSW 테스트를 위해 쿠키를 수동으로 Cookie 헤더에 추가
-    if (typeof document !== 'undefined') {
-      const cookies = document.cookie;
-      if (cookies) {
-        headers.set('Cookie', cookies);
-      }
-    }
-
-    return headers;
-  },
-});
-
-/**
- * 토큰 갱신을 지원하는 BaseQuery Wrapper
- *
- * @description
- * 401 에러 발생 시 자동으로 토큰 갱신을 시도하고,
- * 원래 요청을 재시도합니다.
- *
- * @flow
- * 1. 요청 실행
- * 2. 401 에러 발생 시
- * 3. skipReauth 체크 (무한 루프 방지)
- * 4. Mutex 락 획득 (중복 갱신 방지)
- * 5. 토큰 갱신 요청
- * 6. 성공 시 Redux 상태 업데이트
- * 7. 원래 요청 재시도
- * 8. 실패 시 로그아웃
- */
-export const axiosBaseQueryWithReauth: BaseQueryType = async (args, api, extraOptions) => {
-  // extraOptions를 ReauthExtraOptions로 캐스팅 (undefined 안전 처리)
+const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
   const options = (extraOptions || {}) as ReauthExtraOptions;
 
-  // 1. 초기 요청 시도
-  let result = await internalBaseQuery(args, api, extraOptions);
+  // Axios 인스턴스 가져오기
+  const instance = getAxiosInstance(api.getState);
 
-  // 2. 401 에러이고 skipReauth가 아닌 경우
-  if (result.error && result.error.status === 401) {
-    // 3. skipReauth 옵션 체크 (refreshToken 엔드포인트 등)
-    if (options.skipReauth === true) {
-      return result;
-    }
-
-    // 4. Mutex 락 획득 (중복 갱신 방지)
-    const release = await mutex.lock();
+  // skipReauth 옵션 설정
+  if (options.skipReauth) {
+    const { url, method, data, params } = typeof args === 'string' ? { url: args } : args;
 
     try {
-      // 5. 토큰 갱신 시도 (skipReauth 옵션을 true로 설정)
-      const refreshResult = await internalBaseQuery({ url: '/auth/refresh', method: 'POST' }, api, {
-        ...(extraOptions || {}),
-        skipReauth: true,
+      const result = await axiosInstanceWithoutReauth({
+        url,
+        method: method?.toLowerCase() as any,
+        data,
+        params,
       });
 
-      // 6. 갱신 성공 시
-      if (refreshResult.data) {
-        // Redux 상태에서 새로운 토큰 추출
-        const data = refreshResult.data as { token?: string };
-        const newToken = data.token;
+      return { data: result.data };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          error: {
+            status: error.response?.status || 500,
+            data: error.response?.data,
+          },
+        };
+      }
+      throw error;
+    }
+  }
 
-        if (newToken) {
-          // 현재 Redux 상태의 사용자 정보 유지
-          const state = api.getState() as { auth?: { user?: User | null } };
-          const currentUser = state.auth?.user ?? null;
+  // 일반 요청 (토큰 갱신 포함)
+  const { url, method, data, params } = typeof args === 'string' ? { url: args } : args;
 
-          // Redux 상태 업데이트 (토큰만 갱신, 사용자 정보 유지)
-          api.dispatch(
-            setCredentials({
-              token: newToken,
-              refreshToken: null,
-              user: currentUser, // ✅ 기존 사용자 정보 유지
-            })
-          );
+  try {
+    const result = await instance({
+      url,
+      method: method?.toLowerCase() as any,
+      data,
+      params,
+    });
 
-          // 7. 원래 요청 재시도 (새로운 토큰으로)
-          result = await internalBaseQuery(args, api, extraOptions);
-        }
-      } else {
-        // 8. 갱신 실패 시 로그아웃 처리
+    return { data: result.data };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // 401 에러는 인터셉터에서 자동 처리하지만, 실패 시 로그아웃
+      if (error.response?.status === 401) {
+        // 갱신 실패로 간주하고 로그아웃 처리
         api.dispatch(clearCredentials());
 
         // 쿠키 삭제
@@ -190,13 +267,16 @@ export const axiosBaseQueryWithReauth: BaseQueryType = async (args, api, extraOp
           window.location.href = '/login';
         }
       }
-    } finally {
-      // Mutex 락 해제
-      release();
-    }
-  }
 
-  return result;
+      return {
+        error: {
+          status: error.response?.status || 500,
+          data: error.response?.data,
+        },
+      };
+    }
+    throw error;
+  }
 };
 
 // ============================================================================
@@ -208,27 +288,38 @@ export const axiosBaseQueryWithReauth: BaseQueryType = async (args, api, extraOp
  *
  * @description
  * 토큰 갱신이 필요 없는 간단한 API 호출에 사용
- * - authService 내부에서 갱신 로직을 방지하기 위해 사용
+ * - 특수한 경우에만 사용
  */
-export const axiosBaseQuery = ({
+const axiosBaseQuery = ({
   baseUrl = publicConfig.apiUrl,
 }: {
   baseUrl?: string;
 } = {}): BaseQueryFn => {
-  return fetchBaseQuery({
-    baseUrl,
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-      const state = getState() as { auth?: { token?: string | null } };
-      const token = state.auth?.token;
+  return async (args) => {
+    const { url, method, data, params } = typeof args === 'string' ? { url: args } : args;
 
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+    try {
+      const result = await axiosInstanceWithoutReauth({
+        baseURL: baseUrl,
+        url,
+        method: method?.toLowerCase() as any,
+        data,
+        params,
+      });
+
+      return { data: result.data };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          error: {
+            status: error.response?.status || 500,
+            data: error.response?.data,
+          },
+        };
       }
-
-      return headers;
-    },
-  });
+      throw error;
+    }
+  };
 };
 
 // ============================================================================
@@ -240,7 +331,7 @@ export const axiosBaseQuery = ({
  *
  * @description
  * 모든 API service에서 사용하는 기본 baseQuery
- * - 401 에러 시 자동 토큰 갱신
+ * - Axios Interceptor로 자동 토큰 갱신
  * - Mutex로 중복 갱신 방지
  * - 갱신 실패 시 자동 로그아웃
  * - skipReauth 옵션으로 갱신 방지 가능
@@ -261,7 +352,7 @@ export const baseQuery = axiosBaseQueryWithReauth;
  * @description
  * 특수한 경우에만 사용 (거의 사용할 필요 없음)
  * - 테스트 코드
- * - 갱신 엔드포인트 자체 (skipReauth 사용 권장)
+ * - 갱신 엔드포인트 자체
  *
  * @example
  * import { baseQueryWithoutReauth } from '@/shared/lib/axios/axiosBaseQuery';

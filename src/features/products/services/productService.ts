@@ -12,7 +12,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { axiosBaseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
 
 import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/api';
 
@@ -28,7 +28,7 @@ import type { CreateProductInput, ProductListParams, UpdateProductInput } from '
  */
 export const productService = createApi({
   reducerPath: 'productsService',
-  baseQuery: axiosBaseQuery(),
+  baseQuery,
 
   // Products 도메인 전용 캐시 태그
   tagTypes: ['Products-LIST', 'Products-ITEM'] as const,

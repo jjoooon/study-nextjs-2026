@@ -64,7 +64,7 @@ export const ROUTES = {
 
   /** 보호된 라우트 (인증 필요) */
   PROTECTED: {
-    DASHBOARD: '/dashboard',
+    DASHBOARD: '/dashboard/dashboard',
     PRODUCTS: '/products',
     PRODUCT_DETAIL: (id: string) => `/products/${id}`,
     PRODUCT_CREATE: '/products/new',

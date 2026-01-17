@@ -23,7 +23,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { axiosBaseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
 
 import type { ActivityItem, DashboardData, DashboardStats } from '../types/api';
 
@@ -39,7 +39,7 @@ import type { ActivityItem, DashboardData, DashboardStats } from '../types/api';
  */
 export const dashboardService = createApi({
   reducerPath: 'dashboardService',
-  baseQuery: axiosBaseQuery(),
+  baseQuery,
 
   // Dashboard 도메인 전용 캐시 태그
   tagTypes: ['Dashboard'] as const,

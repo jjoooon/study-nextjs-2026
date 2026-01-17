@@ -17,7 +17,7 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { name: '홈', href: '/', description: '메인 페이지' },
-  { name: '대시보드', href: '/dashboard', description: '사용자 대시보드' },
+  { name: '대시보드', href: '/sample/dashboard', description: '사용자 대시보드' },
 ];
 
 export function Navigation() {
