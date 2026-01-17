@@ -54,7 +54,7 @@ export default function Home() {
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">🔗 링크</h2>
               <div className="grid md:grid-cols-3 gap-4">
                 <Link
-                  href="/dashboard"
+                  href="/sample/dashboard"
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
                 >
                   <div className="font-semibold text-gray-900 mb-1">대시보드</div>
