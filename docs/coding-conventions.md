@@ -675,10 +675,12 @@ import { UserCard } from '@/shared/components/common/UserCard'
 {
   "semi": true,
   "trailingComma": "es5",
-  "singleQuote": false,
-  "printWidth": 100,
+  "singleQuote": true,
+  "printWidth": 120,
   "tabWidth": 2,
-  "useTabs": false
+  "useTabs": false,
+  "arrowParens": "always",
+  "endOfLine": "auto"
 }
 ```
 
