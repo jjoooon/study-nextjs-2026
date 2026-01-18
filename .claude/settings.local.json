@@ -40,7 +40,8 @@
       "Bash(find:*)",
       "Bash(npm run analyze:*)",
       "Bash(ping:*)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(if not exist docs mkdir docs)"
     ]
   }
 }
