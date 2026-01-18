@@ -31,7 +31,7 @@
  */
 
 import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
-import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig, Method } from 'axios';
 
 import { clearCredentials } from '@/features/auth/store/authSlice';
 import { publicConfig } from '@/shared/config/env';
@@ -173,7 +173,7 @@ let axiosInstance: AxiosInstance | null = null;
  * @description
  * Redux store를 주입받아 인터셉터 설정
  */
-const getAxiosInstance = (getState: () => any): AxiosInstance => {
+const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
   if (!axiosInstance) {
     axiosInstance = axios.create({
       baseURL: publicConfig.apiUrl,
@@ -273,7 +273,7 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) =>
     try {
       const result = await axiosInstanceWithoutReauth({
         url,
-        method: method?.toLowerCase() as any,
+        method: method?.toLowerCase() as Method,
         data,
         params,
       });
@@ -298,7 +298,7 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) =>
   try {
     const result = await instance({
       url,
-      method: method?.toLowerCase() as any,
+      method: method?.toLowerCase() as Method,
       data,
       params,
     });
@@ -360,7 +360,7 @@ const axiosBaseQuery = ({
       const result = await axiosInstanceWithoutReauth({
         baseURL: baseUrl,
         url,
-        method: method?.toLowerCase() as any,
+        method: method?.toLowerCase() as Method,
         data,
         params,
       });

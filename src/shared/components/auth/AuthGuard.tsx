@@ -5,7 +5,7 @@
  *
  * @description
  * Redux 인증 상태를 확인하여 인증되지 않은 사용자를 로그인 페이지로 리다이렉트합니다.
- * - 모든 페이지(로그인 페이지 제외)에 적용되는 라우트 보호
+ * - 모든 페이지(공개 경로 제외)에 적용되는 라우트 보호
  * - Redux의 isAuthenticated 상태를 신뢰하여 판단
  * - 즉시 리다이렉트하여 최상의 UX 제공 (깜빡임 없음)
  *
@@ -16,7 +16,7 @@
  *
  * @features
  * - Redux Persist 지원: 페이지 새로고침 후에도 인증 상태 유지
- * - 경로 기반 예외: 로그인 페이지는 보호에서 제외
+ * - 중앙 집중식 경로 관리: PUBLIC_ROUTES 상수에서 공개 경로 관리
  * - 즉시 리다이렉트: 인증되지 않은 사용자는 바로 로그인 페이지로 이동
  * - 상태 유지: 리다이렉트 시 현재 경로를 query parameter로 전달 (선택 사항)
  *
@@ -36,35 +36,23 @@
  * }
  * ```
  *
+ * 공개 경로 추가 방법:
+ * ```tsx
+ * // @/shared/constants/routes.ts
+ * export const PUBLIC_ROUTES = ['/login', '/register', '/about'] as const;
+ * ```
+ *
  * @see
  * - authSlice: @/features/auth/store/authSlice - 인증 상태 관리
  * - Redux Persist: @/store/config.ts - 상태 지속성 설정
+ * - routes: @/shared/constants/routes - 공개 경로 상수
  * - Next.js Routing: https://nextjs.org/docs/app/building-your-application/routing
  */
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { isPublicRoute } from '@/shared/constants/routes';
 import { useAppSelector } from '@/store/hooks';
-
-/**
- * 제외될 공개 경로 목록
- *
- * @description
- * 인증이 필요 없는 경로들을 정의합니다.
- * - 로그인 페이지: 인증되지 않은 사용자가 접근 가능
- * - 추후 확장 가능: 회원가입, 비밀번호 찾기 등
- */
-const PUBLIC_PATHS = ['/login'] as const;
-
-/**
- * 공개 경로인지 확인하는 헬퍼 함수
- *
- * @param pathname - 현재 경로
- * @returns 공개 경로이면 true, 아니면 false
- */
-const isPublicPath = (pathname: string): boolean => {
-  return PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(path));
-};
 
 /**
  * Auth Guard Component
@@ -89,7 +77,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
    */
   useEffect(() => {
     // 공개 경로인 경우 체크 통과
-    if (isPublicPath(pathname)) {
+    if (isPublicRoute(pathname)) {
       return;
     }
 
@@ -109,7 +97,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
    * - 인증되지 않은 경우 + 보호된 경로: null 반환 (리다이렉트됨)
    * - 공개 경로: 인증 상태와 상관없이 children 렌더링
    */
-  if (!isAuthenticated && !isPublicPath(pathname)) {
+  if (!isAuthenticated && !isPublicRoute(pathname)) {
     // 인증되지 않은 보호된 경로: 렌더링하지 않음 (리다이렉트됨)
     return null;
   }

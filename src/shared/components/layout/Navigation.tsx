@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useLogoutMutation } from '@/features/auth/services/authService';
 import { selectIsAuthenticated, selectUser } from '@/features/auth/store/authSelectors';
 import { clearCredentials } from '@/features/auth/store/authSlice';
+import { AUTH_ROUTES, MAIN_ROUTES } from '@/shared/constants/routes';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 interface NavItem {
@@ -16,8 +17,8 @@ interface NavItem {
 }
 
 const navigation: NavItem[] = [
-  { name: '홈', href: '/', description: '메인 페이지' },
-  { name: '대시보드', href: '/sample/dashboard', description: '사용자 대시보드' },
+  { name: '홈', href: MAIN_ROUTES.HOME, description: '메인 페이지' },
+  { name: '대시보드', href: MAIN_ROUTES.DASHBOARD, description: '사용자 대시보드' },
 ];
 
 export function Navigation() {
@@ -47,7 +48,7 @@ export function Navigation() {
       dispatch(clearCredentials());
       setIsUserMenuOpen(false);
       // 로그아웃 후 메인 페이지로 이동
-      window.location.href = '/';
+      window.location.href = MAIN_ROUTES.HOME;
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -59,7 +60,7 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* 로고 및 브랜드 */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href={MAIN_ROUTES.HOME} className="flex items-center gap-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">N</span>
               </div>
@@ -90,7 +91,7 @@ export function Navigation() {
             {!isAuthenticated ? (
               // 로그인 전: 로그인 버튼
               <Link
-                href="/login"
+                href={AUTH_ROUTES.LOGIN}
                 className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200"
               >
                 로그인
@@ -147,7 +148,7 @@ export function Navigation() {
             {/* 모바일 인증 메뉴 - 항상 표시 */}
             {!isAuthenticated ? (
               <Link
-                href="/login"
+                href={AUTH_ROUTES.LOGIN}
                 className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200"
               >
                 로그인
@@ -257,7 +258,7 @@ export function Navigation() {
             {!isAuthenticated ? (
               // 로그인 전: 로그인 버튼
               <Link
-                href="/login"
+                href={AUTH_ROUTES.LOGIN}
                 className="block px-4 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
