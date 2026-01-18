@@ -49,8 +49,14 @@ export const authHandlers = [
       }
 
       return HttpResponse.json({
-        error: 'INVALID_CREDENTIALS',
-        message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+        token: 'mock-jwt-token-12345',
+        expiresIn: 3600, // 1시간
+        user: {
+          id: 1,
+          email: 'test@example.com',
+          name: '테스트 사용자',
+          role: 'user',
+        },
       });
     }
 
