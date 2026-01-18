@@ -12,7 +12,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { baseQuery } from '@/shared/lib/rtkQuery/rtkQueryBaseQuery';
 
 import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/api';
 

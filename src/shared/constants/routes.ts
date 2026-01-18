@@ -69,13 +69,7 @@ export const AUTH_ROUTES = {
   LOGOUT: '/logout',
 
   /** 회원가입 (추가 예정) */
-  REGISTER: '/register',
-
-  /** 비밀번호 찾기 (추가 예정) */
-  FORGOT_PASSWORD: '/forgot-password',
-
-  /** 비밀번호 재설정 (추가 예정) */
-  RESET_PASSWORD: '/reset-password',
+  TOKEN_REFRESH: '/auth/refresh',
 } as const;
 
 // ============================================================================
