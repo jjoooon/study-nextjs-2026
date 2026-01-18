@@ -5,7 +5,7 @@
  * 대시보드의 UI 상태, 위젯 구성, 컴포넌트 Props를 정의
  */
 
-import type { DashboardStats, ActivityItem } from './api';
+import type { DashboardStats, ActivityItem } from './apiTypes';
 
 // ============================================================================
 // WIDGET TYPES

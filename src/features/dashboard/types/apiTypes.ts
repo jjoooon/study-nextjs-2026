@@ -81,7 +81,7 @@ export interface DashboardData {
 }
 
 // Forward import from ui.ts to avoid circular dependency
-import type { Widget } from './ui';
+import type { Widget } from './uiTypes';
 
 // ============================================================================
 // QUERY PARAM TYPES

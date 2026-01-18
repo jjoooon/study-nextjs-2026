@@ -6,7 +6,7 @@ import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from '@/features/products/services/productService';
-import type { CreateProductInput, Product, UpdateProductInput } from '@/features/products/types/api';
+import type { CreateProductInput, Product, UpdateProductInput } from '@/features/products/types/apiTypes';
 import log from '@/shared/utils/logger';
 
 // ============================================================================

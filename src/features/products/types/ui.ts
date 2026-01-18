@@ -4,7 +4,7 @@
  * UI 상태와 컴포넌트 Props 타입 정의
  */
 
-import type { Product } from './api';
+import type { Product } from './apiTypes';
 
 // ============================================================================
 // UI STATE TYPES

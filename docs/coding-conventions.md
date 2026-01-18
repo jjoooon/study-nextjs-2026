@@ -459,7 +459,7 @@ return (
   </ul>
 )
 
-// ❌ 나쁜 예: index作为 key
+// ❌ 나쁜 예: index key
 {products.map((product, index) => (
   <ProductCard key={index} product={product} />
 ))}

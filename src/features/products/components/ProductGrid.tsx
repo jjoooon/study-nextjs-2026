@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 // ✅ AG Grid v34+ Theming API 사용 (구버전 CSS 제거)
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
-import type { Product } from '../types/api';
+import type { Product } from '../types/apiTypes';
 
 // ============================================================================
 // AG GRID MODULE REGISTRATION

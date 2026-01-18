@@ -14,7 +14,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQuery } from '@/shared/lib/rtkQuery/rtkQueryBaseQuery';
 
-import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/api';
+import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/apiTypes';
 
 // ============================================================================
 // PRODUCT SERVICE

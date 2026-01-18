@@ -19,7 +19,7 @@ import { z } from 'zod';
 
 import { zodToFieldErrors } from '@/shared/utils/validation/zodHelpers';
 
-import type { CreateProductInput, Product, UpdateProductInput } from '../types/api';
+import type { CreateProductInput, Product, UpdateProductInput } from '../types/apiTypes';
 import { createProductSchema } from '../utils/validation';
 
 interface ProductFormProps {

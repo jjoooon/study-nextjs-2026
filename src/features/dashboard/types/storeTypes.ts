@@ -5,7 +5,7 @@
  * Redux Slice 상태 구조와 액션 Payload 타입을 정의
  */
 
-import type { Widget } from './ui';
+import type { Widget } from './uiTypes';
 
 // ============================================================================
 // STATE TYPES

@@ -25,7 +25,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQuery } from '@/shared/lib/rtkQuery/rtkQueryBaseQuery';
 
-import type { ActivityItem, DashboardData, DashboardStats } from '../types/api';
+import type { ActivityItem, DashboardData, DashboardStats } from '../types/apiTypes';
 
 // ============================================================================
 // DASHBOARD SERVICE
