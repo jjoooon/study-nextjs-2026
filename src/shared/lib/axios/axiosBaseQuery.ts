@@ -7,20 +7,35 @@
  * - TypeScript 완벽 호환
  * - RTK Query의 모든 기능 유지
  * - 401 에러 시 자동 토큰 갱신
+ * - RTK Query의 `body`와 Axios의 `data` 자동 매핑
  *
  * @architecture
  * - Axios 인스턴스: 글로벌 설정
  * - Request Interceptor: 자동 토큰 주입
  * - Response Interceptor: 401 에러 처리 및 토큰 갱신
  * - Mutex: 중복 갱신 방지
+ * - Body-to-Data 매핑: RTK Query 호환성 보장
  *
  * @usage
  * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
  *
  * export const apiSlice = createApi({
  *   baseQuery,
- *   endpoints: (builder) => ({ ... })
+ *   endpoints: (builder) => ({
+ *     // RTK Query 스타일 (body 사용)
+ *     createItem: builder.mutation({
+ *       query: (item) => ({
+ *         url: '/items',
+ *         method: 'POST',
+ *         body: item,  // ✅ 자동으로 data로 매핑됨
+ *       }),
+ *     }),
+ *   })
  * });
+ *
+ * @bugfix
+ * - POST 데이터 손실 버그 수정 (body → data 매핑)
+ * - RTK Query의 body 속성을 Axios의 data로 자동 변환
  *
  * @see
  * - authService: @/features/auth/services/authService - 사용 예시
@@ -266,15 +281,21 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) =>
   // Axios 인스턴스 가져오기
   const instance = getAxiosInstance(api.getState);
 
-  // skipReauth 옵션 설정
-  if (options.skipReauth) {
-    const { url, method, data, params } = typeof args === 'string' ? { url: args } : args;
+  // 🔧 RTK Query의 body를 Axios의 data로 매핑
+  const parsedArgs = typeof args === 'string' ? { url: args } : args;
+  const { url, method, body, data, params } = parsedArgs;
 
+  // body 우선, data fallback (RTK Query 호환성)
+  const requestData = body ?? data;
+  const requestMethod = method?.toLowerCase() as Method;
+
+  // skipReauth 요청 처리
+  if (options.skipReauth) {
     try {
       const result = await axiosInstanceWithoutReauth({
         url,
-        method: method?.toLowerCase() as Method,
-        data,
+        method: requestMethod,
+        data: requestData,
         params,
       });
 
@@ -293,13 +314,11 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) =>
   }
 
   // 일반 요청 (토큰 갱신 포함)
-  const { url, method, data, params } = typeof args === 'string' ? { url: args } : args;
-
   try {
     const result = await instance({
       url,
-      method: method?.toLowerCase() as Method,
-      data,
+      method: requestMethod,
+      data: requestData,
       params,
     });
 

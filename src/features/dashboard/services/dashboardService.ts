@@ -23,7 +23,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQuery } from '@/shared/lib/rtkQuery/rtkQueryBaseQuery';
+import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
 
 import type { ActivityItem, DashboardData, DashboardStats } from '../types/apiTypes';
 

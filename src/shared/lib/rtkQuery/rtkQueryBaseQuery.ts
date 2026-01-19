@@ -45,7 +45,7 @@ interface ReauthExtraOptions {
 /**
  * BaseQuery 타입 정의
  */
-type BaseQueryType = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, object>;
+type BaseQueryType = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, Record<string, unknown>, object>;
 
 // ============================================================================
 // MUTEX (중복 토큰 갱신 방지)
