@@ -12,7 +12,7 @@
 import { EmptyList } from '@/shared/components/ui/EmptyState';
 import { SkeletonList } from '@/shared/components/ui/Skeleton';
 
-import type { ProductListProps } from '../types/ui';
+import type { ProductListProps } from '../types/uiTypes';
 
 export default function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
   // 로딩 상태 - shared SkeletonList 사용

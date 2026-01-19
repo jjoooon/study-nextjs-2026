@@ -20,7 +20,7 @@
 import { last30DaysRange } from '@/shared/utils/date/dateRange';
 import { URL_PARAMS as SHARED_URL_PARAMS } from '@/shared/utils/url/urlParams';
 
-import type { ProductsFilters, ProductsSort } from '../types/ui';
+import type { ProductsFilters, ProductsSort } from '../types/uiTypes';
 
 // ============================================================================
 // PRODUCTS URL PARAMETER KEYS
