@@ -415,5 +415,5 @@ App (Next.js App Router)
 ## 관련 문서
 
 - [README.md](../README.md) - 프로젝트 개요
-- [아키텍처 가이드](./architecture.md) - 상세 아키텍처 설명 (추후 작성 예정)
-- [코딩 컨벤션](./coding-conventions.md) - 코딩 표준 (추후 작성 예정)
+- [아키텍처 가이드](./architecture.md) - 상세 아키텍처 설명
+- [코딩 컨벤션](./coding-conventions.md) - 코딩 표준
