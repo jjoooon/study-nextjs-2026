@@ -19,7 +19,7 @@
 ### 기술 스택
 
 ```
-Next.js 15 App Router
+Next.js 16 App Router
 ├── Client Components ('use client')
 ├── Dynamic Reducer Injection (Redux)
 ├── RTK Query (API State Management)
