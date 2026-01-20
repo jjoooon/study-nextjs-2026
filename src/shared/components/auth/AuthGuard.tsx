@@ -85,7 +85,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     if (!isAuthenticated) {
       // 현재 경로를 query parameter로 전달 (로그인 후 복귀용)
       const returnUrl = encodeURIComponent(pathname);
-      router.replace(`${AUTH_ROUTES.LOGIN}/login?returnUrl=${returnUrl}`);
+      router.replace(`${AUTH_ROUTES.LOGIN}?returnUrl=${returnUrl}`);
     }
   }, [isAuthenticated, pathname, router]);
 
