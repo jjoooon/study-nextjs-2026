@@ -151,14 +151,19 @@ if (process.env.NODE_ENV === 'development') {
  *
  * @note
  * RootState는 PersistPartial 타입 문제를 피해 수동으로 타이핑
- * 여기에 모든 기능 슬라이스와 API 슬라이스를 포함
+ * 새로운 reducer 추가 시 여기에 타입을 추가해야 함
+ *
+ * @example
+ * // 새 feature 추가 시:
+ * export type RootState = {
+ *   // ...기존 타입들
+ *   newFeature: import('@/features/newFeature/types/storeTypes').NewFeatureState;
+ * };
  */
 export type RootState = {
   auth: import('@/features/auth/types/storeTypes').AuthState;
   dashboard: import('@/features/dashboard/types/storeTypes').DashboardState;
-  dashboardApi: unknown;
   products: import('@/features/products/types/storeTypes').ProductsUIState;
-  productsApi: unknown;
 };
 
 export type AppDispatch = typeof store.dispatch;
