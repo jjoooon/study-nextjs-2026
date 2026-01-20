@@ -1,10 +1,11 @@
+import { fileURLToPath } from 'url';
 import dynamic from 'next/dynamic';
-import { notFound } from 'next/navigation';
+import { getPageFiles } from '@/shared/utils/file/getPageFiles';
 import log from '@/shared/utils/logger';
 
-// 🔒 화이트리스트: 허용된 페이지 ID만 정의
-const ALLOWED_PAGE_IDS = ['List', 'Detail', 'New', 'Edit'] as const;
-type PageId = (typeof ALLOWED_PAGE_IDS)[number];
+// 🔒 페이지 파일들 동적으로 발견 (현재 파일 기준 ../pages)
+const PAGE_IDS = getPageFiles(fileURLToPath(import.meta.url));
+type PageId = (typeof PAGE_IDS)[number];
 
 // ==============================================================================
 // 정적 생성: 빌드 시 HTML 미리 생성
@@ -26,7 +27,7 @@ type PageId = (typeof ALLOWED_PAGE_IDS)[number];
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-static-params
  */
 export function generateStaticParams(): Array<{ pageId: PageId }> {
-  return ALLOWED_PAGE_IDS.map((pageId) => ({
+  return PAGE_IDS.map((pageId) => ({
     pageId,
   }));
 }
@@ -40,12 +41,6 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
   const { pageId } = await params;
   logger.debug(`pageId: ${pageId}`);
-
-  // ✅ 보안 검증: 화이트리스트에 없는 pageId는 404 처리
-  if (!ALLOWED_PAGE_IDS.includes(pageId as PageId)) {
-    logger.warn(`Invalid pageId attempted: ${pageId}`);
-    notFound();
-  }
 
   // ✅ 개선된 에러 처리: 함수 컴포넌트를 올바르게 반환
   const PageComponent = dynamic(() => import(`@/app/sample/products/pages/${pageId}`), {
