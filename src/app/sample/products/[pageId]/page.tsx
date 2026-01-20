@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
   logger.debug(`pageId: ${pageId}`);
 
   // ✅ 개선된 에러 처리: 함수 컴포넌트를 올바르게 반환
-  const PageComponent = dynamic(() => import(`@/app/sample/products/pages/${pageId}`), {
+  const PageComponent = dynamic(() => import(`../pages/${pageId}`), {
     ssr: true,
   });
 
