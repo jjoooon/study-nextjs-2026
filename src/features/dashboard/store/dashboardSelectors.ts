@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '@/store';
+import type { RootState } from '@/redux';
 
 import type { Widget } from '../types/uiTypes';
 

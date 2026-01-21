@@ -25,7 +25,7 @@ import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProductForm } from '@/features/products/hooks/useProductForm';
 import productsReducer from '@/features/products/store/productsUISlice';
 import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/apiTypes';
-import { useInjectReducer } from '@/store/reducers/hooks';
+import { useInjectReducer } from '@/redux/reducers/hooks';
 
 // ============================================================================
 // DYNAMIC REDUCER INJECTION

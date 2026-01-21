@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { AUTH_ROUTES, MAIN_ROUTES } from '@/shared/constants/routes';
 import { useLogoutMutation } from '@/shared/services/authService';
 import { selectIsAuthenticated, selectUser } from '@/shared/store/authSelectors';
 import { clearCredentials } from '@/shared/store/authSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 interface NavItem {
   name: string;

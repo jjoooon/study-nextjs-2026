@@ -1,7 +1,7 @@
 import { useGetDashboardQuery } from '@/features/dashboard/services/dashboardService';
 import * as dashboardSelectors from '@/features/dashboard/store/dashboardSelectors';
 import { reorderWidgets, toggleWidget } from '@/features/dashboard/store/dashboardSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 // ============================================================================
 // DASHBOARD HOOKS (RTK Query + Selector-based)

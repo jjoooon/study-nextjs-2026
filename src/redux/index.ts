@@ -61,7 +61,7 @@ export const store = configureStore({
  * - Next.js Provider에서 사용
  *
  * @usage
- * import { persistor } from '@/store';
+ * import { persistor } from '@/redux';
  *
  * <Provider store={store}>
  *   <PersistGate loading={null} persistor={persistor}>
@@ -179,7 +179,7 @@ export type AppDispatch = typeof store.dispatch;
  * 원시 useDispatch와 useSelector 대신 이 훅 사용
  *
  * @example
- * import { useAppDispatch, useAppSelector } from '@/store';
+ * import { useAppDispatch, useAppSelector } from '@/redux';
  *
  * const dispatch = useAppDispatch();
  * const user = useAppSelector((state) => state.auth.user);
@@ -197,7 +197,7 @@ export { useAppDispatch, useAppSelector } from './hooks';
  * 코드 분할을 위해 런타임에 리듀서 주입/제거
  *
  * @example
- * import { injectReducer, ejectReducer } from '@/store';
+ * import { injectReducer, ejectReducer } from '@/redux';
  *
  * // 지연 로딩된 리듀서 주입
  * store.dispatch(injectReducer('analytics', analyticsReducer));

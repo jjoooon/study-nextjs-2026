@@ -1,8 +1,7 @@
 import { Middleware, AnyAction } from '@reduxjs/toolkit';
 
+import type { RootState } from '@/redux';
 import log from '@/shared/utils/logger';
-
-import type { RootState } from '@/store';
 
 // ============================================================================
 // PERFORMANCE MONITORING

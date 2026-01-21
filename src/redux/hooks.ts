@@ -1,6 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import type { RootState, AppDispatch } from '@/store';
+import type { RootState, AppDispatch } from '@/redux';
 
 // 핵심 타입드 훅
 // - 재정의된 useAppSelector - 타입 자동 추론

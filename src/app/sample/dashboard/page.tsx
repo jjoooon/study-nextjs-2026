@@ -24,8 +24,8 @@ import RecentActivity from '@/features/dashboard/components/RecentActivity';
 import { useDashboard } from '@/features/dashboard/hooks/useDashboard';
 import dashboardReducer from '@/features/dashboard/store/dashboardSlice';
 import type { Widget } from '@/features/dashboard/types/uiTypes';
+import { useInjectReducer } from '@/redux/reducers/hooks';
 import log from '@/shared/utils/logger';
-import { useInjectReducer } from '@/store/reducers/hooks';
 
 const logger = log.getLogger('Dashboard');
 

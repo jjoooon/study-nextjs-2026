@@ -39,7 +39,7 @@ import ProductList from '@/features/products/components/ProductList';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
-import { useInjectReducer } from '@/store/reducers/hooks';
+import { useInjectReducer } from '@/redux/reducers/hooks';
 
 // ============================================================================
 // DYNAMIC REDUCER INJECTION

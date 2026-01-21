@@ -51,8 +51,8 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useAppSelector } from '@/redux/hooks';
 import { AUTH_ROUTES, isPublicRoute } from '@/shared/constants/routes';
-import { useAppSelector } from '@/store/hooks';
 
 /**
  * Auth Guard Component

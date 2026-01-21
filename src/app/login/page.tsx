@@ -20,10 +20,9 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { useAppDispatch } from '@/redux/hooks';
 import { useLoginMutation } from '@/shared/services/authService';
 import { setCredentials, setError } from '@/shared/store/authSlice';
-
-import { useAppDispatch } from '@/store/hooks';
 
 export default function LoginPage() {
   const router = useRouter();
