@@ -15,8 +15,8 @@
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
-import type { DateRange } from '@/shared/types/date';
-import type { URLParamKeys } from '@/shared/types/url';
+import type { DateRange } from '@/shared/types/dateTypes';
+import type { URLParamKeys } from '@/shared/types/urlTypes';
 
 // ============================================================================
 // URL PARAMETER KEYS

@@ -11,7 +11,7 @@
  * UI에서는 Date 객체로 사용
  */
 
-import type { DateRange, DateRangeObject } from '@/shared/types/date';
+import type { DateRange, DateRangeObject } from '@/shared/types/dateTypes';
 
 // ============================================================================
 // DATE SERIALIZATION UTILS

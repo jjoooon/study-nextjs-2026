@@ -10,7 +10,7 @@
  * UI에서는 dateRangeFromState로 Date 객체로 변환 후 사용
  */
 
-import type { DateRange } from '@/shared/types/date';
+import type { DateRange } from '@/shared/types/dateTypes';
 
 import { dateToISOString } from './dateSerialization';
 

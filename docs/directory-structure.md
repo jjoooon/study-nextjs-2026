@@ -12,7 +12,7 @@ study-nextjs-2026/
 │   ├── app/                      # Next.js App Router
 │   ├── features/                 # 기능 기반 모듈
 │   ├── shared/                   # 공유 코드
-│   ├── store/                    # Redux 상태 관리
+│   ├── redux/                    # Redux 상태 관리
 │   └── mocks/                    # MSW API 모킹
 ├── .storybook/                   # Storybook 설정
 ├── .gitignore
@@ -35,7 +35,7 @@ src/
 ├── app/                          # Next.js App Router (App Router)
 ├── features/                     # 기능 기반 모듈 (Feature-based)
 ├── shared/                       # 공유 코드 (Shared Layer)
-├── store/                        # Redux 상태 관리
+├── redux/                        # Redux 상태 관리
 └── mocks/                        # MSW API 모킹
 ```
 
@@ -87,15 +87,6 @@ app/
 
 ```
 features/
-├── auth/                        # 인증 기능
-│   ├── components/              # 인증 관련 컴포넌트
-│   ├── hooks/                   # 인증 관련 커스텀 훅
-│   ├── services/                # 인증 API 서비스
-│   ├── store/                   # 인증 상태 관리
-│   │   ├── authSlice.ts        # Redux Slice
-│   │   └── authSelectors.ts    # Redux Selectors
-│   └── types/                   # 인증 관련 타입
-│
 ├── dashboard/                   # 대시보드 기능
 │   ├── components/              # 대시보드 컴포넌트
 │   │   ├── DashboardStats.tsx  # 통계 카드
@@ -108,9 +99,9 @@ features/
 │   │   ├── dashboardSlice.ts
 │   │   └── dashboardSelectors.ts
 │   ├── types/                   # 타입 정의
-│   │   ├── api.ts              # API 응답 타입
-│   │   ├── store.ts            # Store 타입
-│   │   └── ui.ts               # UI 관련 타입
+│   │   ├── apiTypes.ts         # API 응답 타입
+│   │   ├── storeTypes.ts       # Store 타입
+│   │   └── uiTypes.ts          # UI 관련 타입
 │   ├── utils/                   # 유틸리티
 │   │   └── dateUtils.ts        # 날짜 유틸리티
 │   └── constants/               # 상수
@@ -123,6 +114,11 @@ features/
     │   ├── ProductGrid.tsx     # 상품 그리드
     │   ├── ProductDetail.tsx   # 상품 상세
     │   └── ProductFilters.tsx  # 상품 필터
+    ├── sections/                # 페이지 섹션 컴포넌트
+    │   ├── ListSection.tsx     # 목록 페이지 섹션
+    │   ├── DetailSection.tsx   # 상세 페이지 섹션
+    │   ├── EditSection.tsx     # 수정 페이지 섹션
+    │   └── NewSection.tsx      # 등록 페이지 섹션
     ├── hooks/                   # 상품 훅
     │   ├── useProducts.ts      # 상품 목록 훅
     │   ├── useProduct.ts       # 단일 상품 훅
@@ -131,14 +127,12 @@ features/
     ├── services/                # 상품 API 서비스
     │   └── productService.ts
     ├── store/                   # 상품 상태
-    │   ├── productsSlice.ts    # 상품 Slice
-    │   ├── productsSelectors.ts # 상품 Selectors
-    │   └── productsUISlice.ts  # UI 상태 Slice
+    │   ├── productsUISlice.ts  # UI 상태 Slice
+    │   └── productsSelectors.ts # 상품 Selectors
     ├── types/                   # 타입 정의
-    │   ├── api.ts              # API 타입
-    │   ├── store.ts            # Store 타입
-    │   ├── ui.ts               # UI 타입
-    │   └── routes.ts           # 라우트 타입
+    │   ├── apiTypes.ts         # API 타입
+    │   ├── storeTypes.ts       # Store 타입
+    │   └── uiTypes.ts          # UI 타입
     ├── utils/                   # 유틸리티
     │   ├── urlParams.ts        # URL 파라미터 처리
     │   └── validation.ts       # 검증 로직
@@ -149,7 +143,8 @@ features/
 **기능별 구조 패턴:**
 ```
 feature-name/
-├── components/          # 기능 전용 컴포넌트
+├── components/          # 재사용 가능한 UI 컴포넌트
+├── sections/            # 페이지 단위 섹션 컴포넌트
 ├── hooks/              # 기능 전용 커스텀 훅
 ├── services/           # API 서비스
 ├── store/              # Redux 상태 (Slice, Selectors)
@@ -162,6 +157,10 @@ feature-name/
 - Feature는 다른 Feature의 컴포넌트를 직접 import할 수 없습니다
 - 반드시 Shared Layer를 통해서만 재사용 가능합니다
 
+**Components vs Sections:**
+- **components/**: 재사용 가능한 작은 UI 컴포넌트 (ProductCard, ProductFilters 등)
+- **sections/**: 페이지 단위의 큰 컴포넌트 (ListSection, DetailSection 등)
+
 ---
 
 ### `/src/shared` - 공유 코드 (Shared Layer)
@@ -173,53 +172,36 @@ shared/
 ├── components/                 # 공유 컴포넌트
 │   ├── auth/                  # 인증 관련 컴포넌트
 │   │   └── AuthGuard.tsx     # 인증 가드
-│   ├── common/                # 공통 컴포넌트
-│   │   ├── ErrorBoundary.tsx # 에러 바운더리
-│   │   ├── ContentLoader.tsx # 콘텐츠 로더
-│   │   ├── SuspenseBoundary.tsx # Suspense 바운더리
-│   │   ├── PerformanceMonitor.tsx # 성능 모니터
-│   │   └── PerformanceMonitorWrapper.tsx
 │   ├── layout/                # 레이아웃 컴포넌트
 │   │   └── Navigation.tsx    # 네비게이션
 │   └── ui/                    # UI 컴포넌트 (Shadcn/UI 스타일)
-│       ├── Button.tsx        # 버튼
-│       ├── Skeleton.tsx      # 스켈레톤
-│       └── EmptyState.tsx    # 빈 상태
+│       └── Button.tsx        # 버튼
 │
 ├── lib/                       # 라이브러리
-│   ├── shadcn/               # Shadcn/UI 유틸리티
-│   │   └── utils.ts         # cn() 함수 등
-│   ├── rtkQuery/             # RTK Query 설정
-│   │   └── rtkQueryBaseQuery.ts
-│   └── axios/                # Axios 설정
-│       └── axiosBaseQuery.ts
+│   └── utils.ts             # 유틸리티 함수
+│
+├── services/                  # 공유 서비스
+│   └── api/                 # API 설정
+│
+├── store/                     # 공유 Redux 설정
+│   ├── hooks.ts             # 커스텀 훅
+│   ├── index.ts             # 스토어 설정
+│   └── config.ts            # 스토어 설정
 │
 ├── styles/                    # 공유 스타일
-│   └── globals.css           # 전역 CSS
+│   └── globals.css          # 전역 CSS
 │
 ├── types/                     # 공유 타입
-│   ├── date.ts               # 날짜 관련 타입
-│   ├── url.ts                # URL 관련 타입
-│   └── pagination.ts         # 페이지네이션 타입
+│   └── index.ts             # 공유 타입 정의
 │
 ├── utils/                     # 공유 유틸리티
-│   ├── date/                 # 날짜 유틸리티
-│   │   ├── dateSerialization.ts
-│   │   └── dateRange.ts
-│   ├── url/                  # URL 유틸리티
-│   │   └── urlParams.ts
-│   ├── validation/           # 검증 유틸리티
-│   │   ├── commonSchemas.ts
-│   │   └── zodHelpers.ts
-│   ├── error.ts              # 에러 처리
-│   ├── logger.ts             # 로깅
-│   └── performance.ts        # 성능 측정
+│   └── index.ts             # 유틸리티 함수
 │
 ├── config/                    # 설정
-│   └── env.ts                # 환경 변수 설정
+│   └── env.ts               # 환경 변수 설정
 │
 └── constants/                 # 공유 상수
-    └── routes.ts             # 라우트 상수
+    └── index.ts             # 상수 정의
 ```
 
 **Shared 컴포넌트 특징:**
@@ -229,29 +211,26 @@ shared/
 
 ---
 
-### `/src/store` - Redux 상태 관리
+### `/src/redux` - Redux 상태 관리
 
 Redux Toolkit과 Redux Persist를 사용한 전역 상태 관리가 위치합니다.
 
 ```
-store/
+redux/
+├── hooks.ts                   # 커스텀 Redux 훅
 ├── index.ts                   # 스토어 메인 설정
 ├── config.ts                  # 스토어 설정
-├── setup.ts                   # 스토어 초기화
-├── hooks.ts                   # 커스텀 Redux 훅
-├── storage.ts                 # Redux Persist 스토리지
-├── transforms.ts              # 데이터 변환 함수
-│
-├── registry/                  # 스토어 레지스트리
-│   ├── base.ts              # 기본 레지스트리
-│   ├── reducer.ts           # 리듀서 레지스트리
-│   └── middleware.ts        # 미들웨어 레지스트리
 │
 ├── middleware/                # 커스텀 미들웨어
 │   └── performance.ts       # 성능 모니터링 미들웨어
 │
 ├── reducers/                  # 리듀서
 │   └── hooks.ts             # 리듀서 훅
+│
+├── registry/                  # 스토어 레지스트리
+│   ├── base.ts              # 기본 레지스트리
+│   ├── reducer.ts           # 리듀서 레지스트리
+│   └── middleware.ts        # 미들웨어 레지스트리
 │
 └── api/                       # API 설정
     ├── config.ts             # API 설정
@@ -262,7 +241,7 @@ store/
 - **Redux Toolkit** - 상태 관리
 - **Redux Persist** - 로컬 스토리지 지속성
 - **Registry 패턴** - 동적 리듀서/미들웨어 등록
-- **Performance Middleware** - 상태 변경 성능 모니터링
+- **성능 모니터링 미들웨어** - 상태 변경 성능 모니터링
 
 ---
 
@@ -287,7 +266,6 @@ mocks/
 │   └── errors.ts             # 에러 핸들러
 │
 └── data/                      # 모의 데이터
-    ├── auth.ts               # 인증 데이터
     ├── products.ts           # 상품 데이터
     └── dashboard.ts          # 대시보드 데이터
 ```
@@ -352,10 +330,10 @@ App (Next.js App Router)
 
 | 레이어 | 책임 | 예시 |
 |--------|------|------|
-| **Features** | 도메인별 비즈니스 로직 | 상품 관리, 인증, 대시보드 |
+| **Features** | 도메인별 비즈니스 로직 | 대시보드, 상품 관리 |
 | **Shared** | 재사용 가능한 코드 | UI 컴포넌트, 유틸리티, 타입 |
 | **App** | 라우팅, 레이아웃 | 페이지, 레이아웃, 에러 처리 |
-| **Store** | 전역 상태 관리 | Redux 설정, 미들웨어 |
+| **Redux** | 전역 상태 관리 | Redux 설정, 미들웨어 |
 | **Mocks** | API 모킹 | MSW 핸들러, 모의 데이터 |
 
 ---
@@ -364,6 +342,7 @@ App (Next.js App Router)
 
 ### 컴포넌트 파일
 - **PascalCase**: `UserProfile.tsx`, `ProductList.tsx`
+- **Section 접미사**: `ListSection.tsx`, `DetailSection.tsx`
 - 컴포넌트 파일은 `.tsx` 확장자
 
 ### 유틸리티/함수 파일
@@ -371,15 +350,15 @@ App (Next.js App Router)
 - 유틸리티 파일은 `.ts` 확장자
 
 ### 타입 파일
-- **camelCase**: `api.ts`, `store.ts`, `ui.ts`
+- **camelCase**: `apiTypes.ts`, `storeTypes.ts`, `uiTypes.ts`
 - 타입 정의 전용 파일
 
 ### Hook 파일
 - **camelCase**, `use` 접두사: `useDashboard.ts`, `useProducts.ts`
 
 ### Redux 파일
-- Slice: `[name]Slice.ts` (예: `authSlice.ts`)
-- Selector: `[name]Selectors.ts` (예: `authSelectors.ts`)
+- Slice: `[name]Slice.ts` (예: `dashboardSlice.ts`)
+- Selector: `[name]Selectors.ts` (예: `dashboardSelectors.ts`)
 
 ---
 
@@ -391,13 +370,14 @@ App (Next.js App Router)
 2. 표준 구조로 하위 디렉토리 생성:
    ```
    feature-name/
-   ├── components/
-   ├── hooks/
-   ├── services/
-   ├── store/
-   ├── types/
-   ├── utils/
-   └── constants/
+   ├── components/       # 재사용 가능한 UI 컴포넌트
+   ├── sections/         # 페이지 단위 섹션 컴포넌트
+   ├── hooks/           # 커스텀 훅
+   ├── services/        # API 서비스
+   ├── store/           # Redux 슬라이스 및 선택자
+   ├── types/           # TypeScript 타입
+   ├── utils/           # 유틸리티 함수
+   └── constants/       # 상수
    ```
 3. 필요한 컴포넌트, 로직 구현
 
@@ -405,8 +385,8 @@ App (Next.js App Router)
 
 1. 적절한 위치에 컴포넌트 생성:
    - UI 컴포넌트: `/src/shared/components/ui/`
-   - 공통 컴포넌트: `/src/shared/components/common/`
    - 레이아웃: `/src/shared/components/layout/`
+   - 인증: `/src/shared/components/auth/`
 2. Storybook으로 개발 및 테스트
 3. export 추가
 
@@ -417,3 +397,4 @@ App (Next.js App Router)
 - [README.md](../README.md) - 프로젝트 개요
 - [아키텍처 가이드](./architecture.md) - 상세 아키텍처 설명
 - [코딩 컨벤션](./coding-conventions.md) - 코딩 표준
+- [Products Feature Workflow](./products-feature-workflow.md) - 상품 기능 상세 가이드

@@ -32,4 +32,4 @@ export {
 } from '@/shared/utils/date/dateRange';
 
 // Dashboard 전용 타입 재내보내기
-export type { DateRange, DateRangeObject } from '@/shared/types/date';
+export type { DateRange, DateRangeObject } from '@/shared/types/dateTypes';
