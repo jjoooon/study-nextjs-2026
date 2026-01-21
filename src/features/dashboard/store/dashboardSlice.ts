@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { last30DaysRange } from '@/shared/utils/date/dateRange';
 import type { DashboardState } from '../types/storeTypes';
-import { last30DaysRange } from '../utils/dateUtils';
 
 const initialState: DashboardState = {
   widgets: [
