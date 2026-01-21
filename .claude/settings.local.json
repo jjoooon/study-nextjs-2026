@@ -41,7 +41,8 @@
       "Bash(npm run analyze:*)",
       "Bash(ping:*)",
       "Bash(netstat:*)",
-      "Bash(if not exist docs mkdir docs)"
+      "Bash(if not exist docs mkdir docs)",
+      "Bash(git log:*)"
     ]
   }
 }
