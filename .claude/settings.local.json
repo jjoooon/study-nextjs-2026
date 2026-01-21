@@ -43,7 +43,8 @@
       "Bash(netstat:*)",
       "Bash(if not exist docs mkdir docs)",
       "Bash(git log:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(npm run type-check:*)"
     ]
   }
 }
