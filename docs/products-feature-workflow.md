@@ -958,9 +958,10 @@ export const productService = createApi({
   }),
 });
 
-// ⚠️ 중요: RTK Query service 생성 후 middleware 등록 필수!
-// middlewareRegistry.registerMiddleware('productService', productService.middleware, 50);
-// 자세한 내용은 "7. Middleware Registry Pattern" 참조
+// ⚠️ 중요: RTK Query service 생성 후 API_REGISTRY에 등록 필수!
+// src/redux/api/config.ts의 API_REGISTRY 배열에 추가
+// { api: productService, priority: 50, name: 'productsService' }
+// 자세한 내용은 "7. Registry Pattern" 참조
 ```
 
 **장점:**
@@ -1074,9 +1075,13 @@ function ProductsPageContent() {
 
 ---
 
-### 7. Middleware Registry Pattern
+### 7. Registry Pattern (Reducer + Middleware)
 
-**목적:** 중앙 집중식 store config 수정 없이 미들웨어 동적 등록
+**목적:** 중앙 집중식 store config 수정 없이 동적 등록
+
+**두 가지 Registry:**
+1. **API_REGISTRY**: RTK Query services 중앙 등록 (`src/redux/api/config.ts`)
+2. **middlewareRegistry**: Custom middleware 동적 등록 (`src/redux/registry/middleware.ts`)
 
 ```typescript
 // 1️⃣ RTK Query Service 생성
@@ -1092,56 +1097,79 @@ export const productsService = createApi({
   }),
 });
 
-// 2️⃣ Service Middleware 등록 (필수!)
-import { middlewareRegistry } from '@/redux/registry/middleware';
+// 2️⃣ API_REGISTRY에 등록 (src/redux/api/config.ts)
+import { productsService } from '@/features/products/services/productService';
 
-middlewareRegistry.registerMiddleware(
-  'productsService',
-  productsService.middleware,  // RTK Query가 자동 생성한 middleware
-  50  // 우선순위 50-99: API 미들웨어
-);
+export const API_REGISTRY = [
+  // Core APIs (우선순위 10-19)
+  { api: authService, priority: 10, name: 'authService' },
 
-// 3️⃣ Store 설정에서 자동 합체됨
-// configureMiddleware() → middlewareRegistry.getAllMiddleware()
+  // Feature APIs (우선순위 50-59)
+  { api: dashboardService, priority: 50, name: 'dashboardService' },
+  { api: productsService, priority: 50, name: 'productsService' }, // ✅ 새 API 추가
+  // { api: analyticsApiSlice, priority: 54, name: 'analyticsApi' },
+] as const;
+
+// 3️⃣ 자동 처리 (src/redux/api/registry.ts)
+// - registerAllApiReducers(): reducer 자동 등록
+// - getAllApiMiddleware(): middleware 자동 반환
+// - 수동으로 middlewareRegistry.registerMiddleware() 호출 불필요!
 ```
 
 **주요 사용처:**
-- **RTK Query Services**: `api.middleware` 등록 (가장 일반적인 용도)
-- **Custom Logger**: 성능 모니터링, 디버깅
-- **Error Handling**: 전역 에러 처리 미들웨어
-- **Analytics**: 사용자 행동 추적
 
-**우선순위 가이드:**
+**1️⃣ API_REGISTRY (RTK Query Services):**
+- ✅ **가장 일반적인 용도**: 새 RTK Query service 추가
+- 📍 위치: `src/redux/api/config.ts`
+- 🔄 자동 처리: reducer + middleware 모두 자동 등록
+
+**2️⃣ middlewareRegistry (Custom Middleware):**
+- Performance monitoring middleware
+- Custom logging middleware
+- Error handling middleware
+- Analytics middleware
+
+**우선순위 가이드 (API_REGISTRY):**
+- **10-19**: Core APIs (authService 등)
+- **50-59**: Feature APIs (dashboardService, productsService 등)
+
+**우선순위 가이드 (middlewareRegistry):**
 - **0-9**: 핵심 체크 (직렬화, 불변성)
 - **10-29**: 성능 및 모니터링
 - **30-49**: 로깅
-- **50-99**: API 미들웨어 (usersApi, productsApi 등) ⭐ RTK Query services
+- **50-99**: API 미들웨어 (수동 등록 시)
 - **100+**: 에러 처리, 분석
 
 **아키텍처 통합:**
 ```
-미들웨어 등록 (feature 슬라이스)
-  ↓
-middlewareRegistry.registerMiddleware(name, middleware, priority)
-  ↓
-store 초기화 (src/redux/index.ts)
-  ↓
-configureMiddleware() → middlewareRegistry.getAllMiddleware()
-  ↓
-coreMiddleware.concat(...registryMiddleware)
-  ↓
-middlewareRegistry.lock() // 등록 마감
+[RTK Query Service 추가 시]
+1. Service 생성 (createApi)
+   ↓
+2. API_REGISTRY에 등록 (src/redux/api/config.ts)
+   ↓
+3. 자동 처리 (src/redux/api/registry.ts)
+   - registerAllApiReducers() → reducer 자동 등록
+   - getAllApiMiddleware() → middleware 자동 반환
+
+[Custom Middleware 추가 시]
+1. Middleware 생성
+   ↓
+2. middlewareRegistry.registerMiddleware(name, middleware, priority)
+   ↓
+3. configureMiddleware() → middlewareRegistry.getAllMiddleware()
+   ↓
+4. Store에 합체
 ```
 
 **장점:**
-- 팀별 독립적 미들웨어 개발
-- Merge conflict 방지
-- 우선순위 기반 미들웨어 순서 관리
-- 자동으로 store에 합체됨
+- **RTK Query Services**: API_REGISTRY에 한 줄 추가하면 reducer + middleware 자동 처리
+- **Custom Middleware**: 수동으로 middlewareRegistry에 등록 가능
+- 팀별 독립적 개발 (merge conflict 방지)
+- 우선순위 기반 순서 관리
 - 스토어 설정 파일 수정 불필요
 
 **연관 패턴:**
-- **3. RTK Query 자동 캐싱**: RTK Query service 생성 후 필수로 `api.middleware` 등록 필요
+- **3. RTK Query 자동 캐싱**: RTK Query service 생성 후 API_REGISTRY에 등록 필요
 - **1. Dynamic Reducer Injection**: companion pattern, 런타임 extensibility
 
 ---
@@ -1162,7 +1190,7 @@ middlewareRegistry.lock() // 등록 마감
 
 3. **코드 분할**
    - Dynamic Reducer Injection
-   - Middleware Registry Pattern
+   - Registry Pattern (API_REGISTRY + middlewareRegistry)
    - 페이지별 lazy loading
    - 초기 번들 크기 최적화
 
