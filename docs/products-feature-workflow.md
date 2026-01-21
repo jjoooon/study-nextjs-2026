@@ -30,13 +30,14 @@ Next.js 16 App Router
 ### 레이어 구조
 
 ```
-┌─────────────────────────────────────────────┐
-│  Pages Layer (app/sample/products/pages/)  │
-│  - List.tsx, Detail.tsx, Edit.tsx, New.tsx │
-└─────────────────┬───────────────────────────┘
+┌─────────────────────────────────────────────────┐
+│  Pages Layer (app/sample/products/pages/)       │
+│  - List.tsx, Detail.tsx, Edit.tsx, New.tsx      │
+│  (래퍼 컴포넌트 → features/sections import)      │
+└─────────────────┬───────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────┐
-│  Hooks Layer (features/products/hooks/)    │
+│  Hooks Layer (features/products/hooks/)     │
 │  - useProducts, useProduct, useProductForm  │
 └─────────────────┬───────────────────────────┘
                   │
@@ -51,7 +52,7 @@ Next.js 16 App Router
 └─────────────────┬───────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────┐
-│  Store Layer (features/products/store/)    │
+│  Store Layer (features/products/store/)     │
 │  - productsUISlice (Redux UI State)         │
 └─────────────────────────────────────────────┘
 ```
@@ -62,13 +63,23 @@ Next.js 16 App Router
 
 ```
 src/
-├── app/sample/products/pages/         # 페이지 컴포넌트
-│   ├── List.tsx                       # 제품 목록 페이지
-│   ├── Detail.tsx                     # 제품 상세 페이지
-│   ├── Edit.tsx                       # 제품 수정 페이지
-│   └── New.tsx                        # 제품 등록 페이지
+├── app/sample/products/               # App Router 페이지
+│   ├── [pageId]/                      # 동적 라우트
+│   │   └── page.tsx                   # 진입점 (../pages/${pageId} import)
+│   │
+│   └── pages/                         # 페이지 래퍼 컴포넌트
+│       ├── List.tsx                   # → ListSection
+│       ├── Detail.tsx                 # → DetailSection
+│       ├── Edit.tsx                   # → EditSection
+│       └── New.tsx                    # → NewSection
 │
 └── features/products/                 # 제품 기능 모듈
+    ├── sections/                      # 페이지 섹션 컴포넌트
+    │   ├── ListSection.tsx            # 목록 페이지
+    │   ├── DetailSection.tsx          # 상세 페이지
+    │   ├── EditSection.tsx            # 수정 페이지
+    │   └── NewSection.tsx             # 등록 페이지
+    │
     ├── components/                    # UI 컴포넌트
     │   ├── ProductFilters.tsx         # 필터 컴포넌트
     │   ├── ProductForm.tsx            # 폼 컴포넌트
@@ -104,25 +115,97 @@ src/
 
 ---
 
+### 페이지 래퍼 구조
+
+**목적:** Next.js App Router와 Feature Sections 간의 계층 분리
+
+```
+[pageId]/page.tsx (동적 라우트)
+    ↓
+pages/XXXX.tsx (래퍼 컴포넌트)
+    ↓
+sections/XXXXSection.tsx (실제 컴포넌트)
+```
+
+**래퍼 파일 예시:**
+```typescript
+// app/sample/products/pages/Detail.tsx
+import DetailSection from '@/features/products/sections/DetailSection';
+
+export default function Page() {
+  return <DetailSection />;
+}
+```
+
+**장점:**
+- ✅ Next.js 라우팅과 Feature 로직 분리
+- ✅ 유연한 페이지 구조 변경 가능
+- ✅ Feature 코드를 `features/`에 중앙화
+- ✅ 테스트와 재사용성 향상
+
+---
+
 ## 🔄 페이지 워크플로우
 
-### 1. 제품 목록 페이지 (List.tsx)
+**아키텍처 개요: Page Wrapper Pattern**
 
-```mermaid
-graph TD
-    A[List.tsx] --> B[useInjectReducer]
-    B --> C[ProductsPageContent]
-    C --> D[useProducts Hook]
-    D --> E[useProductsURLState]
-    D --> F[useGetProductsQuery]
-    E --> G[URL에서 필터/정렬/뷰모드]
-    F --> H[RTK Query API 호출]
-    G --> I[ProductFilters]
-    G --> J[정렬/뷰모드 컨트롤]
-    H --> K[ProductList/ProductGrid]
-    K --> L[제품 클릭]
-    L --> M[Detail 페이지 이동]
 ```
+src/app/sample/products/[pageId]/page.tsx (Page Wrapper)
+  ↓
+src/app/sample/products/pages/{List,Detail,Edit,New}.tsx (Page Wrapper)
+  ↓
+src/features/products/sections/{List,Detail,Edit,New}Section.tsx (실제 구현)
+```
+
+- **pages/**: Next.js App Router용 thin wrapper
+- **sections/**: 실제 비즈니스 로직과 UI가 구현된 섹션 컴포넌트
+- **장점**: 코드 분할, 재사용성, 테스트 용이성
+
+---
+
+### 1. 제품 목록 페이지 (List)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  /sample/products/List (List.tsx)                           │
+│    ↓                                                        │
+│  ListSection Import                                         │
+│    ↓                                                        │
+│  sections/ListSection.tsx                                   │
+│    ↓                                                        │
+│  useInjectReducer (Dynamic Reducer Injection)               │
+│    ↓                                                        │
+│  Content 컴포넌트                                            │
+│    ↓                                                        │
+│  useProducts Hook                                           │
+│    ├────────────────────────────────────┐                   │
+│    ↓                                    ↓                   │
+│  useProductsURLState           useGetProductsQuery          │
+│    ↓                                    ↓                   │
+│  URL에서 필터/정렬/뷰모드         RTK Query API 호출          │
+│    ↓                                    ↓                   │
+│  ProductFilters                    ProductList/ProductGrid  │
+│  정렬/뷰모드 컨트롤                       ↓                   │
+│                                          │                  │
+│                                    제품 클릭                 │
+│                                          ↓                  │
+│                                    Detail 페이지 이동        │
+│                                    (쿼리 파라미터 보존)      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**파일 구조:**
+
+1. **Page Wrapper** (`src/app/sample/products/pages/List.tsx`)
+   ```typescript
+   import ListSection from '@/features/products/sections/ListSection';
+
+   export default function Page() {
+     return <ListSection />;
+   }
+   ```
+
+2. **Section Component** (`src/features/products/sections/ListSection.tsx`)
 
 **실행 흐름:**
 
@@ -141,16 +224,19 @@ graph TD
      sort,            // URL 기반 정렬
      viewMode,        // URL 기반 뷰모드
      updateFilters,   // URL 업데이트
+     updateSort,      // 정렬 업데이트
+     updateViewMode,  // 뷰모드 업데이트
    } = useProducts();
    ```
 
 3. **URL 기반 상태 관리**
    ```
-   /sample/products/List?search=laptop&category=subscription&sortBy=price&sortOrder=asc
+   /sample/products/List?search=laptop&category=subscription&sortBy=price&sortOrder=asc&viewMode=table
    ```
    - 페이지 새로고침해도 상태 유지
    - URL 공유 가능
    - 브라우저 뒤로/앞으로 가기 지원
+   - **페이지 이동 간 쿼리 파라미터 보존**
 
 4. **컴포넌트 렌더링**
    - `ProductFilters`: 검색, 상태, 카테고리 필터
@@ -158,22 +244,56 @@ graph TD
    - 정렬 버튼 (이름, 가격, 등록일)
    - 뷰 모드 전환 (테이블/그리드)
 
-### 2. 제품 상세 페이지 (Detail.tsx)
+5. **페이지 이동 시 쿼리 파라미터 보존**
+   ```typescript
+   const handleProductClick = (product) => {
+     const params = new URLSearchParams(searchParams.toString());
+     params.set('id', product.id);
+     router.push(`${PRODUCTS_ROUTES.DETAIL}?${params.toString()}`);
+   };
+   ```
 
-```mermaid
-graph TD
-    A[Detail.tsx] --> B[URL에서 id 추출]
-    B --> C[useInjectReducer]
-    C --> D[ProductDetailPageContent]
-    D --> E[useProduct Hook]
-    E --> F[useGetProductByIdQuery]
-    F --> G[ProductDetail 컴포넌트]
-    G --> H{사용자 액션}
-    H -->|수정| I[Edit 페이지 이동]
-    H -->|삭제| J[deleteProduct]
-    J --> K[목록 페이지 이동]
-    H -->|뒤로| L[목록 페이지 이동]
+### 2. 제품 상세 페이지 (Detail)
+
 ```
+┌─────────────────────────────────────────────────────────────┐
+│  /sample/products/Detail (Detail.tsx)                      │
+│    ↓                                                        │
+│  DetailSection Import                                       │
+│    ↓                                                        │
+│  sections/DetailSection.tsx                                │
+│    ↓                                                        │
+│  URL에서 id 추출 (쿼리 파라미터)                            │
+│    ↓                                                        │
+│  useInjectReducer                                          │
+│    ↓                                                        │
+│  Content 컴포넌트                                            │
+│    ↓                                                        │
+│  useProduct Hook                                            │
+│    ↓                                                        │
+│  useGetProductByIdQuery                                     │
+│    ↓                                                        │
+│  ProductDetail 컴포넌트                                     │
+│    ↓                                                        │
+│  사용자 액션                                                │
+│    ├─ 수정 → Edit 페이지 이동 (쿼리 파라미터 보존)          │
+│    ├─ 삭제 → deleteProduct → 목록 페이지 이동 (상태 보존)    │
+│    └─ 뒤로 → 목록 페이지 이동 (필터 상태 보존)               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**파일 구조:**
+
+1. **Page Wrapper** (`src/app/sample/products/pages/Detail.tsx`)
+   ```typescript
+   import DetailSection from '@/features/products/sections/DetailSection';
+
+   export default function Page() {
+     return <DetailSection />;
+   }
+   ```
+
+2. **Section Component** (`src/features/products/sections/DetailSection.tsx`)
 
 **실행 흐름:**
 
@@ -191,8 +311,7 @@ graph TD
 3. **삭제 처리**
    ```typescript
    const handleDelete = () => {
-     if (!confirm('정말 이 제품을 삭제하시겠습니까?')) return;
-     deleteProduct();  // → router.push('/products')
+     deleteProduct();  // → 목록 페이지로 자동 이동
    };
    ```
 
@@ -202,27 +321,63 @@ graph TD
    router.push(`${PRODUCTS_ROUTES.DETAIL}?${params.toString()}`);
 
    // 상세 → 목록 복귀 시 필터 상태 유지
-   router.push(returnURL);  // /sample/products/List?search=...&category=...
+   const returnURL = `${PRODUCTS_ROUTES.LIST}?${searchParams.toString()}`;
+   router.push(returnURL);
+
+   // 상세 → 수정 이동 시 필터 상태 유지
+   const params = new URLSearchParams(searchParams.toString());
+   params.set('id', product.id);
+   router.push(`${PRODUCTS_ROUTES.EDIT}?${params.toString()}`);
    ```
 
-### 3. 제품 수정 페이지 (Edit.tsx)
+### 3. 제품 수정 페이지 (Edit)
 
-```mermaid
-graph TD
-    A[Edit.tsx] --> B[URL에서 id 추출]
-    B --> C[useInjectReducer]
-    C --> D[EditProductPageContent]
-    D --> E[useProductForm Hook]
-    E --> F[useGetProductByIdQuery]
-    F --> G[initialData 로드]
-   G --> H[ProductForm 초기값]
-   H --> I[사용자 수정]
-   I --> J[handleSubmit]
-   J --> K[Zod 검증]
-   K -->|검증 성공| L[updateProduct]
-   L --> M[목록 페이지 이동]
-   K -->|검증 실패| N[에러 표시]
 ```
+┌─────────────────────────────────────────────────────────────┐
+│  /sample/products/Edit (Edit.tsx)                          │
+│    ↓                                                        │
+│  EditSection Import                                         │
+│    ↓                                                        │
+│  sections/EditSection.tsx                                  │
+│    ↓                                                        │
+│  URL에서 id 추출 (쿼리 파라미터)                            │
+│    ↓                                                        │
+│  useInjectReducer                                          │
+│    ↓                                                        │
+│  Content 컴포넌트                                            │
+│    ↓                                                        │
+│  useProductForm Hook                                        │
+│    ↓                                                        │
+│  useGetProductByIdQuery                                     │
+│    ↓                                                        │
+│  initialData 로드                                           │
+│    ↓                                                        │
+│  ProductForm 초기값                                         │
+│    ↓                                                        │
+│  사용자 수정                                                 │
+│    ↓                                                        │
+│  handleSubmit                                               │
+│    ↓                                                        │
+│  Zod 검증                                                   │
+│    ├─ 검증 성공 → updateProduct → 목록 이동 (상태 보존)       │
+│    └─ 검증 실패 → 에러 표시                                 │
+│                                                           │
+│  취소 → Detail 페이지 이동 (쿼리 파라미터 보존)              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**파일 구조:**
+
+1. **Page Wrapper** (`src/app/sample/products/pages/Edit.tsx`)
+   ```typescript
+   import EditSection from '@/features/products/sections/EditSection';
+
+   export default function Page() {
+     return <EditSection />;
+   }
+   ```
+
+2. **Section Component** (`src/features/products/sections/EditSection.tsx`)
 
 **실행 흐름:**
 
@@ -237,11 +392,12 @@ graph TD
      initialData={initialData}  // 제품 데이터로 초기화
      mode="update"
      onSubmit={handleSubmit}
+     onCancel={handleCancel}
      isSubmitting={isSubmitting}
    />
    ```
 
-3. **Zod 검증**
+3. **Zod 검증** (ProductForm 내부)
    ```typescript
    const validate = (): boolean => {
      const result = createProductSchema.safeParse(formData);
@@ -260,24 +416,62 @@ graph TD
      if (result) {
        router.push(returnURL);  // 필터 상태 유지하며 목록으로
      }
+     return result;
    };
    ```
 
-### 4. 제품 등록 페이지 (New.tsx)
+5. **취소 처리**
+   ```typescript
+   const handleCancel = () => {
+     const params = new URLSearchParams(searchParams.toString());
+     router.push(`${PRODUCTS_ROUTES.DETAIL}?${params.toString()}`);
+   };
+   ```
 
-```mermaid
-graph TD
-    A[New.tsx] --> B[useInjectReducer]
-    B --> C[NewProductPageContent]
-    C --> D[useProductForm Hook]
-    D --> E[ProductForm 빈 상태]
-    E --> F[사용자 입력]
-    F --> G[handleSubmit]
-    G --> H[Zod 검증]
-    H -->|검증 성공| I[createProduct]
-    I --> J[목록 페이지 이동]
-    H -->|검증 실패| K[에러 표시]
+---
+
+### 4. 제품 등록 페이지 (New)
+
 ```
+┌─────────────────────────────────────────────────────────────┐
+│  /sample/products/New (New.tsx)                            │
+│    ↓                                                        │
+│  NewSection Import                                          │
+│    ↓                                                        │
+│  sections/NewSection.tsx                                   │
+│    ↓                                                        │
+│  useInjectReducer                                          │
+│    ↓                                                        │
+│  Content 컴포넌트                                            │
+│    ↓                                                        │
+│  useProductForm Hook                                        │
+│    ↓                                                        │
+│  ProductForm 빈 상태                                        │
+│    ↓                                                        │
+│  사용자 입력                                                 │
+│    ↓                                                        │
+│  handleSubmit                                               │
+│    ↓                                                        │
+│  Zod 검증                                                   │
+│    ├─ 검증 성공 → createProduct → 목록 이동 (상태 보존)       │
+│    └─ 검증 실패 → 에러 표시                                 │
+│                                                           │
+│  취소 → 목록 페이지 이동 (쿼리 파라미터 보존)                │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**파일 구조:**
+
+1. **Page Wrapper** (`src/app/sample/products/pages/New.tsx`)
+   ```typescript
+   import NewSection from '@/features/products/sections/NewSection';
+
+   export default function Page() {
+     return <NewSection />;
+   }
+   ```
+
+2. **Section Component** (`src/features/products/sections/NewSection.tsx`)
 
 **실행 흐름:**
 
@@ -288,6 +482,7 @@ graph TD
    <ProductForm
      mode="create"
      onSubmit={handleSubmit}
+     onCancel={handleCancel}
      isSubmitting={isSubmitting}
    />
    ```
@@ -299,6 +494,14 @@ graph TD
      if (result) {
        router.push(returnURL);  // 필터 상태 유지하며 목록으로
      }
+     return result;
+   };
+   ```
+
+3. **취소 처리**
+   ```typescript
+   const handleCancel = () => {
+     router.push(returnURL);  // 필터 상태 유지하며 목록으로
    };
    ```
 
@@ -486,9 +689,11 @@ export const useProducts = () => {
 ### List 페이지 컴포넌트 트리
 
 ```
-List.tsx (Page)
-└── ProductsPageContent
-    ├── ProductFilters
+[pageId]/page.tsx (Dynamic Route)
+└── List.tsx (Wrapper)
+    └── ListSection
+        ├── ProductsPageContent
+            ├── ProductFilters
     │   ├── 검색 입력
     │   ├── 상태 선택
     │   └── 카테고리 선택
@@ -505,9 +710,11 @@ List.tsx (Page)
 ### Detail 페이지 컴포넌트 트리
 
 ```
-Detail.tsx (Page)
-└── ProductDetailPageContent
-    └── ProductDetail
+[pageId]/page.tsx (Dynamic Route)
+└── Detail.tsx (Wrapper)
+    └── DetailSection
+        └── ProductDetailPageContent
+            └── ProductDetail
         ├── 제품 정보 표시
         ├── 버튼 그룹
         │   ├── 수정 버튼 → Edit 페이지
@@ -519,9 +726,11 @@ Detail.tsx (Page)
 ### Edit/New 페이지 컴포넌트 트리
 
 ```
-Edit.tsx / New.tsx (Page)
-└── EditProductPageContent / NewProductPageContent
-    └── ProductForm
+[pageId]/page.tsx (Dynamic Route)
+└── Edit.tsx / New.tsx (Wrapper)
+    └── EditSection / NewSection
+        └── EditProductPageContent / NewProductPageContent
+            └── ProductForm
         ├── 제품명 입력
         ├── 가격 입력
         ├── 카테고리 선택

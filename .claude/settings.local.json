@@ -42,7 +42,8 @@
       "Bash(ping:*)",
       "Bash(netstat:*)",
       "Bash(if not exist docs mkdir docs)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(git restore:*)"
     ]
   }
 }

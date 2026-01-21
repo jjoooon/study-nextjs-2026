@@ -24,45 +24,45 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        Presentation Layer                    │
+│                        Presentation Layer                   │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │              Next.js App Router (Pages/Layouts)       │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                              ↓                              │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │              Feature Components (UI)                   │  │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐           │  │
-│  │  │  Auth    │  │ Dashboard│  │ Products │           │  │
-│  │  └──────────┘  └──────────┘  └──────────┘           │  │
+│  │              Feature Components (UI)                  │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐             │  │
+│  │  │  Auth    │  │ Dashboard│  │ Products │             │  │
+│  │  └──────────┘  └──────────┘  └──────────┘             │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                        Business Logic Layer                  │
+│                        Business Logic Layer                 │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │              Custom Hooks (useXXX)                     │  │
+│  │              Custom Hooks (useXXX)                    │  │
 │  └───────────────────────────────────────────────────────┘  │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │              Services (API Calls)                      │  │
+│  │              Services (API Calls)                     │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                        State Management Layer                │
+│                        State Management Layer               │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │              Redux Store (Global State)                │  │
+│  │              Redux Store (Global State)               │  │
 │  │  ┌─────────────────────────────────────────┐          │  │
-│  │  │  Slices │ Selectors │ Middleware         │          │  │
+│  │  │  Slices │ Selectors │ Middleware        │          │  │
 │  │  └─────────────────────────────────────────┘          │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                        Data Layer                             │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │     MSW      │  │    Axios     │  │   RTK Query  │     │
-│  │  (Dev Mock)  │  │  (HTTP)      │  │  (Caching)   │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
+│                        Data Layer                           │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │     MSW      │  │    Axios     │  │   RTK Query  │       │
+│  │  (Dev Mock)  │  │  (HTTP)      │  │  (Caching)   │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -169,7 +169,14 @@ src/features/
 │   └── ...
 │
 └── products/               # 상품 기능
-    └── ...
+    ├── components/          # 상품 UI 컴포넌트
+    ├── hooks/              # 상품 관련 커스텀 훅
+    ├── services/           # 상품 API 서비스
+    ├── store/              # 상품 상태 관리
+    ├── types/              # 상품 타입 정의
+    ├── utils/              # 상품 유틸리티
+    ├── constants/          # 상품 상수
+    └── sections/           # 페이지 섹션 컴포넌트
 ```
 
 ### 장점
@@ -182,34 +189,73 @@ src/features/
 
 ### Import 제한
 
-**ESLint 규칙으로 강제:**
+**eslint-plugin-boundaries로 강제:**
 
 ```javascript
 // eslint.config.js
-'import/no-restricted-paths': [
-  'error',
+import boundaries from 'eslint-plugin-boundaries';
+
+export default [
   {
-    zones: [
-      {
-        target: './src/features/**/*.{ts,tsx}',
-        from: './src/features/**/components/**',
-        except: ['./src/shared/**'],
-        message: 'Feature는 다른 Feature의 Component를 직접 import할 수 없습니다.',
-      },
-    ],
+    plugins: {
+      boundaries,
+    },
+    rules: {
+      'boundaries/element-types': [
+        'error',
+        {
+          rules: [
+            {
+              from: 'features',
+              disallow: ['features'],
+              message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
+            },
+          ],
+        },
+      ],
+    },
+    settings: {
+      'boundaries/elements': [
+        {
+          type: 'features',
+          pattern: 'src/features/**/*',
+          mode: 'folder',
+        },
+        {
+          type: 'shared',
+          pattern: 'src/shared/**/*',
+          mode: 'folder',
+        },
+      ],
+    },
   },
-]
+];
 ```
+
+**설명:**
+- `type: 'features'` - features 디렉토리를 하나의 element로 정의
+- `from: 'features'` - features에서
+- `disallow: ['features']` - 다른 features import 금지
+- 같은 feature 내 import는 허용 (eslint-plugin-boundaries의 장점)
 
 **사용 예시:**
 
 ```typescript
-// ✅ 올바른 import
+// ✅ 올바른 import (Shared Layer)
 import { Button } from '@/shared/components/ui/Button'
 
+// ✅ 올바른 import (같은 Feature 내)
+import { ProductFilters } from '@/features/products/components/ProductFilters'
+
 // ❌ 잘못된 import (다른 Feature의 컴포넌트)
-import { ProductCard } from '@/features/products/components/ProductCard'
+import { ProductCard } from '@/features/dashboard/components/DashboardCard'
 ```
+
+**eslint-plugin-boundaries 장점:**
+- ✅ 같은 feature 내 import 허용 (기존 문제 해결)
+- ✅ 직관적인 설정 구조
+- ✅ TypeScript path alias 지원 (@/features, @/shared)
+- ✅ 유지보수 용이 (새 feature 추가 시 설정 변경 불필요)
 
 ---
 
@@ -233,14 +279,14 @@ import { ProductCard } from '@/features/products/components/ProductCard'
 └─────────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────────┐
-│  State Management Layer (상태 관리 계층)        │
+│  State Management Layer (상태 관리 계층)         │
 │  - Redux Store                                  │
 │  - Redux Slices                                 │
 │  - Selectors                                    │
 └─────────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────────┐
-│  Data Layer (데이터 계층)                       │
+│  Data Layer (데이터 계층)                        │
 │  - Axios (HTTP client)                          │
 │  - MSW (API mocking)                            │
 │  - RTK Query (optional)                         │
@@ -464,22 +510,45 @@ export const getReducers = () => reducerRegistry
 
 ### Redux Persist
 
-로컬 스토리지에 상태 지속:
+**보안 강화된 sessionStorage에 상태 지속:**
 
 ```typescript
 // store/storage.ts
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+export const createSecureStorage = () => {
+  if (typeof window === 'undefined') {
+    // SSR 대체 처리
+    return {
+      getItem: (_key: string) => Promise.resolve(null),
+      setItem: (_key: string, _value: string) => Promise.resolve(),
+      removeItem: (_key: string) => Promise.resolve(),
+    };
+  }
 
+  return {
+    getItem: (key: string) => Promise.resolve(sessionStorage.getItem(key)),
+    setItem: (key: string, value: string) => Promise.resolve(sessionStorage.setItem(key, value)),
+    removeItem: (key: string) => Promise.resolve(sessionStorage.removeItem(key)),
+  };
+};
+
+export const secureStorage = createSecureStorage();
+
+// store/config.ts
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: secureStorage, // 🔒 sessionStorage 사용 (localStorage보다 안전)
+  version: 1,
   whitelist: ['auth'], // 지속할 상태
-  transforms: [
-    // 데이터 변환 (날짜 직렬화 등)
-  ],
+  // transforms: [], // TODO: auth 구현 후 민감 데이터 필터링 활성화
+  blacklist: [],
 }
 ```
+
+**보안 특징:**
+- ✅ **sessionStorage 사용**: 탭 닫으면 자동 삭제 (localStorage보다 안전)
+- ✅ **XSS 공격 방지**: 토큰이 브라우저에 장기간 노출되지 않음
+- ✅ **SSR 호환**: 서버 사이드 렌더링 대응
+- ⚠️ **프로덕션 권장**: httpOnly 쿠키 사용 (서버 사이드)
 
 ---
 
@@ -493,21 +562,37 @@ const persistConfig = {
 
 **역할:**
 - 라우팅 경로에 매핑
-- 데이터 fetching 조율
 - 레이아웃 구성
 
 ```typescript
-// app/sample/products/pages/List.tsx
-export default function ProductsListPage() {
-  const { products, loading, fetchProducts } = useProducts()
+// app/sample/products/pages/List.tsx (래퍼)
+import ListSection from '@/features/products/sections/ListSection';
 
-  useEffect(() => {
-    fetchProducts()
-  }, [fetchProducts])
+export default function Page() {
+  return <ListSection />;
+}
 
-  if (loading) return <Loading />
+// features/products/sections/ListSection.tsx (실제 컴포넌트)
+export default function ListSection() {
+  // 1️⃣ UI 리듀서 동적 주입
+  const { isReady } = useInjectReducer('products', productsReducer, {
+    ejectOnUnmount: true,
+  });
 
-  return <ProductList products={products} />
+  // 로딩 상태 표시
+  if (!isReady) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2️⃣ 준비되면 실제 컨텐츠 렌더링
+  return <Content />;
 }
 ```
 
@@ -596,11 +681,19 @@ export const ProductForm = () => {
 복잡한 UI를 위한 패턴:
 
 ```typescript
-// 예시: Button 컴포넌트
-const Button = React.forwardRef<
-  HTMLButtonElement,
-  ButtonProps
->(({ className, variant, size, ...props }, ref) => {
+// 예시: Button 컴포넌트 (React 19+)
+interface ButtonProps extends React.ComponentProps<'button'> {
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
+}
+
+const Button = ({
+  className,
+  variant = 'default',
+  size = 'default',
+  ref,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       className={cn(buttonVariants({ variant, size, className }))}
@@ -608,12 +701,15 @@ const Button = React.forwardRef<
       {...props}
     />
   )
-})
-
-Button.displayName = 'Button'
+}
 
 export { Button, buttonVariants }
 ```
+
+**React 19 개선사항:**
+- ✅ **`forwardRef` 불필요**: 직접 `ref` prop 받기 가능
+- ✅ **간결한 코드**: HSA(Higher-Order Component) 패턴 제거
+- ✅ **타입 추론 개선**: `React.ComponentProps<'button'>`로 기본 prop 상속
 
 ---
 
@@ -693,17 +789,17 @@ export const AuthGuard = ({ children }) => {
 
 ```typescript
 // app/sample/products/[pageId]/page.tsx
-export default function ProductPage({ params }: { params: { pageId: string } }) {
-  const { pageId } = params
+import dynamic from 'next/dynamic';
 
-  switch (pageId) {
-    case 'list':
-      return <ProductsListPage />
-    case 'new':
-      return <ProductNewPage />
-    default:
-      return <ProductDetailPage id={pageId} />
-  }
+export default async function ProductPage({ params }: { params: { pageId: string } }) {
+  const { pageId } = await params;
+
+  // 동적으로 pages/${pageId}.tsx import
+  const PageComponent = dynamic(() => import(`../pages/${pageId}`), {
+    ssr: true,
+  });
+
+  return <PageComponent />;
 }
 ```
 
@@ -879,19 +975,91 @@ const middleware = [
 
 ### 1. 환경 변수 관리
 
+**Zod를 사용한 타입 안전한 환경 변수 검증:**
+
 ```typescript
 // shared/config/env.ts
-const getEnvVar = (key: string, defaultValue?: string) => {
-  const value = process.env[key] || defaultValue
-  if (!value) {
-    throw new Error(`환경 변수 ${key}가 설정되지 않았습니다.`)
-  }
-  return value
-}
+import { z } from 'zod';
 
-export const config = {
-  apiBaseUrl: getEnvVar('NEXT_PUBLIC_API_BASE_URL'),
-}
+// 환경 변수 스키마 정의
+const envSchema = z.object({
+  // Node.js 환경
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+
+  // 애플리케이션 설정 (공개)
+  NEXT_PUBLIC_APP_NAME: z.string().default('Next.js App'),
+  NEXT_PUBLIC_APP_VERSION: z.string().default('1.0.0'),
+
+  // API 설정 (공개)
+  NEXT_PUBLIC_API_URL: z.string().url().default('/api'),
+  NEXT_PUBLIC_API_TIMEOUT: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive())
+    .default(10000),
+  NEXT_PUBLIC_API_RETRY_COUNT: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().int().min(0).max(10))
+    .default(3),
+
+  // Feature Flags (공개)
+  NEXT_PUBLIC_FEATURE_DARK_MODE: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(true),
+  NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(true),
+
+  // 개발 도구 설정 (공개)
+  NEXT_PUBLIC_REDUX_DEVTOOLS: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(true),
+  NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
+});
+
+// 환경 변수 검증 및 파싱
+const config = envSchema.parse({
+  NODE_ENV: process.env.NODE_ENV,
+  NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+  NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  NEXT_PUBLIC_API_TIMEOUT: process.env.NEXT_PUBLIC_API_TIMEOUT,
+  // ... 기타 환경 변수
+});
+
+// 편의 속성들
+export const isDevelopment = config.NODE_ENV === 'development';
+export const isProduction = config.NODE_ENV === 'production';
+export const isTest = config.NODE_ENV === 'test';
+
+// 공개 설정 (클라이언트에서 접근 가능)
+export const publicConfig = {
+  appName: config.NEXT_PUBLIC_APP_NAME,
+  appVersion: config.NEXT_PUBLIC_APP_VERSION,
+  apiUrl: config.NEXT_PUBLIC_API_URL,
+  apiTimeout: config.NEXT_PUBLIC_API_TIMEOUT,
+  apiRetryCount: config.NEXT_PUBLIC_API_RETRY_COUNT,
+  features: {
+    darkMode: config.NEXT_PUBLIC_FEATURE_DARK_MODE,
+    performanceMonitoring: config.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
+  },
+  devtools: {
+    redux: config.NEXT_PUBLIC_REDUX_DEVTOOLS,
+    logLevel: config.NEXT_PUBLIC_LOG_LEVEL,
+  },
+} as const;
+```
+
+**사용 예시:**
+```typescript
+// 컴포넌트에서 사용
+import { publicConfig, isDevelopment } from '@/shared/config/env';
+
+const apiUrl = publicConfig.apiUrl;
+const isDev = isDevelopment;
 ```
 
 ### 2. XSS 방지
@@ -903,20 +1071,7 @@ export const config = {
 // 명시적 HTML 렌더링 시 주의
 <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
 ```
-
-### 3. CSRF 보호
-
-```typescript
-// Axios 인터셉터로 CSRF 토큰 처리
-axios.interceptors.request.use((config) => {
-  const token = getCsrfToken()
-  if (token) {
-    config.headers['X-CSRF-Token'] = token
-  }
-  return config
-})
-```
-
+ 
 ---
 
 ## 기술적 의사결정
@@ -968,31 +1123,6 @@ axios.interceptors.request.use((config) => {
 **대안 고려:**
 - CSS Modules: 전역 스타일 관리 어려움
 - Styled Components: 런타임 오버헤드
-
----
-
-## 향후 개선 방향
-
-### 1. RTK Query 도입
-
-서버 상태 관리를 위해 RTK Query 도입 고려:
-- 자동 캐싱
-- 재요청 최적화
-- Optimistic Updates
-
-### 2. Server Actions 도입
-
-Next.js 16의 Server Actions 활용:
-- 클라이언트-서버 경계 단순화
-- 보안 향상
-- 성능 최적화
-
-### 3. 컴포넌트 Storybook 확장
-
-모든 공유 컴포넌트 Storybook 문서화:
-- 컴포넌트 카탈로그
-- 시각적 회귀 테스트
-- 디자인 시스템 문서
 
 ---
 
