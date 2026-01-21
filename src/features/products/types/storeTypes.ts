@@ -15,5 +15,4 @@
  */
 export type ProductsUIState = {
   selectedProducts: number[];
-  viewMode: 'table' | 'grid';
 };

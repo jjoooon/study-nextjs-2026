@@ -6,7 +6,7 @@
  * @description
  * Redux에서 관리하는 UI 전용 상태
  * - filters, sort: URL 쿼리 파라미터로 관리 (useProductsURLState)
- * - selectedProducts, viewMode: Redux에서 관리 (이 파일)
+ * - selectedProducts: Redux에서 관리 (이 파일)
  *
  * @architecture
  * URL 상태 (영구적) + Redux 상태 (일시적)
@@ -24,7 +24,6 @@ import { ProductsUIState } from '../types/storeTypes';
 
 const initialState: ProductsUIState = {
   selectedProducts: [] as number[],
-  viewMode: 'table' as 'table' | 'grid',
 };
 
 // ============================================================================
@@ -74,16 +73,6 @@ export const productsSlice = createSlice({
     clearProductSelection: (state) => {
       state.selectedProducts = [];
     },
-
-    /**
-     * 뷰 모드 변경
-     *
-     * @param state - 현재 상태
-     * @param action - 새로운 뷰 모드
-     */
-    setViewMode: (state, action: PayloadAction<'table' | 'grid'>) => {
-      state.viewMode = action.payload;
-    },
   },
 });
 
@@ -91,7 +80,7 @@ export const productsSlice = createSlice({
 // ACTIONS EXPORT
 // ============================================================================
 
-export const { toggleProductSelection, selectAllProducts, clearProductSelection, setViewMode } = productsSlice.actions;
+export const { toggleProductSelection, selectAllProducts, clearProductSelection } = productsSlice.actions;
 
 // ============================================================================
 // REDUCER EXPORT
