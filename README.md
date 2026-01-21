@@ -41,28 +41,45 @@
 src/
 ├── app/                    # Next.js App Router 페이지
 │   ├── sample/            # 샘플 애플리케이션 페이지
+│   ├── login/            # 로그인 페이지
 │   ├── providers.tsx      # 애플리케이션 전체 Provider
 │   ├── layout.tsx         # 루트 레이아웃
-│   └── globals.css        # 전역 스타일
+│   ├── page.tsx          # 홈 페이지
+│   ├── globals.css        # 전역 스타일
+│   ├── error.tsx         # 에러 처리
+│   └── global-error.tsx  # 전역 에러 처리
 ├── features/              # 기능 기반 모듈
 │   ├── auth/             # 인증 기능
 │   ├── dashboard/        # 대시보드 기능
 │   └── products/         # 상품 기능
 ├── shared/               # 공유 유틸리티 및 컴포넌트
 │   ├── components/       # 재사용 가능한 UI 컴포넌트
-│   ├── lib/             # 공유 라이브러리
-│   ├── styles/          # 공유 스타일
-│   ├── types/           # 공유 TypeScript 타입
-│   └── utils/           # 유틸리티 함수
+│   │   ├── ui/          # 기본 UI 컴포넌트 (Button, Skeleton 등)
+│   │   ├── auth/        # 인증 관련 컴포넌트
+│   │   └── layout/      # 레이아웃 컴포넌트
+│   ├── config/          # 공유 설정
+│   ├── constants/       # 공유 상수
+│   ├── lib/            # 공유 라이브러리
+│   ├── styles/         # 공유 스타일
+│   ├── types/          # 공유 TypeScript 타입
+│   └── utils/          # 유틸리티 함수
 ├── store/               # Redux 스토어 설정
-│   ├── hooks.ts         # Redux 훅
-│   ├── index.ts         # 스토어 설정
-│   ├── registry/        # 스토어 레지스트리
-│   └── middleware/      # Redux 미들웨어
+│   ├── hooks.ts        # Redux 훅
+│   ├── index.ts        # 스토어 설정
+│   ├── config.ts       # 스토어 설정
+│   ├── setup.ts        # 스토어 설정
+│   ├── api/            # API 슬라이스
+│   ├── reducers/       # 리듀서
+│   ├── registry/       # 스토어 레지스트리
+│   ├── middleware/     # Redux 미들웨어
+│   ├── storage.ts      # 스토리지 설정
+│   └── transforms.ts   # 상태 변환
 └── mocks/              # MSW API 모킹
     ├── handlers/       # 요청 핸들러
     ├── data/          # 모의 데이터
-    └── setup/         # MSW 설정
+    ├── setup/         # MSW 설정
+    ├── browser.ts     # 브라우저 MSW 설정
+    └── server.ts      # 서버 MSW 설정
 ```
 
 ## 아키텍처 원칙
@@ -201,6 +218,19 @@ npm run format
 
 ## 주요 기능
 
+### 구현된 기능
+- **로그인 시스템** - 인증 UI 및 상태 관리
+- **샘플 애플리케이션** - AG Grid 기반 데이터 그리드
+- **에러 처리** - 페이지 및 전역 에러 핸들링
+- **로딩 상태** - UX 개선을 위한 로딩 UI
+
+### UI 컴포넌트
+- **Button** - CVA 기반 변형 관리
+- **Skeleton** - 로딩 스켈레톤 UI
+- **EmptyState** - 빈 상태 표시 컴포넌트
+- **AuthGuard** - 인증 가드 컴포넌트
+- **Navigation** - 네비게이션 컴포넌트
+
 ### 성능 최적화
 - Turbo 모드 개발 환경
 - 번들 분석
@@ -220,6 +250,7 @@ npm run format
 ### 상태 관리
 - 전역 상태를 위한 Redux Toolkit
 - 상태 지속성을 위한 Redux Persist
+- API 상태 관리 (api/ 슬라이스)
 - 성능 모니터링 미들웨어
 - 타입 안전한 선택자 및 훅
 
@@ -236,7 +267,3 @@ npm run format
 ## 라이선스
 
 이 프로젝트는 교육 목적으로 만들어졌습니다.
-
-## 기여
-
-이 프로젝트는 Next.js와 현대적 React 개발 패턴을 학습하기 위한 스터디 프로젝트입니다.
