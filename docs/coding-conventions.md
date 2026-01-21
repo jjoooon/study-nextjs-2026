@@ -560,6 +560,7 @@ export const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
 | 파일 타입 | 명명 규칙 | 예시 |
 |-----------|----------|------|
 | 컴포넌트 | PascalCase | `UserProfile.tsx`, `ProductList.tsx` |
+| 섹션 (Section) | PascalCase + Section 접미사 | `ListSection.tsx`, `DetailSection.tsx`, `EditSection.tsx` |
 | 유틸리티/함수 | camelCase | `dateUtils.ts`, `formatCurrency.ts` |
 | Hooks | camelCase (use 접두사) | `useProducts.ts`, `useAuth.ts` |
 | 타입 정의 | camelCase | `userTypes.ts`, `apiTypes.ts` |
@@ -571,9 +572,13 @@ export const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
 ```
 features/
 ├── auth/
-│   ├── components/           # PascalCase 파일명
+│   ├── components/           # PascalCase 파일명 (재사용 가능한 UI 컴포넌트)
 │   │   ├── LoginForm.tsx
 │   │   └── RegisterForm.tsx
+│   ├── sections/             # PascalCase + Section 접미사 (페이지 단위 컴포넌트)
+│   │   ├── LoginSection.tsx
+│   │   ├── RegisterSection.tsx
+│   │   └── ProfileSection.tsx
 │   ├── hooks/                # camelCase + use 접두사
 │   │   └── useAuth.ts
 │   ├── services/             # camelCase + Service 접미사
@@ -582,7 +587,21 @@ features/
 │       └── authTypes.ts
 ```
 
-### 3. 인덱스 파일
+### 3. Components vs Sections
+
+**components/** - 재사용 가능한 UI 컴포넌트
+- 작은 단위의 UI 조각
+- 여러 곳에서 재사용
+- 독립적으로 렌더링 가능
+- 예: `Button.tsx`, `ProductCard.tsx`, `DataTable.tsx`
+
+**sections/** - 페이지 단위 컴포넌트
+- 페이지 전체 또는 큰 단위의 레이아웃
+- 특정 라우트와 연결
+- 여러 components를 조합
+- 예: `ListSection.tsx`, `DetailSection.tsx`, `EditSection.tsx`
+
+### 4. 인덱스 파일
 
 ```typescript
 // ✅ 좋은 예: barrels pattern
@@ -591,9 +610,105 @@ export { ProductList } from './ProductList'
 export { ProductCard } from './ProductCard'
 export { ProductForm } from './ProductForm'
 
+// features/products/sections/index.ts
+export { ListSection } from './ListSection'
+export { DetailSection } from './DetailSection'
+export { EditSection } from './EditSection'
+export { NewSection } from './NewSection'
+
 // 사용
 import { ProductList, ProductCard, ProductForm } from '@/features/products/components'
+import { ListSection, DetailSection } from '@/features/products/sections'
 ```
+
+### 5. 실제 프로젝트 예시
+
+```typescript
+// ✅ 좋은 예: Products Feature 구조
+features/products/
+├── components/              # 재사용 가능한 UI 컴포넌트
+│   ├── ProductCard.tsx      # 개별 제품 카드
+│   ├── ProductGrid.tsx      # 제품 그리드 레이아웃
+│   ├── ProductList.tsx      # 제품 테이블 뷰
+│   ├── ProductFilters.tsx   # 필터 UI
+│   └── index.ts
+├── sections/                # 페이지 단위 컴포넌트
+│   ├── ListSection.tsx      # 제품 목록 페이지
+│   ├── DetailSection.tsx    # 제품 상세 페이지
+│   ├── EditSection.tsx      # 제품 수정 페이지
+│   ├── NewSection.tsx       # 제품 등록 페이지
+│   └── index.ts
+├── hooks/
+│   └── useProducts.ts
+├── services/
+│   └── productService.ts
+├── store/
+│   └── productsUISlice.ts
+├── types/
+│   └── productTypes.ts
+└── constants/
+    └── routes.ts
+
+// ListSection.tsx - 페이지 단위 컴포넌트
+// 여러 components를 조합하여 페이지 구성
+export default function ListSection() {
+  return (
+    <>
+      <ProductFilters />
+      <ProductList />
+    </>
+  )
+}
+```
+
+### 6. 섹션 (Section) 컴포넌트 작성 가이드
+
+```typescript
+// ✅ 좋은 예: Section 컴포넌트 구조
+// features/products/sections/ListSection.tsx
+
+/**
+ * List Section
+ *
+ * 제품 목록 페이지 컴포넌트
+ *
+ * @description
+ * - 여러 components(ProductFilters, ProductList) 조합
+ * - 페이지 단위의 상태 관리
+ * - 라우팅 로직 처리
+ */
+export default function ListSection() {
+  // 1. 페이지 단위 상태 관리
+  const { products, filters, updateFilters } = useProducts()
+
+  // 2. 이벤트 핸들러 (라우팅 포함)
+  const handleProductClick = (product: Product) => {
+    router.push(`/products/${product.id}`)
+  }
+
+  // 3. components 조합
+  return (
+    <div className="container">
+      <ProductFilters filters={filters} onChange={updateFilters} />
+      <ProductList products={products} onItemClick={handleProductClick} />
+    </div>
+  )
+}
+```
+
+### 7. 파일명 선택 가이드라인
+
+**Component로 분류하는 경우:**
+- 단일 UI 요소 (버튼, 입력필드, 카드)
+- 여러 페이지에서 재사용
+- 독립적인 스타일과 동작
+- props로 데이터 전달
+
+**Section으로 분류하는 경우:**
+- 페이지 전체 또는 주요 영역
+- 특정 라우트와 1:1 매핑
+- 여러 components를 포함
+- 복잡한 상태 관리 및 라우팅 로직
 
 ---
 
