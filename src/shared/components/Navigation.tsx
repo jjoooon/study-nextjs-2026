@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-import { useLogoutMutation } from '@/features/auth/services/authService';
-import { selectIsAuthenticated, selectUser } from '@/features/auth/store/authSelectors';
-import { clearCredentials } from '@/features/auth/store/authSlice';
 import { AUTH_ROUTES, MAIN_ROUTES } from '@/shared/constants/routes';
+import { useLogoutMutation } from '@/shared/services/authService';
+import { selectIsAuthenticated, selectUser } from '@/shared/store/authSelectors';
+import { clearCredentials } from '@/shared/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 interface NavItem {

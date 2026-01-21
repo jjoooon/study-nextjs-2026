@@ -48,8 +48,8 @@
 import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig, Method } from 'axios';
 
-import { clearCredentials } from '@/features/auth/store/authSlice';
 import { publicConfig } from '@/shared/config/env';
+import { clearCredentials } from '@/shared/store/authSlice';
 
 // ============================================================================
 // TYPES

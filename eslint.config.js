@@ -64,7 +64,7 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         rules: [
           {
             from: 'shared',
-            allow: ['shared', 'features'],
+            allow: ['shared'],
             message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
           },
           {

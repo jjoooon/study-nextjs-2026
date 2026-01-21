@@ -26,10 +26,10 @@
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { setCredentials, clearCredentials } from '@/features/auth/store/authSlice';
-import type { User } from '@/features/auth/types/storeTypes';
 import { publicConfig } from '@/shared/config/env';
 import { AUTH_ROUTES } from '@/shared/constants/routes';
+import { setCredentials, clearCredentials } from '@/shared/store/authSlice';
+import type { User } from '@/shared/types/authTypes';
 
 // ============================================================================
 // TYPES

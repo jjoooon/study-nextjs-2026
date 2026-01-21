@@ -161,7 +161,7 @@ if (process.env.NODE_ENV === 'development') {
  * };
  */
 export type RootState = {
-  auth: import('@/features/auth/types/storeTypes').AuthState;
+  auth: import('@/shared/types/authTypes').AuthState;
   dashboard: import('@/features/dashboard/types/storeTypes').DashboardState;
   products: import('@/features/products/types/storeTypes').ProductsUIState;
 };

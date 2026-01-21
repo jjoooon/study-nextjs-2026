@@ -45,8 +45,8 @@
 
 import type { Metadata } from 'next';
 
-import { AuthGuard } from '@/shared/components/auth/AuthGuard';
 import '@/shared/styles/globals.css';
+import { AuthGuard } from '@/shared/components/AuthGuard';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {

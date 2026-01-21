@@ -15,7 +15,7 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import type { AuthState, User } from '../types/storeTypes';
+import type { AuthState, User } from '../types/authTypes';
 
 // ============================================================================
 // INITIAL STATE
@@ -113,4 +113,4 @@ export const { setCredentials, clearCredentials, setLoading, setError, updateUse
 export default authSlice.reducer;
 
 // 타입 export (selector에서 사용)
-export type { AuthState } from '../types/storeTypes';
+export type { AuthState } from '../types/authTypes';

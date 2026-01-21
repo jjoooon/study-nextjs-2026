@@ -14,7 +14,7 @@ import { combineReducers, Reducer } from '@reduxjs/toolkit';
 import type { UnknownAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 
-import authReducer from '@/features/auth/store/authSlice';
+import authReducer from '@/shared/store/authSlice';
 import log from '@/shared/utils/logger';
 
 import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';

@@ -33,7 +33,7 @@
 import Link from 'next/link';
 
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
-import { Navigation } from '@/shared/components/layout/Navigation';
+import { Navigation } from '@/shared/components/Navigation';
 
 export default function Home() {
   return (

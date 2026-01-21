@@ -11,9 +11,9 @@
 
 import type { Reducer, Middleware } from '@reduxjs/toolkit';
 
-import { authService } from '@/features/auth/services/authService';
 import dashboardService from '@/features/dashboard/services/dashboardService';
 import { productService } from '@/features/products/services/productService';
+import { authService } from '@/shared/services/authService';
 
 /**
  * 개별 API 등록 정보 타입
