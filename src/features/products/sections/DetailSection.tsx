@@ -1,0 +1,160 @@
+'use client';
+
+/**
+ * Detail Section
+ *
+ * 제품 상세 페이지 컴포넌트
+ *
+ * @description
+ * 제품 상세 정보를 표시하고 수정/삭제 기능 제공
+ * - Dynamic Reducer Pattern으로 products reducer lazy loading
+ * - useProduct 훅으로 제품 조회 및 삭제
+ * - ProductDetail 컴포넌트로 상세 정보 표시
+ *
+ * @architecture
+ * Next.js App Router + Client Component Pattern
+ * Dynamic Route [id] 사용
+ * Next.js 15+: useParams로 id 추출
+ *
+ * @usage
+ * /sample/products/Detail?id=123 route에서 자동으로 렌더링됨
+ */
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import ProductDetail from '@/features/products/components/ProductDetail';
+import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
+import { useProduct } from '@/features/products/hooks/useProduct';
+import productsReducer from '@/features/products/store/productsUISlice';
+import { useInjectReducer } from '@/store/reducers/hooks';
+
+// ============================================================================
+// DETAIL SECTION
+// ============================================================================
+
+/**
+ * Detail Section 컴포넌트
+ *
+ * Dynamic Reducer Pattern으로 products reducer를 주입
+ */
+export default function DetailSection() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id') as string;
+
+  // 1️⃣ UI 리듀서만 동적 주입 (productsApi는 이미 초기에 로드됨)
+  const { isReady } = useInjectReducer('products', productsReducer, {
+    ejectOnUnmount: false,
+  });
+
+  // 로딩 상태 표시
+  if (!isReady) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2️⃣ 준비되면 실제 컨텐츠 렌더링
+  return <Content id={id} />;
+}
+
+// ============================================================================
+// DETAIL SECTION CONTENT
+// ============================================================================
+
+/**
+ * Detail Section 실제 컨텐츠
+ *
+ * reducer 주입 후 렌더링되는 컴포넌트
+ */
+function Content({ id }: { id: string }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { product, isLoading, isDeleting, deleteProduct } = useProduct(id);
+
+  // ✅ 쿼리 파라미터를 보존한 복귀 URL
+  const returnURL = `${PRODUCTS_ROUTES.LIST}?${searchParams.toString()}`;
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">제품 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 제품을 찾을 수 없음
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="bg-white border border-gray-200 px-4 py-3 rounded max-w-md">
+          <p className="font-medium text-gray-900">제품을 찾을 수 없습니다</p>
+          <button
+            type="button"
+            onClick={() => router.push(returnURL)}
+            className="mt-4 text-sm text-blue-600 underline hover:no-underline"
+          >
+            목록으로 돌아가기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 핸들러
+  const handleEdit = (_productId: number) => {
+    // ✅ 쿼리 파라미터 보존하면서 수정 페이지로 이동
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('id', product.id);
+    router.push(`${PRODUCTS_ROUTES.EDIT}?${params.toString()}`);
+  };
+
+  const handleDelete = (_productId: number) => {
+    deleteProduct();
+  };
+
+  const handleBack = () => {
+    // ✅ 쿼리 파라미터 보존하면서 목록으로 복귀
+    router.push(returnURL);
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* 페이지 헤더 */}
+      <div className="mb-8">
+        <nav className="text-sm text-gray-600 mb-2">
+          <ol className="flex items-center space-x-2">
+            <li>
+              <button type="button" onClick={() => router.push(returnURL)} className="hover:text-blue-600">
+                제품 관리
+              </button>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900">{product.name}</li>
+          </ol>
+        </nav>
+      </div>
+
+      {/* 제품 상세 */}
+      <ProductDetail product={product} onEdit={handleEdit} onDelete={handleDelete} onBack={handleBack} />
+
+      {/* 삭제 중 로딩 표시 */}
+      {isDeleting && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p className="text-gray-900">제품을 삭제하는 중...</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
