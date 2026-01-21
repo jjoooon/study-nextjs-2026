@@ -957,6 +957,10 @@ export const productService = createApi({
     }),
   }),
 });
+
+// ⚠️ 중요: RTK Query service 생성 후 middleware 등록 필수!
+// middlewareRegistry.registerMiddleware('productService', productService.middleware, 50);
+// 자세한 내용은 "7. Middleware Registry Pattern" 참조
 ```
 
 **장점:**
@@ -1070,6 +1074,78 @@ function ProductsPageContent() {
 
 ---
 
+### 7. Middleware Registry Pattern
+
+**목적:** 중앙 집중식 store config 수정 없이 미들웨어 동적 등록
+
+```typescript
+// 1️⃣ RTK Query Service 생성
+// services/productService.ts
+import { createApi } from '@reduxjs/toolkit/query/react';
+
+export const productsService = createApi({
+  reducerPath: 'productsService',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  endpoints: (builder) => ({
+    getProducts: builder.query({ ... }),
+    createProduct: builder.mutation({ ... }),
+  }),
+});
+
+// 2️⃣ Service Middleware 등록 (필수!)
+import { middlewareRegistry } from '@/redux/registry/middleware';
+
+middlewareRegistry.registerMiddleware(
+  'productsService',
+  productsService.middleware,  // RTK Query가 자동 생성한 middleware
+  50  // 우선순위 50-99: API 미들웨어
+);
+
+// 3️⃣ Store 설정에서 자동 합체됨
+// configureMiddleware() → middlewareRegistry.getAllMiddleware()
+```
+
+**주요 사용처:**
+- **RTK Query Services**: `api.middleware` 등록 (가장 일반적인 용도)
+- **Custom Logger**: 성능 모니터링, 디버깅
+- **Error Handling**: 전역 에러 처리 미들웨어
+- **Analytics**: 사용자 행동 추적
+
+**우선순위 가이드:**
+- **0-9**: 핵심 체크 (직렬화, 불변성)
+- **10-29**: 성능 및 모니터링
+- **30-49**: 로깅
+- **50-99**: API 미들웨어 (usersApi, productsApi 등) ⭐ RTK Query services
+- **100+**: 에러 처리, 분석
+
+**아키텍처 통합:**
+```
+미들웨어 등록 (feature 슬라이스)
+  ↓
+middlewareRegistry.registerMiddleware(name, middleware, priority)
+  ↓
+store 초기화 (src/redux/index.ts)
+  ↓
+configureMiddleware() → middlewareRegistry.getAllMiddleware()
+  ↓
+coreMiddleware.concat(...registryMiddleware)
+  ↓
+middlewareRegistry.lock() // 등록 마감
+```
+
+**장점:**
+- 팀별 독립적 미들웨어 개발
+- Merge conflict 방지
+- 우선순위 기반 미들웨어 순서 관리
+- 자동으로 store에 합체됨
+- 스토어 설정 파일 수정 불필요
+
+**연관 패턴:**
+- **3. RTK Query 자동 캐싱**: RTK Query service 생성 후 필수로 `api.middleware` 등록 필요
+- **1. Dynamic Reducer Injection**: companion pattern, 런타임 extensibility
+
+---
+
 ## 🎯 요약
 
 ### 아키텍처 핵심 원칙
@@ -1086,6 +1162,7 @@ function ProductsPageContent() {
 
 3. **코드 분할**
    - Dynamic Reducer Injection
+   - Middleware Registry Pattern
    - 페이지별 lazy loading
    - 초기 번들 크기 최적화
 
