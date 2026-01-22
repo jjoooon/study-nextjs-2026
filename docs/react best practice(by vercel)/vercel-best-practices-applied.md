@@ -10,29 +10,29 @@
 
 #### 1. 배럴 파일 임포트 제거
 
-**현재 프로젝트에서의 예시:**
+**⚠️ 중요: 현재 프로젝트는 배럴 파일 구조가 없습니다!**
+
+현재 `src/shared/components/ui/` 디렉토리에는 `index.ts` (배럴 파일)가 존재하지 않으므로, 이 부분은 **해당 사항 없음**입니다.
+
+**만약 배럴 파일을 추가하게 된다면:**
 
 ```typescript
-// ❌ 현재: src/features/products/components/ProductList.tsx
-import { SkeletonList } from '@/shared/components/ui/Skeleton';
+// ❌ 배럴 임포트 (피해야 할 패턴)
+import { SkeletonList, Button } from '@/shared/components/ui'
 
-// ✅ 개선:
-import SkeletonList from '@/shared/components/ui/Skeleton/SkeletonList';
+// ✅ 직접 파일 임포트 (권장)
+import { SkeletonList } from '@/shared/components/ui/Skeleton'
+import { Button } from '@/shared/components/ui/button'
 ```
 
-**적용 방법:**
+**적용 방법 (배럴 파일 존재 시):**
 ```bash
 # 프로젝트 전체에서 배럴 임포트 찾기
-grep -r "import.*from '@/shared/components/ui" src/
+grep -r "import.*from '@/shared/components/ui'[^/]" src/
 
-# 일괄 변환 스크립트
-find src -name "*.tsx" -o -name "*.ts" | while read file; do
-  # 배럴 임포트를 직접 임포트로 변환
-  sed -i "s/import { \([^}]*\) } from '\(.*\)'/import \1 from '\2\/\1'/g" "$file"
-done
+# 배럴 임포트 제거: ui/index.ts → ui/ComponentName
+# 예: 'from "@/shared/components/ui"' → 'from "@/shared/components/ui/Skeleton"'
 ```
-
-**Next.js 최적화 설정 추가:**
 
 ```typescript
 // next.config.ts

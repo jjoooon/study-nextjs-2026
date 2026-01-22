@@ -51,7 +51,8 @@
       "Bash(pacman:*)",
       "Bash(npm ls:*)",
       "Bash(ANALYZE=true npm run build:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(test:*)"
     ]
   }
 }
