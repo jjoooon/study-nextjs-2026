@@ -44,7 +44,10 @@
       "Bash(if not exist docs mkdir docs)",
       "Bash(git log:*)",
       "Bash(git restore:*)",
-      "Bash(npm run type-check:*)"
+      "Bash(npm run type-check:*)",
+      "Bash(dpkg:*)",
+      "Bash(rm:*)",
+      "Skill(vercel-react-best-practices)"
     ]
   }
 }
