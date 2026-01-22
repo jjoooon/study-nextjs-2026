@@ -47,7 +47,9 @@
       "Bash(npm run type-check:*)",
       "Bash(dpkg:*)",
       "Bash(rm:*)",
-      "Skill(vercel-react-best-practices)"
+      "Skill(vercel-react-best-practices)",
+      "Bash(pacman:*)",
+      "Bash(npm ls:*)"
     ]
   }
 }
