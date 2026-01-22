@@ -1,5 +1,5 @@
-import type { NextConfig } from 'next';
 import bundleAnalyzer from '@next/bundle-analyzer';
+import type { NextConfig } from 'next';
 
 // Bundle analyzer configuration (Next.js 16.1)
 const withBundleAnalyzer = bundleAnalyzer({
@@ -9,6 +9,8 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig: NextConfig = {
   // Performance optimizations
   reactStrictMode: true,
+
+  reactCompiler: true,
 
   // Speed optimizations
   compiler: {
