@@ -62,7 +62,6 @@ export const productService = createApi({
         return `/products?${searchParams.toString()}`;
       },
       providesTags: ['Products-LIST'],
-      keepUnusedDataFor: 300, // 5분 캐시
     }),
 
     /**
@@ -75,7 +74,6 @@ export const productService = createApi({
     getProductById: builder.query({
       query: (id: number) => `/products/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Products-ITEM', id }],
-      keepUnusedDataFor: 600, // 10분 캐시
     }),
 
     /**

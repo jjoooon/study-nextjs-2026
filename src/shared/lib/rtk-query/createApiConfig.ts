@@ -41,7 +41,7 @@ import { baseQuery } from '../axios/axiosBaseQuery';
  */
 export const CacheStrategy = {
   DEFAULT: {
-    keepUnusedDataFor: Infinity,
+    keepUnusedDataFor: 300, // 5분
     refetchOnMountOrArgChange: false,
     refetchOnFocus: false,
     refetchOnReconnect: false,
