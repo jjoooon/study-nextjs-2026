@@ -42,12 +42,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
         const { worker } = await import('@/mocks/browser');
 
         // Service Worker 시작 (별도 프로세스로 실행)
-        await worker.start({
-          onUnhandledRequest: 'bypass',
-        }).catch((error) => {
-          // MSW 실패해도 앱이 계속 실행되도록 처리
-          logger.warn('[MSW] Worker start failed (continuing without mocking):', error);
-        });
+        await worker
+          .start({
+            onUnhandledRequest: 'bypass',
+          })
+          .catch((error) => {
+            // MSW 실패해도 앱이 계속 실행되도록 처리
+            logger.warn('[MSW] Worker start failed (continuing without mocking):', error);
+          });
 
         // MSW 성공 시에만 로깅
         if (typeof window !== 'undefined' && 'navigator' in window) {
@@ -66,7 +68,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   // ✅ Production: 즉시 렌더링 (로딩 UI 없음)
-  if (process.env.NODE_ENV !== 'development' || isReady) {
+  if (process.env.NODE_ENV === 'production' || isReady) {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
