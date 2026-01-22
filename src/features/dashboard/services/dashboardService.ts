@@ -53,7 +53,6 @@ export const dashboardService = createApi({
     getDashboard: builder.query<DashboardData, void>({
       query: () => '/dashboard',
       providesTags: ['Dashboard'],
-      keepUnusedDataFor: 60,
     }),
 
     /**
@@ -65,7 +64,6 @@ export const dashboardService = createApi({
     getDashboardStats: builder.query<DashboardStats, void>({
       query: () => '/dashboard/stats',
       providesTags: ['Dashboard'],
-      keepUnusedDataFor: 60,
     }),
 
     /**
@@ -77,7 +75,6 @@ export const dashboardService = createApi({
     getRecentActivity: builder.query<ActivityItem[], void>({
       query: () => '/dashboard/activity',
       providesTags: ['Dashboard'],
-      keepUnusedDataFor: 30, // 30초 캐시 (활동 데이터는 더 자주 갱신)
     }),
   }),
 });
