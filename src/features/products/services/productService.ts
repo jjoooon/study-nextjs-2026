@@ -12,7 +12,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { createApiConfig } from '@/shared/lib/rtk-query/createApiConfig';
 
 import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/apiTypes';
 
@@ -27,17 +27,10 @@ import type { CreateProductInput, ProductListParams, UpdateProductInput } from '
  * 자동으로 Redux hooks를 생성합니다.
  */
 export const productService = createApi({
-  reducerPath: 'productsService',
-  baseQuery,
-
-  // Products 도메인 전용 캐시 태그
-  tagTypes: ['Products-LIST', 'Products-ITEM'] as const,
-
-  // Products 전용 캐시 설정
-  keepUnusedDataFor: 300,
-  refetchOnMountOrArgChange: 30,
-  refetchOnFocus: true,
-  refetchOnReconnect: true,
+  ...createApiConfig({
+    reducerPath: 'productsService',
+    tagTypes: ['Products-LIST', 'Products-ITEM'],
+  }),
 
   endpoints: (builder) => ({
     /**

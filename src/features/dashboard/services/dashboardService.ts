@@ -23,7 +23,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { createApiConfig } from '@/shared/lib/rtk-query/createApiConfig';
 
 import type { ActivityItem, DashboardData, DashboardStats } from '../types/apiTypes';
 
@@ -38,17 +38,10 @@ import type { ActivityItem, DashboardData, DashboardStats } from '../types/apiTy
  * 자동으로 Redux hooks를 생성합니다.
  */
 export const dashboardService = createApi({
-  reducerPath: 'dashboardService',
-  baseQuery,
-
-  // Dashboard 도메인 전용 캐시 태그
-  tagTypes: ['Dashboard'] as const,
-
-  // Dashboard 전용 캐시 설정
-  keepUnusedDataFor: 60, // 1분 캐시 (실시간 데이터)
-  refetchOnMountOrArgChange: true,
-  refetchOnFocus: true,
-  refetchOnReconnect: true,
+  ...createApiConfig({
+    reducerPath: 'dashboardService',
+    tagTypes: ['Dashboard'],
+  }),
 
   endpoints: (builder) => ({
     /**

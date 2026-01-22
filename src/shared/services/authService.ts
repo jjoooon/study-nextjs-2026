@@ -17,7 +17,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
+import { createApiConfig } from '@/shared/lib/rtk-query/createApiConfig';
 
 // ============================================================================
 // AUTH SERVICE
@@ -34,11 +34,10 @@ import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
  * - refreshToken만: skipReauth 옵션으로 갱신 방지
  */
 export const authService = createApi({
-  reducerPath: 'authService',
-  baseQuery,
-
-  // Auth 도메인 전용 캐시 태그
-  tagTypes: ['Auth'] as const,
+  ...createApiConfig({
+    reducerPath: 'authService',
+    tagTypes: ['Auth'],
+  }),
 
   endpoints: (builder) => ({
     /**
