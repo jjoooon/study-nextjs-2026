@@ -33,13 +33,42 @@
 import { List, LayoutGrid } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import dynamic from 'next/dynamic';
+
 import ProductFilters from '@/features/products/components/ProductFilters';
-import ProductGrid from '@/features/products/components/ProductGrid';
 import ProductList from '@/features/products/components/ProductList';
+import { SkeletonList } from '@/shared/components/ui/Skeleton';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
 import { useInjectReducer } from '@/redux/reducers/hooks';
+
+// ============================================================================
+// DYNAMIC IMPORT - AG Grid Bundle Optimization
+// ============================================================================
+
+/**
+ * ProductGrid Dynamic Import
+ *
+ * @description
+ * Vercel React Best Practices - bundle-dynamic-imports 규칙 적용
+ * AG Grid (~500KB gzipped)를 초기 번들에서 제외하여 지연 로딩
+ *
+ * @benefits
+ * - 초기 번들 크기 ~500KB 감소
+ * - LCP (Largest Contentful Paint) 개선
+ * - TTI (Time to Interactive) 개선
+ * - 그리드 뷰를 사용하지 않는 사용자에게 불필요한 코드 전송 방지
+ *
+ * @implementation
+ * - ssr: false (AG Grid는 클라이언트 전용 라이브러리)
+ * - loading: ProductGrid 로딩 중 SkeletonList 표시
+ * - viewMode === 'grid'일 때만 로드됨 (on-demand loading)
+ */
+const ProductGrid = dynamic(() => import('@/features/products/components/ProductGrid').then(mod => ({ default: mod.default })), {
+  loading: () => <SkeletonList count={5} />,
+  ssr: false, // AG Grid는 클라이언트 사이드 전용
+});
 
 // ============================================================================
 // DYNAMIC REDUCER INJECTION
