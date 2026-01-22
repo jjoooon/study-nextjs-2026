@@ -31,17 +31,17 @@
  */
 
 import { List, LayoutGrid } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 import dynamic from 'next/dynamic';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
-import { SkeletonList } from '@/shared/components/ui/Skeleton';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
 import { useInjectReducer } from '@/redux/reducers/hooks';
+import { SkeletonList } from '@/shared/components/ui/Skeleton';
 
 // ============================================================================
 // DYNAMIC IMPORT - AG Grid Bundle Optimization
@@ -65,10 +65,13 @@ import { useInjectReducer } from '@/redux/reducers/hooks';
  * - loading: ProductGrid 로딩 중 SkeletonList 표시
  * - viewMode === 'grid'일 때만 로드됨 (on-demand loading)
  */
-const ProductGrid = dynamic(() => import('@/features/products/components/ProductGrid').then(mod => ({ default: mod.default })), {
-  loading: () => <SkeletonList count={5} />,
-  ssr: false, // AG Grid는 클라이언트 사이드 전용
-});
+const ProductGrid = dynamic(
+  () => import('@/features/products/components/ProductGrid').then((mod) => ({ default: mod.default })),
+  {
+    loading: () => <SkeletonList count={5} />,
+    ssr: false, // AG Grid는 클라이언트 사이드 전용
+  }
+);
 
 // ============================================================================
 // DYNAMIC REDUCER INJECTION
