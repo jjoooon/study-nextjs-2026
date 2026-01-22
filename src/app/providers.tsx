@@ -68,7 +68,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   // ✅ Production: 즉시 렌더링 (로딩 UI 없음)
-  if (process.env.NODE_ENV === 'production' || isReady) {
+  if (process.env.NODE_ENV !== 'development' || isReady) {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
