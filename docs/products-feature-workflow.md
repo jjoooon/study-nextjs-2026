@@ -673,8 +673,7 @@ export const useProducts = () => {
 
     // Redux UI 상태 (선택된 제품)
     selectedProducts,
-    toggleProductSelection: (id) =>
-      dispatch({ type: 'products/toggleProductSelection', payload: id }),
+    toggleProductSelection: (id: number) => dispatch(toggleProductSelection(id)),
 
     // API Actions
     refetch,

@@ -2,6 +2,11 @@ import { useMemo } from 'react';
 
 import { useGetProductsQuery } from '@/features/products/services/productService';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
+import {
+  toggleProductSelection,
+  selectAllProducts,
+  clearProductSelection,
+} from '@/features/products/store/productsUISlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { useProductsURLState } from './useProductsURLState';
@@ -57,13 +62,7 @@ export const useProducts = () => {
   );
 
   // ✅ RTK Query hook - 안정화된 쿼리 파라미터 사용
-  const {
-    data: productsData,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useGetProductsQuery(queryParams);
+  const { data: productsData, isLoading, isError, error, refetch } = useGetProductsQuery(queryParams);
 
   return {
     // API 데이터
@@ -87,9 +86,9 @@ export const useProducts = () => {
     clearFilters,
 
     // Redux Actions (선택된 제품만)
-    toggleProductSelection: (id: number) => dispatch({ type: 'products/toggleProductSelection', payload: id }),
-    selectAllProducts: (ids: number[]) => dispatch({ type: 'products/selectAllProducts', payload: ids }),
-    clearProductSelection: () => dispatch({ type: 'products/clearProductSelection' }),
+    toggleProductSelection: (id: number) => dispatch(toggleProductSelection(id)),
+    selectAllProducts: (ids: number[]) => dispatch(selectAllProducts(ids)),
+    clearProductSelection: () => dispatch(clearProductSelection()),
 
     // API Actions
     refetch,
