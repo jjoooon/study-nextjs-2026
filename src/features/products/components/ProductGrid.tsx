@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { ModuleRegistry } from 'ag-grid-community';
 import { AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
@@ -22,6 +23,89 @@ import type { Product } from '../types/apiTypes';
  * AllCommunityModule: Community Edition의 모든 기능 포함
  */
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+// ============================================================================
+// OPTIMIZED COMPONENTS - Vercel Best Practices
+// ============================================================================
+
+/**
+ * Status Cell Renderer
+ *
+ * Vercel React Best Practices - rerender-memo, rendering-hoist-jsx 규칙 적용
+ *
+ * @description
+ * AG Grid cellRenderer를 별도 컴포넌트로 분리하여 최적화
+ *
+ * @optimization
+ * - memo로 불필요한 재렌더링 방지
+ * - 스타일 객체를 컴포넌트 외부로 호이스팅
+ * - status 값이 같을 때 재렌더링 방지
+ */
+const StatusCellRenderer = memo(({ value }: { value: string }) => {
+  return (
+    <div style={STATUS_STYLES[value]?.container}>
+      {value}
+    </div>
+  );
+});
+
+StatusCellRenderer.displayName = 'StatusCellRenderer';
+
+/**
+ * Status 스타일 상수
+ *
+ * Vercel React Best Practices - rendering-hoist-jsx 규칙 적용
+ *
+ * @description
+ * 스타일 객체를 컴포넌트 외부로 호이스팅하여
+ * 매 렌더링마다 새로운 객체 생성 방지
+ */
+const STATUS_STYLES: Record<string, { container: React.CSSProperties }> = {
+  active: {
+    container: {
+      backgroundColor: '#dcfce7', // green-100
+      color: '#166534', // green-800
+      padding: '4px 12px',
+      borderRadius: '9999px',
+      fontSize: '12px',
+      fontWeight: '500',
+      textAlign: 'center' as const,
+    },
+  },
+  inactive: {
+    container: {
+      backgroundColor: '#fef9c3', // yellow-100
+      color: '#854d0e', // yellow-800
+      padding: '4px 12px',
+      borderRadius: '9999px',
+      fontSize: '12px',
+      fontWeight: '500',
+      textAlign: 'center' as const,
+    },
+  },
+  draft: {
+    container: {
+      backgroundColor: '#f3f4f6', // gray-100
+      color: '#374151', // gray-800
+      padding: '4px 12px',
+      borderRadius: '9999px',
+      fontSize: '12px',
+      fontWeight: '500',
+      textAlign: 'center' as const,
+    },
+  },
+  default: {
+    container: {
+      backgroundColor: '#f3f4f6', // gray-100
+      color: '#374151', // gray-800
+      padding: '4px 12px',
+      borderRadius: '9999px',
+      fontSize: '12px',
+      fontWeight: '500',
+      textAlign: 'center' as const,
+    },
+  },
+};
 
 // ============================================================================
 // PRODUCT GRID COMPONENT
@@ -109,38 +193,9 @@ export default function ProductGrid({ products, onProductClick }: ProductGridPro
         resizable: true,
         flex: 1, // ✅ 1 비율로 공간 차지
         minWidth: 100,
-        cellRenderer: (params: { value: string }) => {
-          const status = params.value;
-          const colorClass =
-            status === 'active'
-              ? '#dcfce7' // green-100
-              : status === 'inactive'
-                ? '#fef9c3' // yellow-100
-                : '#f3f4f6'; // gray-100
-
-          const textClass =
-            status === 'active'
-              ? '#166534' // green-800
-              : status === 'inactive'
-                ? '#854d0e' // yellow-800
-                : '#374151'; // gray-800
-
-          return (
-            <div
-              style={{
-                backgroundColor: colorClass,
-                color: textClass,
-                padding: '4px 12px',
-                borderRadius: '9999px',
-                fontSize: '12px',
-                fontWeight: '500',
-                textAlign: 'center',
-              }}
-            >
-              {status}
-            </div>
-          );
-        },
+        // ✅ Vercel Best Practices - rerender-memo
+        // 최적화된 StatusCellRenderer 컴포넌트 사용
+        cellRenderer: (params: { value: string }) => <StatusCellRenderer value={params.value} />,
       },
     ],
     []
