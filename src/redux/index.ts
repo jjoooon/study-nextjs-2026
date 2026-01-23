@@ -25,10 +25,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistStore } from 'redux-persist';
 
+import type { DashboardState } from '@/features/dashboard/types/storeTypes';
+import type { ProductsUIState } from '@/features/products/types/storeTypes';
+import type { AuthState } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
 
 // 스토어 설정 및 초기화
 import { configureMiddleware, devToolsConfig } from './config';
+
+// 타입 임포트
 
 // ============================================================================
 // 스토어 생성
@@ -155,15 +160,19 @@ if (process.env.NODE_ENV === 'development') {
  *
  * @example
  * // 새 feature 추가 시:
+ * // 1. 파일 상단에 타입 임포트 추가:
+ * // import type { NewFeatureState } from '@/features/newFeature/types/storeTypes';
+ *
+ * // 2. RootState 타입에 필드 추가:
  * export type RootState = {
  *   // ...기존 타입들
- *   newFeature: import('@/features/newFeature/types/storeTypes').NewFeatureState;
+ *   newFeature: NewFeatureState;
  * };
  */
 export type RootState = {
-  auth: import('@/shared/types/authTypes').AuthState;
-  dashboard: import('@/features/dashboard/types/storeTypes').DashboardState;
-  products: import('@/features/products/types/storeTypes').ProductsUIState;
+  auth: AuthState;
+  dashboard: DashboardState;
+  products: ProductsUIState;
 };
 
 export type AppDispatch = typeof store.dispatch;
