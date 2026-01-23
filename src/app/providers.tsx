@@ -77,35 +77,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
       </Provider>
     );
   }
-
-  // ✅ Development: MSW 초기화 중에만 로딩 표시
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        flexDirection: 'column',
-        gap: '1rem',
-      }}
-    >
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          border: '4px solid #e5e7eb',
-          borderTopColor: '#3b82f6',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite',
-        }}
-      />
-      <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>Initializing development environment...</p>
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-    </div>
-  );
 }

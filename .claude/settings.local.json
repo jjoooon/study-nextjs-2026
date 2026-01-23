@@ -52,7 +52,8 @@
       "Bash(npm ls:*)",
       "Bash(ANALYZE=true npm run build:*)",
       "Bash(xargs:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "mcp__context7__resolve-library-id"
     ]
   }
 }
