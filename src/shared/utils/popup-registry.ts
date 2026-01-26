@@ -4,19 +4,29 @@
  * @description
  * - 팝업 타입과 실제 컴포넌트의 매핑 관리
  * - 동적 import를 지원하는 로더 함수 저장
- * - 공통 팝업과 Feature 팝업 모두 등록 가능
+ * - 공통 팝업만 미리 등록하고, Feature 팝업은 사용처에서 동적 등록
+ *
+ * @architecture
+ * - 공통 팝업: popup-registry.ts에 기본 등록
+ * - Feature 팝업: 각 feature 컴포넌트에서 registerDialog()로 동적 등록
  *
  * @usage
- * // 1. 공통 팝업 등록
- * registerDialog('confirm', () => import('@/shared/components/popups/confirm-dialog'));
+ * // 1. 공통 팝업 (이미 등록됨)
+ * const confirmed = await popup.confirm({ message: '확인하시겠습니까?' });
  *
- * // 2. Feature 팝업 등록
- * registerDialog('products/detail', () =>
- *   import('@/features/products/components/popups/product-detail-dialog')
- * );
+ * // 2. Feature 팝업 동적 등록
+ * import { registerDialog } from '@/shared/utils/popup-registry';
+ * import { popup } from '@/shared/utils/popup';
  *
- * // 3. 팝업 사용
- * const result = await openPopup('products/detail', { productId: 123 });
+ * // 컴포넌트 마운트 시 등록
+ * useEffect(() => {
+ *   registerDialog('products/detail', () =>
+ *     import('@/features/products/components/popups/product-detail-dialog')
+ *   );
+ * }, []);
+ *
+ * // 팝업 사용
+ * const result = await popup.open('products/detail', { productId: 123 });
  */
 
 import type { ComponentType } from 'react';
@@ -47,27 +57,26 @@ type DialogRegistry = Record<string, DialogLoader>;
  * 전역 Dialog Registry
  *
  * @description
- * - 모든 팝업 타입과 해당 로더 함수를 저장
- * - 초기에 공통 팝업 등록
- * - Feature에서 추가 등록 가능
+ * - 공통 팝업만 기본 등록
+ * - Feature 팝업은 각 feature에서 동적으로 등록
+ *
+ * @guideline
+ * - ✅ 등록: confirm, alert 등 전역적으로 사용하는 공통 팝업
+ * - ❌ 미등록: products/detail, shared/table 등 feature-specific 팝업
  */
 const dialogRegistry: DialogRegistry = {
   // 공통 팝업 (기본 등록)
   confirm: () =>
-    import('@/shared/components/popups/confirm-dialog') as unknown as Promise<{
+    import('@/shared/components/popups/ConfirmDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
   alert: () =>
-    import('@/shared/components/popups/alert-dialog') as unknown as Promise<{
-      default: ComponentType<Record<string, unknown>>;
-    }>,
-  'shared/table': () =>
-    import('@/shared/components/popups/table-dialog') as unknown as Promise<{
+    import('@/shared/components/popups/AlertDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
 
-  // Feature 팝업은 각 feature에서 등록
-  // 예: 'products/detail', 'products/delete', etc.
+  // Feature 팝업은 각 feature에서 registerDialog()로 동적 등록
+  // 예: 'products/detail', 'products/delete', 'shared/table' 등
 };
 
 // ============================================================================

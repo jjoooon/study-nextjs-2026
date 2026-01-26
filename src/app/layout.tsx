@@ -47,7 +47,7 @@ import type { Metadata } from 'next';
 
 import '@/shared/styles/globals.css';
 import { AuthGuard } from '@/shared/components/AuthGuard';
-import { DialogRoot } from '@/shared/components/popups/dialog-root';
+import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {

@@ -34,17 +34,20 @@ import { List, LayoutGrid } from 'lucide-react';
 
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
+import type { ComponentType } from 'react';
+import { useEffect } from 'react';
 
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
+import type { TableDialogResult } from '@/features/products/components/popups/TableDialog';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
 import type { Product } from '@/features/products/types/apiTypes';
 import { useInjectReducer } from '@/redux/reducers/hooks';
-import type { TableDialogResult } from '@/shared/components/popups/table-dialog';
 import { SkeletonList } from '@/shared/components/ui/Skeleton';
 import { popup } from '@/shared/utils/popup';
+import { registerDialog } from '@/shared/utils/popup-registry';
 
 // ============================================================================
 // DYNAMIC IMPORT - AG Grid Bundle Optimization
@@ -123,6 +126,34 @@ function Content() {
   // Products 훅
   const { products, total, filters, sort, isLoading, viewMode, updateFilters, updateSort, updateViewMode } =
     useProducts();
+
+  // ============================================================================
+  // DYNAMIC POPUP REGISTRATION
+  // ============================================================================
+
+  /**
+   * Table Dialog 동적 등록
+   *
+   * @description
+   * Feature 팝업을 사용처에서 동적으로 등록
+   * - 모듈 독립성 확보
+   * - 필요할 때만 로드 (코드 스플리팅)
+   * - 중앙 레지스트리 의존성 제거
+   */
+  useEffect(() => {
+    registerDialog(
+      'shared/table',
+      () =>
+        import('@/features/products/components/popups/TableDialog') as unknown as Promise<{
+          default: ComponentType<Record<string, unknown>>;
+        }>
+    );
+
+    // cleanup: 필요없으면 제거 (현재는 등록만 하므로 빈 함수)
+    return () => {
+      // 팝업 등록은 해제하지 않아도 됨 (전역 레지스트리이므로)
+    };
+  }, []);
 
   // 검색 조건 변경 핸들러
   const handleFilterChange = (newFilters: typeof filters) => {

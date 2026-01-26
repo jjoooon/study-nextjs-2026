@@ -30,7 +30,7 @@
 import { createPortal } from 'react-dom';
 import { useAppSelector } from '@/redux';
 import { selectAllPopups } from '@/shared/store/popupSelectors';
-import { DialogRenderer } from './dialog-renderer';
+import { DialogRenderer } from './DialogRenderer';
 
 export function DialogRoot() {
   const popups = useAppSelector(selectAllPopups);
