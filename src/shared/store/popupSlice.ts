@@ -236,7 +236,11 @@ export const popupSlice = createSlice({
         return;
       }
 
-      const id = action.payload.id || `popup-${Date.now()}-${Math.random().toString(36).slice(2, ID_RANDOM_LENGTH + 2)}`;
+      const id =
+        action.payload.id ||
+        `popup-${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2, ID_RANDOM_LENGTH + 2)}`;
       const zIndex = BASE_Z_INDEX + state.popups.length;
 
       state.popups.push({

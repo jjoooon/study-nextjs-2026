@@ -99,7 +99,9 @@ export async function open<T = unknown, P = Record<string, unknown>>(
     if (timeout > 0) {
       setTimeout(() => {
         // 콜백이 여전히 존재하는지 확인 (이미 resolve/reject 되지 않았는지)
-        const callbacks = (globalThis as unknown as { popupCallbacksMap?: Map<string, unknown> }).popupCallbacksMap?.get(id);
+        const callbacks = (
+          globalThis as unknown as { popupCallbacksMap?: Map<string, unknown> }
+        ).popupCallbacksMap?.get(id);
         if (callbacks) {
           reject(new Error(`Popup timeout after ${timeout}ms`));
           store.dispatch(removePopup({ popupId: id }));
