@@ -1,11 +1,12 @@
 'use client';
 
-import { memo } from 'react';
+import type { ColDef } from 'ag-grid-community';
+
 import { ModuleRegistry } from 'ag-grid-community';
 import { AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
+
 // ✅ AG Grid v34+ Theming API 사용 (구버전 CSS 제거)
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
@@ -42,11 +43,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
  * - status 값이 같을 때 재렌더링 방지
  */
 const StatusCellRenderer = memo(({ value }: { value: string }) => {
-  return (
-    <div style={STATUS_STYLES[value]?.container}>
-      {value}
-    </div>
-  );
+  return <div style={STATUS_STYLES[value]?.container}>{value}</div>;
 });
 
 StatusCellRenderer.displayName = 'StatusCellRenderer';
