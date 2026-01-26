@@ -46,8 +46,8 @@ import productsReducer from '@/features/products/store/productsUISlice';
 // import type { Product } from '@/features/products/types/apiTypes';
 import { useInjectReducer } from '@/redux/reducers/hooks';
 import { SkeletonList } from '@/shared/components/ui/Skeleton';
-// import { popup } from '@/shared/utils/popup';
-// import { registerDialog } from '@/shared/utils/popup-registry';
+// import { popup } from '@/shared/utils/popup/popup';
+// import { registerDialog } from '@/shared/utils/popup/popupRegistry';
 
 // ============================================================================
 // DYNAMIC IMPORT - AG Grid Bundle Optimization

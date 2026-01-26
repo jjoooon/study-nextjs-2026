@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux';
 
 import type { PopupInstance } from '@/shared/store/popupSlice';
 import { removePopup } from '@/shared/store/popupSlice';
-import { getDialogLoader } from '@/shared/utils/popup-registry';
+import { getDialogLoader } from '@/shared/utils/popup/popupRegistry';
 
 type DialogRendererProps = Omit<PopupInstance, 'zIndex'>;
 
