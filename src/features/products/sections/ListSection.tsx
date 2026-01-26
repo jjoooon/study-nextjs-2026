@@ -34,20 +34,20 @@ import { List, LayoutGrid } from 'lucide-react';
 
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
-import type { ComponentType } from 'react';
-import { useEffect } from 'react';
+// import type { ComponentType } from 'react';
+// import { useEffect } from 'react';
 
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
-import type { TableDialogResult } from '@/features/products/components/popups/TableDialog';
+// import type { TableDialogResult } from '@/features/products/components/popups/TableDialog';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
-import type { Product } from '@/features/products/types/apiTypes';
+// import type { Product } from '@/features/products/types/apiTypes';
 import { useInjectReducer } from '@/redux/reducers/hooks';
 import { SkeletonList } from '@/shared/components/ui/Skeleton';
-import { popup } from '@/shared/utils/popup';
-import { registerDialog } from '@/shared/utils/popup-registry';
+// import { popup } from '@/shared/utils/popup';
+// import { registerDialog } from '@/shared/utils/popup-registry';
 
 // ============================================================================
 // DYNAMIC IMPORT - AG Grid Bundle Optimization
@@ -140,20 +140,20 @@ function Content() {
    * - 필요할 때만 로드 (코드 스플리팅)
    * - 중앙 레지스트리 의존성 제거
    */
-  useEffect(() => {
-    registerDialog(
-      'shared/table',
-      () =>
-        import('@/features/products/components/popups/TableDialog') as unknown as Promise<{
-          default: ComponentType<Record<string, unknown>>;
-        }>
-    );
+  // useEffect(() => {
+  //   registerDialog(
+  //     'shared/table',
+  //     () =>
+  //       import('@/features/products/components/popups/TableDialog') as unknown as Promise<{
+  //         default: ComponentType<Record<string, unknown>>;
+  //       }>
+  //   );
 
-    // cleanup: 필요없으면 제거 (현재는 등록만 하므로 빈 함수)
-    return () => {
-      // 팝업 등록은 해제하지 않아도 됨 (전역 레지스트리이므로)
-    };
-  }, []);
+  //   // cleanup: 필요없으면 제거 (현재는 등록만 하므로 빈 함수)
+  //   return () => {
+  //     // 팝업 등록은 해제하지 않아도 됨 (전역 레지스트리이므로)
+  //   };
+  // }, []);
 
   // 검색 조건 변경 핸들러
   const handleFilterChange = (newFilters: typeof filters) => {
@@ -181,86 +181,84 @@ function Content() {
   };
 
   // 테이블 팝업 테스트 버튼 클릭 핸들러
-  const handleTablePopupTest = async () => {
-    // 더미 데이터 생성
-    const dummyData = products.map((product: Product) => ({
-      id: String(product.id),
-      name: product.name,
-      category: product.category,
-      price: product.price,
-      status: Math.random() > 0.5 ? 'active' : 'inactive',
-    }));
+  // const handleTablePopupTest = async () => {
+  //   // 더미 데이터 생성
+  //   const dummyData = products.map((product: Product) => ({
+  //     id: String(product.id),
+  //     name: product.name,
+  //     category: product.category,
+  //     price: product.price,
+  //     status: Math.random() > 0.5 ? 'active' : 'inactive',
+  //   }));
 
-    try {
-      // 팝업 열기 (단일 선택 모드)
-      const result = await popup.open<TableDialogResult>('shared/table', {
-        title: '제품 선택 테스트',
-        description: '행을 클릭하면 팝업이 닫히고 선택된 데이터가 반환됩니다.',
-        data: dummyData,
-        allowMultiSelect: false,
-      });
+  //   try {
+  //     // 팝업 열기 (단일 선택 모드)
+  //     const result = await popup.open<TableDialogResult>('shared/table', {
+  //       title: '제품 선택 테스트',
+  //       description: '행을 클릭하면 팝업이 닫히고 선택된 데이터가 반환됩니다.',
+  //       data: dummyData,
+  //       allowMultiSelect: false,
+  //     });
 
-      // 액션 타입에 따라 분기 처리
-      if (result) {
-        switch (result.action) {
-          case 'select':
-            console.log('🎉 선택된 행:', result.singleRow);
+  //     // 액션 타입에 따라 분기 처리
+  //     if (result) {
+  //       switch (result.action) {
+  //         case 'select':
+  //           console.log('🎉 선택된 행:', result.singleRow);
 
-            // 선택된 제품으로 이동
-            if (result.singleRow) {
-              const clickedProduct = products.find((p: Product) => p.id === Number(result.singleRow?.id));
-              if (clickedProduct) {
-                handleProductClick(clickedProduct);
-              }
-            }
-            break;
+  //           // 선택된 제품으로 이동
+  //           if (result.singleRow) {
+  //             const clickedProduct = products.find((p: Product) => p.id === Number(result.singleRow?.id));
+  //             if (clickedProduct) {
+  //               handleProductClick(clickedProduct);
+  //             }
+  //           }
+  //           break;
 
-          case 'multiSelect':
-            console.log('📦 다중 선택된 행들:', result.selectedRows);
-            // 다중 선택 로직 처리
-            break;
+  //         case 'multiSelect':
+  //           console.log('📦 다중 선택된 행들:', result.selectedRows);
+  //           // 다중 선택 로직 처리
+  //           break;
 
-          case 'cancel':
-            console.log('❌ 취소됨');
-            break;
-        }
-      }
-    } catch (error) {
-      console.error('팝업 오류:', error);
-    }
-  };
+  //         case 'cancel':
+  //           console.log('❌ 취소됨');
+  //           break;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('팝업 오류:', error);
+  //   }
+  // };
 
   return (
-    <div className="">
+    <div className="container mx-auto px-4 py-8">
       {/* 페이지 헤더 */}
-      <div>
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">제품 관리</h1>
           <p className="text-gray-600">총 {total}개의 제품</p>
         </div>
-        <div>
-          <button
-            type="button"
-            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors font-medium"
-            onClick={() => router.push('/')}
-          >
-            메인으로
-          </button>
-          <button
+        <button
+          type="button"
+          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors font-medium"
+          onClick={() => router.push('/')}
+        >
+          메인으로
+        </button>
+        {/* <button
             type="button"
             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-medium"
             onClick={handleTablePopupTest}
           >
             테이블 팝업 테스트
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
-            onClick={handleNewProductClick}
-          >
-            제품 등록
-          </button>
-        </div>
+          </button> */}
+        <button
+          type="button"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+          onClick={handleNewProductClick}
+        >
+          제품 등록
+        </button>
       </div>
 
       {/* 필터 */}
