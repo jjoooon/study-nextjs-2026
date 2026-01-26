@@ -13,9 +13,12 @@
  * 2. useEffect로 컴포넌트 동적 로드 및 상태 저장
  * 3. 로딩 중이면 Fallback 표시
  * 4. 컴포넌트 렌더링
+ *
+ * @performance
+ * - useMemo로 loader 캐싱 (불필요한 재조회 방지)
  */
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { PopupInstance } from '@/shared/store/popupSlice';
@@ -34,8 +37,8 @@ export function DialogRenderer({ id, popupType, props }: DialogRendererProps) {
   const [Component, setComponent] = useState<React.ComponentType<Record<string, unknown>> | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  // Registry에서 로더 조회
-  const loader = getDialogLoader(popupType);
+  // Registry에서 로더 조회 (메모이제이션으로 최적화)
+  const loader = useMemo(() => getDialogLoader(popupType), [popupType]);
 
   // 컴포넌트 동적 로드
   useEffect(() => {

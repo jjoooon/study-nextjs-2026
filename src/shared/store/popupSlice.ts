@@ -12,20 +12,96 @@ export interface PopupCallbacks {
   reject: (error: unknown) => void;
 }
 
+// ============================================================================
+// CONSTANTS
+// ============================================================================
+
+/**
+ * 팝업 타임아웃 (밀리초)
+ *
+ * @description
+ * 사용자가 응답하지 않는 팝업을 자동으로 닫기 위한 타임아웃
+ * - 기본값: 30초
+ * - 너무 길면 메모리 누수 위험
+ * - 너무 짧으면 사용자 경험 저하
+ */
+const POPUP_TIMEOUT = 30000; // 30 seconds
+
+/**
+ * 팝업 최대 깊이
+ *
+ * @description
+ * 허용 가능한 최대 중첩 팝업 수
+ * - 팝업 스팸 공격 방지
+ * - 무한 중첩 방지
+ * - UI/UX 저하 방지
+ */
+const MAX_POPUP_DEPTH = 10;
+
+/**
+ * 팝업 Z-Index 기준값
+ *
+ * @description
+ * 팝업 레이어의 기본 Z-Index 값
+ * - 첫 번째 팝업: 1000
+ * - 두 번째 팝업: 1001
+ * - ...
+ */
+const BASE_Z_INDEX = 1000;
+
+/**
+ * 팝업 ID 랜덤 문자열 길이
+ *
+ * @description
+ * 팝업 ID 고유성을 위한 랜덤 문자열 길이
+ */
+const ID_RANDOM_LENGTH = 7;
+
+// ============================================================================
+// CALLBACKS MANAGEMENT
+// ============================================================================
+
+/**
+ * 팝업 콜백 타입 (확장)
+ */
+export interface PopupCallbacksExtended extends PopupCallbacks {
+  /** 타임아웃 ID (정리용) */
+  _timeoutId?: ReturnType<typeof setTimeout>;
+}
+
 /**
  * 팝업 콜백 맵 (Redux state 외부에서 관리)
  *
  * @description
  * Redux state에는 직렬화 가능한 데이터만 저장하기 위해,
  * Promise resolve/reject 함수는 별도 Map으로 관리
+ *
+ * @memory-management
+ * - 콜백 등록 시 자동 타임아웃 설정 (30초)
+ * - resolve/reject 호출 시 타임아웃 제거
+ * - 타임아웃 발생 시 자동으로 콜백 정리
  */
-const popupCallbacksMap = new Map<string, PopupCallbacks>();
+const popupCallbacksMap = new Map<string, PopupCallbacksExtended>();
 
 /**
  * 팝업 콜백 등록
+ *
+ * @description
+ * 콜백을 등록하고 자동 정리를 위한 타임아웃을 설정합니다
+ *
+ * @param id - 팝업 ID
+ * @param callbacks - resolve/reject 함수
  */
 export function registerPopupCallbacks(id: string, callbacks: PopupCallbacks) {
-  popupCallbacksMap.set(id, callbacks);
+  const timeoutId = setTimeout(() => {
+    if (popupCallbacksMap.has(id)) {
+      console.warn(`[Popup] Auto-closing orphaned popup: ${id} (timeout: ${POPUP_TIMEOUT}ms)`);
+      callbacks.reject(new Error(`Popup timeout after ${POPUP_TIMEOUT}ms`));
+      removePopupCallbacks(id);
+    }
+  }, POPUP_TIMEOUT);
+
+  popupCallbacksMap.set(id, { ...callbacks, _timeoutId: timeoutId });
 }
 
 /**
@@ -37,8 +113,20 @@ export function getPopupCallbacks(id: string): PopupCallbacks | undefined {
 
 /**
  * 팝업 콜백 제거
+ *
+ * @description
+ * 콜백을 Map에서 제거하고 타임아웃을 취소합니다
+ *
+ * @param id - 팝업 ID
+ * @returns 제거 성공 여부
  */
 export function removePopupCallbacks(id: string): boolean {
+  const callbacks = popupCallbacksMap.get(id);
+
+  if (callbacks?._timeoutId) {
+    clearTimeout(callbacks._timeoutId);
+  }
+
   return popupCallbacksMap.delete(id);
 }
 // ============================================================================
@@ -135,11 +223,21 @@ export const popupSlice = createSlice({
      * @description
      * 새로운 팝업을 스택의 맨 위에 추가합니다
      * ID가 제공되지 않으면 자동 생성합니다
+     *
+     * @validation
+     * - 최대 팝업 깊이 초과 시 에러 로그 및 조기 반환
      */
     addPopup: (state, action: PayloadAction<Omit<PopupInstance, 'id' | 'zIndex'> & { id?: string }>) => {
-      const id = action.payload.id || `popup-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-      const baseZIndex = 1000;
-      const zIndex = baseZIndex + state.popups.length;
+      // 최대 팝업 깊이 체크
+      if (state.popups.length >= MAX_POPUP_DEPTH) {
+        console.error(
+          `[Popup] Maximum popup depth (${MAX_POPUP_DEPTH}) reached. Cannot add popup: ${action.payload.popupType}`
+        );
+        return;
+      }
+
+      const id = action.payload.id || `popup-${Date.now()}-${Math.random().toString(36).slice(2, ID_RANDOM_LENGTH + 2)}`;
+      const zIndex = BASE_Z_INDEX + state.popups.length;
 
       state.popups.push({
         ...action.payload,
@@ -166,7 +264,7 @@ export const popupSlice = createSlice({
 
         // Z-Index 재계산 (중첩 팝업 유지)
         state.popups.forEach((p, i) => {
-          p.zIndex = 1000 + i;
+          p.zIndex = BASE_Z_INDEX + i;
         });
 
         // Map에서 콜백 조회 후 실행
@@ -198,7 +296,7 @@ export const popupSlice = createSlice({
 
         // Z-Index 재계산
         state.popups.forEach((p, i) => {
-          p.zIndex = 1000 + i;
+          p.zIndex = BASE_Z_INDEX + i;
         });
 
         // Map에서 콜백 조회 후 실행
