@@ -27,6 +27,7 @@ import { persistStore } from 'redux-persist';
 
 import type { DashboardState } from '@/features/dashboard/types/storeTypes';
 import type { ProductsUIState } from '@/features/products/types/storeTypes';
+import type { PopupState } from '@/shared/store/popupSlice';
 import type { AuthState } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
 
@@ -171,6 +172,7 @@ if (process.env.NODE_ENV === 'development') {
  */
 export type RootState = {
   auth: AuthState;
+  popup: PopupState;
   dashboard: DashboardState;
   products: ProductsUIState;
 };

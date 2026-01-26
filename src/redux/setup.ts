@@ -15,6 +15,7 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 
 import authReducer from '@/shared/store/authSlice';
+import popupReducer from '@/shared/store/popupSlice';
 import log from '@/shared/utils/logger';
 
 import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';
@@ -35,6 +36,9 @@ import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './registry/reduc
 export const initializeReducers = () => {
   // ✅ Core UI Reducers - 항상 초기 로드
   reducerRegistry.register('auth', authReducer, 20);
+
+  // ✅ Popup System - 항상 초기 로드 (전역 팝업 관리)
+  reducerRegistry.register('popup', popupReducer, 25);
 
   // ⚠️ Optional UI Reducers - 페이지에서 지연 로딩
   // dashboard, products는 각 페이지에서 useInjectReducer로 주입

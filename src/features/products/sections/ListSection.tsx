@@ -40,8 +40,11 @@ import ProductList from '@/features/products/components/ProductList';
 import { PRODUCTS_ROUTES } from '@/features/products/constants/routes';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
+import type { Product } from '@/features/products/types/apiTypes';
 import { useInjectReducer } from '@/redux/reducers/hooks';
+import type { TableDialogResult } from '@/shared/components/popups/table-dialog';
 import { SkeletonList } from '@/shared/components/ui/Skeleton';
+import { popup } from '@/shared/utils/popup';
 
 // ============================================================================
 // DYNAMIC IMPORT - AG Grid Bundle Optimization
@@ -146,28 +149,87 @@ function Content() {
     router.push(`${PRODUCTS_ROUTES.NEW}?${searchParams.toString()}`);
   };
 
+  // 테이블 팝업 테스트 버튼 클릭 핸들러
+  const handleTablePopupTest = async () => {
+    // 더미 데이터 생성
+    const dummyData = products.map((product: Product) => ({
+      id: String(product.id),
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      status: Math.random() > 0.5 ? 'active' : 'inactive',
+    }));
+
+    try {
+      // 팝업 열기 (단일 선택 모드)
+      const result = await popup.open<TableDialogResult>('shared/table', {
+        title: '제품 선택 테스트',
+        description: '행을 클릭하면 팝업이 닫히고 선택된 데이터가 반환됩니다.',
+        data: dummyData,
+        allowMultiSelect: false,
+      });
+
+      // 액션 타입에 따라 분기 처리
+      if (result) {
+        switch (result.action) {
+          case 'select':
+            console.log('🎉 선택된 행:', result.singleRow);
+
+            // 선택된 제품으로 이동
+            if (result.singleRow) {
+              const clickedProduct = products.find((p: Product) => p.id === Number(result.singleRow?.id));
+              if (clickedProduct) {
+                handleProductClick(clickedProduct);
+              }
+            }
+            break;
+
+          case 'multiSelect':
+            console.log('📦 다중 선택된 행들:', result.selectedRows);
+            // 다중 선택 로직 처리
+            break;
+
+          case 'cancel':
+            console.log('❌ 취소됨');
+            break;
+        }
+      }
+    } catch (error) {
+      console.error('팝업 오류:', error);
+    }
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="">
       {/* 페이지 헤더 */}
-      <div className="mb-8 flex items-center justify-between">
+      <div>
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">제품 관리</h1>
           <p className="text-gray-600">총 {total}개의 제품</p>
         </div>
-        <button
-          type="button"
-          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
-          onClick={() => router.push('/')}
-        >
-          메인으로
-        </button>
-        <button
-          type="button"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
-          onClick={handleNewProductClick}
-        >
-          제품 등록
-        </button>
+        <div>
+          <button
+            type="button"
+            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors font-medium"
+            onClick={() => router.push('/')}
+          >
+            메인으로
+          </button>
+          <button
+            type="button"
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-medium"
+            onClick={handleTablePopupTest}
+          >
+            테이블 팝업 테스트
+          </button>
+          <button
+            type="button"
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            onClick={handleNewProductClick}
+          >
+            제품 등록
+          </button>
+        </div>
       </div>
 
       {/* 필터 */}
