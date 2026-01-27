@@ -205,7 +205,7 @@ interface ProductItemProps {
 export const ProductItem = memo(function ProductItem({ product, onProductClick }: ProductItemProps) {
   return (
     <div
-      className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer"
+      className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-shadow cursor-pointer"
       onClick={() => onProductClick(product)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -363,7 +363,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <div
-      className="bg-white rounded-lg shadow p-6"
+      className="bg-white rounded-lg shadow-sm p-6"
       onMouseEnter={preload}
       onFocus={preload}
     >

@@ -265,7 +265,7 @@ function Content() {
       <ProductFilters filters={filters} onFilterChange={handleFilterChange} />
 
       {/* 정렬 및 뷰 모드 컨트롤 */}
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
+      <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <span className="text-sm font-medium text-gray-700">정렬:</span>
@@ -331,7 +331,7 @@ function Content() {
       {viewMode === 'table' ? (
         <ProductList products={products} isLoading={isLoading} onProductClick={handleProductClick} />
       ) : (
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <ProductGrid products={products} onProductClick={handleProductClick} />
         </div>
       )}

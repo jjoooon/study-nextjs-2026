@@ -484,7 +484,7 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/utils';
 
 interface ButtonProps extends React.ComponentProps<'button'> {
-  variant?: 'default' | 'destructive' | 'outline';
+  variant?: 'default' | 'destructive' | 'outline-solid';
 }
 
 export function Button({
@@ -497,7 +497,7 @@ export function Button({
       className={cn(
         'px-4 py-2 rounded-md font-medium',
         variant === 'default' && 'bg-blue-600 text-white',
-        variant === 'outline' && 'border border-gray-300',
+        variant === 'outline-solid' && 'border border-gray-300',
         className
       )}
       {...props}

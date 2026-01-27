@@ -111,7 +111,7 @@ function Content() {
       </div>
 
       {/* 등록 폼 */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow-sm p-6">
         <ProductForm mode="create" onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isSubmitting} />
       </div>
     </div>

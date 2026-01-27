@@ -683,7 +683,7 @@ export const ProductForm = () => {
 ```typescript
 // 예시: Button 컴포넌트 (React 19+)
 interface ButtonProps extends React.ComponentProps<'button'> {
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+  variant?: 'default' | 'destructive' | 'outline-solid' | 'secondary' | 'ghost' | 'link'
   size?: 'default' | 'sm' | 'lg' | 'icon'
 }
 

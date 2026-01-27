@@ -56,7 +56,7 @@ export default function ProductDetail({ product, onEdit, onDelete, onBack }: Pro
       </div>
 
       {/* 기본 정보 */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">기본 정보</h2>
         <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -87,7 +87,7 @@ export default function ProductDetail({ product, onEdit, onDelete, onBack }: Pro
       </div>
 
       {/* 날짜 정보 */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">날짜 정보</h2>
         <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>

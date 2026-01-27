@@ -30,7 +30,7 @@ export default function ProductList({ products, isLoading, onProductClick }: Pro
       {products.map((product) => (
         <div
           key={product.id}
-          className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer"
+          className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-shadow cursor-pointer"
           onClick={() => onProductClick?.(product)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {

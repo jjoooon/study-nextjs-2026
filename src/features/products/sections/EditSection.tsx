@@ -139,7 +139,7 @@ function Content({ id }: { id: string }) {
       </div>
 
       {/* 수정 폼 */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow-sm p-6">
         {initialData ? (
           <ProductForm
             initialData={initialData}
