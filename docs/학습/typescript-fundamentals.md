@@ -309,24 +309,65 @@ interface Duck extends Animal, Flyable, Swimmable {
 }
 
 // 7. 하이브리드 타입 (함수 + 객체)
+// ⚠️ 주의: 하이브리드 타입은 함수와 객체 프로퍼티를 모두 가질 수 있는 특수한 패턴입니다.
+// 이 패턴은 JavaScript의 함수가 객체라는 특성을 활용하지만, 타입 안정성을 위해 신중하게 사용해야 합니다.
+
 interface Counter {
-  (start: number): string; // 함수 타입
+  (start: number): string; // 호출 시그니처 (함수처럼 호출 가능)
   interval: number; // 프로퍼티
   reset(): void; // 메서드
 }
 
+// 구현 방법 1: 함수에 프로퍼티 추가 (가장 일반적인 방법)
 function getCounter(): Counter {
-  let counter = (function (start: number) {
-    return start.toString();
-  }) as Counter;
+  const counter = function (start: number): string {
+    // 함수 본문에서 this를 통해 프로퍼티에 접근
+    return `Count: ${start}, Interval: ${(counter as any).interval}`;
+  } as Counter;
 
+  // JavaScript에서는 함수 객체에 프로퍼티를 추가할 수 있습니다
   counter.interval = 123;
   counter.reset = function () {
     console.log("Reset!");
+    (this as any).interval = 0;
   };
 
   return counter;
 }
+
+// 사용 예시
+const myCounter = getCounter();
+console.log(myCounter(5)); // "Count: 5, Interval: 123"
+console.log(myCounter.interval); // 123
+myCounter.reset(); // "Reset!"
+
+// 구현 방법 2: 클래스로 구현 (더 타입 안전한 방법)
+class SafeCounter implements Counter {
+  interval: number;
+
+  constructor(interval: number = 123) {
+    this.interval = interval;
+  }
+
+  reset(): void {
+    console.log("Reset!");
+    this.interval = 0;
+  }
+
+  // 호출 시그니처 구현
+  (start: number): string {
+    return `Count: ${start}, Interval: ${this.interval}`;
+  }
+}
+
+function getSafeCounter(): Counter {
+  const counter = new SafeCounter(100);
+  return counter as unknown as Counter;
+}
+
+const safeCounter = getSafeCounter();
+console.log(safeCounter(10)); // "Count: 10, Interval: 100"
+console.log(safeCounter.interval); // 100
 ```
 
 ### 타입 별칭 (Type Alias)
