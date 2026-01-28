@@ -51,6 +51,10 @@ React는 Meta(구 Facebook)에서 개발한 **사용자 인터페이스 구축�
 - ✅ `forwardRef` 없이 ref prop 직접 사용 가능
 - ✅ Concurrent Features 기본 활성화
 - ✅ 성능 및 개발자 경험 개선
+- ✅ `useOptimistic` 낙관적 업데이트
+- ✅ `useActionState` 폼 상태 관리
+- ✅ `useFormStatus` 폼 제출 상태
+- ✅ React Compiler (실험적)
 
 ---
 
@@ -671,6 +675,135 @@ const expensiveValue = useMemo(() => {
 const memoizedCallback = useCallback(() => {
   doSomething(a, b);
 }, [a, b]); // a 또는 b가 변경될 때만 함수 재생성
+```
+
+### React 19 새로운 훅
+
+#### useOptimistic (낙관적 업데이트)
+
+서버 응답을 기다리는 동안 UI를 즉시 업데이트합니다.
+
+```typescript
+'use client';
+
+import { useOptimistic } from 'react';
+
+type Message = {
+  id: string;
+  text: string;
+  sending?: boolean;
+};
+
+export function Chat() {
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  // 낙관적 상태
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
+    messages,
+    (state, newMessage: string) => [
+      ...state,
+      {
+        id: Math.random().toString(),
+        text: newMessage,
+        sending: true,
+      },
+    ]
+  );
+
+  const handleSubmit = async (formData: FormData) => {
+    const message = formData.get('message') as string;
+
+    // 즉시 UI 업데이트
+    addOptimisticMessage(message);
+
+    // 서버 전송
+    await sendMessage(message);
+    setMessages(await getMessages());
+  };
+
+  return (
+    <div>
+      {optimisticMessages.map((msg) => (
+        <div key={msg.id}>
+          {msg.text}
+          {msg.sending && <span> (전송 중...)</span>}
+        </div>
+      ))}
+
+      <form action={handleSubmit}>
+        <input name="message" type="text" />
+        <button type="submit">전송</button>
+      </form>
+    </div>
+  );
+}
+```
+
+#### useActionState (폼 상태 관리)
+
+폼의 제출 상태를 관리하는 훅입니다.
+
+```typescript
+'use client';
+
+import { useActionState } from 'react';
+
+async function submitForm(prevState: any, formData: FormData) {
+  const name = formData.get('name');
+
+  // 서버 액션
+  await createUser(name);
+
+  return { success: true, message: '생성 완료!' };
+}
+
+export function UserForm() {
+  const [state, formAction, isPending] = useActionState(submitForm, null);
+
+  return (
+    <form action={formAction}>
+      <input name="name" type="text" />
+      <button type="submit" disabled={isPending}>
+        {isPending ? '제출 중...' : '제출'}
+      </button>
+
+      {state?.message && <p>{state.message}</p>}
+    </form>
+  );
+}
+```
+
+#### useFormStatus (폼 제출 상태)
+
+폼의 제출 상태를 자식 컴포넌트에서 확인합니다.
+
+```typescript
+'use client';
+
+import { useFormStatus } from 'react';
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? '제출 중...' : '제출'}
+    </button>
+  );
+}
+
+export function Form() {
+  async function handleSubmit(formData: FormData) {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
+
+  return (
+    <form action={handleSubmit}>
+      <input name="name" type="text" />
+      <SubmitButton />
+    </form>
+  );
+}
 ```
 
 ### 커스텀 훅 (Custom Hooks)

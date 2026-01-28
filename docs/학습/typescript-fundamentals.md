@@ -988,7 +988,22 @@ const config = {
 } as const;
 // readonly로 추론됨
 
-// 6. 타입 가드
+// 6. satisfies 연산자 (TypeScript 4.9+)
+interface Config {
+  url: string;
+  timeout: number;
+}
+
+// 타입 검증만 수행, 값의 타입은 유지
+const serverConfig = {
+  url: "https://api.example.com",
+  timeout: 5000,
+  mode: "secure", // 추가 프로퍼티 허용
+} satisfies Config;
+
+// serverConfig.mode는 여전히 "secure"로 추론됨
+
+// 7. 타입 가드
 function isString(value: unknown): value is string {
   return typeof value === "string";
 }
@@ -999,7 +1014,7 @@ function processValue(value: unknown) {
   }
 }
 
-// 7. 디스크리미네이티드 유니온 (Discriminated Unions)
+// 8. 디스크리미네이티드 유니온 (Discriminated Unions)
 interface Success {
   status: "success";
   data: any;
@@ -1100,6 +1115,52 @@ function updateUser(id: number, name: string, email: string): void {
 
 type UpdateUserParams = Parameters<typeof updateUser>;
 // [id: number, name: string, email: string]
+
+// 12. Awaited<T>: Promise 타입 추출 (TypeScript 4.5+)
+type AsyncResult = Awaited<Promise<User>>;
+// User
+```
+
+### TypeScript 5.x新增유틸리티
+
+```typescript
+// 1. NoInfer<T>: 타입 추론 방지 (TypeScript 5.4+)
+function createPair<T extends string | number>(first: T, second: NoInfer<T>) {
+  return [first, second] as const;
+}
+
+// second는 T로 추론되지 않고 명시적으로 지정해야 함
+const pair = createPair("hello", "world"); // ✅
+const pair2 = createPair("hello", 123); // ❌
+
+// 2. Tuple 유형 개선
+type NameOrNameArray = string | [string, ...string[]];
+
+function processNames(names: NameOrNameArray) {
+  if (Array.isArray(names)) {
+    // names: [string, ...string[]]
+    console.log(names[0]);
+  } else {
+    // names: string
+    console.log(names.toUpperCase());
+  }
+}
+
+// 3. Keyof 타입 개선
+type Colors = {
+  red: string;
+  blue: string;
+  green: string;
+};
+
+type ColorKeys = keyof Colors;
+// "red" | "blue" | "green"
+
+// 4. Template Literal Types 활용
+type EventName<T extends string> = `on${Capitalize<T>}`;
+
+type ClickEvent = EventName<"click">; // "onClick"
+type MouseEvent = EventName<"mouse">; // "onMouse"
 ```
 
 ### 맵드 타입 (Mapped Types)

@@ -43,6 +43,13 @@ Zod는 **TypeScript-first 스키마 검증 라이브러리**입니다. 런타임
 }
 ```
 
+**Zod 4.x의 새로운 특징:**
+- ✅ 더 나은 TypeScript 타입 추론
+- ✅ 개선된 에러 메시지
+- ✅ 성능 최적화
+- ✅ 새로운 유틸리티 메서드
+- ✅ 커스텀 에러 맵 지원
+
 ---
 
 ## 핵심 개념
@@ -589,6 +596,129 @@ export const productsHandlers = [
     return HttpResponse.json(mockProducts);
   }),
 ];
+```
+
+### 5. Zod 4.x 고급 패턴
+
+#### discriminateUnion (판별된 유니온)
+
+```typescript
+// Zod 3.x+의 discriminatedUnion
+const eventSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('click'),
+    x: z.number(),
+    y: z.number(),
+  }),
+  z.object({
+    type: z.literal('keydown'),
+    key: z.string(),
+  }),
+  z.object({
+    type: z.literal('scroll'),
+    scrollTop: z.number(),
+  }),
+]);
+
+type Event = z.infer<typeof eventSchema>;
+/*
+type Event =
+  | { type: 'click'; x: number; y: number; }
+  | { type: 'keydown'; key: string; }
+  | { type: 'scroll'; scrollTop: number; }
+*/
+
+// 타입 안전한 처리
+function handleEvent(event: Event) {
+  if (event.type === 'click') {
+    console.log(`Clicked at ${event.x}, ${event.y}`);
+  } else if (event.type === 'keydown') {
+    console.log(`Key pressed: ${event.key}`);
+  } else {
+    console.log(`Scrolled to ${event.scrollTop}`);
+  }
+}
+```
+
+#### passthrough (통과 검증)
+
+```typescript
+// 데이터 검증 후 원본 데이터 유지
+const schema = z.object({
+  name: z.string(),
+  age: z.number(),
+  metadata: z.passthrough(z.record(z.unknown())), // 추가 필드 허용
+});
+
+const result = schema.parse({
+  name: 'John',
+  age: 30,
+  metadata: { extra: 'data', count: 10 }, // 유지됨
+});
+```
+
+#### readonly와 shallow (Zod 3.x+)
+
+```typescript
+// 읽기 전용 스키마
+const readonlySchema = z.object({
+  id: z.string(),
+  items: z.array(z.object({
+    name: z.string(),
+  })).readonly(),
+}).readonly();
+
+// 얕은 readonly (depth: 1만)
+const shallowReadonlySchema = z.object({
+  id: z.string(),
+  items: z.array(z.object({
+    name: z.string(),
+  })),
+}).readonly();
+```
+
+#### async/refine 결합 (비동기 검증)
+
+```typescript
+const userSchema = z.object({
+  email: z.string().email(),
+  username: z.string().min(3),
+}).refine(
+  async (data) => {
+    // 비동기로 중복 검사
+    const exists = await checkUserExists(data.email);
+    return !exists;
+  },
+  {
+    message: '이미 등록된 이메일입니다',
+    path: ['email'],
+  }
+);
+
+async function checkUserExists(email: string): Promise<boolean> {
+  // DB 조회 로직
+  return false;
+}
+```
+
+#### 재귀적 스키마 (Recursive Schema)
+
+```typescript
+// Zod 3.x+의 재귀적 스키마
+const categorySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  subcategories: z.lazy(() => z.array(categorySchema)),
+});
+
+type Category = z.infer<typeof categorySchema>;
+/*
+type Category = {
+  id: string;
+  name: string;
+  subcategories: Category[];
+}
+*/
 ```
 
 ---

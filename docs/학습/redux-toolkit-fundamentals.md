@@ -45,6 +45,12 @@ Redux Toolkit(RTK)은 **Redux 공식 팀이 권장하는 Redux 로직 작성을 
 }
 ```
 
+**Redux Toolkit 2.5의 새로운 특징:**
+- ✅ 개선된 TypeScript 타입 추론
+- ✅ 더 나은 DevTools 통합
+- ✅ Performance 최적화
+- ✅ enhanced 패키지 구조
+
 ---
 
 ## 핵심 개념
@@ -582,6 +588,83 @@ export function ProductList() {
     </div>
   );
 }
+```
+
+### Redux Toolkit 2.x 최적화 팁턴
+
+#### 1. Thunk 결과 타입 검증 (TypeScript 5.x)
+
+```typescript
+import { unwrapResult } from '@reduxjs/toolkit';
+
+export function ProductForm() {
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (data: ProductFormData) => {
+    const result = await dispatch(createProduct(data));
+
+    // 타입 안전한 결과 검증
+    if (createProduct.fulfilled.match(result)) {
+      // 성공: result.payload는 Product 타입
+      console.log('생성된 상품:', result.payload);
+      router.push('/products');
+    } else if (createProduct.rejected.match(result)) {
+      // 실패: result.error는 SerializedError
+      console.error('생성 실패:', result.error.message);
+    }
+  };
+}
+```
+
+#### 2. listenerMiddleware 활용 (Redux Toolkit 1.9+)
+
+```typescript
+// redux/listenerMiddleware.ts
+import { createListenerMiddleware } from '@reduxjs/toolkit';
+import { productsApi } from '@/features/products/services/productsApi';
+
+export const listenerMiddleware = createListenerMiddleware();
+
+// API 호출 성공 시 추가 작업 수행
+listenerMiddleware.startListening({
+  matcher: productsApi.endpoints.createProduct.matchFulfilled,
+  effect: async (action, listenerApi) => {
+    // 상품 생성 성공 시 알림 표시
+    const { dispatch } = listenerApi;
+    dispatch(showNotification({
+      message: '상품이 생성되었습니다',
+      type: 'success',
+    }));
+  },
+});
+
+// Store에 미들웨어 추가
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(listenerMiddleware.middleware),
+});
+```
+
+#### 3. 코드 분할 지원 (RTK Query 2.x+)
+
+```typescript
+// productsApi.ts
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const productsApi = createApi({
+  reducerPath: 'productsApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  endpoints: (builder) => ({
+    getProducts: builder.query<Product[], void>({
+      query: () => '/products',
+    }),
+  }),
+});
+
+// 코드 분할 지원
+export const useGetProductsQuery = productsApi.useGetProductsQuery;
+export const useLazyGetProductsQuery = productsApi.useLazyGetProductsQuery;
 ```
 
 ---

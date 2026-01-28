@@ -31,11 +31,13 @@ Next.js는 Vercel에서 개발한 **React 기반的全스택 프레임워크**�
 ```
 
 **Next.js 16의 새로운 특징:**
-- ✅ Turbopack 기본 활성화 (dev 모드)
+- ✅ Turbopack 기본 활성화 (dev & production)
 - ✅ 성능 및 안정성 개선
 - ✅ React 19 완벽 지원
 - ✅ App Router 안정화
-- ✅ Partial Prerendering (PPR) 개선
+- ✅ Partial Prerendering (PPR) 안정화
+- ✅ 향상된 Metadata API
+- ✅ Server Actions 개선
 
 ---
 
@@ -107,6 +109,47 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ received: body });
 }
 ```
+
+### 5. Partial Prerendering (PPR)
+
+Next.js 15+부터 안정화된 PPR은 정적 셸과 동적 콘텐츠를 혼합하여 렌더링합니다.
+
+```typescript
+// next.config.ts
+const nextConfig: NextConfig = {
+  experimental: {
+    ppr: 'incremental', // 점진적 PPR 활성화
+  },
+};
+
+// app/dashboard/page.tsx
+export const experimental_ppr = true; // 페이지별 PPR 활성화
+
+export default async function Dashboard() {
+  // 정적 부분 (즉시 렌더링)
+  const staticHeader = <h1>대시보드</h1>;
+
+  // 동적 부분 (스트리밍)
+  const data = await fetch('https://api.example.com/data', {
+    cache: 'no-store',
+  }).then(r => r.json());
+
+  return (
+    <div>
+      {staticHeader}
+      <Suspense fallback={<Skeleton />}>
+        <DynamicData data={data} />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+**PPR 장점:**
+- 빠른 초기 페이지 로드 (정적 셸)
+- 나중에 동적 콘텐츠 스트리밍
+- SEO 친화적
+- 사용자 경험 개선
 
 ---
 
@@ -528,6 +571,81 @@ export default function NewProductPage() {
   );
 }
 ```
+
+### 6. Parallel Routes & Intercepting Routes (Next.js 16)
+
+#### Parallel Routes (병렬 라우팅)
+
+여러 페이지를 동시에 렌더링하여 복잡한 UI를 구현합니다.
+
+```typescript
+// app/dashboard/@dashboard/page.tsx
+export default function DashboardPage() {
+  return <div>대시보드 메인</div>;
+}
+
+// app/dashboard/@analytics/page.tsx
+export default function AnalyticsPage() {
+  return <div>분석 패널</div>;
+}
+
+// app/dashboard/layout.tsx
+export default function DashboardLayout({
+  children,
+  dashboard,
+  analytics,
+}: {
+  children: React.ReactNode;
+  dashboard: React.ReactNode;
+  analytics: React.ReactNode;
+}) {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      <div className="col-span-2">{dashboard}</div>
+      <div>{analytics}</div>
+    </div>
+  );
+}
+```
+
+**폴더 구조:**
+```
+app/dashboard/
+├── layout.tsx
+├── page.tsx (children)
+├── @dashboard/
+│   └── page.tsx
+└── @analytics/
+    └── page.tsx
+```
+
+#### Intercepting Routes (인터셉트 라우팅)
+
+현재 페이지 컨텍스트를 유지하면서 다른 페이지를 표시합니다.
+
+```typescript
+// app/feed/[id]/page.tsx
+export default function PhotoPage({ params }: { params: Promise<{ id: string }> }) {
+  return <div>사진 상세</div>;
+}
+
+// app/@modal/(.)feed/[id]/page.tsx
+export default function PhotoModal({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <div className="modal">
+      <div className="modal-content">사진 모달</div>
+    </div>
+  );
+}
+
+// app/@modal/(..)feed/[id]/page.tsx
+// app/@modal/(...)feed/[id]/page.tsx
+```
+
+**인터셉션 규칙:**
+- `(.)` - 같은 레벨 인터셉트
+- `(..)` - 한 단계 위 인터셉트
+- `(...)` - 루트까지 인터셉트
 
 ---
 
