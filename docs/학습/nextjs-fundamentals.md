@@ -516,7 +516,7 @@ const data = await fetch(`https://api.example.com/data?id=${id}`, {
 // 1. Static Generation (기본)
 export default async function Page() {
   const data = await fetch('https://api.example.com/data', {
-    cache: 'force-cache' // 또는 next: { revalidate: 인트 }
+    cache: 'force-cache' // 영구 캐시
   });
   return <div>{/* ... */}</div>;
 }
