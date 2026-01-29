@@ -20,7 +20,7 @@
 
 ### 정의
 
-Next.js는 Vercel에서 개발한 **React 기반的全스택 프레임워크**로, 서버 사이드 렌더링(SSR), 정적 사이트 생성(SSG), API Routes 등의 기능을 제공합니다.
+Next.js는 Vercel에서 개발한 **React 기반의 풀스택 프레임워크**로, 서버 사이드 렌더링(SSR), 정적 사이트 생성(SSG), API Routes 등의 기능을 제공합니다.
 
 ### 프로젝트의 Next.js 버전
 
