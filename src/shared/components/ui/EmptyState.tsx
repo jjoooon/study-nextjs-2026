@@ -44,7 +44,7 @@ export interface EmptyStateAction {
    * 버튼 스타일
    * @default 'primary'
    */
-  variant?: 'primary' | 'secondary' | 'outline-solid';
+  variant?: 'primary' | 'secondary' | 'outline';
 }
 
 /**
