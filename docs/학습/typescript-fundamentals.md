@@ -406,9 +406,20 @@ interface Person {
   age: number;
 }
 
-// 4. 조건부 타입
+// 4. 조건부 타입 (Conditional Types)
+
+// 📘 조건부 타입이란?
+// 타입 수준에서 if-else 논리를 수행하는 TypeScript의 강력한 기능
+// 기본 문법: T extends Condition ? TrueType : FalseType
+
+// 기본 예시 1: null/undefined 필터링
 type NonNullable<T> = T extends null | undefined ? never : T;
 
+// 사용 예시
+type UserId = string | null;
+type CleanUserId = NonNullable<UserId>; // string (null 제거됨)
+
+// 기본 예시 2: 타입 이름 반환
 type TypeName<T> = T extends string
   ? "string"
   : T extends number
@@ -420,6 +431,104 @@ type TypeName<T> = T extends string
   : T extends Function
   ? "function"
   : "object";
+
+type T1 = TypeName<string>; // "string"
+type T2 = TypeName<number[]>; // "object"
+
+// 실전 사용 사례 1: 배열/비배열 타입 구분
+type Unpacked<T> = T extends (infer U)[]
+  ? U                    // 배열이면 요소 타입 추출
+  : T extends (...args: any[]) => infer U
+  ? U                    // 함수면 반환 타입 추출
+  : T extends Promise<infer U>
+  ? U                    // Promise면 resolve 타입 추출
+  : T;                   // 그 외는 원본 타입
+
+// 사용 예시
+type T0 = Unpacked<string>;              // string
+type T1 = Unpacked<string[]>;            // string (배열 언패킹)
+type T2 = Unpacked<() => string>;        // string (함수 반환 타입)
+type T3 = Unpacked<Promise<string>>;     // string (Promise 언패킹)
+
+// 실전 사용 사례 2: API 응답 타입 분리
+type ApiResponse<T, E = Error> =
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: E };
+
+type ExtractData<T> = T extends { status: 'success'; data: infer D }
+  ? D
+  : never;
+
+type ExtractError<T> = T extends { status: 'error'; error: infer E }
+  ? E
+  : never;
+
+// 사용 예시
+type SuccessResult = ApiResponse<User>;
+type DataType = ExtractData<SuccessResult>; // User
+
+type ErrorResult = ApiResponse<never, NetworkError>;
+type ErrorType = ExtractError<ErrorResult>; // NetworkError
+
+// 실전 사용 사례 3: React 이벤트 핸들러 타입
+type EventType<T extends React.ElementType> =
+  T extends 'input'
+    ? React.ChangeEvent<HTMLInputElement>
+    : T extends 'button'
+    ? React.MouseEvent<HTMLButtonElement>
+    : React.Event;
+
+// 사용 예시
+function handleEvent<T extends 'input' | 'button'>(
+  element: T,
+  handler: (e: EventType<T>) => void
+) {
+  // element 타입에 따라 handler의 이벤트 타입이 자동 결정됨
+}
+
+// 실전 사용 사례 4: 픽셀/백분율 단위 처리
+type CssUnit = 'px' | '%' | 'em' | 'rem';
+
+type ValueType<T extends CssUnit> =
+  T extends 'px' | 'em' | 'rem'
+    ? number           // 절대 단위는 숫자
+    : T extends '%'
+    ? number           // 백분율도 숫자
+    : never;
+
+function setStyle<T extends CssUnit>(
+  property: string,
+  value: ValueType<T>,
+  unit: T
+): string {
+  return `${property}: ${value}${unit}`;
+}
+
+// 고급 패턴: infer 키워드로 타입 추출
+// ReturnType 구현 (내장 유틸리티와 동일)
+type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+function getUser(): User {
+  return { id: 1, name: '홍길동' };
+}
+
+type UserReturn = MyReturnType<typeof getUser>;  // User
+
+// Promise의 unwrap 타입
+type UnwrappedPromise<T> = T extends Promise<infer U> ? U : T;
+
+type Data = UnwrappedPromise<Promise<User>>;  // User
+
+// 💡 조건부 타입을 사용해야 할 때
+// ✅ 적합한 경우:
+// - 제네릭 타입에 따라 분기가 필요할 때
+// - 타입 필터링이 필요할 때 (null 제거, 특정 타입 추출)
+// - 복잡한 타입 변환이 필요할 때
+// - API 응답 타입 분리가 필요할 때
+//
+// ❌ 부적합한 경우:
+// - 간단한 유니온 타입으로 충분할 때
+// - 런타임 로직과 관계없을 때 (조건부 타입은 컴파일 시점에만 작동)
 
 // 5. 맵드 타입 (Mapped Types)
 type Readonly<T> = {
@@ -1162,17 +1271,53 @@ type AsyncResult = Awaited<Promise<User>>;
 // User
 ```
 
-### TypeScript 5.x新增유틸리티
+### TypeScript 5.x 유틸리티
 
 ```typescript
 // 1. NoInfer<T>: 타입 추론 방지 (TypeScript 5.4+)
-function createPair<T extends string | number>(first: T, second: NoInfer<T>) {
-  return [first, second] as const;
+// NoInfer는 특정 매개변수가 타입 추론의 "후보"가 되는 것을 방지합니다
+// 여러 매개변수가 있을 때, 어떤 매개변수로부터 타입을 추론할지 제어할 수 있습니다
+
+// TypeScript 5.4 공식 문서의 createStreetLight 예제
+function createStreetLight<C extends string>(
+  colors: C[],              // ✅ C 타입 추론의 주요 출처
+  defaultColor?: NoInfer<C>  // ✅ NoInfer로 인해 타입 추론에서 제외
+) {
+  return {
+    colors,
+    defaultColor: defaultColor ?? colors[0]
+  };
 }
 
-// second는 T로 추론되지 않고 명시적으로 지정해야 함
-const pair = createPair("hello", "world"); // ✅
-const pair2 = createPair("hello", 123); // ❌
+// ✅ colors 배열에서 C = "red" | "yellow" | "green"으로 추론
+// defaultColor "red"는 이 추론된 타입의 일부이므로 OK
+const light1 = createStreetLight(["red", "yellow", "green"], "red");
+//   ^? const light1: { colors: ("red" | "yellow" | "green")[]; defaultColor: "red" | "yellow" | "green" }
+
+// ❌ "blue"는 colors 배열에 없는 값
+// NoInfer로 인해 defaultColor가 C 타입을 확장할 수 없음
+// Error: Argument of type '"blue"' is not assignable to parameter of type '"red" | "yellow" | "green" | undefined'
+// const light2 = createStreetLight(["red", "yellow", "green"], "blue");
+
+// 예제 2: NoInfer의 실제 사용 사례
+function configureOptions<T extends string>(
+  commands: T[],           // ✅ T 타입 추론의 출처
+  defaultCommand?: NoInfer<T>,  // ✅ 추론에서 제외
+  timeout?: NoInfer<number>     // ✅ T와 무관한 독립 타입
+) {
+  return {
+    commands,
+    defaultCommand: defaultCommand ?? commands[0],
+    timeout: timeout ?? 5000
+  };
+}
+
+// ✅ commands에서 T = "start" | "stop" | "restart"로 추론
+const options1 = configureOptions(["start", "stop", "restart"], "start", 3000);
+//   ^? const options1: { commands: ("start" | "stop" | "restart")[]; defaultCommand: "start" | "stop" | "restart"; timeout: number }
+
+// ❌ "pause"는 commands 배열에 없음
+// const options2 = configureOptions(["start", "stop", "restart"], "pause");
 
 // 2. Tuple 유형 개선
 type NameOrNameArray = string | [string, ...string[]];
