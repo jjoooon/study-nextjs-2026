@@ -816,19 +816,6 @@ export async function generateMetadata({
 
 ## 배포 및 운영
 
-### Vercel에 배포
-
-```bash
-# 1. Vercel CLI 설치
-npm i -g vercel
-
-# 2. 배포
-vercel
-
-# 3. 프로덕션 배포
-vercel --prod
-```
-
 ### 환경 변수 설정
 
 ```bash
