@@ -7,14 +7,15 @@
 1. [TypeScript란 무엇인가?](#typescript란-무엇인가)
 2. [기본 타입](#기본-타입)
 3. [Enum 타입](#enum-타입)
-4. [인터페이스와 타입](#인터페이스와-타입)
-5. [함수 타입](#함수-타입)
-6. [클래스와 타입](#클래스와-타입)
-7. [제네릭](#제네릭)
-8. [타입 추론과 타입 단언](#타입-추론과-타입-단언)
-9. [유틸리티 타입](#유틸리티-타입)
-10. [React와 TypeScript](#react와-typescript)
-11. [프로젝트 설정](#프로젝트-설정)
+4. [Declare와 타입 정의](#declare와-타입-정의)
+5. [인터페이스와 타입](#인터페이스와-타입)
+6. [함수 타입](#함수-타입)
+7. [클래스와 타입](#클래스와-타입)
+8. [제네릭](#제네릭)
+9. [타입 추론과 타입 단언](#타입-추론과-타입-단언)
+10. [유틸리티 타입](#유틸리티-타입)
+11. [React와 TypeScript](#react와-typescript)
+12. [프로젝트 설정](#프로젝트-설정)
 
 ---
 
@@ -799,6 +800,653 @@ export enum RegularEnum {
 // - 단순한 값 제한만 필요할 때
 // - 번들 크기 최적화가 중요할 때
 // - union 타입과 자주 결합할 때
+```
+
+---
+
+## Declare와 타입 정의
+
+`declare` 키워드는 TypeScript 컴파일러에게 특정 변수, 함수, 클래스 등이 존재한다는 것을 알려주지만, 실제 구현은 컴파일 결과에 포함하지 않도록 합니다. 주로 JavaScript 라이브러리나 외부 모듈에 타입 정보를 제공할 때 사용합니다.
+
+### Declare 기본 개념
+
+```typescript
+// 1. declare 키워드의 목적
+// - JavaScript 코드에 타입 정보 추가
+// - 런타임 코드 생성 없이 타입 검사만 수행
+// - 외부 라이브러리 타이핑
+
+// 2. 기본 사용법
+declare const API_URL: string;
+declare function fetchData(url: string): Promise<any>;
+declare class MyClass {
+  constructor(value: number);
+  getValue(): number;
+}
+
+// 사용
+console.log(API_URL); // 런타임에 존재해야 함
+const data = await fetchData('https://api.example.com');
+const instance = new MyClass(42);
+```
+
+### Declare 변수와 함수
+
+```typescript
+// 1. declare 변수
+// 전역 변수 선언 (window 객체 등)
+declare const VERSION: string;
+declare let debugMode: boolean;
+declare var globalConfig: {
+  apiUrl: string;
+  timeout: number;
+};
+
+// 2. declare 함수
+declare function log(message: string): void;
+declare function parseJson(json: string): unknown;
+declare async function fetchUser(id: number): Promise<User>;
+
+// 3. 오버로드 함수 선언
+declare function createElement(tag: 'div'): HTMLDivElement;
+declare function createElement(tag: 'span'): HTMLSpanElement;
+declare function createElement(tag: 'a'): HTMLAnchorElement;
+declare function createElement(tag: string): HTMLElement;
+
+// 사용
+const div = createElement('div'); // HTMLDivElement
+const span = createElement('span'); // HTMLSpanElement
+
+// 4. 화살표 함수는 declare 사용 불가
+// ❌ 에러
+// declare const arrowFunc = () => void;
+
+// ✅ 함수 표현식 사용
+declare const arrowFunc: () => void;
+```
+
+### Declare 클래스
+
+```typescript
+// 1. 기본 클래스 선언
+declare class Animal {
+  name: string;
+  constructor(name: string);
+  speak(): void;
+  static getSpecies(): string;
+}
+
+// 2. 추상 클래스 선언
+declare abstract class Shape {
+  abstract getArea(): number;
+  toString(): string;
+}
+
+// 3. 제네릭 클래스 선언
+declare class Storage<T> {
+  private items: T[];
+  addItem(item: T): void;
+  getItem(index: number): T;
+}
+
+// 사용
+const stringStorage = new Storage<string>();
+```
+
+### Declare Enum
+
+```typescript
+// 1. Ambient Enum (선언만 있는 enum)
+declare enum HttpStatus {
+  OK = 200,
+  NotFound = 404,
+  Error = 500,
+}
+
+// 2. 사용 사례: 서버에서 정의된 enum
+// 서버 코드 (JavaScript):
+// const Color = { Red: 0, Green: 1, Blue: 2 };
+
+// 클라이언트 타입 정의:
+declare enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+// 사용
+let c: Color = Color.Red;
+```
+
+### Declare Namespace
+
+```typescript
+// 1. 네임스페이스 선언
+declare namespace MyLibrary {
+  function init(): void;
+  class Utility {
+    helper(): string;
+  }
+  interface Options {
+    debug: boolean;
+    version: string;
+  }
+}
+
+// 사용
+MyLibrary.init();
+const util = new MyLibrary.Utility();
+const options: MyLibrary.Options = {
+  debug: true,
+  version: '1.0.0',
+};
+
+// 2. 중첩 네임스페이스
+declare namespace Utils {
+  export namespace String {
+    export function capitalize(str: string): string;
+    export function lowercase(str: string): string;
+  }
+  export namespace Number {
+    export function round(num: number): number;
+    export function floor(num: number): number;
+  }
+}
+
+// 사용
+Utils.String.capitalize('hello'); // "Hello"
+Utils.Number.round(3.7); // 4
+```
+
+### Declare Module
+
+```typescript
+// 1. 모듈 선언 (module.d.ts)
+declare module 'my-library' {
+  export function initialize(): void;
+  export class MyClass {
+    constructor();
+    method(): string;
+  }
+  export interface Options {
+    debug?: boolean;
+  }
+}
+
+// 2. 모듈 확장 (기존 모듈에 타입 추가)
+declare module 'express' {
+  interface Request {
+    user?: {
+      id: string;
+      role: string;
+    };
+  }
+}
+
+// 사용 (Express 요청)
+app.get('/profile', (req, res) => {
+  console.log(req.user?.id); // 이제 타입 안전함
+});
+
+// 3. 전역 모듈 선언
+declare module '*';
+declare module '*.css';
+declare module '*.png';
+declare module '*.svg';
+
+// 4. 모듈의 특정 export만 선언
+declare module 'lodash' {
+  export function debounce(func: Function, wait: number): Function;
+  export function throttle(func: Function, limit: number): Function;
+}
+```
+
+### Declare Global
+
+```typescript
+// 1. 전역 변수 확장
+declare global {
+  interface Window {
+    myCustomProperty: string;
+    myApp: {
+      version: string;
+      config: Record<string, any>;
+    };
+  }
+
+  namespace NodeJS {
+    interface ProcessEnv {
+      MY_CUSTOM_ENV: string;
+      DATABASE_URL: string;
+    }
+  }
+}
+
+// 사용
+window.myCustomProperty = 'value';
+window.myApp.version = '1.0.0';
+process.env.MY_CUSTOM_ENV = 'development';
+
+// 2. 전역 함수 추가
+declare global {
+  function myGlobalFunction(): void;
+  const MY_GLOBAL_CONSTANT: number;
+}
+
+// ⚠️ 주의: declare global은 외부 모듈에서만 사용 가능
+// (파일에 import나 export가 있어야 함)
+export {};
+```
+
+### Declare 파일 구조
+
+```typescript
+// 1. .d.ts 파일의 구조
+// types/index.d.ts
+
+// 전역 타입 선언
+declare interface MyGlobalInterface {
+  id: string;
+  name: string;
+}
+
+// 전역 변수
+declare const MY_GLOBAL: MyGlobalInterface;
+
+// 모듈 선언
+declare module 'my-module' {
+  export function doSomething(): void;
+  export class MyClass {
+    constructor();
+    method(): string;
+  }
+}
+
+// 2. 여러 .d.ts 파일 구성
+// types/global.d.ts - 전역 타입
+// types/express.d.ts - Express 확장
+// types/utils.d.ts - 유틸리티 함수
+// types/index.d.ts - 모든 타입 모음
+
+// types/index.d.ts
+/// <reference path="global.d.ts" />
+/// <reference path="express.d.ts" />
+/// <reference path="utils.d.ts" />
+```
+
+### Declare와 타입 정의 파일
+
+```typescript
+// 1. @types 패키지 구조
+// @types/node/index.d.ts
+declare module 'node' {
+  export interface Buffer {
+    // ...
+  }
+  export function readFile(path: string): Buffer;
+}
+
+// 2. 프로젝트 내 타입 정의
+// src/types/custom.d.ts
+
+// 전역으로 사용할 타입
+declare namespace MyApp {
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+  }
+
+  interface ApiResponse<T> {
+    success: boolean;
+    data: T;
+    error?: string;
+  }
+
+  type UserRole = 'admin' | 'user' | 'guest';
+
+  enum Status {
+    Pending = 'pending',
+    Approved = 'approved',
+    Rejected = 'rejected',
+  }
+}
+
+// 사용
+const user: MyApp.User = {
+  id: '1',
+  name: '홍길동',
+  email: 'hong@example.com',
+};
+
+const response: MyApp.ApiResponse<MyApp.User> = {
+  success: true,
+  data: user,
+};
+```
+
+### 실전 사용 예시
+
+```typescript
+// 1. CDN 라이브러리 타이핑
+// HTML에서 로드한 라이브러리
+// <script src="https://cdn.example.com/library.js"></script>
+
+// library.d.ts
+declare namespace MyLibrary {
+  interface Config {
+    apiKey: string;
+    debug?: boolean;
+  }
+
+  function init(config: Config): void;
+  function getData(id: string): Promise<any>;
+  export const version: string;
+}
+
+// TypeScript 코드에서 사용
+MyLibrary.init({ apiKey: 'xxx' });
+const data = await MyLibrary.getData('123');
+
+// 2. 웹팩 플러그인 타이핑
+// webpack.config.ts에서 사용하는 플러그인
+declare module 'my-custom-loader' {
+  interface MyCustomLoaderOptions {
+    option1: string;
+    option2?: number;
+  }
+
+  const loader: (content: string, map: any) => string;
+  export = loader;
+}
+
+// webpack.config.ts
+import loader from 'my-custom-loader';
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.custom$/,
+        use: [
+          {
+            loader: 'my-custom-loader',
+            options: {
+              option1: 'value',
+              option2: 42,
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+
+// 3. Next.js 커스텀 타입 확장
+// next-env.d.ts 또는 types/next.d.ts
+declare module 'next/image' {
+  interface ImageProps {
+    // 사용자 정의 프로퍼티 추가
+    customProp?: string;
+  }
+}
+
+declare module 'next/link' {
+  interface LinkProps {
+    // 커스텀 프롭 추가
+    analytics?: boolean;
+  }
+}
+
+// 사용
+import Image from 'next/image';
+import Link from 'next/link';
+
+<Image src="/logo.png" customProp="value" />
+<Link href="/about" analytics>소개</Link>
+
+// 4. API 라우트 타입 정의
+// types/api.d.ts
+declare namespace API {
+  namespace Users {
+    interface GetUserRequest {
+      userId: string;
+    }
+
+    interface GetUserResponse {
+      id: string;
+      name: string;
+      email: string;
+    }
+
+    interface CreateUserRequest {
+      name: string;
+      email: string;
+      password: string;
+    }
+
+    interface CreateUserResponse {
+      success: boolean;
+      user?: GetUserResponse;
+      error?: string;
+    }
+  }
+}
+
+// 사용
+type GetUserHandler = (
+  req: API.Users.GetUserRequest
+) => Promise<API.Users.GetUserResponse>;
+
+// 5. 환경 변수 타입 정의
+// types/env.d.ts
+declare namespace NodeJS {
+  interface ProcessEnv {
+    // Node.js 기본 환경 변수
+    NODE_ENV: 'development' | 'production' | 'test';
+
+    // 데이터베이스
+    DATABASE_URL: string;
+    DATABASE_POOL_SIZE?: number;
+
+    // API
+    API_BASE_URL: string;
+    API_KEY: string;
+
+    // 인증
+    JWT_SECRET: string;
+    JWT_EXPIRES_IN?: string;
+
+    // 서버
+    PORT?: number;
+    HOST?: string;
+
+    // 기타
+    LOG_LEVEL?: 'debug' | 'info' | 'warn' | 'error';
+  }
+}
+
+// 사용
+const dbUrl = process.env.DATABASE_URL;
+const port = process.env.PORT || 3000;
+
+// 6. 브라우저 확장 타이핑
+// types/browser.d.ts
+declare namespace Chrome {
+  interface Extension {
+    getURL(path: string): string;
+    sendMessage(message: any): void;
+  }
+
+  namespace Runtime {
+    interface MessageSender {
+      id?: string;
+      url?: string;
+    }
+
+    type MessageHandler = (
+      message: any,
+      sender: MessageSender,
+      sendResponse: (response?: any) => void
+    ) => void;
+
+    function onMessage.addListener(
+      callback: MessageHandler
+    ): void;
+  }
+}
+
+// 사용
+Chrome.Runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log('Message received:', message);
+  sendResponse({ success: true });
+});
+```
+
+### tsconfig와 Declare 설정
+
+```json
+{
+  "compilerOptions": {
+    // 타입 선언 파일 검색 경로
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+
+    // 자동으로 포함할 타입 선언
+    "types": [
+      "node",
+      "jest",
+      "react"
+    ],
+
+    // 모든 타입 선언 자동 포함 (기본값)
+    // "types": []
+  },
+
+  // 포함할 파일
+  "include": [
+    "src/**/*",
+    "src/**/*.d.ts"
+  ],
+
+  // 제외할 파일
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
+```
+
+### Declare 사용 시 주의사항
+
+```typescript
+// 1. ⚠️ declare와 구현의 분리
+// declare는 타입 정보만 제공, 실제 구현은 따로 필요
+declare function calculateTax(amount: number): number;
+
+// 실제 구현 (JavaScript 또는 TypeScript)
+function calculateTax(amount: number): number {
+  return amount * 0.1;
+}
+
+// 2. ⚠️ declare global 사용 조건
+// 파일이 모듈로 처리되어야 함 (import/export 필요)
+// ❌ 에러: declare global을 모듈이 아닌 파일에서 사용
+// declare global {
+//   interface Window {
+//     custom: string;
+//   }
+// }
+
+// ✅ 올바른 사용
+export {}; // 빈 export로 모듈 처리
+
+declare global {
+  interface Window {
+    custom: string;
+  }
+}
+
+// 3. ⚠️ 중복 선언 주의
+// 여러 파일에서 같은 것을 declare하면 충돌 가능
+// 해결: namespace나 module로 감싸기
+
+// 4. ⚠️ declare module '*'
+// 너무 광범위한 모듈 선언은 피하기
+// ❌ 피해야 할 패턴
+// declare module '*' {
+//   const value: any;
+//   export default value;
+// }
+
+// ✅ 구체적인 모듈 선언
+declare module 'specific-library' {
+  export function specificFunction(): void;
+}
+
+// 5. ✅ declare 사용 권장 사례
+// - JavaScript 라이브러리에 타입 추가
+// - CDN으로 로드한 외부 스크립트
+// - 환경별 전역 변수/함수
+// -第三方 라이브러리 타이핑
+// - 빌드 도구/플러그인 확장
+
+// 6. ✅ declare 대안 고려 사례
+// - 자체 라이브러리는 .d.ts 파일과 .ts 파일 분리
+// - npm 패키지는 DefinitelyTyped (@types/*) 사용
+// - 프로젝트 내부 코드는 declare 대신 직접 import
+```
+
+### Declare와 타입 내보내기
+
+```typescript
+// 1. .d.ts 파일에서 타입 내보내기
+// src/types/user.d.ts
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export type UserRole = 'admin' | 'user' | 'guest';
+
+export enum UserStatus {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending',
+}
+
+export declare function getUser(id: string): User;
+export declare class UserService {
+  findAll(): Promise<User[]>;
+  findById(id: string): Promise<User | null>;
+}
+
+// 2. 사용
+import { User, UserRole, UserService } from '@/types/user';
+
+const user: User = {
+  id: '1',
+  name: '홍길동',
+  email: 'hong@example.com',
+};
+
+const service = new UserService();
+
+// 3. default export와 named export 혼합
+// src/types/index.d.ts
+export default interface AppConfig {
+  apiUrl: string;
+  timeout: number;
+}
+
+export { User } from './user';
+export { Product } from './product';
+
+// 사용
+import AppConfig, { User } from '@/types';
 ```
 
 ---
