@@ -590,7 +590,7 @@ export function ProductList() {
 }
 ```
 
-### Redux Toolkit 2.x 최적화 팁턴
+### Redux Toolkit 2.x 최적화 팁
 
 #### 1. Thunk 결과 타입 검증 (TypeScript 5.x)
 
