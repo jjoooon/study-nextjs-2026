@@ -6,14 +6,15 @@
 
 1. [TypeScript란 무엇인가?](#typescript란-무엇인가)
 2. [기본 타입](#기본-타입)
-3. [인터페이스와 타입](#인터페이스와-타입)
-4. [함수 타입](#함수-타입)
-5. [클래스와 타입](#클래스와-타입)
-6. [제네릭](#제네릭)
-7. [타입 추론과 타입 단언](#타입-추론과-타입-단언)
-8. [유틸리티 타입](#유틸리티-타입)
-9. [React와 TypeScript](#react와-typescript)
-10. [프로젝트 설정](#프로젝트-설정)
+3. [Enum 타입](#enum-타입)
+4. [인터페이스와 타입](#인터페이스와-타입)
+5. [함수 타입](#함수-타입)
+6. [클래스와 타입](#클래스와-타입)
+7. [제네릭](#제네릭)
+8. [타입 추론과 타입 단언](#타입-추론과-타입-단언)
+9. [유틸리티 타입](#유틸리티-타입)
+10. [React와 TypeScript](#react와-typescript)
+11. [프로젝트 설정](#프로젝트-설정)
 
 ---
 
@@ -232,6 +233,572 @@ const user1: User = {
 //   email: "hong@example.com",
 //   age: 25, // User 타입에 없는 프로퍼티
 // };
+```
+
+---
+
+## Enum 타입
+
+Enum(Enumerated Type)은 이름이 있는 상수들의 집합을 정의하는 타입입니다. enum을 사용하면 의미 있는 이름을 부여하여 코드의 가독성과 안전성을 높일 수 있습니다.
+
+### 숫자형 Enum (Numeric Enum)
+
+```typescript
+// 1. 기본 숫자형 enum
+enum Direction {
+  Up,    // 0 (자동 할당)
+  Down,  // 1
+  Left,  // 2
+  Right, // 3
+}
+
+// 사용
+let move: Direction;
+move = Direction.Up;    // 0
+move = Direction.Right; // 3
+
+// 역방향 접근 (숫자로 이름 접근)
+console.log(Direction[0]); // "Up"
+console.log(Direction[1]); // "Down"
+
+// 2. 초기값 설정
+enum Status {
+  Pending = 1,
+  Approved = 2,
+  Rejected = 3,
+}
+
+// 3. 사용자 지정 값
+enum HttpStatus {
+  OK = 200,
+  Created = 201,
+  BadRequest = 400,
+  Unauthorized = 401,
+  NotFound = 404,
+  InternalServerError = 500,
+}
+
+// 4. 계산된 값 (Computed Values)
+enum FileAccess {
+  // 상수 멤버
+  None,
+  Read = 1 << 1,    // 2 (비트 시프트)
+  Write = 1 << 2,   // 4
+  ReadWrite = Read | Write, // 6 (비트 OR 연산)
+  // 계산된 멤버 뒤에는 초기화되지 않은 멤버가 올 수 없음
+  // G = '123'.length, // ❌ 에러
+}
+```
+
+### 문자형 Enum (String Enum)
+
+```typescript
+// 1. 기본 문자형 enum
+enum Colors {
+  Red = 'RED',
+  Green = 'GREEN',
+  Blue = 'BLUE',
+}
+
+// 2. 혼합 enum (권장하지 않음)
+enum MixedEnum {
+  No = 0,
+  Yes = 'YES',
+}
+
+// ⚠️ 주의: 문자형 enum은 역방향 접근이 불가능
+// Colors['RED'] // ❌ 에러
+```
+
+### const Enum
+
+```typescript
+// 1. const enum 선언
+const enum Directions {
+  Up,
+  Down,
+  Left,
+  Right,
+}
+
+// 2. 사용 (컴파일 시 인라인화됨)
+let dir = Directions.Up; // 컴파일 결과: let dir = 0
+
+// 3. 일반 enum과 const enum의 차이
+// 일반 enum:
+enum RegularEnum {
+  A = 1,
+}
+
+// 컴파일 결과:
+// var RegularEnum;
+// (function (RegularEnum) {
+//   RegularEnum[RegularEnum["A"] = 1] = "A";
+// })(RegularEnum || (RegularEnum = {}));
+
+// const enum:
+const enum ConstEnum {
+  A = 1,
+}
+
+// 컴파일 결과:
+// var x = 1; // 완전히 인라인화됨
+```
+
+### Enum 멤버 유형
+
+```typescript
+// 1. 상수 멤버 (Constant Members)
+enum ConstantEnum {
+  // 1. 초기화자가 없는 첫 번째 멤버 = 0
+  A,
+  // 2. 초기화자가 없고 숫자형 상수 멤버가 앞에 있는 경우 = 이전 값 + 1
+  B,
+  C = 5,
+  D = 5 + 3, // 8
+  // 3. enum 상수 멤버 참조
+  E = C, // 5
+  // 4. 괄호로 감싼 상수 표현식
+  F = 'test'.length, // 4
+}
+
+// 2. 계산된 멤버 (Computed Members)
+// 런타임에 계산되는 표현식
+enum ComputedEnum {
+  A = Math.random(),
+  B = 'test'.length,
+  C = ['a', 'b', 'c'].length,
+}
+// ⚠️ 계산된 멤버 뒤에는 초기화되지 않은 멤버가 올 수 없음
+// enum ErrorEnum {
+//   A = Math.random(),
+//   B, // ❌ 에러: 계산된 멤버 뒤에 초기화되지 않은 멤버
+// }
+```
+
+### Enum과 유니온 타입
+
+```typescript
+// 1. enum을 유니온 타입처럼 사용
+enum Status {
+  Pending,
+  Approved,
+  Rejected,
+}
+
+type StatusKeys = Status.Pending | Status.Approved | Status.Rejected;
+
+function handleStatus(status: StatusKeys) {
+  switch (status) {
+    case Status.Pending:
+      console.log('대기 중');
+      break;
+    case Status.Approved:
+      console.log('승인됨');
+      break;
+    case Status.Rejected:
+      console.log('거부됨');
+      break;
+  }
+}
+
+// 2. enum 기반 타입 좁히기 (Type Narrowing)
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+function getColorName(color: Color): string {
+  switch (color) {
+    case Color.Red:
+      return '빨간색';
+    case Color.Green:
+      return '초록색';
+    case Color.Blue:
+      return '파란색';
+    // ⚠️ 모든 케이스를 처리하면 TypeScript가 자동으로 추론
+    // default:
+    //   return '알 수 없음';
+  }
+}
+```
+
+### Ambient Enum
+
+```typescript
+// 1. declare enum (정의만 하고 구현은 없음)
+declare enum AmbientEnum {
+  A = 1,
+  B = 2,
+  C = 3,
+}
+
+// 사용 (런타임에 정의되어 있다고 가정)
+let x = AmbientEnum.A;
+
+// 2. 사용 사례: 전역 변수로 정의된 enum
+// window.js 에서:
+// window.MyEnum = { A: 1, B: 2 };
+
+// TypeScript에서:
+declare enum MyEnum {
+  A,
+  B,
+}
+```
+
+### 고급 Enum 패턴
+
+```typescript
+// 1. Enum 메서드 추가
+enum LogLevel {
+  DEBUG,
+  INFO,
+  WARN,
+  ERROR,
+}
+
+namespace LogLevel {
+  export function toString(level: LogLevel): string {
+    switch (level) {
+      case LogLevel.DEBUG:
+        return 'DEBUG';
+      case LogLevel.INFO:
+        return 'INFO';
+      case LogLevel.WARN:
+        return 'WARN';
+      case LogLevel.ERROR:
+        return 'ERROR';
+    }
+  }
+
+  export function fromString(str: string): LogLevel {
+    switch (str.toUpperCase()) {
+      case 'DEBUG':
+        return LogLevel.DEBUG;
+      case 'INFO':
+        return LogLevel.INFO;
+      case 'WARN':
+        return LogLevel.WARN;
+      case 'ERROR':
+        return LogLevel.ERROR;
+      default:
+        return LogLevel.INFO;
+    }
+  }
+}
+
+// 사용
+const level: LogLevel = LogLevel.INFO;
+console.log(LogLevel.toString(level)); // "INFO"
+
+// 2. Enum과 객체 매핑
+enum UserRole {
+  Admin = 'ADMIN',
+  User = 'USER',
+  Guest = 'GUEST',
+}
+
+const rolePermissions: Record<UserRole, string[]> = {
+  [UserRole.Admin]: ['read', 'write', 'delete'],
+  [UserRole.User]: ['read', 'write'],
+  [UserRole.Guest]: ['read'],
+};
+
+function getPermissions(role: UserRole): string[] {
+  return rolePermissions[role];
+}
+
+// 3. Enum 플래그 패턴 (비트 플래그)
+enum FilePermission {
+  None = 0,
+  Read = 1 << 0,      // 1 (0001)
+  Write = 1 << 1,     // 2 (0010)
+  Execute = 1 << 2,   // 4 (0100)
+  All = Read | Write | Execute, // 7 (0111)
+}
+
+// 비트 연산으로 조합
+let myPermissions: FilePermission = FilePermission.Read | FilePermission.Write;
+
+// 권한 확인
+function hasPermission(permissions: FilePermission, flag: FilePermission): boolean {
+  return (permissions & flag) === flag;
+}
+
+if (hasPermission(myPermissions, FilePermission.Read)) {
+  console.log('읽기 권한 있음');
+}
+
+// 권한 추가
+myPermissions |= FilePermission.Execute; // 읽기 + 쓰기 + 실행
+
+// 권한 제거
+myPermissions &= ~FilePermission.Write; // 읽기 + 실행만 남음
+
+// 4. Enum과 문자열 리터럴 타입 결합
+enum ApiEndpoint {
+  Users = '/api/users',
+  Products = '/api/products',
+  Orders = '/api/orders',
+}
+
+type ApiEndpoints = `${ApiEndpoint}`;
+
+function fetchFromApi(endpoint: ApiEndpoints): Promise<any> {
+  return fetch(endpoint).then(res => res.json());
+}
+
+// 사용
+fetchFromApi(ApiEndpoint.Users);
+```
+
+### Enum vs 문자열 리터럴 타입
+
+```typescript
+// 1. Enum 장점
+// - 이름 충돌 방지 (네임스페이스 제공)
+enum Direction {
+  Up = 'UP',
+  Down = 'DOWN',
+}
+
+// - 리팩토링 용이
+// - IDE 자동완성 지원
+// - 타입 안정성
+
+// 2. 문자열 리터럴 타입 장점
+type DirectionLiteral = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+
+// - 더 간결한 코드
+// - enum보다 가벼움 (번들 크기 감소)
+// - union 타입과의 호환성
+
+// 3. 선택 가이드
+// ✅ Enum 사용:
+// - 관련된 상수들이 그룹으로 필요할 때
+// - 리팩토링이 자주 필요한 경우
+// - 역방향 접근이 필요할 때 (숫자형 enum)
+// - 비트 플래그 패턴이 필요할 때
+
+// ✅ 문자열 리터럴 타입 사용:
+// - 단순한 값 제한이 필요할 때
+// - 번들 크기를 최적화해야 할 때
+// - union 타입과 자주 결합할 때
+```
+
+### 실전 사용 예시
+
+```typescript
+// 1. API 상태 코드 관리
+enum ApiStatus {
+  Idle = 'idle',
+  Loading = 'loading',
+  Success = 'success',
+  Error = 'error',
+}
+
+interface ApiResponse<T> {
+  status: ApiStatus;
+  data?: T;
+  error?: string;
+}
+
+async function fetchUser(id: string): Promise<ApiResponse<User>> {
+  return {
+    status: ApiStatus.Loading,
+  };
+}
+
+// 2. 사용자 권한 관리
+enum Permission {
+  // 사용자 관리
+  CreateUser = 'create_user',
+  ReadUser = 'read_user',
+  UpdateUser = 'update_user',
+  DeleteUser = 'delete_user',
+
+  // 게시물 관리
+  CreatePost = 'create_post',
+  ReadPost = 'read_post',
+  UpdatePost = 'update_post',
+  DeletePost = 'delete_post',
+
+  // 관리자 기능
+  ManageUsers = 'manage_users',
+  ManageSettings = 'manage_settings',
+}
+
+interface Role {
+  name: string;
+  permissions: Permission[];
+}
+
+const adminRole: Role = {
+  name: 'Admin',
+  permissions: [
+    Permission.CreateUser,
+    Permission.ReadUser,
+    Permission.UpdateUser,
+    Permission.DeleteUser,
+    Permission.ManageUsers,
+    Permission.ManageSettings,
+  ],
+};
+
+function hasPermission(role: Role, permission: Permission): boolean {
+  return role.permissions.includes(permission);
+}
+
+// 3. 애플리케이션 환경 설정
+enum Environment {
+  Development = 'development',
+  Staging = 'staging',
+  Production = 'production',
+}
+
+class AppConfig {
+  constructor(private env: Environment) {}
+
+  get apiUrl(): string {
+    switch (this.env) {
+      case Environment.Development:
+        return 'http://localhost:3000';
+      case Environment.Staging:
+        return 'https://staging.example.com';
+      case Environment.Production:
+        return 'https://api.example.com';
+    }
+  }
+
+  get isProduction(): boolean {
+    return this.env === Environment.Production;
+  }
+}
+
+// 4. UI 상태 관리 (React에서의 사용)
+enum ButtonVariant {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Outline = 'outline',
+  Ghost = 'ghost',
+}
+
+interface ButtonProps {
+  variant: ButtonVariant;
+  children: React.ReactNode;
+}
+
+export function Button({ variant, children }: ButtonProps) {
+  const className = `btn btn-${variant}`;
+  return <button className={className}>{children}</button>;
+}
+
+// 사용
+<Button variant={ButtonVariant.Primary}>클릭하세요</Button>
+
+// 5. 정렬 옵션
+enum SortOrder {
+  Ascending = 'asc',
+  Descending = 'desc',
+}
+
+enum SortField {
+  Name = 'name',
+  CreatedAt = 'createdAt',
+  UpdatedAt = 'updatedAt',
+}
+
+interface SortOptions {
+  field: SortField;
+  order: SortOrder;
+}
+
+function sortUsers(users: User[], options: SortOptions): User[] {
+  return [...users].sort((a, b) => {
+    const aValue = a[options.field];
+    const bValue = b[options.field];
+
+    if (options.order === SortOrder.Ascending) {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+}
+
+// 사용
+const sortedUsers = sortUsers(users, {
+  field: SortField.Name,
+  order: SortOrder.Ascending,
+});
+```
+
+### Enum 사용 시 주의사항
+
+```typescript
+// 1. ⚠️ enum 값 직접 할당 주의
+enum Status {
+  Pending = 1,
+  Approved = 2,
+}
+
+// ❌ 문제: 숫자가 자동으로 enum 멤버로 인식됨
+let status: Status = 1; // Status.Pending으로 처리됨
+status = 999; // 타입 에러 없이 할당됨
+
+// ✅ 해결: 문자형 enum 사용
+enum StringStatus {
+  Pending = 'PENDING',
+  Approved = 'APPROVED',
+}
+
+let strStatus: StringStatus = 'PENDING'; // StringStatus.Pending
+// strStatus = 'INVALID'; // ❌ 타입 에러
+
+// 2. ⚠️ 역방향 접근 주의
+enum NumericEnum {
+  A = 1,
+  B = 2,
+}
+
+console.log(NumericEnum[1]); // "A"
+console.log(NumericEnum[2]); // "B"
+
+// 문제: 값과 이름이 충돌할 수 있음
+enum ConflictingEnum {
+  A = 0,
+  B = 1,
+  C = 2,
+  '0' = 'ZERO', // ⚠️ 충돌 가능
+}
+
+// 3. ⚠️ const enum의 import 문제
+// some.ts
+export const enum ConstEnum {
+  A = 1,
+}
+
+// other.ts (isolatedModules: true인 경우)
+import { ConstEnum } from './some';
+let x = ConstEnum.A; // ❌ 에러 발생 가능
+
+// ✅ 해결: 일반 enum 사용
+export enum RegularEnum {
+  A = 1,
+}
+
+// 4. ✅ enum 사용 권장 사례
+// - 관련된 상수들을 그룹화할 때
+// - 리팩토링이 자주 필요한 경우
+// - 비트 플래그 패턴이 필요할 때
+// - 역방향 접근이 필요할 때
+
+// 5. ✅ 문자열 리터럴 타입 사용 권장 사례
+// - 단순한 값 제한만 필요할 때
+// - 번들 크기 최적화가 중요할 때
+// - union 타입과 자주 결합할 때
 ```
 
 ---
@@ -1320,17 +1887,108 @@ const options1 = configureOptions(["start", "stop", "restart"], "start", 3000);
 // const options2 = configureOptions(["start", "stop", "restart"], "pause");
 
 // 2. Tuple 유형 개선
+// TypeScript의 튜플은 고정된 수의 요소를 가진 배열로, 각 요소의 타입이 명확히 지정됩니다
+
+// 기본 튜플 타입
+let tuple1: [string, number] = ["hello", 42];
+//   ^? let tuple1: [string, number]
+
+// 요소 접근 시 타입 보존
+const first = tuple1[0];  // string
+const second = tuple1[1]; // number
+//   ^? const second: number
+
+// 💡 Leading Rest Element: 첫 번째 요소가 가변일 때 유용
 type NameOrNameArray = string | [string, ...string[]];
 
 function processNames(names: NameOrNameArray) {
   if (Array.isArray(names)) {
-    // names: [string, ...string[]]
-    console.log(names[0]);
+    // names: [string, ...string[]] - 첫 번째 요소는 string, 나머지도 string[]
+    // 이 패턴은 "최소 1개의 문자열이 있는 배열"을 표현
+    console.log(names[0]);  // 첫 번째 이름
+    console.log(names.length); // 전체 길이
   } else {
-    // names: string
+    // names: string - 단일 문자열
     console.log(names.toUpperCase());
   }
 }
+
+// 사용 예시
+processNames("John");           // 단일 이름
+processNames(["John"]);         // 이름 배열 (1개)
+processNames(["John", "Jane"]); // 이름 배열 (2개 이상)
+
+// 💡 Optional Tuple Elements: 선택적 요소를 가진 튜플
+type KeyValuePair = [string, number?];
+
+const pair1: KeyValuePair = ["age", 30];
+const pair2: KeyValuePair = ["name"];  // number은 선택적
+
+// 💡 Readonly Tuple: 불변 튜플 (배열 메서드 사용 제한)
+type ReadonlyTuple = readonly [string, number];
+
+const readonlyTuple: ReadonlyTuple = ["fixed", 100];
+// readonlyTuple.push(200); // ❌ Error: 'push' does not exist on 'readonly [string, number]'
+
+// 💡 Named Tuple Elements: 튜플 요소에 이름 지정 (가독성 향상)
+type User = [name: string, age: number, isActive: boolean];
+
+const user: User = ["Alice", 25, true];
+// 각 위치의 의미가 명확해짐
+const userName = user[0];   // name
+const userAge = user[1];    // age
+const userActive = user[2]; // isActive
+
+// 💡 Tuple Union: 다양한 튜플 타입의 유니온
+type Response =
+  | [status: 200, data: string]
+  | [status: 404, error: string]
+  | [status: 500, error: string, details?: string];
+
+function handleResponse(response: Response) {
+  const [status, payload] = response;
+
+  if (status === 200) {
+    console.log("Success:", payload); // payload: string
+  } else if (status === 404) {
+    console.log("Not Found:", payload); // payload: string
+  } else {
+    console.log("Server Error:", payload); // payload: string
+  }
+}
+
+// 💡 Practical Use Case: API 응답 타입 정의
+type ApiResult<T, E = Error> =
+  | [success: true, data: T]
+  | [success: false, error: E];
+
+async function fetchData(url: string): Promise<ApiResult<User, string>> {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return [true, data];  // Success case
+  } catch (error) {
+    return [false, "Network error"];  // Error case
+  }
+}
+
+// 사용
+const result = await fetchData("/api/user/1");
+if (result[0]) {
+  const userData = result[1]; // User 타입
+  console.log("User:", userData.name);
+} else {
+  const errorMsg = result[1]; // string 타입
+  console.log("Error:", errorMsg);
+}
+
+// 💡 Tuple Utility: 튜플 조작 유틸리티 타입
+type First<T extends unknown[]> = T extends [infer F, ...unknown[]] ? F : never;
+type Rest<T extends unknown[]> = T extends [unknown, ...infer R] ? R : never;
+
+type Numbers = [number, string, boolean];
+type FirstElement = First<Numbers>; // number
+type RestElements = Rest<Numbers>;  // [string, boolean]
 
 // 3. Keyof 타입 개선
 type Colors = {
