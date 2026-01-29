@@ -110,43 +110,204 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-### 5. Partial Prerendering (PPR)
+### 5. Partial Prerendering (PPR) & Cache Components
 
-Next.js 15+부터 안정화된 PPR은 정적 셸과 동적 콘텐츠를 혼합하여 렌더링합니다.
+Next.js 16부터 **PPR이 안정화(stable)**되었으며, **Cache Components**라는 새로운 캐싱 모델이 도입되었습니다.
+
+#### 5.1 PPR 활성화 방법 (Next.js 16)
 
 ```typescript
 // next.config.ts
 const nextConfig: NextConfig = {
-  experimental: {
-    ppr: 'incremental', // 점진적 PPR 활성화
-  },
+  cacheComponents: true, // ✅ Cache Components (PPR 포함) 활성화
 };
 
+// ❌ Next.js 16에서 제거됨:
+// experimental.ppr = 'incremental'
+// export const experimental_ppr = true;
+```
+
+#### 5.2 PPR 기본 패턴
+
+```typescript
 // app/dashboard/page.tsx
-export const experimental_ppr = true; // 페이지별 PPR 활성화
+import { Suspense } from 'react'
 
-export default async function Dashboard() {
-  // 정적 부분 (즉시 렌더링)
-  const staticHeader = <h1>대시보드</h1>;
-
-  // 동적 부분 (스트리밍)
-  const data = await fetch('https://api.example.com/data', {
-    cache: 'no-store',
-  }).then(r => r.json());
-
+export default function Dashboard() {
   return (
     <div>
-      {staticHeader}
+      {/* ✅ 정적 부분: 빌드 시 prerendering으로 정적 HTML 셸에 포함 */}
+      <h1>대시보드</h1>
+      <p>환영합니다!</p>
+
+      {/* ✅ 동적 부분: Suspense로 감싸면 요청 시간에 스트리밍 */}
       <Suspense fallback={<Skeleton />}>
-        <DynamicData data={data} />
+        <DynamicContent />
       </Suspense>
     </div>
-  );
+  )
+}
+
+async function DynamicContent() {
+  const data = await fetch('https://api.example.com/data', {
+    cache: 'no-store',
+  }).then(r => r.json())
+
+  return <div>{data.title}</div>
 }
 ```
 
-**PPR 장점:**
-- 빠른 초기 페이지 로드 (정적 셸)
+**핵심 개념:**
+- **정적 셸 (Static Shell)**: Suspense 바깥쪽 컨텐츠는 빌드 시 prerendering
+- **동적 스트리밍 (Dynamic Streaming)**: Suspense 안쪽 컨텐츠는 요청 시간에 resolving
+- **React Suspense 경계**: 정적/동적 컨텐츠의 분기점
+
+#### 5.3 Cache Components와 `use cache`
+
+```typescript
+// app/products/page.tsx
+import { unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag } from 'next/cache'
+
+export default async function ProductsPage() {
+  return (
+    <div>
+      <h1>제품 목록</h1>
+
+      {/* ✅ 캐시된 동적 데이터: 정적 셸에 포함 */}
+      <Suspense fallback={<Loading />}>
+        <ProductList />
+      </Suspense>
+
+      {/* ✅ 개인화된 데이터: 항상 요청 시간에 스트리밍 */}
+      <Suspense fallback={<Loading />}>
+        <UserRecommendations />
+      </Suspense>
+    </div>
+  )
+}
+
+// 🎯 캐시된 컴포넌트 (정적 셸에 포함)
+async function ProductList() {
+  'use cache'
+  cacheLife('hours') // 1시간 동안 캐시
+  cacheTag('products') // 태그로 재검증 가능
+
+  const products = await fetch('https://api.example.com/products').then(r => r.json())
+
+  return (
+    <ul>
+      {products.map((p: any) => <li key={p.id}>{p.name}</li>)}
+    </ul>
+  )
+}
+
+// 🎯 개인화된 컴포넌트 (항상 스트리밍)
+async function UserRecommendations() {
+  const userId = cookies().get('userId')?.value // 런타임 데이터
+
+  const recommendations = await fetch(`https://api.example.com/recommendations/${userId}`, {
+    cache: 'no-store',
+  }).then(r => r.json())
+
+  return (
+    <ul>
+      {recommendations.map((r: any) => <li key={r.id}>{r.title}</li>)}
+    </ul>
+  )
+}
+```
+
+#### 5.4 캐시 수명 설정 (`cacheLife`)
+
+```typescript
+import { unstable_cacheLife as cacheLife } from 'next/cache'
+
+// 미리 정의된 프로필 사용
+cacheLife('minutes')    // 1분
+cacheLife('hours')      // 1시간
+cacheLife('days')       // 1일
+cacheLife('weeks')      // 1주
+cacheLife('max')        // 무기한
+
+// 커스텀 설정
+cacheLife({
+  expiry: 3600,         // 1시간 (초 단위)
+  stale: 300,           // 5분 동안 stale 데이터 허용
+  revalidate: 60,       // 1분마다 백그라운드 재검증
+})
+
+// 사용 예시
+async function CachedData() {
+  'use cache'
+  cacheLife('hours')
+
+  const data = await fetch('https://api.example.com/data').then(r => r.json())
+  return <div>{data.title}</div>
+}
+```
+
+#### 5.5 태그 기반 재검증 (Tag-based Revalidation)
+
+```typescript
+// app/actions.ts
+'use server'
+
+import { revalidateTag, updateTag } from 'next/cache'
+
+// Server Action에서 데이터 변경 후 즉시 재검증
+export async function updateProduct(id: string, data: any) {
+  await fetch(`https://api.example.com/products/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+
+  // 즉시 재검증 (같은 요청 내에서)
+  updateTag('products')
+
+  // 또는 백그라운드 재검증 (eventual consistency)
+  revalidateTag('products')
+}
+
+// 컴포넌트에서 태그 사용
+async function ProductList() {
+  'use cache'
+  cacheTag('products') // 태그 연결
+  cacheLife('days')
+
+  const products = await fetch('https://api.example.com/products').then(r => r.json())
+  return <div>{/* ... */}</div>
+}
+```
+
+#### 5.6 PPR 장점
+
+- **빠른 초기 페이지 로드**: 정적 HTML 셸이 즉시 전송
+- **SEO 친화적**: 검색 엔진이 정적 셸을 크롤링
+- **스트리밍**: 동적 콘텐츠가 준비되는 대로 점진적으로 표시
+- **정적/동적 혼합**: 단일 라우트에서 정적, 캐시된, 동적 컨텐츠 조합 가능
+- **개선된 UX**: Suspense fallback으로 로딩 상태 명확히 표현
+
+#### 5.7 마이그레이션 가이드 (Next.js 15 → 16)
+
+```typescript
+// ❌ Next.js 15 (제거됨)
+export const dynamic = 'force-static'
+export const revalidate = 3600
+export const fetchCache = 'force-cache'
+export const experimental_ppr = true
+
+// ✅ Next.js 16 (새로운 방식)
+async function Page() {
+  'use cache'                    // force-static 대신
+  cacheLife('hours')             // revalidate 대신
+  // fetchCache는 불필요 (use cache 내부에서 자동 캐싱)
+
+  const data = await fetch(url)
+  return <div>{data.title}</div>
+}
+```
+
+**참고:** PPR은 Cache Components가 활성화된 경우 기본 동작이며, 별도의 페이지 설정 없이 Suspense 경계를 통해 자동으로 작동합니다.
 - 나중에 동적 콘텐츠 스트리밍
 - SEO 친화적
 - 사용자 경험 개선
