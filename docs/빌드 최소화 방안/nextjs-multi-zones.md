@@ -132,6 +132,6 @@ Turborepo:
 
 ## 참고 자료
 
-- [Next.js Multi-Zones 문서](https://nextjs.org/docs/pages/building-your-application/routing/colocation#multi-zones)
+- [Next.js Multi-Zones 문서](https://nextjs.org/docs/pages/guides/multi-zones)
 - [Turborepo 문서](https://turbo.build/repo/docs)
 - [Monorepo 패턴](https://monorepo.tools/)
