@@ -1,4 +1,5 @@
 import { parseStringPromise } from 'xml2js';
+import { query, paths, nodes } from 'jsonpath';
 
 // ============================================================================
 // 타입 정의
@@ -103,6 +104,7 @@ function parseXPath(xpath: string): XPathNode[] {
 
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
+    const nextToken = tokens[i + 1];
 
     if (token === '[') {
       inFilter = true;
@@ -127,6 +129,13 @@ function parseXPath(xpath: string): XPathNode[] {
           currentNode.returnAttribute = token.substring(1);
         }
       } else if (!currentNode) {
+        currentNode = { name: token };
+      } else {
+        // We already have a currentNode and encountered another name
+        // This means the previous node is complete (didn't have filters)
+        currentNode.filters = currentFilters.length > 0 ? currentFilters : undefined;
+        nodes.push(currentNode);
+        currentFilters = [];
         currentNode = { name: token };
       }
     }
@@ -312,6 +321,95 @@ export function clearXPathCache(): void {
 export function getXPathCacheSize(): number {
   return queryCache.size;
 }
+
+// ============================================================================
+// JSONPath 쿼리 함수 (추천)
+// ============================================================================
+
+/**
+ * JSONPath로 JSON 데이터 쿼리 (현대적이고 강력한 방법)
+ *
+ * JSONPath는 XPath와 유사하지만 JSON에 최적화된 쿼리 언어입니다.
+ * 훨씬 더 직관적이고 간편하게 데이터를 탐색할 수 있습니다.
+ *
+ * @example
+ * ```typescript
+ * // 기본 경로
+ * const risks = jsonPathQuery(jsonData, '$.GD.RISK_OBJCT_CVRGE.RISK');
+ *
+ * // 필터링
+ * const risk = jsonPathQuery(jsonData,
+ *   "$.GD.RISK_OBJCT_CVRGE.RISK[?(@.RK_TPCD=='RLA20011')]"
+ * );
+ *
+ * // 복잡한 조건
+ * const coverage = jsonPathQuery(jsonData,
+ *   "$.GD.RISK_OBJCT_CVRGE.RISK[?(@.RK_TPCD=='RLA20011')].OBJECT.CVRGE[?(@.SL_STRDT<='20260130' && @.SL_NDDT>'20260130')]"
+ * );
+ *
+ * // 속성만 반환
+ * const codes = jsonPathQuery(jsonData,
+ *   "$.GD.RISK_OBJCT_CVRGE.RISK[?(@.RK_TPCD=='RLA20011')].OBJECT.CVRGE.@CVRCD"
+ * );
+ *
+ * // 배열의 모든 요소
+ * const allIds = jsonPathQuery(jsonData, '$..CVRGE[*].CVRCD');
+ *
+ * // 첫 번째 요소
+ * const first = jsonPathQuery(jsonData, '$.GD.RISK_OBJCT_CVRGE.RISK[0]');
+ *
+ * // 마지막 요소
+ * const last = jsonPathQuery(jsonData, '$.GD.RISK_OBJCT_CVRGE.RISK[(@.length-1)]');
+ * ```
+ *
+ * @param jsonData - 변환된 JSON 데이터
+ * @param jsonPath - JSONPath 쿼리 문자열
+ * @returns 쿼리 결과 (항상 배열로 반환)
+ */
+export function jsonPathQuery(jsonData: any, jsonPath: string): any[] {
+  try {
+    const result = query(jsonData, jsonPath);
+
+    // JSONPath는 항상 배열을 반환하지만,
+    // 단일 결과인 경우도 배열로 반환하여 일관성 유지
+    return Array.isArray(result) ? result : [result];
+  } catch (error) {
+    console.error('JSONPath 쿼리 오류:', error);
+    throw new Error(`JSONPath 쿼리 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
+  }
+}
+
+/**
+ * JSONPath로 단일 결과만 가져오기
+ * 결과가 여러 개인 경우 첫 번째 항목만 반환
+ *
+ * @example
+ * ```typescript
+ * const risk = jsonPathQueryOne(jsonData,
+ *   "$.GD.RISK_OBJCT_CVRGE.RISK[?(@.RK_TPCD=='RLA20011')]"
+ * );
+ * // 결과가 배열이 아니라 단일 객체로 반환
+ * ```
+ */
+export function jsonPathQueryOne(jsonData: any, jsonPath: string): any {
+  const results = jsonPathQuery(jsonData, jsonPath);
+  return results.length > 0 ? results[0] : null;
+}
+
+/**
+ * JSONPath로 값의 개수 가져오기
+ */
+export function jsonPathCount(jsonData: any, jsonPath: string): number {
+  return jsonPathQuery(jsonData, jsonPath).length;
+}
+
+/**
+ * JSONPath로 결과가 존재하는지 확인
+ */
+export function jsonPathExists(jsonData: any, jsonPath: string): boolean {
+  return jsonPathQuery(jsonData, jsonPath).length > 0;
+}
+
 
 /**
  * XML 파일에서 특정 경로의 데이터 추출 (XPath 스타일)
