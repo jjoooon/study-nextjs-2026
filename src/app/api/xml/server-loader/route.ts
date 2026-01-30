@@ -1,0 +1,63 @@
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import { NextResponse } from 'next/server';
+import { convertXmlToJson } from '@/shared/utils/xml/xmlParser';
+
+export async function GET() {
+  const loadStart = performance.now();
+
+  try {
+    // XML 파일 경로 설정
+    const xmlFilePath = join(process.cwd(), 'public', 'mocks', 'data', 'LA02866001__0_20260129.xml');
+
+    // 파일 로드
+    const fileReadStart = performance.now();
+    const xmlText = await readFile(xmlFilePath, 'utf-8');
+    const fileReadEnd = performance.now();
+
+    // XML 파싱
+    const parseStart = performance.now();
+    const converted = await convertXmlToJson(xmlText);
+    const parseEnd = performance.now();
+
+    const totalEnd = performance.now();
+
+    // 성능 메트릭스 계산
+    const metrics = {
+      loadTime: fileReadEnd - fileReadStart,
+      parseTime: parseEnd - parseStart,
+      totalTime: totalEnd - loadStart,
+    };
+
+    return NextResponse.json(
+      {
+        data: converted,
+        ...metrics,
+      },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Server-side XML processing error:', error);
+    return NextResponse.json(
+      {
+        data: null,
+        loadTime: 0,
+        parseTime: 0,
+        totalTime: 0,
+        error: error instanceof Error ? error.message : 'XML 처리 중 오류 발생',
+      },
+      {
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
+  }
+}

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import log from '@/shared/utils/logger';
-import { convertXmlToJson } from '@/shared/utils/xml/xmlParser';
 import { xpathQuery } from '@/shared/utils/xml/xpathQuery';
 
 interface ConvertedData {
@@ -17,8 +16,16 @@ interface ConvertedData {
   };
 }
 
+interface ServerDataResponse {
+  data: ConvertedData | null;
+  loadTime: number;
+  parseTime: number;
+  totalTime: number;
+  error?: string;
+}
+
 export default function XmlConverterPage() {
-  const logger = log.getLogger('XML');
+  const logger = log.getLogger('XML-Server');
 
   const [jsonData, setJsonData] = useState<ConvertedData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,63 +34,63 @@ export default function XmlConverterPage() {
   const [queryResult, setQueryResult] = useState<any>(null);
   const [xpathInput, setXpathInput] = useState<string>("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE");
   const [queryMode, setQueryMode] = useState<'xpath' | 'native'>('xpath');
-  const [clientMetrics, setClientMetrics] = useState<{
-    networkTime: number;
-    parseTime: number;
+  const [serverMetrics, setServerMetrics] = useState<{
+    serverLoadTime: number;
+    serverParseTime: number;
+    serverProcessingTime: number;
     totalTime: number;
+    networkOverhead: number;
   } | null>(null);
 
   useEffect(() => {
-    async function loadAndConvertXml() {
+    async function loadFromServer() {
       try {
         setLoading(true);
         setError(null);
 
         const totalStart = performance.now();
 
-        // XML 파일을 fetch하여 로드 (캐시 방지)
-        const fetchStart = performance.now();
-        const response = await fetch('/mocks/data/LA02866001__0_20260129.xml', {
+        // 서버 사이드 API 호출 (캐시 방지)
+        const response = await fetch('/api/xml/server-loader', {
           cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache',
-          },
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const xmlText = await response.text();
-        const fetchEnd = performance.now();
 
-        // XML을 JSON으로 변환 (CVRGE 자동 배열화)
-        const parseStart = performance.now();
-        const converted = await convertXmlToJson(xmlText);
-        const parseEnd = performance.now();
+        const result: ServerDataResponse = await response.json();
+        const totalEnd = performance.now(); // 클라이언트에서 사용 가능한 시점
 
-        // 클라이언트에서 사용 가능한 시점
-        const totalEnd = performance.now();
+        if (result.error) {
+          throw new Error(result.error);
+        }
 
-        setJsonData(converted);
-        setClientMetrics({
-          networkTime: fetchEnd - fetchStart,
-          parseTime: parseEnd - parseStart,
-          totalTime: totalEnd - totalStart, // End-to-End: 요청부터 사용 가능까지
+        setJsonData(result.data);
+        const endToEndTime = totalEnd - totalStart;
+        const networkOverhead = endToEndTime - result.totalTime;
+
+        setServerMetrics({
+          serverLoadTime: result.loadTime, // 서버 파일 I/O (참고용)
+          serverParseTime: result.parseTime, // 서버 파싱 (참고용)
+          serverProcessingTime: result.totalTime, // 서버 전체 처리 (참고용)
+          totalTime: endToEndTime, // ⭐ End-to-End: 요청부터 사용 가능까지 (비교 기준)
+          networkOverhead, // 네트워크 왕복 + JSON 직렬화/역직렬화
         });
 
-        logger.info('클라이언트 사이드 로딩 완료', {
-          networkTime: fetchEnd - fetchStart,
-          parseTime: parseEnd - parseStart,
-          totalTime: totalEnd - totalStart,
+        logger.info('서버 사이드 로딩 완료', {
+          serverProcessingTime: result.totalTime,
+          networkOverhead,
+          endToEndTime,
         });
       } catch (err) {
         setError(err instanceof Error ? err.message : 'XML 변환 중 오류가 발생했습니다.');
-        console.error('XML 변환 오류:', err);
+        console.error('서버 사이드 XML 변환 오류:', err);
       } finally {
         setLoading(false);
       }
     }
 
-    loadAndConvertXml();
+    loadFromServer();
   }, [logger]);
 
   // 특정 조건으로 데이터 조회 예시
@@ -157,9 +164,9 @@ export default function XmlConverterPage() {
     return (
       <div className="p-8">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">XML → JSON 변환 예제</h1>
+          <h1 className="text-3xl font-bold mb-6">XML → JSON 변환 예제 (Server-Side)</h1>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-blue-800">XML을 JSON으로 변환 중...</p>
+            <p className="text-blue-800">서버에서 XML을 JSON으로 변환 중...</p>
           </div>
         </div>
       </div>
@@ -170,7 +177,7 @@ export default function XmlConverterPage() {
     return (
       <div className="p-8">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">XML → JSON 변환 예제</h1>
+          <h1 className="text-3xl font-bold mb-6">XML → JSON 변환 예제 (Server-Side)</h1>
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="text-red-800 font-semibold">오류 발생:</p>
             <p className="text-red-700 mt-2">{error}</p>
@@ -183,49 +190,56 @@ export default function XmlConverterPage() {
   return (
     <div className="p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">XML → JSON 변환 예제 (Client-Side)</h1>
-        <p className="text-gray-600 mb-8">
-          xml2js 라이브러리를 사용하여 XML 데이터를 JSON으로 변환하고 xPath로 쿼리하는 예제
-        </p>
+        <h1 className="text-3xl font-bold mb-2">XML → JSON 변환 예제 (Server-Side)</h1>
+        <p className="text-gray-600 mb-8">서버 사이드에서 XML 로드 및 JSON 파싱을 처리하여 성능을 비교하는 예제</p>
 
         {/* 성능 메트릭스 */}
-        {clientMetrics && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg shadow-sm mb-6">
-            <div className="bg-blue-100 px-6 py-4 border-b border-blue-200">
-              <h2 className="text-xl font-semibold text-blue-800">⚡ 클라이언트 사이드 성능 메트릭스 (End-to-End)</h2>
+        {serverMetrics && (
+          <div className="bg-green-50 border border-green-200 rounded-lg shadow-sm mb-6">
+            <div className="bg-green-100 px-6 py-4 border-b border-green-200">
+              <h2 className="text-xl font-semibold text-green-800">⚡ 서버 사이드 성능 메트릭스 (End-to-End)</h2>
             </div>
             <div className="p-6">
               {/* 메인 비교 지표 */}
-              <div className="mb-4 pb-4 border-b border-blue-200">
+              <div className="mb-4 pb-4 border-b border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-2xl font-bold text-gray-800">⏱️ 전체 End-to-End</span>
                     <p className="text-sm text-gray-600 mt-1">요청부터 사용 가능까지 (비교 기준)</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-4xl font-bold text-blue-700">{clientMetrics.totalTime.toFixed(2)}ms</p>
+                    <p className="text-4xl font-bold text-green-700">{serverMetrics.totalTime.toFixed(2)}ms</p>
                   </div>
                 </div>
               </div>
 
               {/* 세부 시간 분석 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-white rounded-lg p-3 border border-gray-200">
-                  <span className="text-xs font-medium text-gray-500 block mb-1">네트워크 다운로드</span>
-                  <p className="text-lg font-semibold text-gray-600">{clientMetrics.networkTime.toFixed(2)}ms</p>
-                  <p className="text-xs text-gray-400 mt-1">XML 파일 다운로드</p>
+                  <span className="text-xs font-medium text-gray-500 block mb-1">서버 파일 I/O</span>
+                  <p className="text-lg font-semibold text-gray-600">{serverMetrics.serverLoadTime.toFixed(2)}ms</p>
+                  <p className="text-xs text-gray-400 mt-1">서버 처리 (참고)</p>
                 </div>
                 <div className="bg-white rounded-lg p-3 border border-gray-200">
-                  <span className="text-xs font-medium text-gray-500 block mb-1">브라우저 파싱</span>
-                  <p className="text-lg font-semibold text-gray-600">{clientMetrics.parseTime.toFixed(2)}ms</p>
-                  <p className="text-xs text-gray-400 mt-1">XML → JSON 변환</p>
+                  <span className="text-xs font-medium text-gray-500 block mb-1">서버 XML 파싱</span>
+                  <p className="text-lg font-semibold text-gray-600">{serverMetrics.serverParseTime.toFixed(2)}ms</p>
+                  <p className="text-xs text-gray-400 mt-1">서버 처리 (참고)</p>
+                </div>
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <span className="text-xs font-medium text-gray-500 block mb-1">네트워크 오버헤드</span>
+                  <p className="text-lg font-semibold text-gray-600">{serverMetrics.networkOverhead.toFixed(2)}ms</p>
+                  <p className="text-xs text-gray-400 mt-1">왕복 + JSON 변환</p>
                 </div>
               </div>
 
               {/* 추가 정보 */}
-              <div className="mt-4 pt-4 border-t border-blue-200">
-                <p className="text-xs text-gray-500">
-                  * ⏱️ End-to-End 시간이 Case2와 비교하는 주요 지표입니다.
+              <div className="mt-4 pt-4 border-t border-green-200">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">서버 전체 처리 시간 (참고):</span>
+                  <span className="font-semibold text-gray-700">{serverMetrics.serverProcessingTime.toFixed(2)}ms</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  * 서버 시간은 참고용입니다. Case1과의 공정한 비교를 위해 ⏱️ End-to-End 시간을 사용하세요.
                 </p>
               </div>
             </div>
@@ -458,17 +472,19 @@ export default function XmlConverterPage() {
 
         {/* 사용법 안내 */}
         <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-3">📖 사용법</h3>
+          <h3 className="text-lg font-semibold text-blue-900 mb-3">📖 Server-Side 처리 특징</h3>
           <div className="space-y-2 text-sm text-blue-800">
             <p>
-              <strong>1. xml2js 설정:</strong> explicitArray=false, mergeAttrs=true 옵션으로 단일 요소는 객체로, 속성은
-              프로퍼티로 병합하여 사용하기 쉬운 JSON 생성
+              <strong>1. 서버 사이드 처리:</strong> XML 로드와 파싱이 서버에서 일어나 클라이언트 부하 감소
             </p>
             <p>
-              <strong>2. 쿼리 방식:</strong> queryData() 함수로 경로 기반 접근, filterByDateRange()로 날짜 범위 필터링
+              <strong>2. 성능 향상:</strong> 대용량 XML 파일 처리 시 클라이언트보다 빠른 처리 속도
             </p>
             <p>
-              <strong>3. 성능:</strong> 5MB XML 파일의 경우 변환 후 인덱싱하면 XPath 대비 90% 이상 성능 향상 가능
+              <strong>3. 네트워크 전송:</strong> JSON 형태로만 전송되어 전송량 최적화
+            </p>
+            <p>
+              <strong>4. 캐싱 가능:</strong> 변환된 JSON 데이터를 서버에서 캐싱 가능
             </p>
           </div>
         </div>
