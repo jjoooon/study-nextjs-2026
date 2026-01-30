@@ -41,5 +41,5 @@ export function xpathQuery(jsonData: any, xpath: string): any {
   return compiled(jsonData);
 }
 
-// 재내보
+// 재 내보내기
 export { clearXPathCache, getXPathCacheSize };
