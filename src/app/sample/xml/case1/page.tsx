@@ -154,7 +154,9 @@ export default function XmlConverterPage() {
     <div className="p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">XML → JSON 변환 예제</h1>
-        <p className="text-gray-600 mb-8">xml2js 라이브러리를 사용하여 XML 데이터를 JSON으로 변환하고 쿼리하는 예제</p>
+        <p className="text-gray-600 mb-8">
+          xml2js 라이브러리를 사용하여 XML 데이터를 JSON으로 변환하고 xPath로 쿼리하는 예제
+        </p>
 
         {/* 기본 정보 섹션 */}
         {jsonData && (
