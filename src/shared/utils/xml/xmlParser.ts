@@ -1,6 +1,6 @@
 import { parseStringPromise } from 'xml2js';
 import log from '@/shared/utils/logger';
-import type { XmlParserOptions } from './xmlTypes';
+import type { XmlParserOptions, XmlNode, XmlJson } from './xmlTypes';
 
 /**
  * XML을 JSON으로 변환하는 유틸리티 함수
@@ -9,6 +9,14 @@ import type { XmlParserOptions } from './xmlTypes';
  * ```typescript
  * // 기본 사용 (단일 요소는 객체로, 여러 요소는 배열로)
  * const data = await convertXmlToJson(xml);
+ *
+ * // 타입 지정
+ * interface MyData {
+ *   GD: {
+ *     RISK: Array<{ RK_TPCD: string }>;
+ *   };
+ * }
+ * const data = await convertXmlToJson<MyData>(xml);
  *
  * // 커스텀 옵션
  * const data = await convertXmlToJson(xml, {
@@ -19,9 +27,12 @@ import type { XmlParserOptions } from './xmlTypes';
  * @param xmlString - XML 문자열
  * @param options - xml2js 파서 옵션
  * @returns 파싱된 JSON 객체
+ * @throws {Error} XML 파싱 실패 시 또는 보안 위반 시
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function convertXmlToJson(xmlString: string, options?: XmlParserOptions): Promise<any> {
+export async function convertXmlToJson<T = XmlNode>(
+  xmlString: string,
+  options?: XmlParserOptions
+): Promise<T> {
   const logger = log.getLogger('Global');
 
   // 입력값 검증
@@ -59,10 +70,16 @@ export async function convertXmlToJson(xmlString: string, options?: XmlParserOpt
       // 따라서 XXE 공격에 기본적으로 안전하지만 명시적으로 보안 설정 추가
 
       ...options, // 사용자 커스텀 옵션으로 오버라이드
-    });
+    }) as XmlJson<T>;
 
-    return result;
+    return result as T;
   } catch (error) {
+    // 이미 처리된 에러인 경우 그대로 전파
+    if (error instanceof Error && error.message.includes('XML')) {
+      throw error;
+    }
+
+    // 그 외 에러는 래핑하여 처리
     logger.error('XML 파싱 오류:', error);
     throw new Error(`XML 변환 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
   }

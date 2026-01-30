@@ -62,7 +62,7 @@ export default function XmlConverterPage() {
 
         // XML을 JSON으로 변환 (CVRGE 자동 배열화)
         const parseStart = performance.now();
-        const converted = await convertXmlToJson(xmlText);
+        const converted = await convertXmlToJson<ConvertedData>(xmlText);
         const parseEnd = performance.now();
 
         // 클라이언트에서 사용 가능한 시점

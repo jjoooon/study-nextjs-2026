@@ -24,9 +24,8 @@ export interface XPathNode {
 /**
  * 컴파일된 쿼리 함수
  */
-export interface CompiledQuery {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (data: any): any;
+export interface CompiledQuery<T = unknown> {
+  (data: unknown): T;
 }
 
 /**
@@ -39,3 +38,13 @@ export interface XmlParserOptions {
   ignoreAttrs?: boolean;
   charkey?: string;
 }
+
+/**
+ * XML 파싱 결과의 기본 형태
+ */
+export type XmlNode = Record<string, unknown> | Record<string, unknown>[] | string | number | boolean | null;
+
+/**
+ * XML JSON 변환 결과 타입
+ */
+export type XmlJson<T = XmlNode> = T;
