@@ -247,6 +247,12 @@ export default function XmlConverterPage() {
                   <p className="text-xs text-gray-500 mb-2">빠른 예제:</p>
                   <div className="flex flex-wrap gap-2">
                     <button
+                      onClick={() => setXpathInput('/GD/RISK_OBJCT_CVRGE/RISK/OBJECT')}
+                      className="text-xs px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded-md border border-purple-300 transition-colors"
+                    >
+                      전체 OBJECT (2개)
+                    </button>
+                    <button
                       onClick={() => setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE")}
                       className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition-colors"
                     >

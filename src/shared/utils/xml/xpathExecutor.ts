@@ -31,7 +31,9 @@ export function compileXPath(nodes: XPathNode[]): CompiledQuery {
 
       // 현재 레벨이 배열이면 모든 요소에서 검색
       if (Array.isArray(current)) {
-        current = current.map((item) => item[node.name]).filter(Boolean);
+        const mapped = current.map((item) => item[node.name]);
+        // null과 undefined만 필터링, 빈 객체는 보존
+        current = mapped.filter((item) => item != null);
         if (current.length === 0) return null;
         if (current.length === 1) current = current[0];
       } else {
