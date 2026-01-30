@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
     const totalEnd = performance.now();
 
     // DOM을 XML 문자열로 직렬화하여 전송
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const serializer = new (require('@xmldom/xmldom').XMLSerializer)();
     const serializedXml = serializer.serializeToString(xmlDoc);
 

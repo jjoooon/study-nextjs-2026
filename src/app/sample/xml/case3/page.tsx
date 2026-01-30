@@ -364,19 +364,19 @@ export default function XmlConverterPage() {
                 <div>
                   <span className="text-sm font-medium text-gray-500">상품 코드:</span>
                   <p className="text-lg font-semibold text-gray-900">
-                    {xpath.select1('/GD/@GOCD', xmlDoc)?.nodeValue || '-'}
+                    {xpath.select1('/GD/@GOCD', xmlDoc)?.toString() || '-'}
                   </p>
                 </div>
                 <div>
                   <span className="text-sm font-medium text-gray-500">신청 일자:</span>
                   <p className="text-lg font-semibold text-gray-900">
-                    {xpath.select1('/GD/@P_APPL_DT', xmlDoc)?.nodeValue || '-'}
+                    {xpath.select1('/GD/@P_APPL_DT', xmlDoc)?.toString() || '-'}
                   </p>
                 </div>
                 <div>
                   <span className="text-sm font-medium text-gray-500">상품명:</span>
                   <p className="text-lg font-semibold text-gray-900">
-                    {xpath.select1('/GD/@GD_KORNM', xmlDoc)?.nodeValue || '-'}
+                    {xpath.select1('/GD/@GD_KORNM', xmlDoc)?.toString() || '-'}
                   </p>
                 </div>
               </div>
