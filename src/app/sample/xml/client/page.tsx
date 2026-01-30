@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { convertXmlToJson, queryData, filterByDateRange } from '@/shared/utils/xml/xmlConverter';
+import { convertXmlToJson, queryData, filterByDateRange, xpathQuery } from '@/shared/utils/xml/xmlConverter';
 
 interface ConvertedData {
   GD: {
@@ -19,8 +19,10 @@ export default function XmlConverterPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [queryResult, setQueryResult] = useState<any>(null);
+  const [xpathResult, setXPathResult] = useState<any>(null);
   const [selectedRiskType, setSelectedRiskType] = useState<string>('RLA20011');
   const [targetDate, setTargetDate] = useState<string>('20260130');
+  const [useXPath, setUseXPath] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadAndConvertXml() {
@@ -53,34 +55,65 @@ export default function XmlConverterPage() {
   const handleQuery = () => {
     if (!jsonData) return;
 
-    // 기존 XPath 스타일 쿼리를 JSON 기반으로 변환
-    // 예: RMXPath_NSP("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='"+rkTpcd+"']/...")
-    const risks = queryData(jsonData, 'GD.RISK_OBJCT_CVRGE.RISK');
+    if (useXPath) {
+      // 🔥 새로운 XPath 방식 (레거시 호환)
+      // XPath를 그대로 사용하여 쿼리
+      const xpath = `/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='${selectedRiskType}']/OBJECT/CVRGE[@SL_STRDT<='${targetDate}' and @SL_NDDT>'${targetDate}']`;
 
-    if (Array.isArray(risks)) {
-      // RK_TPCD로 필터링
-      const filteredRisks = risks.filter((risk: any) => risk.RK_TPCD === selectedRiskType);
+      try {
+        const result = xpathQuery(jsonData, xpath);
 
-      if (filteredRisks.length > 0) {
-        const risk = filteredRisks[0];
-
-        // OBJECT와 CVRGE 데이터 추출
-        if (risk.OBJECT && risk.OBJECT.CVRGE) {
-          let coverages = Array.isArray(risk.OBJECT.CVRGE) ? risk.OBJECT.CVRGE : [risk.OBJECT.CVRGE];
-
-          // 날짜 범위로 필터링
-          coverages = filterByDateRange(coverages, 'SL_STRDT', 'SL_NDDT', targetDate);
-
-          setQueryResult({
-            riskType: risk.RK_TPCD,
-            coverages: coverages,
-            totalCount: coverages.length,
+        if (result && result.length > 0) {
+          setXPathResult({
+            method: 'XPath',
+            xpath: xpath,
+            coverages: Array.isArray(result) ? result : [result],
+            totalCount: Array.isArray(result) ? result.length : 1,
           });
         } else {
-          setQueryResult({ message: '해당 리스크 유형에 대한 담보 정보가 없습니다.' });
+          setXPathResult({
+            method: 'XPath',
+            xpath: xpath,
+            message: '조건에 맞는 데이터를 찾을 수 없습니다.',
+          });
         }
-      } else {
-        setQueryResult({ message: '조건에 맞는 리스크를 찾을 수 없습니다.' });
+      } catch (error) {
+        setXPathResult({
+          method: 'XPath',
+          xpath: xpath,
+          error: error instanceof Error ? error.message : '쿼리 실행 중 오류 발생',
+        });
+      }
+    } else {
+      // 기존 JSON 방식
+      const risks = queryData(jsonData, 'GD.RISK_OBJCT_CVRGE.RISK');
+
+      if (Array.isArray(risks)) {
+        // RK_TPCD로 필터링
+        const filteredRisks = risks.filter((risk: any) => risk.RK_TPCD === selectedRiskType);
+
+        if (filteredRisks.length > 0) {
+          const risk = filteredRisks[0];
+
+          // OBJECT와 CVRGE 데이터 추출
+          if (risk.OBJECT && risk.OBJECT.CVRGE) {
+            let coverages = Array.isArray(risk.OBJECT.CVRGE) ? risk.OBJECT.CVRGE : [risk.OBJECT.CVRGE];
+
+            // 날짜 범위로 필터링
+            coverages = filterByDateRange(coverages, 'SL_STRDT', 'SL_NDDT', targetDate);
+
+            setQueryResult({
+              method: 'Native JSON',
+              riskType: risk.RK_TPCD,
+              coverages: coverages,
+              totalCount: coverages.length,
+            });
+          } else {
+            setQueryResult({ method: 'Native JSON', message: '해당 리스크 유형에 대한 담보 정보가 없습니다.' });
+          }
+        } else {
+          setQueryResult({ method: 'Native JSON', message: '조건에 맞는 리스크를 찾을 수 없습니다.' });
+        }
       }
     }
   };
@@ -146,8 +179,26 @@ export default function XmlConverterPage() {
         {/* 쿼리 인터페이스 */}
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-6">
           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">데이터 쿼리 (XPath 스타일)</h2>
-            <p className="text-sm text-gray-600 mt-1">기존 XPath 쿼리를 JSON 기반 조회로 변환하여 실행</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">데이터 쿼리</h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  {useXPath ? '🔥 XPath 레거시 호환 모드' : '기존 Native JSON 방식'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setUseXPath(!useXPath)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    useXPath
+                      ? 'bg-orange-100 text-orange-800 border-2 border-orange-300'
+                      : 'bg-gray-100 text-gray-700 border-2 border-gray-300 hover:bg-gray-200'
+                  }`}
+                >
+                  {useXPath ? '🔥 XPath 모드' : '📦 JSON 모드'}
+                </button>
+              </div>
+            </div>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -189,28 +240,42 @@ export default function XmlConverterPage() {
             </div>
 
             {/* XPath 예시 표시 */}
-            <div className="bg-gray-50 rounded-md p-4 mb-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">🔍 해당하는 XPath 쿼리:</p>
-              <code className="text-xs text-gray-800 block overflow-x-auto">
-                /GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD=&apos;{selectedRiskType}&apos;]/OBJECT/CVRGE[@SL_STRDT&lt;=&apos;
-                {targetDate}&apos; and @SL_NDDT&gt;&apos;{targetDate}&apos;]
-              </code>
-            </div>
+            {useXPath && (
+              <div className="bg-orange-50 border border-orange-200 rounded-md p-4 mb-4">
+                <p className="text-sm font-medium text-gray-700 mb-2">🔥 실행될 XPath 쿼리:</p>
+                <code className="text-xs text-gray-800 block overflow-x-auto bg-white p-2 rounded">
+                  /GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD=&apos;{selectedRiskType}&apos;]/OBJECT/CVRGE[@SL_STRDT&lt;=&apos;
+                  {targetDate}&apos; and @SL_NDDT&gt;&apos;{targetDate}&apos;]
+                </code>
+              </div>
+            )}
 
             {/* 쿼리 결과 */}
-            {queryResult && (
+            {(queryResult || xpathResult) && (
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">조회 결과</h3>
-                {queryResult.message ? (
-                  <p className="text-gray-600">{queryResult.message}</p>
-                ) : (
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  조회 결과 {(queryResult || xpathResult)?.method}
+                </h3>
+                {(queryResult?.message || xpathResult?.message) && (
+                  <p className="text-gray-600">{queryResult?.message || xpathResult?.message}</p>
+                )}
+                {(queryResult?.error || xpathResult?.error) && (
+                  <div className="bg-red-50 border border-red-200 rounded-md p-3 text-red-700">
+                    <p className="font-medium">오류:</p>
+                    <p className="text-sm">{queryResult?.error || xpathResult?.error}</p>
+                  </div>
+                )}
+                {(queryResult?.coverages || xpathResult?.coverages) && (
                   <div>
                     <p className="text-sm text-gray-600 mb-3">
-                      찾은 담보(CVRGE) 수: <span className="font-semibold">{queryResult.totalCount}</span>
+                      찾은 담보(CVRGE) 수: <span className="font-semibold">{queryResult?.totalCount || xpathResult?.totalCount}</span>
                     </p>
                     <div className="space-y-2">
-                      {queryResult.coverages.map((coverage: any, index: number) => (
-                        <div key={index} className="bg-blue-50 border border-blue-200 rounded-md p-3">
+                      {(queryResult?.coverages || xpathResult?.coverages)?.map((coverage: any, index: number) => (
+                        <div
+                          key={index}
+                          className={`border rounded-md p-3 ${useXPath ? 'bg-orange-50 border-orange-200' : 'bg-blue-50 border-blue-200'}`}
+                        >
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
                             <div>
                               <span className="font-medium">담보코드:</span> {coverage.CVRCD}
