@@ -41,6 +41,7 @@ export default function XmlConverterPage() {
     totalTime: number;
     networkOverhead: number;
   } | null>(null);
+  const [selectedFileSize, setSelectedFileSize] = useState<string>('2KB');
 
   useEffect(() => {
     async function loadFromServer() {
@@ -50,8 +51,12 @@ export default function XmlConverterPage() {
 
         const totalStart = performance.now();
 
+        // 선택한 파일 크기에 따라 다른 XML 파일 로드
+        const fileName =
+          selectedFileSize === '2KB' ? 'LA02866001__0_20260129.xml' : `LA02866001__0_20260129_${selectedFileSize}.xml`;
+
         // 서버 사이드 API 호출 (캐시 방지)
-        const response = await fetch('/api/xml/server-loader', {
+        const response = await fetch(`/api/xml/server-loader?file=${fileName}`, {
           cache: 'no-store',
         });
         if (!response.ok) {
@@ -78,6 +83,7 @@ export default function XmlConverterPage() {
         });
 
         logger.info('서버 사이드 로딩 완료', {
+          fileSize: selectedFileSize,
           serverProcessingTime: result.totalTime,
           networkOverhead,
           endToEndTime,
@@ -91,7 +97,7 @@ export default function XmlConverterPage() {
     }
 
     loadFromServer();
-  }, [logger]);
+  }, [selectedFileSize, logger]);
 
   // 특정 조건으로 데이터 조회 예시
   const handleQuery = () => {
@@ -192,6 +198,33 @@ export default function XmlConverterPage() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">XML → JSON 변환 예제 (Server-Side)</h1>
         <p className="text-gray-600 mb-8">서버 사이드에서 XML 로드 및 JSON 파싱을 처리하여 성능을 비교하는 예제</p>
+
+        {/* 테스트 파일 크기 선택 */}
+        <div className="bg-purple-50 border border-purple-200 rounded-lg shadow-sm mb-6">
+          <div className="bg-purple-100 px-6 py-4 border-b border-purple-200">
+            <h2 className="text-xl font-semibold text-purple-800">📁 테스트 파일 크기 선택</h2>
+          </div>
+          <div className="p-6">
+            <div className="flex flex-wrap gap-3">
+              {['2KB', '1MB', '3MB', '5MB'].map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedFileSize(size)}
+                  className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                    selectedFileSize === size
+                      ? 'bg-purple-600 text-white shadow-lg scale-105'
+                      : 'bg-white text-purple-700 border-2 border-purple-300 hover:bg-purple-100 hover:border-purple-400'
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+            <p className="text-sm text-purple-700 mt-3">
+              현재 선택: <span className="font-semibold">{selectedFileSize}</span> 파일 테스트
+            </p>
+          </div>
+        </div>
 
         {/* 성능 메트릭스 */}
         {serverMetrics && (
@@ -340,7 +373,7 @@ export default function XmlConverterPage() {
                       onClick={() => setXpathInput('/GD/RISK_OBJCT_CVRGE/RISK/OBJECT')}
                       className="text-xs px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded-md border border-purple-300 transition-colors"
                     >
-                      전체 OBJECT (2개)
+                      전체 OBJECT
                     </button>
                     <button
                       onClick={() => setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE")}
@@ -410,7 +443,14 @@ export default function XmlConverterPage() {
             {/* 쿼리 결과 */}
             {queryResult && (
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">조회 결과 ({queryResult?.method})</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  조회 결과 ({queryResult?.method})
+                  {queryResult?.queryTime > 0 && (
+                    <span className="text-sm font-normal text-gray-600 ml-2">
+                      ({queryResult.queryTime.toFixed(2)}ms)
+                    </span>
+                  )}
+                </h3>
 
                 {queryResult?.message && <p className="text-gray-600">{queryResult.message}</p>}
 

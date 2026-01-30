@@ -32,6 +32,7 @@ export default function XmlConverterPage() {
     parseTime: number;
     totalTime: number;
   } | null>(null);
+  const [selectedFileSize, setSelectedFileSize] = useState<string>('2KB');
 
   useEffect(() => {
     async function loadAndConvertXml() {
@@ -41,9 +42,13 @@ export default function XmlConverterPage() {
 
         const totalStart = performance.now();
 
+        // 선택한 파일 크기에 따라 다른 XML 파일 로드
+        const fileName =
+          selectedFileSize === '2KB' ? 'LA02866001__0_20260129.xml' : `LA02866001__0_20260129_${selectedFileSize}.xml`;
+
         // XML 파일을 fetch하여 로드 (캐시 방지)
         const fetchStart = performance.now();
-        const response = await fetch('/mocks/data/LA02866001__0_20260129.xml', {
+        const response = await fetch(`/mocks/data/${fileName}`, {
           cache: 'no-store',
           headers: {
             'Cache-Control': 'no-cache',
@@ -71,6 +76,7 @@ export default function XmlConverterPage() {
         });
 
         logger.info('클라이언트 사이드 로딩 완료', {
+          fileSize: selectedFileSize,
           networkTime: fetchEnd - fetchStart,
           parseTime: parseEnd - parseStart,
           totalTime: totalEnd - totalStart,
@@ -84,11 +90,13 @@ export default function XmlConverterPage() {
     }
 
     loadAndConvertXml();
-  }, [logger]);
+  }, [selectedFileSize, logger]);
 
   // 특정 조건으로 데이터 조회 예시
   const handleQuery = () => {
     if (!jsonData) return;
+
+    const queryStart = performance.now();
 
     if (queryMode === 'xpath') {
       // 🔥 XPath 레거시 호환 방식 - 직접 입력한 XPath 사용
@@ -98,12 +106,15 @@ export default function XmlConverterPage() {
         setQueryResult({
           method: 'XPath (레거시)',
           error: 'XPath 쿼리를 입력해주세요.',
+          queryTime: 0,
         });
         return;
       }
 
       try {
         const result = xpathQuery(jsonData, xpath);
+        const queryEnd = performance.now();
+
         logger.debug('xpath result', result);
 
         // XPath 결과 처리
@@ -112,6 +123,7 @@ export default function XmlConverterPage() {
             method: 'XPath (레거시)',
             query: xpath,
             message: '조건에 맞는 데이터를 찾을 수 없습니다.',
+            queryTime: queryEnd - queryStart,
           });
         } else if (typeof result === 'string' || typeof result === 'number' || typeof result === 'boolean') {
           // 원시값 (속성값 조회 등)
@@ -120,6 +132,7 @@ export default function XmlConverterPage() {
             query: xpath,
             data: [{ value: result, type: typeof result }],
             totalCount: 1,
+            queryTime: queryEnd - queryStart,
           });
         } else if (Array.isArray(result)) {
           setQueryResult({
@@ -127,6 +140,7 @@ export default function XmlConverterPage() {
             query: xpath,
             data: result,
             totalCount: result.length,
+            queryTime: queryEnd - queryStart,
           });
         } else {
           // 단일 객체
@@ -135,20 +149,26 @@ export default function XmlConverterPage() {
             query: xpath,
             data: [result],
             totalCount: 1,
+            queryTime: queryEnd - queryStart,
           });
         }
       } catch (error) {
+        const queryEnd = performance.now();
         setQueryResult({
           method: 'XPath (레거시)',
           query: xpath,
           error: error instanceof Error ? error.message : '쿼리 실행 중 오류 발생',
+          queryTime: queryEnd - queryStart,
         });
       }
     } else {
+      // Native JSON 모드 - 전체 데이터 반환
+      const queryEnd = performance.now();
       setQueryResult({
         method: 'Native JSON',
         data: [jsonData], // 배열로 감싸서 일관성 유지
         totalCount: 1,
+        queryTime: queryEnd - queryStart,
       });
     }
   };
@@ -188,6 +208,37 @@ export default function XmlConverterPage() {
           xml2js 라이브러리를 사용하여 XML 데이터를 JSON으로 변환하고 xPath로 쿼리하는 예제
         </p>
 
+        {/* 파일 크기 선택 컨트롤 */}
+        <div className="bg-purple-50 border border-purple-200 rounded-lg shadow-sm mb-6">
+          <div className="bg-purple-100 px-6 py-4 border-b border-purple-200">
+            <h2 className="text-xl font-semibold text-purple-800">📁 테스트 파일 크기 선택</h2>
+          </div>
+          <div className="p-6">
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="text-sm font-medium text-gray-700">XML 파일 크기:</span>
+              <div className="flex flex-wrap gap-2">
+                {['2KB', '1MB', '3MB', '5MB'].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedFileSize(size)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedFileSize === size
+                        ? 'bg-purple-600 text-white border-2 border-purple-400'
+                        : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+              {loading && <span className="text-sm text-purple-700 ml-4">로딩 중...</span>}
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              * 파일 크기를 변경하면 자동으로 해당 파일을 로드하여 성능을 테스트합니다.
+            </p>
+          </div>
+        </div>
+
         {/* 성능 메트릭스 */}
         {clientMetrics && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg shadow-sm mb-6">
@@ -224,9 +275,7 @@ export default function XmlConverterPage() {
 
               {/* 추가 정보 */}
               <div className="mt-4 pt-4 border-t border-blue-200">
-                <p className="text-xs text-gray-500">
-                  * ⏱️ End-to-End 시간이 Case2와 비교하는 주요 지표입니다.
-                </p>
+                <p className="text-xs text-gray-500">* ⏱️ End-to-End 시간이 Case2와 비교하는 주요 지표입니다.</p>
               </div>
             </div>
           </div>
@@ -326,7 +375,7 @@ export default function XmlConverterPage() {
                       onClick={() => setXpathInput('/GD/RISK_OBJCT_CVRGE/RISK/OBJECT')}
                       className="text-xs px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded-md border border-purple-300 transition-colors"
                     >
-                      전체 OBJECT (2개)
+                      전체 OBJECT
                     </button>
                     <button
                       onClick={() => setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE")}
@@ -396,7 +445,14 @@ export default function XmlConverterPage() {
             {/* 쿼리 결과 */}
             {queryResult && (
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">조회 결과 ({queryResult?.method})</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  조회 결과 ({queryResult?.method})
+                  {queryResult?.queryTime > 0 && (
+                    <span className="text-sm font-normal text-gray-600 ml-2">
+                      ({queryResult.queryTime.toFixed(2)}ms)
+                    </span>
+                  )}
+                </h3>
 
                 {queryResult?.message && <p className="text-gray-600">{queryResult.message}</p>}
 
