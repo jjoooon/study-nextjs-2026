@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react';
 import * as xpath from 'xpath';
 import log from '@/shared/utils/logger';
 
+interface QueryResult {
+  results: Array<{ type: string; value: string | number | boolean }>;
+  nodeCount: number;
+}
+
 export default function XmlConverterPage() {
   const logger = log.getLogger('XML-Raw');
 
@@ -11,8 +16,7 @@ export default function XmlConverterPage() {
   const [xmlString, setXmlString] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [queryResult, setQueryResult] = useState<any>(null);
+  const [queryResult, setQueryResult] = useState<QueryResult | null>(null);
   const [xpathInput, setXpathInput] = useState<string>("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE");
   const [metrics, setMetrics] = useState<{
     loadTime: number;
@@ -503,7 +507,7 @@ export default function XmlConverterPage() {
                     <p className="text-sm text-gray-600">
                       결과 수: <span className="font-semibold">{queryResult.nodeCount}</span>
                     </p>
-                    {queryResult.results.map((result: any, index: number) => (
+                    {queryResult.results.map((result, index: number) => (
                       <div key={index} className="border rounded-md p-3 bg-blue-50 border-blue-200">
                         {/* 속성값 */}
                         {result.type === 'attribute' && (

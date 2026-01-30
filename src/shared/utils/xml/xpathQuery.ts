@@ -1,6 +1,6 @@
+import log from '@/shared/utils/logger';
 import { getCachedOrCompile, clearXPathCache, getXPathCacheSize } from './xpathExecutor';
 import { parseXPath } from './xpathParser';
-import log from '@/shared/utils/logger';
 
 /**
  * XPath 인젝션 방지를 위한 입력 검증
@@ -13,14 +13,22 @@ import log from '@/shared/utils/logger';
  * - 비교 연산자: =, !=, <, >, <=, >=
  * - 문자열 리터럴: 'single quoted strings'
  */
-const XPATH_PATTERN = /^[a-zA-Z0-9_@\/\-\[\]\s'=<>()]+$/;
+const XPATH_PATTERN = /^[a-zA-Z0-9_@/\-[\]\s'=<>()]+$/;
 
 /**
  * 허용되는 XPath 키워드 및 연산자
+ * @deprecated 향후 버전에서 사용될 수 있음
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ALLOWED_XPATH_KEYWORDS = [
-  'and', 'or',  // 논리 연산자
-  '=', '!=', '<', '>', '<=', '>='  // 비교 연산자
+  'and',
+  'or', // 논리 연산자
+  '=',
+  '!=',
+  '<',
+  '>',
+  '<=',
+  '>=', // 비교 연산자
 ];
 
 /**
@@ -33,7 +41,7 @@ const DANGEROUS_PATTERNS = [
   /new\s+Function/i,
   /document\./i,
   /window\./i,
-  /\.\./,  // 경로 순회 방지
+  /\.\./, // 경로 순회 방지
 ];
 
 /**
@@ -103,7 +111,7 @@ function validateXPathInput(xpath: string): void {
  * @returns 쿼리 결과
  * @throws {Error} 유효하지 않은 XPath 또는 쿼리 실패 시
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export function xpathQuery<T = unknown>(jsonData: unknown, xpath: string): T {
   const logger = log.getLogger('Global');
 
@@ -127,9 +135,7 @@ export function xpathQuery<T = unknown>(jsonData: unknown, xpath: string): T {
 
     // 그 외 에러는 래핑하여 처리
     logger.error('XPath 쿼리 실행 오류:', { xpath, error });
-    throw new Error(
-      `XPath 쿼리 실패 (${xpath}): ${error instanceof Error ? error.message : '알 수 없는 오류'}`
-    );
+    throw new Error(`XPath 쿼리 실패 (${xpath}): ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
   }
 }
 

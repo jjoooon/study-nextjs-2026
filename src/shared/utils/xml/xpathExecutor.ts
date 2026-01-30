@@ -1,6 +1,6 @@
+import log from '@/shared/utils/logger';
 import type { XPathNode, CompiledQuery } from './xmlTypes';
 import { evaluateFilter } from './xpathParser';
-import log from '@/shared/utils/logger';
 
 /**
  * XPath 쿼리 캐시 (LRU Cache)
@@ -105,9 +105,7 @@ export function compileXPath<T = unknown>(nodes: XPathNode[]): CompiledQuery<T> 
       return current as T;
     } catch (error) {
       log.error('XPath 쿼리 실행 중 오류 발생:', error);
-      throw new Error(
-        `XPath 쿼리 실행 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`
-      );
+      throw new Error(`XPath 쿼리 실행 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
     }
   };
 }
@@ -133,10 +131,7 @@ export function getXPathCacheSize(): number {
  * @param nodes - XPath AST 노드 배열
  * @returns 컴파일된 쿼리 함수
  */
-export function getCachedOrCompile<T = unknown>(
-  xpath: string,
-  nodes: XPathNode[]
-): CompiledQuery<T> {
+export function getCachedOrCompile<T = unknown>(xpath: string, nodes: XPathNode[]): CompiledQuery<T> {
   // 캐시 확인
   if (queryCache.has(xpath)) {
     return queryCache.get(xpath) as CompiledQuery<T>;

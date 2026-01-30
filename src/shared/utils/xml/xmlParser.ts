@@ -29,10 +29,7 @@ import type { XmlParserOptions, XmlNode, XmlJson } from './xmlTypes';
  * @returns 파싱된 JSON 객체
  * @throws {Error} XML 파싱 실패 시 또는 보안 위반 시
  */
-export async function convertXmlToJson<T = XmlNode>(
-  xmlString: string,
-  options?: XmlParserOptions
-): Promise<T> {
+export async function convertXmlToJson<T = XmlNode>(xmlString: string, options?: XmlParserOptions): Promise<T> {
   const logger = log.getLogger('Global');
 
   // 입력값 검증
@@ -42,12 +39,7 @@ export async function convertXmlToJson<T = XmlNode>(
 
   // XXE 공격 방지를 위한 DTD/엔티티 검증
   // 참고: xml2js는 기본적으로 XXE에 안전하지만, 추가 보안 조치로 명시적 검증 수행
-  const forbiddenPatterns = [
-    /<!DOCTYPE/i,
-    /<!ENTITY/i,
-    /SYSTEM\s+/i,
-    /PUBLIC\s+/i
-  ];
+  const forbiddenPatterns = [/<!DOCTYPE/i, /<!ENTITY/i, /SYSTEM\s+/i, /PUBLIC\s+/i];
 
   for (const pattern of forbiddenPatterns) {
     if (pattern.test(xmlString)) {
@@ -57,7 +49,7 @@ export async function convertXmlToJson<T = XmlNode>(
   }
 
   try {
-    const result = await parseStringPromise(xmlString, {
+    const result = (await parseStringPromise(xmlString, {
       // 기본 설정: XML을 자연스러운 JSON으로 변환
       explicitArray: false, // 단일 요소는 객체로, 여러 요소는 배열로
       mergeAttrs: true, // 속성을 객체 프로퍼티로 병합
@@ -70,7 +62,7 @@ export async function convertXmlToJson<T = XmlNode>(
       // 따라서 XXE 공격에 기본적으로 안전하지만 명시적으로 보안 설정 추가
 
       ...options, // 사용자 커스텀 옵션으로 오버라이드
-    }) as XmlJson<T>;
+    })) as XmlJson<T>;
 
     return result as T;
   } catch (error) {
