@@ -22,7 +22,7 @@ import type { XmlParserOptions } from './xmlTypes';
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function convertXmlToJson(xmlString: string, options?: XmlParserOptions): Promise<any> {
-  const logger = log.getLogger('Glbal');
+  const logger = log.getLogger('Gl0bal');
   try {
     const result = await parseStringPromise(xmlString, {
       // 기본 설정: XML을 자연스러운 JSON으로 변환
