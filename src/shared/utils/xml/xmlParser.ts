@@ -1,4 +1,5 @@
 import { parseStringPromise } from 'xml2js';
+import log from '@/shared/utils/logger';
 import type { XmlParserOptions } from './xmlTypes';
 
 /**
@@ -21,6 +22,7 @@ import type { XmlParserOptions } from './xmlTypes';
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function convertXmlToJson(xmlString: string, options?: XmlParserOptions): Promise<any> {
+  const logger = log.getLogger('Glbal');
   try {
     const result = await parseStringPromise(xmlString, {
       // 기본 설정: XML을 자연스러운 JSON으로 변환
@@ -34,7 +36,7 @@ export async function convertXmlToJson(xmlString: string, options?: XmlParserOpt
 
     return result;
   } catch (error) {
-    console.error('XML 파싱 오류:', error);
+    logger.error('XML 파싱 오류:', error);
     throw new Error(`XML 변환 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
   }
 }
