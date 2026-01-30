@@ -35,7 +35,9 @@ export function compileXPath(nodes: XPathNode[]): CompiledQuery {
         // null과 undefined만 필터링, 빈 객체는 보존
         current = mapped.filter((item) => item != null);
         if (current.length === 0) return null;
-        if (current.length === 1) current = current[0];
+        // 중첩 배열 평탄화 (여러 부모의 자식 요소들을 하나의 배열로)
+        const flattened = current.flat();
+        current = flattened.length === 1 ? flattened[0] : flattened;
       } else {
         current = current[node.name];
       }
