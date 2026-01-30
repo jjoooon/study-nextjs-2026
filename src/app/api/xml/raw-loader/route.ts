@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { NextRequest, NextResponse } from 'next/server';
 import { DOMParser } from '@xmldom/xmldom';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const loadStart = performance.now();
@@ -54,8 +54,8 @@ export async function GET(request: NextRequest) {
       {
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          Pragma: 'no-cache',
+          Expires: '0',
         },
       }
     );
