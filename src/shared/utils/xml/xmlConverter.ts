@@ -1,5 +1,5 @@
+import * as jp from 'jsonpath';
 import { parseStringPromise } from 'xml2js';
-import { query, paths, nodes } from 'jsonpath';
 
 // ============================================================================
 // 타입 정의
@@ -241,17 +241,41 @@ function compileXPath(nodes: XPathNode[]): CompiledQuery {
 
 /**
  * XML을 JSON으로 변환하는 유틸리티 함수
+ *
+ * @example
+ * ```typescript
+ * // 기본 사용 (단일 요소는 객체로, 여러 요소는 배열로)
+ * const data = await convertXmlToJson(xml);
+ *
+ * // 커스텀 옵션
+ * const data = await convertXmlToJson(xml, {
+ *   explicitArray: false  // 단일 요소를 객체로 변환하지 않음
+ * });
+ * ```
+ *
  * @param xmlString - XML 문자열
+ * @param options - xml2js 파서 옵션
  * @returns 파싱된 JSON 객체
  */
-export async function convertXmlToJson(xmlString: string): Promise<any> {
+export async function convertXmlToJson(
+  xmlString: string,
+  options?: {
+    explicitArray?: boolean;
+    mergeAttrs?: boolean;
+    trim?: boolean;
+    ignoreAttrs?: boolean;
+    charkey?: string;
+  }
+): Promise<any> {
   try {
     const result = await parseStringPromise(xmlString, {
-      explicitArray: false, // 단일 요소일 경우 배열로 변환하지 않음
+      // 기본 설정: XML을 자연스러운 JSON으로 변환
+      explicitArray: false, // 단일 요소는 객체로, 여러 요소는 배열로
       mergeAttrs: true, // 속성을 객체 프로퍼티로 병합
       trim: true, // 텍스트 값 공백 제거
       ignoreAttrs: false, // 속성 유지
       charkey: 'value', // 텍스트 값의 키 이름
+      ...options, // 사용자 커스텀 옵션으로 오버라이드
     });
 
     return result;
@@ -368,7 +392,7 @@ export function getXPathCacheSize(): number {
  */
 export function jsonPathQuery(jsonData: any, jsonPath: string): any[] {
   try {
-    const result = query(jsonData, jsonPath);
+    const result = jp.query(jsonData, jsonPath);
 
     // JSONPath는 항상 배열을 반환하지만,
     // 단일 결과인 경우도 배열로 반환하여 일관성 유지
@@ -409,7 +433,6 @@ export function jsonPathCount(jsonData: any, jsonPath: string): number {
 export function jsonPathExists(jsonData: any, jsonPath: string): boolean {
   return jsonPathQuery(jsonData, jsonPath).length > 0;
 }
-
 
 /**
  * XML 파일에서 특정 경로의 데이터 추출 (XPath 스타일)

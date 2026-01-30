@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import log from '@/shared/utils/logger';
-import { convertXmlToJson, filterByDateRange, xpathQuery, jsonPathQuery } from '@/shared/utils/xml/xmlConverter';
+import { convertXmlToJson, xpathQuery } from '@/shared/utils/xml/xmlConverter';
 
 interface ConvertedData {
   GD: {
@@ -22,9 +22,8 @@ export default function XmlConverterPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [queryResult, setQueryResult] = useState<any>(null);
-  const [selectedRiskType, setSelectedRiskType] = useState<string>('RLA20011');
-  const [targetDate, setTargetDate] = useState<string>('20260130');
-  const [queryMode, setQueryMode] = useState<'jsonpath' | 'xpath' | 'native'>('jsonpath');
+  const [xpathInput, setXpathInput] = useState<string>("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE");
+  const [queryMode, setQueryMode] = useState<'xpath' | 'native'>('xpath');
 
   useEffect(() => {
     async function loadAndConvertXml() {
@@ -39,8 +38,9 @@ export default function XmlConverterPage() {
         }
         const xmlText = await response.text();
 
-        // XML을 JSON으로 변환
+        // XML을 JSON으로 변환 (CVRGE 자동 배열화)
         const converted = await convertXmlToJson(xmlText);
+
         setJsonData(converted);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'XML 변환 중 오류가 발생했습니다.');
@@ -57,49 +57,27 @@ export default function XmlConverterPage() {
   const handleQuery = () => {
     if (!jsonData) return;
 
-    if (queryMode === 'jsonpath') {
-      // 🚀 JSONPath 방식 (추천 - 가장 간편하고 강력)
-      const jsonPath = `$.GD.RISK_OBJCT_CVRGE.RISK[?(@.RK_TPCD=='${selectedRiskType}')].OBJECT.CVRGE[?(@.SL_STRDT<='${targetDate}' && @.SL_NDDT>'${targetDate}')]`;
+    if (queryMode === 'xpath') {
+      // 🔥 XPath 레거시 호환 방식 - 직접 입력한 XPath 사용
+      const xpath = xpathInput.trim();
 
-      try {
-        const result = jsonPathQuery(jsonData, jsonPath);
-
-        if (result && result.length > 0) {
-          setQueryResult({
-            method: 'JSONPath ⭐',
-            query: jsonPath,
-            coverages: result,
-            totalCount: result.length,
-          });
-        } else {
-          setQueryResult({
-            method: 'JSONPath ⭐',
-            query: jsonPath,
-            message: '조건에 맞는 데이터를 찾을 수 없습니다.',
-          });
-        }
-      } catch (error) {
+      if (!xpath) {
         setQueryResult({
-          method: 'JSONPath ⭐',
-          query: jsonPath,
-          error: error instanceof Error ? error.message : '쿼리 실행 중 오류 발생',
+          method: 'XPath (레거시)',
+          error: 'XPath 쿼리를 입력해주세요.',
         });
+        return;
       }
-    } else if (queryMode === 'xpath') {
-      // 🔥 XPath 레거시 호환 방식
-      const xpath = `/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='${selectedRiskType}']/OBJECT/CVRGE[@SL_STRDT<='${targetDate}' and @SL_NDDT>'${targetDate}']`;
 
       try {
         const result = xpathQuery(jsonData, xpath);
         logger.debug('xpath result', result);
 
-        // XPath는 이제 CVRGE 객체를 직접 반환합니다
+        // XPath 결과 처리
         let coverages = [];
         if (Array.isArray(result)) {
-          // 배열인 경우 모든 요소를 coverages로 사용
           coverages = result;
         } else if (result && typeof result === 'object') {
-          // 단일 객체인 경우 배열로 변환
           coverages = [result];
         }
 
@@ -125,31 +103,11 @@ export default function XmlConverterPage() {
         });
       }
     } else {
-      // Native JSON 방식 (이전 queryData 사용)
-      const risks = jsonData.GD.RISK_OBJCT_CVRGE?.RISK;
-
-      if (Array.isArray(risks)) {
-        const filteredRisks = risks.filter((risk: any) => risk.RK_TPCD === selectedRiskType);
-
-        if (filteredRisks.length > 0) {
-          const risk = filteredRisks[0];
-
-          if (risk.OBJECT && risk.OBJECT.CVRGE) {
-            let coverages = Array.isArray(risk.OBJECT.CVRGE) ? risk.OBJECT.CVRGE : [risk.OBJECT.CVRGE];
-            coverages = filterByDateRange(coverages, 'SL_STRDT', 'SL_NDDT', targetDate);
-
-            setQueryResult({
-              method: 'Native JSON',
-              coverages: coverages,
-              totalCount: coverages.length,
-            });
-          } else {
-            setQueryResult({ method: 'Native JSON', message: '해당 리스크 유형에 대한 담보 정보가 없습니다.' });
-          }
-        } else {
-          setQueryResult({ method: 'Native JSON', message: '조건에 맞는 리스크를 찾을 수 없습니다.' });
-        }
-      }
+      setQueryResult({
+        method: 'Native JSON',
+        data: jsonData,
+        totalCount: 1,
+      });
     }
   };
 
@@ -217,22 +175,11 @@ export default function XmlConverterPage() {
             <div>
               <h2 className="text-xl font-semibold text-gray-800">데이터 쿼리 방식 선택</h2>
               <p className="text-sm text-gray-600 mt-1">
-                {queryMode === 'jsonpath' && '🚀 JSONPath: 가장 간편하고 강력한 쿼리 방식 (추천)'}
                 {queryMode === 'xpath' && '🔥 XPath: 레거시 호환, 기존 XPath 그대로 사용'}
                 {queryMode === 'native' && '📦 Native JSON: TypeScript 네이티브 방식'}
               </p>
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
-              <button
-                onClick={() => setQueryMode('jsonpath')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  queryMode === 'jsonpath'
-                    ? 'bg-green-100 text-green-800 border-2 border-green-300'
-                    : 'bg-gray-100 text-gray-700 border-2 border-gray-300 hover:bg-gray-200'
-                }`}
-              >
-                🚀 JSONPath
-              </button>
               <button
                 onClick={() => setQueryMode('xpath')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -256,122 +203,94 @@ export default function XmlConverterPage() {
             </div>
           </div>
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <label htmlFor="riskType" className="block text-sm font-medium text-gray-700 mb-2">
-                  리스크 유형 코드 (RK_TPCD)
-                </label>
-                <select
-                  id="riskType"
-                  value={selectedRiskType}
-                  onChange={(e) => setSelectedRiskType(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="RLA20010">RLA20010</option>
-                  <option value="RLA20011">RLA20011</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="targetDate" className="block text-sm font-medium text-gray-700 mb-2">
-                  기준일자
+            {queryMode === 'xpath' ? (
+              <div className="mb-4">
+                <label htmlFor="xpathInput" className="block text-sm font-medium text-gray-700 mb-2">
+                  XPath 쿼리
                 </label>
                 <input
-                  id="targetDate"
+                  id="xpathInput"
                   type="text"
-                  value={targetDate}
-                  onChange={(e) => setTargetDate(e.target.value)}
-                  placeholder="YYYYMMDD"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={xpathInput}
+                  onChange={(e) => setXpathInput(e.target.value)}
+                  placeholder="/GD/RISK_OBJCT_CVRGE/RISK"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
                 />
+                <div className="mt-2 flex items-end">
+                  <button
+                    onClick={handleQuery}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                  >
+                    조회 실행
+                  </button>
+                </div>
               </div>
-              <div className="flex items-end">
-                <button
-                  onClick={handleQuery}
-                  className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                >
-                  조회 실행
-                </button>
-              </div>
-            </div>
-
-            {/* 쿼리 예시 표시 */}
-            {queryMode === 'jsonpath' && (
-              <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">🚀 실행될 JSONPath 쿼리:</p>
-                <code className="text-xs text-gray-800 block overflow-x-auto bg-white p-2 rounded">
-                  $.GD.RISK_OBJCT_CVRGE.RISK[?(@.RK_TPCD==&apos;{selectedRiskType}
-                  &apos;)].OBJECT.CVRGE[?(@.SL_STRDT&lt;=&apos;
-                  {targetDate}&apos; && @.SL_NDDT&gt;&apos;{targetDate}&apos;)]
-                </code>
+            ) : (
+              <div className="mb-4">
+                <div className="flex items-end">
+                  <button
+                    onClick={handleQuery}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                  >
+                    전체 데이터 조회
+                  </button>
+                </div>
               </div>
             )}
+
+            {/* 쿼리 예시 표시 */}
             {queryMode === 'xpath' && (
               <div className="bg-orange-50 border border-orange-200 rounded-md p-4 mb-4">
                 <p className="text-sm font-medium text-gray-700 mb-2">🔥 실행될 XPath 쿼리:</p>
-                <code className="text-xs text-gray-800 block overflow-x-auto bg-white p-2 rounded">
-                  /GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD=&apos;{selectedRiskType}&apos;]/OBJECT/CVRGE[@SL_STRDT&lt;=&apos;
-                  {targetDate}&apos; and @SL_NDDT&gt;&apos;{targetDate}&apos;]
-                </code>
+                <code className="text-xs text-gray-800 block overflow-x-auto bg-white p-2 rounded">{xpathInput}</code>
               </div>
             )}
-            {queryMode === 'native' && (
-              <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">📦 Native JSON 방식:</p>
-                <code className="text-xs text-gray-800 block overflow-x-auto bg-white p-2 rounded">
-                  jsonData.GD.RISK_OBJCT_CVRGE.RISK.filter(r =&gt; r.RK_TPCD === &apos;{selectedRiskType}
-                  &apos;).flatMap(r =&gt; r.OBJECT.CVRGE).filter(c =&gt; c.SL_STRDT &lt;= &apos;{targetDate}&apos; &&
-                  c.SL_NDDT &gt; &apos;{targetDate}&apos;)
-                </code>
-              </div>
-            )}
-
             {/* 쿼리 결과 */}
             {queryResult && (
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">조회 결과 {queryResult?.method}</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">조회 결과 ({queryResult?.method})</h3>
+
                 {queryResult?.message && <p className="text-gray-600">{queryResult.message}</p>}
+
                 {queryResult?.error && (
                   <div className="bg-red-50 border border-red-200 rounded-md p-3 text-red-700">
                     <p className="font-medium">오류:</p>
                     <p className="text-sm">{queryResult.error}</p>
                   </div>
                 )}
+
                 {queryResult?.coverages && (
-                  <div>
-                    <p className="text-sm text-gray-600 mb-3">
-                      찾은 담보(CVRGE) 수: <span className="font-semibold">{queryResult.totalCount}</span>
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      결과 수: <span className="font-semibold">{queryResult.totalCount}</span>
                     </p>
-                    <div className="space-y-2">
-                      {queryResult.coverages.map((coverage: any, index: number) => (
-                        <div
-                          key={index}
-                          className={`border rounded-md p-3 ${
-                            queryMode === 'jsonpath'
-                              ? 'bg-green-50 border-green-200'
-                              : queryMode === 'xpath'
-                                ? 'bg-orange-50 border-orange-200'
-                                : 'bg-blue-50 border-blue-200'
-                          }`}
-                        >
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                            <div>
-                              <span className="font-medium">담보코드:</span> {coverage.CVRCD}
-                            </div>
-                            <div>
-                              <span className="font-medium">시작일:</span> {coverage.SL_STRDT}
-                            </div>
-                            <div>
-                              <span className="font-medium">종료일:</span> {coverage.SL_NDDT}
-                            </div>
-                          </div>
-                          {coverage.ADD_ATTR && coverage.ADD_ATTR.ATTR && (
-                            <div className="mt-2 text-sm">
-                              <span className="font-medium">추가속성:</span> {coverage.ADD_ATTR.ATTR.ATRCD}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                    {queryResult.coverages.map((item: any, index: number) => (
+                      <div
+                        key={index}
+                        className={`border rounded-md p-3 ${
+                          queryMode === 'xpath' ? 'bg-orange-50 border-orange-200' : 'bg-blue-50 border-blue-200'
+                        }`}
+                      >
+                        <pre className="text-xs bg-white p-2 rounded overflow-x-auto">
+                          {JSON.stringify(item, null, 2)}
+                        </pre>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {queryResult?.data && (
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      결과 수: <span className="font-semibold">{queryResult.totalCount}</span>
+                    </p>
+                    {queryResult.data.map((item: any, index: number) => (
+                      <div key={index} className="border rounded-md p-3 bg-blue-50 border-blue-200">
+                        <pre className="text-xs bg-white p-2 rounded overflow-x-auto">
+                          {JSON.stringify(item, null, 2)}
+                        </pre>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
