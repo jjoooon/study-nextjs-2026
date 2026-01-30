@@ -74,25 +74,34 @@ export default function XmlConverterPage() {
         logger.debug('xpath result', result);
 
         // XPath 결과 처리
-        let coverages = [];
-        if (Array.isArray(result)) {
-          coverages = result;
-        } else if (result && typeof result === 'object') {
-          coverages = [result];
-        }
-
-        if (coverages.length > 0) {
-          setQueryResult({
-            method: 'XPath (레거시)',
-            query: xpath,
-            coverages: coverages,
-            totalCount: coverages.length,
-          });
-        } else {
+        if (result === null || result === undefined) {
           setQueryResult({
             method: 'XPath (레거시)',
             query: xpath,
             message: '조건에 맞는 데이터를 찾을 수 없습니다.',
+          });
+        } else if (typeof result === 'string' || typeof result === 'number' || typeof result === 'boolean') {
+          // 원시값 (속성값 조회 등)
+          setQueryResult({
+            method: 'XPath (레거시)',
+            query: xpath,
+            data: [{ value: result, type: typeof result }],
+            totalCount: 1,
+          });
+        } else if (Array.isArray(result)) {
+          setQueryResult({
+            method: 'XPath (레거시)',
+            query: xpath,
+            data: result,
+            totalCount: result.length,
+          });
+        } else {
+          // 단일 객체
+          setQueryResult({
+            method: 'XPath (레거시)',
+            query: xpath,
+            data: [result],
+            totalCount: 1,
           });
         }
       } catch (error) {
@@ -213,16 +222,54 @@ export default function XmlConverterPage() {
                   type="text"
                   value={xpathInput}
                   onChange={(e) => setXpathInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleQuery();
+                    }
+                  }}
                   placeholder="/GD/RISK_OBJCT_CVRGE/RISK"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
                 />
-                <div className="mt-2 flex items-end">
+                <div className="mt-2 flex items-end gap-2">
                   <button
                     onClick={handleQuery}
                     className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                   >
                     조회 실행
                   </button>
+                </div>
+
+                {/* XPath 예제 버튼들 */}
+                <div className="mt-3">
+                  <p className="text-xs text-gray-500 mb-2">빠른 예제:</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE")}
+                      className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition-colors"
+                    >
+                      CVRGE 객체
+                    </button>
+                    <button
+                      onClick={() =>
+                        setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE/@CVRCD")
+                      }
+                      className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition-colors"
+                    >
+                      @CVRCD 속성
+                    </button>
+                    <button
+                      onClick={() => setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/@RK_TPCD")}
+                      className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition-colors"
+                    >
+                      @RK_TPCD 속성
+                    </button>
+                    <button
+                      onClick={() => setXpathInput('/GD/@GD_KORNM')}
+                      className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition-colors"
+                    >
+                      상품명 (@GD_KORNM)
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -259,36 +306,32 @@ export default function XmlConverterPage() {
                   </div>
                 )}
 
-                {queryResult?.coverages && (
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-600">
-                      결과 수: <span className="font-semibold">{queryResult.totalCount}</span>
-                    </p>
-                    {queryResult.coverages.map((item: any, index: number) => (
-                      <div
-                        key={index}
-                        className={`border rounded-md p-3 ${
-                          queryMode === 'xpath' ? 'bg-orange-50 border-orange-200' : 'bg-blue-50 border-blue-200'
-                        }`}
-                      >
-                        <pre className="text-xs bg-white p-2 rounded overflow-x-auto">
-                          {JSON.stringify(item, null, 2)}
-                        </pre>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
                 {queryResult?.data && (
                   <div className="space-y-2">
                     <p className="text-sm text-gray-600">
                       결과 수: <span className="font-semibold">{queryResult.totalCount}</span>
                     </p>
                     {queryResult.data.map((item: any, index: number) => (
-                      <div key={index} className="border rounded-md p-3 bg-blue-50 border-blue-200">
-                        <pre className="text-xs bg-white p-2 rounded overflow-x-auto">
-                          {JSON.stringify(item, null, 2)}
-                        </pre>
+                      <div
+                        key={index}
+                        className={`border rounded-md p-3 ${
+                          queryMode === 'xpath' ? 'bg-orange-50 border-orange-200' : 'bg-blue-50 border-blue-200'
+                        }`}
+                      >
+                        {/* 원시값 (속성값 조회 결과) */}
+                        {item.type && (item.type === 'string' || item.type === 'number' || item.type === 'boolean') ? (
+                          <div>
+                            <p className="text-xs text-gray-500 mb-1">속성값 ({item.type}):</p>
+                            <code className="text-sm font-semibold text-gray-800 bg-white px-2 py-1 rounded">
+                              {String(item.value)}
+                            </code>
+                          </div>
+                        ) : (
+                          /* 객체 또는 배열 */
+                          <pre className="text-xs bg-white p-2 rounded overflow-x-auto">
+                            {JSON.stringify(item, null, 2)}
+                          </pre>
+                        )}
                       </div>
                     ))}
                   </div>

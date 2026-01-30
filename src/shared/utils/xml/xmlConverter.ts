@@ -124,9 +124,16 @@ function parseXPath(xpath: string): XPathNode[] {
       currentNode = null;
     } else if (token) {
       if (token.startsWith('@')) {
-        // 속성 반환: /path/@attr
+        // 속성 반환: /path/@attr 또는 /path/@attr (독립 노드)
+        const attrName = token.substring(1);
         if (currentNode) {
-          currentNode.returnAttribute = token.substring(1);
+          currentNode.returnAttribute = attrName;
+        } else {
+          // @attr이 독립적인 노드로 온 경우 (예: /CVRGE/@CVRCD)
+          // 이전 노드의 속성으로 처리해야 함
+          if (nodes.length > 0) {
+            nodes[nodes.length - 1].returnAttribute = attrName;
+          }
         }
       } else if (!currentNode) {
         currentNode = { name: token };

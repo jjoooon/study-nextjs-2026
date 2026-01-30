@@ -55,4 +55,22 @@
             </OBJECT>
         </RISK>
     </RISK_OBJCT_CVRGE>
+    <GD_SL_CHNCD>
+        <SL_CHNCD CHNCD="01"/>
+        <SL_CHNCD CHNCD="02"/>
+        <SL_CHNCD CHNCD="03"/>
+    </GD_SL_CHNCD>
+    <GD_SL_TRM>
+        <SL_TRM SL_STRDT="20251201" SL_NDDT="20260401"/>
+    </GD_SL_TRM>
+    <GD_CVRGE_CSF>
+        <CVR_CSF/>
+        <CVR_CSF/>
+        <CVR_CSF/>
+        <CVR_CSF/>
+        <CVR_CSF/>
+    </GD_CVRGE_CSF>
+    <GD_SRP_XCRT>
+        <AP_DC_XC DC_XC_KNDCD="05"/>
+    </GD_SRP_XCRT>
 </GD>
