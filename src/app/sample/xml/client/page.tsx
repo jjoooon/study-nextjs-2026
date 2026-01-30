@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import log from '@/shared/utils/logger';
-import { convertXmlToJson, xpathQuery } from '@/shared/utils/xml/xmlConverter';
+import { convertXmlToJson } from '@/shared/utils/xml/xmlParser';
+import { xpathQuery } from '@/shared/utils/xml/xpathQuery';
 
 interface ConvertedData {
   GD: {
@@ -10,6 +11,7 @@ interface ConvertedData {
     P_APPL_DT: string;
     GD_KORNM: string;
     RISK_OBJCT_CVRGE?: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       RISK?: any | any[];
     };
   };
@@ -21,6 +23,7 @@ export default function XmlConverterPage() {
   const [jsonData, setJsonData] = useState<ConvertedData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [queryResult, setQueryResult] = useState<any>(null);
   const [xpathInput, setXpathInput] = useState<string>("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011']/OBJECT/CVRGE");
   const [queryMode, setQueryMode] = useState<'xpath' | 'native'>('xpath');
@@ -269,6 +272,22 @@ export default function XmlConverterPage() {
                     >
                       상품명 (@GD_KORNM)
                     </button>
+                    <button
+                      onClick={() =>
+                        setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20010' or @RK_TPCD='RLA20011']")
+                      }
+                      className="text-xs px-3 py-1 bg-blue-100 hover:bg-blue-200 rounded-md border border-blue-300 transition-colors"
+                    >
+                      OR (RK_TPCD)
+                    </button>
+                    <button
+                      onClick={() =>
+                        setXpathInput("/GD/RISK_OBJCT_CVRGE/RISK[@RK_TPCD='RLA20011' and @RK_TPCD='RLA20011']")
+                      }
+                      className="text-xs px-3 py-1 bg-green-100 hover:bg-green-200 rounded-md border border-green-300 transition-colors"
+                    >
+                      AND (RK_TPCD)
+                    </button>
                   </div>
                 </div>
               </div>
@@ -311,6 +330,7 @@ export default function XmlConverterPage() {
                     <p className="text-sm text-gray-600">
                       결과 수: <span className="font-semibold">{queryResult.totalCount}</span>
                     </p>
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {queryResult.data.map((item: any, index: number) => (
                       <div
                         key={index}
