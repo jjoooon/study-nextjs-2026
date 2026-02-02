@@ -121,6 +121,16 @@ const envSchema = z.object({
 
   /** 로깅 레벨 */
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
+
+  // ==========================================================================
+  // 디버그 설정 (비공개 - 서버에서만 접근 가능)
+  // ==========================================================================
+
+  /** 디버그 허용 IP 목록 (쉼표로 구분, CIDR 지원) */
+  DEBUG_IPS: z.string().optional(),
+
+  /** 디버그 IP에 적용할 로그 레벨 */
+  DEBUG_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
 });
 
 /**
@@ -151,6 +161,9 @@ const config = envSchema.parse({
   NEXT_PUBLIC_STORYBOOK_ENABLED: process.env.NEXT_PUBLIC_STORYBOOK_ENABLED,
   NEXT_PUBLIC_REDUX_DEVTOOLS: process.env.NEXT_PUBLIC_REDUX_DEVTOOLS,
   NEXT_PUBLIC_LOG_LEVEL: process.env.NEXT_PUBLIC_LOG_LEVEL,
+
+  DEBUG_IPS: process.env.DEBUG_IPS,
+  DEBUG_LOG_LEVEL: process.env.DEBUG_LOG_LEVEL,
 });
 
 /**
@@ -196,4 +209,10 @@ export const publicConfig = {
 /**
  * 비공개 설정 (서버에서만 접근 가능)
  */
-export const serverConfig = {} as const;
+export const serverConfig = {
+  debugIps:
+    config.DEBUG_IPS?.split(',')
+      .map((ip) => ip.trim())
+      .filter(Boolean) ?? [],
+  debugLogLevel: config.DEBUG_LOG_LEVEL,
+} as const;
