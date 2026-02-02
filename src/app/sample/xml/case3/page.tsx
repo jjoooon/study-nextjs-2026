@@ -5,8 +5,19 @@ import * as xpath from 'xpath';
 import log from '@/shared/utils/logger';
 
 interface QueryResult {
-  results: Array<{ type: string; value: string | number | boolean }>;
+  results?: Array<
+    | { type: 'attribute'; value: string | null }
+    | { type: 'element'; tag: string; content: string }
+    | { type: 'number'; content: string | null }
+    | { type: 'string'; value: string | null }
+    | { type: 'boolean'; value: boolean }
+    | { type: string | number; value?: string | number | boolean | null; tag?: string; content?: string | null }
+  >;
   nodeCount: number;
+  xpath?: string;
+  queryTime?: number;
+  message?: string;
+  error?: string;
 }
 
 export default function XmlConverterPage() {
@@ -98,6 +109,7 @@ export default function XmlConverterPage() {
     if (!xpathQuery) {
       setQueryResult({
         error: 'XPath 쿼리를 입력해주세요.',
+        nodeCount: 0,
       });
       return;
     }
@@ -244,6 +256,7 @@ export default function XmlConverterPage() {
       setQueryResult({
         xpath: xpathQuery,
         error: err instanceof Error ? err.message : '쿼리 실행 중 오류 발생',
+        nodeCount: 0,
       });
     }
   };
@@ -486,7 +499,7 @@ export default function XmlConverterPage() {
               <div className="border-t border-gray-200 pt-4">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
                   조회 결과
-                  {queryResult.queryTime > 0 && (
+                  {queryResult.queryTime && queryResult.queryTime > 0 && (
                     <span className="text-sm font-normal text-gray-600 ml-2">
                       ({queryResult.queryTime.toFixed(2)}ms)
                     </span>
@@ -519,23 +532,23 @@ export default function XmlConverterPage() {
                           </div>
                         )}
                         {/* 요소 */}
-                        {result.type === 'element' && (
+                        {result.type === 'element' && 'tag' in result && 'content' in result && (
                           <div>
                             <p className="text-xs text-gray-500 mb-1">요소 (&lt;{result.tag}&gt;):</p>
                             <pre className="text-xs bg-white p-2 rounded overflow-x-auto">{result.content}</pre>
                           </div>
                         )}
                         {/* 숫자 (count() 등) */}
-                        {result.type === 'number' && (
+                        {result.type === 'number' && 'content' in result && (
                           <div>
                             <p className="text-xs text-gray-500 mb-1">숫자 결과:</p>
                             <code className="text-sm font-semibold text-gray-800 bg-white px-2 py-1 rounded">
-                              {result.value}
+                              {result.content}
                             </code>
                           </div>
                         )}
                         {/* 문자열 (text(), 속성값 등) */}
-                        {result.type === 'string' && (
+                        {result.type === 'string' && 'value' in result && (
                           <div>
                             <p className="text-xs text-gray-500 mb-1">문자열 결과:</p>
                             <code className="text-sm font-semibold text-gray-800 bg-white px-2 py-1 rounded">
