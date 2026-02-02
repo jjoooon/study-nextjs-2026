@@ -3,7 +3,7 @@
  *
  * @purpose
  * - IP 기반 로그 레벨 동적 설정
- * - 특정 IP 사용자에게 디버그 로그 레벨 부여
+ * - 여러 미들웨어 핸들러를 순차적으로 실행
  *
  * @description
  * 환경변수 DEBUG_IPS에 등록된 IP에서 접근 시,
@@ -12,72 +12,42 @@
  * 환경변수 예시:
  * DEBUG_IPS=127.0.0.1,192.168.1.100,10.0.0.0/24
  * DEBUG_LOG_LEVEL=debug
+ *
+ * 새로운 핸들러를 추가하려면 아래 handlers 배열에 추가하세요.
  */
 
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { serverConfig } from '@/shared/config/env';
-import { getClientIp, isIpMatch } from '@/shared/utils/ipHelper';
-import log from '@/shared/utils/logger';
+import { composeMiddleware } from './middleware/chain';
+import { debugLogLevelHandler } from './middleware/handlers/debugLogLevel';
 
-const DEBUG_COOKIE_NAME = 'debug_log_level';
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7일
+/**
+ * 미들웨어 핸들러 목록
+ *
+ * @description
+ * 등록된 순서대로 실행됩니다.
+ */
+const handlers = [
+  {
+    handler: debugLogLevelHandler,
+    config: {
+      name: 'DebugLogLevel',
+    },
+  },
+  // 여기에 새로운 핸들러를 추가하세요
+  // 예: { handler: authHandler, config: { name: 'Auth' } },
+];
 
-const logger = log.getLogger('Global');
+const middlewareChain = composeMiddleware(handlers);
 
 export function proxy(request: NextRequest) {
-  const response = NextResponse.next();
-
-  // 디버그 IP가 설정되지 않은 경우 스킵
-  if (serverConfig.debugIps.length === 0) {
-    // 기존 쿠키 제거 (설정이 해제된 경우)
-    if (request.cookies.get(DEBUG_COOKIE_NAME)) {
-      response.cookies.delete(DEBUG_COOKIE_NAME);
-    }
-    return response;
-  }
-
-  // 이미 쿠키가 있는 경우 재설정 방지 (성능 최적화)
-  const existingCookie = request.cookies.get(DEBUG_COOKIE_NAME);
-  if (existingCookie?.value === serverConfig.debugLogLevel) {
-    return response;
-  }
-
-  // 클라이언트 IP 추출
-  const clientIp = getClientIp(request);
-  logger.info(`Client IP: ${clientIp}`);
-
-  // IP가 일치하는지 확인
-  const isDebugIp = isIpMatch(clientIp, serverConfig.debugIps);
-
-  if (isDebugIp) {
-    // 디버그 로그 레벨 쿠키 설정
-    response.cookies.set(DEBUG_COOKIE_NAME, serverConfig.debugLogLevel, {
-      httpOnly: false, // 클라이언트 JavaScript에서 읽을 수 있어야 함
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: COOKIE_MAX_AGE,
-      path: '/',
-    });
-  } else {
-    // 일치하지 않는 경우 기존 쿠키 제거
-    if (existingCookie) {
-      response.cookies.delete(DEBUG_COOKIE_NAME);
-    }
-  }
-
-  return response;
+  return middlewareChain(request);
 }
 
-// 프록시가 실행될 경로 패턴
+/**
+ * 프록시가 실행될 경로 패턴
+ */
 export const config = {
   matcher: [
-    /*
-     * 모든 경로에 대해 실행:
-     * - _next/static (정적 파일 제외)
-     * - _next/image (이미지 최적화 제외)
-     * - favicon.ico, 사이트맵, robots.txt 제외
-     */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
