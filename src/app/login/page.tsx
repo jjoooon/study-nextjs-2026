@@ -7,14 +7,13 @@
  * MSW로 모킹된 인증 API를 사용하는 로그인 페이지
  *
  * @features
- * - 이메일/비밀번호 로그인
- * - accessToken은 Redux 상태로 관리
- * - refreshToken은 HttpOnly Cookie로 자동 설정
+ * - 사번/비밀번호 로그인
+ * - 세션 쿠키로 인증 관리
  * - 로그인 성공 시 returnUrl 또는 메인 페이지로 리다이렉트
  * - 폼 유효성 검사
  *
  * @test
- * - 테스트 계정: test@example.com / password123
+ * - 테스트 계정: 사번 123456 / password123
  */
 
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -30,8 +29,8 @@ export default function LoginPage() {
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
-  const [email, setEmail] = useState('test@example.com');
-  const [password, setPassword] = useState('password123');
+  const [employeeId, setEmployeeId] = useState('1234567');
+  const [password, setPassword] = useState('1111');
 
   // returnUrl 쿼리 파라미터 추출 (AuthGuard에서 전달됨)
   const returnUrl = searchParams.get('returnUrl');
@@ -44,15 +43,13 @@ export default function LoginPage() {
 
     try {
       // 로그인 API 호출
-      const result = await login({ email, password }).unwrap();
+      const result = await login({ employeeId, password }).unwrap();
 
       // Redux 상태 업데이트
-      // - accessToken과 user 정보만 저장
-      // - refreshToken은 HttpOnly Cookie로 자동 설정됨
+      // - 사용자 정보만 저장
+      // - session_id 쿠키는 자동 설정됨
       dispatch(
         setCredentials({
-          token: result.token,
-          refreshToken: null, // 쿠키에서 관리하므로 Redux에 저장하지 않음
           user: result.user,
         })
       );
@@ -78,21 +75,21 @@ export default function LoginPage() {
         {/* 로그인 폼 */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="-space-y-px rounded-md shadow-xs">
-            {/* 이메일 입력 */}
+            {/* 사번 입력 */}
             <div>
-              <label htmlFor="email" className="sr-only">
-                이메일
+              <label htmlFor="employeeId" className="sr-only">
+                사번
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
+                id="employeeId"
+                name="employeeId"
+                type="text"
+                autoComplete="username"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
                 className="relative block w-full rounded-t-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="이메일 주소"
+                placeholder="사번"
               />
             </div>
 
@@ -141,10 +138,9 @@ export default function LoginPage() {
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-blue-800">테스트 안내</h3>
                 <div className="mt-2 text-sm text-blue-700">
-                  <p>이 로그인 기능은 MSW(Mock Service Worker)로 모킹된 API를 사용합니다.</p>
                   <ul className="mt-1 list-disc list-inside">
-                    <li>이메일: test@example.com</li>
-                    <li>비밀번호: password123</li>
+                    <li>사번: 7자리 숫자 (예: 1234567)</li>
+                    <li>비밀번호: 1111</li>
                   </ul>
                 </div>
               </div>

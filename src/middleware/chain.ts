@@ -14,18 +14,15 @@
 import type { NextRequest } from 'next/server';
 import type { NextResponse } from 'next/server';
 import { NextResponse as createNextResponse } from 'next/server';
-import type { ConfiguredHandler, MiddlewareHandler, MiddlewareHandlerConfig } from './types';
 import log from '@/shared/utils/logger';
+import type { ConfiguredHandler, MiddlewareHandler, MiddlewareHandlerConfig } from './types';
 
 const logger = log.getLogger('MiddlewareChain');
 
 /**
  * 미들웨어 핸들러를 래핑하여 조건부 실행 및 로깅 추가
  */
-function wrapHandler(
-  handler: MiddlewareHandler,
-  config?: MiddlewareHandlerConfig
-): MiddlewareHandler {
+function wrapHandler(handler: MiddlewareHandler, config?: MiddlewareHandlerConfig): MiddlewareHandler {
   return async (request: NextRequest, response: NextResponse): Promise<NextResponse> => {
     // 조건부 실행: condition이 false면 스킵
     if (config?.condition && !config.condition(request)) {

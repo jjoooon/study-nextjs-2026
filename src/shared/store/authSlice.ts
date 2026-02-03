@@ -25,8 +25,6 @@ import type { AuthState, User } from '../types/authTypes';
  * 초기 상태
  */
 const initialState: AuthState = {
-  token: null,
-  refreshToken: null,
   user: null,
   isAuthenticated: false,
   isLoading: false,
@@ -49,11 +47,10 @@ const authSlice = createSlice({
     /**
      * 자격증명 저장
      *
-     * 로그인 성공 시 토큰과 사용자 정보를 저장합니다.
+     * 로그인 성공 시 사용자 정보를 저장합니다.
+     * 세션 쿠키는 자동 관리되므로 Redux에 저장하지 않습니다.
      */
-    setCredentials: (state, action: { payload: Pick<AuthState, 'token' | 'refreshToken' | 'user'> }) => {
-      state.token = action.payload.token;
-      state.refreshToken = action.payload.refreshToken;
+    setCredentials: (state, action: { payload: Pick<AuthState, 'user'> }) => {
       state.user = action.payload.user;
       state.isAuthenticated = true;
       state.error = null;
@@ -65,8 +62,6 @@ const authSlice = createSlice({
      * 모든 인증 정보를 초기화합니다.
      */
     clearCredentials: (state) => {
-      state.token = null;
-      state.refreshToken = null;
       state.user = null;
       state.isAuthenticated = false;
       state.error = null;

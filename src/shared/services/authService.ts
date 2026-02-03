@@ -5,7 +5,8 @@
  *
  * @description
  * Auth 도메인의 모든 API 호출을 담당하는 서비스 계층
- * - 로그인, 로그아웃, 토큰 갱신 등 인증 관련 기능
+ * - 로그인, 로그아웃 등 인증 관련 기능
+ * - 쿠키 기반 세션 인증
  * - MSW로 모킹되어 개발 및 테스트에 활용
  * - 실제 백엔드 연동 시 코드 변경 불필요
  *
@@ -44,11 +45,11 @@ export const authService = createApi({
      * 로그인
      * POST /api/auth/login
      *
-     * @param credentials - 사용자 자격증명
-     * @returns 토큰 및 사용자 정보
+     * @param credentials - 사용자 자격증명 (사번, 비밀번호)
+     * @returns 사용자 정보 (세션 쿠키는 자동 설정됨)
      */
     login: builder.mutation({
-      query: (credentials: { email: string; password: string }) => ({
+      query: (credentials: { employeeId: string; password: string }) => ({
         url: '/auth/login',
         method: 'POST',
         body: credentials,
@@ -82,26 +83,16 @@ export const authService = createApi({
     }),
 
     /**
-     * 토큰 갱신
-     * POST /api/auth/refresh
+     * 토큰 갱신 (제거됨)
      *
      * @description
-     * - refreshToken은 HttpOnly Cookie에서 자동 전송됨
-     * - 별도로 파라미터 전달 불필요
-     * - skipReauth: true로 토큰 갱신 로직 건너뜀 (무한 루프 방지)
+     * 쿠키 기반 인증에서는 토큰 갱신이 필요 없습니다.
+     * 세션 쿠키의 유효기간 동안 자동으로 인증이 유지됩니다.
      *
-     * @returns 새로운 accessToken
+     * @deprecated
+     * 쿠키 기반 인증으로 변경되어 사용하지 않습니다.
      */
-    refreshToken: builder.mutation({
-      query: () => ({
-        url: '/auth/refresh',
-        method: 'POST',
-        // 쿠키는 withCredentials: true로 자동 전송
-      }),
-      extraOptions: {
-        skipReauth: true, // 토큰 갱신 엔드포인트는 재갱신하지 않음
-      },
-    }),
+    // refreshToken: builder.mutation({ ... }), // 제거됨
 
     /**
      * 비밀번호 찾기 (이메일 발송)
@@ -146,7 +137,6 @@ export const authService = createApi({
  * - useLoginMutation: 로그인
  * - useLogoutMutation: 로그아웃
  * - useGetMeQuery: 사용자 정보 조회
- * - useRefreshTokenMutation: 토큰 갱신
  * - useForgotPasswordMutation: 비밀번호 찾기
  * - useResetPasswordMutation: 비밀번호 재설정
  */
@@ -154,7 +144,6 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useGetMeQuery,
-  useRefreshTokenMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
 } = authService;

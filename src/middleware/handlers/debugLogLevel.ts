@@ -16,10 +16,10 @@
 
 import type { NextRequest } from 'next/server';
 import type { NextResponse } from 'next/server';
-import type { MiddlewareHandler } from '../types';
 import { serverConfig } from '@/shared/config/env';
 import { getClientIp, isIpMatch } from '@/shared/utils/ipHelper';
 import log from '@/shared/utils/logger';
+import type { MiddlewareHandler } from '../types';
 
 const DEBUG_COOKIE_NAME = 'debug_log_level';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7일

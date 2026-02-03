@@ -20,10 +20,7 @@ import type { NextResponse } from 'next/server';
  * @param response - NextResponse 객체 (기본적으로 NextResponse.next())
  * @returns 수정된 NextResponse 객체
  */
-export type MiddlewareHandler = (
-  request: NextRequest,
-  response: NextResponse
-) => NextResponse | Promise<NextResponse>;
+export type MiddlewareHandler = (request: NextRequest, response: NextResponse) => NextResponse | Promise<NextResponse>;
 
 /**
  * 미들웨어 핸들러 설정

@@ -13,12 +13,11 @@ import type { AuthState } from './authSlice';
  *
  * @description
  * 인증 상태에 대한 selector
- * - token, refreshToken: 토큰 정보
  * - user: 사용자 정보
  * - isAuthenticated: 인증 여부
  * - isLoading, error: 로딩 및 에러 상태
  *
- * @note Conditional Rendering으로 인해 방어 로직 불필요
+ * @note 쿠키 기반 인증으로 변경되어 토큰 selector 제거됨
  */
 
 // ============================================================================
@@ -41,16 +40,6 @@ export const selectIsAuthenticated = createSelector([selectAuthState], (auth) =>
 export const selectUser = createSelector([selectAuthState], (auth) => auth.user);
 
 /**
- * 액세스 토큰 선택자
- */
-export const selectToken = createSelector([selectAuthState], (auth) => auth.token);
-
-/**
- * 리프레시 토큰 선택자
- */
-export const selectRefreshToken = createSelector([selectAuthState], (auth) => auth.refreshToken);
-
-/**
  * 로딩 상태 선택자
  */
 export const selectAuthLoading = createSelector([selectAuthState], (auth) => auth.isLoading);
@@ -70,9 +59,9 @@ export const selectAuthError = createSelector([selectAuthState], (auth) => auth.
 export const selectUserName = createSelector([selectUser], (user) => user?.name ?? null);
 
 /**
- * 사용자 이메일 선택자
+ * 사용자 사번 선택자
  */
-export const selectUserEmail = createSelector([selectUser], (user) => user?.email ?? null);
+export const selectUserEmployeeId = createSelector([selectUser], (user) => user?.employeeId ?? null);
 
 /**
  * 사용자 역할 선택자

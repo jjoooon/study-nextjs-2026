@@ -3,12 +3,23 @@
  *
  * @description
  * MSW(Mock Service Worker)를 사용하여 인증 API를 모킹합니다.
- * - 로그인, 로그아웃, 토큰 검증 등 인증 관련 모든 API 모킹
+ * - 로그인, 로그아웃, 세션 검증 등 인증 관련 모든 API 모킹
+ * - 쿠키 기반 세션 인증 방식
  * - 다양한 시나리오 시뮬레이션 가능 (성공, 실패, 네트워크 지연)
  *
  * @test
- * - 테스트 계정: test@example.com / password123
+ * - 사번: 7자리 숫자 (예: 1234567)
+ * - 비밀번호: 1111 (고정)
  * - 실패 케이스: 그 외 모든 조합
+ *
+ * @cookies
+ * - InitechEamERCD: 1001 (고정)
+ * - InitechEamUID: 로그인 시 사용한 사번
+ * - InitechEamUIP: 127.0.0.1 (고정)
+ * - InitechEamUPID: portal.hwgitest.com
+ * - InitechEamUTOA: 1 (고정)
+ * - InitechEamUHMAC: aaaaa (고정)
+ * - InitechEamULAT: new Date().getTime()의 10자리
  */
 
 import { http, HttpResponse, delay } from 'msw';
@@ -22,39 +33,47 @@ export const authHandlers = [
    * POST /api/auth/login
    *
    * @description
-   * 사용자 자격증명을 검증하고 JWT 토큰 발급
-   * - accessToken은 응답 본문으로 반환
-   * - refreshToken은 HttpOnly Cookie로 설정
+   * 사용자 자격증명을 검증하고 세션 쿠키 발급
+   * - 쿠키들로 세션 관리
+   * - 사용자 정보는 응답 본문으로 반환
    *
    * @success
-   * - email: test@example.com
-   * - password: password123
+   * - employeeId: 7자리 숫자 (정규식: /^\d{7}$/)
+   * - password: 1111 (고정)
    *
    * @failure
    * - 그 외 모든 조합은 401 반환
    */
   http.post('/api/auth/login', async ({ request }) => {
-    const body = (await request.json()) as { email: string; password: string };
-    const { email, password } = body;
+    const body = (await request.json()) as { employeeId: string; password: string };
+    const { employeeId, password } = body;
 
     // 네트워크 지연 시뮬레이션 (500ms)
-    await delay(500);
+    await delay(50);
 
-    // ✅ 성공 시나리오: 올바른 자격증명
-    if (email === 'test@example.com' && password === 'password123') {
-      // MSW에서 실제 브라우저 쿠키 설정을 위해 document.cookie 사용
-      // 참고: HttpOnly 속성은 JavaScript에서 설정 불가능하므로 개발용으로만 사용
+    // ✅ 성공 시나리오: 사번 7자리 숫자, 비밀번호 1111
+    const isValidEmployeeId = /^\d{7}$/.test(employeeId);
+    const isValidPassword = password === '1111';
+
+    if (isValidEmployeeId && isValidPassword) {
+      // 쿠키 설정
       if (typeof document !== 'undefined') {
-        document.cookie = 'refreshToken=mock-refresh-token-67890; Path=/; Max-Age=604800; SameSite=lax';
+        const timestamp = String(Date.now()).slice(0, 10); // 10자리만 사용
+
+        document.cookie = `InitechEamERCD=1001; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamUID=${employeeId}; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamUIP=127.0.0.1; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamUPID=portal.hwgitest.com; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamUTOA=1; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamUHMAC=aaaaa; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamULAT=${timestamp}; Path=/; Max-Age=86400; SameSite=lax`;
       }
 
       return HttpResponse.json({
-        token: 'mock-jwt-token-12345',
-        expiresIn: 3600, // 1시간
         user: {
           id: 1,
-          email: 'test@example.com',
-          name: '테스트 사용자',
+          employeeId,
+          name: '사용자',
           role: 'user',
         },
       });
@@ -64,7 +83,7 @@ export const authHandlers = [
     return HttpResponse.json(
       {
         error: 'INVALID_CREDENTIALS',
-        message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+        message: '사번 또는 비밀번호가 올바르지 않습니다.',
       },
       { status: 401 }
     );
@@ -91,22 +110,34 @@ export const authHandlers = [
    *
    * @description
    * 현재 로그인된 사용자 정보 조회
-   * - Authorization 헤더의 Bearer 토큰 검증
+   * - 쿠키로 세션 검증
    *
    * @success
-   * - Authorization: Bearer mock-jwt-token-12345
-   * - Authorization: Bearer new-mock-jwt-token-* (갱신된 토큰)
+   * - InitechEamUID: 7자리 사번이 있는 경우
    *
    * @failure (401)
-   * - Authorization 헤더 없음
-   * - 잘못된 토큰
-   * - 만료된 토큰: expired-token-*
+   * - 쿠키 없음
+   * - 잘못된 세션
    */
   http.get('/api/auth/me', async ({ request }) => {
-    const authHeader = request.headers.get('Authorization');
+    // 쿠키에서 사번 추출
+    let employeeId = null;
+    const cookieHeader = request.headers.get('Cookie');
 
-    // 인증 헤더 검증
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (cookieHeader) {
+      const uidMatch = cookieHeader.match(/InitechEamUID=([^;]+)/);
+      employeeId = uidMatch ? uidMatch[1] : null;
+    }
+
+    // MSW 환경에서 헤더에 없는 경우 document.cookie에서 읽기
+    if (!employeeId && typeof document !== 'undefined') {
+      const cookies = document.cookie;
+      const uidMatch = cookies.match(/InitechEamUID=([^;]+)/);
+      employeeId = uidMatch ? uidMatch[1] : null;
+    }
+
+    // 인증 검증: 7자리 사번인지 확인
+    if (!employeeId || !/^\d{7}$/.test(employeeId)) {
       return HttpResponse.json(
         {
           error: 'UNAUTHORIZED',
@@ -116,87 +147,28 @@ export const authHandlers = [
       );
     }
 
-    // 토큰 추출
-    const token = authHeader.split(' ')[1];
-
-    // 만료된 토큰 시뮬레이션 (토큰 갱신 테스트용)
-    if (token.startsWith('expired-token-')) {
-      return HttpResponse.json(
-        {
-          error: 'TOKEN_EXPIRED',
-          message: '토큰이 만료되었습니다.',
-        },
-        { status: 401 }
-      );
-    }
-
-    // 유효한 토큰 검증
-    const isValidToken = token === 'mock-jwt-token-12345' || token.startsWith('new-mock-jwt-token-');
-
-    if (!isValidToken) {
-      return HttpResponse.json(
-        {
-          error: 'INVALID_TOKEN',
-          message: '유효하지 않은 토큰입니다.',
-        },
-        { status: 401 }
-      );
-    }
-
     // 성공: 사용자 정보 반환
     return HttpResponse.json({
       user: {
         id: 1,
-        email: 'test@example.com',
-        name: '테스트 사용자',
+        employeeId,
+        name: '사용자',
         role: 'user',
       },
     });
   }),
 
   /**
-   * 토큰 갱신
-   * POST /api/auth/refresh
+   * 토큰 갱신 (제거됨)
    *
    * @description
-   * 쿠키의 리프레시 토큰으로 새로운 액세스 토큰 발급
-   * - refreshToken은 HttpOnly Cookie에서 읽음
-   * - 새로운 accessToken만 응답 본문으로 반환
+   * 쿠키 기반 인증에서는 토큰 갱신이 필요 없습니다.
+   * 세션 쿠키의 유효기간 동안 자동으로 인증이 유지됩니다.
+   *
+   * @deprecated
+   * 쿠키 기반 인증으로 변경되어 사용하지 않습니다.
    */
-  http.post('/api/auth/refresh', async ({ request }) => {
-    // MSW에서는 Cookie 헤더가 null일 수 있으므로 document.cookie 직접 읽기
-    let refreshToken = null;
-
-    // 1. 요청 헤더에서 쿠키 읽기 시도
-    const cookieHeader = request.headers.get('Cookie');
-
-    if (cookieHeader) {
-      const refreshTokenMatch = cookieHeader.match(/refreshToken=([^;]+)/);
-      refreshToken = refreshTokenMatch ? refreshTokenMatch[1] : null;
-    }
-
-    // 2. 헤더에 없으면 document.cookie에서 읽기 (MSW 환경)
-    if (!refreshToken && typeof document !== 'undefined') {
-      const cookies = document.cookie;
-      const refreshTokenMatch = cookies.match(/refreshToken=([^;]+)/);
-      refreshToken = refreshTokenMatch ? refreshTokenMatch[1] : null;
-    }
-
-    if (refreshToken === 'mock-refresh-token-67890') {
-      return HttpResponse.json({
-        token: 'new-mock-jwt-token-' + Date.now(),
-        expiresIn: 3600,
-      });
-    }
-
-    return HttpResponse.json(
-      {
-        error: 'INVALID_REFRESH_TOKEN',
-        message: '유효하지 않은 리프레시 토큰입니다.',
-      },
-      { status: 401 }
-    );
-  }),
+  // http.post('/api/auth/refresh', ...), // 제거됨
 
   /**
    * 비밀번호 찾기 (이메일 발송)

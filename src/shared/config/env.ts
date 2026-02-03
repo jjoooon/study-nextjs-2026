@@ -67,19 +67,7 @@ const envSchema = z.object({
   // 인증 설정 (공개)
   // ==========================================================================
 
-  /** 액세스 토큰 만료 시간 (분) */
-  NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .pipe(z.number().positive())
-    .default(15),
-
-  /** 리프레시 토큰 만료 시간 (일) */
-  NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .pipe(z.number().positive())
-    .default(7),
+  // 쿠키 기반 인증으로 변경되어 토큰 만료 시간 설정 제거됨
 
   // ==========================================================================
   // Feature Flags (공개)
@@ -151,9 +139,6 @@ const config = envSchema.parse({
   NEXT_PUBLIC_API_TIMEOUT: process.env.NEXT_PUBLIC_API_TIMEOUT,
   NEXT_PUBLIC_API_RETRY_COUNT: process.env.NEXT_PUBLIC_API_RETRY_COUNT,
 
-  NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY: process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
-  NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY: process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
-
   NEXT_PUBLIC_FEATURE_DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE,
   NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: process.env.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
   NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: process.env.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
@@ -189,9 +174,6 @@ export const publicConfig = {
   apiUrl: config.NEXT_PUBLIC_API_URL,
   apiTimeout: config.NEXT_PUBLIC_API_TIMEOUT,
   apiRetryCount: config.NEXT_PUBLIC_API_RETRY_COUNT,
-
-  accessTokenExpiry: config.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
-  refreshTokenExpiry: config.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
 
   features: {
     darkMode: config.NEXT_PUBLIC_FEATURE_DARK_MODE,
