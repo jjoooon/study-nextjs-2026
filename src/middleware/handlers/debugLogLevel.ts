@@ -17,7 +17,7 @@
 import type { NextRequest } from 'next/server';
 import type { NextResponse } from 'next/server';
 import { serverConfig } from '@/shared/config/env';
-import { getClientIp, isIpMatch } from '@/shared/utils/ipHelper';
+import { getClientIp, isIpMatch } from '@/shared/utils/ipUtils';
 import log from '@/shared/utils/logger';
 import type { MiddlewareHandler } from '../types';
 

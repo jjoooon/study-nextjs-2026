@@ -1,5 +1,5 @@
 /**
- * IP Address Helper Utilities
+ * IP Address Utilities
  *
  * @description
  * - IP 주소 추출 (다양한 헤더 지원)
@@ -7,7 +7,7 @@
  * - 신뢰할 수 있는 프록시 환경 고려
  *
  * @usage
- * import { getClientIp, isIpMatch } from '@/shared/utils/ip-helper';
+ * import { getClientIp, isIpMatch } from '@/shared/utils/ipUtils';
  *
  * const ip = getClientIp(request);
  * const isDebug = isIpMatch(ip, ['127.0.0.1', '192.168.1.0/24']);
