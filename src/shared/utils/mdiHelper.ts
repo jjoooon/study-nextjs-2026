@@ -397,10 +397,7 @@ function handleMessage(event: MessageEvent): void {
   if (type === 'PING') {
     // event.source가 Window 객체인지 검증
     if (event.source && event.source !== window && typeof event.source.postMessage === 'function') {
-      event.source.postMessage(
-        { type: 'PONG', senderId: message.senderId },
-        event.origin // 보안: 수신한 origin으로만 응답
-      );
+      (event.source as Window).postMessage({ type: 'PONG', senderId: message.senderId }, event.origin);
     }
     return;
   }
