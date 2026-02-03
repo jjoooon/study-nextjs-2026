@@ -8,12 +8,15 @@
  * - 준비 완료 시 READY 메시지 전송 (window.parent.postMessage 사용)
  * - 부모로부터 메시지 수신
  * - 메시지에 따른 UI 업데이트
+ * - 초기 데이터 수신 (mdi.getInitialData() 사용)
  *
  * @usage
- * 부모 문서에서 mdi.open('/sample/mdi2/child')로 열립니다
+ * 부모 문서에서 mdi.open('/sample/mdi2/child', { productId: 123, mode: 'edit' })로 열립니다
  */
 
 import { useEffect, useState } from 'react';
+
+import { mdi } from '@/shared/utils/mdiHelper2';
 
 interface ReceivedMessage {
   id: string;
@@ -22,11 +25,23 @@ interface ReceivedMessage {
   timestamp: string;
 }
 
+interface InitialData {
+  productId?: number;
+  mode?: string;
+  message?: string;
+  timestamp?: number;
+}
+
 export default function ChildPage() {
   const [isReady, setIsReady] = useState(false);
   const [receivedMessages, setReceivedMessages] = useState<ReceivedMessage[]>([]);
   const [parentMessage, setParentMessage] = useState<string>('');
   const [documentName, setDocumentName] = useState<string>('');
+  // Lazy initialization to avoid setState in effect
+  const [initialData] = useState<InitialData | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return mdi.getInitialData<InitialData>();
+  });
 
   // payload를 안전하게 문자열로 변환하는 헬퍼 함수
   const formatPayload = (payload: unknown): string => {
@@ -46,9 +61,21 @@ export default function ChildPage() {
 
   // 초기화 및 메시지 핸들러 설정
   useEffect(() => {
+    // 초기 데이터 로그 (lazy init으로 이미 state에 설정됨)
+    if (initialData) {
+      console.log('[MDI2 Child] Initial data received:', initialData);
+    }
+
     // 부모 문서에 준비 완료 알림
     const notifyReady = () => {
-      sendToParent({ type: 'READY', payload: { documentId: 'mdi2-child' } });
+      sendToParent({
+        type: 'READY',
+        payload: {
+          documentId: 'mdi2-child',
+          hasInitialData: !!initialData,
+          initialData,
+        },
+      });
       setIsReady(true);
     };
 
@@ -101,7 +128,8 @@ export default function ChildPage() {
       clearTimeout(timer);
       window.removeEventListener('message', handleMessage);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // initialData는 lazy init으로 mount 시에만 설정됨, 추가 의존성 불필요
 
   // 부모에게 데이터 업데이트 전송
   const handleSendToParent = () => {
@@ -165,6 +193,46 @@ export default function ChildPage() {
           )}
         </div>
 
+        {/* Initial Data Card */}
+        {initialData && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">초기 데이터</h2>
+              <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
+                mdi.getInitialData()
+              </span>
+            </div>
+            <div className="space-y-2 text-sm">
+              {initialData.productId !== undefined && (
+                <div className="flex">
+                  <span className="w-32 text-gray-500">Product ID:</span>
+                  <span className="font-mono text-gray-900">{initialData.productId}</span>
+                </div>
+              )}
+              {initialData.mode && (
+                <div className="flex">
+                  <span className="w-32 text-gray-500">Mode:</span>
+                  <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                    {initialData.mode}
+                  </span>
+                </div>
+              )}
+              {initialData.message && (
+                <div className="flex">
+                  <span className="w-32 text-gray-500">Message:</span>
+                  <span className="text-gray-900">{initialData.message}</span>
+                </div>
+              )}
+              {initialData.timestamp && (
+                <div className="flex">
+                  <span className="w-32 text-gray-500">Timestamp:</span>
+                  <span className="text-gray-900">{new Date(initialData.timestamp).toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Actions */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">부모에게 전송</h2>
@@ -224,11 +292,35 @@ export default function ChildPage() {
             <li>
               <code className="bg-white px-1 rounded">window.parent.postMessage</code>를 사용하여 부모와 통신합니다
             </li>
+            <li>
+              <code className="bg-white px-1 rounded">mdi.getInitialData()</code>로 부모가 전달한 초기 데이터를 받습니다
+              (sessionStorage 기반)
+            </li>
             <li>페이지 로드 후 0.5초 뒤 부모에게 READY 신호를 보냅니다</li>
             <li>부모로부터 UPDATE_DATA, REFRESH, RENAME, PING 메시지를 받을 수 있습니다</li>
             <li>PING을 받으면 자동으로 PONG 응답을 보냅니다</li>
             <li>데이터 업데이트 버튼으로 부모에게 메시지를 보낼 수 있습니다</li>
           </ul>
+
+          {/* Code Example */}
+          <div className="mt-4 p-4 bg-white rounded-lg border border-teal-200">
+            <div className="text-xs text-gray-500 mb-2">코드 예시:</div>
+            <pre className="text-xs text-teal-900 overflow-x-auto">
+              {`// 자식 문서에서 초기 데이터 수신
+interface InitialData {
+  productId?: number;
+  mode?: string;
+  message?: string;
+  timestamp?: number;
+}
+
+const initialData = mdi.getInitialData<InitialData>();
+if (initialData) {
+  console.log('Product ID:', initialData.productId);
+  console.log('Mode:', initialData.mode);
+}`}
+            </pre>
+          </div>
         </div>
 
         {/* Note */}

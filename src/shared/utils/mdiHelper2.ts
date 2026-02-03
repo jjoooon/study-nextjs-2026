@@ -115,6 +115,98 @@ export function _getCurrentDocumentId(): string | null {
 }
 
 // ============================================================================
+// INITIAL DATA HANDLING (sessionStorage)
+// ============================================================================
+
+/**
+ * sessionStorage key prefix for initial data
+ */
+const INIT_DATA_KEY_PREFIX = 'mdi2-init-';
+
+/**
+ * Store initial data in sessionStorage for child document
+ *
+ * @param documentId - MDI document ID
+ * @param data - Initial data to pass to child
+ */
+function storeInitialData(documentId: string, data: unknown): void {
+  if (typeof window === 'undefined') return;
+
+  const key = `${INIT_DATA_KEY_PREFIX}${documentId}`;
+  try {
+    const serialized = JSON.stringify(data);
+    sessionStorage.setItem(key, serialized);
+    log.debug('Initial data stored', { documentId, key });
+  } catch (error) {
+    log.error('Failed to store initial data', { documentId, error });
+  }
+}
+
+/**
+ * Get initial data from sessionStorage (called by child document)
+ *
+ * @param documentId - MDI document ID (extracted from URL)
+ * @returns Initial data or null if not found
+ *
+ * @example
+ * // In child document
+ * const initialData = mdi.getInitialData();
+ * if (initialData) {
+ *   console.log('Received initial data:', initialData);
+ * }
+ */
+export function getInitialData<T = unknown>(documentId?: string): T | null {
+  if (typeof window === 'undefined') return null;
+
+  // If documentId not provided, extract from URL
+  if (!documentId) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
+    documentId = urlParams.get('mdiDocId') || hashParams.get('mdiDocId') || undefined;
+  }
+
+  if (!documentId) {
+    log.warn('No document ID found in URL');
+    return null;
+  }
+
+  const key = `${INIT_DATA_KEY_PREFIX}${documentId}`;
+  try {
+    const serialized = sessionStorage.getItem(key);
+    if (!serialized) {
+      log.debug('No initial data found', { documentId, key });
+      return null;
+    }
+
+    const data = JSON.parse(serialized) as T;
+    // Remove after reading to prevent memory leaks
+    sessionStorage.removeItem(key);
+    log.info('Initial data retrieved and cleared', { documentId });
+    return data;
+  } catch (error) {
+    log.error('Failed to retrieve initial data', { documentId, error });
+    return null;
+  }
+}
+
+/**
+ * URL에 document ID 추가 (내부용)
+ */
+function appendDocumentIdToUrl(url: string, documentId: string): string {
+  if (typeof window === 'undefined') return url;
+
+  try {
+    const urlObj = new URL(url, window.location.origin);
+    urlObj.searchParams.set('mdiDocId', documentId);
+    return urlObj.toString();
+  } catch {
+    // Relative URL인 경우
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}mdiDocId=${documentId}`;
+  }
+}
+
+// ============================================================================
 // CORE API
 // ============================================================================
 
@@ -122,27 +214,44 @@ export function _getCurrentDocumentId(): string | null {
  * 새 문서 열기 (In-Page Tab)
  *
  * @param url - 열 문서의 컴포넌트 타입 또는 URL
+ * @param initialData - 자식 문서에 전달할 초기 데이터 (선택적)
  * @returns MDIDocument 객체
  *
  * @example
+ * // 기본 사용
  * const doc = mdi.open('child');
+ *
+ * // 초기 데이터 전달
+ * const doc = mdi.open('child', { productId: 123, mode: 'edit' });
+ *
+ * // 자식 문서에서 데이터 수신
+ * // const initialData = mdi.getInitialData(); // { productId: 123, mode: 'edit' }
  */
-export function open(url: string): MDIDocument {
+export function open<T = unknown>(url: string, initialData?: T): MDIDocument {
   const id = generateDocumentId();
 
-  log.debug('Opening MDI document (in-page tab)', { id, url });
+  log.debug('Opening MDI document (in-page tab)', { id, url, hasInitialData: !!initialData });
+
+  // 초기 데이터가 있으면 sessionStorage에 저장
+  if (initialData !== undefined) {
+    storeInitialData(id, initialData);
+  }
+
+  // URL에 document ID 추가 (자식 문서가 초기 데이터를 찾기 위해)
+  const urlWithId = appendDocumentIdToUrl(url, id);
 
   // 문서 레지스트리에 등록
   const document: MDIDocument = {
     id,
-    tabRef: url, // 컴포넌트 타입 저장
-    url,
+    tabRef: urlWithId, // 컴포넌트 타입 저장 (ID 포함 URL)
+    url: urlWithId,
     openedAt: Date.now(),
+    name: undefined, // 추가: 명시적 초기화
   };
 
   documentRegistry.set(id, document);
 
-  log.info('MDI document opened', { id, url });
+  log.info('MDI document opened', { id, url: urlWithId, initialDataProvided: initialData !== undefined });
 
   return document;
 }
@@ -475,6 +584,7 @@ export const mdi = {
   isDocumentOpen,
   focus,
   rename,
+  getInitialData,
 };
 
 // ============================================================================

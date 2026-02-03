@@ -6,14 +6,16 @@
  * @description
  * mdiHelper2의 기능을 체험할 수 있는 샘플 페이지
  * - 페이지 내 탭으로 문서 열기/닫기
+ * - 초기 데이터와 함께 문서 열기 (sessionStorage 기반)
  * - 문서 간 메시지 전송
  * - 브로드캐스트
  * - 메시지 수신 핸들링
  *
  * @usage
  * 1. "새 문서 열기" 버튼으로 child 컴포넌트를 새 탭으로 엽니다
- * 2. 열린 문서 목록에서 개별 문서를 제어할 수 있습니다
- * 3. 메시지 전송/브로드캐스트로 문서 간 통신을 테스트합니다
+ * 2. "초기 데이터와 함께 열기"로 자식 문서에 데이터를 전달합니다
+ * 3. 열린 문서 목록에서 개별 문서를 제어할 수 있습니다
+ * 4. 메시지 전송/브로드캐스트로 문서 간 통신을 테스트합니다
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -38,6 +40,8 @@ export default function Page() {
   const [newName, setNewName] = useState('');
   const [newDocumentUrl, setNewDocumentUrl] = useState('/sample/mdi2/child');
   const [reloadOnTabSwitch, setReloadOnTabSwitch] = useState(false); // 탭 전환 시 리로드 여부 (default: false)
+  const [initialDataProductId, setInitialDataProductId] = useState('123'); // 초기 데이터 예시 - Product ID
+  const [initialDataMode, setInitialDataMode] = useState('edit'); // 초기 데이터 예시 - Mode
 
   // payload를 안전하게 문자열로 변환하는 헬퍼 함수
   const formatPayload = useCallback((payload: unknown): string => {
@@ -130,11 +134,25 @@ export default function Page() {
   }, [addLog]);
 
   // 새 문서 열기
-  const handleOpenDocument = (url: string = 'child') => {
+  const handleOpenDocument = (url: string = 'child', withInitialData: boolean = false) => {
     try {
-      const doc = mdi.open(url);
+      let doc;
+      if (withInitialData) {
+        // 초기 데이터와 함께 열기
+        const initialData = {
+          productId: parseInt(initialDataProductId, 10) || 123,
+          mode: initialDataMode || 'view',
+          message: `초기 데이터가 전달되었습니다 (${new Date().toLocaleTimeString()})`,
+          timestamp: Date.now(),
+        };
+        doc = mdi.open(url, initialData);
+        addLog('DOCUMENT_OPENED_WITH_INITIAL_DATA', 'sent', { documentId: doc.id, url: doc.url, initialData });
+      } else {
+        // 기본 열기
+        doc = mdi.open(url);
+        addLog('DOCUMENT_OPENED', 'sent', { documentId: doc.id, url: doc.url });
+      }
       setSelectedDocId(doc.id);
-      addLog('DOCUMENT_OPENED', 'sent', { documentId: doc.id, url: doc.url });
     } catch (error) {
       alert((error as Error).message);
     }
@@ -287,6 +305,7 @@ export default function Page() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-semibold mb-4">동작</h2>
               <div className="flex flex-col gap-3">
+                {/* URL 입력 및 열기 버튼 */}
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -305,6 +324,41 @@ export default function Page() {
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                   >
                     열기
+                  </button>
+                </div>
+
+                {/* 초기 데이터 입력 영역 */}
+                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="text-sm font-medium text-gray-700 mb-2">초기 데이터 전달 (선택적)</div>
+                  <div className="flex gap-2 mb-2">
+                    <div className="flex-1">
+                      <label className="text-xs text-gray-500 block mb-1">Product ID</label>
+                      <input
+                        type="number"
+                        value={initialDataProductId}
+                        onChange={(e) => setInitialDataProductId(e.target.value)}
+                        placeholder="123"
+                        className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="text-xs text-gray-500 block mb-1">Mode</label>
+                      <select
+                        value={initialDataMode}
+                        onChange={(e) => setInitialDataMode(e.target.value)}
+                        className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                      >
+                        <option value="view">View</option>
+                        <option value="edit">Edit</option>
+                        <option value="create">Create</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleOpenDocument(newDocumentUrl, true)}
+                    className="w-full px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-sm font-medium"
+                  >
+                    초기 데이터와 함께 열기
                   </button>
                 </div>
 
@@ -522,6 +576,14 @@ export default function Page() {
               <strong>새 문서 열기</strong>: 버튼 클릭 시 child 컴포넌트가 페이지 내 새 탭으로 열립니다
             </li>
             <li>
+              <strong>초기 데이터와 함께 열기</strong>: Product ID와 Mode를 설정하고 &quot;초기 데이터와 함께 열기&quot;
+              버튼을 클릭하면 자식 문서에 초기 데이터가 전달됩니다
+            </li>
+            <li>
+              <strong>자식 문서에서 초기 데이터 수신</strong>: 자식 문서에서{' '}
+              <code className="bg-white px-1 rounded">mdi.getInitialData()</code>를 호출하여 초기 데이터를 받습니다
+            </li>
+            <li>
               <strong>문서 이름 변경</strong>: &quot;이름&quot; 버튼으로 문서에 별칭을 지정할 수 있습니다 (Enter: 저장,
               Esc: 취소)
             </li>
@@ -538,6 +600,29 @@ export default function Page() {
               <strong>문서 닫기</strong>: 개별 문서나 모든 문서를 닫을 수 있습니다
             </li>
           </ol>
+
+          {/* Code Example */}
+          <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
+            <div className="text-xs text-gray-500 mb-2">코드 예시:</div>
+            <pre className="text-xs text-blue-900 overflow-x-auto">
+              {`// 부모 문서 - 초기 데이터와 함께 열기
+const doc = mdi.open('child', {
+  productId: 123,
+  mode: 'edit',
+  message: 'Hello from parent',
+  timestamp: Date.now()
+});
+
+// 자식 문서 - 초기 데이터 수신
+const initialData = mdi.getInitialData<{
+  productId: number;
+  mode: string;
+  message: string;
+  timestamp: number;
+}>();
+console.log(initialData); // { productId: 123, mode: 'edit', ... }`}
+            </pre>
+          </div>
         </div>
       </div>
     </div>
