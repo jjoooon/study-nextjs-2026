@@ -35,6 +35,8 @@ export default function Page() {
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
   const [renamingDocId, setRenamingDocId] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
+  const [initialProduct, setInitialProduct] = useState('');
+  const [initialMode, setInitialMode] = useState('view');
 
   // payload를 안전하게 문자열로 변환하는 헬퍼 함수
   const formatPayload = (payload: unknown): string => {
@@ -98,9 +100,18 @@ export default function Page() {
   // 새 문서 열기
   const handleOpenDocument = () => {
     try {
-      const doc = mdi.open('/sample/mdi/child');
+      // 초기 데이터와 함께 열기
+      const doc = mdi.open('/sample/mdi/child', {
+        product: initialProduct || 'Sample Product',
+        mode: initialMode,
+        timestamp: Date.now(),
+      });
       setSelectedDocId(doc.id);
-      addLog('DOCUMENT_OPENED', 'sent', { documentId: doc.id, url: doc.url });
+      addLog('DOCUMENT_OPENED', 'sent', {
+        documentId: doc.id,
+        url: doc.url,
+        initialData: { product: initialProduct, mode: initialMode },
+      });
     } catch (error) {
       alert((error as Error).message);
     }
@@ -201,12 +212,45 @@ export default function Page() {
         {/* Actions */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">동작</h2>
+
+          {/* Initial Data Input */}
+          <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <h3 className="text-sm font-semibold text-amber-900 mb-3">초기 데이터 설정</h3>
+            <div className="flex flex-wrap gap-3">
+              <div className="flex-1 min-w-[200px]">
+                <label className="block text-xs text-gray-600 mb-1">제품명</label>
+                <input
+                  type="text"
+                  value={initialProduct}
+                  onChange={(e) => setInitialProduct(e.target.value)}
+                  placeholder="예: Sample Product"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+              </div>
+              <div className="w-40">
+                <label className="block text-xs text-gray-600 mb-1">모드</label>
+                <select
+                  value={initialMode}
+                  onChange={(e) => setInitialMode(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                >
+                  <option value="view">보기 (view)</option>
+                  <option value="edit">편집 (edit)</option>
+                  <option value="create">생성 (create)</option>
+                </select>
+              </div>
+            </div>
+            <p className="text-xs text-amber-700 mt-2">
+              💡 설정된 초기 데이터는 sessionStorage를 통해 자식 문서로 전달됩니다
+            </p>
+          </div>
+
           <div className="flex flex-wrap gap-3">
             <button
               onClick={handleOpenDocument}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
-              새 문서 열기
+              새 문서 열기 (초기 데이터 포함)
             </button>
 
             <button
@@ -390,10 +434,14 @@ export default function Page() {
           <h3 className="text-lg font-semibold text-blue-900 mb-3">사용 가이드</h3>
           <ol className="space-y-2 text-sm text-blue-800 list-decimal list-inside">
             <li>
+              <strong>초기 데이터 설정</strong>: 제품명과 모드를 설정한 후 &quot;새 문서 열기&quot;를 클릭하면 초기
+              데이터가 자식 문서로 전달됩니다
+            </li>
+            <li>
               <strong>새 문서 열기</strong>: 버튼 클릭 시 /sample/mdi/child 페이지가 새 탭으로 열립니다
             </li>
             <li>
-              <strong>문서 이름 변경</strong>: &qout;이름 변경&qout; 버튼으로 문서에 별칭을 지정할 수 있습니다 (Enter:
+              <strong>문서 이름 변경</strong>: &quot;이름 변경&quot; 버튼으로 문서에 별칭을 지정할 수 있습니다 (Enter:
               저장, Esc: 취소)
             </li>
             <li>
@@ -409,6 +457,13 @@ export default function Page() {
               <strong>문서 닫기</strong>: 개별 문서나 모든 문서를 닫을 수 있습니다
             </li>
           </ol>
+          <div className="mt-4 p-3 bg-white rounded border border-blue-200">
+            <p className="text-xs text-blue-800">
+              <strong>💡 초기 데이터 전달 방식:</strong> sessionStorage를 사용하여 부모→자식으로 데이터를 전달합니다.
+              자식 문서는 <code className="px-1 py-0.5 bg-blue-100 rounded">mdi.getInitialData()</code>로 데이터를
+              조회합니다.
+            </p>
+          </div>
         </div>
       </div>
     </div>

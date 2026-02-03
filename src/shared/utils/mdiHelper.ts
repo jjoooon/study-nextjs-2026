@@ -9,16 +9,14 @@
  * @usage
  * import { mdi } from '@/shared/utils/mdiHelper';
  *
- * // 부모 문서 - 탭 열기
- * const doc = mdi.open('/products/detail?id=123');
+ * // 부모 문서 - 초기 데이터와 함께 탭 열기
+ * const doc = mdi.open('/products/detail', { productId: 123, mode: 'edit' });
  *
- * // 부모 문서 - 자식 문서 READY 이벤트 대기
- * mdi.onMessage('READY', (msg) => {
- *   mdi.postMessage(doc, { type: 'INIT_DATA', payload: { id: 123 } });
- * });
+ * // 자식 문서 - 초기 데이터 수신 (일반 JS)
+ * const initialData = mdi.getInitialData();
  *
- * // 자식 문서 - 준비 완료 알림
- * window.opener.postMessage({ type: 'READY' }, '*');
+ * // 자식 문서 - 초기 데이터 수신 (React Hook)
+ * const initialData = mdi.useMDIInitialData();
  */
 
 import logger from './logger';
@@ -45,6 +43,8 @@ export interface MDIDocument {
   name?: string;
   /** 닫힘 감지 인터벌 ID (내부용) */
   _closeCheckInterval?: ReturnType<typeof setInterval>;
+  /** 전달된 초기 데이터 (내부용) */
+  _initialData?: unknown;
 }
 
 /**
@@ -129,6 +129,81 @@ export function removeAllowedOrigin(origin: string): void {
   log.info('Allowed origin removed', { origin });
 }
 
+// ============================================================================
+// INITIAL DATA HANDLING (sessionStorage)
+// ============================================================================
+
+/**
+ * sessionStorage key prefix for initial data
+ */
+const INIT_DATA_KEY_PREFIX = 'mdi-init-';
+
+/**
+ * Store initial data in sessionStorage for child document
+ *
+ * @param documentId - MDI document ID
+ * @param data - Initial data to pass to child
+ */
+function storeInitialData(documentId: string, data: unknown): void {
+  if (typeof window === 'undefined') return;
+
+  const key = `${INIT_DATA_KEY_PREFIX}${documentId}`;
+  try {
+    const serialized = JSON.stringify(data);
+    sessionStorage.setItem(key, serialized);
+    log.debug('Initial data stored', { documentId, key });
+  } catch (error) {
+    log.error('Failed to store initial data', { documentId, error });
+  }
+}
+
+/**
+ * Get initial data from sessionStorage (called by child document)
+ *
+ * @param documentId - MDI document ID (extracted from URL)
+ * @returns Initial data or null if not found
+ *
+ * @example
+ * // In child document
+ * const initialData = mdi.getInitialData();
+ * if (initialData) {
+ *   console.log('Received initial data:', initialData);
+ * }
+ */
+export function getInitialData<T = unknown>(documentId?: string): T | null {
+  if (typeof window === 'undefined') return null;
+
+  // If documentId not provided, extract from URL
+  if (!documentId) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
+    documentId = urlParams.get('mdiDocId') || hashParams.get('mdiDocId') || undefined;
+  }
+
+  if (!documentId) {
+    log.warn('No document ID found in URL');
+    return null;
+  }
+
+  const key = `${INIT_DATA_KEY_PREFIX}${documentId}`;
+  try {
+    const serialized = sessionStorage.getItem(key);
+    if (!serialized) {
+      log.debug('No initial data found', { documentId, key });
+      return null;
+    }
+
+    const data = JSON.parse(serialized) as T;
+    // Remove after reading to prevent memory leaks
+    sessionStorage.removeItem(key);
+    log.info('Initial data retrieved and cleared', { documentId });
+    return data;
+  } catch (error) {
+    log.error('Failed to retrieve initial data', { documentId, error });
+    return null;
+  }
+}
+
 /**
  * 출처 검증
  *
@@ -150,18 +225,34 @@ function isOriginAllowed(origin: string): boolean {
  * 새 문서 열기
  *
  * @param url - 열 URL 또는 경로
+ * @param initialData - 자식 문서에 전달할 초기 데이터 (선택적)
  * @returns MDIDocument 객체
  *
  * @example
+ * // 기본 사용
  * const doc = mdi.open('/products/detail?id=123');
+ *
+ * // 초기 데이터 전달
+ * const doc = mdi.open('/products/detail', { productId: 123, mode: 'edit' });
+ *
+ * // 자식 문서에서 데이터 수신
+ * // const initialData = mdi.getInitialData(); // { productId: 123, mode: 'edit' }
  */
-export function open(url: string): MDIDocument {
+export function open<T = unknown>(url: string, initialData?: T): MDIDocument {
   const id = generateDocumentId();
 
-  log.debug('Opening MDI document (new tab)', { id, url });
+  log.debug('Opening MDI document (new tab)', { id, url, hasInitialData: !!initialData });
+
+  // 초기 데이터가 있으면 sessionStorage에 저장
+  if (initialData !== undefined) {
+    storeInitialData(id, initialData);
+  }
+
+  // URL에 document ID 추가 (child가 초기 데이터를 찾기 위해)
+  const urlWithId = appendDocumentIdToUrl(url, id);
 
   // window.open 호출 - 무조건 _blank로 새 탭
-  const tabRef = window.open(url, '_blank');
+  const tabRef = window.open(urlWithId, '_blank');
 
   if (!tabRef) {
     log.error('Failed to open document (popup blocked?)');
@@ -184,13 +275,29 @@ export function open(url: string): MDIDocument {
     url,
     openedAt: Date.now(),
     _closeCheckInterval: closeCheckInterval,
+    _initialData: initialData,
   };
 
   documentRegistry.set(id, document);
 
-  log.info('MDI document opened', { id, url });
+  log.info('MDI document opened', { id, url, initialDataProvided: initialData !== undefined });
 
   return document;
+}
+
+/**
+ * URL에 document ID 추가 (내부용)
+ */
+function appendDocumentIdToUrl(url: string, documentId: string): string {
+  try {
+    const urlObj = new URL(url, window.location.origin);
+    urlObj.searchParams.set('mdiDocId', documentId);
+    return urlObj.toString();
+  } catch {
+    // Relative URL인 경우
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}mdiDocId=${documentId}`;
+  }
 }
 
 /**
@@ -540,6 +647,7 @@ export const mdi = {
   rename,
   addAllowedOrigin,
   removeAllowedOrigin,
+  getInitialData,
 };
 
 // ============================================================================

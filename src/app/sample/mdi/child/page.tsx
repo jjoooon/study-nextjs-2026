@@ -5,12 +5,13 @@
  *
  * @description
  * 부모 문서에서 열리는 자식 문서
+ * - 초기 데이터 수신 (sessionStorage)
  * - 준비 완료 시 READY 메시지 전송
  * - 부모로부터 메시지 수신
  * - 메시지에 따른 UI 업데이트
  *
  * @usage
- * 부모 문서에서 mdi.open('/sample/mdi/child')로 열립니다
+ * 부모 문서에서 mdi.open('/sample/mdi/child', initialData)로 열립니다
  */
 
 import { useEffect, useState } from 'react';
@@ -25,11 +26,22 @@ interface ReceivedMessage {
   timestamp: string;
 }
 
+interface InitialData {
+  product?: string;
+  mode?: string;
+  timestamp?: number;
+}
+
 export default function ChildPage() {
   const [isReady, setIsReady] = useState(false);
   const [receivedMessages, setReceivedMessages] = useState<ReceivedMessage[]>([]);
   const [parentMessage, setParentMessage] = useState<string>('');
   const [documentName, setDocumentName] = useState<string>('');
+  // Lazy initialization to avoid setState in effect
+  const [initialData] = useState<InitialData | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return mdi.getInitialData<InitialData>();
+  });
 
   // payload를 안전하게 문자열로 변환하는 헬퍼 함수
   const formatPayload = (payload: unknown): string => {
@@ -41,10 +53,15 @@ export default function ChildPage() {
 
   // 초기화 및 메시지 핸들러 설정
   useEffect(() => {
+    // 초기 데이터 로그 (lazy init으로 이미 state에 설정됨)
+    if (initialData) {
+      console.log('Initial data received:', initialData);
+    }
+
     // 부모 문서에 준비 완료 알림
     const notifyReady = () => {
       if (window.opener) {
-        window.opener.postMessage({ type: 'READY', payload: { documentId: 'child' } }, '*');
+        window.opener.postMessage({ type: 'READY', payload: { documentId: 'child', initialData } }, '*');
       }
       setIsReady(true);
     };
@@ -122,7 +139,8 @@ export default function ChildPage() {
       cleanupRename();
       cleanupPong();
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // initialData는 lazy init으로 mount 시에만 설정됨, 추가 의존성 불필요
 
   // 부모에게 메시지 전송
   const handleSendToParent = () => {
@@ -197,6 +215,44 @@ export default function ChildPage() {
           )}
         </div>
 
+        {/* Initial Data Card */}
+        {initialData && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">📦 초기 데이터</h2>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="w-24 text-sm text-gray-500">제품:</span>
+                <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-lg font-medium">
+                  {initialData.product || '-'}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-24 text-sm text-gray-500">모드:</span>
+                <span
+                  className={`px-3 py-1 rounded-lg font-medium ${
+                    initialData.mode === 'edit'
+                      ? 'bg-blue-100 text-blue-800'
+                      : initialData.mode === 'create'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {initialData.mode || 'view'}
+                </span>
+              </div>
+              {initialData.timestamp && (
+                <div className="flex items-center gap-3">
+                  <span className="w-24 text-sm text-gray-500">전송 시간:</span>
+                  <span className="text-sm text-gray-700">{new Date(initialData.timestamp).toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+            <p className="mt-3 text-xs text-gray-500">
+              💡 이 데이터는 sessionStorage를 통해 부모 문서에서 전달받았습니다
+            </p>
+          </div>
+        )}
+
         {/* Actions */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">부모에게 전송</h2>
@@ -253,11 +309,21 @@ export default function ChildPage() {
           <h3 className="text-lg font-semibold text-purple-900 mb-3">작동 방식</h3>
           <ul className="space-y-2 text-sm text-purple-800 list-disc list-inside">
             <li>이 페이지는 부모 문서에서 열린 자식 문서입니다</li>
+            <li>
+              부모로부터 전달받은 <strong>초기 데이터</strong>를 sessionStorage에서 조회합니다
+            </li>
             <li>페이지 로드 후 0.5초 뒤 부모에게 READY 신호를 보냅니다</li>
             <li>부모로부터 UPDATE_DATA, REFRESH, INIT_DATA 메시지를 받을 수 있습니다</li>
             <li>데이터 업데이트 버튼으로 부모에게 메시지를 보낼 수 있습니다</li>
             <li>PING 버튼으로 부모에게 PING을 보내고 PONG 응답을 받을 수 있습니다</li>
           </ul>
+          <div className="mt-4 p-3 bg-white rounded border border-purple-200">
+            <p className="text-xs text-purple-800">
+              <strong>초기 데이터 수신:</strong>{' '}
+              <code className="px-1 py-0.5 bg-purple-100 rounded text-xs">mdi.getInitialData()</code>를 호출하여 부모가
+              전달한 데이터를 조회합니다.
+            </p>
+          </div>
         </div>
       </div>
     </div>
