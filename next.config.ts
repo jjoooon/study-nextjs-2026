@@ -7,6 +7,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
+  // Enable source maps in production for debugging
+  productionBrowserSourceMaps: process.env.ENABLE_SOURCE_MAP === 'true',
+
   // Performance optimizations
   reactStrictMode: true,
 
