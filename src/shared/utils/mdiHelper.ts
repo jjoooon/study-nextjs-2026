@@ -1,19 +1,21 @@
 /**
  * MDI (Multiple Document Interface) Helper
  *
- * @description
- * - 페이지 내에서 여러 문서/탭을 관리하는 유틸리티
- * - window.open을 사용하여 새 탭으로 문서 열기/닫기 구현
- * - 향후 탭 UI 기반 구현으로 확장 가능한 설계
+ * 페이지 내에서 여러 문서/탭을 관리하는 유틸리티입니다.
+ * window.open을 사용하여 새 탭으로 문서 열기/닫기를 구현하며,
+ * 향후 탭 UI 기반 구현으로 확장 가능한 설계입니다.
  *
- * @usage
+ * @example
+ * ```ts
  * import { mdi } from '@/shared/utils/mdiHelper';
  *
  * // 부모 문서 - 초기 데이터와 함께 탭 열기
- * const doc = mdi.open('/products/detail', { initialData: {...}, title: '탭이름' } );
+ * const doc = mdi.open('/products/detail', { initialData: { productId: 123 }, title: '상품 상세' });
  *
- * // 자식 문서 - 초기 데이터 수신 (일반 JS)
- * const initialData = mdi.getOpenOptions()?.initialData;
+ * // 자식 문서 - 초기 데이터 수신
+ * const options = mdi.getOpenOptions<{ productId: number }>();
+ * const initialData = options?.initialData; // { productId: 123 }
+ * ```
  */
 
 import logger from './logger';
@@ -105,10 +107,25 @@ const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '
 // ============================================================================
 
 /**
- * 문서 ID 생성
+ * MDI 문서 추적을 위한 고유 ID를 생성합니다.
+ *
+ * @returns "mdi-document-{timestamp}-{random}" 형식의 고유 식별자 문자열
  */
 function generateDocumentId(): string {
   return `mdi-document-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+/**
+ * 닫힌 문서의 리소스를 정리합니다 (내부용).
+ *
+ * @param id - 문서 ID
+ * @param docInfo - 문서 정보
+ */
+function cleanupClosedDocument(id: string, docInfo: MDIDocument): void {
+  if (docInfo._closeCheckInterval) {
+    clearInterval(docInfo._closeCheckInterval);
+  }
+  documentRegistry.delete(id);
 }
 
 /**
@@ -138,16 +155,15 @@ export function removeAllowedOrigin(origin: string): void {
 // INITIAL DATA HANDLING (sessionStorage)
 // ============================================================================
 
-/**
- * sessionStorage key prefix for initial data
- */
+// sessionStorage key prefix for initial data
 const INIT_DATA_KEY_PREFIX = 'mdi-init-';
 
 /**
- * Store initial data in sessionStorage for child document
+ * 자식 문서에 전달할 초기 데이터를 sessionStorage에 저장합니다.
  *
- * @param documentId - MDI document ID
- * @param data - Initial data to pass to child
+ * @param documentId - MDI 문서 ID
+ * @param data - 자식 문서에 전달할 초기 데이터
+ * @throws {Error} JSON 직렬화 또는 sessionStorage 저장 실패 시 (에러 로그만 기록)
  */
 function storeInitialData(documentId: string, data: unknown): void {
   if (typeof window === 'undefined') return;
@@ -163,14 +179,14 @@ function storeInitialData(documentId: string, data: unknown): void {
 }
 
 /**
- * Get open options from sessionStorage (called by child document)
+ * sessionStorage에서 열기 옵션을 가져옵니다 (자식 문서에서 호출).
  *
- * @param documentId - MDI document ID (extracted from URL)
- * @returns Options or null if not found
+ * @param documentId - URL에서 추출한 MDI 문서 ID (미입력 시 URL에서 자동 추출)
+ * @returns 찾은 옵션 또는 null
  *
  * @example
- * // In child document
- * const options = mdi.getOpenOptions();
+ * // 자식 문서에서
+ * const options = mdi.getOpenOptions<{ productId: number }>();
  * if (options) {
  *   console.log('Received initialData:', options.initialData);
  *   console.log('Received title:', options.title);
@@ -211,7 +227,7 @@ export function getOpenOptions<T = unknown>(documentId?: string): MDIOpenOptions
 }
 
 /**
- * 출처 검증
+ * 출처를 검증하여 메시지 수신 허용 여부를 확인합니다 (보안).
  *
  * @param origin - 검증할 origin
  * @returns 허용된 출처인지 여부
@@ -248,7 +264,8 @@ function isOriginAllowed(origin: string): boolean {
  * });
  *
  * // 자식 문서에서 데이터 수신
- * // const initialData = mdi.getInitialData(); // { productId: 123, mode: 'edit' }
+ * // const options = mdi.getOpenOptions<{ productId: number; mode: string }>();
+ * // const initialData = options?.initialData; // { productId: 123, mode: 'edit' }
  */
 export function open<T = unknown>(url: string, options?: MDIOpenOptions<T>): MDIDocument {
   const id = generateDocumentId();
@@ -298,15 +315,20 @@ export function open<T = unknown>(url: string, options?: MDIOpenOptions<T>): MDI
 }
 
 /**
- * URL에 document ID 추가 (내부용)
+ * URL에 document ID를 추가합니다 (내부용).
+ *
+ * @param url - 기본 URL
+ * @param documentId - 추가할 문서 ID
+ * @returns document ID가 추가된 URL
  */
 function appendDocumentIdToUrl(url: string, documentId: string): string {
   try {
     const urlObj = new URL(url, window.location.origin);
     urlObj.searchParams.set('mdiDocId', documentId);
     return urlObj.toString();
-  } catch {
-    // Relative URL인 경우
+  } catch (error) {
+    // Relative URL인 경우 fallback 처리
+    log.debug('URL parsing failed, treating as relative URL', { url, error });
     const separator = url.includes('?') ? '&' : '?';
     return `${url}${separator}mdiDocId=${documentId}`;
   }
@@ -332,17 +354,12 @@ export function close(mdiDocument: MDIDocument | string): boolean {
     return false;
   }
 
-  // 인터벌 정리 (메모리 누수 방지)
-  if (docInfo._closeCheckInterval) {
-    clearInterval(docInfo._closeCheckInterval);
-  }
-
   if (docInfo.tabRef && !docInfo.tabRef.closed) {
     docInfo.tabRef.close();
     log.info('MDI document closed', { id });
   }
 
-  documentRegistry.delete(id);
+  cleanupClosedDocument(id, docInfo);
   return true;
 }
 
@@ -355,19 +372,13 @@ export function close(mdiDocument: MDIDocument | string): boolean {
 export function closeAll(): void {
   let closedCount = 0;
 
-  documentRegistry.forEach((docInfo) => {
-    // 인터벌 정리 (메모리 누수 방지)
-    if (docInfo._closeCheckInterval) {
-      clearInterval(docInfo._closeCheckInterval);
-    }
-
+  documentRegistry.forEach((docInfo, id) => {
     if (docInfo.tabRef && !docInfo.tabRef.closed) {
       docInfo.tabRef.close();
       closedCount += 1;
     }
+    cleanupClosedDocument(id, docInfo);
   });
-
-  documentRegistry.clear();
 
   log.info('All MDI documents closed', { count: closedCount });
 }
@@ -472,29 +483,33 @@ export function onMessage<T = unknown>(
   handler: MDIMessageHandler<T>
 ): () => void {
   if (!messageHandlers.has(messageType)) {
-    messageHandlers.set(messageType, new Set());
+    messageHandlers.set(messageType, new Set<MDIMessageHandler>());
   }
 
-  messageHandlers.get(messageType)!.add(handler as MDIMessageHandler);
+  const handlers = messageHandlers.get(messageType);
+  if (handlers) {
+    handlers.add(handler as MDIMessageHandler);
+  }
 
   log.debug('Message handler registered', { messageType });
 
   // 정리 함수 반환
   return () => {
-    const handlers = messageHandlers.get(messageType);
-    if (handlers) {
-      handlers.delete(handler as MDIMessageHandler);
+    const cleanupHandlers = messageHandlers.get(messageType);
+    if (cleanupHandlers) {
+      cleanupHandlers.delete(handler as MDIMessageHandler);
       log.debug('Message handler unregistered', { messageType });
     }
   };
 }
 
 /**
- * 메시지 수신 처리 (내부용)
+ * postMessage 이벤트를 처리합니다 (내부용).
  *
- * @description
- * window.message 이벤트 리스너에서 호출
- * 보안: origin 검증 및 message 형식 검증 수행
+ * window.message 이벤트 리스너에서 호출되며,
+ * origin 검증 및 메시지 형식 검증을 수행합니다.
+ *
+ * @param event - 수신한 메시지 이벤트
  */
 function handleMessage(event: MessageEvent): void {
   // 보안: origin 검증
@@ -503,10 +518,10 @@ function handleMessage(event: MessageEvent): void {
     return;
   }
 
-  const message = event.data as MDIMessage;
+  const message = event.data;
 
-  // 메시지 형식 검증
-  if (!message || typeof message !== 'object' || !message.type) {
+  // 메시지 형식 검증 (type guard)
+  if (!isValidMDIMessage(message)) {
     return;
   }
 
@@ -515,8 +530,8 @@ function handleMessage(event: MessageEvent): void {
   // PING/PONG 자동 응답
   if (type === 'PING') {
     // event.source가 Window 객체인지 검증
-    if (event.source && event.source !== window && typeof event.source.postMessage === 'function') {
-      (event.source as Window).postMessage({ type: 'PONG', senderId: message.senderId }, event.origin);
+    if (isWindowSource(event.source)) {
+      event.source.postMessage({ type: 'PONG', senderId: message.senderId }, event.origin);
     }
     return;
   }
@@ -536,6 +551,37 @@ function handleMessage(event: MessageEvent): void {
   }
 }
 
+/**
+ * MDI 메시지 형식 유효성을 검증하는 타입 가드입니다.
+ *
+ * @param data - 검증할 데이터
+ * @returns MDIMessage 형식인지 여부
+ */
+function isValidMDIMessage(data: unknown): data is MDIMessage {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'type' in data &&
+    typeof (data as MDIMessage).type === 'string'
+  );
+}
+
+/**
+ * event.source가 Window 객체인지 확인하는 타입 가드입니다.
+ *
+ * @param source - 검증할 event.source
+ * @returns Window 객체인지 여부
+ */
+function isWindowSource(source: unknown): source is Window {
+  return (
+    source !== null &&
+    source !== window &&
+    typeof source === 'object' &&
+    'postMessage' in source &&
+    typeof (source as Window).postMessage === 'function'
+  );
+}
+
 // 메시지 리스너 등록 (최초 1회만)
 if (typeof window !== 'undefined') {
   window.addEventListener('message', handleMessage);
@@ -550,7 +596,7 @@ if (typeof window !== 'undefined') {
  * 열린 모든 문서 목록 반환
  */
 export function getOpenDocuments(): MDIDocument[] {
-  // 닫힌 문서 제거 및 인터벌 정리
+  // 닫힌 문서 제거 및 정리
   const closedDocuments: string[] = [];
 
   documentRegistry.forEach((docInfo, id) => {
@@ -561,10 +607,9 @@ export function getOpenDocuments(): MDIDocument[] {
 
   closedDocuments.forEach((id) => {
     const docInfo = documentRegistry.get(id);
-    if (docInfo?._closeCheckInterval) {
-      clearInterval(docInfo._closeCheckInterval);
+    if (docInfo) {
+      cleanupClosedDocument(id, docInfo);
     }
-    documentRegistry.delete(id);
   });
 
   return Array.from(documentRegistry.values());
