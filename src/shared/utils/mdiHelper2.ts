@@ -218,7 +218,7 @@ export function closeAll(): void {
  *
  * @param mdiDocument - 대상 MDIDocument 객체 또는 ID
  * @param message - 전송할 메시지
- * @param targetOrigin - 대상 origin (호환성을 위한 매개변수, 무시됨)
+ * @param _targetOrigin - 호환성을 위한 매개변수 (In-Page 버전에서는 사용하지 않음)
  *
  * @example
  * mdi.postMessage(docRef, {
@@ -229,13 +229,19 @@ export function closeAll(): void {
 export function postMessage<T = unknown>(
   mdiDocument: MDIDocument | string,
   message: MDIMessage<T>,
-  _targetOrigin = '*'
+  _targetOrigin?: string
 ): void {
   const id = typeof mdiDocument === 'string' ? mdiDocument : mdiDocument.id;
   const docInfo = documentRegistry.get(id);
 
   if (!docInfo) {
     log.warn('Document not found for postMessage', { id });
+    return;
+  }
+
+  // 메시지 형식 검증
+  if (!message || typeof message !== 'object' || !message.type) {
+    log.warn('Invalid message format', { id });
     return;
   }
 
@@ -278,6 +284,12 @@ export function postMessage<T = unknown>(
 export function postMessageToParent<T = unknown>(message: MDIMessage<T>): void {
   if (!currentDocumentId) {
     log.warn('postMessageToParent called from non-child document');
+    return;
+  }
+
+  // 메시지 형식 검증
+  if (!message || typeof message !== 'object' || !message.type) {
+    log.warn('Invalid message format for postMessageToParent');
     return;
   }
 

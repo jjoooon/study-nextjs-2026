@@ -43,6 +43,8 @@ export interface MDIDocument {
   openedAt: number;
   /** 문서 이름 (선택적) */
   name?: string;
+  /** 닫힘 감지 인터벌 ID (내부용) */
+  _closeCheckInterval?: ReturnType<typeof setInterval>;
 }
 
 /**
@@ -83,6 +85,16 @@ const documentRegistry = new Map<string, MDIDocument>();
  */
 const messageHandlers = new Map<string, Set<MDIMessageHandler>>();
 
+/**
+ * 허용된 출처 목록 (보안: 비어있으면 현재 origin만 허용)
+ */
+const allowedOrigins = new Set<string>();
+
+/**
+ * 현재 origin (메시지 수신 시 검증용)
+ */
+const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+
 // ============================================================================
 // PRIVATE UTILITIES
 // ============================================================================
@@ -92,6 +104,42 @@ const messageHandlers = new Map<string, Set<MDIMessageHandler>>();
  */
 function generateDocumentId(): string {
   return `mdi-document-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+/**
+ * 허용된 출처 추가
+ *
+ * @param origin - 허용할 origin (예: 'https://example.com')
+ *
+ * @example
+ * mdi.addAllowedOrigin('https://trusted-site.com');
+ */
+export function addAllowedOrigin(origin: string): void {
+  allowedOrigins.add(origin);
+  log.info('Allowed origin added', { origin });
+}
+
+/**
+ * 허용된 출처 제거
+ *
+ * @param origin - 제거할 origin
+ */
+export function removeAllowedOrigin(origin: string): void {
+  allowedOrigins.delete(origin);
+  log.info('Allowed origin removed', { origin });
+}
+
+/**
+ * 출처 검증
+ *
+ * @param origin - 검증할 origin
+ * @returns 허용된 출처인지 여부
+ */
+function isOriginAllowed(origin: string): boolean {
+  if (allowedOrigins.size === 0) {
+    return origin === currentOrigin;
+  }
+  return allowedOrigins.has(origin);
 }
 
 // ============================================================================
@@ -120,24 +168,25 @@ export function open(url: string): MDIDocument {
     throw new Error('팝업이 차단되었습니다. 팝업을 허용해주세요.');
   }
 
-  // 문서 레지스트리에 등록
+  // 문서 닫힘 감지 인터벌 생성
+  const closeCheckInterval = setInterval(() => {
+    if (tabRef.closed) {
+      clearInterval(closeCheckInterval);
+      log.debug('Document closed by user', { id });
+      documentRegistry.delete(id);
+    }
+  }, 1000);
+
+  // 문서 레지스트리에 등록 (인터벌 참조 포함)
   const document: MDIDocument = {
     id,
     tabRef,
     url,
     openedAt: Date.now(),
+    _closeCheckInterval: closeCheckInterval,
   };
 
   documentRegistry.set(id, document);
-
-  // 문서 닫힘 감지
-  const checkClosed = setInterval(() => {
-    if (tabRef.closed) {
-      clearInterval(checkClosed);
-      log.debug('Document closed by user', { id });
-      documentRegistry.delete(id);
-    }
-  }, 1000);
 
   log.info('MDI document opened', { id, url });
 
@@ -164,6 +213,11 @@ export function close(mdiDocument: MDIDocument | string): boolean {
     return false;
   }
 
+  // 인터벌 정리 (메모리 누수 방지)
+  if (docInfo._closeCheckInterval) {
+    clearInterval(docInfo._closeCheckInterval);
+  }
+
   if (docInfo.tabRef && !docInfo.tabRef.closed) {
     docInfo.tabRef.close();
     log.info('MDI document closed', { id });
@@ -183,6 +237,11 @@ export function closeAll(): void {
   let closedCount = 0;
 
   documentRegistry.forEach((docInfo) => {
+    // 인터벌 정리 (메모리 누수 방지)
+    if (docInfo._closeCheckInterval) {
+      clearInterval(docInfo._closeCheckInterval);
+    }
+
     if (docInfo.tabRef && !docInfo.tabRef.closed) {
       docInfo.tabRef.close();
       closedCount += 1;
@@ -199,18 +258,18 @@ export function closeAll(): void {
  *
  * @param mdiDocument - 대상 MDIDocument 객체 또는 ID
  * @param message - 전송할 메시지
- * @param targetOrigin - 대상 origin (기본: '*')
+ * @param targetOrigin - 대상 origin (기본: 현재 origin, 보안을 위해 '*' 사용 지양)
  *
  * @example
  * mdi.postMessage(docRef, {
  *   type: 'UPDATE_DATA',
  *   payload: { id: 123, name: 'Product' }
- * });
+ * }, window.location.origin);
  */
 export function postMessage<T = unknown>(
   mdiDocument: MDIDocument | string,
   message: MDIMessage<T>,
-  targetOrigin = '*'
+  targetOrigin = currentOrigin
 ): void {
   const id = typeof mdiDocument === 'string' ? mdiDocument : mdiDocument.id;
   const docInfo = documentRegistry.get(id);
@@ -237,6 +296,7 @@ export function postMessage<T = unknown>(
     from: id,
     to: docInfo.url,
     type: message.type,
+    targetOrigin,
   });
 }
 
@@ -315,11 +375,19 @@ export function onMessage<T = unknown>(
  *
  * @description
  * window.message 이벤트 리스너에서 호출
+ * 보안: origin 검증 및 message 형식 검증 수행
  */
 function handleMessage(event: MessageEvent): void {
+  // 보안: origin 검증
+  if (!isOriginAllowed(event.origin)) {
+    log.warn('Message rejected: origin not allowed', { origin: event.origin });
+    return;
+  }
+
   const message = event.data as MDIMessage;
 
-  if (!message || !message.type) {
+  // 메시지 형식 검증
+  if (!message || typeof message !== 'object' || !message.type) {
     return;
   }
 
@@ -327,8 +395,12 @@ function handleMessage(event: MessageEvent): void {
 
   // PING/PONG 자동 응답
   if (type === 'PING') {
-    if (event.source && typeof event.source.postMessage === 'function') {
-      event.source.postMessage({ type: 'PONG', senderId: message.senderId }, { targetOrigin: event.origin });
+    // event.source가 Window 객체인지 검증
+    if (event.source && event.source !== window && typeof event.source.postMessage === 'function') {
+      event.source.postMessage(
+        { type: 'PONG', senderId: message.senderId },
+        event.origin // 보안: 수신한 origin으로만 응답
+      );
     }
     return;
   }
@@ -344,7 +416,7 @@ function handleMessage(event: MessageEvent): void {
       }
     });
 
-    log.debug('Message handled', { type, handlerCount: handlers.size });
+    log.debug('Message handled', { type, handlerCount: handlers.size, origin: event.origin });
   }
 }
 
@@ -362,7 +434,7 @@ if (typeof window !== 'undefined') {
  * 열린 모든 문서 목록 반환
  */
 export function getOpenDocuments(): MDIDocument[] {
-  // 닫힌 문서 제거
+  // 닫힌 문서 제거 및 인터벌 정리
   const closedDocuments: string[] = [];
 
   documentRegistry.forEach((docInfo, id) => {
@@ -371,7 +443,13 @@ export function getOpenDocuments(): MDIDocument[] {
     }
   });
 
-  closedDocuments.forEach((id) => documentRegistry.delete(id));
+  closedDocuments.forEach((id) => {
+    const docInfo = documentRegistry.get(id);
+    if (docInfo?._closeCheckInterval) {
+      clearInterval(docInfo._closeCheckInterval);
+    }
+    documentRegistry.delete(id);
+  });
 
   return Array.from(documentRegistry.values());
 }
@@ -463,6 +541,8 @@ export const mdi = {
   isDocumentOpen,
   focus,
   rename,
+  addAllowedOrigin,
+  removeAllowedOrigin,
 };
 
 // ============================================================================
