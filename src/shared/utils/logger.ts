@@ -1,7 +1,7 @@
 /**
  * Simple Logging Wrapper using loglevel
  *
- * @purpose
+ * @description
  * - Simple console.log wrapper
  * - Auto-disable in production
  * - Environment-aware log levels

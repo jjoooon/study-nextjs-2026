@@ -1,7 +1,7 @@
 /**
  * IP Address Helper Utilities
  *
- * @purpose
+ * @description
  * - IP 주소 추출 (다양한 헤더 지원)
  * - IP 매칭 (단일 IP, CIDR 블록)
  * - 신뢰할 수 있는 프록시 환경 고려
