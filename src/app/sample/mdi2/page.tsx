@@ -139,14 +139,16 @@ export default function Page() {
       let doc;
       if (withInitialData) {
         // 초기 데이터와 함께 열기
-        const initialData = {
-          productId: parseInt(initialDataProductId, 10) || 123,
-          mode: initialDataMode || 'view',
-          message: `초기 데이터가 전달되었습니다 (${new Date().toLocaleTimeString()})`,
-          timestamp: Date.now(),
-        };
-        doc = mdi.open(url, initialData);
-        addLog('DOCUMENT_OPENED_WITH_INITIAL_DATA', 'sent', { documentId: doc.id, url: doc.url, initialData });
+        doc = mdi.open(url, {
+          initialData: {
+            productId: parseInt(initialDataProductId, 10) || 123,
+            mode: initialDataMode || 'view',
+            message: `초기 데이터가 전달되었습니다 (${new Date().toLocaleTimeString()})`,
+            timestamp: Date.now(),
+          },
+          title: '새탭',
+        });
+        addLog('DOCUMENT_OPENED_WITH_INITIAL_DATA', 'sent', { documentId: doc.id, url: doc.url });
       } else {
         // 기본 열기
         doc = mdi.open(url);
@@ -607,10 +609,12 @@ export default function Page() {
             <pre className="text-xs text-blue-900 overflow-x-auto">
               {`// 부모 문서 - 초기 데이터와 함께 열기
 const doc = mdi.open('child', {
-  productId: 123,
-  mode: 'edit',
-  message: 'Hello from parent',
-  timestamp: Date.now()
+  initialData: {
+    productId: 123,
+    mode: 'edit',
+    message: 'Hello from parent',
+    timestamp: Date.now()
+  }
 });
 
 // 자식 문서 - 초기 데이터 수신

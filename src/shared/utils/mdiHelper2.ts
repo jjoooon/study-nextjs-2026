@@ -69,6 +69,16 @@ export interface MDIMessage<T = unknown> {
  */
 export type MDIMessageHandler<T = unknown> = (message: MDIMessage<T>) => void;
 
+/**
+ * MDI 문서 열기 옵션
+ */
+export interface MDIOpenOptions<T = unknown> {
+  /** 자식 문서에 전달할 초기 데이터 */
+  initialData?: T;
+  /** 초기 문서 이름 (window title) */
+  title?: string;
+}
+
 // ============================================================================
 // STATE MANAGEMENT
 // ============================================================================
@@ -143,19 +153,20 @@ function storeInitialData(documentId: string, data: unknown): void {
 }
 
 /**
- * Get initial data from sessionStorage (called by child document)
+ * Get open options from sessionStorage (called by child document)
  *
  * @param documentId - MDI document ID (extracted from URL)
- * @returns Initial data or null if not found
+ * @returns Options or null if not found
  *
  * @example
  * // In child document
- * const initialData = mdi.getInitialData();
- * if (initialData) {
- *   console.log('Received initial data:', initialData);
+ * const options = mdi.getOpenOptions();
+ * if (options) {
+ *   console.log('Received initialData:', options.initialData);
+ *   console.log('Received title:', options.title);
  * }
  */
-export function getInitialData<T = unknown>(documentId?: string): T | null {
+export function getOpenOptions<T = unknown>(documentId?: string): MDIOpenOptions<T> | null {
   if (typeof window === 'undefined') return null;
 
   // If documentId not provided, extract from URL
@@ -178,7 +189,7 @@ export function getInitialData<T = unknown>(documentId?: string): T | null {
       return null;
     }
 
-    const data = JSON.parse(serialized) as T;
+    const data = JSON.parse(serialized) as MDIOpenOptions<T>;
     // Remove after reading to prevent memory leaks
     sessionStorage.removeItem(key);
     log.info('Initial data retrieved and cleared', { documentId });
@@ -188,6 +199,7 @@ export function getInitialData<T = unknown>(documentId?: string): T | null {
     return null;
   }
 }
+
 
 /**
  * URL에 document ID 추가 (내부용)
@@ -214,7 +226,7 @@ function appendDocumentIdToUrl(url: string, documentId: string): string {
  * 새 문서 열기 (In-Page Tab)
  *
  * @param url - 열 문서의 컴포넌트 타입 또는 URL
- * @param initialData - 자식 문서에 전달할 초기 데이터 (선택적)
+ * @param options - 옵션 객체
  * @returns MDIDocument 객체
  *
  * @example
@@ -222,19 +234,25 @@ function appendDocumentIdToUrl(url: string, documentId: string): string {
  * const doc = mdi.open('child');
  *
  * // 초기 데이터 전달
- * const doc = mdi.open('child', { productId: 123, mode: 'edit' });
+ * const doc = mdi.open('child', { initialData: { productId: 123, mode: 'edit' } });
+ *
+ * // 초기 데이터와 제목 설정
+ * const doc = mdi.open('child', {
+ *   initialData: { productId: 123, mode: 'edit' },
+ *   title: '상품 상세 편집'
+ * });
  *
  * // 자식 문서에서 데이터 수신
  * // const initialData = mdi.getInitialData(); // { productId: 123, mode: 'edit' }
  */
-export function open<T = unknown>(url: string, initialData?: T): MDIDocument {
+export function open<T = unknown>(url: string, options?: MDIOpenOptions<T>): MDIDocument {
   const id = generateDocumentId();
 
-  log.debug('Opening MDI document (in-page tab)', { id, url, hasInitialData: !!initialData });
+  log.debug('Opening MDI document (in-page tab)', { id, url, options });
 
-  // 초기 데이터가 있으면 sessionStorage에 저장
-  if (initialData !== undefined) {
-    storeInitialData(id, initialData);
+  // options 전체를 sessionStorage에 저장
+  if (options !== undefined) {
+    storeInitialData(id, options);
   }
 
   // URL에 document ID 추가 (자식 문서가 초기 데이터를 찾기 위해)
@@ -246,12 +264,12 @@ export function open<T = unknown>(url: string, initialData?: T): MDIDocument {
     tabRef: urlWithId, // 컴포넌트 타입 저장 (ID 포함 URL)
     url: urlWithId,
     openedAt: Date.now(),
-    name: undefined, // 추가: 명시적 초기화
+    name: options?.title,
   };
 
   documentRegistry.set(id, document);
 
-  log.info('MDI document opened', { id, url: urlWithId, initialDataProvided: initialData !== undefined });
+  log.info('MDI document opened', { id, url: urlWithId, options });
 
   return document;
 }
@@ -584,7 +602,7 @@ export const mdi = {
   isDocumentOpen,
   focus,
   rename,
-  getInitialData,
+  getOpenOptions,
 };
 
 // ============================================================================

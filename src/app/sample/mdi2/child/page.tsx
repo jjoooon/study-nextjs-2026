@@ -11,12 +11,13 @@
  * - 초기 데이터 수신 (mdi.getInitialData() 사용)
  *
  * @usage
- * 부모 문서에서 mdi.open('/sample/mdi2/child', { productId: 123, mode: 'edit' })로 열립니다
+ * 부모 문서에서 mdi.open('/sample/mdi2/child', { initialData: { productId: 123, mode: 'edit' } })로 열립니다
  */
 
 import { useEffect, useState } from 'react';
 
 import { mdi } from '@/shared/utils/mdiHelper2';
+import type { MDIOpenOptions } from '@/shared/utils/mdiHelper2';
 
 interface ReceivedMessage {
   id: string;
@@ -38,10 +39,12 @@ export default function ChildPage() {
   const [parentMessage, setParentMessage] = useState<string>('');
   const [documentName, setDocumentName] = useState<string>('');
   // Lazy initialization to avoid setState in effect
-  const [initialData] = useState<InitialData | null>(() => {
+  const [mdiOptions] = useState<MDIOpenOptions<InitialData> | null>(() => {
     if (typeof window === 'undefined') return null;
-    return mdi.getInitialData<InitialData>();
+    return mdi.getOpenOptions<InitialData>();
   });
+  // initialData는 옵션에서 추출 (하위 호환성)
+  const initialData = mdiOptions?.initialData;
 
   // payload를 안전하게 문자열로 변환하는 헬퍼 함수
   const formatPayload = (payload: unknown): string => {
@@ -62,8 +65,14 @@ export default function ChildPage() {
   // 초기화 및 메시지 핸들러 설정
   useEffect(() => {
     // 초기 데이터 로그 (lazy init으로 이미 state에 설정됨)
-    if (initialData) {
-      console.log('[MDI2 Child] Initial data received:', initialData);
+    if (mdiOptions) {
+      console.log('[MDI2 Child] MDI options received:', mdiOptions);
+    }
+
+    // title이 있으면 문서 제목 설정
+    if (mdiOptions?.title) {
+      document.title = mdiOptions.title;
+      setDocumentName(mdiOptions.title);
     }
 
     // 부모 문서에 준비 완료 알림
@@ -73,7 +82,7 @@ export default function ChildPage() {
         payload: {
           documentId: 'mdi2-child',
           hasInitialData: !!initialData,
-          initialData,
+          mdiOptions,
         },
       });
       setIsReady(true);
@@ -129,7 +138,7 @@ export default function ChildPage() {
       window.removeEventListener('message', handleMessage);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // initialData는 lazy init으로 mount 시에만 설정됨, 추가 의존성 불필요
+  }, []); // mdiOptions는 lazy init으로 mount 시에만 설정됨, 추가 의존성 불필요
 
   // 부모에게 데이터 업데이트 전송
   const handleSendToParent = () => {
@@ -198,9 +207,16 @@ export default function ChildPage() {
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">초기 데이터</h2>
-              <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
-                mdi.getInitialData()
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
+                  mdi.getInitialData()
+                </span>
+                {mdiOptions?.title && (
+                  <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs font-medium">
+                    Title: {mdiOptions.title}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="space-y-2 text-sm">
               {initialData.productId !== undefined && (

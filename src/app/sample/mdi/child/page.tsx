@@ -11,12 +11,12 @@
  * - 메시지에 따른 UI 업데이트
  *
  * @usage
- * 부모 문서에서 mdi.open('/sample/mdi/child', initialData)로 열립니다
+ * 부모 문서에서 mdi.open('/sample/mdi/child', { initialData: {...} })로 열립니다
  */
 
 import { useEffect, useState } from 'react';
 
-import type { MDIMessage } from '@/shared/utils/mdiHelper';
+import type { MDIMessage, MDIOpenOptions } from '@/shared/utils/mdiHelper';
 import { mdi } from '@/shared/utils/mdiHelper';
 
 interface ReceivedMessage {
@@ -38,10 +38,12 @@ export default function ChildPage() {
   const [parentMessage, setParentMessage] = useState<string>('');
   const [documentName, setDocumentName] = useState<string>('');
   // Lazy initialization to avoid setState in effect
-  const [initialData] = useState<InitialData | null>(() => {
+  const [mdiOptions] = useState<MDIOpenOptions<InitialData> | null>(() => {
     if (typeof window === 'undefined') return null;
-    return mdi.getInitialData<InitialData>();
+    return mdi.getOpenOptions<InitialData>();
   });
+  // initialData는 옵션에서 추출 (하위 호환성)
+  const initialData = mdiOptions?.initialData;
 
   // payload를 안전하게 문자열로 변환하는 헬퍼 함수
   const formatPayload = (payload: unknown): string => {
@@ -54,14 +56,20 @@ export default function ChildPage() {
   // 초기화 및 메시지 핸들러 설정
   useEffect(() => {
     // 초기 데이터 로그 (lazy init으로 이미 state에 설정됨)
-    if (initialData) {
-      console.log('Initial data received:', initialData);
+    if (mdiOptions) {
+      console.log('MDI options received:', mdiOptions);
+    }
+
+    // title이 있으면 문서 제목 설정
+    if (mdiOptions?.title) {
+      document.title = mdiOptions.title;
+      setDocumentName(mdiOptions.title);
     }
 
     // 부모 문서에 준비 완료 알림
     const notifyReady = () => {
       if (window.opener) {
-        window.opener.postMessage({ type: 'READY', payload: { documentId: 'child', initialData } }, '*');
+        window.opener.postMessage({ type: 'READY', payload: { documentId: 'child', mdiOptions } }, '*');
       }
       setIsReady(true);
     };
@@ -88,16 +96,6 @@ export default function ChildPage() {
       const message: ReceivedMessage = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
         type: 'REFRESH',
-        payload: msg.payload,
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      setReceivedMessages((prev) => [message, ...prev].slice(0, 20));
-    });
-
-    const cleanupInitData = mdi.onMessage('INIT_DATA', (msg: MDIMessage) => {
-      const message: ReceivedMessage = {
-        id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-        type: 'INIT_DATA',
         payload: msg.payload,
         timestamp: new Date().toLocaleTimeString(),
       };
@@ -135,12 +133,11 @@ export default function ChildPage() {
       clearTimeout(timer);
       cleanupUpdateData();
       cleanupRefresh();
-      cleanupInitData();
       cleanupRename();
       cleanupPong();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // initialData는 lazy init으로 mount 시에만 설정됨, 추가 의존성 불필요
+  }, []); // mdiOptions는 lazy init으로 mount 시에만 설정됨, 추가 의존성 불필요
 
   // 부모에게 메시지 전송
   const handleSendToParent = () => {
@@ -218,7 +215,14 @@ export default function ChildPage() {
         {/* Initial Data Card */}
         {initialData && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">📦 초기 데이터</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">📦 초기 데이터</h2>
+              {mdiOptions?.title && (
+                <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs font-medium">
+                  Title: {mdiOptions.title}
+                </span>
+              )}
+            </div>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <span className="w-24 text-sm text-gray-500">제품:</span>
@@ -313,7 +317,7 @@ export default function ChildPage() {
               부모로부터 전달받은 <strong>초기 데이터</strong>를 sessionStorage에서 조회합니다
             </li>
             <li>페이지 로드 후 0.5초 뒤 부모에게 READY 신호를 보냅니다</li>
-            <li>부모로부터 UPDATE_DATA, REFRESH, INIT_DATA 메시지를 받을 수 있습니다</li>
+            <li>부모로부터 UPDATE_DATA, REFRESH, RENAME 메시지를 받을 수 있습니다</li>
             <li>데이터 업데이트 버튼으로 부모에게 메시지를 보낼 수 있습니다</li>
             <li>PING 버튼으로 부모에게 PING을 보내고 PONG 응답을 받을 수 있습니다</li>
           </ul>

@@ -102,9 +102,12 @@ export default function Page() {
     try {
       // 초기 데이터와 함께 열기
       const doc = mdi.open('/sample/mdi/child', {
-        product: initialProduct || 'Sample Product',
-        mode: initialMode,
-        timestamp: Date.now(),
+        initialData: {
+          product: initialProduct || 'Sample Product',
+          mode: initialMode,
+          timestamp: Date.now(),
+        },
+        title: '새탭',
       });
       setSelectedDocId(doc.id);
       addLog('DOCUMENT_OPENED', 'sent', {
