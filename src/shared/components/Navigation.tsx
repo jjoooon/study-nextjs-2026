@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { AUTH_ROUTES, MAIN_ROUTES } from '@/shared/constants/routes';
 import { useLogoutMutation } from '@/shared/services/authService';
+import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 import { selectIsAuthenticated, selectUser } from '@/shared/store/authSelectors';
 import { clearCredentials } from '@/shared/store/authSlice';
 
@@ -46,6 +47,19 @@ export function Navigation() {
     try {
       await logout(undefined).unwrap();
       dispatch(clearCredentials());
+      // 인증 쿠키 삭제
+      deleteCookieValues(
+        [
+          'InitechEamERCD',
+          'InitechEamUID',
+          'InitechEamUIP',
+          'InitechEamUPID',
+          'InitechEamUTOA',
+          'InitechEamUHMAC',
+          'InitechEamULAT',
+        ],
+        { path: '/', sameSite: 'lax' }
+      );
       setIsUserMenuOpen(false);
       // 로그아웃 후 메인 페이지로 이동
       window.location.href = MAIN_ROUTES.HOME;

@@ -27,6 +27,7 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { publicConfig } from '@/shared/config/env';
 import { AUTH_ROUTES } from '@/shared/constants/routes';
+import { deleteCookieValues, getCookieValue } from '@/shared/utils/cookieUtils';
 import { clearCredentials } from '@/shared/store/authSlice';
 
 // ============================================================================
@@ -56,11 +57,24 @@ const internalBaseQuery = fetchBaseQuery({
   credentials: 'include',
   // MSW 테스트를 위해 쿠키를 수동으로 Cookie 헤더에 추가
   prepareHeaders: (headers) => {
-    if (typeof document !== 'undefined') {
-      const cookies = document.cookie;
-      if (cookies) {
-        headers.set('Cookie', cookies);
-      }
+    // 쿠키 헤더 수동 구성 (MSW 테스트용)
+    const cookiePairs = [
+      { name: 'InitechEamERCD', value: getCookieValue('InitechEamERCD') },
+      { name: 'InitechEamUID', value: getCookieValue('InitechEamUID') },
+      { name: 'InitechEamUIP', value: getCookieValue('InitechEamUIP') },
+      { name: 'InitechEamUPID', value: getCookieValue('InitechEamUPID') },
+      { name: 'InitechEamUTOA', value: getCookieValue('InitechEamUTOA') },
+      { name: 'InitechEamUHMAC', value: getCookieValue('InitechEamUHMAC') },
+      { name: 'InitechEamULAT', value: getCookieValue('InitechEamULAT') },
+    ];
+
+    const cookieHeader = cookiePairs
+      .filter((pair) => pair.value)
+      .map((pair) => `${pair.name}=${pair.value}`)
+      .join('; ');
+
+    if (cookieHeader) {
+      headers.set('Cookie', cookieHeader);
     }
 
     return headers;
@@ -86,16 +100,19 @@ export const baseQueryWithReauth: BaseQueryType = async (args, api, extraOptions
   if (result.error && result.error.status === 401) {
     api.dispatch(clearCredentials());
 
-    // 쿠키 삭제
-    if (typeof document !== 'undefined') {
-      document.cookie = 'InitechEamERCD=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'InitechEamUID=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'InitechEamUIP=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'InitechEamUPID=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'InitechEamUTOA=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'InitechEamUHMAC=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'InitechEamULAT=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    }
+    // 인증 쿠키 삭제
+    deleteCookieValues(
+      [
+        'InitechEamERCD',
+        'InitechEamUID',
+        'InitechEamUIP',
+        'InitechEamUPID',
+        'InitechEamUTOA',
+        'InitechEamUHMAC',
+        'InitechEamULAT',
+      ],
+      { path: '/', sameSite: 'lax' }
+    );
 
     // 로그인 페이지로 리다이렉트
     if (typeof window !== 'undefined') {

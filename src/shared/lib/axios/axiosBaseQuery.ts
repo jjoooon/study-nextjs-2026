@@ -44,43 +44,12 @@ import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
 import axios, { AxiosError, AxiosInstance, Method } from 'axios';
 
 import { publicConfig } from '@/shared/config/env';
+import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 import { clearCredentials } from '@/shared/store/authSlice';
 
 // ============================================================================
 // TYPES
 // ============================================================================
-
-// ============================================================================
-// UTILITIES
-// ============================================================================
-
-/**
- * 인증 쿠키 삭제
- *
- * @description
- * 모든 인증 관련 쿠키를 삭제합니다
- *
- * @example
- * // 로그아웃, 세션 만료 등에서 사용
- * deleteAuthCookies();
- *
- * @see
- * - Called from: axiosBaseQueryWithReauth (401 에러 시)
- * - Related: clearCredentials() in authSlice
- * - MDN Cookie Docs: https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
- */
-export const deleteAuthCookies = (): void => {
-  if (typeof document !== 'undefined') {
-    // 쿠키 삭제
-    document.cookie = 'InitechEamERCD=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'InitechEamUID=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'InitechEamUIP=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'InitechEamUPID=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'InitechEamUTOA=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'InitechEamUHMAC=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'InitechEamULAT=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  }
-};
 
 // ============================================================================
 // AXIOS INSTANCE
@@ -122,8 +91,19 @@ const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
             store.dispatch(clearCredentials());
           }
 
-          // 쿠키 삭제
-          deleteAuthCookies();
+          // 인증 쿠키 삭제
+          deleteCookieValues(
+            [
+              'InitechEamERCD',
+              'InitechEamUID',
+              'InitechEamUIP',
+              'InitechEamUPID',
+              'InitechEamUTOA',
+              'InitechEamUHMAC',
+              'InitechEamULAT',
+            ],
+            { path: '/', sameSite: 'lax' }
+          );
 
           // 로그인 페이지로 리다이렉트
           if (typeof window !== 'undefined') {

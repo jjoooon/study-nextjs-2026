@@ -16,6 +16,7 @@
 
 import log from 'loglevel';
 import { publicConfig } from '../config/env';
+import { getCookieValue } from './cookieUtils';
 
 const DEBUG_COOKIE_NAME = 'debug_log_level';
 
@@ -28,24 +29,10 @@ const DEBUG_COOKIE_NAME = 'debug_log_level';
  * @returns 쿠키에 설정된 로그 레벨 또는 null
  */
 function getDebugLogLevelFromCookie(): log.LogLevelDesc | null {
-  // 브라우저 환경 확인
-  if (typeof window === 'undefined') {
-    return null;
-  }
+  const level = getCookieValue(DEBUG_COOKIE_NAME) as string | undefined;
 
-  try {
-    const cookies = document.cookie.split(';');
-    const debugCookie = cookies.find((cookie) => cookie.trim().startsWith(`${DEBUG_COOKIE_NAME}=`));
-
-    if (debugCookie) {
-      const level = debugCookie.split('=')[1]?.trim();
-      if (level && ['error', 'warn', 'info', 'debug'].includes(level)) {
-        return level as log.LogLevelDesc;
-      }
-    }
-  } catch {
-    // 쿠키 접근 불가 (써드 파티 등)
-    return null;
+  if (level && ['error', 'warn', 'info', 'debug'].includes(level)) {
+    return level as log.LogLevelDesc;
   }
 
   return null;
@@ -112,26 +99,25 @@ export function setupCookieListener(): void {
   }
 
   // 쿠키 변경 감지 (간단한 폴링 방식)
-  let lastCookieValue = document.cookie;
+  let lastLevel = getDebugLogLevelFromCookie();
   const checkInterval = 1000; // 1초마다 확인
 
   const intervalId = setInterval(() => {
-    const currentCookieValue = document.cookie;
-    if (currentCookieValue !== lastCookieValue) {
-      lastCookieValue = currentCookieValue;
+    const currentLevel = getDebugLogLevelFromCookie();
+    const loggerLevel = log.getLogger('dummy').getLevel();
 
-      const newLevel = getDebugLogLevelFromCookie();
-      const currentLevel = log.getLogger('dummy').getLevel();
+    const defaultLevel = publicConfig.devtools.logLevel;
+    const targetLevel = currentLevel ?? defaultLevel;
+    const newLevelConstant = log.levels[targetLevel as keyof typeof log.levels];
 
-      const defaultLevel = publicConfig.devtools.logLevel;
-      const targetLevel = newLevel ?? defaultLevel;
-      const newLevelConstant = log.levels[targetLevel as keyof typeof log.levels];
+    if (currentLevel !== lastLevel) {
+      lastLevel = currentLevel;
 
-      if (newLevel !== null && currentLevel !== newLevelConstant) {
+      if (currentLevel !== null && loggerLevel !== newLevelConstant) {
         // 로그 레벨 변경
         log.setLevel(newLevelConstant);
-        console.log(`[Logger] Log level changed to: ${newLevel}`);
-      } else if (newLevel === null && currentLevel !== log.levels[defaultLevel as keyof typeof log.levels]) {
+        console.log(`[Logger] Log level changed to: ${currentLevel}`);
+      } else if (currentLevel === null && loggerLevel !== log.levels[defaultLevel as keyof typeof log.levels]) {
         // 기본 레벨로 복원
         log.setLevel(defaultLevel);
         console.log(`[Logger] Log level reset to: ${defaultLevel}`);

@@ -23,6 +23,7 @@
  */
 
 import { http, HttpResponse, delay } from 'msw';
+import { setCookieValue } from '@/shared/utils/cookieUtils';
 
 /**
  * 인증 API 핸들러
@@ -57,17 +58,16 @@ export const authHandlers = [
 
     if (isValidEmployeeId && isValidPassword) {
       // 쿠키 설정
-      if (typeof document !== 'undefined') {
-        const timestamp = String(Date.now()).slice(0, 10); // 10자리만 사용
+      const timestamp = String(Date.now()).slice(0, 10);
+      const cookieOptions = { path: '/', sameSite: 'lax' as const };
 
-        document.cookie = `InitechEamERCD=1001; Path=/; SameSite=lax`;
-        document.cookie = `InitechEamUID=${employeeId}; Path=/; SameSite=lax`;
-        document.cookie = `InitechEamUIP=127.0.0.1; Path=/; SameSite=lax`;
-        document.cookie = `InitechEamUPID=portal.hwgitest.com; Path=/; SameSite=lax`;
-        document.cookie = `InitechEamUTOA=1; Path=/; SameSite=lax`;
-        document.cookie = `InitechEamUHMAC=aaaaa; Path=/; SameSite=lax`;
-        document.cookie = `InitechEamULAT=${timestamp}; Path=/; SameSite=lax`;
-      }
+      setCookieValue('InitechEamERCD', '1001', cookieOptions);
+      setCookieValue('InitechEamUID', employeeId, cookieOptions);
+      setCookieValue('InitechEamUIP', '127.0.0.1', cookieOptions);
+      setCookieValue('InitechEamUPID', 'portal.hwgitest.com', cookieOptions);
+      setCookieValue('InitechEamUTOA', '1', cookieOptions);
+      setCookieValue('InitechEamUHMAC', 'aaaaa', cookieOptions);
+      setCookieValue('InitechEamULAT', timestamp, cookieOptions);
 
       return HttpResponse.json({
         user: {
