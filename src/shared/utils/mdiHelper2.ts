@@ -67,15 +67,7 @@ export interface MDIDocument {
  * - `RENAME`: 문서 이름 변경 알림
  * - `CUSTOM`: 사용자 정의 메시지
  */
-export type MDIMessageType =
-  | 'UPDATE_DATA'
-  | 'REFRESH'
-  | 'CLOSE'
-  | 'PING'
-  | 'PONG'
-  | 'READY'
-  | 'RENAME'
-  | 'CUSTOM';
+export type MDIMessageType = 'UPDATE_DATA' | 'REFRESH' | 'CLOSE' | 'PING' | 'PONG' | 'READY' | 'RENAME' | 'CUSTOM';
 
 /**
  * MDI 메시지 구조
@@ -149,7 +141,7 @@ function generateDocumentId(): string {
  * @internal
  * @param docId - 설정할 문서 ID
  */
-function _setCurrentDocumentId(docId: string): void {
+export function _setCurrentDocumentId(docId: string): void {
   currentDocumentId = docId;
 }
 
@@ -159,7 +151,7 @@ function _setCurrentDocumentId(docId: string): void {
  * @internal
  * @returns 현재 문서 ID 또는 null
  */
-function _getCurrentDocumentId(): string | null {
+export function _getCurrentDocumentId(): string | null {
   return currentDocumentId;
 }
 
@@ -249,7 +241,6 @@ export function getOpenOptions<T = unknown>(documentId?: string): MDIOpenOptions
     return null;
   }
 }
-
 
 /**
  * URL에 문서 ID 쿼리 파라미터를 추가합니다 (내부용)

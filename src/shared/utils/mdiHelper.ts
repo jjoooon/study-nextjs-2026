@@ -558,12 +558,7 @@ function handleMessage(event: MessageEvent): void {
  * @returns MDIMessage 형식인지 여부
  */
 function isValidMDIMessage(data: unknown): data is MDIMessage {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'type' in data &&
-    typeof (data as MDIMessage).type === 'string'
-  );
+  return typeof data === 'object' && data !== null && 'type' in data && typeof (data as MDIMessage).type === 'string';
 }
 
 /**

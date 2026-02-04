@@ -7,9 +7,9 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { AUTH_ROUTES, MAIN_ROUTES } from '@/shared/constants/routes';
 import { useLogoutMutation } from '@/shared/services/authService';
-import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 import { selectIsAuthenticated, selectUser } from '@/shared/store/authSelectors';
 import { clearCredentials } from '@/shared/store/authSlice';
+import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 
 interface NavItem {
   name: string;

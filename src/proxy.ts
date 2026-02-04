@@ -3,6 +3,7 @@
  *
  * @purpose
  * - IP 기반 로그 레벨 동적 설정
+ * - 소스맵 파일 접근 차단
  * - 여러 미들웨어 핸들러를 순차적으로 실행
  *
  * @description
@@ -18,6 +19,7 @@
 
 import type { NextRequest } from 'next/server';
 import { composeMiddleware } from './middleware/chain';
+// import { blockSourceMapsHandler } from './middleware/handlers/blockSourceMaps';
 import { debugLogLevelHandler } from './middleware/handlers/debugLogLevel';
 
 /**
@@ -27,6 +29,12 @@ import { debugLogLevelHandler } from './middleware/handlers/debugLogLevel';
  * 등록된 순서대로 실행됩니다.
  */
 const handlers = [
+  // {
+  //   handler: blockSourceMapsHandler,
+  //   config: {
+  //     name: 'BlockSourceMaps',
+  //   },
+  // },
   {
     handler: debugLogLevelHandler,
     config: {
@@ -45,7 +53,10 @@ export function proxy(request: NextRequest) {
 
 /**
  * 프록시가 실행될 경로 패턴
+ * - _next/static/chunks/*.js.map 제외하고 허용
  */
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  // 소스맵 추가
+  // matcher: ['/((?!_next/static/(?!chunks/.*\\.map$)|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };

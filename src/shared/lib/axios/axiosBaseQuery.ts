@@ -44,8 +44,8 @@ import type { BaseQueryFn } from '@reduxjs/toolkit/query/react';
 import axios, { AxiosError, AxiosInstance, Method } from 'axios';
 
 import { publicConfig } from '@/shared/config/env';
-import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 import { clearCredentials } from '@/shared/store/authSlice';
+import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 
 // ============================================================================
 // TYPES

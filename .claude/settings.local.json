@@ -56,7 +56,9 @@
       "mcp__context7__resolve-library-id",
       "Bash(npm run format:*)",
       "Bash(node:*)",
-      "Bash(npm update:*)"
+      "Bash(npm update:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(yarn lint:*)"
     ]
   }
 }

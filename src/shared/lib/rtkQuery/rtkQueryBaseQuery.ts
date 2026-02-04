@@ -27,8 +27,8 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { publicConfig } from '@/shared/config/env';
 import { AUTH_ROUTES } from '@/shared/constants/routes';
-import { deleteCookieValues, getCookieValue } from '@/shared/utils/cookieUtils';
 import { clearCredentials } from '@/shared/store/authSlice';
+import { deleteCookieValues, getCookieValue } from '@/shared/utils/cookieUtils';
 
 // ============================================================================
 // TYPES
