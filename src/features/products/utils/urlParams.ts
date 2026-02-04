@@ -17,8 +17,16 @@
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
 
-import { last30DaysRange } from '@/shared/utils/date/dateRange';
 import { URL_PARAMS as SHARED_URL_PARAMS } from '@/shared/utils/url/urlParams';
+
+const last30DaysRange = () => {
+  const now = new Date();
+  const start = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  return {
+    start: start.toISOString(),
+    end: now.toISOString(),
+  };
+};
 
 import type { ProductsFilters, ProductsSort } from '../types/uiTypes';
 
