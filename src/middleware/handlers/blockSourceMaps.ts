@@ -26,7 +26,7 @@ const logger = log.getLogger('BlockSourceMaps');
  * @description
  * 개발용으로 임시 하드코딩. 추후 환경변수로 이동 예정.
  */
-const ALLOWED_SOURCE_MAP_IPS = ['127.0.0.1', '::1'] as const;
+const ALLOWED_SOURCE_MAP_IPS = ['127.0.0.1', '::1'];
 
 /**
  * 소스맵 파일 경로 패턴
@@ -46,7 +46,7 @@ export function createBlockSourceMapsHandler(): MiddlewareHandler {
     // 소스맵 파일 요청인 경우
     if (SOURCE_MAP_PATTERN.test(pathname)) {
       const clientIp = getClientIp(request);
-      const isAllowedIp = clientIp && ALLOWED_SOURCE_MAP_IPS.includes(clientIp as any);
+      const isAllowedIp = clientIp && ALLOWED_SOURCE_MAP_IPS.includes(clientIp);
 
       if (isAllowedIp) {
         // 허용된 IP: 정상 응답 (소스맵 접근 허용)
