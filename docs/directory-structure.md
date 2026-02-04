@@ -34,6 +34,7 @@ study-nextjs-2026/
 src/
 ├── app/                          # Next.js App Router (App Router)
 ├── features/                     # 기능 기반 모듈 (Feature-based)
+├── middleware/                   # Next.js 미들웨어
 ├── shared/                       # 공유 코드 (Shared Layer)
 ├── redux/                        # Redux 상태 관리
 └── mocks/                        # MSW API 모킹
@@ -211,6 +212,30 @@ shared/
 
 ---
 
+### `/src/middleware` - Next.js 미들웨어
+
+Next.js 미들웨어를 사용한 요청/응답 처리가 위치합니다.
+
+```
+middleware/
+├── chain.ts                    # 미들웨어 체인 (Chain of Responsibility)
+├── types.ts                    # 미들웨어 타입 정의
+└── handlers/                   # 미들웨어 핸들러
+    ├── debugLogLevel.ts       # 디버그 로그 레벨 설정
+    └── blockSourceMaps.ts     # 소스맵 접근 차단
+```
+
+**미들웨어 아키텍처:**
+- **Chain of Responsibility 패턴** - 순차적 미들웨어 실행
+- **조건부 실행** - 핸들러별 실행 조건 지원
+- **핸들러 기반 모듈화** - 독립적인 미들웨어 핸들러
+
+**주요 핸들러:**
+- **debugLogLevel** - IP 기반 디버그 로그 레벨 동적 설정
+- **blockSourceMaps** - 프로덕션 환경에서 소스맵 접근 차단
+
+---
+
 ### `/src/redux` - Redux 상태 관리
 
 Redux Toolkit과 Redux Persist를 사용한 전역 상태 관리가 위치합니다.
@@ -332,6 +357,7 @@ App (Next.js App Router)
 |--------|------|------|
 | **Features** | 도메인별 비즈니스 로직 | 대시보드, 상품 관리 |
 | **Shared** | 재사용 가능한 코드 | UI 컴포넌트, 유틸리티, 타입 |
+| **Middleware** | 요청/응답 처리 | IP 기반 로그 설정, 소스맵 차단 |
 | **App** | 라우팅, 레이아웃 | 페이지, 레이아웃, 에러 처리 |
 | **Redux** | 전역 상태 관리 | Redux 설정, 미들웨어 |
 | **Mocks** | API 모킹 | MSW 핸들러, 모의 데이터 |
@@ -389,6 +415,23 @@ App (Next.js App Router)
    - 인증: `/src/shared/components/auth/`
 2. Storybook으로 개발 및 테스트
 3. export 추가
+
+### 새로운 미들웨어 핸들러 추가
+
+1. `/src/middleware/handlers/`에 핸들러 파일 생성
+2. `MiddlewareHandler` 타입 구현:
+   ```typescript
+   import type { MiddlewareHandler } from '../types';
+
+   export function createMyHandler(): MiddlewareHandler {
+     return (request, response) => {
+       // 미들웨어 로직
+       return response;
+     };
+   }
+   ```
+3. 미들웨어 체인에 핸들러 등록 (`chain.ts`의 `composeMiddleware`)
+4. 필요한 경우 조건부 실행 설정 (`MiddlewareHandlerConfig`)
 
 ---
 
