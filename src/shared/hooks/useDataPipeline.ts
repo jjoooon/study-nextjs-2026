@@ -101,11 +101,15 @@ export type { PipelineStep };
  * @param initialSteps - 초기 스텝 배열
  * @returns 파이프라인 상태 및 조작 메서드
  */
+// 안전한 ID 생성기
+let stepIdCounter = 0;
+const generateStepId = () => `step-${Date.now()}-${++stepIdCounter}`;
+
 export function useDataPipeline(initialSteps: PipelineStep[] = []) {
   const [steps, setSteps] = useState<PipelineStep[]>(
-    initialSteps.map((step, idx) => ({
+    initialSteps.map((step) => ({
       ...step,
-      id: `step-${idx}-${Date.now()}`,
+      id: step.id || generateStepId(),
       execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
     }))
   );
@@ -154,13 +158,13 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
 
       const step = currentSteps[stepIndex];
 
-      // 조건 체크
-      if (step.condition && !step.condition(currentResults, currentContext)) {
-        if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
-        return;
-      }
-
       try {
+        // 조건 체크 (try-catch 내부로 이동)
+        if (step.condition && !step.condition(currentResults, currentContext)) {
+          if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
+          return;
+        }
+
         let result: unknown;
 
         // 1. Query 처리
@@ -181,7 +185,8 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
 
           if (isError) throw error;
 
-          if (step.mutationArgs !== undefined && !data) {
+          // mutationArgs가 있고 아직 데이터가 없으면 실행
+          if (step.mutationArgs !== undefined && data === undefined) {
             result = await trigger(step.mutationArgs).unwrap();
           } else {
             result = data;
@@ -267,7 +272,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     ) => {
       const newStep: PipelineStep = {
         ...step,
-        id: `step-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: step.id || generateStepId(),
         execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
       };
 
@@ -286,7 +291,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
 
       return newStep.id;
     },
-    [steps.length]
+    [steps]
   );
 
   /**
@@ -305,7 +310,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     ) => {
       const stepsWithIds = newSteps.map((step) => ({
         ...step,
-        id: `step-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: step.id || generateStepId(),
         execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
       }));
 
@@ -324,7 +329,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
 
       return stepsWithIds.map((s) => s.id);
     },
-    [steps.length]
+    [steps]
   );
 
   /**
@@ -337,10 +342,20 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
 
       if (index === -1) return prev;
 
+      const removedStep = prev[index];
       const newSteps = prev.filter((_, i) => i !== index);
 
       // 결과도 제거
       setResults((prevResults) => prevResults.filter((_, i) => i !== index));
+
+      // 실행 기록에서도 제거
+      if (removedStep.id) {
+        setExecutedStepIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(removedStep.id!);
+          return newSet;
+        });
+      }
 
       // 현재 인덱스 조정
       setCurrentStepIndex((current) => {
@@ -416,9 +431,9 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     (keepInitial = false) => {
       if (keepInitial) {
         setSteps(
-          initialSteps.map((step, idx) => ({
+          initialSteps.map((step) => ({
             ...step,
-            id: `step-${idx}-${Date.now()}`,
+            id: step.id || generateStepId(),
             execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
           }))
         );
@@ -453,6 +468,15 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
         newResults.splice(toIndex, 0, result);
         return newResults;
       });
+
+      // 이동한 스텝의 실행 기록 제거 (재실행 위해)
+      if (removed.id) {
+        setExecutedStepIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(removed.id!);
+          return newSet;
+        });
+      }
 
       setCurrentStepIndex(toIndex);
 
@@ -590,14 +614,28 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     );
   }, []);
 
-  // 파이프라인 통계
+  // 파이프라인 통계 (최적화됨)
   const stats = useMemo(() => {
+    const totalSteps = steps.length;
+    const completedSteps = results.filter((r) => r !== undefined && r !== null).length;
+
+    // 한 번의 순회로 모든 타입 카운트
+    let querySteps = 0;
+    let mutationSteps = 0;
+    let functionSteps = 0;
+
+    for (const step of steps) {
+      if (step.type === 'query') querySteps++;
+      else if (step.type === 'mutation') mutationSteps++;
+      else if (step.type === 'function') functionSteps++;
+    }
+
     return {
-      totalSteps: steps.length,
-      completedSteps: results.filter(Boolean).length,
-      querySteps: steps.filter((s) => s.type === 'query').length,
-      mutationSteps: steps.filter((s) => s.type === 'mutation').length,
-      functionSteps: steps.filter((s) => s.type === 'function').length,
+      totalSteps,
+      completedSteps,
+      querySteps,
+      mutationSteps,
+      functionSteps,
       hasErrors: errors.length > 0,
     };
   }, [steps, results, errors]);
