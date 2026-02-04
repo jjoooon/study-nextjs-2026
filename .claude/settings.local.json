@@ -58,7 +58,8 @@
       "Bash(node:*)",
       "Bash(npm update:*)",
       "Bash(pnpm lint:*)",
-      "Bash(yarn lint:*)"
+      "Bash(yarn lint:*)",
+      "Bash(pnpm add:*)"
     ]
   }
 }
