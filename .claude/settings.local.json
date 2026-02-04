@@ -61,7 +61,8 @@
       "Bash(yarn lint:*)",
       "Bash(pnpm add:*)",
       "Bash(pnpm run typecheck:*)",
-      "Bash(pnpm run type-check:*)"
+      "Bash(pnpm run type-check:*)",
+      "Bash(pnpm type-check:*)"
     ]
   }
 }
