@@ -44,7 +44,7 @@ src/
 
 ### `/src/app` - Next.js App Router
 
-Next.js 16의 App Router를 사용하는 페이지와 레이아웃이 위치합니다.
+Next.js 16.1.6의 App Router를 사용하는 페이지와 레이아웃이 위치합니다.
 
 ```
 app/
@@ -62,16 +62,40 @@ app/
 └── sample/                      # 샘플 애플리케이션
     ├── layout.tsx               # 샘플 레이아웃
     ├── loading.tsx              # 샘플 로딩 UI
-    ├── dashboard/
+    │
+    ├── dashboard/               # 대시보드
     │   └── page.tsx             # 대시보드 페이지
-    └── products/
-        ├── [pageId]/            # 동적 라우트
-        │   └── page.tsx         # 상품 상세/수정 페이지
-        └── pages/               # 페이지 컴포넌트
-            ├── List.tsx         # 상품 목록
-            ├── Detail.tsx       # 상품 상세
-            ├── Edit.tsx         # 상품 수정
-            └── New.tsx          # 상품 등록
+    │
+    ├── products/                # 상품 관리
+    │   ├── [pageId]/            # 동적 라우트
+    │   │   └── page.tsx         # 상품 상세/수정 페이지
+    │   └── pages/               # 페이지 컴포넌트
+    │       ├── List.tsx         # 상품 목록
+    │       ├── Detail.tsx       # 상품 상세
+    │       ├── Edit.tsx         # 상품 수정
+    │       └── New.tsx          # 상품 등록
+    │
+    ├── xml/                     # XML 처리 학습 예제
+    │   ├── README.md            # XML 예제 설명
+    │   ├── case1/               # 기본 XML 파싱
+    │   │   └── page.tsx
+    │   ├── case2/               # XPath 쿼리
+    │   │   └── page.tsx
+    │   └── case3/               # 고급 XML 처리
+    │       └── page.tsx
+    │
+    ├── mdi/                     # Multiple Data Interface 예제
+    │   ├── page.tsx             # MDI 메인 페이지
+    │   └── child/               # MDI 자원 페이지
+    │       └── page.tsx
+    │
+    └── mdi2/                    # 고급 MDI 예제
+        ├── page.tsx             # 고급 MDI 메인 페이지
+        ├── components/          # MDI 컴포넌트
+        │   ├── MDIPageRenderer.tsx  # 페이지 렌더러
+        │   └── MDITabPanel.tsx      # 탭 패널
+        └── child/               # MDI 자원 페이지
+            └── page.tsx
 ```
 
 **주요 파일:**
@@ -171,44 +195,77 @@ feature-name/
 ```
 shared/
 ├── components/                 # 공유 컴포넌트
-│   ├── auth/                  # 인증 관련 컴포넌트
-│   │   └── AuthGuard.tsx     # 인증 가드
-│   ├── layout/                # 레이아웃 컴포넌트
-│   │   └── Navigation.tsx    # 네비게이션
-│   └── ui/                    # UI 컴포넌트 (Shadcn/UI 스타일)
-│       └── Button.tsx        # 버튼
+│   ├── AuthGuard.tsx         # 인증 가드
+│   ├── Navigation.tsx        # 네비게이션
+│   └── ui/                   # UI 컴포넌트 (Radix UI 기반)
+│       ├── button.tsx        # 버튼
+│       ├── dialog.tsx        # 다이얼로그
+│       ├── Skeleton.tsx      # 스켈레톤 로딩
+│       └── EmptyState.tsx    # 빈 상태 표시
 │
 ├── lib/                       # 라이브러리
-│   └── utils.ts             # 유틸리티 함수
+│   ├── axios/                # Axios 관련 설정
+│   ├── rtk-query/            # RTK Query 관련
+│   ├── rtkQuery/             # RTK Query 관련
+│   ├── shadcn/               # Shadcn 유틸리티 (cn, twMerge 등)
+│   └── serverFetch.ts        # 서버 페칭 유틸리티
 │
 ├── services/                  # 공유 서비스
-│   └── api/                 # API 설정
+│   ├── authService.ts        # 인증 서비스
+│   └── dynamicService.ts     # 동적 서비스
 │
-├── store/                     # 공유 Redux 설정
-│   ├── hooks.ts             # 커스텀 훅
-│   ├── index.ts             # 스토어 설정
-│   └── config.ts            # 스토어 설정
-│
-├── styles/                    # 공유 스타일
-│   └── globals.css          # 전역 CSS
+├── store/                     # 공유 Redux 슬라이스
+│   ├── authSelectors.ts      # 인증 상태 선택자
+│   ├── authSlice.ts          # 인증 슬라이스
+│   ├── popupSelectors.ts     # 팝업 상태 선택자
+│   └── popupSlice.ts         # 팝업 슬라이스
 │
 ├── types/                     # 공유 타입
-│   └── index.ts             # 공유 타입 정의
+│   ├── authTypes.ts          # 인증 관련 타입
+│   ├── dateTypes.ts          # 날짜 관련 타입
+│   ├── paginationTypes.ts    # 페이지네이션 타입
+│   └── urlTypes.ts           # URL 관련 타입
 │
 ├── utils/                     # 공유 유틸리티
-│   └── index.ts             # 유틸리티 함수
+│   ├── validation/           # 유효성 검사
+│   │   ├── commonSchemas.ts  # 공통 Zod 스키마
+│   │   └── zodHelpers.ts     # Zod 헬퍼 함수
+│   ├── file/                 # 파일 처리
+│   │   └── getPageFiles.ts   # 페이지 파일 가져오기
+│   ├── popup/                # 팝업 유틸리티
+│   │   ├── popupApi.ts       # 팝업 API
+│   │   └── popupRegistry.ts  # 팝업 레지스트리
+│   ├── url/                  # URL 처리
+│   │   └── urlParams.ts      # URL 파라미터 처리
+│   ├── xml/                  # XML 처리
+│   │   ├── xmlParser.ts      # XML 파서
+│   │   ├── xmlTypes.ts       # XML 타입
+│   │   ├── xpathExecutor.ts  # XPath 실행기
+│   │   ├── xpathParser.ts    # XPath 파서
+│   │   └── xpathQuery.ts     # XPath 쿼리
+│   ├── cookieUtils.ts        # 쿠키 유틸리티
+│   ├── dateUtils.ts          # 날짜 유틸리티
+│   ├── ipUtils.ts            # IP 유틸리티
+│   ├── logger.ts             # 로거
+│   ├── mdiHelper.ts          # MDI 헬퍼
+│   ├── mdiHelper2.ts         # MDI 헬퍼 2
+│   ├── numberUtils.ts        # 숫자 유틸리티
+│   ├── performance.ts        # 성능 유틸리티
+│   ├── storageUtils.ts       # 스토리지 유틸리티
+│   └── stringUtils.ts        # 문자열 유틸리티
 │
 ├── config/                    # 설정
-│   └── env.ts               # 환경 변수 설정
+│   └── env.ts                # 환경 변수 설정
 │
 └── constants/                 # 공유 상수
-    └── index.ts             # 상수 정의
+    └── index.ts              # 상수 정의
 ```
 
 **Shared 컴포넌트 특징:**
 - 모든 Feature에서 import 가능
 - Redux 상태(selector, slice)에 접근 가능
 - 재사용 가능한 범용 컴포넌트
+- **UI 컴포넌트**: Radix UI 프리미티브 기반 (button, dialog, Skeleton, EmptyState 등)
 
 ---
 
@@ -245,6 +302,9 @@ redux/
 ├── hooks.ts                   # 커스텀 Redux 훅
 ├── index.ts                   # 스토어 메인 설정
 ├── config.ts                  # 스토어 설정
+├── setup.ts                   # 스토어 설정
+├── storage.ts                 # Redux Persist 스토리지 설정
+├── transforms.ts              # 스테이트 변환 함수
 │
 ├── middleware/                # 커스텀 미들웨어
 │   └── performance.ts       # 성능 모니터링 미들웨어
@@ -302,6 +362,56 @@ mocks/
 
 ---
 
+## 학습 예제
+
+### `/src/app/sample/xml` - XML 처리 예제
+
+다양한 XML 처리 기법을 학습할 수 있는 예제 코드가 위치합니다.
+
+```
+xml/
+├── README.md                  # XML 예제 설명문서
+├── case1/                     # 기본 XML 파싱
+│   └── page.tsx             # xml2js를 활용한 기본 파싱
+├── case2/                     # XPath 쿼리
+│   └── page.tsx             # xpath, defiant.js를 활용한 쿼리
+└── case3/                     # 고급 XML 처리
+    └── page.tsx             # 대용량 XML 처리 및 최적화
+```
+
+**관련 유틸리티:** `src/shared/utils/xml/`
+
+### `/src/app/sample/mdi` - Multiple Data Interface 예제
+
+탭 기반 다중 데이터 인터페이스 패턴 구현 예제입니다.
+
+```
+mdi/
+├── page.tsx                   # MDI 메인 페이지
+└── child/                     # MDI 자원 페이지
+    └── page.tsx
+```
+
+### `/src/app/sample/mdi2` - 고급 MDI 예제
+
+컴포넌트 기반的高级 MDI 패턴 구현 예제입니다.
+
+```
+mdi2/
+├── page.tsx                   # 고급 MDI 메인 페이지
+├── components/                # MDI 전용 컴포넌트
+│   ├── MDIPageRenderer.tsx  # 페이지 렌더러
+│   └── MDITabPanel.tsx      # 탭 패널 컴포넌트
+└── child/                     # MDI 자원 페이지
+    └── page.tsx
+```
+
+**관련 유틸리티:**
+- `src/shared/utils/mdiHelper.ts`
+- `src/shared/utils/mdiHelper2.ts`
+
+---
+
 ## 경로 별칭 (Path Aliases)
 
 TypeScript 설정에서 정의된 경로 별칭을 사용하여 import를 간소화합니다.
@@ -356,11 +466,19 @@ App (Next.js App Router)
 | 레이어 | 책임 | 예시 |
 |--------|------|------|
 | **Features** | 도메인별 비즈니스 로직 | 대시보드, 상품 관리 |
-| **Shared** | 재사용 가능한 코드 | UI 컴포넌트, 유틸리티, 타입 |
+| **Shared** | 재사용 가능한 코드 | UI 컴포넌트, 유틸리티(20+), 타입 |
 | **Middleware** | 요청/응답 처리 | IP 기반 로그 설정, 소스맵 차단 |
-| **App** | 라우팅, 레이아웃 | 페이지, 레이아웃, 에러 처리 |
-| **Redux** | 전역 상태 관리 | Redux 설정, 미들웨어 |
+| **App** | 라우팅, 레이아웃 | 페이지, 레이아웃, 에러 처리, 학습 예제 |
+| **Redux** | 전역 상태 관리 | Redux 설정, 미들웨어, 슬라이스 |
 | **Mocks** | API 모킹 | MSW 핸들러, 모의 데이터 |
+
+**Shared 유틸리티 카테고리:**
+- **validation/** - 유효성 검사 (Zod 스키마, 헬퍼)
+- **xml/** - XML 처리 (파서, XPath)
+- **popup/** - 팝업 시스템 (API, 레지스트리)
+- **file/** - 파일 처리
+- **url/** - URL 처리
+- **공통 유틸리티** - 날짜, IP, 쿠키, 로그, 숫자, 문자열 등
 
 ---
 
@@ -369,6 +487,7 @@ App (Next.js App Router)
 ### 컴포넌트 파일
 - **PascalCase**: `UserProfile.tsx`, `ProductList.tsx`
 - **Section 접미사**: `ListSection.tsx`, `DetailSection.tsx`
+- **lowercase** (UI 컴포넌트): `button.tsx`, `dialog.tsx` (Radix UI 기반 컴포넌트)
 - 컴포넌트 파일은 `.tsx` 확장자
 
 ### 유틸리티/함수 파일
@@ -432,6 +551,25 @@ App (Next.js App Router)
    ```
 3. 미들웨어 체인에 핸들러 등록 (`chain.ts`의 `composeMiddleware`)
 4. 필요한 경우 조건부 실행 설정 (`MiddlewareHandlerConfig`)
+
+### 새로운 학습 예제 추가
+
+1. `/src/app/sample/`에 새로운 예제 디렉토리 생성
+2. 페이지 컴포넌트 구현:
+   ```typescript
+   // 예: /src/app/sample/my-example/page.tsx
+   export default function MyExamplePage() {
+     return <div>My Learning Example</div>;
+   }
+   ```
+3. 필요한 경우:
+   - `components/` - 예제 전용 컴포넌트
+   - `utils/` - 예제 전용 유틸리티 (또는 `src/shared/utils/` 사용)
+   - `README.md` - 예제 설명
+
+**학습 예제 카테고리:**
+- **XML 처리** - 다양한 XML 파싱 기법 (`/xml/*`)
+- **MDI 패턴** - Multiple Data Interface (`/mdi/*`, `/mdi2/*`)
 
 ---
 
