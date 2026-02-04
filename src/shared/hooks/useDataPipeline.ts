@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 
 /**
  * RTK Query와 일반 함수를 모두 포함할 수 있는 데이터 파이프라인 Hook
@@ -116,17 +116,46 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
   const [context, setContext] = useState<Record<string, unknown>>({});
   const [executedStepIds, setExecutedStepIds] = useState<Set<string>>(new Set());
 
+  // Ref로 최신 값 참조 (무한 루프 방지)
+  const stepsRef = useRef(steps);
+  const resultsRef = useRef(results);
+  const contextRef = useRef(context);
+  const executedStepIdsRef = useRef(executedStepIds);
+
+  // State 변경 시 Ref 업데이트
+  useEffect(() => {
+    stepsRef.current = steps;
+  }, [steps]);
+
+  useEffect(() => {
+    resultsRef.current = results;
+  }, [results]);
+
+  useEffect(() => {
+    contextRef.current = context;
+  }, [context]);
+
+  useEffect(() => {
+    executedStepIdsRef.current = executedStepIds;
+  }, [executedStepIds]);
+
   // 스텝 처리 로직
   useEffect(() => {
     let cancelled = false;
 
     const processStep = async (stepIndex: number) => {
-      if (cancelled || stepIndex >= steps.length) return;
+      // Ref를 통해 최신 값 참조
+      const currentSteps = stepsRef.current;
+      const currentResults = resultsRef.current;
+      const currentContext = contextRef.current;
+      const currentExecutedStepIds = executedStepIdsRef.current;
 
-      const step = steps[stepIndex];
+      if (cancelled || stepIndex >= currentSteps.length) return;
+
+      const step = currentSteps[stepIndex];
 
       // 조건 체크
-      if (step.condition && !step.condition(results, context)) {
+      if (step.condition && !step.condition(currentResults, currentContext)) {
         if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
         return;
       }
@@ -168,12 +197,12 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
             return;
           }
 
-          if (executedStepIds.has(step.id!)) {
+          if (currentExecutedStepIds.has(step.id!)) {
             if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
             return;
           }
 
-          result = await step.fn(results, { ...context, ...step.fnArgs });
+          result = await step.fn(currentResults, { ...currentContext, ...step.fnArgs });
 
           if (!cancelled) {
             setExecutedStepIds((prev) => new Set(prev).add(step.id!));
@@ -190,7 +219,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
         const transformed = step.transform?.(result) ?? result;
 
         // 성공 콜백
-        await step.onSuccess?.(transformed, results, context);
+        await step.onSuccess?.(transformed, currentResults, currentContext);
 
         // 결과 및 컨텍스트 저장
         if (!cancelled) {
@@ -216,7 +245,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     return () => {
       cancelled = true;
     };
-  }, [currentStepIndex, steps, results, context, executedStepIds]);
+  }, [currentStepIndex]); // 오직 currentStepIndex만 의존성
 
   // ========== 스텝 조작 메서드 ==========
 
