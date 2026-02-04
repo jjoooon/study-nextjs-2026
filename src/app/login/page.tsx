@@ -20,14 +20,16 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { useLoginMutation } from '@/shared/services/authService';
+import { useDynamicMutation } from '@/shared/services/dynamicService';
 import { setCredentials, setError } from '@/shared/store/authSlice';
+
+import type { User } from '@/shared/types/authTypes';
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const [login, { isLoading }] = useLoginMutation();
+  const [dynamicMutation, { isLoading }] = useDynamicMutation();
 
   const [employeeId, setEmployeeId] = useState('1234567');
   const [password, setPassword] = useState('1111');
@@ -42,8 +44,13 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      // 로그인 API 호출
-      const result = await login({ employeeId, password }).unwrap();
+      // 로그인 API 호출 - dynamicService 사용
+      // 명시적 타입 단언: API 응답 구조를 정확히 알 때만 사용
+      const result = (await dynamicMutation({
+        url: '/auth/login',
+        method: 'POST',
+        body: { employeeId, password },
+      }).unwrap()) as { user: User };
 
       // Redux 상태 업데이트
       // - 사용자 정보만 저장

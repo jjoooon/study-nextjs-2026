@@ -9,34 +9,36 @@
  * - 커스텀 URL, 파라미터 처리
  * - 모든 service에서 재사용 가능
  *
+ * @warning
+ * 이 service는 "escape hatch"로 설계되었습니다.
+ *
+ * ⚠️ 사용을 권장하지 않는 경우:
+ * - 핵심 비즈니스 로직 (로그인, 제품 CRUD 등)
+ * - 자주 호출되는 API
+ * - 팀에서 공유하는 표준 endpoint
+ *
+ * ✅ 적합한 사용 cases:
+ * - 프로토타이핑, 빠른 테스트
+ * - 드물게 사용되는 일회성 endpoint
+ * - 동적으로 결정되는 경로 (`/api/files/${dynamicPath}`)
+ *
  * @example
  * ```tsx
- * // 컴포넌트에서 GET 요청
- * const { data, error, isLoading } = useDynamicQuery({
- *   url: '/custom/endpoint',
- *   params: { filter: 'active', page: 1 }
- * });
+ * // GET 요청
+ * const { data } = useDynamicQuery({ url: '/custom/endpoint' });
  *
- * // 컴포넌트에서 POST 요청
- * const [dynamicMutation, { data, error }] = useDynamicMutation();
+ * // POST 요청 - 명시적 타입 단언 사용
+ * const [mutation] = useDynamicMutation();
  *
  * const handleSubmit = async () => {
- *   await dynamicMutation({
- *     url: '/custom/create',
+ *   // 타입 단언: API 응답 구조를 명확히 알 때만 사용
+ *   const result = await mutation({
+ *     url: '/custom/action',
  *     method: 'POST',
- *     body: { name: 'test' }
- *   });
- * };
+ *     body: { data: 'value' }
+ *   }).unwrap() as { user: User };
  *
- * // 서비스 레이어에서 직접 호출
- * import { dynamicApi } from '@/shared/services/dynamicService';
- *
- * export const fetchCustomData = async (id: string) => {
- *   const result = await dynamicApi.initiate('getCustomData', {
- *     url: `/custom/${id}`,
- *     params: { detailed: true }
- *   });
- *   return result.data;
+ *   result.user; // User
  * };
  * ```
  */
@@ -155,17 +157,39 @@ export const dynamicService = createApi({
 });
 
 // ============================================================================
-// GENERATED HOOKS EXPORTS
+// HOOKS EXPORTS
 // ============================================================================
 
 /**
- * Dynamic Service 자동 생성된 React Hooks
+ * 동적 쿼리 Hook
  *
- * RTK Query가 자동으로 생성하는 hooks를 export 합니다:
- * - useDynamicQuery: 동적 GET 요청
- * - useDynamicMutation: 동적 POST/PATCH/PUT/DELETE 요청
+ * @description
+ * GET 요청을 위한 Hook
  */
 export const useDynamicQuery = dynamicService.useFetchQuery;
+
+/**
+ * 동적 뮤테이션 Hook
+ *
+ * @description
+ * POST/PATCH/PUT/DELETE 요청을 위한 Hook
+ *
+ * @example
+ * ```tsx
+ * const [mutation] = useDynamicMutation();
+ *
+ * const handleSubmit = async () => {
+ *   // 명시적 타입 단언 사용 (API 응답 구조를 정확히 알 때만)
+ *   const result = await mutation({
+ *     url: '/custom/action',
+ *     method: 'POST',
+ *     body: { data: 'value' }
+ *   }).unwrap() as { success: boolean; id: string };
+ *
+ *   console.log(result.id); // 타입 안전
+ * };
+ * ```
+ */
 export const useDynamicMutation = dynamicService.useExecuteMutation;
 
 // ============================================================================
@@ -196,7 +220,7 @@ export const useDynamicMutation = dynamicService.useExecuteMutation;
  *     throw new Error('Request failed');
  *   }
  *
- *   return result.data;
+ *   return result.data as CustomResponse;
  * };
  * ```
  */
