@@ -60,13 +60,13 @@ export const authHandlers = [
       if (typeof document !== 'undefined') {
         const timestamp = String(Date.now()).slice(0, 10); // 10자리만 사용
 
-        document.cookie = `InitechEamERCD=1001; Path=/; Max-Age=86400; SameSite=lax`;
-        document.cookie = `InitechEamUID=${employeeId}; Path=/; Max-Age=86400; SameSite=lax`;
-        document.cookie = `InitechEamUIP=127.0.0.1; Path=/; Max-Age=86400; SameSite=lax`;
-        document.cookie = `InitechEamUPID=portal.hwgitest.com; Path=/; Max-Age=86400; SameSite=lax`;
-        document.cookie = `InitechEamUTOA=1; Path=/; Max-Age=86400; SameSite=lax`;
-        document.cookie = `InitechEamUHMAC=aaaaa; Path=/; Max-Age=86400; SameSite=lax`;
-        document.cookie = `InitechEamULAT=${timestamp}; Path=/; Max-Age=86400; SameSite=lax`;
+        document.cookie = `InitechEamERCD=1001; Path=/; SameSite=lax`;
+        document.cookie = `InitechEamUID=${employeeId}; Path=/; SameSite=lax`;
+        document.cookie = `InitechEamUIP=127.0.0.1; Path=/; SameSite=lax`;
+        document.cookie = `InitechEamUPID=portal.hwgitest.com; Path=/; SameSite=lax`;
+        document.cookie = `InitechEamUTOA=1; Path=/; SameSite=lax`;
+        document.cookie = `InitechEamUHMAC=aaaaa; Path=/; SameSite=lax`;
+        document.cookie = `InitechEamULAT=${timestamp}; Path=/; SameSite=lax`;
       }
 
       return HttpResponse.json({

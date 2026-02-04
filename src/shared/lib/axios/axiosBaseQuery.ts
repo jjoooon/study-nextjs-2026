@@ -72,13 +72,13 @@ import { clearCredentials } from '@/shared/store/authSlice';
 export const deleteAuthCookies = (): void => {
   if (typeof document !== 'undefined') {
     // 쿠키 삭제
-    document.cookie = 'InitechEamERCD=; Max-Age=0; Path=/; SameSite=lax';
-    document.cookie = 'InitechEamUID=; Max-Age=0; Path=/; SameSite=lax';
-    document.cookie = 'InitechEamUIP=; Max-Age=0; Path=/; SameSite=lax';
-    document.cookie = 'InitechEamUPID=; Max-Age=0; Path=/; SameSite=lax';
-    document.cookie = 'InitechEamUTOA=; Max-Age=0; Path=/; SameSite=lax';
-    document.cookie = 'InitechEamUHMAC=; Max-Age=0; Path=/; SameSite=lax';
-    document.cookie = 'InitechEamULAT=; Max-Age=0; Path=/; SameSite=lax';
+    document.cookie = 'InitechEamERCD=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'InitechEamUID=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'InitechEamUIP=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'InitechEamUPID=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'InitechEamUTOA=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'InitechEamUHMAC=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'InitechEamULAT=; Path=/; SameSite=lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
   }
 };
 
