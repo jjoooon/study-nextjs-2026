@@ -1,31 +1,35 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 
 /**
- * RTK Query와 일반 함수를 모두 포함할 수 있는 데이터 파이프라인 Hook
+ * 함수 파이프라인 Hook
+ *
+ * 복잡한 데이터 처리 로직을 순차적으로 실행하고 관리할 수 있습니다.
  *
  * @example
  * ```tsx
  * const pipeline = useDataPipeline([
  *   {
- *     type: 'query',
- *     query: () => useGetUserQuery(userId),
  *     label: 'Fetch User',
+ *     fn: async () => {
+ *       const response = await fetch('/api/user');
+ *       return response.json();
+ *     },
  *   },
  *   {
- *     type: 'function',
+ *     label: 'Fetch Analytics',
  *     fn: async (results) => {
  *       const [user] = results;
  *       const response = await fetch(`/api/analytics/${user.id}`);
  *       return response.json();
  *     },
- *     label: 'Load Analytics',
  *   },
  *   {
- *     type: 'mutation',
- *     mutation: () => useCreateOrderMutation(),
- *     execute: false, // 수동 실행
- *     label: 'Create Order',
- *   }
+ *     label: 'Calculate Score',
+ *     fn: (results) => {
+ *       const [user, analytics] = results;
+ *       return { score: user.score * analytics.multiplier };
+ *     },
+ *   },
  * ]);
  * ```
  */
@@ -35,58 +39,33 @@ type PipelineStep<T = unknown, R = unknown> = {
   /** 고유 ID (동적 관리용) */
   id?: string;
 
-  /** 스텝 타입 */
-  type: 'query' | 'mutation' | 'function';
-
-  // === Query용 ===
-  /** RTK Query Hook 결과 (useQuery) */
-  query?: () => {
-    data?: T;
-    isLoading: boolean;
-    isError: boolean;
-    error?: unknown;
-    refetch?: () => void;
-  };
-
-  // === Mutation용 ===
-  /** RTK Mutation Hook 결과 (useMutation) */
-  mutation?: () => [
-    trigger: (args: unknown) => { unwrap: () => Promise<T> },
-    result: {
-      isLoading: boolean;
-      isError: boolean;
-      error?: unknown;
-      data?: T;
-    },
-  ];
-  /** Mutation 인자 */
-  mutationArgs?: unknown;
-  /** Mutation 실행 여부 (false면 자동 실행 안 함) */
-  execute?: boolean;
-
-  // === 일반 함수용 ===
   /** 실행할 함수 (동기 또는 비동기) */
-  fn?: (prevResults: unknown[], context: Record<string, unknown>) => T | Promise<T>;
+  fn: (prevResults: unknown[], context: Record<string, unknown>) => T | Promise<T>;
+
   /** 함수에 전달할 추가 인자 */
   fnArgs?: Record<string, unknown>;
 
-  // === 공통 ===
-  /** 이전 스텝 완료 후 대기 여부 */
-  waitForPrev?: boolean;
   /** 실행 조건 (false면 스텝 건너뜀) */
   condition?: (prevResults: unknown[], context: Record<string, unknown>) => boolean;
+
   /** 성공 콜백 */
   onSuccess?: (data: R, allResults: unknown[], context: Record<string, unknown>) => void | Promise<void>;
+
   /** 에러 콜백 */
   onError?: (error: unknown) => void;
+
   /** 데이터 변환 함수 */
   transform?: (data: T) => R;
+
   /** 실행 컨텍스트 (단계 간 데이터 공유) */
   context?: Record<string, unknown>;
 
-  // === 메타데이터 ===
+  /** 실행 여부 (false면 자동 실행 안 함) */
+  execute?: boolean;
+
   /** 스텝 라벨 (디버깅/표시용) */
   label?: string;
+
   /** 스텝 설명 */
   description?: string;
 };
@@ -96,7 +75,7 @@ export type { PipelineStep };
 /**
  * 데이터 파이프라인 Hook
  *
- * RTK Query의 Query/Mutation과 일반 함수를 하나의 파이프라인으로 관리할 수 있습니다.
+ * 일반 함수들을 순차적으로 실행하여 복잡한 데이터 처리 파이프라인을 구성할 수 있습니다.
  *
  * @param initialSteps - 초기 스텝 배열
  * @returns 파이프라인 상태 및 조작 메서드
@@ -110,7 +89,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     initialSteps.map((step) => ({
       ...step,
       id: step.id || generateStepId(),
-      execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
+      execute: step.execute ?? true,
     }))
   );
 
@@ -158,66 +137,42 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
 
       const step = currentSteps[stepIndex];
 
+      // fn이 없으면 건너뜀
+      if (!step.fn) {
+        if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
+        return;
+      }
+
       try {
-        // 조건 체크 (try-catch 내부로 이동)
+        // 조건 체크
         if (step.condition && !step.condition(currentResults, currentContext)) {
           if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
           return;
         }
 
-        let result: unknown;
+        // 실행 여부 체크
+        const shouldExecute = step.execute !== false;
 
-        // 1. Query 처리
-        if (step.type === 'query' && step.query) {
-          const { data, isLoading, isError, error } = step.query();
-
-          if (isLoading) return; // 로딩 중이면 대기
-
-          if (isError) throw error;
-          result = data;
-        }
-
-        // 2. Mutation 처리
-        else if (step.type === 'mutation' && step.execute && step.mutation) {
-          const [trigger, { isLoading, isError, error, data }] = step.mutation();
-
-          if (isLoading) return;
-
-          if (isError) throw error;
-
-          // mutationArgs가 있고 아직 데이터가 없으면 실행
-          if (step.mutationArgs !== undefined && data === undefined) {
-            result = await trigger(step.mutationArgs).unwrap();
-          } else {
-            result = data;
-          }
-        }
-
-        // 3. 일반 함수 처리
-        else if (step.type === 'function' && step.fn) {
-          const shouldExecute = step.execute !== false;
-
-          if (!shouldExecute) {
-            if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
-            return;
-          }
-
-          if (currentExecutedStepIds.has(step.id!)) {
-            if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
-            return;
-          }
-
-          result = await step.fn(currentResults, { ...currentContext, ...step.fnArgs });
-
-          if (!cancelled) {
-            setExecutedStepIds((prev) => new Set(prev).add(step.id!));
-          }
-        }
-
-        // 다른 타입이거나 실행 조건 불충족
-        else {
+        if (!shouldExecute) {
           if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
           return;
+        }
+
+        // 이미 실행된 스텝인지 체크
+        if (currentExecutedStepIds.has(step.id!)) {
+          if (!cancelled) setCurrentStepIndex((prev) => prev + 1);
+          return;
+        }
+
+        // 함수 실행
+        const result: unknown = await step.fn(currentResults, {
+          ...currentContext,
+          ...step.fnArgs,
+        });
+
+        // 실행 기록 저장
+        if (!cancelled) {
+          setExecutedStepIds((prev) => new Set(prev).add(step.id!));
         }
 
         // 결과 변환
@@ -273,7 +228,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
       const newStep: PipelineStep = {
         ...step,
         id: step.id || generateStepId(),
-        execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
+        execute: step.execute ?? true,
       };
 
       setSteps((prev) => {
@@ -311,7 +266,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
       const stepsWithIds = newSteps.map((step) => ({
         ...step,
         id: step.id || generateStepId(),
-        execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
+        execute: step.execute ?? true,
       }));
 
       setSteps((prev) => {
@@ -434,7 +389,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
           initialSteps.map((step) => ({
             ...step,
             id: step.id || generateStepId(),
-            execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
+            execute: step.execute ?? true,
           }))
         );
         setResults((prev) => prev.slice(0, initialSteps.length));
@@ -523,38 +478,15 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
   // ========== 실행 메서드 ==========
 
   /**
-   * Mutation 실행
+   * 스텝 실행 (수동 트리거)
    * @param stepIdOrIndex - 스텝 ID 또는 인덱스
-   * @param args - Mutation 인자
+   * @param args - 함수에 전달할 추가 인자
    */
-  const executeMutation = useCallback((stepIdOrIndex: string | number, args?: unknown) => {
+  const executeStep = useCallback((stepIdOrIndex: string | number, args?: Record<string, unknown>) => {
     setSteps((prev) => {
       const index = typeof stepIdOrIndex === 'string' ? prev.findIndex((s) => s.id === stepIdOrIndex) : stepIdOrIndex;
 
-      if (index === -1 || prev[index].type !== 'mutation') return prev;
-
-      const newSteps = [...prev];
-      newSteps[index] = {
-        ...newSteps[index],
-        execute: true,
-        mutationArgs: args,
-      };
-
-      setCurrentStepIndex(index);
-      return newSteps;
-    });
-  }, []);
-
-  /**
-   * Function 실행
-   * @param stepIdOrIndex - 스텝 ID 또는 인덱스
-   * @param args - 함수 인자
-   */
-  const executeFunction = useCallback((stepIdOrIndex: string | number, args?: Record<string, unknown>) => {
-    setSteps((prev) => {
-      const index = typeof stepIdOrIndex === 'string' ? prev.findIndex((s) => s.id === stepIdOrIndex) : stepIdOrIndex;
-
-      if (index === -1 || prev[index].type !== 'function') return prev;
+      if (index === -1) return prev;
 
       const newSteps = [...prev];
       newSteps[index] = {
@@ -590,7 +522,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
         if (index < fromIndex) return step;
         return {
           ...step,
-          execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
+          execute: step.execute ?? true,
         };
       })
     );
@@ -609,7 +541,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     setSteps((prev) =>
       prev.map((step) => ({
         ...step,
-        execute: step.type === 'function' ? (step.execute ?? true) : step.execute,
+        execute: step.execute ?? true,
       }))
     );
   }, []);
@@ -619,23 +551,9 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     const totalSteps = steps.length;
     const completedSteps = results.filter((r) => r !== undefined && r !== null).length;
 
-    // 한 번의 순회로 모든 타입 카운트
-    let querySteps = 0;
-    let mutationSteps = 0;
-    let functionSteps = 0;
-
-    for (const step of steps) {
-      if (step.type === 'query') querySteps++;
-      else if (step.type === 'mutation') mutationSteps++;
-      else if (step.type === 'function') functionSteps++;
-    }
-
     return {
       totalSteps,
       completedSteps,
-      querySteps,
-      mutationSteps,
-      functionSteps,
       hasErrors: errors.length > 0,
     };
   }, [steps, results, errors]);
@@ -662,8 +580,7 @@ export function useDataPipeline(initialSteps: PipelineStep[] = []) {
     findStep,
 
     // 실행 메서드
-    executeMutation,
-    executeFunction,
+    executeStep,
     resetExecution,
     reset,
   };
