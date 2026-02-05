@@ -56,6 +56,35 @@ React는 Meta(구 Facebook)에서 개발한 **사용자 인터페이스 구축�
 - ✅ `useFormStatus` 폼 제출 상태
 - ✅ React Compiler (실험적)
 
+### Strict Mode (개발 환경)
+
+Next.js는 기본적으로 React Strict Mode를 활성화합니다.
+
+```typescript
+// 개발 환경에서의 동작
+function MyComponent() {
+  useEffect(() => {
+    console.log('마운트');
+    return () => console.log('언마운트');
+  }, []);
+
+  return <div>Component</div>;
+}
+```
+
+**Strict Mode 활성화 시:**
+```
+마운트      // 첫 번째 렌더링
+언마운트    // cleanup
+마운트      // 두 번째 렌더링 (Strict Mode)
+```
+
+**목적:**
+- 사이드 이펙트 감지
+- 메모리 누수 발견
+- 잘못된 생명주기 사용 식별
+- **프로덕션 환경에서는 비활성화** (성능 영향 없음)
+
 ---
 
 ## 컴포넌트 기반 아키텍처
@@ -150,6 +179,32 @@ JSX는 JavaScript의 확장 문법으로, JavaScript 코드 내에서 HTML과 �
 
 ### JSX 기본 규칙
 
+#### key prop (리스트 렌더링 시 필수)
+
+리스트를 렌더링할 때 `key` prop은 필수입니다.
+
+```typescript
+// ✅ 올바른 key 사용
+{products.map(product => (
+  <div key={product.id}>
+    {product.name}
+  </div>
+))}
+
+// ❌ 인덱스를 key로 사용 (비권장)
+{products.map((product, index) => (
+  <div key={index}>
+    {product.name}
+  </div>
+))}
+```
+
+**key prop의 중요성**:
+- React가 각 항목을 식별하고 변경 사항을 추적
+- 고유하고 안정적인 값이어야 함 (ID, UUID 등)
+- 인덱스를 key로 사용하면 리스트 순서가 바뀔 때 문제 발생
+- 중복된 key는 렌더링 오류를 일으킴
+
 ```typescript
 // 1. 단일 루트 요소
 ✅ <div><p>Hello</p><p>World</p></div>
@@ -187,6 +242,15 @@ JSX는 JavaScript의 확장 문법으로, JavaScript 코드 내에서 HTML과 �
 
 // 3. 동적 className
 <div className={`card ${isActive ? 'active' : ''}`}>
+
+// 4. clsx 또는 cn 유틸리티 사용 (권장)
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: (string | boolean | undefined)[]) {
+  return twMerge(clsx(inputs));
+}
+
 <div className={cn('base-class', isActive && 'active-class')}>
 ```
 
@@ -361,13 +425,15 @@ React.ClipboardEvent<HTMLDivElement>
 
 `useEffect`는 **컴포넌트의 부수 효과(Side Effects)를 처리**하는 훅입니다.
 
+> **⚠️ 중요**: `useEffect`는 **Client Component**에서만 사용할 수 있습니다. Server Component에서는 사용할 수 없습니다.
+
 ### 기본 구조
 
 ```typescript
 import { useEffect, useState } from 'react';
 
 export function UserProfile({ userId }: { userId: string }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   // 마운트 시 한 번 실행
@@ -449,6 +515,11 @@ useEffect(() => {
 
 ```typescript
 // src/features/dashboard/hooks/useDashboard.ts
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { fetchDashboardStats } from '@/features/dashboard/dashboardSlice';
+import { selectDashboard } from '@/features/dashboard/dashboardSelector';
+
 export const useDashboard = () => {
   const dispatch = useDispatch();
   const { stats, loading, error } = useAppSelector(selectDashboard);
@@ -469,6 +540,69 @@ export const useDashboard = () => {
 
   return { stats, loading, error };
 };
+```
+
+---
+
+## React의 렌더링 모델 이해하기
+
+### 렌더링이란?
+
+렌더링은 React가 컴포넌트를 호출하여 UI가 어떻게 보여야 하는지 계산하는 과정입니다.
+
+### 렌더링을 트리거하는 것
+
+1. **State 변경**: `setState` 호출
+2. **Props 변경**: 부모로부터 새 props 수신
+3. **Context 변경**: Context 값 변경
+
+### React의 렌더링 과정
+
+```
+1. Trigger (useState, 새 props)
+   ↓
+2. Render (컴포넌트 함수 호출, JSX 반환)
+   ↓
+3. Commit (DOM 업데이트)
+```
+
+### 중요: 렌더링 ≠ DOM 변경
+
+```typescript
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  // 이 부분은 렌더링 시마다 실행됨
+  console.log('렌더링됨:', count);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>증가</button>
+    </div>
+  );
+}
+```
+
+React는 Virtual DOM을 사용하여 실제 DOM 변경을 최소화합니다:
+1. 이전 Virtual DOM과 새 Virtual DOM 비교
+2. 달라진 부분만 실제 DOM에 적용
+
+### 불필요한 리렌더링 방지
+
+```typescript
+// ❌ 매 렌더링 시 새 함수 생성
+function Parent() {
+  return <Child onClick={() => console.log('click')} />;
+}
+
+// ✅ 함수 참조 안정화
+function Parent() {
+  const handleClick = useCallback(() => {
+    console.log('click');
+  }, []);
+  return <Child onClick={handleClick} />;
+}
 ```
 
 ---
@@ -856,6 +990,71 @@ export const useDashboard = () => {
 
 ---
 
+## Server Actions (React 19 + Next.js)
+
+Server Actions는 React 19와 Next.js 16에서 도입된 기능으로, 클라이언트에서 직접 서버 쪽 함수를 호출할 수 있게 해줍니다.
+
+### 기본 Server Action
+
+```typescript
+// app/actions/products.ts
+'use server';
+
+import { db } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
+
+export async function createProduct(formData: FormData) {
+  const name = formData.get('name') as string;
+  const price = Number(formData.get('price'));
+
+  // 서버에서 직접 DB 접근
+  const product = await db.products.create({
+    data: { name, price }
+  });
+
+  // 캐시 무효화
+  revalidatePath('/products');
+
+  return { success: true, product };
+}
+```
+
+### Server Action 사용
+
+```typescript
+// app/products/new/page.tsx
+import { createProduct } from '@/app/actions/products';
+
+export default function NewProductPage() {
+  return (
+    <form action={createProduct}>
+      <input name="name" type="text" required />
+      <input name="price" type="number" required />
+      <button type="submit">생성</button>
+    </form>
+  );
+}
+```
+
+### Server Actions 장점
+
+1. **클라이언트 JS 감소**: 폼 제출 로직이 서버에서 실행
+2. **Progressive Enhancement**: JS가 비활성화되어도 작동
+3. **타입 안전성**: TypeScript와 함께 사용 가능
+4. **자동 로딩 상태**: `useFormStatus` 훅으로 접근
+
+### Server Actions vs Client-side Form Handling
+
+| 특징 | Server Actions | Client-side (React Hook Form) |
+|-----|----------------|-------------------------------|
+| **번들 크기** | 작음 | ~25KB 추가 |
+| **SEO** | 우수 | 보통 |
+| **복잡한 검증** | 서버에서 처리 | 클라이언트 + 서버 |
+| **실시간 피드백** | 제한적 | 우수 |
+| **사용 시점** | 간단한 폼, SEO 중요 | 복잡한 폼, 실시간 검증 |
+
+---
+
 ## 폼 처리
 
 ### 제어된 컴포넌트 (Controlled Components)
@@ -908,7 +1107,28 @@ export function ContactForm() {
 }
 ```
 
-### React Hook Form 사용 (권장)
+### React Hook Form 사용
+
+복잡한 폼의 경우 React Hook Form을 고려해보세요.
+
+```bash
+npm install react-hook-form zod @hookform/resolvers
+```
+
+**장점:**
+- 렌더링 간 수행 감소 (성능 향상)
+- 복잡한 검증 로직 지원
+- Zod 등과의 쉬운 통합
+
+**단점:**
+- 번들 크기 약 25KB 추가
+- 간단한 폼에는 과도함
+
+**사용 권장:**
+- ✅ 복잡한 다단계 폼
+- ✅ 실시간 검증이 필요한 폼
+- ✅ 동적 필드가 많은 폼
+- ⚠️ 간단한 폼에는 Server Actions 권장
 
 프로젝트에서는 React Hook Form을 사용하는 것이 좋습니다.
 
@@ -965,16 +1185,43 @@ export function ProductForm() {
 
 ## 성능 최적화
 
+### 최적화 우선순위
+
+```
+1. Server Components (가장 중요)
+   ↓ 클라이언트 JS 번들 0%
+2. Code Splitting (dynamic import)
+   ↓ 초기 로딩 시간 감소
+3. React.memo, useMemo, useCallback
+   ↓ 불필요한 리렌더링 방지
+```
+
+**가장 중요한 최적화**: Server Component를 기본으로 사용하세요. 클라이언트로 전송되는 JavaScript가 0에 가까워지는 것이 가장 큰 성능 향상입니다.
+
 ### React.memo
 
 ```typescript
 export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   return <div>{product.name}</div>;
-}, (prevProps, nextProps) => {
-  // 커스텀 비교 함수
-  return prevProps.product.id === nextProps.product.id;
 });
+
+// 커스텀 비교 함수가 필요한 경우 (신중하게 사용)
+export const ProductCardWithCustomCompare = React.memo(
+  ({ product }: ProductCardProps) => {
+    return <div>{product.name}</div>;
+  },
+  (prevProps, nextProps) => {
+    // 모든 관련 필드를 비교해야 함
+    return (
+      prevProps.product.id === nextProps.product.id &&
+      prevProps.product.name === nextProps.product.name &&
+      prevProps.product.price === nextProps.product.price
+    );
+  }
+);
 ```
+
+> **⚠️ 주의**: 대부분의 경우 커스텀 비교 함수 없이 기본 `React.memo`만 사용하는 것이 좋습니다. 커스텀 비교 함수는 실수로 업데이트를 건너뛸 위험이 있습니다.
 
 ### useMemo
 
@@ -993,6 +1240,22 @@ const handleEdit = useCallback((id: string) => {
   router.push(`/products/${id}/edit`);
 }, [router]);
 ```
+
+### 최적화하지 말아야 할 때
+
+```typescript
+// ❌ 불필요한 최적화
+const value = useMemo(() => x + y, [x, y]);  // 단순 연산
+
+// ✅ 필요한 최적화
+const sortedProducts = useMemo(() => {
+  return products
+    .filter(p => p.category === selectedCategory)
+    .sort((a, b) => a.price - b.price);
+}, [products, selectedCategory]);  // 비용이 큰 연산
+```
+
+**원칙**: 측정 후 최적화하세요. React DevTools Profiler로 병목을 먼저 확인하세요.
 
 ### 코드 분할 (Code Splitting)
 
@@ -1017,15 +1280,24 @@ const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 3. **Props**: 부모 → 자식 데이터 전달
 4. **State**: 컴포넌트 내부 상태 관리
 5. **이벤트 처리**: 사용자 인터랙션 반응
-6. **useEffect**: 생명주기 및 부수 효과 처리
+6. **useEffect**: 생명주기 및 부수 효과 처리 (Client Component only)
 7. **Hooks**: 상태와 생명주기 기능 사용
 
 ### 프로젝트 적용 가이드
 
-- **Server Component**: 데이터 가져오기, SEO 중요 페이지
+- **Server Component (기본)**: 데이터 가져오기, SEO 중요 페이지, 최고의 성능
 - **Client Component**: 이벤트 핸들링, State 관리 필요한 곳
+- **Server Actions**: 간단한 폼 제출, mutation 작업
+- **React Hook Form**: 복잡한 폼, 실시간 검증 필요시
 - **커스텀 훅**: 비즈니스 로직 재사용
-- **성능 최적화**: React.memo, useMemo, useCallback 적절히 사용
+- **성능 최적화**: Server Component > Code Splitting > React.memo/useMemo/useCallback
+
+### React 19 주요 변경사항
+
+- Server Actions로 폼 처리 간소화
+- `useOptimistic`, `useActionState`, `useFormStatus` 새로운 훅
+- Concurrent Features 기본 활성화
+- React Compiler로 자동 최적화 (선택적)
 
 ### 다음 학습 단계
 
