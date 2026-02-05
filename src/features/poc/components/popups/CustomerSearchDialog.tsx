@@ -20,9 +20,19 @@
  * }
  */
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
+import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry } from 'ag-grid-community';
+import { AllCommunityModule } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+
+// AG Grid Theming
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+// AG Grid Module Registration
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -121,11 +131,7 @@ const SAMPLE_CUSTOMERS: Customer[] = [
 /**
  * 고객찾기 팝업 컴포넌트
  */
-export function CustomerSearchDialog({
-  title = '고객찾기',
-  description = '검색 조건을 입력하고 고객을 선택하세요.',
-  resolve,
-}: CustomerSearchDialogProps) {
+export function CustomerSearchDialog({ title = '고객찾기', description = '', resolve }: CustomerSearchDialogProps) {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     customerType: '',
     customerNo: '',
@@ -138,6 +144,96 @@ export function CustomerSearchDialog({
   });
 
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+
+  // ============================================================================
+  // AG GRID COLUMN DEFINITIONS
+  // ============================================================================
+
+  const columnDefs: ColDef<Customer>[] = useMemo(
+    () => [
+      {
+        field: 'name',
+        headerName: '고객명',
+        sortable: true,
+        filter: true,
+        resizable: true,
+        flex: 1,
+        minWidth: 100,
+        pinned: 'left',
+        cellStyle: () => ({ fontWeight: 600 }),
+      },
+      {
+        field: 'customerNo',
+        headerName: '고객식별번호',
+        sortable: true,
+        filter: true,
+        resizable: true,
+        flex: 1,
+        minWidth: 120,
+      },
+      {
+        field: 'customerType',
+        headerName: '고객유형명',
+        sortable: true,
+        filter: true,
+        resizable: true,
+        flex: 1,
+        minWidth: 100,
+        cellStyle: () => ({ color: '#6b7280' }),
+      },
+      {
+        field: 'phone',
+        headerName: '휴대폰번호',
+        sortable: true,
+        filter: true,
+        resizable: true,
+        flex: 1,
+        minWidth: 140,
+      },
+      {
+        field: 'address',
+        headerName: '주소',
+        sortable: false,
+        filter: true,
+        resizable: true,
+        flex: 2,
+        minWidth: 200,
+        cellStyle: () => ({ color: '#6b7280' }),
+      },
+    ],
+    []
+  );
+
+  // ============================================================================
+  // AG GRID OPTIONS
+  // ============================================================================
+
+  const gridOptions = useMemo(
+    () => ({
+      animateRows: true,
+      domLayout: 'autoHeight' as const,
+      rowHeight: 50,
+      headerHeight: 45,
+      pagination: false,
+      suppressCellFocus: true,
+      defaultColDef: {
+        sortable: true,
+        filter: true,
+        resizable: true,
+      },
+      rowSelection: {
+        mode: 'singleRow' as const,
+        enableClickSelection: true,
+        enableSelectionWithoutKeys: true,
+        checkboxes: false,
+      },
+      onSelectionChanged: () => {
+        // AG Grid에서 선택된 행을 처리하기 위해 ref로 접근 필요
+        // 현재는 onRowClicked로 처리
+      },
+    }),
+    []
+  );
 
   /**
    * 검색 필터 변경 핸들러
@@ -203,7 +299,7 @@ export function CustomerSearchDialog({
   };
 
   return (
-    <Dialog open>
+    <Dialog open onOpenChange={(open) => !open && handleCancel()}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -211,13 +307,13 @@ export function CustomerSearchDialog({
         </DialogHeader>
 
         {/* 검색 필터 영역 */}
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
-          <div className="grid grid-cols-3 gap-4">
+        <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
+          <div className="grid grid-cols-3 gap-3">
             {/* 고객유형 */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-700 mb-1">고객유형</label>
+              <label className="text-sm font-medium text-gray-700 mb-0.5">고객유형</label>
               <select
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchFilters.customerType}
                 onChange={(e) => handleFilterChange('customerType', e.target.value)}
               >
@@ -229,10 +325,10 @@ export function CustomerSearchDialog({
 
             {/* 고객식별번호 */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-700 mb-1">고객식별번호</label>
+              <label className="text-sm font-medium text-gray-700 mb-0.5">고객식별번호</label>
               <input
                 type="text"
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchFilters.customerNo}
                 onChange={(e) => handleFilterChange('customerNo', e.target.value)}
                 placeholder="고객식별번호 입력"
@@ -241,10 +337,10 @@ export function CustomerSearchDialog({
 
             {/* 고객명 */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-700 mb-1">고객명</label>
+              <label className="text-sm font-medium text-gray-700 mb-0.5">고객명</label>
               <input
                 type="text"
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchFilters.name}
                 onChange={(e) => handleFilterChange('name', e.target.value)}
                 placeholder="고객명 입력"
@@ -253,21 +349,22 @@ export function CustomerSearchDialog({
 
             {/* 생년월일 */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-700 mb-1">생년월일</label>
+              <label className="text-sm font-medium text-gray-700 mb-0.5">생년월일</label>
               <input
-                type="date"
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text"
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchFilters.birthDate}
                 onChange={(e) => handleFilterChange('birthDate', e.target.value)}
+                placeholder="YYYYMMDD"
               />
             </div>
 
             {/* 휴대폰번호 */}
             <div className="flex flex-col col-span-2">
-              <label className="text-sm font-medium text-gray-700 mb-1">휴대폰번호</label>
+              <label className="text-sm font-medium text-gray-700 mb-0.5">휴대폰번호</label>
               <div className="flex items-center gap-2">
                 <select
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
                   value={searchFilters.phone1}
                   onChange={(e) => handleFilterChange('phone1', e.target.value)}
                 >
@@ -279,36 +376,28 @@ export function CustomerSearchDialog({
                   <option value="019">019</option>
                 </select>
                 <span className="text-gray-500">-</span>
-                <select
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
+                <input
+                  type="text"
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
                   value={searchFilters.phone2}
                   onChange={(e) => handleFilterChange('phone2', e.target.value)}
-                >
-                  <option value="">선택</option>
-                  {Array.from({ length: 1000 }, (_, i) => String(i).padStart(3, '0')).map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="0000"
+                  maxLength={4}
+                />
                 <span className="text-gray-500">-</span>
-                <select
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
+                <input
+                  type="text"
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
                   value={searchFilters.phone3}
                   onChange={(e) => handleFilterChange('phone3', e.target.value)}
-                >
-                  <option value="">선택</option>
-                  {Array.from({ length: 10000 }, (_, i) => String(i).padStart(4, '0')).map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="0000"
+                  maxLength={4}
+                />
               </div>
             </div>
 
-            {/* 최근등록고객 (3개월) */}
-            <div className="flex flex-col col-span-3">
+            {/* 최근등록고객 (3개월) 및 버튼 */}
+            <div className="flex items-center justify-between col-span-3">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -318,74 +407,26 @@ export function CustomerSearchDialog({
                 />
                 <span className="text-sm font-medium text-gray-700">최근등록고객 (3개월)</span>
               </label>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={handleReset}>
+                  초기화
+                </Button>
+                <Button onClick={handleSearch}>조회</Button>
+              </div>
             </div>
-          </div>
-
-          {/* 검색/초기화 버튼 */}
-          <div className="flex justify-end gap-2 mt-4">
-            <Button variant="outline" onClick={handleReset}>
-              초기화
-            </Button>
-            <Button onClick={handleSearch}>조회</Button>
           </div>
         </div>
 
-        {/* 고객 리스트 영역 */}
+        {/* 고객 리스트 영역 - AG Grid */}
         <div className="mt-4">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="w-12"></th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    고객명
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    고객식별번호
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    고객유형명
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    휴대폰번호
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    주소
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {SAMPLE_CUSTOMERS.map((customer) => (
-                  <tr
-                    key={customer.id}
-                    className={`hover:bg-blue-50 transition-colors cursor-pointer ${
-                      selectedCustomer?.id === customer.id ? 'bg-blue-50' : ''
-                    }`}
-                    onClick={() => handleSelectCustomer(customer)}
-                  >
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <input
-                        type="radio"
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                        checked={selectedCustomer?.id === customer.id}
-                        onChange={() => handleSelectCustomer(customer)}
-                      />
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{customer.name}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{customer.customerNo}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{customer.customerType}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{customer.phone}</td>
-                    <td className="px-4 py-4 text-sm text-gray-500 max-w-xs truncate">{customer.address}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* 데이터가 없는 경우 */}
-          {SAMPLE_CUSTOMERS.length === 0 && (
-            <div className="text-center py-8 text-gray-500">검색된 고객이 없습니다.</div>
-          )}
+          <AgGridReact<Customer>
+            rowData={SAMPLE_CUSTOMERS}
+            columnDefs={columnDefs}
+            gridOptions={gridOptions}
+            onRowClicked={(event) => event.data && handleSelectCustomer(event.data)}
+            getRowId={(params) => params.data.id}
+            rowClass="cursor-pointer"
+          />
         </div>
 
         {/* 선택된 고객 정보 표시 */}
