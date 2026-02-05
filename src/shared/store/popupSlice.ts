@@ -21,11 +21,15 @@ export interface PopupCallbacks {
  *
  * @description
  * 사용자가 응답하지 않는 팝업을 자동으로 닫기 위한 타임아웃
- * - 기본값: 30초
- * - 너무 길면 메모리 누수 위험
- * - 너무 짧으면 사용자 경험 저하
+ *
+ * @disabled
+ * 타임아웃 시스템은 실제 사용자 경험을 저해하고 불필요한 복잡도를 추가합니다.
+ * 사용자가 팝업을 닫으면(resolve/reject 호출) 자동으로 콜백이 정리되므로
+ * 별도의 타임아웃이 필요 없습니다.
+ *
+ * 정말로 필요한 경우 개별 팝업에서 open()의 timeout 옵션을 사용하세요.
  */
-const POPUP_TIMEOUT = 30000; // 30 seconds
+const POPUP_TIMEOUT = 0; // Disabled (use timeout option in open() if needed)
 
 /**
  * 팝업 최대 깊이
@@ -87,19 +91,22 @@ const popupCallbacksMap = new Map<string, PopupCallbacksExtended>();
  * 팝업 콜백 등록
  *
  * @description
- * 콜백을 등록하고 자동 정리를 위한 타임아웃을 설정합니다
+ * 콜백을 등록합니다. 타임아웃이 0이면 타이머를 설정하지 않습니다.
  *
  * @param id - 팝업 ID
  * @param callbacks - resolve/reject 함수
  */
 export function registerPopupCallbacks(id: string, callbacks: PopupCallbacks) {
-  const timeoutId = setTimeout(() => {
-    if (popupCallbacksMap.has(id)) {
-      console.warn(`[Popup] Auto-closing orphaned popup: ${id} (timeout: ${POPUP_TIMEOUT}ms)`);
-      callbacks.reject(new Error(`Popup timeout after ${POPUP_TIMEOUT}ms`));
-      removePopupCallbacks(id);
-    }
-  }, POPUP_TIMEOUT);
+  const timeoutId =
+    POPUP_TIMEOUT > 0
+      ? setTimeout(() => {
+          if (popupCallbacksMap.has(id)) {
+            console.warn(`[Popup] Auto-closing orphaned popup: ${id} (timeout: ${POPUP_TIMEOUT}ms)`);
+            callbacks.reject(new Error(`Popup timeout after ${POPUP_TIMEOUT}ms`));
+            removePopupCallbacks(id);
+          }
+        }, POPUP_TIMEOUT)
+      : undefined;
 
   popupCallbacksMap.set(id, { ...callbacks, _timeoutId: timeoutId });
 }

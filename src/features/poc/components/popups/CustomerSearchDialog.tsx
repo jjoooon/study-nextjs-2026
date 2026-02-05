@@ -20,13 +20,13 @@
  * }
  */
 
-import { useState, useMemo } from 'react';
-import { Button } from '@/shared/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
 import type { ColDef } from 'ag-grid-community';
 import { ModuleRegistry } from 'ag-grid-community';
 import { AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { useState, useMemo } from 'react';
+import { Button } from '@/shared/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
 
 // AG Grid Theming
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -144,6 +144,8 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
   });
 
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [excludeTerminated, setExcludeTerminated] = useState<boolean>(true);
+  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>(SAMPLE_CUSTOMERS);
 
   // ============================================================================
   // AG GRID COLUMN DEFINITIONS
@@ -249,8 +251,46 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
    * 검색 핸들러
    */
   const handleSearch = () => {
-    // TODO: 실제 검색 로직 구현 (현재는 샘플 데이터 표시)
-    console.log('검색 조건:', searchFilters);
+    // 검색 조건에 따라 샘플 데이터 필터링
+    const filtered = SAMPLE_CUSTOMERS.filter((customer) => {
+      // 고객유형 필터
+      if (searchFilters.customerType === 'individual' && customer.customerType !== '개인') {
+        return false;
+      }
+      if (searchFilters.customerType === 'corporate' && customer.customerType !== '법인') {
+        return false;
+      }
+
+      // 고객식별번호 필터 (부분 일치)
+      if (searchFilters.customerNo && !customer.customerNo.includes(searchFilters.customerNo)) {
+        return false;
+      }
+
+      // 고객명 필터 (부분 일치)
+      if (searchFilters.name && !customer.name.includes(searchFilters.name)) {
+        return false;
+      }
+
+      // 생년월일 필터 (부분 일치)
+      if (searchFilters.birthDate && !customer.birthDate.includes(searchFilters.birthDate)) {
+        return false;
+      }
+
+      // 휴대폰번호 필터 (연결하여 검사)
+      const phoneFull = `${searchFilters.phone1}${searchFilters.phone2}${searchFilters.phone3}`;
+      const customerPhone = customer.phone.replace(/-/g, '');
+      if (phoneFull !== '010' && !customerPhone.includes(phoneFull)) {
+        return false;
+      }
+
+      // 해지고객 제외 체크박스 (sample data에 status가 없으므로 가정)
+      // 실제로는 customer.status === 'terminated' 등으로 체크
+
+      return true;
+    });
+
+    setFilteredCustomers(filtered);
+    setSelectedCustomer(null); // 검색 시 선택 초기화
   };
 
   /**
@@ -298,8 +338,44 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
     });
   };
 
+  /**
+   * Dialog 닫기 핸들러 (X 버튼, ESC 키, 백드롭 클릭)
+   */
+  const handleDialogOpenChange = (open: boolean) => {
+    if (!open) {
+      handleCancel();
+    }
+  };
+
+  /**
+   * 고객등록 버튼 핸들러
+   */
+  const handleRegisterCustomer = () => {
+    // TODO: 고객등록 기능 구현
+    console.log('고객등록');
+  };
+
+  /**
+   * 고객수정 버튼 핸들러
+   */
+  const handleEditCustomer = () => {
+    // TODO: 선택된 고객이 있으면 수정 기능 구현
+    if (selectedCustomer) {
+      console.log('고객수정:', selectedCustomer);
+    } else {
+      console.warn('선택된 고객이 없습니다.');
+    }
+  };
+
+  /**
+   * 닫기 버튼 핸들러
+   */
+  const handleClose = () => {
+    handleCancel();
+  };
+
   return (
-    <Dialog open onOpenChange={(open) => !open && handleCancel()}>
+    <Dialog open onOpenChange={handleDialogOpenChange}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -420,34 +496,45 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
         {/* 고객 리스트 영역 - AG Grid */}
         <div className="mt-4">
           <AgGridReact<Customer>
-            rowData={SAMPLE_CUSTOMERS}
+            rowData={filteredCustomers}
             columnDefs={columnDefs}
             gridOptions={gridOptions}
             onRowClicked={(event) => event.data && handleSelectCustomer(event.data)}
             getRowId={(params) => params.data.id}
             rowClass="cursor-pointer"
           />
+
+          {/* 해지고객 제외 체크박스 */}
+          <div className="flex items-center gap-2 mt-2">
+            <input
+              type="checkbox"
+              id="exclude-terminated"
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              checked={excludeTerminated}
+              onChange={(e) => setExcludeTerminated(e.target.checked)}
+            />
+            <label htmlFor="exclude-terminated" className="text-sm text-gray-700 cursor-pointer">
+              해지고객 제외
+            </label>
+          </div>
         </div>
 
-        {/* 선택된 고객 정보 표시 */}
-        {selectedCustomer && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-            <div className="text-sm">
-              <span className="font-medium text-blue-900">선택된 고객:</span>{' '}
-              <span className="text-blue-700">
-                {selectedCustomer.name} ({selectedCustomer.customerNo})
-              </span>
-            </div>
-          </div>
-        )}
+        {/* 구분선 */}
+        <div className="border-t border-gray-200 my-4" />
 
-        {/* 하단 버튼 */}
-        <div className="mt-6 flex justify-end gap-2">
-          <Button variant="outline" onClick={handleCancel}>
-            취소
-          </Button>
-          <Button onClick={handleConfirm} disabled={!selectedCustomer}>
-            확인
+        {/* 하단 버튼 영역 */}
+        <div className="flex justify-between items-center">
+          {/* 좌측: 고객등록, 고객수정 */}
+          <div className="flex gap-2">
+            <Button onClick={handleRegisterCustomer}>고객등록</Button>
+            <Button variant="outline" onClick={handleEditCustomer} disabled={!selectedCustomer}>
+              고객수정
+            </Button>
+          </div>
+
+          {/* 우측: 닫기 */}
+          <Button variant="outline" onClick={handleClose}>
+            닫기
           </Button>
         </div>
       </DialogContent>
