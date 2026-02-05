@@ -1,6 +1,8 @@
 # TypeScript 기본 지식
 
-이 문서는 현재 프로젝트를 이해하기 위해 필요한 TypeScript의 핵심 개념과 Next.js 16 App Router 환경에서의 사용법을 설명합니다.
+이 문서는 현재 프로젝트를 이해하기 위해 필요한 TypeScript의 핵심 개념과 Next.js App Router 환경에서의 사용법을 설명합니다.
+
+> **학습 가이드**: 이 문서는 기본부터 고급까지 다룹니다. 초보자는 [기본 타입](#기본-타입)부터 시작하고, 경험이 있는 개발자는 [유틸리티 타입](#유틸리티-타입)이나 [고급 주제](#declare와-타입-정의)로 바로 이동하세요.
 
 ## 목차
 
@@ -41,7 +43,7 @@ TypeScript는 Microsoft에서 개발한 **JavaScript의 상위집합(Superset) �
    - VS Code, WebStorm 등 IDE와의 완벽한 통합
    - IntelliSense, 자동 import, 리팩토링 지원
 
-4. **최준 표준 준수**
+4. **최신 표준 준수**
    - ECMAScript 표준을 따름
    - 최신 JavaScript 기능을 빠르게 지원
 
@@ -53,11 +55,13 @@ TypeScript는 Microsoft에서 개발한 **JavaScript의 상위집합(Superset) �
 }
 ```
 
-**TypeScript 5.7의 새로운 특징:**
+**TypeScript 5.7의 주요 특징:**
+- ✅ `NoInfer` 유틸리티 타입 개선 (타입 추론 제어)
+- ✅ 조건부 타입 관련 에러 메시지 개선
+- ✅ `--moduleResolution bundler` 기본값 변경
 - ✅ 성능 및 안정성 개선
-- ✅ 향상된 타입 추론
-- ✅ 새로운 유틸리티 타입 추가
-- ✅ 개선된 에러 메시지
+
+> **참고**: TypeScript 5.7의 구체적인 변경사항은 [공식 릴리스 노트](https://devblogs.microsoft.com/typescript/announcing-typescript-5-7/)를 확인하세요.
 
 ### TypeScript vs JavaScript
 
@@ -69,6 +73,17 @@ TypeScript는 Microsoft에서 개발한 **JavaScript의 상위집합(Superset) �
 | **학습 곡선** | 낮음 | 중간 |
 | **코드량** | 적음 | 많음 (타입 정의) |
 | **생산성** | 소규모에 적합 | 대규모에 적합 |
+
+### TypeScript 사용 권장 패턴
+
+| 상황 | 권장 방식 | 대안 |
+|------|-----------|------|
+| 상수 값 집합 | `as const` 객체 또는 유니온 타입 | Enum (특수한 경우만) |
+| 런타임 검증 | Zod 등 스키마 라이브러리 | `as` 타입 단언 (지양) |
+| null 체크 | 타입 가드 (`if (x !== null)`) | `!` 비-null 단언 (지양) |
+| 타입 검증 | `satisfies` 연산자 | 타입 단언 `as` |
+| 함수 컴포넌트 | 함수 선언식 | `React.FC` (지양) |
+| SSR 안전성 | `typeof window !== 'undefined'` 체크 | 직접 사용 (에러 발생) |
 
 ---
 
@@ -239,6 +254,25 @@ const user1: User = {
 ---
 
 ## Enum 타입
+
+> **⚠️ 권장 사항**: 대부분의 경우 **문자열 리터럴 타입** 또는 **`as const` 객체**를 사용하는 것이 좋습니다.
+>
+> ```typescript
+> // ✅ 권장: 문자열 리터럴 타입
+> type Status = 'pending' | 'approved' | 'rejected';
+>
+> // ✅ 권장: as const 객체
+> const Status = {
+>   Pending: 'pending',
+>   Approved: 'approved',
+>   Rejected: 'rejected',
+> } as const;
+>
+> // ⚠️ Enum은 다음 경우에만 고려하세요:
+> // - 비트 플래그 패턴이 필요할 때
+> // - 역방향 접근(숫자 → 이름)이 필요할 때
+> // - 기존 코드베이스와의 호환성이 필요할 때
+> ```
 
 Enum(Enumerated Type)은 이름이 있는 상수들의 집합을 정의하는 타입입니다. enum을 사용하면 의미 있는 이름을 부여하여 코드의 가독성과 안전성을 높일 수 있습니다.
 
@@ -1907,11 +1941,24 @@ async function fetchUser(id: number): Promise<User> {
 }
 
 // 6. 조건부 반환 타입
+// ⚠️ 주의: 아래 코드는 타입 안전하지 않습니다!
 function parseInput<T>(input: string): T {
-  return JSON.parse(input) as T;
+  return JSON.parse(input) as T; // 런타임 검사 없음
 }
 
 const user = parseInput<User>('{"id":1,"name":"홍길동"}');
+
+// ✅ 권장: 런타임 검증 라이브러리 사용 (Zod 등)
+import { z } from 'zod';
+
+const UserSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
+function parseUserSafe(input: string): User {
+  return UserSchema.parse(JSON.parse(input)); // 런타임 검사 포함
+}
 ```
 
 ### 함수 타입과 고계 함수
@@ -2327,6 +2374,8 @@ let arr = [0, 1, null]; // (number | null)[]으로 추론
 
 ### 타입 단언 (Type Assertion)
 
+> **⚠️ 타입 단언 사용 주의사항**: 타입 단언은 TypeScript의 타입 검사를 우회합니다. 가능하면 타입 가드, 타입 좁히기, `satisfies` 연산자를 먼저 고려하세요.
+
 ```typescript
 // 1. angle-bracket 문법 (JSX와 함께 사용 불가)
 let value: any = "Hello, World!";
@@ -2335,12 +2384,19 @@ let length: number = (<string>value).length;
 // 2. as 문법 (권장)
 let length2: number = (value as string).length;
 
-// 3. 비-null 단언
+// 3. 비-null 단언 (!) - 신중하게 사용
 function printLength(str: string | null) {
+  // ⚠️ ! 연산자는 null/undefined 검사를 우회합니다
+  // 실제로 null이면 런타임 에러 발생
   console.log(str!.length); // null이 아님을 단언
 }
 
-// 4. DOM 요소 단언
+// ✅ 더 안전한 방법: 명시적 null 체크
+function printLengthSafe(str: string | null) {
+  if (str !== null) {
+    console.log(str.length); // 타입 가드로 좁혀짐
+  }
+}
 const button = document.querySelector("button") as HTMLButtonElement;
 button.addEventListener("click", () => {
   console.log("Button clicked!");
@@ -2354,6 +2410,7 @@ const config = {
 // readonly로 추론됨
 
 // 6. satisfies 연산자 (TypeScript 4.9+)
+// 💡 satisfies는 타입 검증만 수행하고, 값의 구체적인 타입을 유지합니다
 interface Config {
   url: string;
   timeout: number;
@@ -2367,6 +2424,34 @@ const serverConfig = {
 } satisfies Config;
 
 // serverConfig.mode는 여전히 "secure"로 추론됨
+
+// ✅ satisfies vs as const vs 타입 단언 비교
+
+// 방법 1: 타입 단언 (as) - 타입 변환, 검사 없음
+const config1 = {
+  url: "https://api.example.com",
+  timeout: 5000,
+} as Config;
+// ❌ 잘못된 값도 통과됨
+const config2 = {
+  urll: "typo", // 오탈지만 타입 단언으로 통과
+} as Config;
+
+// 방법 2: satisfies - 타입 검증, 구체적 타입 유지
+const config3 = {
+  url: "https://api.example.com",
+  timeout: 5000,
+} satisfies Config;
+// ✅ 오탈 있으면 에러 발생
+// const config4 = { urll: "typo" } satisfies Config; // Error
+
+// 방법 3: as const - 최대한 구체적인 타입
+const config5 = {
+  url: "https://api.example.com",
+  timeout: 5000,
+} as const;
+// url: "https://api.example.com" (리터럴 타입)
+// timeout: 5000 (리터럴 타입)
 
 // 7. 타입 가드
 function isString(value: unknown): value is string {
@@ -2883,11 +2968,14 @@ const memoizedCallback = useCallback(() => {
 }, [a, b]);
 
 // 8. 커스텀 훅
+// ⚠️ localStorage는 브라우저 전용 API입니다.
+// Server Component에서 사용하면 에러가 발생합니다.
 function useLocalStorage<T>(
   key: string,
   initialValue: T
 ): [T, (value: T) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
+    // ✅ SSR 안전성 확보
     if (typeof window === "undefined") return initialValue;
 
     const item = window.localStorage.getItem(key);
@@ -2896,7 +2984,43 @@ function useLocalStorage<T>(
 
   const setValue = (value: T) => {
     setStoredValue(value);
-    window.localStorage.setItem(key, JSON.stringify(value));
+    // ⚠️ 여기서도 체크 필요 (Edge cases)
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
+// ✅ 더 안전한 버전 (런타임 검증 포함)
+function useLocalStorageSafe<T>(
+  key: string,
+  initialValue: T
+): [T, (value: T | ((val: T) => T)) => void] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === "undefined") return initialValue;
+
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error);
+    }
   };
 
   return [storedValue, setValue];
@@ -2905,9 +3029,156 @@ function useLocalStorage<T>(
 const [name, setName] = useLocalStorage<string>("name", "");
 ```
 
+### Next.js App Router 타이핑
+
+Next.js 13+ App Router에서의 TypeScript 사용법입니다.
+
+#### 1. Server Components (기본값)
+
+```typescript
+// app/users/page.tsx
+// Server Component는 'use client'가 없음
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ✅ async 함수로 데이터 페칭
+async function getUsers(): Promise<User[]> {
+  const res = await fetch('https://api.example.com/users', {
+    cache: 'no-store', // 또는 next: { revalidate: 60 }
+  });
+  return res.json();
+}
+
+// ✅ Server Component는 async 가능
+export default async function UsersPage() {
+  const users = await getUsers();
+
+  return (
+    <div>
+      <h1>사용자 목록</h1>
+      <UserList users={users} />
+    </div>
+  );
+}
+```
+
+#### 2. Route Segment 타입
+
+```typescript
+// app/users/[id]/page.tsx
+
+interface PageProps {
+  params: Promise<{ id: string }>; // ⚠️ Next.js 15+: Promise로 감싸짐
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function UserPage({ params, searchParams }: PageProps) {
+  const { id } = await params; // await 필요
+  const { tab } = await searchParams;
+
+  const user = await fetchUser(id);
+  return <UserProfile user={user} activeTab={tab} />;
+}
+```
+
+#### 3. generateStaticParams 타이핑
+
+```typescript
+// app/blog/[slug]/page.tsx
+
+export async function generateStaticParams() {
+  const posts = await getPosts(); // Promise<{ slug: string }[]>
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+#### 4. Server Actions 타이핑
+
+```typescript
+// 'use server' 지시자
+
+import { z } from 'zod';
+
+const FormSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+});
+
+export async function createUser(formData: FormData) {
+  'use server'; // ✅ 서버 액션임을 표시
+
+  const validatedFields = FormSchema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+  });
+
+  if (!validatedFields.success) {
+    return { error: validatedFields.error.flatten() };
+  }
+
+  // DB 저장 로직...
+  return { success: true };
+}
+```
+
+#### 5. Metadata API
+
+```typescript
+// app/about/page.tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '소개 | 우리 사이트',
+  description: '우리 사이트에 대해 알아보세요',
+  openGraph: {
+    title: '소개 페이지',
+    images: ['/og-image.png'],
+  },
+};
+
+export default function AboutPage() {
+  return <div>소개 페이지</div>;
+}
+```
+
+#### 6. Middleware 타이핑
+
+```typescript
+// middleware.ts
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('token')?.value;
+
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*', '/api/protected/:path*'],
+};
+```
+
 ### 프로젝트에서의 사용 예시
 
 ```typescript
+### 프로젝트에서의 사용 예시
+
+> **SSR 안전성 패턴**: 브라우저 전용 API(localStorage, window 등)를 사용할 때는 항상 `typeof window !== 'undefined'` 체크가 필요합니다.
+
+```typescript
+// app/users/[id]/page.tsx
 // src/features/products/components/ProductCard.tsx
 interface ProductCardProps {
   product: {
