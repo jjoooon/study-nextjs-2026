@@ -12,6 +12,7 @@
 import type { Reducer, Middleware } from '@reduxjs/toolkit';
 
 import dashboardService from '@/features/dashboard/services/dashboardService';
+import { customerService } from '@/features/poc/services/customerService';
 import { productService } from '@/features/products/services/productService';
 import { authService } from '@/shared/services/authService';
 import { dynamicService } from '@/shared/services/dynamicService';
@@ -51,6 +52,7 @@ export const API_REGISTRY = [
 
   // Feature APIs (우선순위 50-59)
   { api: dashboardService, priority: 50, name: 'dashboardService' },
+  { api: customerService, priority: 50, name: 'pocCustomerService' },
   { api: productService, priority: 50, name: 'productsService' },
   // ✅ 새로운 API를 여기에 추가
   // { api: analyticsApiSlice, priority: 54, name: 'analyticsApi' },

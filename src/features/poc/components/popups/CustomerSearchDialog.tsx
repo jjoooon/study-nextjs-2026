@@ -25,6 +25,8 @@ import { ModuleRegistry } from 'ag-grid-community';
 import { AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useMemo } from 'react';
+import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';
+import type { Customer } from '@/features/poc/types/customerTypes';
 import { Button } from '@/shared/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
 
@@ -39,19 +41,6 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 // ============================================================================
 
 /**
- * 고객 데이터 타입
- */
-export interface Customer {
-  id: string;
-  name: string;
-  customerNo: string;
-  customerType: string;
-  phone: string;
-  address: string;
-  birthDate: string;
-}
-
-/**
  * 고객 검색 결과 타입
  */
 export interface CustomerSearchDialogResult {
@@ -59,20 +48,6 @@ export interface CustomerSearchDialogResult {
   action: 'select' | 'cancel';
   /** 선택된 고객 (select 액션 시) */
   customer?: Customer;
-}
-
-/**
- * 고객 검색 조건 타입
- */
-interface SearchFilters {
-  customerType: string;
-  customerNo: string;
-  name: string;
-  birthDate: string;
-  phone1: string;
-  phone2: string;
-  phone3: string;
-  recentCustomer: boolean;
 }
 
 /**
@@ -88,43 +63,6 @@ export interface CustomerSearchDialogProps {
 }
 
 // ============================================================================
-// SAMPLE DATA
-// ============================================================================
-
-/**
- * 샘플 고객 데이터
- */
-const SAMPLE_CUSTOMERS: Customer[] = [
-  {
-    id: '1',
-    name: '김철수',
-    customerNo: 'CUST001',
-    customerType: '개인',
-    phone: '010-1234-5678',
-    address: '서울시 강남구 테헤란로 123',
-    birthDate: '1980-01-15',
-  },
-  {
-    id: '2',
-    name: '이영희',
-    customerNo: 'CUST002',
-    customerType: '법인',
-    phone: '010-2345-6789',
-    address: '서울시 서초구 강남대로 456',
-    birthDate: '1985-03-22',
-  },
-  {
-    id: '3',
-    name: '박민수',
-    customerNo: 'CUST003',
-    customerType: '개인',
-    phone: '010-3456-7890',
-    address: '서울시 송파구 올림픽대로 789',
-    birthDate: '1990-07-08',
-  },
-];
-
-// ============================================================================
 // CUSTOMER SEARCH DIALOG COMPONENT
 // ============================================================================
 
@@ -132,20 +70,10 @@ const SAMPLE_CUSTOMERS: Customer[] = [
  * 고객찾기 팝업 컴포넌트
  */
 export function CustomerSearchDialog({ title = '고객찾기', description = '', resolve }: CustomerSearchDialogProps) {
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    customerType: '',
-    customerNo: '',
-    name: '',
-    birthDate: '',
-    phone1: '010',
-    phone2: '',
-    phone3: '',
-    recentCustomer: false,
-  });
-
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
-  const [excludeTerminated, setExcludeTerminated] = useState<boolean>(true);
-  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>(SAMPLE_CUSTOMERS);
+
+  // API를 통한 고객 검색
+  const { customers, isLoading, searchFilters, updateFilter, handleSearch, handleReset } = useCustomerSearch();
 
   // ============================================================================
   // AG GRID COLUMN DEFINITIONS
@@ -240,74 +168,8 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
   /**
    * 검색 필터 변경 핸들러
    */
-  const handleFilterChange = <K extends keyof SearchFilters>(key: K, value: SearchFilters[K]) => {
-    setSearchFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  /**
-   * 검색 핸들러
-   */
-  const handleSearch = () => {
-    // 검색 조건에 따라 샘플 데이터 필터링
-    const filtered = SAMPLE_CUSTOMERS.filter((customer) => {
-      // 고객유형 필터
-      if (searchFilters.customerType === 'individual' && customer.customerType !== '개인') {
-        return false;
-      }
-      if (searchFilters.customerType === 'corporate' && customer.customerType !== '법인') {
-        return false;
-      }
-
-      // 고객식별번호 필터 (부분 일치)
-      if (searchFilters.customerNo && !customer.customerNo.includes(searchFilters.customerNo)) {
-        return false;
-      }
-
-      // 고객명 필터 (부분 일치)
-      if (searchFilters.name && !customer.name.includes(searchFilters.name)) {
-        return false;
-      }
-
-      // 생년월일 필터 (부분 일치)
-      if (searchFilters.birthDate && !customer.birthDate.includes(searchFilters.birthDate)) {
-        return false;
-      }
-
-      // 휴대폰번호 필터 (연결하여 검사)
-      const phoneFull = `${searchFilters.phone1}${searchFilters.phone2}${searchFilters.phone3}`;
-      const customerPhone = customer.phone.replace(/-/g, '');
-      if (phoneFull !== '010' && !customerPhone.includes(phoneFull)) {
-        return false;
-      }
-
-      // 해지고객 제외 체크박스 (sample data에 status가 없으므로 가정)
-      // 실제로는 customer.status === 'terminated' 등으로 체크
-
-      return true;
-    });
-
-    setFilteredCustomers(filtered);
-    setSelectedCustomer(null); // 검색 시 선택 초기화
-  };
-
-  /**
-   * 초기화 핸들러
-   */
-  const handleReset = () => {
-    setSearchFilters({
-      customerType: '',
-      customerNo: '',
-      name: '',
-      birthDate: '',
-      phone1: '010',
-      phone2: '',
-      phone3: '',
-      recentCustomer: false,
-    });
-    setSelectedCustomer(null);
+  const handleFilterChange = <K extends keyof typeof searchFilters>(key: K, value: (typeof searchFilters)[K]) => {
+    updateFilter(key, value);
   };
 
   /**
@@ -315,18 +177,6 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
    */
   const handleSelectCustomer = (customer: Customer) => {
     setSelectedCustomer(customer);
-  };
-
-  /**
-   * 확인 버튼 핸들러
-   */
-  const handleConfirm = () => {
-    if (selectedCustomer) {
-      resolve({
-        action: 'select',
-        customer: selectedCustomer,
-      });
-    }
   };
 
   /**
@@ -390,8 +240,8 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               <label className="text-sm font-medium text-gray-700 mb-0.5">고객유형</label>
               <select
                 className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchFilters.customerType}
-                onChange={(e) => handleFilterChange('customerType', e.target.value)}
+                value={searchFilters.customerType || ''}
+                onChange={(e) => handleFilterChange('customerType', e.target.value as '' | 'individual' | 'corporate')}
               >
                 <option value="">전체</option>
                 <option value="individual">개인</option>
@@ -405,7 +255,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               <input
                 type="text"
                 className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchFilters.customerNo}
+                value={searchFilters.customerNo || ''}
                 onChange={(e) => handleFilterChange('customerNo', e.target.value)}
                 placeholder="고객식별번호 입력"
               />
@@ -417,7 +267,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               <input
                 type="text"
                 className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchFilters.name}
+                value={searchFilters.name || ''}
                 onChange={(e) => handleFilterChange('name', e.target.value)}
                 placeholder="고객명 입력"
               />
@@ -429,7 +279,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               <input
                 type="text"
                 className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchFilters.birthDate}
+                value={searchFilters.birthDate || ''}
                 onChange={(e) => handleFilterChange('birthDate', e.target.value)}
                 placeholder="YYYYMMDD"
               />
@@ -441,7 +291,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               <div className="flex items-center gap-2">
                 <select
                   className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
-                  value={searchFilters.phone1}
+                  value={searchFilters.phone1 || '010'}
                   onChange={(e) => handleFilterChange('phone1', e.target.value)}
                 >
                   <option value="010">010</option>
@@ -455,7 +305,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
                 <input
                   type="text"
                   className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
-                  value={searchFilters.phone2}
+                  value={searchFilters.phone2 || ''}
                   onChange={(e) => handleFilterChange('phone2', e.target.value)}
                   placeholder="0000"
                   maxLength={4}
@@ -464,7 +314,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
                 <input
                   type="text"
                   className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
-                  value={searchFilters.phone3}
+                  value={searchFilters.phone3 || ''}
                   onChange={(e) => handleFilterChange('phone3', e.target.value)}
                   placeholder="0000"
                   maxLength={4}
@@ -478,7 +328,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
                 <input
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  checked={searchFilters.recentCustomer}
+                  checked={searchFilters.recentCustomer || false}
                   onChange={(e) => handleFilterChange('recentCustomer', e.target.checked)}
                 />
                 <span className="text-sm font-medium text-gray-700">최근등록고객 (3개월)</span>
@@ -495,14 +345,20 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
 
         {/* 고객 리스트 영역 - AG Grid */}
         <div className="mt-2">
-          <AgGridReact<Customer>
-            rowData={filteredCustomers}
-            columnDefs={columnDefs}
-            gridOptions={gridOptions}
-            onRowClicked={(event) => event.data && handleSelectCustomer(event.data)}
-            getRowId={(params) => params.data.id}
-            rowClass="cursor-pointer"
-          />
+          {isLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+          ) : (
+            <AgGridReact<Customer>
+              rowData={customers}
+              columnDefs={columnDefs}
+              gridOptions={gridOptions}
+              onRowClicked={(event) => event.data && handleSelectCustomer(event.data)}
+              getRowId={(params) => params.data.id}
+              rowClass="cursor-pointer"
+            />
+          )}
 
           {/* 해지고객 제외 체크박스 */}
           <div className="flex items-center gap-2">
@@ -510,8 +366,8 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               type="checkbox"
               id="exclude-terminated"
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              checked={excludeTerminated}
-              onChange={(e) => setExcludeTerminated(e.target.checked)}
+              checked={searchFilters.excludeTerminated || false}
+              onChange={(e) => handleFilterChange('excludeTerminated', e.target.checked)}
             />
             <label htmlFor="exclude-terminated" className="text-sm text-gray-700 cursor-pointer">
               해지고객 제외

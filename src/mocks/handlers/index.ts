@@ -6,8 +6,15 @@
  */
 
 import { authHandlers } from './auth';
+import { customersHandlers } from './customers';
 import { dashboardHandlers } from './dashboard';
 import { errorHandlers } from './errors';
 import { productsHandlers } from './products';
 
-export const handlers = [...authHandlers, ...dashboardHandlers, ...productsHandlers, ...errorHandlers];
+export const handlers = [
+  ...authHandlers,
+  ...customersHandlers,
+  ...dashboardHandlers,
+  ...productsHandlers,
+  ...errorHandlers,
+];
