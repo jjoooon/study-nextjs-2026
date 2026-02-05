@@ -19,7 +19,7 @@ export interface Customer {
   /** 고객식별번호 */
   customerNo: string;
   /** 고객유형명 */
-  customerType: string;
+  customerType: '개인' | '법인';
   /** 휴대폰번호 */
   phone: string;
   /** 주소 */
@@ -43,7 +43,7 @@ export interface Customer {
  */
 export interface CustomerSearchFilters {
   /** 고객유형 */
-  customerType?: '' | 'individual' | 'corporate';
+  customerType?: '' | '개인' | '법인';
   /** 고객식별번호 */
   customerNo?: string;
   /** 고객명 */

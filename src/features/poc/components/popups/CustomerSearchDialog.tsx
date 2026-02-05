@@ -241,11 +241,11 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
               <select
                 className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchFilters.customerType || ''}
-                onChange={(e) => handleFilterChange('customerType', e.target.value as '' | 'individual' | 'corporate')}
+                onChange={(e) => handleFilterChange('customerType', e.target.value as '' | '개인' | '법인')}
               >
                 <option value="">전체</option>
-                <option value="individual">개인</option>
-                <option value="corporate">법인</option>
+                <option value="개인">개인</option>
+                <option value="법인">법인</option>
               </select>
             </div>
 

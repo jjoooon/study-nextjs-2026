@@ -37,9 +37,9 @@ export const customersHandlers = [
     let filtered = [...mockCustomers];
 
     // 고객유형 필터
-    if (filters?.customerType === 'individual') {
+    if (filters?.customerType === '개인') {
       filtered = filtered.filter((c) => c.customerType === '개인');
-    } else if (filters?.customerType === 'corporate') {
+    } else if (filters?.customerType === '법인') {
       filtered = filtered.filter((c) => c.customerType === '법인');
     }
 
