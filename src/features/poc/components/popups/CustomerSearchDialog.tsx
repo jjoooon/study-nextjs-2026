@@ -383,7 +383,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
         </DialogHeader>
 
         {/* 검색 필터 영역 */}
-        <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
+        <div className="p-3 bg-gray-50 rounded-lg border">
           <div className="grid grid-cols-3 gap-3">
             {/* 고객유형 */}
             <div className="flex flex-col">
@@ -494,7 +494,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
         </div>
 
         {/* 고객 리스트 영역 - AG Grid */}
-        <div className="mt-4">
+        <div className="mt-2">
           <AgGridReact<Customer>
             rowData={filteredCustomers}
             columnDefs={columnDefs}
@@ -505,7 +505,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
           />
 
           {/* 해지고객 제외 체크박스 */}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2">
             <input
               type="checkbox"
               id="exclude-terminated"
