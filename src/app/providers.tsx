@@ -30,13 +30,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
      * @see https://mswjs.io/docs/integrations/browser/
      */
     async function enableMocking() {
-      // ✅ Production: 즉시 렌더링 (로딩 상태 제거)
-      if (process.env.NODE_ENV !== 'development') {
+      // ✅ MSW 비활성화 시 즉시 렌더링 (로딩 상태 제거)
+      const mswEnabled = process.env.NEXT_PUBLIC_MSW_ENABLED === 'true';
+
+      if (!mswEnabled) {
         setIsReady(true);
         return;
       }
 
-      // ✅ Development: MSW 초기화 (비차단)
+      // ✅ MSW 초기화 (비차단)
       try {
         // MSW worker 동적 임포트
         const { worker } = await import('@/mocks/browser');
@@ -67,8 +69,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     enableMocking();
   }, []);
 
-  // ✅ Production: 즉시 렌더링 (로딩 UI 없음)
-  if (process.env.NODE_ENV !== 'development' || isReady) {
+  // ✅ MSW 비활성화 또는 준비 완료 시 렌더링
+  const mswEnabled = process.env.NEXT_PUBLIC_MSW_ENABLED === 'true';
+  if (!mswEnabled || isReady) {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

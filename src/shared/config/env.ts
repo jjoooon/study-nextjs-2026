@@ -47,7 +47,7 @@ const envSchema = z.object({
   // ==========================================================================
 
   /** API 기본 URL */
-  NEXT_PUBLIC_API_URL: z.string().url().default('/api'),
+  NEXT_PUBLIC_API_URL: z.string().default('/api'),
 
   /** API 타임아웃 (ms) */
   NEXT_PUBLIC_API_TIMEOUT: z
