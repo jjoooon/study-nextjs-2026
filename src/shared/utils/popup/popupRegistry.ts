@@ -42,7 +42,7 @@ import type { ComponentType } from 'react';
  * Promise<{ default: ComponentType }>를 반환하는 함수
  * React.lazy의 인자로 사용됩니다
  */
-export type DialogLoader = () => Promise<{ default: ComponentType<Record<string, unknown>> }>;
+export type DialogLoader = () => Promise<{ default: ComponentType<Record<string, unknown>> } | unknown>;
 
 /**
  * Dialog Registry 타입

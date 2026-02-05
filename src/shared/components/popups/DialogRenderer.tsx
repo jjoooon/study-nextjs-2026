@@ -53,7 +53,8 @@ export function DialogRenderer({ id, popupType, props }: DialogRendererProps) {
     loader()
       .then((module) => {
         if (isMounted) {
-          setComponent(() => module.default);
+          const mod = module as { default: React.ComponentType<Record<string, unknown>> };
+          setComponent(() => mod.default);
         }
       })
       .catch((err) => {
