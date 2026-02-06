@@ -21,14 +21,14 @@
  */
 
 import type { ColDef } from 'ag-grid-community';
-import { ModuleRegistry } from 'ag-grid-community';
-import { AllCommunityModule } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';
 import type { Customer } from '@/features/poc/types/customerTypes';
 import { Button } from '@/shared/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
+import { isProduction } from '@/shared/config/env';
 import log from '@/shared/utils/logger';
 
 // AG Grid Theming
@@ -37,7 +37,7 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 const logger = log.getLogger('Poc');
 
 // AG Grid Module Registration
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllCommunityModule, ...(!isProduction ? [ValidationModule] : [])]);
 
 // ============================================================================
 // TYPE DEFINITIONS

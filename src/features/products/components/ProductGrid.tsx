@@ -2,10 +2,10 @@
 
 import type { ColDef } from 'ag-grid-community';
 
-import { ModuleRegistry } from 'ag-grid-community';
-import { AllCommunityModule } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, memo } from 'react';
+import { memo, useMemo } from 'react';
+import { isProduction } from '@/shared/config/env';
 
 // ✅ AG Grid v34+ Theming API 사용 (구버전 CSS 제거)
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -23,7 +23,7 @@ import type { Product } from '../types/apiTypes';
  * AG Grid v34부터는 모듈 시스템을 사용하여 필요한 기능을 등록해야 합니다.
  * AllCommunityModule: Community Edition의 모든 기능 포함
  */
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllCommunityModule, ...(!isProduction ? [ValidationModule] : [])]);
 
 // ============================================================================
 // OPTIMIZED COMPONENTS - Vercel Best Practices
