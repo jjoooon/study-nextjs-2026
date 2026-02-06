@@ -8,6 +8,9 @@ import { http } from 'msw';
 
 import type { Customer, GetCustomersParams } from '@/features/poc/types/customerTypes';
 import { mockCustomers } from '@/mocks/data/customers';
+import log from '@/shared/utils/logger';
+
+const logger = log.getLogger('Global');
 
 /**
  * 고객 검색 API 핸들러
@@ -29,7 +32,7 @@ export const customersHandlers = [
       try {
         filters = JSON.parse(filtersParam);
       } catch {
-        console.error('[MSW] Failed to parse filters:', filtersParam);
+        logger.error('[MSW] Failed to parse filters:', filtersParam);
       }
     }
 

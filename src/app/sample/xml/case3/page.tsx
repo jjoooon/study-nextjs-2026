@@ -91,7 +91,7 @@ export default function XmlConverterPage() {
         });
       } catch (err) {
         setError(err instanceof Error ? err.message : 'XML 로드 중 오류가 발생했습니다.');
-        console.error('서버 사이드 Raw XML 로드 오류:', err);
+        logger.error('서버 사이드 Raw XML 로드 오류:', err);
       } finally {
         setLoading(false);
       }

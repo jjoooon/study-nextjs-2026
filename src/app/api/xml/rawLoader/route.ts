@@ -1,7 +1,10 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import { DOMParser } from '@xmldom/xmldom';
 import { NextRequest, NextResponse } from 'next/server';
-import { convertXmlToJson } from '@/shared/utils/xml/xmlParser';
+import log from '@/shared/utils/logger';
+
+const logger = log.getLogger('Xml');
 
 export async function GET(request: NextRequest) {
   const loadStart = performance.now();
@@ -19,12 +22,26 @@ export async function GET(request: NextRequest) {
     const xmlText = await readFile(xmlFilePath, 'utf-8');
     const fileReadEnd = performance.now();
 
-    // XML 파싱
+    // DOM 파싱 (서버에서 처리)
     const parseStart = performance.now();
-    const converted = await convertXmlToJson(xmlText);
+    const parser = new DOMParser({
+      errorHandler: {
+        warning: () => {},
+        error: () => {},
+        fatalError: (msg) => {
+          throw new Error(msg);
+        },
+      },
+    });
+    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
     const parseEnd = performance.now();
 
     const totalEnd = performance.now();
+
+    // DOM을 XML 문자열로 직렬화하여 전송
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const serializer = new (require('@xmldom/xmldom').XMLSerializer)();
+    const serializedXml = serializer.serializeToString(xmlDoc);
 
     // 성능 메트릭스 계산
     const metrics = {
@@ -35,7 +52,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       {
-        data: converted,
+        xmlData: serializedXml,
         ...metrics,
       },
       {
@@ -47,10 +64,10 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error('Server-side XML processing error:', error);
+    logger.error('Server-side XML processing error:', error);
     return NextResponse.json(
       {
-        data: null,
+        xmlData: null,
         loadTime: 0,
         parseTime: 0,
         totalTime: 0,

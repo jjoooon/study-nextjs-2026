@@ -10,6 +10,9 @@ import { useLogoutMutation } from '@/shared/services/authService';
 import { selectIsAuthenticated, selectUser } from '@/shared/store/authSelectors';
 import { clearCredentials } from '@/shared/store/authSlice';
 import { deleteCookieValues } from '@/shared/utils/cookieUtils';
+import log from '@/shared/utils/logger';
+
+const logger = log.getLogger('Global');
 
 interface NavItem {
   name: string;
@@ -64,7 +67,7 @@ export function Navigation() {
       // 로그아웃 후 메인 페이지로 이동
       window.location.href = MAIN_ROUTES.HOME;
     } catch (error) {
-      console.error('Logout failed:', error);
+      logger.error('Logout failed:', error);
     }
   };
 

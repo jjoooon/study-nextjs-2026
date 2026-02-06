@@ -16,7 +16,7 @@
  * });
  *
  * if (result?.action === 'select') {
- *   console.log('선택된 고객:', result.customer);
+ *   logger.log('선택된 고객:', result.customer);
  * }
  */
 
@@ -29,9 +29,12 @@ import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';
 import type { Customer } from '@/features/poc/types/customerTypes';
 import { Button } from '@/shared/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
+import log from '@/shared/utils/logger';
 
 // AG Grid Theming
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+const logger = log.getLogger('Poc');
 
 // AG Grid Module Registration
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -202,7 +205,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
    */
   const handleRegisterCustomer = () => {
     // TODO: 고객등록 기능 구현
-    console.log('고객등록');
+    logger.log('고객등록');
   };
 
   /**
@@ -211,9 +214,9 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
   const handleEditCustomer = () => {
     // TODO: 선택된 고객이 있으면 수정 기능 구현
     if (selectedCustomer) {
-      console.log('고객수정:', selectedCustomer);
+      logger.log('고객수정:', selectedCustomer);
     } else {
-      console.warn('선택된 고객이 없습니다.');
+      logger.warn('선택된 고객이 없습니다.');
     }
   };
 

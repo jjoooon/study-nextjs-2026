@@ -16,8 +16,11 @@
 
 import { useEffect, useState } from 'react';
 
+import log from '@/shared/utils/logger';
 import { mdi } from '@/shared/utils/mdiHelper2';
 import type { MDIOpenOptions } from '@/shared/utils/mdiHelper2';
+
+const logger = log.getLogger('Sample');
 
 interface ReceivedMessage {
   id: string;
@@ -66,7 +69,7 @@ export default function ChildPage() {
   useEffect(() => {
     // 초기 데이터 로그 (lazy init으로 이미 state에 설정됨)
     if (mdiOptions) {
-      console.log('[MDI2 Child] MDI options received:', mdiOptions);
+      logger.log('[MDI2 Child] MDI options received:', mdiOptions);
     }
 
     // title이 있으면 문서 제목 설정
@@ -332,8 +335,8 @@ interface InitialData {
 
 const initialData = mdi.getInitialData<InitialData>();
 if (initialData) {
-  console.log('Product ID:', initialData.productId);
-  console.log('Mode:', initialData.mode);
+  logger.log('Product ID:', initialData.productId);
+  logger.log('Mode:', initialData.mode);
 }`}
             </pre>
           </div>

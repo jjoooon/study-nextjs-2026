@@ -30,6 +30,9 @@
  */
 
 import type { ComponentType } from 'react';
+import log from '@/shared/utils/logger';
+
+const logger = log.getLogger('Global');
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -96,7 +99,7 @@ const dialogRegistry: DialogRegistry = {
  */
 export function registerDialog(popupType: string, loader: DialogLoader) {
   if (dialogRegistry[popupType]) {
-    console.warn(`[DialogRegistry] Overriding dialog: ${popupType}`);
+    logger.warn(`[DialogRegistry] Overriding dialog: ${popupType}`);
   }
 
   dialogRegistry[popupType] = loader;
@@ -130,7 +133,7 @@ export function getRegisteredDialogTypes(): string[] {
 
 if (process.env.NODE_ENV === 'development') {
   // 개발 모드에서 등록된 팝업 목록 출력
-  console.log('[DialogRegistry] Registered dialogs:', getRegisteredDialogTypes());
+  logger.log('[DialogRegistry] Registered dialogs:', getRegisteredDialogTypes());
 }
 
 // ============================================================================

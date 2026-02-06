@@ -90,7 +90,7 @@ export default function XmlConverterPage() {
         });
       } catch (err) {
         setError(err instanceof Error ? err.message : 'XML 변환 중 오류가 발생했습니다.');
-        console.error('서버 사이드 XML 변환 오류:', err);
+        logger.error('서버 사이드 XML 변환 오류:', err);
       } finally {
         setLoading(false);
       }

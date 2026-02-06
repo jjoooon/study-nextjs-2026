@@ -20,9 +20,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+import log from '@/shared/utils/logger';
 import { mdi } from '@/shared/utils/mdiHelper2';
 import type { MDIDocument, MDIMessage } from '@/shared/utils/mdiHelper2';
 import { MDITabPanel } from './components/MDITabPanel';
+
+const logger = log.getLogger('Sample');
 
 interface MessageLog {
   id: string;
@@ -117,7 +120,7 @@ export default function Page() {
             }
           } catch (error) {
             // CORS 등의 이유로 접근 불가능한 경우 무시
-            console.warn('Cannot send message to iframe:', error);
+            logger.warn('Cannot send message to iframe:', error);
           }
         });
         addLog('PONG', 'sent');
@@ -200,7 +203,7 @@ export default function Page() {
           messageSent = true;
         }
       } catch (error) {
-        console.warn('Cannot send message to iframe:', error);
+        logger.warn('Cannot send message to iframe:', error);
       }
     });
 
@@ -232,7 +235,7 @@ export default function Page() {
           );
         }
       } catch (error) {
-        console.warn('Cannot send broadcast to iframe:', error);
+        logger.warn('Cannot send broadcast to iframe:', error);
       }
     });
 
@@ -624,7 +627,7 @@ const initialData = mdi.getInitialData<{
   message: string;
   timestamp: number;
 }>();
-console.log(initialData); // { productId: 123, mode: 'edit', ... }`}
+logger.log(initialData); // { productId: 123, mode: 'edit', ... }`}
             </pre>
           </div>
         </div>

@@ -16,8 +16,11 @@
 
 import { useEffect, useState } from 'react';
 
+import log from '@/shared/utils/logger';
 import type { MDIMessage, MDIOpenOptions } from '@/shared/utils/mdiHelper';
 import { mdi } from '@/shared/utils/mdiHelper';
+
+const logger = log.getLogger('Sample');
 
 interface ReceivedMessage {
   id: string;
@@ -57,7 +60,7 @@ export default function ChildPage() {
   useEffect(() => {
     // 초기 데이터 로그 (lazy init으로 이미 state에 설정됨)
     if (mdiOptions) {
-      console.log('MDI options received:', mdiOptions);
+      logger.log('MDI options received:', mdiOptions);
     }
 
     // title이 있으면 문서 제목 설정

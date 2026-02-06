@@ -116,10 +116,12 @@ export function setupCookieListener(): void {
       if (currentLevel !== null && loggerLevel !== newLevelConstant) {
         // 로그 레벨 변경
         log.setLevel(newLevelConstant);
+        // eslint-disable-next-line no-console
         console.log(`[Logger] Log level changed to: ${currentLevel}`);
       } else if (currentLevel === null && loggerLevel !== log.levels[defaultLevel as keyof typeof log.levels]) {
         // 기본 레벨로 복원
         log.setLevel(defaultLevel);
+        // eslint-disable-next-line no-console
         console.log(`[Logger] Log level reset to: ${defaultLevel}`);
       }
     }

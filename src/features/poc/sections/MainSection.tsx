@@ -11,8 +11,11 @@
 import { useEffect, useState } from 'react';
 import type { CustomerSearchDialogResult } from '@/features/poc/components/popups/CustomerSearchDialog';
 import { Button } from '@/shared/components/ui/button';
+import log from '@/shared/utils/logger';
 import { popup } from '@/shared/utils/popup/popupApi';
 import { registerDialog } from '@/shared/utils/popup/popupRegistry';
+
+const logger = log.getLogger('Poc');
 
 /**
  * Main Page Component
@@ -42,10 +45,10 @@ export default function MainPage() {
           name: result.customer.name,
           customerNo: result.customer.customerNo,
         });
-        console.log('선택된 고객:', result.customer);
+        logger.log('선택된 고객:', result.customer);
       }
     } catch (error) {
-      console.error('팝업 오류:', error);
+      logger.error('팝업 오류:', error);
     }
   };
 

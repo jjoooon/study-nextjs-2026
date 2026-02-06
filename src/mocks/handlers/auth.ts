@@ -24,6 +24,9 @@
 
 import { http, HttpResponse, delay } from 'msw';
 import { setCookieValue } from '@/shared/utils/cookieUtils';
+import log from '@/shared/utils/logger';
+
+const logger = log.getLogger('Global');
 
 /**
  * 인증 API 핸들러
@@ -199,7 +202,7 @@ export const authHandlers = [
     const { token } = body;
 
     // 실제로는 토큰 검증 후 비밀번호 변경
-    console.log('[MSW] Password reset requested:', { token, newPassword: '***' });
+    logger.log('[MSW] Password reset requested:', { token, newPassword: '***' });
 
     return HttpResponse.json({
       message: '비밀번호가 재설정되었습니다.',

@@ -1,4 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import log from '@/shared/utils/logger';
+
+const logger = log.getLogger('Global');
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -101,7 +104,7 @@ export function registerPopupCallbacks(id: string, callbacks: PopupCallbacks) {
     POPUP_TIMEOUT > 0
       ? setTimeout(() => {
           if (popupCallbacksMap.has(id)) {
-            console.warn(`[Popup] Auto-closing orphaned popup: ${id} (timeout: ${POPUP_TIMEOUT}ms)`);
+            logger.warn(`[Popup] Auto-closing orphaned popup: ${id} (timeout: ${POPUP_TIMEOUT}ms)`);
             callbacks.reject(new Error(`Popup timeout after ${POPUP_TIMEOUT}ms`));
             removePopupCallbacks(id);
           }
@@ -237,7 +240,7 @@ export const popupSlice = createSlice({
     addPopup: (state, action: PayloadAction<Omit<PopupInstance, 'id' | 'zIndex'> & { id?: string }>) => {
       // 최대 팝업 깊이 체크
       if (state.popups.length >= MAX_POPUP_DEPTH) {
-        console.error(
+        logger.error(
           `[Popup] Maximum popup depth (${MAX_POPUP_DEPTH}) reached. Cannot add popup: ${action.payload.popupType}`
         );
         return;

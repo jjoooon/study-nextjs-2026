@@ -21,6 +21,7 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     boundaries
   },
   rules: {
+    'no-console': 'warn',
     // Prettier rules
     'prettier/prettier': 'error',
 
@@ -48,6 +49,67 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
       { argsIgnorePattern: '^_' }
     ],
     '@typescript-eslint/no-explicit-any': 'warn',
+
+    // Naming conventions
+    '@typescript-eslint/naming-convention': [
+      'error',
+      // 기본: camelCase
+      {
+        selector: 'default',
+        format: ['camelCase'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      // import: camelCase 또는 PascalCase
+      {
+        selector: 'import',
+        format: ['camelCase', 'PascalCase'],
+      },
+      // 변수: camelCase, UPPER_CASE(상수), PascalCase(컴포넌트)
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      // 함수: camelCase 또는 PascalCase
+      {
+        selector: 'function',
+        format: ['camelCase', 'PascalCase'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      // 타입 관련: PascalCase
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+      // 타입 속성: PascalCase, UPPER_CASE, camelCase (외부 API 등)
+      {
+        selector: 'typeProperty',
+        format: ['PascalCase', 'UPPER_CASE', 'camelCase', 'snake_case'],
+        leadingUnderscore: 'allow',
+      },
+      // 인터페이스 I 접두사 금지
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        custom: {
+          regex: '^I[A-Z]',
+          match: false,
+        },
+      },
+      // 객체 리터럴 속성 - 모든 형식 허용 (HTTP 헤더, 상수 객체 등)
+      {
+        selector: 'objectLiteralProperty',
+        format: null,
+      },
+      // 객체 리터럴 메서드 - 모든 형식 허용
+      {
+        selector: 'objectLiteralMethod',
+        format: null,
+      },
+    ],
 
     // Import rules
     'import/order': [
