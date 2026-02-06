@@ -10,6 +10,7 @@ import importPlugin from 'eslint-plugin-import'
 import prettierPlugin from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
 import boundaries from 'eslint-plugin-boundaries';
+import checkFile from 'eslint-plugin-check-file';
 
 export default [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig, {
   plugins: {
@@ -18,7 +19,8 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'jsx-a11y': jsxA11y,
     import: importPlugin,
     prettier: prettierPlugin,
-    boundaries
+    boundaries,
+    'check-file': checkFile
   },
   rules: {
     'no-console': 'warn',
@@ -111,6 +113,27 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
       },
     ],
 
+    // Filename naming conventions
+    'check-file/filename-naming-convention': [
+      'error',
+      {
+        // React 컴포넌트: PascalCase
+        '**/components/*.tsx': 'PASCAL_CASE',
+        '**/components/!(ui)/*.tsx': 'PASCAL_CASE', // shadcn 컴포넌트 제외
+        '**/components/!(ui)/**/*.tsx': 'PASCAL_CASE', // shadcn 컴포넌트 제외
+        '**/sections/**/*.tsx': 'PASCAL_CASE',
+        // 그 외 파일: camelCase
+        '**/!(components|sections)/**/*.ts': 'CAMEL_CASE',
+      }
+    ],
+    'check-file/folder-naming-convention': [
+      'error',
+      {
+        // src/app 디렉토리는 nextjs 특수 디렉토리가 많아서 일단 제외
+        'src/!(app)/**': 'CAMEL_CASE',
+      }
+    ],
+
     // Import rules
     'import/order': [
       'error',
@@ -172,7 +195,7 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'storybook-static',
     'storybook-static/**',
     'coverage',
-    '.prettierrc.cjs'
+    '.prettierrc.cjs',
   ]
 }, ...storybook.configs["flat/recommended"], {
   rules: {
