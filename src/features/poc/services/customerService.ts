@@ -11,7 +11,7 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { createApiConfig } from '@/shared/lib/rtk-query/createApiConfig';
+import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
 
 import type { GetCustomersParams } from '../types/customerTypes';
 
