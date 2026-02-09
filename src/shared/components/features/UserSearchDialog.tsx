@@ -209,6 +209,15 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
     });
   };
 
+  /**
+   * 고객등록 버튼 핸들러
+   */
+  const handleRegister = () => {
+    resolve({
+      action: 'select',
+    });
+  };
+
   return (
     <Dialog open onOpenChange={handleCancel}>
       <DialogContent className="h-[80vh] w-[90rem] min-w-[80rem] min-h-[60rem]" resizable={true}>
@@ -296,12 +305,10 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
         </div>
 
         <DialogFooter>
-          {/* TODO: @YunJunmo */}
           <Button variant="outline" size="lg" color="gray" onClick={handleCancel}>
             고객수정
           </Button>
-          {/* TODO: @YunJunmo */}
-          <Button variant="contained" size="lg" onClick={handleCancel}>
+          <Button variant="contained" size="lg" onClick={handleRegister}>
             고객등록
           </Button>
         </DialogFooter>
