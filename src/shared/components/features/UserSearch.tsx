@@ -1,12 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-import UserSearchDialog from './UserSearchDialog';
-import { FormCell, FormTable, Grow, FormItem } from '@/shared/components/common';
-import { SearchIcon, CalendarIcon, AddIcon } from '@/shared/components/icons';
+import { useEffect, useState } from 'react';
+import { FormCell, FormItem, FormTable, Grow } from '@/shared/components/common';
+import { AddIcon, CalendarIcon, SearchIcon } from '@/shared/components/icons';
 import { LayoutLabel } from '@/shared/components/layout/Cabinet';
 import { Button, Input, NativeSelect, NativeSelectOption, TableRow } from '@/shared/components/uiux';
+import log from '@/shared/utils/logger';
+import { popup } from '@/shared/utils/popup/popupApi';
+import { registerDialog } from '@/shared/utils/popup/popupRegistry';
+import { UserSearchResult } from './UserSearchDialog';
 
 interface UserData {
   id: string;
@@ -80,10 +83,40 @@ const getRelativeDate = (dateString: string): string => {
   return `${dayDiff}일 전`;
 };
 
+const logger = log.getLogger('Poc');
+
 export const UserSearch = () => {
   const [selectedId, setSelectedId] = useState<string>('user1');
-  const [dialogOpen, setDialogOpen] = useState(false); // 모달 상태 추가
+  // const [dialogOpen, setDialogOpen] = useState(false); // 모달 상태 추가
   const cards = MOCK_USERS;
+
+  /**
+   * 고객 검색 팝업 열기
+   */
+  const handleOpenUserSearch = async () => {
+    // TODO: @YunJunmo types로 이동
+    try {
+      const result = await popup.open<UserSearchResult>('products/user-search', {
+        title: '고객찾기',
+      });
+
+      if (result?.action === 'select' && result.customer) {
+        // setSelectedCustomer({
+        //   name: result.customer.name,
+        //   customerNo: result.customer.customerNo,
+        // });
+        logger.log('선택된 고객:', result.customer);
+      }
+    } catch (error) {
+      logger.error('팝업 오류:', error);
+    }
+  };
+
+  // 컴포넌트 마운트 시 팝업 등록
+  // TODO: @YunJunmo shared로 이동 검토
+  useEffect(() => {
+    registerDialog('products/user-search', () => import('./UserSearchDialog'));
+  }, []);
 
   const handleSelect = (id: string) => {
     setSelectedId(id);
@@ -91,7 +124,6 @@ export const UserSearch = () => {
 
   return (
     <>
-      <UserSearchDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
       <LayoutLabel>
         <Grow variant="box" className="grid grid-cols-[24rem_1px_1fr_14rem] mb-[3.2rem] rounded-[1.6rem]">
           <FormTable
@@ -107,7 +139,7 @@ export const UserSearch = () => {
                   <Button
                     aria-label="고객명 추가"
                     variant="icon"
-                    onClick={() => setDialogOpen(true)} // 클릭 시 모달 오픈
+                    onClick={handleOpenUserSearch} // 클릭 시 모달 오픈
                   >
                     <SearchIcon />
                   </Button>
@@ -121,7 +153,7 @@ export const UserSearch = () => {
                   <Button
                     aria-label="고지질병 추가"
                     variant="icon"
-                    onClick={() => setDialogOpen(true)} // 클릭 시 모달 오픈
+                    onClick={handleOpenUserSearch} // 클릭 시 모달 오픈
                   >
                     <SearchIcon />
                   </Button>

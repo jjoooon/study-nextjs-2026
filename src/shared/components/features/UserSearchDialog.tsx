@@ -22,103 +22,129 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function UserSearchDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  // Types
-  interface ProductData {
-    customerName: string;
-    customerId: string;
-    customerType: string;
-    phone: string;
-    address: string;
-  }
+// Types
+interface ProductData {
+  customerName: string;
+  customerId: string;
+  customerType: string;
+  phone: string;
+  address: string;
+}
 
-  // Mock Data
-  const MOCK_DATA: ProductData[] = [
-    {
-      customerName: '홍길동',
-      customerId: 'CUST001',
-      customerType: '개인',
-      phone: '010-1234-5678',
-      address: '서울특별시 강남구 테헤란로 123, 삼성타워 45층 4501호',
-    },
-    {
-      customerName: '김철수',
-      customerId: 'CUST002',
-      customerType: '사업자',
-      phone: '010-2345-6789',
-      address: '부산광역시 해운대구 마린시티 1차 101동 2502호',
-    },
-    {
-      customerName: '이영희',
-      customerId: 'CUST003',
-      customerType: '단체',
-      phone: '010-3456-7890',
-      address: '대구광역시 수성구 두산위브 더 숲 B동 1204호',
-    },
-    {
-      customerName: '박민수',
-      customerId: 'CUST004',
-      customerType: '개인',
-      phone: '010-4567-8901',
-      address: '인천광역시 연수구 센트럴파크앙리 32층 3205호',
-    },
-    {
-      customerName: '홍길동',
-      customerId: 'CUST001',
-      customerType: '개인',
-      phone: '010-1234-5678',
-      address: '서울특별시 강남구 테헤란로 123, 삼성타워 45층 4501호',
-    },
-    {
-      customerName: '김철수',
-      customerId: 'CUST002',
-      customerType: '사업자',
-      phone: '010-2345-6789',
-      address: '부산광역시 해운대구 마린시티 1차 101동 2502호',
-    },
-    {
-      customerName: '이영희',
-      customerId: 'CUST003',
-      customerType: '단체',
-      phone: '010-3456-7890',
-      address: '대구광역시 수성구 두산위브 더 숲 B동 1204호',
-    },
-    {
-      customerName: '박민수',
-      customerId: 'CUST004',
-      customerType: '개인',
-      phone: '010-4567-8901',
-      address: '인천광역시 연수구 센트럴파크앙리 32층 3205호',
-    },
-    {
-      customerName: '홍길동',
-      customerId: 'CUST001',
-      customerType: '개인',
-      phone: '010-1234-5678',
-      address: '서울특별시 강남구 테헤란로 123, 삼성타워 45층 4501호',
-    },
-    {
-      customerName: '김철수',
-      customerId: 'CUST002',
-      customerType: '사업자',
-      phone: '010-2345-6789',
-      address: '부산광역시 해운대구 마린시티 1차 101동 2502호',
-    },
-    {
-      customerName: '이영희',
-      customerId: 'CUST003',
-      customerType: '단체',
-      phone: '010-3456-7890',
-      address: '대구광역시 수성구 두산위브 더 숲 B동 1204호',
-    },
-    {
-      customerName: '박민수',
-      customerId: 'CUST004',
-      customerType: '개인',
-      phone: '010-4567-8901',
-      address: '인천광역시 연수구 센트럴파크앙리 32층 3205호',
-    },
-  ];
+// Mock Data
+const MOCK_DATA: ProductData[] = [
+  {
+    customerName: '홍길동',
+    customerId: 'CUST001',
+    customerType: '개인',
+    phone: '010-1234-5678',
+    address: '서울특별시 강남구 테헤란로 123, 삼성타워 45층 4501호',
+  },
+  {
+    customerName: '김철수',
+    customerId: 'CUST002',
+    customerType: '사업자',
+    phone: '010-2345-6789',
+    address: '부산광역시 해운대구 마린시티 1차 101동 2502호',
+  },
+  {
+    customerName: '이영희',
+    customerId: 'CUST003',
+    customerType: '단체',
+    phone: '010-3456-7890',
+    address: '대구광역시 수성구 두산위브 더 숲 B동 1204호',
+  },
+  {
+    customerName: '박민수',
+    customerId: 'CUST004',
+    customerType: '개인',
+    phone: '010-4567-8901',
+    address: '인천광역시 연수구 센트럴파크앙리 32층 3205호',
+  },
+  {
+    customerName: '홍길동',
+    customerId: 'CUST001',
+    customerType: '개인',
+    phone: '010-1234-5678',
+    address: '서울특별시 강남구 테헤란로 123, 삼성타워 45층 4501호',
+  },
+  {
+    customerName: '김철수',
+    customerId: 'CUST002',
+    customerType: '사업자',
+    phone: '010-2345-6789',
+    address: '부산광역시 해운대구 마린시티 1차 101동 2502호',
+  },
+  {
+    customerName: '이영희',
+    customerId: 'CUST003',
+    customerType: '단체',
+    phone: '010-3456-7890',
+    address: '대구광역시 수성구 두산위브 더 숲 B동 1204호',
+  },
+  {
+    customerName: '박민수',
+    customerId: 'CUST004',
+    customerType: '개인',
+    phone: '010-4567-8901',
+    address: '인천광역시 연수구 센트럴파크앙리 32층 3205호',
+  },
+  {
+    customerName: '홍길동',
+    customerId: 'CUST001',
+    customerType: '개인',
+    phone: '010-1234-5678',
+    address: '서울특별시 강남구 테헤란로 123, 삼성타워 45층 4501호',
+  },
+  {
+    customerName: '김철수',
+    customerId: 'CUST002',
+    customerType: '사업자',
+    phone: '010-2345-6789',
+    address: '부산광역시 해운대구 마린시티 1차 101동 2502호',
+  },
+  {
+    customerName: '이영희',
+    customerId: 'CUST003',
+    customerType: '단체',
+    phone: '010-3456-7890',
+    address: '대구광역시 수성구 두산위브 더 숲 B동 1204호',
+  },
+  {
+    customerName: '박민수',
+    customerId: 'CUST004',
+    customerType: '개인',
+    phone: '010-4567-8901',
+    address: '인천광역시 연수구 센트럴파크앙리 32층 3205호',
+  },
+];
+
+/**
+ * 고객 검색 결과 타입
+ */
+export interface UserSearchResult {
+  /** 수행된 액션 타입 */
+  action: 'select' | 'cancel';
+  /** 선택된 고객 (select 액션 시) */
+  // TODO: @YunJunmo
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customer?: any;
+}
+
+/**
+ * 고객찾기 팝업 Props
+ */
+export interface UserSearchProps {
+  /** 팝업 제목 */
+  title?: string;
+  /** 팝업 설명 */
+  description?: string;
+  /** Promise resolve 함수 (결과 반환) */
+  resolve: (result: UserSearchResult) => void;
+}
+
+export default function UserSearchDialog({ resolve }: UserSearchProps) {
+  // if (!open) return null;
 
   const columnDefs: ColDef<ProductData>[] = useMemo(
     () => [
@@ -174,10 +200,17 @@ export default function UserSearchDialog({ open, onClose }: { open: boolean; onC
     []
   );
 
-  if (!open) return null;
+  /**
+   * 취소 버튼 핸들러
+   */
+  const handleCancel = () => {
+    resolve({
+      action: 'cancel',
+    });
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open onOpenChange={handleCancel}>
       <DialogContent className="h-[80vh] w-[90rem] min-w-[80rem] min-h-[60rem]" resizable={true}>
         <DialogHeader>
           <DialogTitle>고객찾기 (CUSZ001)</DialogTitle>
@@ -263,16 +296,12 @@ export default function UserSearchDialog({ open, onClose }: { open: boolean; onC
         </div>
 
         <DialogFooter>
-          <Button variant="outline" size="lg" color="gray" onClick={onClose}>
+          {/* TODO: @YunJunmo */}
+          <Button variant="outline" size="lg" color="gray" onClick={handleCancel}>
             고객수정
           </Button>
-          <Button
-            variant="contained"
-            size="lg"
-            onClick={() => {
-              onClose();
-            }}
-          >
+          {/* TODO: @YunJunmo */}
+          <Button variant="contained" size="lg" onClick={handleCancel}>
             고객등록
           </Button>
         </DialogFooter>
