@@ -174,17 +174,17 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
   const isOutside = modifiers.outside;
 
   return (
-    <Button
+    <button
       ref={ref}
-      variant="ghost"
+      type="button"
       data-day={day.date.toLocaleDateString()}
       data-selected-single={isSelected}
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        'relative flex aspect-square h-[2.6rem] w-[2.6rem] flex-col gap-1 font-[1.4rem] leading-none',
-        'hover:bg-(--color-element-gray-lighter) rounded-full',
+        'relative flex aspect-square h-[2.6rem] w-[2.6rem] flex-col gap-1 text-[1.4rem] leading-none',
+        'hover:bg-(--color-element-gray-lighter) rounded-full items-center justify-center',
         // Selected state (주황색 배경, 흰색 텍스트)
         isSelected && 'bg-[#ff5c2e] text-white hover:bg-(--color-element-primary)',
         // Disabled state (회색 텍스트)
@@ -210,7 +210,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       {isToday && !isSelected && (
         <div className="absolute bottom-[0] left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ff5c2e] rounded-full" />
       )}
-    </Button>
+    </button>
   );
 }
 
