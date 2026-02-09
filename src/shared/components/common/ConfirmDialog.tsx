@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/shared/components/uiux';
+import log from '@/shared/utils/logger';
 
 type ConfirmDialogProps = {
   open?: boolean;
@@ -26,6 +27,8 @@ type ConfirmDialogProps = {
   onCancel?: () => void;
   trigger?: React.ReactNode;
 };
+
+const logger = log.getLogger('Pub');
 
 export function ConfirmDialog({
   open,
@@ -50,7 +53,7 @@ export function ConfirmDialog({
 
   const showConfirm = !!confirmLabel.length;
   const showCancel = !!cancelLabel.length;
-  console.log('ConfirmDialogqueue Rendered', showCancel);
+  logger.log('ConfirmDialogqueue Rendered', showCancel);
   const handleConfirm = async () => {
     if (!onConfirm) return;
     setIsLoading(true);

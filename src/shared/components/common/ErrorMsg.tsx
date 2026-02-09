@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Typo } from '@/shared/components/common';
 import { cn } from '@/shared/lib/shadcn/utils';
+import log from '@/shared/utils/logger';
 
 type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 
@@ -23,6 +24,8 @@ type ErrorMsgProps = {
   onClose?: () => void;
   closeOnOutsideClick?: boolean;
 };
+
+const logger = log.getLogger('Pub');
 
 export function ErrorMsg({
   id,
@@ -52,7 +55,7 @@ export function ErrorMsg({
         // 포커스된 요소가 aria-describedby로 연결되어 있는지 확인
         const activeElement = document.activeElement;
         if (activeElement) {
-          console.log('handlePointerDown3', activeElement);
+          logger.log('handlePointerDown3', activeElement);
 
           const activeDescribedBy = activeElement.getAttribute('aria-describedby');
           if (activeDescribedBy?.split(' ').includes(id)) return;

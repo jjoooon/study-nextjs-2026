@@ -2,11 +2,11 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import UserSearchDialog from './UserSearchDialog';
 import { FormCell, FormTable, Grow, FormItem } from '@/shared/components/common';
 import { SearchIcon, CalendarIcon, AddIcon } from '@/shared/components/icons';
 import { LayoutLabel } from '@/shared/components/layout/Cabinet';
 import { Button, Input, NativeSelect, NativeSelectOption, TableRow } from '@/shared/components/uiux';
+import UserSearchDialog from './UserSearchDialog';
 
 interface UserData {
   id: string;
