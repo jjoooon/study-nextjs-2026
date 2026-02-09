@@ -52,6 +52,8 @@ export function ErrorMsg({
         // 포커스된 요소가 aria-describedby로 연결되어 있는지 확인
         const activeElement = document.activeElement;
         if (activeElement) {
+          console.log('handlePointerDown3', activeElement);
+
           const activeDescribedBy = activeElement.getAttribute('aria-describedby');
           if (activeDescribedBy?.split(' ').includes(id)) return;
         }

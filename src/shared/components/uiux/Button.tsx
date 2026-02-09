@@ -4,6 +4,8 @@ import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
+console.log();
+
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none cursor-pointer',
   {

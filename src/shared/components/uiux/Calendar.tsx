@@ -116,7 +116,9 @@ function Calendar({
           return <ChevronDownIcon className={cn('size-4', className)} {...props} />;
         },
         MonthCaption: ({ ...captionProps }) => {
-          const { onMonthChange } = props as any;
+          const { onMonthChange } = props as React.ComponentProps<typeof DayPicker> & {
+            onMonthChange?: (date: Date) => void;
+          };
           const today = new Date();
 
           const handleTodayClick = () => {

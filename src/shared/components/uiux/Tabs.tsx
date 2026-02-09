@@ -64,7 +64,7 @@ const TabsList = React.forwardRef<React.ElementRef<typeof TabsPrimitive.List>, T
         {/* 각 TabsTrigger에 totalTabs prop 자동 주입 */}
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child, { totalTabs } as any);
+            return React.cloneElement(child, { totalTabs } as Partial<TabsTriggerProps>);
           }
           return child;
         })}
