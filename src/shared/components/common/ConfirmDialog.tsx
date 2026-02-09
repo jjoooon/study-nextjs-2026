@@ -50,7 +50,6 @@ export function ConfirmDialog({
 
   const showConfirm = !!confirmLabel.length;
   const showCancel = !!cancelLabel.length;
-  console.log('ConfirmDialogqueue Rendered', showCancel);
   const handleConfirm = async () => {
     if (!onConfirm) return;
     setIsLoading(true);

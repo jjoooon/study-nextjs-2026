@@ -118,12 +118,13 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
       'error',
       {
         // React 컴포넌트: PascalCase
-        '**/components/*.tsx': 'PASCAL_CASE',
-        '**/components/!(ui)/*.tsx': 'PASCAL_CASE', // shadcn 컴포넌트 제외
-        '**/components/!(ui)/**/*.tsx': 'PASCAL_CASE', // shadcn 컴포넌트 제외
-        '**/sections/**/*.tsx': 'PASCAL_CASE',
+        '**/components/!(index).*': 'PASCAL_CASE',
+        '**/components/*/!(index).*': 'PASCAL_CASE',
+        '**/sections/*.{ts,tsx}': 'PASCAL_CASE',
+        '**/sections/*/*.{ts,tsx}': 'PASCAL_CASE',
         // 그 외 파일: camelCase
-        '**/!(components|sections)/**/*.ts': 'CAMEL_CASE',
+        'src/shared/!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
+        'src/features/*/!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
       }
     ],
     'check-file/folder-naming-convention': [

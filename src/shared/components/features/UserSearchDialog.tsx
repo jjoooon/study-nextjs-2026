@@ -232,11 +232,11 @@ export default function UserSearchDialog({ open, onClose }: { open: boolean; onC
               </TableRow>
             </FormTable>
             <Grow placement="me" className="w-full gap-2">
-              <Button variant="contained" color="secondary" size="md" onClick={() => console.log('검색!')}>
+              <Button variant="contained" color="secondary" size="md" onClick={() => {}}>
                 <SearchIcon color="white" />
                 검색
               </Button>
-              <Button variant="icon" color="gray" size="md" onClick={() => console.log('리셋!')} aria-label="리셋">
+              <Button variant="icon" color="gray" size="md" onClick={() => {}} aria-label="리셋">
                 <ResetIcon />
               </Button>
             </Grow>
@@ -270,7 +270,6 @@ export default function UserSearchDialog({ open, onClose }: { open: boolean; onC
             variant="contained"
             size="lg"
             onClick={() => {
-              console.log('고객등록!');
               onClose();
             }}
           >

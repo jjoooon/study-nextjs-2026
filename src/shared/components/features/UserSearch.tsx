@@ -87,7 +87,6 @@ export const UserSearch = () => {
 
   const handleSelect = (id: string) => {
     setSelectedId(id);
-    console.log('Selected user:', id);
   };
 
   return (

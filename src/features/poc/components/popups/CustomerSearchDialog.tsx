@@ -26,10 +26,10 @@ import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';
 import type { Customer } from '@/features/poc/types/customerTypes';
-import { Button } from '@/shared/components/uiux/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/uiux/dialog';
 import { isProduction } from '@/shared/config/env';
 import log from '@/shared/utils/logger';
+import { Button } from '@/shared/components/uiux/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/uiux/dialog';
 
 // AG Grid Theming
 import 'ag-grid-community/styles/ag-theme-quartz.css';
