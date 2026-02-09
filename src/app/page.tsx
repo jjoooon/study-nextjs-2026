@@ -67,6 +67,24 @@ export default function Home() {
                   <div className="font-semibold text-gray-900 mb-1">상품</div>
                   <div className="text-sm text-gray-600">상세 설명</div>
                 </Link>
+                <Link
+                  href="/pub/poc/PocPage1"
+                  className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
+                >
+                  <div className="font-semibold text-gray-900 mb-1">(퍼블) 페이지1</div>
+                </Link>
+                <Link
+                  href="/pub/poc/PocPage2"
+                  className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
+                >
+                  <div className="font-semibold text-gray-900 mb-">(퍼블) 페이지2</div>
+                </Link>
+                <Link
+                  href="/pub/poc/PocPage3"
+                  className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all"
+                >
+                  <div className="font-semibold text-gray-900 mb-1">(퍼블) 페이지3</div>
+                </Link>
               </div>
             </section>
           </div>
