@@ -1,0 +1,1 @@
+export { InsPlanBasic } from './InsPlanBasic';
