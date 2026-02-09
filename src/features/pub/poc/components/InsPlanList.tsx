@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
 import { MOCK_DATA } from '../constants/insPlanListData';
 import { InsPlanListDep1 } from './InsPlanListDep1';
 import { InsPlanListDep2 } from './InsPlanListDep2';
 import { InsPlanListDep3 } from './InsPlanListDep3';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
 
 interface InsPlanListProps {
   filterCategory: string;
@@ -14,7 +14,7 @@ interface InsPlanListProps {
 
 // 상품 정보 섹션
 export function InsPlanList({ filterCategory, filterAge }: InsPlanListProps) {
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [selectedDep2Index, setSelectedDep2Index] = useState<number | null>(null);
 
   // 필터링된 데이터
@@ -81,18 +81,14 @@ export function InsPlanList({ filterCategory, filterAge }: InsPlanListProps) {
     });
   }, [filterCategory, filterAge]);
 
-  const selectedProduct = selectedProductId ? filteredData.find((p) => p.id === selectedProductId) : undefined;
+  const selectedProduct = selectedPlanId ? filteredData.find((p) => p.id === selectedPlanId) : undefined;
   const selectedDep2 =
     selectedProduct && selectedDep2Index !== null ? selectedProduct.dep2[selectedDep2Index] : undefined;
 
   return (
     <ResizablePanelGroup orientation="horizontal" className="w-full pb-[3.4rem]">
       <ResizablePanel defaultSize={70} minSize={'50%'} className="resizablePanel-line">
-        <InsPlanListDep1
-          data={filteredData}
-          selectedProductId={selectedProductId}
-          onSelectProduct={setSelectedProductId}
-        />
+        <InsPlanListDep1 data={filteredData} selectedPlanId={selectedPlanId} onSelectPlan={setSelectedPlanId} />
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel defaultSize={30} minSize={'30%'}>

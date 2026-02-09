@@ -9,20 +9,17 @@
  * Shared UI 컴포넌트를 사용하여 로딩/빈 상태 표시
  */
 
-import { EmptyList } from '@/shared/components/ui/EmptyState';
-import { SkeletonList } from '@/shared/components/ui/Skeleton';
-
 import type { ProductListProps } from '../types/uiTypes';
 
 export default function ProductList({ products, isLoading, onProductClick }: ProductListProps) {
   // 로딩 상태 - shared SkeletonList 사용
   if (isLoading) {
-    return <SkeletonList count={5} />;
+    // return <SkeletonList count={5} />;
   }
 
   // 빈 상태 - shared EmptyList 사용
   if (products.length === 0) {
-    return <EmptyList message="등록된 제품이 없습니다." />;
+    return <div>등록된 제품이 없습니다</div>;
   }
 
   return (

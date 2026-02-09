@@ -45,7 +45,6 @@ import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
 // import type { Product } from '@/features/products/types/apiTypes';
 import { useInjectReducer } from '@/redux/reducers/hooks';
-import { SkeletonList } from '@/shared/components/ui/Skeleton';
 // import { popup } from '@/shared/utils/popup/popup';
 // import { registerDialog } from '@/shared/utils/popup/popupRegistry';
 
@@ -74,7 +73,8 @@ import { SkeletonList } from '@/shared/components/ui/Skeleton';
 const ProductGrid = dynamic(
   () => import('@/features/products/components/ProductGrid').then((mod) => ({ default: mod.default })),
   {
-    loading: () => <SkeletonList count={5} />,
+    // loading: () => <SkeletonList count={5} />,
+    loading: () => <div>Loading...</div>,
     ssr: false, // AG Grid는 클라이언트 사이드 전용
   }
 );

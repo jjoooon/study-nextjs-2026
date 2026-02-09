@@ -10,7 +10,7 @@
 
 import { useEffect, useState } from 'react';
 import type { CustomerSearchDialogResult } from '@/features/poc/components/popups/CustomerSearchDialog';
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components/uiux/button';
 import log from '@/shared/utils/logger';
 import { popup } from '@/shared/utils/popup/popupApi';
 import { registerDialog } from '@/shared/utils/popup/popupRegistry';

@@ -1,7 +1,5 @@
 'use client';
 
-import { SELECT_OPTIONS, RADIO_OPTIONS } from '../constants/insPlanBasicData';
-import type { TabData } from '../types/insPlanBasic';
 import { FormTableLine, FormCell, FormTable, Gcol, Typo, FormItem, Grow } from '@/shared/components/common';
 import { DatePickerInput } from '@/shared/components/common';
 import {
@@ -12,6 +10,8 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from '@/shared/components/uiux';
+import { SELECT_OPTIONS, RADIO_OPTIONS } from '../constants/insPlanBasicData';
+import type { TabData } from '../types/insPlanBasic';
 
 interface InsPlanBasicStep3Props {
   active: string;

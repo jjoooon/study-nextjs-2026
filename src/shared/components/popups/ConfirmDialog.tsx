@@ -24,7 +24,7 @@
  * }
  */
 
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components/uiux/button';
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/shared/components/ui/dialog';
+} from '@/shared/components/uiux/dialog';
 
 interface ConfirmDialogProps {
   /** 팝업 제목 */

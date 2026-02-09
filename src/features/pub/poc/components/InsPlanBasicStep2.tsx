@@ -1,7 +1,5 @@
 'use client';
 
-import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
-import type { TabData, InsuredData } from '../types/insPlanBasic';
 import { FormCell, FormTable, Gcol, Typo, FormItem, Grow, ButtonGroup } from '@/shared/components/common';
 import { DatePickerInput } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
@@ -17,6 +15,8 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from '@/shared/components/uiux';
+import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
+import type { TabData, InsuredData } from '../types/insPlanBasic';
 
 interface InsPlanBasicStep2Props {
   active: string;

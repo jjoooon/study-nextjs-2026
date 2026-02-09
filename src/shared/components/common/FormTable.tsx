@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 import { Typo, Grow } from '@/shared/components/common';
-import { Table, TableBody, TableCaption, TableCell, TableHead } from '@/shared/components/ui/table';
+import { Table, TableBody, TableCaption, TableCell, TableHead } from '@/shared/components/uiux/table';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const FormCellVariants = cva('', {
