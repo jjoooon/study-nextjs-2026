@@ -19,7 +19,7 @@
  * });
  */
 
-import { Button } from '@/shared/components/uiux/button';
+import { Button } from '@/shared/components/uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -27,7 +27,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/shared/components/uiux/dialog';
+} from '@/shared/components/uiux/Dialog';
 
 interface AlertDialogProps {
   /** 팝업 제목 */
@@ -52,14 +52,14 @@ export function Alert({
   const handleClose = () => resolve();
 
   // 변종에 따른 버튼 스타일
-  const getButtonVariant = (): 'default' | 'destructive' | 'secondary' => {
+  const getButtonVariant = () => {
     switch (variant) {
       case 'error':
-        return 'destructive';
+        return { color: 'gray' as const };
       case 'warning':
-        return 'secondary';
+        return { color: 'grayLight' as const };
       default:
-        return 'default';
+        return { color: 'primary' as const };
     }
   };
 
@@ -71,7 +71,7 @@ export function Alert({
           <DialogDescription>{message}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant={getButtonVariant()} onClick={handleClose}>
+          <Button variant="contained" {...getButtonVariant()} onClick={handleClose}>
             {buttonText}
           </Button>
         </DialogFooter>

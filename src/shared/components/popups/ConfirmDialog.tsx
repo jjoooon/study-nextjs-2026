@@ -24,7 +24,7 @@
  * }
  */
 
-import { Button } from '@/shared/components/uiux/button';
+import { Button } from '@/shared/components/uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/shared/components/uiux/dialog';
+} from '@/shared/components/uiux/Dialog';
 
 interface ConfirmDialogProps {
   /** 팝업 제목 */
@@ -61,14 +61,14 @@ export function ConfirmDialog({
   const handleCancel = () => resolve(false);
 
   // 변종에 따른 버튼 스타일
-  const getConfirmButtonVariant = (): 'default' | 'destructive' | 'secondary' => {
+  const getConfirmButtonVariant = () => {
     switch (variant) {
       case 'danger':
-        return 'destructive';
+        return { color: 'gray' as const };
       case 'warning':
-        return 'secondary';
+        return { color: 'grayLight' as const };
       default:
-        return 'default';
+        return { color: 'primary' as const };
     }
   };
 
@@ -80,10 +80,10 @@ export function ConfirmDialog({
           <DialogDescription>{message}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="outline" color="gray" onClick={handleCancel}>
             {cancelText}
           </Button>
-          <Button variant={getConfirmButtonVariant()} onClick={handleConfirm}>
+          <Button variant="contained" {...getConfirmButtonVariant()} onClick={handleConfirm}>
             {confirmText}
           </Button>
         </DialogFooter>
