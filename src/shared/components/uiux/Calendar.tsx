@@ -131,6 +131,7 @@ function Calendar({
             <div
               className="flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]"
               onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
             >
               <div className="flex items-center gap-1">
                 {captionProps.children}
