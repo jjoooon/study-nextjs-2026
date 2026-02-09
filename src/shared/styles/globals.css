@@ -1,161 +1,641 @@
 @import 'tailwindcss';
-
+@import "./ag-grid-re.css";
+@plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
+/* Scrollbar Styles */
+html {
+  font-size: 10px;
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
+::-webkit-scrollbar {
+  width: .4rem;
+  height: .4rem;
 }
 
-@layer utilities {
-  :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 255, 255, 255;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --foreground-rgb: 255, 255, 255;
-      --background-start-rgb: 0, 0, 0;
-      --background-end-rgb: 0, 0, 0;
-    }
-  }
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 0.4rem;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
 }
 
-/* ============================================================================
- * AG GRID STYLES
- * ============================================================================
- */
+.a11y-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 0.1rem;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 0.1rem;
+}
 
-/**
- * AG Grid 셀 수직 정렬
- *
- * @description
- * 모든 AG Grid의 셀 컨텐츠를 수직 중앙 정렬
- * - 제품명, 설명, 가격, 상태 등 모든 컬럼에 적용
- * - flexbox를 사용한 수직 중앙 정렬
- */
-.ag-row .ag-cell {
+.sr-only-radio {
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+  width: 0.1rem;
+  height: 0.1rem;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.separator {
+  transform: translateY(-0.3rem);
+}
+
+input::placeholder {
+  font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  font-size: 1.3rem;
+  color: #000;
+  opacity: 0.2;
+  letter-spacing: -0.039rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.resize-separator::after {
+  content: "";
+  width: .4rem;
+  opacity: 0;
+  height: 100%;
+  display: block;
+  background: radial-gradient(closest-side, var(--color-primary-50), transparent 95%);
+}
+
+.resize-separator:hover::after,
+.resize-separator[data-separator="active"]::after {
+  opacity: 1;
+}
+
+.resize-separator[aria-orientation="horizontal"]::after {
+  width: 100%;
+  height: .4rem;
+}
+
+.resize-separator {
   display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  align-items: center;
+  justify-content: center;
+  outline: 0;
+  cursor: default;
+}
+
+.resize-separator[aria-orientation="horizontal"] {
+  width: 100%;
+  height: 2rem;
+}
+
+.resize-separator[aria-orientation="vertical"] {
+  height: 100%;
+  width: 2rem;
+}
+
+.resizablePanel-line {
+  border-bottom: 0.1rem solid var(--color-gray-20);
+}
+
+.isRemovable[role="tab"][data-state="active"]+button {
+  display: block;
+}
+
+.isRemovable[role="tab"]+button {
+  display: none;
+}
+
+.isRemovable[role="tab"][data-state="active"] {
+  padding-right: 2.8rem;
+}
+
+/* col {
+  width: auto;
+} */
+
+.col-auto {
+  width: min-content;
+}
+
+.col-s {
+  width: 10rem;
+}
+
+.col-m {
+  width: 15rem;
+}
+
+.col-l {
+  width: 20rem;
+}
+
+/* 1. 설계도: 변수를 Tailwind 유틸리티로 등록 */
+@theme {
+  /* Spacing Scale (p-*, m-*, gap-*, etc.) */
+  --base-font-size: 10px;
+  --spacing-0: 0;
+  --spacing-0\.5: calc(var(--base-unit) * 0.5);
+  --spacing-1: var(--base-unit);
+  --spacing-1\.5: calc(var(--base-unit) * 1.5);
+  --spacing-2: calc(var(--base-unit) * 2);
+  --spacing-2\.5: calc(var(--base-unit) * 2.5);
+  --spacing-3: calc(var(--base-unit) * 3);
+  --spacing-3\.25: calc(var(--base-unit) * 3.25);
+  --spacing-3\.5: calc(var(--base-unit) * 3.5);
+  --spacing-4: calc(var(--base-unit) * 4);
+  --spacing-4\.5: calc(var(--base-unit) * 4.5);
+  --spacing-5: calc(var(--base-unit) * 5);
+  --spacing-6: calc(var(--base-unit) * 6);
+  --spacing-7: calc(var(--base-unit) * 7);
+  --spacing-8: calc(var(--base-unit) * 8);
+  --spacing-9: calc(var(--base-unit) * 9);
+  --spacing-10: calc(var(--base-unit) * 10);
+  --spacing-11: calc(var(--base-unit) * 11);
+  --spacing-12: calc(var(--base-unit) * 12);
+  --spacing-14: calc(var(--base-unit) * 14);
+  --spacing-16: calc(var(--base-unit) * 16);
+  --spacing-20: calc(var(--base-unit) * 20);
+  --spacing-24: calc(var(--base-unit) * 24);
+  --spacing-px: 0.1rem;
+
+  /* Font Size Scale (text-*) */
+  --text-nav: 1.5rem;
+  --text-xxs: calc(var(--base-unit) * 3);
+  --text-xs: calc(var(--base-unit) * 3.25);
+  --text-sm: calc(var(--base-unit) * 3.5);
+  --text-base: calc(var(--base-unit) * 4);
+  --text-lg: calc(var(--base-unit) * 4.5);
+  --text-xl: calc(var(--base-unit) * 5);
+  --text-2xl: calc(var(--base-unit) * 6);
+  --text-3xl: calc(var(--base-unit) * 7.5);
+  --text-4xl: calc(var(--base-unit) * 9);
+  --text-5xl: calc(var(--base-unit) * 12);
+  --text-6xl: calc(var(--base-unit) * 15);
+  --text-7xl: calc(var(--base-unit) * 18);
+  --text-8xl: calc(var(--base-unit) * 24);
+  --text-9xl: calc(var(--base-unit) * 32);
+
+  /* Border Radius Scale (rounded-*) */
+  --radius-none: 0;
+  --radius-sm: calc(var(--base-unit) * 0.5);
+  --radius-DEFAULT: var(--base-unit);
+  --radius-md: calc(var(--base-unit) * 1.5);
+  --radius-lg: calc(var(--base-unit) * 2);
+  --radius-xl: calc(var(--base-unit) * 3);
+  --radius-2xl: calc(var(--base-unit) * 4);
+  --radius-3xl: calc(var(--base-unit) * 6);
+  --radius-full: 999.9rem;
+
+  /* Border Width Scale (border-*) */
+  --border-width-0: 0rem;
+  --border-width-DEFAULT: 0.1rem;
+  --border-width-2: var(--base-unit);
+  --border-width-4: calc(var(--base-unit) * 2);
+  --border-width-6: calc(var(--base-unit) * 3);
+  --border-width-8: calc(var(--base-unit) * 4);
+
+  /* Line Height Scale (leading-*) */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  --line-height-3: calc(var(--base-unit) * 3);
+  --line-height-4: calc(var(--base-unit) * 4);
+  --line-height-5: calc(var(--base-unit) * 5);
+  --line-height-6: calc(var(--base-unit) * 6);
+  --line-height-7: calc(var(--base-unit) * 7);
+  --line-height-8: calc(var(--base-unit) * 8);
+  --line-height-9: calc(var(--base-unit) * 9);
+  --line-height-10: calc(var(--base-unit) * 10);
+
+  /* Letter Spacing Scale (tracking-*) */
+  --letter-spacing-tighter: calc(var(--base-unit) * -0.125);
+  --letter-spacing-tight: calc(var(--base-unit) * -0.0625);
+  --letter-spacing-normal: 0rem;
+  --letter-spacing-wide: calc(var(--base-unit) * 0.0625);
+  --letter-spacing-wider: calc(var(--base-unit) * 0.125);
+  --letter-spacing-widest: calc(var(--base-unit) * 0.25);
+
+  /* Font Family (font-*) */
+  --font-family-malgun: var(--font-malgun), system-ui, sans-serif;
+
+  /* Additional Colors (bg-*, text-*, border-*) */
+  --color-white: #ffffff;
+  --color-black: #000000;
+}
+
+/* 2. 실제 값 창고 (라이트 모드) */
+:root {
+  /* ===== 1. Base Unit ===== */
+  --base-unit: 0.4rem;
+
+  /* ===== 2. Primitive Colors (Figma Tokens) ===== */
+  --color-gray-100: #000000;
+  --color-primary-95: #2E0D03;
+  --color-primary-90: #531A0A;
+  --color-primary-80: #832E15;
+  --color-primary-70: #B54121;
+  --color-primary-60: #E8542A;
+  --color-primary-50: #FF5C2D;
+  --color-primary-40: #FF7D58;
+  --color-primary-30: #FF9273;
+  --color-primary-20: #FFB49F;
+  --color-primary-15: #FFCCBE;
+  --color-primary-10: #FFEFEA;
+  --color-primary-5: #FFF7F4;
+  --color-gray-95: #131416;
+  --color-gray-90: #1E2124;
+  --color-gray-80: #323232;
+  --color-gray-70: #414141;
+  --color-gray-60: #545454;
+  --color-gray-50: #777777;
+  --color-gray-40: #999999;
+  --color-gray-30: #B3B3B3;
+  --color-gray-20: #CCCCCC;
+  --color-gray-15: #D8D8D8;
+  --color-gray-10: #E5E5E5;
+  --color-gray-5: #F4F4F4;
+  --color-gray-0: #FFFFFF;
+  --color-secondary-95: #1A1613;
+  --color-secondary-90: #292421;
+  --color-secondary-80: #352F2B;
+  --color-secondary-70: #453C38;
+  --color-secondary-60: #584D48;
+  --color-secondary-50: #61554F;
+  --color-secondary-40: #817772;
+  --color-secondary-30: #958D89;
+  --color-secondary-20: #B6B1AE;
+  --color-secondary-15: #CDC6C4;
+  --color-secondary-10: #E1DEDD;
+  --color-secondary-5: #EFEEED;
+  --color-alpha-black-100: #000000;
+  --color-alpha-black-75: #000000BF;
+  --color-alpha-black-50: #0000007F;
+  --color-alpha-black-25: #0000003F;
+  --color-alpha-black-10: #00000019;
+  --color-alpha-black-0: #00000000;
+  --color-alpha-white-100: #FFFFFF;
+  --color-alpha-white-75: #FFFFFFBF;
+  --color-alpha-white-50: #FFFFFF7F;
+  --color-alpha-white-25: #FFFFFF3F;
+  --color-alpha-white-10: #FFFFFF19;
+  --color-alpha-white-0: #FFFFFF00;
+  --color-danger-95: #340606;
+  --color-danger-90: #4C0C0C;
+  --color-danger-80: #691414;
+  --color-danger-70: #901A1A;
+  --color-danger-60: #C63131;
+  --color-danger-50: #E43939;
+  --color-danger-40: #FC6565;
+  --color-danger-30: #FC7E7E;
+  --color-danger-20: #FDA7A7;
+  --color-danger-15: #FEC3C3;
+  --color-danger-10: #FFE0E0;
+  --color-danger-5: #FFF1F1;
+  --color-warning-95: #281F02;
+  --color-warning-90: #4D3D0B;
+  --color-warning-80: #694D03;
+  --color-warning-70: #8C6603;
+  --color-warning-60: #BC8700;
+  --color-warning-50: #DC9F00;
+  --color-warning-40: #FFB800;
+  --color-warning-30: #FFC83A;
+  --color-warning-20: #FFD362;
+  --color-warning-15: #FFE38A;
+  --color-warning-10: #FEF4D4;
+  --color-warning-5: #FFFBEF;
+  --color-success-95: #002210;
+  --color-information-95: #002148;
+  --color-information-90: #002F66;
+  --color-information-80: #003D85;
+  --color-information-70: #004FAC;
+  --color-information-60: #0060D1;
+  --color-information-50: #006FF2;
+  --color-information-40: #338CF5;
+  --color-information-30: #6FB1FF;
+  --color-information-20: #A3CBFB;
+  --color-information-15: #CBE2FF;
+  --color-information-10: #E0EEFF;
+  --color-information-5: #EEF7FF;
+  --color-success-90: #004720;
+  --color-success-80: #005E2A;
+  --color-success-70: #007D39;
+  --color-success-60: #009442;
+  --color-success-50: #00AA4D;
+  --color-success-40: #29C06D;
+  --color-success-30: #69D59A;
+  --color-success-20: #ACE8C7;
+  --color-success-15: #C8F2DB;
+  --color-success-10: #E9FDF2;
+  --color-success-5: #F7FFFA;
+  --typo-font-type: "Malgun Gothic";
+  --typo-letter-spacing-n3: -1.2999999523162842;
+  --typo-letter-spacing-n2: -1;
+  --typo-letter-spacing-n1: -0.800000011920929;
+  --typo-letter-spacing-0: 0;
+  --number-0: 0;
+  --number-1: 2;
+  --number-2: 3;
+  --number-3: 4;
+  --number-4: 6;
+  --number-5: 8;
+  --number-6: 10;
+  --number-7: 12;
+  --number-8: 16;
+  --number-9: 20;
+  --number-10: 24;
+  --number-11: 28;
+  --number-12: 32;
+  --number-13: 36;
+  --number-14: 40;
+  --number-15: 44;
+  --number-16: 48;
+  --number-17: 56;
+  --number-18: 64;
+  --number-19: 72;
+  --number-20: 80;
+  --number-21: 96;
+  --number-max: 1000;
+  --typo-font-weight-regular: "Regular";
+  --typo-font-weight-bold: "Bold";
+
+  /* color */
+  --color-background-base: var(--color-gray-0);
+  --color-surface-base: var(--color-gray-0);
+  --color-surface-inverse: var(--color-gray-90);
+  --color-surface-gray-light: var(--color-gray-5);
+  --color-surface-gray: var(--color-gray-10);
+  --color-surface-dim: var(--color-alpha-black-75);
+  --color-background-gray: var(--color-gray-5);
+  --color-background-dim: var(--color-alpha-black-75);
+  --color-border-gray-lighter: var(--color-gray-5);
+  --color-border-gray-light: var(--color-gray-15);
+  --color-border-gray: var(--color-gray-20);
+  --color-border-gray-darker: var(--color-gray-90);
+  --color-border-primary: var(--color-primary-50);
+  --color-border-information: var(--color-information-50);
+  --color-border-inverse: var(--color-gray-0);
+  --color-divider-gray-light: var(--color-gray-10);
+  --color-divider-gray: var(--color-gray-30);
+  --color-divider-primary: var(--color-primary-50);
+  --color-text-inverse: var(--color-gray-0);
+  --color-text-gray-lighter: var(--color-gray-30);
+  --color-text-gray-light: var(--color-gray-50);
+  --color-text-gray: var(--color-gray-70);
+  --color-text-base: var(--color-gray-100);
+  --color-text-primary: var(--color-primary-50);
+  --color-text-secondary: var(--color-secondary-50);
+  --color-text-danger: var(--color-danger-50);
+  --color-text-warning: var(--color-warning-40);
+  --color-text-warning-dark: var(--color-warning-50);
+  --color-text-success: var(--color-success-50);
+  --color-text-information: var(--color-information-50);
+  --color-element-inverse: var(--color-gray-0);
+  --color-element-gray-lighterest: var(--color-gray-5);
+  --color-element-gray-lighter: var(--color-gray-10);
+  --color-element-gray-light: var(--color-gray-30);
+  --color-element-gray: var(--color-gray-50);
+  --color-element-primary: var(--color-primary-50);
+  --color-element-danger: var(--color-danger-50);
+  --color-element-information-lighter: var(--color-information-10);
+  --color-element-information: var(--color-information-50);
+  --color-element-success-lighter: var(--color-success-60);
+  --color-element-success: var(--color-success-10);
+  --color-element-warning: var(--color-warning-10);
+  --color-icon-inverse: var(--color-gray-0);
+  --color-icon-gray: var(--color-gray-80);
+  --color-button-text-inverse: var(--color-gray-0);
+  --color-button-text-base: var(--color-gray-100);
+  --color-button-text-secondary: var(--color-secondary-70);
+  --color-button-text-disabled: var(--color-gray-30);
+  --color-button-text-primary: var(--color-primary-50);
+  --color-button-text-success: var(--color-success-60);
+  --color-button-text-information: var(--color-information-50);
+  --color-table-th-surface-gray: var(--color-gray-5);
+  --color-table-th-surface-secondary: var(--color-primary-5);
+  --color-table-th-surface-highlight: var(--color-primary-10);
+  --color-table-th-surface-alert: var(--color-danger-10);
+  --color-table-td-surface-base: var(--color-gray-0);
+  --color-table-border-border-gray: var(--color-gray-10);
+  --color-table-border-border-primary: var(--color-primary-15);
+  --color-table-td-surface-gray: var(--color-gray-5);
+  --color-table-td-surface-hover: var(--color-secondary-10);
+  --color-table-td-surface-selected: var(--color-warning-10);
+  --color-table-td-surface-click: var(--color-warning-15);
+  --color-table-td-surface-editable: var(--color-information-5);
+  --color-table-td-surface-total: var(--color-danger-5);
+  --color-button-contained-surface-primary: var(--color-primary-50);
+  --color-button-contained-surface-primary-hover: var(--color-primary-60);
+  --color-button-contained-surface-secondary: var(--color-secondary-50);
+  --color-button-contained-surface-secondary-hover: var(--color-secondary-70);
+  --color-button-contained-surface-gray: var(--color-gray-50);
+  --color-button-contained-surface-gray-hover: var(--color-gray-60);
+  --color-button-contained-surface-gray-light: var(--color-gray-5);
+  --color-button-contained-surface-gray-light-hover: var(--color-gray-0);
+  --color-button-outlined-surface-primary: var(--color-primary-5);
+  --color-button-disabled-surface-disabled: var(--color-gray-5);
+  --color-button-disabled-surface-disabled-dark: var(--color-gray-20);
+  --color-button-disabled-border-disabled: var(--color-gray-10);
+  --color-button-outlined-surface-primary-hover: var(--color-primary-10);
+  --color-button-outlined-surface-gray: var(--color-gray-0);
+  --color-button-outlined-surface-gray-hover: var(--color-gray-5);
+  --color-button-outlined-surface-success: var(--color-success-5);
+  --color-button-outlined-border-primary: var(--color-primary-50);
+  --color-button-outlined-border-gray: var(--color-gray-60);
+  --color-button-outlined-border-gray-hover: var(--color-gray-100);
+  --color-button-outlined-border-gray-light: var(--color-gray-20);
+  --color-button-outlined-border-success: var(--color-success-60);
+  --color-icon-gray-light: var(--color-gray-50);
+  --color-icon-gray-lighter: var(--color-gray-30);
+  --color-icon-primary: var(--color-primary-50);
+  --color-icon-secondary: var(--color-secondary-50);
+  --color-icon-secondary-darker: var(--color-secondary-90);
+  --color-icon-danger: var(--color-danger-50);
+  --color-icon-warning: var(--color-warning-40);
+  --color-icon-success: var(--color-success-50);
+  --color-icon-information: var(--color-information-50);
+  --color-input-surface-base: var(--color-gray-0);
+  --color-input-surface-disabled: var(--color-gray-5);
+  --color-input-surface-error: var(--color-danger-5);
+  --color-input-surface-highlight: var(--color-warning-10);
+  --color-input-surface-highlight-bold: var(--color-primary-10);
+  --color-input-border: var(--color-gray-20);
+  --color-input-border-active: var(--color-primary-50);
+  --color-input-border-disabled: var(--color-gray-10);
+  --color-input-border-hover: var(--color-gray-100);
+  --color-input-border-error: var(--color-danger-50);
+  --color-input-border-highlight: var(--color-warning-30);
+  --color-input-border-highlight-bold: var(--color-primary-30);
+  --color-alpha-base-75: var(--color-alpha-white-75);
+  --color-alpha-base-50: var(--color-alpha-white-50);
+  --color-alpha-base-25: var(--color-alpha-white-25);
+  --color-alpha-base-10: var(--color-alpha-white-10);
+  --color-alpha-inverse-75: var(--color-alpha-black-75);
+  --color-alpha-inverse-50: var(--color-alpha-black-50);
+  --color-alpha-inverse-25: var(--color-alpha-black-25);
+  --color-alpha-inverse-10: var(--color-alpha-black-10);
+  --gap-xxxsmall: var(--number-0);
+  --gap-xxsmall: var(--number-1);
+  --padding-xxxsmall: var(--number-1);
+  --padding-xxsmall: var(--number-3);
+  --padding-xsmall: var(--number-4);
+  --padding-small: var(--number-5);
+  --padding-medium: var(--number-6);
+  --padding-large: var(--number-7);
+  --padding-xlarge: var(--number-8);
+  --padding-xxlarge: var(--number-10);
+  --padding-xxxlarge: var(--number-12);
+  --gap-xsmall: var(--number-3);
+  --gap-small: var(--number-4);
+  --gap-medium: var(--number-6);
+  --gap-large: var(--number-7);
+  --gap-xlarge: var(--number-8);
+  --gap-xxlarge: var(--number-10);
+  --gap-xxxlarge: var(--number-18);
+  --radius-xsmall: var(--number-2);
+  --radius-small: var(--number-3);
+  --radius-medium: var(--number-4);
+  --radius-large: var(--number-5);
+  --radius-xlarge: var(--number-6);
+  --radius-max: var(--number-max);
+  --size-height-xxsmall: var(--number-5);
+  --size-height-xsmall: var(--number-7);
+  --size-height-small: var(--number-9);
+  --size-height-medium: var(--number-10);
+  --size-height-large: var(--number-12);
+  --size-height-xlarge: var(--number-14);
+  --size-height-xxlarge: var(--number-16);
+
+  /* ===== 9. Shadcn/ui Color Tokens (for utilities) ===== */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ===== Tailwind Scale Definitions (from tailwind.config.ts) ===== */
+
+
+}
+
+/* 3. 실제 값 창고 (다크 모드) - 클래스 기반일 경우 */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* 4. 기본 스타일 (HTML 태그 초기화) */
+@layer base {
+  html {
+    font-size: 10px;
+  }
+
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+    color: #000;
+    background: var(--background);
+    color: var(--foreground);
+    letter-spacing: -0.039rem;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  *,
+  *::after,
+  *::before {
+    box-sizing: border-box;
+  }
+
+  *:focus-visible {
+    box-shadow: none !important;
+  }
+
+  .bg-popover {
+    background-color: #fff;
+  }
+
+  .custom-dialog-width {
+    max-width: 100rem;
+    width: 100%;
+  }
+
+  [data-variant="setting"] tr {
+    border: 0 !important
+  }
+
+  [data-separator][aria-orientation="horizontal"] {
+    width: 100% !important;
+  }
+
+  /* Radix Tabs - Hide inactive content */
+  [role="tabpanel"][data-state="inactive"] {
+    display: none;
+  }
 }
