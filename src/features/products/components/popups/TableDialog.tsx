@@ -28,8 +28,8 @@
  */
 
 import { useState } from 'react';
-import { Button } from '@/shared/components/uiux/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/uiux/dialog';
+import { Button } from '@/shared/components/uiux/Button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/uiux/Dialog';
 
 // ============================================================================
 // TYPE DEFINITIONS
