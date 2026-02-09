@@ -1,0 +1,23 @@
+import { ZoomControl } from '@/shared/components/common/ZoomControl';
+import FlowStatus from '@/shared/components/features/FlowStatus';
+import { UserSearch } from '@/shared/components/features/UserSearch';
+import { LayoutBody, LayoutFolder } from '@/shared/components/layout/Cabinet';
+
+const PageLayout = ({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) => {
+  return (
+    <LayoutBody>
+      <FlowStatus />
+      <LayoutFolder>
+        <UserSearch />
+        {children}
+        <ZoomControl />
+      </LayoutFolder>
+    </LayoutBody>
+  );
+};
+
+export default PageLayout;

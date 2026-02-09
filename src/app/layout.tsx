@@ -43,12 +43,18 @@
  * - Next.js Layouts: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout
  */
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import '@/shared/styles/globals.css';
 import { AuthGuard } from '@/shared/components/AuthGuard';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import { Providers } from './providers';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   title: '한화손해보험 UI 프레임워크',
@@ -61,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko" className="select-none">
       <body>
         <Providers>
           <AuthGuard>{children}</AuthGuard>
