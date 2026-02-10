@@ -10,7 +10,7 @@
  * @features
  * - 요청 카운트 기반 중첩 요청 처리
  * - 전역 수동 모드 (globalManual): 수동 끄기 전까지 계속 표시
- * - 메시지 및 옵션 커스터마이징
+ * - 메시지 커스터마이징
  * - 타입 안전한 상태 관리
  */
 
@@ -26,8 +26,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface SpinnerOptions {
   /** 표시할 메시지 (선택) */
   message?: string;
-  /** 최소 표시 시간 (ms) - 너무 빠른 요청의 경우 깜빡임 방지 */
-  minDuration?: number;
   /** spinner를 표시할지 여부를 결정하는 키 */
   showSpinner?: boolean;
 }
@@ -44,8 +42,6 @@ interface SpinnerState {
   message: string | null;
   /** spinner 시작 시간 */
   startTime: number | null;
-  /** 최소 표시 시간 */
-  minDuration: number;
   /** 전역 수동 모드: true이면 API 요청 완료와 무관하게 계속 표시 */
   globalManual: boolean;
 }
@@ -59,7 +55,6 @@ const initialState: SpinnerState = {
   isVisible: false,
   message: null,
   startTime: null,
-  minDuration: 0, // 기본 0ms: 최소 표시 시간 없음
   globalManual: false, // 전역 수동 모드 비활성화
 };
 
@@ -84,7 +79,6 @@ const spinnerSlice = createSlice({
       if (state.count === 1) {
         state.isVisible = true;
         state.message = action.payload.message ?? null;
-        state.minDuration = action.payload.minDuration ?? 0; // 기본 0ms
         state.startTime = Date.now();
       }
     },
@@ -110,7 +104,6 @@ const spinnerSlice = createSlice({
         state.isVisible = false;
         state.message = null;
         state.startTime = null;
-        state.minDuration = 0;
       }
     },
 
