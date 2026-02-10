@@ -61,7 +61,8 @@ export const productService = createApi({
 
         return {
           url: `/products?${searchParams.toString()}`,
-          showDelay: 100,
+          // showDelay: 100,
+          // minDuration: 3_000,
         };
       },
       providesTags: ['Products-LIST'],
