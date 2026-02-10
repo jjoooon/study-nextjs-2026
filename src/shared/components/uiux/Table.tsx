@@ -13,11 +13,20 @@ function Table({ className, ...props }: React.ComponentProps<'table'>) {
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
-  return <thead data-slot="table-header" className={cn('[&_tr]:border-b', className)} {...props} />;
+  return (
+    <thead
+      data-slot="table-header"
+      className={cn(
+        '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
+        className
+      )}
+      {...props}
+    />
+  );
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
-  return <tbody data-slot="table-body" className={cn('[&_tr:last-child]:border-0', className)} {...props} />;
+  return <tbody data-slot="table-body" className={cn('[&_tr:last-child]:border-b', className)} {...props} />;
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
@@ -34,7 +43,10 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   return (
     <tr
       data-slot="table-row"
-      className={cn('hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors', className)}
+      className={cn(
+        'hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-[#E5E5E5] transition-colors',
+        className
+      )}
       {...props}
     />
   );
