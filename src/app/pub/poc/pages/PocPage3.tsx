@@ -1,4 +1,4 @@
-import InsPlanCovAside from '@/features/pub/poc/components/InsPlanBasicAside';
+import InsPlanCovAside from '@/features/pub/poc/components/InsPlanCovAside';
 import InsPlanCovBottom from '@/features/pub/poc/components/InsPlanCovBottom';
 import Page3Section from '@/features/pub/poc/sections/Page3Section';
 

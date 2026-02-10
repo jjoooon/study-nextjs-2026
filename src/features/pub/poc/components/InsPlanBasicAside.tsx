@@ -84,7 +84,7 @@ export default function InsPlanBasicAside() {
         </Grid>
       </Gcol>
       {/* 바로가기 */}
-      <Gcol placement="ts" className="w-full gap-[1.6rem]">
+      <Gcol placement="ts" className="w-full gap-[1.2rem]">
         <Grow placement="ms">
           <Typo variant="heading-l" tag="h3">
             바로가기
