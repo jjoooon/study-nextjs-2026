@@ -158,25 +158,42 @@ class PriceFilter implements ProductFilter {
 
 ```
 src/features/
-├── auth/                    # 인증 기능
-│   ├── components/          # 인증 UI
-│   ├── hooks/              # 인증 로직
-│   ├── services/           # 인증 API
-│   ├── store/              # 인증 상태
-│   └── types/              # 인증 타입
-│
 ├── dashboard/              # 대시보드 기능
+│   ├── components/          # 대시보드 UI
+│   ├── hooks/              # 대시보드 로직
+│   ├── store/              # 대시보드 UI 상태
+│   └── types/              # 대시보드 타입
+│
+├── products/               # 상품 기능
+│   ├── components/          # 상품 UI 컴포넌트
+│   ├── hooks/              # 상품 관련 커스텀 훅
+│   ├── services/           # 상품 API 서비스
+│   ├── store/              # 상품 UI 상태 관리
+│   ├── types/              # 상품 타입 정의
+│   ├── utils/              # 상품 유틸리티
+│   ├── constants/          # 상품 상수
+│   └── sections/           # 페이지 섹션 컴포넌트
+│
+├── poc/                    # POC (Proof of Concept)
 │   └── ...
 │
-└── products/               # 상품 기능
-    ├── components/          # 상품 UI 컴포넌트
-    ├── hooks/              # 상품 관련 커스텀 훅
-    ├── services/           # 상품 API 서비스
-    ├── store/              # 상품 상태 관리
-    ├── types/              # 상품 타입 정의
-    ├── utils/              # 상품 유틸리티
-    ├── constants/          # 상품 상수
-    └── sections/           # 페이지 섹션 컴포넌트
+└── pub/                    # 공개 기능
+    └── ...
+
+src/shared/                 # 공유 레이어
+├── components/             # 공유 UI 컴포넌트
+├── store/                  # 공유 상태 (auth, popup 등)
+├── config/                 # 환경 설정
+├── utils/                  # 공유 유틸리티
+└── types/                  # 공유 타입
+
+src/redux/                  # Redux 설정
+├── api/                    # RTK Query API 슬라이스
+├── registry/               # 리듀서/미들웨어 레지스트리
+├── middleware/             # 커스텀 미들웨어
+├── config.ts               # Redux 설정
+├── storage.ts              # 보안 스토리지
+└── setup.ts                # 리듀서 초기화
 ```
 
 ### 장점
@@ -204,10 +221,16 @@ export default [
       'boundaries/element-types': [
         'error',
         {
+          default: 'disallow', // 기본: 모든 import 금지
           rules: [
             {
+              from: 'shared',
+              allow: ['shared'], // Shared는 Shared와 Features를 import 가능
+              message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
+            },
+            {
               from: 'features',
-              disallow: ['features'],
+              allow: ['shared'], // Feature는 Shared만 import 가능
               message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
             },
           ],
@@ -434,57 +457,94 @@ const [formData, setFormData] = useState(initialForm)
 
 ```typescript
 interface RootState {
-  // Feature Slices
+  // Shared Slices (src/shared/store/)
   auth: AuthState          // 인증 상태
-  dashboard: DashboardState // 대시보드 상태
-  products: ProductsState  // 상품 상태
-  productsUI: ProductsUIState // 상품 UI 상태
+  popup: PopupState        // 팝업 상태
+
+  // Feature UI Slices (src/features/*/store/)
+  dashboard: DashboardState // 대시보드 UI 상태
+  products: ProductsUIState  // 상품 UI 상태 (선택, 뷰모드 등)
+
+  // API Slices (src/redux/api/)
+  // RTK Query로 관리되는 서버 데이터 상태
+  // - productsApi: 상품 데이터
+  // - dashboardApi: 대시보드 통계
 }
 ```
+
+**상태 분리 원칙:**
+- **UI 상태**: Redux Slice (`features/*/store/*.ts`)
+  - 폼 입력, 선택 항목, 모달 열기/닫기 등 일시적 상태
+- **서버 데이터**: RTK Query (`src/redux/api/*.ts`)
+  - API 호출, 캐싱, 재요청 등 서버 데이터 관리
 
 ### Redux Toolkit 패턴
 
-#### 1. Slice 구조
+#### 1. UI Slice 구조
 
 ```typescript
-// features/products/store/productsSlice.ts
+// features/products/store/productsUISlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface ProductsState {
-  items: Product[]
-  loading: boolean
-  error: string | null
+interface ProductsUIState {
+  selectedProducts: number[]
+  // UI 전용 상태만 관리 (필터, 정렬은 URL로 관리)
 }
 
-const productsSlice = createSlice({
+const initialState: ProductsUIState = {
+  selectedProducts: [],
+}
+
+export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setProducts: (state, action: PayloadAction<Product[]>) => {
-      state.items = action.payload
+    toggleProductSelection: (state, action: PayloadAction<number>) => {
+      const index = state.selectedProducts.indexOf(action.payload)
+      if (index === -1) {
+        state.selectedProducts.push(action.payload)
+      } else {
+        state.selectedProducts.splice(index, 1)
+      }
     },
-    // ... other reducers
+    clearProductSelection: (state) => {
+      state.selectedProducts = []
+    },
   },
 })
 
-export const { setProducts } = productsSlice.actions
+export const { toggleProductSelection, clearProductSelection } = productsSlice.actions
 export default productsSlice.reducer
 ```
+
+**참고:** 서버 데이터는 RTK Query API 슬라이스에서 별도 관리됩니다.
 
 #### 2. Selector 패턴
 
 ```typescript
 // features/products/store/productsSelectors.ts
-import { RootState } from '@/store'
+import { createSelector } from '@reduxjs/toolkit'
+import type { RootState } from '@/redux'
 
-export const selectAllProducts = (state: RootState) =>
-  state.products.items
+// Base Selectors
+export const selectProductsState = (state: RootState) => state.products
 
-export const selectProductById = (state: RootState, id: string) =>
-  state.products.items.find((p) => p.id === id)
+// Memoized Selectors
+export const selectSelectedProducts = createSelector(
+  [selectProductsState],
+  (products) => products.selectedProducts
+)
 
-export const selectProductsLoading = (state: RootState) =>
-  state.products.loading
+export const selectSelectedProductsCount = createSelector(
+  [selectSelectedProducts],
+  (selectedProducts) => selectedProducts.length
+)
+```
+
+**참고:** 서버 데이터 선택자는 RTK Query가 자동 생성합니다:
+```typescript
+// RTK Query 자동 생성 선택자
+const { data: products, isLoading, error } = useGetProductsQuery()
 ```
 
 #### 3. Registry Pattern
@@ -492,21 +552,25 @@ export const selectProductsLoading = (state: RootState) =>
 동적 리듀서 등록을 위한 레지스트리 패턴:
 
 ```typescript
-// store/registry/reducer.ts
+// src/redux/registry/reducer.ts
 import { Reducer } from '@reduxjs/toolkit'
 
-interface ReducerRegistry {
-  [key: string]: Reducer
+class ReducerRegistry {
+  private entries: Map<string, ReducerEntry> = new Map()
+  // ... 전체 구현은 실제 파일 참조
 }
 
-const reducerRegistry: ReducerRegistry = {}
-
-export const registerReducer = (key: string, reducer: Reducer) => {
-  reducerRegistry[key] = reducer
-}
-
-export const getReducers = () => reducerRegistry
+export const reducerRegistry = new ReducerRegistry({
+  validateKeys: true,
+  warnOnDuplicate: true,
+  mergeStrategy: 'replace',
+})
 ```
+
+**주요 기능:**
+- 동적 리듀서 등록/제거 (Code Splitting 지원)
+- 우선순위 기반 리듀서 실행 순서
+- 런타임 리듀서 주입 (injectReducer/ejectReducer 액션)
 
 ### Redux Persist
 
@@ -515,10 +579,9 @@ export const getReducers = () => reducerRegistry
 > **보안 경고**: 이 설정은 학습 목적입니다. sessionStorage는 XSS 공격에 취약합니다. 실제 서비스에서는 httpOnly 쿠키와 서버 사이드 세션을 사용하세요.
 
 ```typescript
-// store/storage.ts
-export const createSessionStorage = () => {
+// src/redux/storage.ts
+export const createSecureStorage = () => {
   if (typeof window === 'undefined') {
-    // SSR 대체 처리
     return {
       getItem: (_key: string) => Promise.resolve(null),
       setItem: (_key: string, _value: string) => Promise.resolve(),
@@ -533,12 +596,12 @@ export const createSessionStorage = () => {
   };
 };
 
-export const sessionStorage = createSessionStorage();
+export const secureStorage = createSecureStorage();
 
-// store/config.ts
+// src/redux/config.ts
 const persistConfig = {
   key: 'root',
-  storage: sessionStorage, // ⚠️ sessionStorage 사용 (학습용, 프로덕션에서는 httpOnly 쿠키 권장)
+  storage: secureStorage, // ⚠️ sessionStorage 사용 (학습용, 프로덕션에서는 httpOnly 쿠키 권장)
   version: 1,
   whitelist: ['auth'], // 지속할 상태
   // transforms: [], // TODO: auth 구현 후 민감 데이터 필터링 활성화
@@ -1017,10 +1080,10 @@ const middleware = [
 
 ### 1. 환경 변수 관리
 
-**Zod를 사용한 타입 안전한 환경 변수 검증:**
+**Zod를 사용한 타입 안전한 환경 변수 검증 (실제 구현):**
 
 ```typescript
-// shared/config/env.ts
+// src/shared/config/env.ts
 import { z } from 'zod';
 
 // 환경 변수 스키마 정의
@@ -1031,9 +1094,10 @@ const envSchema = z.object({
   // 애플리케이션 설정 (공개)
   NEXT_PUBLIC_APP_NAME: z.string().default('Next.js App'),
   NEXT_PUBLIC_APP_VERSION: z.string().default('1.0.0'),
+  NEXT_PUBLIC_APP_DESCRIPTION: z.string().default(''),
 
   // API 설정 (공개)
-  NEXT_PUBLIC_API_URL: z.string().url().default('/api'),
+  NEXT_PUBLIC_API_URL: z.string().default('/api'),
   NEXT_PUBLIC_API_TIMEOUT: z
     .string()
     .transform((val) => parseInt(val, 10))
@@ -1050,26 +1114,48 @@ const envSchema = z.object({
     .string()
     .transform((val) => val === 'true')
     .default(true),
+  NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(false),
   NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: z
     .string()
     .transform((val) => val === 'true')
     .default(true),
 
   // 개발 도구 설정 (공개)
+  NEXT_PUBLIC_STORYBOOK_ENABLED: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(true),
   NEXT_PUBLIC_REDUX_DEVTOOLS: z
     .string()
     .transform((val) => val === 'true')
     .default(true),
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
+
+  // 디버그 설정 (비공개 - 서버 전용)
+  DEBUG_IPS: z.string().optional(),
+  DEBUG_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
 });
 
 // 환경 변수 검증 및 파싱
 const config = envSchema.parse({
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+  NEXT_PUBLIC_APP_VERSION: process.env.NEXT_PUBLIC_APP_VERSION,
+  NEXT_PUBLIC_APP_DESCRIPTION: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_API_TIMEOUT: process.env.NEXT_PUBLIC_API_TIMEOUT,
-  // ... 기타 환경 변수
+  NEXT_PUBLIC_API_RETRY_COUNT: process.env.NEXT_PUBLIC_API_RETRY_COUNT,
+  NEXT_PUBLIC_FEATURE_DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE,
+  NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: process.env.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
+  NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: process.env.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
+  NEXT_PUBLIC_STORYBOOK_ENABLED: process.env.NEXT_PUBLIC_STORYBOOK_ENABLED,
+  NEXT_PUBLIC_REDUX_DEVTOOLS: process.env.NEXT_PUBLIC_REDUX_DEVTOOLS,
+  NEXT_PUBLIC_LOG_LEVEL: process.env.NEXT_PUBLIC_LOG_LEVEL,
+  DEBUG_IPS: process.env.DEBUG_IPS,
+  DEBUG_LOG_LEVEL: process.env.DEBUG_LOG_LEVEL,
 });
 
 // 편의 속성들
@@ -1081,17 +1167,26 @@ export const isTest = config.NODE_ENV === 'test';
 export const publicConfig = {
   appName: config.NEXT_PUBLIC_APP_NAME,
   appVersion: config.NEXT_PUBLIC_APP_VERSION,
+  appDescription: config.NEXT_PUBLIC_APP_DESCRIPTION,
   apiUrl: config.NEXT_PUBLIC_API_URL,
   apiTimeout: config.NEXT_PUBLIC_API_TIMEOUT,
   apiRetryCount: config.NEXT_PUBLIC_API_RETRY_COUNT,
   features: {
     darkMode: config.NEXT_PUBLIC_FEATURE_DARK_MODE,
+    realtimeNotifications: config.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
     performanceMonitoring: config.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
   },
   devtools: {
+    storybook: config.NEXT_PUBLIC_STORYBOOK_ENABLED,
     redux: config.NEXT_PUBLIC_REDUX_DEVTOOLS,
     logLevel: config.NEXT_PUBLIC_LOG_LEVEL,
   },
+} as const;
+
+// 비공개 설정 (서버에서만 접근 가능)
+export const serverConfig = {
+  debugIps: config.DEBUG_IPS?.split(',').map((ip) => ip.trim()).filter(Boolean) ?? [],
+  debugLogLevel: config.DEBUG_LOG_LEVEL,
 } as const;
 ```
 
@@ -1104,42 +1199,7 @@ const apiUrl = publicConfig.apiUrl;
 const isDev = isDevelopment;
 ```
 
-**⚠️ 단순화된 대안 (학습용):**
-
-Zod 검증은 강력하지만, 학습 프로젝트에서는 더 간단한 구현으로 충분합니다:
-
-```typescript
-// shared/config/env.ts (단순화 버전)
-const config = {
-  // 애플리케이션 설정
-  appName: process.env.NEXT_PUBLIC_APP_NAME || 'Next.js App',
-  appVersion: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
-
-  // API 설정
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
-  apiTimeout: Number(process.env.NEXT_PUBLIC_API_TIMEOUT) || 10000,
-  apiRetryCount: Number(process.env.NEXT_PUBLIC_API_RETRY_COUNT) || 3,
-
-  // 환경 플래그
-  isDevelopment: process.env.NODE_ENV === 'development',
-  isProduction: process.env.NODE_ENV === 'production',
-
-  // 기능 플래그
-  features: {
-    darkMode: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE === 'true',
-    performanceMonitoring: process.env.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING !== 'false',
-  },
-} as const;
-
-export default config;
-export const { isDevelopment, isProduction } = config;
-```
-
-**언제 Zod 검증이 필요한가:**
-- ✅ 대규모 팀 프로젝트 (환경 변수 실수 방지)
-- ✅ CI/CD 파이프라인 통합
-- ✅ 엄격한 타입 안전성 요구
-- ⚠️ 학습 프로젝트에서는 과도할 수 있음
+**⚠️ 참고:** 이 프로젝트는 Zod 검증을 사용합니다. 단순화된 대안보다 타입 안전성과 런타임 검증이 중요한 경우 Zod 사용을 권장합니다.
 
 ### 2. XSS 방지
 
