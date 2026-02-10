@@ -56,7 +56,7 @@ const initialState: SpinnerState = {
   isVisible: false,
   message: null,
   startTime: null,
-  minDuration: 300, // 기본 300ms
+  minDuration: 300, // 기본 300ms: 100ms 미만은 깜빡임, 500ms 이상은 지연감
 };
 
 // ============================================================================

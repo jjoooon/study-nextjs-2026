@@ -29,7 +29,9 @@
  *         url: '/items',
  *         method: 'POST',
  *         body: item,  // ✅ 자동으로 data로 매핑됨
- *         showSpinner: true,  // ✅ spinner 표시 옵션
+ *         showSpinner: true,  // ✅ spinner 표시 옵션 (기본 true)
+ *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
+ *         delayShow: 200,  // ✅ 200ms 후 spinner 표시 (기본 100ms)
  *       }),
  *     }),
  *   })
@@ -60,12 +62,12 @@ import { deleteCookieValues } from '@/shared/utils/cookieUtils';
  * Axios 요청 메타데이터
  */
 export interface AxiosRequestMeta {
-  /** spinner 표시 여부 (기본: false) */
+  /** spinner 표시 여부 (기본: true) */
   showSpinner?: boolean;
   /** spinner 메시지 */
   spinnerMessage?: string;
-  /** 최소 표시 시간 (ms) */
-  minDuration?: number;
+  /** spinner 표시 지연 시간 (ms) - 이 시간 내에 완료되면 spinner 미표시 */
+  delayShow?: number;
 }
 
 // ============================================================================
@@ -146,7 +148,8 @@ const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
  * @description
  * 쿠키 인증과 통합된 RTK Query BaseQuery
  * - 401 에러 시 자동 로그아웃
- * - showSpinner 옵션으로 spinner 자동 표시
+ * - **짧은 요청은 spinner 미표시** (기본 100ms 지연 후 표시)
+ * - 기본 메시지: "Loading..."
  * - RTK Query의 body를 Axios의 data로 자동 매핑
  */
 const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
@@ -157,19 +160,47 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
   const parsedArgs = typeof args === 'string' ? { url: args } : args;
   const { url, method, body, data, params } = parsedArgs;
 
-  // spinner 옵션 추출
-  const { showSpinner: showSpinnerOption, spinnerMessage, minDuration } = parsedArgs as AxiosRequestMeta;
+  // spinner 옵션 추출 (기본: true, delayShow 기본 100ms)
+  const {
+    showSpinner: showSpinnerOption = true,
+    spinnerMessage = 'Loading...',
+    delayShow = 100, // 기본 100ms: 이 시간 내에 완료되면 spinner 미표시
+  } = parsedArgs as AxiosRequestMeta;
 
-  // ✅ spinner 표시 (interceptor 대신 직접 dispatch)
-  if (showSpinnerOption) {
-    api.dispatch(showSpinner({ message: spinnerMessage, minDuration }));
-  }
+  // setTimeout 참조와 상태 추적
+  let spinnerTimer: ReturnType<typeof setTimeout> | null = null;
+  let isSpinnerShown = false;
+
+  // spinner 표시 지연 함수
+  const showSpinnerAfterDelay = () => {
+    spinnerTimer = setTimeout(() => {
+      api.dispatch(showSpinner({ message: spinnerMessage }));
+      isSpinnerShown = true;
+    }, delayShow);
+  };
+
+  // spinner 숨김 및 타이머 정리 함수
+  const hideSpinnerAndClear = () => {
+    if (spinnerTimer) {
+      clearTimeout(spinnerTimer);
+      spinnerTimer = null;
+    }
+    if (isSpinnerShown) {
+      api.dispatch(hideSpinner());
+      isSpinnerShown = false;
+    }
+  };
 
   // body 우선, data fallback (RTK Query 호환성)
   const requestData = body ?? data;
   const requestMethod = method?.toLowerCase() as Method;
 
   try {
+    // spinner 표시 지연 시작
+    if (showSpinnerOption) {
+      showSpinnerAfterDelay();
+    }
+
     const result = await instance({
       url,
       method: requestMethod,
@@ -177,17 +208,13 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
       params,
     });
 
-    // ✅ spinner 숨김
-    if (showSpinnerOption) {
-      api.dispatch(hideSpinner());
-    }
+    // 요청 완료 후 spinner 정리
+    hideSpinnerAndClear();
 
     return { data: result.data };
   } catch (error) {
-    // ✅ 에러 시에도 spinner 숨김
-    if (showSpinnerOption) {
-      api.dispatch(hideSpinner());
-    }
+    // 에러 시에도 spinner 정리
+    hideSpinnerAndClear();
 
     if (axios.isAxiosError(error)) {
       return {
@@ -212,7 +239,9 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  * 모든 API service에서 사용하는 기본 baseQuery
  * - 쿠키 자동 전송 (withCredentials: true)
  * - 401 에러 시 자동 로그아웃
- * - showSpinner 옵션으로 spinner 자동 표시
+ * - **기본적으로 spinner 표시** (showSpinner: false로 끌 수 있음)
+ * - **기본 메시지: "Loading..."**
+ * - **기본 100ms 지연 후 표시** (delayShow로 조절 가능)
  *
  * @example
  * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
@@ -220,27 +249,25 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  * export const myApi = createApi({
  *   baseQuery,
  *   endpoints: (builder) => ({
- *     // Spinner 표시 안함 (기본)
+ *     // 기본 spinner 표시 (메시지: "Loading...", 100ms 지연)
  *     getItems: builder.query({
  *       query: () => '/items',
  *     }),
- *     // Spinner 표시
+ *     // spinner 끄기
+ *     fastQuery: builder.query({
+ *       query: () => ({
+ *         url: '/fast',
+ *         showSpinner: false,  // ❌ spinner 미표시
+ *       }),
+ *     }),
+ *     // 커스텀 메시지 및 지연 시간
  *     createItem: builder.mutation({
  *       query: (item) => ({
  *         url: '/items',
  *         method: 'POST',
  *         body: item,
- *         showSpinner: true,
- *       }),
- *     }),
- *     // Spinner와 메시지 표시
- *     uploadFile: builder.mutation({
- *       query: (file) => ({
- *         url: '/upload',
- *         method: 'POST',
- *         body: file,
- *         showSpinner: true,
- *         spinnerMessage: '파일 업로드 중...',
+ *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
+ *         delayShow: 200,  // ✅ 200ms 후 표시
  *       }),
  *     }),
  *   })

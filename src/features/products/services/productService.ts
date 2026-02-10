@@ -61,8 +61,6 @@ export const productService = createApi({
 
         return {
           url: `/products?${searchParams.toString()}`,
-          showSpinner: true,
-          spinnerMessage: '제품 목록을 불러오는 중...',
         };
       },
       providesTags: ['Products-LIST'],
