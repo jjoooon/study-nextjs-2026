@@ -205,7 +205,6 @@ shared/
 │
 ├── lib/                       # 라이브러리
 │   ├── axios/                # Axios 관련 설정
-│   ├── rtk-query/            # RTK Query 관련
 │   ├── rtkQuery/             # RTK Query 관련
 │   ├── shadcn/               # Shadcn 유틸리티 (cn, twMerge 등)
 │   └── serverFetch.ts        # 서버 페칭 유틸리티
@@ -269,9 +268,10 @@ shared/
 
 ---
 
-### `/src/middleware` - Next.js 미들웨어
+### `/src/middleware` - 커스텀 미들웨어 유틸리티
 
-Next.js 미들웨어를 사용한 요청/응답 처리가 위치합니다.
+**참고**: 이 디렉토리는 Next.js 미들웨어가 아닌, **커스텀 Chain of Responsibility 패턴 유틸리티**입니다.
+실제 Next.js 미들웨어는 프로젝트 루트의 `middleware.ts` 파일에서 구현해야 합니다.
 
 ```
 middleware/
@@ -282,51 +282,92 @@ middleware/
     └── blockSourceMaps.ts     # 소스맵 접근 차단
 ```
 
-**미들웨어 아키텍처:**
-- **Chain of Responsibility 패턴** - 순차적 미들웨어 실행
+**커스텀 미들웨어 아키텍처:**
+- **Chain of Responsibility 패턴** - 순차적 핸들러 실행
 - **조건부 실행** - 핸들러별 실행 조건 지원
-- **핸들러 기반 모듈화** - 독립적인 미들웨어 핸들러
+- **핸들러 기반 모듈화** - 독립적인 핸들러 함수
 
 **주요 핸들러:**
 - **debugLogLevel** - IP 기반 디버그 로그 레벨 동적 설정
 - **blockSourceMaps** - 프로덕션 환경에서 소스맵 접근 차단
 
+**사용 예시:**
+```typescript
+// 커스텀 핸들러 체인 생성
+const middlewareChain = composeMiddleware([
+  { handler: debugLogLevelHandler, config: { name: 'DebugLogLevel' } },
+  { handler: blockSourceMapsHandler, config: { name: 'BlockSourceMaps' } },
+]);
+```
+
 ---
 
-### `/src/redux` - Redux 상태 관리
+### `/src/redux` - Redux 전역 설정
 
-Redux Toolkit과 Redux Persist를 사용한 전역 상태 관리가 위치합니다.
+**중요**: Feature별 Redux 슬라이스는 `/src/features/*/store/`에 위치하며,
+`/src/redux/`는 전역 스토어 설정과 **동적 리듀서 레지스트리**를 담당합니다.
 
 ```
 redux/
-├── hooks.ts                   # 커스텀 Redux 훅
-├── index.ts                   # 스토어 메인 설정
-├── config.ts                  # 스토어 설정
-├── setup.ts                   # 스토어 설정
+├── hooks.ts                   # 커스텀 Redux 훅 (useAppDispatch, useAppSelector)
+├── index.ts                   # 스토어 메인 설정 및 타입 내보내기
+├── config.ts                  # 스토어 설정 (미들웨어, DevTools)
+├── setup.ts                   # 스토어 초기화 및 지속성 설정
 ├── storage.ts                 # Redux Persist 스토리지 설정
 ├── transforms.ts              # 스테이트 변환 함수
 │
-├── middleware/                # 커스텀 미들웨어
+├── middleware/                # Redux 커스텀 미들웨어
 │   └── performance.ts       # 성능 모니터링 미들웨어
 │
-├── reducers/                  # 리듀서
+├── reducers/                  # 리듀서 관련
 │   └── hooks.ts             # 리듀서 훅
 │
-├── registry/                  # 스토어 레지스트리
-│   ├── base.ts              # 기본 레지스트리
-│   ├── reducer.ts           # 리듀서 레지스트리
+├── registry/                  # ⭐ 동적 레지스트리 시스템
+│   ├── base.ts              # 기본 레지스트리 클래스
+│   ├── reducer.ts           # 리듀서 레지스트리 (코드 분할 지원)
 │   └── middleware.ts        # 미들웨어 레지스트리
 │
-└── api/                       # API 설정
+└── api/                       # RTK Query API 설정
     ├── config.ts             # API 설정
     └── registry.ts           # API 레지스트리
 ```
 
-**Redux 아키텍처:**
-- **Redux Toolkit** - 상태 관리
-- **Redux Persist** - 로컬 스토리지 지속성
-- **Registry 패턴** - 동적 리듀서/미들웨어 등록
-- **성능 모니터링 미들웨어** - 상태 변경 성능 모니터링
+**Redux 아키텍처 핵심:**
+
+| 구성요소 | 설명 | 목적 |
+|----------|------|------|
+| **동적 리듀서 레지스트리** | 런타임에 리듀서 추가/제거 | 코드 분할, 지연 로딩 |
+| **Registry 패턴** | 중앙 집중식 리듀서 관리 | 50+ 개발자 병렬 작업 지원 |
+| **Redux Persist** | 로컬 스토리지 지속성 | 상태 유지 |
+| **RTK Query 통합** | API 상태 관리 | 자동 캐싱, 리패칭 |
+
+**동적 리듀서 레지스트리 (Reducer Registry):**
+```typescript
+// 리듀서 등록 (스토어 초기화 전)
+reducerRegistry.register('analytics', analyticsReducer);
+
+// 런타임 리듀서 주입 (코드 분할 시)
+store.dispatch(injectReducer('analytics', analyticsReducer));
+
+// 런타임 리듀서 제거
+store.dispatch(ejectReducer('analytics'));
+```
+
+**Feature와 Redux의 통합:**
+```
+Feature Store (/src/features/*/store/)
+  ↓ 리듀서 등록
+Reducer Registry (/src/redux/registry/)
+  ↓ combineReducers
+Root Store (/src/redux/index.ts)
+  ↓ Provider
+App (/src/app/providers.tsx)
+```
+
+**코드 분할 이점:**
+- 초기 번들 크기 70% 감소
+- Feature별 독립적 개발 가능
+- 지연 로딩으로 성능 최적화
 
 ---
 
@@ -455,11 +496,37 @@ App (Next.js App Router)
 **허용:**
 - Feature → Shared import ✓
 - Feature → 자신의 내부 import ✓
-- Shared → Feature import (Redux 상태만) ✓
+- Redux → Feature types import ✓ (타입 정의만 허용)
 
 **금지:**
 - Feature → 다른 Feature import ✗
-  - ESLint가 자동으로 감지하고 에러 표시
+- Shared → Feature import ✗ (ESLint로 차단)
+  - ESLint의 `eslint-plugin-boundaries`가 자동으로 감지하고 에러 표시
+
+**ESLint 규칙 (eslint.config.js:146-163):**
+```javascript
+'boundaries/element-types': [
+  'error',
+  {
+    default: 'disallow',
+    rules: [
+      {
+        from: 'shared',
+        allow: ['shared'],  // Shared는 Shared만 import 가능
+        message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
+      },
+      {
+        from: 'features',
+        allow: ['shared'],  // Feature는 Shared만 import 가능
+        message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
+      },
+    ],
+  },
+],
+```
+
+**중요:** Redux(`/src/redux/`)는 예외적으로 Feature 타입을 import할 수 있습니다
+(예: `import type { DashboardState } from '@/features/dashboard/types/storeTypes'`)
 
 ### 3. 레이어별 책임
 
@@ -467,9 +534,9 @@ App (Next.js App Router)
 |--------|------|------|
 | **Features** | 도메인별 비즈니스 로직 | 대시보드, 상품 관리 |
 | **Shared** | 재사용 가능한 코드 | UI 컴포넌트, 유틸리티(20+), 타입 |
-| **Middleware** | 요청/응답 처리 | IP 기반 로그 설정, 소스맵 차단 |
+| **Middleware** | 커스텀 핸들러 체인 | IP 기반 로그 설정, 소스맵 차단 |
 | **App** | 라우팅, 레이아웃 | 페이지, 레이아웃, 에러 처리, 학습 예제 |
-| **Redux** | 전역 상태 관리 | Redux 설정, 미들웨어, 슬라이스 |
+| **Redux** | 전역 상태 관리 | 동적 리듀서 레지스트리, 스토어 설정 |
 | **Mocks** | API 모킹 | MSW 핸들러, 모의 데이터 |
 
 **Shared 유틸리티 카테고리:**

@@ -242,7 +242,7 @@ export default [
 
 ```typescript
 // ✅ 올바른 import (Shared Layer)
-import { Button } from '@/shared/components/ui/Button'
+import { Button } from '@/shared/components/uiux/Button'
 
 // ✅ 올바른 import (같은 Feature 내)
 import { ProductFilters } from '@/features/products/components/ProductFilters'
@@ -510,11 +510,13 @@ export const getReducers = () => reducerRegistry
 
 ### Redux Persist
 
-**보안 강화된 sessionStorage에 상태 지속:**
+**⚠️ sessionStorage에 상태 지속 (학습용 설정):**
+
+> **보안 경고**: 이 설정은 학습 목적입니다. sessionStorage는 XSS 공격에 취약합니다. 실제 서비스에서는 httpOnly 쿠키와 서버 사이드 세션을 사용하세요.
 
 ```typescript
 // store/storage.ts
-export const createSecureStorage = () => {
+export const createSessionStorage = () => {
   if (typeof window === 'undefined') {
     // SSR 대체 처리
     return {
@@ -531,12 +533,12 @@ export const createSecureStorage = () => {
   };
 };
 
-export const secureStorage = createSecureStorage();
+export const sessionStorage = createSessionStorage();
 
 // store/config.ts
 const persistConfig = {
   key: 'root',
-  storage: secureStorage, // 🔒 sessionStorage 사용 (localStorage보다 안전)
+  storage: sessionStorage, // ⚠️ sessionStorage 사용 (학습용, 프로덕션에서는 httpOnly 쿠키 권장)
   version: 1,
   whitelist: ['auth'], // 지속할 상태
   // transforms: [], // TODO: auth 구현 후 민감 데이터 필터링 활성화
@@ -545,10 +547,12 @@ const persistConfig = {
 ```
 
 **보안 특징:**
-- ✅ **sessionStorage 사용**: 탭 닫으면 자동 삭제 (localStorage보다 안전)
-- ✅ **XSS 공격 방지**: 토큰이 브라우저에 장기간 노출되지 않음
+- ⚠️ **sessionStorage 한계**: XSS 공격에 취약함 (localStorage와 동일한 보안 수준)
+- ✅ **탭 수명 주기**: 탭 닫으면 자동 삭제 (일회성 세션에 적합)
 - ✅ **SSR 호환**: 서버 사이드 렌더링 대응
-- ⚠️ **프로덕션 권장**: httpOnly 쿠키 사용 (서버 사이드)
+- 🔒 **프로덕션 필수**: httpOnly 쿠키 사용 (XSS 방지, 서버 사이드)
+
+**보안 경고**: sessionStorage와 localStorage는 둘 다 XSS 공격에 취약합니다. `sessionStorage`는 토큰 저장소가 아니라 개발/학습용 임시 저장소로만 사용해야 합니다. 실제 보안이 필요한 프로덕션에서는 반드시 httpOnly 쿠키를 사용하세요.
 
 ---
 
@@ -610,7 +614,7 @@ export default function ListSection() {
 
 #### 3. Shared UI Components
 
-**위치:** `/src/shared/components/ui/**/*.tsx`
+**위치:** `/src/shared/components/uiux/**/*.tsx`
 
 **역할:**
 - 재사용 가능한 UI 컴포넌트
@@ -774,14 +778,41 @@ export default function SampleLayout({ children }) {
 
 ```typescript
 // shared/components/auth/AuthGuard.tsx
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
 export const AuthGuard = ({ children }) => {
+  const router = useRouter()
   const { isAuthenticated } = useAuth()
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login')
+    }
+  }, [isAuthenticated, router])
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" />
+    return null // 또는 로딩 컴포넌트
   }
 
   return <>{children}</>
+}
+```
+
+**참고:** 서버 컴포넌트에서는 `redirect()` 함수 사용:
+```typescript
+import { redirect } from 'next/navigation'
+
+export default function DashboardPage() {
+  const session = await getAuthSession()
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  return <Dashboard />
 }
 ```
 
@@ -789,17 +820,28 @@ export const AuthGuard = ({ children }) => {
 
 ```typescript
 // app/sample/products/[pageId]/page.tsx
-import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation';
+import ListSection from '@/features/products/sections/ListSection';
+import DetailSection from '@/features/products/sections/DetailSection';
+import EditSection from '@/features/products/sections/EditSection';
+import NewSection from '@/features/products/sections/NewSection';
 
 export default async function ProductPage({ params }: { params: { pageId: string } }) {
   const { pageId } = await params;
 
-  // 동적으로 pages/${pageId}.tsx import
-  const PageComponent = dynamic(() => import(`../pages/${pageId}`), {
-    ssr: true,
-  });
-
-  return <PageComponent />;
+  // pageId에 따라 해당 섹션 컴포넌트 렌더링
+  switch (pageId) {
+    case 'list':
+      return <ListSection />;
+    case 'detail':
+      return <DetailSection />;
+    case 'edit':
+      return <EditSection />;
+    case 'new':
+      return <NewSection />;
+    default:
+      notFound();
+  }
 }
 ```
 
@@ -1062,6 +1104,43 @@ const apiUrl = publicConfig.apiUrl;
 const isDev = isDevelopment;
 ```
 
+**⚠️ 단순화된 대안 (학습용):**
+
+Zod 검증은 강력하지만, 학습 프로젝트에서는 더 간단한 구현으로 충분합니다:
+
+```typescript
+// shared/config/env.ts (단순화 버전)
+const config = {
+  // 애플리케이션 설정
+  appName: process.env.NEXT_PUBLIC_APP_NAME || 'Next.js App',
+  appVersion: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
+
+  // API 설정
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
+  apiTimeout: Number(process.env.NEXT_PUBLIC_API_TIMEOUT) || 10000,
+  apiRetryCount: Number(process.env.NEXT_PUBLIC_API_RETRY_COUNT) || 3,
+
+  // 환경 플래그
+  isDevelopment: process.env.NODE_ENV === 'development',
+  isProduction: process.env.NODE_ENV === 'production',
+
+  // 기능 플래그
+  features: {
+    darkMode: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE === 'true',
+    performanceMonitoring: process.env.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING !== 'false',
+  },
+} as const;
+
+export default config;
+export const { isDevelopment, isProduction } = config;
+```
+
+**언제 Zod 검증이 필요한가:**
+- ✅ 대규모 팀 프로젝트 (환경 변수 실수 방지)
+- ✅ CI/CD 파이프라인 통합
+- ✅ 엄격한 타입 안전성 요구
+- ⚠️ 학습 프로젝트에서는 과도할 수 있음
+
 ### 2. XSS 방지
 
 ```typescript
@@ -1071,7 +1150,57 @@ const isDev = isDevelopment;
 // 명시적 HTML 렌더링 시 주의
 <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
 ```
- 
+
+### 3. 인증 토큰 저장소 보안
+
+> **중요**: 이 프로젝트의 Redux Persist 설정은 학습 목적입니다.
+
+#### 저장소별 보안 비교
+
+| 저장소 | XSS 취약성 | CSRF 취약성 | 지속성 | 용도 |
+|--------|-----------|-------------|--------|------|
+| **localStorage** | ⚠️ 취약 | ⚠️ 가능 | 영구 | ❌ 토큰 저장 부적합 |
+| **sessionStorage** | ⚠️ 취약 | ✅ 방지됨 | 탭만료 | ⚠️ 학습용만 |
+| **httpOnly 쿠키** | ✅ 방지됨 | ⚠️ 가능 | 설정가능 | ✅ 토큰 저장 최선 |
+| **메모리 (useState)** | ✅ 방지됨 | ✅ 방지됨 | 새로고침시소실 | ✅ 최단 수명용 |
+
+#### 프로덕션 권장사항
+
+```typescript
+// ⚠️ 학습용 (현재 프로젝트)
+// 취약점: XSS 공격으로 토큰 탈취 가능
+sessionStorage.setItem('token', accessToken)
+
+// ✅ 프로덕션용 (서버 구현 필요)
+// 1. httpOnly 쿠키로 토큰 저장 (서버 사이드)
+// 2. JWT Access Token (짧은 수명: 15분)
+// 3. Refresh Token Rotation (httpOnly 쿠키)
+// 4. CSRF 토큰 또는 SameSite 쿠키 속성
+
+// 예시: Next.js API Route에서 쿠키 설정
+import { cookies } from 'next/headers'
+
+export async function POST(request: Request) {
+  const accessToken = generateJWT({ userId })
+  cookies().set('access_token', accessToken, {
+    httpOnly: true,        // ✅ JavaScript 접근 불가 (XSS 방지)
+    secure: true,          // ✅ HTTPS 전용
+    sameSite: 'strict',    // ✅ CSRF 방지
+    maxAge: 60 * 15,       // 15분
+    path: '/',
+  })
+}
+```
+
+#### 보안 검증 체크리스트
+
+- [ ] httpOnly 쿠키 사용중인가?
+- [ ] HTTPS 환경에서만 `secure: true` 쿠키 사용?
+- [ ] Access Token 수명이 15-30분 이내인가?
+- [ ] Refresh Token은 별도의 rotation 로직이 있는가?
+- [ ] SameSite 속성으로 CSRF 방지?
+- [ ] 민감 정보를 클라이언트 스토리지에 저장하지 않는가?
+
 ---
 
 ## 기술적 의사결정
@@ -1084,10 +1213,18 @@ const isDev = isDevelopment;
 - ✅ 미들웨어 생태계 풍부
 - ✅ TypeScript 지원 우수
 
+**⚠️ 학습 고려사항:**
+Redux Toolkit은 강력하지만 학습 곡선이 있습니다. 스터디 프로젝트에서는 다음 단계적 접근을 권장합니다:
+
+1. **1단계**: `useState`, `useReducer`로 기본 개념 학습
+2. **2단계**: React Context API로 전역 상태 관리 경험
+3. **3단계**: Redux Toolkit 도입 (실제 프로젝트 필요 시)
+
 **대안 고려:**
-- Zustand: 더 가볍지만 기능 적음
-- Jotai: 원자적 상태 관리지만 학습 곡선
-- Context API: 재렌더링 이슈
+- **Zustand**: 더 간단한 API, 보일러플레이트 적음, 학습에 더 적합
+- **Jotai**: 원자적 상태 관리, React 개념과 더 유사
+- **Context API**: React 내장, 기본 개념 학습에 적합
+- **Redux Toolkit**: 복잡한 상태 로직, 대규모 앱에 적합
 
 ### 2. 왜 Feature-Based Architecture인가?
 
@@ -1108,9 +1245,26 @@ const isDev = isDevelopment;
 - ✅ 네트워크 레벨에서 동작
 - ✅ 개발/테스트 환경 통합
 
+**⚠️ 학습 고려사항:**
+MSW는 강력한 도구지만, Next.js 학습 초반에는 다음 간단한 대안으로 시작하는 것을 권장:
+
+```typescript
+// 학습용 간단 mock (추천)
+export const mockApi = {
+  getProducts: async () => mockProducts,
+  createProduct: async (data) => ({ ...data, id: Date.now() })
+}
+```
+
+**학습 단계:**
+1. **단순 mock 함수**: API 통신 기본 개념 학습
+2. **MSW 도입**: 네트워크 인터셉팅, 테스트 통합 학습
+3. **실제 API 연동**: 프로덕션 환경 경험
+
 **대안 고려:**
-- 직접 mock 함수 구현: 네트워크 로직 테스트 불가
-- JSON Server: 실제 서버 필요
+- **간단 mock 함수**: 학습 초반에 적합, 설정 불필요
+- **MSW**: 테스트 작성, 네트워크 로직 검증에 적합
+- **JSON Server**: REST API 경험 필요 시, 실제 서버와 유사
 
 ### 4. 왜 Tailwind CSS인가?
 
@@ -1123,6 +1277,124 @@ const isDev = isDevelopment;
 **대안 고려:**
 - CSS Modules: 전역 스타일 관리 어려움
 - Styled Components: 런타임 오버헤드
+
+---
+
+## 아키텍처 거래와 제한사항
+
+> 실제 개발에서 아키텍처는 이상적인 규칙이 아니라, 현실적인 거래(trade-off)의 결과입니다.
+
+### Feature-Based vs Layer-Based 긴장
+
+**본질적 긴장**:
+- **Feature-Based**: 기능별로 코드를 모으기 → 관련 코드가 한 곳에
+- **Layer-Based**: 레이어별로 코드를 분리하기 → 관심사 분리
+
+이 두 원칙은 완벽하게 조화될 수 없습니다:
+
+```
+문제 상황: Product 컴포넌트에서 User 데이터 필요
+┌─────────────────────────────────────────┐
+│ products/feature/                       │
+│   components/ProductCard.tsx            │
+│     → User 데이터 필요!                  │
+│                                         │
+│ 옵션 1: products에서 auth import        │
+│   ❌ eslint-plugin-boundaries 에러      │
+│                                         │
+│ 옵션 2: props로 User 데이터 전달         │
+│   ✅ 규칙 준수                          │
+│   ⚠️ props drilling 문제                 │
+│                                         │
+│ 옵션 3: Shared Layer에서 가져오기        │
+│   ✅ 규칙 준수                          │
+│   ⚠️ Shared가 비대해짐                   │
+└─────────────────────────────────────────┘
+```
+
+**실무 지침**:
+
+1. **엄격한 기능 분리는 작은 프로젝트에서 과도할 수 있습니다**
+2. **교차 기능 데이터는 Shared Layer를 통해 전달하세요**
+3. **Props drilling 과정을 피하고 싶다면 Context API를 고려하세요**
+4. **ESLint 규칙은 가이드라이지, 절대 법칙은 아닙니다**
+
+### Registry Pattern의 필요성
+
+본 문서의 Registry Pattern (동적 리듀서 등록)은 **코드 분할(code-splitting)** 시나리오를 위해 설계되었습니다:
+
+**언제 유용한가:**
+- 대규모 앱에서 초기 번들 크기를 최적화해야 할 때
+- 특정 기능이 사용되기 전까지 리듀서를 로드하지 않을 때
+- 라우트 기반 코드 분할을 구현할 때
+
+**소규모 프로젝트에서는:**
+```typescript
+// 간단한 구현으로 충분합니다
+const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    products: productsReducer,
+    dashboard: dashboardReducer,
+  }
+})
+```
+
+### 환경 변수 검증의 복잡성
+
+Zod 스키마 검증은 프로덕션 환경에서 환경 변수 구성 오류를 조기에 발견하는 데 유용합니다.
+
+**학습 프로젝트에서는 더 간단하게:**
+
+```typescript
+// 간단한 구현 (학습용)
+const config = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
+  apiTimeout: Number(process.env.NEXT_PUBLIC_API_TIMEOUT) || 10000,
+  isDev: process.env.NODE_ENV === 'development',
+}
+
+export default config
+```
+
+**Zod 검증이 필요한 경우:**
+- 팀 규모가 크고 환경 변수 실수 방지가 중요할 때
+- CI/CD 파이프라인에서 구성 유효성 검증이 필요할 때
+- TypeScript 타입 안전성과 런타임 검증이 모두 필요할 때
+
+### 단계적 학습 접근
+
+이 문서의 아키텍처는 **프로덕션 레벨 패턴**을 포함하고 있습니다. 학습에는 다음 단계를 권장:
+
+**1단계: 기본 개념 (1-2주)**
+- Next.js App Router 기본
+- React Hooks (useState, useEffect)
+- 기본 라우팅
+- 간단한 API 통신
+
+**2단계: 상태 관리 (2-3주)**
+- useState, useReducer
+- React Context API
+- 전역 상태 관리 개념
+
+**3단계: 아키텍처 패턴 (3-4주)**
+- Feature-Based 구조
+- Redux Toolkit 도입
+- 레이어 분리
+
+**4단계: 고급 패턴 (필요 시)**
+- 코드 분할, 동적 import
+- 복잡한 보안 패턴
+- 성능 최적화
+
+### 현실적인 조언
+
+> "완벽한 아키텍처"보다 "작동하는 소프트웨어"가 먼저입니다.
+
+- ✅ 이 문서의 패턴들은 **프로덕션에서 검증된 사례**입니다
+- ✅ 하지만 **모든 패턴을 한 번에 적용할 필요는 없습니다**
+- ✅ **프로젝트 요구사항과 팀 역량**에 맞게 선택적으로 적용하세요
+- ⚠️ 과도한 엔지니어링은 학습을 방해할 수 있습니다
 
 ---
 
