@@ -716,7 +716,7 @@ export const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
 | 유틸리티/함수 | camelCase | `dateUtils.ts`, `formatCurrency.ts` |
 | Hooks | camelCase (use 접두사) | `useProducts.ts`, `useAuth.ts` |
 | 타입 정의 | camelCase | `userTypes.ts`, `apiTypes.ts` |
-| 상수 | camelCase | `apiConstants.ts`, `routeConstants.ts` |
+| 상수 | camelCase | `api.ts`, `route.ts` |
 | 설정 | camelCase | `eslintConfig.js`, `tailwindConfig.ts` |
 
 ### 2. 디렉토리 구조
