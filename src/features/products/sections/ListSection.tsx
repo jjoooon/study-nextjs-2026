@@ -37,6 +37,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 // import type { ComponentType } from 'react';
 // import { useEffect } from 'react';
 
+import { useEffect } from 'react';
 import ProductFilters from '@/features/products/components/ProductFilters';
 import ProductList from '@/features/products/components/ProductList';
 // import type { TableDialogResult } from '@/features/products/components/popups/TableDialog';
@@ -45,6 +46,7 @@ import { useProducts } from '@/features/products/hooks/useProducts';
 import productsReducer from '@/features/products/store/productsUISlice';
 // import type { Product } from '@/features/products/types/apiTypes';
 import { useInjectReducer } from '@/redux/reducers/hooks';
+import { disableSpinner, enableSpinner, forceHideSpinner, forceShowSpinner } from '@/shared/utils/spinnerUtils';
 // import { popup } from '@/shared/utils/popup/popup';
 // import { registerDialog } from '@/shared/utils/popup/popupRegistry';
 
@@ -126,6 +128,22 @@ function Content() {
   // Products 훅
   const { products, total, filters, sort, isLoading, viewMode, updateFilters, updateSort, updateViewMode } =
     useProducts();
+
+  // spinner 강제 비활성 화 예제
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     disableSpinner();
+  //   }, 300);
+
+  //   setTimeout(() => {
+  //     forceShowSpinner();
+  //   }, 1000);
+
+  //   setTimeout(() => {
+  //     forceHideSpinner();
+  //     enableSpinner();
+  //   }, 3000);
+  // }, []);
 
   // ============================================================================
   // DYNAMIC POPUP REGISTRATION

@@ -6,10 +6,13 @@
  * - Axios interceptor와 연동하여 API 요청 시 자동 표시
  * - 특정 요청에 대해서만 spinner 표시 가능
  * - 전역 수동 모드: API 요청 완료와 무관하게 수동으로 제어
+ * - spinner 완전 비활성화: 모든 spinner 작업 무시 (forceShowSpinner는 예외)
  *
  * @features
  * - 요청 카운트 기반 중첩 요청 처리
  * - 전역 수동 모드 (globalManual): 수동 끄기 전까지 계속 표시
+ * - spinner 완전 비활성화 (disabled): 일반 spinner 동작 차단
+ * - forceShowSpinner: disabled 상태에서도 강제로 spinner 표시 가능 (disabled 플래그 유지)
  * - 메시지 커스터마이징
  * - 타입 안전한 상태 관리
  */
@@ -52,6 +55,8 @@ interface SpinnerState {
   transparentBackground: boolean;
   /** 로딩 이미지 숨김 여부 */
   hideLoadingIndicator: boolean;
+  /** spinner 비활성화: true이면 모든 spinner 작업 무시 */
+  disabled: boolean;
 }
 
 // ============================================================================
@@ -66,6 +71,7 @@ const initialState: SpinnerState = {
   globalManual: false, // 전역 수동 모드 비활성화
   transparentBackground: false, // 기본: 불투명 배경
   hideLoadingIndicator: false, // 기본: 로딩 이미지 표시
+  disabled: false, // 기본: spinner 활성화
 };
 
 // ============================================================================
@@ -83,6 +89,11 @@ const spinnerSlice = createSlice({
      * Spinner 표시 시작
      */
     showSpinner: (state, action: PayloadAction<SpinnerOptions>) => {
+      // spinner가 비활성화되어 있으면 무시
+      if (state.disabled) {
+        return;
+      }
+
       state.count += 1;
 
       // 최초 요청인 경우에만 상태 업데이트
@@ -120,9 +131,12 @@ const spinnerSlice = createSlice({
      * 전역 spinner 강제 표시
      * - API 요청 완료와 무관하게 계속 spinner 표시
      * - 수동으로 끄기 전까지 유지
+     * - disabled 상태와 무관하게 무조건 실행 (disabled 플래그는 유지)
      */
     forceShowSpinner: {
       reducer: (state, action: PayloadAction<{ message?: string }>) => {
+        // disabled 상태여부와 무관하게 무조건 실행
+        // (disabled 플래그는 변경하지 않고 유지)
         state.globalManual = true;
         state.isVisible = true;
         state.message = action.payload.message ?? null;
@@ -159,6 +173,33 @@ const spinnerSlice = createSlice({
         state.message = action.payload;
       }
     },
+
+    /**
+     * Spinner 비활성화
+     * - 모든 spinner 작업을 무시하도록 설정
+     * - 현재 표시 중인 spinner를 모두 닫은 후 비활성화
+     */
+    disableSpinner: (state) => {
+      // 먼저 현재 표시 중인 spinner를 모두 닫음
+      state.isVisible = false;
+      state.globalManual = false;
+      state.count = 0;
+      state.message = null;
+      state.startTime = null;
+      state.transparentBackground = false;
+      state.hideLoadingIndicator = false;
+
+      // 그 후 spinner 비활성화
+      state.disabled = true;
+    },
+
+    /**
+     * Spinner 활성화
+     * - spinner 기능을 다시 사용 가능하도록 설정
+     */
+    enableSpinner: (state) => {
+      state.disabled = false;
+    },
   },
 });
 
@@ -176,6 +217,9 @@ export const {
   // 기타
   resetSpinner,
   updateMessage,
+  // spinner 활성화/비활성화
+  disableSpinner,
+  enableSpinner,
 } = spinnerSlice.actions;
 export default spinnerSlice.reducer;
 
