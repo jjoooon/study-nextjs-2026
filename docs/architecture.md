@@ -790,16 +790,29 @@ Next.js 16의 App Router를 사용:
 app/
 ├── layout.tsx              # 루트 레이아웃
 ├── page.tsx                # 홈 페이지 (/)
+├── providers.tsx           # Redux Provider 등
 ├── login/
 │   └── page.tsx            # 로그인 페이지 (/login)
-└── sample/
+├── poc/                    # POC (Proof of Concept)
+│   ├── [pageId]/page.tsx   # 동적 라우트
+│   └── pages/Main.tsx      # 메인 페이지
+├── pub/                    # 공개 페이지
+│   └── poc/                # 공개 POC
+└── sample/                 # 샘플 앱
     ├── layout.tsx          # 샘플 레이아웃
     ├── dashboard/
     │   └── page.tsx        # 대시보드 (/sample/dashboard)
-    └── products/
-        ├── [pageId]/
-        │   └── page.tsx    # 동적 라우트 (/sample/products/:pageId)
-        └── pages/          # 페이지 컴포넌트들
+    ├── products/           # 제품 관리
+    │   ├── [pageId]/
+    │   │   └── page.tsx    # 동적 라우트 (/sample/products/:pageId)
+    │   └── pages/          # 페이지 컴포넌트들
+    │       ├── List.tsx
+    │       ├── Detail.tsx
+    │       ├── Edit.tsx
+    │       └── New.tsx
+    ├── mdi/                # MDI (Multiple Document Interface) 샘플
+    ├── xml/                # XML 처리 샘플
+    └── ...
 ```
 
 ### 라우팅 원칙
@@ -883,30 +896,37 @@ export default function DashboardPage() {
 
 ```typescript
 // app/sample/products/[pageId]/page.tsx
-import { notFound } from 'next/navigation';
-import ListSection from '@/features/products/sections/ListSection';
-import DetailSection from '@/features/products/sections/DetailSection';
-import EditSection from '@/features/products/sections/EditSection';
-import NewSection from '@/features/products/sections/NewSection';
+import { fileURLToPath } from 'url';
+import dynamic from 'next/dynamic';
+import { getPageFiles } from '@/shared/utils/file/getPageFiles';
 
-export default async function ProductPage({ params }: { params: { pageId: string } }) {
+// 🔒 페이지 파일들 동적으로 발견 (현재 파일 기준 ../pages)
+const PAGE_IDS = getPageFiles(fileURLToPath(import.meta.url));
+type PageId = (typeof PAGE_IDS)[number];
+
+// 정적 생성: 빌드 시 HTML 미리 생성
+export function generateStaticParams(): Array<{ pageId: PageId }> {
+  return PAGE_IDS.map((pageId) => ({
+    pageId,
+  }));
+}
+
+export default async function Page({ params }: { params: { pageId: string } }) {
   const { pageId } = await params;
 
-  // pageId에 따라 해당 섹션 컴포넌트 렌더링
-  switch (pageId) {
-    case 'list':
-      return <ListSection />;
-    case 'detail':
-      return <DetailSection />;
-    case 'edit':
-      return <EditSection />;
-    case 'new':
-      return <NewSection />;
-    default:
-      notFound();
-  }
+  // 동적 import로 페이지 컴포넌트 로드
+  const PageComponent = dynamic(() => import(`../pages/${pageId}`), {
+    ssr: true,
+  });
+
+  return <PageComponent />;
 }
 ```
+
+**특징:**
+- **동적 페이지 발견**: `getPageFiles` 유틸리티로 `pages/` 디렉토리의 파일 자동 탐지
+- **정적 생성**: `generateStaticParams`로 빌드 시 HTML 미리 생성
+- **유연한 확장**: 새 페이지 파일 추가 시 코드 수정 불필요
 
 ---
 
@@ -930,44 +950,70 @@ Component Re-render
 
 ### 데이터 가져오기 패턴
 
-#### 1. 컴포넌트 마운트 시
+#### 1. RTK Query 사용 (실제 구현)
 
 ```typescript
-export default function DashboardPage() {
-  const { fetchDashboard, loading } = useDashboard()
+// features/products/hooks/useProducts.ts
+export const useProducts = () => {
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    fetchDashboard()
-  }, [fetchDashboard])
+  // URL 기반 필터/정렬 상태
+  const { filters, sort, viewMode, updateFilters, updateSort, updateViewMode } =
+    useProductsURLState();
 
-  if (loading) return <Loading />
+  // 쿼리 파라미터 안정화 (Vercel Best Practices)
+  const queryParams = useMemo(
+    () => ({
+      page: 1,
+      pageSize: 10,
+      search: filters.search || undefined,
+      status: filters.status || undefined,
+      category: filters.category || undefined,
+      sortBy: sort.sortBy,
+      sortOrder: sort.sortOrder,
+    }),
+    [filters, sort]
+  );
 
-  return <DashboardStats />
-}
+  // RTK Query 자동 fetching
+  const { data: productsData, isLoading, isError, error, refetch } =
+    useGetProductsQuery(queryParams);
+
+  return {
+    products: productsData?.products || [],
+    total: productsData?.total || 0,
+    isLoading,
+    isError,
+    error,
+    updateFilters,
+    updateSort,
+    refetch,
+  };
+};
 ```
 
-#### 2. 사용자 액션 시
+#### 2. 컴포넌트에서 사용
 
 ```typescript
-export const ProductForm = () => {
-  const { createProduct } = useProductForm()
+export default function ListSection() {
+  const { products, isLoading, error, filters, updateFilters } = useProducts();
 
-  const handleSubmit = async (data: ProductFormData) => {
-    await createProduct(data)
-    router.push('/products')
-  }
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorState error={error} />;
 
-  return <form onSubmit={handleSubmit}>...</form>
+  return <ProductList products={products} />;
 }
 ```
 
 ### 에러 처리 전략
 
 ```typescript
-// 1. Component Level (Error Boundary)
-// app/error.tsx
-export default function Error({ error, reset }: {
-  error: Error
+// 1. Next.js Error Boundary (app/error.tsx)
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
   reset: () => void
 }) {
   return (
@@ -978,31 +1024,34 @@ export default function Error({ error, reset }: {
   )
 }
 
-// 2. Hook Level
-const useProducts = () => {
-  const [error, setError] = useState<string | null>(null)
+// 2. RTK Query Error Handling
+export const useProducts = () => {
+  const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams);
 
-  const fetchProducts = async () => {
-    try {
-      // ...
-    } catch (err) {
-      setError(err.message)
-    }
+  return {
+    products: data?.products || [],
+    isLoading,
+    isError: !!error,
+    error, // RTK Query가 제공하는 에러 객체
+    refetch, // 재시도 함수
+  };
+};
+
+// 3. 컴포넌트에서 에러 처리
+export default function ProductListSection() {
+  const { products, isLoading, error, refetch } = useProducts();
+
+  if (isLoading) return <Skeleton />;
+  if (error) {
+    return (
+      <ErrorState
+        message="제품을 불러올 수 없습니다"
+        onRetry={refetch}
+      />
+    );
   }
 
-  return { error, fetchProducts }
-}
-
-// 3. Service Level
-export const productService = {
-  async getProducts() {
-    try {
-      const response = await axios.get('/api/products')
-      return response.data
-    } catch (error) {
-      throw new APIError('상품을 불러올 수 없습니다', error)
-    }
-  }
+  return <ProductList products={products} />;
 }
 ```
 
@@ -1013,12 +1062,23 @@ export const productService = {
 ### 1. 코드 분할 (Code Splitting)
 
 ```typescript
-// 동적 import로 컴포넌트 지연 로딩
-const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
-  loading: () => <Skeleton />,
-  ssr: false,
-})
+// AG Grid 동적 import (Vercel Best Practices - bundle-dynamic-imports)
+const ProductGrid = dynamic(
+  () => import('@/features/products/components/ProductGrid').then((mod) => ({ default: mod.ProductGrid })),
+  {
+    loading: () => <div>Loading...</div>,
+    ssr: false, // AG Grid는 클라이언트 사이드 전용
+  }
+);
+
+// 조건부 렌더링으로 on-demand loading
+{viewMode === 'grid' ? <ProductGrid products={products} /> : <ProductList products={products} />}
 ```
+
+**이점:**
+- 초기 번더 크기 ~500KB 감소 (AG Grid)
+- LCP (Largest Contentful Paint) 개선
+- 테이블 뷰 사용자에게 불필요한 코드 전송 방지
 
 ### 2. 이미지 최적화
 
@@ -1046,16 +1106,25 @@ experimental: {
 ### 4. 메모이제이션
 
 ```typescript
+// Vercel Best Practices - rerender-dependencies
+// useMemo로 쿼리 파라미터 안정화
+const queryParams = useMemo(
+  () => ({
+    page: 1,
+    pageSize: 10,
+    search: filters.search || undefined,
+    status: filters.status || undefined,
+    category: filters.category || undefined,
+    sortBy: sort.sortBy,
+    sortOrder: sort.sortOrder,
+  }),
+  [filters, sort] // filters 또는 sort가 변경될 때만 재생성
+);
+
 // React.memo로 렌더링 최적화
 export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   return <div>{product.name}</div>
 })
-
-// useMemo로 값 메모이제이션
-const sortedProducts = useMemo(() =>
-  products.sort((a, b) => a.name.localeCompare(b.name)),
-  [products]
-)
 
 // useCallback으로 함수 메모이제이션
 const handleEdit = useCallback((id: string) => {
@@ -1265,26 +1334,31 @@ export async function POST(request: Request) {
 
 ## 기술적 의사결정
 
-### 1. 왜 Redux Toolkit인가?
+### 1. 왜 Redux Toolkit + RTK Query인가?
 
 **이유:**
 - ✅ 복잡한 상태 로직 관리 용이
 - ✅ DevTools로 디버깅 편리
 - ✅ 미들웨어 생태계 풍부
 - ✅ TypeScript 지원 우수
+- ✅ RTK Query로 서버 데이터 캐싱 자동화
+
+**실제 구현:**
+- **Redux Toolkit**: UI 상태 관리 (선택, 필터, 정렬 등)
+- **RTK Query**: 서버 데이터 fetching, 캐싱, 재요청
 
 **⚠️ 학습 고려사항:**
 Redux Toolkit은 강력하지만 학습 곡선이 있습니다. 스터디 프로젝트에서는 다음 단계적 접근을 권장합니다:
 
 1. **1단계**: `useState`, `useReducer`로 기본 개념 학습
 2. **2단계**: React Context API로 전역 상태 관리 경험
-3. **3단계**: Redux Toolkit 도입 (실제 프로젝트 필요 시)
+3. **3단계**: Redux Toolkit + RTK Query 도입 (현재 프로젝트)
 
 **대안 고려:**
 - **Zustand**: 더 간단한 API, 보일러플레이트 적음, 학습에 더 적합
 - **Jotai**: 원자적 상태 관리, React 개념과 더 유사
-- **Context API**: React 내장, 기본 개념 학습에 적합
-- **Redux Toolkit**: 복잡한 상태 로직, 대규모 앱에 적합
+- **TanStack Query (React Query)**: 서버 데이터 전용, Redux 없이 사용 가능
+- **Redux Toolkit + RTK Query**: 복잡한 상태 로직, 대규모 앱에 적합
 
 ### 2. 왜 Feature-Based Architecture인가?
 
@@ -1439,7 +1513,7 @@ export default config
 
 **3단계: 아키텍처 패턴 (3-4주)**
 - Feature-Based 구조
-- Redux Toolkit 도입
+- Redux Toolkit + RTK Query 도입
 - 레이어 분리
 
 **4단계: 고급 패턴 (필요 시)**
@@ -1462,6 +1536,7 @@ export default config
 
 - [Next.js 문서](https://nextjs.org/docs)
 - [Redux Toolkit 문서](https://redux-toolkit.js.org/)
+- [RTK Query 문서](https://redux-toolkit.js.org/rtk-query/overview)
 - [React 문서](https://react.dev/)
 - [TypeScript 문서](https://www.typescriptlang.org/docs/)
 - [Tailwind CSS 문서](https://tailwindcss.com/docs)
