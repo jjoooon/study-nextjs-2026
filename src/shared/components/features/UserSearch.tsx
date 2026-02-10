@@ -9,7 +9,7 @@ import { Button, Input, NativeSelect, NativeSelectOption, TableRow } from '@/sha
 import log from '@/shared/utils/logger';
 import { popup } from '@/shared/utils/popup/popupApi';
 import { registerDialog } from '@/shared/utils/popup/popupRegistry';
-import { UserSearchResult } from './UserSearchDialog';
+import { UserSearchResult } from '../popups/UserSearchDialog';
 
 interface UserData {
   id: string;
@@ -115,7 +115,7 @@ export const UserSearch = () => {
   // 컴포넌트 마운트 시 팝업 등록
   // TODO: @YunJunmo shared로 이동 검토
   useEffect(() => {
-    registerDialog('products/user-search', () => import('./UserSearchDialog'));
+    registerDialog('products/user-search', () => import('../popups/UserSearchDialog'));
   }, []);
 
   const handleSelect = (id: string) => {
