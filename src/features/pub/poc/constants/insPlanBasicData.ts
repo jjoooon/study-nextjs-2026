@@ -151,7 +151,12 @@ export const INITIAL_TABS: Array<{ value: TabKey; label: string }> = [
   { value: 'tab3', label: '0443555' },
   { value: 'tab4', label: '0547783' },
 ];
-
+export const INITIAL_TABS2: Array<{ value: TabKey; label: string }> = [
+  { value: 'tab1', label: '김길동 32세(남)' },
+  { value: 'tab2', label: '홍길순 43세(여)' },
+  { value: 'tab3', label: '홍길동 50세(남)' },
+  { value: 'tab4', label: '최길순 37세(여)' },
+];
 export const SELECT_OPTIONS = {
   personalInfoPath: [
     { label: '본인', value: '본인' },

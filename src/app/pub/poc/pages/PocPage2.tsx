@@ -10,13 +10,13 @@ export default function pageLayout() {
     <>
       <LayoutDocument className="grid-cols-[1fr] gap-5">
         <ResizablePanelGroup orientation="horizontal" className="w-full">
-          <ResizablePanel defaultSize="80%" minSize="72rem">
+          <ResizablePanel defaultSize="75%" minSize="72rem">
             <LayoutMain className="grid-cols-[1fr] gap-5">
               <Page2Section />
             </LayoutMain>
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize="50%" minSize="0" maxSize="37.5rem">
+          <ResizablePanel defaultSize="37.5rem" minSize="0" maxSize="50%">
             <InsPlanBasicAside />
           </ResizablePanel>
         </ResizablePanelGroup>

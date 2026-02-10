@@ -1,7 +1,7 @@
 import { ArrowNext } from '@/shared/components/icons';
 import { LayoutControls } from '@/shared/components/layout/Cabinet';
 
-export default function FooterPage1() {
+export default function InsPlanListBottom() {
   return (
     <LayoutControls>
       <div className="flex flex-col w-full relative z-10">

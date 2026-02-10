@@ -1,7 +1,8 @@
 import { Grow } from '@/shared/components/common';
 import { ArrowNext } from '@/shared/components/icons';
 import { LayoutControls } from '@/shared/components/layout/Cabinet';
-const Footer = () => {
+
+export default function InsPlanBasicBottom() {
   return (
     <LayoutControls>
       <div className="flex flex-col w-full relative z-10">
@@ -28,6 +29,4 @@ const Footer = () => {
       </div>
     </LayoutControls>
   );
-};
-
-export default Footer;
+}

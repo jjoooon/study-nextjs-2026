@@ -2,7 +2,7 @@ import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
 import { ArrowIcon } from '@/shared/components/icons';
 import { Badge, Button } from '@/shared/components/uiux';
 
-export default function InsPlanBasicAside() {
+export default function InsPlanCovAside() {
   return (
     <Gcol placement="ts" className="gap-[3.2rem] h-[calc(100vh-32.2rem)] overflow-y-auto overflow-x-hidden pb-[3.2rem]">
       {/* 꼭 확인해야 할 일! */}

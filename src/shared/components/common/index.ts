@@ -9,3 +9,4 @@ export * from './TablePagination';
 export * from './ErrorMsg';
 export * from './DatePicker';
 export * from './ZoomControl';
+export * from './KeyValueList';

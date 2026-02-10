@@ -1,5 +1,5 @@
-import InsPlanBasicAside from '@/features/pub/poc/components/InsPlanBasicAside';
-import InsPlanBasicBottom from '@/features/pub/poc/components/InsPlanBasicBottom';
+import InsPlanCovAside from '@/features/pub/poc/components/InsPlanBasicAside';
+import InsPlanCovBottom from '@/features/pub/poc/components/InsPlanCovBottom';
 import Page3Section from '@/features/pub/poc/sections/Page3Section';
 
 import { LayoutDocument, LayoutMain } from '@/shared/components/layout/Cabinet';
@@ -10,18 +10,18 @@ export default function pageLayout() {
     <>
       <LayoutDocument className="grid-cols-[1fr] gap-5">
         <ResizablePanelGroup orientation="horizontal" className="w-full">
-          <ResizablePanel defaultSize="80%" minSize="72rem">
+          <ResizablePanel defaultSize="75%" minSize="72rem">
             <LayoutMain className="grid-cols-[1fr] gap-5">
               <Page3Section />
             </LayoutMain>
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize="50%" minSize="0" maxSize="37.5rem">
-            <InsPlanBasicAside />
+          <ResizablePanel defaultSize="37.5rem" minSize="0" maxSize="50%">
+            <InsPlanCovAside />
           </ResizablePanel>
         </ResizablePanelGroup>
       </LayoutDocument>
-      <InsPlanBasicBottom />
+      <InsPlanCovBottom />
     </>
   );
 }
