@@ -42,7 +42,7 @@ export const productService = createApi({
      */
     getProducts: builder.query({
       query: (params: ProductListParams | void) => {
-        if (!params) return '/products';
+        if (!params) return { url: '/products' };
 
         const searchParams = new URLSearchParams();
 
@@ -59,7 +59,11 @@ export const productService = createApi({
         if (params.status) searchParams.append('status', params.status);
         if (params.category) searchParams.append('category', params.category);
 
-        return `/products?${searchParams.toString()}`;
+        return {
+          url: `/products?${searchParams.toString()}`,
+          showSpinner: true,
+          spinnerMessage: '제품 목록을 불러오는 중...',
+        };
       },
       providesTags: ['Products-LIST'],
     }),

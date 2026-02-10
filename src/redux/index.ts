@@ -28,10 +28,10 @@ import { persistStore } from 'redux-persist';
 import type { DashboardState } from '@/features/dashboard/types/storeTypes';
 import type { ProductsUIState } from '@/features/products/types/storeTypes';
 import type { PopupState } from '@/shared/store/popupSlice';
+import type { SpinnerState } from '@/shared/store/spinnerSlice';
 import type { AuthState } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
 
-// 스토어 설정 및 초기화
 import { configureMiddleware, devToolsConfig } from './config';
 
 // 타입 임포트
@@ -173,6 +173,7 @@ if (process.env.NODE_ENV === 'development') {
 export type RootState = {
   auth: AuthState;
   popup: PopupState;
+  spinner: SpinnerState;
   dashboard: DashboardState;
   products: ProductsUIState;
 };
