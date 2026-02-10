@@ -32,7 +32,6 @@
  *         showSpinner: true,  // ✅ spinner 표시 옵션 (기본 true)
  *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
  *         delayShow: 200,  // ✅ 200ms 후 spinner 표시 (기본 100ms)
- *         minDuration: 500,  // ✅ 최소 500ms 동안 표시 유지 (기본 300ms)
  *       }),
  *     }),
  *   })
@@ -69,8 +68,6 @@ export interface AxiosRequestMeta {
   spinnerMessage?: string;
   /** spinner 표시 지연 시간 (ms) - 이 시간 내에 완료되면 spinner 미표시 */
   delayShow?: number;
-  /** spinner 최소 표시 시간 (ms) - spinner가 표시되면 최소 이 시간 동안 유지 */
-  minDuration?: number;
 }
 
 // ============================================================================
@@ -152,7 +149,6 @@ const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
  * 쿠키 인증과 통합된 RTK Query BaseQuery
  * - 401 에러 시 자동 로그아웃
  * - **짧은 요청은 spinner 미표시** (기본 100ms 지연 후 표시)
- * - **최소 표시 시간 보장** (기본 0ms, 필요 시 minDuration 설정)
  * - 기본 메시지: "Loading..."
  * - RTK Query의 body를 Axios의 data로 자동 매핑
  */
@@ -169,19 +165,17 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
     showSpinner: showSpinnerOption = true,
     spinnerMessage = 'Loading...',
     delayShow = 100, // 기본 100ms: 이 시간 내에 완료되면 spinner 미표시
-    minDuration = 0, // 기본 0ms: 최소 표시 시간 없음 (필요 시 설정)
   } = parsedArgs as AxiosRequestMeta;
 
   // 타이머 참조와 상태 추적
   let spinnerTimer: ReturnType<typeof setTimeout> | null = null;
-  let minDurationTimer: ReturnType<typeof setTimeout> | null = null;
   let spinnerShown = false; // spinner가 실제로 표시되었는지 추적
 
   // spinner 표시 지연 함수
   const showSpinnerAfterDelay = () => {
     spinnerTimer = setTimeout(() => {
       spinnerShown = true;
-      api.dispatch(showSpinner({ message: spinnerMessage, minDuration }));
+      api.dispatch(showSpinner({ message: spinnerMessage }));
     }, delayShow);
   };
 
@@ -198,33 +192,7 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
       return;
     }
 
-    // Redux 상태 확인
-    const state = api.getState() as { spinner?: { startTime: number | null; minDuration: number } };
-    const spinnerState = state.spinner;
-
-    // minDuration 처리
-    if (spinnerState?.startTime && spinnerState.minDuration > 0) {
-      const elapsed = Date.now() - spinnerState.startTime;
-      const remainingTime = spinnerState.minDuration - elapsed;
-
-      if (remainingTime > 0) {
-        // 최소 표시 시간이 남았으면 스케줄링
-        if (minDurationTimer) {
-          clearTimeout(minDurationTimer);
-        }
-        minDurationTimer = setTimeout(() => {
-          api.dispatch(hideSpinner());
-          minDurationTimer = null;
-        }, remainingTime);
-        return;
-      }
-    }
-
     // 즉시 숨김
-    if (minDurationTimer) {
-      clearTimeout(minDurationTimer);
-      minDurationTimer = null;
-    }
     api.dispatch(hideSpinner());
   };
 
@@ -245,7 +213,7 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
       params,
     });
 
-    // 요청 완료 후 spinner 정리 (Redux에서 minDuration 처리)
+    // 요청 완료 후 spinner 정리
     hideSpinnerAndClear();
 
     return { data: result.data };
@@ -279,7 +247,6 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  * - **기본적으로 spinner 표시** (showSpinner: false로 끌 수 있음)
  * - **기본 메시지: "Loading..."**
  * - **기본 100ms 지연 후 표시** (delayShow로 조절 가능)
- * - **최소 표시 시간 없음** (필요 시 minDuration 설정)
  *
  * @example
  * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
@@ -306,7 +273,6 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  *         body: item,
  *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
  *         delayShow: 200,  // ✅ 200ms 후 표시
- *         minDuration: 500,  // ✅ 최소 500ms 유지 (옵션)
  *       }),
  *     }),
  *   })
