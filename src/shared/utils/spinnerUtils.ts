@@ -43,7 +43,7 @@ import {
  * forceShowSpinner('데이터를 불러오는 중...');
  */
 export function forceShowSpinner(message?: string): void {
-  store.dispatch(forceShowSpinnerAction({ message }));
+  store.dispatch(forceShowSpinnerAction(message));
 }
 
 /**
