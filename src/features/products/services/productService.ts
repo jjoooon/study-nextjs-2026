@@ -61,7 +61,6 @@ export const productService = createApi({
 
         return {
           url: `/products?${searchParams.toString()}`,
-          minDuration: 30_000, // 최소 500ms 동안 spinner 표시 유지
         };
       },
       providesTags: ['Products-LIST'],
