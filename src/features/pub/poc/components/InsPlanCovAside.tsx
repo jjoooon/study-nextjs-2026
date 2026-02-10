@@ -139,7 +139,7 @@ export default function InsPlanCovAside() {
           <Typo variant="heading-l" tag="h3">
             인수지침점검
           </Typo>
-          <Button>AI 자동 해결</Button>
+          <Button className="bg-[#000000D9]! border-[#000000D9] text-[#FFD12B]">AI 자동 해결</Button>
         </Grow>
         <Gcol variant="box-line" placement="ts" className="w-full">
           <Table>
