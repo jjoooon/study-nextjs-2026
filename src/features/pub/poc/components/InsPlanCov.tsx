@@ -246,7 +246,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
           } else if (value === '거절' || value === '조건부인수') {
             return { color: '#FB3F3F' };
           }
-          return {};
+          return undefined;
         },
       },
     ],
