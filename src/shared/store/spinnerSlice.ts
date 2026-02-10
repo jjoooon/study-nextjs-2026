@@ -121,11 +121,14 @@ const spinnerSlice = createSlice({
      * - API 요청 완료와 무관하게 계속 spinner 표시
      * - 수동으로 끄기 전까지 유지
      */
-    forceShowSpinner: (state, action: PayloadAction<{ message?: string } | undefined>) => {
-      state.globalManual = true;
-      state.isVisible = true;
-      state.message = action.payload?.message ?? null;
-      state.count = 0; // API 요청 count와 무관하게 동작하도록 초기화
+    forceShowSpinner: {
+      reducer: (state, action: PayloadAction<{ message?: string }>) => {
+        state.globalManual = true;
+        state.isVisible = true;
+        state.message = action.payload.message ?? null;
+        state.count = 0; // API 요청 count와 무관하게 동작하도록 초기화
+      },
+      prepare: (message?: string) => ({ payload: { message } }),
     },
 
     /**
@@ -136,6 +139,9 @@ const spinnerSlice = createSlice({
       state.isVisible = false;
       state.message = null;
       state.count = 0;
+      state.startTime = null;
+      state.transparentBackground = false;
+      state.hideLoadingIndicator = false;
     },
 
     /**
