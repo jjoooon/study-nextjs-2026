@@ -49,6 +49,11 @@ src/
 │   │   │   └── case3/   - 고급 XML 처리
 │   │   ├── mdi/          # Multiple Data Interface 예제
 │   │   └── mdi2/         # 고급 MDI 예제
+│   ├── pub/              # 퍼블리싱 페이지
+│   │   └── poc/         # POC (Proof of Concept) 퍼블리싱
+│   │       ├── [pageId]/  # 동적 페이지 라우팅
+│   │       ├── pages/     # 퍼블리싱 페이지 컴포넌트
+│   │       └── layout.tsx # 퍼블리싱 레이아웃
 │   ├── login/            # 로그인 페이지
 │   ├── providers.tsx      # 애플리케이션 전체 Provider
 │   ├── layout.tsx         # 루트 레이아웃
@@ -65,15 +70,26 @@ src/
 │   │   ├── types/        # TypeScript 타입
 │   │   ├── utils/        # 유틸리티 함수
 │   │   └── constants/    # 상수
-│   └── products/         # 상품 기능
-│       ├── components/   # 상품 컴포넌트
-│       ├── sections/     # 페이지 섹션 (목록, 상세, 생성, 수정)
-│       ├── hooks/        # 커스텀 훅
-│       ├── services/     # API 서비스
-│       ├── store/        # Redux 슬라이스
-│       ├── types/        # TypeScript 타입
-│       ├── utils/        # 유틸리티 함수
-│       └── constants/    # 상수
+│   ├── products/         # 상품 기능
+│   │   ├── components/   # 상품 컴포넌트
+│   │   ├── sections/     # 페이지 섹션 (목록, 상세, 생성, 수정)
+│   │   ├── hooks/        # 커스텀 훅
+│   │   ├── services/     # API 서비스
+│   │   ├── store/        # Redux 슬라이스
+│   │   ├── types/        # TypeScript 타입
+│   │   ├── utils/        # 유틸리티 함수
+│   │   └── constants/    # 상수
+│   └── pub/              # 퍼블리싱 기능
+│       └── poc/         # POC 퍼블리싱 컴포넌트
+│           ├── components/  # 퍼블리싱 UI 컴포넌트
+│           │   ├── InsPlanBasic*    # 보험설계 기본정보 (Step1~3, Bottom, Aside)
+│           │   ├── InsPlanList*     # 보험설계 목록 (Dep1~3, Bottom, Set)
+│           │   └── Page*Index.ts    # 페이지 인덱스 컴포넌트
+│           ├── sections/    # 퍼블리싱 페이지 섹션
+│           ├── hooks/       # 커스텀 훅 (useForm 등)
+│           ├── types/       # TypeScript 타입 (insPlanBasic 등)
+│           ├── constants/   # 퍼블리싱 상수 데이터
+│           └── services/    # 퍼블리싱 API 서비스
 ├── middleware/            # Next.js 미들웨어
 │   ├── handlers/         # 미들웨어 핸들러
 │   │   ├── debugLogLevel.ts    # 디버그 로그 레벨 설정
@@ -82,17 +98,31 @@ src/
 │   └── types.ts          # 미들웨어 타입 정의
 ├── shared/               # 공유 유틸리티 및 컴포넌트
 │   ├── components/       # 재사용 가능한 UI 컴포넌트
-│   │   ├── ui/          # 기본 UI 컴포넌트 (Button, Skeleton, EmptyState 등)
+│   │   ├── common/      # 기본 공통 컴포넌트 (ConfirmDialog, DatePicker, FormTable, Typo, ZoomControl 등)
+│   │   ├── features/    # 기능별 공통 컴포넌트 (FlowStatus, UserSearch 등)
+│   │   ├── icons/       # 아이콘 컴포넌트
+│   │   ├── layout/      # 레이아웃 컴포넌트 (Cabinet, LayoutBody, LayoutFolder 등)
+│   │   ├── popups/      # 팝업 컴포넌트
+│   │   ├── uiux/        # UI/UX 컴포넌트 (Button, Input, NativeSelect, TableRow 등)
 │   │   ├── AuthGuard.tsx   # 인증 가드
 │   │   └── Navigation.tsx  # 네비게이션
 │   ├── config/          # 공유 설정 (env.ts 등)
 │   ├── constants/       # 공유 상수
-│   ├── lib/            # 공유 라이브러리 (shadcn/utils)
+│   ├── hooks/           # 공용 커스텀 훅
+│   ├── lib/            # 공유 라이브러리
+│   │   ├── axios/      # Axios 설정
+│   │   ├── rtkQuery/   # RTK Query 설정
+│   │   └── shadcn/     # shadcn/utils
 │   ├── services/       # 공유 서비스
 │   ├── store/          # 공유 Redux 슬라이스 (auth, popup)
 │   ├── styles/         # 공유 스타일
 │   ├── types/          # 공유 TypeScript 타입
-│   └── utils/          # 유틸리티 함수 (logger, validation, ipUtils 등)
+│   └── utils/          # 유틸리티 함수
+│       ├── file/       # 파일 관련 유틸
+│       ├── popup/      # 팝업 관련 유틸
+│       ├── url/        # URL 관련 유틸
+│       ├── validation/ # 유효성 검사 유틸
+│       └── xml/        # XML 파싱 유틸
 ├── redux/               # Redux 스토어 설정
 │   ├── middleware/     # Redux 미들웨어 (performance)
 │   ├── reducers/       # 리듀서 훅
@@ -310,9 +340,23 @@ DEBUG_LOG_LEVEL=debug
 - **로딩 상태** - UX 개선을 위한 로딩 UI
 - **XML 처리 예제** - 다양한 XML 파싱 기법 학습 (case1, case2, case3)
 - **MDI 예제** - Multiple Data Interface 패턴 구현
+- **POC 퍼블리싱** - 보험설계 UI 퍼블리싱 (`/pub/poc`)
+  - 보험설계 기본정보 (InsPlanBasic)
+  - 보험설계 목록 (InsPlanList)
+  - 동적 페이지 라우팅 지원
 
 ### UI 컴포넌트
-- **Button** - CVA 기반 변형 관리
+- **공통 컴포넌트** (`components/common/`)
+  - ConfirmDialog, DatePicker, ErrorMsg, FormTable
+  - Group, SortableButton, TablePagination, Typo, ZoomControl
+- **기능 컴포넌트** (`components/features/`)
+  - FlowStatus, UserSearch
+- **레이아웃 컴포넌트** (`components/layout/`)
+  - Cabinet (LayoutBody, LayoutFolder)
+- **UI/UX 컴포넌트** (`components/uiux/`)
+  - Button, Input, NativeSelect, NativeSelectOption, TableRow
+- **아이콘** (`components/icons/`)
+  - SearchIcon 등 Lucide 기반 아이콘
 - **AuthGuard** - 인증 가드 컴포넌트
 - **Navigation** - 네비게이션 컴포넌트
 - **ProductGrid** - 상품 그리드 컴포넌트
@@ -353,6 +397,10 @@ DEBUG_LOG_LEVEL=debug
 - **고급 MDI** - `/sample/mdi2/*`
   - 컴포넌트 기반 MDI 패턴
   - 탭 패널 및 페이지 렌더러
+- **POC 퍼블리싱** - `/pub/poc/*`
+  - 보험설계 UI 컴포넌트 구조
+  - 폼 상태 관리 (useForm hook)
+  - 퍼블리싱 데이터 상수 관리
 
 ## 학습 리소스
 
