@@ -5,10 +5,11 @@
  * 전역 spinner 상태 관리를 위한 Redux Slice
  * - Axios interceptor와 연동하여 API 요청 시 자동 표시
  * - 특정 요청에 대해서만 spinner 표시 가능
- * - 수동 제어를 위한 hook 제공
+ * - 전역 수동 모드: API 요청 완료와 무관하게 수동으로 제어
  *
  * @features
  * - 요청 카운트 기반 중첩 요청 처리
+ * - 전역 수동 모드 (globalManual): 수동 끄기 전까지 계속 표시
  * - 메시지 및 옵션 커스터마이징
  * - 타입 안전한 상태 관리
  */
@@ -45,6 +46,8 @@ interface SpinnerState {
   startTime: number | null;
   /** 최소 표시 시간 */
   minDuration: number;
+  /** 전역 수동 모드: true이면 API 요청 완료와 무관하게 계속 표시 */
+  globalManual: boolean;
 }
 
 // ============================================================================
@@ -57,6 +60,7 @@ const initialState: SpinnerState = {
   message: null,
   startTime: null,
   minDuration: 300, // 기본 300ms: 100ms 미만은 깜빡임, 500ms 이상은 지연감
+  globalManual: false, // 전역 수동 모드 비활성화
 };
 
 // ============================================================================
@@ -89,6 +93,14 @@ const spinnerSlice = createSlice({
      * Spinner 숨김
      */
     hideSpinner: (state) => {
+      // 전역 수동 모드가 활성화되어 있으면 숨기지 않음
+      if (state.globalManual) {
+        if (state.count > 0) {
+          state.count -= 1;
+        }
+        return;
+      }
+
       if (state.count > 0) {
         state.count -= 1;
       }
@@ -99,6 +111,28 @@ const spinnerSlice = createSlice({
         state.message = null;
         state.startTime = null;
       }
+    },
+
+    /**
+     * 전역 spinner 강제 표시
+     * - API 요청 완료와 무관하게 계속 spinner 표시
+     * - 수동으로 끄기 전까지 유지
+     */
+    forceShowSpinner: (state, action: PayloadAction<{ message?: string } | undefined>) => {
+      state.globalManual = true;
+      state.isVisible = true;
+      state.message = action.payload?.message ?? null;
+      state.count = 0; // API 요청 count와 무관하게 동작하도록 초기화
+    },
+
+    /**
+     * 전역 spinner 강제 숨김
+     */
+    forceHideSpinner: (state) => {
+      state.globalManual = false;
+      state.isVisible = false;
+      state.message = null;
+      state.count = 0;
     },
 
     /**
@@ -123,7 +157,17 @@ const spinnerSlice = createSlice({
 // ACTIONS & REDUCER
 // ============================================================================
 
-export const { showSpinner, hideSpinner, resetSpinner, updateMessage } = spinnerSlice.actions;
+export const {
+  // API 요청 기반 spinner
+  showSpinner,
+  hideSpinner,
+  // 전역 spinner (강제 모드)
+  forceShowSpinner,
+  forceHideSpinner,
+  // 기타
+  resetSpinner,
+  updateMessage,
+} = spinnerSlice.actions;
 export default spinnerSlice.reducer;
 
 // ============================================================================
@@ -133,20 +177,14 @@ export default spinnerSlice.reducer;
 export type { SpinnerState };
 
 // ============================================================================
-// SELECTORS
+// SELECTOR RE-EXPORTS
 // ============================================================================
 
 /**
- * Spinner 표시 여부 selector
+ * Spinner Selectors
+ *
+ * @description
+ * Selector는 별도 파일로 분리되어 있습니다.
+ * @see spinnerSelectors.ts
  */
-export const selectIsSpinnerVisible = (state: { spinner: SpinnerState }) => state.spinner.isVisible;
-
-/**
- * Spinner 메시지 selector
- */
-export const selectSpinnerMessage = (state: { spinner: SpinnerState }) => state.spinner.message;
-
-/**
- * Spinner 카운트 selector
- */
-export const selectSpinnerCount = (state: { spinner: SpinnerState }) => state.spinner.count;
+export * from './spinnerSelectors';
