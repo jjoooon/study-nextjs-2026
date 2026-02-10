@@ -28,7 +28,7 @@ export const productsHandlers = [
     const sortOrder = url.searchParams.get('sortOrder') || 'desc';
 
     // 네트워크 지연 시뮬레이션 (30-60ms)
-    await delay(Math.floor(Math.random() * 30) + 2000);
+    await delay(Math.floor(Math.random() * 30) + 30);
 
     // 필터링 로직
     let filteredProducts = [...mockProducts];

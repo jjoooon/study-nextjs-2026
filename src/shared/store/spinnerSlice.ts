@@ -59,7 +59,7 @@ const initialState: SpinnerState = {
   isVisible: false,
   message: null,
   startTime: null,
-  minDuration: 300, // 기본 300ms: 100ms 미만은 깜빡임, 500ms 이상은 지연감
+  minDuration: 0, // 기본 0ms: 최소 표시 시간 없음
   globalManual: false, // 전역 수동 모드 비활성화
 };
 
@@ -84,7 +84,7 @@ const spinnerSlice = createSlice({
       if (state.count === 1) {
         state.isVisible = true;
         state.message = action.payload.message ?? null;
-        state.minDuration = action.payload.minDuration ?? 300;
+        state.minDuration = action.payload.minDuration ?? 0; // 기본 0ms
         state.startTime = Date.now();
       }
     },
@@ -110,6 +110,7 @@ const spinnerSlice = createSlice({
         state.isVisible = false;
         state.message = null;
         state.startTime = null;
+        state.minDuration = 0;
       }
     },
 

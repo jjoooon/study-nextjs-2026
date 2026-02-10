@@ -175,15 +175,13 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
   // 타이머 참조와 상태 추적
   let spinnerTimer: ReturnType<typeof setTimeout> | null = null;
   let minDurationTimer: ReturnType<typeof setTimeout> | null = null;
-  let isSpinnerShown = false;
-  let spinnerShownAt: number | null = null;
+  let spinnerShown = false; // spinner가 실제로 표시되었는지 추적
 
   // spinner 표시 지연 함수
   const showSpinnerAfterDelay = () => {
     spinnerTimer = setTimeout(() => {
+      spinnerShown = true;
       api.dispatch(showSpinner({ message: spinnerMessage, minDuration }));
-      isSpinnerShown = true;
-      spinnerShownAt = Date.now();
     }, delayShow);
   };
 
@@ -195,30 +193,39 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
       spinnerTimer = null;
     }
 
-    // 최소 표시 시간 타이머 정리
+    // 아직 spinner가 표시되지 않았으면 바로 숨김 (아직 showSpinner가 dispatch되지 않음)
+    if (!spinnerShown) {
+      return;
+    }
+
+    // Redux 상태 확인
+    const state = api.getState() as { spinner?: { startTime: number | null; minDuration: number } };
+    const spinnerState = state.spinner;
+
+    // minDuration 처리
+    if (spinnerState?.startTime && spinnerState.minDuration > 0) {
+      const elapsed = Date.now() - spinnerState.startTime;
+      const remainingTime = spinnerState.minDuration - elapsed;
+
+      if (remainingTime > 0) {
+        // 최소 표시 시간이 남았으면 스케줄링
+        if (minDurationTimer) {
+          clearTimeout(minDurationTimer);
+        }
+        minDurationTimer = setTimeout(() => {
+          api.dispatch(hideSpinner());
+          minDurationTimer = null;
+        }, remainingTime);
+        return;
+      }
+    }
+
+    // 즉시 숨김
     if (minDurationTimer) {
       clearTimeout(minDurationTimer);
       minDurationTimer = null;
     }
-
-    // spinner가 표시된 경우에만 숨김 처리
-    if (isSpinnerShown) {
-      const elapsed = spinnerShownAt ? Date.now() - spinnerShownAt : 0;
-
-      // 최소 표시 시간이 지나지 않았으면 지연 후 숨김
-      if (elapsed < minDuration) {
-        const remainingTime = minDuration - elapsed;
-        minDurationTimer = setTimeout(() => {
-          api.dispatch(hideSpinner());
-        }, remainingTime);
-      } else {
-        // 최소 시간이 지났으면 바로 숨김
-        api.dispatch(hideSpinner());
-      }
-
-      isSpinnerShown = false;
-      spinnerShownAt = null;
-    }
+    api.dispatch(hideSpinner());
   };
 
   // body 우선, data fallback (RTK Query 호환성)
@@ -238,12 +245,12 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
       params,
     });
 
-    // 요청 완료 후 spinner 정리 (minDuration 고려)
+    // 요청 완료 후 spinner 정리 (Redux에서 minDuration 처리)
     hideSpinnerAndClear();
 
     return { data: result.data };
   } catch (error) {
-    // 에러 시에도 spinner 정리 (minDuration 고려)
+    // 에러 시에도 spinner 정리
     hideSpinnerAndClear();
 
     if (axios.isAxiosError(error)) {
