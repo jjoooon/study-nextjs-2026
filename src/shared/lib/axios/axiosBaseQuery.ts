@@ -8,11 +8,13 @@
  * - RTK Query의 모든 기능 유지
  * - 401 에러 시 로그아웃 처리
  * - RTK Query의 `body`와 Axios의 `data` 자동 매핑
+ * - 전역 spinner 자동 표시/숨김
  *
  * @architecture
  * - Axios 인스턴스: 글로벌 설정
  * - withCredentials: 쿠키 자동 전송
- * - Response Interceptor: 401 에러 시 로그아웃
+ * - Request Interceptor: 요청 시 spinner 표시
+ * - Response Interceptor: 응답 시 spinner 숨김, 401 에러 시 로그아웃
  * - Body-to-Data 매핑: RTK Query 호환성 보장
  *
  * @usage
@@ -27,6 +29,10 @@
  *         url: '/items',
  *         method: 'POST',
  *         body: item,  // ✅ 자동으로 data로 매핑됨
+ *         showSpinner: true,  // ✅ spinner 표시 옵션 (기본 true)
+ *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
+ *         delayShow: 200,  // ✅ 200ms 후 spinner 표시 (기본 100ms)
+ *         minDuration: 500,  // ✅ 최소 500ms 동안 표시 유지 (기본 300ms)
  *       }),
  *     }),
  *   })
@@ -35,6 +41,7 @@
  * @see
  * - authService: @/shared/services/authService - 사용 예시
  * - authSlice: @/shared/store/authSlice - Auth 상태 관리
+ * - spinnerSlice: @/shared/store/spinnerSlice - Spinner 상태 관리
  * - MSW Handlers: @/mocks/handlers/auth.ts - 개발용 API 모킹
  * - RTK Query Docs: https://redux-toolkit.js.org/rtk-query/api/createApi
  * - Axios Interceptors: https://axios-http.com/docs/interceptors
@@ -45,11 +52,26 @@ import axios, { AxiosError, AxiosInstance, Method } from 'axios';
 
 import { publicConfig } from '@/shared/config/env';
 import { clearCredentials } from '@/shared/store/authSlice';
+import { hideSpinner, showSpinner } from '@/shared/store/spinnerSlice';
 import { deleteCookieValues } from '@/shared/utils/cookieUtils';
 
 // ============================================================================
 // TYPES
 // ============================================================================
+
+/**
+ * Axios 요청 메타데이터
+ */
+export interface AxiosRequestMeta {
+  /** spinner 표시 여부 (기본: true) */
+  showSpinner?: boolean;
+  /** spinner 메시지 */
+  spinnerMessage?: string;
+  /** spinner 표시 지연 시간 (ms) - 이 시간 내에 완료되면 spinner 미표시 */
+  delayShow?: number;
+  /** spinner 최소 표시 시간 (ms) - spinner가 표시되면 최소 이 시간 동안 유지 */
+  minDuration?: number;
+}
 
 // ============================================================================
 // AXIOS INSTANCE
@@ -129,6 +151,9 @@ const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
  * @description
  * 쿠키 인증과 통합된 RTK Query BaseQuery
  * - 401 에러 시 자동 로그아웃
+ * - **짧은 요청은 spinner 미표시** (기본 100ms 지연 후 표시)
+ * - **최소 표시 시간 보장** (기본 0ms, 필요 시 minDuration 설정)
+ * - 기본 메시지: "Loading..."
  * - RTK Query의 body를 Axios의 data로 자동 매핑
  */
 const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
@@ -139,11 +164,80 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
   const parsedArgs = typeof args === 'string' ? { url: args } : args;
   const { url, method, body, data, params } = parsedArgs;
 
+  // spinner 옵션 추출
+  const {
+    showSpinner: showSpinnerOption = true,
+    spinnerMessage = 'Loading...',
+    delayShow = 100, // 기본 100ms: 이 시간 내에 완료되면 spinner 미표시
+    minDuration = 0, // 기본 0ms: 최소 표시 시간 없음 (필요 시 설정)
+  } = parsedArgs as AxiosRequestMeta;
+
+  // 타이머 참조와 상태 추적
+  let spinnerTimer: ReturnType<typeof setTimeout> | null = null;
+  let minDurationTimer: ReturnType<typeof setTimeout> | null = null;
+  let spinnerShown = false; // spinner가 실제로 표시되었는지 추적
+
+  // spinner 표시 지연 함수
+  const showSpinnerAfterDelay = () => {
+    spinnerTimer = setTimeout(() => {
+      spinnerShown = true;
+      api.dispatch(showSpinner({ message: spinnerMessage, minDuration }));
+    }, delayShow);
+  };
+
+  // spinner 숨김 및 타이머 정리 함수
+  const hideSpinnerAndClear = () => {
+    // 지연 타이머 정리
+    if (spinnerTimer) {
+      clearTimeout(spinnerTimer);
+      spinnerTimer = null;
+    }
+
+    // 아직 spinner가 표시되지 않았으면 바로 숨김 (아직 showSpinner가 dispatch되지 않음)
+    if (!spinnerShown) {
+      return;
+    }
+
+    // Redux 상태 확인
+    const state = api.getState() as { spinner?: { startTime: number | null; minDuration: number } };
+    const spinnerState = state.spinner;
+
+    // minDuration 처리
+    if (spinnerState?.startTime && spinnerState.minDuration > 0) {
+      const elapsed = Date.now() - spinnerState.startTime;
+      const remainingTime = spinnerState.minDuration - elapsed;
+
+      if (remainingTime > 0) {
+        // 최소 표시 시간이 남았으면 스케줄링
+        if (minDurationTimer) {
+          clearTimeout(minDurationTimer);
+        }
+        minDurationTimer = setTimeout(() => {
+          api.dispatch(hideSpinner());
+          minDurationTimer = null;
+        }, remainingTime);
+        return;
+      }
+    }
+
+    // 즉시 숨김
+    if (minDurationTimer) {
+      clearTimeout(minDurationTimer);
+      minDurationTimer = null;
+    }
+    api.dispatch(hideSpinner());
+  };
+
   // body 우선, data fallback (RTK Query 호환성)
   const requestData = body ?? data;
   const requestMethod = method?.toLowerCase() as Method;
 
   try {
+    // spinner 표시 지연 시작
+    if (showSpinnerOption) {
+      showSpinnerAfterDelay();
+    }
+
     const result = await instance({
       url,
       method: requestMethod,
@@ -151,8 +245,14 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
       params,
     });
 
+    // 요청 완료 후 spinner 정리 (Redux에서 minDuration 처리)
+    hideSpinnerAndClear();
+
     return { data: result.data };
   } catch (error) {
+    // 에러 시에도 spinner 정리
+    hideSpinnerAndClear();
+
     if (axios.isAxiosError(error)) {
       return {
         error: {
@@ -176,17 +276,45 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  * 모든 API service에서 사용하는 기본 baseQuery
  * - 쿠키 자동 전송 (withCredentials: true)
  * - 401 에러 시 자동 로그아웃
+ * - **기본적으로 spinner 표시** (showSpinner: false로 끌 수 있음)
+ * - **기본 메시지: "Loading..."**
+ * - **기본 100ms 지연 후 표시** (delayShow로 조절 가능)
+ * - **최소 표시 시간 없음** (필요 시 minDuration 설정)
  *
  * @example
  * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
  *
  * export const myApi = createApi({
  *   baseQuery,
- *   endpoints: (builder) => ({ ... })
+ *   endpoints: (builder) => ({
+ *     // 기본 spinner 표시 (메시지: "Loading...", 100ms 지연)
+ *     getItems: builder.query({
+ *       query: () => '/items',
+ *     }),
+ *     // spinner 끄기
+ *     fastQuery: builder.query({
+ *       query: () => ({
+ *         url: '/fast',
+ *         showSpinner: false,  // ❌ spinner 미표시
+ *       }),
+ *     }),
+ *     // 커스텀 메시지 및 시간 설정
+ *     createItem: builder.mutation({
+ *       query: (item) => ({
+ *         url: '/items',
+ *         method: 'POST',
+ *         body: item,
+ *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
+ *         delayShow: 200,  // ✅ 200ms 후 표시
+ *         minDuration: 500,  // ✅ 최소 500ms 유지 (옵션)
+ *       }),
+ *     }),
+ *   })
  * });
  *
  * @see
  * - authService: @/shared/services/authService - 실제 사용 예시
+ * - spinnerSlice: @/shared/store/spinnerSlice - Spinner 상태 관리
  * - RTK Query BaseQuery: https://redux-toolkit.js.org/rtk-query/api/createApi#basequery
  */
 export const baseQuery = axiosBaseQueryWithReauth;

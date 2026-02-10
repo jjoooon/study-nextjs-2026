@@ -47,6 +47,7 @@ import type { Metadata, Viewport } from 'next';
 
 import '@/shared/styles/globals.css';
 import { AuthGuard } from '@/shared/components/AuthGuard';
+import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import { Providers } from './providers';
 
@@ -72,6 +73,7 @@ export default function RootLayout({
         <Providers>
           <AuthGuard>{children}</AuthGuard>
           <DialogRoot />
+          <SpinnerRoot />
         </Providers>
       </body>
     </html>

@@ -1,6 +1,6 @@
 # 아키텍처 가이드
 
-이 문서는 Next.js 스터디 프로젝트의 아키텍처 설계, 원칙, 그리고 기술적 의사결정을 설명합니다.
+이 문서는 프로젝트의 아키텍처 설계, 원칙, 그리고 기술적 의사결정을 설명합니다.
 
 ## 목차
 
@@ -158,25 +158,42 @@ class PriceFilter implements ProductFilter {
 
 ```
 src/features/
-├── auth/                    # 인증 기능
-│   ├── components/          # 인증 UI
-│   ├── hooks/              # 인증 로직
-│   ├── services/           # 인증 API
-│   ├── store/              # 인증 상태
-│   └── types/              # 인증 타입
-│
 ├── dashboard/              # 대시보드 기능
+│   ├── components/          # 대시보드 UI
+│   ├── hooks/              # 대시보드 로직
+│   ├── store/              # 대시보드 UI 상태
+│   └── types/              # 대시보드 타입
+│
+├── products/               # 상품 기능
+│   ├── components/          # 상품 UI 컴포넌트
+│   ├── hooks/              # 상품 관련 커스텀 훅
+│   ├── services/           # 상품 API 서비스
+│   ├── store/              # 상품 UI 상태 관리
+│   ├── types/              # 상품 타입 정의
+│   ├── utils/              # 상품 유틸리티
+│   ├── constants/          # 상품 상수
+│   └── sections/           # 페이지 섹션 컴포넌트
+│
+├── poc/                    # POC (Proof of Concept)
 │   └── ...
 │
-└── products/               # 상품 기능
-    ├── components/          # 상품 UI 컴포넌트
-    ├── hooks/              # 상품 관련 커스텀 훅
-    ├── services/           # 상품 API 서비스
-    ├── store/              # 상품 상태 관리
-    ├── types/              # 상품 타입 정의
-    ├── utils/              # 상품 유틸리티
-    ├── constants/          # 상품 상수
-    └── sections/           # 페이지 섹션 컴포넌트
+└── pub/                    # 공개 기능
+    └── ...
+
+src/shared/                 # 공유 레이어
+├── components/             # 공유 UI 컴포넌트
+├── store/                  # 공유 상태 (auth, popup 등)
+├── config/                 # 환경 설정
+├── utils/                  # 공유 유틸리티
+└── types/                  # 공유 타입
+
+src/redux/                  # Redux 설정
+├── api/                    # RTK Query API 슬라이스
+├── registry/               # 리듀서/미들웨어 레지스트리
+├── middleware/             # 커스텀 미들웨어
+├── config.ts               # Redux 설정
+├── storage.ts              # 보안 스토리지
+└── setup.ts                # 리듀서 초기화
 ```
 
 ### 장점
@@ -204,10 +221,16 @@ export default [
       'boundaries/element-types': [
         'error',
         {
+          default: 'disallow', // 기본: 모든 import 금지
           rules: [
             {
+              from: 'shared',
+              allow: ['shared'], // Shared는 Shared와 Features를 import 가능
+              message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
+            },
+            {
               from: 'features',
-              disallow: ['features'],
+              allow: ['shared'], // Feature는 Shared만 import 가능
               message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
             },
           ],
@@ -242,7 +265,7 @@ export default [
 
 ```typescript
 // ✅ 올바른 import (Shared Layer)
-import { Button } from '@/shared/components/ui/Button'
+import { Button } from '@/shared/components/uiux/Button'
 
 // ✅ 올바른 import (같은 Feature 내)
 import { ProductFilters } from '@/features/products/components/ProductFilters'
@@ -434,57 +457,94 @@ const [formData, setFormData] = useState(initialForm)
 
 ```typescript
 interface RootState {
-  // Feature Slices
+  // Shared Slices (src/shared/store/)
   auth: AuthState          // 인증 상태
-  dashboard: DashboardState // 대시보드 상태
-  products: ProductsState  // 상품 상태
-  productsUI: ProductsUIState // 상품 UI 상태
+  popup: PopupState        // 팝업 상태
+
+  // Feature UI Slices (src/features/*/store/)
+  dashboard: DashboardState // 대시보드 UI 상태
+  products: ProductsUIState  // 상품 UI 상태 (선택, 뷰모드 등)
+
+  // API Slices (src/redux/api/)
+  // RTK Query로 관리되는 서버 데이터 상태
+  // - productsApi: 상품 데이터
+  // - dashboardApi: 대시보드 통계
 }
 ```
+
+**상태 분리 원칙:**
+- **UI 상태**: Redux Slice (`features/*/store/*.ts`)
+  - 폼 입력, 선택 항목, 모달 열기/닫기 등 일시적 상태
+- **서버 데이터**: RTK Query (`src/redux/api/*.ts`)
+  - API 호출, 캐싱, 재요청 등 서버 데이터 관리
 
 ### Redux Toolkit 패턴
 
-#### 1. Slice 구조
+#### 1. UI Slice 구조
 
 ```typescript
-// features/products/store/productsSlice.ts
+// features/products/store/productsUISlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface ProductsState {
-  items: Product[]
-  loading: boolean
-  error: string | null
+interface ProductsUIState {
+  selectedProducts: number[]
+  // UI 전용 상태만 관리 (필터, 정렬은 URL로 관리)
 }
 
-const productsSlice = createSlice({
+const initialState: ProductsUIState = {
+  selectedProducts: [],
+}
+
+export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setProducts: (state, action: PayloadAction<Product[]>) => {
-      state.items = action.payload
+    toggleProductSelection: (state, action: PayloadAction<number>) => {
+      const index = state.selectedProducts.indexOf(action.payload)
+      if (index === -1) {
+        state.selectedProducts.push(action.payload)
+      } else {
+        state.selectedProducts.splice(index, 1)
+      }
     },
-    // ... other reducers
+    clearProductSelection: (state) => {
+      state.selectedProducts = []
+    },
   },
 })
 
-export const { setProducts } = productsSlice.actions
+export const { toggleProductSelection, clearProductSelection } = productsSlice.actions
 export default productsSlice.reducer
 ```
+
+**참고:** 서버 데이터는 RTK Query API 슬라이스에서 별도 관리됩니다.
 
 #### 2. Selector 패턴
 
 ```typescript
 // features/products/store/productsSelectors.ts
-import { RootState } from '@/store'
+import { createSelector } from '@reduxjs/toolkit'
+import type { RootState } from '@/redux'
 
-export const selectAllProducts = (state: RootState) =>
-  state.products.items
+// Base Selectors
+export const selectProductsState = (state: RootState) => state.products
 
-export const selectProductById = (state: RootState, id: string) =>
-  state.products.items.find((p) => p.id === id)
+// Memoized Selectors
+export const selectSelectedProducts = createSelector(
+  [selectProductsState],
+  (products) => products.selectedProducts
+)
 
-export const selectProductsLoading = (state: RootState) =>
-  state.products.loading
+export const selectSelectedProductsCount = createSelector(
+  [selectSelectedProducts],
+  (selectedProducts) => selectedProducts.length
+)
+```
+
+**참고:** 서버 데이터 선택자는 RTK Query가 자동 생성합니다:
+```typescript
+// RTK Query 자동 생성 선택자
+const { data: products, isLoading, error } = useGetProductsQuery()
 ```
 
 #### 3. Registry Pattern
@@ -492,31 +552,36 @@ export const selectProductsLoading = (state: RootState) =>
 동적 리듀서 등록을 위한 레지스트리 패턴:
 
 ```typescript
-// store/registry/reducer.ts
+// src/redux/registry/reducer.ts
 import { Reducer } from '@reduxjs/toolkit'
 
-interface ReducerRegistry {
-  [key: string]: Reducer
+class ReducerRegistry {
+  private entries: Map<string, ReducerEntry> = new Map()
+  // ... 전체 구현은 실제 파일 참조
 }
 
-const reducerRegistry: ReducerRegistry = {}
-
-export const registerReducer = (key: string, reducer: Reducer) => {
-  reducerRegistry[key] = reducer
-}
-
-export const getReducers = () => reducerRegistry
+export const reducerRegistry = new ReducerRegistry({
+  validateKeys: true,
+  warnOnDuplicate: true,
+  mergeStrategy: 'replace',
+})
 ```
+
+**주요 기능:**
+- 동적 리듀서 등록/제거 (Code Splitting 지원)
+- 우선순위 기반 리듀서 실행 순서
+- 런타임 리듀서 주입 (injectReducer/ejectReducer 액션)
 
 ### Redux Persist
 
-**보안 강화된 sessionStorage에 상태 지속:**
+**⚠️ sessionStorage에 상태 지속 (학습용 설정):**
+
+> **보안 경고**: 이 설정은 학습 목적입니다. sessionStorage는 XSS 공격에 취약합니다. 실제 서비스에서는 httpOnly 쿠키와 서버 사이드 세션을 사용하세요.
 
 ```typescript
-// store/storage.ts
+// src/redux/storage.ts
 export const createSecureStorage = () => {
   if (typeof window === 'undefined') {
-    // SSR 대체 처리
     return {
       getItem: (_key: string) => Promise.resolve(null),
       setItem: (_key: string, _value: string) => Promise.resolve(),
@@ -533,10 +598,10 @@ export const createSecureStorage = () => {
 
 export const secureStorage = createSecureStorage();
 
-// store/config.ts
+// src/redux/config.ts
 const persistConfig = {
   key: 'root',
-  storage: secureStorage, // 🔒 sessionStorage 사용 (localStorage보다 안전)
+  storage: secureStorage, // ⚠️ sessionStorage 사용 (학습용, 프로덕션에서는 httpOnly 쿠키 권장)
   version: 1,
   whitelist: ['auth'], // 지속할 상태
   // transforms: [], // TODO: auth 구현 후 민감 데이터 필터링 활성화
@@ -545,10 +610,12 @@ const persistConfig = {
 ```
 
 **보안 특징:**
-- ✅ **sessionStorage 사용**: 탭 닫으면 자동 삭제 (localStorage보다 안전)
-- ✅ **XSS 공격 방지**: 토큰이 브라우저에 장기간 노출되지 않음
+- ⚠️ **sessionStorage 한계**: XSS 공격에 취약함 (localStorage와 동일한 보안 수준)
+- ✅ **탭 수명 주기**: 탭 닫으면 자동 삭제 (일회성 세션에 적합)
 - ✅ **SSR 호환**: 서버 사이드 렌더링 대응
-- ⚠️ **프로덕션 권장**: httpOnly 쿠키 사용 (서버 사이드)
+- 🔒 **프로덕션 필수**: httpOnly 쿠키 사용 (XSS 방지, 서버 사이드)
+
+**보안 경고**: sessionStorage와 localStorage는 둘 다 XSS 공격에 취약합니다. `sessionStorage`는 토큰 저장소가 아니라 개발/학습용 임시 저장소로만 사용해야 합니다. 실제 보안이 필요한 프로덕션에서는 반드시 httpOnly 쿠키를 사용하세요.
 
 ---
 
@@ -610,7 +677,7 @@ export default function ListSection() {
 
 #### 3. Shared UI Components
 
-**위치:** `/src/shared/components/ui/**/*.tsx`
+**위치:** `/src/shared/components/uiux/**/*.tsx`
 
 **역할:**
 - 재사용 가능한 UI 컴포넌트
@@ -723,16 +790,29 @@ Next.js 16의 App Router를 사용:
 app/
 ├── layout.tsx              # 루트 레이아웃
 ├── page.tsx                # 홈 페이지 (/)
+├── providers.tsx           # Redux Provider 등
 ├── login/
 │   └── page.tsx            # 로그인 페이지 (/login)
-└── sample/
+├── poc/                    # POC (Proof of Concept)
+│   ├── [pageId]/page.tsx   # 동적 라우트
+│   └── pages/Main.tsx      # 메인 페이지
+├── pub/                    # 공개 페이지
+│   └── poc/                # 공개 POC
+└── sample/                 # 샘플 앱
     ├── layout.tsx          # 샘플 레이아웃
     ├── dashboard/
     │   └── page.tsx        # 대시보드 (/sample/dashboard)
-    └── products/
-        ├── [pageId]/
-        │   └── page.tsx    # 동적 라우트 (/sample/products/:pageId)
-        └── pages/          # 페이지 컴포넌트들
+    ├── products/           # 제품 관리
+    │   ├── [pageId]/
+    │   │   └── page.tsx    # 동적 라우트 (/sample/products/:pageId)
+    │   └── pages/          # 페이지 컴포넌트들
+    │       ├── List.tsx
+    │       ├── Detail.tsx
+    │       ├── Edit.tsx
+    │       └── New.tsx
+    ├── mdi/                # MDI (Multiple Document Interface) 샘플
+    ├── xml/                # XML 처리 샘플
+    └── ...
 ```
 
 ### 라우팅 원칙
@@ -774,14 +854,41 @@ export default function SampleLayout({ children }) {
 
 ```typescript
 // shared/components/auth/AuthGuard.tsx
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
 export const AuthGuard = ({ children }) => {
+  const router = useRouter()
   const { isAuthenticated } = useAuth()
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login')
+    }
+  }, [isAuthenticated, router])
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" />
+    return null // 또는 로딩 컴포넌트
   }
 
   return <>{children}</>
+}
+```
+
+**참고:** 서버 컴포넌트에서는 `redirect()` 함수 사용:
+```typescript
+import { redirect } from 'next/navigation'
+
+export default function DashboardPage() {
+  const session = await getAuthSession()
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  return <Dashboard />
 }
 ```
 
@@ -789,12 +896,25 @@ export const AuthGuard = ({ children }) => {
 
 ```typescript
 // app/sample/products/[pageId]/page.tsx
+import { fileURLToPath } from 'url';
 import dynamic from 'next/dynamic';
+import { getPageFiles } from '@/shared/utils/file/getPageFiles';
 
-export default async function ProductPage({ params }: { params: { pageId: string } }) {
+// 🔒 페이지 파일들 동적으로 발견 (현재 파일 기준 ../pages)
+const PAGE_IDS = getPageFiles(fileURLToPath(import.meta.url));
+type PageId = (typeof PAGE_IDS)[number];
+
+// 정적 생성: 빌드 시 HTML 미리 생성
+export function generateStaticParams(): Array<{ pageId: PageId }> {
+  return PAGE_IDS.map((pageId) => ({
+    pageId,
+  }));
+}
+
+export default async function Page({ params }: { params: { pageId: string } }) {
   const { pageId } = await params;
 
-  // 동적으로 pages/${pageId}.tsx import
+  // 동적 import로 페이지 컴포넌트 로드
   const PageComponent = dynamic(() => import(`../pages/${pageId}`), {
     ssr: true,
   });
@@ -802,6 +922,11 @@ export default async function ProductPage({ params }: { params: { pageId: string
   return <PageComponent />;
 }
 ```
+
+**특징:**
+- **동적 페이지 발견**: `getPageFiles` 유틸리티로 `pages/` 디렉토리의 파일 자동 탐지
+- **정적 생성**: `generateStaticParams`로 빌드 시 HTML 미리 생성
+- **유연한 확장**: 새 페이지 파일 추가 시 코드 수정 불필요
 
 ---
 
@@ -825,44 +950,70 @@ Component Re-render
 
 ### 데이터 가져오기 패턴
 
-#### 1. 컴포넌트 마운트 시
+#### 1. RTK Query 사용 (실제 구현)
 
 ```typescript
-export default function DashboardPage() {
-  const { fetchDashboard, loading } = useDashboard()
+// features/products/hooks/useProducts.ts
+export const useProducts = () => {
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    fetchDashboard()
-  }, [fetchDashboard])
+  // URL 기반 필터/정렬 상태
+  const { filters, sort, viewMode, updateFilters, updateSort, updateViewMode } =
+    useProductsURLState();
 
-  if (loading) return <Loading />
+  // 쿼리 파라미터 안정화 (Vercel Best Practices)
+  const queryParams = useMemo(
+    () => ({
+      page: 1,
+      pageSize: 10,
+      search: filters.search || undefined,
+      status: filters.status || undefined,
+      category: filters.category || undefined,
+      sortBy: sort.sortBy,
+      sortOrder: sort.sortOrder,
+    }),
+    [filters, sort]
+  );
 
-  return <DashboardStats />
-}
+  // RTK Query 자동 fetching
+  const { data: productsData, isLoading, isError, error, refetch } =
+    useGetProductsQuery(queryParams);
+
+  return {
+    products: productsData?.products || [],
+    total: productsData?.total || 0,
+    isLoading,
+    isError,
+    error,
+    updateFilters,
+    updateSort,
+    refetch,
+  };
+};
 ```
 
-#### 2. 사용자 액션 시
+#### 2. 컴포넌트에서 사용
 
 ```typescript
-export const ProductForm = () => {
-  const { createProduct } = useProductForm()
+export default function ListSection() {
+  const { products, isLoading, error, filters, updateFilters } = useProducts();
 
-  const handleSubmit = async (data: ProductFormData) => {
-    await createProduct(data)
-    router.push('/products')
-  }
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorState error={error} />;
 
-  return <form onSubmit={handleSubmit}>...</form>
+  return <ProductList products={products} />;
 }
 ```
 
 ### 에러 처리 전략
 
 ```typescript
-// 1. Component Level (Error Boundary)
-// app/error.tsx
-export default function Error({ error, reset }: {
-  error: Error
+// 1. Next.js Error Boundary (app/error.tsx)
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
   reset: () => void
 }) {
   return (
@@ -873,31 +1024,34 @@ export default function Error({ error, reset }: {
   )
 }
 
-// 2. Hook Level
-const useProducts = () => {
-  const [error, setError] = useState<string | null>(null)
+// 2. RTK Query Error Handling
+export const useProducts = () => {
+  const { data, isLoading, error, refetch } = useGetProductsQuery(queryParams);
 
-  const fetchProducts = async () => {
-    try {
-      // ...
-    } catch (err) {
-      setError(err.message)
-    }
+  return {
+    products: data?.products || [],
+    isLoading,
+    isError: !!error,
+    error, // RTK Query가 제공하는 에러 객체
+    refetch, // 재시도 함수
+  };
+};
+
+// 3. 컴포넌트에서 에러 처리
+export default function ProductListSection() {
+  const { products, isLoading, error, refetch } = useProducts();
+
+  if (isLoading) return <Skeleton />;
+  if (error) {
+    return (
+      <ErrorState
+        message="제품을 불러올 수 없습니다"
+        onRetry={refetch}
+      />
+    );
   }
 
-  return { error, fetchProducts }
-}
-
-// 3. Service Level
-export const productService = {
-  async getProducts() {
-    try {
-      const response = await axios.get('/api/products')
-      return response.data
-    } catch (error) {
-      throw new APIError('상품을 불러올 수 없습니다', error)
-    }
-  }
+  return <ProductList products={products} />;
 }
 ```
 
@@ -908,12 +1062,23 @@ export const productService = {
 ### 1. 코드 분할 (Code Splitting)
 
 ```typescript
-// 동적 import로 컴포넌트 지연 로딩
-const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
-  loading: () => <Skeleton />,
-  ssr: false,
-})
+// AG Grid 동적 import (Vercel Best Practices - bundle-dynamic-imports)
+const ProductGrid = dynamic(
+  () => import('@/features/products/components/ProductGrid').then((mod) => ({ default: mod.ProductGrid })),
+  {
+    loading: () => <div>Loading...</div>,
+    ssr: false, // AG Grid는 클라이언트 사이드 전용
+  }
+);
+
+// 조건부 렌더링으로 on-demand loading
+{viewMode === 'grid' ? <ProductGrid products={products} /> : <ProductList products={products} />}
 ```
+
+**이점:**
+- 초기 번더 크기 ~500KB 감소 (AG Grid)
+- LCP (Largest Contentful Paint) 개선
+- 테이블 뷰 사용자에게 불필요한 코드 전송 방지
 
 ### 2. 이미지 최적화
 
@@ -941,16 +1106,25 @@ experimental: {
 ### 4. 메모이제이션
 
 ```typescript
+// Vercel Best Practices - rerender-dependencies
+// useMemo로 쿼리 파라미터 안정화
+const queryParams = useMemo(
+  () => ({
+    page: 1,
+    pageSize: 10,
+    search: filters.search || undefined,
+    status: filters.status || undefined,
+    category: filters.category || undefined,
+    sortBy: sort.sortBy,
+    sortOrder: sort.sortOrder,
+  }),
+  [filters, sort] // filters 또는 sort가 변경될 때만 재생성
+);
+
 // React.memo로 렌더링 최적화
 export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   return <div>{product.name}</div>
 })
-
-// useMemo로 값 메모이제이션
-const sortedProducts = useMemo(() =>
-  products.sort((a, b) => a.name.localeCompare(b.name)),
-  [products]
-)
 
 // useCallback으로 함수 메모이제이션
 const handleEdit = useCallback((id: string) => {
@@ -975,10 +1149,10 @@ const middleware = [
 
 ### 1. 환경 변수 관리
 
-**Zod를 사용한 타입 안전한 환경 변수 검증:**
+**Zod를 사용한 타입 안전한 환경 변수 검증 (실제 구현):**
 
 ```typescript
-// shared/config/env.ts
+// src/shared/config/env.ts
 import { z } from 'zod';
 
 // 환경 변수 스키마 정의
@@ -989,9 +1163,10 @@ const envSchema = z.object({
   // 애플리케이션 설정 (공개)
   NEXT_PUBLIC_APP_NAME: z.string().default('Next.js App'),
   NEXT_PUBLIC_APP_VERSION: z.string().default('1.0.0'),
+  NEXT_PUBLIC_APP_DESCRIPTION: z.string().default(''),
 
   // API 설정 (공개)
-  NEXT_PUBLIC_API_URL: z.string().url().default('/api'),
+  NEXT_PUBLIC_API_URL: z.string().default('/api'),
   NEXT_PUBLIC_API_TIMEOUT: z
     .string()
     .transform((val) => parseInt(val, 10))
@@ -1008,26 +1183,48 @@ const envSchema = z.object({
     .string()
     .transform((val) => val === 'true')
     .default(true),
+  NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(false),
   NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: z
     .string()
     .transform((val) => val === 'true')
     .default(true),
 
   // 개발 도구 설정 (공개)
+  NEXT_PUBLIC_STORYBOOK_ENABLED: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(true),
   NEXT_PUBLIC_REDUX_DEVTOOLS: z
     .string()
     .transform((val) => val === 'true')
     .default(true),
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
+
+  // 디버그 설정 (비공개 - 서버 전용)
+  DEBUG_IPS: z.string().optional(),
+  DEBUG_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
 });
 
 // 환경 변수 검증 및 파싱
 const config = envSchema.parse({
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+  NEXT_PUBLIC_APP_VERSION: process.env.NEXT_PUBLIC_APP_VERSION,
+  NEXT_PUBLIC_APP_DESCRIPTION: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_API_TIMEOUT: process.env.NEXT_PUBLIC_API_TIMEOUT,
-  // ... 기타 환경 변수
+  NEXT_PUBLIC_API_RETRY_COUNT: process.env.NEXT_PUBLIC_API_RETRY_COUNT,
+  NEXT_PUBLIC_FEATURE_DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE,
+  NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS: process.env.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
+  NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING: process.env.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
+  NEXT_PUBLIC_STORYBOOK_ENABLED: process.env.NEXT_PUBLIC_STORYBOOK_ENABLED,
+  NEXT_PUBLIC_REDUX_DEVTOOLS: process.env.NEXT_PUBLIC_REDUX_DEVTOOLS,
+  NEXT_PUBLIC_LOG_LEVEL: process.env.NEXT_PUBLIC_LOG_LEVEL,
+  DEBUG_IPS: process.env.DEBUG_IPS,
+  DEBUG_LOG_LEVEL: process.env.DEBUG_LOG_LEVEL,
 });
 
 // 편의 속성들
@@ -1039,17 +1236,26 @@ export const isTest = config.NODE_ENV === 'test';
 export const publicConfig = {
   appName: config.NEXT_PUBLIC_APP_NAME,
   appVersion: config.NEXT_PUBLIC_APP_VERSION,
+  appDescription: config.NEXT_PUBLIC_APP_DESCRIPTION,
   apiUrl: config.NEXT_PUBLIC_API_URL,
   apiTimeout: config.NEXT_PUBLIC_API_TIMEOUT,
   apiRetryCount: config.NEXT_PUBLIC_API_RETRY_COUNT,
   features: {
     darkMode: config.NEXT_PUBLIC_FEATURE_DARK_MODE,
+    realtimeNotifications: config.NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS,
     performanceMonitoring: config.NEXT_PUBLIC_FEATURE_PERFORMANCE_MONITORING,
   },
   devtools: {
+    storybook: config.NEXT_PUBLIC_STORYBOOK_ENABLED,
     redux: config.NEXT_PUBLIC_REDUX_DEVTOOLS,
     logLevel: config.NEXT_PUBLIC_LOG_LEVEL,
   },
+} as const;
+
+// 비공개 설정 (서버에서만 접근 가능)
+export const serverConfig = {
+  debugIps: config.DEBUG_IPS?.split(',').map((ip) => ip.trim()).filter(Boolean) ?? [],
+  debugLogLevel: config.DEBUG_LOG_LEVEL,
 } as const;
 ```
 
@@ -1062,6 +1268,8 @@ const apiUrl = publicConfig.apiUrl;
 const isDev = isDevelopment;
 ```
 
+**⚠️ 참고:** 이 프로젝트는 Zod 검증을 사용합니다. 단순화된 대안보다 타입 안전성과 런타임 검증이 중요한 경우 Zod 사용을 권장합니다.
+
 ### 2. XSS 방지
 
 ```typescript
@@ -1071,23 +1279,86 @@ const isDev = isDevelopment;
 // 명시적 HTML 렌더링 시 주의
 <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
 ```
- 
+
+### 3. 인증 토큰 저장소 보안
+
+> **중요**: 이 프로젝트의 Redux Persist 설정은 학습 목적입니다.
+
+#### 저장소별 보안 비교
+
+| 저장소 | XSS 취약성 | CSRF 취약성 | 지속성 | 용도 |
+|--------|-----------|-------------|--------|------|
+| **localStorage** | ⚠️ 취약 | ⚠️ 가능 | 영구 | ❌ 토큰 저장 부적합 |
+| **sessionStorage** | ⚠️ 취약 | ✅ 방지됨 | 탭만료 | ⚠️ 학습용만 |
+| **httpOnly 쿠키** | ✅ 방지됨 | ⚠️ 가능 | 설정가능 | ✅ 토큰 저장 최선 |
+| **메모리 (useState)** | ✅ 방지됨 | ✅ 방지됨 | 새로고침시소실 | ✅ 최단 수명용 |
+
+#### 프로덕션 권장사항
+
+```typescript
+// ⚠️ 학습용 (현재 프로젝트)
+// 취약점: XSS 공격으로 토큰 탈취 가능
+sessionStorage.setItem('token', accessToken)
+
+// ✅ 프로덕션용 (서버 구현 필요)
+// 1. httpOnly 쿠키로 토큰 저장 (서버 사이드)
+// 2. JWT Access Token (짧은 수명: 15분)
+// 3. Refresh Token Rotation (httpOnly 쿠키)
+// 4. CSRF 토큰 또는 SameSite 쿠키 속성
+
+// 예시: Next.js API Route에서 쿠키 설정
+import { cookies } from 'next/headers'
+
+export async function POST(request: Request) {
+  const accessToken = generateJWT({ userId })
+  cookies().set('access_token', accessToken, {
+    httpOnly: true,        // ✅ JavaScript 접근 불가 (XSS 방지)
+    secure: true,          // ✅ HTTPS 전용
+    sameSite: 'strict',    // ✅ CSRF 방지
+    maxAge: 60 * 15,       // 15분
+    path: '/',
+  })
+}
+```
+
+#### 보안 검증 체크리스트
+
+- [ ] httpOnly 쿠키 사용중인가?
+- [ ] HTTPS 환경에서만 `secure: true` 쿠키 사용?
+- [ ] Access Token 수명이 15-30분 이내인가?
+- [ ] Refresh Token은 별도의 rotation 로직이 있는가?
+- [ ] SameSite 속성으로 CSRF 방지?
+- [ ] 민감 정보를 클라이언트 스토리지에 저장하지 않는가?
+
 ---
 
 ## 기술적 의사결정
 
-### 1. 왜 Redux Toolkit인가?
+### 1. 왜 Redux Toolkit + RTK Query인가?
 
 **이유:**
 - ✅ 복잡한 상태 로직 관리 용이
 - ✅ DevTools로 디버깅 편리
 - ✅ 미들웨어 생태계 풍부
 - ✅ TypeScript 지원 우수
+- ✅ RTK Query로 서버 데이터 캐싱 자동화
+
+**실제 구현:**
+- **Redux Toolkit**: UI 상태 관리 (선택, 필터, 정렬 등)
+- **RTK Query**: 서버 데이터 fetching, 캐싱, 재요청
+
+**⚠️ 학습 고려사항:**
+Redux Toolkit은 강력하지만 학습 곡선이 있습니다. 프로젝트에서는 다음 단계적 접근을 권장합니다:
+
+1. **1단계**: `useState`, `useReducer`로 기본 개념 학습
+2. **2단계**: React Context API로 전역 상태 관리 경험
+3. **3단계**: Redux Toolkit + RTK Query 도입 (현재 프로젝트)
 
 **대안 고려:**
-- Zustand: 더 가볍지만 기능 적음
-- Jotai: 원자적 상태 관리지만 학습 곡선
-- Context API: 재렌더링 이슈
+- **Zustand**: 더 간단한 API, 보일러플레이트 적음, 학습에 더 적합
+- **Jotai**: 원자적 상태 관리, React 개념과 더 유사
+- **TanStack Query (React Query)**: 서버 데이터 전용, Redux 없이 사용 가능
+- **Redux Toolkit + RTK Query**: 복잡한 상태 로직, 대규모 앱에 적합
 
 ### 2. 왜 Feature-Based Architecture인가?
 
@@ -1108,9 +1379,26 @@ const isDev = isDevelopment;
 - ✅ 네트워크 레벨에서 동작
 - ✅ 개발/테스트 환경 통합
 
+**⚠️ 학습 고려사항:**
+MSW는 강력한 도구지만, Next.js 학습 초반에는 다음 간단한 대안으로 시작하는 것을 권장:
+
+```typescript
+// 학습용 간단 mock (추천)
+export const mockApi = {
+  getProducts: async () => mockProducts,
+  createProduct: async (data) => ({ ...data, id: Date.now() })
+}
+```
+
+**학습 단계:**
+1. **단순 mock 함수**: API 통신 기본 개념 학습
+2. **MSW 도입**: 네트워크 인터셉팅, 테스트 통합 학습
+3. **실제 API 연동**: 프로덕션 환경 경험
+
 **대안 고려:**
-- 직접 mock 함수 구현: 네트워크 로직 테스트 불가
-- JSON Server: 실제 서버 필요
+- **간단 mock 함수**: 학습 초반에 적합, 설정 불필요
+- **MSW**: 테스트 작성, 네트워크 로직 검증에 적합
+- **JSON Server**: REST API 경험 필요 시, 실제 서버와 유사
 
 ### 4. 왜 Tailwind CSS인가?
 
@@ -1126,10 +1414,129 @@ const isDev = isDevelopment;
 
 ---
 
+## 아키텍처 거래와 제한사항
+
+> 실제 개발에서 아키텍처는 이상적인 규칙이 아니라, 현실적인 거래(trade-off)의 결과입니다.
+
+### Feature-Based vs Layer-Based 긴장
+
+**본질적 긴장**:
+- **Feature-Based**: 기능별로 코드를 모으기 → 관련 코드가 한 곳에
+- **Layer-Based**: 레이어별로 코드를 분리하기 → 관심사 분리
+
+이 두 원칙은 완벽하게 조화될 수 없습니다:
+
+```
+문제 상황: Product 컴포넌트에서 User 데이터 필요
+┌─────────────────────────────────────────┐
+│ products/feature/                       │
+│   components/ProductCard.tsx            │
+│     → User 데이터 필요!                  │
+│                                         │
+│ 옵션 1: products에서 auth import        │
+│   ❌ eslint-plugin-boundaries 에러      │
+│                                         │
+│ 옵션 2: props로 User 데이터 전달         │
+│   ✅ 규칙 준수                          │
+│   ⚠️ props drilling 문제                 │
+│                                         │
+│ 옵션 3: Shared Layer에서 가져오기        │
+│   ✅ 규칙 준수                          │
+│   ⚠️ Shared가 비대해짐                   │
+└─────────────────────────────────────────┘
+```
+
+**실무 지침**:
+
+1. **엄격한 기능 분리는 작은 프로젝트에서 과도할 수 있습니다**
+2. **교차 기능 데이터는 Shared Layer를 통해 전달하세요**
+3. **Props drilling 과정을 피하고 싶다면 Context API를 고려하세요**
+4. **ESLint 규칙은 가이드라이지, 절대 법칙은 아닙니다**
+
+### Registry Pattern의 필요성
+
+본 문서의 Registry Pattern (동적 리듀서 등록)은 **코드 분할(code-splitting)** 시나리오를 위해 설계되었습니다:
+
+**언제 유용한가:**
+- 대규모 앱에서 초기 번들 크기를 최적화해야 할 때
+- 특정 기능이 사용되기 전까지 리듀서를 로드하지 않을 때
+- 라우트 기반 코드 분할을 구현할 때
+
+**소규모 프로젝트에서는:**
+```typescript
+// 간단한 구현으로 충분합니다
+const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    products: productsReducer,
+    dashboard: dashboardReducer,
+  }
+})
+```
+
+### 환경 변수 검증의 복잡성
+
+Zod 스키마 검증은 프로덕션 환경에서 환경 변수 구성 오류를 조기에 발견하는 데 유용합니다.
+
+**학습 프로젝트에서는 더 간단하게:**
+
+```typescript
+// 간단한 구현 (학습용)
+const config = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
+  apiTimeout: Number(process.env.NEXT_PUBLIC_API_TIMEOUT) || 10000,
+  isDev: process.env.NODE_ENV === 'development',
+}
+
+export default config
+```
+
+**Zod 검증이 필요한 경우:**
+- 팀 규모가 크고 환경 변수 실수 방지가 중요할 때
+- CI/CD 파이프라인에서 구성 유효성 검증이 필요할 때
+- TypeScript 타입 안전성과 런타임 검증이 모두 필요할 때
+
+### 단계적 학습 접근
+
+이 문서의 아키텍처는 **프로덕션 레벨 패턴**을 포함하고 있습니다. 학습에는 다음 단계를 권장:
+
+**1단계: 기본 개념 (1-2주)**
+- Next.js App Router 기본
+- React Hooks (useState, useEffect)
+- 기본 라우팅
+- 간단한 API 통신
+
+**2단계: 상태 관리 (2-3주)**
+- useState, useReducer
+- React Context API
+- 전역 상태 관리 개념
+
+**3단계: 아키텍처 패턴 (3-4주)**
+- Feature-Based 구조
+- Redux Toolkit + RTK Query 도입
+- 레이어 분리
+
+**4단계: 고급 패턴 (필요 시)**
+- 코드 분할, 동적 import
+- 복잡한 보안 패턴
+- 성능 최적화
+
+### 현실적인 조언
+
+> "완벽한 아키텍처"보다 "작동하는 소프트웨어"가 먼저입니다.
+
+- ✅ 이 문서의 패턴들은 **프로덕션에서 검증된 사례**입니다
+- ✅ 하지만 **모든 패턴을 한 번에 적용할 필요는 없습니다**
+- ✅ **프로젝트 요구사항과 팀 역량**에 맞게 선택적으로 적용하세요
+- ⚠️ 과도한 엔지니어링은 학습을 방해할 수 있습니다
+
+---
+
 ## 참고 자료
 
 - [Next.js 문서](https://nextjs.org/docs)
 - [Redux Toolkit 문서](https://redux-toolkit.js.org/)
+- [RTK Query 문서](https://redux-toolkit.js.org/rtk-query/overview)
 - [React 문서](https://react.dev/)
 - [TypeScript 문서](https://www.typescriptlang.org/docs/)
 - [Tailwind CSS 문서](https://tailwindcss.com/docs)
