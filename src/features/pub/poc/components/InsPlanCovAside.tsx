@@ -135,10 +135,11 @@ export default function InsPlanCovAside() {
       </Gcol>
       {/* 인수지침점검 */}
       <Gcol placement="ts" className="w-full gap-[1.2rem]">
-        <Grow placement="ms">
+        <Grow placement="msb">
           <Typo variant="heading-l" tag="h3">
             인수지침점검
           </Typo>
+          <Button>AI 자동 해결</Button>
         </Grow>
         <Gcol variant="box-line" placement="ts" className="w-full">
           <Table>
