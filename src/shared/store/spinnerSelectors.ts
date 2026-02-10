@@ -17,6 +17,8 @@ import type { SpinnerState } from './spinnerSlice';
  * - message: spinner 메시지
  * - count: 활성화된 요청 수
  * - globalManual: 전역 수동 모드 활성화 여부
+ * - transparentBackground: 배경 투명 여부
+ * - hideLoadingIndicator: 로딩 이미지 숨김 여부
  */
 
 // ============================================================================
@@ -48,6 +50,22 @@ export const selectSpinnerCount = createSelector([selectSpinnerState], (spinner)
  */
 export const selectIsGlobalManual = createSelector([selectSpinnerState], (spinner) => spinner.globalManual);
 
+/**
+ * 배경 투명 여부 선택자
+ */
+export const selectIsTransparentBackground = createSelector(
+  [selectSpinnerState],
+  (spinner) => spinner.transparentBackground
+);
+
+/**
+ * 로딩 이미지 숨김 여부 선택자
+ */
+export const selectIsHideLoadingIndicator = createSelector(
+  [selectSpinnerState],
+  (spinner) => spinner.hideLoadingIndicator
+);
+
 // ============================================================================
 // COMPOSED SELECTORS
 // ============================================================================
@@ -56,11 +74,20 @@ export const selectIsGlobalManual = createSelector([selectSpinnerState], (spinne
  * Spinner 상태 요약
  */
 export const selectSpinnerStatus = createSelector(
-  [selectIsSpinnerVisible, selectSpinnerMessage, selectSpinnerCount, selectIsGlobalManual],
-  (isVisible, message, count, globalManual) => ({
+  [
+    selectIsSpinnerVisible,
+    selectSpinnerMessage,
+    selectSpinnerCount,
+    selectIsGlobalManual,
+    selectIsTransparentBackground,
+    selectIsHideLoadingIndicator,
+  ],
+  (isVisible, message, count, globalManual, transparentBackground, hideLoadingIndicator) => ({
     isVisible,
     message,
     count,
     globalManual,
+    transparentBackground,
+    hideLoadingIndicator,
   })
 );

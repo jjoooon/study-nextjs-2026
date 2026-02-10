@@ -32,6 +32,8 @@
  *         showSpinner: true,  // ✅ spinner 표시 옵션 (기본 true)
  *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
  *         delayShow: 200,  // ✅ 200ms 후 spinner 표시 (기본 100ms)
+ *         transparentBackground: true,  // ✅ 투명 배경 (기본 false)
+ *         hideLoadingIndicator: false,  // ✅ 로딩 이미지 숨김 (기본 false)
  *       }),
  *     }),
  *   })
@@ -68,6 +70,10 @@ export interface AxiosRequestMeta {
   spinnerMessage?: string;
   /** spinner 표시 지연 시간 (ms) - 이 시간 내에 완료되면 spinner 미표시 */
   delayShow?: number;
+  /** 배경색을 투명하게 할지 여부 */
+  transparentBackground?: boolean;
+  /** 로딩 이미지(스피너)를 숨길지 여부 */
+  hideLoadingIndicator?: boolean;
 }
 
 // ============================================================================
@@ -165,6 +171,8 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
     showSpinner: showSpinnerOption = true,
     spinnerMessage = 'Loading...',
     delayShow = 100, // 기본 100ms: 이 시간 내에 완료되면 spinner 미표시
+    transparentBackground = false,
+    hideLoadingIndicator = false,
   } = parsedArgs as AxiosRequestMeta;
 
   // 타이머 참조와 상태 추적
@@ -175,7 +183,13 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
   const showSpinnerAfterDelay = () => {
     spinnerTimer = setTimeout(() => {
       spinnerShown = true;
-      api.dispatch(showSpinner({ message: spinnerMessage }));
+      api.dispatch(
+        showSpinner({
+          message: spinnerMessage,
+          transparentBackground,
+          hideLoadingIndicator,
+        })
+      );
     }, delayShow);
   };
 
@@ -247,6 +261,8 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  * - **기본적으로 spinner 표시** (showSpinner: false로 끌 수 있음)
  * - **기본 메시지: "Loading..."**
  * - **기본 100ms 지연 후 표시** (delayShow로 조절 가능)
+ * - **투명 배경 옵션** (transparentBackground: true)
+ * - **로딩 이미지 숨김 옵션** (hideLoadingIndicator: true)
  *
  * @example
  * import { baseQuery } from '@/shared/lib/axios/axiosBaseQuery';
@@ -273,6 +289,8 @@ const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
  *         body: item,
  *         spinnerMessage: '생성 중...',  // ✅ 커스텀 메시지
  *         delayShow: 200,  // ✅ 200ms 후 표시
+ *         transparentBackground: true,  // ✅ 투명 배경
+ *         hideLoadingIndicator: false,  // ✅ 로딩 이미지 표시
  *       }),
  *     }),
  *   })

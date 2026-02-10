@@ -28,6 +28,10 @@ export interface SpinnerOptions {
   message?: string;
   /** spinner를 표시할지 여부를 결정하는 키 */
   showSpinner?: boolean;
+  /** 배경색을 투명하게 할지 여부 */
+  transparentBackground?: boolean;
+  /** 로딩 이미지(스피너)를 숨길지 여부 */
+  hideLoadingIndicator?: boolean;
 }
 
 /**
@@ -44,6 +48,10 @@ interface SpinnerState {
   startTime: number | null;
   /** 전역 수동 모드: true이면 API 요청 완료와 무관하게 계속 표시 */
   globalManual: boolean;
+  /** 배경색 투명 여부 */
+  transparentBackground: boolean;
+  /** 로딩 이미지 숨김 여부 */
+  hideLoadingIndicator: boolean;
 }
 
 // ============================================================================
@@ -56,6 +64,8 @@ const initialState: SpinnerState = {
   message: null,
   startTime: null,
   globalManual: false, // 전역 수동 모드 비활성화
+  transparentBackground: false, // 기본: 불투명 배경
+  hideLoadingIndicator: false, // 기본: 로딩 이미지 표시
 };
 
 // ============================================================================
@@ -79,6 +89,8 @@ const spinnerSlice = createSlice({
       if (state.count === 1) {
         state.isVisible = true;
         state.message = action.payload.message ?? null;
+        state.transparentBackground = action.payload.transparentBackground ?? false;
+        state.hideLoadingIndicator = action.payload.hideLoadingIndicator ?? false;
         state.startTime = Date.now();
       }
     },
@@ -89,9 +101,6 @@ const spinnerSlice = createSlice({
     hideSpinner: (state) => {
       // 전역 수동 모드가 활성화되어 있으면 숨기지 않음
       if (state.globalManual) {
-        if (state.count > 0) {
-          state.count -= 1;
-        }
         return;
       }
 

@@ -61,7 +61,10 @@ export const productService = createApi({
 
         return {
           url: `/products?${searchParams.toString()}`,
-          // showDelay: 100,
+          // spinner 옵션 예시:
+          transparentBackground: true, // 투명 배경
+          hideLoadingIndicator: true, // 로딩 이미지 숨김
+          // spinnerMessage: '데이터 불러오는 중...',  // 커스텀 메시지
         };
       },
       providesTags: ['Products-LIST'],
