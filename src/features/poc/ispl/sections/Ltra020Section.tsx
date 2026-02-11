@@ -12,7 +12,7 @@ const TABS = [
   { value: 'tab4', label: '보장분석 설계' },
 ];
 
-export default function Page1() {
+export default function Ltra020Section() {
   const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
   const [selectedCategory, setSelectedCategory] = useState<string>('0');
   const [selectedAge, setSelectedAge] = useState<string>('전체');
