@@ -4,35 +4,8 @@ import log from '@/shared/utils/logger';
 const logger = log.getLogger('Global');
 
 // ============================================================================
-// TYPE DEFINITIONS
-// ============================================================================
-
-/**
- * 팝업 콜백 타입
- */
-export interface PopupCallbacks {
-  resolve: (value: unknown) => void;
-  reject: (error: unknown) => void;
-}
-
-// ============================================================================
 // CONSTANTS
 // ============================================================================
-
-/**
- * 팝업 타임아웃 (밀리초)
- *
- * @description
- * 사용자가 응답하지 않는 팝업을 자동으로 닫기 위한 타임아웃
- *
- * @disabled
- * 타임아웃 시스템은 실제 사용자 경험을 저해하고 불필요한 복잡도를 추가합니다.
- * 사용자가 팝업을 닫으면(resolve/reject 호출) 자동으로 콜백이 정리되므로
- * 별도의 타임아웃이 필요 없습니다.
- *
- * 정말로 필요한 경우 개별 팝업에서 open()의 timeout 옵션을 사용하세요.
- */
-const POPUP_TIMEOUT = 0; // Disabled (use timeout option in open() if needed)
 
 /**
  * 팝업 최대 깊이
@@ -71,9 +44,11 @@ const ID_RANDOM_LENGTH = 7;
 /**
  * 팝업 콜백 타입 (확장)
  */
-export interface PopupCallbacksExtended extends PopupCallbacks {
+export interface PopupCallbacksExtended<T = unknown> {
+  resolve: (value: T) => void;
+  reject: (error: Error) => void;
   /** 타임아웃 ID (정리용) */
-  _timeoutId?: ReturnType<typeof setTimeout>;
+  timeoutId?: ReturnType<typeof setTimeout>;
 }
 
 /**
@@ -84,41 +59,30 @@ export interface PopupCallbacksExtended extends PopupCallbacks {
  * Promise resolve/reject 함수는 별도 Map으로 관리
  *
  * @memory-management
- * - 콜백 등록 시 자동 타임아웃 설정 (30초)
+ * - 콜백 등록 시 타임아웃 설정 (옵션)
  * - resolve/reject 호출 시 타임아웃 제거
  * - 타임아웃 발생 시 자동으로 콜백 정리
  */
-const popupCallbacksMap = new Map<string, PopupCallbacksExtended>();
+const popupCallbacksMap = new Map<string, PopupCallbacksExtended<unknown>>();
 
 /**
- * 팝업 콜백 등록
+ * 팝업 콜백 등록 (제네릭 타입 지원)
  *
  * @description
- * 콜백을 등록합니다. 타임아웃이 0이면 타이머를 설정하지 않습니다.
+ * 콜백을 등록합니다. 타입 안전한 콜백 등록을 지원합니다.
  *
  * @param id - 팝업 ID
- * @param callbacks - resolve/reject 함수
+ * @param callbacks - resolve/reject 함수 (타입 안전)
  */
-export function registerPopupCallbacks(id: string, callbacks: PopupCallbacks) {
-  const timeoutId =
-    POPUP_TIMEOUT > 0
-      ? setTimeout(() => {
-          if (popupCallbacksMap.has(id)) {
-            logger.warn(`[Popup] Auto-closing orphaned popup: ${id} (timeout: ${POPUP_TIMEOUT}ms)`);
-            callbacks.reject(new Error(`Popup timeout after ${POPUP_TIMEOUT}ms`));
-            removePopupCallbacks(id);
-          }
-        }, POPUP_TIMEOUT)
-      : undefined;
-
-  popupCallbacksMap.set(id, { ...callbacks, _timeoutId: timeoutId });
+export function registerPopupCallbacks<T = unknown>(id: string, callbacks: PopupCallbacksExtended<T>): void {
+  popupCallbacksMap.set(id, callbacks as PopupCallbacksExtended<unknown>);
 }
 
 /**
- * 팝업 콜백 조회
+ * 팝업 콜백 조회 (제네릭 타입 지원)
  */
-export function getPopupCallbacks(id: string): PopupCallbacks | undefined {
-  return popupCallbacksMap.get(id);
+export function getPopupCallbacks<T = unknown>(id: string): PopupCallbacksExtended<T> | undefined {
+  return popupCallbacksMap.get(id) as PopupCallbacksExtended<T> | undefined;
 }
 
 /**
@@ -133,11 +97,24 @@ export function getPopupCallbacks(id: string): PopupCallbacks | undefined {
 export function removePopupCallbacks(id: string): boolean {
   const callbacks = popupCallbacksMap.get(id);
 
-  if (callbacks?._timeoutId) {
-    clearTimeout(callbacks._timeoutId);
+  if (callbacks?.timeoutId) {
+    clearTimeout(callbacks.timeoutId);
   }
 
   return popupCallbacksMap.delete(id);
+}
+
+/**
+ * 팝업 콜백 존재 확인
+ *
+ * @description
+ * 특정 ID의 콜백이 존재하는지 확인합니다
+ *
+ * @param id - 팝업 ID
+ * @returns 존재 여부
+ */
+export function hasPopupCallbacks(id: string): boolean {
+  return popupCallbacksMap.has(id);
 }
 // ============================================================================
 
@@ -285,7 +262,7 @@ export const popupSlice = createSlice({
         const callbacks = getPopupCallbacks(popupId);
         if (callbacks) {
           // Promise resolve (비동기로 실행하여 Redux state 업데이트 방지)
-          setTimeout(() => callbacks.resolve(result), 0);
+          setTimeout(() => callbacks.resolve(result as never), 0);
           // Map에서 제거
           removePopupCallbacks(popupId);
         }
@@ -301,7 +278,7 @@ export const popupSlice = createSlice({
      * @param payload.popupId - 닫을 팝업 ID
      * @param payload.error - 에러 객체
      */
-    rejectPopup: (state, action: PayloadAction<{ popupId: string; error: unknown }>) => {
+    rejectPopup: (state, action: PayloadAction<{ popupId: string; error: Error }>) => {
       const { popupId, error } = action.payload;
       const index = state.popups.findIndex((popup) => popup.id === popupId);
 

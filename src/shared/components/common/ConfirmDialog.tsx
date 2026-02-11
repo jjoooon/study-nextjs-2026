@@ -13,15 +13,24 @@ import {
   AlertDialogTrigger,
 } from '@/shared/components/uiux';
 
+/**
+ * Dialog 톤 타입 (실제 시각적 상태)
+ *
+ * @description
+ * - danger: 적색 파괴적 버튼 (삭제 등 위험 작업)
+ * - info: 기본 파란색 버튼 (일반 확인)
+ */
+export type DialogTone = 'danger' | 'info';
+
 type ConfirmDialogProps = {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  title?: string; // optional로 변경
+  title?: string;
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  tone?: 'danger' | 'info' | 'success';
+  tone?: DialogTone;
   onConfirm?: () => void | Promise<void>;
   onCancel?: () => void;
   trigger?: React.ReactNode;
@@ -33,18 +42,18 @@ type ConfirmDialogProps = {
 
 export function ConfirmDialog({
   open,
-  defaultOpen = true, // 기본적으로 열림
+  defaultOpen = true,
   onOpenChange,
-  title = '알림', // 기본값 추가
+  title = '알림',
   description,
   confirmLabel = '확인',
   cancelLabel = '',
-  tone = 'danger',
+  tone = 'info',
   onConfirm,
   onCancel,
   trigger,
   alertMode = false,
-  resolve, // DialogRenderer에서 전달
+  resolve,
 }: ConfirmDialogProps) {
   const [isLoading, setIsLoading] = React.useState(false);
 

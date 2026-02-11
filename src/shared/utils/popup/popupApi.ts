@@ -35,7 +35,26 @@
  */
 
 import { store } from '@/redux';
-import { addPopup, registerPopupCallbacks, removePopup } from '@/shared/store/popupSlice';
+import {
+  addPopup,
+  registerPopupCallbacks,
+  removePopup,
+  removePopupCallbacks,
+  hasPopupCallbacks,
+  type PopupCallbacksExtended,
+} from '@/shared/store/popupSlice';
+
+// ============================================================================
+// TYPES & CONSTANTS
+// ============================================================================
+
+/**
+ * 팝업 타입 상수
+ */
+export const POPUP_TYPES = {
+  CONFIRM: 'confirm',
+  ALERT: 'alert',
+} as const;
 
 // ============================================================================
 // CORE API
@@ -73,7 +92,7 @@ export interface OpenPopupOptions {
  */
 export async function open<T = unknown, P = Record<string, unknown>>(
   popupType: string,
-  props: P = {} as P,
+  props?: P,
   options: OpenPopupOptions = {}
 ): Promise<T> {
   const { timeout = 0 } = options;
@@ -82,33 +101,49 @@ export async function open<T = unknown, P = Record<string, unknown>>(
     // 1. 고유 ID 생성
     const id = `popup-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
-    // 2. 콜백을 Map에 등록 (Redux state 외부로 분리)
-    registerPopupCallbacks(id, {
-      resolve: resolve as (value: unknown) => void,
-      reject: reject as (error: unknown) => void,
-    });
-
-    // 3. Redux에는 직렬화 가능한 데이터만 저장
-    store.dispatch(
-      addPopup({
-        id,
-        popupType,
-        props: props as Record<string, unknown>,
-      })
-    );
-
-    // 4. 타임아웃 설정 (옵션)
+    // 2. 타임아웃 설정 (옵션) - 콜백 등록 전에 설정
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     if (timeout > 0) {
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         // 콜백이 여전히 존재하는지 확인 (이미 resolve/reject 되지 않았는지)
-        const callbacks = (
-          globalThis as unknown as { popupCallbacksMap?: Map<string, unknown> }
-        ).popupCallbacksMap?.get(id);
-        if (callbacks) {
+        if (hasPopupCallbacks(id)) {
           reject(new Error(`Popup timeout after ${timeout}ms`));
           store.dispatch(removePopup({ popupId: id }));
+          removePopupCallbacks(id);
         }
       }, timeout);
+    }
+
+    // 3. 콜백 래핑 - cleanup을 resolve/reject에 통합
+    const wrappedCallbacks: PopupCallbacksExtended<T> = {
+      resolve: (value: T) => {
+        if (timeoutId) clearTimeout(timeoutId);
+        removePopupCallbacks(id);
+        resolve(value);
+      },
+      reject: (error: Error) => {
+        if (timeoutId) clearTimeout(timeoutId);
+        removePopupCallbacks(id);
+        reject(error);
+      },
+      timeoutId,
+    };
+
+    // 4. 콜백을 Redux Slice에 등록
+    registerPopupCallbacks<T>(id, wrappedCallbacks);
+
+    // 5. Redux에는 직렬화 가능한 데이터만 저장
+    try {
+      store.dispatch(
+        addPopup({
+          id,
+          popupType,
+          props: (props ?? {}) as Record<string, unknown>,
+        })
+      );
+    } catch (dispatchError) {
+      removePopupCallbacks(id);
+      reject(dispatchError instanceof Error ? dispatchError : new Error('Failed to dispatch popup'));
     }
   });
 }
@@ -118,6 +153,15 @@ export async function open<T = unknown, P = Record<string, unknown>>(
 // ============================================================================
 
 /**
+ * Dialog 톤 타입 (컴포넌트의 실제 시각적 상태)
+ *
+ * @description
+ * - danger: 적색 파괴적 버튼 (삭제 등 위험 작업)
+ * - info: 기본 파란색 버튼 (일반 확인)
+ */
+export type DialogTone = 'danger' | 'info';
+
+/**
  * Confirm Dialog Props 타입
  */
 export interface ConfirmDialogProps {
@@ -125,7 +169,7 @@ export interface ConfirmDialogProps {
   message?: string;
   confirmText?: string;
   cancelText?: string;
-  variant?: 'danger' | 'warning' | 'info';
+  tone?: DialogTone;
 }
 
 /**
@@ -135,23 +179,40 @@ export interface AlertDialogProps {
   title?: string;
   message?: string;
   buttonText?: string;
-  variant?: 'info' | 'success' | 'warning' | 'error';
+  tone?: DialogTone;
 }
 
 /**
- * AlertDialog variant를 ConfirmDialog tone으로 변환
+ * Confirm Dialog 공통 Props 타입
  */
-function variantToTone(variant?: 'info' | 'success' | 'warning' | 'error'): 'danger' | 'info' | 'success' {
-  switch (variant) {
-    case 'error':
-      return 'danger';
-    case 'success':
-      return 'success';
-    case 'warning':
-    case 'info':
-    default:
-      return 'info';
-  }
+interface ConfirmDialogInternalProps {
+  title: string;
+  description?: string;
+  confirmLabel: string;
+  cancelLabel?: string;
+  tone: DialogTone;
+  alertMode?: boolean;
+}
+
+/**
+ * Confirm/Alert 공통 Props 빌더
+ */
+function buildConfirmProps(
+  title: string,
+  confirmLabel: string,
+  tone: DialogTone,
+  message?: string,
+  alertMode = false,
+  cancelLabel?: string
+): ConfirmDialogInternalProps {
+  return {
+    title,
+    description: message,
+    confirmLabel,
+    ...(cancelLabel !== undefined && { cancelLabel }),
+    tone,
+    ...(alertMode && { alertMode: true }),
+  };
 }
 
 /**
@@ -165,7 +226,8 @@ function variantToTone(variant?: 'info' | 'success' | 'warning' | 'error'): 'dan
  *   title: '삭제 확인',
  *   message: '정말 삭제하시겠습니까?',
  *   confirmText: '삭제',
- *   cancelText: '취소'
+ *   cancelText: '취소',
+ *   tone: 'danger'
  * });
  *
  * if (confirmed) {
@@ -173,16 +235,16 @@ function variantToTone(variant?: 'info' | 'success' | 'warning' | 'error'): 'dan
  * }
  */
 export async function confirm(props: ConfirmDialogProps = {}): Promise<boolean> {
-  // ConfirmDialog에 맞게 props 변환
-  const confirmProps: Record<string, unknown> = {
-    title: props.title || '확인',
-    description: props.message,
-    confirmLabel: props.confirmText || '확인',
-    cancelLabel: props.cancelText || '취소',
-    tone: props.variant === 'danger' ? 'danger' : props.variant === 'warning' ? 'info' : 'info',
-  };
+  const confirmProps = buildConfirmProps(
+    props.title || '확인',
+    props.confirmText || '확인',
+    props.tone ?? 'info',
+    props.message,
+    false,
+    props.cancelText || '취소'
+  );
 
-  return open<boolean, Record<string, unknown>>('confirm', confirmProps);
+  return open<boolean, ConfirmDialogInternalProps>(POPUP_TYPES.CONFIRM, confirmProps);
 }
 
 /**
@@ -194,20 +256,20 @@ export async function confirm(props: ConfirmDialogProps = {}): Promise<boolean> 
  * @example
  * await popup.alert({
  *   title: '완료',
- *   message: '작업이 완료되었습니다'
+ *   message: '작업이 완료되었습니다',
+ *   tone: 'info'
  * });
  */
-export async function alert(props: AlertDialogProps): Promise<void> {
-  // ConfirmDialog에 맞게 props 변환
-  const confirmProps: Record<string, unknown> = {
-    title: props.title || '알림',
-    description: props.message,
-    confirmLabel: props.buttonText || '확인',
-    tone: variantToTone(props.variant),
-    alertMode: true,
-  };
+export async function alert(props: AlertDialogProps = {}): Promise<void> {
+  const confirmProps = buildConfirmProps(
+    props.title || '알림',
+    props.buttonText || '확인',
+    props.tone ?? 'info',
+    props.message,
+    true
+  );
 
-  return open<void, Record<string, unknown>>('alert', confirmProps);
+  return open<void, ConfirmDialogInternalProps>(POPUP_TYPES.ALERT, confirmProps);
 }
 
 // ============================================================================
