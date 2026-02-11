@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { InsPlanBasic, InsPlanCov } from '../components/Page3Index';
-import { INITIAL_TABS2 } from '../constants/insPlanBasicData';
 import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/shared/components/uiux';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { InsPlanBasic, InsPlanCov } from '../components/Page3Index';
+import { INITIAL_TABS2 } from '../constants/insPlanBasicData';
 
 // 테스트용 더미 데이터
 const DUMMY_PLAN_COV_DATA = [
