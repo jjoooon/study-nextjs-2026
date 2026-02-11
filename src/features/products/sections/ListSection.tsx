@@ -186,7 +186,7 @@ function Content() {
   const handleProductClick = (product: (typeof products)[0]) => {
     // ✅ 쿼리 파라미터 보존하면서 상세 페이지로 이동
     const params = new URLSearchParams(searchParams.toString());
-    params.set('id', product.id);
+    params.set('id', String(product.id));
     router.push(`${PRODUCTS_ROUTES.DETAIL}?${params.toString()}`);
   };
 

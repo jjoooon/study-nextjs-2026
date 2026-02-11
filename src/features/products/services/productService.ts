@@ -14,7 +14,13 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
 
-import type { CreateProductInput, ProductListParams, UpdateProductInput } from '../types/apiTypes';
+import type {
+  CreateProductInput,
+  Product,
+  ProductListParams,
+  ProductsListResponse,
+  UpdateProductInput,
+} from '../types/apiTypes';
 
 // ============================================================================
 // PRODUCT SERVICE
@@ -40,7 +46,7 @@ export const productService = createApi({
      * @param params - 페이지네이션, 정렬, 필터링 파라미터
      * @returns 제품 목록
      */
-    getProducts: builder.query({
+    getProducts: builder.query<ProductsListResponse, ProductListParams | void>({
       query: (params: ProductListParams | void) => {
         if (!params) return { url: '/products' };
 
@@ -77,7 +83,7 @@ export const productService = createApi({
      * @param id - 제품 ID
      * @returns 제품 상세 정보
      */
-    getProductById: builder.query({
+    getProductById: builder.query<Product, number>({
       query: (id: number) => `/products/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Products-ITEM', id }],
     }),
@@ -89,7 +95,7 @@ export const productService = createApi({
      * @param product - 생성할 제품 데이터
      * @returns 생성된 제품 정보
      */
-    createProduct: builder.mutation({
+    createProduct: builder.mutation<Product, CreateProductInput>({
       query: (product: CreateProductInput) => ({
         url: '/products',
         method: 'POST',
@@ -106,7 +112,7 @@ export const productService = createApi({
      * @param data - 수정할 제품 데이터
      * @returns 수정된 제품 정보
      */
-    updateProduct: builder.mutation({
+    updateProduct: builder.mutation<Product, { id: number; data: UpdateProductInput }>({
       query: ({ id, data }: { id: number; data: UpdateProductInput }) => ({
         url: `/products/${id}`,
         method: 'PATCH',
@@ -122,7 +128,7 @@ export const productService = createApi({
      * @param id - 제품 ID
      * @returns 삭제 결과
      */
-    deleteProduct: builder.mutation({
+    deleteProduct: builder.mutation<void, number>({
       query: (id: number) => ({
         url: `/products/${id}`,
         method: 'DELETE',
