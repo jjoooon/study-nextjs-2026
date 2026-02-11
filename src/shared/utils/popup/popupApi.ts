@@ -40,7 +40,7 @@ import {
   registerPopupCallbacks,
   removePopup,
   removePopupCallbacks,
-  hasPopupCallbacks,
+  getPopupCallbacks,
   type PopupCallbacksExtended,
 } from '@/shared/store/popupSlice';
 
@@ -98,30 +98,41 @@ export async function open<T = unknown, P = Record<string, unknown>>(
   const { timeout = 0 } = options;
 
   return new Promise<T>((resolve, reject) => {
-    // 1. 고유 ID 생성
-    const id = `popup-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+    // 1. 고유 ID 생성 (crypto.randomUUID 사용해 더 강력한 고유성 보장)
+    const id =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? `popup-${crypto.randomUUID()}`
+        : `popup-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
     // 2. 타임아웃 설정 (옵션) - 콜백 등록 전에 설정
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let isSettled = false; // Promise 상태 추적
+
     if (timeout > 0) {
       timeoutId = setTimeout(() => {
-        // 콜백이 여전히 존재하는지 확인 (이미 resolve/reject 되지 않았는지)
-        if (hasPopupCallbacks(id)) {
-          reject(new Error(`Popup timeout after ${timeout}ms`));
+        // 콜백을 먼저 가져온 후 상태 확인 (경쟁 조건 방지)
+        const callbacks = getPopupCallbacks<T>(id);
+        if (callbacks && !isSettled) {
+          isSettled = true;
           store.dispatch(removePopup({ popupId: id }));
           removePopupCallbacks(id);
+          reject(new Error(`Popup timeout after ${timeout}ms`));
         }
       }, timeout);
     }
 
-    // 3. 콜백 래핑 - cleanup을 resolve/reject에 통합
+    // 3. 콜백 래핑 - cleanup과 상태 추적 통합
     const wrappedCallbacks: PopupCallbacksExtended<T> = {
       resolve: (value: T) => {
+        if (isSettled) return; // 이미 처리된 경우 무시
+        isSettled = true;
         if (timeoutId) clearTimeout(timeoutId);
         removePopupCallbacks(id);
         resolve(value);
       },
       reject: (error: Error) => {
+        if (isSettled) return; // 이미 처리된 경우 무시
+        isSettled = true;
         if (timeoutId) clearTimeout(timeoutId);
         removePopupCallbacks(id);
         reject(error);
@@ -142,7 +153,10 @@ export async function open<T = unknown, P = Record<string, unknown>>(
         })
       );
     } catch (dispatchError) {
+      // Redux 디스패치 실패 시 타임아웃도 정리
+      if (timeoutId) clearTimeout(timeoutId);
       removePopupCallbacks(id);
+      isSettled = true;
       reject(dispatchError instanceof Error ? dispatchError : new Error('Failed to dispatch popup'));
     }
   });
