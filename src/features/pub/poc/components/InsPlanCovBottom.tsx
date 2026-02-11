@@ -1,7 +1,12 @@
+'use client';
+
+import { useEffect } from 'react';
 import { Grow, Gcol, KeyValueList } from '@/shared/components/common';
 import { ArrowNext } from '@/shared/components/icons';
 import { LayoutControls } from '@/shared/components/layout/Cabinet';
 import { Button, Checkbox } from '@/shared/components/uiux';
+import { popup } from '@/shared/utils/popup/popupApi';
+import { registerDialog } from '@/shared/utils/popup/popupRegistry';
 
 const KeyValueData = [
   { key: '만기금(환급률)', value: '47,908원' },
@@ -11,6 +16,24 @@ const KeyValueData = [
 ];
 
 export default function InsPlanCovBottom() {
+  // 컴포넌트 마운트 시 팝업 등록
+  useEffect(() => {
+    registerDialog('underwriting', () => import('@/shared/components/popups/UnderwritingDialog'));
+  }, []);
+
+  /**
+   * 보험료계산(지침) 팝업 열기 핸들러
+   */
+  const handleOpenUnderwritingDialog = async () => {
+    try {
+      await popup.open('underwriting', {
+        title: '보험료계산(지침)',
+      });
+    } catch (error) {
+      console.error('팝업 오류:', error);
+    }
+  };
+
   return (
     <LayoutControls>
       <Gcol className="w-full relative z-10">
@@ -53,7 +76,7 @@ export default function InsPlanCovBottom() {
               <Button variant="outline" color="gray" size="lg">
                 설계복사
               </Button>
-              <Button variant="outline" color="gray" size="lg">
+              <Button variant="outline" color="gray" size="lg" onClick={handleOpenUnderwritingDialog}>
                 보험료계산(지침)
               </Button>
             </Grow>

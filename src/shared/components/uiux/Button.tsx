@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         contained: '',
         outline: '',
-        text: 'px-0!',
+        text: 'px-0! text-[blue] underline-offset-3 underline',
         underline: '',
         ghost: '',
         icon: '',

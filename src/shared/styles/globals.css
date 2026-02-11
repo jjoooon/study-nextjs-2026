@@ -11,24 +11,24 @@ body {
   min-width: 126rem;
   overflow-x: auto;
 }
-[data-cabinet="body"] ::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: .4rem;
   height: .4rem;
   padding-left: .4rem;
 }
 
-[data-cabinet="body"] ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #eeeeee;
   border-radius: 0.4rem;
 }
 
-[data-cabinet="body"] ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
   border-radius: 0.4rem;
   background-clip: padding-box;
 }
 
-[data-cabinet="body"] ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background-color: #9ca3af;
 }
 
