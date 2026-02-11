@@ -12,7 +12,9 @@
  * // 1. Confirm dialog
  * const confirmed = await popup.confirm({
  *   title: '삭제 확인',
- *   message: '정말 삭제하시겠습니까?'
+ *   message: '정말 삭제하시겠습니까?',
+ *   confirmText: '삭제',
+ *   cancelText: '취소'
  * });
  *
  * if (confirmed) {
@@ -137,6 +139,22 @@ export interface AlertDialogProps {
 }
 
 /**
+ * AlertDialog variant를 ConfirmDialog tone으로 변환
+ */
+function variantToTone(variant?: 'info' | 'success' | 'warning' | 'error'): 'danger' | 'info' | 'success' {
+  switch (variant) {
+    case 'error':
+      return 'danger';
+    case 'success':
+      return 'success';
+    case 'warning':
+    case 'info':
+    default:
+      return 'info';
+  }
+}
+
+/**
  * Confirm Dialog (확인/취소)
  *
  * @param props - Confirm Dialog props
@@ -155,7 +173,16 @@ export interface AlertDialogProps {
  * }
  */
 export async function confirm(props: ConfirmDialogProps = {}): Promise<boolean> {
-  return open<boolean, ConfirmDialogProps>('confirm', props);
+  // ConfirmDialog에 맞게 props 변환
+  const confirmProps: Record<string, unknown> = {
+    title: props.title || '확인',
+    description: props.message,
+    confirmLabel: props.confirmText || '확인',
+    cancelLabel: props.cancelText || '취소',
+    tone: props.variant === 'danger' ? 'danger' : props.variant === 'warning' ? 'info' : 'info',
+  };
+
+  return open<boolean, Record<string, unknown>>('confirm', confirmProps);
 }
 
 /**
@@ -171,7 +198,16 @@ export async function confirm(props: ConfirmDialogProps = {}): Promise<boolean> 
  * });
  */
 export async function alert(props: AlertDialogProps): Promise<void> {
-  return open<void, AlertDialogProps>('alert', props);
+  // ConfirmDialog에 맞게 props 변환
+  const confirmProps: Record<string, unknown> = {
+    title: props.title || '알림',
+    description: props.message,
+    confirmLabel: props.buttonText || '확인',
+    tone: variantToTone(props.variant),
+    alertMode: true,
+  };
+
+  return open<void, Record<string, unknown>>('alert', confirmProps);
 }
 
 // ============================================================================

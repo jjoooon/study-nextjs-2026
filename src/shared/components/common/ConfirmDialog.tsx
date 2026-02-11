@@ -12,13 +12,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/shared/components/uiux';
-import log from '@/shared/utils/logger';
 
 type ConfirmDialogProps = {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  title: string;
+  title?: string; // optional로 변경
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
@@ -26,15 +25,17 @@ type ConfirmDialogProps = {
   onConfirm?: () => void | Promise<void>;
   onCancel?: () => void;
   trigger?: React.ReactNode;
+  /** Alert mode: 취소 버튼 숨김 */
+  alertMode?: boolean;
+  /** Promise resolve 함수 (DialogRenderer에서 전달) */
+  resolve?: (result?: unknown) => void;
 };
-
-const logger = log.getLogger('Pub');
 
 export function ConfirmDialog({
   open,
-  defaultOpen,
+  defaultOpen = true, // 기본적으로 열림
   onOpenChange,
-  title,
+  title = '알림', // 기본값 추가
   description,
   confirmLabel = '확인',
   cancelLabel = '',
@@ -42,27 +43,47 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
   trigger,
+  alertMode = false,
+  resolve, // DialogRenderer에서 전달
 }: ConfirmDialogProps) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const dialogProps = {
     ...(open !== undefined ? { open } : {}),
-    ...(defaultOpen !== undefined ? { defaultOpen } : {}),
+    defaultOpen: defaultOpen ?? true, // 항상 기본 열림 상태
     ...(onOpenChange ? { onOpenChange } : {}),
   };
 
+  // alertMode인 경우 취소 버튼 숨김
   const showConfirm = !!confirmLabel.length;
-  const showCancel = !!cancelLabel.length;
-  logger.log('ConfirmDialogqueue Rendered', showCancel);
+  const showCancel = !alertMode && !!cancelLabel.length;
+
+  // 다이얼로그 닫기 함수
+  const closeDialog = () => {
+    onOpenChange?.(false);
+  };
+
+  // 확인 버튼 핸들러
   const handleConfirm = async () => {
-    if (!onConfirm) return;
     setIsLoading(true);
     try {
-      await onConfirm();
+      // onConfirm이 있으면 실행
+      if (onConfirm) {
+        await onConfirm();
+      }
     } finally {
       setIsLoading(false);
-      onOpenChange?.(false);
+      // alertMode: void, confirm mode: true
+      resolve?.(alertMode ? undefined : true);
+      closeDialog();
     }
+  };
+
+  // 취소 버튼 핸들러
+  const handleCancel = () => {
+    onCancel?.();
+    resolve?.(false); // confirm mode에서 취소는 false
+    closeDialog();
   };
 
   return (
@@ -74,7 +95,7 @@ export function ConfirmDialog({
           {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          {showCancel && <AlertDialogCancel onClick={onCancel}>{cancelLabel}</AlertDialogCancel>}
+          {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}
           {showConfirm && (
             <AlertDialogAction
               disabled={isLoading}
@@ -89,3 +110,6 @@ export function ConfirmDialog({
     </AlertDialog>
   );
 }
+
+// default export for dynamic import
+export default ConfirmDialog;

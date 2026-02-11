@@ -62,6 +62,7 @@ type DialogRegistry = Record<string, DialogLoader>;
  * @description
  * - 공통 팝업만 기본 등록
  * - Feature 팝업은 각 feature에서 동적으로 등록
+ * - confirm과 alert는 ConfirmDialog 하나로 통합 관리
  *
  * @guideline
  * - ✅ 등록: confirm, alert 등 전역적으로 사용하는 공통 팝업
@@ -69,12 +70,13 @@ type DialogRegistry = Record<string, DialogLoader>;
  */
 const dialogRegistry: DialogRegistry = {
   // 공통 팝업 (기본 등록)
+  // confirm과 alert 모두 ConfirmDialog를 사용
   confirm: () =>
-    import('@/shared/components/popups/ConfirmDialog') as unknown as Promise<{
+    import('@/shared/components/common/ConfirmDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
   alert: () =>
-    import('@/shared/components/popups/AlertDialog') as unknown as Promise<{
+    import('@/shared/components/common/ConfirmDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
 
