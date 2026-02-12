@@ -144,8 +144,6 @@ export interface UserSearchProps {
 }
 
 export default function UserSearchDialog({ resolve }: UserSearchProps) {
-  // if (!open) return null;
-
   const columnDefs: ColDef<ProductData>[] = useMemo(
     () => [
       {

@@ -96,6 +96,7 @@ function DialogContent({
 
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      document.body.style.userSelect = 'none';
       if (isDragging && !isResizing) {
         const newX = e.clientX - dragStart.x;
         const newY = e.clientY - dragStart.y;
@@ -130,6 +131,7 @@ function DialogContent({
     const handleMouseUp = () => {
       setIsDragging(false);
       setIsResizing(null);
+      document.body.style.userSelect = 'auto';
     };
 
     if (isDragging || isResizing) {

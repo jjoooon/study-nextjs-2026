@@ -1,23 +1,40 @@
 'use client';
 
 import * as React from 'react';
-
 import { cn } from '@/shared/lib/shadcn/utils';
 
-function Table({ className, ...props }: React.ComponentProps<'table'>) {
+type TableVariant = 'default' | 'sub';
+
+interface TableProps extends React.ComponentProps<'table'> {
+  variant?: TableVariant;
+}
+
+const TableVariantContext = React.createContext<TableVariant>('default');
+
+function Table({ className, variant = 'default', ...props }: TableProps) {
+  // 스타일 variant별로 분리
+  const variantClass =
+    variant === 'default'
+      ? 'w-full rounded-0'
+      : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
   return (
-    <div data-slot="table-container" className="relative w-full">
-      <table data-slot="table" className={cn('w-full caption-bottom text-sm', className)} {...props} />
-    </div>
+    <TableVariantContext.Provider value={variant}>
+      <div data-slot="table-container" className="relative w-full">
+        <table data-slot="table" className={cn(variantClass, className)} {...props} />
+      </div>
+    </TableVariantContext.Provider>
   );
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
+  const variant = React.useContext(TableVariantContext);
   return (
     <thead
       data-slot="table-header"
       className={cn(
-        '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
+        variant === 'default'
+          ? '[&_tr]:bg-(--color-table-th-surface-gray) [&_th]:h-[3rem] [&_th]:py-[.2rem]'
+          : '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
         className
       )}
       {...props}
@@ -26,25 +43,36 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
-  return <tbody data-slot="table-body" className={cn('[&_tr:last-child]:border-b', className)} {...props} />;
+  const variant = React.useContext(TableVariantContext);
+  return (
+    <tbody
+      data-slot="table-body"
+      className={cn(variant === 'default' ? '[&_tr:last-child]:border-b' : '', className)}
+      {...props}
+    />
+  );
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
+  const variant = React.useContext(TableVariantContext);
   return (
     <tfoot
       data-slot="table-footer"
-      className={cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)}
+      className={cn(variant === 'default' ? '' : 'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)}
       {...props}
     />
   );
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
+  const variant = React.useContext(TableVariantContext);
   return (
     <tr
       data-slot="table-row"
       className={cn(
-        'hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-[#E5E5E5] transition-colors',
+        variant === 'default'
+          ? ''
+          : 'hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-[#E5E5E5] transition-colors',
         className
       )}
       {...props}
@@ -53,11 +81,14 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
 }
 
 function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
+  const variant = React.useContext(TableVariantContext);
   return (
     <th
       data-slot="table-head"
       className={cn(
-        'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
+        variant === 'default'
+          ? 'text-[1.3rem] border border-(--color-table-border-border-gray)'
+          : 'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
       {...props}
@@ -66,11 +97,14 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
 }
 
 function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
+  const variant = React.useContext(TableVariantContext);
   return (
     <td
       data-slot="table-cell"
       className={cn(
-        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
+        variant === 'default'
+          ? 'border border-(--color-table-border-border-gray) px-[.6rem] py-[.4rem] text-[1.3rem]'
+          : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
       {...props}
@@ -80,7 +114,11 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
 
 function TableCaption({ className, ...props }: React.ComponentProps<'caption'>) {
   return (
-    <caption data-slot="table-caption" className={cn('text-muted-foreground mt-4 text-sm', className)} {...props} />
+    <caption
+      data-slot="table-caption"
+      className={cn('text-muted-foreground mt-4 text-sm a11y-hidden', className)}
+      {...props}
+    />
   );
 }
 

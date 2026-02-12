@@ -1,10 +1,6 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, RowSpanParams, ICellRendererParams, CellClassParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
-import { Grow, Gcol, FormCell, FormTable } from '@/shared/components/common';
+import { Grow, Gcol, FormCell, FormTable, Grid } from '@/shared/components/common';
 import {
   Dialog,
   DialogContent,
@@ -20,8 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/components/uiux';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Types
 interface ProductData {
@@ -92,9 +86,9 @@ const MOCK_DATA: ProductData[] = [
 ];
 
 /**
- * 고객 검색 결과 타입
+ * 지침확인결과 팝업 Props
  */
-export interface UnderwritingResult {
+export interface DialogResult {
   /** 수행된 액션 타입 */
   action: 'select' | 'cancel';
   /** 선택된 고객 (select 액션 시) */
@@ -102,108 +96,47 @@ export interface UnderwritingResult {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customer?: any;
 }
-
-/**
- * 고객찾기 팝업 Props
- */
-export interface UnderwritingProps {
-  /** 팝업 제목 */
+export interface DialogProps {
   title?: string;
-  /** 팝업 설명 */
   description?: string;
-  /** Promise resolve 함수 (결과 반환) */
-  resolve: (result: UnderwritingResult) => void;
+  resolve: (result: DialogResult) => void;
 }
 
-export default function UnderwritingDialog({ resolve }: UnderwritingProps) {
-  // if (!open) return null;
-
-  const columnDefs: ColDef<ProductData>[] = useMemo(
-    () => [
-      {
-        headerName: '대상',
-        field: 'target',
-        width: 120,
-        cellClass: 'text-center px-0!',
-        sortable: false,
-        filter: false,
-        cellRenderer: (params: ICellRendererParams) => {
-          return <div className="flex w-full h-full items-center justify-center bg-white">{params.value}</div>;
-        },
-      },
-      {
-        headerName: '인수제한',
-        field: 'underwritingLimit',
-        width: 120,
-        cellClass: 'text-center px-0!',
-        sortable: false,
-        filter: false,
-        cellRenderer: (params: ICellRendererParams) => {
-          return <div className="flex w-full h-full items-center justify-center bg-white">{params.value}</div>;
-        },
-      },
-      {
-        headerName: '위배내용',
-        field: 'violationContent',
-        flex: 2,
-        cellClass: 'text-left',
-        sortable: false,
-        filter: false,
-        wrapText: true,
-        autoHeight: true,
-        tooltipValueGetter: (params) => {
-          if (!params.data) return '';
-          return params.data.violationContent;
-        },
-      },
-      {
-        headerName: '위배유형',
-        field: 'violationType',
-        width: 140,
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        cellRenderer: (params: ICellRendererParams) => {
-          return (
-            <Button variant="text" className="flex w-full h-full items-center justify-center">
-              {params.value}
-            </Button>
-          );
-        },
-      },
-    ],
-    []
-  );
-
-  /**
-   * 취소 버튼 핸들러suppressRowTransform={true}
-                
-   */
+export default function UnderwritingDialog({ resolve }: DialogProps) {
   const handleCancel = () => {
     resolve({
       action: 'cancel',
     });
   };
 
-  /**
-   * 고객등록 버튼 핸들러
-   */
-  const handleRegister = () => {
-    resolve({
-      action: 'select',
-    });
+  const calculateRowSpans = (data: any[], key: string): number[] => {
+    const spans: number[] = data.map(() => 0);
+    let i = 0;
+    while (i < data.length) {
+      const val = data[i][key];
+      let cnt = 1;
+      while (i + cnt < data.length && data[i + cnt][key] === val) {
+        cnt++;
+      }
+      spans[i] = cnt;
+      i += cnt;
+    }
+    return spans;
   };
 
   return (
     <Dialog open onOpenChange={handleCancel}>
-      <DialogContent className="h-[80vh] w-[90rem] min-w-[70rem] min-h-[30rem]" resizable={true}>
+      <DialogContent
+        className="h-[50rem] w-[90rem] min-w-[80rem] max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)]"
+        resizable={true}
+      >
         <DialogHeader>
           <DialogTitle>지침확인결과 (LTRZ384)</DialogTitle>
         </DialogHeader>
 
         {/* 모달 내용 - FormTable 사용 */}
-        <div className="gap-8 flex-1 grid grid-rows-[auto_1fr] w-full px-[3.2rem]">
-          <Gcol className="gap-2">
+        <Gcol className="gap-8 flex-1 w-full px-[3.2rem] pb-[3.2rem]" placement="ts">
+          <Gcol className="gap-2 shrink-0 w-full">
             <FormTable
               variant="setting"
               caption="지침확인결과 (LTRZ384) 테이블입니다."
@@ -226,91 +159,53 @@ export default function UnderwritingDialog({ resolve }: UnderwritingProps) {
               </Button>
             </Grow>
           </Gcol>
-
           {/* MOCK_DATA 기반 수동 rowspan 테이블 */}
-          <div style={{ maxHeight: 320, overflow: 'auto', position: 'relative' }}>
-            <Table>
-              <TableCaption className="a11y-hidden">지침확인결과 (MOCK_DATA 기반)</TableCaption>
-              <TableHeader style={{ position: 'sticky', top: 0, zIndex: 2, background: '#fff' }}>
-                <TableRow>
-                  <TableHead className="w-[120px]">대상</TableHead>
-                  <TableHead className="w-[120px]">인수제한</TableHead>
-                  <TableHead>위배내용</TableHead>
-                  <TableHead className="w-[140px]">위배유형</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {(() => {
-                  // rowSpanTarget/rowSpanLimit 값이 있으면 우선 사용, 없으면 연속 구간 계산
-                  const rows = [];
-                  // 대상 rowSpan 계산 (rowSpanTarget)
-                  const targetRowSpans = MOCK_DATA.map((row) => row.rowSpanTarget || 0);
-                  // 인수제한 rowSpan 계산 (rowSpanLimit)
-                  const limitRowSpans = MOCK_DATA.map((row) => row.rowSpanLimit || 0);
-                  // 만약 값이 없으면 연속 구간 계산 (fallback)
-                  if (targetRowSpans.every((v) => v === 0)) {
-                    let i = 0;
-                    while (i < MOCK_DATA.length) {
-                      const val = MOCK_DATA[i].target;
-                      let cnt = 1;
-                      while (i + cnt < MOCK_DATA.length && MOCK_DATA[i + cnt].target === val) cnt++;
-                      targetRowSpans[i] = cnt;
-                      for (let j = 1; j < cnt; j++) targetRowSpans[i + j] = 0;
-                      i += cnt;
-                    }
-                  }
-                  if (limitRowSpans.every((v) => v === 0)) {
-                    let i = 0;
-                    while (i < MOCK_DATA.length) {
-                      const val = MOCK_DATA[i].underwritingLimit;
-                      let cnt = 1;
-                      while (i + cnt < MOCK_DATA.length && MOCK_DATA[i + cnt].underwritingLimit === val) cnt++;
-                      limitRowSpans[i] = cnt;
-                      for (let j = 1; j < cnt; j++) limitRowSpans[i + j] = 0;
-                      i += cnt;
-                    }
-                  }
-                  for (let i = 0; i < MOCK_DATA.length; i++) {
-                    rows.push(
-                      <TableRow key={i}>
-                        {targetRowSpans[i] > 0 && (
-                          <TableCell rowSpan={targetRowSpans[i]} className="text-center align-middle">
-                            {MOCK_DATA[i].target}
+          <div className="min-h-0 h-[100%] flex flex-col">
+            <div className="flex-1 min-h-0 overflow-auto [&>div]:h-0 border-t-[.2rem] border-t-(--color-border-gray-darker) border-b-[.1rem] border-b-(--color-table-border-border-gray)">
+              <Table>
+                <TableCaption className="a11y-hidden">지침확인결과 (MOCK_DATA 기반)</TableCaption>
+                <TableHeader style={{ position: 'sticky', top: 0, zIndex: 2, background: '#fff' }}>
+                  <TableRow>
+                    <TableHead className="w-[12rem]">대상</TableHead>
+                    <TableHead className="w-[12rem]">인수제한</TableHead>
+                    <TableHead>위배내용</TableHead>
+                    <TableHead className="w-[12rem]">위배유형</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {(() => {
+                    const rows = [];
+                    const targetRowSpans = calculateRowSpans(MOCK_DATA, 'target');
+                    const limitRowSpans = calculateRowSpans(MOCK_DATA, 'underwritingLimit');
+                    for (let i = 0; i < MOCK_DATA.length; i++) {
+                      rows.push(
+                        <TableRow key={i}>
+                          {targetRowSpans[i] > 0 && (
+                            <TableCell rowSpan={targetRowSpans[i]} className="text-center align-middle">
+                              <div className="w-full relative w-full">
+                                <div className="sticky top-0">{MOCK_DATA[i].target}</div>
+                              </div>
+                            </TableCell>
+                          )}
+                          {limitRowSpans[i] > 0 && (
+                            <TableCell rowSpan={limitRowSpans[i]} className="text-center align-middle">
+                              {MOCK_DATA[i].underwritingLimit}
+                            </TableCell>
+                          )}
+                          <TableCell className="whitespace-pre-line">{MOCK_DATA[i].violationContent}</TableCell>
+                          <TableCell className="text-center">
+                            <Button variant="text">{MOCK_DATA[i].violationType}</Button>
                           </TableCell>
-                        )}
-                        {limitRowSpans[i] > 0 && (
-                          <TableCell rowSpan={limitRowSpans[i]} className="text-center align-middle">
-                            {MOCK_DATA[i].underwritingLimit}
-                          </TableCell>
-                        )}
-                        <TableCell className="whitespace-pre-line">{MOCK_DATA[i].violationContent}</TableCell>
-                        <TableCell className="text-center">{MOCK_DATA[i].violationType}</TableCell>
-                      </TableRow>
-                    );
-                  }
-                  return rows;
-                })()}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div style={{ width: '100%', height: '100%' }}>
-            <div
-              className="ag-theme-alpine grid grid-rows-[1fr_auto] no-odd"
-              style={{ height: '100%', width: '100%', whiteSpace: 'pre-line' }}
-            >
-              <AgGridReact<ProductData>
-                rowData={MOCK_DATA}
-                columnDefs={columnDefs}
-                suppressRowTransform={true}
-                pagination={true}
-                paginationPageSize={10}
-                paginationPageSizeSelector={[10, 20, 50, 100]}
-                // 클릭 관련 이벤트 핸들러 없음 (비활성화)
-              />
+                        </TableRow>
+                      );
+                    }
+                    return rows;
+                  })()}
+                </TableBody>
+              </Table>
             </div>
           </div>
-        </div>
+        </Gcol>
       </DialogContent>
     </Dialog>
   );

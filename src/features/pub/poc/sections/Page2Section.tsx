@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-
-import { Gcol } from '@/shared/components/common';
-import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/shared/components/uiux';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { InsPlanBasic, InsPlanBasicStep1, InsPlanBasicStep2, InsPlanBasicStep3 } from '../components/Page2Index';
 import { INITIAL_TABS } from '../constants/insPlanBasicData';
 import type { TabKey } from '../constants/insPlanBasicData';
 import { useForm } from '../hooks/useForm';
+import { Gcol } from '@/shared/components/common';
+import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/shared/components/uiux';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 export default function Main() {
   const [testError, setTestError] = useState(false);

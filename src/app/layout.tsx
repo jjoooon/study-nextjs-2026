@@ -46,10 +46,10 @@
 import type { Metadata, Viewport } from 'next';
 
 import '@/shared/styles/globals.css';
+import { Providers } from './providers';
 import { AuthGuard } from '@/shared/components/AuthGuard';
 import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
-import { Providers } from './providers';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -68,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="select-none">
+    <html lang="ko">
       <body>
         <Providers>
           <AuthGuard>{children}</AuthGuard>
