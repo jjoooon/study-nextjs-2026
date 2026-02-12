@@ -443,3 +443,35 @@ export const UserIcon: React.FC<IconProps> = ({ className = '', size = 24, color
     />
   </svg>
 );
+
+// ------------------------
+export const ZoomOut: React.FC<IconProps> = ({ className = '', size = 20, color = '#FF5C2E' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 20 20"
+    fill="none"
+    className={className}
+  >
+    <circle cx="9.99996" cy="9.99996" r="7.66667" fill={color} stroke={color} strokeWidth="1.33333" />
+    <path d="M5.83337 10H14.1667" stroke="white" strokeWidth="1.83333" strokeLinecap="round" />
+  </svg>
+);
+export const ZoomIn: React.FC<IconProps> = ({ className = '', size = 20, color = '#FF5C2E' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 20 20"
+    fill="none"
+    className={className}
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.99996 1.66666C14.6023 1.66666 18.3333 5.39762 18.3333 9.99999C18.3333 14.6024 14.6023 18.3333 9.99996 18.3333C5.39759 18.3333 1.66663 14.6024 1.66663 9.99999C1.66663 5.39762 5.39759 1.66666 9.99996 1.66666ZM9.99996 4.91698C9.4937 4.91698 9.08362 5.32706 9.08362 5.83332V9.08365H5.83329C5.32703 9.08365 4.91695 9.49373 4.91695 9.99999C4.91695 10.5063 5.32703 10.9163 5.83329 10.9163H9.08362V14.1667C9.08362 14.6729 9.4937 15.083 9.99996 15.083C10.5062 15.083 10.9163 14.6729 10.9163 14.1667V10.9163H14.1666C14.6729 10.9163 15.083 10.5063 15.083 9.99999C15.083 9.49373 14.6729 9.08365 14.1666 9.08365H10.9163V5.83332C10.9163 5.32706 10.5062 4.91698 9.99996 4.91698Z"
+      fill={color}
+    />
+  </svg>
+);
