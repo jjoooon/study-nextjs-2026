@@ -149,6 +149,30 @@ const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
 // ============================================================================
 
 /**
+ * RTK Query BaseQuery args 타입
+ */
+interface BaseQueryArgs {
+  url: string;
+  method?: string;
+  body?: unknown;
+  data?: unknown;
+  params?: unknown;
+  showSpinner?: boolean;
+  spinnerMessage?: string;
+  delayShow?: number;
+  transparentBackground?: boolean;
+  hideLoadingIndicator?: boolean;
+}
+
+/**
+ * RTK Query BaseQuery error 타입
+ */
+interface BaseQueryError {
+  status: number;
+  data?: unknown;
+}
+
+/**
  * 쿠키 기반 BaseQuery
  *
  * @description
@@ -158,7 +182,11 @@ const getAxiosInstance = (getState: () => unknown): AxiosInstance => {
  * - 기본 메시지: "Loading..."
  * - RTK Query의 body를 Axios의 data로 자동 매핑
  */
-const axiosBaseQueryWithReauth: BaseQueryFn = async (args, api) => {
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+const axiosBaseQueryWithReauth: BaseQueryFn<string | BaseQueryArgs, unknown, BaseQueryError, {}> = async (
+  args,
+  api
+) => {
   // Axios 인스턴스 가져오기
   const instance = getAxiosInstance(api.getState);
 

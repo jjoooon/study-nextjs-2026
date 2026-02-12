@@ -113,7 +113,7 @@ function Content({ id }: { id: string }) {
   const handleEdit = (_productId: number) => {
     // ✅ 쿼리 파라미터 보존하면서 수정 페이지로 이동
     const params = new URLSearchParams(searchParams.toString());
-    params.set('id', product.id);
+    params.set('id', String(product.id));
     router.push(`${PRODUCTS_ROUTES.EDIT}?${params.toString()}`);
   };
 
