@@ -5,8 +5,8 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 export default function LayoutType1Section() {
   return (
     <LayoutScrollWrap className="grid-rows-[1fr_auto]">
-      <LayoutScrollItem className="bg-[yellow] w-full">
-        <div className=" bg-[red] text-[40rem]">
+      <LayoutScrollItem className="w-full">
+        <div className="text-[40rem]">
           1
           <br />
           2

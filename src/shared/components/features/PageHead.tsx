@@ -5,10 +5,10 @@ import { Button } from '@/shared/components/uiux';
 
 export default function PageHead() {
   return (
-    <Gcol className="w-full">
-      <Grow placement="msb">
+    <Gcol className="w-full px-[1rem] gap-[1rem]">
+      <Grow placement="msb" className="w-full">
         <Grow className="gap-1">
-          <Typo>상품가입설계</Typo>
+          <Typo variant="heading-sm">상품가입설계</Typo>
           <Typo>(LTRA350)</Typo>
         </Grow>
         <Grow className="gap-1">
@@ -16,7 +16,17 @@ export default function PageHead() {
           <Button>닫기</Button>
         </Grow>
       </Grow>
-      <div>페이지 헤드</div>
+
+      <Grow placement="msb" className="w-full">
+        <Grow className="gap-1">
+          <Typo variant="heading-sm">상품가입설계</Typo>
+          <Typo>(LTRA350)</Typo>
+        </Grow>
+        <Grow className="gap-1">
+          <ZoomControl />
+          <Button>닫기</Button>
+        </Grow>
+      </Grow>
     </Gcol>
   );
 }

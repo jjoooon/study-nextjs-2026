@@ -5,32 +5,34 @@ import { cn } from '@/shared/lib/shadcn/utils';
 const typoVariants = cva('', {
   variants: {
     variant: {
-      'heading-l': 'block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-m': 'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-s': 'block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-lg': 'block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-md': 'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-sm': 'block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',
 
-      'body-l': 'text-[1.5rem] font-normal leading-[150%] tracking-[-0.13rem]',
-      'body-m': 'text-[1.3rem] font-normal leading-[150%] tracking-[-0.13rem]',
-      'body-s': 'text-[1.2rem] font-normal leading-[150%] tracking-[-0.13rem]',
+      'body-lg': 'text-[1.5rem] leading-[150%] tracking-[-0.13rem]',
+      'body-md': 'text-[1.3rem] leading-[150%] tracking-[-0.13rem]',
+      'body-sm': 'text-[1.2rem] leading-[150%] tracking-[-0.13rem]',
 
-      'button-l': 'text-[1.4rem] font-normal leading-[100%] tracking-[-0.13rem]',
-      'button-m': 'text-[1.3rem] font-normal leading-[100%] tracking-[-0.13rem]',
-      'button-s': 'text-[1.2rem] font-normal leading-[100%] tracking-[-0.13rem]',
+      'button-lg': 'text-[1.4rem] leading-[100%] tracking-[-0.13rem]',
+      'button-md': 'text-[1.3rem] leading-[100%] tracking-[-0.13rem]',
+      'button-sm': 'text-[1.2rem] leading-[100%] tracking-[-0.13rem]',
     },
     weight: {
-      normal: 'font-normal',
-      bold: 'font-bold',
-      semibold: 'font-semibold',
+      normal: 'font-normal!',
+      bold: 'font-bold!',
+      semibold: 'font-semibold!',
     },
     color: {
-      default: 'text-black',
-      primary: 'text-blue-600',
-      secondary: 'text-gray-600',
-      error: 'text-red-600',
+      default: 'text-(--color-text-base)',
+      grayLight: 'text-(--color-text-gray-light)',
+      gray: 'text-(--color-text-gray)',
+      primary: 'text-(--color-text-primary)',
+      secondary: 'text-(--color-text-secondary)',
+      information: 'text-(--color-text-information)',
     },
   },
   defaultVariants: {
-    variant: 'body-m',
+    variant: 'body-md',
     color: 'default',
   },
 });

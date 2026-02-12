@@ -30,14 +30,14 @@ export const ZoomControl = () => {
 
   return (
     <Grow className="gap-1 items-center">
-      <Button variant="outline" color="gray" className="mr-[1rem]" size="xs" onClick={handleZoomAuto}>
+      <Button variant="outlined" color="gray" className="mr-[1rem]" size="sm" onClick={handleZoomAuto}>
         자동맞춤
       </Button>
-      <Button variant="icon" size="xs" color="transparent" onClick={handleZoomOut}>
+      <Button variant="none" onlyicon={true} size="sm" color="transparent" onClick={handleZoomOut}>
         <ZoomOut />
       </Button>
-      <Typo variant="button-s">{fontSize * 10}%</Typo>
-      <Button variant="icon" size="xs" color="transparent" onClick={handleZoomIn}>
+      <Typo variant="button-sm">{fontSize * 10}%</Typo>
+      <Button variant="none" onlyicon={true} size="sm" color="transparent" onClick={handleZoomIn}>
         <ZoomIn />
       </Button>
     </Grow>

@@ -7,10 +7,12 @@
 html {
   font-size: 10px;
 }
+
 body {
   min-width: 126rem;
   overflow-x: auto;
 }
+
 ::-webkit-scrollbar {
   width: .4rem;
   height: .4rem;
@@ -343,8 +345,8 @@ input::placeholder {
   --color-success-15: #C8F2DB;
   --color-success-10: #E9FDF2;
   --color-success-5: #F7FFFA;
-  --typo-font-type: "Malgun Gothic";
   --typo-letter-spacing-n3: -1.2999999523162842;
+  --typo-font-type: "Malgun Gothic";
   --typo-letter-spacing-n2: -1;
   --typo-letter-spacing-n1: -0.800000011920929;
   --typo-letter-spacing-0: 0;
@@ -412,11 +414,12 @@ input::placeholder {
   --color-element-gray: var(--color-gray-50);
   --color-element-primary: var(--color-primary-50);
   --color-element-danger: var(--color-danger-50);
-  --color-element-information-lighter: var(--color-information-10);
+  --color-element-information-light: var(--color-information-10);
   --color-element-information: var(--color-information-50);
-  --color-element-success-lighter: var(--color-success-60);
-  --color-element-success: var(--color-success-10);
-  --color-element-warning: var(--color-warning-10);
+  --color-element-success: var(--color-success-60);
+  --color-element-success-light: var(--color-success-10);
+  --color-element-warning-light: var(--color-warning-10);
+  --color-element-warning: var(--color-warning-15);
   --color-icon-inverse: var(--color-gray-0);
   --color-icon-gray: var(--color-gray-80);
   --color-button-text-inverse: var(--color-gray-0);
@@ -502,11 +505,11 @@ input::placeholder {
   --padding-xxxlarge: var(--number-12);
   --gap-xsmall: var(--number-3);
   --gap-small: var(--number-4);
-  --gap-medium: var(--number-6);
-  --gap-large: var(--number-7);
-  --gap-xlarge: var(--number-8);
-  --gap-xxlarge: var(--number-10);
-  --gap-xxxlarge: var(--number-18);
+  --gap-medium: var(--number-5);
+  --gap-large: var(--number-6);
+  --gap-xlarge: var(--number-7);
+  --gap-xxlarge: var(--number-8);
+  --gap-xxxlarge: var(--number-10);
   --radius-xsmall: var(--number-2);
   --radius-small: var(--number-3);
   --radius-medium: var(--number-4);
@@ -603,10 +606,6 @@ input::placeholder {
 
   body {
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-    color: #000;
-    background: var(--background);
-    color: var(--foreground);
-    letter-spacing: -0.039rem;
   }
 
   button {
