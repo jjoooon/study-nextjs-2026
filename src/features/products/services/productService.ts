@@ -155,6 +155,8 @@ export const productService = createApi({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
+  useLazyGetProductsQuery,
+  useLazyGetProductByIdQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,

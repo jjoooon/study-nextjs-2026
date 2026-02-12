@@ -71,4 +71,4 @@ export const customerService = createApi({
  * RTK Query가 자동으로 생성하는 hooks를 export 합니다:
  * - useGetCustomersQuery: 고객 목록 조회
  */
-export const { useGetCustomersQuery } = customerService;
+export const { useGetCustomersQuery, useLazyGetCustomersQuery } = customerService;
