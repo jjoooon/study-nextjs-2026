@@ -139,21 +139,6 @@ export const ChevronDownIcon: React.FC<IconProps> = ({ className = '', size = 24
   </svg>
 );
 
-export const CloseIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'white' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 14 14`}
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M11.2133 1.87993C11.4639 1.62934 11.8696 1.62934 12.1202 1.87993C12.3707 2.13052 12.3708 2.53626 12.1202 2.78683L7.90697 7.00004L12.1202 11.2133C12.3707 11.4638 12.3708 11.8696 12.1202 12.1202C11.8696 12.3707 11.4639 12.3707 11.2133 12.1202L7.00007 7.90694L2.78686 12.1202C2.53629 12.3707 2.13055 12.3707 1.87996 12.1202C1.62937 11.8696 1.62937 11.4638 1.87996 11.2133L6.09317 7.00004L1.87996 2.78683C1.62937 2.53624 1.62937 2.13051 1.87996 1.87993C2.13054 1.62934 2.53627 1.62934 2.78686 1.87993L7.00007 6.09314L11.2133 1.87993Z"
-      fill={color}
-    />
-  </svg>
-);
 export const CloseDialog: React.FC<IconProps> = ({ className = '', size = 14, color = '#2C2724' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -445,7 +430,62 @@ export const UserIcon: React.FC<IconProps> = ({ className = '', size = 24, color
 );
 
 // ------------------------
-export const ZoomOut: React.FC<IconProps> = ({ className = '', size = 20, color = '#FF5C2E' }) => (
+export const CloseIcon = ({ className = '', size = 16, color = 'var(--color-secondary-90)' }: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M12.8152 2.1485C13.1016 1.86212 13.5652 1.86212 13.8516 2.1485C14.138 2.43489 14.138 2.8986 13.8516 3.18496L9.03653 8.00007L13.8516 12.8152C14.138 13.1016 14.138 13.5653 13.8516 13.8516C13.5653 14.138 13.1016 14.138 12.8152 13.8516L8.00007 9.03653L3.18496 13.8516C2.8986 14.138 2.43489 14.138 2.1485 13.8516C1.86212 13.5652 1.86212 13.1016 2.1485 12.8152L6.96361 8.00007L2.1485 3.18496C1.86212 2.89858 1.86212 2.43489 2.1485 2.1485C2.43489 1.86212 2.89858 1.86212 3.18496 2.1485L8.00007 6.96361L12.8152 2.1485Z"
+      fill={color}
+    />
+  </svg>
+);
+
+export const ArrowLightIcon: React.FC<IconProps> = ({ className = '', size = 15, color = '#FF5C2E' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 15 15"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M4.50281 1.99153C4.77124 1.72336 5.20607 1.72336 5.47449 1.99153L10.4971 7.01411C10.7654 7.28261 10.7655 7.71795 10.4971 7.9864L5.47449 13.0084C5.20603 13.2767 4.77126 13.2767 4.50281 13.0084C4.23437 12.7399 4.23446 12.3052 4.50281 12.0367L9.03833 7.50056L4.50281 2.96382C4.23437 2.69538 4.23446 2.26003 4.50281 1.99153Z"
+      fill={color}
+    />
+  </svg>
+);
+export const ListIcon: React.FC<IconProps> = ({ className = '', size = 15, color = '#FF5C2E' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 15 15"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M12.5623 10.625C12.942 10.625 13.2495 10.9326 13.2495 11.3123C13.2495 11.692 12.942 11.9995 12.5623 11.9995H2.56226C2.18256 11.9995 1.875 11.692 1.875 11.3123C1.875 10.9326 2.18256 10.625 2.56226 10.625H12.5623Z"
+      fill={color}
+    />
+    <path
+      d="M12.5623 6.875C12.942 6.875 13.2495 7.18256 13.2495 7.56226C13.2495 7.94195 12.942 8.24951 12.5623 8.24951H2.56226C2.18256 8.24951 1.875 7.94195 1.875 7.56226C1.875 7.18256 2.18256 6.875 2.56226 6.875H12.5623Z"
+      fill={color}
+    />
+    <path
+      d="M12.5623 3.125C12.942 3.125 13.2495 3.43256 13.2495 3.81226C13.2495 4.19195 12.942 4.49951 12.5623 4.49951H2.56226C2.18256 4.49951 1.875 4.19195 1.875 3.81226C1.875 3.43256 2.18256 3.125 2.56226 3.125H12.5623Z"
+      fill={color}
+    />
+  </svg>
+);
+
+export const ZoomOutIcon: React.FC<IconProps> = ({ className = '', size = 20, color = '#FF5C2E' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -458,7 +498,7 @@ export const ZoomOut: React.FC<IconProps> = ({ className = '', size = 20, color 
     <path d="M5.83337 10H14.1667" stroke="white" strokeWidth="1.83333" strokeLinecap="round" />
   </svg>
 );
-export const ZoomIn: React.FC<IconProps> = ({ className = '', size = 20, color = '#FF5C2E' }) => (
+export const ZoomInIcon: React.FC<IconProps> = ({ className = '', size = 20, color = '#FF5C2E' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}

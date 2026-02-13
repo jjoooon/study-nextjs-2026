@@ -152,7 +152,7 @@ const buttonVariants = cva(
       {
         variant: 'outlined',
         color: 'gray-light',
-        className: `border border-(--color-gary-20) 
+        className: `border border-(--color-gray-20) 
         bg-(--color-gary-0) 
         text-(--color-gary-100) 
         hover:bg-(--color-gray-5) 

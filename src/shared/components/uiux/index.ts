@@ -26,3 +26,5 @@ export * from './InputGroup';
 export * from './Separator';
 export * from './Skeleton';
 export * from './Empty';
+export * from './Switch';
+export * from './HoverCard';

@@ -1,6 +1,6 @@
 'use client';
 
-import LayoutType1Section from '@/features/pub/proto/sections/LayoutType1Section';
+import { MainHeadLTRA350 } from '../components/LTRA350';
 import {
   LayoutFolder,
   LayoutFolderHead,
@@ -13,14 +13,18 @@ import {
   LayoutAsideHead,
   LayoutAsideBody,
   LayoutAsideFoot,
+  LayoutScrollWrap,
+  LayoutScrollItem,
 } from '@/shared/components/layout';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
 
-export default function Page() {
+export default function LTRA350Section() {
   return (
     <LayoutFolder>
-      <LayoutFolderHead>
-        <LayoutMainHead>콘텐츠 헤드</LayoutMainHead>
+      <LayoutFolderHead className="grid grid-cols-[1fr_auto] gap-[1rem]">
+        <LayoutMainHead>
+          <MainHeadLTRA350 />
+        </LayoutMainHead>
         <LayoutAsideHead>사이드 헤드</LayoutAsideHead>
       </LayoutFolderHead>
       <LayoutFolderBody>
@@ -28,8 +32,23 @@ export default function Page() {
           <ResizablePanel defaultSize="75%" minSize="72rem">
             <LayoutMain>
               <LayoutMainBody>
-                {/* features/proto/sections */}
-                <LayoutType1Section />
+                <LayoutScrollWrap className="grid-rows-[1fr_auto]">
+                  <LayoutScrollItem className="w-full">
+                    <div className="text-[40rem]">
+                      1
+                      <br />
+                      2
+                      <br />
+                      3
+                      <br />
+                    </div>
+                  </LayoutScrollItem>
+                  <LayoutScrollItem className="bg-[pink] w-full">
+                    qqq
+                    <br />
+                    qqqqq
+                  </LayoutScrollItem>
+                </LayoutScrollWrap>
               </LayoutMainBody>
               <LayoutMainFoot>
                 콘텐츠 풋터

@@ -15,8 +15,8 @@ interface InsPlanBasicStep1Props {
 export function InsPlanBasicStep1({ currentData, testError, handleChange }: InsPlanBasicStep1Props) {
   return (
     <Gcol className="gap-[1rem] w-full">
-      <Grow placement="msb">
-        <Typo tag="h3" variant="heading-l">
+      <Grow placement="bwc">
+        <Typo tag="h3" variant="heading-lg">
           계약자
         </Typo>
       </Grow>
@@ -39,7 +39,7 @@ export function InsPlanBasicStep1({ currentData, testError, handleChange }: InsP
                   errorPs="bl"
                   onChange={(e) => handleChange('name', e.target.value)}
                 />
-                <Button aria-label="계약자 추가" variant="icon">
+                <Button aria-label="계약자 추가" variant="none" onlyicon>
                   <SearchIcon />
                 </Button>
               </FormItem>

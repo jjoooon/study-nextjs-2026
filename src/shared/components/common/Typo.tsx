@@ -24,7 +24,7 @@ const typoVariants = cva('', {
     },
     color: {
       default: 'text-(--color-text-base)',
-      grayLight: 'text-(--color-text-gray-light)',
+      'gray-light': 'text-(--color-gray-30)',
       gray: 'text-(--color-text-gray)',
       primary: 'text-(--color-text-primary)',
       secondary: 'text-(--color-text-secondary)',

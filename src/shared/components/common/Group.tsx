@@ -2,39 +2,24 @@ import { ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 type LayoutPlacement =
-  | 'ts'
-  | 'tc'
-  | 'te'
-  | 'tsb'
-  | 'tsa'
-  | 'tse'
-  | 'tst'
-  | 'ms'
-  | 'mc'
-  | 'me'
-  | 'msb'
-  | 'msa'
-  | 'mse'
-  | 'mst'
-  | 'bs'
-  | 'bc'
-  | 'be'
-  | 'bsb'
-  | 'bsa'
-  | 'bse'
-  | 'bst'
-  | 'sbs'
-  | 'sbc'
-  | 'sbe'
-  | 'sas'
-  | 'sac'
-  | 'sae'
-  | 'ses'
-  | 'sec'
-  | 'see'
-  | 'sts'
-  | 'stc'
-  | 'ste';
+  | 'ss'
+  | 'sc'
+  | 'se'
+  | 'cs'
+  | 'cc'
+  | 'ce'
+  | 'es'
+  | 'ec'
+  | 'ee'
+  | 'bws'
+  | 'bwc'
+  | 'bwe'
+  | 'ars'
+  | 'arc'
+  | 'are'
+  | 'evs'
+  | 'evc'
+  | 'eve';
 
 type Variant =
   | 'default'
@@ -58,46 +43,48 @@ interface GroupProps {
 
 // 가로 정렬(Row)용 매핑
 const ROW_PLACEMENT_MAP: Record<string, string> = {
-  ts: 'justify-start items-start',
-  tc: 'justify-center items-start',
-  te: 'justify-end items-start',
-  tsb: 'w-full justify-between items-start',
-  tsa: 'w-full justify-around items-start',
-  tse: 'w-full justify-evenly items-start',
-  ms: 'justify-start items-center',
-  mc: 'justify-center items-center',
-  me: 'justify-end items-center',
-  msb: 'w-full justify-between items-center',
-  msa: 'w-full justify-around items-center',
-  mse: 'w-full justify-evenly items-center',
-  bs: 'justify-start items-end',
-  bc: 'justify-center items-end',
-  be: 'justify-end items-end',
-  bsb: 'w-full justify-between items-end',
-  bsa: 'w-full justify-around items-end',
-  bse: 'w-full justify-evenly items-end',
+  ss: 'justify-start items-start ',
+  sc: 'justify-start items-center',
+  se: 'justify-start items-endt',
+  cs: 'justify-center items-start ',
+  cc: 'justify-center items-center',
+  ce: 'justify-center items-endt',
+  es: 'justify-end items-start ',
+  ec: 'justify-end items-center',
+  ee: 'justify-end items-endt',
+
+  bws: 'w-full justify-between items-start  ',
+  bwc: 'w-full justify-between items-center',
+  bwe: 'w-full justify-between items-end',
+  ars: 'w-full justify-around items-start',
+  arc: 'w-full justify-around items-center',
+  are: 'w-full justify-around items-end',
+  evs: 'w-full justify-evenly items-start',
+  evc: 'w-full justify-evenly items-center',
+  eve: 'w-full justify-evenly items-end',
 };
 
 // 세로 정렬(Col)용 매핑
 const COL_PLACEMENT_MAP: Record<string, string> = {
-  ts: 'justify-start items-start',
-  tc: 'justify-start items-center',
-  te: 'justify-start items-end',
-  ms: 'justify-center items-start',
-  mc: 'justify-center items-center',
-  me: 'justify-center items-end',
-  bs: 'justify-end items-start',
-  bc: 'justify-end items-center',
-  be: 'justify-end items-end',
-  sbs: 'justify-between items-start',
-  sbc: 'justify-between items-center',
-  sbe: 'justify-between items-end',
-  sas: 'justify-around items-start',
-  sac: 'justify-around items-center',
-  sae: 'justify-around items-end',
-  ses: 'justify-evenly items-start',
-  sec: 'justify-evenly items-center',
-  see: 'justify-evenly items-end',
+  ss: 'justify-start items-start ',
+  sc: 'justify-start items-center',
+  se: 'justify-start items-endt',
+  cs: 'justify-center items-start ',
+  cc: 'justify-center items-center',
+  ce: 'justify-center items-endt',
+  es: 'justify-end items-start ',
+  ec: 'justify-end items-center',
+  ee: 'justify-end items-endt',
+
+  bws: 'h-full justify-between items-start  ',
+  bwc: 'h-full justify-between items-center',
+  bwe: 'h-full justify-between items-end',
+  ars: 'h-full justify-around items-start',
+  arc: 'h-full justify-around items-center',
+  are: 'h-full justify-around items-end',
+  evs: 'h-full justify-evenly items-start',
+  evc: 'h-full justify-evenly items-center',
+  eve: 'h-full justify-evenly items-end',
 };
 
 // 스타일 변이(Variant) 매핑
@@ -115,7 +102,7 @@ const VARIANT_MAP: Record<Variant, string> = {
   'box-line': 'px-[2rem] py-[2rem] bg-[#FFF] gap-[1.2rem] border border-[#ECECEC] rounded-[1.6rem] ',
 };
 
-export const Gcol = ({ children, placement = 'mc', variant = 'default', className }: GroupProps) => {
+export const Gcol = ({ children, placement = 'cc', variant = 'default', className }: GroupProps) => {
   return (
     <div
       data-group="col"
@@ -131,7 +118,7 @@ export const Gcol = ({ children, placement = 'mc', variant = 'default', classNam
   );
 };
 
-export const Grow = ({ children, placement = 'mc', variant = 'default', className }: GroupProps) => {
+export const Grow = ({ children, placement = 'cc', variant = 'default', className }: GroupProps) => {
   return (
     <div
       data-group="row"
@@ -150,7 +137,7 @@ export const Grid = ({ children, variant = 'default', className }: GroupProps) =
   );
 };
 
-export const FormItem = ({ children, placement = 'ms', variant = 'default', className }: GroupProps) => {
+export const FormItem = ({ children, placement = 'sc', variant = 'default', className }: GroupProps) => {
   return (
     <div
       data-group="row"
@@ -168,7 +155,7 @@ export const FormItem = ({ children, placement = 'ms', variant = 'default', clas
 export const Separator = ({ children }: GroupProps) => {
   return <div className="translate-y-[-.2rem]">{children}</div>;
 };
-export const ButtonGroup = ({ children, placement = 'ms', variant = 'default', className }: GroupProps) => {
+export const ButtonGroup = ({ children, placement = 'sc', variant = 'default', className }: GroupProps) => {
   return (
     <div
       data-group="row"

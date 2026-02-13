@@ -119,7 +119,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
-      <Button aria-label="고객 추가" variant="icon" color="transparent" onClick={() => alert('추가')}>
+      <Button aria-label="고객 추가" variant="none" onlyicon color="transparent" onClick={() => alert('추가')}>
         <AddIcon />
       </Button>
     ) : (
@@ -173,7 +173,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               size="sm"
               className="flex-1"
             />
-            <Button variant="icon" aria-label="고객명 검색" size="sm">
+            <Button variant="none" onlyicon aria-label="고객명 검색" size="sm">
               <SearchIcon />
             </Button>
           </Grow>
@@ -270,12 +270,12 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         <div className="text-center p-4">데이터가 없습니다.</div>
       ) : (
         <>
-          <Grow placement="msb">
-            <Typo tag="h3" variant="heading-l">
+          <Grow placement="bwc">
+            <Typo tag="h3" variant="heading-lg">
               가입담보 선택
             </Typo>
             <ButtonGroup>
-              <Button color="gray" variant="outline" size="md">
+              <Button color="gray" variant="outlined" size="md">
                 다운로드
               </Button>
             </ButtonGroup>
@@ -293,10 +293,10 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                   <NativeSelectOption value="">나만의 설계</NativeSelectOption>
                   <NativeSelectOption value="1">나만의 설계1</NativeSelectOption>
                 </NativeSelect>
-                <Button variant="outline" color="gray" size="sm">
+                <Button variant="outlined" color="gray" size="sm">
                   단체입력
                 </Button>
-                <Button variant="outline" color="gray" size="sm">
+                <Button variant="outlined" color="gray" size="sm">
                   <ResetIcon />
                   담보초기화
                 </Button>
@@ -304,15 +304,15 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               <Grow className="w-full px-2 py-[.6rem]" placement="tsb">
                 <Grow className="gap-6">
                   <Grow className="gap-1">
-                    <Button variant="outline" color="gray" size="sm">
+                    <Button variant="outlined" color="gray" size="sm">
                       가입담보
                     </Button>
-                    <Button variant="outline" color="gray" size="sm">
+                    <Button variant="outlined" color="gray" size="sm">
                       미가입담보
                     </Button>
                   </Grow>
                   <Grow className="gap-3">
-                    <Typo variant="heading-m">분류별 선택</Typo>
+                    <Typo variant="heading-md">분류별 선택</Typo>
                     <Separator>|</Separator>
                     <Grow className="gap-x-4 gap-y-1 flex-wrap" placement="ts">
                       {CategoriesCheckbox.map((category) => (
@@ -324,7 +324,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                   </Grow>
                 </Grow>
                 <Grow>
-                  <Button variant="outline" color="gray" size="sm">
+                  <Button variant="outlined" color="gray" size="sm">
                     더보기
                   </Button>
                 </Grow>

@@ -58,7 +58,7 @@ export default function InsPlanCovAside() {
       {/* 꼭 확인해야 할 일! */}
       <Gcol variant="box-line" placement="ts" className="w-full">
         <Grow placement="ms">
-          <Typo variant="heading-l" tag="h3">
+          <Typo variant="heading-lg" tag="h3">
             꼭 확인해야 할 일!
           </Typo>
         </Grow>
@@ -135,8 +135,8 @@ export default function InsPlanCovAside() {
       </Gcol>
       {/* 인수지침점검 */}
       <Gcol placement="ts" className="w-full gap-[1.2rem]">
-        <Grow placement="msb">
-          <Typo variant="heading-l" tag="h3">
+        <Grow placement="bwc">
+          <Typo variant="heading-lg" tag="h3">
             인수지침점검
           </Typo>
           <Button className="bg-[#000000D9]! border-[#000000D9] text-[#FFD12B]">AI 자동 해결</Button>
@@ -183,7 +183,7 @@ export default function InsPlanCovAside() {
       {/* 바로가기 */}
       <Gcol placement="ts" className="w-full gap-[1.2rem]">
         <Grow placement="ms">
-          <Typo variant="heading-l" tag="h3">
+          <Typo variant="heading-lg" tag="h3">
             바로가기
           </Typo>
         </Grow>
@@ -228,13 +228,13 @@ export default function InsPlanCovAside() {
       </Gcol>
 
       <Grid placement="ts" className="w-full gap-[1.2rem] grid-cols-2">
-        <Button variant="outline" color="grayLight" className="py-6 font-bold gap-1">
+        <Button variant="outlined" color="grayLight" className="py-6 font-bold gap-1">
           알릴사항
           <Badge color="red" className="rounded-full font-extrabold">
             N
           </Badge>
         </Button>
-        <Button variant="outline" color="grayLight" size="lg" className="py-6 font-bold gap-1">
+        <Button variant="outlined" color="grayLight" size="lg" className="py-6 font-bold gap-1">
           심사요청
           <Badge color="red" className="rounded-full font-extrabold">
             N

@@ -337,7 +337,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
                 <span className="text-sm font-medium text-gray-700">최근등록고객 (3개월)</span>
               </label>
               <div className="flex gap-2">
-                <Button variant="outline" onClick={handleReset}>
+                <Button variant="outlined" onClick={handleReset}>
                   초기화
                 </Button>
                 <Button onClick={handleSearch}>조회</Button>
@@ -386,13 +386,13 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
           {/* 좌측: 고객등록, 고객수정 */}
           <div className="flex gap-2">
             <Button onClick={handleRegisterCustomer}>고객등록</Button>
-            <Button variant="outline" onClick={handleEditCustomer} disabled={!selectedCustomer}>
+            <Button variant="outlined" onClick={handleEditCustomer} disabled={!selectedCustomer}>
               고객수정
             </Button>
           </div>
 
           {/* 우측: 닫기 */}
-          <Button variant="outline" onClick={handleClose}>
+          <Button variant="outlined" onClick={handleClose}>
             닫기
           </Button>
         </div>

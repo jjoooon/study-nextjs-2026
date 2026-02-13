@@ -27,7 +27,10 @@ export const LayoutHead = ({ children, className }: LayoutProps) => {
 
 export const LayoutBody = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="body" className={cn('relative grid grid-cols-[auto_1fr]', className)}>
+    <div
+      data-layout="body"
+      className={cn('relative grid grid-cols-[auto_1fr] px-[.6rem] py-[.4rem] gap-[1rem]', className)}
+    >
       {children}
     </div>
   );
@@ -74,21 +77,21 @@ export const LayoutMain = ({ children, className }: LayoutProps) => {
 
 export const LayoutMainHead = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="main-head" className={cn('relative flex shrink-0', className)}>
+    <div data-layout="main-head" className={cn('relative w-full flex shrink-0', className)}>
       {children}
     </div>
   );
 };
 export const LayoutMainBody = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="main-body" className={cn('relative flex flex-1', className)}>
+    <div data-layout="main-body" className={cn('relative w-full flex flex-1', className)}>
       {children}
     </div>
   );
 };
 export const LayoutMainFoot = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="main-foot" className={cn('relative flex shrink-0', className)}>
+    <div data-layout="main-foot" className={cn('relative w-full flex shrink-0', className)}>
       {children}
     </div>
   );
@@ -103,7 +106,7 @@ export const LayoutAside = ({ children, className }: LayoutProps) => {
 };
 export const LayoutAsideHead = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="aside-head" className={cn('relative flex shrink-0', className)}>
+    <div data-layout="aside-head" className={cn('relative w-full flex shrink-0', className)}>
       {children}
     </div>
   );
@@ -111,14 +114,14 @@ export const LayoutAsideHead = ({ children, className }: LayoutProps) => {
 
 export const LayoutAsideBody = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="aside-body" className={cn('relative flex flex-1', className)}>
+    <div data-layout="aside-body" className={cn('relative w-full flex flex-1', className)}>
       {children}
     </div>
   );
 };
 export const LayoutAsideFoot = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="aside-foot" className={cn('relative flex shrink-0', className)}>
+    <div data-layout="aside-foot" className={cn('relative w-full flex shrink-0', className)}>
       {children}
     </div>
   );

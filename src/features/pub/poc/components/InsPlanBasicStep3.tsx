@@ -23,12 +23,12 @@ interface InsPlanBasicStep3Props {
 export function InsPlanBasicStep3({ active, currentData, testError, handleChange }: InsPlanBasicStep3Props) {
   return (
     <Gcol className="gap-[1rem] w-full">
-      <Grow placement="msb">
-        <Typo tag="h3" variant="heading-l">
+      <Grow placement="bwc">
+        <Typo tag="h3" variant="heading-lg">
           계약형태
         </Typo>
         <Grow>
-          <Button color="gray" variant="outline" size="md">
+          <Button color="gray" variant="outlined" size="md">
             최근사용한 계약형태
           </Button>
         </Grow>

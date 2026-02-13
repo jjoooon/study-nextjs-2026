@@ -90,7 +90,7 @@ export function InsPlanListDep2({ product, onSelectDep2 }: InsPlanListDep2Props)
 
   return (
     <>
-      <Typo variant="heading-s" className="mb-1 truncate">
+      <Typo variant="heading-sm" className="mb-1 truncate">
         {product.productName}
       </Typo>
       <div className="ag-theme-alpine th-s" style={{ height: 'calc(100% - 2.3rem)', width: '100%' }}>

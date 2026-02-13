@@ -22,7 +22,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
       <Pagination>
         <PaginationContent>
           <Button
-            variant="outline"
+            variant="outlined"
             disabled={currentPage === 1}
             onClick={() => {
               if (currentPage === 1) return;
@@ -35,7 +35,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
             <Button
               key={pageNum}
-              variant="outline"
+              variant="outlined"
               className={
                 'px-2 py-1 text-xs border rounded ' +
                 (pageNum === currentPage
@@ -49,7 +49,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
           ))}
 
           <Button
-            variant="outline"
+            variant="outlined"
             disabled={currentPage === totalPages}
             onClick={() => {
               if (currentPage < totalPages) {

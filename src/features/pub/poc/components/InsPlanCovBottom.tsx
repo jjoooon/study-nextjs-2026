@@ -37,7 +37,7 @@ export default function InsPlanCovBottom() {
   return (
     <LayoutControls>
       <Gcol className="w-full relative z-10">
-        <Grow placement="msb" className="flex-1 bg-[#F6F0ED] min-h-[7.8rem]">
+        <Grow placement="bwc" className="flex-1 bg-[#F6F0ED] min-h-[7.8rem]">
           <Grow className="flex justify-between items-center flex-1 px-8" placement="tsb">
             <KeyValueList data={KeyValueData} className="flex-1" />
 
@@ -59,24 +59,24 @@ export default function InsPlanCovBottom() {
             </Grow>
           </Grow>
         </Grow>
-        <Grow placement="msb" className="min-h-[5.8rem] bg-[#312B27]">
-          <Grow className="flex justify-between items-center flex-1 px-8" placement="msb">
+        <Grow placement="bwc" className="min-h-[5.8rem] bg-[#312B27]">
+          <Grow className="flex justify-between items-center flex-1 px-8" placement="bwc">
             <Grow className="gap-1">
-              <Button variant="outline" color="gray" size="lg">
+              <Button variant="outlined" color="gray" size="lg">
                 고지유형별보험료비교
               </Button>
-              <Button variant="outline" color="gray" size="lg">
+              <Button variant="outlined" color="gray" size="lg">
                 조건별 비교 설계
               </Button>
             </Grow>
             <Grow className="gap-1">
-              <Button variant="outline" color="gray" size="lg">
+              <Button variant="outlined" color="gray" size="lg">
                 출력 +
               </Button>
-              <Button variant="outline" color="gray" size="lg">
+              <Button variant="outlined" color="gray" size="lg">
                 설계복사
               </Button>
-              <Button variant="outline" color="gray" size="lg" onClick={handleOpenUnderwritingDialog}>
+              <Button variant="outlined" color="gray" size="lg" onClick={handleOpenUnderwritingDialog}>
                 보험료계산(지침)
               </Button>
             </Grow>

@@ -298,7 +298,7 @@ export function TableDialog({
                 {selectedRows.size > 0 ? `${selectedRows.size}개 선택됨` : '항목을 선택해주세요'}
               </div>
               <div className="flex space-x-2">
-                <Button variant="outline" onClick={handleCancel}>
+                <Button variant="outlined" onClick={handleCancel}>
                   취소
                 </Button>
                 <Button onClick={handleConfirm} disabled={selectedRows.size === 0}>
@@ -308,7 +308,7 @@ export function TableDialog({
             </>
           ) : (
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={handleCancel}>
+              <Button variant="outlined" onClick={handleCancel}>
                 취소
               </Button>
             </div>

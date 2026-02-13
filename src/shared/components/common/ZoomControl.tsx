@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Grow, Typo } from '@/shared/components/common';
-import { ZoomOut, ZoomIn } from '@/shared/components/icons';
+import { ZoomOutIcon, ZoomInIcon } from '@/shared/components/icons';
 import { Button } from '@/shared/components/uiux';
 import { setScale } from '@/shared/utils/scale';
 
@@ -34,11 +34,11 @@ export const ZoomControl = () => {
         자동맞춤
       </Button>
       <Button variant="none" onlyicon={true} size="sm" color="transparent" onClick={handleZoomOut}>
-        <ZoomOut />
+        <ZoomOutIcon />
       </Button>
       <Typo variant="button-sm">{fontSize * 10}%</Typo>
       <Button variant="none" onlyicon={true} size="sm" color="transparent" onClick={handleZoomIn}>
-        <ZoomIn />
+        <ZoomInIcon />
       </Button>
     </Grow>
   );

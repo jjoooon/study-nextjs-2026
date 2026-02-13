@@ -1,5 +1,7 @@
 'use client';
 
+import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
+import type { TabData, InsuredData } from '../types/insPlanBasic';
 import { FormCell, FormTable, Gcol, Typo, FormItem, Grow, ButtonGroup } from '@/shared/components/common';
 import { DatePickerInput } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
@@ -15,8 +17,6 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from '@/shared/components/uiux';
-import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
-import type { TabData, InsuredData } from '../types/insPlanBasic';
 
 interface InsPlanBasicStep2Props {
   active: string;
@@ -41,12 +41,12 @@ export function InsPlanBasicStep2({
 }: InsPlanBasicStep2Props) {
   return (
     <Gcol className="gap-[1rem] w-full">
-      <Grow placement="msb">
-        <Typo tag="h3" variant="heading-l">
+      <Grow placement="bwc">
+        <Typo tag="h3" variant="heading-lg">
           피보험자
         </Typo>
         <ButtonGroup>
-          <Button color="gray" variant="outline" size="md">
+          <Button color="gray" variant="outlined" size="md">
             계약자와 동일
           </Button>
         </ButtonGroup>
@@ -100,7 +100,7 @@ export function InsPlanBasicStep2({
                           value={currentInsured?.name || ''}
                           onChange={(e) => handleInsuredChange(index, 'name', e.target.value)}
                         />
-                        <Button aria-label="피보험자 검색" variant="icon">
+                        <Button aria-label="피보험자 검색" variant="none" onlyicon>
                           <SearchIcon />
                         </Button>
                       </FormItem>
@@ -133,7 +133,7 @@ export function InsPlanBasicStep2({
                           value={currentInsured?.age || ''}
                           onChange={(e) => handleInsuredChange(index, 'age', e.target.value)}
                         />
-                        <Button aria-label="연령계산" variant="outline" size="md" color="gray">
+                        <Button aria-label="연령계산" variant="outlined" size="md" color="gray">
                           연령계산
                         </Button>
                         <Typo tag="b">만 {currentInsured?.age}세</Typo>
@@ -177,7 +177,7 @@ export function InsPlanBasicStep2({
                             handleInsuredChange(index, 'lossDate', formattedValue ?? '');
                           }}
                         />
-                        <Button aria-label="실손정액 조회" variant="outline" size="md" color="gray">
+                        <Button aria-label="실손정액 조회" variant="outlined" size="md" color="gray">
                           조회
                         </Button>
                       </FormItem>

@@ -136,7 +136,7 @@ function Calendar({
               <div className="flex items-center gap-1">
                 {captionProps.children}
                 {onMonthChange && (
-                  <Button variant="outline" color="gray" size="md" className="font-[1.3rem]" onClick={handleTodayClick}>
+                  <Button variant="outlined" color="gray" size="md" className="font-[1.3rem]" onClick={handleTodayClick}>
                     오늘
                   </Button>
                 )}

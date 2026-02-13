@@ -276,7 +276,7 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
                 <SearchIcon color="white" />
                 검색
               </Button>
-              <Button variant="icon" color="gray" size="md" onClick={() => {}} aria-label="리셋">
+              <Button variant="none" onlyicon color="gray" size="md" onClick={() => {}} aria-label="리셋">
                 <ResetIcon />
               </Button>
             </Grow>
@@ -303,7 +303,7 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
         </div>
 
         <DialogFooter>
-          <Button variant="outline" size="lg" color="gray" onClick={handleCancel}>
+          <Button variant="outlined" size="lg" color="gray" onClick={handleCancel}>
             고객수정
           </Button>
           <Button variant="contained" size="lg" onClick={handleRegister}>

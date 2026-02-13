@@ -8,7 +8,7 @@ export default function InsPlanBasicAside() {
       {/* 꼭 확인해야 할 일! */}
       <Gcol variant="box-line" placement="ts" className="w-full">
         <Grow placement="ms">
-          <Typo variant="heading-l" tag="h3">
+          <Typo variant="heading-lg" tag="h3">
             꼭 확인해야 할 일!
           </Typo>
         </Grow>
@@ -86,7 +86,7 @@ export default function InsPlanBasicAside() {
       {/* 바로가기 */}
       <Gcol placement="ts" className="w-full gap-[1.2rem]">
         <Grow placement="ms">
-          <Typo variant="heading-l" tag="h3">
+          <Typo variant="heading-lg" tag="h3">
             바로가기
           </Typo>
         </Grow>

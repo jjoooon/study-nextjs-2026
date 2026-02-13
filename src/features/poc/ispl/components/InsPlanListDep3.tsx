@@ -34,7 +34,7 @@ const InsPlanNameRenderer = (props: ICellRendererParams<InsPlanDep3>) => {
   if (!data) return null;
 
   return (
-    <Grow placement="msb" className="h-full">
+    <Grow placement="bwc" className="h-full">
       <Typo variant="body-m" className="flex-1 truncate justify-start ">
         {data.name}
       </Typo>

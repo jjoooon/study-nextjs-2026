@@ -3,8 +3,9 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-
+import { useState } from 'react';
 import { CloseIcon } from '@/shared/components/icons';
+
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const Tabs = TabsPrimitive.Root;
@@ -76,16 +77,22 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 
 const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigger>, TabsTriggerProps>(
   ({ className, variant, children, removable, onRemove, activeValue: _activeValue, totalTabs, ...rest }, ref) => {
+    // totalTabs는 DOM에 전달하지 않음
     const triggerProps = { ...rest };
-
+    delete triggerProps.totalTabs; // totalTabs prop을 제거
     return (
       <div className="relative">
         <TabsPrimitive.Trigger
           ref={ref}
-          className={cn(tabsTriggerVariants({ variant }), removable && totalTabs! > 1 ? 'isRemovable' : '', className)}
+          className={cn(
+            tabsTriggerVariants({ variant }),
+            removable && totalTabs! > 1 ? 'isRemovable' : '',
+            className,
+            'items-center'
+          )}
           {...triggerProps}
         >
-          <span>{children}</span>
+          <span className="flex items-center">{children}</span>
         </TabsPrimitive.Trigger>
         {removable && totalTabs! > 1 && (
           <button
@@ -149,7 +156,7 @@ const TabsLine = React.forwardRef<
     borderColor?: string;
   }
 >(({ className, borderColor = 'border-[#FF5C2E]', children, ...props }, ref) => (
-  <div ref={ref} className={cn('border-b', borderColor, className)} {...props}>
+  <div ref={ref} className={cn('border-b-[.2rem] grid grid-cols-[1fr_auto]', borderColor, className)} {...props}>
     {children}
   </div>
 ));

@@ -10,7 +10,7 @@ export function InsPlanBasic() {
     <Gcol variant="box">
       <div className="flex items-center justify-between gap-4 w-full">
         <FormItem className="gap-4 flex-1">
-          <Typo tag="h2" variant="heading-l">
+          <Typo tag="h2" variant="heading-lg">
             한화 시그니처 여성 3N5 간편건강보험 3.0 2504
           </Typo>
           <NativeSelect aria-label="형 선택" readOnly={false} required={false} width="xl">
@@ -19,7 +19,7 @@ export function InsPlanBasic() {
           </NativeSelect>
         </FormItem>
         <ButtonGroup>
-          <Button color="secondary" variant="outline" size="md">
+          <Button color="secondary" variant="outlined" size="md">
             추천플랜
           </Button>
           <Button color="secondary" variant="contained" size="md">
@@ -36,7 +36,7 @@ export function InsPlanBasic() {
             <Input type="text" aria-label="설계번호 뒷자리" width="lg" />
             <FormItem className="w-max ml-2">
               <Input type="text" aria-label="라벨명모름" defaultValue="880101-1 김한화" />
-              <Button aria-label="계약자 추가" variant="icon">
+              <Button aria-label="계약자 추가" variant="none" onlyicon>
                 <SearchIcon />
               </Button>
             </FormItem>

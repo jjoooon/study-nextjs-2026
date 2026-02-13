@@ -11,6 +11,7 @@ const FormCellVariants = cva('', {
       primary: 'bg-blue-100 text-blue-900',
       secondary: 'bg-slate-100 text-slate-900',
       light: 'bg-gray-50',
+      none: 'bg-transparent border-0! p-0 [&+td]:border-0!',
     },
   },
   defaultVariants: {
@@ -53,7 +54,7 @@ export const FormCell = ({
         {...(titleColSpan && { colSpan: titleColSpan })}
         {...(titleRowSpan && { rowSpan: titleRowSpan })}
       >
-        <Typo variant="body-m" weight="bold">
+        <Typo variant="body-md" weight="bold">
           {title}
         </Typo>
       </TableHead>
@@ -62,7 +63,7 @@ export const FormCell = ({
         {...(colSpan && { colSpan })}
         {...(rowSpan && { rowSpan })}
       >
-        <Grow className="gap-1" placement="ms">
+        <Grow className="gap-1" placement="sc">
           {children}
         </Grow>
       </TableCell>
@@ -79,6 +80,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
       'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none!',
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
+    none: 'border-0! bg-transparent [&_th]:bg-transparent [&_th]:border-0! [&_th]:p-0! [&_td]:border-0! [&_tr]:border-0! [&_td]:p-0!',
   };
 
   return (
@@ -97,6 +99,10 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
       <TableBody>{children}</TableBody>
     </Table>
   );
+};
+
+export const FormRow = ({ children }: { children: ReactNode }) => {
+  return <tr>{children}</tr>;
 };
 
 export const FormTableLine = ({ children }: { children: ReactNode }) => {
