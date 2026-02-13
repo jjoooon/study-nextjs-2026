@@ -367,7 +367,7 @@ export function MainHeadLTRA350() {
             </DropdownMenu>
           </Grow>
         </TabsLine>
-        <TabsContent value={active}></TabsContent>
+        {/* <TabsContent value={active}></TabsContent> */}
       </Tabs>
     </>
   );
