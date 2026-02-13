@@ -14,6 +14,9 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
 } from '@/shared/components/uiux';
 
 const VISIBLE_COUNT = 6; //탭 최대 노출 갯수
@@ -278,7 +281,12 @@ const mockData = [
 export function MainHeadLTRA350() {
   const [active, setActive] = React.useState('tab1');
 
-  const { visibleStart, end, handlePrev, handleNext, isLastPage } = useTabsPagination(mockData, VISIBLE_COUNT, active);
+  // tab pagination 훅 사용
+  const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
+    mockData,
+    VISIBLE_COUNT,
+    active
+  );
 
   return (
     <>
@@ -331,9 +339,32 @@ export function MainHeadLTRA350() {
             <Button variant="outlined" color="gray-light" onlyicon={true} onClick={handleNext} disabled={isLastPage}>
               <ArrowLightIcon />
             </Button>
-            <Button variant="outlined" color="gray-light" onlyicon={true}>
-              <ListIcon />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outlined" color="gray-light" onlyicon={true}>
+                  <ListIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align="end">
+                {mockData.map((tab) => (
+                  <Button
+                    variant="text"
+                    key={tab.value}
+                    onClick={() => {
+                      setActive(tab.value);
+                      // 해당 탭이 보이도록 페이지네이션 이동
+                      const idx = mockData.findIndex((t) => t.value === tab.value);
+                      if (idx !== -1) {
+                        const page = Math.floor(idx / VISIBLE_COUNT);
+                        setVisibleStart(page * VISIBLE_COUNT);
+                      }
+                    }}
+                  >
+                    {tab.name}
+                  </Button>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </Grow>
         </TabsLine>
         <TabsContent value={active}></TabsContent>
