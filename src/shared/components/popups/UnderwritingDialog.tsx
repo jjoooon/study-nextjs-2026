@@ -1,6 +1,6 @@
 'use client';
 
-import { Grow, Gcol, FormCell, FormTable, Grid } from '@/shared/components/common';
+import { Grow, Gcol, FormCell, FormTable } from '@/shared/components/common';
 import {
   Dialog,
   DialogContent,
@@ -109,7 +109,7 @@ export default function UnderwritingDialog({ resolve }: DialogProps) {
     });
   };
 
-  const calculateRowSpans = (data: any[], key: string): number[] => {
+  const calculateRowSpans = (data: ProductData[], key: keyof ProductData): number[] => {
     const spans: number[] = data.map(() => 0);
     let i = 0;
     while (i < data.length) {
@@ -135,7 +135,7 @@ export default function UnderwritingDialog({ resolve }: DialogProps) {
         </DialogHeader>
 
         {/* 모달 내용 - FormTable 사용 */}
-        <Gcol className="gap-8 flex-1 w-full px-[3.2rem] pb-[3.2rem]" placement="ts">
+        <Gcol className="gap-8 flex-1 w-full px-[3.2rem] pb-[3.2rem]" placement="ss">
           <Gcol className="gap-2 shrink-0 w-full">
             <FormTable
               variant="setting"
@@ -153,7 +153,7 @@ export default function UnderwritingDialog({ resolve }: DialogProps) {
                 </FormCell>
               </TableRow>
             </FormTable>
-            <Grow placement="me" className="w-full gap-2">
+            <Grow placement="ec" className="w-full gap-2">
               <Button variant="contained" color="secondary" size="md" onClick={() => {}}>
                 간편누적해소
               </Button>
