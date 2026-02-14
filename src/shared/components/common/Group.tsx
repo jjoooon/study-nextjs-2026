@@ -98,7 +98,7 @@ const VARIANT_MAP: Record<Variant, string> = {
   tr: 'border-b border-gray-200',
   'form-table': 'w-full border-collapse',
   form: 'space-y-4',
-  box: 'px-[2rem] py-[1.2rem] bg-[#F4F4F4] gap-[1.2rem]',
+  box: 'px-2.5 py-2 bg-[var(--color-gray-5)] gap-1.5',
   'box-line': 'px-[2rem] py-[2rem] bg-[#FFF] gap-[1.2rem] border border-[#ECECEC] rounded-[1.6rem] ',
 };
 

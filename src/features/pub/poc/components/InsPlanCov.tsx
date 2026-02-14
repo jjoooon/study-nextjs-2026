@@ -283,7 +283,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
 
           <Gcol className="w-full">
             <Gcol className="w-full border-t border-t-[.2rem] border-t-[#000]">
-              <Grow className="w-full px-2 py-[.6rem] bg-[var(--color-table-th-surface-gray)] gap-2" placement="me">
+              <Grow className="w-full px-2 py-[.6rem] bg-[var(--color-table-th-surface-gray)] gap-2" placement="ec">
                 <Checkbox>플랜 기본값</Checkbox>
                 <NativeSelect aria-label="플랜선택" width="md" readOnly={false} required={false}>
                   <NativeSelectOption value="">플랜선택</NativeSelectOption>
@@ -301,7 +301,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                   담보초기화
                 </Button>
               </Grow>
-              <Grow className="w-full px-2 py-[.6rem]" placement="tsb">
+              <Grow className="w-full px-2 py-[.6rem]" placement="bws">
                 <Grow className="gap-6">
                   <Grow className="gap-1">
                     <Button variant="outlined" color="gray" size="sm">
@@ -314,7 +314,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                   <Grow className="gap-3">
                     <Typo variant="heading-md">분류별 선택</Typo>
                     <Separator>|</Separator>
-                    <Grow className="gap-x-4 gap-y-1 flex-wrap" placement="ts">
+                    <Grow className="gap-x-4 gap-y-1 flex-wrap" placement="ss">
                       {CategoriesCheckbox.map((category) => (
                         <Checkbox key={category.value} className="whitespace-nowrap">
                           {category.label}

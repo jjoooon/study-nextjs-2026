@@ -2,9 +2,10 @@
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
-import { CheckIcon, Favorite } from '@/shared/components/icons';
+import { CheckIcon, CheckboxIcon, Favorite } from '@/shared/components/icons';
 
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow } from '../common';
 
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
@@ -32,11 +33,6 @@ function Checkbox({
     sm: 'size-[1.4rem] rounded-[0.3rem]',
   };
 
-  const buttonSizeStyles = {
-    lg: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.042rem] w-auto',
-    sm: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto',
-  };
-
   const colorStyles = {
     primary:
       'hover:border-[var(--color-border-primary)] data-[state=checked]:bg-[var(--color-element-primary)] data-[state=checked]:border-[var(--color-border-primary)] data-[state=checked]:text-white',
@@ -56,20 +52,22 @@ function Checkbox({
   };
 
   const iconSize = size === 'lg' ? 16 : 14;
+  const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(false);
 
   return (
     <div className={`flex items-center gap-1 ${isFavorite ? 'h-full' : ''}`}>
       <CheckboxPrimitive.Root
         data-slot="checkbox"
         id={checkboxId}
+        checked={checked}
+        onCheckedChange={setChecked as (checked: boolean | 'indeterminate') => void}
         className={cn(
-          'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[var(--color-element-gray-lighter)] disabled:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:bg-[var(--color-element-gray-lighter)] disabled:data-[state=checked]:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:text-[#b3b3b3]',
+          'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[var(--color-element-gray-lighter)] disabled:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:bg-[var(--color-element-gray-lighter)] disabled:data-[state=checked]:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:text-[#b3b3b3] [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]',
           // favorite 스타일
           isFavorite && 'border-0 bg-transparent shadow-none size-[0.5rem]',
           // button 스타일
           isButton &&
-            'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black whitespace-nowrap',
-          isButton && buttonSizeStyles[size],
+            'h-[2.5rem] px-1.5 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[0.4rem] border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap',
           isButton && buttonColorStyles[color],
           // default 스타일
           !isFavorite &&
@@ -82,9 +80,12 @@ function Checkbox({
         {...props}
       >
         {isFavorite ? (
-          <Favorite color={props.checked ? '#FF5C2E' : '#ECECEC'} />
+          <Favorite color={props.checked ? 'var(--color-primary-50)' : 'var(--color-gray-30)'} />
         ) : isButton ? (
-          children
+          <Grow className="gap-[0.2rem]" placement="sc">
+            <CheckboxIcon color={checked ? 'var(--color-primary-50)' : 'var(--color-gray-30)'} />
+            {children}
+          </Grow>
         ) : (
           <CheckboxPrimitive.Indicator
             data-slot="checkbox-indicator"

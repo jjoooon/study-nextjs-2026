@@ -1,23 +1,9 @@
 'use client';
 
-import React from 'react';
-import { useTabsPagination } from '@/features/pub/proto/hooks/useTabsPagination';
-import { Grow, Typo, BulletList, BulletListItem } from '@/shared/components/common';
-import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
-import {
-  Tabs,
-  TabsList,
-  TabsContent,
-  TabsTrigger,
-  TabsLine,
-  Button,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from '@/shared/components/uiux';
+import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
+import { TabHead } from '@/shared/components/common/TabHead';
+import { PaperIcon, SearchIcon } from '@/shared/components/icons';
+import { Button, Checkbox, Input } from '@/shared/components/uiux';
 
 const VISIBLE_COUNT = 6; //탭 최대 노출 갯수
 const mockData = [
@@ -277,98 +263,67 @@ const mockData = [
     ],
   },
 ];
+const CategoriesCheckbox = [
+  { label: '사망후유', value: '0' },
+  { label: '3대진단', value: '1' },
+  { label: '입원일당', value: '2' },
+  { label: '수술비', value: '3' },
+  { label: '골절/화상', value: '4' },
+  { label: '운전비용', value: '5' },
+  { label: '치료비', value: '6' },
+  { label: '갱신', value: '7' },
+  { label: '비갱신', value: '8' },
+  { label: '기타', value: '9' },
+];
+const tags = ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'];
 
 export function MainHeadLTRA350() {
-  const [active, setActive] = React.useState('tab1');
-
-  // tab pagination 훅 사용
-  const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
-    mockData,
-    VISIBLE_COUNT,
-    active
-  );
-
   return (
-    <>
-      <Tabs value={active} onValueChange={setActive} className="w-full h-full grid grid-rows-[auto_1fr] content-start">
-        <TabsLine>
-          <TabsList>
-            {mockData.slice(visibleStart, end).map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
-                <HoverCard>
-                  <HoverCardTrigger asChild>
-                    <span className="flex items-center">
-                      <span className="max-w-[8rem] truncate block">{tab.name}</span>
-                      <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                    </span>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <BulletList>
-                      {tab.info.map((info, index) => (
-                        <BulletListItem key={index} type="dot">
-                          {info}
-                        </BulletListItem>
-                      ))}
-                    </BulletList>
-                  </HoverCardContent>
-                </HoverCard>
-              </TabsTrigger>
+    <TabHead data={mockData} visibleCount={VISIBLE_COUNT}>
+      <Gcol variant="box" placement="ss" className="w-full">
+        <Grow className="gap-3">
+          <Button variant="contained" color="secondary" size="md">
+            <PaperIcon />
+            담보패키지 선택
+          </Button>
+          <Grow className="gap-x-1 gap-y-1 flex-wrap" placement="ss">
+            {CategoriesCheckbox.map((category) => (
+              <Checkbox key={category.value} variant="button">
+                {category.label}
+              </Checkbox>
             ))}
-          </TabsList>
-          <Grow className="gap-[.4rem] mb-[.1rem]">
-            <Grow className="gap-[.2rem]">
-              <Typo className="tracking-[0]!" color="primary" weight="bold">
-                {Math.ceil((visibleStart + VISIBLE_COUNT) / VISIBLE_COUNT)}
-              </Typo>
-              <Typo className="tracking-[0]!" color="gray-light" weight="bold">
-                /
-              </Typo>
-              <Typo className="tracking-[0]!" color="gray-light" weight="bold">
-                {Math.ceil(mockData.length / VISIBLE_COUNT)}
-              </Typo>
-            </Grow>
-            <Button
-              variant="outlined"
-              color="gray-light"
-              onlyicon={true}
-              onClick={handlePrev}
-              disabled={visibleStart === 0}
-            >
-              <ArrowLightIcon className="rotate-180" />
-            </Button>
-            <Button variant="outlined" color="gray-light" onlyicon={true} onClick={handleNext} disabled={isLastPage}>
-              <ArrowLightIcon />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outlined" color="gray-light" onlyicon={true}>
-                  <ListIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align="end">
-                {mockData.map((tab) => (
-                  <Button
-                    variant="text"
-                    key={tab.value}
-                    onClick={() => {
-                      setActive(tab.value);
-                      // 해당 탭이 보이도록 페이지네이션 이동
-                      const idx = mockData.findIndex((t) => t.value === tab.value);
-                      if (idx !== -1) {
-                        const page = Math.floor(idx / VISIBLE_COUNT);
-                        setVisibleStart(page * VISIBLE_COUNT);
-                      }
-                    }}
-                  >
-                    {tab.name}
-                  </Button>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
           </Grow>
-        </TabsLine>
-        {/* <TabsContent value={active}></TabsContent> */}
-      </Tabs>
-    </>
+        </Grow>
+        <Grow className="gap-2.5 w-full" placement="bwc">
+          <Grow className="gap-2.5" placement="sc">
+            <FormItem className="shrink-0 w-auto">
+              <Input aria-label="담보명" placeholder="담보명 입력" type="text" width="lg" />
+              <Button aria-label="담보명 검색" variant="outlined" color="gray-light" size="lg" onlyicon>
+                <SearchIcon color="var(--color-primary-50)" />
+              </Button>
+            </FormItem>
+            <BulletList position="row" className="gap-x-4 gap-y-1 flex-1 w-full">
+              {tags.map((tab, index) => {
+                return (
+                  <BulletListItem key={index} type="tag" onClick={() => console.log(tab)}>
+                    {tab}
+                  </BulletListItem>
+                );
+              })}
+            </BulletList>
+          </Grow>
+          <ButtonGroup className="gap-1" placement="ec">
+            <Button variant="contained" color="secondary" size="md">
+              <PaperIcon />
+              편집
+            </Button>
+            <Button variant="contained" color="secondary" size="md">
+              <PaperIcon />
+              초기화
+            </Button>
+          </ButtonGroup>
+        </Grow>
+      </Gcol>
+    </TabHead>
   );
 }

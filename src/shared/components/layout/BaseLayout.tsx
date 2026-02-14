@@ -46,7 +46,7 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
 
 export const LayoutFolder = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="folder" className={cn('relative grid grid-rows-[auto_1fr]', className)}>
+    <div data-layout="folder" className={cn('relative grid grid-rows-[auto_1fr] gap-1.5', className)}>
       {children}
     </div>
   );

@@ -6,8 +6,9 @@ import { cn } from '@/shared/lib/shadcn/utils';
 interface BulletListProps {
   children?: ReactNode;
   position?: 'col' | 'row';
-  type?: 'dot' | 'dash' | 'square';
+  type?: 'dot' | 'dash' | 'square' | 'tag';
   className?: string;
+  onClick?: () => void;
 }
 
 export const BulletList = ({ children, position = 'col', className }: BulletListProps) => {
@@ -17,19 +18,19 @@ export const BulletList = ({ children, position = 'col', className }: BulletList
     </ul>
   );
 };
-export const BulletListItem = ({ children, type = 'dot', className }: BulletListProps) => {
+export const BulletListItem = ({ children, type = 'dot', className, onClick }: BulletListProps) => {
   const bulletStyles = {
-    dot: "after:content-[''] after:block after:w-[.4rem] after:h-[.4rem] after:rounded-full after:bg-[var(--color-icon-primary)]",
-    dash: "after:content-[''] after:block after:w-[.8rem] after:h-[.2rem] after:bg-[var(--color-icon-primary)]",
-    square: "after:content-[''] after:block after:w-[.4rem] after:h-[.4rem] after:bg-[var(--color-icon-primary)]",
+    dot: "pl-[1rem] before:absolute before:top-[50%] before:left-0 before:translate-y-[-50%] before:content-[''] before:block before:w-[.4rem] before:h-[.4rem] before:rounded-full before:bg-[var(--color-icon-primary)]",
+    dash: "pl-[1rem] before:absolute before:top-[50%] before:left-0 before:translate-y-[-50%] before:content-[''] before:block before:w-[.8rem] before:h-[.2rem] before:bg-[var(--color-icon-primary)]",
+    square:
+      "pl-[1rem] before:absolute before:top-[50%] before:left-0 before:translate-y-[-50%] before:content-[''] before:block before:w-[.4rem] before:h-[.4rem] before:bg-[var(--color-icon-primary)]",
+    tag: "before:content-['#'] before:block before:text-[var(--color-primary-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-secondary-70)]",
   };
   return (
     <li
-      className={cn(
-        `relative text-[1.3rem] text-[var(--color-secondary-70)] pl-[1rem] after:absolute after:top-[50%] after:left-0 after:translate-y-[-50%]`,
-        bulletStyles[type],
-        className
-      )}
+      className={cn(`relative text-[1.3rem] text-[var(--color-secondary-70)]`, bulletStyles[type], className)}
+      {...(type === 'tag' && onClick ? { onClick } : {})}
+      style={type === 'tag' && onClick ? { cursor: 'pointer' } : undefined}
     >
       {children}
     </li>
