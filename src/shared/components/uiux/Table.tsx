@@ -33,7 +33,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
       data-slot="table-header"
       className={cn(
         variant === 'default'
-          ? '[&_tr]:bg-(--color-table-th-surface-gray) [&_th]:h-[3rem] [&_th]:py-[.2rem]'
+          ? '[&_tr]:bg-[var(--color-table-th-surface-gray)] [&_th]:h-[3rem] [&_th]:py-[.2rem]'
           : '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
         className
       )}
@@ -87,7 +87,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
       data-slot="table-head"
       className={cn(
         variant === 'default'
-          ? 'text-[1.3rem] border border-(--color-table-border-border-gray)'
+          ? 'text-[1.3rem] border border-[var(--color-table-border-border-gray)]'
           : 'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
@@ -103,7 +103,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         variant === 'default'
-          ? 'border border-(--color-table-border-border-gray) px-[.6rem] py-[.4rem] text-[1.3rem]'
+          ? 'border border-[var(--color-table-border-border-gray)] px-[.6rem] py-[.4rem] text-[1.3rem]'
           : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}

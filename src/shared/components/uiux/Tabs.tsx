@@ -3,7 +3,6 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { useState } from 'react';
 import { CloseIcon } from '@/shared/components/icons';
 
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -28,8 +27,8 @@ const tabsTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
-        sub: "h-[2.6rem] px-3 pt-[0.6rem] pb-2 -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] -mr-px bg-[var(--color-element-inverse)] border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+        sub: "h-[2.6rem] px-3 pt-[0.6rem] pb-2 -mr-px bg-[var(--color-element-gray-lighterest)] border-t border-l border-r border-[var(--color-border-gray-light)] text-black data-[state=active]:bg-[var(--color-element-inverse)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
       },
     },
     defaultVariants: {
@@ -78,12 +77,13 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigger>, TabsTriggerProps>(
   ({ className, variant, children, removable, onRemove, activeValue: _activeValue, totalTabs, ...rest }, ref) => {
     // totalTabs는 DOM에 전달하지 않음
-    const triggerProps = { ...rest };
+    const triggerProps = { ...rest } as Record<string, unknown>;
     delete triggerProps.totalTabs; // totalTabs prop을 제거
     return (
       <div className="relative">
         <TabsPrimitive.Trigger
           ref={ref}
+          value={triggerProps.value as string}
           className={cn(
             tabsTriggerVariants({ variant }),
             removable && totalTabs! > 1 ? 'isRemovable' : '',

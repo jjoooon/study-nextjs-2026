@@ -80,7 +80,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
             />
           </div>
           {params.data && (
-            <div className="border-l border-l-(--color-table-border-border-gray) flex-1 text-center h-full">
+            <div className="border-l border-l-[var(--color-table-border-border-gray)] flex-1 text-center h-full">
               {params.data.id}
             </div>
           )}
@@ -283,7 +283,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
 
           <Gcol className="w-full">
             <Gcol className="w-full border-t border-t-[.2rem] border-t-[#000]">
-              <Grow className="w-full px-2 py-[.6rem] bg-(--color-table-th-surface-gray) gap-2" placement="me">
+              <Grow className="w-full px-2 py-[.6rem] bg-[var(--color-table-th-surface-gray)] gap-2" placement="me">
                 <Checkbox>플랜 기본값</Checkbox>
                 <NativeSelect aria-label="플랜선택" width="md" readOnly={false} required={false}>
                   <NativeSelectOption value="">플랜선택</NativeSelectOption>

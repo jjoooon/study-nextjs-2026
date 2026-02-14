@@ -13,7 +13,7 @@ function Calendar({
   classNames,
   showOutsideDays = true,
   captionLayout = 'label',
-  buttonVariant = 'ghost',
+  buttonVariant = 'none',
   formatters,
   components,
   ...props
@@ -50,12 +50,12 @@ function Calendar({
         ),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
-          'h-[2.8rem] w-[2.8rem] border border-(--color-input-border) select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-(--color-button-outlined-border-gray-hover) hover:bg-(--color-button-outlined-surface-gray-hover)',
+          'h-[2.8rem] w-[2.8rem] border border-[var(--color-input-border)] select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)]',
           defaultClassNames.button_previous
         ),
         button_next: cn(
           buttonVariants({ variant: buttonVariant }),
-          'h-[2.8rem] w-[2.8rem] border border-(--color-input-border) select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-(--color-button-outlined-border-gray-hover) hover:bg-(--color-button-outlined-surface-gray-hover)',
+          'h-[2.8rem] w-[2.8rem] border border-[var(--color-input-border)] select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)]',
           defaultClassNames.button_next
         ),
         month_caption: cn(
@@ -67,7 +67,7 @@ function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-(--color-input-border)',
+          'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-input-border)]',
           defaultClassNames.dropdown_root
         ),
         dropdown: cn('bg-popover absolute inset-0 opacity-0', defaultClassNames.dropdown),
@@ -136,7 +136,13 @@ function Calendar({
               <div className="flex items-center gap-1">
                 {captionProps.children}
                 {onMonthChange && (
-                  <Button variant="outlined" color="gray" size="md" className="font-[1.3rem]" onClick={handleTodayClick}>
+                  <Button
+                    variant="outlined"
+                    color="gray"
+                    size="md"
+                    className="font-[1.3rem]"
+                    onClick={handleTodayClick}
+                  >
                     오늘
                   </Button>
                 )}
@@ -185,19 +191,19 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       data-range-middle={modifiers.range_middle}
       className={cn(
         'relative flex aspect-square h-[2.6rem] w-[2.6rem] flex-col gap-1 text-[1.4rem] leading-none',
-        'hover:bg-(--color-element-gray-lighter) rounded-full items-center justify-center',
+        'hover:bg-[var(--color-element-gray-lighter)] rounded-full items-center justify-center',
         // Selected state (주황색 배경, 흰색 텍스트)
-        isSelected && 'bg-[#ff5c2e] text-white hover:bg-(--color-element-primary)',
+        isSelected && 'bg-[#ff5c2e] text-white hover:bg-[var(--color-element-primary)]',
         // Disabled state (회색 텍스트)
-        isDisabled && 'text-(--color-text-gray-lighter) opacity-50 cursor-not-allowed hover:bg-transparent',
+        isDisabled && 'text-[var(--color-text-gray-lighter)] opacity-50 cursor-not-allowed hover:bg-transparent',
         // Saturday (파란색)
-        !isSelected && !isDisabled && isSaturday && 'text-(--color-text-information)',
+        !isSelected && !isDisabled && isSaturday && 'text-[var(--color-text-information)]',
         // Sunday/dayoff (빨간색)
-        !isSelected && !isDisabled && isSunday && 'text-(--color-text-danger)',
+        !isSelected && !isDisabled && isSunday && 'text-[var(--color-text-danger)]',
         // Outside month
-        isOutside && 'text-(--color-text-gray-lighter)',
+        isOutside && 'text-[var(--color-text-gray-lighter)]',
         // Range states
-        'data-[range-middle=true]:bg-(--color-element-gray-lighter) data-[range-middle=true]:text-accent-foreground',
+        'data-[range-middle=true]:bg-[var(--color-element-gray-lighter)] data-[range-middle=true]:text-accent-foreground',
         'data-[range-start=true]:bg-[#ff5c2e] data-[range-start=true]:text-white',
         'data-[range-end=true]:bg-[#ff5c2e] data-[range-end=true]:text-white',
         'data-[range-end=true]:rounded-full data-[range-middle=true]:rounded-full! data-[range-start=true]:rounded-full',

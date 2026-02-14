@@ -27,7 +27,7 @@ export function InsPlanBasicStep1({ currentData, testError, handleChange }: InsP
           cols={['max-w-[20rem] w-[15%]', 'w-[35%]', 'max-w-[20rem] w-[15%]', 'w-[35%]']}
         >
           <TableRow>
-            <FormCell title={<b className="text-(--color-text-primary)">계약자</b>}>
+            <FormCell title={<b className="text-[var(--color-text-primary)]">계약자</b>}>
               <FormItem>
                 <Input
                   aria-label="계약자명 입력"

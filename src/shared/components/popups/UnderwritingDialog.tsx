@@ -161,7 +161,7 @@ export default function UnderwritingDialog({ resolve }: DialogProps) {
           </Gcol>
           {/* MOCK_DATA 기반 수동 rowspan 테이블 */}
           <div className="min-h-0 h-[100%] flex flex-col">
-            <div className="flex-1 min-h-0 overflow-auto [&>div]:h-0 border-t-[.2rem] border-t-(--color-border-gray-darker) border-b-[.1rem] border-b-(--color-table-border-border-gray)">
+            <div className="flex-1 min-h-0 overflow-auto [&>div]:h-0 border-t-[.2rem] border-t-[var(--color-border-gray-darker)] border-b-[.1rem] border-b-[var(--color-table-border-border-gray)]">
               <Table>
                 <TableCaption className="a11y-hidden">지침확인결과 (MOCK_DATA 기반)</TableCaption>
                 <TableHeader style={{ position: 'sticky', top: 0, zIndex: 2, background: '#fff' }}>

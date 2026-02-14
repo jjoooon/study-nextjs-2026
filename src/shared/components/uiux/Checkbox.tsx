@@ -39,7 +39,7 @@ function Checkbox({
 
   const colorStyles = {
     primary:
-      'hover:border-(--color-border-primary) data-[state=checked]:bg-(--color-element-primary) data-[state=checked]:border-(--color-border-primary) data-[state=checked]:text-white',
+      'hover:border-[var(--color-border-primary)] data-[state=checked]:bg-[var(--color-element-primary)] data-[state=checked]:border-[var(--color-border-primary)] data-[state=checked]:text-white',
     information:
       'hover:border-[var(--color-border-information,#006ff2)] data-[state=checked]:bg-[var(--color-element-information,#006ff2)] data-[state=checked]:border-[var(--color-border-information,#006ff2)] data-[state=checked]:text-white',
     secondary:
@@ -63,16 +63,18 @@ function Checkbox({
         data-slot="checkbox"
         id={checkboxId}
         className={cn(
-          'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-(--color-element-gray-lighter) disabled:border-(--color-border-gray-light) disabled:data-[state=checked]:bg-(--color-element-gray-lighter) disabled:data-[state=checked]:border-(--color-border-gray-light) disabled:data-[state=checked]:text-[#b3b3b3]',
+          'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[var(--color-element-gray-lighter)] disabled:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:bg-[var(--color-element-gray-lighter)] disabled:data-[state=checked]:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:text-[#b3b3b3]',
           // favorite 스타일
           isFavorite && 'border-0 bg-transparent shadow-none size-[0.5rem]',
           // button 스타일
           isButton &&
-            'rounded-[0.6rem] border border-(--color-border-gray-light) bg-white font-normal leading-normal text-black whitespace-nowrap',
+            'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black whitespace-nowrap',
           isButton && buttonSizeStyles[size],
           isButton && buttonColorStyles[color],
           // default 스타일
-          !isFavorite && !isButton && 'border border-(--color-border-gray-light) bg-(--color-element-inverse)',
+          !isFavorite &&
+            !isButton &&
+            'border border-[var(--color-border-gray-light)] bg-[var(--color-element-inverse)]',
           !isFavorite && !isButton && sizeStyles[size],
           !isFavorite && !isButton && colorStyles[color],
           className

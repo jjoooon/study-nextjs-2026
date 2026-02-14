@@ -19,17 +19,18 @@ const radioGroupItemVariants = cva(
     variants: {
       variant: {
         default:
-          'rounded-full border bg-(--color-element-inverse) data-[state=checked]:border-(--color-border-gray-light) data-[required=true]:bg-(--color-input-surface-highlight) data-[required=true]:border-(--color-input-border-highlight) data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
+          'rounded-full border bg-[var(--color-element-inverse)] data-[state=checked]:border-[var(--color-border-gray-light)] data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
         button:
-          'rounded-[0.6rem] border border-(--color-border-gray-light) bg-white font-normal leading-normal text-black data-[state=checked]:bg-[#fff7f4] data-[state=checked]:text-[#ff3800] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)] data-[required=true]:bg-(--color-input-surface-highlight) data-[required=true]:border-(--color-input-border-highlight) data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
+          'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[state=checked]:bg-[#fff7f4] data-[state=checked]:text-[#ff3800] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)] data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
       },
       size: {
         large: '',
         small: '',
       },
       color: {
-        primary: 'border-(--color-border-gray-light) hover:border-(--color-element-primary) ',
-        information: 'border-(--color-border-gray-light) hover:border-[#006ff2] data-[state=checked]:border-[#006ff2]',
+        primary: 'border-[var(--color-border-gray-light)] hover:border-[var(--color-element-primary)]',
+        information:
+          'border-[var(--color-border-gray-light)] hover:border-[#006ff2] data-[state=checked]:border-[#006ff2]',
       },
     },
     compoundVariants: [
@@ -64,7 +65,7 @@ const radioGroupItemVariants = cva(
   }
 );
 
-const radioIndicatorVariants = cva('absolute rounded-full bg-(--color-element-primary)', {
+const radioIndicatorVariants = cva('absolute rounded-full bg-[var(--color-element-primary)]', {
   variants: {
     size: {
       large: 'h-[1rem] w-[1rem]',

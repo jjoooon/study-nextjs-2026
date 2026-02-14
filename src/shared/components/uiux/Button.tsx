@@ -10,10 +10,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         contained: '',
-        outlined: `disabled:text-(--color-gray-30)
-        disabled:bg-(--color-gray-5)
-        disabled:border-(--color-gray-10)`,
-        text: `px-0! text-(--color-secondary-70) bg-transparent border-none underline-offset-3 
+        outlined: `disabled:text-[var(--color-gray-30)]
+        disabled:bg-[var(--color-gray-5)]
+        disabled:border-[var(--color-gray-10)]`,
+        text: `px-0! text-[var(--color-secondary-70)] bg-transparent border-none underline-offset-3 
         hover:underline 
         focus-visible:underline`,
         none: 'bg-transparent border-none',
@@ -24,8 +24,8 @@ const buttonVariants = cva(
         gray: '',
         'gray-light': '',
         success: '',
-        link: 'text-(--color-information-50)',
-        transparent: `bg-transparent text-(--color-text-primary) border-transparent`,
+        link: 'text-[var(--color-information-50)]',
+        transparent: `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
         xl: `h-[3.2rem] px-2 has-[>svg]:px-3 rounded-[0.6rem] text-[1.4rem] font-bold min-w-[8rem] gap-1`,
@@ -38,158 +38,158 @@ const buttonVariants = cva(
       {
         variant: 'contained',
         color: 'primary',
-        className: `border border-(--color-primary-50) 
-        bg-(--color-primary-50) 
-        text-(--color-gray-0) 
-        hover:bg-(--color-primary-60) 
+        className: `border border-[var(--color-primary-50)] 
+        bg-[var(--color-primary-50)] 
+        text-[var(--color-gray-0)] 
+        hover:bg-[var(--color-primary-60)] 
         hover:border-dashed 
-        hover:border-(--color-gray-0) 
-        focus-visible:ring-(--color-primary-60) 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-primary-60)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-0)
-        disabled:text-(--color-gray-0)
-        disabled:bg-(--color-gray-20)
-        disabled:border-(--color-gray-20)`,
+        focus-visible:border-[var(--color-gray-0)]
+        disabled:text-[var(--color-gray-0)]
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
       },
       {
         variant: 'contained',
         color: 'gray',
-        className: `border border-(--color-gray-50) 
-        bg-(--color-gray-50) 
-        text-(--color-gray-0) 
-        hover:bg-(--color-gray-60) 
+        className: `border border-[var(--color-gray-50)] 
+        bg-[var(--color-gray-50)] 
+        text-[var(--color-gray-0)] 
+        hover:bg-[var(--color-gray-60)] 
         hover:border-dashed 
-        hover:border-(--color-gray-0) 
-        focus-visible:ring-(--color-gray-60) 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-gray-60)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-0) 
-        disabled:text-(--color-gray-0)
-        disabled:bg-(--color-gray-20)
-        disabled:border-(--color-gray-20)`,
+        focus-visible:border-[var(--color-gray-0)] 
+        disabled:text-[var(--color-gray-0)]
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
       },
       {
         variant: 'contained',
         color: 'secondary',
-        className: `border border-(--color-secondary-50) 
-        bg-(--color-secondary-50) 
-        text-(--color-gray-0) 
-        hover:bg-(--color-secondary-70) 
+        className: `border border-[var(--color-secondary-50)] 
+        bg-[var(--color-secondary-50)] 
+        text-[var(--color-gray-0)] 
+        hover:bg-[var(--color-secondary-70)] 
         hover:border-dashed 
-        hover:border-(--color-gray-0) 
-        focus-visible:ring-(--color-secondary-70) 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-secondary-70)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-0) 
-        disabled:text-(--color-gray-0)
-        disabled:bg-(--color-gray-20)
-        disabled:border-(--color-gray-20)`,
+        focus-visible:border-[var(--color-gray-0)] 
+        disabled:text-[var(--color-gray-0)]
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
       },
       {
         variant: 'contained',
         color: 'primary',
         size: 'xl',
-        className: `disabled:text-(--color-gray-30)
-        disabled:bg-(--color-gray-5)
-        disabled:border-(--color-gray-5)`,
+        className: `disabled:text-[var(--color-gray-30)]
+        disabled:bg-[var(--color-gray-5)]
+        disabled:border-[var(--color-gray-5)]`,
       },
       {
         variant: 'contained',
         color: 'secondary',
         size: 'xl',
-        className: `disabled:text-(--color-gray-30)
-        disabled:bg-(--color-gray-5)
-        disabled:border-(--color-gray-5)`,
+        className: `disabled:text-[var(--color-gray-30)]
+        disabled:bg-[var(--color-gray-5)]
+        disabled:border-[var(--color-gray-5)]`,
       },
       {
         variant: 'contained',
         color: 'gray',
         size: 'xl',
-        className: `disabled:text-(--color-gray-30)
-        disabled:bg-(--color-gray-5)
-        disabled:border-(--color-gray-5)`,
+        className: `disabled:text-[var(--color-gray-30)]
+        disabled:bg-[var(--color-gray-5)]
+        disabled:border-[var(--color-gray-5)]`,
       },
 
       {
         variant: 'outlined',
         color: 'primary',
-        className: `border border-(--color-primary-50) 
-        bg-(--color-primary-5) 
-        text-(--color-primary-50) 
-        hover:bg-(--color-primary-10) 
+        className: `border border-[var(--color-primary-50)] 
+        bg-[var(--color-primary-5)] 
+        text-[var(--color-primary-50)] 
+        hover:bg-[var(--color-primary-10)] 
         hover:border-dashed 
-        hover:border-(--color-gray-0) 
-        focus-visible:ring-(--color-primary-10) 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-primary-10)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-0)`,
+        focus-visible:border-[var(--color-gray-0)]`,
       },
       {
         variant: 'outlined',
         color: 'primary',
         size: 'sm',
-        className: `border border-(--color-primary-50) 
-        bg-(--color-gray-0) 
-        text-(--color-primary-50) 
-        hover:bg-(--color-gray-0) 
+        className: `border border-[var(--color-primary-50)] 
+        bg-[var(--color-gray-0)] 
+        text-[var(--color-primary-50)] 
+        hover:bg-[var(--color-gray-0)] 
         hover:border-dashed 
-        hover:border-(--color-gray-0) 
-        focus-visible:ring-(--color-gray-0) 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-gray-0)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-0)`,
+        focus-visible:border-[var(--color-gray-0)]`,
       },
 
       {
         variant: 'outlined',
         color: 'gray',
-        className: `border border-(--color-gray-60) 
-        bg-(--color-gary-0) 
-        text-(--color-gary-100) 
-        hover:bg-(--color-gray-5) 
+        className: `border border-[var(--color-gray-60)] 
+        bg-[var(--color-gary-0)] 
+        text-[var(--color-gray-100)] 
+        hover:bg-[var(--color-gray-5)] 
         hover:border-dashed 
-        hover:border-(--color-gray-100) 
-        focus-visible:ring-(--color-gray-5) 
+        hover:border-[var(--color-gray-100)] 
+        focus-visible:ring-[var(--color-gray-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-100)`,
+        focus-visible:border-[var(--color-gray-100)]`,
       },
       {
         variant: 'outlined',
         color: 'gray-light',
-        className: `border border-(--color-gray-20) 
-        bg-(--color-gary-0) 
-        text-(--color-gary-100) 
-        hover:bg-(--color-gray-5) 
+        className: `border border-[var(--color-gray-20)] 
+        bg-[var(--color-gary-0)] 
+        text-[var(--color-gray-100)] 
+        hover:bg-[var(--color-gray-5)] 
         hover:border-dashed 
-        hover:border-(--color-gray-100) 
-        focus-visible:ring-(--color-gray-5) 
+        hover:border-[var(--color-gray-100)] 
+        focus-visible:ring-[var(--color-gray-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-gray-100)`,
+        focus-visible:border-[var(--color-gray-100)]`,
       },
       {
         variant: 'outlined',
         color: 'success',
-        className: `border border-(--color-success-60) 
-        bg-(--color-success-5) 
-        text-(--color-success-60) 
-        hover:bg-(--color-success-5) 
+        className: `border border-[var(--color-success-60)] 
+        bg-[var(--color-success-5)] 
+        text-[var(--color-success-60)] 
+        hover:bg-[var(--color-success-5)] 
         hover:border-dashed 
-        hover:border-(--color-success-60) 
-        focus-visible:ring-(--color-success-5) 
+        hover:border-[var(--color-success-60)] 
+        focus-visible:ring-[var(--color-success-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-(--color-success-60)`,
+        focus-visible:border-[var(--color-success-60)]`,
       },
 
       {
         variant: 'text',
         color: 'success',
-        className: `text-(--color-success-60)`,
+        className: `text-[var(--color-success-60)]`,
       },
       {
         variant: 'text',
         color: 'primary',
-        className: `text-(--color-primary-50)`,
+        className: `text-[var(--color-primary-50)]`,
       },
       {
         variant: 'text',
         color: 'link',
-        className: `text-(--color-primary-50)`,
+        className: `text-[var(--color-primary-50)]`,
       },
     ],
     defaultVariants: {

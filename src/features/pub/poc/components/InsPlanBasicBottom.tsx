@@ -20,7 +20,7 @@ export default function InsPlanBasicBottom() {
           <button
             type="submit"
             form="page2-MainForm"
-            className="flex items-center justify-center text-white max-w-[26rem] shrink-0 w-full h-[5.8rem] fw-bold text-[2rem] font-bold bg-(--color-primary-50) gap-[1rem] tracking-tighter"
+            className="flex items-center justify-center text-white max-w-[26rem] shrink-0 w-full h-[5.8rem] fw-bold text-[2rem] font-bold bg-[var(--color-primary-50)] gap-[1rem] tracking-tighter"
           >
             다음
             <ArrowNext />

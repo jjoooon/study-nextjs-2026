@@ -1,10 +1,8 @@
 'use client';
 
 import { MOCK_DATA } from '@/features/pub/poc/constants/insPlanBasicData';
-import { Grow, Gcol, FormCell, FormTable, Grid } from '@/shared/components/common';
 import {
   Button,
-  Input,
   Table,
   TableBody,
   TableCaption,
@@ -42,7 +40,7 @@ export default function DataBaseTable({ theadData, tbodyData, caption, stickyHea
   return (
     <>
       <div className="min-h-0 h-[100%] flex flex-col">
-        <div className="flex-1 min-h-0 overflow-auto [&>div]:h-0 border-t-[.2rem] border-t-(--color-border-gray-darker) border-b-[.1rem] border-b-(--color-table-border-border-gray)">
+        <div className="flex-1 min-h-0 overflow-auto [&>div]:h-0 border-t-[.2rem] border-t-[var(--color-border-gray-darker)] border-b-[.1rem] border-b-[var(--color-table-border-border-gray)]">
           <Table>
             <TableCaption className="a11y-hidden">지침확인결과 (MOCK_DATA 기반)</TableCaption>
             <colgroup>

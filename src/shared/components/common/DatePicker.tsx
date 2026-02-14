@@ -446,7 +446,8 @@ export function DatePickerInput({
         <PopoverTrigger asChild>
           <Button
             id={`${finalId}-button`}
-            variant="none" onlyicon
+            variant="none"
+            onlyicon
             color="primary"
             aria-label="Select date"
             className={buttonSizeClass}
@@ -456,7 +457,7 @@ export function DatePickerInput({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
+          className="w-auto overflow-hidden p-0 border-[var(--color-border-gray-light)]"
           align="end"
           alignOffset={-8}
           sideOffset={10}
