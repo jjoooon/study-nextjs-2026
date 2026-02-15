@@ -43,6 +43,24 @@ interface InsPlanCovData {
   selected?: boolean; // 체크박스 상태 추가
 }
 
+// NEW: Highlight helper function
+const highlightText = (text: string, query: string): React.ReactNode => {
+  if (!query.trim()) return text;
+
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+
+  return parts.map((part, index) =>
+    regex.test(part) ? (
+      <mark key={index} className="bg-yellow-200 text-black rounded px-0.5">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+};
+
 // 4. 메인 컴포넌트 함수 선언
 export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan }: InsPlanCovProps) {
   // 3. 커스텀 셀 렌더러 정의 (필요시)
