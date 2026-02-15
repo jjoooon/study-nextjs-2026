@@ -67,8 +67,8 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   // NEW: Search state management
-  const [searchQuery, setSearchQuery] = useState('');  // Search input value
-  const [filteredData, setFilteredData] = useState<InsPlanCovData[]>(data);  // Filtered rows
+  const [searchQuery, setSearchQuery] = useState(''); // Search input value
+  const [filteredData, setFilteredData] = useState<InsPlanCovData[]>(data); // Filtered rows
 
   const handleSelectionChanged = useCallback(
     (event: { api: GridApi<InsPlanCovData> }) => {
@@ -91,9 +91,8 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     }
 
     const query = searchQuery.toLowerCase();
-    const filtered = data.filter(item =>
-      item.productCode.toLowerCase().includes(query) ||
-      item.productName.toLowerCase().includes(query)
+    const filtered = data.filter(
+      (item) => item.productCode.toLowerCase().includes(query) || item.productName.toLowerCase().includes(query)
     );
     setFilteredData(filtered);
   }, [searchQuery, data]);
@@ -179,11 +178,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
   // NEW: ProductName cell renderer with highlight
   const productNameRenderer = useCallback(
     (params: ICellRendererParams<InsPlanCovData>) => {
-      return (
-        <span>
-          {highlightText(params.data?.productName || '', searchQuery)}
-        </span>
-      );
+      return <span>{highlightText(params.data?.productName || '', searchQuery)}</span>;
     },
     [searchQuery]
   );
@@ -221,7 +216,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         sortable: false,
         filter: false,
         autoHeight: true,
-        cellRenderer: productNameRenderer,  // ADD THIS - connect the renderer
+        cellRenderer: productNameRenderer, // ADD THIS - connect the renderer
         tooltipValueGetter: (params) => {
           if (!params.data) return '';
           return `상품코드: ${params.data.productCode} | 상품명: ${params.data.productName}`;
@@ -234,9 +229,10 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               id="cabinet-label-username"
               size="sm"
               className="flex-1"
-              value={searchQuery}  // ADD THIS - controlled input
-              onChange={(e) => setSearchQuery(e.target.value)}  // ADD THIS - handler
-              onKeyDown={(e) => {  // ADD THIS - keyboard support
+              value={searchQuery} // ADD THIS - controlled input
+              onChange={(e) => setSearchQuery(e.target.value)} // ADD THIS - handler
+              onKeyDown={(e) => {
+                // ADD THIS - keyboard support
                 if (e.key === 'Enter') {
                   handleSearch();
                 } else if (e.key === 'Escape') {
@@ -248,7 +244,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               variant="icon"
               aria-label="고객명 검색"
               size="sm"
-              onClick={handleSearch}  // ADD THIS - search handler
+              onClick={handleSearch} // ADD THIS - search handler
             >
               <SearchIcon />
             </Button>
@@ -256,7 +252,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               variant="icon"
               aria-label="검색 초기화"
               size="sm"
-              onClick={handleReset}  // ADD THIS - reset handler
+              onClick={handleReset} // ADD THIS - reset handler
             >
               <ResetIcon />
             </Button>

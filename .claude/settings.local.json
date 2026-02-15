@@ -65,7 +65,8 @@
       "Bash(pnpm type-check:*)",
       "Bash(pnpm format:*)",
       "Bash(pnpm tsc:*)",
-      "Bash(pnpm eslint:*)"
+      "Bash(pnpm eslint:*)",
+      "Bash(git diff:*)"
     ]
   }
 }
