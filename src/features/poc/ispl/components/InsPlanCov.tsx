@@ -30,6 +30,7 @@ interface InsPlanCovProps {
 // 2. 데이터 행(Row)의 구조 정의
 interface InsPlanCovData {
   id: number;
+  productCode: string; // NEW - Sequential codes like P001, P002, etc.
   isDuplicate: boolean; // 중복 여부 (boolean은 관습적으로 is/has 접두사 사용)
   productName: string; // 상품명
   coverageAmount: number; // 가입금액 (보장받는 금액)
