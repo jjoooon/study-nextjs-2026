@@ -48,6 +48,10 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
   // 3. 커스텀 셀 렌더러 정의 (필요시)
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
+  // NEW: Search state management
+  const [searchQuery, setSearchQuery] = useState('');  // Search input value
+  const [filteredData, setFilteredData] = useState<InsPlanCovData[]>(data);  // Filtered rows
+
   const handleSelectionChanged = useCallback(
     (event: { api: GridApi<InsPlanCovData> }) => {
       const selectedNodes = event.api.getSelectedNodes();
