@@ -221,9 +221,10 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         sortable: false,
         filter: false,
         autoHeight: true,
+        cellRenderer: productNameRenderer,  // ADD THIS - connect the renderer
         tooltipValueGetter: (params) => {
           if (!params.data) return '';
-          return `상품명: ${params.data.productName}`;
+          return `상품코드: ${params.data.productCode} | 상품명: ${params.data.productName}`;
         },
         headerComponent: () => (
           <Grow className="gap-1 w-full">
@@ -233,9 +234,31 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               id="cabinet-label-username"
               size="sm"
               className="flex-1"
+              value={searchQuery}  // ADD THIS - controlled input
+              onChange={(e) => setSearchQuery(e.target.value)}  // ADD THIS - handler
+              onKeyDown={(e) => {  // ADD THIS - keyboard support
+                if (e.key === 'Enter') {
+                  handleSearch();
+                } else if (e.key === 'Escape') {
+                  handleReset();
+                }
+              }}
             />
-            <Button variant="icon" aria-label="고객명 검색" size="sm">
+            <Button
+              variant="icon"
+              aria-label="고객명 검색"
+              size="sm"
+              onClick={handleSearch}  // ADD THIS - search handler
+            >
               <SearchIcon />
+            </Button>
+            <Button
+              variant="icon"
+              aria-label="검색 초기화"
+              size="sm"
+              onClick={handleReset}  // ADD THIS - reset handler
+            >
+              <ResetIcon />
             </Button>
           </Grow>
         ),
@@ -311,7 +334,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         },
       },
     ],
-    [checkboxRenderer, CheckboxHeader, duplicateRenderer]
+    [checkboxRenderer, CheckboxHeader, duplicateRenderer, productNameRenderer]
   );
 
   const CategoriesCheckbox = [
