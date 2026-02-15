@@ -10,6 +10,7 @@ import { INITIAL_TABS2 } from '../constants/insPlanBasicData';
 const DUMMY_PLAN_COV_DATA = [
   {
     id: 1,
+    productCode: "P001",
     isDuplicate: false,
     productName: '무배당 삼성화재 실손의료보험',
     coverageAmount: 50000000,
@@ -22,6 +23,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 2,
+    productCode: "P002",
     isDuplicate: true,
     productName: '무배당 메리츠 종합보험',
     coverageAmount: 30000000,
@@ -34,6 +36,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 3,
+    productCode: "P003",
     isDuplicate: false,
     productName: 'KB손해보험 암보험',
     coverageAmount: 70000000,
@@ -46,6 +49,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 4,
+    productCode: "P004",
     isDuplicate: false,
     productName: '한화생명 의료실비보험',
     coverageAmount: 45000000,
@@ -58,6 +62,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 5,
+    productCode: "P005",
     isDuplicate: true,
     productName: '롯데생명 종신보험',
     coverageAmount: 100000000,
@@ -70,6 +75,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 6,
+    productCode: "P006",
     isDuplicate: false,
     productName: '현대생명 정기보험',
     coverageAmount: 60000000,
@@ -82,6 +88,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 7,
+    productCode: "P007",
     isDuplicate: false,
     productName: 'AXA손해보험 질병보험',
     coverageAmount: 55000000,
@@ -94,6 +101,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 8,
+    productCode: "P008",
     isDuplicate: true,
     productName: '삼성생명 어린이보험',
     coverageAmount: 25000000,
@@ -106,6 +114,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 9,
+    productCode: "P009",
     isDuplicate: false,
     productName: '교보생명 장기요양보험',
     coverageAmount: 80000000,
@@ -118,6 +127,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 10,
+    productCode: "P010",
     isDuplicate: false,
     productName: '신한생명 변액보험',
     coverageAmount: 90000000,
@@ -130,6 +140,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 11,
+    productCode: "P011",
     isDuplicate: true,
     productName: 'DB손해보험 특정질병보험',
     coverageAmount: 35000000,
@@ -142,6 +153,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 12,
+    productCode: "P012",
     isDuplicate: false,
     productName: '우리생명 연금보험',
     coverageAmount: 120000000,
@@ -154,6 +166,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 13,
+    productCode: "P013",
     isDuplicate: false,
     productName: '동부화재 운전자보험',
     coverageAmount: 40000000,
@@ -166,6 +179,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 14,
+    productCode: "P014",
     isDuplicate: true,
     productName: '미래에셋생명 저축보험',
     coverageAmount: 75000000,
@@ -178,6 +192,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 15,
+    productCode: "P015",
     isDuplicate: false,
     productName: '하나생명 여행보험',
     coverageAmount: 20000000,
@@ -190,6 +205,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 16,
+    productCode: "P016",
     isDuplicate: false,
     productName: 'DL손해보험 주택보험',
     coverageAmount: 150000000,
@@ -202,6 +218,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 17,
+    productCode: "P017",
     isDuplicate: true,
     productName: '별코 종신보험',
     coverageAmount: 65000000,
@@ -214,6 +231,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 18,
+    productCode: "P018",
     isDuplicate: false,
     productName: '태연생명 치과보험',
     coverageAmount: 15000000,
@@ -226,6 +244,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 19,
+    productCode: "P019",
     isDuplicate: false,
     productName: '경남정보통신 보장성보험',
     coverageAmount: 85000000,
@@ -238,6 +257,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 20,
+    productCode: "P020",
     isDuplicate: true,
     productName: '한국신용정보 생활보험',
     coverageAmount: 50000000,
@@ -250,6 +270,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 21,
+    productCode: "P021",
     isDuplicate: false,
     productName: '푸른보험 휴직보험',
     coverageAmount: 30000000,
@@ -262,6 +283,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 22,
+    productCode: "P022",
     isDuplicate: false,
     productName: '한화손해보험 배상책임보험',
     coverageAmount: 100000000,
@@ -274,6 +296,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 23,
+    productCode: "P023",
     isDuplicate: true,
     productName: '롯데손해보험 펫보험',
     coverageAmount: 10000000,
@@ -286,6 +309,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 24,
+    productCode: "P024",
     isDuplicate: false,
     productName: '삼성화재 골프보험',
     coverageAmount: 50000000,
@@ -298,6 +322,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 25,
+    productCode: "P025",
     isDuplicate: false,
     productName: '현대해상 해외여행보험',
     coverageAmount: 25000000,
@@ -310,6 +335,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 26,
+    productCode: "P026",
     isDuplicate: true,
     productName: 'AIG손해보험 기업배상보험',
     coverageAmount: 200000000,
@@ -322,6 +348,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 27,
+    productCode: "P027",
     isDuplicate: false,
     productName: '메트라이프 장기간병보험',
     coverageAmount: 110000000,
@@ -334,6 +361,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 28,
+    productCode: "P028",
     isDuplicate: false,
     productName: '한국지역난방공사 보장성보험',
     coverageAmount: 55000000,
@@ -346,6 +374,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 29,
+    productCode: "P029",
     isDuplicate: true,
     productName: '케이 생명 암보험',
     coverageAmount: 70000000,
@@ -358,6 +387,7 @@ const DUMMY_PLAN_COV_DATA = [
   },
   {
     id: 30,
+    productCode: "P030",
     isDuplicate: false,
     productName: '보장보험 건강증진보험',
     coverageAmount: 65000000,
