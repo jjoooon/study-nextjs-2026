@@ -12,7 +12,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 
 import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 // import { Label } from 'recharts';
 import { Gcol, Typo, Grow, ButtonGroup, Separator } from '@/shared/components/common';
 import { SearchIcon, AddIcon, ResetIcon } from '@/shared/components/icons';
@@ -64,6 +64,32 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     },
     [onSelectPlan]
   );
+
+  // NEW: Search handler
+  const handleSearch = useCallback(() => {
+    if (!searchQuery.trim()) {
+      setFilteredData(data);
+      return;
+    }
+
+    const query = searchQuery.toLowerCase();
+    const filtered = data.filter(item =>
+      item.productCode.toLowerCase().includes(query) ||
+      item.productName.toLowerCase().includes(query)
+    );
+    setFilteredData(filtered);
+  }, [searchQuery, data]);
+
+  // NEW: Reset handler
+  const handleReset = useCallback(() => {
+    setSearchQuery('');
+    setFilteredData(data);
+  }, [data]);
+
+  // NEW: Reset filter when data changes
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
 
   // checkboxRenderer를 useCallback으로 메모이제이션
   const checkboxRenderer = useCallback(
