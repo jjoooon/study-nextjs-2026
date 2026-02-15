@@ -176,6 +176,18 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     );
   }, []);
 
+  // NEW: ProductName cell renderer with highlight
+  const productNameRenderer = useCallback(
+    (params: ICellRendererParams<InsPlanCovData>) => {
+      return (
+        <span>
+          {highlightText(params.data?.productName || '', searchQuery)}
+        </span>
+      );
+    },
+    [searchQuery]
+  );
+
   // 5. 컬럼 정의
   const columnDefs: ColDef<InsPlanCovData>[] = useMemo(
     () => [
