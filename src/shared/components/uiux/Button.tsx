@@ -17,6 +17,8 @@ const buttonVariants = cva(
         hover:underline 
         focus-visible:underline`,
         none: 'bg-transparent border-none',
+        state:
+          'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] p-x-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline',
       },
       color: {
         primary: '',

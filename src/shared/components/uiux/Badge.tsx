@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center justify-center rounded-[0.3rem] border-transparent px-2 h-[2.2rem] text-xs font-normal w-fit whitespace-nowrap shrink-0 [&>svg]:size-[1.2rem] gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden',
+  'inline-flex items-center justify-center rounded-[0.3rem] border-transparent p-1 h-[2rem] text-[1.2rem] font-bold tracking-[-0.13rem] w-fit whitespace-nowrap shrink-0 tra [&>svg]:size-[1.2rem] gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden',
   {
     variants: {
       variant: {
@@ -28,14 +28,10 @@ const badgeVariants = cva(
 );
 
 const colorMap: Record<string, { bg: string; text: string }> = {
-  blue: { bg: '#E3F2FD', text: '#1976D2' },
-  yellow: { bg: '#FFF9E6', text: '#F57C00' },
-  red: { bg: '#FFEBEE', text: '#D32F2F' },
-  green: { bg: '#E8F5E9', text: '#388E3C' },
-  black: { bg: '#F5F5F5', text: '#212121' },
-  orange: { bg: '#FFF3E0', text: '#E65100' },
-  purple: { bg: '#F3E5F5', text: '#7B1FA2' },
-  gray: { bg: '#F4F4F4', text: '#7F7F7F' },
+  blue: { bg: 'var(--color-information-10)', text: 'var(--color-information-50)' },
+  red: { bg: 'var(--color-danger-10)', text: 'var(--color-danger-50)' },
+  green: { bg: 'var(--color-success-10)', text: 'var(--color-success-50)' },
+  orange: { bg: 'var(--color-primary-10)', text: 'var(--color-primary-50)' },
 };
 
 function Badge({

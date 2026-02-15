@@ -1,70 +1,389 @@
 'use client';
 
-import { MainHeadLTRA350 } from '../components/LTRA350';
-import {
-  LayoutFolder,
-  LayoutFolderHead,
-  LayoutFolderBody,
-  LayoutMain,
-  LayoutMainHead,
-  LayoutMainBody,
-  LayoutMainFoot,
-  LayoutAside,
-  LayoutAsideHead,
-  LayoutAsideBody,
-  LayoutAsideFoot,
-  LayoutScrollWrap,
-  LayoutScrollItem,
-} from '@/shared/components/layout';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
+import { useState } from 'react';
+import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
+import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
+import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
+
+const DUMMY_PLAN_COV_DATA = [
+  {
+    id: 1,
+    isDuplicate: true,
+    productName: '무배당 삼성화재 실손의료보험',
+    coverageAmount: 500,
+    premium: 450,
+    availableAmount: 100,
+    expiryPeriod: '80세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: true,
+  },
+  {
+    id: 2,
+    isDuplicate: true,
+    productName: '무배당 메리츠 종합보험',
+    coverageAmount: 300,
+    premium: 350,
+    availableAmount: 500,
+    expiryPeriod: '100세',
+    paymentPeriod: '전기납',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 3,
+    isDuplicate: true,
+    productName: 'KB손해보험 암보험',
+    coverageAmount: 700,
+    premium: 550,
+    availableAmount: 1500,
+    expiryPeriod: '90세',
+    paymentPeriod: '15년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 4,
+    isDuplicate: true,
+    productName: '한화생명 의료실비보험',
+    coverageAmount: 450,
+    premium: 420,
+    availableAmount: 900,
+    expiryPeriod: '85세',
+    paymentPeriod: '10년',
+    expectedUwResult: '거절',
+    isHighlighted: false,
+  },
+  {
+    id: 5,
+    isDuplicate: true,
+    productName: '롯데생명 종신보험',
+    coverageAmount: 100,
+    premium: 750,
+    availableAmount: 200,
+    expiryPeriod: '100세',
+    paymentPeriod: '전기납',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 6,
+    isDuplicate: true,
+    productName: '현대생명 정기보험',
+    coverageAmount: 600,
+    premium: 480,
+    availableAmount: 1200,
+    expiryPeriod: '80세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 7,
+    isDuplicate: true,
+    productName: 'AXA손해보험 질병보험',
+    coverageAmount: 550,
+    premium: 500,
+    availableAmount: 1100,
+    expiryPeriod: '75세',
+    paymentPeriod: '15년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 8,
+    isDuplicate: true,
+    productName: '삼성생명 어린이보험',
+    coverageAmount: 250,
+    premium: 280,
+    availableAmount: 400,
+    expiryPeriod: '30세',
+    paymentPeriod: '12년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 9,
+    isDuplicate: true,
+    productName: '교보생명 장기요양보험',
+    coverageAmount: 800,
+    premium: 650,
+    availableAmount: 1600,
+    expiryPeriod: '100세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 10,
+    isDuplicate: true,
+    productName: '신한생명 변액보험',
+    coverageAmount: 900,
+    premium: 700,
+    availableAmount: 1800,
+    expiryPeriod: '80세',
+    paymentPeriod: '15년',
+    expectedUwResult: '거절',
+    isHighlighted: false,
+  },
+  {
+    id: 11,
+    isDuplicate: true,
+    productName: 'DB손해보험 특정질병보험',
+    coverageAmount: 350,
+    premium: 380,
+    availableAmount: 700,
+    expiryPeriod: '65세',
+    paymentPeriod: '10년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 12,
+    isDuplicate: true,
+    productName: '우리생명 연금보험',
+    coverageAmount: 1200,
+    premium: 850,
+    availableAmount: 2500,
+    expiryPeriod: '100세',
+    paymentPeriod: '전기납',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 13,
+    isDuplicate: true,
+    productName: '동부화재 운전자보험',
+    coverageAmount: 400,
+    premium: 320,
+    availableAmount: 800,
+    expiryPeriod: '75세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 14,
+    isDuplicate: true,
+    productName: '미래에셋생명 저축보험',
+    coverageAmount: 750,
+    premium: 600,
+    availableAmount: 1500,
+    expiryPeriod: '85세',
+    paymentPeriod: '15년',
+    expectedUwResult: '거절',
+    isHighlighted: false,
+  },
+  {
+    id: 15,
+    isDuplicate: true,
+    productName: '하나생명 여행보험',
+    coverageAmount: 200,
+    premium: 250,
+    availableAmount: 300,
+    expiryPeriod: '80세',
+    paymentPeriod: '1년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 16,
+    isDuplicate: true,
+    productName: 'DL손해보험 주택보험',
+    coverageAmount: 1500,
+    premium: 950,
+    availableAmount: 300,
+    expiryPeriod: '무제한',
+    paymentPeriod: '1년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 17,
+    isDuplicate: true,
+    productName: '별코 종신보험',
+    coverageAmount: 650,
+    premium: 520,
+    availableAmount: 1300,
+    expiryPeriod: '90세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 18,
+    isDuplicate: true,
+    productName: '태연생명 치과보험',
+    coverageAmount: 150,
+    premium: 180,
+    availableAmount: 250,
+    expiryPeriod: '80세',
+    paymentPeriod: '10년',
+    expectedUwResult: '거절',
+    isHighlighted: false,
+  },
+  {
+    id: 19,
+    isDuplicate: true,
+    productName: '경남정보통신 보장성보험',
+    coverageAmount: 850,
+    premium: 680,
+    availableAmount: 1700,
+    expiryPeriod: '85세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 20,
+    isDuplicate: true,
+    productName: '한국신용정보 생활보험',
+    coverageAmount: 500,
+    premium: 450,
+    availableAmount: 100,
+    expiryPeriod: '80세',
+    paymentPeriod: '15년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 21,
+    isDuplicate: true,
+    productName: '푸른보험 휴직보험',
+    coverageAmount: 300,
+    premium: 320,
+    availableAmount: 600,
+    expiryPeriod: '60세',
+    paymentPeriod: '10년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 22,
+    isDuplicate: true,
+    productName: '한화손해보험 배상책임보험',
+    coverageAmount: 100,
+    premium: 780,
+    availableAmount: 200,
+    expiryPeriod: '무제한',
+    paymentPeriod: '1년',
+    expectedUwResult: '거절',
+    isHighlighted: false,
+  },
+  {
+    id: 23,
+    isDuplicate: true,
+    productName: '롯데손해보험 펫보험',
+    coverageAmount: 100,
+    premium: 150,
+    availableAmount: 200,
+    expiryPeriod: '10세',
+    paymentPeriod: '1년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 24,
+    isDuplicate: true,
+    productName: '삼성화재 골프보험',
+    coverageAmount: 500,
+    premium: 480,
+    availableAmount: 100,
+    expiryPeriod: '80세',
+    paymentPeriod: '1년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 25,
+    isDuplicate: true,
+    productName: '현대해상 해외여행보험',
+    coverageAmount: 250,
+    premium: 280,
+    availableAmount: 500,
+    expiryPeriod: '80세',
+    paymentPeriod: '1년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 26,
+    isDuplicate: true,
+    productName: 'AIG손해보험 기업배상보험',
+    coverageAmount: 200,
+    premium: 1200,
+    availableAmount: 400,
+    expiryPeriod: '무제한',
+    paymentPeriod: '1년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 27,
+    isDuplicate: true,
+    productName: '메트라이프 장기간병보험',
+    coverageAmount: 1100,
+    premium: 820,
+    availableAmount: 2200,
+    expiryPeriod: '100세',
+    paymentPeriod: '20년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+  {
+    id: 28,
+    isDuplicate: true,
+    productName: '한국지역난방공사 보장성보험',
+    coverageAmount: 550,
+    premium: 500,
+    availableAmount: 1100,
+    expiryPeriod: '80세',
+    paymentPeriod: '20년',
+    expectedUwResult: '거절',
+    isHighlighted: false,
+  },
+  {
+    id: 29,
+    isDuplicate: true,
+    productName: '케이 생명 암보험',
+    coverageAmount: 700,
+    premium: 580,
+    availableAmount: 1400,
+    expiryPeriod: '90세',
+    paymentPeriod: '20년',
+    expectedUwResult: '조건부인수',
+    isHighlighted: false,
+  },
+  {
+    id: 30,
+    isDuplicate: true,
+    productName: '보장보험 건강증진보험',
+    coverageAmount: 650,
+    premium: 540,
+    availableAmount: 1300,
+    expiryPeriod: '85세',
+    paymentPeriod: '15년',
+    expectedUwResult: '인수',
+    isHighlighted: false,
+  },
+];
 
 export default function LTRA350Section() {
+  const [hideAside, setHideAside] = useState(false);
+
   return (
-    <LayoutFolder>
-      <LayoutFolderHead className="grid grid-cols-[1fr_auto] gap-[1rem]">
-        <LayoutMainHead>
-          <MainHeadLTRA350 />
-        </LayoutMainHead>
-        <LayoutAsideHead>사이드 헤드</LayoutAsideHead>
-      </LayoutFolderHead>
-      <LayoutFolderBody>
-        <ResizablePanelGroup orientation="horizontal" className="w-full">
-          <ResizablePanel defaultSize="75%" minSize="72rem">
-            <LayoutMain>
-              <LayoutMainBody>
-                <LayoutScrollWrap className="grid-rows-[1fr_auto]">
-                  <LayoutScrollItem className="w-full">
-                    <div className="text-[40rem]">
-                      1
-                      <br />
-                      2
-                      <br />
-                      3
-                      <br />
-                    </div>
-                  </LayoutScrollItem>
-                  <LayoutScrollItem className="bg-[pink] w-full">
-                    qqq
-                    <br />
-                    qqqqq
-                  </LayoutScrollItem>
-                </LayoutScrollWrap>
-              </LayoutMainBody>
-              <LayoutMainFoot>
-                콘텐츠 풋터
-                <br /> 콘텐츠 풋터
-              </LayoutMainFoot>
-            </LayoutMain>
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize="37.5rem" minSize="0" maxSize="50%">
-            <LayoutAside>
-              <LayoutAsideBody>사이드 바디</LayoutAsideBody>
-              <LayoutAsideFoot>사이드 풋터</LayoutAsideFoot>
-            </LayoutAside>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </LayoutFolderBody>
-    </LayoutFolder>
+    <LayoutTemplateA
+      headMain={<LTRA350MainHead />}
+      headAside={<TaskStatusBoard />}
+      bodyMain={<LTRA350MainBody data={DUMMY_PLAN_COV_DATA} hideAside={hideAside} setHideAside={setHideAside} />}
+      bodyAside={<div>사이드 바디</div>}
+      footMain={
+        <>
+          <br /> 콘텐츠 풋터
+        </>
+      }
+      footAside={<div>사이드 풋터</div>}
+      hideAside={hideAside}
+    />
   );
 }

@@ -5,7 +5,7 @@ import Page2Section from '@/features/pub/poc/sections/Page2Section';
 import { LayoutDocument, LayoutMain } from '@/shared/components/layout/Cabinet';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
 
-export default function pageLayout() {
+export default function Page() {
   return (
     <>
       <LayoutDocument className="grid-cols-[1fr] gap-5">

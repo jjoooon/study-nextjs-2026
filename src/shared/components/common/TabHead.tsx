@@ -70,8 +70,8 @@ export function TabHead({ data, visibleCount = 6, children }: TabHeadProps) {
               </TabsTrigger>
             ))}
           </TabsList>
-          <Grow className="gap-[.4rem] mb-[.1rem]">
-            <Grow className="gap-[.2rem]">
+          <Grow className="gap-[.4rem] mb-[.2rem]">
+            <Grow className="gap-[.1rem]">
               <Typo className="tracking-[0]!" color="primary" weight="bold">
                 {Math.ceil((visibleStart + visibleCount) / visibleCount)}
               </Typo>

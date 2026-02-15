@@ -5,7 +5,7 @@ import { TabHead } from '@/shared/components/common/TabHead';
 import { PaperIcon, SearchIcon } from '@/shared/components/icons';
 import { Button, Checkbox, Input } from '@/shared/components/uiux';
 
-const VISIBLE_COUNT = 6; //탭 최대 노출 갯수
+const VISIBLE_COUNT = 5; //탭 최대 노출 갯수
 const mockData = [
   {
     name: '반짝빛나리반짝빛나리',
@@ -277,7 +277,7 @@ const CategoriesCheckbox = [
 ];
 const tags = ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'];
 
-export function MainHeadLTRA350() {
+export function LTRA350MainHead() {
   return (
     <TabHead data={mockData} visibleCount={VISIBLE_COUNT}>
       <Gcol variant="box" placement="ss" className="w-full">
@@ -303,21 +303,28 @@ export function MainHeadLTRA350() {
               </Button>
             </FormItem>
             <BulletList position="row" className="gap-x-4 gap-y-1 flex-1 w-full">
-              {tags.map((tab, index) => {
+              {tags.map((tag, index) => {
                 return (
-                  <BulletListItem key={index} type="tag" onClick={() => console.log(tab)}>
-                    {tab}
+                  <BulletListItem
+                    key={index}
+                    type="tag"
+                    onClick={() => {
+                      // eslint-disable-next-line no-console
+                      console.log('디버깅 데이터:', tag);
+                    }}
+                  >
+                    {tag}
                   </BulletListItem>
                 );
               })}
             </BulletList>
           </Grow>
           <ButtonGroup className="gap-1" placement="ec">
-            <Button variant="contained" color="secondary" size="md">
+            <Button variant="contained" color="secondary" size="lg">
               <PaperIcon />
               편집
             </Button>
-            <Button variant="contained" color="secondary" size="md">
+            <Button variant="contained" color="secondary" size="lg">
               <PaperIcon />
               초기화
             </Button>

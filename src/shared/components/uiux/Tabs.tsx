@@ -27,8 +27,8 @@ const tabsTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] -mr-px bg-[var(--color-element-inverse)] border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
-        sub: "h-[2.6rem] px-3 pt-[0.6rem] pb-2 -mr-px bg-[var(--color-element-gray-lighterest)] border-t border-l border-r border-[var(--color-border-gray-light)] text-black data-[state=active]:bg-[var(--color-element-inverse)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+          "h-[2.7rem] px-2.5 pt-1.5 pb-1.5 -mr-px bg-[var(--color-element-inverse)] border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+        sub: "h-[2.7rem] px-3 pt-[0.6rem] pb-2 -mr-px bg-[var(--color-element-gray-lighterest)] border-t border-l border-r border-[var(--color-border-gray-light)] text-black data-[state=active]:bg-[var(--color-element-inverse)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
       },
     },
     defaultVariants: {
@@ -156,7 +156,7 @@ const TabsLine = React.forwardRef<
     borderColor?: string;
   }
 >(({ className, borderColor = 'border-[#FF5C2E]', children, ...props }, ref) => (
-  <div ref={ref} className={cn('border-b-[.2rem] grid grid-cols-[1fr_auto]', borderColor, className)} {...props}>
+  <div ref={ref} className={cn('border-b-[.1rem] grid grid-cols-[1fr_auto]', borderColor, className)} {...props}>
     {children}
   </div>
 ));

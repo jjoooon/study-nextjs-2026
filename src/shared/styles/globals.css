@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  min-width: 126rem;
+  min-width: 120.4rem;
   overflow-x: auto;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #eeeeee;
+  background: transparent;
   border-radius: 0.4rem;
 }
 
@@ -273,6 +273,18 @@ input::placeholder {
   --color-gray-10: #E5E5E5;
   --color-gray-5: #F4F4F4;
   --color-gray-0: #FFFFFF;
+
+  --color-coolgray-90: #111827;
+  --color-coolgray-80: #1f2937;
+  --color-coolgray-70: #374151;
+  --color-coolgray-60: #4b5563;
+  --color-coolgray-50: #6b7280;
+  --color-coolgray-40: #9ca3af;
+  --color-coolgray-30: #d1d5db;
+  --color-coolgray-20: #e5e7eb;
+  --color-coolgray-10: #f3f4f6;
+  --color-coolgray-5: #f9fafb;
+
   --color-secondary-95: #1A1613;
   --color-secondary-90: #292421;
   --color-secondary-80: #352F2B;

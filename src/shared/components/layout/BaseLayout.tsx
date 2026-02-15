@@ -27,10 +27,7 @@ export const LayoutHead = ({ children, className }: LayoutProps) => {
 
 export const LayoutBody = ({ children, className }: LayoutProps) => {
   return (
-    <div
-      data-layout="body"
-      className={cn('relative grid grid-cols-[auto_1fr] px-[.6rem] py-[.4rem] gap-[1rem]', className)}
-    >
+    <div data-layout="body" className={cn('relative grid grid-cols-[auto_1fr] px-[.6rem] py-[.4rem] gap-3', className)}>
       {children}
     </div>
   );
@@ -38,7 +35,7 @@ export const LayoutBody = ({ children, className }: LayoutProps) => {
 
 export const LayoutProcess = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="process" className={cn('relative grid grid-cols-[1fr_auto]', className)}>
+    <div data-layout="process" className={cn('relative grid grid-cols-[1fr_auto] min-w-[4rem]', className)}>
       {children}
     </div>
   );
@@ -46,7 +43,7 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
 
 export const LayoutFolder = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="folder" className={cn('relative grid grid-rows-[auto_1fr] gap-1.5', className)}>
+    <div data-layout="folder" className={cn('relative grid grid-rows-[auto_1fr] gap-2.5', className)}>
       {children}
     </div>
   );
@@ -54,7 +51,7 @@ export const LayoutFolder = ({ children, className }: LayoutProps) => {
 
 export const LayoutFolderHead = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="folder-head" className={cn('relative flex justify-between', className)}>
+    <div data-layout="folder-head" className={cn('relative flex justify-between gap-3', className)}>
       {children}
     </div>
   );
@@ -69,7 +66,7 @@ export const LayoutFolderBody = ({ children, className }: LayoutProps) => {
 
 export const LayoutMain = ({ children, className }: LayoutProps) => {
   return (
-    <main data-layout="main" className={cn('relative flex flex-col h-full', className)}>
+    <main data-layout="main" className={cn('relative flex flex-col h-full gap-3', className)}>
       {children}
     </main>
   );
@@ -99,14 +96,14 @@ export const LayoutMainFoot = ({ children, className }: LayoutProps) => {
 
 export const LayoutAside = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="aside" className={cn('relative flex flex-col h-full', className)}>
+    <div data-layout="aside" className={cn('relative flex flex-col h-full w-[19.8rem]', className)}>
       {children}
     </div>
   );
 };
 export const LayoutAsideHead = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="aside-head" className={cn('relative w-full flex shrink-0', className)}>
+    <div data-layout="aside-head" className={cn('relative w-full flex shrink-0 w-[19.8rem]', className)}>
       {children}
     </div>
   );

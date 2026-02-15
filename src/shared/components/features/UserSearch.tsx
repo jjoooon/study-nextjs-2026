@@ -85,7 +85,7 @@ const getRelativeDate = (dateString: string): string => {
 
 const logger = log.getLogger('Poc');
 
-export const UserSearch = () => {
+export default function UserSearch() {
   const [selectedId, setSelectedId] = useState<string>('user1');
   // const [dialogOpen, setDialogOpen] = useState(false); // 모달 상태 추가
   const cards = MOCK_USERS;
@@ -138,7 +138,8 @@ export const UserSearch = () => {
                   <Input type="text" aria-label="고객명" />
                   <Button
                     aria-label="고객명 추가"
-                    variant="none" onlyicon
+                    variant="none"
+                    onlyicon
                     onClick={handleOpenUserSearch} // 클릭 시 모달 오픈
                   >
                     <SearchIcon />
@@ -152,7 +153,8 @@ export const UserSearch = () => {
                   <Input type="text" aria-label="질병검색" />
                   <Button
                     aria-label="고지질병 추가"
-                    variant="none" onlyicon
+                    variant="none"
+                    onlyicon
                     onClick={handleOpenUserSearch} // 클릭 시 모달 오픈
                   >
                     <SearchIcon />
@@ -199,7 +201,13 @@ export const UserSearch = () => {
                 </li>
               ))}
               <li className="items-center flex shrink-0">
-                <Button aria-label="고객 추가" variant="none" onlyicon color="transparent" onClick={() => alert('추가')}>
+                <Button
+                  aria-label="고객 추가"
+                  variant="none"
+                  onlyicon
+                  color="transparent"
+                  onClick={() => alert('추가')}
+                >
                   <AddIcon />
                 </Button>
               </li>
@@ -215,4 +223,4 @@ export const UserSearch = () => {
       </LayoutLabel>
     </>
   );
-};
+}
