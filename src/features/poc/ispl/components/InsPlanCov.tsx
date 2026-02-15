@@ -418,7 +418,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
             <div style={{ width: '100%', height: 'calc(100vh - 62.1rem)' }}>
               <div className="ag-theme-alpine top-noline" style={{ height: '100%', width: '100%' }}>
                 <AgGridReact<InsPlanCovData>
-                  rowData={data}
+                  rowData={filteredData}
                   columnDefs={columnDefs}
                   rowSelection="multiple" // multiple로 변경
                   suppressRowHoverHighlight={false}
