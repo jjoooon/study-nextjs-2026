@@ -1,49 +1,40 @@
 'use client';
 
-/**
- * AG Grid 컴포넌트 흐름
- * 1. 모듈 등록 : AG Grid가 필요한 모든 기능(필터, 소트, 렌더링 등)을 사용할 수 있도록 초기화
- * 2. 타입 정의 (Props & Data Inerface) : 타입 안정성 제공 및 자동완성 활성화
- * 3. 커스텀 셀 렌더러 정의 (필요시) : 셀 내에서 복잡한 UI를 구현하기 위해
- * 4. 메인 컴포넌트 함수 선언 : 상태 관리, 컬럼 정의, 이벤트 핸들러 등 구현
- */
-// 1.모듈 등록
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-
 import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useCallback, useEffect } from 'react';
-// import { Label } from 'recharts';
+
 import { Gcol, Typo, Grow, ButtonGroup, Separator } from '@/shared/components/common';
 import { SearchIcon, AddIcon, ResetIcon } from '@/shared/components/icons';
 import { Button, Input, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 
-// 1.모듈 등록
+// AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-// 2. 타입 정의 : 컴포넌트 Props 정의
+// Types
 interface InsPlanCovProps {
   data: InsPlanCovData[];
   selectedPlanId: number | null;
   onSelectPlan: (planId: number) => void;
 }
-// 2. 데이터 행(Row)의 구조 정의
+
 interface InsPlanCovData {
   id: number;
-  productCode: string; // NEW - Sequential codes like P001, P002, etc.
-  isDuplicate: boolean; // 중복 여부 (boolean은 관습적으로 is/has 접두사 사용)
-  productName: string; // 상품명
-  coverageAmount: number; // 가입금액 (보장받는 금액)
-  premium: number; // 보험료 (매달 내는 돈)
-  availableAmount: number; // 가능금액
-  expiryPeriod: string; // 만기 (또는 maturityTerm)
-  paymentPeriod: string; // 납기 (또는 paymentTerm)
-  expectedUwResult: string; // 예상UW결과 (UnderWriting의 약어)
+  productCode: string;
+  isDuplicate: boolean;
+  productName: string;
+  coverageAmount: number;
+  premium: number;
+  availableAmount: number;
+  expiryPeriod: string;
+  paymentPeriod: string;
+  expectedUwResult: string;
   isHighlighted?: boolean;
-  selected?: boolean; // 체크박스 상태 추가
+  selected?: boolean;
 }
 
-// NEW: Highlight helper function
+// Utils
 const highlightText = (text: string, query: string): React.ReactNode => {
   if (!query.trim()) return text;
 
@@ -61,14 +52,66 @@ const highlightText = (text: string, query: string): React.ReactNode => {
   );
 };
 
-// 4. 메인 컴포넌트 함수 선언
-export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan }: InsPlanCovProps) {
-  // 3. 커스텀 셀 렌더러 정의 (필요시)
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+// Components
+interface ProductNameHeaderProps {
+  onSearch: (query: string) => void;
+  onReset: () => void;
+  initialValue: string;
+}
 
-  // NEW: Search state management
-  const [searchQuery, setSearchQuery] = useState(''); // Search input value
-  const [filteredData, setFilteredData] = useState<InsPlanCovData[]>(data); // Filtered rows
+const ProductNameHeader = ({ onSearch, onReset, initialValue }: ProductNameHeaderProps) => {
+  const [localQuery, setLocalQuery] = useState(initialValue);
+
+  useEffect(() => {
+    setLocalQuery(initialValue);
+  }, [initialValue]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearch(localQuery);
+    } else if (e.key === 'Escape') {
+      setLocalQuery('');
+      onReset();
+    }
+  };
+
+  return (
+    <Grow className="gap-1 w-full">
+      <Input
+        type="text"
+        placeholder="상품코드 또는 상품명으로 검색하세요"
+        id="cabinet-label-username"
+        size="sm"
+        className="flex-1"
+        value={localQuery}
+        onChange={(e) => setLocalQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+      <Button variant="icon" aria-label="고객명 검색" size="sm" onClick={() => onSearch(localQuery)}>
+        <SearchIcon />
+      </Button>
+      <Button variant="icon" aria-label="검색 초기화" size="sm" onClick={onReset}>
+        <ResetIcon />
+      </Button>
+    </Grow>
+  );
+};
+
+// Main Component
+export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan }: InsPlanCovProps) {
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // 검색어로 데이터 필터링 (메모이제이션으로 성능 최적화)
+  const filteredData = useMemo(() => {
+    if (!searchQuery.trim()) return data;
+
+    const lowerQuery = searchQuery.toLowerCase();
+    return data.filter(
+      (item) =>
+        item.productCode.toLowerCase().includes(lowerQuery) || item.productName.toLowerCase().includes(lowerQuery)
+    );
+  }, [data, searchQuery]);
 
   const handleSelectionChanged = useCallback(
     (event: { api: GridApi<InsPlanCovData> }) => {
@@ -83,32 +126,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     [onSelectPlan]
   );
 
-  // NEW: Search handler
-  const handleSearch = useCallback(() => {
-    if (!searchQuery.trim()) {
-      setFilteredData(data);
-      return;
-    }
-
-    const query = searchQuery.toLowerCase();
-    const filtered = data.filter(
-      (item) => item.productCode.toLowerCase().includes(query) || item.productName.toLowerCase().includes(query)
-    );
-    setFilteredData(filtered);
-  }, [searchQuery, data]);
-
-  // NEW: Reset handler
-  const handleReset = useCallback(() => {
-    setSearchQuery('');
-    setFilteredData(data);
-  }, [data]);
-
-  // NEW: Reset filter when data changes
-  useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
-
-  // checkboxRenderer를 useCallback으로 메모이제이션
+  // Cell Renderers
   const checkboxRenderer = useCallback(
     (params: ICellRendererParams<InsPlanCovData>) => {
       const isChecked = selectedRows.includes(params.data?.id || 0);
@@ -138,7 +156,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     [selectedRows]
   );
 
-  // CheckboxHeader를 useCallback으로 메모이제이션
   const CheckboxHeader = useCallback(() => {
     const allSelected = data.length > 0 && selectedRows.length === data.length;
 
@@ -163,7 +180,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     );
   }, [data, selectedRows]);
 
-  // duplicateRenderer를 useCallback으로 메모이제이션
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
@@ -175,7 +191,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     );
   }, []);
 
-  // NEW: ProductName cell renderer with highlight
   const productNameRenderer = useCallback(
     (params: ICellRendererParams<InsPlanCovData>) => {
       return <span>{highlightText(params.data?.productName || '', searchQuery)}</span>;
@@ -183,7 +198,24 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     [searchQuery]
   );
 
-  // 5. 컬럼 정의
+  // Search Handlers
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
+  const handleSearchReset = useCallback(() => {
+    setSearchQuery('');
+  }, []);
+
+  const ProductNameHeaderComponent = useMemo(() => {
+    const Component = () => (
+      <ProductNameHeader onSearch={handleSearch} onReset={handleSearchReset} initialValue={searchQuery} />
+    );
+    Component.displayName = 'ProductNameHeaderComponent';
+    return Component;
+  }, [handleSearch, handleSearchReset, searchQuery]);
+
+  // Column Definitions
   const columnDefs: ColDef<InsPlanCovData>[] = useMemo(
     () => [
       {
@@ -216,48 +248,12 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         sortable: false,
         filter: false,
         autoHeight: true,
-        cellRenderer: productNameRenderer, // ADD THIS - connect the renderer
+        cellRenderer: productNameRenderer,
         tooltipValueGetter: (params) => {
           if (!params.data) return '';
           return `상품코드: ${params.data.productCode} | 상품명: ${params.data.productName}`;
         },
-        headerComponent: () => (
-          <Grow className="gap-1 w-full">
-            <Input
-              type="text"
-              placeholder="상품코드 또는 상품명으로 검색하세요"
-              id="cabinet-label-username"
-              size="sm"
-              className="flex-1"
-              value={searchQuery} // ADD THIS - controlled input
-              onChange={(e) => setSearchQuery(e.target.value)} // ADD THIS - handler
-              onKeyDown={(e) => {
-                // ADD THIS - keyboard support
-                if (e.key === 'Enter') {
-                  handleSearch();
-                } else if (e.key === 'Escape') {
-                  handleReset();
-                }
-              }}
-            />
-            <Button
-              variant="icon"
-              aria-label="고객명 검색"
-              size="sm"
-              onClick={handleSearch} // ADD THIS - search handler
-            >
-              <SearchIcon />
-            </Button>
-            <Button
-              variant="icon"
-              aria-label="검색 초기화"
-              size="sm"
-              onClick={handleReset} // ADD THIS - reset handler
-            >
-              <ResetIcon />
-            </Button>
-          </Grow>
-        ),
+        headerComponent: ProductNameHeaderComponent,
       },
       {
         headerName: '가입금액',
@@ -330,7 +326,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         },
       },
     ],
-    [checkboxRenderer, CheckboxHeader, duplicateRenderer, productNameRenderer]
+    [checkboxRenderer, CheckboxHeader, duplicateRenderer, productNameRenderer, ProductNameHeaderComponent]
   );
 
   const CategoriesCheckbox = [
@@ -345,7 +341,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
 
   return (
     <Gcol className="gap-[1rem] w-full">
-      {/* 로딩 상태 표시 */}
       {!data || data.length === 0 ? (
         <div className="text-center p-4">데이터가 없습니다.</div>
       ) : (
@@ -416,11 +411,11 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                 <AgGridReact<InsPlanCovData>
                   rowData={filteredData}
                   columnDefs={columnDefs}
-                  rowSelection="multiple" // multiple로 변경
+                  rowSelection="multiple"
                   suppressRowHoverHighlight={false}
                   isRowSelectable={(_params) => true}
                   onSelectionChanged={handleSelectionChanged}
-                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                  singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
                   tooltipMouseTrack={true}
