@@ -4,7 +4,11 @@ import Image from 'next/image';
 import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
 import { Button } from '@/shared/components/uiux';
 
-export default function TaskStatusBoard() {
+interface TaskStatusBoardProps {
+  state: { id: number; status: string; label: string }[];
+}
+
+export default function TaskStatusBoard({ state }: TaskStatusBoardProps) {
   return (
     <Gcol
       variant="box"
@@ -25,18 +29,20 @@ export default function TaskStatusBoard() {
       </Grow>
 
       <Grid className="grid-cols-2 gap-1 w-full">
-        <Button variant="state" state="GO">
-          누적
-        </Button>
-        <Button variant="state" state="WAIT">
-          중복
-        </Button>
-        <Button variant="state" state="STOP">
-          직업
-        </Button>
-        <Button variant="state" state="GO">
-          기타
-        </Button>
+        {state.map((item) => {
+          return (
+            <Button key={item.id} variant="state">
+              {item.label}
+              <Image
+                src={`/images/icon/task-${item.status}.svg`}
+                alt="설명"
+                width={19}
+                height={19}
+                className="w-[auto] h-[1.9rem]"
+              />
+            </Button>
+          );
+        })}
       </Grid>
     </Gcol>
   );

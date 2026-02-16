@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
 import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
-import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 
 const DUMMY_PLAN_COV_DATA = [
   {
@@ -367,6 +367,12 @@ const DUMMY_PLAN_COV_DATA = [
     isHighlighted: false,
   },
 ];
+const DUMMY_TASK_STATUS_DATA = [
+  { id: 1, status: 'GO', label: '누적' },
+  { id: 2, status: 'WAIT', label: '중복' },
+  { id: 3, status: 'STOP', label: '직업' },
+  { id: 4, status: 'GO', label: '기타' },
+];
 
 export default function LTRA350Section() {
   const [hideAside, setHideAside] = useState(false);
@@ -374,7 +380,7 @@ export default function LTRA350Section() {
   return (
     <LayoutTemplateA
       headMain={<LTRA350MainHead />}
-      headAside={<TaskStatusBoard />}
+      headAside={<TaskStatusBoard state={DUMMY_TASK_STATUS_DATA} />}
       bodyMain={<LTRA350MainBody data={DUMMY_PLAN_COV_DATA} hideAside={hideAside} setHideAside={setHideAside} />}
       bodyAside={<div>사이드 바디</div>}
       footMain={
