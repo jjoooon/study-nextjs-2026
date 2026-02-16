@@ -409,11 +409,11 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                 <AgGridReact<InsPlanCovData>
                   rowData={filteredData}
                   columnDefs={columnDefs}
-                  rowSelection={{ mode: 'multiRow' }}
-                  suppressRowHoverHighlight={false}
-                  selectionOptions={{
+                  rowSelection={{
+                    mode: 'multiRow',
                     isRowSelectable: (_params) => true,
                   }}
+                  suppressRowHoverHighlight={false}
                   onSelectionChanged={handleSelectionChanged}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
