@@ -1,13 +1,13 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Gcol, Typo, Grow, ButtonGroup, Separator } from '@/shared/components/common';
-import { SearchIcon, AddIcon, ResetIcon } from '@/shared/components/icons';
-import { Button, Input, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
+import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
+import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 
 // AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -98,7 +98,7 @@ const ProductNameHeader = ({ onSearch, onReset, initialValue }: ProductNameHeade
 };
 
 // Main Component
-export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan }: InsPlanCovProps) {
+export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCovProps) {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -113,17 +113,28 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     );
   }, [data, searchQuery]);
 
-  const handleSelectionChanged = useCallback(
-    (event: { api: GridApi<InsPlanCovData> }) => {
-      const selectedNodes = event.api.getSelectedNodes();
-      if (selectedNodes.length > 0) {
-        const selectedData = selectedNodes[0].data;
-        if (selectedData) {
-          onSelectPlan(selectedData.id);
-        }
+  // 체크박스 선택 시 가입금액 편집 모드 시작, 해제 시 편집 모드 종료
+  const handleCellClicked = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (event: any) => {
+      if (event.colDef.field === 'selected' && event.data) {
+        const isNowChecked = selectedRows.includes(event.data.id);
+
+        setTimeout(() => {
+          if (isNowChecked) {
+            // 지금 체크됨 → 편집 모드 시작
+            event.api.startEditingCell({
+              rowIndex: event.rowIndex,
+              colKey: 'coverageAmount',
+            });
+          } else {
+            // 지금 해제됨 → 편집 모드 종료
+            event.api.stopEditing();
+          }
+        }, 0);
       }
     },
-    [onSelectPlan]
+    [selectedRows]
   );
 
   // Cell Renderers
@@ -355,7 +366,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
           </Grow>
 
           <Gcol className="w-full">
-            <Gcol className="w-full border-t border-t-[.2rem] border-t-[#000]">
+            <Gcol className="w-full border-t border-t-[#000]">
               <Grow className="w-full px-2 py-[.6rem] bg-(--color-table-th-surface-gray) gap-2" placement="me">
                 <Checkbox>플랜 기본값</Checkbox>
                 <NativeSelect aria-label="플랜선택" width="md" readOnly={false} required={false}>
@@ -409,12 +420,8 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                 <AgGridReact<InsPlanCovData>
                   rowData={filteredData}
                   columnDefs={columnDefs}
-                  rowSelection={{
-                    mode: 'multiRow',
-                    isRowSelectable: (_params) => true,
-                  }}
                   suppressRowHoverHighlight={false}
-                  onSelectionChanged={handleSelectionChanged}
+                  onCellClicked={handleCellClicked}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
