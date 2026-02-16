@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none cursor-pointer leading-[100%] tracking-[-0.13rem] has-[>svg]:inline-flex has-[>svg]:items-center has-[>svg]:justify-center',
+  'inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none cursor-pointer leading-[100%] tracking-[-0.13rem] has-[>svg]:inline-flex has-[>svg]:items-center has-[>svg]:justify-center',
   {
     variants: {
       variant: {
@@ -30,10 +30,11 @@ const buttonVariants = cva(
         transparent: `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
-        xl: `h-[3.2rem] px-2 has-[>svg]:px-3 rounded-[0.6rem] text-[1.4rem] font-bold min-w-[8rem] gap-1`,
-        lg: `h-[2.8rem] px-[1rem] has-[>svg]:px-2.5 rounded-[0.6rem] text-[1.4rem] font-bold gap-1`,
-        md: `h-[2.5rem] px-[.6rem] has-[>svg]:px-1.5 rounded-[0.4rem] text-[1.3rem] font-bold gap-1`,
-        sm: `h-[2.2rem] px-[.6rem] has-[>svg]:px-1.5 rounded-[0.3rem] text-[1.2rem] font-bold gap-1`,
+        xl: `h-[3.2rem] px-2 has-[>svg]:px-3 rounded-[0.6rem] text-[1.4rem] font-normal min-w-[8rem] gap-1`,
+        lg: `h-[2.8rem] px-[1rem] has-[>svg]:px-2.5 rounded-[0.6rem] text-[1.4rem] font-normal gap-1`,
+        md: `h-[2.5rem] px-[.6rem] has-[>svg]:px-1.5 rounded-[0.4rem] text-[1.3rem] font-normal gap-1`,
+        sm: `h-[2.2rem] px-[.6rem] has-[>svg]:px-1.5 rounded-[0.3rem] text-[1.2rem] font-normal gap-1`,
+        xs: `h-[1.6rem] p-0 has-[>svg]:px-0 rounded-[0.3rem] text-[1.2rem] font-normal gap-1`,
       },
     },
     compoundVariants: [
@@ -43,6 +44,7 @@ const buttonVariants = cva(
         className: `border border-[var(--color-primary-50)] 
         bg-[var(--color-primary-50)] 
         text-[var(--color-gray-0)] 
+        font-bold 
         hover:bg-[var(--color-primary-60)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
@@ -59,6 +61,7 @@ const buttonVariants = cva(
         className: `border border-[var(--color-gray-50)] 
         bg-[var(--color-gray-50)] 
         text-[var(--color-gray-0)] 
+        font-bold
         hover:bg-[var(--color-gray-60)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
@@ -91,6 +94,7 @@ const buttonVariants = cva(
         size: 'xl',
         className: `disabled:text-[var(--color-gray-30)]
         disabled:bg-[var(--color-gray-5)]
+        font-bold 
         disabled:border-[var(--color-gray-5)]`,
       },
       {

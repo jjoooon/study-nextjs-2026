@@ -1,6 +1,9 @@
 'use client';
 
 import {
+  LayoutHead,
+  LayoutBody,
+  LayoutProcess,
   LayoutFolder,
   LayoutFolderHead,
   LayoutFolderBody,
@@ -16,6 +19,7 @@ import {
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
 
 interface Props {
+  pageHead: React.ReactNode;
   headMain: React.ReactNode;
   headAside: React.ReactNode;
   bodyMain: React.ReactNode;
@@ -26,6 +30,7 @@ interface Props {
 }
 
 export const LayoutTemplateA = ({
+  pageHead,
   headMain,
   headAside,
   bodyMain,
@@ -34,24 +39,30 @@ export const LayoutTemplateA = ({
   footAside,
   hideAside = false,
 }: Props) => (
-  <LayoutFolder>
-    <LayoutFolderHead className="grid grid-cols-[1fr_auto] gap-[1rem]">
-      <LayoutMainHead>{headMain}</LayoutMainHead>
-      <LayoutAsideHead>{headAside}</LayoutAsideHead>
-    </LayoutFolderHead>
-    <LayoutFolderBody className="grid grid-cols-[1fr_auto] gap-[1rem]">
-      <LayoutMain>
-        <LayoutMainBody>{bodyMain}</LayoutMainBody>
-        <LayoutMainFoot>{footMain}</LayoutMainFoot>
-      </LayoutMain>
-      {!hideAside && (
-        <LayoutAside>
-          <LayoutAsideBody>{bodyAside}</LayoutAsideBody>
-          <LayoutAsideFoot>{footAside}</LayoutAsideFoot>
-        </LayoutAside>
-      )}
-    </LayoutFolderBody>
-  </LayoutFolder>
+  <>
+    <LayoutHead>{pageHead}</LayoutHead>
+    <LayoutBody>
+      <LayoutProcess>프로세스</LayoutProcess>
+      <LayoutFolder>
+        <LayoutFolderHead className="grid grid-cols-[1fr_auto] gap-[1rem]">
+          <LayoutMainHead>{headMain}</LayoutMainHead>
+          <LayoutAsideHead>{headAside}</LayoutAsideHead>
+        </LayoutFolderHead>
+        <LayoutFolderBody className="grid grid-cols-[1fr_auto] gap-[1rem]">
+          <LayoutMain>
+            <LayoutMainBody>{bodyMain}</LayoutMainBody>
+            <LayoutMainFoot>{footMain}</LayoutMainFoot>
+          </LayoutMain>
+          {!hideAside && (
+            <LayoutAside>
+              <LayoutAsideBody>{bodyAside}</LayoutAsideBody>
+              <LayoutAsideFoot>{footAside}</LayoutAsideFoot>
+            </LayoutAside>
+          )}
+        </LayoutFolderBody>
+      </LayoutFolder>
+    </LayoutBody>
+  </>
 );
 
 export const LayoutTemplateB = ({ headMain, headAside, bodyMain, bodyAside, footMain, footAside }: Props) => (

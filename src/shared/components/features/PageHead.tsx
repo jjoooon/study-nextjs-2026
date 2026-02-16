@@ -18,27 +18,38 @@ import {
 import { CloseIcon, SearchIcon } from '@/shared/components/icons';
 import { Input, Button } from '@/shared/components/uiux';
 
-const pageHeadData = {
-  simpleMode: true,
-  pageName: '상품가입설계',
-  pageId: 'LTRA350',
-  title: '한화 시그니처 여성 건강보험 3.0 2504',
-  options: ['납입면제 강화형', '기본형'],
-  planNumber: ['LA20234472050000', '2'],
-  contractHolder: '6012345 박하늘별님달',
-};
+interface PageHeadData {
+  data: {
+    simpleMode?: boolean;
+    pageName?: string;
+    pageId?: string;
+    title?: string;
+    options?: string[];
+    planNumber?: string[];
+    contractHolder?: string;
+  };
+}
 
-export default function PageHead() {
-  const [simpleMode, setSimpleMode] = useState(pageHeadData.simpleMode);
+export default function PageHead({ data }: PageHeadData) {
+  // data가 undefined일 경우를 대비한 기본값 처리
+  const safeData = data ?? {};
+  const [simpleMode, setSimpleMode] = useState<boolean>(safeData.simpleMode ?? false);
+
+  // 설계번호와 계약자명 상태 추가
+  const [planNumber, setPlanNumber] = useState<string[]>([
+    safeData.planNumber?.[0] ?? '',
+    safeData.planNumber?.[1] ?? '',
+  ]);
+  const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
   return (
     <Gcol className="w-full px-[1rem]">
       <Grow placement="bwc" className="w-full py-1">
         <Grow className="gap-1">
           <Typo tag="h1" variant="heading-sm">
-            {pageHeadData.pageName}
+            {safeData.pageName}
           </Typo>
-          <Typo>({pageHeadData.pageId})</Typo>
+          <Typo>({safeData.pageId})</Typo>
         </Grow>
         <Grow className="gap-1">
           <ZoomControl />
@@ -50,18 +61,18 @@ export default function PageHead() {
 
       <Grow placement="bwc" className="w-full py-1">
         <Grow className="gap-[.8rem] flex-1" placement="sc">
-          <ViewMode state={simpleMode} onChange={setSimpleMode} />
+          <ViewMode state={simpleMode} onChange={setSimpleMode as (value: boolean) => void} />
           <Typo tag="h2" variant="heading-lg">
-            {pageHeadData.title}
+            {safeData.title}
           </Typo>
           <BulletList position="row" className="gap-[.89rem]">
-            {pageHeadData.options.map((item, index) => (
+            {safeData.options?.map((item, index) => (
               <BulletListItem type="dot" key={index}>
                 {item}
               </BulletListItem>
             ))}
           </BulletList>
-          <Button variant="contained" color="secondary" size="md">
+          <Button variant="outlined" color="gray" size="md">
             변경
           </Button>
         </Grow>
@@ -69,12 +80,30 @@ export default function PageHead() {
           <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
             <FormRow>
               <FormCell title="설계번호">
-                <Input aria-label="설계번호 입력" type="text" defaultValue={pageHeadData.planNumber[0]} width="lg" />
+                <Input
+                  aria-label="설계번호 입력"
+                  type="text"
+                  value={planNumber[0]}
+                  width="lg"
+                  onChange={(e) => setPlanNumber([e.target.value, planNumber[1]])}
+                />
                 <Separator>-</Separator>
-                <Input aria-label="설계번호 입력" type="text" defaultValue={pageHeadData.planNumber[1]} width="2xs" />
+                <Input
+                  aria-label="설계번호 입력"
+                  type="text"
+                  value={planNumber[1]}
+                  width="2xs"
+                  onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
+                />
 
                 <FormItem className="w-auto ml-3">
-                  <Input aria-label="계약자명 입력" type="text" defaultValue={pageHeadData.contractHolder} width="lg" />
+                  <Input
+                    aria-label="계약자명 입력"
+                    type="text"
+                    value={contractHolder}
+                    width="lg"
+                    onChange={(e) => setContractHolder(e.target.value)}
+                  />
                   <Button variant="outlined" color="gray-light" aria-label="계약자 추가" onlyicon size="lg">
                     <SearchIcon color="var(--color-primary-50)" />
                   </Button>

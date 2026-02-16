@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
 import { PaperIcon, SearchIcon } from '@/shared/components/icons';
@@ -278,6 +279,8 @@ const CategoriesCheckbox = [
 const tags = ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'];
 
 export function LTRA350MainHead() {
+  const [coverageName, setCoverageName] = useState('');
+
   return (
     <TabHead data={mockData} visibleCount={VISIBLE_COUNT}>
       <Gcol variant="box" placement="ss" className="w-full">
@@ -297,7 +300,15 @@ export function LTRA350MainHead() {
         <Grow className="gap-2.5 w-full" placement="bwc">
           <Grow className="gap-2.5" placement="sc">
             <FormItem className="shrink-0 w-auto">
-              <Input aria-label="담보명" placeholder="담보명 입력" type="text" width="lg" />
+              <Input
+                aria-label="담보명"
+                placeholder="담보명 입력"
+                type="text"
+                width="lg"
+                clear={true}
+                value={coverageName}
+                onChange={(e) => setCoverageName(e.target.value)}
+              />
               <Button aria-label="담보명 검색" variant="outlined" color="gray-light" size="lg" onlyicon>
                 <SearchIcon color="var(--color-primary-50)" />
               </Button>

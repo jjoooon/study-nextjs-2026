@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import PageFoot from '@/shared/components/features/PageFoot';
+import PageHead from '@/shared/components/features/PageHead';
 import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
 import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
 
+// LTRA350MainBody에 전달할 데이터 예시
 const DUMMY_PLAN_COV_DATA = [
   {
     id: 1,
@@ -367,6 +370,8 @@ const DUMMY_PLAN_COV_DATA = [
     isHighlighted: false,
   },
 ];
+
+// TaskStatusBoard에 전달할 데이터 예시
 const DUMMY_TASK_STATUS_DATA = [
   { id: 1, status: 'GO', label: '누적' },
   { id: 2, status: 'WAIT', label: '중복' },
@@ -374,20 +379,28 @@ const DUMMY_TASK_STATUS_DATA = [
   { id: 4, status: 'GO', label: '기타' },
 ];
 
+// PageHead에 전달할 데이터 예시
+const DUMMY_HEAD_DATA = {
+  simpleMode: true,
+  pageName: '상품가입설계',
+  pageId: 'LTRA350',
+  title: '한화 시그니처 여성 건강보험 3.0 2504',
+  options: ['납입면제 강화형', '기본형'],
+  planNumber: ['LA20234472050000', '2'],
+  contractHolder: '6012345 박하늘별님달',
+};
+
 export default function LTRA350Section() {
   const [hideAside, setHideAside] = useState(false);
 
   return (
     <LayoutTemplateA
+      pageHead={<PageHead data={DUMMY_HEAD_DATA} />}
       headMain={<LTRA350MainHead />}
       headAside={<TaskStatusBoard state={DUMMY_TASK_STATUS_DATA} />}
       bodyMain={<LTRA350MainBody data={DUMMY_PLAN_COV_DATA} hideAside={hideAside} setHideAside={setHideAside} />}
       bodyAside={<div>사이드 바디</div>}
-      footMain={
-        <>
-          <br /> 콘텐츠 풋터
-        </>
-      }
+      footMain={<PageFoot />}
       footAside={<div>사이드 풋터</div>}
       hideAside={hideAside}
     />
