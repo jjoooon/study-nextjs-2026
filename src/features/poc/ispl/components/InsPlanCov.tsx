@@ -227,7 +227,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         filter: false,
         cellRenderer: checkboxRenderer,
         headerComponent: CheckboxHeader,
-        suppressRowClickSelection: true,
         pinned: 'left',
       },
       {
@@ -238,7 +237,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         sortable: false,
         filter: false,
         cellRenderer: duplicateRenderer,
-        suppressRowClickSelection: true,
       },
       {
         headerName: '상품명',
@@ -411,9 +409,11 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
                 <AgGridReact<InsPlanCovData>
                   rowData={filteredData}
                   columnDefs={columnDefs}
-                  rowSelection="multiple"
+                  rowSelection={{ mode: 'multiRow' }}
                   suppressRowHoverHighlight={false}
-                  isRowSelectable={(_params) => true}
+                  selectionOptions={{
+                    isRowSelectable: (_params) => true,
+                  }}
                   onSelectionChanged={handleSelectionChanged}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
