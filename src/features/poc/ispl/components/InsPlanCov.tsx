@@ -431,7 +431,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                     mode: 'multiRow',
                     checkboxes: true,
                     headerCheckbox: true,
-                    enableClickSelection: true,
+                    enableClickSelection: false,
                   }}
                   // onSelectionChanged={(event) => {
                   // const selectedNodes = event.api.getSelectedNodes();
@@ -439,13 +439,17 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                   // setSelectedRows(selectedIds);
                   // }}
                   onRowSelected={(event) => {
-                    if (event.node.isSelected() && event.node.data) {
-                      setTimeout(() => {
+                    // 전체 선택 시 편집 모드 스킵 (여러 행 동시 편집 방지)
+                    const selectedCount = event.api.getSelectedNodes().length;
+                    const isSelectAll = selectedCount > 1;
+
+                    if (event.node.isSelected() && event.node.data && !isSelectAll) {
+                      requestAnimationFrame(() => {
                         event.api.startEditingCell({
                           rowIndex: event.node.rowIndex ?? -1,
                           colKey: 'coverageAmount',
                         });
-                      }, 0);
+                      });
                     } else if (!event.node.isSelected()) {
                       event.api.stopEditing();
                     }

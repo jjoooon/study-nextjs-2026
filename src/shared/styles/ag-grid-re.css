@@ -116,6 +116,14 @@
   display: none;
 }
 
+/* 헤더 전체 선택 체크박스 가운데 정렬 */
+.ag-header-select-all {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 :where(.ag-ltr) .ag-sort-indicator-icon {
   padding-left: 0;
 }
