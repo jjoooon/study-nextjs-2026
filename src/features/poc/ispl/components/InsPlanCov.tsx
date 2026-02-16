@@ -114,28 +114,28 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
   }, [data, searchQuery]);
 
   // 체크박스 선택 시 가입금액 편집 모드 시작, 해제 시 편집 모드 종료
-  const handleCellClicked = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (event: any) => {
-      if (event.colDef.field === 'selected' && event.data) {
-        const isNowChecked = selectedRows.includes(event.data.id);
+  // const handleCellClicked = useCallback(
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   (event: any) => {
+  //     if (event.colDef.field === 'selected' && event.data) {
+  //       const isNowChecked = selectedRows.includes(event.data.id);
 
-        setTimeout(() => {
-          if (isNowChecked) {
-            // 지금 체크됨 → 편집 모드 시작
-            event.api.startEditingCell({
-              rowIndex: event.rowIndex,
-              colKey: 'coverageAmount',
-            });
-          } else {
-            // 지금 해제됨 → 편집 모드 종료
-            event.api.stopEditing();
-          }
-        }, 0);
-      }
-    },
-    [selectedRows]
-  );
+  //       setTimeout(() => {
+  //         if (isNowChecked)
+  //           // 지금 체크됨 → 편집 모드 시작
+  //           event.api.startEditingCell({
+  //             rowIndex: event.rowIndex,
+  //             colKey: 'coverageAmount',
+  //           });
+  //         } else {
+  //           // 지금 해제됨 → 편집 모드 종료
+  //           event.api.stopEditing();
+  //         }
+  //       }, 0);
+  //     }
+  //   },
+  //   [selectedRows]
+  // );
 
   // Cell Renderers
   const checkboxRenderer = useCallback(
@@ -229,17 +229,17 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
   // Column Definitions
   const columnDefs: ColDef<InsPlanCovData>[] = useMemo(
     () => [
-      {
-        headerName: '',
-        field: 'selected',
-        width: 130,
-        cellClass: 'text-center p-0!',
-        sortable: false,
-        filter: false,
-        cellRenderer: checkboxRenderer,
-        headerComponent: CheckboxHeader,
-        pinned: 'left',
-      },
+      // {
+      //   headerName: '',
+      //   field: 'selected',
+      //   width: 130,
+      //   cellClass: 'text-center p-0!',
+      //   sortable: false,
+      //   filter: false,
+      //   cellRenderer: checkboxRenderer,
+      //   headerComponent: CheckboxHeader,
+      //   // pinned: 'left',
+      // },
       {
         headerName: '중복',
         field: 'isDuplicate',
@@ -421,12 +421,35 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                   rowData={filteredData}
                   columnDefs={columnDefs}
                   suppressRowHoverHighlight={false}
-                  onCellClicked={handleCellClicked}
+                  // onCellClicked={handleCellClicked}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
                   tooltipMouseTrack={true}
                   getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    checkboxes: true,
+                    headerCheckbox: true,
+                    enableClickSelection: true,
+                  }}
+                  // onSelectionChanged={(event) => {
+                  // const selectedNodes = event.api.getSelectedNodes();
+                  // const selectedIds = selectedNodes.map((node) => node.data?.id).filter(Boolean);
+                  // setSelectedRows(selectedIds);
+                  // }}
+                  onRowSelected={(event) => {
+                    if (event.node.isSelected() && event.node.data) {
+                      setTimeout(() => {
+                        event.api.startEditingCell({
+                          rowIndex: event.node.rowIndex ?? -1,
+                          colKey: 'coverageAmount',
+                        });
+                      }, 0);
+                    } else if (!event.node.isSelected()) {
+                      event.api.stopEditing();
+                    }
+                  }}
                 />
               </div>
             </div>
