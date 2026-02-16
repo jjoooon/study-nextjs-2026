@@ -3,7 +3,7 @@
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
 import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
@@ -99,6 +99,7 @@ const ProductNameHeader = ({ onSearch, onReset, initialValue }: ProductNameHeade
 
 // Main Component
 export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCovProps) {
+  const gridRef = useRef<AgGridReact<InsPlanCovData>>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   // 검색어로 데이터 필터링 (메모이제이션으로 성능 최적화)
@@ -336,10 +337,10 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
             <div style={{ width: '100%', height: 'calc(100vh - 62.1rem)' }}>
               <div className="ag-theme-alpine top-noline" style={{ height: '100%', width: '100%' }}>
                 <AgGridReact<InsPlanCovData>
+                  ref={gridRef}
                   rowData={filteredData}
                   columnDefs={columnDefs}
                   suppressRowHoverHighlight={false}
-                  // onCellClicked={handleCellClicked}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
