@@ -99,7 +99,6 @@ const ProductNameHeader = ({ onSearch, onReset, initialValue }: ProductNameHeade
 
 // Main Component
 export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCovProps) {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   // 검색어로 데이터 필터링 (메모이제이션으로 성능 최적화)
@@ -112,84 +111,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
         item.productCode.toLowerCase().includes(lowerQuery) || item.productName.toLowerCase().includes(lowerQuery)
     );
   }, [data, searchQuery]);
-
-  // 체크박스 선택 시 가입금액 편집 모드 시작, 해제 시 편집 모드 종료
-  // const handleCellClicked = useCallback(
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   (event: any) => {
-  //     if (event.colDef.field === 'selected' && event.data) {
-  //       const isNowChecked = selectedRows.includes(event.data.id);
-
-  //       setTimeout(() => {
-  //         if (isNowChecked)
-  //           // 지금 체크됨 → 편집 모드 시작
-  //           event.api.startEditingCell({
-  //             rowIndex: event.rowIndex,
-  //             colKey: 'coverageAmount',
-  //           });
-  //         } else {
-  //           // 지금 해제됨 → 편집 모드 종료
-  //           event.api.stopEditing();
-  //         }
-  //       }, 0);
-  //     }
-  //   },
-  //   [selectedRows]
-  // );
-
-  // Cell Renderers
-  const checkboxRenderer = useCallback(
-    (params: ICellRendererParams<InsPlanCovData>) => {
-      const isChecked = selectedRows.includes(params.data?.id || 0);
-      return (
-        <div className="w-full h-full flex items-center justify-center">
-          <div className="flex justify-center flex-1">
-            <Checkbox
-              checked={isChecked}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  setSelectedRows([...selectedRows, params.data?.id || 0]);
-                } else {
-                  setSelectedRows(selectedRows.filter((id) => id !== params.data?.id));
-                }
-              }}
-              className="flex justify-center items-center"
-            />
-          </div>
-          {params.data && (
-            <div className="border-l border-l-(--color-table-border-border-gray) flex-1 text-center h-full">
-              {params.data.id}
-            </div>
-          )}
-        </div>
-      );
-    },
-    [selectedRows]
-  );
-
-  const CheckboxHeader = useCallback(() => {
-    const allSelected = data.length > 0 && selectedRows.length === data.length;
-
-    return (
-      <div className="w-full h-full flex items-center justify-center ">
-        <Checkbox
-          variant="button"
-          color="secondary"
-          checked={allSelected}
-          onCheckedChange={(checked) => {
-            if (checked) {
-              setSelectedRows(data.map((item) => item.id));
-            } else {
-              setSelectedRows([]);
-            }
-          }}
-          className="flex justify-center items-center"
-        >
-          전체선택
-        </Checkbox>
-      </div>
-    );
-  }, [data, selectedRows]);
 
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
     const isDuplicate = params.value as boolean;
@@ -229,17 +150,14 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
   // Column Definitions
   const columnDefs: ColDef<InsPlanCovData>[] = useMemo(
     () => [
-      // {
-      //   headerName: '',
-      //   field: 'selected',
-      //   width: 130,
-      //   cellClass: 'text-center p-0!',
-      //   sortable: false,
-      //   filter: false,
-      //   cellRenderer: checkboxRenderer,
-      //   headerComponent: CheckboxHeader,
-      //   // pinned: 'left',
-      // },
+      {
+        headerName: 'ID',
+        field: 'id',
+        width: 70,
+        cellClass: 'text-center',
+        sortable: false,
+        filter: false,
+      },
       {
         headerName: '중복',
         field: 'isDuplicate',
@@ -335,7 +253,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
         },
       },
     ],
-    [checkboxRenderer, CheckboxHeader, duplicateRenderer, productNameRenderer, ProductNameHeaderComponent]
+    [duplicateRenderer, productNameRenderer, ProductNameHeaderComponent]
   );
 
   const CategoriesCheckbox = [
@@ -433,11 +351,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                     headerCheckbox: true,
                     enableClickSelection: false,
                   }}
-                  // onSelectionChanged={(event) => {
-                  // const selectedNodes = event.api.getSelectedNodes();
-                  // const selectedIds = selectedNodes.map((node) => node.data?.id).filter(Boolean);
-                  // setSelectedRows(selectedIds);
-                  // }}
                   onRowSelected={(event) => {
                     // 전체 선택 시 편집 모드 스킵 (여러 행 동시 편집 방지)
                     const selectedCount = event.api.getSelectedNodes().length;
