@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FormRow, FormTable, FormCell, Gcol, Grow } from '@/shared/components/common';
 import { Button, Input } from '@/shared/components/uiux';
 
-export default function PageFoot() {
+export default function MainFoot() {
   const [amount, setAmount] = useState('0');
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);

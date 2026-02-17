@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import PageFoot from '@/shared/components/features/PageFoot';
+import BodyAside from '@/shared/components/features/BodyAside';
 import PageHead from '@/shared/components/features/PageHead';
 import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
 import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
+import MainFoot from '@/shared/components/features/MainFoot';
 
 // LTRA350MainBody에 전달할 데이터 예시
 const DUMMY_PLAN_COV_DATA = [
@@ -396,12 +397,13 @@ export default function LTRA350Section() {
   return (
     <LayoutTemplateA
       pageHead={<PageHead data={DUMMY_HEAD_DATA} />}
-      headMain={<LTRA350MainHead />}
-      headAside={<TaskStatusBoard state={DUMMY_TASK_STATUS_DATA} />}
-      bodyMain={<LTRA350MainBody data={DUMMY_PLAN_COV_DATA} hideAside={hideAside} setHideAside={setHideAside} />}
-      bodyAside={<div>사이드 바디</div>}
-      footMain={<PageFoot />}
-      footAside={<div>사이드 풋터</div>}
+      process={<div>프로세스</div>}
+      mainHead={<LTRA350MainHead />}
+      mainBody={<LTRA350MainBody data={DUMMY_PLAN_COV_DATA} hideAside={hideAside} setHideAside={setHideAside} />}
+      mainFoot={<MainFoot />}
+      asideHead={<TaskStatusBoard state={DUMMY_TASK_STATUS_DATA} />}
+      asideBody={<BodyAside />}
+      asideFoot={<div>사이드 풋터</div>}
       hideAside={hideAside}
     />
   );
