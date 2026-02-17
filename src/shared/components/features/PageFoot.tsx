@@ -5,7 +5,7 @@ import { FormRow, FormTable, FormCell, Gcol, Grow } from '@/shared/components/co
 import { Button, Input } from '@/shared/components/uiux';
 
 export default function PageFoot() {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('0');
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
 

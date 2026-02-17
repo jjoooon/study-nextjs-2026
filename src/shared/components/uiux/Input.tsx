@@ -172,10 +172,10 @@ function Input({
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={clear && isFocused && displayValue ? { paddingRight: '2rem' } : undefined}
+              style={clear && isFocused && displayValue !== '' ? { paddingRight: '2rem' } : undefined}
               {...props}
             />
-            {clear && isFocused && displayValue && (
+            {clear && isFocused && displayValue !== '' && (
               <Button
                 variant="none"
                 color="gray"
@@ -215,10 +215,10 @@ function Input({
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            style={clear && isFocused && displayValue ? { paddingRight: '2.8rem' } : undefined}
+            style={clear && isFocused && displayValue !== '' ? { paddingRight: '2.8rem' } : undefined}
             {...props}
           />
-          {clear && isFocused && displayValue && (
+          {clear && isFocused && displayValue !== '' && (
             <Button
               variant="none"
               color="gray"
