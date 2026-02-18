@@ -10,7 +10,7 @@ export default function MainFoot() {
   const [testError, setTestError] = useState(false);
 
   return (
-    <Gcol className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 border border-gray-90 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
+    <Gcol className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 border border-[var(--color-gray-15)] shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
       <Grow placement="bwc" className="px-3 pb-2 pt-2.5">
         <form
           id="page2-MainForm"

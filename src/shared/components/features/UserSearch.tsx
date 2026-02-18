@@ -139,7 +139,7 @@ export default function UserSearch() {
                   <Button
                     aria-label="고객명 추가"
                     variant="none"
-                    onlyicon
+                    size="icon-md"
                     onClick={handleOpenUserSearch} // 클릭 시 모달 오픈
                   >
                     <SearchIcon />
@@ -154,7 +154,7 @@ export default function UserSearch() {
                   <Button
                     aria-label="고지질병 추가"
                     variant="none"
-                    onlyicon
+                    size="icon-md"
                     onClick={handleOpenUserSearch} // 클릭 시 모달 오픈
                   >
                     <SearchIcon />
@@ -204,8 +204,7 @@ export default function UserSearch() {
                 <Button
                   aria-label="고객 추가"
                   variant="none"
-                  onlyicon
-                  color="transparent"
+                  size="icon-md"
                   onClick={() => alert('추가')}
                 >
                   <AddIcon />

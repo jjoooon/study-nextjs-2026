@@ -119,7 +119,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
-      <Button aria-label="고객 추가" variant="none" onlyicon color="transparent" onClick={() => alert('추가')}>
+      <Button aria-label="고객 추가" variant="none" size="icon-md" onClick={() => alert('추가')}>
         <AddIcon />
       </Button>
     ) : (
@@ -173,7 +173,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
               size="sm"
               className="flex-1"
             />
-            <Button variant="none" onlyicon aria-label="고객명 검색" size="sm">
+            <Button variant="none" aria-label="고객명 검색" size="icon-sm">
               <SearchIcon />
             </Button>
           </Grow>

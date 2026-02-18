@@ -24,7 +24,7 @@ export const BulletListItem = ({ children, type = 'dot', className, onClick }: B
     dash: "pl-[1rem] before:absolute before:top-[50%] before:left-0 before:translate-y-[-50%] before:content-[''] before:block before:w-[.8rem] before:h-[.2rem] before:bg-[var(--color-icon-primary)]",
     square:
       "pl-[1rem] before:absolute before:top-[50%] before:left-0 before:translate-y-[-50%] before:content-[''] before:block before:w-[.4rem] before:h-[.4rem] before:bg-[var(--color-icon-primary)]",
-    tag: "before:content-['#'] before:block before:text-[var(--color-primary-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-secondary-70)]",
+    tag: "before:content-['#'] before:block before:text-[var(--color-coolgray-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-coolgray-50)]",
   };
   return (
     <li

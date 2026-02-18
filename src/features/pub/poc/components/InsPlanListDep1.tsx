@@ -38,7 +38,7 @@ const InsPlanNameRenderer = (props: ICellRendererParams<InsPlanData>) => {
 
   return (
     <Grow placement="bwc">
-      <Typo variant="body-m" className="flex-1 truncate">
+      <Typo variant="body-md" className="flex-1 truncate">
         {data.productName}
       </Typo>
       <Grow className="shrink-0">
@@ -134,7 +134,7 @@ export function InsPlanListDep1({ data, selectedPlanId: _selectedPlanId, onSelec
               size="sm"
               className="flex-1"
             />
-            <Button variant="none" onlyicon aria-label="고객명 검색" size="sm">
+            <Button variant="none" aria-label="고객명 검색" size="icon-sm">
               <SearchIcon />
             </Button>
           </Grow>

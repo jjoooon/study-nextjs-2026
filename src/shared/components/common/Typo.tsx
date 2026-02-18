@@ -8,6 +8,7 @@ const typoVariants = cva('', {
       'heading-lg': 'block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
       'heading-md': 'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
       'heading-sm': 'block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-xs': 'block text-[1.1rem] font-normal leading-[150%] tracking-[-0.08rem]',
 
       'body-lg': 'text-[1.5rem] leading-[150%] tracking-[-0.13rem]',
       'body-md': 'text-[1.3rem] leading-[150%] tracking-[-0.13rem]',
@@ -16,6 +17,9 @@ const typoVariants = cva('', {
       'button-lg': 'text-[1.4rem] leading-[100%] tracking-[-0.13rem]',
       'button-md': 'text-[1.3rem] leading-[100%] tracking-[-0.13rem]',
       'button-sm': 'text-[1.2rem] leading-[100%] tracking-[-0.13rem]',
+
+      'amount-md': 'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+      'amount-xs': 'block text-[1.1rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
     },
     weight: {
       normal: 'font-normal!',

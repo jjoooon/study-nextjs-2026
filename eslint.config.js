@@ -117,6 +117,8 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'check-file/filename-naming-convention': [
       'error',
       {
+        // Storybook stories 파일은 예외 처리
+        '**/*.stories.@(js|jsx|ts|tsx|mdx)': null,
         // React 컴포넌트: PascalCase
         '**/components/!(index).*': 'PASCAL_CASE',
         '**/components/*/!(index).*': 'PASCAL_CASE',

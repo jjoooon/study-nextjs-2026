@@ -18,14 +18,7 @@ import {
   DropdownMenuContent,
 } from '@/shared/components/uiux';
 import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
-
-type TabDataType = {
-  name: string;
-  age: string;
-  gender: string;
-  value: string;
-  info: string[];
-};
+import type { TabDataType } from '@/features/pub/proto/types/LTRA350Data.types';
 
 interface TabHeadProps {
   data: TabDataType[];
@@ -85,18 +78,18 @@ export function TabHead({ data, visibleCount = 6, children }: TabHeadProps) {
             <Button
               variant="outlined"
               color="gray-light"
-              onlyicon={true}
+              size="icon-md"
               onClick={handlePrev}
               disabled={visibleStart === 0}
             >
               <ArrowLightIcon className="rotate-180" />
             </Button>
-            <Button variant="outlined" color="gray-light" onlyicon={true} onClick={handleNext} disabled={isLastPage}>
+            <Button variant="outlined" color="gray-light" size="icon-md" onClick={handleNext} disabled={isLastPage}>
               <ArrowLightIcon />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outlined" color="gray-light" onlyicon={true}>
+                <Button variant="outlined" color="gray-light" size="icon-md">
                   <ListIcon />
                 </Button>
               </DropdownMenuTrigger>

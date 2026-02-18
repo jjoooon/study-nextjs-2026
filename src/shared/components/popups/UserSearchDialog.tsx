@@ -251,7 +251,7 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
                 </FormCell>
                 <FormCell title="생년월일">
                   <Input type="tel" width="lg" placeholder="주민번호앞6자리" />
-                  <Typo variant="body-s">예) YYMMDD</Typo>
+                  <Typo variant="body-sm">예) YYMMDD</Typo>
                 </FormCell>
               </TableRow>
 
@@ -271,12 +271,12 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
                 </FormCell>
               </TableRow>
             </FormTable>
-            <Grow placement="me" className="w-full gap-2">
+            <Grow placement="ce" className="w-full gap-2">
               <Button variant="contained" color="secondary" size="md" onClick={() => {}}>
                 <SearchIcon color="white" />
                 검색
               </Button>
-              <Button variant="none" onlyicon color="gray" size="md" onClick={() => {}} aria-label="리셋">
+              <Button variant="none" color="gray" size="icon-md" onClick={() => {}} aria-label="리셋">
                 <ResetIcon />
               </Button>
             </Grow>
@@ -294,7 +294,7 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
                 paginationPageSizeSelector={[10, 20, 50, 100]}
               />
               <div className="px-[1rem] py-[.8rem] flex gap gap-[.8rem]">
-                <Grow className="gap-1" placement="ms">
+                <Grow className="gap-1" placement="sc">
                   <Checkbox defaultChecked>해지고객 제외</Checkbox>
                 </Grow>
               </div>

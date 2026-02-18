@@ -8,31 +8,10 @@ import { Grow, Typo } from '@/shared/components/common';
 import { SizeIcon, PlusIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 import { Button, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import type { AgGridData, AgGridProps } from '../types/LTRA350Data.types';
+import { useAgGridSelection } from '../hooks/useAgGridSelection';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
-// 2. 타입 정의 : 컴포넌트 Props 정의
-interface AgGridProps {
-  data: AgGridData[];
-  selectedPlanId?: number | null;
-  onSelectPlan?: (planId: number) => void;
-  hideAside: boolean;
-  setHideAside: (hide: boolean) => void;
-}
-// 2. 데이터 행(Row)의 구조 정의
-interface AgGridData {
-  id: number;
-  isDuplicate: boolean; // 중복 여부 (boolean은 관습적으로 is/has 접두사 사용)
-  productName: string; // 상품명
-  coverageAmount: number; // 가입금액 (보장받는 금액)
-  premium: number; // 보험료 (매달 내는 돈)
-  availableAmount: number; // 가능금액
-  expiryPeriod: string; // 만기 (또는 maturityTerm)
-  paymentPeriod: string; // 납기 (또는 paymentTerm)
-  expectedUwResult: string; // 예상UW결과 (UnderWriting의 약어)
-  isHighlighted?: boolean;
-  selected?: boolean; // 체크박스 상태 추가
-}
 
 export function LTRA350MainBody({
   data,
@@ -41,28 +20,14 @@ export function LTRA350MainBody({
   hideAside,
   setHideAside,
 }: AgGridProps) {
-  // 3. 커스텀 셀 렌더러 정의 (필요시)
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { selectedRows, setSelectedRows, handleSelectionChanged } = useAgGridSelection(data, onSelectPlan);
 
-  const handleSelectionChanged = useCallback(
-    (event: { api: GridApi<AgGridData> }) => {
-      const selectedNodes = event.api.getSelectedNodes();
-      if (selectedNodes.length > 0) {
-        const selectedData = selectedNodes[0].data;
-        if (selectedData && typeof onSelectPlan === 'function') {
-          onSelectPlan(selectedData.id);
-        }
-      }
-    },
-    [onSelectPlan]
-  );
-
-  // checkboxRenderer를 useCallback으로 메모이제이션
-  const checkboxRenderer = useCallback(
+  // checkboxRender를 useCallback으로 메모이제이션
+  const checkboxRender = useCallback(
     (params: ICellRendererParams<AgGridData>) => {
       const isChecked = selectedRows.includes(params.data?.id || 0);
       return (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex items-center justify-center editable-cell">
           <div className="flex justify-center shrink-0 w-[2.6rem] h-full editable-cell">
             <Checkbox
               checked={isChecked}
@@ -77,15 +42,15 @@ export function LTRA350MainBody({
               className="flex justify-center items-center"
             />
           </div>
-          {params.data && (
+          {/* {params.data && (
             <div className="border-l border-l-[var(--color-table-border-border-gray)] flex-1 text-center h-full">
               {params.data.id}
             </div>
-          )}
+          )} */}
         </div>
       );
     },
-    [selectedRows]
+    [selectedRows, setSelectedRows]
   );
 
   // CheckboxHeader를 useCallback으로 메모이제이션
@@ -95,8 +60,9 @@ export function LTRA350MainBody({
     return (
       <div className="w-full h-full flex items-center justify-center ">
         <Checkbox
-          variant="button"
+          // variant="button"
           color="secondary"
+          size="sm"
           checked={allSelected}
           onCheckedChange={(checked) => {
             if (checked) {
@@ -106,8 +72,9 @@ export function LTRA350MainBody({
             }
           }}
           className="flex justify-center items-center"
+          aria-label="전체 선택"
         >
-          전체선택
+          {/* 전체선택 */}
         </Checkbox>
       </div>
     );
@@ -121,12 +88,11 @@ export function LTRA350MainBody({
         <Button
           aria-label="고객 추가"
           variant="outlined"
-          size="sm"
-          onlyicon
+          size="icon-sm"
           color="gray-light"
           onClick={() => alert('추가')}
         >
-          <PlusIcon />
+          <PlusIcon color="var(--color-gray-30)" />
         </Button>
       </Grow>
     ) : (
@@ -140,13 +106,23 @@ export function LTRA350MainBody({
       {
         headerName: '',
         field: 'selected',
-        width: 90,
+        width: 30,
         cellClass: 'text-center p-0!',
         sortable: false,
         filter: false,
-        cellRenderer: checkboxRenderer,
+        cellRenderer: checkboxRender,
         headerComponent: CheckboxHeader,
         suppressRowClickSelection: true,
+        pinned: 'left',
+      },
+      {
+        headerName: '',
+        field: 'id',
+        cellClass: 'text-center',
+        width: 40,
+        sortable: false,
+        filter: false,
+        editable: false,
         pinned: 'left',
       },
       {
@@ -157,6 +133,7 @@ export function LTRA350MainBody({
         sortable: false,
         filter: false,
         autoHeight: true,
+        pinned: 'left',
         tooltipValueGetter: (params) => {
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
@@ -164,8 +141,7 @@ export function LTRA350MainBody({
         headerComponent: () => (
           <Grow className="gap-1 w-full">
             담보명(
-            <Checkbox size="sm" />
-            담보명 전체보기)
+            <Checkbox size="sm">담보명 전체보기</Checkbox>)
           </Grow>
         ),
       },
@@ -255,7 +231,7 @@ export function LTRA350MainBody({
         suppressRowClickSelection: true,
       },
     ],
-    [checkboxRenderer, CheckboxHeader, duplicateRenderer]
+    [checkboxRender, CheckboxHeader, duplicateRenderer]
   );
 
   return (

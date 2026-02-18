@@ -50,7 +50,7 @@ export const FormCell = ({
   return (
     <>
       <TableHead
-        className={cn(FormCellVariants({ variant }), 'pr-0!', className)}
+        className={cn(FormCellVariants({ variant }), 'pr-0! text-left', className)}
         {...(titleColSpan && { colSpan: titleColSpan })}
         {...(titleRowSpan && { rowSpan: titleRowSpan })}
       >

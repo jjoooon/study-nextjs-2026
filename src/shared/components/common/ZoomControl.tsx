@@ -33,11 +33,11 @@ export const ZoomControl = () => {
       <Button variant="outlined" color="gray" className="mr-[1rem]" size="sm" onClick={handleZoomAuto}>
         자동맞춤
       </Button>
-      <Button variant="none" onlyicon={true} size="sm" color="transparent" onClick={handleZoomOut}>
+      <Button variant="none" size="icon-sm" className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
         <ZoomOutIcon />
       </Button>
       <Typo variant="button-sm">{fontSize * 10}%</Typo>
-      <Button variant="none" onlyicon={true} size="sm" color="transparent" onClick={handleZoomIn}>
+      <Button variant="none" size="icon-sm" className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
         <ZoomInIcon />
       </Button>
     </Grow>

@@ -179,8 +179,7 @@ function Input({
               <Button
                 variant="none"
                 color="gray"
-                size="xs"
-                onlyicon
+                size="icon-xs"
                 className="absolute right-0 top-1/2 -translate-y-1/2"
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
@@ -222,8 +221,7 @@ function Input({
             <Button
               variant="none"
               color="gray"
-              size="xs"
-              onlyicon
+              size="icon-xs"
               className="absolute right-2 top-1/2 -translate-y-1/2"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
