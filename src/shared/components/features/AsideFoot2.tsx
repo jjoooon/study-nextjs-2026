@@ -3,10 +3,10 @@
 import { Gcol, Grow, ButtonGroup, Typo } from '@/shared/components/common';
 import { Button, Checkbox } from '@/shared/components/uiux';
 
-export default function AsideFoot() {
+export default function AsideFoot2() {
   return (
     <Gcol className="w-full gap-1 pb-1.5">
-      <Grow
+      {/* <Grow
         placement="bwc"
         className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)]"
       >
@@ -17,7 +17,7 @@ export default function AsideFoot() {
           </Typo>
           <Typo variant="heading-md">원</Typo>
         </Grow>
-      </Grow>
+      </Grow> */}
       <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] gap-1">
         <Grow placement="bwc">
           <Typo variant="heading-md">납입보험료</Typo>

@@ -61,15 +61,15 @@ export const Default: Story = {
 };
 
 // asChild 전용 스토리
-export const AsChild: Story = {
-  args: {
-    asChild: true,
-    children: <Link href="/login">Login</Link>,
-  },
-  render: (args) => (
-    <Button asChild {...args}>
-      <Link href="/login">Link - {args.children}</Link>
-    </Button>
-  ),
-};
+// export const AsChild: Story = {
+//   args: {
+//     asChild: true,
+//     children: <Link href="/login">Login</Link>,
+//   },
+//   render: (args) => (
+//     <Button asChild {...args}>
+//       <Link href="/login">Link - {args.children}</Link>
+//     </Button>
+//   ),
+// };
 

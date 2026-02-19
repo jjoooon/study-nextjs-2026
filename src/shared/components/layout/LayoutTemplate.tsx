@@ -7,6 +7,7 @@ import {
   LayoutFolder,
   LayoutFolderHead,
   LayoutFolderBody,
+  LayoutFolderFoot,
   LayoutMain,
   LayoutMainHead,
   LayoutMainBody,
@@ -25,7 +26,8 @@ interface Props {
   mainFoot: React.ReactNode;
   asideHead: React.ReactNode;
   asideBody: React.ReactNode;
-  asideFoot: React.ReactNode;
+  asideFoot1: React.ReactNode;
+  asideFoot2: React.ReactNode;
   hideAside?: boolean;
   process?: React.ReactNode;
 }
@@ -37,7 +39,8 @@ export const LayoutTemplateA = ({
   mainBody,
   asideBody,
   mainFoot,
-  asideFoot,
+  asideFoot1,
+  asideFoot2,
   process,
   hideAside = false,
 }: Props) => (
@@ -46,22 +49,25 @@ export const LayoutTemplateA = ({
     <LayoutBody>
       <LayoutProcess>{process}</LayoutProcess>
       <LayoutFolder>
-        <LayoutFolderHead className="grid grid-cols-[1fr_auto] gap-[1rem]">
+        <LayoutFolderHead className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
           <LayoutMainHead>{mainHead}</LayoutMainHead>
           <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         </LayoutFolderHead>
         <LayoutFolderBody className="grid grid-cols-[1fr_auto] gap-[1rem]">
           <LayoutMain>
             <LayoutMainBody>{mainBody}</LayoutMainBody>
-            <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
           </LayoutMain>
           {!hideAside && (
             <LayoutAside>
               <LayoutAsideBody>{asideBody}</LayoutAsideBody>
-              <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
+              <LayoutAsideFoot className="mb-[-0.6rem]">{asideFoot1}</LayoutAsideFoot>
             </LayoutAside>
           )}
         </LayoutFolderBody>
+        <LayoutFolderFoot className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
+          <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
+          <LayoutAsideFoot>{asideFoot2}</LayoutAsideFoot>
+        </LayoutFolderFoot>
       </LayoutFolder>
     </LayoutBody>
   </>

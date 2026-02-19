@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import AsidBody from '@/shared/components/features/AsideBody';
 import PageHead from '@/shared/components/features/PageHead';
-import AsideFoot from '@/shared/components/features/AsideFoot';
+import AsideFoot1 from '@/shared/components/features/AsideFoot1';
+import AsideFoot2 from '@/shared/components/features/AsideFoot2';
 import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
 import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
@@ -35,7 +36,8 @@ export default function LTRA350Section() {
       mainFoot={<MainFoot />}
       asideHead={<TaskStatusBoard state={DUMMY_TASK_STATUS_DATA} />}
       asideBody={<AsidBody />}
-      asideFoot={<AsideFoot />}
+      asideFoot1={<AsideFoot1 />}
+      asideFoot2={<AsideFoot2 />}
       hideAside={hideAside}
     />
   );

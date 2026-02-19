@@ -1,7 +1,7 @@
 'use client';
 
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useCallback } from 'react';
 import { Grow, Typo } from '@/shared/components/common';
@@ -10,7 +10,6 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 import { Button, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 import type { AgGridData, AgGridProps } from '../types/LTRA350Data.types';
 import { useAgGridSelection } from '../hooks/useAgGridSelection';
-import { ArrowRightIcon } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -135,7 +134,7 @@ export function LTRA350MainBody({
         filter: false,
         autoHeight: true,
         pinned: 'left',
-        tooltipValueGetter: (params: ICellRendererParams<AgGridData>) => {
+        tooltipValueGetter: (params: ITooltipParams<AgGridData>) => {
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
         },
@@ -154,7 +153,7 @@ export function LTRA350MainBody({
         sortable: true,
         filter: false,
         editable: true,
-        valueFormatter: (params: ICellRendererParams<AgGridData>) => {
+        valueFormatter: (params: ValueFormatterParams<AgGridData>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
         valueParser: (params: { newValue: string }) => {
