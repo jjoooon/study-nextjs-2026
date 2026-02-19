@@ -1,5 +1,7 @@
-
-export interface Category { value: string; label: string }
+export interface Category {
+  value: string;
+  label: string;
+}
 
 export type Tag = string;
 
@@ -9,7 +11,7 @@ export interface TabDataType {
   gender: string;
   value: string;
   info: string[];
-};
+}
 
 export interface AgGridData {
   id: number;
@@ -19,6 +21,7 @@ export interface AgGridData {
   premium: number; // 보험료 (매달 내는 돈)
   availableAmount: number; // 가능금액
   expiryPeriod: string; // 만기 (또는 maturityTerm)
+  canEditExpiry: boolean; // 만기 편집 가능 여부
   paymentPeriod: string; // 납기 (또는 paymentTerm)
   expectedUwResult: string; // 예상UW결과 (UnderWriting의 약어)
   isHighlighted?: boolean;

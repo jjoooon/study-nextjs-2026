@@ -5,11 +5,12 @@ import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useCallback } from 'react';
 import { Grow, Typo } from '@/shared/components/common';
-import { SizeIcon, PlusIcon } from '@/shared/components/icons';
+import { SizeIcon, PlusIcon, SelectArrowIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 import { Button, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 import type { AgGridData, AgGridProps } from '../types/LTRA350Data.types';
 import { useAgGridSelection } from '../hooks/useAgGridSelection';
+import { ArrowRightIcon } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -128,13 +129,13 @@ export function LTRA350MainBody({
       {
         headerName: '담보명',
         field: 'productName',
-        flex: 1,
+        width: 300,
         cellClass: 'text-left',
         sortable: false,
         filter: false,
         autoHeight: true,
         pinned: 'left',
-        tooltipValueGetter: (params) => {
+        tooltipValueGetter: (params: ICellRendererParams<AgGridData>) => {
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
         },
@@ -148,15 +149,15 @@ export function LTRA350MainBody({
       {
         headerName: '가입금액(만원)',
         field: 'coverageAmount',
-        width: 120,
+        flex: 1,
         cellClass: () => 'text-right editable-cell',
         sortable: true,
         filter: false,
         editable: true,
-        valueFormatter: (params) => {
+        valueFormatter: (params: ICellRendererParams<AgGridData>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
-        valueParser: (params) => {
+        valueParser: (params: { newValue: string }) => {
           return Number(params.newValue);
         },
       },
@@ -167,7 +168,7 @@ export function LTRA350MainBody({
         cellClass: 'text-right',
         sortable: true,
         filter: false,
-        valueFormatter: (params) => {
+        valueFormatter: (params: ICellRendererParams<AgGridData>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
       },
@@ -178,22 +179,28 @@ export function LTRA350MainBody({
         cellClass: 'text-right',
         sortable: true,
         filter: false,
-        valueFormatter: (params) => {
+        valueFormatter: (params: ICellRendererParams<AgGridData>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
       },
       {
         headerName: '만기',
         field: 'expiryPeriod',
-        width: 80,
+        width: 100,
         cellClass: 'text-center editable-cell',
         sortable: true,
         filter: false,
-        editable: true, // 셀 편집 가능하게
+        editable: (params: ICellRendererParams<AgGridData>) => params.data?.canEditExpiry,
         cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'], // 원하는 옵션
         },
+        cellRenderer: (params: ICellRendererParams<AgGridData>) => (
+          <div className="flex items-center justify-center gap-1 w-full h-full">
+            <span className="block w-[6rem] text-right">{params.value}</span>
+            {params.data?.canEditExpiry ? <SelectArrowIcon size={14} color="var(--color-gray-50)" /> : <SelectArrowIcon size={14} color="var(--color-gray-20)" />}
+          </div>
+        ),
       },
       {
         headerName: '납기',
@@ -210,7 +217,7 @@ export function LTRA350MainBody({
         cellClass: 'text-center',
         sortable: false,
         filter: false,
-        cellStyle: (params) => {
+        cellStyle: (params: ICellRendererParams<AgGridData>) => {
           const value = params.value as string;
           if (value === '인수') {
             return { color: '#006FF2' };

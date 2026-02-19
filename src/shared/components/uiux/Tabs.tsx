@@ -51,16 +51,16 @@ const tabsListVariants = cva('inline-flex items-start', {
 });
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center relative whitespace-nowrap text-[1.3rem] font-normal tracking-[-0.039rem] ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-30',
+  'inline-flex items-center justify-center relative whitespace-nowrap font-normal tracking-[-0.039rem] ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-30',
   {
     variants: {
       variant: {
         default:
-          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
         sub:
-          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.4rem] -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+          "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.4rem] text-[1.2rem] -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
         box:
-          "h-[3rem] flex items-center justify-center font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]",
+          "h-[3rem] flex items-center justify-center text-[1.3rem] font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]",
       },
     },
     defaultVariants: {
@@ -121,7 +121,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
     const { variant } = useTabsContext();
     // totalTabs는 DOM에 전달하지 않음
     const triggerProps = { ...rest };
-    delete triggerProps.totalTabs; // totalTabs prop을 제거
+    // delete triggerProps.totalTabs; // totalTabs prop을 제거
     return (
       <div data-tabs="tab-trigger-wrap" className="relative">
         <TabsPrimitive.Trigger
@@ -136,7 +136,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
             e.currentTarget.scrollIntoView({
               behavior: 'smooth',
               block: 'nearest',
-              inline: 'center'
+              inline: 'center',
             });
           }}
           {...triggerProps}
