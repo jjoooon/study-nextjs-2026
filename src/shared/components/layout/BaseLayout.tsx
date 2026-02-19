@@ -63,6 +63,13 @@ export const LayoutFolderBody = ({ children, className }: LayoutProps) => {
     </div>
   );
 };
+export const LayoutFolderFoot = ({ children, className }: LayoutProps) => {
+  return (
+    <div data-layout="folder-foot" className={cn('relative flex justify-between gap-3', className)}>
+      {children}
+    </div>
+  );
+};
 
 export const LayoutMain = ({ children, className }: LayoutProps) => {
   return (
@@ -96,7 +103,7 @@ export const LayoutMainFoot = ({ children, className }: LayoutProps) => {
 
 export const LayoutAside = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="aside" className={cn('relative flex flex-col h-full w-[19.8rem]', className)}>
+    <div data-layout="aside" className={cn('relative flex flex-col h-full w-[19.8rem] gap-2', className)}>
       {children}
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import type { TabDataType } from '@/features/pub/proto/types/LTRA350Data.types';
 import { Grow, Typo, BulletList, BulletListItem } from '@/shared/components/common';
 import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
 import {
@@ -18,29 +19,35 @@ import {
   DropdownMenuContent,
 } from '@/shared/components/uiux';
 import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
-import type { TabDataType } from '@/features/pub/proto/types/LTRA350Data.types';
 
 interface TabHeadProps {
   data: TabDataType[];
   visibleCount: number;
   children: React.ReactNode;
+  variant?: 'default' | 'sub' | 'box';
 }
 
-export function TabHead({ data, visibleCount = 6, children }: TabHeadProps) {
+export function TabHead({ data, visibleCount = 6, children, variant = 'default' }: TabHeadProps) {
   const [active, setActive] = React.useState('tab1');
 
   // tab pagination 훅 사용
   const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
     data,
     visibleCount,
+    variant,
     active
   );
 
   return (
     <>
-      <Tabs value={active} onValueChange={setActive} className="w-full h-full grid grid-rows-[auto_1fr] content-start">
+      <Tabs
+        variant={variant}
+        value={active}
+        onValueChange={setActive}
+        className="w-full h-full grid grid-rows-[auto_1fr] content-start"
+      >
         <TabsLine>
-          <TabsList>
+          <TabsList activeValue={active}>
             {data.slice(visibleStart, end).map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 <HoverCard>
@@ -63,7 +70,7 @@ export function TabHead({ data, visibleCount = 6, children }: TabHeadProps) {
               </TabsTrigger>
             ))}
           </TabsList>
-          <Grow className="gap-[.4rem] mb-[.2rem]">
+          <Grow className="gap-[.4rem] mb-[.1rem]">
             <Grow className="gap-[.1rem]">
               <Typo className="tracking-[0]!" color="primary" weight="bold">
                 {Math.ceil((visibleStart + visibleCount) / visibleCount)}

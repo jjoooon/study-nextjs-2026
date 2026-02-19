@@ -33,14 +33,14 @@ const buttonVariants = cva(
         transparent: `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
-        xl: `h-[3.2rem] px-2 has-[>svg]:px-3 rounded-[0.6rem] text-[1.4rem] font-normal min-w-[8rem] gap-1`,
-        lg: `h-[2.8rem] px-[1rem] has-[>svg]:px-2.5 rounded-[0.6rem] text-[1.4rem] font-normal gap-1`,
-        md: `h-[2.5rem] px-[.6rem] has-[>svg]:px-1.5 rounded-[0.4rem] text-[1.3rem] font-normal gap-1`,
-        sm: `h-[2.2rem] px-[.6rem] has-[>svg]:px-1.5 rounded-[0.3rem] text-[1.2rem] font-normal gap-1`,
-        xs: `h-[1.6rem] p-0 has-[>svg]:px-0 rounded-[0.3rem] text-[1.2rem] font-normal gap-1`,
+        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 min-w-[8rem] gap-1`,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.4rem] font-normal px-2.5 gap-1`,
+        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal px-1.5 gap-[0.2rem]`,
+        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`,
+        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.2rem] font-normal p-0 gap-[0.2rem]`,
 
         'icon-xl': `h-[3.2rem] rounded-[0.6rem] px-0 aspect-square`,
-        'icon-lg': `h-[2.8rem] rounded-[0.6rem] px-0 aspect-square`,
+        'icon-lg': `h-[2.8rem] rounded-[0.4rem] px-0 aspect-square`,
         'icon-md': `h-[2.5rem] rounded-[0.4rem] px-0 aspect-square`,
         'icon-sm': `h-[2.2rem] rounded-[0.3rem] px-0 aspect-square`,
         'icon-xs': `h-[1.6rem] rounded-[0.3rem] px-0 aspect-square`,
@@ -277,16 +277,7 @@ interface UIButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
   (
-    {
-      children,
-      variant = 'contained',
-      color = 'primary',
-      size = 'md',
-      className,
-      asChild = false,
-      type,
-      ...props
-    },
+    { children, variant = 'contained', color = 'primary', size = 'md', className, asChild = false, type, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button';

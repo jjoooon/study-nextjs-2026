@@ -1,9 +1,9 @@
 'use client';
 
-import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
-import { Button } from '@/shared/components/uiux';
-import Link from "next/link";
+import Link from 'next/link';
+import { Gcol, Grow, Typo } from '@/shared/components/common';
 import { SettingIcon, PlusIcon } from '@/shared/components/icons';
+import { Button } from '@/shared/components/uiux';
 
 export function QuickLinks() {
   return (
@@ -14,30 +14,29 @@ export function QuickLinks() {
           <SettingIcon color="var(--color-secondary-50)" />
         </Button>
       </Grow>
-      <div
-      className="grid grid-cols-[1fr_1fr] bg-[var(--color-gray-0)] rounded-[0.8rem] border border-[var(--color-gray-5)] w-full gap-[0.6rem] p-2.5 gap-1 shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]">
-        <Button asChild variant="outlined" color="primary" size="sm" className='w-full'>
+      <div className="grid grid-cols-[1fr_1fr] bg-[var(--color-gray-0)] rounded-[0.8rem] border border-[var(--color-gray-5)] w-full gap-[0.6rem] p-2.5 gap-1 shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]">
+        <Button asChild variant="outlined" color="primary" size="sm" className="w-full">
           <Link href="/login">설계매뉴얼</Link>
         </Button>
-        <Button asChild variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button asChild variant="outlined" color="gray-light" size="sm" className="w-full">
           <Link href="/login">실손정액조회</Link>
         </Button>
-        <Button asChild variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button asChild variant="outlined" color="gray-light" size="sm" className="w-full">
           <Link href="/login">다른상품설계</Link>
         </Button>
-        <Button asChild variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button asChild variant="outlined" color="gray-light" size="sm" className="w-full">
           <Link href="/login">동일상품복사</Link>
         </Button>
-        <Button asChild variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button asChild variant="outlined" color="gray-light" size="sm" className="w-full">
           <Link href="/login">설계동의</Link>
         </Button>
-        <Button asChild variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button asChild variant="outlined" color="gray-light" size="sm" className="w-full">
           <Link href="/login">전체누적</Link>
         </Button>
-        <Button asChild variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button asChild variant="outlined" color="gray-light" size="sm" className="w-full">
           <Link href="/login">약관조회</Link>
         </Button>
-        <Button variant="outlined" color="gray-light" size="sm" className='w-full'>
+        <Button variant="outlined" color="gray-light" size="sm" className="w-full">
           더보기
           <PlusIcon color="var(--color-gray-50)" />
         </Button>

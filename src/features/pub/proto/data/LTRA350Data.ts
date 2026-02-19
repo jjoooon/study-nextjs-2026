@@ -23,6 +23,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: true,
+    canEditExpiry: true,
   },
   {
     id: 2,
@@ -35,6 +36,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '전기납',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 3,
@@ -47,6 +49,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '15년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 4,
@@ -59,6 +62,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '10년',
     expectedUwResult: '거절',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 5,
@@ -71,6 +75,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '전기납',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 6,
@@ -83,6 +88,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 7,
@@ -95,6 +101,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '15년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 8,
@@ -107,6 +114,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '12년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 9,
@@ -119,6 +127,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 10,
@@ -131,6 +140,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '15년',
     expectedUwResult: '거절',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 11,
@@ -143,6 +153,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '10년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 12,
@@ -155,6 +166,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '전기납',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 13,
@@ -167,6 +179,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 14,
@@ -179,6 +192,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '15년',
     expectedUwResult: '거절',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 15,
@@ -191,6 +205,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 16,
@@ -203,6 +218,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 17,
@@ -215,6 +231,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 18,
@@ -227,6 +244,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '10년',
     expectedUwResult: '거절',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 19,
@@ -239,6 +257,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 20,
@@ -251,6 +270,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '15년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 21,
@@ -263,6 +283,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '10년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 22,
@@ -275,6 +296,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '거절',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 23,
@@ -287,6 +309,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 24,
@@ -299,6 +322,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 25,
@@ -311,6 +335,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 26,
@@ -323,6 +348,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '1년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 27,
@@ -335,6 +361,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 28,
@@ -347,6 +374,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '거절',
     isHighlighted: false,
+    canEditExpiry: false,
   },
   {
     id: 29,
@@ -359,6 +387,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '20년',
     expectedUwResult: '조건부인수',
     isHighlighted: false,
+    canEditExpiry: true,
   },
   {
     id: 30,
@@ -371,6 +400,7 @@ export const DUMMY_PLAN_COV_DATA = [
     paymentPeriod: '15년',
     expectedUwResult: '인수',
     isHighlighted: false,
+    canEditExpiry: false,
   },
 ];
 

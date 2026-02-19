@@ -1,9 +1,5 @@
-/**
- * Ltra350
- */
-
-import InsPlanBasicAside from '@/features/poc/ispl/components/InsPlanBasicAside';
-import InsPlanBasicBottom from '@/features/poc/ispl/components/InsPlanBasicBottom';
+import InsPlanCovAside from '@/features/poc/ispl/components/InsPlanCovAside';
+import InsPlanCovBottom from '@/features/poc/ispl/components/InsPlanCovBottom';
 import Ltra350Section from '@/features/poc/ispl/sections/Ltra350Section';
 
 import { LayoutDocument, LayoutMain } from '@/shared/components/layout/Cabinet';
@@ -21,11 +17,11 @@ export default function Ltra350() {
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel defaultSize="37.5rem" minSize="0" maxSize="50%">
-            <InsPlanBasicAside />
+            <InsPlanCovAside />
           </ResizablePanel>
         </ResizablePanelGroup>
       </LayoutDocument>
-      <InsPlanBasicBottom />
+      <InsPlanCovBottom />
     </>
   );
 }

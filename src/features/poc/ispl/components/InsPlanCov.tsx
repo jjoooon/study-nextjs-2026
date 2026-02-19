@@ -1,125 +1,122 @@
 'use client';
 
-/**
- * AG Grid 컴포넌트 흐름
- * 1. 모듈 등록 : AG Grid가 필요한 모든 기능(필터, 소트, 렌더링 등)을 사용할 수 있도록 초기화
- * 2. 타입 정의 (Props & Data Inerface) : 타입 안정성 제공 및 자동완성 활성화
- * 3. 커스텀 셀 렌더러 정의 (필요시) : 셀 내에서 복잡한 UI를 구현하기 위해
- * 4. 메인 컴포넌트 함수 선언 : 상태 관리, 컬럼 정의, 이벤트 핸들러 등 구현
- */
-// 1.모듈 등록
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-
-import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useCallback } from 'react';
-// import { Label } from 'recharts';
-import { Gcol, Typo, Grow, ButtonGroup, Separator } from '@/shared/components/common';
-import { SearchIcon, AddIcon, ResetIcon } from '@/shared/components/icons';
-import { Button, Input, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-// 1.모듈 등록
+import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
+import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
+import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+
+// AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-// 2. 타입 정의 : 컴포넌트 Props 정의
+// Types
 interface InsPlanCovProps {
   data: InsPlanCovData[];
   selectedPlanId: number | null;
   onSelectPlan: (planId: number) => void;
 }
-// 2. 데이터 행(Row)의 구조 정의
+
 interface InsPlanCovData {
   id: number;
-  isDuplicate: boolean; // 중복 여부 (boolean은 관습적으로 is/has 접두사 사용)
-  productName: string; // 상품명
-  coverageAmount: number; // 가입금액 (보장받는 금액)
-  premium: number; // 보험료 (매달 내는 돈)
-  availableAmount: number; // 가능금액
-  expiryPeriod: string; // 만기 (또는 maturityTerm)
-  paymentPeriod: string; // 납기 (또는 paymentTerm)
-  expectedUwResult: string; // 예상UW결과 (UnderWriting의 약어)
+  productCode: string;
+  isDuplicate: boolean;
+  productName: string;
+  coverageAmount: number;
+  premium: number;
+  availableAmount: number;
+  expiryPeriod: string;
+  paymentPeriod: string;
+  expectedUwResult: string;
   isHighlighted?: boolean;
-  selected?: boolean; // 체크박스 상태 추가
+  selected?: boolean;
 }
 
-// 4. 메인 컴포넌트 함수 선언
-export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan }: InsPlanCovProps) {
-  // 3. 커스텀 셀 렌더러 정의 (필요시)
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+// Utils
+const highlightText = (text: string, query: string): React.ReactNode => {
+  if (!query.trim()) return text;
 
-  const handleSelectionChanged = useCallback(
-    (event: { api: GridApi<InsPlanCovData> }) => {
-      const selectedNodes = event.api.getSelectedNodes();
-      if (selectedNodes.length > 0) {
-        const selectedData = selectedNodes[0].data;
-        if (selectedData) {
-          onSelectPlan(selectedData.id);
-        }
-      }
-    },
-    [onSelectPlan]
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+
+  return parts.map((part, index) =>
+    regex.test(part) ? (
+      <mark key={index} className="bg-yellow-200 text-black rounded px-0.5">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
   );
+};
 
-  // checkboxRenderer를 useCallback으로 메모이제이션
-  const checkboxRenderer = useCallback(
-    (params: ICellRendererParams<InsPlanCovData>) => {
-      const isChecked = selectedRows.includes(params.data?.id || 0);
-      return (
-        <div className="w-full h-full flex items-center justify-center">
-          <div className="flex justify-center flex-1">
-            <Checkbox
-              checked={isChecked}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  setSelectedRows([...selectedRows, params.data?.id || 0]);
-                } else {
-                  setSelectedRows(selectedRows.filter((id) => id !== params.data?.id));
-                }
-              }}
-              className="flex justify-center items-center"
-            />
-          </div>
-          {params.data && (
-            <div className="border-l border-l-[var(--color-table-border-border-gray)] flex-1 text-center h-full">
-              {params.data.id}
-            </div>
-          )}
-        </div>
-      );
-    },
-    [selectedRows]
+// Components
+interface ProductNameHeaderProps {
+  onSearch: (query: string) => void;
+  onReset: () => void;
+  initialValue: string;
+}
+
+const ProductNameHeader = ({ onSearch, onReset, initialValue }: ProductNameHeaderProps) => {
+  const [localQuery, setLocalQuery] = useState(initialValue);
+
+  useEffect(() => {
+    setLocalQuery(initialValue);
+  }, [initialValue]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearch(localQuery);
+    } else if (e.key === 'Escape') {
+      setLocalQuery('');
+      onReset();
+    }
+  };
+
+  return (
+    <Grow className="gap-1 w-full">
+      <Input
+        type="text"
+        placeholder="상품코드 또는 상품명으로 검색하세요"
+        id="cabinet-label-username"
+        size="sm"
+        className="flex-1"
+        value={localQuery}
+        onChange={(e) => setLocalQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+      <Button variant="outlined" aria-label="고객명 검색" size="icon-sm" onClick={() => onSearch(localQuery)}>
+        <SearchIcon />
+      </Button>
+      <Button variant="outlined" aria-label="검색 초기화" size="icon-sm" onClick={onReset}>
+        <ResetIcon />
+      </Button>
+    </Grow>
   );
+};
 
-  // CheckboxHeader를 useCallback으로 메모이제이션
-  const CheckboxHeader = useCallback(() => {
-    const allSelected = data.length > 0 && selectedRows.length === data.length;
+// Main Component
+export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCovProps) {
+  const gridRef = useRef<AgGridReact<InsPlanCovData>>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-    return (
-      <div className="w-full h-full flex items-center justify-center ">
-        <Checkbox
-          variant="button"
-          color="secondary"
-          checked={allSelected}
-          onCheckedChange={(checked) => {
-            if (checked) {
-              setSelectedRows(data.map((item) => item.id));
-            } else {
-              setSelectedRows([]);
-            }
-          }}
-          className="flex justify-center items-center"
-        >
-          전체선택
-        </Checkbox>
-      </div>
+  // 검색어로 데이터 필터링 (메모이제이션으로 성능 최적화)
+  const filteredData = useMemo(() => {
+    if (!searchQuery.trim()) return data;
+
+    const lowerQuery = searchQuery.toLowerCase();
+    return data.filter(
+      (item) =>
+        item.productCode.toLowerCase().includes(lowerQuery) || item.productName.toLowerCase().includes(lowerQuery)
     );
-  }, [data, selectedRows]);
+  }, [data, searchQuery]);
 
-  // duplicateRenderer를 useCallback으로 메모이제이션
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
-      <Button aria-label="고객 추가" variant="none" size="icon-md" onClick={() => alert('추가')}>
+      <Button aria-label="고객 추가" variant="outlined" size="icon-md" onClick={() => alert('추가')}>
         <AddIcon />
       </Button>
     ) : (
@@ -127,20 +124,40 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
     );
   }, []);
 
-  // 5. 컬럼 정의
+  const productNameRenderer = useCallback(
+    (params: ICellRendererParams<InsPlanCovData>) => {
+      return <span>{highlightText(params.data?.productName || '', searchQuery)}</span>;
+    },
+    [searchQuery]
+  );
+
+  // Search Handlers
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
+  const handleSearchReset = useCallback(() => {
+    setSearchQuery('');
+  }, []);
+
+  const ProductNameHeaderComponent = useMemo(() => {
+    const Component = () => (
+      <ProductNameHeader onSearch={handleSearch} onReset={handleSearchReset} initialValue={searchQuery} />
+    );
+    Component.displayName = 'ProductNameHeaderComponent';
+    return Component;
+  }, [handleSearch, handleSearchReset, searchQuery]);
+
+  // Column Definitions
   const columnDefs: ColDef<InsPlanCovData>[] = useMemo(
     () => [
       {
-        headerName: '',
-        field: 'selected',
-        width: 130,
-        cellClass: 'text-center p-0!',
+        headerName: 'ID',
+        field: 'id',
+        width: 70,
+        cellClass: 'text-center',
         sortable: false,
         filter: false,
-        cellRenderer: checkboxRenderer,
-        headerComponent: CheckboxHeader,
-        suppressRowClickSelection: true,
-        pinned: 'left',
       },
       {
         headerName: '중복',
@@ -150,7 +167,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         sortable: false,
         filter: false,
         cellRenderer: duplicateRenderer,
-        suppressRowClickSelection: true,
       },
       {
         headerName: '상품명',
@@ -160,24 +176,12 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         sortable: false,
         filter: false,
         autoHeight: true,
+        cellRenderer: productNameRenderer,
         tooltipValueGetter: (params) => {
           if (!params.data) return '';
-          return `상품명: ${params.data.productName}`;
+          return `상품코드: ${params.data.productCode} | 상품명: ${params.data.productName}`;
         },
-        headerComponent: () => (
-          <Grow className="gap-1 w-full">
-            <Input
-              type="text"
-              placeholder="상품코드 또는 상품명으로 검색하세요"
-              id="cabinet-label-username"
-              size="sm"
-              className="flex-1"
-            />
-            <Button variant="none" size="icon-md" aria-label="고객명 검색">
-              <SearchIcon />
-            </Button>
-          </Grow>
-        ),
+        headerComponent: ProductNameHeaderComponent,
       },
       {
         headerName: '가입금액',
@@ -250,7 +254,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
         },
       },
     ],
-    [checkboxRenderer, CheckboxHeader, duplicateRenderer]
+    [duplicateRenderer, productNameRenderer, ProductNameHeaderComponent]
   );
 
   const CategoriesCheckbox = [
@@ -265,7 +269,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
 
   return (
     <Gcol className="gap-[1rem] w-full">
-      {/* 로딩 상태 표시 */}
       {!data || data.length === 0 ? (
         <div className="text-center p-4">데이터가 없습니다.</div>
       ) : (
@@ -282,8 +285,8 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
           </Grow>
 
           <Gcol className="w-full">
-            <Gcol className="w-full border-t border-t-[.2rem] border-t-[#000]">
-              <Grow className="w-full px-2 py-[.6rem] bg-[var(--color-table-th-surface-gray)] gap-2" placement="ec">
+            <Gcol className="w-full border-t border-t-[#000]">
+              <Grow className="w-full px-2 py-[.6rem] bg-(--color-table-th-surface-gray) gap-2" placement="ec">
                 <Checkbox>플랜 기본값</Checkbox>
                 <NativeSelect aria-label="플랜선택" width="md" readOnly={false} required={false}>
                   <NativeSelectOption value="">플랜선택</NativeSelectOption>
@@ -334,17 +337,37 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
             <div style={{ width: '100%', height: 'calc(100vh - 62.1rem)' }}>
               <div className="ag-theme-alpine top-noline" style={{ height: '100%', width: '100%' }}>
                 <AgGridReact<InsPlanCovData>
-                  rowData={data}
+                  ref={gridRef}
+                  rowData={filteredData}
                   columnDefs={columnDefs}
-                  rowSelection="multiple" // multiple로 변경
                   suppressRowHoverHighlight={false}
-                  isRowSelectable={(_params) => true}
-                  onSelectionChanged={handleSelectionChanged}
-                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                  singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
                   tooltipMouseTrack={true}
                   getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    checkboxes: true,
+                    headerCheckbox: true,
+                    enableClickSelection: false,
+                  }}
+                  onRowSelected={(event) => {
+                    // 전체 선택 시 편집 모드 스킵 (여러 행 동시 편집 방지)
+                    const selectedCount = event.api.getSelectedNodes().length;
+                    const isSelectAll = selectedCount > 1;
+
+                    if (event.node.isSelected() && event.node.data && !isSelectAll) {
+                      requestAnimationFrame(() => {
+                        event.api.startEditingCell({
+                          rowIndex: event.node.rowIndex ?? -1,
+                          colKey: 'coverageAmount',
+                        });
+                      });
+                    } else if (!event.node.isSelected()) {
+                      event.api.stopEditing();
+                    }
+                  }}
                 />
               </div>
             </div>
