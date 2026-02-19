@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import type { TabDataType, Category, Tag } from '../types/LTRA350Data.types';
 import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
 import { PaperIcon, SearchIcon } from '@/shared/components/icons';
 import { Button, Checkbox, Input } from '@/shared/components/uiux';
-import type { TabDataType, Category, Tag } from '../types/LTRA350Data.types';
 
 interface LTRA350MainHeadProps {
   data: TabDataType[];

@@ -9,12 +9,12 @@ import { QuickLinks } from './QuickLinks';
 export default function AsideBody() {
   return (
     <Gcol placement="ss" className="w-full">
-      <Tabs defaultValue="info" className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]">
-        <TabsList variant="box">
-          <TabsTrigger variant="box" value="info">
+      <Tabs defaultValue="info" variant="box" className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]">
+        <TabsList>
+          <TabsTrigger value="info">
             주요정보
           </TabsTrigger>
-          <TabsTrigger variant="box" value="AI">
+          <TabsTrigger value="AI">
             AI
           </TabsTrigger>
         </TabsList>

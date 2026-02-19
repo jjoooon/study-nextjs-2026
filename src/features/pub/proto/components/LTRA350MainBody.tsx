@@ -100,7 +100,7 @@ export function LTRA350MainBody({
     );
   }, []);
 
-  // 5. 컬럼 정의
+  // 컬럼 정의
   const columnDefs: ColDef<AgGridData>[] = useMemo(
     () => [
       {
