@@ -3,18 +3,17 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { useState } from 'react';
 import { CloseIcon } from '@/shared/components/icons';
 
 import { cn } from '@/shared/lib/shadcn/utils';
-
 
 // Context 생성
 interface TabsContextProps {
   variant?: string;
   removable?: boolean;
   onRemove?: (value: string) => void;
-  [key: string]: any;
+  // [key: string]: any;
+  // 필요한 명확한 속성을 여기에 추가하세요. 인덱스 시그니처([key: string]: any)는 타입 안정성을 위해 제거되었습니다.
 }
 const TabsContext = React.createContext<TabsContextProps>({});
 export const useTabsContext = () => React.useContext(TabsContext);
@@ -24,7 +23,7 @@ interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.
   variant?: string;
   removable?: boolean;
   onRemove?: (value: string) => void;
-  [key: string]: any;
+  // [key: string]: any;
 }
 const Tabs = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Root>, TabsProps>(
   ({ children, variant, removable, onRemove, ...props }, ref) => (
@@ -57,10 +56,8 @@ const tabsTriggerVariants = cva(
       variant: {
         default:
           "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
-        sub:
-          "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.4rem] text-[1.2rem] -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
-        box:
-          "h-[3rem] flex items-center justify-center text-[1.3rem] font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]",
+        sub: "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.4rem] text-[1.2rem] -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+        box: 'h-[3rem] flex items-center justify-center text-[1.3rem] font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]',
       },
     },
     defaultVariants: {
@@ -87,21 +84,18 @@ export interface TabsTriggerProps
     InternalTriggerProps {}
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?: string }>(
-  ({ className, variant: _variant, children, activeValue, ...props }, ref) => {
+  ({ className, variant: _variant, children, ...props }, ref) => {
     const { variant, removable, onRemove } = useTabsContext();
     const totalTabs = React.Children.count(children);
     return (
       <TabsPrimitive.List
-        className={cn(
-          tabsListVariants({ variant: variant as 'default' | 'sub' | 'box' | undefined }),
-          className
-        )}
+        className={cn(tabsListVariants({ variant: variant as 'default' | 'sub' | 'box' | undefined }), className)}
         ref={ref}
         {...props}
       >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            const value = (child.props as any).value;
+            const value = (child as React.ReactElement<TabsTriggerProps>).props.value;
             return React.cloneElement(child as React.ReactElement<TabsTriggerProps>, {
               totalTabs,
               removable,
@@ -117,7 +111,10 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigger>, TabsTriggerProps>(
-  ({ className, variant: _variant, children, removable, onRemove, activeValue: _activeValue, totalTabs, ...rest }, ref) => {
+  (
+    { className, variant: _variant, children, removable, onRemove, activeValue: _activeValue, totalTabs, ...rest },
+    ref
+  ) => {
     const { variant } = useTabsContext();
     // totalTabs는 DOM에 전달하지 않음
     const triggerProps = { ...rest };
@@ -154,7 +151,10 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
             }}
             tabIndex={-1}
           >
-            <CloseIcon size={14} color={variant === 'sub' || variant === 'box' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'} />
+            <CloseIcon
+              size={14}
+              color={variant === 'sub' || variant === 'box' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'}
+            />
           </button>
         )}
       </div>
@@ -219,7 +219,12 @@ const TabsLine = React.forwardRef<
     <div
       data-tabs="tablist-wrap"
       ref={ref}
-      className={cn(style, borderColor, 'hide-scrollbar grid grid-cols-[1fr_auto] overflow-x-auto overflow-y-hidden gap-2', className)}
+      className={cn(
+        style,
+        borderColor,
+        'hide-scrollbar grid grid-cols-[1fr_auto] overflow-x-auto overflow-y-hidden gap-2',
+        className
+      )}
       data-variant={variant}
       style={{ scrollBehavior: 'smooth', ...(props.style || {}) }}
       {...props}
