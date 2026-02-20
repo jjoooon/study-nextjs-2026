@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, Separator, FormTable, FormCell, FormRow, FormItem} from '@/shared/components/common';
+import { Grow, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
 import { Button, TableRow } from '@/shared/components/uiux';
 import { Input } from '@/shared/components/uiux/Input';
@@ -167,34 +167,17 @@ export const Default: Story = {
     };
 
     return (
-      <StoryWrap>
-        <Grow className='gap-3' >
-          <Gcol placement='ss' className='gap-1'>
-            Control Sample
-            <Input
-              {...args}
-              before={mapNode(args.before)}
-              after={mapNode(args.after)}
-              value={value}
-              onChange={handleChange}
-            />
-          </Gcol>
-          
-          <Gcol placement='ss' className='gap-1'>
-            읽기전용
-            <Input
-            readOnly={true}
-            value="정보값"
-            />
-          </Gcol>
-          <Gcol placement='ss' className='gap-1'>
-            필수입력
-            <Input
-            required={true}
-            />
-          </Gcol>
-       </Grow>
-      </StoryWrap>
+      <Grow placement="sc" className="gap-3 flex-wrap bg-[var(--color-gray-5)] p-6">
+        <Input
+          {...restArgs}
+          style={outline ? { outline: '1px solid red' } : undefined}
+          before={mapNode(args.before)}
+          after={mapNode(args.after)}
+          value={value}
+          onChange={handleChange}
+        />
+        
+      </Grow>
     );
   },
 };
