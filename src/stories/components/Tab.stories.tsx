@@ -1,21 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import Link from "next/link"
-import { useTabs } from '@/shared/hooks/useTabs';
 // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
-import type { TabDataType } from '@/features/pub/proto/types/LTRA350Data.types';
-import { Grow, Typo, BulletList, BulletListItem } from '@/shared/components/common';
-import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
-import {
-  Tabs, 
-  TabsList, 
-  TabsTrigger, 
-  TabsContent, 
-  TabsPanel, 
-  TabsLine,
-} from '@/shared/components/uiux';
-import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
+import { Grow } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
+import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
+import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@/shared/components/uiux';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
+import { StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/UIUX/Tabs',
@@ -63,8 +55,8 @@ export const Default: Story = {
   render: (args) => {
     const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
     return (
-      <Grow placement="sc" className='gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6'>
-        <Tabs 
+      <StoryWrap className="bg-[var(--color-gray-5)]">
+        <Tabs
           variant={args.variant}
           removable={args.removable}
           onRemove={handleRemove}
@@ -87,7 +79,7 @@ export const Default: Story = {
             </TabsContent>
           ))}
         </Tabs>
-      </Grow>
+      </StoryWrap>
     );
   },
 };
@@ -100,8 +92,11 @@ export const TabsDefault: Story = {
   render: (args) => {
     const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
     return (
-      <Grow placement="sc" className='gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6'>
-        <Tabs 
+      <Grow
+        placement="sc"
+        className="gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6"
+      >
+        <Tabs
           variant="default"
           removable={args.removable}
           onRemove={handleRemove}
@@ -138,8 +133,11 @@ export const TabsSub: Story = {
     // variant를 고정
     const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
     return (
-      <Grow placement="sc" className='gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6'>
-        <Tabs 
+      <Grow
+        placement="sc"
+        className="gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6"
+      >
+        <Tabs
           variant="sub"
           removable={args.removable}
           onRemove={handleRemove}
@@ -176,8 +174,11 @@ export const TabsBox: Story = {
     args.variant = 'box';
     const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS2);
     return (
-      <Grow placement="sc" className='gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6'>
-        <Tabs 
+      <Grow
+        placement="sc"
+        className="gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6"
+      >
+        <Tabs
           variant="box"
           removable={args.removable}
           onRemove={handleRemove}
@@ -465,7 +466,7 @@ export const TabsPagination: Story = {
       },
     ];
     const [active, setActive] = React.useState('tab1');
-    
+
     // tab pagination 훅 사용
     const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
       data,
@@ -473,8 +474,13 @@ export const TabsPagination: Story = {
       active
     );
     return (
-      <Grow placement="sc" className='gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6'>
-        <TabHead data={data} visibleCount={visibleCount} variant={args.variant}>내용</TabHead>
+      <Grow
+        placement="sc"
+        className="gap-3 rounded-[.8rem] border-1 border-[var(--color-gray-10)] border-dashed flex-wrap bg-[var(--color-gray-0)] p-6"
+      >
+        <TabHead data={data} visibleCount={visibleCount} variant={args.variant}>
+          내용
+        </TabHead>
       </Grow>
     );
   },
