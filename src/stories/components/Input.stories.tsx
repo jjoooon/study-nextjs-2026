@@ -151,7 +151,7 @@ export const Default: Story = {
 
     return (
       <StoryWrap>
-        <Grow className='gap-3' >
+        <Grow className='gap-3' placement='bws'>
           <Gcol placement='ss' className='gap-1'>
             Control Sample
             <Input
@@ -162,20 +162,32 @@ export const Default: Story = {
               onChange={handleChange}
             />
           </Gcol>
+          <Grow className='gap-2'>
+            <Gcol placement='ss' className='gap-1'>
+              상태: 읽기전용
+              <Input
+              readOnly={true}
+              width='md'
+              value="정보값"
+              />
+            </Gcol>
+            <Gcol placement='ss' className='gap-1'>
+              상태: 필수
+              <Input
+              required={true}
+              width='md'
+              />
+            </Gcol>
+            <Gcol placement='ss' className='gap-1'>
+              상태: 에러
+              <Input
+                width='md'
+                error={true}
+              />
+            </Gcol>
+          </Grow>
           
-          <Gcol placement='ss' className='gap-1'>
-            읽기전용
-            <Input
-            readOnly={true}
-            value="정보값"
-            />
-          </Gcol>
-          <Gcol placement='ss' className='gap-1'>
-            필수입력
-            <Input
-            required={true}
-            />
-          </Gcol>
+          
        </Grow>
       </StoryWrap>
     );

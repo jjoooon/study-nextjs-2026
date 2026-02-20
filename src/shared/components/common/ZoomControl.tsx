@@ -23,22 +23,22 @@ export const ZoomControl = () => {
     setFontSize(Math.max(1.4, fontSize - 1));
     setScaleState(Math.max(0.8, scale - 0.1));
   };
-  const handleZoomAuto = () => {
-    setFontSize(Math.max(1.4, 10));
-    setScaleState(Math.max(0.8, 1));
+  const handleZoomRest = () => {
+    setFontSize(10);
+    setScaleState(1);
   };
 
   return (
     <Grow className="gap-1 items-center">
-      <Button variant="outlined" color="gray" className="mr-[1rem]" size="sm" onClick={handleZoomAuto}>
-        자동맞춤
-      </Button>
       <Button variant="none" size="icon-sm" className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
         <ZoomOutIcon />
       </Button>
       <Typo variant="button-sm">{fontSize * 10}%</Typo>
       <Button variant="none" size="icon-sm" className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
         <ZoomInIcon />
+      </Button>
+      <Button variant="outlined" color="gray" className="mr-[1rem]" size="sm" onClick={handleZoomRest}>
+        초기화
       </Button>
     </Grow>
   );
