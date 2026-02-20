@@ -76,10 +76,55 @@ export const Default: Story = {
     }
 };
 
+export const All: Story = {
+    render: () => (
+        <Grow placement="sc" className="gap-6 flex-wrap bg-[var(--color-gray-5)] p-6 flex-col items-start w-full">
+            <section className="w-full space-y-3">
+                <h3 className="text-lg font-bold">Sizes</h3>
+                <div className="flex gap-4 items-center">
+                    <Checkbox size="lg">Size lg (Default)</Checkbox>
+                    <Checkbox size="sm">Size sm</Checkbox>
+                </div>
+            </section>
+
+            <section className="w-full space-y-3">
+                <h3 className="text-lg font-bold">Variants</h3>
+                <div className="flex gap-4 items-center flex-wrap">
+                    <Checkbox variant="default">Default</Checkbox>
+                    <Checkbox variant="favorite" />
+                    <Checkbox variant="button">Button Variant</Checkbox>
+                    <Checkbox variant="noneText">None Text</Checkbox>
+                </div>
+            </section>
+
+            <section className="w-full space-y-3">
+                <h3 className="text-lg font-bold">Colors (Checked State)</h3>
+                <div className="flex gap-4 items-center">
+                    <Checkbox color="primary" checked>Primary</Checkbox>
+                    <Checkbox color="information" checked>Information</Checkbox>
+                    <Checkbox color="secondary" checked>Secondary</Checkbox>
+                </div>
+            </section>
+
+            <section className="w-full space-y-3">
+                <h3 className="text-lg font-bold">States</h3>
+                <div className="flex gap-4 items-center flex-wrap">
+                    <Checkbox>Unchecked</Checkbox>
+                    <Checkbox checked>Checked</Checkbox>
+                    <Checkbox checked="indeterminate">Indeterminate</Checkbox>
+                    <Checkbox disabled>Disabled</Checkbox>
+                    <Checkbox disabled checked>Disabled Checked</Checkbox>
+                </div>
+            </section>
+        </Grow>
+    ),
+};
+
 export const Favorite: Story = {
     ...Default,
     args: {
         variant: 'favorite',
+        children: ''
     },
 };
 

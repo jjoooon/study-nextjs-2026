@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol } from '@/shared/components/common';
+import { Grow, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
+import { Button, TableRow } from '@/shared/components/uiux';
 import { Input } from '@/shared/components/uiux/Input';
 import { StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
@@ -11,6 +12,9 @@ const meta: Meta<typeof Input> = {
   tags: ['autodocs'],
   parameters: {    
     docs: {
+      description: {
+        component: ``,
+      },
       argTypes: { expanded: false },
     },
     controls: { expanded: false },  
@@ -27,13 +31,19 @@ const meta: Meta<typeof Input> = {
       control: 'select',
       options: ['lg', 'sm'],
       description: 'Input 크기',
-      table: { category: 'Appearance' },
+      table: { 
+        category: 'Appearance',
+        type: { summary: 'lg | sm' }
+      },
     },
     width: {
       control: 'select',
       options: ['full', 'max', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       description: 'Input 너비',
-      table: { category: 'Appearance' },
+      table: { 
+        category: 'Appearance',
+        type: { summary: 'full | max | 2xs | xs | sm | md | lg | xl | 2xl' }
+      },
     },
     before: {
       control: { type: 'text' },
@@ -73,7 +83,10 @@ const meta: Meta<typeof Input> = {
       control: 'select',
       options: ['amount', 'number'],
       description: '입력 포맷 유형 (금액, 숫자)',
-      table: { category: 'Behavior' },
+      table: { 
+        category: 'Behavior',
+        type: { summary: 'amount | number' }
+      },
     },
     clear: {
       control: 'boolean',
@@ -95,8 +108,11 @@ const meta: Meta<typeof Input> = {
     errorPs: {
       control: 'select',
       options: ['tl', 'tr', 'bl', 'br'],
-      description: '에러 메시지 위치 (Top-Left, Bottom-Right 등)',
-      table: { category: 'Error Handling' },
+      description: "에러 메시지 위치",
+      table: { 
+        category: 'Error Handling', 
+        type: { summary: 'tl | tr | bl | br' }
+      },
     },
 
     // 5. Events & Others
@@ -134,6 +150,7 @@ type Story = StoryObj<typeof Input>;
 export const Default: Story = {
   render: (args) => {
     const [value, setValue] = React.useState(args.value ?? '');
+    const { outline, ...restArgs } = args as any;
 
     React.useEffect(() => {
       setValue(args.value ?? '');
@@ -150,84 +167,202 @@ export const Default: Story = {
     };
 
     return (
-      <StoryWrap>
-        <Grow className='gap-3' placement='bws'>
-          <Gcol placement='ss' className='gap-1'>
-            Control Sample
-            <Input
-              {...args}
-              before={mapNode(args.before)}
-              after={mapNode(args.after)}
-              value={value}
-              onChange={handleChange}
-            />
-          </Gcol>
-          <Grow className='gap-2'>
-            <Gcol placement='ss' className='gap-1'>
-              상태: 읽기전용
-              <Input
-              readOnly={true}
-              width='md'
-              value="정보값"
-              />
-            </Gcol>
-            <Gcol placement='ss' className='gap-1'>
-              상태: 필수
-              <Input
-              required={true}
-              width='md'
-              />
-            </Gcol>
-            <Gcol placement='ss' className='gap-1'>
-              상태: 에러
-              <Input
-                width='md'
-                error={true}
-              />
-            </Gcol>
-          </Grow>
-          
-          
-       </Grow>
-      </StoryWrap>
+      <Grow placement="sc" className="gap-3 flex-wrap bg-[var(--color-gray-5)] p-6">
+        <Input
+          {...restArgs}
+          style={outline ? { outline: '1px solid red' } : undefined}
+          before={mapNode(args.before)}
+          after={mapNode(args.after)}
+          value={value}
+          onChange={handleChange}
+        />
+        
+      </Grow>
     );
   },
 };
 
-export const WithIcon: Story = {
+export const All: Story = {
+  render: () => (
+    <Grow placement="sc" className="gap-6 flex-wrap bg-[var(--color-gray-5)] p-6 flex-col items-start w-full">
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">Sizes</h3>
+        <div className="flex gap-4">
+          <Input size="lg" placeholder="Size lg (Default)" />
+          <Input size="sm" placeholder="Size sm" />
+        </div>
+      </section>
+
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">States</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input placeholder="Default" />
+          <Input placeholder="Required" required />
+          <Input placeholder="Disabled" disabled />
+          <Input placeholder="Read Only" readOnly value="Read Only Value" />
+          <Input placeholder="Error State" error errorMsg="에러 메시지입니다." />
+          <Input placeholder="Clearable Input" clear />
+        </div>
+      </section>
+
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">Widths</h3>
+        <div className="space-y-2">
+          <Input width="full" placeholder="Width Full" />
+          <div className="flex flex-wrap gap-2">
+            <Input width="2xl" placeholder="Width 2xl" />
+            <Input width="xl" placeholder="Width xl" />
+            <Input width="lg" placeholder="Width lg" />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Input width="md" placeholder="Width md" />
+            <Input width="sm" placeholder="Width sm" />
+            <Input width="xs" placeholder="Width xs" />
+            <Input width="2xs" placeholder="Width 2xs" />
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">Adornments & Formats</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input before={<SearchIcon />} placeholder="With Icon (Before)" />
+          <Input after="원" placeholder="With Unit (After)" className="text-right" />
+          <Input formatType="amount" placeholder="Amount Format (콤마 자동)" />
+          <Input formatType="number" placeholder="Number Format (숫자만)" />
+        </div>
+      </section>
+    </Grow>
+  ),
+};
+
+export const Error: Story = {
   ...Default,
   args: {
-    before: 'SearchIcon',
-    placeholder: '검색어를 입력하세요',
+    error: true,
+    errorMsg: '에러 메시지를 입력하세요.',
+    errorPs: 'tl',//'tl' | 'tr' | 'bl' | 'br';
   },
 };
 
-export const WithUnit: Story = {
+export const Before: Story = {
   ...Default,
   args: {
-    after: '원',
-    formatType: 'amount',
-    className: 'text-right',
-    placeholder: '금액 입력',
-    value: '1000000',
+    placeholder: '내용을 입력하세요',
+    before: 'text',
   },
 };
 
-export const AmountFormat: Story = {
+export const After: Story = {
   ...Default,
   args: {
-    formatType: 'amount',
-    className: 'text-right',
-    placeholder: '금액만 입력',
-    value: '1234567',
+    placeholder: '내용을 입력하세요',
+    after: 'text',
   },
 };
 
-export const NumberFormat: Story = {
+export const Number: Story = {
   ...Default,
   args: {
+    placeholder: '내용을 입력하세요',
     formatType: 'number',
-    placeholder: '숫자만 입력',
-    value: '12345',
+  },
+};
+
+export const Amount: Story = {
+  ...Default,
+  args: {
+    placeholder: '내용을 입력하세요',
+    formatType: 'amount',
+  },
+};
+
+
+export const Form: Story = {
+  render: () => (
+    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+      <FormTable variant="boxIn" caption="고객명" cols={['w-[10rem] min-w-[10rem]', '']}>
+        <TableRow>
+          <FormCell title="고객명">
+            <FormItem className="w-max ml-2">
+              <Input type="text" aria-label="고객명" defaultValue="김한화" />
+              <Button aria-label="고객명 검색" variant="none" size="icon-md">
+                <SearchIcon />
+              </Button>
+            </FormItem>
+          </FormCell>
+        </TableRow>
+      </FormTable>
+    </Grow>
+  ),
+};
+
+export const Form2: Story = {
+  render: () => (
+    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+      <FormTable variant="boxIn" caption="설계번호 입력 예시" cols={['w-[10rem] min-w-[10rem]', '']}>
+        <TableRow>
+          <FormCell title="설계번호">
+            <Input type="text" aria-label="설계번호 앞자리" width="lg" />
+            <Separator>-</Separator>
+            <Input type="text" aria-label="설계번호 뒷자리" width="lg" />
+            <FormItem className="w-max ml-2">
+              <Input type="text" aria-label="라벨명모름" defaultValue="880101-1 김한화" />
+              <Button aria-label="계약자 추가" variant="none" size="icon-md">
+                <SearchIcon />
+              </Button>
+            </FormItem>
+          </FormCell>
+        </TableRow>
+      </FormTable>
+    </Grow>
+  ),
+};
+
+
+
+export const Form3: Story = {
+  render: () => {
+    const [planNumber, setPlanNumber] = React.useState(['', '']);
+    const [contractHolder, setContractHolder] = React.useState('');
+
+    return (
+      <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+        <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
+          <FormRow>
+            <FormCell title="설계번호">
+              <Input
+                aria-label="설계번호 입력"
+                type="text"
+                value={planNumber[0]}
+                width="lg"
+                onChange={(e) => setPlanNumber([e.target.value, planNumber[1]])}
+              />
+              <Separator>-</Separator>
+              <Input
+                aria-label="설계번호 입력"
+                type="text"
+                value={planNumber[1]}
+                width="2xs"
+                onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
+              />
+
+              <FormItem className="w-auto ml-3">
+                <Input
+                  aria-label="계약자명 입력"
+                  type="text"
+                  value={contractHolder}
+                  width="lg"
+                  onChange={(e) => setContractHolder(e.target.value)}
+                />
+                <Button variant="outlined" color="gray-light" aria-label="계약자 추가" size="icon-lg">
+                  <SearchIcon color="var(--color-primary-50)" />
+                </Button>
+              </FormItem>
+            </FormCell>
+          </FormRow>
+        </FormTable>
+      </Grow>
+    );
   },
 };
