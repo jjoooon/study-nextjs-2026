@@ -5,11 +5,11 @@ export interface Category {
 
 export type Tag = string;
 
-export interface TabDataType {
+export interface NameAgeGenderValueInfoType {
   name: string;
-  age: string;
+  age: number | string;
   gender: string;
-  value: string;
+  value: number | string;
   info: string[];
 }
 

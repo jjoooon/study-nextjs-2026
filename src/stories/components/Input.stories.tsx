@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow } from '@/shared/components/common';
+import { Grow, Gcol } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
 import { Input } from '@/shared/components/uiux/Input';
+import { StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Input> = {
   title: 'Components/UIUX/Input',
@@ -149,29 +150,34 @@ export const Default: Story = {
     };
 
     return (
-      <Grow placement="sc" className="gap-3 flex-wrap bg-[var(--color-gray-5)] p-6">
-        <div className="w-full">
-          <dl className="flex flex-wrap text-xs font-sans bg-white border border-[var(--color-gray-4)] p-3 rounded gap-2">
-            {Object.entries(args).map(([k, v], idx, arr) => (
-              <div key={k} className="flex items-center space-x-1">
-                <span className="font-semibold text-[var(--color-primary)]">{k}</span>
-                <span className="text-[var(--color-gray-700)]">=</span>
-                <span className="text-[var(--color-secondary)] whitespace-nowrap">
-                  {typeof v === 'function' ? v.name || '<fn>' : String(v)}
-                </span>
-                {idx < arr.length - 1 && <span className="text-[var(--color-gray-400)]">,</span>}
-              </div>
-            ))}
-          </dl>
-        </div>
-        <Input
-          {...args}
-          before={mapNode(args.before)}
-          after={mapNode(args.after)}
-          value={value}
-          onChange={handleChange}
-        />
-      </Grow>
+      <StoryWrap>
+        <Grow className='gap-3' >
+          <Gcol placement='ss' className='gap-1'>
+            Control Sample
+            <Input
+              {...args}
+              before={mapNode(args.before)}
+              after={mapNode(args.after)}
+              value={value}
+              onChange={handleChange}
+            />
+          </Gcol>
+          
+          <Gcol placement='ss' className='gap-1'>
+            읽기전용
+            <Input
+            readOnly={true}
+            value="정보값"
+            />
+          </Gcol>
+          <Gcol placement='ss' className='gap-1'>
+            필수입력
+            <Input
+            required={true}
+            />
+          </Gcol>
+       </Grow>
+      </StoryWrap>
     );
   },
 };
