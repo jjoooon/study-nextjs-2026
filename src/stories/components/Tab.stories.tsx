@@ -17,7 +17,7 @@ import {
 } from '@/shared/components/uiux';
 
 import { useTabs } from '@/shared/hooks/useTabs';
-import { StoryWrap } from '@/shared/components/storybook/StoryWrap';
+import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/UIUX/Tabs',
@@ -80,29 +80,34 @@ export const Default: Story = {
     const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
     return (
       <StoryWrap>
-        <Tabs
-          variant={args.variant}
-          removable={args.removable}
-          onRemove={handleRemove}
-          value={active}
-          onValueChange={setActive}
-          className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
-        >
-          <TabsLine>
-            <TabsList>
-              {visibleTabs.map((tab) => (
-                <TabsTrigger value={tab.value} key={tab.value}>
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </TabsLine>
-          {visibleTabs.map((tab) => (
-            <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
-              {tab.label}
-            </TabsContent>
-          ))}
-        </Tabs>
+        <StoryBox>
+          <Tabs
+            variant={args.variant}
+            removable={args.removable}
+            onRemove={handleRemove}
+            value={active}
+            onValueChange={setActive}
+            className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+          >
+            <TabsLine>
+              <TabsList>
+                {visibleTabs.map((tab) => (
+                  <TabsTrigger value={tab.value} key={tab.value}>
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </TabsLine>
+            {visibleTabs.map((tab) => (
+              <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+                {tab.label}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </StoryBox>
+        <StoryBox>
+            ddd
+        </StoryBox>
       </StoryWrap>
     );
   },

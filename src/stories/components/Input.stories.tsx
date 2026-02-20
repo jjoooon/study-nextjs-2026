@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
+import { Grow, Gcol, Typo, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
 import { Button, TableRow } from '@/shared/components/uiux';
 import { Input } from '@/shared/components/uiux/Input';
-import { StoryWrap } from '@/shared/components/storybook/StoryWrap';
+import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
+import { Label } from 'radix-ui';
 
 const meta: Meta<typeof Input> = {
   title: 'Components/UIUX/Input',
@@ -12,8 +13,11 @@ const meta: Meta<typeof Input> = {
   tags: ['autodocs'],
   parameters: {    
     docs: {
-      description: {
-        component: ``,
+       description: {
+        component: `
+입력 필드는 사용자가 문자, 숫자, 날짜 등의 데이터를 직접 기입할 수 있도록 마련된 요소이다.   
+데이터의 성격에 따라 텍스트, 날짜(Date), 검색(Search) 등 다양한 유형으로 확장되어 사용된다.
+        `,
       },
       argTypes: { expanded: false },
     },
@@ -123,14 +127,14 @@ const meta: Meta<typeof Input> = {
     },
     
     // 테이블에서 숨길 항목들 (직접 컨트롤할 필요가 없는 props)
-    value: { table: { disable: true } },
+    // value: { table: { disable: true } },
     className: { table: { disable: true } },
   },
   args: {
     variant: 'default',
     size: 'lg',
-    width: 'full',
-    placeholder: '내용을 입력하세요',
+    width: 'md',
+    placeholder: 'placeholder',
     required: false,
     readOnly: false,
     error: false,
@@ -150,7 +154,7 @@ type Story = StoryObj<typeof Input>;
 export const Default: Story = {
   render: (args) => {
     const [value, setValue] = React.useState(args.value ?? '');
-    const { outline, ...restArgs } = args as any;
+    const { ...restArgs } = args as any;
 
     React.useEffect(() => {
       setValue(args.value ?? '');
@@ -167,17 +171,62 @@ export const Default: Story = {
     };
 
     return (
-      <Grow placement="sc" className="gap-3 flex-wrap bg-[var(--color-gray-5)] p-6">
-        <Input
-          {...restArgs}
-          style={outline ? { outline: '1px solid red' } : undefined}
-          before={mapNode(args.before)}
-          after={mapNode(args.after)}
-          value={value}
-          onChange={handleChange}
-        />
-        
-      </Grow>
+      <StoryWrap>
+        <StoryBox>
+          <Grow >
+            <Input
+              {...restArgs}
+              value={value}
+              onChange={handleChange}
+            />
+          </Grow>
+        </StoryBox>
+        <StoryBox>
+          <Grow placement="cc" className="gap-2">
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Typo variant="body-sm">읽기전용</Typo>
+              <Input
+                width="sm"
+                value="Read"
+                readOnly
+              />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Typo variant="body-sm">필수입력</Typo>
+              <Input
+                width="sm"
+                required
+              />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Typo variant="body-sm">에러</Typo>
+              <Input
+                width="sm"
+                error
+                errorPs='bl'
+                errorMsg="에러 메시지입니다."
+              />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Typo variant="body-sm">before</Typo>
+              <Input
+                width="sm"
+                before="시간:"
+              />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Typo variant="body-sm">after + amount</Typo>
+              <Input
+                className="text-right"
+                value="10000"
+                width="sm"
+                after="원"
+                formatType="amount"
+              />
+            </Gcol>
+          </Grow>
+        </StoryBox>
+      </StoryWrap>
     );
   },
 };
