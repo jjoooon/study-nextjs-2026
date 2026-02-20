@@ -10,6 +10,9 @@ const meta: Meta<typeof Input> = {
   tags: ['autodocs'],
   parameters: {    
     docs: {
+      description: {
+        component: ``,
+      },
       argTypes: { expanded: false },
     },
     controls: { expanded: false },  
@@ -94,7 +97,7 @@ const meta: Meta<typeof Input> = {
     errorPs: {
       control: 'select',
       options: ['tl', 'tr', 'bl', 'br'],
-      description: '에러 메시지 위치 (Top-Left, Bottom-Right 등)',
+      description: "에러 메시지 위치 <br> ('tl' = top-left, 'tr' = top-right, 'bl' = bottom-left, 'br' = bottom-right)",
       table: { category: 'Error Handling' },
     },
 
@@ -133,6 +136,7 @@ type Story = StoryObj<typeof Input>;
 export const Default: Story = {
   render: (args) => {
     const [value, setValue] = React.useState(args.value ?? '');
+    const { outline, ...restArgs } = args as any;
 
     React.useEffect(() => {
       setValue(args.value ?? '');
@@ -150,66 +154,111 @@ export const Default: Story = {
 
     return (
       <Grow placement="sc" className="gap-3 flex-wrap bg-[var(--color-gray-5)] p-6">
-        <div className="w-full">
-          <dl className="flex flex-wrap text-xs font-sans bg-white border border-[var(--color-gray-4)] p-3 rounded gap-2">
-            {Object.entries(args).map(([k, v], idx, arr) => (
-              <div key={k} className="flex items-center space-x-1">
-                <span className="font-semibold text-[var(--color-primary)]">{k}</span>
-                <span className="text-[var(--color-gray-700)]">=</span>
-                <span className="text-[var(--color-secondary)] whitespace-nowrap">
-                  {typeof v === 'function' ? v.name || '<fn>' : String(v)}
-                </span>
-                {idx < arr.length - 1 && <span className="text-[var(--color-gray-400)]">,</span>}
-              </div>
-            ))}
-          </dl>
-        </div>
         <Input
-          {...args}
+          {...restArgs}
+          style={outline ? { outline: '1px solid red' } : undefined}
           before={mapNode(args.before)}
           after={mapNode(args.after)}
           value={value}
           onChange={handleChange}
         />
+        
       </Grow>
     );
   },
 };
 
-export const WithIcon: Story = {
+export const All: Story = {
+  render: () => (
+    <Grow placement="sc" className="gap-6 flex-wrap bg-[var(--color-gray-5)] p-6 flex-col items-start w-full">
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">Sizes</h3>
+        <div className="flex gap-4">
+          <Input size="lg" placeholder="Size lg (Default)" />
+          <Input size="sm" placeholder="Size sm" />
+        </div>
+      </section>
+
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">States</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input placeholder="Default" />
+          <Input placeholder="Required" required />
+          <Input placeholder="Disabled" disabled />
+          <Input placeholder="Read Only" readOnly value="Read Only Value" />
+          <Input placeholder="Error State" error errorMsg="에러 메시지입니다." />
+          <Input placeholder="Clearable Input" clear />
+        </div>
+      </section>
+
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">Widths</h3>
+        <div className="space-y-2">
+          <Input width="full" placeholder="Width Full" />
+          <div className="flex flex-wrap gap-2">
+            <Input width="2xl" placeholder="Width 2xl" />
+            <Input width="xl" placeholder="Width xl" />
+            <Input width="lg" placeholder="Width lg" />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Input width="md" placeholder="Width md" />
+            <Input width="sm" placeholder="Width sm" />
+            <Input width="xs" placeholder="Width xs" />
+            <Input width="2xs" placeholder="Width 2xs" />
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full space-y-3">
+        <h3 className="text-lg font-bold">Adornments & Formats</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input before={<SearchIcon />} placeholder="With Icon (Before)" />
+          <Input after="원" placeholder="With Unit (After)" className="text-right" />
+          <Input formatType="amount" placeholder="Amount Format (콤마 자동)" />
+          <Input formatType="number" placeholder="Number Format (숫자만)" />
+        </div>
+      </section>
+    </Grow>
+  ),
+};
+
+export const Error: Story = {
   ...Default,
   args: {
-    before: 'SearchIcon',
-    placeholder: '검색어를 입력하세요',
+    error: true,
+    errorMsg: '에러 메시지를 입력하세요.',
+    errorPs: 'tl',//'tl' | 'tr' | 'bl' | 'br';
   },
 };
 
-export const WithUnit: Story = {
+export const Before: Story = {
   ...Default,
   args: {
-    after: '원',
-    formatType: 'amount',
-    className: 'text-right',
-    placeholder: '금액 입력',
-    value: '1000000',
+    placeholder: '내용을 입력하세요',
+    before: 'text',
   },
 };
 
-export const AmountFormat: Story = {
+export const After: Story = {
   ...Default,
   args: {
-    formatType: 'amount',
-    className: 'text-right',
-    placeholder: '금액만 입력',
-    value: '1234567',
+    placeholder: '내용을 입력하세요',
+    after: 'text',
   },
 };
 
-export const NumberFormat: Story = {
+export const Number: Story = {
   ...Default,
   args: {
+    placeholder: '내용을 입력하세요',
     formatType: 'number',
-    placeholder: '숫자만 입력',
-    value: '12345',
+  },
+};
+
+export const Amount: Story = {
+  ...Default,
+  args: {
+    placeholder: '내용을 입력하세요',
+    formatType: 'amount',
   },
 };
