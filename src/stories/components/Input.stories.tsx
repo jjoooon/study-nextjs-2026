@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow } from '@/shared/components/common';
+import { Grow, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
+import { Button, TableRow } from '@/shared/components/uiux';
 import { Input } from '@/shared/components/uiux/Input';
 
 const meta: Meta<typeof Input> = {
@@ -29,13 +30,19 @@ const meta: Meta<typeof Input> = {
       control: 'select',
       options: ['lg', 'sm'],
       description: 'Input 크기',
-      table: { category: 'Appearance' },
+      table: { 
+        category: 'Appearance',
+        type: { summary: 'lg | sm' }
+      },
     },
     width: {
       control: 'select',
       options: ['full', 'max', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       description: 'Input 너비',
-      table: { category: 'Appearance' },
+      table: { 
+        category: 'Appearance',
+        type: { summary: 'full | max | 2xs | xs | sm | md | lg | xl | 2xl' }
+      },
     },
     before: {
       control: { type: 'text' },
@@ -75,7 +82,10 @@ const meta: Meta<typeof Input> = {
       control: 'select',
       options: ['amount', 'number'],
       description: '입력 포맷 유형 (금액, 숫자)',
-      table: { category: 'Behavior' },
+      table: { 
+        category: 'Behavior',
+        type: { summary: 'amount | number' }
+      },
     },
     clear: {
       control: 'boolean',
@@ -97,8 +107,11 @@ const meta: Meta<typeof Input> = {
     errorPs: {
       control: 'select',
       options: ['tl', 'tr', 'bl', 'br'],
-      description: "에러 메시지 위치 <br> ('tl' = top-left, 'tr' = top-right, 'bl' = bottom-left, 'br' = bottom-right)",
-      table: { category: 'Error Handling' },
+      description: "에러 메시지 위치",
+      table: { 
+        category: 'Error Handling', 
+        type: { summary: 'tl | tr | bl | br' }
+      },
     },
 
     // 5. Events & Others
@@ -260,5 +273,95 @@ export const Amount: Story = {
   args: {
     placeholder: '내용을 입력하세요',
     formatType: 'amount',
+  },
+};
+
+
+export const Form: Story = {
+  render: () => (
+    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+      <FormTable variant="boxIn" caption="고객명" cols={['w-[10rem] min-w-[10rem]', '']}>
+        <TableRow>
+          <FormCell title="고객명">
+            <FormItem className="w-max ml-2">
+              <Input type="text" aria-label="고객명" defaultValue="김한화" />
+              <Button aria-label="고객명 검색" variant="none" size="icon-md">
+                <SearchIcon />
+              </Button>
+            </FormItem>
+          </FormCell>
+        </TableRow>
+      </FormTable>
+    </Grow>
+  ),
+};
+
+export const Form2: Story = {
+  render: () => (
+    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+      <FormTable variant="boxIn" caption="설계번호 입력 예시" cols={['w-[10rem] min-w-[10rem]', '']}>
+        <TableRow>
+          <FormCell title="설계번호">
+            <Input type="text" aria-label="설계번호 앞자리" width="lg" />
+            <Separator>-</Separator>
+            <Input type="text" aria-label="설계번호 뒷자리" width="lg" />
+            <FormItem className="w-max ml-2">
+              <Input type="text" aria-label="라벨명모름" defaultValue="880101-1 김한화" />
+              <Button aria-label="계약자 추가" variant="none" size="icon-md">
+                <SearchIcon />
+              </Button>
+            </FormItem>
+          </FormCell>
+        </TableRow>
+      </FormTable>
+    </Grow>
+  ),
+};
+
+
+
+export const Form3: Story = {
+  render: () => {
+    const [planNumber, setPlanNumber] = React.useState(['', '']);
+    const [contractHolder, setContractHolder] = React.useState('');
+
+    return (
+      <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+        <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
+          <FormRow>
+            <FormCell title="설계번호">
+              <Input
+                aria-label="설계번호 입력"
+                type="text"
+                value={planNumber[0]}
+                width="lg"
+                onChange={(e) => setPlanNumber([e.target.value, planNumber[1]])}
+              />
+              <Separator>-</Separator>
+              <Input
+                aria-label="설계번호 입력"
+                type="text"
+                value={planNumber[1]}
+                width="2xs"
+                onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
+              />
+
+              <FormItem className="w-auto ml-3">
+                <Input
+                  aria-label="계약자명 입력"
+                  type="text"
+                  value={contractHolder}
+                  width="lg"
+                  onChange={(e) => setContractHolder(e.target.value)}
+                />
+                <Button variant="outlined" color="gray-light" aria-label="계약자 추가" size="icon-lg">
+                  <SearchIcon color="var(--color-primary-50)" />
+                </Button>
+              </FormItem>
+            </FormCell>
+          </FormRow>
+        </FormTable>
+      </Grow>
+    );
   },
 };
