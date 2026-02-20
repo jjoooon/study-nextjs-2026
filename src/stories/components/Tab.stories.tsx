@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Link from 'next/link';
 import React from 'react';
 // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
 import { Grow } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
-import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@/shared/components/uiux';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
