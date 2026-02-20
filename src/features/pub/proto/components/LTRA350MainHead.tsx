@@ -1,14 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import type { TabDataType, Category, Tag } from '../types/LTRA350Data.types';
+import type { NameAgeGenderValueInfoType, Category, Tag } from '../types/LTRA350Data.types';
 import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
 import { PaperIcon, SearchIcon } from '@/shared/components/icons';
-import { Button, Checkbox, Input } from '@/shared/components/uiux';
+import { 
+  Button, 
+  Checkbox, 
+  Input, 
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger 
+} from '@/shared/components/uiux';
 
 interface LTRA350MainHeadProps {
-  data: TabDataType[];
+  data: NameAgeGenderValueInfoType[];
   categories: Category[];
   tags: Tag[];
   visibleCount: number;
@@ -18,7 +25,50 @@ export function LTRA350MainHead({ data, categories, tags, visibleCount }: LTRA35
   const [coverageName, setCoverageName] = useState('');
 
   return (
-    <TabHead data={data} visibleCount={visibleCount}>
+    <TabHead 
+      data={data} 
+      visibleCount={visibleCount} 
+      variant="default"
+      getValue={tab => String(tab.value)}
+      renderTab={tab => (
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <span className="flex items-center">
+              <span className="max-w-20 truncate block">{tab.name}</span>
+              <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+            </span>
+          </HoverCardTrigger>
+          <HoverCardContent>
+            <BulletList>
+              {tab.info.map((info, index) => (
+                <BulletListItem key={index} type="dot">
+                  {info}
+                </BulletListItem>
+              ))}
+            </BulletList>
+          </HoverCardContent>
+        </HoverCard>
+      )}
+      renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
+        <Button
+          variant="text"
+          key={String(tab.value)}
+          onClick={() => {
+            setActive(String(tab.value));
+            const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+            if (idx !== -1) {
+              const page = Math.floor(idx / visibleCount);
+              setVisibleStart(page * visibleCount);
+            }
+          }}
+        >
+          <span className="flex items-center gap-2">
+            <span className="block">{tab.name}</span>
+            <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+          </span>
+        </Button>
+      )}
+    >
       <Gcol variant="box" placement="ss" className="w-full">
         <Grow className="gap-3">
           <Button variant="contained" color="secondary" size="md">

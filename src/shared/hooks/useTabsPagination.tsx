@@ -2,10 +2,16 @@
 
 import { useState, useEffect } from 'react';
 
-export function useTabsPagination<T extends { value: string }>(data: T[], visibleCount: number, active: string) {
+export function useTabsPagination<T>(
+  data: T[],
+  visibleCount: number,
+  variant: string,
+  active: string,
+  getValue: (item: T) => string // value 추출 함수 추가
+) {
   // visibleStart의 초기값을 active에 맞춰 계산
   const getStartByActive = (activeValue: string) => {
-    const idx = data.findIndex((t) => t.value === activeValue);
+    const idx = data.findIndex((t) => getValue(t) === activeValue);
     if (idx === -1) return 0;
     return Math.floor(idx / visibleCount) * visibleCount;
   };
@@ -20,7 +26,6 @@ export function useTabsPagination<T extends { value: string }>(data: T[], visibl
   }, [active, data, visibleCount]);
 
   const handlePrev = () => setVisibleStart((prev) => Math.max(0, prev - visibleCount));
-
   const handleNext = () => {
     const maxStart =
       data.length % visibleCount === 0 ? data.length - visibleCount : data.length - (data.length % visibleCount);

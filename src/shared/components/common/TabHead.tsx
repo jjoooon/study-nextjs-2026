@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import type { TabDataType } from '@/features/pub/proto/types/LTRA350Data.types';
-import { Grow, Typo, BulletList, BulletListItem } from '@/shared/components/common';
+import { Grow, Typo } from '@/shared/components/common';
 import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
 import {
   Tabs,
@@ -11,31 +10,50 @@ import {
   TabsTrigger,
   TabsLine,
   Button,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from '@/shared/components/uiux';
 import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
 
-interface TabHeadProps {
-  data: TabDataType[];
+interface TabHeadProps<T> {
+  data: T[];
   visibleCount: number;
   children: React.ReactNode;
-  variant?: 'default' | 'sub' | 'box';
+  variant?: string;
+  renderButtons?: React.ReactNode;
+  renderTab?: (tab: T) => React.ReactNode;
+  renderDropdownItem?: (
+    tab: T,
+    setActive: (value: string) => void,
+    setVisibleStart: (start: number) => void,
+    data: T[],
+    visibleCount: number
+  ) => React.ReactNode;
+  getValue: (tab: T) => string; // value 추출 함수 추가
 }
 
-export function TabHead({ data, visibleCount = 6, children, variant = 'default' }: TabHeadProps) {
-  const [active, setActive] = React.useState('tab1');
+export function TabHead<T>({ 
+  data, 
+  visibleCount = 6, 
+  children, 
+  variant = 'default',
+  renderTab,
+  renderDropdownItem,
+  renderButtons,
+  getValue,
+}: TabHeadProps<T>) {
+  const [active, setActive] = React.useState<string>(
+    data.length > 0 ? String(getValue(data[0])) : ''
+  );
 
   // tab pagination 훅 사용
   const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
-    data,
+    data,                // T[]: data의 타입이 자동으로 T로 추론됨
     visibleCount,
     variant,
-    active
+    active,
+    getValue
   );
 
   return (
@@ -49,29 +67,14 @@ export function TabHead({ data, visibleCount = 6, children, variant = 'default' 
         <TabsLine>
           <TabsList activeValue={active}>
             {data.slice(visibleStart, end).map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
-                <HoverCard>
-                  <HoverCardTrigger asChild>
-                    <span className="flex items-center">
-                      <span className="max-w-[8rem] truncate block">{tab.name}</span>
-                      <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                    </span>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <BulletList>
-                      {tab.info.map((info, index) => (
-                        <BulletListItem key={index} type="dot">
-                          {info}
-                        </BulletListItem>
-                      ))}
-                    </BulletList>
-                  </HoverCardContent>
-                </HoverCard>
+              <TabsTrigger key={getValue(tab)} value={getValue(tab)}>
+                {renderTab(tab)}
               </TabsTrigger>
             ))}
           </TabsList>
-          <Grow className="gap-[.4rem] mb-[.1rem]">
-            <Grow className="gap-[.1rem]">
+          <Grow className="gap-[.4rem] mb-[0.1rem]">
+            {renderButtons}
+            <Grow className="gap-[0.1rem]">
               <Typo className="tracking-[0]!" color="primary" weight="bold">
                 {Math.ceil((visibleStart + visibleCount) / visibleCount)}
               </Typo>
@@ -101,23 +104,12 @@ export function TabHead({ data, visibleCount = 6, children, variant = 'default' 
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align="end">
-                {data.map((tab) => (
-                  <Button
-                    variant="text"
-                    key={tab.value}
-                    onClick={() => {
-                      setActive(tab.value);
-                      // 해당 탭이 보이도록 페이지네이션 이동
-                      const idx = data.findIndex((t) => t.value === tab.value);
-                      if (idx !== -1) {
-                        const page = Math.floor(idx / visibleCount);
-                        setVisibleStart(page * visibleCount);
-                      }
-                    }}
-                  >
-                    {tab.name}
-                  </Button>
-                ))}
+                {renderDropdownItem
+                  ? data.map(tab =>
+                    renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount)
+                  )
+                  : ''
+                }
               </DropdownMenuContent>
             </DropdownMenu>
           </Grow>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-interface BaseTab {
+export interface BaseTab {
   value: string;
   label: string;
 }

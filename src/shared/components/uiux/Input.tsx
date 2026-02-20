@@ -118,7 +118,7 @@ function Input({
   const baseStyle = cn(
     'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
     isInvalid || error
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] outline-[0.4rem] outline-[#ff5c2d9c]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
@@ -220,7 +220,6 @@ function Input({
           {clear && isFocused && displayValue !== '' && (
             <Button
               variant="none"
-              color="gray"
               size="icon-xs"
               className="absolute right-2 top-1/2 -translate-y-1/2"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
@@ -236,7 +235,7 @@ function Input({
                 }
               }}
             >
-              <InputClearIcon />
+              <InputClearIcon size={size === 'lg' ? 16 : 12} color="var(--color-gray-30)" />
             </Button>
           )}
         </>

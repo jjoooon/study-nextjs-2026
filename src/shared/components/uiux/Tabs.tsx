@@ -84,7 +84,7 @@ export interface TabsTriggerProps
     InternalTriggerProps {}
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?: string }>(
-  ({ className, variant: _variant, children, ...props }, ref) => {
+  ({ className, variant: _variant, children, activeValue, ...props }, ref) => {
     const { variant, removable, onRemove } = useTabsContext();
     const totalTabs = React.Children.count(children);
     return (
@@ -95,7 +95,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?
       >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            const value = (child as React.ReactElement<TabsTriggerProps>).props.value;
+            const value = (child.props as any).value;
             return React.cloneElement(child as React.ReactElement<TabsTriggerProps>, {
               totalTabs,
               removable,
