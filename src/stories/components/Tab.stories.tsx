@@ -54,7 +54,7 @@ const meta: Meta<typeof Tabs> = {
     removable: false,
   },
 };
-const TABS = [
+const DATA_TABS_1 = [
   { value: 'tab1', label: '상품/플랜 설계' },
   { value: 'tab2', label: '담보 설계' },
   { value: 'tab3', label: '추천 설계' },
@@ -68,16 +68,274 @@ const TABS = [
   { value: 'tab11', label: '추천 설계' },
   { value: 'tab12', label: '보장분석 설계' },
 ];
-const TABS2 = [
+const DATA_TABS_2 = [
   { value: 'tab1', label: '상품/플랜 설계' },
   { value: 'tab2', label: '담보 설계' },
 ];
+const DATA_TABS_3 = [
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '1',
+    gender: '여',
+    value: 'tab1',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '2',
+    gender: '남',
+    value: 'tab2',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '3',
+    gender: '여',
+    value: 'tab3',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '4',
+    gender: '남',
+    value: 'tab4',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '5',
+    gender: '여',
+    value: 'tab5',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '6',
+    gender: '여',
+    value: 'tab6',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '7',
+    gender: '남',
+    value: 'tab7',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '8',
+    gender: '남',
+    value: 'tab8',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '9',
+    gender: '여',
+    value: 'tab9',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '10',
+    gender: '남',
+    value: 'tab10',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '11',
+    gender: '여',
+    value: 'tab11',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '12',
+    gender: '남',
+    value: 'tab12',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '13',
+    gender: '남',
+    value: 'tab13',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '14',
+    gender: '여',
+    value: 'tab14',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+  {
+    name: '반짝빛나리반짝빛나리',
+    age: '15',
+    gender: '남',
+    value: 'tab15',
+    info: [
+      '추가정보1',
+      '추가정보2',
+      '추가정보3',
+      '추가정보4',
+      '추가정보5',
+      '추가정보6',
+      '추가정보7',
+      '추가정보8',
+      '추가정보9',
+    ],
+  },
+];
+
 export default meta;
 type Story = StoryObj<typeof Tabs>;
 
 export const Default: Story = {
   render: (args) => {
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
+    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_1);
     return (
       <StoryWrap>
         <StoryBox>
@@ -106,7 +364,7 @@ export const Default: Story = {
           </Tabs>
         </StoryBox>
         <StoryBox>
-            ddd
+          탭2
         </StoryBox>
       </StoryWrap>
     );
@@ -119,7 +377,7 @@ export const TabsDefault: Story = {
     },
   },
   render: (args) => {
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
+    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_1);
     return (
       <Tabs
         variant="default"
@@ -155,7 +413,7 @@ export const TabsSub: Story = {
   },
   render: (args) => {
     // variant를 고정
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS);
+    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_1);
     return (
       <Tabs
         variant="sub"
@@ -191,7 +449,7 @@ export const TabsBox: Story = {
   },
   render: (args) => {
     args.variant = 'box';
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(TABS2);
+    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_2);
     return (
         <Tabs
           variant="box"
@@ -222,269 +480,17 @@ export const TabsBox: Story = {
 
 export const TabsPagination: Story = {
   render: (args) => {
-    const data = [
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '1',
-        gender: '여',
-        value: 'tab1',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '2',
-        gender: '남',
-        value: 'tab2',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '3',
-        gender: '여',
-        value: 'tab3',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '4',
-        gender: '남',
-        value: 'tab4',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '5',
-        gender: '여',
-        value: 'tab5',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '6',
-        gender: '여',
-        value: 'tab6',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '7',
-        gender: '남',
-        value: 'tab7',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '8',
-        gender: '남',
-        value: 'tab8',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '9',
-        gender: '여',
-        value: 'tab9',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '10',
-        gender: '남',
-        value: 'tab10',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '11',
-        gender: '여',
-        value: 'tab11',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '12',
-        gender: '남',
-        value: 'tab12',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '13',
-        gender: '남',
-        value: 'tab13',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '14',
-        gender: '여',
-        value: 'tab14',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-      {
-        name: '반짝빛나리반짝빛나리',
-        age: '15',
-        gender: '남',
-        value: 'tab15',
-        info: [
-          '추가정보1',
-          '추가정보2',
-          '추가정보3',
-          '추가정보4',
-          '추가정보5',
-          '추가정보6',
-          '추가정보7',
-          '추가정보8',
-          '추가정보9',
-        ],
-      },
-    ];
+    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_3);
 
     return (
       <TabHead 
-        data={data} 
-        visibleCount={4} 
-        variant="default"
+        data={visibleTabs}
+        active={active}
+        setActive={setActive}
+        removable={args.removable}
+        onRemove={handleRemove}
+        visibleCount={4}
+        variant={args.variant}
         getValue={tab => String(tab.value)}
         renderButtons={
           <Grow className="gap-1">

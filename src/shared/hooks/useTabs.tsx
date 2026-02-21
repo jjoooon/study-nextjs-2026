@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export interface BaseTab {
   value: string;
-  label: string;
+  label?: string;
 }
 
 export function useTabs<T extends BaseTab>(initialTabs: T[]) {
@@ -13,15 +13,26 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
   const [hiddenTabs, setHiddenTabs] = useState<Set<string>>(new Set());
 
   const handleRemove = (value: string) => {
-    if (tabs.length - hiddenTabs.size <= 1) return;
-    const newHidden = new Set(hiddenTabs);
-    newHidden.add(value);
-    setHiddenTabs(newHidden);
+    // 
+    // if (tabs.length - hiddenTabs.size <= 1) return;
+    // const newHidden = new Set(hiddenTabs);
+    // newHidden.add(value);
+    // setHiddenTabs(newHidden);
 
-    if (active === value) {
-      const visibleTabs = tabs.filter((tab) => !newHidden.has(tab.value));
-      setActive(visibleTabs[0]?.value || '');
-    }
+    // if (active === value) {
+    //   const visibleTabs = tabs.filter((tab) => !newHidden.has(tab.value));
+    //   setActive(visibleTabs[0]?.value || '');
+    // }
+
+    if (tabs.length <= 1) return;
+    setTabs((prev) => {
+      const next = prev.filter(tab => tab.value !== value);
+      // 삭제된 탭이 active였다면, 첫 번째 탭을 active로 설정
+      if (active === value) {
+        setActive(next[0]?.value || '');
+      }
+      return next;
+    });
   };
 
   const visibleTabs = tabs.filter((tab) => !hiddenTabs.has(tab.value));
