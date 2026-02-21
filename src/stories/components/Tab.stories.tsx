@@ -335,28 +335,42 @@ type Story = StoryObj<typeof Tabs>;
 
 export const Default: Story = {
   render: (args) => {
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_1);
+    const {
+      tabs: tabs1,
+      active: active1,
+      setActive: setActive1,
+      handleRemove: handleRemove1,
+      visibleTabs: visibleTabs1,
+    } = useTabs(DATA_TABS_1);
+
+    const {
+      tabs: tabs3,
+      active: active3,
+      setActive: setActive3,
+      handleRemove: handleRemove3,
+      visibleTabs: visibleTabs3,
+    } = useTabs(DATA_TABS_3);
     return (
       <StoryWrap>
         <StoryBox>
           <Tabs
             variant={args.variant}
             removable={args.removable}
-            onRemove={handleRemove}
-            value={active}
-            onValueChange={setActive}
+            onRemove={handleRemove1}
+            value={active1}
+            onValueChange={setActive1}
             className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
           >
             <TabsLine>
               <TabsList>
-                {visibleTabs.map((tab) => (
+                {visibleTabs1.map((tab) => (
                   <TabsTrigger value={tab.value} key={tab.value}>
                     {tab.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </TabsLine>
-            {visibleTabs.map((tab) => (
+            {visibleTabs1.map((tab) => (
               <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
                 {tab.label}
               </TabsContent>
@@ -364,7 +378,66 @@ export const Default: Story = {
           </Tabs>
         </StoryBox>
         <StoryBox>
-          탭2
+          <TabHead 
+            data={visibleTabs3}
+            active={active3}
+            setActive={setActive3}
+            removable={args.removable}
+            onRemove={handleRemove3}
+            visibleCount={4}
+            variant={args.variant}
+            getValue={tab => String(tab.value)}
+            renderButtons={
+              <Grow className="gap-1">
+                <Button variant="outlined" color="gray" size="md">
+                  버튼1 
+                </Button>
+                <Button variant="outlined" color="gray" size="md">
+                  버튼2
+                </Button>
+              </Grow>
+            }
+            renderTab={tab => (
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <span className="flex items-center">
+                    <span className="max-w-20 truncate block">{tab.name}</span>
+                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                  </span>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <BulletList>
+                    {tab.info.map((info, index) => (
+                      <BulletListItem key={index} type="dot">
+                        {info}
+                      </BulletListItem>
+                    ))}
+                  </BulletList>
+                </HoverCardContent>
+              </HoverCard>
+            )}
+            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
+              <Button
+                variant="text"
+                key={String(tab.value)}
+                onClick={() => {
+                  setActive(String(tab.value));
+                  const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                  if (idx !== -1) {
+                    const page = Math.floor(idx / visibleCount);
+                    setVisibleStart(page * visibleCount);
+                  }
+                }}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="block">{tab.name}</span>
+                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                </span>
+              </Button>
+            )}
+          >
+            내용
+          </TabHead>
         </StoryBox>
       </StoryWrap>
     );

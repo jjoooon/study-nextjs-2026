@@ -214,7 +214,7 @@ const TabsLine = React.forwardRef<
   }
 >(({ className, borderColor = 'border-[#FF5C2E]', children, ...props }, ref) => {
   const { variant } = useTabsContext();
-  const style = variant === 'box' ? 'border-none' : 'border-b-[.1rem]';
+  const style = variant === 'box' ? 'border-none rounded-[0.8rem]' : 'border-b-[.1rem]';
   return (
     <div
       data-tabs="tablist-wrap"
