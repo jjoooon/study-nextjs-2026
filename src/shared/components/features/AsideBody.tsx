@@ -22,7 +22,7 @@ export default function AsideBody() {
         <TabsContent value="info" className="w-full h-full relative">
           <LayoutScrollWrap>
             <LayoutScrollItem>
-              <Gcol className="gap-2 w-full" placement="ss">
+              <Gcol className="gap-2 w-full pb-[16rem]" placement="ss">
                 <section className="w-full">
                   <Grow className="gap-2" placement="bwc">
                     <Typo variant="heading-md">인수지침 점검</Typo>
