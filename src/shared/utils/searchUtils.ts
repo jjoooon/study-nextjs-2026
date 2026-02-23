@@ -1,7 +1,6 @@
 /**
  * 검색 유틸리티
  * - 한글 초성 검색
- * - Fuzzy 매칭 지원
  * - 텍스트 하이라이팅
  */
 
@@ -35,6 +34,7 @@ const CHOSUNG = [
  * @example
  * getChosung('사망후유') // 'ㅅㅎㅎㅇ'
  * getChosung('3대진단') // '3ㄷㅈㄷ'
+ * getChosung('형 한') // 'ㅎ ㅎ' (공백 유지)
  */
 export const getChosung = (text: string): string => {
   const result: string[] = [];
@@ -56,103 +56,102 @@ export const getChosung = (text: string): string => {
 };
 
 /**
- * 검색어가 초성으로만 구성되어 있는지 확인
+ * 검색어가 초성 검색이 필요한지 확인 (공백, 영문 허용)
  * @param query 검색어
  * @returns 초성 쿼리 여부
  *
  * @example
  * isChosungQuery('ㅅㅎㅎㅇ') // true
+ * isChosungQuery('ㅅㅎ ㅎㅇ') // true (공백 허용)
+ * isChosungQuery('DBㅅㅎㅂㅎ') // true (영문+초성 허용)
  * isChosungQuery('사망') // false
  */
 export const isChosungQuery = (query: string): boolean => {
-  const chosungPattern = /^[ㄱ-ㅎ|]+$/;
-  return chosungPattern.test(query);
+  // 한글 완성형 문자가 없으면 초성 검색으로 처리
+  const hasCompleteHangul = /[가-힣]/.test(query);
+  return !hasCompleteHangul && query.length > 0;
 };
 
 /**
- * 텍스트의 초성이 검색어와 매칭되는지 확인
+ * 텍스트의 초성이 검색어와 매칭되는지 확인 (정확한 일치)
  * @param text 검색 대상 텍스트
  * @param chosungQuery 초성 검색어
  * @returns 매칭 여부
  *
  * @example
- * matchesChosung('사망후유', 'ㅅㅎㅎㅇ') // true
- * matchesChosung('가입금액', 'ㄱㅇ') // true
+ * matchesChosung('사망후유', 'ㅅㅎ') // true
+ * matchesChosung('사망후유', 'ㅅ ㅎ') // false
  */
 export const matchesChosung = (text: string, chosungQuery: string): boolean => {
-  return findChosungMatchIndices(text, chosungQuery).length > 0;
+  const textChosung = getChosung(text);
+  return textChosung.includes(chosungQuery);
 };
 
 /**
- * 초성 검색어에 매칭되는 문자의 인덱스를 찾음
+ * 초성 검색어에 매칭되는 문자의 인덱스를 찾음 (정확한 일치, 공백 포함, 대소문자 무시)
  * @param text 검색 대상 텍스트
  * @param chosungQuery 초성 검색어
- * @param fuzzy 비연속 매칭 허용 여부 (기본값: true)
  * @returns 매칭되는 문자의 인덱스 배열
  *
  * @example
- * findChosungMatchIndices('사망후유', 'ㅅㅎ', true) // [0, 2] - fuzzy 허용
- * findChosungMatchIndices('사망후유', 'ㅅㅎ', false) // [0, 1] - 연속만
- * findChosungMatchIndices('가입금액', 'ㄱㅇ') // [0, 1]
+ * findChosungMatchIndices('사망후유', 'ㅅㅎ') // [0, 1]
+ * findChosungMatchIndices('비갱신형 한국...', 'ㅎ ㅎ') // [3, 5] - '형', '한'
+ * findChosungMatchIndices('DB손해보험 해외여행보험', 'ㅎ ㅎ') // [마지막-1, 마지막-5] - '험', '해'
+ * findChosungMatchIndices('DB손해보험', 'dbㅅㅎㅂㅎ') // [0, 1, 2, 3, 4] - 'DB손해보험' 전체
  */
-export const findChosungMatchIndices = (text: string, chosungQuery: string, fuzzy: boolean = true): number[] => {
-  const indices: number[] = [];
-  let queryIndex = 0;
+export const findChosungMatchIndices = (text: string, chosungQuery: string): number[] => {
+  const textChosung = getChosung(text);
+  const matchIndex = textChosung.toLowerCase().indexOf(chosungQuery.toLowerCase());
 
-  for (let i = 0; i < text.length && queryIndex < chosungQuery.length; i++) {
+  if (matchIndex === -1) return [];
+
+  const indices: number[] = [];
+
+  // 초성 문자열과 동일한 인덱스 구조로 위치 매핑 생성
+  type CharPosition = { chosungIndex: number; textIndex: number; isHangul: boolean };
+  const positions: CharPosition[] = [];
+  let chosungIndex = 0;
+
+  for (let i = 0; i < text.length; i++) {
     const char = text[i];
     const code = char.charCodeAt(0);
+    const isHangul = code >= 0xac00 && code <= 0xd7a3;
 
-    // ASCII 빠른 패스 (비한글 문자 스킵)
-    if (code < 0xac00 || code > 0xd7a3) continue;
-
-    // 한글 초성 매칭
-    const startIndex = Math.floor((code - 0xac00) / 28 / 21);
-    if (CHOSUNG[startIndex] === chosungQuery[queryIndex]) {
-      indices.push(i);
-      queryIndex++;
-
-      // 연속 매칭만 허용하는 경우, 다음 문자가 바로 매칭되지 않으면 중단
-      if (!fuzzy && queryIndex < chosungQuery.length) {
-        const nextChar = text[i + 1];
-        if (nextChar) {
-          const nextCode = nextChar.charCodeAt(0);
-          if (nextCode >= 0xac00 && nextCode <= 0xd7a3) {
-            const nextStartIndex = Math.floor((nextCode - 0xac00) / 28 / 21);
-            if (CHOSUNG[nextStartIndex] !== chosungQuery[queryIndex]) {
-              return [];
-            }
-          }
-        }
-      }
+    // 한글, 공백, 영문만 포함 (초성 변환 결과와 동일하게)
+    if (isHangul || char === ' ' || (code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
+      positions.push({ chosungIndex, textIndex: i, isHangul });
+      chosungIndex++;
     }
   }
 
-  // 전체 검색어가 매칭된 경우에만 반환
-  return queryIndex === chosungQuery.length ? indices : [];
+  // 매칭된 구간의 모든 문자 인덱스 수집 (영문, 한글 모두)
+  for (let j = 0; j < chosungQuery.length; j++) {
+    const pos = positions[matchIndex + j];
+    if (pos) {
+      indices.push(pos.textIndex);
+    }
+  }
+
+  return indices;
 };
 
 /**
  * 하이라이팅 정보를 반환
  * @param text 하이라이팅할 텍스트
  * @param query 검색어
- * @param fuzzy 초성 검색 시 fuzzy 매칭 허용 여부 (기본값: true)
  * @returns 하이라이팅 구간 배열 {text, highlight}
  *
  * @example
- * getHighlightRanges('사망후유', 'ㅅㅎㅎㅇ') // [{text: '사망후유', highlight: true}]
+ * getHighlightRanges('사망후유', 'ㅅㅁㅎㅇ') // [{text: '사망후유', highlight: true}]
  * getHighlightRanges('AXA손해보험', 'ㅅㅎ') // [{text: 'AXA', highlight: false}, {text: '손해', highlight: true}, {text: '보험', highlight: false}]
+ * getHighlightRanges('Hello World', 'ello') // [{text: 'H', highlight: false}, {text: 'ello', highlight: true}, {text: ' World', highlight: false}]
  */
-export const getHighlightRanges = (
-  text: string,
-  query: string,
-  fuzzy: boolean = true
-): Array<{ text: string; highlight: boolean }> => {
+export const getHighlightRanges = (text: string, query: string): Array<{ text: string; highlight: boolean }> => {
   if (!query.trim()) return [{ text, highlight: false }];
 
-  // 초성 검색인 경우
+  // 초성 검색인 경우 (정확한 초성 일치)
   if (isChosungQuery(query)) {
-    const matchIndices = findChosungMatchIndices(text, query, fuzzy);
+    const matchIndices = findChosungMatchIndices(text, query);
 
     if (matchIndices.length === 0) return [{ text, highlight: false }];
 
@@ -190,7 +189,7 @@ export const getHighlightRanges = (
     return result;
   }
 
-  // 일반 텍스트 검색인 경우 (최적화: 단일 패스 매칭)
+  // 일반 텍스트 검색인 경우 (정확한 부분 문자열 일치, 띄어쓰기 포함)
   const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(`(${escapedQuery})`, 'gi');
   const result: Array<{ text: string; highlight: boolean }> = [];
