@@ -177,6 +177,8 @@
 .ag-row-hover .ag-cell-focus,
 .ag-row-hover {
   background-color: var(--color-table-td-surface-hover) !important;
+}
+.ag-row-hover {
   cursor: pointer;
 }
 
