@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
 import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
 import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
-import { isChosungQuery, matchesChosung } from '@/shared/utils/hangulUtils';
+import { findChosungMatchIndices, getHighlightRanges, isChosungQuery } from '@/shared/utils/hangulUtils';
 
 // AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -34,24 +34,6 @@ interface InsPlanCovData {
   isHighlighted?: boolean;
   selected?: boolean;
 }
-
-// Utils
-const highlightText = (text: string, query: string): React.ReactNode => {
-  if (!query.trim()) return text;
-
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  const parts = text.split(regex);
-
-  return parts.map((part, index) =>
-    regex.test(part) ? (
-      <mark key={index} className="bg-yellow-200 text-black rounded px-0.5">
-        {part}
-      </mark>
-    ) : (
-      part
-    )
-  );
-};
 
 // Components
 interface ProductNameHeaderProps {
@@ -122,7 +104,10 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
 
       // 초성 검색 (한글 텍스트에 대해서만 수행)
       if (isChosung) {
-        return matchesChosung(item.productCode, searchQuery) || matchesChosung(item.productName, searchQuery);
+        return (
+          findChosungMatchIndices(item.productCode, searchQuery).length > 0 ||
+          findChosungMatchIndices(item.productName, searchQuery).length > 0
+        );
       }
 
       return false;
@@ -142,7 +127,20 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
 
   const productNameRenderer = useCallback(
     (params: ICellRendererParams<InsPlanCovData>) => {
-      return <span>{highlightText(params.data?.productName || '', searchQuery)}</span>;
+      const ranges = getHighlightRanges(params.data?.productName || '', searchQuery);
+      return (
+        <span>
+          {ranges.map((range, index) =>
+            range.highlight ? (
+              <mark key={index} className="bg-yellow-200 text-black rounded">
+                {range.text}
+              </mark>
+            ) : (
+              range.text
+            )
+          )}
+        </span>
+      );
     },
     [searchQuery]
   );
