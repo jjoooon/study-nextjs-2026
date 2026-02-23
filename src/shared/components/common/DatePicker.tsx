@@ -447,7 +447,7 @@ export function DatePickerInput({
           <Button
             id={`${finalId}-button`}
             variant="none"
-            size="icon-md"
+            only="icon" size="md"
             color="primary"
             aria-label="Select date"
             className={buttonSizeClass}

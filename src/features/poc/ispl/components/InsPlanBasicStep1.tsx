@@ -39,7 +39,7 @@ export function InsPlanBasicStep1({ currentData, testError, handleChange }: InsP
                   errorPs="bl"
                   onChange={(e) => handleChange('name', e.target.value)}
                 />
-                <Button aria-label="계약자 추가" variant="none" size="icon-md">
+                <Button aria-label="계약자 추가" variant="none" only="icon" size="md">
                   <SearchIcon />
                 </Button>
               </FormItem>

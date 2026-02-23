@@ -134,7 +134,7 @@ export function InsPlanListDep1({ data, selectedPlanId: _selectedPlanId, onSelec
               size="sm"
               className="flex-1"
             />
-            <Button variant="none" aria-label="고객명 검색" size="icon-sm">
+            <Button variant="none" aria-label="고객명 검색" only="icon" size="sm">
               <SearchIcon />
             </Button>
           </Grow>

@@ -53,7 +53,7 @@ export default function PageHead({ data }: PageHeadData) {
         </Grow>
         <Grow className="gap-1">
           <ZoomControl />
-          <Button variant="none" size="icon-md">
+          <Button variant="none" only="icon" size="md">
             <CloseIcon />
           </Button>
         </Grow>
@@ -104,7 +104,7 @@ export default function PageHead({ data }: PageHeadData) {
                     width="lg"
                     onChange={(e) => setContractHolder(e.target.value)}
                   />
-                  <Button variant="outlined" color="gray-light" aria-label="계약자 추가" size="icon-lg">
+                  <Button variant="outlined" color="gray-light" aria-label="계약자 추가" only="icon" size="lg">
                     <SearchIcon color="var(--color-primary-50)" />
                   </Button>
                 </FormItem>

@@ -26,7 +26,7 @@ export default function AsideBody() {
                 <section className="w-full">
                   <Grow className="gap-2" placement="bwc">
                     <Typo variant="heading-md">인수지침 점검</Typo>
-                    <Button variant="none" size="icon-sm">
+                    <Button variant="none" only="icon" size="sm">
                       <NewPopupIcon />
                     </Button>
                   </Grow>
@@ -34,7 +34,7 @@ export default function AsideBody() {
                 <section className="w-full">
                   <Grow className="gap-2" placement="bwc">
                     <Typo variant="heading-md">간편설계 계약정보</Typo>
-                    <Button variant="none" size="icon-sm">
+                    <Button variant="none" only="icon" size="sm">
                       <NewPopupIcon />
                     </Button>
                   </Grow>

@@ -10,7 +10,7 @@ export function QuickLinks() {
     <Gcol className="w-full gap-1">
       <Grow className="gap-2" placement="bwc">
         <Typo variant="heading-md">바로가기</Typo>
-        <Button variant="none" size="icon-sm">
+        <Button variant="none" only="icon" size="sm">
           <SettingIcon color="var(--color-secondary-50)" />
         </Button>
       </Grow>

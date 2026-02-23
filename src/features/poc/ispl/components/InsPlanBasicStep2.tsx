@@ -100,7 +100,7 @@ export function InsPlanBasicStep2({
                           value={currentInsured?.name || ''}
                           onChange={(e) => handleInsuredChange(index, 'name', e.target.value)}
                         />
-                        <Button aria-label="피보험자 검색" variant="none" size="icon-md">
+                        <Button aria-label="피보험자 검색" variant="none" only="icon" size="md">
                           <SearchIcon />
                         </Button>
                       </FormItem>

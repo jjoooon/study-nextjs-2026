@@ -23,6 +23,10 @@ const buttonVariants = cva(
         state:
           'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] p-x-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline',
       },
+      only: {
+        default: '',
+        icon: 'p-0! aspect-square',
+      },
       color: {
         primary: '',
         secondary: '',
@@ -37,18 +41,36 @@ const buttonVariants = cva(
         lg: `h-[2.8rem] rounded-[0.4rem] text-[1.4rem] font-normal px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
         sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
-
         xs: `h-[1.6rem] rounded-[0.3rem] text-[1.2rem] font-normal p-0 gap-[0.2rem] [&>svg]:w-[1.32rem]`,
-
-        'icon-xl': `h-[3.2rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]`,
-        'icon-lg': `h-[2.8rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.6rem]`,
-        'icon-md': `h-[2.5rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.4rem]`,
-        'icon-sm': `h-[2.2rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]`,
-
-        'icon-xs': `h-[1.6rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]`,
       },
     },
     compoundVariants: [
+      {
+        only: 'icon',
+        size: 'xl',
+        className: 'min-w-[0]! h-[3.2rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
+      },
+      {
+        only: 'icon',
+        size: 'lg',
+        className: 'h-[2.8rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
+      },
+      {
+        only: 'icon',
+        size: 'md',
+        className: 'h-[2.5rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.4rem]',
+      },
+      {
+        only: 'icon',
+        size: 'sm',
+        className: 'h-[2.2rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]',
+      },
+      {
+        only: 'icon',
+        size: 'xs',
+        className: 'h-[1.6rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]',
+      },
+
       {
         variant: 'contained',
         color: 'primary',
@@ -300,6 +322,7 @@ const buttonVariants = cva(
       variant: 'contained',
       color: 'primary',
       size: 'md',
+      only: 'default',
     },
   }
 );
@@ -309,13 +332,14 @@ interface UIButtonProps
   variant?: VariantProps<typeof buttonVariants>['variant'];
   color?: VariantProps<typeof buttonVariants>['color'];
   size?: VariantProps<typeof buttonVariants>['size'];
+  only?: VariantProps<typeof buttonVariants>['only'];
   children?: React.ReactNode;
   asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
   (
-    { children, variant = 'contained', color = 'primary', size = 'md', className, asChild = false, type, ...props },
+    { children, variant = 'contained', color = 'primary', size = 'md', className, asChild = false, only = 'default', type, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button';
@@ -326,7 +350,8 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
         data-slot="button"
         data-variant={variant}
         data-size={size}
-        className={cn(buttonVariants({ variant, color, size }), className)}
+        data-only={only}
+        className={cn(buttonVariants({ variant, color, size, only }), className)}
         type={Comp === 'button' ? (type ?? 'button') : undefined}
         {...props}
       >

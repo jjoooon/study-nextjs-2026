@@ -276,7 +276,7 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
                 <SearchIcon color="white" />
                 검색
               </Button>
-              <Button variant="none" color="gray" size="icon-md" onClick={() => {}} aria-label="리셋">
+              <Button variant="none" color="gray" only="icon" size="md" onClick={() => {}} aria-label="리셋">
                 <ResetIcon />
               </Button>
             </Grow>

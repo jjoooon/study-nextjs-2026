@@ -109,7 +109,7 @@ export function LTRA350MainHead({ data, categories, tags, visibleCount }: LTRA35
                 value={coverageName}
                 onChange={(e) => setCoverageName(e.target.value)}
               />
-              <Button aria-label="담보명 검색" variant="outlined" color="gray-light" size="icon-lg">
+              <Button aria-label="담보명 검색" variant="outlined" color="gray-light" only="icon" size="lg">
                 <SearchIcon color="var(--color-primary-50)" />
               </Button>
             </FormItem>

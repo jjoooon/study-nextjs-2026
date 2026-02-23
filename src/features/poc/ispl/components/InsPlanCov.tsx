@@ -87,10 +87,10 @@ const ProductNameHeader = ({ onSearch, onReset, initialValue }: ProductNameHeade
         onChange={(e) => setLocalQuery(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <Button variant="outlined" aria-label="고객명 검색" size="icon-sm" onClick={() => onSearch(localQuery)}>
+      <Button variant="outlined" aria-label="고객명 검색" only="icon" size="sm" onClick={() => onSearch(localQuery)}>
         <SearchIcon />
       </Button>
-      <Button variant="outlined" aria-label="검색 초기화" size="icon-sm" onClick={onReset}>
+      <Button variant="outlined" aria-label="검색 초기화" only="icon" size="sm" onClick={onReset}>
         <ResetIcon />
       </Button>
     </Grow>
@@ -116,7 +116,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
-      <Button aria-label="고객 추가" variant="outlined" size="icon-md" onClick={() => alert('추가')}>
+      <Button aria-label="고객 추가" variant="outlined" only="icon" size="md" onClick={() => alert('추가')}>
         <AddIcon />
       </Button>
     ) : (

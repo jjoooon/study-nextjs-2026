@@ -36,7 +36,7 @@ export function InsPlanBasic() {
             <Input type="text" aria-label="설계번호 뒷자리" width="lg" />
             <FormItem className="w-max ml-2">
               <Input type="text" aria-label="라벨명모름" defaultValue="880101-1 김한화" />
-              <Button aria-label="계약자 추가" variant="none" size="icon-md">
+              <Button aria-label="계약자 추가" variant="none" only="icon" size="md">
                 <SearchIcon />
               </Button>
             </FormItem>

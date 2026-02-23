@@ -18,7 +18,7 @@ const meta: Meta<typeof Button> = {
 사용자가 서비스를 이용하는 과정에서 어떤 행동이 중요한지에 따라 관련된 버튼이 다양한 스타일로 표현된다.
 
 - **기본 버튼** 방식과 **아이콘 버튼** 두가지로 크게 나누어진다. 
-- 스타일로는 **contained**, **outlined**, **text**, **none**, **state**가 있다.
+- 스타일로는 **contained**, **outlined**, **text**, **none** 가 있다.
 
 <br>
 #### **기본 버튼: Usage**
@@ -42,7 +42,8 @@ import { SearchIcon } from '@/shared/components/icons';
 <Button 
   variant={"contained | outlined | text | none"}
   color={"primary | secondary | gray | gray-light | success | link"}
-  size={"icon-xs | icon-sm | icon-md | icon-lg | icon-xl"}
+  size={"xl | lg | md | sm | xs"}
+  only="icon"
 >
   <SearchIcon />
 </Button>
@@ -57,7 +58,7 @@ import { Button } from "@/shared/components/uiux"
   asChild
   variant={"contained | outlined | text | none"}
   color={"primary | secondary | gray | gray-light | success | link"}
-  size={"icon-xs | icon-sm | icon-md | icon-lg | icon-xl"}
+  size={"xl | lg | md | sm | xs"}
 >
   <Link href="/login">Login</Link>
 </Button>
@@ -81,8 +82,13 @@ import { Button } from "@/shared/components/uiux"
     },
     size: {
       control: 'select',
-      options: ['xl', 'lg', 'md', 'sm', 'icon-xl', 'icon-lg', 'icon-md', 'icon-sm'],
+      options: ['xl', 'lg', 'md', 'sm'],
       description: '버튼의 크기',
+    },
+    only :{
+      control: 'select',
+      options: ['default', 'icon'],
+      description: '특정한 조건의 유형',
     },
     // asChild는 Controls에서 숨김 처리
     asChild: { table: { disable: true }, description: '자식 요소로 렌더링 여부' },
@@ -97,6 +103,7 @@ import { Button } from "@/shared/components/uiux"
     variant: 'contained',
     color: 'primary',
     size: 'xl',
+    only: 'default',
     // asChild: false, // 기본값에서 제거
     disabled: false,
   },
@@ -108,39 +115,39 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {
   render: (args) => (
     <StoryWrap className="flex-row items-stretch">
-      <StoryBox className="w-full justify-center border-[var(--color-primary-50)] border-[0.5px] rounded-md">
+      <StoryBox className="w-full flex-1 justify-center">
         <Button {...args}>{args.children}</Button> 
         <Button {...args}>{args.children}<SearchIcon /></Button> 
-        <Button {...args}><SearchIcon /></Button> 
+        <Button {...args} only="icon" ><SearchIcon /></Button> 
         <Button asChild {...args}>
-          <Link href="/login">Login</Link>
+          <Link href="/login">Link</Link>
         </Button> 
       </StoryBox>
-      <Gcol className="gap-2">
-        <StoryBox className="w-full">
-          <Grow className="gap-2" placement="bwe">
-            <Grow className="gap-1 ">
-              <Button {...args} size="xl" variant="outlined" color="gray">XL: 32</Button>
+      <Gcol className="gap-2 shrink-0">
+        <StoryBox className="w-full bg-[var(--color-gray-20)]">
+          <Grow className="gap-2 " placement="bwe">
+            <Grow className="flex-1 gap-1 h-[3.2rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
+              32
             </Grow>
-            <Grow className="gap-1">
-              <Button {...args} size="lg" variant="outlined" color="gray">LG: 28</Button>
+            <Grow className="flex-1 gap-1 h-[2.8rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
+              28
             </Grow>
-            <Grow className="gap-1">
-              <Button {...args} size="md" variant="outlined" color="gray">MD: 25</Button>
+            <Grow className="flex-1 gap-1 h-[2.5rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
+              25
             </Grow>
-            <Grow className="gap-1">
-              <Button {...args} size="sm" variant="outlined" color="gray">SM: 22</Button>
+            <Grow className="flex-1 gap-1 h-[2.2rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
+              22
             </Grow>
           </Grow>
         </StoryBox>
-        <StoryBox className="w-full gap-4 flex-wrap">
+        <StoryBox className="w-full gap-4 flex-wrap flex-col">
           <Grow className="gap-2">
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-primary-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-secondary-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-20)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-success-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-information-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-primary-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-secondary-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-20)]">T</div>
+            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-success-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-information-50)]">T</div>
           </Grow>
           <Grow className="gap-2">
             <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-primary-50)] rounded-[0.4rem] border bg-[var(--color-primary-5)] border-[var(--color-primary-50)]">T</div>

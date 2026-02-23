@@ -101,18 +101,18 @@ export function TabHead<T>({
             <Button
               variant="outlined"
               color="gray-light"
-              size="icon-md"
+              only="icon" size="md"
               onClick={handlePrev}
               disabled={visibleStart === 0}
             >
               <ArrowLightIcon className="rotate-180" />
             </Button>
-            <Button variant="outlined" color="gray-light" size="icon-md" onClick={handleNext} disabled={isLastPage}>
+            <Button variant="outlined" color="gray-light" only="icon" size="md" onClick={handleNext} disabled={isLastPage}>
               <ArrowLightIcon />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outlined" color="gray-light" size="icon-md">
+                <Button variant="outlined" color="gray-light" only="icon" size="md">
                   <ListIcon />
                 </Button>
               </DropdownMenuTrigger>

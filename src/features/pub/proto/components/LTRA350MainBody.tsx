@@ -88,7 +88,7 @@ export function LTRA350MainBody({
         <Button
           aria-label="고객 추가"
           variant="outlined"
-          size="icon-sm"
+          only="icon" size="sm"
           color="gray-light"
           onClick={() => alert('추가')}
         >
