@@ -6498,5 +6498,18 @@
     "paymentPeriod": "20년",
     "expectedUwResult": "인수",
     "isHighlighted": false
+  },
+{
+    "id": 501,
+    "productCode": "P501",
+    "isDuplicate": true,
+    "productName": "보통약관(상해(간편))",
+    "coverageAmount": 280000000,
+    "premium": 100000,
+    "availableAmount": 840000000,
+    "expiryPeriod": "85세",
+    "paymentPeriod": "20년",
+    "expectedUwResult": "인수",
+    "isHighlighted": false
   }
 ]

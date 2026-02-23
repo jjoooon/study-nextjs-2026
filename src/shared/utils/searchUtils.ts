@@ -110,19 +110,12 @@ export const findChosungMatchIndices = (text: string, chosungQuery: string): num
 
   // 단일 순회로 매칭된 인덱스 추적 (positions 배열 제거로 성능 개선)
   for (let i = 0; i < text.length && matchedCount < queryLen; i++) {
-    const char = text[i];
-    const code = char.charCodeAt(0);
-    const isHangul = code >= 0xac00 && code <= 0xd7a3;
-    const isEnglish = (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
-
-    // 한글, 공백, 영문만 카운트 (getChosung 결과와 동일하게)
-    if (isHangul || char === ' ' || isEnglish) {
-      if (chosungIndex >= matchIndex && matchedCount < queryLen) {
-        indices.push(i);
-        matchedCount++;
-      }
-      chosungIndex++;
+    // getChosung는 모든 문자를 반환하므로, 모든 문자를 카운트해야 인덱스 매핑이 정확함
+    if (chosungIndex >= matchIndex && matchedCount < queryLen) {
+      indices.push(i);
+      matchedCount++;
     }
+    chosungIndex++; // 모든 문자를 카운트 (getChosung 동작과 동일하게)
   }
 
   // 정확히 매칭된 경우에만 반환
@@ -163,7 +156,7 @@ export const getHighlightRanges = (text: string, query: string): Array<{ text: s
       }
 
       // 연속된 구간 찾기
-      let endIndex = startIndex;
+      let endIndex = startIndex확하
       while (i + 1 < matchIndices.length && matchIndices[i + 1] === endIndex + 1) {
         i++;
         endIndex = matchIndices[i];
