@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
 import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
 import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
-import { findChosungMatchIndices, getHighlightRanges, isChosungQuery } from '@/shared/utils/hangulUtils';
+import { findChosungMatchIndices, getHighlightRanges, isChosungQuery } from '@/shared/utils/searchUtils';
 
 // AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);

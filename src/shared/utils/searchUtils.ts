@@ -1,5 +1,8 @@
 /**
- * 한글 처리 유틸리티
+ * 검색 유틸리티
+ * - 한글 초성 검색
+ * - Fuzzy 매칭 지원
+ * - 텍스트 하이라이팅
  */
 
 const CHOSUNG = [
@@ -93,11 +96,7 @@ export const matchesChosung = (text: string, chosungQuery: string): boolean => {
  * findChosungMatchIndices('사망후유', 'ㅅㅎ', false) // [0, 1] - 연속만
  * findChosungMatchIndices('가입금액', 'ㄱㅇ') // [0, 1]
  */
-export const findChosungMatchIndices = (
-  text: string,
-  chosungQuery: string,
-  fuzzy: boolean = true
-): number[] => {
+export const findChosungMatchIndices = (text: string, chosungQuery: string, fuzzy: boolean = true): number[] => {
   const indices: number[] = [];
   let queryIndex = 0;
 
