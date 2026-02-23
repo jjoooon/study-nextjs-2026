@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
 import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
 import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { findChosungMatchIndices, getHighlightRanges, isChosungQuery } from '@/shared/utils/searchUtils';
 
 // AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -33,24 +34,6 @@ interface InsPlanCovData {
   isHighlighted?: boolean;
   selected?: boolean;
 }
-
-// Utils
-const highlightText = (text: string, query: string): React.ReactNode => {
-  if (!query.trim()) return text;
-
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  const parts = text.split(regex);
-
-  return parts.map((part, index) =>
-    regex.test(part) ? (
-      <mark key={index} className="bg-yellow-200 text-black rounded px-0.5">
-        {part}
-      </mark>
-    ) : (
-      part
-    )
-  );
-};
 
 // Components
 interface ProductNameHeaderProps {
@@ -103,14 +86,32 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
   const [searchQuery, setSearchQuery] = useState('');
 
   // 검색어로 데이터 필터링 (메모이제이션으로 성능 최적화)
+  // data prop의 참조가 변경되지 않았다면 같은 배열 참조 반환
   const filteredData = useMemo(() => {
     if (!searchQuery.trim()) return data;
 
     const lowerQuery = searchQuery.toLowerCase();
-    return data.filter(
-      (item) =>
-        item.productCode.toLowerCase().includes(lowerQuery) || item.productName.toLowerCase().includes(lowerQuery)
-    );
+    const isChosung = isChosungQuery(searchQuery);
+
+    return data.filter((item) => {
+      const productCodeLower = item.productCode.toLowerCase();
+      const productNameLower = item.productName.toLowerCase();
+
+      // 기본 문자열 포함 검색
+      if (productCodeLower.includes(lowerQuery) || productNameLower.includes(lowerQuery)) {
+        return true;
+      }
+
+      // 초성 검색 (한글 텍스트에 대해서만 수행)
+      if (isChosung) {
+        return (
+          findChosungMatchIndices(item.productCode, searchQuery).length > 0 ||
+          findChosungMatchIndices(item.productName, searchQuery).length > 0
+        );
+      }
+
+      return false;
+    });
   }, [data, searchQuery]);
 
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
@@ -126,7 +127,20 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
 
   const productNameRenderer = useCallback(
     (params: ICellRendererParams<InsPlanCovData>) => {
-      return <span>{highlightText(params.data?.productName || '', searchQuery)}</span>;
+      const ranges = getHighlightRanges(params.data?.productName || '', searchQuery);
+      return (
+        <span>
+          {ranges.map((range, index) =>
+            range.highlight ? (
+              <mark key={index} className="bg-yellow-200 text-black rounded">
+                {range.text}
+              </mark>
+            ) : (
+              range.text
+            )
+          )}
+        </span>
+      );
     },
     [searchQuery]
   );
@@ -340,12 +354,22 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                   ref={gridRef}
                   rowData={filteredData}
                   columnDefs={columnDefs}
+                  // 성능 최적화 옵션
+                  animateRows={false} // 행 애니메이션 비활성화 (스크롤 성능 향상)
                   suppressRowHoverHighlight={false}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
                   tooltipMouseTrack={true}
+                  // 스크롤 성능 최적화
+                  rowBuffer={10} // 뷰포트 외부에 렌더링할 행 수 제한 (기본값: 20)
+                  suppressColumnVirtualisation={false} // 컬럼 가상화 활성화
+                  suppressDragLeaveHidesColumns={true} // 드래그 시 컬럼 숨김 방지
+                  enableCellTextSelection={true} // 셀 텍스트 선택 활성화 (렌더링 최적화)
+                  suppressCellFocus={false} // 셀 포커스 표시 (필요시 false로 변경)
+                  // 행 스타일
                   getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+                  // 행 선택 설정
                   rowSelection={{
                     mode: 'multiRow',
                     checkboxes: true,
