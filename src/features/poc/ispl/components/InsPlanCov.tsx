@@ -103,6 +103,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
   const [searchQuery, setSearchQuery] = useState('');
 
   // 검색어로 데이터 필터링 (메모이제이션으로 성능 최적화)
+  // data prop의 참조가 변경되지 않았다면 같은 배열 참조 반환
   const filteredData = useMemo(() => {
     if (!searchQuery.trim()) return data;
 
@@ -340,12 +341,22 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                   ref={gridRef}
                   rowData={filteredData}
                   columnDefs={columnDefs}
+                  // 성능 최적화 옵션
+                  animateRows={false} // 행 애니메이션 비활성화 (스크롤 성능 향상)
                   suppressRowHoverHighlight={false}
                   singleClickEdit={true}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}
                   tooltipMouseTrack={true}
+                  // 스크롤 성능 최적화
+                  rowBuffer={10} // 뷰포트 외부에 렌더링할 행 수 제한 (기본값: 20)
+                  suppressColumnVirtualisation={false} // 컬럼 가상화 활성화
+                  suppressDragLeaveHidesColumns={true} // 드래그 시 컬럼 숨김 방지
+                  enableCellTextSelection={true} // 셀 텍스트 선택 활성화 (렌더링 최적화)
+                  suppressCellFocus={false} // 셀 포커스 표시 (필요시 false로 변경)
+                  // 행 스타일
                   getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+                  // 행 선택 설정
                   rowSelection={{
                     mode: 'multiRow',
                     checkboxes: true,
