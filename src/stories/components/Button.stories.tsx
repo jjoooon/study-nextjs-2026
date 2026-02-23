@@ -3,6 +3,7 @@ import { SearchIcon } from '@/shared/components/icons';
 import { Button } from '@/shared/components/uiux/Button';
 import { Grow,FormTable,FormRow,FormCell  } from '@/shared/components/common';
 import Link from "next/link"
+import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/UIUX/Button',
@@ -48,15 +49,17 @@ type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
   render: (args) => (
-    <Grow placement="sc" className='gap-3 flex-wrap bg-[var(--color-gray-5)] p-6'>
-      <Button {...args}>{args.children}</Button> 
-      <Button {...args}><SearchIcon />{args.children}</Button> 
-      <Button {...args}><SearchIcon /></Button> 
+    <StoryWrap>
+      <StoryBox>
+        <Button {...args}>{args.children}</Button> 
+        <Button {...args}><SearchIcon />{args.children}</Button> 
+        <Button {...args}><SearchIcon /></Button> 
 
-      <Button asChild {...args}>
-        <Link href="/login">Link - {args.children}</Link>
-      </Button>
-    </Grow>
+        <Button asChild {...args}>
+          <Link href="/login">Link - {args.children}</Link>
+        </Button>
+      </StoryBox>
+    </StoryWrap>
   ),
 };
 

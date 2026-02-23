@@ -154,7 +154,7 @@ function Input({
           className={cn(
             variantStyles[variant],
             className,
-            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem]'
+            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]'
           )}
           style={inlineWidthStyle}
         >
