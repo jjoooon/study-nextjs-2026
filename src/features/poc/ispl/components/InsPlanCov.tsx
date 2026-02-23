@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
 import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
 import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { isChosungQuery, matchesChosung } from '@/shared/utils/hangulUtils';
 
 // AG Grid 모듈 등록
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -108,10 +109,24 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
     if (!searchQuery.trim()) return data;
 
     const lowerQuery = searchQuery.toLowerCase();
-    return data.filter(
-      (item) =>
-        item.productCode.toLowerCase().includes(lowerQuery) || item.productName.toLowerCase().includes(lowerQuery)
-    );
+    const isChosung = isChosungQuery(searchQuery);
+
+    return data.filter((item) => {
+      const productCodeLower = item.productCode.toLowerCase();
+      const productNameLower = item.productName.toLowerCase();
+
+      // 기본 문자열 포함 검색
+      if (productCodeLower.includes(lowerQuery) || productNameLower.includes(lowerQuery)) {
+        return true;
+      }
+
+      // 초성 검색 (한글 텍스트에 대해서만 수행)
+      if (isChosung) {
+        return matchesChosung(item.productCode, searchQuery) || matchesChosung(item.productName, searchQuery);
+      }
+
+      return false;
+    });
   }, [data, searchQuery]);
 
   const duplicateRenderer = useCallback((params: ICellRendererParams<InsPlanCovData>) => {
