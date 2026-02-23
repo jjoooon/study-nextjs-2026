@@ -5,8 +5,8 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const buttonVariants = cva(
-  `inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none select-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
-  disabled:pointer-events-none disabled:opacity-50 
+  `relative inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none select-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
+  disabled:pointer-events-none disabled:opacity-100 
   focus-visible:ring-2 focus-visible:ring-offset-2 
   has-[>svg]:inline-flex has-[>svg]:items-center has-[>svg]:justify-center`,
   {
@@ -33,17 +33,19 @@ const buttonVariants = cva(
         transparent: `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
-        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 min-w-[8rem] gap-1`,
-        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.4rem] font-normal px-2.5 gap-1`,
-        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal px-1.5 gap-[0.2rem]`,
-        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`,
-        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.2rem] font-normal p-0 gap-[0.2rem]`,
+        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 [&>svg]:w-[1.6rem] min-w-[8rem] `,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.4rem] font-normal px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
+        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
+        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
 
-        'icon-xl': `h-[3.2rem] rounded-[0.6rem] px-0 aspect-square`,
-        'icon-lg': `h-[2.8rem] rounded-[0.4rem] px-0 aspect-square`,
-        'icon-md': `h-[2.5rem] rounded-[0.4rem] px-0 aspect-square`,
-        'icon-sm': `h-[2.2rem] rounded-[0.3rem] px-0 aspect-square`,
-        'icon-xs': `h-[1.6rem] rounded-[0.3rem] px-0 aspect-square`,
+        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.2rem] font-normal p-0 gap-[0.2rem] [&>svg]:w-[1.32rem]`,
+
+        'icon-xl': `h-[3.2rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]`,
+        'icon-lg': `h-[2.8rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.6rem]`,
+        'icon-md': `h-[2.5rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.4rem]`,
+        'icon-sm': `h-[2.2rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]`,
+
+        'icon-xs': `h-[1.6rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]`,
       },
     },
     compoundVariants: [
@@ -60,9 +62,9 @@ const buttonVariants = cva(
         focus-visible:ring-[var(--color-primary-60)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)]
-        disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-gray-20)]
-        disabled:border-[var(--color-gray-20)]`,
+        disabled:text-[var(--color-gray-30)]
+        disabled:bg-[var(--color-gray-5)]
+        disabled:border-[var(--color-gray-10)]!`,
       },
       {
         variant: 'contained',
@@ -138,6 +140,7 @@ const buttonVariants = cva(
         className: `border border-[var(--color-secondary-50)] 
         bg-[var(--color-secondary-50)] 
         text-[var(--color-gray-0)] 
+        font-bold
         hover:bg-[var(--color-secondary-70)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
@@ -201,7 +204,19 @@ const buttonVariants = cva(
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-primary-50)]`,
       },
-
+      {
+        variant: 'outlined',
+        color: 'secondary',
+        className: `border border-[var(--color-secondary-50)] 
+        bg-[var(--color-gray-0)] 
+        text-[var(--color-secondary-50)] 
+        hover:bg-[var(--color-secondary-5)] 
+        hover:border-dashed 
+        hover:border-[var(--color-secondary-50)] 
+        focus-visible:ring-[var(--color-secondary-5)] 
+        focus-visible:border-dashed 
+        focus-visible:border-[var(--color-secondary-50)]`,
+      },
       {
         variant: 'outlined',
         color: 'gray',
@@ -241,6 +256,19 @@ const buttonVariants = cva(
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-success-60)]`,
       },
+      {
+        variant: 'outlined',
+        color: 'link',
+        className: `border border-[var(--color-information-60)] 
+        bg-[var(--color-gray-0)] 
+        text-[var(--color-information-50)] 
+        hover:bg-[var(--color-information-5)] 
+        hover:border-dashed 
+        hover:border-[var(--color-information-50)] 
+        focus-visible:ring-[var(--color-information-5)] 
+        focus-visible:border-dashed 
+        focus-visible:border-[var(--color-information-100)]`,
+      },
 
       {
         variant: 'text',
@@ -254,8 +282,18 @@ const buttonVariants = cva(
       },
       {
         variant: 'text',
+        color: 'gray',
+        className: `text-[var(--color-secondary-70)]`,
+      },
+      {
+        variant: 'text',
+        color: 'gray-light',
+        className: `text-[var(--color-secondary-70)]`,
+      },
+      {
+        variant: 'text',
         color: 'link',
-        className: `text-[var(--color-primary-50)]`,
+        className: `text-[var(--color-information-50)]`,
       },
     ],
     defaultVariants: {

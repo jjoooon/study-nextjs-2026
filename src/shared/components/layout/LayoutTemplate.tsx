@@ -57,16 +57,16 @@ export const LayoutTemplateA = ({
           <LayoutMain>
             <LayoutMainBody>{mainBody}</LayoutMainBody>
           </LayoutMain>
+          {!hideAside && (
           <LayoutAside>
             <LayoutAsideBody>{asideBody}</LayoutAsideBody>
           </LayoutAside>
+          )}
         </LayoutFolderBody>
 
         <LayoutFolderFoot className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
           <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
-          {!hideAside && (
-            <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
-          )}
+          <LayoutAsideFoot className={hideAside ? 'hide-aside' : ''}>{asideFoot}</LayoutAsideFoot>
         </LayoutFolderFoot>
       </LayoutFolder>
     </LayoutBody>

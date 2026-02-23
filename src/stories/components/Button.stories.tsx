@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SearchIcon } from '@/shared/components/icons';
 import { Button } from '@/shared/components/uiux/Button';
-import { Grow,FormTable,FormRow,FormCell  } from '@/shared/components/common';
+import { Gcol, Grow, Typo } from '@/shared/components/common';
 import Link from "next/link"
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
@@ -9,21 +9,79 @@ const meta: Meta<typeof Button> = {
   title: 'Components/UIUX/Button',
   component: Button,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `
+버튼은 어떤 기능이나 동작을 실행하거나 기능을 사용하기 위한 상태로 변경하는 요소이다.   
+사용자가 서비스를 이용하는 과정에서 어떤 행동이 중요한지에 따라 관련된 버튼이 다양한 스타일로 표현된다.
+
+- **기본 버튼** 방식과 **아이콘 버튼** 두가지로 크게 나누어진다. 
+- 스타일로는 **contained**, **outlined**, **text**, **none**, **state**가 있다.
+
+<br>
+#### **기본 버튼: Usage**
+\`\`\`tsx
+import { Button } from "@/shared/components/uiux"
+
+<Button 
+  variant={"contained | outlined | text | none"}
+  color={"primary | secondary | gray | gray-light | success | link"}
+  size={"xl | lg | md | sm | xs"}
+>
+  //버튼이름
+</Button>
+\`\`\`
+
+#### **Only 아이콘 버튼: Usage**
+\`\`\`tsx
+import { Button } from "@/shared/components/uiux"
+import { SearchIcon } from '@/shared/components/icons';
+
+<Button 
+  variant={"contained | outlined | text | none"}
+  color={"primary | secondary | gray | gray-light | success | link"}
+  size={"icon-xs | icon-sm | icon-md | icon-lg | icon-xl"}
+>
+  <SearchIcon />
+</Button>
+\`\`\`
+
+#### **Link 버튼: Usage**
+\`\`\`tsx
+import Link from "next/link"
+import { Button } from "@/shared/components/uiux"
+
+<Button 
+  asChild
+  variant={"contained | outlined | text | none"}
+  color={"primary | secondary | gray | gray-light | success | link"}
+  size={"icon-xs | icon-sm | icon-md | icon-lg | icon-xl"}
+>
+  <Link href="/login">Login</Link>
+</Button>
+\`\`\`
+        `,
+      },
+      argTypes: { expanded: false },
+    },
+  },
   argTypes: {
     onClick: { action: 'clicked' },
     variant: {
       control: 'select',
-      options: ['contained', 'outlined', 'text', 'none', 'state'],
+      options: ['contained', 'outlined', 'text', 'none'],
       description: '버튼의 스타일 유형',
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'gray', 'gray-light', 'success', 'link', 'transparent'],
+      options: ['primary', 'secondary', 'gray', 'gray-light', 'success', 'link'],
       description: '버튼의 색상 유형',
     },
     size: {
       control: 'select',
-      options: ['xl', 'lg', 'md', 'sm', 'xs', 'icon-xs', 'icon-sm', 'icon-md', 'icon-lg', 'icon-xl'],
+      options: ['xl', 'lg', 'md', 'sm', 'icon-xl', 'icon-lg', 'icon-md', 'icon-sm'],
       description: '버튼의 크기',
     },
     // asChild는 Controls에서 숨김 처리
@@ -38,7 +96,7 @@ const meta: Meta<typeof Button> = {
     children: '테스트',
     variant: 'contained',
     color: 'primary',
-    size: 'md',
+    size: 'xl',
     // asChild: false, // 기본값에서 제거
     disabled: false,
   },
@@ -49,16 +107,51 @@ type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
   render: (args) => (
-    <StoryWrap>
-      <StoryBox>
+    <StoryWrap className="flex-row items-stretch">
+      <StoryBox className="w-full justify-center border-[var(--color-primary-50)] border-[0.5px] rounded-md">
         <Button {...args}>{args.children}</Button> 
-        <Button {...args}><SearchIcon />{args.children}</Button> 
+        <Button {...args}>{args.children}<SearchIcon /></Button> 
         <Button {...args}><SearchIcon /></Button> 
-
         <Button asChild {...args}>
-          <Link href="/login">Link - {args.children}</Link>
-        </Button>
+          <Link href="/login">Login</Link>
+        </Button> 
       </StoryBox>
+      <Gcol className="gap-2">
+        <StoryBox className="w-full">
+          <Grow className="gap-2" placement="bwe">
+            <Grow className="gap-1 ">
+              <Button {...args} size="xl" variant="outlined" color="gray">XL: 32</Button>
+            </Grow>
+            <Grow className="gap-1">
+              <Button {...args} size="lg" variant="outlined" color="gray">LG: 28</Button>
+            </Grow>
+            <Grow className="gap-1">
+              <Button {...args} size="md" variant="outlined" color="gray">MD: 25</Button>
+            </Grow>
+            <Grow className="gap-1">
+              <Button {...args} size="sm" variant="outlined" color="gray">SM: 22</Button>
+            </Grow>
+          </Grow>
+        </StoryBox>
+        <StoryBox className="w-full gap-4 flex-wrap">
+          <Grow className="gap-2">
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-primary-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-secondary-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-20)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-success-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-information-50)]">T</div>
+          </Grow>
+          <Grow className="gap-2">
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-primary-50)] rounded-[0.4rem] border bg-[var(--color-primary-5)] border-[var(--color-primary-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-secondary-50)] rounded-[0.4rem] border bg-[var(--color-gray-0)] border-[var(--color-secondary-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-gray-100)] rounded-[0.4rem] border bg-[var(--color-gray-0)] border-[var(--color-gray-60)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-gray-100)] rounded-[0.4rem] border bg-[var(--color-gray-0)] border-[var(--color-gray-20)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-success-50)] rounded-[0.4rem] border bg-[var(--color-success-5)] border-[var(--color-success-50)]">T</div>
+            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-information-50)] rounded-[0.4rem] border bg-[var(--color-information-5)] border-[var(--color-information-50)]">T</div>
+          </Grow>
+        </StoryBox>
+      </Gcol>
     </StoryWrap>
   ),
 };
