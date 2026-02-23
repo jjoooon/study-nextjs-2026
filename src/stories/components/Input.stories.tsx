@@ -13,7 +13,13 @@ const meta: Meta<typeof Input> = {
   parameters: {    
     docs: {
       description: {
-        component: ``,
+        component: `
+Input은 서비스 이용정보 또는 사용자의 정보를 입력할 때 사용되는 컴포넌트이다.
+
+* 콘텐츠 내에서 적합한 계층을 가진 크기로 사용한다. 
+* **lg (Large)**는 일반적으로 사용되며, **Horizon Table**, **Filter** 영역에 사용된다.
+* **sm (Small)**은 **Vertical Table** 데이터 값을 입력할 때 사용된다.
+        `,
       },
       argTypes: { expanded: false },
     },
@@ -140,7 +146,6 @@ const meta: Meta<typeof Input> = {
     errorPs: 'bl',
     before: '',
     after: '',
-    type: 'text',
   },
 };
 
@@ -167,7 +172,7 @@ export const Default: Story = {
     };
 
     return (
-      <Grow placement="sc" className="gap-3 flex-wrap bg-[var(--color-gray-5)] p-6">
+      <StoryWrap>
         <Input
           {...restArgs}
           style={outline ? { outline: '1px solid red' } : undefined}
@@ -177,14 +182,14 @@ export const Default: Story = {
           onChange={handleChange}
         />
         
-      </Grow>
+      </StoryWrap>
     );
   },
 };
 
 export const All: Story = {
   render: () => (
-    <Grow placement="sc" className="gap-6 flex-wrap bg-[var(--color-gray-5)] p-6 flex-col items-start w-full">
+    <StoryWrap>
       <section className="w-full space-y-3">
         <h3 className="text-lg font-bold">Sizes</h3>
         <div className="flex gap-4">
@@ -232,7 +237,7 @@ export const All: Story = {
           <Input formatType="number" placeholder="Number Format (숫자만)" />
         </div>
       </section>
-    </Grow>
+    </StoryWrap>
   ),
 };
 
@@ -280,7 +285,7 @@ export const Amount: Story = {
 
 export const Form: Story = {
   render: () => (
-    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+    <StoryWrap>
       <FormTable variant="boxIn" caption="고객명" cols={['w-[10rem] min-w-[10rem]', '']}>
         <TableRow>
           <FormCell title="고객명">
@@ -293,13 +298,13 @@ export const Form: Story = {
           </FormCell>
         </TableRow>
       </FormTable>
-    </Grow>
+    </StoryWrap>
   ),
 };
 
 export const Form2: Story = {
   render: () => (
-    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+    <StoryWrap>
       <FormTable variant="boxIn" caption="설계번호 입력 예시" cols={['w-[10rem] min-w-[10rem]', '']}>
         <TableRow>
           <FormCell title="설계번호">
@@ -315,7 +320,7 @@ export const Form2: Story = {
           </FormCell>
         </TableRow>
       </FormTable>
-    </Grow>
+    </StoryWrap>
   ),
 };
 
@@ -327,7 +332,7 @@ export const Form3: Story = {
     const [contractHolder, setContractHolder] = React.useState('');
 
     return (
-      <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+      <StoryWrap>
         <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
           <FormRow>
             <FormCell title="설계번호">
@@ -362,7 +367,7 @@ export const Form3: Story = {
             </FormCell>
           </FormRow>
         </FormTable>
-      </Grow>
+      </StoryWrap>
     );
   },
 };
