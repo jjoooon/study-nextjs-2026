@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  min-width: 120.4rem;
+  /* min-width: 120.4rem; */
   overflow-x: auto;
 }
 
@@ -151,7 +151,12 @@ input::placeholder {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+.hide-aside .aside-1 {
+  display: none;
+}
 .sb-show-main.sb-main-padded {padding:0 !important;}
+
+
 
 /* 1. 설계도: 변수를 Tailwind 유틸리티로 등록 */
 @theme {

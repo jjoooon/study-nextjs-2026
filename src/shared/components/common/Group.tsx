@@ -45,13 +45,13 @@ interface GroupProps {
 const ROW_PLACEMENT_MAP: Record<string, string> = {
   ss: 'justify-start items-start ',
   sc: 'justify-start items-center',
-  se: 'justify-start items-endt',
+  se: 'justify-start items-end',
   cs: 'justify-center items-start ',
   cc: 'justify-center items-center',
-  ce: 'justify-center items-endt',
+  ce: 'justify-center items-end',
   es: 'justify-end items-start ',
   ec: 'justify-end items-center',
-  ee: 'justify-end items-endt',
+  ee: 'justify-end items-end',
 
   bws: 'w-full justify-between items-start  ',
   bwc: 'w-full justify-between items-center',
@@ -68,13 +68,13 @@ const ROW_PLACEMENT_MAP: Record<string, string> = {
 const COL_PLACEMENT_MAP: Record<string, string> = {
   ss: 'justify-start items-start ',
   sc: 'justify-start items-center',
-  se: 'justify-start items-endt',
+  se: 'justify-start items-end',
   cs: 'justify-center items-start ',
   cc: 'justify-center items-center',
-  ce: 'justify-center items-endt',
+  ce: 'justify-center items-end',
   es: 'justify-end items-start ',
   ec: 'justify-end items-center',
-  ee: 'justify-end items-endt',
+  ee: 'justify-end items-end',
 
   bws: 'h-full justify-between items-start  ',
   bwc: 'h-full justify-between items-center',

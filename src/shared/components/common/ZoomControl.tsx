@@ -9,7 +9,6 @@ import { setScale } from '@/shared/utils/scale';
 export const ZoomControl = () => {
   const [fontSize, setFontSize] = useState(10);
   const [scale, setScaleState] = useState(1);
-
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontSize}px`;
     setScale(scale); // scale 값을 공용 함수에 반영

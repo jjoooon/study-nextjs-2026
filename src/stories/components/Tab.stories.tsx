@@ -34,6 +34,97 @@ const meta: Meta<typeof Tabs> = {
 - **기본 탭** 방식과 **페이징 탭** 두가지로 크게 나누어진다. 
 - 스타일로는 **default**, **sub**, **box**가 있다.
 
+- - -
+
+<br>
+#### **기본 탭: Usage**
+\`\`\`tsx
+import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from "@/shared/components/uiux";
+import { useTabs } from "@/shared/hooks/useTabs";
+
+const {
+  tabs: name_tabs,
+  active: name_active,
+  setActive: name_setActive,
+  handleRemove: name_handleRemove,
+  visibleTabs: name_visibleTabs,
+} = useTabs(DATA_TABS_1);
+
+<Tabs
+  variant={"default | sub | box"}
+  removable={true | false}
+  onRemove={name_handleRemove}
+  value={name_active}
+  onValueChange={name_setActive}
+  className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+>
+  <TabsLine>
+    <TabsList>
+      {name_visibleTabs.map((tab) => (
+        <TabsTrigger value={tab.value} key={tab.value}>
+          {tab.label}
+        </TabsTrigger>
+      ))}
+    </TabsList>
+  </TabsLine>
+  {name_visibleTabs.map((tab) => (
+    <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+      {tab.label}
+    </TabsContent>
+  ))}
+</Tabs>
+\`\`\`
+
+<br>
+#### **페이징 탭: Usage**
+\`\`\`tsx
+import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger, Button } from "@/shared/components/uiux";
+import { TabHead } from '@/shared/components/common/TabHead';
+import { useTabs } from "@/shared/hooks/useTabs";
+
+const {
+  tabs: name_tabs,
+  active: name_active,
+  setActive: name_setActive,
+  handleRemove: name_handleRemove,
+  visibleTabs: name_visibleTabs,
+} = useTabs(DATA_TABS_1);
+
+<TabHead 
+  variant={"default | sub | box"}
+  data={name_visibleTabs}
+  active={name_active}
+  setActive={name_setActive}
+  removable={true | false}
+  onRemove={name_handleRemove}
+  visibleCount={4}
+  getValue={tab => String(tab.value)}
+  renderButtons={
+    //추가 버튼이 필요한 경우
+  }
+  renderTab={tab => (
+    //탭 렌더링 커스텀마이징 필요한 경우
+  )}
+  renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
+    <Button
+      variant="text"
+      key={String(tab.value)}
+      onClick={() => {
+        setActive(String(tab.value));
+        const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+        if (idx !== -1) {
+          const page = Math.floor(idx / visibleCount);
+          setVisibleStart(page * visibleCount);
+        }
+      }}
+    >
+      //리스트 형식으로 드롭다운 아이템이 필요한 경우
+    </Button>
+  )}
+>
+  하단내용
+</TabHead>
+\`\`\`
         `,
       },
       argTypes: { expanded: false },

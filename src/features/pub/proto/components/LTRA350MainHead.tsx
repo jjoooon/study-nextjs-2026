@@ -13,6 +13,7 @@ import {
   HoverCardContent,
   HoverCardTrigger 
 } from '@/shared/components/uiux';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 interface LTRA350MainHeadProps {
   data: NameAgeGenderValueInfoType[];
@@ -23,12 +24,25 @@ interface LTRA350MainHeadProps {
 
 export function LTRA350MainHead({ data, categories, tags, visibleCount }: LTRA350MainHeadProps) {
   const [coverageName, setCoverageName] = useState('');
+  const stringifiedData = data.map(item => ({
+    ...item,
+    value: String(item.value),
+  }));
+  const {
+    tabs: LTRA350_tabs,
+    active: LTRA350_active,
+    setActive: LTRA350_setActive,
+    handleRemove: LTRA350_handleRemove,
+    visibleTabs: LTRA350_visibleTabs,
+  } = useTabs(stringifiedData);
 
   return (
     <TabHead 
-      data={data} 
-      visibleCount={visibleCount} 
-      variant="default"
+    variant="default"
+      data={LTRA350_tabs} 
+      active={LTRA350_active}
+      setActive={LTRA350_setActive}
+      visibleCount={6}
       getValue={tab => String(tab.value)}
       renderTab={tab => (
         <HoverCard>

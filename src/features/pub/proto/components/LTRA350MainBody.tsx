@@ -149,7 +149,7 @@ export function LTRA350MainBody({
       {
         headerName: '담보명',
         field: 'productName',
-        width: 300,
+        width: hideAside ? 600 : 300,
         cellClass: 'text-left',
         sortable: false,
         filter: false,
@@ -164,7 +164,7 @@ export function LTRA350MainBody({
       {
         headerName: '가입금액(만원)',
         field: 'coverageAmount',
-        flex: 1,
+        flex: 1.4,
         cellClass: () => 'text-right editable-cell',
         sortable: true,
         filter: false,
@@ -179,7 +179,7 @@ export function LTRA350MainBody({
       {
         headerName: '보험료(만원)',
         field: 'premium',
-        width: 110,
+        flex: 1.4,
         cellClass: 'text-right',
         sortable: true,
         filter: false,
@@ -190,7 +190,7 @@ export function LTRA350MainBody({
       {
         headerName: '가능금액(만원)',
         field: 'availableAmount',
-        width: 110,
+        flex: 1.4,
         cellClass: 'text-right',
         sortable: true,
         filter: false,
@@ -201,7 +201,7 @@ export function LTRA350MainBody({
       {
         headerName: '만기',
         field: 'expiryPeriod',
-        width: 100,
+        flex: 1,
         cellClass: 'text-center editable-cell',
         sortable: true,
         filter: false,
@@ -215,7 +215,7 @@ export function LTRA350MainBody({
       {
         headerName: '납기',
         field: 'paymentPeriod',
-        width: 80,
+        flex: 1,
         cellClass: 'text-center',
         sortable: true,
         filter: false,
@@ -223,7 +223,7 @@ export function LTRA350MainBody({
       {
         headerName: '예상UW',
         field: 'expectedUwResult',
-        width: 90,
+        flex: 1,
         cellClass: 'text-center',
         sortable: false,
         filter: false,
@@ -248,7 +248,7 @@ export function LTRA350MainBody({
         suppressRowClickSelection: true,
       },
     ],
-    [checkboxRender, CheckboxHeader, duplicateRenderer, productNameHeader, expiryCellRenderer]
+    [checkboxRender, CheckboxHeader, duplicateRenderer, productNameHeader, expiryCellRenderer, hideAside]
   );
 
   return (
@@ -278,7 +278,7 @@ export function LTRA350MainBody({
         </Grow>
       </LayoutScrollItem>
       <LayoutScrollItem className="w-full">
-        <div className="ag-theme-alpine space-bottom-12">
+        <div className="ag-theme-alpine">
           <AgGridReact<AgGridData>
             rowData={data}
             columnDefs={columnDefs}
