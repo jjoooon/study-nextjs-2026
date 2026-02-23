@@ -177,6 +177,7 @@
 .ag-row-hover .ag-cell-focus,
 .ag-row-hover {
   background-color: var(--color-table-td-surface-hover) !important;
+  cursor: pointer;
 }
 
 .ag-row-selected.ag-row-hover:before,
