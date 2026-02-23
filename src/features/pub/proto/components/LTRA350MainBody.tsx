@@ -1,7 +1,7 @@
 'use client';
 
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams, EditableCallbackParams, CellClassParams } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams, EditableCallbackParams, ValueParserParams, CellClassParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useCallback } from 'react';
 import { Grow, Typo } from '@/shared/components/common';
@@ -100,6 +100,27 @@ export function LTRA350MainBody({
     );
   }, []);
 
+  // 담보명 헤더 컴포넌트를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
+  const productNameHeader = useCallback(
+    () => (
+      <Grow className="gap-1 w-full">
+        담보명(
+        <Checkbox size="sm">담보명 전체보기</Checkbox>)
+      </Grow>
+    ),
+    []
+  );
+
+  // 만기 셀 렌더러를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
+  const expiryCellRenderer = useCallback((params: ICellRendererParams<AgGridData>) => {
+    return (
+      <div className="flex items-center justify-center gap-1 w-full h-full">
+        <span className="block w-[6rem] text-right">{params.value}</span>
+        {params.data?.canEditExpiry ? <SelectArrowIcon size={14} color="var(--color-gray-50)" /> : <SelectArrowIcon size={14} color="var(--color-gray-20)" />}
+      </div>
+    );
+  }, []);
+
   // 컬럼 정의
   const columnDefs: ColDef<AgGridData>[] = useMemo(
     () => [
@@ -138,12 +159,7 @@ export function LTRA350MainBody({
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
         },
-        headerComponent: () => (
-          <Grow className="gap-1 w-full">
-            담보명(
-            <Checkbox size="sm">담보명 전체보기</Checkbox>)
-          </Grow>
-        ),
+        headerComponent: productNameHeader,
       },
       {
         headerName: '가입금액(만원)',
@@ -156,7 +172,7 @@ export function LTRA350MainBody({
         valueFormatter: (params: ValueFormatterParams<AgGridData>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
-        valueParser: (params: { newValue: string }) => {
+        valueParser: (params: ValueParserParams<AgGridData>) => {
           return Number(params.newValue);
         },
       },
@@ -189,17 +205,12 @@ export function LTRA350MainBody({
         cellClass: 'text-center editable-cell',
         sortable: true,
         filter: false,
-        editable: (params: EditableCallbackParams<AgGridData>) => params.data?.canEditExpiry,
+        editable: (params: EditableCallbackParams<AgGridData>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'], // 원하는 옵션
         },
-        cellRenderer: (params: ICellRendererParams<AgGridData>) => (
-          <div className="flex items-center justify-center gap-1 w-full h-full">
-            <span className="block w-[6rem] text-right">{params.value}</span>
-            {params.data?.canEditExpiry ? <SelectArrowIcon size={14} color="var(--color-gray-50)" /> : <SelectArrowIcon size={14} color="var(--color-gray-20)" />}
-          </div>
-        ),
+        cellRenderer: expiryCellRenderer,
       },
       {
         headerName: '납기',
@@ -237,7 +248,7 @@ export function LTRA350MainBody({
         suppressRowClickSelection: true,
       },
     ],
-    [checkboxRender, CheckboxHeader, duplicateRenderer]
+    [checkboxRender, CheckboxHeader, duplicateRenderer, productNameHeader, expiryCellRenderer]
   );
 
   return (

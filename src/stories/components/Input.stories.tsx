@@ -144,7 +144,6 @@ const meta: Meta<typeof Input> = {
     errorPs: 'bl',
     before: '',
     after: '',
-    type: 'text',
   },
 };
 
@@ -233,7 +232,7 @@ export const Default: Story = {
 
 export const All: Story = {
   render: () => (
-    <Grow placement="sc" className="gap-6 flex-wrap bg-[var(--color-gray-5)] p-6 flex-col items-start w-full">
+    <StoryWrap>
       <section className="w-full space-y-3">
         <h3 className="text-lg font-bold">Sizes</h3>
         <div className="flex gap-4">
@@ -281,7 +280,7 @@ export const All: Story = {
           <Input formatType="number" placeholder="Number Format (숫자만)" />
         </div>
       </section>
-    </Grow>
+    </StoryWrap>
   ),
 };
 
@@ -329,7 +328,7 @@ export const Amount: Story = {
 
 export const Form: Story = {
   render: () => (
-    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+    <StoryWrap>
       <FormTable variant="boxIn" caption="고객명" cols={['w-[10rem] min-w-[10rem]', '']}>
         <TableRow>
           <FormCell title="고객명">
@@ -342,13 +341,13 @@ export const Form: Story = {
           </FormCell>
         </TableRow>
       </FormTable>
-    </Grow>
+    </StoryWrap>
   ),
 };
 
 export const Form2: Story = {
   render: () => (
-    <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+    <StoryWrap>
       <FormTable variant="boxIn" caption="설계번호 입력 예시" cols={['w-[10rem] min-w-[10rem]', '']}>
         <TableRow>
           <FormCell title="설계번호">
@@ -364,7 +363,7 @@ export const Form2: Story = {
           </FormCell>
         </TableRow>
       </FormTable>
-    </Grow>
+    </StoryWrap>
   ),
 };
 
@@ -376,7 +375,7 @@ export const Form3: Story = {
     const [contractHolder, setContractHolder] = React.useState('');
 
     return (
-      <Grow placement="sc" className="w-full bg-[var(--color-gray-5)] p-6">
+      <StoryWrap>
         <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
           <FormRow>
             <FormCell title="설계번호">
@@ -411,7 +410,7 @@ export const Form3: Story = {
             </FormCell>
           </FormRow>
         </FormTable>
-      </Grow>
+      </StoryWrap>
     );
   },
 };
