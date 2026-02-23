@@ -149,7 +149,7 @@ export function LTRA350MainBody({
       {
         headerName: '담보명',
         field: 'productName',
-        width: hideAside ? 600 : 300,
+        width: hideAside ? 510 : 300,
         cellClass: 'text-left',
         sortable: false,
         filter: false,
