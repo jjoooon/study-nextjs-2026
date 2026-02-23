@@ -9,6 +9,22 @@ const meta: Meta<typeof Button> = {
   title: 'Components/UIUX/Button',
   component: Button,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `
+버튼은 어떤 기능이나 동작을 실행하거나 기능을 사용하기 위한 상태로 변경하는 요소이다.   
+사용자가 서비스를 이용하는 과정에서 어떤 행동이 중요한지에 따라 관련된 버튼이 다양한 스타일로 표현된다.
+
+- **기본 버튼** 방식과 **아이콘 버튼** 두가지로 크게 나누어진다. 
+- 스타일로는 **contained**, **outlined**, **text**, **none**, **state**가 있다.
+
+        `,
+      },
+      argTypes: { expanded: false },
+    },
+  },
   argTypes: {
     onClick: { action: 'clicked' },
     variant: {
