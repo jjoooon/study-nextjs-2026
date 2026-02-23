@@ -372,3 +372,6 @@
   text-align: right;
   padding:0 .8rem;
 }
+.space-bottom-12 .ag-body-viewport{
+  padding-bottom: calc(9.8rem + 1.2rem) !important;
+}

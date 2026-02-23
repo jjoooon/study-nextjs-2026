@@ -58,7 +58,7 @@ export function LTRA350MainBody({
     const allSelected = data.length > 0 && selectedRows.length === data.length;
 
     return (
-      <div className="w-full h-full flex items-center justify-center ">
+      <div className="w-full h-full flex items-center justify-center">
         <Checkbox
           // variant="button"
           color="secondary"
@@ -267,7 +267,7 @@ export function LTRA350MainBody({
         </Grow>
       </LayoutScrollItem>
       <LayoutScrollItem className="w-full">
-        <div className="ag-theme-alpine">
+        <div className="ag-theme-alpine space-bottom-12">
           <AgGridReact<AgGridData>
             rowData={data}
             columnDefs={columnDefs}

@@ -65,7 +65,7 @@ export const LayoutFolderBody = ({ children, className }: LayoutProps) => {
 };
 export const LayoutFolderFoot = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="folder-foot" className={cn('relative flex justify-between gap-3', className)}>
+    <div data-layout="folder-foot" className={cn('fixed bottom-0 left-0 w-full flex justify-between gap-3 pl-[5.6rem] pr-[0.6rem]', className)}>
       {children}
     </div>
   );
