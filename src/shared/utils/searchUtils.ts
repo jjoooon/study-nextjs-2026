@@ -80,8 +80,7 @@ export const isChosungQuery = (query: string): boolean => {
  * matchesChosung('가입금액', 'ㄱㅇ') // true
  */
 export const matchesChosung = (text: string, chosungQuery: string): boolean => {
-  const textChosung = getChosung(text);
-  return textChosung.includes(chosungQuery);
+  return findChosungMatchIndices(text, chosungQuery).length > 0;
 };
 
 /**
@@ -104,23 +103,24 @@ export const findChosungMatchIndices = (text: string, chosungQuery: string, fuzz
     const char = text[i];
     const code = char.charCodeAt(0);
 
-    // 한글만 검사
-    if (code >= 0xac00 && code <= 0xd7a3) {
-      const startIndex = Math.floor((code - 0xac00) / 28 / 21);
-      if (CHOSUNG[startIndex] === chosungQuery[queryIndex]) {
-        indices.push(i);
-        queryIndex++;
+    // ASCII 빠른 패스 (비한글 문자 스킵)
+    if (code < 0xac00 || code > 0xd7a3) continue;
 
-        // 연속 매칭만 허용하는 경우, 다음 문자가 바로 매칭되지 않으면 중단
-        if (!fuzzy && queryIndex < chosungQuery.length) {
-          const nextChar = text[i + 1];
-          if (nextChar) {
-            const nextCode = nextChar.charCodeAt(0);
-            if (nextCode >= 0xac00 && nextCode <= 0xd7a3) {
-              const nextStartIndex = Math.floor((nextCode - 0xac00) / 28 / 21);
-              if (CHOSUNG[nextStartIndex] !== chosungQuery[queryIndex]) {
-                return [];
-              }
+    // 한글 초성 매칭
+    const startIndex = Math.floor((code - 0xac00) / 28 / 21);
+    if (CHOSUNG[startIndex] === chosungQuery[queryIndex]) {
+      indices.push(i);
+      queryIndex++;
+
+      // 연속 매칭만 허용하는 경우, 다음 문자가 바로 매칭되지 않으면 중단
+      if (!fuzzy && queryIndex < chosungQuery.length) {
+        const nextChar = text[i + 1];
+        if (nextChar) {
+          const nextCode = nextChar.charCodeAt(0);
+          if (nextCode >= 0xac00 && nextCode <= 0xd7a3) {
+            const nextStartIndex = Math.floor((nextCode - 0xac00) / 28 / 21);
+            if (CHOSUNG[nextStartIndex] !== chosungQuery[queryIndex]) {
+              return [];
             }
           }
         }
@@ -190,13 +190,30 @@ export const getHighlightRanges = (
     return result;
   }
 
-  // 일반 텍스트 검색인 경우
+  // 일반 텍스트 검색인 경우 (최적화: 단일 패스 매칭)
   const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(`(${escapedQuery})`, 'gi');
-  const parts = text.split(regex);
+  const result: Array<{ text: string; highlight: boolean }> = [];
+  let match: RegExpExecArray | null;
+  let lastIndex = 0;
 
-  return parts.map((part) => ({
-    text: part,
-    highlight: regex.test(part),
-  }));
+  // 단일 패스로 매칭과 비매칭 부분 모두 추출
+  while ((match = regex.exec(text)) !== null) {
+    // 매칭되지 않은 이전 부분 추가
+    if (match.index > lastIndex) {
+      result.push({ text: text.slice(lastIndex, match.index), highlight: false });
+    }
+
+    // 매칭된 부분 추가
+    result.push({ text: match[1], highlight: true });
+
+    lastIndex = regex.lastIndex;
+  }
+
+  // 남은 텍스트 추가
+  if (lastIndex < text.length) {
+    result.push({ text: text.slice(lastIndex), highlight: false });
+  }
+
+  return result;
 };
