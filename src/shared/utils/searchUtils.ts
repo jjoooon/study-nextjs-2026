@@ -37,22 +37,20 @@ const CHOSUNG = [
  * getChosung('형 한') // 'ㅎ ㅎ' (공백 유지)
  */
 export const getChosung = (text: string): string => {
-  const result: string[] = [];
+  let result = '';
 
   for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const code = char.charCodeAt(0);
+    const code = text.charCodeAt(i);
 
     // 한글 범위: 가(0xAC00) ~ 힣(0xD7A3)
     if (code >= 0xac00 && code <= 0xd7a3) {
-      const startIndex = (code - 0xac00) / 28 / 21;
-      result.push(CHOSUNG[Math.floor(startIndex)]);
+      result += CHOSUNG[Math.floor((code - 0xac00) / 28 / 21)];
     } else {
-      result.push(char);
+      result += text[i];
     }
   }
 
-  return result.join('');
+  return result;
 };
 
 /**
@@ -106,33 +104,29 @@ export const findChosungMatchIndices = (text: string, chosungQuery: string): num
   if (matchIndex === -1) return [];
 
   const indices: number[] = [];
-
-  // 초성 문자열과 동일한 인덱스 구조로 위치 매핑 생성
-  type CharPosition = { chosungIndex: number; textIndex: number; isHangul: boolean };
-  const positions: CharPosition[] = [];
   let chosungIndex = 0;
+  let matchedCount = 0;
+  const queryLen = chosungQuery.length;
 
-  for (let i = 0; i < text.length; i++) {
+  // 단일 순회로 매칭된 인덱스 추적 (positions 배열 제거로 성능 개선)
+  for (let i = 0; i < text.length && matchedCount < queryLen; i++) {
     const char = text[i];
     const code = char.charCodeAt(0);
     const isHangul = code >= 0xac00 && code <= 0xd7a3;
+    const isEnglish = (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
 
-    // 한글, 공백, 영문만 포함 (초성 변환 결과와 동일하게)
-    if (isHangul || char === ' ' || (code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
-      positions.push({ chosungIndex, textIndex: i, isHangul });
+    // 한글, 공백, 영문만 카운트 (getChosung 결과와 동일하게)
+    if (isHangul || char === ' ' || isEnglish) {
+      if (chosungIndex >= matchIndex && matchedCount < queryLen) {
+        indices.push(i);
+        matchedCount++;
+      }
       chosungIndex++;
     }
   }
 
-  // 매칭된 구간의 모든 문자 인덱스 수집 (영문, 한글 모두)
-  for (let j = 0; j < chosungQuery.length; j++) {
-    const pos = positions[matchIndex + j];
-    if (pos) {
-      indices.push(pos.textIndex);
-    }
-  }
-
-  return indices;
+  // 정확히 매칭된 경우에만 반환
+  return matchedCount === queryLen ? indices : [];
 };
 
 /**
@@ -147,7 +141,7 @@ export const findChosungMatchIndices = (text: string, chosungQuery: string): num
  * getHighlightRanges('Hello World', 'ello') // [{text: 'H', highlight: false}, {text: 'ello', highlight: true}, {text: ' World', highlight: false}]
  */
 export const getHighlightRanges = (text: string, query: string): Array<{ text: string; highlight: boolean }> => {
-  if (!query.trim()) return [{ text, highlight: false }];
+  if (query.length === 0) return [{ text, highlight: false }];
 
   // 초성 검색인 경우 (정확한 초성 일치)
   if (isChosungQuery(query)) {
