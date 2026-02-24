@@ -146,7 +146,7 @@ const renderInteractive: Story['render'] = (args) => {
 
     React.useEffect(() => {
         setChecked(args.checked ?? false);
-    }, [args.checked]);
+    }, [args.checked, args.variant]);
 
     const handleCheckedChange = (isChecked: boolean | 'indeterminate') => {
         setChecked(isChecked);
@@ -154,12 +154,14 @@ const renderInteractive: Story['render'] = (args) => {
     };
 
     const children = args.variant === 'button' ? 'Button Variant' : args.children;
+    
+    const { checked: _checked, onCheckedChange: _onCheckedChange, ...restArgs } = args;
 
     return (
         <StoryWrap>
             <StoryBox>
                 <Grow>
-                    <Checkbox {...args} checked={checked} onCheckedChange={handleCheckedChange}>
+                    <Checkbox {...restArgs} checked={checked} variant={args.variant} onCheckedChange={handleCheckedChange}>
                         {children}
                     </Checkbox>
                 </Grow>
@@ -170,13 +172,14 @@ const renderInteractive: Story['render'] = (args) => {
 
 export const Default: Story = { 
     render: (args) => {
-        // Checkbox 컴포넌트가 내부 상태를 가지고 있어 외부에서 제어하기 어렵습니다.
-        // 이 render 함수는 Storybook에서 상태를 제어하는 방법을 보여줍니다.
+        // 이전에는 컴포넌트 내부에서 상태를 관리했기 때문에
+        // 외부에서 제어하기 위해 추가 로직이 필요했으나
+        // 이제 props.checked / onCheckedChange로 완전히 제어 가능합니다.
         const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
 
         React.useEffect(() => {
             setChecked(args.checked ?? false);
-        }, [args.checked]);
+        }, [args.checked, args.variant]);
 
         const handleCheckedChange = (isChecked: boolean | 'indeterminate') => {
             setChecked(isChecked);
@@ -185,35 +188,30 @@ export const Default: Story = {
 
         const children = args.variant === 'button' ? 'Button Variant' : args.children;
 
+        const { checked: _checked, onCheckedChange: _onCheckedChange, ...restArgs } = args;
+
         return (
-            <StoryWrap>
+            <StoryWrap className='flex-row'>
                 <StoryBox>
-                    <Grow>
-                        <Checkbox {...args} checked={checked} onCheckedChange={handleCheckedChange}>
-                            {children}
-                        </Checkbox>
-                    </Grow>
+                    <Checkbox {...restArgs} checked={checked} variant={args.variant} onCheckedChange={handleCheckedChange}>
+                        {children}
+                    </Checkbox>
                 </StoryBox>
                 <StoryBox>
                     <Grow placement="cc" className="gap-2">
                         <Gcol placement="ss" className="gap-[0.2rem]">
-                            <Typo variant="body-sm">Checked</Typo>
                             <Checkbox checked>Label</Checkbox>
                         </Gcol>
                         <Gcol placement="ss" className="gap-[0.2rem]">
-                            <Typo variant="body-sm">Indeterminate</Typo>
                             <Checkbox checked="indeterminate">Label</Checkbox>
                         </Gcol>
                         <Gcol placement="ss" className="gap-[0.2rem]">
-                            <Typo variant="body-sm">Disabled</Typo>
                             <Checkbox disabled>Label</Checkbox>
                         </Gcol>
-                        <Gcol placement="ss" className="gap-[0.2rem]">
-                            <Typo variant="body-sm">Favorite</Typo>
-                            <Checkbox variant="favorite" />
+                        <Gcol placement="ss" className="flex items-[normal] gap-[0.2rem] w-[20px] h-auto">
+                            <Checkbox variant="favorite" className='h-auto'/>
                         </Gcol>
                         <Gcol placement="ss" className="gap-[0.2rem]">
-                            <Typo variant="body-sm">Button</Typo>
                             <Checkbox variant="button">Button Variant</Checkbox>
                         </Gcol>
                     </Grow>
@@ -223,49 +221,6 @@ export const Default: Story = {
     }
 };
 
-export const All: Story = {
-    render: () => (
-        <Grow placement="sc" className="gap-6 flex-wrap bg-[var(--color-gray-5)] p-6 flex-col items-start w-full">
-            <section className="w-full space-y-3">
-                <h3 className="text-lg font-bold">Sizes</h3>
-                <div className="flex gap-4 items-center">
-                    <Checkbox size="lg">Size lg (Default)</Checkbox>
-                    <Checkbox size="sm">Size sm</Checkbox>
-                </div>
-            </section>
-
-            <section className="w-full space-y-3">
-                <h3 className="text-lg font-bold">Variants</h3>
-                <div className="flex gap-4 items-center flex-wrap">
-                    <Checkbox variant="default">Default</Checkbox>
-                    <Checkbox variant="favorite" />
-                    <Checkbox variant="button">Button Variant</Checkbox>
-                    <Checkbox variant="noneText">None Text</Checkbox>
-                </div>
-            </section>
-
-            <section className="w-full space-y-3">
-                <h3 className="text-lg font-bold">Colors (Checked State)</h3>
-                <div className="flex gap-4 items-center">
-                    <Checkbox color="primary" checked>Primary</Checkbox>
-                    <Checkbox color="information" checked>Information</Checkbox>
-                    <Checkbox color="secondary" checked>Secondary</Checkbox>
-                </div>
-            </section>
-
-            <section className="w-full space-y-3">
-                <h3 className="text-lg font-bold">States</h3>
-                <div className="flex gap-4 items-center flex-wrap">
-                    <Checkbox>Unchecked</Checkbox>
-                    <Checkbox checked>Checked</Checkbox>
-                    <Checkbox checked="indeterminate">Indeterminate</Checkbox>
-                    <Checkbox disabled>Disabled</Checkbox>
-                    <Checkbox disabled checked>Disabled Checked</Checkbox>
-                </div>
-            </section>
-        </Grow>
-    ),
-};
 
 export const Favorite: Story = {
     args: {

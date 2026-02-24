@@ -26,7 +26,8 @@ function Checkbox({
   const isNoneText = variant === 'noneText';
   const isButton = variant === 'button';
   const generatedId = React.useId();
-  const checkboxId = props.id || generatedId;
+  const { checked: propsChecked, onCheckedChange: propsOnCheckedChange, id: propsId, ...restProps } = props;
+  const checkboxId = propsId || generatedId;
 
   const sizeStyles = {
     lg: 'size-[2rem] rounded-[0.4rem]',
@@ -52,15 +53,28 @@ function Checkbox({
   };
 
   const iconSize = size === 'lg' ? 16 : 14;
-  const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(false);
+
+  // support both controlled and uncontrolled usage
+  const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(false);
+  const isControlled = propsChecked !== undefined;
+  const checkedState: boolean | 'indeterminate' = isControlled ? (propsChecked as boolean | 'indeterminate') : internalChecked;
+
+  const handleChange = (value: boolean | 'indeterminate') => {
+    if (!isControlled) {
+      setInternalChecked(value);
+    }
+    if (propsOnCheckedChange) {
+      propsOnCheckedChange(value);
+    }
+  };
 
   return (
     <div className={`flex items-center gap-1 ${isFavorite ? 'h-full' : ''}`}>
       <CheckboxPrimitive.Root
         data-slot="checkbox"
         id={checkboxId}
-        checked={checked}
-        onCheckedChange={setChecked as (checked: boolean | 'indeterminate') => void}
+        checked={checkedState}
+        onCheckedChange={handleChange}
         className={cn(
           'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[var(--color-element-gray-lighter)] disabled:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:bg-[var(--color-element-gray-lighter)] disabled:data-[state=checked]:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:text-[#b3b3b3] [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]',
           // favorite 스타일
@@ -77,13 +91,13 @@ function Checkbox({
           !isFavorite && !isButton && colorStyles[color],
           className
         )}
-        {...props}
+        {...restProps}
       >
         {isFavorite ? (
-          <Favorite color={props.checked ? 'var(--color-primary-50)' : 'var(--color-gray-30)'} />
+          <Favorite color={checkedState ? 'var(--color-primary-50)' : 'var(--color-gray-30)'} />
         ) : isButton ? (
           <Grow className="gap-[0.2rem]" placement="sc">
-            <CheckboxIcon color={checked ? 'var(--color-primary-50)' : 'var(--color-gray-30)'} />
+            <CheckboxIcon color={checkedState ? 'var(--color-primary-50)' : 'var(--color-gray-30)'} />
             {children}
           </Grow>
         ) : (
