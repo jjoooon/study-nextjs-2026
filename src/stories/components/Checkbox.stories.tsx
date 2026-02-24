@@ -10,33 +10,56 @@ const meta: Meta<typeof Checkbox> = {
     component: Checkbox,
     tags: ['autodocs'],
     parameters: {
+        layout: 'centered',
         docs: {
             description: {
-                component: `**Checkbox** 컴포넌트는 사용자가 여러 옵션 중에서 하나 이상의 값을 선택할 때 사용합니다.
-설정 변경, 동의/비동의, 목록 필터링 등 다양한 상황에서 활용됩니다.
+                component: `
+Checkbox는 사용자가 여러 옵션 중에서 하나 이상의 값을 선택할 때 사용하는 컴포넌트이다.
+설정 변경, 동의/비동의, 목록 필터링 등 다양한 상황에서 활용된다.
 
-- **다양한 상태**: \`default\`, \`checked\`, \`indeterminate\`, \`disabled\` 등 명확한 시각적 피드백을 제공합니다.
-- **유연한 스타일링**: \`size\`, \`variant\`, \`color\` prop을 통해 다양한 디자인 요구사항을 충족합니다.
+- **기본 체크박스** 방식과 **버튼 체크박스** 두가지로 크게 나누어진다.
+- 스타일로는 **default**, **favorite**, **noneText**, **button**이 있다.
 
+- - -
 
+<br>
+#### **기본 체크박스: Usage**
 \`\`\`tsx
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { useState } from 'react';
 
-// 기본 사용
-<Checkbox>Label</Checkbox>
+const [checked, setChecked] = useState(false);
 
-// 상태 (States)
-<Checkbox checked>Checked</Checkbox>
-<Checkbox checked="indeterminate">Indeterminate</Checkbox>
-<Checkbox disabled>Disabled</Checkbox>
+<Checkbox
+  variant={"default | favorite | noneText"}
+  size={"lg | sm"}
+  color={"primary | information | secondary"}
+  checked={checked}
+  onCheckedChange={setChecked}
+  disabled={true | false}
+>
+  Label
+</Checkbox>
+\`\`\`
 
-// 크기 (Size)
-<Checkbox size="lg">Large</Checkbox>
-<Checkbox size="sm">Small</Checkbox>
+<br>
+#### **버튼 체크박스: Usage**
+\`\`\`tsx
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { useState } from 'react';
 
-// 변형 (Variant)
-<Checkbox variant="favorite" />
-<Checkbox variant="button">Button Variant</Checkbox>
+const [checked, setChecked] = useState(false);
+
+<Checkbox
+  variant="button"
+  size={"lg | sm"}
+  color={"primary | information | secondary"}
+  checked={checked}
+  onCheckedChange={setChecked}
+  disabled={true | false}
+>
+  Button Label
+</Checkbox>
 \`\`\`
         `,
             },

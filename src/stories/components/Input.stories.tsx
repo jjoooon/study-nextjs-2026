@@ -13,42 +13,54 @@ const meta: Meta<typeof Input> = {
   parameters: {
     docs: {
       description: {
-        component: `**Input** 컴포넌트는 사용자로부터 텍스트 기반의 데이터를 입력받기 위한 핵심 UI 요소입니다.
-일관된 디자인 시스템을 유지하면서 다양한 입력 시나리오에 대응할 수 있도록 설계되었습니다.
+        component: `
+Input은 사용자로부터 텍스트 기반의 데이터를 입력받기 위한 컴포넌트이다.
+일관된 디자인 시스템을 유지하면서 다양한 입력 시나리오에 대응할 수 있도록 설계되었다.
 
-- **다양한 상태**: \`default\`, \`error\`, \`disabled\`, \`readOnly\` 등 명확한 시각적 피드백을 제공합니다.
-- **유연한 스타일링**: \`size\`, \`width\` prop을 통해 레이아웃에 유연하게 통합될 수 있습니다.
-- **확장성**: \`before\`, \`after\` prop을 사용하여 아이콘이나 단위 등을 쉽게 추가할 수 있습니다.
-- **사용자 편의성**: \`clear\` (초기화) 버튼, \`formatType\` 등 편의 기능을 지원합니다.
+- **기본 입력** 방식과 **포맷 입력** 두가지로 크게 나누어진다.
+- 스타일로는 **default**가 있다.
 
+
+<br>
+#### **기본 입력: Usage**
 \`\`\`tsx
 import { Input } from '@/shared/components/uiux/Input';
+import { useState } from 'react';
 
-// 기본 사용
-<Input type="text" aria-label="text" defaultValue="text" />
+const [value, setValue] = useState('');
 
-// size
-<Input size="lg" placeholder="text" />
-<Input size="sm" placeholder="text" />
+<Input
+  variant="default"
+  size={"lg | sm"}
+  width={"full | max | 2xs | xs | sm | md | lg | xl | 2xl"}
+  placeholder="텍스트를 입력하세요"
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+  disabled={true | false}
+  readOnly={true | false}
+  error={true | false}
+  errorMsg="에러 메시지"
+  clear={true | false}
+  before="앞에 붙는 요소"
+  after="뒤에 붙는 요소"
+/>
+\`\`\`
 
-// width
-<Input width="full" placeholder="text" />
-<Input width="md" placeholder="text" />
+<br>
+#### **포맷 입력: Usage**
+\`\`\`tsx
+import { Input } from '@/shared/components/uiux/Input';
+import { useState } from 'react';
 
-// states
-<Input disabled value="Disabled" />
-<Input readOnly value="Read Only" />
+const [amount, setAmount] = useState('10000');
 
-// error
-<Input width="sm" error errorPs='bl' errorMsg="에러 메시지입니다." />
-
-// before, after
-<Input before="시간:" placeholder="text" />
-<Input after="원" className="text-right" />
-
-// formatType
-<Input formatType="amount" value="10000" />
-<Input formatType="number" value="10000" />
+<Input
+  formatType={"amount | number"}
+  value={amount}
+  onChange={(e) => setAmount(e.target.value)}
+  after="원"
+  className="text-right"
+/>
 \`\`\`
 
         `,
@@ -132,19 +144,19 @@ import { Input } from '@/shared/components/uiux/Input';
     error: {
       control: 'boolean',
       description: '에러 상태 여부',
-      table: { category: 'State' },
+      table: { category: 'Error' },
     },
     errorMsg: {
       control: 'text',
       description: '에러 메시지 내용',
-      table: { category: 'Error Handling' },
+      table: { category: 'Error' },
     },
     errorPs: {
       control: 'select',
       options: ['tl', 'tr', 'bl', 'br'],
       description: '에러 메시지 위치',
       table: {
-        category: 'Error Handling',
+        category: 'Error',
         type: { summary: 'tl | tr | bl | br' },
       },
     },
@@ -195,32 +207,25 @@ export const Default: Story = {
     };
 
     return (
-      <StoryWrap>
+      <StoryWrap className='flex-row'>
         <StoryBox>
-          <Grow>
-            <Input {...restArgs} value={value} onChange={handleChange} />
-          </Grow>
+          <Input {...restArgs} value={value} onChange={handleChange} />
         </StoryBox>
         <StoryBox>
           <Grow placement="cc" className="gap-2">
             <Gcol placement="ss" className="gap-[0.2rem]">
-              <Typo variant="body-sm">읽기전용</Typo>
-              <Input width="sm" value="Read" readOnly />
+              <Input width="sm" value="읽기전용" readOnly />
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
-              <Typo variant="body-sm">필수입력</Typo>
-              <Input width="sm" required />
+              <Input width="sm" value="필수입력" required />
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
-              <Typo variant="body-sm">에러</Typo>
-              <Input width="sm" error errorPs="bl" errorMsg="에러 메시지입니다." />
+              <Input width="sm" value="에러" error errorPs="bl" errorMsg="에러 메시지입니다." />
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
-              <Typo variant="body-sm">before</Typo>
               <Input width="sm" before="시간:" />
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
-              <Typo variant="body-sm">after + amount</Typo>
               <Input className="text-right" value="10000" width="sm" after="원" formatType="amount" />
             </Gcol>
           </Grow>
@@ -352,59 +357,6 @@ export const Form2: Story = {
               </FormItem>
             </FormCell>
           </TableRow>
-        </FormTable>
-      </StoryWrap>
-    );
-  },
-};
-
-export const Form3: Story = {
-  render: () => {
-    const [planNumber, setPlanNumber] = React.useState(['', '']);
-
-    const handlePlanNumberChange = (index: number, value: string) => {
-      const newPlanNumber = [...planNumber];
-      newPlanNumber[index] = value;
-      setPlanNumber(newPlanNumber);
-    };
-
-    const [contractHolder, setContractHolder] = React.useState('');
-
-    return (
-      <StoryWrap>
-        <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
-          <FormRow>
-            <FormCell title="설계번호">
-              <Input
-                aria-label="설계번호 입력"
-                type="text"
-                value={planNumber[0]}
-                width="lg"
-                onChange={(e) => handlePlanNumberChange(0, e.target.value)}
-              />
-              <Separator>-</Separator>
-              <Input
-                aria-label="설계번호 입력"
-                type="text"
-                value={planNumber[1]}
-                width="sm"
-                onChange={(e) => handlePlanNumberChange(1, e.target.value)}
-              />
-
-              <FormItem className="w-auto ml-3">
-                <Input
-                  aria-label="계약자명 입력"
-                  type="text"
-                  value={contractHolder}
-                  width="lg"
-                  onChange={(e) => setContractHolder(e.target.value)}
-                />
-                <Button variant="outlined" color="gray-light" aria-label="계약자 추가" only="icon" size="lg">
-                  <SearchIcon color="var(--color-primary-50)" />
-                </Button>
-              </FormItem>
-            </FormCell>
-          </FormRow>
         </FormTable>
       </StoryWrap>
     );
