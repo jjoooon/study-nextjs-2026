@@ -33,16 +33,18 @@ export function LTRA350MainHead({ data, categories, tags, visibleCount }: LTRA35
     active: LTRA350_active,
     setActive: LTRA350_setActive,
     handleRemove: LTRA350_handleRemove,
-    visibleTabs: LTRA350_visibleTabs,
   } = useTabs(stringifiedData);
 
   return (
     <TabHead 
-    variant="default"
+      removable={true}
+      onRemove={LTRA350_handleRemove}
+
+      variant="default"
       data={LTRA350_tabs} 
       active={LTRA350_active}
       setActive={LTRA350_setActive}
-      visibleCount={6}
+      visibleCount={visibleCount}
       getValue={tab => String(tab.value)}
       renderTab={tab => (
         <HoverCard>

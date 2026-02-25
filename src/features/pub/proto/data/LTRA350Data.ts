@@ -413,7 +413,7 @@ export const DUMMY_TASK_STATUS_DATA = [
 ];
 
 // LTRA350MainHead
-export const VISIBLE_COUNT = 5; //탭 최대 노출 갯수
+export const VISIBLE_COUNT = 6; //탭 최대 노출 갯수
 export const DUMMY_MAIN_HEAD_DATA = [
   {
     name: '반짝빛나리반짝빛나리',

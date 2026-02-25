@@ -47,7 +47,6 @@ const {
   active: name_active,
   setActive: name_setActive,
   handleRemove: name_handleRemove,
-  visibleTabs: name_visibleTabs,
 } = useTabs(DATA_TABS_1);
 
 <Tabs
@@ -60,14 +59,14 @@ const {
 >
   <TabsLine>
     <TabsList>
-      {name_visibleTabs.map((tab) => (
+      {name_tabs.map((tab) => (
         <TabsTrigger value={tab.value} key={tab.value}>
           {tab.label}
         </TabsTrigger>
       ))}
     </TabsList>
   </TabsLine>
-  {name_visibleTabs.map((tab) => (
+  {name_tabs.map((tab) => (
     <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
       {tab.label}
     </TabsContent>
@@ -87,12 +86,11 @@ const {
   active: name_active,
   setActive: name_setActive,
   handleRemove: name_handleRemove,
-  visibleTabs: name_visibleTabs,
 } = useTabs(DATA_TABS_1);
 
 <TabHead 
   variant={"default | sub | box"}
-  data={name_visibleTabs}
+  data={name_tabs}
   active={name_active}
   setActive={name_setActive}
   removable={true | false}
@@ -429,19 +427,17 @@ type Story = StoryObj<typeof Tabs>;
 export const Default: Story = {
   render: (args) => {
     const {
-      tabs: tabs1,
-      active: active1,
-      setActive: setActive1,
-      handleRemove: handleRemove1,
-      visibleTabs: visibleTabs1,
+      tabs: default_tabs,
+      active: default_active,
+      setActive: default_setActive,
+      handleRemove: default_handleRemove,
     } = useTabs(DATA_TABS_1);
 
     const {
-      tabs: tabs3,
-      active: active3,
-      setActive: setActive3,
-      handleRemove: handleRemove3,
-      visibleTabs: visibleTabs3,
+      tabs: pagination_tabs,
+      active: pagination_active,
+      setActive: pagination_setActive,
+      handleRemove: pagination_handleRemove,
     } = useTabs(DATA_TABS_3);
     return (
       <StoryWrap>
@@ -449,21 +445,21 @@ export const Default: Story = {
           <Tabs
             variant={args.variant}
             removable={args.removable}
-            onRemove={handleRemove1}
-            value={active1}
-            onValueChange={setActive1}
+            onRemove={default_handleRemove}
+            value={default_active}
+            onValueChange={default_setActive}
             className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
           >
             <TabsLine>
               <TabsList>
-                {visibleTabs1.map((tab) => (
+                {default_tabs.map((tab) => (
                   <TabsTrigger value={tab.value} key={tab.value}>
                     {tab.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </TabsLine>
-            {visibleTabs1.map((tab) => (
+            {default_tabs.map((tab) => (
               <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
                 {tab.label}
               </TabsContent>
@@ -472,11 +468,11 @@ export const Default: Story = {
         </StoryBox>
         <StoryBox>
           <TabHead 
-            data={visibleTabs3}
-            active={active3}
-            setActive={setActive3}
+            data={pagination_tabs}
+            active={pagination_active}
+            setActive={pagination_setActive}
             removable={args.removable}
-            onRemove={handleRemove3}
+            onRemove={pagination_handleRemove}
             visibleCount={4}
             variant={args.variant}
             getValue={tab => String(tab.value)}
@@ -543,26 +539,31 @@ export const TabsDefault: Story = {
     },
   },
   render: (args) => {
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_1);
+    const {
+      tabs: default_tabs,
+      active: default_active,
+      setActive: default_setActive,
+      handleRemove: default_handleRemove,
+    } = useTabs(DATA_TABS_1);
     return (
       <Tabs
         variant="default"
         removable={args.removable}
-        onRemove={handleRemove}
-        value={active}
-        onValueChange={setActive}
+        onRemove={default_handleRemove}
+        value={default_active}
+        onValueChange={default_setActive}
         className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
       >
         <TabsLine>
           <TabsList>
-            {visibleTabs.map((tab) => (
+            {default_tabs.map((tab) => (
               <TabsTrigger value={tab.value} key={tab.value}>
                 {tab.label}
               </TabsTrigger>
             ))}
           </TabsList>
         </TabsLine>
-        {visibleTabs.map((tab) => (
+        {default_tabs.map((tab) => (
           <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
             {tab.label}
           </TabsContent>
@@ -579,26 +580,31 @@ export const TabsSub: Story = {
   },
   render: (args) => {
     // variant를 고정
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_1);
+    const {
+      tabs: sub_tabs,
+      active: sub_active,
+      setActive: sub_setActive,
+      handleRemove: sub_handleRemove,
+    } = useTabs(DATA_TABS_1);
     return (
       <Tabs
         variant="sub"
         removable={args.removable}
-        onRemove={handleRemove}
-        value={active}
-        onValueChange={setActive}
+        onRemove={sub_handleRemove}
+        value={sub_active}
+        onValueChange={sub_setActive}
         className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
       >
         <TabsLine>
           <TabsList>
-            {visibleTabs.map((tab) => (
+            {sub_tabs.map((tab) => (
               <TabsTrigger value={tab.value} key={tab.value}>
                 {tab.label}
               </TabsTrigger>
             ))}
           </TabsList>
         </TabsLine>
-        {visibleTabs.map((tab) => (
+        {sub_tabs.map((tab) => (
           <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
             {tab.label}
           </TabsContent>
@@ -615,46 +621,56 @@ export const TabsBox: Story = {
   },
   render: (args) => {
     args.variant = 'box';
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_2);
+     const {
+      tabs: box_tabs,
+      active: box_active,
+      setActive: box_setActive,
+      handleRemove: box_handleRemove,
+    } = useTabs(DATA_TABS_2);
     return (
-        <Tabs
-          variant="box"
-          removable={args.removable}
-          onRemove={handleRemove}
-          value={active}
-          onValueChange={setActive}
-          className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
-        >
-          <TabsLine>
-            <TabsList>
-              {visibleTabs.map((tab) => (
-                <TabsTrigger value={tab.value} key={tab.value}>
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </TabsLine>
-          {visibleTabs.map((tab) => (
-            <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
-              {tab.label}
-            </TabsContent>
-          ))}
-        </Tabs>
+      <Tabs
+        variant="box"
+        removable={args.removable}
+        onRemove={box_handleRemove}
+        value={box_active}
+        onValueChange={box_setActive}
+        className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+      >
+        <TabsLine>
+          <TabsList>
+            {box_tabs.map((tab) => (
+              <TabsTrigger value={tab.value} key={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </TabsLine>
+        {box_tabs.map((tab) => (
+          <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+            {tab.label}
+          </TabsContent>
+        ))}
+      </Tabs>
     );
   },
 };
 
 export const TabsPagination: Story = {
   render: (args) => {
-    const { tabs, active, setActive, handleRemove, visibleTabs } = useTabs(DATA_TABS_3);
+    const {
+      tabs: pagination_tabs,
+      active: pagination_active,
+      setActive: pagination_setActive,
+      handleRemove: pagination_handleRemove,
+    } = useTabs(DATA_TABS_3);
 
     return (
       <TabHead 
-        data={visibleTabs}
-        active={active}
-        setActive={setActive}
+        data={pagination_tabs}
+        active={pagination_active}
+        setActive={pagination_setActive}
         removable={args.removable}
-        onRemove={handleRemove}
+        onRemove={pagination_handleRemove}
         visibleCount={4}
         variant={args.variant}
         getValue={tab => String(tab.value)}
