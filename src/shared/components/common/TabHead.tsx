@@ -88,7 +88,7 @@ export function TabHead<T>({
           <Grow className="gap-[.4rem] mb-[0.1rem]">
             {renderButtons}
             <Grow className="gap-[0.1rem]">
-              <Typo className="tracking-[0]!" color="primary" weight="bold">
+              <Typo className="tracking-[0]!" color="default" weight="bold">
                 {Math.ceil((visibleStart + visibleCount) / visibleCount)}
               </Typo>
               <Typo className="tracking-[0]!" color="gray-light" weight="bold">
@@ -100,19 +100,26 @@ export function TabHead<T>({
             </Grow>
             <Button
               variant="outlined"
-              color="gray-light"
+              color="gray"
               only="icon" size="md"
               onClick={handlePrev}
               disabled={visibleStart === 0}
             >
               <ArrowLightIcon className="rotate-180" />
             </Button>
-            <Button variant="outlined" color="gray-light" only="icon" size="md" onClick={handleNext} disabled={isLastPage}>
+            <Button 
+              variant="outlined" 
+              color="gray" 
+              only="icon" 
+              size="md" 
+              onClick={handleNext} 
+              disabled={isLastPage}
+            >
               <ArrowLightIcon />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outlined" color="gray-light" only="icon" size="md">
+                <Button variant="outlined" color="gray" only="icon" size="md">
                   <ListIcon />
                 </Button>
               </DropdownMenuTrigger>

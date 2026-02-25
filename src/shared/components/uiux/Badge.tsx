@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center justify-center rounded-[0.3rem] border-transparent p-1 h-[2rem] text-[1.2rem] font-bold tracking-[-0.13rem] w-fit whitespace-nowrap shrink-0 tra [&>svg]:size-[1.2rem] gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden',
+  'inline-flex items-center justify-center rounded-[0.3rem] border-transparent px-1 h-[2rem] text-[1.2rem] font-bold tracking-[-0.13rem] w-fit whitespace-nowrap shrink-0 tra [&>svg]:size-[1.2rem] gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden aspect-square leading-none pt-[0.2rem]',
   {
     variants: {
       variant: {
@@ -16,9 +16,6 @@ const badgeVariants = cva(
         outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
         success: 'bg-green-500 text-white [a&]:hover:bg-green-600',
         warning: 'bg-yellow-500 text-white [a&]:hover:bg-yellow-600',
-        go: 'bg-[#00C868] text-white',
-        wait: 'bg-[#FFB82B] text-white',
-        stop: 'bg-[#F9456F] text-white',
       },
     },
     defaultVariants: {

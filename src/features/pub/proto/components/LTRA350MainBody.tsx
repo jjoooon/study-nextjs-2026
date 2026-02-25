@@ -4,12 +4,20 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams, EditableCallbackParams, ValueParserParams, CellClassParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useCallback } from 'react';
-import { Grow, Typo } from '@/shared/components/common';
+import { Grow, Typo, Grid } from '@/shared/components/common';
 import { SizeIcon, PlusIcon, SelectArrowIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
-import { Button, Checkbox, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
-import type { AgGridData, AgGridProps } from '../types/LTRA350Data.types';
+import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge } from '@/shared/components/uiux';
 import { useAgGridSelection } from '../hooks/useAgGridSelection';
+import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+
+interface LTRA350MainBodyProps {
+  data: LTRA350DataType['mainBody'];
+  selectedPlanId?: number | null;
+  onSelectPlan?: (planId: number) => void;
+  hideAside: boolean;
+  setHideAside: (hide: boolean) => void;
+}
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -19,69 +27,12 @@ export function LTRA350MainBody({
   onSelectPlan,
   hideAside,
   setHideAside,
-}: AgGridProps) {
-  const { selectedRows, setSelectedRows, handleSelectionChanged } = useAgGridSelection(data, onSelectPlan);
-
-  // checkboxRender를 useCallback으로 메모이제이션
-  const checkboxRender = useCallback(
-    (params: ICellRendererParams<AgGridData>) => {
-      const isChecked = selectedRows.includes(params.data?.id || 0);
-      return (
-        <div className="w-full h-full flex items-center justify-center editable-cell">
-          <div className="flex justify-center shrink-0 w-[2.6rem] h-full editable-cell">
-            <Checkbox
-              checked={isChecked}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  setSelectedRows([...selectedRows, params.data?.id || 0]);
-                } else {
-                  setSelectedRows(selectedRows.filter((id) => id !== params.data?.id));
-                }
-              }}
-              size="sm"
-              className="flex justify-center items-center"
-            />
-          </div>
-          {/* {params.data && (
-            <div className="border-l border-l-[var(--color-table-border-border-gray)] flex-1 text-center h-full">
-              {params.data.id}
-            </div>
-          )} */}
-        </div>
-      );
-    },
-    [selectedRows, setSelectedRows]
-  );
-
-  // CheckboxHeader를 useCallback으로 메모이제이션
-  const CheckboxHeader = useCallback(() => {
-    const allSelected = data.length > 0 && selectedRows.length === data.length;
-
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Checkbox
-          // variant="button"
-          color="secondary"
-          size="sm"
-          checked={allSelected}
-          onCheckedChange={(checked) => {
-            if (checked) {
-              setSelectedRows(data.map((item) => item.id));
-            } else {
-              setSelectedRows([]);
-            }
-          }}
-          className="flex justify-center items-center"
-          aria-label="전체 선택"
-        >
-          {/* 전체선택 */}
-        </Checkbox>
-      </div>
-    );
-  }, [data, selectedRows]);
+}: LTRA350MainBodyProps) {
+  const rowData = data.agGridTable1;
+  const { selectedRows, setSelectedRows, handleSelectionChanged } = useAgGridSelection(rowData, onSelectPlan);
 
   // duplicateRenderer를 useCallback으로 메모이제이션
-  const duplicateRenderer = useCallback((params: ICellRendererParams<AgGridData>) => {
+  const duplicateRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
       <Grow className="w-full h-full flex items-center justify-center">
@@ -100,19 +51,41 @@ export function LTRA350MainBody({
     );
   }, []);
 
+
   // 담보명 헤더 컴포넌트를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
   const productNameHeader = useCallback(
     () => (
-      <Grow className="gap-1 w-full">
-        담보명(
-        <Checkbox size="sm">담보명 전체보기</Checkbox>)
+      <Grow className="gap-1 w-full" placement="bwc">
+        <Grow className="gap-1" placement="sc">
+          담보명(<Checkbox size="sm">전체보기</Checkbox>)
+        </Grow>
+        <Grow className="gap-1" placement="sc">
+          <Checkbox size="sm">전체 343</Checkbox>
+          <Checkbox size="sm">선택 324</Checkbox>
+          <Checkbox size="sm">미선택 112</Checkbox>
+        </Grow>
       </Grow>
     ),
     []
   );
 
+  // titleRenderer: productName 셀 커스텀 렌더러
+  const titleRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+    return (
+      <Grow className="" placement='bwc'>
+        <Grow>
+          {params.data?.productName}
+        </Grow>
+        <Grow className="gap-1">
+          <Badge color="green" className="w-[3rem]">독립</Badge>
+          <Badge color="blue" className="w-[3rem]">갱신</Badge>
+        </Grow>
+      </Grow>
+    );
+  }, []);
+
   // 만기 셀 렌더러를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
-  const expiryCellRenderer = useCallback((params: ICellRendererParams<AgGridData>) => {
+  const expiryCellRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
     return (
       <div className="flex items-center justify-center gap-1 w-full h-full">
         <span className="block w-[6rem] text-right">{params.value}</span>
@@ -122,25 +95,29 @@ export function LTRA350MainBody({
   }, []);
 
   // 컬럼 정의
-  const columnDefs: ColDef<AgGridData>[] = useMemo(
+  const columnDefs: ColDef<LTRA350DataType['mainBody']['agGridTable1'][number]>[] = useMemo(
     () => [
       {
         headerName: '',
-        field: 'selected',
+        checkboxSelection: true, // ag-Grid 기본 체크박스
+        // suppressRowClickSelection: true, // 체크박스만 클릭 시 선택
+        // field: 'selected',
         width: 30,
         cellClass: 'text-center p-0!',
+        cellClassRules: {
+          'pointer-events-none': params => !!params.data?.locked, // boolean 반환으로 타입 오류 방지
+        },
         sortable: false,
         filter: false,
-        cellRenderer: checkboxRender,
-        headerComponent: CheckboxHeader,
-        suppressRowClickSelection: true,
+        // cellRenderer: checkboxRender,
+        // headerComponent: CheckboxHeader,
         pinned: 'left',
       },
       {
         headerName: '',
         field: 'id',
-        cellClass: 'text-center',
-        width: 40,
+        cellClass: 'text-center p-0!',
+        width: 30,
         sortable: false,
         filter: false,
         editable: false,
@@ -149,52 +126,57 @@ export function LTRA350MainBody({
       {
         headerName: '담보명',
         field: 'productName',
-        width: hideAside ? 510 : 300,
+        width: hideAside ? 510 : 390,
         cellClass: 'text-left',
         sortable: false,
         filter: false,
         autoHeight: true,
         pinned: 'left',
-        tooltipValueGetter: (params: ITooltipParams<AgGridData>) => {
+        tooltipValueGetter: (params: ITooltipParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
         },
         headerComponent: productNameHeader,
+        cellRenderer: titleRenderer
       },
       {
         headerName: '가입금액(만원)',
         field: 'coverageAmount',
-        flex: 1.4,
+        flex: 1.6,
+        headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell',
-        sortable: true,
+        sortable: false,
         filter: false,
         editable: true,
-        valueFormatter: (params: ValueFormatterParams<AgGridData>) => {
+        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
-        valueParser: (params: ValueParserParams<AgGridData>) => {
+        valueParser: (params: ValueParserParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           return Number(params.newValue);
         },
+       
       },
       {
         headerName: '보험료(만원)',
         field: 'premium',
         flex: 1.4,
         cellClass: 'text-right',
-        sortable: true,
+        headerClass: 'px-0!',
+        sortable: false,
         filter: false,
-        valueFormatter: (params: ValueFormatterParams<AgGridData>) => {
+        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
       },
       {
         headerName: '가능금액(만원)',
         field: 'availableAmount',
-        flex: 1.4,
+        flex: 1.6,
         cellClass: 'text-right',
-        sortable: true,
+        headerClass: 'px-0!',
+        sortable: false,
         filter: false,
-        valueFormatter: (params: ValueFormatterParams<AgGridData>) => {
+        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
       },
@@ -203,9 +185,9 @@ export function LTRA350MainBody({
         field: 'expiryPeriod',
         flex: 1,
         cellClass: 'text-center editable-cell',
-        sortable: true,
+        sortable: false,
         filter: false,
-        editable: (params: EditableCallbackParams<AgGridData>) => params.data?.canEditExpiry ?? false,
+        editable: (params: EditableCallbackParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'], // 원하는 옵션
@@ -217,17 +199,18 @@ export function LTRA350MainBody({
         field: 'paymentPeriod',
         flex: 1,
         cellClass: 'text-center',
-        sortable: true,
+        sortable: false,
         filter: false,
       },
       {
         headerName: '예상UW',
         field: 'expectedUwResult',
+        headerClass: 'px-0!',
         flex: 1,
         cellClass: 'text-center',
         sortable: false,
         filter: false,
-        cellStyle: (params: CellClassParams<AgGridData>) => {
+        cellStyle: (params: CellClassParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           const value = params.value as string;
           if (value === '인수') {
             return { color: '#006FF2' };
@@ -248,7 +231,7 @@ export function LTRA350MainBody({
         suppressRowClickSelection: true,
       },
     ],
-    [checkboxRender, CheckboxHeader, duplicateRenderer, productNameHeader, expiryCellRenderer, hideAside]
+    [duplicateRenderer, productNameHeader, expiryCellRenderer, hideAside]
   );
 
   return (
@@ -271,7 +254,7 @@ export function LTRA350MainBody({
               </NativeSelect>
               <Button variant="outlined" color="gray" size="lg" onClick={() => setHideAside(!hideAside)}>
                 {hideAside ? '작게보기' : '크게보기'}
-                <SizeIcon />
+                <SizeIcon color="var(--color-secondary-50)" />
               </Button>
             </Grow>
           </Grow>
@@ -279,10 +262,18 @@ export function LTRA350MainBody({
       </LayoutScrollItem>
       <LayoutScrollItem className="w-full">
         <div className="ag-theme-alpine">
-          <AgGridReact<AgGridData>
-            rowData={data}
+          <AgGridReact<LTRA350DataType['mainBody']['agGridTable1'][number]>
+            rowData={rowData}
             columnDefs={columnDefs}
             rowSelection="multiple" // multiple로 변경
+            suppressRowClickSelection={true}
+            onGridReady={(params) => {
+              params.api.forEachNode((node) => {
+                if (node.data?.locked) node.setSelected(true);
+              });
+            }}
+            // isRowSelectable={(node) => !node.data?.locked}
+
             suppressRowHoverHighlight={false}
             onSelectionChanged={handleSelectionChanged}
             singleClickEdit={true} // 한 번의 클릭으로 편집 활성화

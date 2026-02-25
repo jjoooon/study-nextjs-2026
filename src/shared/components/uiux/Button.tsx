@@ -20,8 +20,10 @@ const buttonVariants = cva(
         hover:underline 
         focus-visible:underline`,
         none: 'bg-transparent border-none',
+
+        banner: 'bg-[var(--color-coolgray-20)] text-[var(--color-gray-100)] border border-[var(--color-coolgray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
         state:
-          'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] p-x-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline',
+          'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline rounded-[0.6rem]!',
       },
       only: {
         default: '',
@@ -32,14 +34,15 @@ const buttonVariants = cva(
         secondary: '',
         gray: '',
         'gray-light': '',
+        'gray-cool': '',
         success: '',
         link: 'text-[var(--color-information-50)]',
         transparent: `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
         xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 [&>svg]:w-[1.6rem] min-w-[8rem] `,
-        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.4rem] font-normal px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
-        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.4rem] font-normal pt-[0.1rem] px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
+        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
         sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
         xs: `h-[1.6rem] rounded-[0.3rem] text-[1.2rem] font-normal p-0 gap-[0.2rem] [&>svg]:w-[1.32rem]`,
       },
@@ -104,6 +107,23 @@ const buttonVariants = cva(
         disabled:text-[var(--color-gray-0)]
         disabled:bg-[var(--color-gray-20)]
         disabled:border-[var(--color-gray-20)]`,
+      },
+      {
+        variant: 'contained',
+        color: 'gray-cool',
+        className: `border border-[var(--color-coolgray-50)] 
+        bg-[var(--color-coolgray-50)] 
+        text-[var(--color-gray-0)] 
+        font-bold
+        hover:bg-[var(--color-coolgray-60)] 
+        hover:border-dashed 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-coolgray-60)] 
+        focus-visible:border-dashed 
+        focus-visible:border-[var(--color-gray-0)] 
+        disabled:text-[var(--color-gray-0)]
+        disabled:bg-[var(--color-coolgray-20)]
+        disabled:border-[var(--color-coolgray-20)]`,
       },
       {
         variant: 'contained',
@@ -254,6 +274,19 @@ const buttonVariants = cva(
       },
       {
         variant: 'outlined',
+        color: 'gray-cool',
+        className: `border border-[var(--color-coolgray-20)] 
+        bg-[var(--color-gray-0)] 
+        text-[var(--color-gray-100)] 
+        hover:bg-[var(--color-coolgray-5)] 
+        hover:border-dashed 
+        hover:border-[var(--color-gray-100)] 
+        focus-visible:ring-[var(--color-coolgray-5)] 
+        focus-visible:border-dashed 
+        focus-visible:border-[var(--color-gray-100)]`,
+      },
+      {
+        variant: 'outlined',
         color: 'gray-light',
         className: `border border-[var(--color-gray-20)] 
         bg-[var(--color-gray-0)] 
@@ -305,12 +338,17 @@ const buttonVariants = cva(
       {
         variant: 'text',
         color: 'gray',
-        className: `text-[var(--color-secondary-70)]`,
+        className: `text-[var(--color-gray-70)]`,
+      },
+      {
+        variant: 'text',
+        color: 'gray-cool',
+        className: `text-[var(--color-coolgray-70)]`,
       },
       {
         variant: 'text',
         color: 'gray-light',
-        className: `text-[var(--color-secondary-70)]`,
+        className: `text-[var(--color-gray-30)]`,
       },
       {
         variant: 'text',

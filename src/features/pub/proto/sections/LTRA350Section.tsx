@@ -10,51 +10,34 @@ import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
 import MainFoot from '@/shared/components/features/MainFoot';
 
 // 데이터 관련 import 제거
+import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+
 export interface LTRA350SectionProps {
-  planCovData: any;
-  taskStatusData: any;
-  headData: any;
-  mainHeadData: any;
-  mainHeadCategories: any;
-  tags: any;
-  visibleCount: number;
+  data: LTRA350DataType;
 }
 
-export default function LTRA350Section({
-  planCovData,
-  taskStatusData,
-  headData,
-  mainHeadData,
-  mainHeadCategories,
-  tags,
-  visibleCount,
-}: LTRA350SectionProps) {
+export default function LTRA350Section({ data }: LTRA350SectionProps) {
   const [hideAside, setHideAside] = useState(false);
 
   return (
     <LayoutTemplateA
-      pageHead={<PageHead data={headData} />}
+      pageHead={<PageHead data={data.pageHead} />}
       process={<div>프로세스</div>}
 
       mainHead={
-        <LTRA350MainHead
-          data={mainHeadData}
-          categories={mainHeadCategories}
-          tags={tags}
-          visibleCount={visibleCount}
-        />
+        <LTRA350MainHead data={data.mainHead}/>
       }
       mainBody={
         <LTRA350MainBody
-          data={planCovData}
+          data={data.mainBody}
           hideAside={hideAside}
           setHideAside={setHideAside}
         />
       }
       mainFoot={<MainFoot />}
 
-      asideHead={<TaskStatusBoard state={taskStatusData} />}
-      asideBody={<AsidBody />}
+      asideHead={<TaskStatusBoard state={data.taskState} />}
+      asideBody={<AsidBody data={data.aside} />}
       asideFoot={<AsideFoot />}
       
       hideAside={hideAside}

@@ -15,22 +15,11 @@ import {
   FormItem,
   ViewMode,
 } from '@/shared/components/common';
-import { CloseIcon, SearchIcon } from '@/shared/components/icons';
+import { CloseIcon, SearchIcon, MemoIcon } from '@/shared/components/icons';
 import { Input, Button } from '@/shared/components/uiux';
+import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
-interface PageHeadData {
-  data: {
-    simpleMode?: boolean;
-    pageName?: string;
-    pageId?: string;
-    title?: string;
-    options?: string[];
-    planNumber?: string[];
-    contractHolder?: string;
-  };
-}
-
-export default function PageHead({ data }: PageHeadData) {
+export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }) {
   // data가 undefined일 경우를 대비한 기본값 처리
   const safeData = data ?? {};
   const [simpleMode, setSimpleMode] = useState<boolean>(safeData.simpleMode ?? false);
@@ -59,7 +48,7 @@ export default function PageHead({ data }: PageHeadData) {
         </Grow>
       </Grow>
 
-      <Grow placement="bwc" className="w-full py-1">
+      <Grow placement="bwc" className="w-full py-1 gap-3">
         <Grow className="gap-[.8rem] flex-1" placement="sc">
           <ViewMode state={simpleMode} onChange={setSimpleMode as (value: boolean) => void} />
           <Typo tag="h2" variant="heading-lg">
@@ -76,7 +65,11 @@ export default function PageHead({ data }: PageHeadData) {
             변경
           </Button>
         </Grow>
-        <Grow className="gap-1 shrink-0" placement="ec">
+        <Grow className="gap-2.5 shrink-0" placement="ec">
+          <Button variant="outlined" color="secondary" size="md">
+            <MemoIcon />
+            메모
+          </Button>
           <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
             <FormRow>
               <FormCell title="설계번호">
@@ -96,12 +89,12 @@ export default function PageHead({ data }: PageHeadData) {
                   onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
                 />
 
-                <FormItem className="w-auto ml-3">
+                <FormItem className="w-[19.8rem] ml-1.5">
                   <Input
                     aria-label="계약자명 입력"
                     type="text"
                     value={contractHolder}
-                    width="lg"
+                    width="full"
                     onChange={(e) => setContractHolder(e.target.value)}
                   />
                   <Button variant="outlined" color="gray-light" aria-label="계약자 추가" only="icon" size="lg">

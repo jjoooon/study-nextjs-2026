@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
 import { Button } from '@/shared/components/uiux';
+import { CheckIcon, ExMarkIcon } from '@/shared/components/icons';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 interface TaskStatusBoardProps {
   state: { id: number; status: string; label: string }[];
@@ -30,16 +32,20 @@ export default function TaskStatusBoard({ state }: TaskStatusBoardProps) {
 
       <Grid className="grid-cols-2 gap-1 w-full">
         {state.map((item) => {
+          const statusColors = {
+            "정상": 'bg-[var(--color-success-50)]',
+            "경고": 'bg-[var(--color-warning-40)]',
+            "중지": 'bg-[var(--color-danger-50)]',
+          };
           return (
             <Button key={item.id} variant="state">
               {item.label}
-              <Image
-                src={`/images/icon/task-${item.status}.svg`}
-                alt="설명"
-                width={19}
-                height={19}
-                className="w-[auto] h-[1.9rem]"
-              />
+              <span className={cn(
+                'w-[1.8rem] h-[1.8rem] rounded-full flex items-center justify-center',
+                statusColors[item.status as keyof typeof statusColors]
+              )}>
+                {item.status === '정상' ? <CheckIcon color="#fff" /> : <ExMarkIcon color="#fff" />}
+              </span>
             </Button>
           );
         })}

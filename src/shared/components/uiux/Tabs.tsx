@@ -40,6 +40,7 @@ const tabsListVariants = cva('inline-flex items-start', {
   variants: {
     variant: {
       default: 'bg-transparent',
+      outlined: 'bg-transparent',
       sub: 'bg-transparent',
       box: 'w-full bg-[#E5E7EB] rounded-[0.8rem] p-[0.2rem] [&>div]:flex-1',
     },
@@ -56,6 +57,8 @@ const tabsTriggerVariants = cva(
       variant: {
         default:
           "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+        outlined:
+          "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.4rem] rounded-tr-[0.4rem] text-[var(--color-gray-70)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
         sub: "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.4rem] text-[1.2rem] -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
         box: 'h-[3rem] flex items-center justify-center text-[1.3rem] font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]',
       },
@@ -153,7 +156,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           >
             <CloseIcon
               size={14}
-              color={variant === 'sub' || variant === 'box' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'}
+              color={variant === 'sub' || variant === 'box' || variant === 'outlined' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'}
             />
           </button>
         )}
