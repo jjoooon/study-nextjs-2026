@@ -4,6 +4,7 @@ import { Grow, Gcol, Typo, FormTable, FormCell, FormItem, Separator, FormRow } f
 import { TableRow } from '@/shared/components/uiux';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
+import { ar } from 'date-fns/locale';
 
 const meta: Meta<typeof Checkbox> = {
     title: 'Components/UIUX/Checkbox',
@@ -225,25 +226,31 @@ export const Default: Story = {
 export const Favorite: Story = {
     args: {
         variant: 'favorite',
-        children: ''
     },
-    render: renderInteractive,
+    render: (args) => {
+        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
+        const { children, ...restArgs } = args;
+
+        return (
+            <div className='pd-0'>
+                <Checkbox className='w-auto h-auto' {...restArgs} checked={checked} onCheckedChange={setChecked} />
+            </div>
+        );
+    },
 };
 
 export const Button: Story = {
-    render: () => {
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(false);
+     args: {
+        variant: 'button',
+        children: '버튼 체크박스'
+    },
+    render: (args) => {
+        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
 
         return (
-            <StoryWrap>
-                <StoryBox>
-                    <Grow>
-                        <Checkbox variant="button" checked={checked} onCheckedChange={setChecked}>
-                            버튼 체크박스
-                        </Checkbox>
-                    </Grow>
-                </StoryBox>
-            </StoryWrap>
+            <Checkbox variant="button" checked={checked} onCheckedChange={setChecked}>
+                {args.children}
+            </Checkbox>
         );
     },
 };
@@ -253,7 +260,12 @@ export const Indeterminate: Story = {
         checked: 'indeterminate',
         children: '부분 선택 상태',
     },
-    render: renderInteractive,
+    render: (args) => {
+        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>('indeterminate');
+        return (
+            <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
+        );
+    }
 };
 
 export const Disabled: Story = {
@@ -261,7 +273,12 @@ export const Disabled: Story = {
         disabled: true,
         children: '비활성화 상태',
     },
-    render: renderInteractive,
+    render: (args) => {        
+        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>('indeterminate');
+        return (
+            <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
+        );
+    }
 };
 
 export const DisabledChecked: Story = {
@@ -270,26 +287,29 @@ export const DisabledChecked: Story = {
         checked: true,
         children: '비활성화된 선택 상태',
     },
-    render: renderInteractive,
+    render: (args) => {
+        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>('indeterminate');
+        return (
+            <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
+        );
+    }
 };
 
 export const Form: Story = {
     render: () => {
         const [checked, setChecked] = React.useState(false);
         return (
-            <StoryWrap>
-                <FormTable variant="boxIn" caption="약관 동의" cols={['w-[10rem] min-w-[10rem]', '']}>
-                    <TableRow>
-                        <FormCell title="서비스 이용약관">
-                            <FormItem>
-                                <Checkbox checked={checked} onCheckedChange={(c) => setChecked(c === true)}>
-                                    (필수) 서비스 이용약관에 동의합니다.
-                                </Checkbox>
-                            </FormItem>
-                        </FormCell>
-                    </TableRow>
-                </FormTable>
-            </StoryWrap>
+            <FormTable variant="boxIn" caption="약관 동의" cols={['w-[10rem] min-w-[10rem]', '']}>
+                <TableRow>
+                    <FormCell title="서비스 이용약관">
+                        <FormItem>
+                            <Checkbox checked={checked} onCheckedChange={(c) => setChecked(c === true)}>
+                                (필수) 서비스 이용약관에 동의합니다.
+                            </Checkbox>
+                        </FormItem>
+                    </FormCell>
+                </TableRow>
+            </FormTable>
         );
     },
 };

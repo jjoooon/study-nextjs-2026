@@ -11,6 +11,7 @@ const meta: Meta<typeof Input> = {
   component: Input,
   tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
         component: `
@@ -107,7 +108,6 @@ const [amount, setAmount] = useState('10000');
     },
 
     // 2. State (상태 관련)
-
     disabled: {
       control: 'boolean',
       description: '비활성화 여부',
@@ -255,9 +255,26 @@ export const Error: Story = {
     };
 
     return (
-      <StoryWrap>
+      <StoryWrap className='flex-row'>
+        {/* center the input horizontally (and vertically if needed) */}
         <StoryBox>
           <Input {...restArgs} value={value} onChange={handleChange} />
+        </StoryBox>
+        <StoryBox>
+          <Grow placement="cc" className="gap-2">
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Input width="lg" value="에러" error errorPs="tl" errorMsg="top left" />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Input width="lg" value="에러" error errorPs="tr" errorMsg="top right" />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Input width="lg" value="에러" error errorPs="bl" errorMsg="bottom left" />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Input width="lg" value="에러" error errorPs="br" errorMsg="bottom right" />
+            </Gcol>
+          </Grow>  
         </StoryBox>
       </StoryWrap>
     );
@@ -268,14 +285,51 @@ export const Before: Story = {
   args: {
     placeholder: '내용을 입력하세요',
     before: '시간',
+    width: 'full',
   },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, onChange, ...restArgs } = args;
+
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      args.onChange?.(e);
+    };
+
+    return (
+      <Input {...restArgs} value={value} onChange={handleChange} />
+    );
+  }
+            
 };
 
 export const After: Story = {
   args: {
     placeholder: '내용을 입력하세요',
     after: '원',
+    width: 'full',
   },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, onChange, ...restArgs } = args;
+
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      args.onChange?.(e);
+    };
+
+    return (
+      <Input {...restArgs} value={value} onChange={handleChange} />
+    );
+  }
 };
 
 export const Number: Story = {
@@ -283,7 +337,25 @@ export const Number: Story = {
     placeholder: '내용을 입력하세요',
     formatType: 'number',
     value: '10000',
+    width: 'full',
   },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, onChange, ...restArgs } = args;
+
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      args.onChange?.(e);
+    };
+    
+    return (
+      <Input {...restArgs} value={value} onChange={handleChange} />
+    );
+  }
 };
 
 export const Amount: Story = {
@@ -292,7 +364,25 @@ export const Amount: Story = {
     formatType: 'amount',
     value: '10000',
     after: '원',
+    width: 'full',
   },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, onChange, ...restArgs } = args;
+    
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]); 
+    
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      args.onChange?.(e);
+    };
+
+    return (
+      <Input {...restArgs} value={value} onChange={handleChange} />
+    );
+  }  
 };
 
 export const Form: Story = {
@@ -300,22 +390,32 @@ export const Form: Story = {
     required: true,
   },
 
-  render: () => (
-    <StoryWrap>
-      <FormTable variant="boxIn" caption="고객명" cols={['w-[10rem] min-w-[10rem]', '']}>
-        <TableRow>
-          <FormCell title="고객명">
-            <FormItem className="w-max ml-2">
-              <Input type="text" aria-label="고객명" defaultValue="김한화" />
-              <Button aria-label="고객명 검색" variant="none" only="icon" size="md">
-                <SearchIcon />
-              </Button>
-            </FormItem>
-          </FormCell>
-        </TableRow>
-      </FormTable>
-    </StoryWrap>
-  ),
+  render: () => {
+    // controlled example to avoid mixing value/defaultValue
+    const [customerName, setCustomerName] = React.useState('');
+
+    return (
+      <StoryWrap>
+        <FormTable variant="boxIn" caption="고객명" cols={['w-[10rem] min-w-[10rem]', '']}>
+          <TableRow>
+            <FormCell title="고객명">
+              <FormItem className="w-max ml-2">
+                <Input
+                  type="text"
+                  aria-label="고객명"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                />
+                <Button aria-label="고객명 검색" variant="none" only="icon" size="md">
+                  <SearchIcon />
+                </Button>
+              </FormItem>
+            </FormCell>
+          </TableRow>
+        </FormTable>
+      </StoryWrap>
+    );
+  },
 };
 
 export const Form2: Story = {
