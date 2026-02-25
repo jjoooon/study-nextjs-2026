@@ -376,3 +376,52 @@
 .space-bottom-12 .ag-body-viewport{
   padding-bottom: calc(9.8rem + 1.2rem) !important;
 }
+
+/* ag-Grid 기본 체크박스 크기 및 선택 색상 커스텀 */
+.ag-theme-alpine .ag-checkbox-input-wrapper {
+  width: 1.4rem;
+  height: 1.4rem;
+  min-width: 1.4rem;
+  min-height: 1.4rem;
+  accent-color: var(--color-primary-50); /* 최신 브라우저 지원 */
+}
+.ag-row-selected .ag-selection-checkbox {
+  background-color: var(--color-table-td-surface-selected) !important;
+}
+.ag-row-hover .ag-selection-checkbox {
+  background-color: var(--color-table-td-surface-hover);
+}
+.ag-selection-checkbox {
+  background-color: var(--color-table-td-surface-editable);
+}
+/* 선택 시 체크박스 배경색(구형 브라우저 대응) */
+.ag-theme-alpine .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-50);
+}
+.ag-selection-checkbox.ag-invisible {visibility: visible !important; }
+.ag-row-selected .ag-selection-checkbox.ag-invisible .ag-disabled .ag-wrapper{
+  background-color: var(--color-gray-10) !important;
+  opacity: 1 !important;
+}
+.ag-row-selected .ag-selection-checkbox.ag-invisible .ag-disabled .ag-wrapper::after {
+  color: #000 !important;
+  filter: none !important;
+  background-color: #000 !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+.ag-row-focus .editable-cell {
+  background-color: var(--color-table-td-surface-selected) !important;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.pointer-events-none .ag-selection-checkbox .ag-wrapper{
+  background-color: var(--color-gray-10) !important;
+  border:1px solid var(--color-gray-20) !important;
+}
+.pointer-events-none .ag-selection-checkbox .ag-wrapper::after {
+  /* mask-image: none !important; */
+  background-color: var(--color-gray-50) !important;
+}

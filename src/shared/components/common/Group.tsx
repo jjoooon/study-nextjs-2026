@@ -99,7 +99,7 @@ const VARIANT_MAP: Record<Variant, string> = {
   'form-table': 'w-full border-collapse',
   form: 'space-y-4',
   box: 'px-2.5 py-2.5 bg-[var(--color-gray-5)] gap-1.5',
-  'box-line': 'px-[2rem] py-[2rem] bg-[#FFF] gap-[1.2rem] border border-[#ECECEC] rounded-[1.6rem] ',
+  'box-line': 'p-2 bg-[#FFF] border border-[var(--color-coolgray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
 };
 
 export const Gcol = ({ children, placement = 'cc', variant = 'default', className }: GroupProps) => {

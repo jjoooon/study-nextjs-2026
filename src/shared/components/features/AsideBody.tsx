@@ -1,56 +1,64 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@/shared/components/common';
+import { BulletList, BulletListItem, Gcol, Grow, Typo } from '@/shared/components/common';
+import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 import { NewPopupIcon } from '@/shared/components/icons';
-import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/uiux';
+import { Button, Badge, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/uiux';
 import { LayoutScrollWrap, LayoutScrollItem } from '../layout';
 import { QuickLinks } from './QuickLinks';
 
-export default function AsideBody() {
+export default function AsideBody({ data }: { data: LTRA350DataType['aside'] }) {
+  const info = data?.simpleContractInfo;
   return (
-    <Gcol placement="ss" className="w-full">
-      <Tabs defaultValue="info" variant="box" className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]">
-        <TabsList>
-          <TabsTrigger value="info">
-            주요정보
-          </TabsTrigger>
-          <TabsTrigger value="AI">
-            AI
-          </TabsTrigger>
-        </TabsList>
-        {/* 주요정보 */}
-        <TabsContent value="info" className="w-full h-full relative">
-          <LayoutScrollWrap>
-            <LayoutScrollItem>
-              <Gcol className="gap-2 w-full pb-[16rem]" placement="ss">
-                <section className="w-full">
-                  <Grow className="gap-2" placement="bwc">
-                    <Typo variant="heading-md">인수지침 점검</Typo>
-                    <Button variant="none" only="icon" size="sm">
-                      <NewPopupIcon />
-                    </Button>
-                  </Grow>
-                </section>
-                <section className="w-full">
-                  <Grow className="gap-2" placement="bwc">
-                    <Typo variant="heading-md">간편설계 계약정보</Typo>
-                    <Button variant="none" only="icon" size="sm">
-                      <NewPopupIcon />
-                    </Button>
-                  </Grow>
-                </section>
-                <QuickLinks />
+    <LayoutScrollWrap>
+      <LayoutScrollItem>
+        <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
+          <Grow className="gap-2" placement="bwc">
+            <Button variant="banner" className="w-full justify-between!">
+              인수지침 점검
+              <NewPopupIcon />
+            </Button>
+          </Grow>
+
+          <Gcol className="w-full gap-1">
+            <Grow className="gap-2" placement="bwc">
+              <Typo variant="heading-md">설계정보</Typo>
+              <Typo variant="body-md" className="text-[var(--color-danger-40)]">설계중</Typo>
+            </Grow>
+            <Gcol variant="box-line" className="w-full bg-[var(--color-coolgray-10)] gap-2" placement="ss">
+              <Gcol variant="box-line" className="w-full gap-1 py-[0.6rem]! border-none! shadow-none!" placement="ss">
+                <BulletList className="pt-[0.4rem]">
+                  <BulletListItem type="dot" size="sm">
+                    <Grow className="w-full" placement="bws">
+                      <div>보험시기 {info?.date}</div>
+                      <Button variant="outlined" color="gray" size="sm" className="-translate-y-[0.4rem]">
+                        변경
+                      </Button>
+                    </Grow>
+                  </BulletListItem>
+                  <BulletListItem type="dot" size="sm">{Array.isArray(info?.info) ? info.info.join('/') : info?.info}</BulletListItem>
+                </BulletList>
               </Gcol>
-            </LayoutScrollItem>
-          </LayoutScrollWrap>
-        </TabsContent>
-        {/* AI */}
-        <TabsContent value="AI" className="w-full h-full relative">
-          <LayoutScrollWrap>
-            <LayoutScrollItem>AI...</LayoutScrollItem>
-          </LayoutScrollWrap>
-        </TabsContent>
-      </Tabs>
-    </Gcol>
+              <Grow className="gap-1" placement="sc">
+                  <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] ">계</Badge>
+                  <Typo variant="body-sm" weight="bold">{info?.polName}</Typo>
+                </Grow>
+                <Grow className="gap-1" placement="sc">
+                  <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem]">피</Badge>
+                  <Typo variant="body-sm" weight="bold">{info?.insName} {info?.insAge}세({info?.insGender}) {info?.insGrade}</Typo>
+                </Grow>
+              <BulletList>
+                <BulletListItem type="dot" size="sm" className="text-[var(--color-danger-50)]">설계유효기간: {info?.quoteExpiryDate}</BulletListItem>
+                <BulletListItem type="dot" size="sm">상령일: {info?.insuranceAgeDate}</BulletListItem>
+                <BulletListItem type="dot" size="sm">동의종료일: {info?.consentEndDate}</BulletListItem>
+                <BulletListItem type="dot" size="sm">{info?.note}</BulletListItem>
+              </BulletList>
+            </Gcol>
+          </Gcol>
+
+          <QuickLinks />
+        </Gcol>
+      </LayoutScrollItem>
+    </LayoutScrollWrap>
   );
 }

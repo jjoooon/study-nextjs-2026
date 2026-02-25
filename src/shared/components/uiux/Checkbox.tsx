@@ -22,6 +22,7 @@ function Checkbox({
   color = 'primary',
   ...props
 }: UICheckboxProps) {
+  const isDefaultSm = variant === 'default' && size === 'sm';
   const isFavorite = variant === 'favorite';
   const isNoneText = variant === 'noneText';
   const isButton = variant === 'button';
@@ -78,6 +79,7 @@ function Checkbox({
         className={cn(
           'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[var(--color-element-gray-lighter)] disabled:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:bg-[var(--color-element-gray-lighter)] disabled:data-[state=checked]:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:text-[#b3b3b3] [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]',
           // favorite 스타일
+          isDefaultSm && 'translate-y-[0.1rem]',
           isFavorite && 'border-0 bg-transparent shadow-none size-[0.5rem]',
           // button 스타일
           isButton &&
