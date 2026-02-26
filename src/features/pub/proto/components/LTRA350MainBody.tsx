@@ -8,7 +8,6 @@ import { Grow, Typo, Grid } from '@/shared/components/common';
 import { SizeIcon, PlusIcon, SelectArrowIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge } from '@/shared/components/uiux';
-import { useAgGridSelection } from '../hooks/useAgGridSelection';
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
 interface LTRA350MainBodyProps {
@@ -29,7 +28,21 @@ export function LTRA350MainBody({
   setHideAside,
 }: LTRA350MainBodyProps) {
   const rowData = data.agGridTable1;
-  const { selectedRows, setSelectedRows, handleSelectionChanged } = useAgGridSelection(rowData, onSelectPlan);
+ 
+  // AgGrid 선택 상태 관리 로직을 직접 구현
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const handleSelectionChanged = useCallback(
+    (event: { api: any }) => {
+      const selectedNodes = event.api.getSelectedNodes();
+      if (selectedNodes.length > 0) {
+        const selectedData = selectedNodes[0].data;
+        if (selectedData && typeof onSelectPlan === 'function') {
+          onSelectPlan(selectedData.id);
+        }
+      }
+    },
+    [onSelectPlan]
+  );
 
   // duplicateRenderer를 useCallback으로 메모이제이션
   const duplicateRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {

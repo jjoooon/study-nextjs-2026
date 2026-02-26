@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import AsidBody from '@/shared/components/features/AsideBody';
 import PageHead from '@/shared/components/features/PageHead';
+import PageProcess from '@/shared/components/features/PageProcess';
 import AsideFoot from '@/shared/components/features/AsideFoot';
 import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
@@ -22,7 +23,7 @@ export default function LTRA350Section({ data }: LTRA350SectionProps) {
   return (
     <LayoutTemplateA
       pageHead={<PageHead data={data.pageHead} />}
-      process={<div>프로세스</div>}
+      process={<PageProcess />}
 
       mainHead={
         <LTRA350MainHead data={data.mainHead}/>
