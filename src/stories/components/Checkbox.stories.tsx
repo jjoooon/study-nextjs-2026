@@ -5,6 +5,7 @@ import { TableRow } from '@/shared/components/uiux';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 import { ar } from 'date-fns/locale';
+import { useState } from 'react';
 
 const meta: Meta<typeof Checkbox> = {
     title: 'Components/UIUX/Checkbox',
@@ -313,3 +314,14 @@ export const Form: Story = {
         );
     },
 };
+
+
+export const list: Story = {
+    // render: () => {
+    //         const [checkedList, setCheckedList] = useState([true, false, false]);
+    //         const handleCheckedChange = (idx: number) => (checked: boolean | 'indeterminate') => {
+    //         setCheckedList(list => list.map((v, i) => (i === idx ? !!checked : v)));
+    //     };
+
+    // },
+}
