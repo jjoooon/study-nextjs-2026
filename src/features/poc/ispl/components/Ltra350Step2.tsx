@@ -27,12 +27,14 @@ export default function Ltra350Step2() {
             ))}
           </TabsList>
         </div>
-        <TabsContent value={active}>
-          <div className="grid grid-rows-[auto_1fr] gap-[2rem]">
-            <InsPlanBasic />
-            <InsPlanCov data={gridData} selectedPlanId={selectedPlanId} onSelectPlan={handleSelectPlan} />
-          </div>
-        </TabsContent>
+        {visibleTabs.map((tab) => (
+          <TabsContent key={tab.value} value={tab.value}>
+            <div className="grid grid-rows-[auto_1fr] gap-[2rem]">
+              <InsPlanBasic />
+              <InsPlanCov data={gridData} selectedPlanId={selectedPlanId} onSelectPlan={handleSelectPlan} />
+            </div>
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   );
