@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, Typo, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
+import { Grow, Gcol, Typo, FormTable, FormCell, FormItem} from '@/shared/components/common';
 import { TableRow } from '@/shared/components/uiux';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
-import { ar } from 'date-fns/locale';
 import { useState } from 'react';
 
 const meta: Meta<typeof Checkbox> = {
@@ -73,11 +72,11 @@ const [checked, setChecked] = useState(false);
         // 1. Appearance
         variant: {  
             control: 'select', 
-            options: ['default', 'favorite', 'noneText', 'button'],
+            options: ['default', 'favorite', 'noneText', 'button', 'text'],
             description: '체크박스 스타일 유형',
             table: { 
                 category: 'Appearance',
-                type: { summary: 'default | favorite | noneText | button' },
+                type: { summary: 'default | favorite | noneText | button | text' },
             },
         },
         size: { 
@@ -201,20 +200,26 @@ export const Default: Story = {
                 </StoryBox>
                 <StoryBox>
                     <Grow placement="cc" className="gap-2">
-                        <Gcol placement="ss" className="gap-[0.2rem]">
+                        <Gcol placement="ss" className="gap-[0.4rem]">
+                            <Checkbox variant="text">Label</Checkbox>
+                        </Gcol>
+                        <Gcol placement="ss" className="gap-[0.4rem]">
                             <Checkbox checked>Label</Checkbox>
                         </Gcol>
-                        <Gcol placement="ss" className="gap-[0.2rem]">
+                        <Gcol placement="ss" className="gap-[0.4rem]">
                             <Checkbox checked="indeterminate">Label</Checkbox>
                         </Gcol>
-                        <Gcol placement="ss" className="gap-[0.2rem]">
+                        <Gcol placement="ss" className="gap-[0.4rem]">
                             <Checkbox disabled>Label</Checkbox>
                         </Gcol>
                         <Gcol placement="ss" className="flex items-[normal] gap-[0.2rem] w-[20px] h-auto">
                             <Checkbox variant="favorite" className='h-auto'/>
                         </Gcol>
-                        <Gcol placement="ss" className="gap-[0.2rem]">
+                        <Gcol placement="ss" className="gap-[0.4rem]">
                             <Checkbox variant="button">Button Variant</Checkbox>
+                        </Gcol>
+                        <Gcol placement="ss" className="gap-[0.4rem]">
+                            <Checkbox variant="noneText">noneText Variant</Checkbox>
                         </Gcol>
                     </Grow>
                 </StoryBox>
@@ -222,6 +227,22 @@ export const Default: Story = {
         )
     }
 };
+
+export const NoneText: Story = {
+    args: {
+        variant: 'noneText',
+        children: '',
+    },
+};
+
+
+export const Text: Story = {
+    args: {
+        variant: 'text',
+        children: 'Text ONLY Checkbox',
+    },
+};
+
 
 
 export const Favorite: Story = {
@@ -317,11 +338,42 @@ export const Form: Story = {
 
 
 export const list: Story = {
-    // render: () => {
-    //         const [checkedList, setCheckedList] = useState([true, false, false]);
-    //         const handleCheckedChange = (idx: number) => (checked: boolean | 'indeterminate') => {
-    //         setCheckedList(list => list.map((v, i) => (i === idx ? !!checked : v)));
-    //     };
+    render: () => {
+        const [checkedList, setCheckedList] = useState([true, false, false]);
+        const handleCheckedChange = (idx: number) => (checked: boolean | 'indeterminate') => {
+            setCheckedList(
+                list => list.map((v, i) => (i === idx ? !!checked : v))
+            );
+        }
+        return (
+            <div className='flex flex-col gap-2'>
+                <div className='flex flex-row gap-2'>
+                    <Checkbox checked={checkedList[0]} onCheckedChange={handleCheckedChange(0)}>전체</Checkbox>
+                    <Checkbox checked={checkedList[1]} onCheckedChange={handleCheckedChange(1)}>선택</Checkbox>
+                    <Checkbox checked={checkedList[2]} onCheckedChange={handleCheckedChange(2)}>미선택</Checkbox>
+                </div>
+            </div>
+        );
+    },
+};
 
-    // },
-}
+export const Map: Story = {
+    render: () => {
+        const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({ all: true, selected: false, unselected: false });
+
+        const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
+            setCheckedMap(map => ({ ...map, [key]: !!checked }));
+        };
+
+        return (
+            <div className='flex flex-col gap-2'>
+                <div className='flex flex-row gap-2'>
+                    <Checkbox checked={checkedMap.all} onCheckedChange={handleCheckedChange('all')}>전체</Checkbox>
+                    <Checkbox checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>선택</Checkbox>
+                    <Checkbox checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>미선택</Checkbox>
+                </div>
+            </div>
+        );
+    },
+};
+
