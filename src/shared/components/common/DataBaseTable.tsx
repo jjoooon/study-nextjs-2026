@@ -14,13 +14,18 @@ import {
 
 // Types
 interface ProductData {
-  theadData: object[];
-  tbodyData: object[];
+  tbodyData: {
+    target: string;
+    underwritingLimit: string;
+    violationContent: string;
+    violationType: string;
+  }[];
   caption: string;
-  stickyHeader: boolean;
+  stickyHeader?: boolean;
 }
 
-export default function DataBaseTable({ theadData, tbodyData, caption, stickyHeader }: ProductData) {
+
+export default function DataBaseTable({ tbodyData, caption, stickyHeader = false }: ProductData) {
   const calculateRowSpans = (data: any[], key: string): number[] => {
     const spans: number[] = data.map(() => 0); // 초기화
     let i = 0;
@@ -60,26 +65,26 @@ export default function DataBaseTable({ theadData, tbodyData, caption, stickyHea
             <TableBody>
               {(() => {
                 const rows = [];
-                const targetRowSpans = calculateRowSpans(MOCK_DATA, 'target');
-                const limitRowSpans = calculateRowSpans(MOCK_DATA, 'underwritingLimit');
-                for (let i = 0; i < MOCK_DATA.length; i++) {
+                const targetRowSpans = calculateRowSpans(tbodyData, 'target');
+                const limitRowSpans = calculateRowSpans(tbodyData, 'underwritingLimit');
+                for (let i = 0; i < tbodyData.length; i++) {
                   rows.push(
                     <TableRow key={i}>
                       {targetRowSpans[i] > 0 && (
                         <TableCell rowSpan={targetRowSpans[i]} className="text-center align-middle">
                           <div className="w-full relative w-full">
-                            <div className="sticky top-0">{MOCK_DATA[i].target}</div>
+                            <div className="sticky top-0">{tbodyData[i].target}</div>
                           </div>
                         </TableCell>
                       )}
                       {limitRowSpans[i] > 0 && (
                         <TableCell rowSpan={limitRowSpans[i]} className="text-center align-middle">
-                          {MOCK_DATA[i].underwritingLimit}
+                          {tbodyData[i].underwritingLimit}
                         </TableCell>
                       )}
-                      <TableCell className="whitespace-pre-line">{MOCK_DATA[i].violationContent}</TableCell>
+                      <TableCell className="whitespace-pre-line">{tbodyData[i].violationContent}</TableCell>
                       <TableCell className="text-center">
-                        <Button variant="text">{MOCK_DATA[i].violationType}</Button>
+                        <Button variant="text">{tbodyData[i].violationType}</Button>
                       </TableCell>
                     </TableRow>
                   );

@@ -12,3 +12,4 @@ export * from './ZoomControl';
 export * from './KeyValueList';
 export * from './BulletList';
 export * from './ViewMode';
+export * from './Spinner';

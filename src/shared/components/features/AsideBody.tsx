@@ -1,6 +1,6 @@
 'use client';
 
-import { BulletList, BulletListItem, Gcol, Grow, Typo } from '@/shared/components/common';
+import { BulletList, BulletListItem, Gcol, Grow, Typo, SpinnerA } from '@/shared/components/common';
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 import { NewPopupIcon } from '@/shared/components/icons';
 import { Button, Badge, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/uiux';
@@ -23,7 +23,10 @@ export default function AsideBody({ data }: { data: LTRA350DataType['aside'] }) 
           <Gcol className="w-full gap-1">
             <Grow className="gap-2" placement="bwc">
               <Typo variant="heading-md">설계정보</Typo>
-              <Typo variant="body-md" className="text-[var(--color-danger-40)]">설계중</Typo>
+              <Grow className="gap-[0.2rem]" placement="cc">
+                  <SpinnerA className="text-[var(--color-primary-50)]" />
+                  <Typo variant="body-md" className="text-[var(--color-danger-40)]">설계중</Typo>
+              </Grow>
             </Grow>
             <Gcol variant="box-line" className="w-full bg-[var(--color-coolgray-10)] gap-2" placement="ss">
               <Gcol variant="box-line" className="w-full gap-1 py-[0.6rem]! border-none! shadow-none!" placement="ss">
@@ -39,20 +42,22 @@ export default function AsideBody({ data }: { data: LTRA350DataType['aside'] }) 
                   <BulletListItem type="dot" size="sm">{Array.isArray(info?.info) ? info.info.join('/') : info?.info}</BulletListItem>
                 </BulletList>
               </Gcol>
-              <Grow className="gap-1" placement="sc">
-                  <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] ">계</Badge>
-                  <Typo variant="body-sm" weight="bold">{info?.polName}</Typo>
-                </Grow>
+              <Gcol className="gap-1" placement="ss">
                 <Grow className="gap-1" placement="sc">
-                  <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem]">피</Badge>
-                  <Typo variant="body-sm" weight="bold">{info?.insName} {info?.insAge}세({info?.insGender}) {info?.insGrade}</Typo>
-                </Grow>
-              <BulletList>
-                <BulletListItem type="dot" size="sm" className="text-[var(--color-danger-50)]">설계유효기간: {info?.quoteExpiryDate}</BulletListItem>
-                <BulletListItem type="dot" size="sm">상령일: {info?.insuranceAgeDate}</BulletListItem>
-                <BulletListItem type="dot" size="sm">동의종료일: {info?.consentEndDate}</BulletListItem>
-                <BulletListItem type="dot" size="sm">{info?.note}</BulletListItem>
-              </BulletList>
+                    <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">계</Badge>
+                    <Typo variant="body-sm" weight="bold">{info?.polName}</Typo>
+                  </Grow>
+                  <Grow className="gap-1" placement="sc">
+                    <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">피</Badge>
+                    <Typo variant="body-sm" weight="bold">{info?.insName} {info?.insAge}세({info?.insGender}) {info?.insGrade}</Typo>
+                  </Grow>
+                <BulletList>
+                  <BulletListItem type="dot" size="sm" className="text-[var(--color-danger-50)]">설계유효기간: {info?.quoteExpiryDate}</BulletListItem>
+                  <BulletListItem type="dot" size="sm">상령일: {info?.insuranceAgeDate}</BulletListItem>
+                  <BulletListItem type="dot" size="sm">동의종료일: {info?.consentEndDate}</BulletListItem>
+                  <BulletListItem type="dot" size="sm">{info?.note}</BulletListItem>
+                </BulletList>
+              </Gcol>
             </Gcol>
           </Gcol>
 

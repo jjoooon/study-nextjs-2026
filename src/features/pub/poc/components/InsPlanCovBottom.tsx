@@ -38,10 +38,10 @@ export default function InsPlanCovBottom() {
     <LayoutControls>
       <Gcol className="w-full relative z-10">
         <Grow placement="bwc" className="flex-1 bg-[#F6F0ED] min-h-[7.8rem]">
-          <Grow className="flex justify-between items-center flex-1 px-8" placement="tsb">
+          <Grow className="flex justify-between items-center flex-1 px-8" placement="bws">
             <KeyValueList data={KeyValueData} className="flex-1" />
 
-            <Grow placement="ms" className="shrink-0 gap-2">
+            <Grow placement="sc" className="shrink-0 gap-2">
               <div className="text-[1.4rem] font-bold">
                 청약 <b className="text-[1.8rem] font-bold">(-100.45)</b>
               </div>
@@ -51,7 +51,7 @@ export default function InsPlanCovBottom() {
               </div>
             </Grow>
           </Grow>
-          <Grow placement="me" className="shrink-0 text-right gap-4 text-[1.6rem] font-bold text-[#000000B3]">
+          <Grow placement="ec" className="shrink-0 text-right gap-4 text-[1.6rem] font-bold text-[#000000B3]">
             <div>납입 보험료</div>
             <Grow className="gap-[.2rem]">
               <strong className="text-[#FF5C2E] text-[3rem] font-bold translate-y-[-.2rem]">200,000</strong>

@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  safelist: [
+    'animate-[spinner-step-rotate_1s_steps(8,end)_infinite]'
+  ],
   theme: {
     extend: {},
     spacing: {
@@ -40,4 +43,7 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: [
+    'animate-[spinner-step-rotate_1s_steps_8_infinite]'
+  ],
 }

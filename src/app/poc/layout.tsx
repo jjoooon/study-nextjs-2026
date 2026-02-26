@@ -1,6 +1,6 @@
 import { ZoomControl } from '@/shared/components/common/ZoomControl';
 import FlowStatus from '@/shared/components/features/FlowStatus';
-import { UserSearch } from '@/shared/components/features/UserSearch';
+import UserSearch from '@/shared/components/features/UserSearch';
 import { LayoutBody, LayoutFolder } from '@/shared/components/layout/Cabinet';
 
 const PageLayout = ({
