@@ -9,7 +9,7 @@ import { Grow } from '../common';
 
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
-  variant?: 'default' | 'favorite' | 'noneText' | 'button';
+  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text';
   size?: 'lg' | 'sm';
   color?: 'primary' | 'information' | 'secondary';
 }
@@ -26,6 +26,7 @@ function Checkbox({
   const isFavorite = variant === 'favorite';
   const isNoneText = variant === 'noneText';
   const isButton = variant === 'button';
+  const isText = variant === 'text';
   const generatedId = React.useId();
   const { checked: propsChecked, onCheckedChange: propsOnCheckedChange, id: propsId, ...restProps } = props;
   const checkboxId = propsId || generatedId;
@@ -69,6 +70,28 @@ function Checkbox({
     }
   };
 
+  if (isText) {
+    // checkedState가 true일 때 underline과 색상 적용
+    const textClass = [
+      "text-[1.3rem] font-normal select-none cursor-pointer",
+      checkedState === true && "underline text-[var(--color-primary-50)] underline-offset-4 font-bold!"
+    ]
+      .filter(Boolean)
+      .join(" ");
+    return (
+      <label htmlFor={checkboxId} className={textClass}>
+        <CheckboxPrimitive.Root
+          data-slot="checkbox"
+          id={checkboxId}
+          checked={checkedState}
+          onCheckedChange={handleChange}
+          className="hidden"
+          {...restProps}
+        />
+        {children}
+      </label>
+    );
+  }
   return (
     <div className={`flex items-center gap-1 ${isFavorite ? 'h-full' : ''}`}>
       <CheckboxPrimitive.Root

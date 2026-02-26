@@ -38,6 +38,7 @@ export interface LTRA350DataType {
       isHighlighted: boolean;
       canEditExpiry: boolean;
       selected?: boolean;
+      badge?: string[]; 
     }>;
   };
   taskState: Array<{ id: number; status: string; label: string }>;
@@ -350,7 +351,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         id: 1,
         locked: true,
         isDuplicate: true,
-        productName: '무배당 삼성화재 실손의료보험',
+        productName: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
         coverageAmount: 500,
         premium: 450,
         availableAmount: 100,
@@ -359,12 +360,13 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         expectedUwResult: '인수',
         isHighlighted: true,
         canEditExpiry: true, 
+        badge: ['독립', '갱신'],
       },
       {
         id: 2,
         locked: true,
         isDuplicate: true,
-        productName: '무배당 메리츠 종합보험',
+        productName: '무배당 메리츠 종합보험 무배당 메리츠 종합보험무배당 메리츠 종합보험무배당 메리츠 종합보험',
         coverageAmount: 300,
         premium: 350,
         availableAmount: 500,
@@ -378,7 +380,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         id: 3,
         locked: false,
         isDuplicate: true,
-        productName: 'KB손해보험 암보험',
+        productName: 'KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험',
         coverageAmount: 700,
         premium: 550,
         availableAmount: 1500,
@@ -387,6 +389,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         expectedUwResult: '인수',
         isHighlighted: false,
         canEditExpiry: true,
+        badge: ['독립'],
       },
       {
         id: 4,
@@ -401,6 +404,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         expectedUwResult: '거절',
         isHighlighted: false,
         canEditExpiry: false,
+        badge: ['갱신'],
       },
       {
         id: 5,

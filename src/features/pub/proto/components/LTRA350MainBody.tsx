@@ -52,6 +52,12 @@ export function LTRA350MainBody({
   }, []);
 
 
+  // '전체 343' 체크박스 상태 관리
+  const [checkedMap, setCheckedMap] = useState({ all: true, selected: false, unselected: false });
+  const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
+    setCheckedMap(map => ({ ...map, [key]: !!checked }));
+  };
+
   // 담보명 헤더 컴포넌트를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
   const productNameHeader = useCallback(
     () => (
@@ -59,27 +65,35 @@ export function LTRA350MainBody({
         <Grow className="gap-1" placement="sc">
           담보명(<Checkbox size="sm">전체보기</Checkbox>)
         </Grow>
-        <Grow className="gap-1" placement="sc">
-          <Checkbox size="sm">전체 343</Checkbox>
-          <Checkbox size="sm">선택 324</Checkbox>
-          <Checkbox size="sm">미선택 112</Checkbox>
+        <Grow className="gap-1.5" placement="sc">
+          <Checkbox variant="text" checked={checkedMap.all} onCheckedChange={handleCheckedChange('all')}>전체 343</Checkbox>
+
+          <Typo variant="body-sm" className="text-[var(--color-gray-20)] text-[1.1rem]">|</Typo>
+
+          <Checkbox variant="text" checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>선택 324</Checkbox>
+
+          <Typo variant="body-sm" className="text-[var(--color-gray-20)] text-[1.1rem]">|</Typo>
+
+          <Checkbox variant="text" checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>미선택 112</Checkbox>
         </Grow>
       </Grow>
     ),
-    []
+    [checkedMap, setCheckedMap]
   );
 
   // titleRenderer: productName 셀 커스텀 렌더러
   const titleRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
     return (
       <Grow className="" placement='bwc'>
-        <Grow>
+        <p className="truncate w-full">
           {params.data?.productName}
-        </Grow>
-        <Grow className="gap-1">
-          <Badge color="green" className="w-[3rem]">독립</Badge>
-          <Badge color="blue" className="w-[3rem]">갱신</Badge>
-        </Grow>
+        </p>
+        {params.data?.badge && (
+          <Grow className="gap-1 shrink-0">
+            {params.data?.badge?.includes('독립') && <Badge color="green" className="w-[3rem]">독립</Badge>}
+            {params.data?.badge?.includes('갱신') && <Badge color="blue" className="w-[3rem]">갱신</Badge>}
+          </Grow>
+        )}
       </Grow>
     );
   }, []);
