@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
+import { LayoutTemplateB } from '@/shared/components/layout/LayoutTemplate';
 
 import PageHead from '@/shared/components/features/PageHead';
 import PageProcess from '@/shared/components/features/PageProcess';
@@ -14,12 +14,12 @@ import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 
-export default function LTRA350Section() {
+export default function LTRA350BSection() {
   const [hideAside, setHideAside] = useState(false);
   const data = DUMMY_LTRA350_DATA;
  
   return (
-    <LayoutTemplateA
+    <LayoutTemplateB
       pageHead={<PageHead data={data.pageHead} />}
       pageProcess={<PageProcess />}
 

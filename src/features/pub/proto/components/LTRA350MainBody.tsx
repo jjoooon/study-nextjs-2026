@@ -1,13 +1,16 @@
+
 'use client';
 
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams, EditableCallbackParams, ValueParserParams, CellClassParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useRef } from 'react';
+// DropdownMenu 임시 import (실제 경로에 맞게 수정 필요)
+// import { DropdownMenu } from '@/shared/components/uiux';
 import { Grow, Typo, Grid } from '@/shared/components/common';
 import { SizeIcon, PlusIcon, SelectArrowIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
-import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge } from '@/shared/components/uiux';
+import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge} from '@/shared/components/uiux';
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
 interface LTRA350MainBodyProps {
@@ -121,6 +124,23 @@ export function LTRA350MainBody({
     );
   }, []);
 
+  const [dropdownInfo, setDropdownInfo] = useState<{
+    visible: boolean;
+    cellRect: DOMRect | null;
+    rowIndex: number | null;
+    cellValue: any;
+  }>({ visible: false, cellRect: null, rowIndex: null, cellValue: null });
+
+  const handleCellClick = (event: React.MouseEvent, rowIndex: number, cellValue: any) => {
+    const cellRect = event.currentTarget.getBoundingClientRect();
+    setDropdownInfo({
+      visible: true,
+      cellRect,
+      rowIndex,
+      cellValue,
+    });
+  };
+
   // 컬럼 정의
   const columnDefs: ColDef<LTRA350DataType['mainBody']['agGridTable1'][number]>[] = useMemo(
     () => [
@@ -181,7 +201,6 @@ export function LTRA350MainBody({
         valueParser: (params: ValueParserParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
           return Number(params.newValue);
         },
-       
       },
       {
         headerName: '보험료(만원)',
