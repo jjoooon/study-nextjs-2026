@@ -37,7 +37,7 @@ function PaginationLink({ className, isActive, size = 'lg', ...props }: Paginati
       data-active={isActive}
       className={cn(
         buttonVariants({
-          variant: isActive ? 'outline' : 'ghost',
+          variant: isActive ? 'outlined' : 'none',
           size,
         }),
         className

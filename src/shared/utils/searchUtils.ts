@@ -156,7 +156,7 @@ export const getHighlightRanges = (text: string, query: string): Array<{ text: s
       }
 
       // 연속된 구간 찾기
-      let endIndex = startIndex확하
+      let endIndex = startIndex;
       while (i + 1 < matchIndices.length && matchIndices[i + 1] === endIndex + 1) {
         i++;
         endIndex = matchIndices[i];

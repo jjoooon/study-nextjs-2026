@@ -112,7 +112,7 @@ const inputGroupButtonVariants = cva('flex items-center gap-2 text-sm shadow-non
 function InputGroupButton({
   className,
   type = 'button',
-  variant = 'ghost',
+  variant = 'none',
   size = 'xs',
   ...props
 }: Omit<React.ComponentProps<typeof Button>, 'size'> & VariantProps<typeof inputGroupButtonVariants>) {

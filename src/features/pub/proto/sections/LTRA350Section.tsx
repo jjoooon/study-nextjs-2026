@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import AsidBody from '@/shared/components/features/AsideBody';
+import AsideBody from '@/shared/components/features/AsideBody';
 import PageHead from '@/shared/components/features/PageHead';
 import PageProcess from '@/shared/components/features/PageProcess';
 import AsideFoot from '@/shared/components/features/AsideFoot';
@@ -11,15 +11,12 @@ import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
 import MainFoot from '@/shared/components/features/MainFoot';
 
 // 데이터 관련 import 제거
-import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 
-export interface LTRA350SectionProps {
-  data: LTRA350DataType;
-}
-
-export default function LTRA350Section({ data }: LTRA350SectionProps) {
+export default function LTRA350Section() {
   const [hideAside, setHideAside] = useState(false);
-
+  const data = DUMMY_LTRA350_DATA;
+ 
   return (
     <LayoutTemplateA
       pageHead={<PageHead data={data.pageHead} />}
@@ -38,7 +35,7 @@ export default function LTRA350Section({ data }: LTRA350SectionProps) {
       mainFoot={<MainFoot />}
 
       asideHead={<TaskStatusBoard state={data.taskState} />}
-      asideBody={<AsidBody data={data.aside} />}
+      asideBody={<AsideBody data={data.aside} />}
       asideFoot={<AsideFoot />}
       
       hideAside={hideAside}

@@ -38,7 +38,7 @@ const InsPlanNameRenderer = (props: ICellRendererParams<InsPlanData>) => {
 
   return (
     <Grow placement="bwc">
-      <Typo variant="body-m" className="flex-1 truncate">
+      <Typo variant="body-md" className="flex-1 truncate">
         {data.productName}
       </Typo>
       <Grow className="shrink-0">

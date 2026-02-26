@@ -608,6 +608,20 @@ export const SpinnerAIcon: React.FC<IconProps> = ({ className = '', size = 18, c
     fill="none"
     className={className}
   >
-    <path d="M9 1.6875V3.5625M9 13.5V16.5M4.3125 9H1.6875M15.9375 9H14.8125M13.8428 13.8428L13.3125 13.3125M13.9982 4.06184L12.9375 5.1225M3.69118 14.3088L5.8125 12.1875M3.84651 3.90651L5.4375 5.4975" stroke={color} stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 1.6875V3.5625M9 13.5V16.5M4.3125 9H1.6875M15.9375 9H14.8125M13.8428 13.8428L13.3125 13.3125M13.9982 4.06184L12.9375 5.1225M3.69118 14.3088L5.8125 12.1875M3.84651 3.90651L5.4375 5.4975" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
+
+export const ProcessDot: React.FC<IconProps> = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="3"
+    height="8"
+    viewBox="0 0 3 8"
+    fill="none"
+  >
+    <circle cx="1.5" cy="1.5" r="1.5" fill="#D4D6DB"/>
+    <circle cx="1.5" cy="6.5" r="1.5" fill="#D4D6DB"/>
+  </svg>
+);
+

@@ -48,7 +48,7 @@ export default function Ltra350Step1() {
               }}
               noValidate
             >
-              <Gcol className="gap-[2rem] w-full overflow-y-auto h-[calc(100vh-47.4rem)] pb-[3.2rem]" placement="ts">
+              <Gcol className="gap-[2rem] w-full overflow-y-auto h-[calc(100vh-47.4rem)] pb-[3.2rem]" placement="ss">
                 <InsPlanBasicStep1 currentData={currentData} testError={testError} handleChange={handleChange} />
 
                 <InsPlanBasicStep2

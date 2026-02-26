@@ -35,7 +35,7 @@ const InsPlanNameRenderer = (props: ICellRendererParams<InsPlanDep3>) => {
 
   return (
     <Grow placement="bwc" className="h-full">
-      <Typo variant="body-m" className="flex-1 truncate justify-start ">
+      <Typo variant="body-md" className="flex-1 truncate justify-start ">
         {data.name}
       </Typo>
       {data.id && (
@@ -92,7 +92,7 @@ export function InsPlanListDep3({ dep3Data }: InsPlanListDep3Props) {
   if (dep3Data.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center">
-        <Typo variant="body-m" className="text-gray-400">
+        <Typo variant="body-md" className="text-gray-400">
           선택된 상품이 없습니다.
         </Typo>
       </div>
