@@ -15,7 +15,7 @@ export function SortableButton({ label, columnKey, currentSortColumn, currentSor
   const isActive = currentSortColumn === columnKey;
 
   return (
-    <Button onClick={() => onSort(columnKey)} variant="ghost">
+    <Button onClick={() => onSort(columnKey)} variant="none">
       <div className="flex items-center gap-1">
         {label}
         {isActive && currentSortOrder === 'asc' && <ChevronUp className="w-4 h-4" />}

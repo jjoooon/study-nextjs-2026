@@ -36,10 +36,10 @@ const InsPlanNameRenderer = (props: ICellRendererParams<InsPlanDep2Data>) => {
 
   return (
     <Grid className="h-full grid-cols-[auto_1fr_auto] grid-rows-[1fr] items-center pr-2">
-      <Typo variant="body-m" className="border-r-[.1rem] border-[#E1E1E1] px-2 h-full flex items-center justify-center">
+      <Typo variant="body-md" className="border-r-[.1rem] border-[#E1E1E1] px-2 h-full flex items-center justify-center">
         {data.type}
       </Typo>
-      <Typo variant="body-m" className="flex items-center justify-start truncate px-2">
+      <Typo variant="body-md" className="flex items-center justify-start truncate px-2">
         {data.name}
       </Typo>
       <Button className="shrink-0 flex items-center justify-center" color="secondary" size="xs">
@@ -81,7 +81,7 @@ export function InsPlanListDep2({ product, onSelectDep2 }: InsPlanListDep2Props)
   if (!product || product.dep2.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center">
-        <Typo variant="body-m" className="text-gray-400">
+        <Typo variant="body-md" className="text-gray-400">
           선택된 상품이 없습니다.
         </Typo>
       </div>

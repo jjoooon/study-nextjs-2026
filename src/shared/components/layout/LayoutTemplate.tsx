@@ -28,7 +28,7 @@ interface Props {
   asideBody: React.ReactNode;
   asideFoot: React.ReactNode;
   hideAside?: boolean;
-  process?: React.ReactNode;
+  pageProcess?: React.ReactNode;
 }
 
 export const LayoutTemplateA = ({
@@ -39,20 +39,18 @@ export const LayoutTemplateA = ({
   asideBody,
   mainFoot,
   asideFoot,
-  process,
+  pageProcess,
   hideAside = false,
 }: Props) => (
   <>
     <LayoutHead>{pageHead}</LayoutHead>
     <LayoutBody>
-      <LayoutProcess>{process}</LayoutProcess>
+      <LayoutProcess>{pageProcess}</LayoutProcess>
       <LayoutFolder>
-
         <LayoutFolderHead className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
           <LayoutMainHead>{mainHead}</LayoutMainHead>
           <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         </LayoutFolderHead>
-
         <LayoutFolderBody className="grid grid-cols-[1fr_auto] gap-[1rem]">
           <LayoutMain>
             <LayoutMainBody>{mainBody}</LayoutMainBody>
@@ -63,7 +61,6 @@ export const LayoutTemplateA = ({
           </LayoutAside>
           )}
         </LayoutFolderBody>
-
         <LayoutFolderFoot className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
           <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
           <LayoutAsideFoot className={hideAside ? 'hide-aside' : ''}>{asideFoot}</LayoutAsideFoot>
@@ -74,3 +71,32 @@ export const LayoutTemplateA = ({
 );
 
 
+export const LayoutTemplateB = ({
+  pageHead,
+  mainHead,
+  asideHead,
+  mainBody,
+  asideBody,
+  mainFoot,
+  asideFoot,
+  pageProcess,
+}: Props) => (
+  <>
+    <LayoutHead>{pageHead}</LayoutHead>
+    <LayoutBody>
+      <LayoutProcess>{pageProcess}</LayoutProcess>
+      <LayoutFolder className="grid-rows-[1fr] grid-cols-[1fr_auto] gap-3">
+        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
+          <LayoutMainHead>{mainHead}</LayoutMainHead>
+          <LayoutMainBody>{mainBody}</LayoutMainBody>
+          <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
+        </LayoutMain>
+        <LayoutAside className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
+          <LayoutAsideHead>{asideHead}</LayoutAsideHead>
+          <LayoutAsideBody>{asideBody}</LayoutAsideBody>
+          <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
+        </LayoutAside>
+      </LayoutFolder>
+    </LayoutBody>
+  </>
+);

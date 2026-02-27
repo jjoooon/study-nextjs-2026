@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-// import type { NameAgeGenderValueInfoType, Category, Tag } from '../types/LTRA350Data.types';
 import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
 import { PaperIcon, SearchIcon, ResetIcon } from '@/shared/components/icons';
