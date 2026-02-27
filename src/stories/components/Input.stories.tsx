@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, Typo, FormTable, FormCell, FormItem, Separator, FormRow } from '@/shared/components/common';
+import { Grow, Gcol, FormTable, FormCell, FormItem, Separator} from '@/shared/components/common';
 import { SearchIcon } from '@/shared/components/icons';
 import { Button, TableRow } from '@/shared/components/uiux';
 import { Input } from '@/shared/components/uiux/Input';

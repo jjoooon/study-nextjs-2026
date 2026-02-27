@@ -50,7 +50,7 @@ export const FormCell = ({
   return (
     <>
       <TableHead
-        className={cn(FormCellVariants({ variant }), 'pr-0! text-left', className)}
+        className={cn(FormCellVariants({ variant }), 'text-left', className)}
         {...(titleColSpan && { colSpan: titleColSpan })}
         {...(titleRowSpan && { rowSpan: titleRowSpan })}
       >
@@ -73,7 +73,7 @@ export const FormCell = ({
 
 export const FormTable = ({ cols, caption, children, className, variant = 'default' }: FormTableProps) => {
   const variantStyles = {
-    default: '[&_th]:pr-0',
+    default: '',
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
     setting:

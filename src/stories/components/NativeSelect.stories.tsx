@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow, FormTable, FormCell, FormItem } from '@/shared/components/common';
+import { Gcol, Grow} from '@/shared/components/common';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
@@ -15,7 +15,7 @@ const meta: Meta<NativeSelectStoryArgs> = {
 		docs: {
 			description: {
 				component: `
-NativeSelect는 네이티브 <select> 요소를 스타일링한 컴포넌트입니다.
+NativeSelect는 <select> 태그를 기반으로 요소를 스타일링한 컴포넌트입니다.
 폼에서 간단한 드롭다운 선택이 필요할 때 사용하세요.
 
 - **기본 구조**: \`NativeSelect\`와 \`NativeSelectOption\` 조합으로 사용합니다.
@@ -158,7 +158,7 @@ export const Sizes: Story = {
 		const [valueSm, setValueSm] = React.useState('apple');
 
 		return (
-			<div className="flex gap-4">
+			<div className="flex gap-[0.2rem]" >
 				<NativeSelect value={valueLg} size="lg" onChange={(e) => setValueLg(e.target.value)}>
 					<NativeSelectOption value="apple">Sizes1</NativeSelectOption>
 					<NativeSelectOption value="banana">Sizes2</NativeSelectOption>
@@ -203,22 +203,26 @@ export const Error: Story = {
 	args: { error: true, errorMsg: '선택해주세요', errorPs: 'tl' },
 	render: (args) => {
 		const [value, setValue] = React.useState(args.value ?? '');
-	
+		const { value: _, onChange, ...restArgs } = args;
 
 		React.useEffect(() => {
 			setValue(args.value ?? '');
-		}, [args.value]);    
+		}, [args.value]);
 
+		const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+			setValue(e.target.value);
+			args.onChange?.(e);
+		};
 
 		return (
 			<StoryWrap className="flex-row">
 				<StoryBox>
-					<NativeSelect {...args} value={value}>
+					<NativeSelect {...restArgs} value={value} onChange={handleChange}>
 						<NativeSelectOption value="">선택하세요</NativeSelectOption>
 						{options.map((o) => (
 							<NativeSelectOption key={o.value} value={o.value}>
 								{o.label}
-							</NativeSelectOption>                
+							</NativeSelectOption>
 						))}
 					</NativeSelect>
 				</StoryBox>
@@ -246,9 +250,9 @@ export const Error: Story = {
 						</Gcol>
 					</Grow>
 				</StoryBox>
-			</StoryWrap>        
+			</StoryWrap>
 		);
-	},    
+	},
 };    
 
 
