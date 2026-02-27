@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow, FormTable, FormCell, FormItem } from '@/shared/components/common';
+import { Gcol, Grow} from '@/shared/components/common';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 

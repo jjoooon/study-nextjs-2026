@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { Grow, Gcol, Typo, FormTable, FormCell, FormItem } from '@/shared/components/common';
+import { Grow, Gcol, FormTable, FormCell, FormItem } from '@/shared/components/common';
 import { Button, TableRow } from '@/shared/components/uiux';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 import {

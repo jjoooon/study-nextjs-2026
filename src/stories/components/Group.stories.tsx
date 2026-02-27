@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { ButtonGroup, FormItem, Gcol, Grid, Grow, Separator, Typo } from '@/shared/components/common';
+import { Gcol, Grow, Typo } from '@/shared/components/common';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 const PLACEMENT_OPTIONS = [

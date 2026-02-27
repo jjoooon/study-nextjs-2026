@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { FormCell, FormItem, FormTable, Gcol, Grow, Typo } from '@/shared/components/common';
-import { TableRow } from '@/shared/components/uiux';
+import { Gcol, Grow,} from '@/shared/components/common';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
