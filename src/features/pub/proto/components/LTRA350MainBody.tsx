@@ -1,17 +1,19 @@
-
 'use client';
 
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams, EditableCallbackParams, ValueParserParams, CellClassParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useCallback, useRef } from 'react';
+import { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 // DropdownMenu 임시 import (실제 경로에 맞게 수정 필요)
 // import { DropdownMenu } from '@/shared/components/uiux';
 import { Grow, Typo, Grid } from '@/shared/components/common';
 import { SizeIcon, PlusIcon, SelectArrowIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
-import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge} from '@/shared/components/uiux';
+import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge, Input} from '@/shared/components/uiux';
+import { AmountUnitInput } from '@/shared/components/features/AmountUnitInput'; 
+
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+
 
 interface LTRA350MainBodyProps {
   data: LTRA350DataType['mainBody'];
@@ -31,6 +33,12 @@ export function LTRA350MainBody({
   setHideAside,
 }: LTRA350MainBodyProps) {
   const rowData = data.agGridTable1;
+
+  // AmountUnitInput 포커스 이동용 ref 배열
+  const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  // AmountUnitInput 오픈 셀 관리
+  const [openedCellId, setOpenedCellId] = useState<string | null>(null);
  
   // AgGrid 선택 상태 관리 로직을 직접 구현
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -191,15 +199,32 @@ export function LTRA350MainBody({
         field: 'coverageAmount',
         flex: 1.6,
         headerClass: 'px-0!',
-        cellClass: () => 'text-right editable-cell',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right',
         sortable: false,
         filter: false,
-        editable: true,
-        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
-          return params.value ? params.value.toLocaleString() : '';
-        },
-        valueParser: (params: ValueParserParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
-          return Number(params.newValue);
+        editable: false,
+        cellRenderer: (params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+          const rowIndex = params.node?.rowIndex ?? 0;
+          // ref 연결
+          if (!amountInputRefs.current) amountInputRefs.current = [];
+          return (
+            <AmountUnitInput
+              value={params.value}
+              onChange={(newValue) => {
+                if (params.setValue) {
+                  params.setValue(newValue);
+                }
+              }}
+              inputRef={el => { amountInputRefs.current[rowIndex] = el; }}
+              onEnter={() => {
+                // 다음 AmountUnitInput으로 포커스 이동
+                const nextRef = amountInputRefs.current[rowIndex + 1];
+                if (nextRef) {
+                  nextRef.focus();
+                }
+              }}
+            />
+          );
         },
       },
       {

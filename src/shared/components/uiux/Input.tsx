@@ -11,7 +11,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 import { FormItemSize, FormItemWidth } from '@/shared/types/uiuxTypes';
 
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  variant?: 'default';
+  variant?: 'ghost' | 'default';
   size?: FormItemSize;
   width?: FormItemWidth;
   required?: boolean;
@@ -123,6 +123,10 @@ function Input({
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
+  const ghostStyle = cn(
+    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
+    
+  );
   const hoverStyle =
     isInvalid || error
       ? 'hover:border-[var(--color-input-border-error)]'
@@ -145,6 +149,7 @@ function Input({
 
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
+    ghost: cn(ghostStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
   };
 
   return (
