@@ -119,20 +119,20 @@ export const Default: Story = {
       <StoryWrap className="flex-row">
         <StoryBox>
           <BulletList {...listArgs}>
-            <BulletListItem type={type} size={size} onClick={onClick}>
+            <BulletListItem type={type} size={size} onClick={onClick} className="whitespace-nowrap">
               {itemText}
             </BulletListItem>
-            <BulletListItem type={type} size={size} onClick={onClick}>
+            <BulletListItem type={type} size={size} onClick={onClick} className="whitespace-nowrap">
               두 번째 문구입니다.
             </BulletListItem>
-            <BulletListItem type={type} size={size} onClick={onClick}>
+            <BulletListItem type={type} size={size} onClick={onClick} className="whitespace-nowrap">
               세 번째 문구입니다.
             </BulletListItem>
           </BulletList>
         </StoryBox>
 
         <StoryBox>
-          <Grow placement="cc" className="gap-4">
+          <Grow placement="ss" className="gap-4">
             <Gcol placement="ss" className="gap-[0.4rem]">
               <BulletList position={args.position} className="gap-[0.2rem]">
                 <BulletListItem type="dot">dot</BulletListItem>
@@ -194,14 +194,7 @@ export const Types: Story = {
       <div className="flex flex-col gap-3">
         <BulletList className="gap-[0.2rem]">
           <BulletListItem type="dot">dot bullet</BulletListItem>
-          <BulletListItem type="dot">dot bullet</BulletListItem>
-        </BulletList>
-        <BulletList className="gap-[0.2rem]">
           <BulletListItem type="dash">dash bullet</BulletListItem>
-          <BulletListItem type="dash">dash bullet</BulletListItem>
-        </BulletList>
-        <BulletList className="gap-[0.2rem]">
-          <BulletListItem type="square">square bullet</BulletListItem>
           <BulletListItem type="square">square bullet</BulletListItem>
         </BulletList>
         <BulletList position="row" className="gap-2">
