@@ -140,7 +140,7 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
             </Grow>
           </Grow>
           <ButtonGroup className="gap-1" placement="ec">
-            <Button variant="contained" color="secondary" size="lg">
+            <Button variant="contained" color="gray-cool" size="lg">
               <ResetIcon />
               초기화
             </Button>

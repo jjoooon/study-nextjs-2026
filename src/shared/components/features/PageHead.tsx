@@ -16,7 +16,7 @@ import {
   ViewMode,
 } from '@/shared/components/common';
 import { CloseIcon, SearchIcon, MemoIcon } from '@/shared/components/icons';
-import { Input, Button } from '@/shared/components/uiux';
+import { Input, Button, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
 export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }) {
@@ -54,16 +54,11 @@ export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }
           <Typo tag="h2" variant="heading-lg">
             {safeData.title}
           </Typo>
-          <BulletList position="row" className="gap-[.89rem]">
-            {safeData.options?.map((item, index) => (
-              <BulletListItem type="dot" key={index}>
-                {item}
-              </BulletListItem>
-            ))}
-          </BulletList>
-          <Button variant="outlined" color="gray" size="md">
-            변경
-          </Button>
+
+          <NativeSelect aria-label="플랜 선택" width="max" readOnly={false} required={false}>
+            <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>
+            <NativeSelectOption value="2">옵션 2</NativeSelectOption>
+          </NativeSelect>
         </Grow>
         <Grow className="gap-2.5 shrink-0" placement="ec">
           <Button variant="outlined" color="secondary" size="md">
