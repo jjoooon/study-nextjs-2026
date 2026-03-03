@@ -108,7 +108,11 @@ export function ConfirmDialog({
           {showConfirm && (
             <AlertDialogAction
               disabled={isLoading}
-              className={tone === 'danger' ? 'bg-destructive hover:bg-destructive/90' : undefined}
+              className={
+                tone === 'danger'
+                  ? 'border-(--color-danger-50) bg-(--color-gray-0) text-(--color-danger-50) hover:bg-(--color-danger-5) hover:border-dashed hover:border-(--color-danger-50)'
+                  : undefined
+              }
               onClick={handleConfirm}
             >
               {isLoading ? 'Processing...' : confirmLabel}
