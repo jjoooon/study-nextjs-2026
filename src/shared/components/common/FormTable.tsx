@@ -80,7 +80,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
       'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none!',
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
-    none: 'border-0! bg-transparent [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[1rem]! [&_td]:border-0! [&_tr]:border-0! [&_td]:p-0! [&_td+th]:pl-[1rem]! [&_th]:w-max',
+    none: 'border-0! bg-transparent [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_td]:border-0! [&_tr]:border-0! [&_td]:p-0! [&_td+th]:pl-[1rem]! [&_th]:w-max',
   };
 
   return (
