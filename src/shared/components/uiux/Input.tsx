@@ -24,6 +24,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   disabled?: boolean;
   formatType?: 'amount' | 'number';
   clear?: boolean;
+  forceFocused?: boolean;
 }
 
 function formatAmount(value: string) {
@@ -48,6 +49,7 @@ function Input({
   disabled = false,
   formatType,
   clear = false,
+  forceFocused = false,
   onChange,
   value,
   ...props
@@ -57,12 +59,13 @@ function Input({
   // 입력 중에는 원본 값, blur 시에는 콤마 포함 값
   const displayValue =
     formatType === 'amount' && typeof value === 'string'
-      ? isFocused
+      ? (isFocused || forceFocused)
         ? value // 입력 중에는 그대로
         : formatAmount(value) // blur 시 콤마 적용
       : (value ?? '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('원본 입력값:', clear, isFocused , displayValue);
     const val = e.target.value.replace(/[^0-9]/g, '');
     if (formatType === 'amount') {
       if (onChange) {
@@ -177,10 +180,10 @@ function Input({
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={clear && isFocused && displayValue !== '' ? { paddingRight: '2rem' } : undefined}
+              style={clear && (isFocused || forceFocused) && displayValue !== '' ? { paddingRight: '2rem' } : undefined}
               {...props}
             />
-            {clear && isFocused && displayValue !== '' && (
+            {clear && (isFocused || forceFocused) && displayValue !== '' && (
               <Button
                 variant="none"
                 color="gray"
@@ -219,10 +222,10 @@ function Input({
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            style={clear && isFocused && displayValue !== '' ? { paddingRight: '2.8rem' } : undefined}
+            style={clear && (isFocused || forceFocused) && displayValue !== '' ? { paddingRight: '2.8rem' } : undefined}
             {...props}
           />
-          {clear && isFocused && displayValue !== '' && (
+          {clear && (isFocused || forceFocused) && displayValue !== '' && (
             <Button
               variant="none"
               only="icon" size="xs"

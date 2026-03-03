@@ -9,6 +9,7 @@ export interface LTRA350DataType {
     options: string[];
     planNumber: string[];
     contractHolder: string;
+    planNumberList: Array<{ label: string; value: string; name: string; amount: string; state: string }>;
   };
   mainHead: {
     visibleCount: number;
@@ -21,7 +22,7 @@ export interface LTRA350DataType {
     }>;
     checkboxList1: Array<{ label: string; value: string }>;
     checkboxList2: Array<{ label: string; value: string }>;
-    tagList: string[];
+    hashList: string[];
   };
   mainBody: {
     agGridTable1: Array<{
@@ -69,6 +70,13 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
     options: ['납입면제 강화형', '기본형'],
     planNumber: ['LA20234472050000', '2'],
     contractHolder: '6012345 박하늘별님달',
+    planNumberList: [
+      { label: 'LA20234472050000', value: 'LA20234472050000', name: '김은빈', amount: '23,000', state: '설계중' },
+      { label: 'LA23234472050001', value: 'LA23234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
+      { label: 'LA20234472050002', value: 'LA20234472050002', name: '이도현', amount: '12,300', state: '심사중' },
+      { label: 'LA20234472050003', value: 'LA20234472050003', name: '최수영', amount: '99,900', state: '청약완료' },
+      { label: 'LA20234472050004', value: 'LA20234472050004', name: '한지민', amount: '77,700', state: '설계중' },
+    ]
   },
   mainHead: {
     visibleCount: 6,
@@ -343,7 +351,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
       { label: '갱신', value: '1' },
       { label: '비갱신', value: '2' },
     ],
-    tagList: ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'],
+    hashList: ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'],
   },
   mainBody: {
     agGridTable1: [

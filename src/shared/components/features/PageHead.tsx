@@ -14,6 +14,7 @@ import {
   Separator,
   FormItem,
   ViewMode,
+  InputCombo,
 } from '@/shared/components/common';
 import { CloseIcon, SearchIcon, MemoIcon } from '@/shared/components/icons';
 import { Input, Button, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
@@ -30,6 +31,18 @@ export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }
     safeData.planNumber?.[1] ?? '',
   ]);
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
+
+  const sampleOptions = safeData.planNumberList?.map(item => ({
+    value: item.value,
+    label: (
+      <div className="type--design-number">
+        <div>{item.label}</div>
+        <div>{item.name}</div>
+        <div>{item.amount}</div>
+        <div>{item.state}</div>
+      </div>
+    )
+  }));
 
   return (
     <Gcol className="w-full px-[1rem]">
@@ -54,7 +67,7 @@ export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }
           <Typo tag="h2" variant="heading-lg">
             {safeData.title}
           </Typo>
-
+          <div className="w-[0.4rem] h-[0.4rem] rounded-full bg-[var(--color-gray-30)]"></div>
           <NativeSelect aria-label="플랜 선택" width="max" readOnly={false} required={false}>
             <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>
             <NativeSelectOption value="2">옵션 2</NativeSelectOption>
@@ -65,17 +78,27 @@ export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }
             <MemoIcon />
             메모
           </Button>
-          <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', '']} variant="none">
+          <FormTable caption="계약자 관련 정보 입력하세요." cols={['', '']} variant="none">
             <FormRow>
-              <FormCell title="설계번호">
-                <Input
+              <FormCell title="설계번호" className="pr-[0.4rem]!">
+                {/* <Input
                   aria-label="설계번호 입력"
                   type="text"
                   value={planNumber[0]}
                   width="lg"
                   onChange={(e) => setPlanNumber([e.target.value, planNumber[1]])}
+                /> */}
+                <InputCombo
+                  aria-label="설계번호 입력"
+                  type="text"
+                  width="lg"
+                  options={sampleOptions}
+                  value={planNumber[0]}
+                  clear={true}
+                  onChange={(value) => setPlanNumber([value, planNumber[1]])}
+                  placeholder="설계번호 입력하세요"
                 />
-                <Separator>-</Separator>
+                -
                 <Input
                   aria-label="설계번호 입력"
                   type="text"

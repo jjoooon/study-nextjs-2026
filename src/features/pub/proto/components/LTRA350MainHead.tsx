@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
-import { PaperIcon, SearchIcon, ResetIcon } from '@/shared/components/icons';
+import { PaperIcon, SearchIcon, ResetIcon, PlusIcon, HashIcon } from '@/shared/components/icons';
 import { 
   Button, 
   Checkbox, 
@@ -121,8 +121,8 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
                   <SearchIcon color="var(--color-primary-50)" />
                 </Button>
               </FormItem>
-              <BulletList position="row" className="gap-x-2.5 gap-y-1 flex-1 w-full">
-                {data.tagList.map((tag, index) => {
+              <BulletList position="row" className="gap-x-2.5 gap-y-[0.2rem] flex-1 w-full">
+                {data.hashList.map((tag, index) => {
                   return (
                     <BulletListItem
                       key={index}
@@ -137,6 +137,16 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
                   );
                 })}
               </BulletList>
+              <ButtonGroup className="gap-1" placement="ec">
+                <Button variant="outlined" color="gray" size="md">
+                  <PlusIcon />
+                  더보기
+                </Button>
+                <Button variant="outlined" color="gray" size="md">
+                  <HashIcon />
+                  편집
+                </Button>
+              </ButtonGroup>
             </Grow>
           </Grow>
           <ButtonGroup className="gap-1" placement="ec">
