@@ -31,7 +31,7 @@ interface AgGridReactStoryProps {
 const AgGridReactStoryComponent = (_props: AgGridReactStoryProps) => null;
 
 const meta: Meta<AgGridReactStoryProps> = {
-  title: 'Components/Proto/AgGridReact',
+  title: 'Components/Common/AgGridReact',
   component: AgGridReactStoryComponent,
   tags: ['autodocs'],
   parameters: {
@@ -227,34 +227,30 @@ const buildColumnDefs = (hideAside: boolean): ColDef<GridRow>[] => [
   },
 ];
 
-export const Default: Story = {
-  render: (args) => {
-    const rowData = DUMMY_LTRA350_DATA.mainBody.agGridTable1;
-    const columnDefs = React.useMemo(() => buildColumnDefs(args.hideAside ?? false), [args.hideAside]);
+const renderGrid: Story['render'] = (args) => {
+  const rowData = DUMMY_LTRA350_DATA.mainBody.agGridTable1;
+  const columnDefs = React.useMemo(() => buildColumnDefs(args.hideAside ?? false), [args.hideAside]);
 
-    return (
-      <StoryWrap>
-        <StoryBox className="w-full h-[80vh]">
-          <div className="h-full ag-theme-alpine" style={{ width: '100%', height: '100%' }}>
-            <AgGridReact<GridRow>
-              rowData={rowData}
-              columnDefs={columnDefs}
-              rowSelection={args.rowSelection}
-              suppressRowClickSelection={true}
-              singleClickEdit={true}
-              tooltipShowDelay={0}
-              tooltipHideDelay={9999}
-              tooltipMouseTrack={true}
-            />
-          </div>
-        </StoryBox>
-      </StoryWrap>
-    );
-  },
+  return (
+    <StoryWrap>
+      <StoryBox className="w-full h-[80vh]">
+        <div className="h-full ag-theme-alpine" style={{ width: '100%', height: '100%' }}>
+          <AgGridReact<GridRow>
+            rowData={rowData}
+            columnDefs={columnDefs}
+            rowSelection={args.rowSelection}
+            suppressRowClickSelection={true}
+            singleClickEdit={true}
+            tooltipShowDelay={0}
+            tooltipHideDelay={9999}
+            tooltipMouseTrack={true}
+          />
+        </div>
+      </StoryBox>
+    </StoryWrap>
+  );
 };
 
-export const CompactWidth: Story = {
-  args: {
-    hideAside: true,
-  },
+export const Default: Story = {
+  render: renderGrid,
 };

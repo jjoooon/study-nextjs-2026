@@ -446,9 +446,9 @@ export function DatePickerInput({
         <PopoverTrigger asChild>
           <Button
             id={`${finalId}-button`}
-            variant="none"
+            variant="outlined"
             only="icon" size="md"
-            color="primary"
+            color="gray-light"
             aria-label="Select date"
             className={buttonSizeClass}
           >

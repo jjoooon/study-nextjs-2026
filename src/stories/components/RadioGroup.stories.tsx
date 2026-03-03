@@ -141,13 +141,13 @@ export const Default: Story = {
         <StoryBox>
           <RadioGroup {...groupArgs} value={value} onValueChange={setValue} className="gap-2">
             <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">
-              {variant === 'button' ? 'Button Option 1' : 'Option 1'}
+              {variant === 'button' ? 'Button Option1' : 'Option1'}
             </RadioGroupItem>
             <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">
-              {variant === 'button' ? 'Button Option 2' : 'Option 2'}
+              {variant === 'button' ? 'Button Option2' : 'Option2'}
             </RadioGroupItem>
             <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>
-              {variant === 'button' ? 'Disabled Option 3' : 'Disabled Option 3'}
+              {variant === 'button' ? 'Disabled Option3' : 'Disabled Option3'}
             </RadioGroupItem>
           </RadioGroup>
         </StoryBox>
@@ -156,40 +156,40 @@ export const Default: Story = {
             <Gcol placement="ss" className="gap-[0.2rem]">
               <RadioGroup defaultValue="1" className="gap-2">
                 <RadioGroupItem value="1" id="s1">
-                  Default 1
+                  Default1
                 </RadioGroupItem>
                 <RadioGroupItem value="2" id="s2">
-                  Default 2
+                  Default2
                 </RadioGroupItem>
               </RadioGroup>
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
               <RadioGroup defaultValue="1" className="gap-2">
                 <RadioGroupItem variant="button" value="1" id="sb1">
-                  Button 1
+                  Button1
                 </RadioGroupItem>
                 <RadioGroupItem variant="button" value="2" id="sb2">
-                  Button 2
+                  Button2
                 </RadioGroupItem>
               </RadioGroup>
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
               <RadioGroup defaultValue="1" disabled className="gap-2">
                 <RadioGroupItem value="1" id="sd1">
-                  Disabled 1
+                  Disabled1
                 </RadioGroupItem>
                 <RadioGroupItem value="2" id="sd2">
-                  Disabled 2
+                  Disabled2
                 </RadioGroupItem>
               </RadioGroup>
             </Gcol>
             <Gcol placement="ss" className="gap-[0.2rem]">
               <RadioGroup defaultValue="1" error errorMsg="에러!" className="gap-2">
                 <RadioGroupItem value="1" id="se1">
-                  Error 1
+                  Error1
                 </RadioGroupItem>
                 <RadioGroupItem value="2" id="se2">
-                  Error 2
+                  Error2
                 </RadioGroupItem>
               </RadioGroup>
             </Gcol>
