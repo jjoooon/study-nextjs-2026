@@ -96,6 +96,7 @@ export function ErrorMsg({
   return (
     <div
       id={id}
+      data-component="error-msg"
       ref={containerRef}
       className={cn(
         'absolute z-10 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT',

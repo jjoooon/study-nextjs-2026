@@ -7,7 +7,7 @@ import { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 // DropdownMenu 임시 import (실제 경로에 맞게 수정 필요)
 // import { DropdownMenu } from '@/shared/components/uiux';
 import { Grow, Typo, Grid } from '@/shared/components/common';
-import { SizeIcon, PlusIcon, SelectArrowIcon } from '@/shared/components/icons';
+import { SizeIcon, PlusIcon, SelectArrowIcon, SearchIcon } from '@/shared/components/icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge, Input} from '@/shared/components/uiux';
 import { AmountUnitInput } from '@/shared/components/features/AmountUnitInput'; 
@@ -77,39 +77,55 @@ export function LTRA350MainBody({
 
 
   // '전체 343' 체크박스 상태 관리
-  const [checkedMap, setCheckedMap] = useState({ all: true, selected: false, unselected: false });
+  const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
   const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
     setCheckedMap(map => ({ ...map, [key]: !!checked }));
   };
 
   // 담보명 헤더 컴포넌트를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
   const productNameHeader = useCallback(
-    () => (
-      <Grow className="gap-1 w-full" placement="bwc">
-        <Grow className="gap-1" placement="sc">
-          담보명(<Checkbox size="sm">전체보기</Checkbox>)
+    () => {
+      const [coverageName, setCoverageName] = useState('');
+      return (
+        <Grow className="gap-1 w-full" placement="bwc">
+          <Grow className="gap-1.5" placement="sc">
+            <Checkbox variant="text" checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>선택 24건</Checkbox>
+            <Typo variant="body-sm" className="text-[var(--color-gray-20)] text-[1.1rem]">|</Typo>
+            <Checkbox variant="text" checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>미선택</Checkbox>
+          </Grow>
+
+          <Grow className="gap-1">
+            <Input
+              aria-label="담보명"
+              placeholder="담보명 입력"
+              type="text"
+              width='md'
+              size="sm"
+              clear={true}
+              value={coverageName}
+              onChange={(e) => setCoverageName(e.target.value)}
+            />
+            <Button aria-label="담보명 검색" variant="outlined" color="gray-light" only="icon" size="md">
+              <SearchIcon color="var(--color-primary-50)" />
+            </Button>
+          </Grow>
+
+          <Grow className="gap-1" placement="sc">
+            <Checkbox size="sm">담보명 풍선말</Checkbox>
+          </Grow>
+          
         </Grow>
-        <Grow className="gap-1.5" placement="sc">
-          <Checkbox variant="text" checked={checkedMap.all} onCheckedChange={handleCheckedChange('all')}>전체 343</Checkbox>
-
-          <Typo variant="body-sm" className="text-[var(--color-gray-20)] text-[1.1rem]">|</Typo>
-
-          <Checkbox variant="text" checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>선택 324</Checkbox>
-
-          <Typo variant="body-sm" className="text-[var(--color-gray-20)] text-[1.1rem]">|</Typo>
-
-          <Checkbox variant="text" checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>미선택 112</Checkbox>
-        </Grow>
-      </Grow>
-    ),
+      )
+    },
     [checkedMap, setCheckedMap]
   );
 
   // titleRenderer: productName 셀 커스텀 렌더러
   const titleRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
     return (
-      <Grow className="" placement='bwc'>
-        <p className="truncate w-full">
+      <Grow className="h-full pr-1.5" placement='bwc'>
+        <div className="border-r border-[var(--color-gray-10)] h-full flex items-center w-[3rem] justify-center">{params.data?.id}</div>
+        <p className="truncate w-full pl-2 flex-1">
           {params.data?.productName}
         </p>
         {params.data?.badge && (
@@ -168,21 +184,12 @@ export function LTRA350MainBody({
         // headerComponent: CheckboxHeader,
         pinned: 'left',
       },
-      {
-        headerName: '',
-        field: 'id',
-        cellClass: 'text-center p-0!',
-        width: 30,
-        sortable: false,
-        filter: false,
-        editable: false,
-        pinned: 'left',
-      },
+     
       {
         headerName: '담보명',
         field: 'productName',
-        width: hideAside ? 510 : 390,
-        cellClass: 'text-left',
+        width: hideAside ? 510 : 426,
+        cellClass: 'text-left p-0!',
         sortable: false,
         filter: false,
         autoHeight: true,
@@ -193,6 +200,38 @@ export function LTRA350MainBody({
         },
         headerComponent: productNameHeader,
         cellRenderer: titleRenderer
+      },
+      {
+        headerName: '속성',
+        field: 'attribute',
+        flex: 1.4,
+        cellClass: 'text-center',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        cellRenderer: (params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+          const rowIndex = params.node?.rowIndex ?? 0;
+          // ref 연결
+          if (!amountInputRefs.current) amountInputRefs.current = [];
+          return (
+            <AmountUnitInput
+              value={params.value}
+              onChange={(newValue) => {
+                if (params.setValue) {
+                  params.setValue(newValue);
+                }
+              }}
+              inputRef={el => { amountInputRefs.current[rowIndex] = el; }}
+              onEnter={() => {
+                // 다음 AmountUnitInput으로 포커스 이동
+                const nextRef = amountInputRefs.current[rowIndex + 1];
+                if (nextRef) {
+                  nextRef.focus();
+                }
+              }}
+            />
+          );
+        },
       },
       {
         headerName: '가입금액(만원)',
@@ -227,6 +266,7 @@ export function LTRA350MainBody({
           );
         },
       },
+      
       {
         headerName: '보험료(만원)',
         field: 'premium',
@@ -309,21 +349,25 @@ export function LTRA350MainBody({
     <LayoutScrollWrap className="grid-rows-[auto_1fr]">
       <LayoutScrollItem className="w-full">
         <Grow placement="bwc" className="gap-1 w-full pb-1">
-          <Grow>
+          <Grow className="gap-1.5">
             <Typo variant="heading-sm">100세만기 · 20년납입 · 월납 · 20년 갱신 · 1형</Typo>
+            <Button variant="outlined" color="gray" size="md">
+              변경
+            </Button>
           </Grow>
           <Grow className="gap-2.5">
+            <Checkbox>담보초기화</Checkbox>
             <Checkbox>플랜기본값</Checkbox>
             <Grow className="gap-1">
-              <NativeSelect aria-label="플랜 선택" width="md" readOnly={false} required={false}>
+              <NativeSelect aria-label="플랜 선택" width="sm" size="sm" readOnly={false} required={false}>
                 <NativeSelectOption value="">플랜 선택</NativeSelectOption>
                 <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
               </NativeSelect>
-              <NativeSelect aria-label="나만의 설계선택" width="md" readOnly={false} required={false}>
+              <NativeSelect aria-label="나만의 설계선택" width="lg" size="sm" readOnly={false} required={false}>
                 <NativeSelectOption value="">나만의 설계선택</NativeSelectOption>
                 <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
               </NativeSelect>
-              <Button variant="outlined" color="gray" size="lg" onClick={() => setHideAside(!hideAside)}>
+              <Button variant="outlined" color="gray" size="md" onClick={() => setHideAside(!hideAside)}>
                 {hideAside ? '작게보기' : '크게보기'}
                 <SizeIcon color="var(--color-secondary-50)" />
               </Button>

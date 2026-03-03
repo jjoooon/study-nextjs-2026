@@ -68,7 +68,7 @@ export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }
             {safeData.title}
           </Typo>
           <div className="w-[0.4rem] h-[0.4rem] rounded-full bg-[var(--color-gray-30)]"></div>
-          <NativeSelect aria-label="플랜 선택" width="max" readOnly={false} required={false}>
+          <NativeSelect aria-label="플랜 선택" width="2xl" readOnly={false} required={false}>
             <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>
             <NativeSelectOption value="2">옵션 2</NativeSelectOption>
           </NativeSelect>

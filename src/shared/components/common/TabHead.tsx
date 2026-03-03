@@ -16,7 +16,7 @@ import {
 } from '@/shared/components/uiux';
 import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
 
-interface TabHeadProps<T> {
+interface TabHeadProps<T extends { error?: boolean }> {
   data: T[];
   visibleCount: number;
   children: React.ReactNode;
@@ -37,7 +37,7 @@ interface TabHeadProps<T> {
   getValue: (tab: T) => string;
 }
 
-export function TabHead<T>({ 
+export function TabHead<T extends { error?: boolean }>({ 
   data, 
   active, 
   setActive,
@@ -80,7 +80,11 @@ export function TabHead<T>({
         <TabsLine>
           <TabsList activeValue={active ?? ""}>
             {data.slice(visibleStart, end).map((tab) => (
-              <TabsTrigger key={getValue(tab)} value={getValue(tab)}>
+              <TabsTrigger
+                key={getValue(tab)}
+                value={getValue(tab)}
+                data-tab-error={tab.error ? 'true' : 'false'}
+              >
                 {renderTab?.(tab)}
               </TabsTrigger>
             ))}

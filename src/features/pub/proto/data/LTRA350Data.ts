@@ -18,6 +18,7 @@ export interface LTRA350DataType {
       age: string | number;
       gender: string;
       value: string;
+      error: boolean;
       info: string[];
     }>;
     checkboxList1: Array<{ label: string; value: string }>;
@@ -31,6 +32,7 @@ export interface LTRA350DataType {
       isDuplicate: boolean;
       productName: string;
       coverageAmount: number;
+      attribute: boolean;
       premium: number;
       availableAmount: number;
       expiryPeriod: string;
@@ -86,6 +88,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         age: '1',
         gender: '여',
         value: 'tab1',
+        error: true,
         info: [
           '추가정보1',
           '추가정보2',
@@ -103,6 +106,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         age: '2',
         gender: '남',
         value: 'tab2',
+        error: true,
         info: [
           '추가정보1',
           '추가정보2',
@@ -120,6 +124,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         age: '3',
         gender: '여',
         value: 'tab3',
+        error: false,
         info: [
           '추가정보1',
           '추가정보2',
@@ -137,6 +142,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         age: '4',
         gender: '남',
         value: 'tab4',
+        error: false,
         info: [
           '추가정보1',
           '추가정보2',
@@ -153,6 +159,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '5',
         gender: '여',
+        error: false,
         value: 'tab5',
         info: [
           '추가정보1',
@@ -170,6 +177,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '6',
         gender: '여',
+        error: false,
         value: 'tab6',
         info: [
           '추가정보1',
@@ -187,6 +195,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '7',
         gender: '남',
+        error: false,
         value: 'tab7',
         info: [
           '추가정보1',
@@ -204,6 +213,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '8',
         gender: '남',
+        error: false,
         value: 'tab8',
         info: [
           '추가정보1',
@@ -221,6 +231,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '9',
         gender: '여',
+        error: false,
         value: 'tab9',
         info: [
           '추가정보1',
@@ -238,6 +249,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '10',
         gender: '남',
+        error: false,
         value: 'tab10',
         info: [
           '추가정보1',
@@ -255,6 +267,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '11',
         gender: '여',
+        error: true,
         value: 'tab11',
         info: [
           '추가정보1',
@@ -272,6 +285,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '12',
         gender: '남',
+        error: false,
         value: 'tab12',
         info: [
           '추가정보1',
@@ -289,6 +303,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '13',
         gender: '남',
+        error: false,
         value: 'tab13',
         info: [
           '추가정보1',
@@ -306,6 +321,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '14',
         gender: '여',
+        error: false,
         value: 'tab14',
         info: [
           '추가정보1',
@@ -323,6 +339,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         name: '반짝빛나리반짝빛나리',
         age: '15',
         gender: '남',
+        error: false,
         value: 'tab15',
         info: [
           '추가정보1',
@@ -351,7 +368,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
       { label: '갱신', value: '1' },
       { label: '비갱신', value: '2' },
     ],
-    hashList: ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'],
+    hashList: ['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매'],
   },
   mainBody: {
     agGridTable1: [
@@ -361,6 +378,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
         coverageAmount: 500,
+        attribute: true,
         premium: 450,
         availableAmount: 100,
         expiryPeriod: '80세',
@@ -376,6 +394,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '무배당 메리츠 종합보험 무배당 메리츠 종합보험무배당 메리츠 종합보험무배당 메리츠 종합보험',
         coverageAmount: 300,
+        attribute: false,
         premium: 350,
         availableAmount: 500,
         expiryPeriod: '100세',
@@ -390,6 +409,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: 'KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험',
         coverageAmount: 700,
+        attribute: false,
         premium: 550,
         availableAmount: 1500,
         expiryPeriod: '90세',
@@ -405,6 +425,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '한화생명 의료실비보험',
         coverageAmount: 450,
+        attribute: false,
         premium: 420,
         availableAmount: 900,
         expiryPeriod: '85세',
@@ -420,6 +441,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '롯데생명 종신보험',
         coverageAmount: 100,
+        attribute: false,
         premium: 750,
         availableAmount: 200,
         expiryPeriod: '100세',
@@ -434,6 +456,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '현대생명 정기보험',
         coverageAmount: 600,
+        attribute: false,
         premium: 480,
         availableAmount: 1200,
         expiryPeriod: '80세',
@@ -448,6 +471,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: 'AXA손해보험 질병보험',
         coverageAmount: 550,
+        attribute: false,
         premium: 500,
         availableAmount: 1100,
         expiryPeriod: '75세',
@@ -462,6 +486,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '삼성생명 어린이보험',
         coverageAmount: 250,
+        attribute: false,
         premium: 280,
         availableAmount: 400,
         expiryPeriod: '30세',
@@ -476,6 +501,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '교보생명 장기요양보험',
         coverageAmount: 800,
+        attribute: false,
         premium: 650,
         availableAmount: 1600,
         expiryPeriod: '100세',
@@ -490,6 +516,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '신한생명 변액보험',
         coverageAmount: 900,
+        attribute: true,
         premium: 700,
         availableAmount: 1800,
         expiryPeriod: '80세',
@@ -504,6 +531,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: 'DB손해보험 특정질병보험',
         coverageAmount: 350,
+        attribute: true,
         premium: 380,
         availableAmount: 700,
         expiryPeriod: '65세',
@@ -518,6 +546,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '우리생명 연금보험',
         coverageAmount: 1200,
+        attribute: true,
         premium: 850,
         availableAmount: 2500,
         expiryPeriod: '100세',
@@ -532,6 +561,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '동부화재 운전자보험',
         coverageAmount: 400,
+        attribute: true,
         premium: 320,
         availableAmount: 800,
         expiryPeriod: '75세',
@@ -546,6 +576,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '미래에셋생명 저축보험',
         coverageAmount: 750,
+        attribute: true,
         premium: 600,
         availableAmount: 1500,
         expiryPeriod: '85세',
@@ -560,6 +591,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
         isDuplicate: true,
         productName: '하나생명 여행보험',
         coverageAmount: 200,
+        attribute: true,
         premium: 250,
         availableAmount: 300,
         expiryPeriod: '80세',
