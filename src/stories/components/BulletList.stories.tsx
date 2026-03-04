@@ -19,8 +19,8 @@ const meta: Meta<BulletListStoryProps> = {
     docs: {
       description: {
         component: `
-BulletList는 안내 문구, 약관 요약, 태그형 라벨 등을 목록 형태로 표현할 때 사용하는 컴포넌트이다.
-목록 배치 방향(column/row)과 아이템 bullet 스타일(dot/dash/square/tag)을 조합해 다양한 문서형 UI를 구성할 수 있다.
+BulletList는 안내 문구, 약관 요약, 해시형 라벨 등을 목록 형태로 표현할 때 사용하는 컴포넌트이다.
+목록 배치 방향(column/row)과 아이템 bullet 스타일(dot/dash/square/hash)을 조합해 다양한 문서형 UI를 구성할 수 있다.
 
 - **position**으로 목록 배치 방향을 설정한다.
 - **BulletListItem type/size**로 아이템의 마커 형태와 텍스트 크기를 제어한다.
@@ -28,13 +28,13 @@ BulletList는 안내 문구, 약관 요약, 태그형 라벨 등을 목록 형�
 ---
 
 <br>
-#### **기본 BulletList: Usage**
+#### **Hash BulletList: Usage**
 \`\`\`tsx
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 <BulletList position="col">
-  <BulletListItem type="dot" size="md">안내 문구 1</BulletListItem>
-  <BulletListItem type="dot" size="md">안내 문구 2</BulletListItem>
+  <BulletListItem type="hash" size="md" onClick={() => console.log('hash click')}>보험</BulletListItem>
+  <BulletListItem type="hash" size="md">자동차</BulletListItem>
 </BulletList>
 \`\`\`
 
@@ -64,18 +64,13 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
         type: { summary: 'col | row' },
       },
     },
-    className: {
-      control: 'text',
-      description: '목록 래퍼 클래스',
-      table: { category: 'Appearance' },
-    },
     type: {
       control: 'select',
-      options: ['dot', 'dash', 'square', 'tag'],
+      options: ['dot', 'dash', 'square', 'hash'],
       description: '아이템 마커 스타일',
       table: {
         category: 'Appearance',
-        type: { summary: 'dot | dash | square | tag' },
+        type: { summary: 'dot | dash | square | hash' },
       },
     },
     size: {
@@ -92,16 +87,10 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
       description: '샘플 아이템 텍스트',
       table: { category: 'Content' },
     },
-    onClick: {
-      action: 'item clicked',
-      description: 'tag 타입 아이템 클릭 이벤트',
-      table: { category: 'Events' },
-    },
     children: { table: { disable: true } },
   },
   args: {
     position: 'col',
-    className: 'gap-[0.2rem]',
     type: 'dot',
     size: 'md',
     itemText: '안내 문구입니다.',
@@ -134,11 +123,11 @@ export const Default: Story = {
         <StoryBox>
           <Grow placement="ss" className="gap-4">
             <Gcol placement="ss" className="gap-[0.4rem]">
-              <BulletList position={args.position} className="gap-[0.2rem]">
+              <BulletList position={args.position}>
                 <BulletListItem type="dot">dot</BulletListItem>
                 <BulletListItem type="dash">dash</BulletListItem>
                 <BulletListItem type="square">square</BulletListItem>
-                <BulletListItem type="tag">tag</BulletListItem>
+                <BulletListItem type="hash">hash</BulletListItem>
               </BulletList>
             </Gcol>
 
@@ -166,11 +155,11 @@ export const Row: Story = {
   args: {
     position: 'row',
     className: 'gap-2',
-    type: 'tag',
+    type: 'hash',
     size: 'md',
   },
   render: (args) => {
-    const { type = 'tag', size = 'md', ...listArgs } = args;
+    const { type = 'hash', size = 'md', ...listArgs } = args;
 
     return (
       <BulletList {...listArgs}>
@@ -198,9 +187,9 @@ export const Types: Story = {
           <BulletListItem type="square">square bullet</BulletListItem>
         </BulletList>
         <BulletList position="row" className="gap-2">
-          <BulletListItem type="tag">tag</BulletListItem>
-          <BulletListItem type="tag">list</BulletListItem>
-          <BulletListItem type="tag">sample</BulletListItem>
+          <BulletListItem type="hash">hash</BulletListItem>
+          <BulletListItem type="hash">list</BulletListItem>
+          <BulletListItem type="hash">sample</BulletListItem>
         </BulletList>
       </div>
     );

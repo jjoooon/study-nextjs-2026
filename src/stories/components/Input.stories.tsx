@@ -34,7 +34,7 @@ const [value, setValue] = useState('');
 <Input
   variant="default | ghost"
   size={"lg | sm"}
-  width={"full | max | 2xs | xs | sm | md | lg | xl | 2xl"}
+  width={"full | max | min | 2xs | xs | sm | md | lg | xl | 2xl"}
   placeholder="텍스트를 입력하세요"
   value={value}
   onChange={(e) => setValue(e.target.value)}
@@ -91,11 +91,11 @@ const [amount, setAmount] = useState('10000');
     },
     width: {
       control: 'select',
-      options: ['full', 'max', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      options: ['full', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       description: 'Input 너비',
       table: {
         category: 'Appearance',
-        type: { summary: 'full | max | 2xs | xs | sm | md | lg | xl | 2xl' },
+        type: { summary: 'full | max | min | 2xs | xs | sm | md | lg | xl | 2xl' },
       },
     },
     before: {
@@ -236,6 +236,35 @@ export const Default: Story = {
             <Gcol placement="ss" className="gap-[0.2rem]">
               <Input className="text-right" value="10000" width="sm" after="원" formatType="amount" />
             </Gcol>
+            <Gcol placement="ss" className="gap-[0.2rem]">
+              <Input width="sm" variant="ghost" placeholder='ghost' />
+            </Gcol>
+          </Grow>
+        </StoryBox>
+      </StoryWrap>
+    );
+  },
+};
+
+export const width: Story = {
+  render: () => {
+    const widths = ['full', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;
+
+    return (
+      <StoryWrap>
+        <StoryBox>
+          <Grow placement="ss" className="gap-2 flex-wrap">
+            {widths.map((size) => (
+              <Grow key={size} placement="ss" className="gap-[0.2rem]">
+                <Input
+                  width={size}
+                  value={size === 'min' ? '' : size}
+                  placeholder={size === 'min' ? 'min' : undefined}
+                  className={size === 'min' ? 'min-w-[2.4rem] px-0' : undefined}
+                  readOnly
+                />
+              </Grow>
+            ))}
           </Grow>
         </StoryBox>
       </StoryWrap>
