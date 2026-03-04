@@ -46,7 +46,7 @@ export const Default: Story = {
         <ResizablePanel defaultSize={30}>
           <div className="h-full flex items-center justify-center">Left</div>
         </ResizablePanel>
-        <ResizableHandle withHandle />
+        <ResizableHandle withHandle  className='bg-gray-300' />
         <ResizablePanel defaultSize={70}>
           <div className="h-full flex items-center justify-center">Right</div>
         </ResizablePanel>
