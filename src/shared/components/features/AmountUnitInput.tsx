@@ -67,13 +67,13 @@ export function AmountUnitInput({
   };
 
   const handleSetMax = () => {
-    const max = 10000; // 예시 최대값, 실제 값은 필요에 따라 조정
+    const max = 20000; // 예시 최대값, 실제 값은 필요에 따라 조정
     const formatted = formatAmount(max);
     setInputValue(formatted);
     onChange(formatted);
   };
   const handleSetMin = () => {
-    const min = 0; // 예시 최소값, 실제 값은 필요에 따라 조정
+    const min = 100; // 예시 최소값, 실제 값은 필요에 따라 조정
     const formatted = formatAmount(min);
     setInputValue(formatted);
     onChange(formatted);
@@ -167,6 +167,7 @@ export function AmountUnitInput({
                   formatType="amount"
                   readOnly
                   after="만"
+                  width="min"
                 />
                 <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(-5)}>
                   <MinusIcon />
