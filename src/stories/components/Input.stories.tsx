@@ -19,7 +19,7 @@ Input은 사용자로부터 텍스트 기반의 데이터를 입력받기 위한
 일관된 디자인 시스템을 유지하면서 다양한 입력 시나리오에 대응할 수 있도록 설계되었다.
 
 - **기본 입력** 방식과 **포맷 입력** 두가지로 크게 나누어진다.
-- 스타일로는 **default**가 있다.
+- 스타일로는 **default, ghost**가 있다.
 
 ---
 
@@ -32,7 +32,7 @@ import { useState } from 'react';
 const [value, setValue] = useState('');
 
 <Input
-  variant="default"
+  variant="default | ghost"
   size={"lg | sm"}
   width={"full | max | 2xs | xs | sm | md | lg | xl | 2xl"}
   placeholder="텍스트를 입력하세요"
@@ -43,6 +43,7 @@ const [value, setValue] = useState('');
   error={true | false}
   errorMsg="에러 메시지"
   clear={true | false}
+  forceFocused={true | false}
   before="앞에 붙는 요소"
   after="뒤에 붙는 요소"
 />
@@ -75,7 +76,7 @@ const [amount, setAmount] = useState('10000');
     // 1. Appearance (외형 관련)
     variant: {
       control: 'select',
-      options: ['default'],
+      options: ['default', 'ghost'],
       description: 'Input 스타일 유형',
       table: { category: 'Appearance' },
     },
@@ -140,6 +141,11 @@ const [amount, setAmount] = useState('10000');
       description: '입력 초기화 버튼 표시 여부',
       table: { category: 'Behavior' },
     },
+    forceFocused: {
+      control: 'boolean',
+      description: '강제로 포커스 상태 스타일/동작 적용 여부',
+      table: { category: 'Behavior' },
+    },
 
     // 4. Error Handling (에러 메시지 설정)
     error: {
@@ -183,6 +189,7 @@ const [amount, setAmount] = useState('10000');
     error: false,
     disabled: false,
     clear: false,
+    forceFocused: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
     before: '',
@@ -384,6 +391,54 @@ export const Amount: Story = {
       <Input {...restArgs} value={value} onChange={handleChange} />
     );
   }  
+};
+
+export const Ghost: Story = {
+  args: {
+    variant: 'ghost',
+    placeholder: 'ghost input',
+    width: 'md',
+  },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, onChange, ...restArgs } = args;
+
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      args.onChange?.(e);
+    };
+
+    return <Input {...restArgs} value={value} onChange={handleChange} />;
+  },
+};
+
+export const ForceFocusedClear: Story = {
+  args: {
+    placeholder: '클리어 버튼 확인',
+    clear: true,
+    forceFocused: true,
+    value: '초기값',
+    width: 'md',
+  },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, onChange, ...restArgs } = args;
+
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      args.onChange?.(e);
+    };
+
+    return <Input {...restArgs} value={value} onChange={handleChange} />;
+  },
 };
 
 export const Form: Story = {
