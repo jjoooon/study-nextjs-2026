@@ -93,6 +93,7 @@ function Input({
     const widthMap: Record<FormItemWidth, string> = {
       full: 'w-full flex-1',
       max: 'w-max',
+      min: 'w-min flex-1',
       '2xs': 'w-[4rem]',
       xs: 'w-[8rem]',
       sm: 'w-[10rem]',

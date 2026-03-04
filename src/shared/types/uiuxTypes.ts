@@ -24,6 +24,7 @@ export type FormItemSize = 'lg' | 'sm';
 export type FormItemWidth =
   | 'full'
   | 'max'
+  | 'min'
   | '2xs'
   | 'xs'
   | 'sm'
