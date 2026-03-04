@@ -353,6 +353,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                 <AgGridReact<InsPlanCovData>
                   ref={gridRef}
                   rowData={filteredData}
+                  getRowId={(params) => String(params.data.id)}
                   columnDefs={columnDefs}
                   // 성능 최적화 옵션
                   animateRows={false} // 행 애니메이션 비활성화 (스크롤 성능 향상)
