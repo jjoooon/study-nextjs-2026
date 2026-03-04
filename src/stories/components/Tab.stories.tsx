@@ -151,13 +151,7 @@ const DATA_TABS_1 = [
   { value: 'tab3', label: '추천 설계' },
   { value: 'tab4', label: '보장분석 설계' },
   { value: 'tab5', label: '상품/플랜 설계' },
-  { value: 'tab6', label: '담보 설계' },
-  { value: 'tab7', label: '추천 설계' },
-  { value: 'tab8', label: '보장분석 설계' },
-  { value: 'tab9', label: '상품/플랜 설계' },
-  { value: 'tab10', label: '담보 설계' },
-  { value: 'tab11', label: '추천 설계' },
-  { value: 'tab12', label: '보장분석 설계' },
+
 ];
 const DATA_TABS_2 = [
   { value: 'tab1', label: '상품/플랜 설계' },
