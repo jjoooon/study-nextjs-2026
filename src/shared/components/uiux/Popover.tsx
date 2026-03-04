@@ -45,19 +45,19 @@ const PopoverContent = React.forwardRef<
     motionClass = '';
   }
   React.useEffect(() => {
-    // Inject global style for data-radix-popper-content-wrapper
-    const styleId = 'popover-content-wrapper-absolute-style';
-    if (!document.getElementById(styleId)) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.innerHTML = '[data-radix-popper-content-wrapper]{position:absolute !important;}';
-      document.head.appendChild(style);
+    // Inject style for data-radix-popper-content-wrapper only if portalContainer is set
+    if (portalContainer) {
+      const styleId = 'popover-content-wrapper-absolute-style';
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = '[data-radix-popper-content-wrapper]{position:absolute !important;}';
+        document.head.appendChild(style);
+      }
+      // Optionally remove style on unmount if needed
+      // return () => { document.getElementById(styleId)?.remove(); };
     }
-    return () => {
-      // Optionally remove style if needed
-      // document.getElementById(styleId)?.remove();
-    };
-  }, []);
+  }, [portalContainer]);
   return (
     <PopoverPrimitive.Portal {...(portalContainer ? { container: portalContainer } : {})}>
       <PopoverPrimitive.Content
