@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Button, Input,
   Popover, PopoverTrigger, PopoverContent, PopoverAnchor
  } from '@/shared/components/uiux';
-import { Typo, Gcol, Grow } from '@/shared/components/common';
+import { Typo, Gcol, Grow, BulletItem } from '@/shared/components/common';
 import { CloseIcon, PlusIcon, MinusIcon } from '@/shared/components/icons';
  
 interface AmountUnitInputProps {
@@ -56,24 +56,26 @@ export function AmountUnitInput({
   const formatAmount = (num: number) => {
     return num.toLocaleString();
   };
+  const max = 20000;
+  const min = 100;
 
   const handleAmountChange = (delta: number) => {
     // inputValue에서 콤마 제거 후 숫자 변환
     const current = Number((inputValue + '').replace(/,/g, '')) || 0;
-    const next = current + delta;
+    let next = current + delta;
+    if (next < min) next = min;
+    if (next > max) next = max;
     const formatted = formatAmount(next);
     setInputValue(formatted);
     onChange(formatted);
   };
 
   const handleSetMax = () => {
-    const max = 20000; // 예시 최대값, 실제 값은 필요에 따라 조정
     const formatted = formatAmount(max);
     setInputValue(formatted);
     onChange(formatted);
   };
   const handleSetMin = () => {
-    const min = 100; // 예시 최소값, 실제 값은 필요에 따라 조정
     const formatted = formatAmount(min);
     setInputValue(formatted);
     onChange(formatted);
@@ -154,10 +156,10 @@ export function AmountUnitInput({
                 onKeyDown={handleKeyDown}
               />
             </Grow>
-            <Gcol className="gap-1.5">
-              <Grow className="gap-1" placement="bwc">
-                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(5)}>
-                  <PlusIcon />
+            <Gcol className="gap-1.5" placement="ss">
+              <Grow className="gap-1.5" placement="bwc">
+                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(100)}>
+                  <PlusIcon color="var(--color-primary-50)" className="translate-y-[0.1rem]" />
                 </Button>
                 <Input
                   variant="default"
@@ -166,11 +168,11 @@ export function AmountUnitInput({
                   className="text-right flex-1"
                   formatType="amount"
                   readOnly
-                  after="만"
+                  after="만원"
                   width="min"
                 />
-                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(-5)}>
-                  <MinusIcon />
+                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(-100)}>
+                  <MinusIcon color="var(--color-primary-50)" />
                 </Button>
               </Grow>
               <Grow className="gap-1">
@@ -181,6 +183,12 @@ export function AmountUnitInput({
                   최대 2억
                 </Button>
               </Grow>
+              <BulletItem type="ref">
+                <Typo className="text-[var(--color-gray-50)]">
+                  가입금액 입력단위:백만원
+                </Typo>
+              </BulletItem>
+              
             </Gcol>
           </Gcol>
         </PopoverContent>

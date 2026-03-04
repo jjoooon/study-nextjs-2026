@@ -428,4 +428,6 @@
 .pointer-events-none .ag-selection-checkbox .ag-wrapper::after {
   /* mask-image: none !important; */
   background-color: var(--color-gray-50) !important;
+  mask-image: var(--ag-checkbox-checked-shape-image);
 }
+

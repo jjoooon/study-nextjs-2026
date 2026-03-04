@@ -10,9 +10,9 @@ export function QuickLinks() {
     <Gcol className="w-full gap-1">
       <Grow className="gap-2" placement="bwc">
         <Typo variant="heading-md">바로가기</Typo>
-        <Button variant="none" only="icon" size="sm">
+        {/* <Button variant="none" only="icon" size="sm">
           <SettingIcon color="var(--color-secondary-50)" />
-        </Button>
+        </Button> */}
       </Grow>
       <Grid variant="box-line" className="grid-cols-[1fr_1fr] w-full gap-[0.6rem]" placement="ss">
       {/* <div className="grid grid-cols-[1fr_1fr] bg-[var(--color-gray-0)] rounded-[0.8rem] border border-[var(--color-gray-5)] w-full gap-[0.6rem] p-2.5 gap-1 shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]"> */}
