@@ -189,7 +189,7 @@ function Input({
                 variant="none"
                 color="gray"
                 only="icon" size="xs"
-                className="absolute right-0 top-1/2 -translate-y-1/2"
+                className="absolute! right-0 top-1/2 -translate-y-1/2"
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
                   // input 값을 지우는 이벤트 발생
@@ -230,7 +230,7 @@ function Input({
             <Button
               variant="none"
               only="icon" size="xs"
-              className="absolute right-2 top-1/2 -translate-y-1/2"
+              className="absolute! right-2 top-1/2 -translate-y-1/2"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
                 // input 값을 지우는 이벤트 발생

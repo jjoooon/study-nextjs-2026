@@ -40,7 +40,6 @@ export default function InsPlanCovBottom() {
         <Grow placement="bwc" className="flex-1 bg-[#F6F0ED] min-h-[7.8rem]">
           <Grow className="flex justify-between items-center flex-1 px-8" placement="bws">
             <KeyValueList data={KeyValueData} className="flex-1" />
-
             <Grow placement="sc" className="shrink-0 gap-2">
               <div className="text-[1.4rem] font-bold">
                 청약 <b className="text-[1.8rem] font-bold">(-100.45)</b>

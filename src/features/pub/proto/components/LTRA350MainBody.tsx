@@ -238,7 +238,7 @@ export function LTRA350MainBody({
         field: 'coverageAmount',
         flex: 1.6,
         headerClass: 'px-0!',
-        cellClass: () => 'text-right editable-cell [&_input]:text-right',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
         sortable: false,
         filter: false,
         editable: false,
@@ -264,19 +264,6 @@ export function LTRA350MainBody({
               }}
             />
           );
-        },
-      },
-      
-      {
-        headerName: '보험료(만원)',
-        field: 'premium',
-        flex: 1.4,
-        cellClass: 'text-right',
-        headerClass: 'px-0!',
-        sortable: false,
-        filter: false,
-        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
-          return params.value ? params.value.toLocaleString() : '';
         },
       },
       {
@@ -310,10 +297,28 @@ export function LTRA350MainBody({
         headerName: '납기',
         field: 'paymentPeriod',
         width: 60,
-        cellClass: 'text-center',
+        cellClass: 'text-center editable-cell px-[0.2rem]!',
         sortable: false,
         filter: false,
         resizable: false,
+        editable: (params: EditableCallbackParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
+        cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
+        cellEditorParams: {
+          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'], // 원하는 옵션
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '보험료(만원)',
+        field: 'premium',
+        flex: 1.4,
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+          return params.value ? params.value.toLocaleString() : '';
+        },
       },
       {
         headerName: '예상UW',

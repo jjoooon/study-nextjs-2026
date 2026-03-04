@@ -6,6 +6,7 @@ import { Button, Input,
  } from '@/shared/components/uiux';
 import { Typo, Gcol, Grow, BulletItem } from '@/shared/components/common';
 import { CloseIcon, PlusIcon, MinusIcon } from '@/shared/components/icons';
+import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
  
 interface AmountUnitInputProps {
   value: string | number;
@@ -34,12 +35,30 @@ export function AmountUnitInput({
   }, [open]);
 
   React.useEffect(() => {
-    setInputValue(value ?? '');
+    if (value === '' || value === undefined || value === null) {
+      setInputValue('');
+    } else {
+      setInputValue(String(value));
+    }
   }, [value]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    onChange(e.target.value);
+    const raw = e.target.value.replace(/,/g, '');
+    // 숫자만 입력되면 콤마포맷, 아니면 그대로
+    if (/^\d*$/.test(raw)) {
+      const num = Number(raw);
+      if (!isNaN(num) && raw !== '') {
+        const formatted = formatAmount(num);
+        setInputValue(formatted);
+        onChange(num); // 숫자만 전달
+      } else {
+        setInputValue('');
+        onChange('');
+      }
+    } else {
+      setInputValue(e.target.value);
+      onChange(''); // 숫자가 아니면 빈 값 전달
+    }
   };
 
   const handleClose = () => {
@@ -49,6 +68,7 @@ export function AmountUnitInput({
     const width = (e.target as HTMLInputElement).offsetWidth;
     setMeasuredWidth(width);
     setOpen(true);
+    agGridAutoScroll();
   };
 
   // 금액 조정 함수
@@ -67,18 +87,18 @@ export function AmountUnitInput({
     if (next > max) next = max;
     const formatted = formatAmount(next);
     setInputValue(formatted);
-    onChange(formatted);
+    onChange(next); // 숫자만 전달
   };
 
   const handleSetMax = () => {
     const formatted = formatAmount(max);
     setInputValue(formatted);
-    onChange(formatted);
+    onChange(max); // 숫자만 전달
   };
   const handleSetMin = () => {
     const formatted = formatAmount(min);
     setInputValue(formatted);
-    onChange(formatted);
+    onChange(min); // 숫자만 전달
   };
 
 
@@ -86,6 +106,8 @@ export function AmountUnitInput({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onEnter) {
       onEnter();
+      // onEnter 후(포커스 이동 후) 다음 tick에 스크롤 이동
+      agGridAutoScroll();
     }
   };
 
@@ -96,7 +118,7 @@ export function AmountUnitInput({
   };
 
   // side에 따라 Grow 위치 클래스 동적 결정
-  let growClass = 'absolute left-[-1.2rem]';
+  let growClass = 'absolute -right-[1.3rem]';
   if (popoverSide === 'bottom') {
     growClass += ' -top-[4.4rem]';
   } else if (popoverSide === 'top') {
@@ -104,27 +126,31 @@ export function AmountUnitInput({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen} >
-      <Grow className="releative">
+    <Popover open={open} onOpenChange={setOpen}>
+      <Grow className="relative h-full">
         <PopoverTrigger asChild>
           <input
             ref={el => {
               triggerInputRef.current = el;
               if (inputRef) inputRef(el);
             }}
-            value={inputValue}
+            value={
+              inputValue && /^\d+$/.test(String(inputValue).replace(/,/g, ''))
+                ? formatAmount(Number(String(inputValue).replace(/,/g, '')))
+                : inputValue
+            }
             onChange={handleInputChange}
             onClick={handleOpen}
             onMouseDown={e => e.preventDefault()}
-            className="text-right cursor-pointer mt-[0.2rem] w-full"
+            className="text-right cursor-pointer w-full h-full px-[0.8rem]"
             onKeyDown={handleKeyDown}
           />
         </PopoverTrigger>
       </Grow>
       {open && (
         <PopoverContent
-          className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5"
-          align="start"
+          className="bbbbbbbb border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 "
+          align="end"
           motion="none"
           portalContainer={typeof window !== 'undefined' ? document.querySelector('.ag-body-viewport') as HTMLElement | null : undefined}
           ref={el => {
@@ -146,13 +172,17 @@ export function AmountUnitInput({
             <Grow className={growClass}>
               <Input
                 variant="default"
-                value={inputValue}
+                type="number"
+                value={inputValue ? Number(String(inputValue).replace(/,/g, '')) : ''}
+                step="100"
+                min={min}
+                max={max}
                 onChange={handleInputChange}
                 size="sm"
-                className="text-right"
+                className="text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 formatType="amount"
                 autoFocus
-                width={measuredWidth ? `${measuredWidth / 10}rem` : undefined}
+                width={measuredWidth ? `${(measuredWidth) / 10}rem` : undefined}
                 onKeyDown={handleKeyDown}
               />
             </Grow>

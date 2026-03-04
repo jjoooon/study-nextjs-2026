@@ -93,7 +93,7 @@ export default function MainFoot() {
           </Grid>
         </form>
       
-      <Grow placement="bwc" className="px-3 pt-2 pb-2.5">
+      <Grow placement="bwc" className="px-3 pt-2 pb-2.5 bg-[var(--color-gray-5)]">
         <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('고지유형별보험료비교')}>
           고지유형별보험료비교
         </Button>

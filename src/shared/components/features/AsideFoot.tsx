@@ -2,6 +2,7 @@
 
 import { Gcol, Grow, ButtonGroup, Typo } from '@/shared/components/common';
 import { Button, Checkbox } from '@/shared/components/uiux';
+import { PlusIcon } from '@/shared/components/icons';
 
 export default function AsideFoot2() {
   return (
@@ -41,11 +42,13 @@ export default function AsideFoot2() {
         </Grow>
       </Gcol>
       <ButtonGroup className="[&>button]:flex-1 [&>button]:w-full" placement="bwc">
-        <Button variant="outlined" color="gray" size="lg" disabled>
-          변경조건
+        <Button variant="outlined" color="gray" size="lg" className="justify-between!">
+          제안서
+           <PlusIcon color="var(--color-gray-50)" />
         </Button>
-        <Button variant="outlined" color="gray" size="lg">
+        <Button variant="outlined" color="gray" size="lg" className="justify-between!">
           출력
+          <PlusIcon color="var(--color-gray-50)" />
         </Button>
       </ButtonGroup>
     </Gcol>
