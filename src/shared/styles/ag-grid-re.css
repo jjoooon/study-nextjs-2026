@@ -109,9 +109,12 @@
 .ag-header-row {
   background: var(--color-gray-5) !important;
 }
-
+.ag-header-cell-resize {
+  background: linear-gradient(90deg, transparent, #e0e0e0);
+}
 .ag-header-cell-resize:after {
   opacity: 0 !important;
+
 }
 
 .ag-pinned-left-header {

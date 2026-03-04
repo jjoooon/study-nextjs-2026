@@ -183,6 +183,7 @@ export function LTRA350MainBody({
         // cellRenderer: checkboxRender,
         // headerComponent: CheckboxHeader,
         pinned: 'left',
+        resizable: false,
       },
      
       {
@@ -204,32 +205,20 @@ export function LTRA350MainBody({
       {
         headerName: '속성',
         field: 'attribute',
-        flex: 1.4,
+        width: 10,
         cellClass: 'text-center',
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
+        resizable: false,
         cellRenderer: (params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
-          const rowIndex = params.node?.rowIndex ?? 0;
-          // ref 연결
-          if (!amountInputRefs.current) amountInputRefs.current = [];
+          if (!params.value) return null;
           return (
-            <AmountUnitInput
-              value={params.value}
-              onChange={(newValue) => {
-                if (params.setValue) {
-                  params.setValue(newValue);
-                }
-              }}
-              inputRef={el => { amountInputRefs.current[rowIndex] = el; }}
-              onEnter={() => {
-                // 다음 AmountUnitInput으로 포커스 이동
-                const nextRef = amountInputRefs.current[rowIndex + 1];
-                if (nextRef) {
-                  nextRef.focus();
-                }
-              }}
-            />
+            <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
+              <Button only="icon" variant="none" size="sm">
+                <SearchIcon color="var(--color-primary-50)" />
+              </Button>
+            </div>
           );
         },
       },
@@ -294,10 +283,11 @@ export function LTRA350MainBody({
       {
         headerName: '만기',
         field: 'expiryPeriod',
-        flex: 1,
-        cellClass: 'text-center editable-cell',
+        width: 60,
+        cellClass: 'text-center editable-cell px-[0.2rem]!',
         sortable: false,
         filter: false,
+        resizable: false,
         editable: (params: EditableCallbackParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
         cellEditorParams: {
@@ -308,17 +298,18 @@ export function LTRA350MainBody({
       {
         headerName: '납기',
         field: 'paymentPeriod',
-        flex: 1,
+        width: 60,
         cellClass: 'text-center',
         sortable: false,
         filter: false,
+        resizable: false,
       },
       {
         headerName: '예상UW',
         field: 'expectedUwResult',
         headerClass: 'px-0!',
         flex: 1,
-        cellClass: 'text-center',
+        cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
         cellStyle: (params: CellClassParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
@@ -334,12 +325,14 @@ export function LTRA350MainBody({
       {
         headerName: '중복',
         field: 'isDuplicate',
-        width: 44,
-        cellClass: 'text-center ',
+        width: 30,
+        headerClass: 'text-center px-0!',
+        cellClass: 'text-center px-0!',
         sortable: false,
         filter: false,
         cellRenderer: duplicateRenderer,
         suppressRowClickSelection: true,
+        resizable: false,
       },
     ],
     [duplicateRenderer, productNameHeader, expiryCellRenderer, hideAside]

@@ -5,6 +5,9 @@ import { Grow, BulletList, BulletListItem, ButtonGroup } from '@/shared/componen
 import { HashIcon, PlusIcon } from '@/shared/components/icons';
 import { 
   Button, 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
 } from '@/shared/components/uiux';
 import { cn } from '@/shared/lib/shadcn/utils';
 
@@ -28,8 +31,8 @@ export const HashList = ({ data }: { data: string[] }) => {
   }, [data]);
 
   return (
-    <Grow className="gap-3 w-full" placement="sc">
-      <div data-hashlist="wrap" ref={wrapRef} className={cn('relative max-w-[calc(100vw-70rem)] overflow-hidden', showMore && 'after:absolute after:block after:bg-gradient-to-r after:from-transparent after:to-[var(--color-gray-5)] after:right-[0] after:top-[0] after:w-[2rem] after:h-full')}>
+    <Grow className="gap-2 w-full" placement="sc">
+      <div data-hashlist="wrap" ref={wrapRef} className={cn('relative max-w-[calc(100vw-70rem)] min-w-[52rem] overflow-hidden', showMore && 'after:absolute after:block after:bg-gradient-to-r after:from-transparent after:to-[var(--color-gray-5)] after:right-[0] after:top-[0] after:w-[2rem] after:h-full')}>
         <div data-hashlist="item" ref={itemRef} style={{ width: 'fit-content' }}>
           <BulletList
             position="row"
@@ -53,10 +56,34 @@ export const HashList = ({ data }: { data: string[] }) => {
       </div>
       <ButtonGroup className="gap-1 shrink-0" placement="ec">
         {showMore && (
-          <Button variant="outlined" color="gray" size="md">
-            <PlusIcon />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outlined" color="gray" size="md">
+                <PlusIcon />
             더보기
-          </Button>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[30rem] p-3 flex flex-col gap-1 overflow-auto" align="end">
+              <BulletList
+                position="row"
+                className="gap-x-2.5 gap-y-[0.2rem] flex-1 flex-wrap whitespace-nowrap relative"
+                type="hash"
+              >
+                {data.map((hash, index) => (
+                  <BulletListItem
+                    key={index}
+                    type="hash"
+                    onClick={() => {
+                      // eslint-disable-next-line no-console
+                      console.log('디버깅 데이터:', hash);
+                    }}
+                  >
+                    {hash}
+                  </BulletListItem>
+                ))}
+              </BulletList>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
         <Button variant="outlined" color="gray" size="md">
           <HashIcon />
