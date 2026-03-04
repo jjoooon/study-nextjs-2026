@@ -82,10 +82,20 @@ export function LTRA350MainBody({
     setCheckedMap(map => ({ ...map, [key]: !!checked }));
   };
 
+  // 담보명 풍선말(tooltip) 표시 여부 상태
+  const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+  // 강제 리렌더용 키
+  const [gridKey, setGridKey] = useState(0);
+
   // 담보명 헤더 컴포넌트를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
   const productNameHeader = useCallback(
     () => {
       const [coverageName, setCoverageName] = useState('');
+      const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
+        setShowProductNameTooltip(!!checked);
+        // 체크 해제 시 강제 리렌더로 툴팁 강제 닫힘
+        if (!checked) setGridKey(k => k + 1);
+      };
       return (
         <Grow className="gap-1 w-full" placement="bwc">
           <Grow className="gap-1.5" placement="sc">
@@ -111,13 +121,14 @@ export function LTRA350MainBody({
           </Grow>
 
           <Grow className="gap-1" placement="sc">
-            <Checkbox size="sm">담보명 풍선말</Checkbox>
+            <Checkbox size="sm" checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
+              담보명 풍선말
+            </Checkbox>
           </Grow>
-          
         </Grow>
       )
     },
-    [checkedMap, setCheckedMap]
+    [checkedMap, setCheckedMap, showProductNameTooltip]
   );
 
   // titleRenderer: productName 셀 커스텀 렌더러
@@ -371,6 +382,7 @@ export function LTRA350MainBody({
       <LayoutScrollItem className="w-full">
         <div className="ag-theme-alpine">
           <AgGridReact<LTRA350DataType['mainBody']['agGridTable1'][number]>
+            key={gridKey}
             rowData={rowData}
             columnDefs={columnDefs}
             rowSelection="multiple" // multiple로 변경
@@ -385,9 +397,9 @@ export function LTRA350MainBody({
             suppressRowHoverHighlight={false}
             onSelectionChanged={handleSelectionChanged}
             singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
-            tooltipShowDelay={0}
-            tooltipHideDelay={9999}
-            tooltipMouseTrack={true}
+            tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+            tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+            tooltipMouseTrack={showProductNameTooltip ? true : undefined}
             getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
           />
         </div>

@@ -610,7 +610,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
   ],
   aside: {
     simpleContractInfo: {
-      date: '2024-05-01',
+      date: '2024-05-08',
       polName: '홍길동',
       insName: '홍길동',
       insAge: '32',
@@ -618,7 +618,7 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
       insGrade: '1급',
       info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
       quoteExpiryDate: '2024-06-30',
-      insuranceAgeDate: '2024-05-01',
+      insuranceAgeDate: '2024-05-08',
       consentEndDate: '2024-06-30',
       note: '알릴사항 비대상',
     },

@@ -14,20 +14,23 @@ export default function AsideBody({ data }: { data: LTRA350DataType['aside'] }) 
     <LayoutScrollWrap>
       <LayoutScrollItem>
         <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
-          <Grow className="gap-2" placement="bwc">
+          {/* <Grow className="gap-2" placement="bwc">
             <Button variant="banner" className="w-full justify-between!">
               인수지침 점검
               <NewPopupIcon />
             </Button>
-          </Grow>
+          </Grow> */}
 
           <Gcol className="w-full gap-1">
             <Grow className="gap-2" placement="bwc">
-              <Typo variant="heading-md">설계정보</Typo>
-              <Grow className="gap-[0.2rem]" placement="cc">
-                  <SpinnerA className="text-[var(--color-primary-50)]" />
+              <Grow className="gap-1.5">
+                <Typo variant="heading-md">계약정보</Typo>
+                <Grow className="gap-[0.2rem]" placement="cc">
                   <Typo variant="body-md" className="text-[var(--color-danger-40)]">설계중</Typo>
+                  <SpinnerA className="text-[var(--color-primary-50)]" />
+                </Grow>
               </Grow>
+              
             </Grow>
             <Gcol variant="box-line" className="w-full bg-[var(--color-coolgray-10)] gap-2" placement="ss">
               <Gcol variant="box-line" className="w-full gap-1 py-[0.6rem]! border-none! shadow-none!" placement="ss">
