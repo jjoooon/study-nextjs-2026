@@ -1,7 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { Grow, Gcol, FormItem, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
+import { 
+  Grow, 
+  Gcol, 
+  FormItem,
+  BulletList, 
+  BulletListItem, 
+  ButtonGroup, 
+  ErrorMsg, 
+  HashList 
+} from '@/shared/components/common';
 import { TabHead } from '@/shared/components/common/TabHead';
 import { PaperIcon, SearchIcon, ResetIcon, PlusIcon, HashIcon } from '@/shared/components/icons';
 import { 
@@ -46,10 +55,17 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
       renderTab={tab => (
         <HoverCard>
           <HoverCardTrigger asChild>
-            <span className="flex items-center">
-              <span className="max-w-20 truncate block">{tab.name}</span>
-              <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-            </span>
+            <div>
+              <span className="flex items-center">
+                <span className="max-w-20 truncate block">{tab.name}</span>
+                <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+              </span>
+              {tab.error && (
+                <ErrorMsg aria-live="polite" show={true} position="tl" id="test">
+                  입력하세요.
+                </ErrorMsg>
+              )}
+            </div>
           </HoverCardTrigger>
           <HoverCardContent>
             <BulletList>
@@ -99,55 +115,14 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
 
         <Grow className="gap-3 w-full" placement="bwc">
           <Grow className="gap-3 w-full" placement="ss">
-            <Grow className="gap-x-1 gap-y-1 flex-wrap" placement="ss">
+            <Grow className="gap-x-1 gap-y-1 flex-wrap shrink-0" placement="ss">
               {data.checkboxList2.map((category) => (
                 <Checkbox key={category.value} variant="button">
                   {category.label}
                 </Checkbox>
               ))}
             </Grow>
-            <Grow className="gap-3" placement="sc">
-              <FormItem className="shrink-0 w-auto">
-                <Input
-                  aria-label="담보명"
-                  placeholder="담보명 입력"
-                  type="text"
-                  width="md"
-                  clear={true}
-                  value={coverageName}
-                  onChange={(e) => setCoverageName(e.target.value)}
-                />
-                <Button aria-label="담보명 검색" variant="outlined" color="gray-light" only="icon" size="lg">
-                  <SearchIcon color="var(--color-primary-50)" />
-                </Button>
-              </FormItem>
-              <BulletList position="row" className="gap-x-2.5 gap-y-[0.2rem] flex-1 w-full">
-                {data.hashList.map((tag, index) => {
-                  return (
-                    <BulletListItem
-                      key={index}
-                      type="tag"
-                      onClick={() => {
-                        // eslint-disable-next-line no-console
-                        console.log('디버깅 데이터:', tag);
-                      }}
-                    >
-                      {tag}
-                    </BulletListItem>
-                  );
-                })}
-              </BulletList>
-              <ButtonGroup className="gap-1" placement="ec">
-                <Button variant="outlined" color="gray" size="md">
-                  <PlusIcon />
-                  더보기
-                </Button>
-                <Button variant="outlined" color="gray" size="md">
-                  <HashIcon />
-                  편집
-                </Button>
-              </ButtonGroup>
-            </Grow>
+            <HashList data={data.hashList} />
           </Grow>
           <ButtonGroup className="gap-1" placement="ec">
             <Button variant="contained" color="gray-cool" size="lg">

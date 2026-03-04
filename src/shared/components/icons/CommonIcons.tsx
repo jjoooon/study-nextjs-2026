@@ -521,6 +521,19 @@ export const PlusIcon: React.FC<IconProps> = ({ className = '', size = 14, color
     />
   </svg>
 );
+export const MinusIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 14 14"
+    fill="none"
+    className={className}
+  >
+    <path d="M12.25 6.3584C12.6043 6.3584 12.8914 6.64545 12.8914 6.99984C12.8914 7.35422 12.6043 7.64128 12.25 7.64128H1.74996C1.39558 7.64128 1.10852 7.35422 1.10852 6.99984C1.10852 6.64545 1.39558 6.3584 1.74996 6.3584H12.25Z" fill={color}/>
+  </svg>
+);
+
 export const InputClearIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

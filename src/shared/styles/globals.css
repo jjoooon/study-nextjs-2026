@@ -713,4 +713,13 @@ input::placeholder {
   .type--design-number > *:nth-child(4) {
     text-align: center;
   }
+  [data-state=active] [data-component=error-msg] {
+    display: none !important;
+  }
+  [data-tab-error="true"]:not([data-state="active"]) {
+    color:var(--color-text-danger) !important;
+    border-color:var(--color-text-danger) !important;
+    background-color: var(--color-input-surface-error) !important;
+    z-index: 1;
+  }
 }

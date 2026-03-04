@@ -5,7 +5,7 @@ import { Button, Input,
   Popover, PopoverTrigger, PopoverContent, PopoverAnchor
  } from '@/shared/components/uiux';
 import { Typo, Gcol, Grow } from '@/shared/components/common';
-import { CloseIcon } from '@/shared/components/icons';
+import { CloseIcon, PlusIcon, MinusIcon } from '@/shared/components/icons';
  
 interface AmountUnitInputProps {
   value: string | number;
@@ -94,11 +94,11 @@ export function AmountUnitInput({
   };
 
   // side에 따라 Grow 위치 클래스 동적 결정
-  let growClass = 'absolute left-[-1.6rem]';
+  let growClass = 'absolute left-[-1.2rem]';
   if (popoverSide === 'bottom') {
-    growClass += ' -top-[4.8rem]';
+    growClass += ' -top-[4.4rem]';
   } else if (popoverSide === 'top') {
-    growClass += ' -bottom-[4.6rem]';
+    growClass += ' -bottom-[4.4rem]';
   }
 
   return (
@@ -121,7 +121,7 @@ export function AmountUnitInput({
       </Grow>
       {open && (
         <PopoverContent
-          className="w-[29rem] "
+          className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5"
           align="start"
           motion="none"
           portalContainer={typeof window !== 'undefined' ? document.querySelector('.ag-body-viewport') as HTMLElement | null : undefined}
@@ -135,12 +135,12 @@ export function AmountUnitInput({
           }}
         >
           <Gcol className="w-full gap-3" placement="ss">
-            <Grow className="w-full gap-3" placement="bws">
+            {/* <Grow className="w-full gap-3" placement="bws">
               <Typo variant="heading-sm">가입한도 인수단위(5만)</Typo>
-              {/* <Button variant="none" only="icon" color="gray" size="sm" onClick={handleClose}>
+              <Button variant="none" only="icon" color="gray" size="sm" onClick={handleClose}>
                 <CloseIcon />
-              </Button> */}
-            </Grow>
+              </Button>
+            </Grow> */}
             <Grow className={growClass}>
               <Input
                 variant="default"
@@ -154,33 +154,30 @@ export function AmountUnitInput({
                 onKeyDown={handleKeyDown}
               />
             </Grow>
-            <Gcol className="gap-2.5">
-              <Grow className="gap-1">
-                <Button variant="contained" color="gray" className="w-[4.8rem]" onClick={() => handleAmountChange(5)}>
-                  +5만
+            <Gcol className="gap-1.5">
+              <Grow className="gap-1" placement="bwc">
+                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(5)}>
+                  <PlusIcon />
                 </Button>
-                <Button variant="outlined" color="primary" className="w-[7rem] font-bold tracking-[0]" onClick={() => handleAmountChange(1000)}>
-                  +1000만
-                </Button>
-                <Button variant="outlined" color="primary" className="w-[7rem] font-bold tracking-[0]" onClick={() => handleAmountChange(5000)}>
-                  +5000만
-                </Button>
-                <Button variant="outlined" color="primary" className="w-[4.8rem]" onClick={handleSetMax}>
-                  최대
+                <Input
+                  variant="default"
+                  value={inputValue}
+                  size="sm"
+                  className="text-right flex-1"
+                  formatType="amount"
+                  readOnly
+                  after="만"
+                />
+                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(-5)}>
+                  <MinusIcon />
                 </Button>
               </Grow>
               <Grow className="gap-1">
-                <Button variant="outlined" color="gray" className="w-[4.8rem]" onClick={() => handleAmountChange(-5)}>
-                  -5만
+                <Button variant="contained" color="secondary" className="w-[8.4rem]" onClick={handleSetMin}>
+                  최소 100만원
                 </Button>
-                <Button variant="outlined" color="primary" className="w-[7rem] font-bold tracking-[0]" onClick={() => handleAmountChange(-1000)}>
-                  -1000만
-                </Button>
-                <Button variant="outlined" color="primary" className="w-[7rem] font-bold tracking-[0]" onClick={() => handleAmountChange(-5000)}>
-                  -5000만
-                </Button>
-                <Button variant="outlined" color="primary" className="w-[4.8rem]" onClick={handleSetMin}>
-                  최소
+                <Button variant="contained" color="primary" className="w-[8.4rem]" onClick={handleSetMax}>
+                  최대 2억
                 </Button>
               </Grow>
             </Gcol>

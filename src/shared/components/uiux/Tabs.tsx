@@ -16,7 +16,7 @@ interface TabsContextProps {
   // 필요한 명확한 속성을 여기에 추가하세요. 인덱스 시그니처([key: string]: any)는 타입 안정성을 위해 제거되었습니다.
 }
 const TabsContext = React.createContext<TabsContextProps>({});
-export const useTabsContext = () => React.useContext(TabsContext);
+export const useTabsContext = (): TabsContextProps => React.useContext(TabsContext);
 
 // Tabs 컴포넌트에서 Context Provider로 감싸기
 interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
@@ -88,7 +88,7 @@ export interface TabsTriggerProps
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?: string }>(
   ({ className, variant: _variant, children, activeValue, ...props }, ref) => {
-    const { variant, removable, onRemove } = useTabsContext();
+    const { variant, removable, onRemove }: TabsContextProps = useTabsContext();
     const totalTabs = React.Children.count(children);
     return (
       <TabsPrimitive.List
@@ -96,7 +96,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?
         ref={ref}
         {...props}
       >
-        {React.Children.map(children, (child) => {
+        {React.Children.map(children, (child: React.ReactNode) => {
           if (React.isValidElement(child)) {
             const value = (child.props as any).value;
             return React.cloneElement(child as React.ReactElement<TabsTriggerProps>, {
@@ -130,7 +130,8 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
             tabsTriggerVariants({ variant: variant as 'default' | 'sub' | 'box' | undefined }),
             removable && totalTabs! > 1 ? 'isRemovable' : '',
             className,
-            'items-center'
+            'items-center ',
+            
           )}
           onClick={(e) => {
             e.currentTarget.scrollIntoView({
@@ -225,7 +226,7 @@ const TabsLine = React.forwardRef<
       className={cn(
         style,
         borderColor,
-        'hide-scrollbar grid grid-cols-[1fr_auto] overflow-x-auto overflow-y-hidden gap-2',
+        'hide-scrollbar grid grid-cols-[1fr_auto] gap-2',
         className
       )}
       data-variant={variant}

@@ -109,9 +109,12 @@
 .ag-header-row {
   background: var(--color-gray-5) !important;
 }
-
+.ag-header-cell-resize {
+  background: linear-gradient(90deg, transparent, #e0e0e0);
+}
 .ag-header-cell-resize:after {
   opacity: 0 !important;
+
 }
 
 .ag-pinned-left-header {
@@ -228,8 +231,9 @@
 }
 .ag-cell .ag-cell-value{ 
   display: inline-block;
-  padding: .4rem 0;
+  padding: 0 0;
   line-height: 1.3;
+  height: 100%;
 }
 .ag-selection-checkbox+.ag-cell-value {
   display: none;
