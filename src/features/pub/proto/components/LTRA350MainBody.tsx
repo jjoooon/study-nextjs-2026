@@ -186,24 +186,6 @@ export function LTRA350MainBody({
   const columnDefs: ColDef<LTRA350DataType['mainBody']['agGridTable1'][number]>[] = useMemo(
     () => [
       {
-        headerName: '',
-        checkboxSelection: true, // ag-Grid 기본 체크박스
-        // suppressRowClickSelection: true, // 체크박스만 클릭 시 선택
-        // field: 'selected',
-        width: 30,
-        cellClass: 'text-center p-0!',
-        cellClassRules: {
-          'pointer-events-none': params => !!params.data?.locked, // boolean 반환으로 타입 오류 방지
-        },
-        sortable: false,
-        filter: false,
-        // cellRenderer: checkboxRender,
-        // headerComponent: CheckboxHeader,
-        pinned: 'left',
-        resizable: false,
-      },
-     
-      {
         headerName: '담보명',
         field: 'productName',
         width: hideAside ? 510 : 426,
@@ -353,7 +335,6 @@ export function LTRA350MainBody({
         sortable: false,
         filter: false,
         cellRenderer: duplicateRenderer,
-        suppressRowClickSelection: true,
         resizable: false,
       },
     ],
@@ -396,8 +377,23 @@ export function LTRA350MainBody({
             key={gridKey}
             rowData={rowData}
             columnDefs={columnDefs}
-            rowSelection="multiple" // multiple로 변경
-            suppressRowClickSelection={true}
+
+            rowSelection={{
+              mode: 'multiRow' as const,
+              headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
+              checkboxes: true,          // 각 행에 체크박스 표시
+              enableClickSelection: false, // 행 본문 클릭 시에는 선택 안 됨
+              isRowSelectable: (params) => !params.data?.locked,
+            }}
+            selectionColumnDef={{
+              width: 40,
+              pinned: 'left',
+              cellClass: 'text-center p-0!',
+              cellClassRules: {
+                'pointer-events-none': params => !!params.data?.locked,
+              },
+            }}
+
             onGridReady={(params) => {
               params.api.forEachNode((node) => {
                 if (node.data?.locked) node.setSelected(true);
