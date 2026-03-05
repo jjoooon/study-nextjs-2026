@@ -75,6 +75,8 @@ export function DatePickerInput({
   size = 'lg',
   width = 'full',
   required = false,
+  readOnly = false,
+  disabled = false,
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
@@ -92,6 +94,10 @@ export function DatePickerInput({
   const [rangeInput, setRangeInput] = React.useState({ from: '', to: '' });
   const [invalidRange, setInvalidRange] = React.useState({ from: false, to: false });
   const [invalidDate, setInvalidDate] = React.useState(false);
+
+  React.useEffect(() => {
+    if (disabled || readOnly) setOpen(false);
+  }, [disabled, readOnly]);
 
   React.useEffect(() => {
     // range 모드일 때 rangeValue 우선 처리
@@ -323,9 +329,14 @@ export function DatePickerInput({
     if (typeof width === 'string') {
       if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
       if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
+      if (/^\d+(\.\d+)?px$/.test(width)) return { width };
     }
     return undefined;
   })();
+
+  const inputStyle: React.CSSProperties | undefined = readOnly
+    ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1px solid #F4F4F4' }
+    : inlineWidthStyle;
 
   const sizeClass = size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]';
   const buttonSizeClass = size === 'lg' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
@@ -359,6 +370,11 @@ export function DatePickerInput({
     }
     focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.7rem]`;
 
+  const disabledClass = disabled
+    ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
+    : '';
+  const readOnlyClass = readOnly ? 'bg-[#F4F4F4]' : '';
+
   const rangeSelected = selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
   const singleSelected = selected instanceof Date ? selected : undefined;
   const multiSelected = Array.isArray(selected) ? selected : undefined;
@@ -371,12 +387,14 @@ export function DatePickerInput({
             id={finalId}
             type="tel"
             value={rangeInput.from}
+            disabled={disabled}
+            readOnly={readOnly}
             placeholder="____-__-__"
             aria-invalid={error || invalidRange.from ? true : undefined}
             aria-describedby={error || invalidDate ? errorId : undefined}
             onChange={handleRangeInputChange('from')}
             onKeyDown={(e) => {
-              if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+              if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
                 setOpen(true);
               }
@@ -385,8 +403,8 @@ export function DatePickerInput({
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass}`}
-            style={inlineWidthStyle}
+            className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            style={inputStyle}
             data-size={size}
             data-width={width}
             ref={fromInputRef}
@@ -395,12 +413,14 @@ export function DatePickerInput({
           <input
             type="tel"
             value={rangeInput.to}
+            disabled={disabled}
+            readOnly={readOnly}
             placeholder="____-__-__"
             aria-invalid={error || invalidRange.to ? true : undefined}
             aria-describedby={error || invalidDate ? errorId : undefined}
             onChange={handleRangeInputChange('to')}
             onKeyDown={(e) => {
-              if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+              if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
                 setOpen(true);
               }
@@ -409,8 +429,8 @@ export function DatePickerInput({
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass}`}
-            style={inlineWidthStyle}
+            className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            style={inputStyle}
             data-size={size}
             data-width={width}
             ref={toInputRef}
@@ -422,12 +442,14 @@ export function DatePickerInput({
           type="tel"
           value={displayValue}
           placeholder="____-__-__"
+          disabled={disabled}
+          readOnly={readOnly}
           required={required}
           aria-invalid={error || invalidDate ? true : undefined}
           aria-describedby={error || invalidDate ? errorId : undefined}
           onChange={handleDateChange}
           onKeyDown={(e) => {
-            if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+            if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
               e.preventDefault();
               setOpen(true);
             }
@@ -436,69 +458,71 @@ export function DatePickerInput({
               setOpen(false);
             }
           }}
-          className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass}`}
-          style={inlineWidthStyle}
+          className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+          style={inputStyle}
           data-size={size}
           data-width={width}
         />
       )}
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            id={`${finalId}-button`}
-            variant="outlined"
-            only="icon" size="md"
-            color="gray-light"
-            aria-label="Select date"
-            className={buttonSizeClass}
+      {!disabled && !readOnly && (
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              id={`${finalId}-button`}
+              variant="outlined"
+              only="icon" size="md"
+              color="gray-light"
+              aria-label="Select date"
+              className={buttonSizeClass}
+            >
+              <CalendarIcon color="var(--color-icon-primary)" />
+              <span className="sr-only">Select date</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            className="w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
+            align="end"
+            alignOffset={-8}
+            sideOffset={10}
           >
-            <CalendarIcon color="var(--color-icon-primary)" />
-            <span className="sr-only">Select date</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-auto overflow-hidden p-0 border-[var(--color-border-gray-light)]"
-          align="end"
-          alignOffset={-8}
-          sideOffset={10}
-        >
-          {mode === 'range' ? (
-            <Calendar
-              mode="range"
-              defaultMonth={rangeSelected?.from}
-              selected={rangeSelected}
-              onSelect={handleSelect}
-              captionLayout="dropdown"
-              month={month}
-              onMonthChange={setMonth}
-              numberOfMonths={2}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
-              required={true}
-            />
-          ) : mode === 'multiple' ? (
-            <Calendar
-              mode="multiple"
-              selected={multiSelected}
-              onSelect={handleSelect}
-              captionLayout="dropdown"
-              month={month}
-              onMonthChange={setMonth}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
-              required={required}
-            />
-          ) : (
-            <Calendar
-              mode="single"
-              selected={singleSelected}
-              onSelect={handleSelect}
-              captionLayout="dropdown"
-              month={month}
-              onMonthChange={setMonth}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
-            />
-          )}
-        </PopoverContent>
-      </Popover>
+            {mode === 'range' ? (
+              <Calendar
+                mode="range"
+                defaultMonth={rangeSelected?.from}
+                selected={rangeSelected}
+                onSelect={handleSelect}
+                captionLayout="dropdown"
+                month={month}
+                onMonthChange={setMonth}
+                numberOfMonths={2}
+                className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+                required={true}
+              />
+            ) : mode === 'multiple' ? (
+              <Calendar
+                mode="multiple"
+                selected={multiSelected}
+                onSelect={handleSelect}
+                captionLayout="dropdown"
+                month={month}
+                onMonthChange={setMonth}
+                className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+                required={required}
+              />
+            ) : (
+              <Calendar
+                mode="single"
+                selected={singleSelected}
+                onSelect={handleSelect}
+                captionLayout="dropdown"
+                month={month}
+                onMonthChange={setMonth}
+                className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              />
+            )}
+          </PopoverContent>
+        </Popover>
+      )}
       {(error || invalidDate) && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {invalidDate && !error ? '유효하지 않은 날짜입니다.' : errorMsg}

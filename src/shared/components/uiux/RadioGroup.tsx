@@ -27,6 +27,10 @@ const radioGroupItemVariants = cva(
         large: '',
         small: '',
       },
+      width: {
+        full: 'w-full',
+        auto: 'w-auto',
+      },
       color: {
         primary: 'border-[var(--color-border-gray-light)] hover:border-[var(--color-element-primary)]',
         information:
@@ -61,6 +65,7 @@ const radioGroupItemVariants = cva(
       variant: 'default',
       size: 'large',
       color: 'primary',
+      width: 'full',
     },
   }
 );
@@ -83,13 +88,14 @@ const RadioGroup = React.forwardRef<
     error?: boolean;
     errorMsg?: React.ReactNode;
     errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+    width?: 'full' | 'auto';
   }
->(({ className, error, errorMsg, errorPs = 'bl', ...props }, ref) => {
+>(({ className, error, errorMsg, width='full', errorPs = 'bl', ...props }, ref) => {
   const errorId = React.useId();
 
   return (
     <RadioGroupContext.Provider value={{ error }}>
-      <div className="relative">
+      <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
         <RadioGroupPrimitive.Root
           className={cn('flex items-center justify-start flex-wrap', className)}
           {...props}

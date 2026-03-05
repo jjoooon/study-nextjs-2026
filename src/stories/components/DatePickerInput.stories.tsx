@@ -20,6 +20,7 @@ DatePickerInput은 캘린더 팝오버와 입력 필드를 함께 제공하는 �
 
 - **mode**로 날짜 선택 방식을 설정한다.
 - **width / size**로 입력 필드 크기를 제어한다.
+- **disabled**로 입력 비활성화를 제어한다.
 - **error / errorMsg / errorPs**로 검증 메시지를 표시한다.
 
 ---
@@ -87,6 +88,11 @@ const [value, setValue] = useState('');
       description: '필수 여부',
       table: { category: 'State' },
     },
+    disabled: {
+      control: 'boolean',
+      description: '비활성화 여부',
+      table: { category: 'State' },
+    },
     error: {
       control: 'boolean',
       description: '에러 상태',
@@ -121,6 +127,7 @@ const [value, setValue] = useState('');
     size: 'lg',
     width: 'sm',
     required: false,
+    disabled: false,
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
@@ -162,6 +169,9 @@ export const Default: Story = {
             </Gcol>
             <Gcol placement="ss" className="gap-[0.4rem]">
               <DatePickerInput mode="single" width="sm" error errorMsg="연령증가일은 필수입니다." errorPs="bl" />
+            </Gcol>
+            <Gcol placement="ss" className="gap-[0.4rem]">
+              <DatePickerInput mode="single" width="sm" value="2026-02-26" disabled />
             </Gcol>
           </Grow>
         </StoryBox>
@@ -214,6 +224,29 @@ export const Multiple: Story = {
       />
     );
   },
+};
+
+export const Disabled: Story = {
+  args: {
+    mode: 'single',
+    width: 'sm',
+    value: '2026-02-26',
+    disabled: true,
+  },
+  render: (args) => <DatePickerInput {...args} />,
+};
+
+export const DisabledRange: Story = {
+  args: {
+    mode: 'range',
+    width: 'lg',
+    rangeValue: {
+      from: '2026-02-01',
+      to: '2026-02-15',
+    },
+    disabled: true,
+  },
+  render: (args) => <DatePickerInput {...args} />,
 };
 
 export const Error: Story = {

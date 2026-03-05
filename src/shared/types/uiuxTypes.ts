@@ -33,4 +33,5 @@ export type FormItemWidth =
   | 'xl'
   | '2xl'
   | `${number}` // 예: "32" -> 32rem
-  | `${number}rem`; // 예: "32rem"
+  | `${number}rem` // 예: "32rem"
+  | `${number}px`; // 예: "90px"

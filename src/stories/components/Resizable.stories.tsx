@@ -44,11 +44,11 @@ export const Default: Story = {
     <div className="w-240 h-96 border rounded-md p-2">
       <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel defaultSize={30}>
-          <div className="h-full flex items-center justify-center">Left</div>
+          <div className="h-full flex items-center justify-center bg-gray-300">Left</div>
         </ResizablePanel>
-        <ResizableHandle withHandle  className='bg-gray-300' />
+        <ResizableHandle withHandle />
         <ResizablePanel defaultSize={70}>
-          <div className="h-full flex items-center justify-center">Right</div>
+          <div className="h-full flex items-center justify-center bg-gray-300">Right</div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
