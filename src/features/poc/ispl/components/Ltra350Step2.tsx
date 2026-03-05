@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import gridData from '@/mocks/data/ispl/dump/planCovData.json';
-import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/shared/components/uiux';
+import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@/shared/components/uiux';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { InsPlanBasic, InsPlanCov } from '../components/Page3Index';
 import { INITIAL_TABS2 } from '../constants/insPlanBasicData';
@@ -27,12 +27,14 @@ export default function Ltra350Step2() {
             ))}
           </TabsList>
         </div>
-        <TabsContent value={active}>
-          <div className="grid grid-rows-[auto_1fr] gap-[2rem]">
-            <InsPlanBasic />
-            <InsPlanCov data={gridData} selectedPlanId={selectedPlanId} onSelectPlan={handleSelectPlan} />
-          </div>
-        </TabsContent>
+        {visibleTabs.map((tab) => (
+          <TabsPanel key={tab.value} value={tab.value} activeValue={active}>
+            <div className="grid grid-rows-[auto_1fr] gap-[2rem]">
+              <InsPlanBasic />
+              <InsPlanCov data={gridData} selectedPlanId={selectedPlanId} onSelectPlan={handleSelectPlan} />
+            </div>
+          </TabsPanel>
+        ))}
       </Tabs>
     </div>
   );
