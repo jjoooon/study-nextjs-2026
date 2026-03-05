@@ -5,7 +5,15 @@ import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
-const Popover = PopoverPrimitive.Root;
+interface PopoverProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root> {
+  className?: string;
+}
+
+const Popover: React.FC<PopoverProps> = ({ className, children, ...props }) => (
+  <PopoverPrimitive.Root {...props}>
+    {children}
+  </PopoverPrimitive.Root>
+);
 
 const PopoverTrigger = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Trigger>,
@@ -24,6 +32,7 @@ type PopoverMotion = 'fade' | 'scale' | 'none';
 interface PopoverContentProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> {
   motion?: PopoverMotion;
   portalContainer?: HTMLElement | null;
+  classWrap?: string;
 }
 
 const motionClassMap: Record<PopoverMotion, string> = {
@@ -35,7 +44,8 @@ const motionClassMap: Record<PopoverMotion, string> = {
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   PopoverContentProps
->(({ className, align = 'center', sideOffset = 4, motion = 'fade', portalContainer, ...props }, ref) => {
+>((props, ref) => {
+  const { className, classWrap, align = 'center', sideOffset = 4, motion = 'fade', portalContainer, ...rest } = props;
   let motionClass = '';
   if (motion === 'fade') {
     motionClass = motionClassMap.fade;
@@ -54,10 +64,13 @@ const PopoverContent = React.forwardRef<
         style.innerHTML = '[data-radix-popper-content-wrapper]{position:absolute !important;}';
         document.head.appendChild(style);
       }
-      // Optionally remove style on unmount if needed
-      // return () => { document.getElementById(styleId)?.remove(); };
+      // classWrap을 data-radix-popper-content-wrapper에 동적으로 추가
+      const wrapper = portalContainer.querySelector('[data-radix-popper-content-wrapper]');
+      if (wrapper && classWrap) {
+        wrapper.classList.add(...classWrap.split(' '));
+      }
     }
-  }, [portalContainer]);
+  }, [portalContainer, classWrap]);
   return (
     <PopoverPrimitive.Portal {...(portalContainer ? { container: portalContainer } : {})}>
       <PopoverPrimitive.Content
@@ -70,7 +83,7 @@ const PopoverContent = React.forwardRef<
           'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]',
           className
         )}
-        {...props}
+        {...rest}
       />
     </PopoverPrimitive.Portal>
   );

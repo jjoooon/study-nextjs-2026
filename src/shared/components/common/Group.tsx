@@ -39,6 +39,7 @@ interface GroupProps {
   placement?: LayoutPlacement;
   variant?: Variant;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 // 가로 정렬(Row)용 매핑
@@ -102,42 +103,44 @@ const VARIANT_MAP: Record<Variant, string> = {
   'box-line': 'p-2 bg-[#FFF] border border-[var(--color-coolgray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
 };
 
-export const Gcol = ({ children, placement = 'cc', variant = 'default', className }: GroupProps) => {
+export const Gcol = ({ children, placement = 'cc', variant = 'default', className, style }: GroupProps) => {
   return (
     <div
       data-group="col"
       className={cn(
         'flex flex-col relative',
-        VARIANT_MAP[variant], // 매핑 객체 사용
-        COL_PLACEMENT_MAP[placement], // 매핑 객체 사용
+        VARIANT_MAP[variant],
+        COL_PLACEMENT_MAP[placement],
         className
       )}
+      style={style}
     >
       {children}
     </div>
   );
 };
 
-export const Grow = ({ children, placement = 'cc', variant = 'default', className }: GroupProps) => {
+export const Grow = ({ children, placement = 'cc', variant = 'default', className, style }: GroupProps) => {
   return (
     <div
       data-group="row"
       className={cn('flex flex-row relative', VARIANT_MAP[variant], ROW_PLACEMENT_MAP[placement], className)}
+      style={style}
     >
       {children}
     </div>
   );
 };
 
-export const Grid = ({ children, variant = 'default', className }: GroupProps) => {
+export const Grid = ({ children, variant = 'default', className, style }: GroupProps) => {
   return (
-    <div data-group="row" className={cn('grid relative', VARIANT_MAP[variant], className)}>
+    <div data-group="row" className={cn('grid relative', VARIANT_MAP[variant], className)} style={style}>
       {children}
     </div>
   );
 };
 
-export const FormItem = ({ children, placement = 'sc', variant = 'default', className }: GroupProps) => {
+export const FormItem = ({ children, placement = 'sc', variant = 'default', className, style }: GroupProps) => {
   return (
     <div
       data-group="row"
@@ -147,19 +150,21 @@ export const FormItem = ({ children, placement = 'sc', variant = 'default', clas
         ROW_PLACEMENT_MAP[placement],
         className
       )}
+      style={style}
     >
       {children}
     </div>
   );
 };
-export const Separator = ({ children }: GroupProps) => {
-  return <div className="translate-y-[-.2rem]">{children}</div>;
+export const Separator = ({ children, style }: GroupProps) => {
+  return <div className="translate-y-[-.2rem]" style={style}>{children}</div>;
 };
-export const ButtonGroup = ({ children, placement = 'sc', variant = 'default', className }: GroupProps) => {
+export const ButtonGroup = ({ children, placement = 'sc', variant = 'default', className, style }: GroupProps) => {
   return (
     <div
       data-group="row"
       className={cn('relative flex flex-row gap-1', VARIANT_MAP[variant], ROW_PLACEMENT_MAP[placement], className)}
+      style={style}
     >
       {children}
     </div>

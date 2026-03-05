@@ -329,10 +329,20 @@
   max-width: .6rem !important;
   min-width: .6rem !important;
 }
-
+.ag-icon-small-down::before{
+  mask-position:50% 73%;
+}
+.ag-picker-field-display {
+  text-align: right;
+}
 .ag-picker-field-wrapper {
   height: 2.5rem !important;
   min-height: 2.5rem !important;
+  padding:0 0!important;
+}
+:where(.ag-icon):before, .ag-icon{
+  width: 1rem !important;
+  height: 1.4rem !important;
 }
 .ag-pinned-left-cols-container .ag-row.ag-row-highlighted::after {
   border-top-right-radius:0;

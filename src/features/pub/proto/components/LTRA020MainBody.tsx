@@ -12,11 +12,11 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
 import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge, Input} from '@/shared/components/uiux';
 import { AmountUnitInput } from '@/shared/components/features/AmountUnitInput'; 
 
-import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+import type { LTRA020DataType } from '@/features/pub/proto/data/LTRA020Data';
 
 
-interface LTRA350MainBodyProps {
-  data: LTRA350DataType['mainBody'];
+interface LTRA020MainBodyProps {
+  data: LTRA020DataType['mainBody'];
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   hideAside: boolean;
@@ -25,13 +25,13 @@ interface LTRA350MainBodyProps {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export function LTRA350MainBody({
+export function LTRA020MainBody({
   data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan,
   hideAside,
   setHideAside,
-}: LTRA350MainBodyProps) {
+}: LTRA020MainBodyProps) {
   const rowData = data.agGridTable1;
 
   // AmountUnitInput 포커스 이동용 ref 배열
@@ -56,7 +56,7 @@ export function LTRA350MainBody({
   );
 
   // duplicateRenderer를 useCallback으로 메모이제이션
-  const duplicateRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+  const duplicateRenderer = useCallback((params: ICellRendererParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
       <Grow className="w-full h-full flex items-center justify-center">
@@ -132,7 +132,7 @@ export function LTRA350MainBody({
   );
 
   // titleRenderer: productName 셀 커스텀 렌더러
-  const titleRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+  const titleRenderer = useCallback((params: ICellRendererParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
     return (
       <Grow className="h-full pr-1.5" placement='bwc'>
         <div className="border-r border-[var(--color-gray-10)] h-full flex items-center w-[3rem] justify-center">{params.data?.id}</div>
@@ -150,7 +150,7 @@ export function LTRA350MainBody({
   }, []);
 
   // 만기 셀 렌더러를 useCallback으로 메모이제이션하여 불필요한 리렌더링 방지
-  const expiryCellRenderer = useCallback((params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+  const expiryCellRenderer = useCallback((params: ICellRendererParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
     return (
       <div className="flex items-center justify-center gap-1 w-full h-full">
         <span className="block w-[6rem] text-right">{params.value}</span>
@@ -177,7 +177,7 @@ export function LTRA350MainBody({
   };
 
   // 컬럼 정의
-  const columnDefs: ColDef<LTRA350DataType['mainBody']['agGridTable1'][number]>[] = useMemo(
+  const columnDefs: ColDef<LTRA020DataType['mainBody']['agGridTable1'][number]>[] = useMemo(
     () => [
       {
         headerName: '',
@@ -206,7 +206,7 @@ export function LTRA350MainBody({
         filter: false,
         autoHeight: true,
         pinned: 'left',
-        tooltipValueGetter: (params: ITooltipParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+        tooltipValueGetter: (params: ITooltipParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
         },
@@ -222,7 +222,7 @@ export function LTRA350MainBody({
         sortable: false,
         filter: false,
         resizable: false,
-        cellRenderer: (params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+        cellRenderer: (params: ICellRendererParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
           if (!params.value) return null;
           return (
             <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
@@ -242,7 +242,7 @@ export function LTRA350MainBody({
         sortable: false,
         filter: false,
         editable: false,
-        cellRenderer: (params: ICellRendererParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+        cellRenderer: (params: ICellRendererParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
           const rowIndex = params.node?.rowIndex ?? 0;
           // ref 연결
           if (!amountInputRefs.current) amountInputRefs.current = [];
@@ -274,7 +274,7 @@ export function LTRA350MainBody({
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+        valueFormatter: (params: ValueFormatterParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
       },
@@ -286,7 +286,7 @@ export function LTRA350MainBody({
         sortable: false,
         filter: false,
         resizable: false,
-        editable: (params: EditableCallbackParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
+        editable: (params: EditableCallbackParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'], // 원하는 옵션
@@ -301,7 +301,7 @@ export function LTRA350MainBody({
         sortable: false,
         filter: false,
         resizable: false,
-        editable: (params: EditableCallbackParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
+        editable: (params: EditableCallbackParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor', // ag-Grid 내장 select editor 사용
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'], // 원하는 옵션
@@ -316,7 +316,7 @@ export function LTRA350MainBody({
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: (params: ValueFormatterParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+        valueFormatter: (params: ValueFormatterParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
           return params.value ? params.value.toLocaleString() : '';
         },
       },
@@ -328,7 +328,7 @@ export function LTRA350MainBody({
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
-        cellStyle: (params: CellClassParams<LTRA350DataType['mainBody']['agGridTable1'][number]>) => {
+        cellStyle: (params: CellClassParams<LTRA020DataType['mainBody']['agGridTable1'][number]>) => {
           const value = params.value as string;
           if (value === '인수') {
             return { color: '#006FF2' };
@@ -386,7 +386,7 @@ export function LTRA350MainBody({
       </LayoutScrollItem>
       <LayoutScrollItem className="w-full">
         <div className="ag-theme-alpine">
-          <AgGridReact<LTRA350DataType['mainBody']['agGridTable1'][number]>
+          <AgGridReact<LTRA020DataType['mainBody']['agGridTable1'][number]>
             key={gridKey}
             rowData={rowData}
             columnDefs={columnDefs}
