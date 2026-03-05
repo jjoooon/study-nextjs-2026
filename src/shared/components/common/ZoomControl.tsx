@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Grow, Typo } from '@/shared/components/common';
-import { ZoomOutIcon, ZoomInIcon } from '@/shared/components/icons';
-import { Button } from '@/shared/components/uiux';
+import { Grow, Typo } from '@atoms';
+import { ZoomOutIcon, ZoomInIcon } from '@icons';
+import { Button } from '@uiux/Button';
+
 import { setScale } from '@/shared/utils/scale';
 
 export const ZoomControl = () => {

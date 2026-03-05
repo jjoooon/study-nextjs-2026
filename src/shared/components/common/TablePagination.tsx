@@ -1,8 +1,8 @@
 'use client';
 
-import { Grow } from '@/shared/components/common/Group';
-import { Pagination, PaginationContent } from '@/shared/components/uiux';
-import { Button } from '@/shared/components/uiux';
+import { Grow } from '@atoms';
+import { Pagination, PaginationContent } from '@uiux/Pagination';
+import { Button } from '@uiux/Button';
 
 interface TablePaginationProps {
   currentPage: number;

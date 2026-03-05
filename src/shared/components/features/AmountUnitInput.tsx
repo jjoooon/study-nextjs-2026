@@ -1,11 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { Button, Input,
-  Popover, PopoverTrigger, PopoverContent, PopoverAnchor
- } from '@/shared/components/uiux';
-import { Typo, Gcol, Grow, BulletItem } from '@/shared/components/common';
-import { CloseIcon, PlusIcon, MinusIcon } from '@/shared/components/icons';
+
+import { Typo, Gcol, Grow } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor} from '@uiux/Popover';
+import { BulletItem } from '@common/BulletList';
+import { PlusIcon, MinusIcon } from '@icons';
+
 import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
  
 interface AmountUnitInputProps {

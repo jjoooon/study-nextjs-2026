@@ -1,14 +1,18 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Grow, BulletList, BulletListItem, ButtonGroup } from '@/shared/components/common';
-import { HashIcon, PlusIcon } from '@/shared/components/icons';
+import { Grow } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { HashIcon, PlusIcon } from '@icons';
 import { 
   Button, 
+} from '@uiux/Button';
+import { 
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-} from '@/shared/components/uiux';
+} from '@uiux/DropdownMenu';
+
 import { cn } from '@/shared/lib/shadcn/utils';
 
 export const HashList = ({ data }: { data: string[] }) => {
@@ -54,7 +58,7 @@ export const HashList = ({ data }: { data: string[] }) => {
           </BulletList>
         </div>
       </div>
-      <ButtonGroup className="gap-1 shrink-0" placement="ec">
+      <Grow className="shrink-0" placement="ec">
         {showMore && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -89,7 +93,7 @@ export const HashList = ({ data }: { data: string[] }) => {
           <HashIcon />
           편집
         </Button>
-      </ButtonGroup>
+      </Grow>
     </Grow>
   );
 }

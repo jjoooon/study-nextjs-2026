@@ -1,19 +1,25 @@
 'use client';
 
 import React from 'react';
-import { Grow, Typo } from '@/shared/components/common';
-import { ArrowLightIcon, ListIcon } from '@/shared/components/icons';
+
+import { Grow, Typo } from '@atoms';
+import { ArrowLightIcon, ListIcon } from '@icons';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from '@uiux/DropdownMenu';
 import {
   Tabs,
   TabsList,
   TabsContent,
   TabsTrigger,
   TabsLine,
+} from '@uiux/Tabs';
+import {
   Button,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from '@/shared/components/uiux';
+} from '@uiux/Button';
+
 import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
 
 interface TabHeadProps<T extends { error?: boolean }> {

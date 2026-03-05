@@ -1,4 +1,4 @@
-import { SpinnerAIcon } from '@/shared/components/icons';
+import { SpinnerAIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 export const SpinnerA = ({ className }: { className?: string }) => {

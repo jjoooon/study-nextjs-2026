@@ -1,7 +1,12 @@
+"use client";
+
 // datalist + popover 기능의 InputCombo 컴포넌트
 // 기존 Input 컴포넌트 활용
-"use client";
+
 import React, { useRef, useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { Input } from "@uiux/Input";
+
 // 고유 ID 생성을 위한 유틸
 function getRandomId(prefix = "inputcombo-") {
 	return (
@@ -10,10 +15,6 @@ function getRandomId(prefix = "inputcombo-") {
 		Date.now().toString(36)
 	);
 }
-import ReactDOM from "react-dom";
-import { Input } from "@/shared/components/uiux/Input";
-
-
 
 type ComboOption =
 	| string
