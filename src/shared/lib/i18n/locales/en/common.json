@@ -1,0 +1,23 @@
+{
+  "language": "English",
+  "language_select": "Select Language",
+  "korean": "한국어",
+  "english": "English",
+  "japanese": "日本語",
+  "header": {
+    "title": "Hanwha Multi-Language Service",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "settings": "Settings"
+  },
+  "footer": {
+    "copyright": "© 2026 Hanwha. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "messages": {
+    "welcome": "Welcome",
+    "language_changed": "Language has been changed"
+  }
+}

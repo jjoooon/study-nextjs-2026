@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from '@/redux';
+import { initializeI18n } from '@/shared/lib/i18n';
 import log from '@/shared/utils/logger';
 
 const logger = log.getLogger('Global');
@@ -30,6 +31,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
      * @see https://mswjs.io/docs/integrations/browser/
      */
     async function enableMocking() {
+      // ✅ i18n 초기화 (messageUtils 기반으로 전환)
+      try {
+        initializeI18n();
+        logger.debug('[i18n] ✅ Initialized (messageUtils mode)');
+      } catch (error) {
+        logger.error('[i18n] ❌ Failed to initialize:', error);
+      }
+
       // ✅ MSW 비활성화 시 즉시 렌더링 (로딩 상태 제거)
       const mswEnabled = process.env.NEXT_PUBLIC_MSW_ENABLED === 'true';
 
@@ -80,4 +89,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       </Provider>
     );
   }
+
+  return null; // 또는 로딩 스피너 등 원하는 로딩 UI 반환
 }
