@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow} from '@/shared/components/common';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { Gcol, Grow } from '@atoms';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 interface NativeSelectStoryArgs extends React.ComponentProps<typeof NativeSelect> {}
@@ -27,7 +27,7 @@ NativeSelect는 <select> 태그를 기반으로 요소를 스타일링한 컴포
 <br>
 #### **기본 사용법: Usage**
 \`\`\`tsx
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useState } from 'react';
 
 <NativeSelect

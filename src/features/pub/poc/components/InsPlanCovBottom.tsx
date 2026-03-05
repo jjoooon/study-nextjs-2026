@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Grow, Gcol, KeyValueList } from '@/shared/components/common';
-import { ArrowNext } from '@/shared/components/icons';
-import { LayoutControls } from '@/shared/components/layout/Cabinet';
-import { Button, Checkbox } from '@/shared/components/uiux';
+import { Grow, Gcol } from '@atoms';
+import { KeyValueList } from '@common/KeyValueList';
+import { ArrowNext } from '@icons';
+import { LayoutControls } from '@layout/Cabinet';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import { popup } from '@/shared/utils/popup/popupApi';
 import { registerDialog } from '@/shared/utils/popup/popupRegistry';
 

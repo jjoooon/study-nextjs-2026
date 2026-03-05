@@ -1,8 +1,9 @@
 'use client';
 
-import { Gcol, Grow, ButtonGroup, Typo } from '@/shared/components/common';
-import { Button, Checkbox } from '@/shared/components/uiux';
-import { PlusIcon } from '@/shared/components/icons';
+import { Gcol, Grow, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { PlusIcon } from '@icons';
 
 export default function AsideFoot2() {
   return (
@@ -41,7 +42,7 @@ export default function AsideFoot2() {
           </Grow>
         </Grow>
       </Gcol>
-      <ButtonGroup className="[&>button]:flex-1 [&>button]:w-full" placement="bwc">
+      <Grow className="[&>button]:flex-1 [&>button]:w-full" placement="bwc">
         <Button variant="outlined" color="gray" size="lg" className="justify-between!">
           제안서
            <PlusIcon color="var(--color-gray-50)" />
@@ -50,7 +51,7 @@ export default function AsideFoot2() {
           출력
           <PlusIcon color="var(--color-gray-50)" />
         </Button>
-      </ButtonGroup>
+      </Grow>
     </Gcol>
   );
 }

@@ -2,9 +2,14 @@
 
 import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData } from '../types/insPlanBasic';
-import { FormTableLine, FormCell, FormTable, Gcol, Grow, Typo, FormItem } from '@/shared/components/common';
-import { SearchIcon } from '@/shared/components/icons';
-import { TableRow, Input, Button, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+
+import { Gcol, Typo, FormItem, Grow } from '@atoms';
+import { FormCell, FormTable, FormTableLine } from '@common/FormTable';
+import { SearchIcon } from '@icons';
+import { TableRow } from '@uiux/Table';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 interface InsPlanBasicStep1Props {
   currentData: TabData;

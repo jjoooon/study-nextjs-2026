@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, FormTable, FormCell, FormItem, Separator} from '@/shared/components/common';
-import { SearchIcon } from '@/shared/components/icons';
-import { Button, TableRow } from '@/shared/components/uiux';
-import { Input } from '@/shared/components/uiux/Input';
+import { Grow, Gcol, FormItem } from '@atoms';
+import { FormTable, FormCell } from '@common/FormTable';
+import { SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { TableRow } from '@uiux/Table';
+import { Input } from '@uiux/Input';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Input> = {
@@ -521,7 +523,7 @@ export const Form2: Story = {
                 value={planNo1}
                 onChange={(e) => setPlanNo1(e.target.value)}
               />
-              <Separator>-</Separator>
+              -
               <Input
                 type="text"
                 aria-label="설계번호 뒷자리"

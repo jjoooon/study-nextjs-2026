@@ -1,19 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
-import { ArrowIcon } from '@/shared/components/icons';
-import {
-  Badge,
-  Button,
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/shared/components/uiux';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { ArrowIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 const invoices = [
   {

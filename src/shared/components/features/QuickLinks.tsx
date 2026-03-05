@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Gcol, Grow, Typo, Grid } from '@/shared/components/common';
-import { SettingIcon, PlusIcon } from '@/shared/components/icons';
-import { Button } from '@/shared/components/uiux';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { SettingIcon, PlusIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 export function QuickLinks() {
   return (

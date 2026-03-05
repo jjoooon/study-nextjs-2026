@@ -4,21 +4,15 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
-import { Grow, Gcol, FormCell, FormTable, Typo } from '@/shared/components/common';
-import { SearchIcon, ResetIcon } from '@/shared/components/icons';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  Button,
-  TableRow,
-  Input,
-  Checkbox,
-  NativeSelect,
-  NativeSelectOption,
-} from '@/shared/components/uiux';
+import { Grow, Gcol, Typo } from '@atoms';
+import { FormCell, FormTable } from '@common/FormTable';
+import { SearchIcon, ResetIcon } from '@icons';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@uiux/Dialog';
+import { TableRow } from '@uiux/Table';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

@@ -1,8 +1,7 @@
 'use client';
 
-import { Gcol, Typo } from '@/shared/components/common';
-import { ProcessDot } from '@/shared/components/icons';
-import { useState } from 'react';
+import { Gcol, Typo } from '@atoms';
+import { ProcessDot } from '@icons';
 
 export default function PageProcess() {
   return(

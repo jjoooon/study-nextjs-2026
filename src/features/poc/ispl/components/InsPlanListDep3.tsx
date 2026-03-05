@@ -4,8 +4,9 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useEffect } from 'react';
-import { Grow, Typo } from '@/shared/components/common';
-import { Tabs, TabsContent, TabsList, TabsTrigger, Button } from '@/shared/components/uiux';
+import { Grow, Typo } from '@atoms';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@uiux/Tabs';
+import { Button } from '@uiux/Button';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

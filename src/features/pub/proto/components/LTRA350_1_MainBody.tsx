@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { Grow, Typo, FormTableLine, FormCell, FormRow, FormTable, FormItem } from '@/shared/components/common';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
-import { Button, RadioGroup, RadioGroupItem, Separator } from "@/shared/components/uiux"
+import { Grow } from '@atoms';
+import { FormTableLine, FormCell, FormRow, FormTable } from '@common/FormTable';
+import { DatePickerInput } from '@common/DatePicker';
+import { Button } from "@uiux/Button"
+import { RadioGroup, RadioGroupItem } from "@uiux/RadioGroup"
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
 type LTRA350_1_MainBodyProps = {

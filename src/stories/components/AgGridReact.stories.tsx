@@ -15,8 +15,9 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
-import { Badge, Button, Checkbox } from '@/shared/components/uiux';
-import { Grow, Typo } from '@/shared/components/common';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Grow } from '@atoms';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

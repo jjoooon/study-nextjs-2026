@@ -1,10 +1,16 @@
 'use client';
 
-import { BulletList, BulletListItem, Gcol, Grow, Typo, SpinnerA } from '@/shared/components/common';
+import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { SpinnerA } from '@common/Spinner';
+import { CalendarIcon } from '@icons';
+
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
-import { NewPopupIcon, CalendarIcon } from '@/shared/components/icons';
-import { Button, Badge, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/uiux';
-import { LayoutScrollWrap, LayoutScrollItem } from '../layout';
+
+import { Button } from '@uiux/Button';
+import { Badge } from '@uiux/Badge';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+
 import { QuickLinks } from './QuickLinks';
 import Link from "next/link"
 

@@ -1,20 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
-import { Grow, BulletList, BulletListItem } from '@/shared/components/common';
-import { TabHead } from '@/shared/components/common/TabHead';
-import { 
-  Tabs, 
-  TabsList, 
-  TabsTrigger, 
-  TabsContent, 
-  TabsPanel, 
-  TabsLine, 
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger, 
-  Button,
-} from '@/shared/components/uiux';
+import { Grow } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { TabHead } from '@common/TabHead';
+import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@uiux/Tabs';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
+import { Button } from '@uiux/Button';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
@@ -39,7 +31,7 @@ const meta: Meta<typeof Tabs> = {
 <br>
 #### **기본 탭: Usage**
 \`\`\`tsx
-import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from "@/shared/components/uiux";
+import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from "@uiux/Tabs";
 import { useTabs } from "@/shared/hooks/useTabs";
 
 const {
@@ -77,8 +69,9 @@ const {
 <br>
 #### **페이징 탭: Usage**
 \`\`\`tsx
-import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger, Button } from "@/shared/components/uiux";
-import { TabHead } from '@/shared/components/common/TabHead';
+import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from "@uiux/Tabs";
+import { Button } from "@uiux/Button";
+import { TabHead } from '@common/TabHead';
 import { useTabs } from "@/shared/hooks/useTabs";
 
 const {

@@ -1,15 +1,14 @@
 'use client';
 
-import { FormTableLine, FormCell, FormTable, Gcol, Typo, FormItem, Grow } from '@/shared/components/common';
-import { DatePickerInput } from '@/shared/components/common';
-import {
-  TableRow,
-  Button,
-  NativeSelect,
-  NativeSelectOption,
-  RadioGroup,
-  RadioGroupItem,
-} from '@/shared/components/uiux';
+import { Gcol, Typo, FormItem, Grow } from '@atoms';
+import { FormTableLine, FormCell, FormTable } from '@common/FormTable';
+import { DatePickerInput } from '@common/DatePicker';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { TableRow } from '@uiux/Table';
+import { Button } from '@uiux/Button';
+
+
 import { SELECT_OPTIONS, RADIO_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData } from '../types/insPlanBasic';
 

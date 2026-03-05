@@ -5,9 +5,13 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { ButtonGroup, Gcol, Grow, Separator, Typo } from '@/shared/components/common';
-import { AddIcon, ResetIcon, SearchIcon } from '@/shared/components/icons';
-import { Button, Checkbox, Input, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { Gcol, Grow, Typo } from '@atoms';
+import { AddIcon, ResetIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+
 import { findChosungMatchIndices, getHighlightRanges, isChosungQuery } from '@/shared/utils/searchUtils';
 
 // AG Grid 모듈 등록
@@ -291,11 +295,11 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
             <Typo tag="h3" variant="heading-lg">
               가입담보 선택
             </Typo>
-            <ButtonGroup>
+            <Grow>
               <Button color="gray" variant="outlined" size="md">
                 다운로드
               </Button>
-            </ButtonGroup>
+            </Grow>
           </Grow>
 
           <Gcol className="w-full">
@@ -330,7 +334,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                   </Grow>
                   <Grow className="gap-3">
                     <Typo variant="heading-md">분류별 선택</Typo>
-                    <Separator>|</Separator>
+                    |
                     <Grow className="gap-x-4 gap-y-1 flex-wrap" placement="ss">
                       {CategoriesCheckbox.map((category) => (
                         <Checkbox key={category.value} className="whitespace-nowrap">

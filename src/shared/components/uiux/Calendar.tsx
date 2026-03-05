@@ -4,8 +4,8 @@ import { ChevronDownIcon } from 'lucide-react';
 import * as React from 'react';
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 
-import { ArrowIcon } from '@/shared/components/icons';
-import { Button, buttonVariants } from '@/shared/components/uiux';
+import { ArrowIcon } from '@icons';
+import { Button, buttonVariants } from '@uiux/Button';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 function Calendar({

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ErrorMsg } from '@/shared/components/common';
+import { ErrorMsg } from '@common/ErrorMsg';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 

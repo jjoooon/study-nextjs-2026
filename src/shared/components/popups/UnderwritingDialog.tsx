@@ -1,21 +1,11 @@
 'use client';
 
-import { Grow, Gcol, FormCell, FormTable } from '@/shared/components/common';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Button,
-  Input,
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/shared/components/uiux';
+import { FormCell, FormTable } from '@common/FormTable';
+import { Grow, Gcol } from '@atoms';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 // Types
 interface ProductData {

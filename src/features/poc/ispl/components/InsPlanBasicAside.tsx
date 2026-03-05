@@ -1,6 +1,7 @@
-import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
-import { ArrowIcon } from '@/shared/components/icons';
-import { Badge, Button } from '@/shared/components/uiux';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { ArrowIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
 
 export default function InsPlanBasicAside() {
   return (

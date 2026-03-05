@@ -4,8 +4,8 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
-import { Grid, Typo } from '@/shared/components/common';
-import { Button } from '@/shared/components/uiux';
+import { Grid, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

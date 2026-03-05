@@ -2,10 +2,11 @@
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
-import { CheckIcon, CheckboxIcon, Favorite } from '@/shared/components/icons';
+
+import { CheckIcon, CheckboxIcon, Favorite } from '@icons';
+import { Grow } from '@atoms';
 
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow } from '../common';
 
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;

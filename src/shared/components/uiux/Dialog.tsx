@@ -2,7 +2,7 @@
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
-import { CloseDialog } from '@/shared/components/icons';
+import { CloseDialog } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {

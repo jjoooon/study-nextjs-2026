@@ -4,16 +4,19 @@
 import * as React from 'react';
 
 import { useState } from 'react';
-import { ErrorMsg } from '@/shared/components/common';
-import { InputClearIcon } from '@/shared/components/icons';
-import { Button } from '@/shared/components/uiux';
+
+import { ErrorMsg } from '@common/ErrorMsg';
+import { InputClearIcon } from '@icons';
+import { Button } from '@uiux/Button';
+
+import { UIUXsize } from '@/shared/types/uiuxTypes';
+
 import { cn } from '@/shared/lib/shadcn/utils';
-import { FormItemSize, FormItemWidth } from '@/shared/types/uiuxTypes';
 
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'ghost' | 'default';
-  size?: FormItemSize;
-  width?: FormItemWidth;
+  size?: UIUXsize;
+  width?: UIUXsize;
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
@@ -90,8 +93,9 @@ function Input({
   const handleBlur = () => setIsFocused(false);
 
   const withStyle = () => {
-    const widthMap: Record<FormItemWidth, string> = {
+    const widthMap: Record<UIUXsize, string> = {
       full: 'w-full flex-1',
+      auto: 'w-auto',
       max: 'w-max',
       min: 'w-min flex-1',
       '2xs': 'w-[4rem]',

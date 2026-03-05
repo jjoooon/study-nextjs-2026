@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { FormRow, FormTable, FormCell, Gcol, Grow, Grid } from '@/shared/components/common';
-import { Button, Input } from '@/shared/components/uiux';
+import { Gcol, Grow, Grid } from '@atoms';
+import { FormRow, FormTable, FormCell } from '@common/FormTable';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 
 export default function MainFoot() {
   const [amount, setAmount] = useState('0');

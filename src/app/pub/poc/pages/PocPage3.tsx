@@ -3,7 +3,7 @@ import InsPlanCovBottom from '@/features/pub/poc/components/InsPlanCovBottom';
 import Page3Section from '@/features/pub/poc/sections/Page3Section';
 
 import { LayoutDocument, LayoutMain } from '@/shared/components/layout/Cabinet';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 export default function Page() {
   return (

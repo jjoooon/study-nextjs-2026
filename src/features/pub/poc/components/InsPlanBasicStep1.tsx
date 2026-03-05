@@ -1,8 +1,12 @@
 'use client';
 
-import { FormTableLine, FormCell, FormTable, Gcol, Grow, Typo, FormItem } from '@/shared/components/common';
-import { SearchIcon } from '@/shared/components/icons';
-import { TableRow, Input, Button, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+import { Gcol, Grow, Typo, FormItem } from '@atoms';
+import { FormTableLine, FormCell, FormTable } from '@common/FormTable';
+import { SearchIcon } from '@icons';
+import { TableRow } from '@uiux/Table';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData } from '../types/insPlanBasic';
 

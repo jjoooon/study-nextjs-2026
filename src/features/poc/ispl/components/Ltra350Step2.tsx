@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import gridData from '@/mocks/data/ispl/dump/planCovData.json';
-import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@/shared/components/uiux';
+import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@uiux/Tabs';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { InsPlanBasic, InsPlanCov } from '../components/Page3Index';
 import { INITIAL_TABS2 } from '../constants/insPlanBasicData';

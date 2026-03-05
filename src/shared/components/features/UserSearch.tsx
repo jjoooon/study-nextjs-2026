@@ -2,10 +2,15 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { FormCell, FormItem, FormTable, Grow } from '@/shared/components/common';
-import { AddIcon, CalendarIcon, SearchIcon } from '@/shared/components/icons';
-import { LayoutLabel } from '@/shared/components/layout/Cabinet';
-import { Button, Input, NativeSelect, NativeSelectOption, TableRow } from '@/shared/components/uiux';
+import { FormItem, Grow } from '@atoms';
+import { FormCell, FormTable } from '@common/FormTable';
+import { AddIcon, CalendarIcon, SearchIcon } from '@icons';
+import { LayoutLabel } from '@layout/Cabinet';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { TableRow } from '@uiux/Table';
+
 import log from '@/shared/utils/logger';
 import { popup } from '@/shared/utils/popup/popupApi';
 import { registerDialog } from '@/shared/utils/popup/popupRegistry';

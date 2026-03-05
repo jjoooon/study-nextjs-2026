@@ -3,7 +3,7 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { ErrorMsg } from '@/shared/components/common';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 // RadioGroup Context to pass error state to RadioGroupItems

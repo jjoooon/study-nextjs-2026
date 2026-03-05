@@ -1,7 +1,8 @@
 'use client';
 
-import { FormCell, FormTable } from '@/shared/components/common';
-import { TableRow, RadioGroup, RadioGroupItem } from '@/shared/components/uiux';
+import { FormCell, FormTable } from '@common/FormTable';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { TableRow } from '@uiux/Table';
 
 interface InsPlanSetProps {
   selectedCategory: string;

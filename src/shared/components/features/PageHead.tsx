@@ -1,23 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Gcol,
-  Grow,
-  Typo,
-  ZoomControl,
-  BulletList,
-  BulletListItem,
-  FormTable,
-  FormRow,
-  FormCell,
-  Separator,
-  FormItem,
-  ViewMode,
-  InputCombo,
-} from '@/shared/components/common';
-import { CloseIcon, SearchIcon, MemoIcon } from '@/shared/components/icons';
-import { Input, Button, NativeSelect, NativeSelectOption } from '@/shared/components/uiux';
+
+import { Gcol, Grow, Typo, FormItem } from '@atoms';
+import { ZoomControl } from '@common/ZoomControl';
+import { FormTable, FormRow, FormCell,} from '@common/FormTable';
+import { ViewMode } from '@common/ViewMode';
+import { InputCombo } from '@common/InputCombo';
+import { CloseIcon, SearchIcon, MemoIcon } from '@icons';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
 export default function PageHead({ data }: { data: LTRA350DataType['pageHead'] }) {

@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Typo, Gcol, Grow } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor} from '@uiux/Popover';
+import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { BulletItem } from '@common/BulletList';
 import { PlusIcon, MinusIcon } from '@icons';
 

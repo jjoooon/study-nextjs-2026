@@ -1,20 +1,15 @@
 'use client';
 
-import { FormCell, FormTable, Gcol, Typo, FormItem, Grow, ButtonGroup } from '@/shared/components/common';
-import { DatePickerInput } from '@/shared/components/common';
+import { Gcol, Typo, FormItem, Grow, ButtonGroup } from '@atoms';
+import { FormCell, FormTable } from '@common/FormTable';
+import { DatePickerInput } from '@common/DatePicker';
 import { SearchIcon } from '@/shared/components/icons';
-import {
-  Tabs,
-  TabsLine,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  TableRow,
-  Input,
-  Button,
-  NativeSelect,
-  NativeSelectOption,
-} from '@/shared/components/uiux';
+import { Tabs, TabsLine, TabsContent, TabsList, TabsTrigger } from '@uiux/Tabs';
+import { TableRow } from '@uiux/Table';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+
 import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData, InsuredData } from '../types/insPlanBasic';
 

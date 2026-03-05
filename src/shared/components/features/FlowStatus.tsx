@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowSide, ArrowSideBg } from '@/shared/components/icons';
-import { LayoutFlow } from '@/shared/components/layout/Cabinet';
-import { Toggle } from '@/shared/components/uiux';
+import { ArrowSide, ArrowSideBg } from '@icons';
+import { LayoutFlow } from '@layout/Cabinet';
+import { Toggle } from '@uiux/Toggle';
 
 interface FlowStatusProps {
   onToggleChange?: (pressed: boolean) => void;

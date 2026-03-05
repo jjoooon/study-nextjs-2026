@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import { ErrorMsg } from '@/shared/components/common';
-import { SelectArrowIcon } from '@/shared/components/icons';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { SelectArrowIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { FormItemSize, FormItemWidth } from '@/shared/types/uiuxTypes';
+import { UIUXsize } from '@/shared/types/uiuxTypes';
 
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
   variant?: 'default';
-  size?: FormItemSize;
-  width?: FormItemWidth;
+  size?: UIUXsize;
+  width?: UIUXsize;
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
@@ -29,9 +29,11 @@ function NativeSelect({
   ...props
 }: UINativeSelectProps) {
   const withStyle = () => {
-    const widthMap: Record<FormItemWidth, string> = {
+    const widthMap: Record<UIUXsize, string> = {
       full: 'w-full flex-1',
+      auto: 'w-auto',
       max: 'w-max',
+      min: 'w-min',
       '2xs': 'w-[4rem]',
       xs: 'w-[8rem]',
       sm: 'w-[10rem]',

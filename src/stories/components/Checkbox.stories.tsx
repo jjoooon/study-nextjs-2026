@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, FormTable, FormCell, FormItem} from '@/shared/components/common';
-import { TableRow } from '@/shared/components/uiux';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Grow, Gcol, FormItem} from '@atoms';
+import { FormTable, FormCell} from '@common/FormTable';
+import { TableRow } from '@uiux/Table';
+import { Checkbox } from '@uiux/Checkbox';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 import { useState } from 'react';
 

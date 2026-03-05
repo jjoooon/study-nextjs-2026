@@ -16,8 +16,8 @@ import {
   LayoutAsideHead,
   LayoutAsideBody,
   LayoutAsideFoot,
-} from '@/shared/components/layout';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux';
+} from '@layout/BaseLayout';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 interface Props {
   pageHead: React.ReactNode;

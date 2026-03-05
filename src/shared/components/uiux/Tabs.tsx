@@ -3,7 +3,7 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { CloseIcon } from '@/shared/components/icons';
+import { CloseIcon } from '@icons';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 

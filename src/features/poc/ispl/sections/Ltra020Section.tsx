@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@/shared/components/uiux';
+import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@uiux/Tabs';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { InsPlanList, InsPlanSet } from '../components/Page1Index';
 

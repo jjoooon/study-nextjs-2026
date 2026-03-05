@@ -26,11 +26,13 @@
       "@/*": ["./src/*"],
       "@/features/*": ["./src/features/*"],
       "@/shared/*": ["./src/shared/*"],
-      "@atoms": ["./src/shared/components/atoms/index.ts"],
+      
       "@uiux/*": ["./src/shared/components/uiux/*"],
       "@common/*": ["./src/shared/components/common/*"],
       "@features/*": ["./src/shared/components/features/*"],
       "@layout/*": ["./src/shared/components/layout/*"],
+
+      "@atoms": ["./src/shared/components/atoms/index.ts"],
       "@icons": ["./src/shared/components/icons/index.ts"]
     }
   },

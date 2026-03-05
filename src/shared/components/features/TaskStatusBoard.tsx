@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { Gcol, Grow, Grid, Typo } from '@/shared/components/common';
-import { Button } from '@/shared/components/uiux';
-import { CheckIcon, ExMarkIcon } from '@/shared/components/icons';
+
+import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { CheckIcon, ExMarkIcon } from '@icons';
+
 import { cn } from '@/shared/lib/shadcn/utils';
 
 interface TaskStatusBoardProps {

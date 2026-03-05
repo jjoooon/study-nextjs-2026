@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { ConfirmDialog } from '@/shared/components/common';
-import { Button } from '@/shared/components/uiux';
+import { ConfirmDialog } from '@common/ConfirmDialog';
+import { Button } from '@uiux/Button';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 type ConfirmDialogStoryProps = React.ComponentProps<typeof ConfirmDialog>;
@@ -28,8 +28,8 @@ ConfirmDialog는 AlertDialog를 기반으로 확인/취소 흐름을 단순화�
 <br>
 #### **기본 ConfirmDialog: Usage**
 \`\`\`tsx
-import { ConfirmDialog } from '@/shared/components/common';
-import { Button } from '@/shared/components/uiux';
+import { ConfirmDialog } from '@common/ConfirmDialog';
+import { Button } from '@uiux/Button';
 
 <ConfirmDialog
   title="정말 삭제하시겠습니까?"
