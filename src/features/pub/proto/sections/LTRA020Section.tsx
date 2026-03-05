@@ -1,33 +1,33 @@
 'use client';
 
 import { useState } from 'react';
-import { LayoutTemplateB } from '@/shared/components/layout/LayoutTemplate';
+import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
 
 import PageHead from '@/shared/components/features/PageHead';
 import PageProcess from '@/shared/components/features/PageProcess';
 import AsideBody from '@/shared/components/features/AsideBody';
-import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
+import { LTRA020MainHead, LTRA020MainBody } from '../components/index_LTRA020';
 import AsideFoot from '@/shared/components/features/AsideFoot';
 import MainFoot from '@/shared/components/features/MainFoot';
 import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 
 
-import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LTRA020_DATA } from '@/features/pub/proto/data/LTRA020Data';
 
-export default function LTRA350BSection() {
+export default function LTRA020Section() {
   const [hideAside, setHideAside] = useState(false);
-  const data = DUMMY_LTRA350_DATA;
+  const data = DUMMY_LTRA020_DATA;
  
   return (
-    <LayoutTemplateB
+    <LayoutTemplateA
       pageHead={<PageHead data={data.pageHead} />}
       pageProcess={<PageProcess />}
 
       mainHead={
-        <LTRA350MainHead data={data.mainHead}/>
+        <LTRA020MainHead data={data.mainHead}/>
       }
       mainBody={
-        <LTRA350MainBody
+        <LTRA020MainBody
           data={data.mainBody}
           hideAside={hideAside}
           setHideAside={setHideAside}
