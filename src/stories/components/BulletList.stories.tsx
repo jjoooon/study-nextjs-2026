@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow} from '@/shared/components/common';
+import { Gcol, Grow } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 type BulletListStoryProps = React.ComponentProps<typeof BulletList> & {
   type?: React.ComponentProps<typeof BulletListItem>['type'];
@@ -188,8 +188,6 @@ export const Types: Story = {
       <div className="flex flex-col gap-3">
         <BulletList className="gap-[0.2rem]">
           <BulletListItem type="dot">dot bullet</BulletListItem>
-          <BulletListItem type="dash">dash bullet</BulletListItem>
-          <BulletListItem type="square">square bullet</BulletListItem>
           <BulletListItem type="ref">ref bullet</BulletListItem>
         </BulletList>
         <BulletList position="row" className="gap-2">

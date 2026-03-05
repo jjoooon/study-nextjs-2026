@@ -1,66 +1,101 @@
+/**
+ * Badge Component
+ * 
+ * @description
+ * 상태, 카테고리, 중요 정보를 시각적으로 표시하는 작은 라벨 컴포넌트
+ * 
+ * @features
+ * - 4가지 스타일 변형: contained, soft, outlined, ghost
+ * - 3가지 색상 옵션: blue, red, green
+ * - 3가지 크기 옵션: sm, md, lg
+ * - asChild prop을 통한 다형성 지원 (Radix UI Slot 활용)
+ * 
+ * @example
+ * // 기본 사용
+ * <Badge variant="contained" color="red" size="md">D-31</Badge>
+ * 
+ * // Soft 스타일 (배경 + 테두리)
+ * <Badge variant="soft" color="blue">진행중</Badge>
+ * 
+ * // Link로 사용
+ * <Badge asChild>
+ *   <Link href="/status">상태 확인</Link>
+ * </Badge>
+ * 
+ * @version 1.0.0
+ * @since 2026-03-05
+ * @lastModified 2026-03-05
+ */
+
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center justify-center rounded-[0.3rem] border-transparent px-1 w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden leading-none',
+  'inline-flex items-center justify-center rounded-[0.3rem] px-1 w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden leading-none',
   {
     variants: {
       variant: {
-        default: 'bg-[#f4f4f4] text-[#7f7f7f]',
-        secondary: 'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90',
-        destructive:
-          'bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
-        outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
-        success: 'bg-green-500 text-white [a&]:hover:bg-green-600',
-        warning: 'bg-yellow-500 text-white [a&]:hover:bg-yellow-600',
+        contained: '',
+        soft: 'border',
+        outlined: 'border bg-transparent',
+        ghost: '',
       },
       size: {
-        lg: 'h-[2.4rem] text-[1.4rem] px-2 [&>svg]:size-[1.4rem] pt-[0.2rem]',
-        md: 'h-[2rem] text-[1.2rem] px-1.5 [&>svg]:size-[1.2rem] pt-[0.2rem]',
+        lg: 'h-[2.4rem] text-[1.4rem] font-bold px-2 [&>svg]:size-[1.4rem] pt-[0.1rem]',
+        md: 'h-[2rem] text-[1.2rem] font-bold px-1.5 [&>svg]:size-[1.2rem]',
         sm: 'h-[1.5rem] text-[1.1rem] font-bold px-[0.2rem] pt-[0.1rem]',
       },
+      color: {
+        blue: '',
+        red: '',
+        green: '',
+      },
     },
+    compoundVariants: [
+      // Contained + Colors
+      { variant: 'contained', color: 'blue', class: 'bg-[var(--color-information-10)] text-[var(--color-information-50)]' },
+      { variant: 'contained', color: 'red', class: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]' },
+      { variant: 'contained', color: 'green', class: 'bg-[var(--color-success-10)] text-[var(--color-success-50)]' },
+      // Soft + Colors
+      { variant: 'soft', color: 'blue', class: 'bg-[var(--color-information-10)] border-[var(--color-information-50)] text-[var(--color-information-50)]' },
+      { variant: 'soft', color: 'red', class: 'bg-[var(--color-danger-10)] border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
+      { variant: 'soft', color: 'green', class: 'bg-[var(--color-success-10)] border-[var(--color-success-50)] text-[var(--color-success-50)]' },
+      // Outlined + Colors
+      { variant: 'outlined', color: 'blue', class: 'border-[var(--color-information-50)] text-[var(--color-information-50)]' },
+      { variant: 'outlined', color: 'red', class: 'border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
+      { variant: 'outlined', color: 'green', class: 'border-[var(--color-success-50)] text-[var(--color-success-50)]' },
+      // Ghost + Colors
+      { variant: 'ghost', color: 'blue', class: 'text-[var(--color-information-50)]' },
+      { variant: 'ghost', color: 'red', class: 'text-[var(--color-danger-50)]' },
+      { variant: 'ghost', color: 'green', class: 'text-[var(--color-success-50)]' },
+    ],
     defaultVariants: {
-      variant: 'default',
+      variant: 'contained',
       size: 'md',
+      color: 'red',
     },
   }
 );
 
-const colorMap: Record<string, { bg: string; text: string }> = {
-  blue: { bg: 'bg-[var(--color-information-10)]', text: 'text-[var(--color-information-50)]' },
-  red: { bg: 'bg-[var(--color-danger-10)]', text: 'text-[var(--color-danger-50)]' },
-  green: { bg: 'bg-[var(--color-success-10)]', text: 'text-[var(--color-success-50)]' },
-  orange: { bg: 'bg-[var(--color-primary-10)]', text: 'text-[var(--color-primary-50)]' },
-};
-
-
-type BadgeSize = 'lg' | 'md' | 'sm';
-
 function Badge({
   className,
-  variant,
+  variant = 'contained',
   size = 'md',
+  color = 'red',
   asChild = false,
-  color,
   ...props
 }: React.ComponentProps<'span'> &
   VariantProps<typeof badgeVariants> & {
     asChild?: boolean;
-    color?: 'blue' | 'yellow' | 'red' | 'green' | 'black' | 'orange' | 'purple' | 'gray';
-    size?: BadgeSize;
   }) {
   const Comp = asChild ? Slot : 'span';
-
-  const colorClass = color && colorMap[color] ? `${colorMap[color].bg} ${colorMap[color].text}` : '';
 
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant, size }), colorClass, className)}
+      className={cn(badgeVariants({ variant, size, color }), className)}
       {...props}
     />
   );

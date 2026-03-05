@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
+import { Button } from '@uiux/Button';
 import {
-  Button,
   Table,
   TableBody,
   TableCaption,
@@ -10,8 +11,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/components/uiux';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+} from '@uiux/Table';
+import { Checkbox } from '@uiux/Checkbox';
 
 // Types
 interface DataBaseTableRow {

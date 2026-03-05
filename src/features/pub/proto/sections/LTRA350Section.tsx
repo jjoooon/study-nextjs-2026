@@ -1,16 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { LayoutTemplateA } from '@/shared/components/layout/LayoutTemplate';
 
-import PageHead from '@/shared/components/features/PageHead';
-import PageProcess from '@/shared/components/features/PageProcess';
-import AsideBody from '@/shared/components/features/AsideBody';
+// components - layout
+import { LayoutTemplateA } from '@layout/LayoutTemplate';
+// components - features
+import PageHead from '@features/PageHead';
+import PageProcess from '@features/PageProcess';
+import AsideBody from '@features/AsideBody';
+import AsideFoot from '@features/AsideFoot';
+import MainFoot from '@features/MainFoot';
+import TaskStatusBoard from '@features/TaskStatusBoard';
+
+// LTRA350 - components
 import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
-import AsideFoot from '@/shared/components/features/AsideFoot';
-import MainFoot from '@/shared/components/features/MainFoot';
-import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
-
 
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 

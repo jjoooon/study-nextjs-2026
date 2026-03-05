@@ -1,19 +1,25 @@
 'use client';
 
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams, GridApi, ITooltipParams, ValueFormatterParams, EditableCallbackParams, ValueParserParams, CellClassParams } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams, ITooltipParams, ValueFormatterParams, EditableCallbackParams, CellClassParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useCallback, useRef, useEffect } from 'react';
-// DropdownMenu 임시 import (실제 경로에 맞게 수정 필요)
-// import { DropdownMenu } from '@/shared/components/uiux';
-import { Grow, Typo, Grid } from '@/shared/components/common';
-import { SizeIcon, PlusIcon, SelectArrowIcon, SearchIcon } from '@/shared/components/icons';
-import { LayoutScrollWrap, LayoutScrollItem } from '@/shared/components/layout';
-import { Button, Checkbox, NativeSelect, NativeSelectOption, Badge, Input} from '@/shared/components/uiux';
-import { AmountUnitInput } from '@/shared/components/features/AmountUnitInput'; 
+import { useMemo, useState, useCallback, useRef } from 'react';
 
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 
+// components - atoms
+import { Grow, Typo } from '@atoms';
+// components - icons
+import { SizeIcon, PlusIcon, SelectArrowIcon, SearchIcon } from '@icons';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+// components - uiux
+import { Button } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Checkbox } from '@uiux/Checkbox';
+import { Badge } from '@uiux/Badge';
+import { Input } from '@uiux/Input';
+// components - features
+import { AmountUnitInput } from '@features/AmountUnitInput'; 
 
 interface LTRA350MainBodyProps {
   data: LTRA350DataType['mainBody'];

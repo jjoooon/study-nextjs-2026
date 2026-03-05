@@ -2,12 +2,14 @@
 
 import * as React from 'react';
 import { type DateRange } from 'react-day-picker';
-import { Separator, ErrorMsg } from '@/shared/components/common';
 
-import { CalendarIcon } from '@/shared/components/icons';
-import { Calendar, Button, Popover, PopoverContent, PopoverTrigger } from '@/shared/components/uiux';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { CalendarIcon } from '@icons';
+import { Calendar } from '@uiux/Calendar';
+import { Button } from '@uiux/Button';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
-import { FormItemSize, FormItemWidth } from '@/shared/types/uiuxTypes';
+import { FormItemSize, FormItemWidth, UIUXsize, UIUXposition } from '@/shared/types/uiuxTypes';
 
 type CalendarSelection = Date | Date[] | DateRange | undefined;
 
@@ -409,7 +411,7 @@ export function DatePickerInput({
             data-width={width}
             ref={fromInputRef}
           />
-          <Separator>-</Separator>
+          -
           <input
             type="tel"
             value={rangeInput.to}

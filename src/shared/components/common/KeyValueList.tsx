@@ -1,7 +1,8 @@
+import { Grow, Typo } from "@atoms";
+
 interface KeyValueItem {
-  key: string;
-  className?: string;
-  value: string | number;
+  key: React.ReactNode;
+  value: React.ReactNode;
 }
 
 interface KeyValueListProps {
@@ -24,3 +25,22 @@ export const KeyValueList = ({ data, className }: KeyValueListProps) => {
     </ul>
   );
 };
+
+interface KeyValueItemProps {
+  label: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export const KeyValueItem = ({ 
+  label, 
+  children, 
+  className 
+}: KeyValueItemProps) => {
+  return (
+    <Grow gap="1" className={className}>
+      <Typo tag="div">{label}</Typo>
+      <div>{children}</div>
+    </Grow>
+  );
+}

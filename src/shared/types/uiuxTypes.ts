@@ -23,6 +23,7 @@ export type FormItemSize = 'lg' | 'sm';
  */
 export type FormItemWidth =
   | 'full'
+  | 'auto'
   | 'max'
   | 'min'
   | '2xs'
@@ -35,3 +36,103 @@ export type FormItemWidth =
   | `${number}` // 예: "32" -> 32rem
   | `${number}rem` // 예: "32rem"
   | `${number}px`; // 예: "90px"
+
+
+
+export type UIUXvariant =
+  | 'contained'
+  | 'soft'
+  | 'outlined'
+  | 'ghost'
+  | 'none'; 
+
+export type UIUXcolor =
+  | 'primary'
+  | 'secondary'
+
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'info'
+  | 'link'
+
+  | 'gray'
+  | 'gray-light'
+  | 'gray-cool'
+
+  | 'blue'
+  | 'red'
+  | 'green'
+  | 'yellow'
+  | 'purple'
+  | 'black'
+
+  | 'none'; 
+
+export type UIUXsize =
+  | 'full'
+  | 'auto'
+  | 'max'
+  | 'min'
+  | '2xs'
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | `${number}` // 예: "32" -> 32rem
+  | `${number}rem` // 예: "32rem"
+  | `${number}px` // 예: "90px"
+  | `${number}%`; // 예: "90%"
+
+export type UIUXposition =
+  | 't'
+  | 'm'
+  | 'b'
+
+  | 's'
+  | 'c'
+  | 'e'
+
+  | 'ss'
+  | 'sc'
+  | 'se'
+  | 'cs'
+  | 'cc'
+  | 'ce'
+  | 'es'
+  | 'ec'
+  | 'ee'
+
+  | 'ts'
+  | 'tc'
+  | 'te'
+  | 'ms'
+  | 'mc'
+  | 'me'
+  | 'bs'
+  | 'bc'
+  | 'be'
+
+  | 'st'
+  | 'sm'
+  | 'se'
+  | 'ct'
+  | 'cm'
+  | 'cb'
+  | 'et'
+  | 'em'
+  | 'eb'
+
+  | 'bws' //justify-between items-start
+  | 'bwc' //justify-between items-center
+  | 'bwe' //justify-between items-end
+  | 'ars' //justify-around items-start
+  | 'arc' //justify-around items-center
+  | 'are' //justify-around items-end
+  | 'evs' //justify-evenly items-start
+  | 'evc' //justify-evenly items-center
+  | 'eve'; //justify-evenly items-end
+
+

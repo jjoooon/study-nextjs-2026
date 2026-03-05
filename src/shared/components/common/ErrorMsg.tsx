@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Typo } from '@/shared/components/common';
+import { Typo } from '@atoms';
 import { cn } from '@/shared/lib/shadcn/utils';
 import log from '@/shared/utils/logger';
 

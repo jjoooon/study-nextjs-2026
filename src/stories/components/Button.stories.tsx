@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SearchIcon } from '@/shared/components/icons';
-import { Button } from '@/shared/components/uiux/Button';
-import { Gcol, Grow, Typo } from '@/shared/components/common';
+import { SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Gcol, Grow, Typo } from '@atoms';
 import Link from "next/link"
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 

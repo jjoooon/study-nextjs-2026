@@ -1,26 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  Grow, 
-  Gcol, 
-  FormItem,
-  BulletList, 
-  BulletListItem, 
-  ButtonGroup, 
-  ErrorMsg, 
-  HashList 
-} from '@/shared/components/common';
-import { TabHead } from '@/shared/components/common/TabHead';
-import { PaperIcon, SearchIcon, ResetIcon, PlusIcon, HashIcon } from '@/shared/components/icons';
-import { 
-  Button, 
-  Checkbox, 
-  Input, 
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger 
-} from '@/shared/components/uiux';
+
+// components - atoms
+import { Grow, Gcol, ButtonGroup } from '@atoms';
+// components - icons
+import { PaperIcon, ResetIcon } from '@icons';
+// components - common
+import { ErrorMsg } from '@common/ErrorMsg';
+import { HashList } from '@common/HashList';
+import { TabHead } from '@common/TabHead';
+import { BulletList, BulletListItem } from '@common/BulletList';
+// components - uiux
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -30,7 +24,6 @@ interface LTRA350MainHeadProps {
 }
 
 export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
-  const [coverageName, setCoverageName] = useState('');
   const stringifiedData = data.tabList.map(item => ({
     ...item,
     value: String(item.value),

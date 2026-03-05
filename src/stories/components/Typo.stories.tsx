@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@/shared/components/common';
+import { Gcol, Grow, Typo } from '@atoms';
+import { KeyValueItem } from '@common/KeyValueList';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
+import { Badge } from '@uiux/Badge';
 
 const VARIANT_OPTIONS = [
   'heading-lg',
@@ -23,7 +25,7 @@ const COLOR_OPTIONS = ['default', 'gray-light', 'gray', 'danger', 'primary', 'se
 const TAG_OPTIONS = ['span', 'p', 'div', 'strong', 'label', 'h1', 'h2', 'h3'] as const;
 
 const meta: Meta<typeof Typo> = {
-  title: 'Components/Common/Typo',
+  title: 'Components/Atoms/Typo',
   component: Typo,
   tags: ['autodocs'],
   parameters: {
@@ -39,7 +41,7 @@ variant, weight, color, tag 조합으로 제목/본문/버튼/금액 텍스트�
 <br>
 #### **Typo: Usage**
 \`\`\`tsx
-import { Typo } from '@/shared/components/common';
+import { Typo } from '@atoms';
 
 <Typo
   tag={"span"}
@@ -85,7 +87,7 @@ import { Typo } from '@/shared/components/common';
       },
     },
     tag: {
-      control: 'select',
+      control: 'text',
       description: '렌더링 HTML 태그',
       table: {
         category: 'Semantic',
@@ -103,7 +105,7 @@ import { Typo } from '@/shared/components/common';
     variant: 'body-md',
     weight: 'normal',
     color: 'default',
-    children: 'Typo Sample Text',
+    children: '샘플용 Typography 0123',
   },
 };
 
@@ -113,13 +115,17 @@ type Story = StoryObj<typeof Typo>;
 export const Default: Story = {
   render: (args) => {
     return (
-      <StoryWrap>
-        <StoryBox className="w-2xl">
-          <Grow placement="sc">
-            <Typo {...args}>{args.children}</Typo>
+      <>
+        <Typo {...args}>{args.children}</Typo>
+        
+        <KeyValueItem label="상령일">
+          <Grow gap="1">
+            <Typo weight="bold">2026-03-09</Typo>
+            <Badge size="sm" variant="ghost" color="blue">Y</Badge>
           </Grow>
-        </StoryBox>
-      </StoryWrap>
+        </KeyValueItem>
+      </>
+      
     );
   },
 };
@@ -127,20 +133,18 @@ export const Default: Story = {
 export const VariantGuide: Story = {
   render: () => {
     return (
-      <StoryWrap>
-        <StoryBox className="w-240">
-          <Gcol className="gap-[0.8rem]">
-            {VARIANT_OPTIONS.map((variant) => (
-              <Grow key={variant} placement="bwc" className="justify-between border-b border-[#E5E5E5] pb-[0.4rem] gap-[2rem]">
-                <Typo variant="body-sm" color="gray">
-                  {variant}
-                </Typo>
-                <Typo variant={variant}>샘플 텍스트 Sample Text 123</Typo>
-              </Grow>
-            ))}
-          </Gcol>
-        </StoryBox>
-      </StoryWrap>
+      <Gcol gap="4">
+        {VARIANT_OPTIONS.map((variant) => (
+          <Grow key={variant} placement="bwc" className="justify-between border-b border-[#E5E5E5] pb-[0.4rem] gap-[2rem]">
+            <Typo variant="body-sm" color="gray">
+              {variant}
+            </Typo>
+            <Typo variant={variant}>
+              {variant === 'amount-md' || variant === 'amount-xs' ? '123,456' : '샘플 텍스트 Sample Text 123'}
+            </Typo>
+          </Grow>
+        ))}
+      </Gcol>
     );
   },
 };

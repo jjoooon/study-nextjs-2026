@@ -16,8 +16,7 @@
 
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import * as React from 'react';
-import { ChevronDownIcon } from '@/shared/components/icons';
-
+import { ChevronDownIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 type AccordionStyle = 'default' | 'box' | 'line' | 'minimal';
