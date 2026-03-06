@@ -20,7 +20,8 @@ import {
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 interface Props {
-  pageHead: React.ReactNode;
+  pageID: React.ReactNode;
+  pageTitle: React.ReactNode;
   mainHead: React.ReactNode;
   mainBody: React.ReactNode;
   mainFoot: React.ReactNode;
@@ -32,7 +33,8 @@ interface Props {
 }
 
 export const LayoutTemplateA = ({
-  pageHead,
+  pageID,
+  pageTitle,
   mainHead,
   asideHead,
   mainBody,
@@ -43,36 +45,31 @@ export const LayoutTemplateA = ({
   hideAside = false,
 }: Props) => (
   <>
-    <LayoutHead>{pageHead}</LayoutHead>
-    <LayoutBody>
+    <LayoutHead>
+      {pageID}
+      {pageTitle}
+    </LayoutHead>
+    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
-      <LayoutFolder>
-        <LayoutFolderHead className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
-          <LayoutMainHead>{mainHead}</LayoutMainHead>
-          <LayoutAsideHead>{asideHead}</LayoutAsideHead>
-        </LayoutFolderHead>
-        <LayoutFolderBody className="grid grid-cols-[1fr_auto] gap-[1rem]">
-          <LayoutMain>
-            <LayoutMainBody>{mainBody}</LayoutMainBody>
-          </LayoutMain>
-          {!hideAside && (
-          <LayoutAside>
-            <LayoutAsideBody>{asideBody}</LayoutAsideBody>
-          </LayoutAside>
-          )}
-        </LayoutFolderBody>
-        <LayoutFolderFoot className="grid grid-cols-[1fr_19.8rem] gap-[1rem]">
-          <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
-          <LayoutAsideFoot className={hideAside ? 'hide-aside' : ''}>{asideFoot}</LayoutAsideFoot>
-        </LayoutFolderFoot>
-      </LayoutFolder>
+      <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
+        <LayoutMainHead>{mainHead}</LayoutMainHead>
+        <LayoutMainBody>{mainBody}</LayoutMainBody>
+        <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
+      </LayoutMain>
+      {!hideAside && (
+      <LayoutAside className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
+        <LayoutAsideHead>{asideHead}</LayoutAsideHead>
+        <LayoutAsideBody>{asideBody}</LayoutAsideBody>
+        <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
+      </LayoutAside>
+      )}
     </LayoutBody>
   </>
 );
 
 
 export const LayoutTemplateB = ({
-  pageHead,
+  pageID,
   mainHead,
   asideHead,
   mainBody,
@@ -82,7 +79,7 @@ export const LayoutTemplateB = ({
   pageProcess,
 }: Props) => (
   <>
-    <LayoutHead>{pageHead}</LayoutHead>
+    <LayoutHead>{pageID}</LayoutHead>
     <LayoutBody>
       <LayoutProcess>{pageProcess}</LayoutProcess>
       <LayoutFolder className="grid-rows-[1fr] grid-cols-[1fr_auto] gap-3">

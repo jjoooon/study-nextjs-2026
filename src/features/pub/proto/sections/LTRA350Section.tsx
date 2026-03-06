@@ -5,7 +5,8 @@ import { useState } from 'react';
 // components - layout
 import { LayoutTemplateA } from '@layout/LayoutTemplate';
 // components - features
-import PageHead from '@features/PageHead';
+import PageID from '@features/PageID';
+import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
 import PageProcess from '@features/PageProcess';
 import AsideBody from '@features/AsideBody';
 import AsideFoot from '@features/AsideFoot';
@@ -23,7 +24,9 @@ export default function LTRA350Section() {
  
   return (
     <LayoutTemplateA
-      pageHead={<PageHead data={data.pageHead} />}
+      pageID={<PageID data={data.pageID} />}
+      pageTitle={<PageTitle data={data.pageTitle} />}
+
       pageProcess={<PageProcess />}
 
       mainHead={

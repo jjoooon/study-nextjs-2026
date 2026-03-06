@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { LayoutTemplateB } from '@/shared/components/layout/LayoutTemplate';
 
-import PageHead from '@/shared/components/features/PageHead';
+import PageID from '@/shared/components/features/PageID';
 import PageProcess from '@/shared/components/features/PageProcess';
 import AsideBody from '@/shared/components/features/AsideBody';
 import { LTRA350_1_MainBody } from '../components/index_LTRA350';
@@ -19,7 +19,7 @@ export default function LTRA350_Section() {
  
   return (
     <LayoutTemplateB
-      pageHead={<PageHead data={data.pageHead} />}
+      pageID={<PageID data={data.pageID} />}
       pageProcess={<PageProcess />}
 
       mainBody={

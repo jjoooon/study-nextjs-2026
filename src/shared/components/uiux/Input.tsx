@@ -21,7 +21,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   readOnly?: boolean;
   error?: boolean;
   errorMsg?: React.ReactNode;
-  errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   after?: React.ReactNode;
   before?: React.ReactNode;
   disabled?: boolean;

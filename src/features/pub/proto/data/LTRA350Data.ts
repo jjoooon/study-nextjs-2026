@@ -64,10 +64,12 @@ export interface LTRA350DataType {
 
 // PageHead에 전달할 데이터 예시
 export const DUMMY_LTRA350_DATA: LTRA350DataType = {
-  pageHead : {
-    simpleMode: true,
+  pageID : {
     pageName: '가입설계',
     pageId: 'LTRA350',
+  },
+  pageTitle : {
+    simpleMode: true,
     title: '한화 시그니처 여성 건강보험 3.0 2504',
     options: ['납입면제 강화형', '기본형'],
     planNumber: ['LA20234472050000', '2'],
