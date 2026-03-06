@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
+import { Gcol, Grow } from '@atoms';
 import {
   Carousel,
   CarouselContent,
@@ -7,7 +8,30 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/shared/components/uiux/Carousel';
-import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+
+const slides = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5', 'Slide 6', 'Slide 7', 'Slide 8', 'Slide 9', 'Slide 10', 'Slide 11', 'Slide 12', 'Slide 13', 'Slide 14', 'Slide 15', 'Slide 16', 'Slide 17', 'Slide 18', 'Slide 19', 'Slide 20'];
+
+function CarouselPreview({ orientation = 'horizontal', className = 'w-lg' }: { orientation?: 'horizontal' | 'vertical'; className?: string }) {
+  const hasHeightClass = /(^|\s)h-/.test(className);
+  const resolvedClassName = orientation === 'vertical' && !hasHeightClass ? `${className} h-104` : className;
+
+  return (
+    <div className={orientation === 'vertical' ? 'py-12' : 'px-12'}>
+      <Carousel opts={{slidesToScroll: 5,}} orientation={orientation} className={resolvedClassName}>
+        <CarouselContent>
+          {slides.map((text) => (
+            <CarouselItem key={text} className='basis-1/5'>
+              <div className="h-32 rounded-md border flex items-center justify-center text-[1.3rem]">{text}</div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
+  );
+}
 
 const meta: Meta<typeof Carousel> = {
   title: 'Components/UIUX/Carousel',
@@ -16,27 +40,38 @@ const meta: Meta<typeof Carousel> = {
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-Carousel는 여러 콘텐츠를 슬라이드 형태로 좌/우(또는 상/하) 탐색할 수 있는 컴포넌트이다.
-Embla Carousel 기반으로 동작하며, orientation과 옵션을 통해 다양한 레이아웃을 구성할 수 있다.
+      page: () => {
+        return (
+          <>
+            <Title /><br /><br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Carousel 컴포넌트는 여러 콘텐츠를 슬라이드 형태로 탐색하기 위한 UI 요소입니다.<br />
+                orientation과 Embla 옵션을 통해 수평/수직 레이아웃을 유연하게 구성할 수 있습니다.
+              </p>
+            </div>
 
-- **Carousel**: 루트 컨테이너
-- **CarouselContent**: 슬라이드 트랙
-- **CarouselItem**: 개별 슬라이드
-- **CarouselPrevious / CarouselNext**: 탐색 버튼
+            <Primary />
+            <Controls />
 
----
-
-<br>
-#### **기본 Carousel: Usage**
+            <h2>Usage</h2>
+            <p>Carousel 컴포넌트는 다음과 같은 구조로 사용할 수 있습니다.</p>
+            <ul>
+              <li>Carousel 루트 컨테이너</li>
+              <li>CarouselContent 슬라이드 트랙</li>
+              <li>CarouselItem 개별 슬라이드</li>
+              <li>CarouselPrevious / CarouselNext 탐색 버튼</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
+  CarouselNext,
 } from '@/shared/components/uiux/Carousel';
 
 <Carousel orientation="horizontal" className="w-lg">
@@ -49,105 +84,87 @@ import {
   <CarouselNext />
 </Carousel>
 \`\`\`
-        `,
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>Carousel 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>orientation</td><td>'horizontal' | 'vertical'</td><td>슬라이드 방향</td></tr>
+                <tr><td>className</td><td>string</td><td>루트 컨테이너 클래스</td></tr>
+                <tr><td>opts</td><td>EmblaOptionsType</td><td>Embla 캐러셀 옵션</td></tr>
+                <tr><td>plugins</td><td>EmblaPluginType[]</td><td>Embla 플러그인</td></tr>
+                <tr><td>setApi</td><td>(api) =&gt; void</td><td>Carousel API 콜백</td></tr>
+              </tbody>
+            </table>
+
+            <h2>Orientation</h2>
+            <p>Carousel 컴포넌트에서 사용할 수 있는 방향 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={4} className="flex-wrap items-start">
+                  <CarouselPreview orientation="horizontal" className="w-lg" />
+                  <CarouselPreview orientation="vertical" className="h-104 w-60" />
+                </Grow>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
       },
-      argTypes: { expanded: false },
     },
-    controls: { expanded: false },
   },
   argTypes: {
     orientation: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['horizontal', 'vertical'],
-      description: '슬라이드 방향',
-      table: {
-        category: 'Appearance',
-        type: { summary: 'horizontal | vertical' },
-      },
+      table: { category: '스타일 props' },
     },
     className: {
-      control: 'text',
-      description: '루트 컨테이너 클래스',
-      table: { category: 'Appearance' },
+      control: { type: 'text' },
+      table: { category: '스타일 props' },
     },
     opts: {
-      control: false,
-      description: 'Embla 옵션',
-      table: { category: 'Behavior' },
+      control: { type: 'object' },
+      table: { category: '설정 props' },
     },
     plugins: {
-      control: false,
-      description: 'Embla 플러그인',
-      table: { category: 'Behavior' },
+      table: { category: '설정 props', disable: true },
     },
     setApi: {
-      control: false,
-      description: 'Carousel API setter',
-      table: { category: 'Events' },
+      table: { category: '이벤트 props' },
     },
-    children: { table: { disable: true } },
+    children: {
+      table: { disable: true },
+    },
   },
   args: {
     orientation: 'horizontal',
     className: 'w-lg',
+    opts: {},
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Carousel>;
 
-const slides = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'];
-
 export const Default: Story = {
   render: (args) => {
-    const isVertical = args.orientation === 'vertical';
-    const hasHeightClass = !!args.className && /(^|\s)h-/.test(args.className);
-    const resolvedClassName = isVertical && !hasHeightClass ? `${args.className ?? ''} h-[26rem]` : args.className;
-
-    return (
-      <StoryWrap>
-        <StoryBox>
-          <div className={isVertical ? 'py-12' : 'px-12'}>
-            <Carousel {...args} className={resolvedClassName}>
-            <CarouselContent>
-              {slides.map((text) => (
-                <CarouselItem key={text}>
-                  <div className="h-32 rounded-md border flex items-center justify-center text-[1.3rem]">{text}</div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-            </Carousel>
-          </div>
-        </StoryBox>
-      </StoryWrap>
-    );
+    return <CarouselPreview orientation={args.orientation} className={args.className} />;
   },
 };
 
 export const Vertical: Story = {
   args: {
     orientation: 'vertical',
-    className: 'h-[26rem] w-[24rem]',
+    className: 'h-104 w-60',
   },
-  render: (args) => (
-    <StoryWrap>
-      <StoryBox>
-        <div className="py-12">
-          <Carousel {...args}>
-            <CarouselContent>
-              {slides.map((text) => (
-                <CarouselItem key={text}>
-                  <div className="h-24 rounded-md border flex items-center justify-center text-[1.3rem]">{text}</div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-      </StoryBox>
-    </StoryWrap>
-  ),
+  render: (args) => <CarouselPreview orientation={args.orientation} className={args.className} />,
 };

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Gcol, Grow } from '@atoms';
 import { Badge } from '@uiux/Badge';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Badge> = {
   title: 'Components/UIUX/Badge',
@@ -8,72 +10,145 @@ const meta: Meta<typeof Badge> = {
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-Badge는 상태, 카테고리, 또는 중요한 정보를 시각적으로 표시하는 작은 라벨 컴포넌트입니다.
+      page: () => {
+        return (
+          <>
+            <Title /><br /><br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Badge 컴포넌트는 상태, 카테고리, 중요 정보를 짧게 강조해 표시하는 UI 요소입니다.<br />
+                variant, color, size 조합으로 같은 의미를 일관된 시각 스타일로 표현할 수 있습니다.
+              </p>
+            </div>
 
-- **variant**: 스타일 유형을 결정합니다 (contained, soft, outlined, ghost)
-- **color**: 배지의 색상을 설정합니다 (blue, red, green)
-- **size**: 배지의 크기를 조절합니다 (sm, md, lg)
+            <Primary />
+            <Controls />
 
-<br>
-#### **Usage**
+            <h2>Usage</h2>
+            <p>Badge 컴포넌트는 다음과 같은 형태로 사용할 수 있습니다.</p>
+            <ul>
+              <li>기본 상태 표시</li>
+              <li>variant + color 조합</li>
+              <li>크기 변경 (sm, md, lg)</li>
+              <li>asChild를 통한 링크/버튼 형태</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { Badge } from "@uiux/Badge"
+import { Badge } from '@uiux/Badge';
 
-<Badge 
-  variant={"contained | soft | outlined | ghost"}
-  color={"blue | red | green"}
-  size={"sm | md | lg"}
+<Badge
+  variant={'contained' | 'soft' | 'outlined' | 'ghost'}
+  color={'blue' | 'red' | 'green'}
+  size={'sm' | 'md' | 'lg'}
 >
-  좋아
+  D-31
 </Badge>
 
-// Link Badge
 <Badge asChild>
-  <a href="#link">연결</a>
+  <a href="#">연결</a>
 </Badge>
 \`\`\`
+              `}
+            </Markdown>
 
-#### **Contained (기본)**
-배경색이 채워진 스타일로, 가장 눈에 잘 띄는 스타일입니다. 
+            <h2>API Reference</h2>
+            <p>Badge 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>variant</td><td>'contained' | 'soft' | 'outlined' | 'ghost'</td><td>배지 스타일</td></tr>
+                <tr><td>color</td><td>'blue' | 'red' | 'green'</td><td>배지 색상</td></tr>
+                <tr><td>size</td><td>'sm' | 'md' | 'lg'</td><td>배지 크기</td></tr>
+                <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
+                <tr><td>children</td><td>ReactNode</td><td>배지 라벨</td></tr>
+              </tbody>
+            </table>
 
-#### **Soft**
-배경색이 부드럽게 처리된 스타일로, 시각적 무게가 가벼운 스타일입니다,
+            <h2>Variant</h2>
+            <p>Badge 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2}>
+                  <Badge variant="contained" color="red">contained</Badge>
+                  <Badge variant="soft" color="red">soft</Badge>
+                  <Badge variant="outlined" color="red">outlined</Badge>
+                  <Badge variant="ghost" color="red">ghost</Badge>
+                </Grow>
+              </Gcol>
+            </Unstyled>
 
-#### **Outlined**
-테두리만 있는 스타일로, 더 가벼운 시각적 무게를 가집니다.
+            <h2>Color</h2>
+            <p>Badge 컴포넌트에서 사용할 수 있는 color 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2}>
+                  <Badge color="blue">blue</Badge>
+                  <Badge color="red">red</Badge>
+                  <Badge color="green">green</Badge>
+                </Grow>
+              </Gcol>
+            </Unstyled>
 
-#### **Ghost**
-배경과 테두리 없이 텍스트 색상만 있는 스타일입니다.
-        `,
+            <h2>Size</h2>
+            <p>Badge 컴포넌트에서 사용할 수 있는 size 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2} placement="ec">
+                  <Badge size="sm">sm</Badge>
+                  <Badge size="md">md</Badge>
+                  <Badge size="lg">lg</Badge>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>AsChild</h2>
+            <p>asChild를 사용하면 링크 등의 요소를 Badge 스타일로 렌더링할 수 있습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Badge asChild variant="outlined" color="blue">
+                  <a href="#">연결 배지</a>
+                </Badge>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
       },
-      argTypes: { expanded: false },
     },
   },
   argTypes: {
     variant: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['contained', 'soft', 'outlined', 'ghost'],
-      description: '배지의 스타일 유형',
+      table: { category: '스타일 props' },
     },
     color: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['blue', 'red', 'green'],
-      description: '배지의 색상',
+      table: { category: '스타일 props' },
     },
     size: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
-      description: '배지의 크기',
+      table: { category: '스타일 props' },
     },
-    asChild: { 
-      table: { disable: true }, 
-      description: '자식 요소로 렌더링 여부' 
+    asChild: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
     },
     children: {
       control: { type: 'text' },
-      description: 'Badge label',
+      table: { category: '설정 props' },
+    },
+    className: {
+      table: { disable: true },
     },
   },
   args: {
@@ -89,14 +164,9 @@ export default meta;
 type Story = StoryObj<typeof Badge>;
 
 export const Default: Story = {
-  render: (args) => (
-    <Badge variant={args.variant} color={args.color} size={args.size}>{args.children}</Badge>
-  ),
+  render: (args) => <Badge {...args}>{args.children}</Badge>,
 };
 
 export const Playground: Story = {
-  render: (args) => (
-    <Badge {...args}>{args.children}</Badge>
-  ),
+  render: (args) => <Badge {...args}>{args.children}</Badge>,
 };
- 

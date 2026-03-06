@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Gcol, Grow, Typo } from '@atoms';
-import Link from "next/link"
-import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
+import { Gcol, Grow } from '@atoms';
+import Link from 'next/link';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/UIUX/Button',
@@ -12,99 +12,193 @@ const meta: Meta<typeof Button> = {
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-버튼은 어떤 기능이나 동작을 실행하거나 기능을 사용하기 위한 상태로 변경하는 요소이다.   
-사용자가 서비스를 이용하는 과정에서 어떤 행동이 중요한지에 따라 관련된 버튼이 다양한 스타일로 표현된다.
+      page: () => {
+        return (
+          <>
+            <Title /><br /><br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Button 컴포넌트는 사용자 액션을 실행하는 핵심 인터랙션 요소입니다.<br />
+                variant, color, size, only 조합으로 일반 버튼과 아이콘 버튼을 일관된 규칙으로 구성할 수 있습니다.
+              </p>
+            </div>
 
-- **기본 버튼** 방식과 **아이콘 버튼** 두가지로 크게 나누어진다. 
-- 스타일로는 **contained**, **outlined**, **text**, **none** 가 있다.
+            <Primary />
+            <Controls />
 
-<br>
-#### **기본 버튼: Usage**
+            <h2>Usage</h2>
+            <p>Button 컴포넌트는 다음과 같은 형태로 사용할 수 있습니다.</p>
+            <ul>
+              <li>기본 버튼</li>
+              <li>아이콘 전용 버튼 (only=&quot;icon&quot;)</li>
+              <li>asChild 기반 링크 버튼</li>
+              <li>비활성 상태 버튼</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { Button } from "@/shared/components/uiux"
+import Link from 'next/link';
+import { SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
-<Button 
-  variant={"contained | outlined | text | none"}
-  color={"primary | secondary | gray | gray-light | success | link"}
-  size={"xl | lg | md | sm | xs"}
+<Button
+  variant={'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state'}
+  color={'primary' | 'secondary' | 'gray' | 'gray-light' | 'gray-cool' | 'success' | 'link' | 'transparent'}
+  size={'xl' | 'lg' | 'md' | 'sm' | 'xs'}
+  only={'default' | 'icon'}
 >
-  //버튼이름
+  버튼
 </Button>
-\`\`\`
 
-#### **Only 아이콘 버튼: Usage**
-\`\`\`tsx
-import { Button } from "@/shared/components/uiux"
-import { SearchIcon } from '@/shared/components/icons';
-
-<Button 
-  variant={"contained | outlined | text | none"}
-  color={"primary | secondary | gray | gray-light | success | link"}
-  size={"xl | lg | md | sm | xs"}
-  only="icon"
->
+<Button only="icon" aria-label="검색">
   <SearchIcon />
 </Button>
-\`\`\`
 
-#### **Link 버튼: Usage**
-\`\`\`tsx
-import Link from "next/link"
-import { Button } from "@/shared/components/uiux"
-
-<Button 
-  asChild
-  variant={"contained | outlined | text | none"}
-  color={"primary | secondary | gray | gray-light | success | link"}
-  size={"xl | lg | md | sm | xs"}
->
-  <Link href="/login">Login</Link>
+<Button asChild>
+  <Link href="/login">로그인</Link>
 </Button>
 \`\`\`
-        `,
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>Button 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>variant</td><td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state'</td><td>버튼 스타일</td></tr>
+                <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'gray-light' | 'gray-cool' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
+                <tr><td>size</td><td>'xl' | 'lg' | 'md' | 'sm' | 'xs'</td><td>버튼 크기</td></tr>
+                <tr><td>only</td><td>'default' | 'icon'</td><td>일반/아이콘 전용 모드</td></tr>
+                <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
+                <tr><td>disabled</td><td>boolean</td><td>비활성 상태</td></tr>
+              </tbody>
+            </table>
+
+            <h2>Variant</h2>
+            <p>Button 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2} className="flex-wrap">
+                  <Button variant="contained">contained</Button>
+                  <Button variant="outlined">outlined</Button>
+                  <Button variant="text">text</Button>
+                  <Button variant="none">none</Button>
+                  <Button variant="banner" size="md" className="w-[16rem]">banner</Button>
+                  <Button variant="state" size="md" className="w-[16rem]">state</Button>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Color</h2>
+            <p>Button 컴포넌트에서 사용할 수 있는 color 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2} className="flex-wrap">
+                  <Button color="primary">primary</Button>
+                  <Button color="secondary">secondary</Button>
+                  <Button color="gray">gray</Button>
+                  <Button color="gray-light">gray-light</Button>
+                  <Button color="gray-cool">gray-cool</Button>
+                  <Button color="success">success</Button>
+                  <Button color="link">link</Button>
+                  <Button color="transparent">transparent</Button>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Size</h2>
+            <p>Button 컴포넌트에서 사용할 수 있는 size 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2} placement="ec">
+                  <Button size="xl">xl</Button>
+                  <Button size="lg">lg</Button>
+                  <Button size="md">md</Button>
+                  <Button size="sm">sm</Button>
+                  <Button size="xs">xs</Button>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Icon / AsChild / Disabled</h2>
+            <p>아이콘 버튼, 링크 버튼, 비활성 버튼 사용 예시는 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2} className="flex-wrap">
+                  <Button only="icon" aria-label="검색">
+                    <SearchIcon />
+                  </Button>
+                  <Button asChild variant="outlined" color="link">
+                    <Link href="/login">로그인 링크</Link>
+                  </Button>
+                  <Button disabled>disabled</Button>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
       },
-      argTypes: { expanded: false },
     },
   },
   argTypes: {
-    onClick: { action: 'clicked' },
+    onClick: {
+      action: 'clicked',
+      table: { category: '이벤트 props' },
+    },
     variant: {
-      control: 'select',
-      options: ['contained', 'outlined', 'text', 'none'],
-      description: '버튼의 스타일 유형',
+      control: { type: 'select' },
+      options: ['contained', 'outlined', 'text', 'none', 'banner', 'state'],
+      table: { category: '스타일 props' },
     },
     color: {
-      control: 'select',
-      options: ['primary', 'secondary', 'gray', 'gray-light', 'success', 'link'],
-      description: '버튼의 색상 유형',
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'gray', 'gray-light', 'gray-cool', 'success', 'link', 'transparent'],
+      table: { category: '스타일 props' },
     },
     size: {
-      control: 'select',
-      options: ['xl', 'lg', 'md', 'sm'],
-      description: '버튼의 크기',
+      control: { type: 'select' },
+      options: ['xl', 'lg', 'md', 'sm', 'xs'],
+      table: { category: '스타일 props' },
     },
-    only :{
-      control: 'select',
+    only: {
+      control: { type: 'select' },
       options: ['default', 'icon'],
-      description: '특정한 조건의 유형',
+      table: { category: '스타일 props' },
     },
-    // asChild는 Controls에서 숨김 처리
-    asChild: { table: { disable: true }, description: '자식 요소로 렌더링 여부' },
-    disabled: { control: 'boolean', description: '버튼 비활성화 여부' },
+    asChild: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
     children: {
       control: { type: 'text' },
-      description: 'Button label',
+      table: { category: '설정 props' },
+    },
+    className: {
+      table: { disable: true },
+    },
+    type: {
+      table: { disable: true },
     },
   },
   args: {
-    children: '테스트',
+    children: '버튼',
     variant: 'contained',
     color: 'primary',
-    size: 'xl',
+    size: 'lg',
     only: 'default',
-    // asChild: false, // 기본값에서 제거
+    asChild: false,
     disabled: false,
   },
 };
@@ -113,66 +207,10 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
-  render: (args) => (
-    <StoryWrap className="flex-row items-stretch">
-      <StoryBox className="w-full flex-1 justify-center">
-        <Button {...args}>{args.children}</Button> 
-        <Button {...args}>{args.children}<SearchIcon /></Button> 
-        <Button {...args} only="icon" ><SearchIcon /></Button> 
-        <Button asChild {...args}>
-          <Link href="/login">Link</Link>
-        </Button> 
-      </StoryBox>
-      <Gcol className="gap-2 shrink-0">
-        <StoryBox className="w-full bg-[var(--color-gray-20)]">
-          <Grow className="gap-2 " placement="bwe">
-            <Grow className="flex-1 gap-1 h-[3.2rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
-              32
-            </Grow>
-            <Grow className="flex-1 gap-1 h-[2.8rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
-              28
-            </Grow>
-            <Grow className="flex-1 gap-1 h-[2.5rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
-              25
-            </Grow>
-            <Grow className="flex-1 gap-1 h-[2.2rem] bg-[var(--color-gray-0)] rounded-[0.4rem] text-[var(--color-gray-100)] flex items-center justify-center">
-              22
-            </Grow>
-          </Grow>
-        </StoryBox>
-        <StoryBox className="w-full gap-4 flex-wrap flex-col">
-          <Grow className="gap-2">
-            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-primary-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-secondary-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-gray-20)]">T</div>
-            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-success-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] font-bold text-[1.3rem] flex items-center justify-center text-[#fff] rounded-[0.4rem] bg-[var(--color-information-50)]">T</div>
-          </Grow>
-          <Grow className="gap-2">
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-primary-50)] rounded-[0.4rem] border bg-[var(--color-primary-5)] border-[var(--color-primary-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-secondary-50)] rounded-[0.4rem] border bg-[var(--color-gray-0)] border-[var(--color-secondary-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-gray-100)] rounded-[0.4rem] border bg-[var(--color-gray-0)] border-[var(--color-gray-60)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-gray-100)] rounded-[0.4rem] border bg-[var(--color-gray-0)] border-[var(--color-gray-20)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-success-50)] rounded-[0.4rem] border bg-[var(--color-success-5)] border-[var(--color-success-50)]">T</div>
-            <div className="w-[4rem] h-[4rem] text-[1.3rem] flex items-center justify-center text-[var(--color-information-50)] rounded-[0.4rem] border bg-[var(--color-information-5)] border-[var(--color-information-50)]">T</div>
-          </Grow>
-        </StoryBox>
-      </Gcol>
-    </StoryWrap>
-  ),
+  render: (args) => <Button {...args}>{args.children}</Button>,
 };
 
-// asChild 전용 스토리
-// export const AsChild: Story = {
-//   args: {
-//     asChild: true,
-//     children: <Link href="/login">Login</Link>,
-//   },
-//   render: (args) => (
-//     <Button asChild {...args}>
-//       <Link href="/login">Link - {args.children}</Link>
-//     </Button>
-//   ),
-// };
+export const Playground: Story = {
+  render: (args) => <Button {...args}>{args.children}</Button>,
+};
 
