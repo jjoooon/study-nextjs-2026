@@ -1,4 +1,4 @@
-import { Grow } from '@/shared/components/common';
+import { Grow } from '@atoms';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 export function StoryWrap({ children, className }: { children: React.ReactNode, className?: string }) {

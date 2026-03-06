@@ -151,11 +151,12 @@ const DATA_TABS_2 = [
   { value: 'tab2', label: '담보 설계' },
 ];
 const DATA_TABS_3 = [
-  {
-    name: '반짝빛나리반짝빛나리',
+ {
+    name: '홍길동',
     age: '1',
     gender: '여',
     value: 'tab1',
+    error: true,
     info: [
       '추가정보1',
       '추가정보2',
@@ -173,6 +174,7 @@ const DATA_TABS_3 = [
     age: '2',
     gender: '남',
     value: 'tab2',
+    error: true,
     info: [
       '추가정보1',
       '추가정보2',
@@ -190,6 +192,7 @@ const DATA_TABS_3 = [
     age: '3',
     gender: '여',
     value: 'tab3',
+    error: false,
     info: [
       '추가정보1',
       '추가정보2',
@@ -207,6 +210,7 @@ const DATA_TABS_3 = [
     age: '4',
     gender: '남',
     value: 'tab4',
+    error: false,
     info: [
       '추가정보1',
       '추가정보2',
@@ -223,6 +227,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '5',
     gender: '여',
+    error: false,
     value: 'tab5',
     info: [
       '추가정보1',
@@ -240,6 +245,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '6',
     gender: '여',
+    error: false,
     value: 'tab6',
     info: [
       '추가정보1',
@@ -257,6 +263,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '7',
     gender: '남',
+    error: false,
     value: 'tab7',
     info: [
       '추가정보1',
@@ -274,6 +281,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '8',
     gender: '남',
+    error: false,
     value: 'tab8',
     info: [
       '추가정보1',
@@ -291,6 +299,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '9',
     gender: '여',
+    error: false,
     value: 'tab9',
     info: [
       '추가정보1',
@@ -308,6 +317,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '10',
     gender: '남',
+    error: false,
     value: 'tab10',
     info: [
       '추가정보1',
@@ -325,6 +335,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '11',
     gender: '여',
+    error: true,
     value: 'tab11',
     info: [
       '추가정보1',
@@ -342,6 +353,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '12',
     gender: '남',
+    error: false,
     value: 'tab12',
     info: [
       '추가정보1',
@@ -359,6 +371,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '13',
     gender: '남',
+    error: false,
     value: 'tab13',
     info: [
       '추가정보1',
@@ -376,6 +389,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '14',
     gender: '여',
+    error: false,
     value: 'tab14',
     info: [
       '추가정보1',
@@ -393,6 +407,7 @@ const DATA_TABS_3 = [
     name: '반짝빛나리반짝빛나리',
     age: '15',
     gender: '남',
+    error: false,
     value: 'tab15',
     info: [
       '추가정보1',
