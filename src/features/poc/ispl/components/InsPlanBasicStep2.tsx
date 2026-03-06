@@ -1,6 +1,6 @@
 'use client';
 
-import { Gcol, Typo, FormItem, Grow, ButtonGroup } from '@atoms';
+import { Gcol, Typo, FormItem, Grow } from '@atoms';
 import { FormCell, FormTable } from '@common/FormTable';
 import { DatePickerInput } from '@common/DatePicker';
 import { SearchIcon } from '@/shared/components/icons';
@@ -40,11 +40,11 @@ export function InsPlanBasicStep2({
         <Typo tag="h3" variant="heading-lg">
           피보험자
         </Typo>
-        <ButtonGroup>
+        <Grow>
           <Button color="gray" variant="outlined" size="md">
             계약자와 동일
           </Button>
-        </ButtonGroup>
+        </Grow>
       </Grow>
 
       <Tabs

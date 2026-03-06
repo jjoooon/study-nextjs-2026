@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux/Resizable';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 const meta: Meta<typeof ResizablePanelGroup> = {
   title: 'Components/UIUX/Resizable',
@@ -20,7 +20,7 @@ Resizable은 패널 간 경계를 드래그하여 영역 크기를 조절할 수
 <br>
 #### **기본 Resizable: Usage**
 \`\`\`tsx
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux/Resizable';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 <ResizablePanelGroup orientation="horizontal">
   <ResizablePanel defaultSize={30}>Left</ResizablePanel>

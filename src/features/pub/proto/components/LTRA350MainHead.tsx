@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 // components - atoms
-import { Grow, Gcol, ButtonGroup } from '@atoms';
+import { Grow, Gcol } from '@atoms';
 // components - icons
 import { PaperIcon, ResetIcon } from '@icons';
 // components - common
@@ -117,12 +117,12 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
             </Grow>
             <HashList data={data.hashList} />
           </Grow>
-          <ButtonGroup className="gap-1" placement="ec">
+          <Grow placement="ec">
             <Button variant="contained" color="gray-cool" size="lg">
               <ResetIcon />
               초기화
             </Button>
-          </ButtonGroup>
+          </Grow>
         </Grow>
       </Gcol>
     </TabHead>

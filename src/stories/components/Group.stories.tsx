@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Typo, Gcol, Grow, Grid, FormItem, ButtonGroup, Separator } from '@atoms';
+import { Typo, Gcol, Grow, Grid, FormItem } from '@atoms';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const placementOptions = [
@@ -29,7 +29,6 @@ Flexbox 기반의 레이아웃 유틸리티 컴포넌트 모음입니다.
 - **Grow**: 가로(Row) 방향 Flex 컨테이너
 - **Grid**: CSS Grid 컨테이너
 - **FormItem**: 폼 아이템용 Row 컨테이너
-- **ButtonGroup**: 버튼 그룹용 Row 컨테이너
 - **Separator**: 구분선 컴포넌트
 
 **Placement 옵션 (정렬):**

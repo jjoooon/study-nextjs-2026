@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol } from '@/shared/components/common';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { Grow, Gcol } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;

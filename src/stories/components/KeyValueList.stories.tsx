@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@/shared/components/common';
-import { KeyValueList } from '@/shared/components/common/KeyValueList';
+import { Gcol, Grow, Typo } from '@atoms';
+import { KeyValueList } from '@common/KeyValueList';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 type KeyValueListStoryProps = React.ComponentProps<typeof KeyValueList>;
@@ -39,7 +39,7 @@ KeyValueList는 key-value 형태의 정보를 가로 목록으로 표시하는 �
 <br>
 #### **KeyValueList: Usage**
 \`\`\`tsx
-import { KeyValueList } from '@/shared/components/common';
+import { KeyValueList } from '@common/KeyValueList';
 
 const data = [
   { key: '총 보험료', value: '125,000원' },

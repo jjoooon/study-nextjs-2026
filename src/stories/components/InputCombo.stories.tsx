@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { InputCombo } from '@/shared/components/common/InputCombo';
+import { InputCombo } from '@common/InputCombo';
 
 const meta: Meta<typeof InputCombo> = {
   title: 'Components/Common/InputCombo',

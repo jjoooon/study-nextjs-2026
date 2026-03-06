@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ScrollArea } from '@/shared/components/uiux/ScrollArea';
+import { ScrollArea } from '@uiux/ScrollArea';
 
 const meta: Meta<typeof ScrollArea> = {
   title: 'Components/UIUX/ScrollArea',
@@ -19,7 +19,7 @@ ScrollArea는 고정된 영역 안에서 overflow 콘텐츠를 스크롤할 수 
 <br>
 #### **기본 ScrollArea: Usage**
 \`\`\`tsx
-import { ScrollArea } from '@/shared/components/uiux/ScrollArea';
+import { ScrollArea } from '@uiux/ScrollArea';
 
 <ScrollArea className="h-72 w-lg rounded-md border p-4">
   <div className="space-y-2">

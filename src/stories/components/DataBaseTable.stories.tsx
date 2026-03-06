@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DataBaseTable from '@/shared/components/common/DataBaseTable';
-import { Gcol, Typo } from '@/shared/components/common';
+import { Gcol, Typo } from '@atoms';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 type DataBaseTableStoryProps = React.ComponentProps<typeof DataBaseTable>;

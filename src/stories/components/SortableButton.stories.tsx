@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, SortableButton, Typo } from '@/shared/components/common';
+import { Grow, Gcol, Typo } from '@atoms';
+import { SortableButton } from '@common/SortableButton';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 type SortOrder = 'asc' | 'desc' | 'none';

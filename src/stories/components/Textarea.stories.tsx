@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol } from '@/shared/components/common';
+import { Grow, Gcol } from '@atoms';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
-import { Textarea } from '@/shared/components/uiux/Textarea';
+import { Textarea } from '@uiux/Textarea';
 
 const meta: Meta<typeof Textarea> = {
   title: 'Components/UIUX/Textarea',
@@ -23,7 +23,7 @@ Textarea는 여러 줄의 텍스트를 입력받기 위한 컴포넌트이다.
 <br>
 #### **기본 Textarea: Usage**
 \`\`\`tsx
-import { Textarea } from '@/shared/components/uiux/Textarea';
+import { Textarea } from '@uiux/Textarea';
 
 <Textarea
   variant="default"
@@ -34,7 +34,7 @@ import { Textarea } from '@/shared/components/uiux/Textarea';
 <br>
 #### **Outline Textarea: Usage**
 \`\`\`tsx
-import { Textarea } from '@/shared/components/uiux/Textarea';
+import { Textarea } from '@uiux/Textarea';
 
 <Textarea
   variant="outline"
@@ -45,7 +45,7 @@ import { Textarea } from '@/shared/components/uiux/Textarea';
 <br>
 #### **Error Textarea: Usage**
 \`\`\`tsx
-import { Textarea } from '@/shared/components/uiux/Textarea';
+import { Textarea } from '@uiux/Textarea';
 
 <Textarea
   variant="default"

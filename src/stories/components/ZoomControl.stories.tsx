@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ZoomControl } from '@/shared/components/common/ZoomControl';
-import { Grow, Gcol } from '@/shared/components/common';
+import { ZoomControl } from '@common/ZoomControl';
+import { Grow, Gcol } from '@atoms';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof ZoomControl> = {

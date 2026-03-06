@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import * as Icons from '@/shared/components/icons/CommonIcons';
+import * as Icons from '@icons';
 
 const iconList = Object.entries(Icons).filter(([name, Comp]) => typeof Comp === 'function');
 

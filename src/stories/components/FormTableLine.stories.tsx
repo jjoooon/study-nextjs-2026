@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Description, Primary, Stories, Title } from '@storybook/addon-docs/blocks';
 import * as React from 'react';
-import { FormCell, FormRow, FormTable, FormTableLine, Gcol, Grow, Typo } from '@/shared/components/common';
+import { Gcol, Grow, Typo } from '@atoms';
+import { FormCell, FormRow, FormTable, FormTableLine, } from '@common/FormTable';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 type FormTableLineStoryProps = React.ComponentProps<typeof FormTableLine>;

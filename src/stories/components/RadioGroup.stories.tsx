@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow,} from '@/shared/components/common';
+import { Gcol, Grow,} from '@atoms';
 import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 type RadioGroupStoryProps = React.ComponentProps<typeof RadioGroup> &
   // RadioGroupItem의 props를 Storybook controls에서 사용하기 위해 추가
@@ -29,7 +29,7 @@ RadioGroup은 사용자가 여러 옵션 중에서 단 하나의 값만 선택�
 <br>
 #### **기본 라디오 그룹: Usage**
 \`\`\`tsx
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { useState } from 'react';
 
 const [value, setValue] = useState('option1');
@@ -44,7 +44,7 @@ const [value, setValue] = useState('option1');
 <br>
 #### **버튼 라디오 그룹: Usage**
 \`\`\`tsx
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { useState } from 'react';
 
 const [value, setValue] = useState('option1');
