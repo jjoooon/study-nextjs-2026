@@ -49,20 +49,18 @@ export const LayoutTemplateA = ({
       {pageID}
       {pageTitle}
     </LayoutHead>
-    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
+    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3" data-hide-aside={hideAside ? "true" : "false"}>
       <LayoutProcess>{pageProcess}</LayoutProcess>
       <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
         <LayoutMainHead>{mainHead}</LayoutMainHead>
         <LayoutMainBody>{mainBody}</LayoutMainBody>
         <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
       </LayoutMain>
-      {!hideAside && (
       <LayoutAside className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>{asideBody}</LayoutAsideBody>
         <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
       </LayoutAside>
-      )}
     </LayoutBody>
   </>
 );

@@ -10,7 +10,7 @@ import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitl
 import PageProcess from '@features/PageProcess';
 import AsideBody from '@features/AsideBody';
 import AsideFoot from '@features/AsideFoot';
-import MainFoot from '@features/MainFoot';
+import { MainFoot as MainFoot } from '@features/MainFoot';
 import TaskStatusBoard from '@features/TaskStatusBoard';
 
 // LTRA350 - components
@@ -28,7 +28,7 @@ export default function LTRA350Section() {
       pageTitle={<PageTitle data={data.pageTitle} />}
 
       pageProcess={<PageProcess />}
-
+      
       mainHead={
         <LTRA350MainHead data={data.mainHead}/>
       }

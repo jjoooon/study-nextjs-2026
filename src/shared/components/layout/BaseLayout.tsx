@@ -25,9 +25,9 @@ export const LayoutHead = ({ children, className }: LayoutProps) => {
   );
 };
 
-export const LayoutBody = ({ children, className }: LayoutProps) => {
+export const LayoutBody = ({ children, className, ...rest }: LayoutProps) => {
   return (
-    <div data-layout="body" className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3', className)}>
+    <div data-layout="body" className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3', className)} {...rest}>
       {children}
     </div>
   );
