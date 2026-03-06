@@ -4,6 +4,7 @@ import React from 'react';
 import { Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabHead } from '@common/TabHead';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@uiux/Tabs';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 import { Button } from '@uiux/Button';
@@ -491,10 +492,17 @@ export const Default: Story = {
             renderTab={tab => (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <span className="flex items-center">
-                    <span className="max-w-20 truncate block">{tab.name}</span>
-                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                  </span>
+                  <div>
+                    <span className="flex items-center">
+                      <span className="max-w-20 truncate block">{tab.name}</span>
+                      <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                    </span>
+                    {tab.error && (
+                      <ErrorMsg aria-live="polite" show={true} position="tl" id="test">
+                        입력하세요.
+                      </ErrorMsg>
+                    )}
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <BulletList>
