@@ -5,8 +5,59 @@ import { Gcol, Grow, Grid } from '@atoms';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
+import { ArrowNext, ResetIcon } from '@icons';
 
-export function MainFoot() {
+
+export function DesignStart() {
+  return (
+    <Grow placement="ec" className="w-full px-2.5 pt-2 pb-2.5 ">
+      <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('초기화')}>
+        <ResetIcon />
+        초기화
+      </Button>
+      <Button
+        type="submit"
+        form="page2-MainForm"
+        variant="contained"
+        color="primary"
+        size="xl"
+        onClick={() => console.log('저장')}
+      >
+        설계시작
+        <ArrowNext />
+      </Button>
+    </Grow>
+  );
+}
+export function DesignGeneration() {
+  return (
+    <Grow placement="bwc" className="w-full px-2.5 pt-2 pb-2.5 ">
+      <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('추천내용 비교')}>
+        추천내용 비교
+      </Button>
+      <Grow>
+        <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('초기화')}>
+          <ResetIcon />
+          초기화
+        </Button>
+         <Button
+          type="submit"
+          form="page2-MainForm"
+          variant="contained"
+          color="primary"
+          size="xl"
+          onClick={() => console.log('설계생성')}
+        >
+          설계생성
+          <ArrowNext />
+        </Button>
+      </Grow>
+     
+    </Grow>
+  );
+}
+
+export function LTRA350Step2() {
   const [amount, setAmount] = useState('0');
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
@@ -123,7 +174,7 @@ export function MainFoot() {
   );
 }
 
-export function MainFootB() {
+export function LTRA350Step1() {
   return (
     <Gcol className="w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
       <Grow placement="bwc" className="px-3 pt-2 pb-2.5 bg-[var(--color-gray-5)]">
