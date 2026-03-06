@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { ZoomControl } from '@common/ZoomControl';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -12,11 +10,11 @@ type DefaultPageID = {
   pageId?: string | number;
   [key: string]: any;
 }
-type PageIDProps<T = DefaultPageID> = {
-  data: T;
+type PageIDProps = {
+  data: DefaultPageID;
 };
 
-export default function PageID<T = DefaultPageID>({ data }: PageIDProps<T>) {
+export default function PageID({ data }: PageIDProps) {
   const safeData = data ?? {};
 
   return (

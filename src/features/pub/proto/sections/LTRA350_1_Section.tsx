@@ -1,15 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { LayoutTemplateB } from '@/shared/components/layout/LayoutTemplate';
+// components - layout
+import { LayoutTemplateB } from '@layout/LayoutTemplate';
+// components - features
+import PageID from '@features/PageID';
+import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
+import PageProcess from '@features/PageProcess';
+import AsideBody from '@features/AsideBody';
+import AsideFoot from '@features/AsideFoot';
+import MainFoot from '@features/MainFoot';
+import TaskStatusBoard from '@features/TaskStatusBoard';
 
-import PageID from '@/shared/components/features/PageID';
-import PageProcess from '@/shared/components/features/PageProcess';
-import AsideBody from '@/shared/components/features/AsideBody';
+// LTRA350 - components
 import { LTRA350_1_MainBody } from '../components/index_LTRA350';
-import AsideFoot from '@/shared/components/features/AsideFoot';
-import MainFoot from '@/shared/components/features/MainFoot';
-import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
 
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 
@@ -19,7 +23,8 @@ export default function LTRA350_Section() {
  
   return (
     <LayoutTemplateB
-      pageID={<PageID data={data.pageID} />}
+     pageID={<PageID data={data.pageID} />}
+    pageTitle={<PageTitle data={data.pageTitle} />}
       pageProcess={<PageProcess />}
 
       mainBody={

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Gcol, Grow, Typo, FormItem } from '@atoms';
+import { Grow, Typo, FormItem } from '@atoms';
 import { FormTable, FormRow, FormCell,} from '@common/FormTable';
 import { ViewMode } from '@common/ViewMode';
 import { InputCombo } from '@common/InputCombo';
@@ -16,33 +16,14 @@ type DefaultPageTitle = {
   pageId?: string | number;
   [key: string]: any;
 }
-type PageTitleProps<T = DefaultPageTitle> = {
-  data: T;
+type PageTitleProps = {
+  data: DefaultPageTitle;
 };
 
-export function PageTitle<T = DefaultPageTitle>({ data }: PageTitleProps<T>) {
+export function PageTitle({ data }: PageTitleProps) {
   // data가 undefined일 경우를 대비한 기본값 처리
   const safeData = data ?? {};
-  const [simpleMode, setSimpleMode] = useState<boolean>(safeData.simpleMode ?? false);
-
-  // 설계번호와 계약자명 상태 추가
-  const [planNumber, setPlanNumber] = useState<string[]>([
-    safeData.planNumber?.[0] ?? '',
-    safeData.planNumber?.[1] ?? '',
-  ]);
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
-
-  const sampleOptions = safeData.planNumberList?.map(item => ({
-    value: item.value,
-    label: (
-      <div className="type--design-number">
-        <div>{item.label}</div>
-        <div>{item.name}</div>
-        <div>{item.amount}</div>
-        <div>{item.state}</div>
-      </div>
-    )
-  }));
 
   return (
     <Grow placement="bwc" className="w-full py-1 gap-3">
@@ -69,7 +50,7 @@ export function PageTitle<T = DefaultPageTitle>({ data }: PageTitleProps<T>) {
   );
 }
 
-export function PageTitleProduct<T = DefaultPageTitle>({ data }: PageTitleProps<T>) {
+export function PageTitleProduct({ data }: PageTitleProps) {
   // data가 undefined일 경우를 대비한 기본값 처리
   const safeData = data ?? {};
   const [simpleMode, setSimpleMode] = useState<boolean>(safeData.simpleMode ?? false);
@@ -81,7 +62,13 @@ export function PageTitleProduct<T = DefaultPageTitle>({ data }: PageTitleProps<
   ]);
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
-  const sampleOptions = safeData.planNumberList?.map(item => ({
+  const sampleOptions = safeData.planNumberList?.map((item: { 
+    label: string; 
+    value: string; 
+    name: string; 
+    amount: string; 
+    state: string 
+  }) => ({
     value: item.value,
     label: (
       <div className="type--design-number">
