@@ -25,7 +25,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   after?: React.ReactNode;
   before?: React.ReactNode;
   disabled?: boolean;
-  formatType?: 'amount' | 'number';
+  commaAmount?: boolean;
   clear?: boolean;
   forceFocused?: boolean;
 }
@@ -37,7 +37,7 @@ function formatAmount(value: string) {
 }
 
 function Input({
-  size = 'lg',
+  size = 'md',
   variant = 'default',
   width = 'full',
   className,
@@ -50,7 +50,7 @@ function Input({
   after = null,
   before = null,
   disabled = false,
-  formatType,
+  commaAmount = false,
   clear = false,
   forceFocused = false,
   onChange,
@@ -61,16 +61,15 @@ function Input({
 
   // 입력 중에는 원본 값, blur 시에는 콤마 포함 값
   const displayValue =
-    formatType === 'amount' && typeof value === 'string'
+    commaAmount && typeof value === 'string'
       ? (isFocused || forceFocused)
         ? value // 입력 중에는 그대로
         : formatAmount(value) // blur 시 콤마 적용
       : (value ?? '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('원본 입력값:', clear, isFocused , displayValue);
     const val = e.target.value.replace(/[^0-9]/g, '');
-    if (formatType === 'amount') {
+    if (commaAmount) {
       if (onChange) {
         const syntheticEvent = {
           ...e,
@@ -91,7 +90,6 @@ function Input({
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
-
   const withStyle = () => {
     const widthMap: Record<UIUXsize, string> = {
       full: 'w-full flex-1',
@@ -153,7 +151,7 @@ function Input({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
-  const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+  const sizeStyle = `${size === 'md' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
@@ -176,7 +174,7 @@ function Input({
             <input
               type={type}
               data-slot="input"
-              className={cn('bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none', className)}
+              className={cn('bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none', commaAmount && 'text-right', className)}
               required={required}
               readOnly={readOnly}
               aria-invalid={error || undefined}
@@ -218,7 +216,7 @@ function Input({
           <input
             type={type}
             data-slot="input"
-            className={cn(variantStyles[variant], className, '[:focus]:px-[0.7rem]')}
+            className={cn(variantStyles[variant], commaAmount && 'text-right', className, '[:focus]:px-[0.7rem]')}
             required={required}
             readOnly={readOnly}
             aria-invalid={error || undefined}

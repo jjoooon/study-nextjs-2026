@@ -2,7 +2,7 @@ import LTRA350 from '@/app/pub/proto/pages/LTRA350';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'page/proto/pages/LTRA350',
+  title: 'page/proto/LTRA350',
   component: LTRA350,
 };
 

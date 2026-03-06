@@ -32,7 +32,7 @@ export default function MainFoot() {
                   </Button>
                   <Input
                     type="tel"
-                    formatType="amount"
+                    commaAmount={true}
                     value="100,000"
                     readOnly={true}
                     className="text-right"
@@ -50,7 +50,7 @@ export default function MainFoot() {
                 <FormCell title="보장보험료">
                   <Input
                     type="tel"
-                    formatType="amount"
+                    commaAmount={true}
                     value="100,000"
                     readOnly={true}
                     className="text-right"
@@ -60,7 +60,7 @@ export default function MainFoot() {
                 <FormCell title="적립보험료">
                   <Input
                     type="tel"
-                    formatType="amount"
+                    commaAmount={true}
                     value="100,000"
                     readOnly={true}
                     className="text-right"
@@ -74,7 +74,7 @@ export default function MainFoot() {
                 <FormCell title="합계보험료">
                   <Input
                     type="tel"
-                    formatType="amount"
+                    commaAmount={true}
                     value={amount}
                     clear={true}
                     width="lg"

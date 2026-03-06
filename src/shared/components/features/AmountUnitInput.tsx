@@ -183,7 +183,7 @@ export function AmountUnitInput({
                 onChange={handleInputChange}
                 size="sm"
                 className="text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                formatType="amount"
+                commaAmount={true}
                 autoFocus
                 width={measuredWidth ? `${(measuredWidth) / 10}rem` : undefined}
                 onKeyDown={handleKeyDown}
@@ -199,7 +199,7 @@ export function AmountUnitInput({
                   value={inputValue}
                   size="sm"
                   className="text-right flex-1"
-                  formatType="amount"
+                  commaAmount={true}
                   readOnly
                   after="만원"
                   width="min"
