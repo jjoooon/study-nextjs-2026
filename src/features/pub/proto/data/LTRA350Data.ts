@@ -1,10 +1,12 @@
 
 // DUMMY_LTRA350_DATA 타입 정의
 export interface LTRA350DataType {
-  pageHead: {
-    simpleMode: boolean;
+  pageID: {
     pageName: string;
     pageId: string;
+  };
+  pageTitle: {
+    simpleMode: boolean;
     title: string;
     options: string[];
     planNumber: string[];

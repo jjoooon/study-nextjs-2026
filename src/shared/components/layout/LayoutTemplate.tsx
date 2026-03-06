@@ -20,14 +20,14 @@ import {
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 interface Props {
-  pageID: React.ReactNode;
-  pageTitle: React.ReactNode;
-  mainHead: React.ReactNode;
-  mainBody: React.ReactNode;
-  mainFoot: React.ReactNode;
-  asideHead: React.ReactNode;
-  asideBody: React.ReactNode;
-  asideFoot: React.ReactNode;
+  pageID?: React.ReactNode;
+  pageTitle?: React.ReactNode;
+  mainHead?: React.ReactNode;
+  mainBody?: React.ReactNode;
+  mainFoot?: React.ReactNode;
+  asideHead?: React.ReactNode;
+  asideBody?: React.ReactNode;
+  asideFoot?: React.ReactNode;
   hideAside?: boolean;
   pageProcess?: React.ReactNode;
 }
@@ -67,9 +67,9 @@ export const LayoutTemplateA = ({
   </>
 );
 
-
 export const LayoutTemplateB = ({
   pageID,
+  pageTitle,
   mainHead,
   asideHead,
   mainBody,
@@ -79,7 +79,10 @@ export const LayoutTemplateB = ({
   pageProcess,
 }: Props) => (
   <>
-    <LayoutHead>{pageID}</LayoutHead>
+    <LayoutHead>
+      {pageID}
+      {pageTitle}
+    </LayoutHead>
     <LayoutBody>
       <LayoutProcess>{pageProcess}</LayoutProcess>
       <LayoutFolder className="grid-rows-[1fr] grid-cols-[1fr_auto] gap-3">
