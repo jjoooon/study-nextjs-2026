@@ -13,13 +13,13 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
   readOnly?: boolean;
   error?: boolean;
   errorMsg?: React.ReactNode;
-  errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
 
 function NativeSelect({
   className,
   variant = 'default',
-  size = 'lg',
+  size = 'md',
   width = 'full',
   required = false,
   readOnly = false,
@@ -85,7 +85,7 @@ function NativeSelect({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
-  const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+  const sizeStyle = `${size === 'md' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),

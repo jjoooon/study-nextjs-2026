@@ -1,137 +1,277 @@
-import type { Meta, StoryObj } from '@storybook/react';
+﻿import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
-import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
 
 const meta: Meta<DatePickerInputStoryProps> = {
-  title: 'Components/Common/DatePickerInput',
+  title: 'Components/Form/DatePickerInput',
   component: DatePickerInput,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-DatePickerInput은 캘린더 팝오버와 입력 필드를 함께 제공하는 날짜 입력 컴포넌트이다.
-단일(single), 다중(multiple), 범위(range) 선택 모드를 지원하며 폼 에러 표시와 너비/사이즈 제어가 가능하다.
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br />
+            <br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
+                <br />
+                single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
+              </p>
+            </div>
 
-- **mode**로 날짜 선택 방식을 설정한다.
-- **width / size**로 입력 필드 크기를 제어한다.
-- **disabled**로 입력 비활성화를 제어한다.
-- **error / errorMsg / errorPs**로 검증 메시지를 표시한다.
+            <Primary />
+            <Controls />
 
----
-
-<br>
-#### **기본 DatePickerInput: Usage**
+            <h2>Usage</h2>
+            <p>DatePickerInput 컴포넌트는 아래와 같은 시나리오에 사용할 수 있습니다.</p>
+            <ul>
+              <li>단일 날짜 선택(single)</li>
+              <li>다중 날짜 선택(multiple)</li>
+              <li>기간 선택(range)</li>
+              <li>필수/비활성화/에러 상태 표시</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import { useState } from 'react';
 
 const [value, setValue] = useState('');
 
 <DatePickerInput
+  mode={'single' | 'multiple' | 'range'}
+  size={'lg' | 'sm'}
+  width={'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '??rem' | '??px'}
+
+  required={false | true}
+  readOnly={false | true}
+  disabled={false | true}
+
+  error={false | true}
+  errorMsg={'입력은 필수입니다.'}
+  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
+
   value={value}
-  mode="single"
-  width="sm"
   onChange={(date, formattedValue) => setValue(formattedValue ?? '')}
 />
 \`\`\`
+              `}
+            </Markdown>
 
-<br>
-#### **FormCell 예시: Usage**
-\`\`\`tsx
-<FormCell title="연령증가일">
-  <DatePickerInput
-    value={ageIncreaseDate}
-    mode="single"
-    width="sm"
-    error={testError}
-    errorMsg="연령증가일은 필수입니다."
-    errorPs="bl"
-    onChange={(date, formattedValue) => {
-      setAgeIncreaseDate(formattedValue ?? '');
-    }}
-  />
-</FormCell>
-\`\`\`
-        `,
+            <h2>API Reference</h2>
+            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>mode</td>
+                  <td>'single', 'multiple', 'range'</td>
+                  <td>날짜 선택 모드</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>'lg', 'sm'</td>
+                  <td>입력 크기</td>
+                </tr>
+                <tr>
+                  <td>width</td>
+                  <td>'full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '??rem', '??px'</td>
+                  <td>입력 너비</td>
+                </tr>
+                <tr>
+                  <td>required</td>
+                  <td>boolean</td>
+                  <td>필수 여부</td>
+                </tr>
+                <tr>
+                  <td>readOnly</td>
+                  <td>boolean</td>
+                  <td>읽기 전용 상태</td>
+                </tr>
+                <tr>
+                  <td>disabled</td>
+                  <td>boolean</td>
+                  <td>비활성화 여부</td>
+                </tr>
+                <tr>
+                  <td>error</td>
+                  <td>boolean</td>
+                  <td>에러 상태</td>
+                </tr>
+                <tr>
+                  <td>errorMsg</td>
+                  <td>ReactNode</td>
+                  <td>에러 메시지</td>
+                </tr>
+                <tr>
+                  <td>errorPs</td>
+                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
+                  <td>에러 메시지 위치</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h2>Mode</h2>
+            <p>single, multiple, range 모드를 지원합니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="multiple" width="sm" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput
+                    mode="range"
+                    width="lg"
+                    rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
+                    onChange={() => undefined}
+                  />
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Size</h2>
+            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 size 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" size="sm" width="sm" value="2026-03-07" onChange={() => undefined} />
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Width</h2>
+            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-8">
+                <Gcol gap={2} className="w-[60rem] p-2">
+                  <DatePickerInput mode="single" width="full" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="max" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="2xs" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="xs" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="md" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="lg" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="xl" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="2xl" value="2026-03-07" onChange={() => undefined} />
+                </Gcol>
+              </Gcol>
+            </Unstyled>
+
+            <h2>State</h2>
+            <p>required, readOnly, disabled 상태를 지원합니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <DatePickerInput mode="single" width="sm" required value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="sm" readOnly value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" width="sm" disabled value="2026-03-07" onChange={() => undefined} />
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Error</h2>
+            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 에러 메시지 위치 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="tl" errorMsg="top left" onChange={() => undefined} />
+                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="tc" errorMsg="top center" onChange={() => undefined} />
+                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="tr" errorMsg="top right" onChange={() => undefined} />
+                </Grow>
+                <Grow gap={8}>
+                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="bl" errorMsg="bottom left" onChange={() => undefined} />
+                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="bc" errorMsg="bottom center" onChange={() => undefined} />
+                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="br" errorMsg="bottom right" onChange={() => undefined} />
+                </Grow>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
       },
-      argTypes: { expanded: false },
     },
-    controls: { expanded: false },
   },
   argTypes: {
     mode: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['single', 'multiple', 'range'],
-      description: '날짜 선택 모드',
-      table: { category: 'Behavior' },
+      table: { category: '스타일 props' },
     },
     size: {
-      control: 'select',
-      options: ['lg', 'sm'],
-      description: '입력 크기',
-      table: { category: 'Appearance' },
+      control: { type: 'select' },
+      options: ['default', 'sm'],
+      table: { category: '스타일 props' },
     },
     width: {
-      control: 'select',
-      options: ['full', 'max', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-      description: '입력 너비',
-      table: { category: 'Appearance' },
+      control: { type: 'select' },
+      options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      table: { category: '스타일 props' },
     },
+
     required: {
-      control: 'boolean',
-      description: '필수 여부',
-      table: { category: 'State' },
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    readOnly: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
     },
     disabled: {
-      control: 'boolean',
-      description: '비활성화 여부',
-      table: { category: 'State' },
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
     },
+
     error: {
-      control: 'boolean',
-      description: '에러 상태',
-      table: { category: 'Error' },
-    },
-    errorMsg: {
-      control: 'text',
-      description: '에러 메시지',
-      table: { category: 'Error' },
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
     },
     errorPs: {
-      control: 'select',
-      options: ['tl', 'tr', 'bl', 'br'],
-      description: '에러 메시지 위치',
-      table: { category: 'Error' },
+      control: { type: 'select' },
+      options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
+      table: { category: '에러 props' },
+    },
+    errorMsg: {
+      control: { type: 'text' },
+      table: { category: '에러 props' },
+    },
+
+    id: {
+      table: { disable: true },
     },
     value: {
-      control: 'text',
-      description: '단일/다중 모드 입력 값 (YYYY-MM-DD)',
-      table: { category: 'Value' },
+      table: { disable: true },
     },
-    rangeValue: { table: { disable: true } },
+    rangeValue: {
+      table: { disable: true },
+    },
     onChange: {
-      action: 'changed',
-      description: '날짜 변경 이벤트 (date, formattedValue)',
-      table: { category: 'Events' },
+      table: { disable: true },
     },
-    id: { table: { disable: true } },
   },
   args: {
     mode: 'single',
-    size: 'lg',
+    size: 'default',
     width: 'sm',
     required: false,
+    readOnly: false,
     disabled: false,
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
-    value: '',
   },
 };
 
@@ -141,160 +281,45 @@ type Story = StoryObj<DatePickerInputStoryProps>;
 export const Default: Story = {
   render: (args) => {
     const [value, setValue] = React.useState(args.value ?? '');
-
-    React.useEffect(() => {
-      setValue(args.value ?? '');
-    }, [args.value]);
-
-    return (
-      <StoryWrap className="flex-row">
-        <StoryBox>
-          <DatePickerInput
-            {...args}
-            mode="single"
-            value={value}
-            onChange={(date, formattedValue) => {
-              setValue(formattedValue ?? '');
-              args.onChange?.(date, formattedValue);
-            }}
-          />
-        </StoryBox>
-        <StoryBox>
-          <Grow placement="cc" className="gap-4">
-            <Gcol placement="ss" className="gap-[0.4rem]">
-              <DatePickerInput mode="single" width="sm" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.4rem]">
-              <DatePickerInput mode="range" width="lg" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.4rem]">
-              <DatePickerInput mode="single" width="sm" error errorMsg="연령증가일은 필수입니다." errorPs="bl" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.4rem]">
-              <DatePickerInput mode="single" width="sm" value="2026-02-26" disabled />
-            </Gcol>
-          </Grow>
-        </StoryBox>
-      </StoryWrap>
-    );
-  },
-};
-
-export const Range: Story = {
-  render: () => {
     const [rangeValue, setRangeValue] = React.useState<{ from?: string; to?: string }>({
-      from: '2026-02-01',
-      to: '2026-02-15',
+      from: '2026-03-01',
+      to: '2026-03-07',
     });
 
-    return (
-      <DatePickerInput
-        mode="range"
-        width="lg"
-        rangeValue={rangeValue}
-        onChange={(_, formattedValue) => {
-          if (!formattedValue) {
-            setRangeValue({ from: '', to: '' });
-            return;
-          }
-
-          const parts = formattedValue.split('~').map((v) => v.trim());
-          setRangeValue({
-            from: parts[0] || '',
-            to: parts[1] || '',
-          });
-        }}
-      />
-    );
-  },
-};
-
-export const Multiple: Story = {
-  render: () => {
-    const [value, setValue] = React.useState('2026-02-26');
-
-    return (
-      <DatePickerInput
-        mode="multiple"
-        value={value}
-        width="sm"
-        onChange={(_, formattedValue) => {
-          setValue(formattedValue ?? '');
-        }}
-      />
-    );
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    mode: 'single',
-    width: 'sm',
-    value: '2026-02-26',
-    disabled: true,
-  },
-  render: (args) => <DatePickerInput {...args} />,
-};
-
-export const DisabledRange: Story = {
-  args: {
-    mode: 'range',
-    width: 'lg',
-    rangeValue: {
-      from: '2026-02-01',
-      to: '2026-02-15',
-    },
-    disabled: true,
-  },
-  render: (args) => <DatePickerInput {...args} />,
-};
-
-export const Error: Story = {
-  args: {
-    mode: 'single',
-    width: 'lg',
-    error: true,
-    errorMsg: '에러 메시지를 입력하세요.',
-    errorPs: 'tl',
-    value: '',
-  },
-  render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? '');
-    const { value: _, onChange, ...restArgs } = args;
-
     React.useEffect(() => {
       setValue(args.value ?? '');
     }, [args.value]);
 
+    if (args.mode === 'range') {
+      return (
+        <DatePickerInput
+          {...args}
+          rangeValue={rangeValue}
+          onChange={(date, formattedValue) => {
+            if (!formattedValue) {
+              setRangeValue({ from: '', to: '' });
+              args.onChange?.(date, formattedValue ?? '');
+              return;
+            }
+
+            const parts = formattedValue.split('~').map((v) => v.trim());
+            setRangeValue({ from: parts[0] || '', to: parts[1] || '' });
+            args.onChange?.(date, formattedValue);
+          }}
+        />
+      );
+    }
+
     return (
-      <StoryWrap className="flex-row">
-        <StoryBox>
-          <DatePickerInput
-            {...restArgs}
-            value={value}
-            onChange={(date, formattedValue) => {
-              setValue(formattedValue ?? '');
-              args.onChange?.(date, formattedValue);
-            }}
-          />
-        </StoryBox>
-        <StoryBox>
-          <Grow placement="cc" className="gap-2">
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <DatePickerInput width="lg" value="2026-02-26" error errorPs="tl" errorMsg="top left" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <DatePickerInput width="lg" value="2026-02-26" error errorPs="tr" errorMsg="top right" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <DatePickerInput width="lg" value="2026-02-26" error errorPs="bl" errorMsg="bottom left" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <DatePickerInput width="lg" value="2026-02-26" error errorPs="br" errorMsg="bottom right" />
-            </Gcol>
-          </Grow>
-        </StoryBox>
-      </StoryWrap>
+      <DatePickerInput
+        {...args}
+        value={value}
+        onChange={(date, formattedValue) => {
+          setValue(formattedValue ?? '');
+          args.onChange?.(date, formattedValue ?? '');
+        }}
+      />
     );
   },
 };
+ 

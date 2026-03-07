@@ -1,93 +1,203 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
-import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 import { Textarea } from '@uiux/Textarea';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Textarea> = {
-  title: 'Components/UIUX/Textarea',
+  title: 'Components/Form/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-Textarea는 여러 줄의 텍스트를 입력받기 위한 컴포넌트이다.
-메모, 상세 설명, 사유 입력 등 긴 텍스트를 다루는 폼에서 사용한다.
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br />
+            <br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Textarea 컴포넌트는 여러 줄 텍스트 입력을 위한 폼 UI 요소입니다.
+                <br />
+                기본 스타일과 outline 스타일을 지원하며, 에러 상태와 메시지 위치를 제어할 수 있습니다.
+              </p>
+            </div>
 
-- **variant**로 입력 필드 스타일을 제어한다.
-- **error / errorMsg / errorPs**로 검증 메시지를 표시한다.
-- **placeholder / disabled / aria-invalid** 등 표준 속성을 그대로 사용할 수 있다.
+            <Primary />
+            <Controls />
 
-<br>
-#### **기본 Textarea: Usage**
+            <h2>Usage</h2>
+            <p>Textarea 컴포넌트는 다양한 형태로 사용할 수 있습니다.</p>
+            <ul>
+              <li>기본 입력(default)</li>
+              <li>outline 스타일</li>
+              <li>읽기 전용/비활성화 상태</li>
+              <li>에러 메시지 및 위치 제어</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
 import { Textarea } from '@uiux/Textarea';
 
 <Textarea
-  variant="default"
-  placeholder="내용을 입력하세요"
+  variant={'default' | 'outline'}
+  placeholder={'내용을 입력하세요'}
+  readOnly={false | true}
+  disabled={false | true}
+
+  error={false | true}
+  errorMsg={'입력은 필수입니다.'}
+  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
 />
 \`\`\`
+              `}
+            </Markdown>
 
-<br>
-#### **Outline Textarea: Usage**
-\`\`\`tsx
-import { Textarea } from '@uiux/Textarea';
+            <h2>API Reference</h2>
+            <p>Textarea 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>variant</td>
+                  <td>'default', 'outline'</td>
+                  <td>Textarea 스타일</td>
+                </tr>
+                <tr>
+                  <td>placeholder</td>
+                  <td>string</td>
+                  <td>플레이스홀더 텍스트</td>
+                </tr>
+                <tr>
+                  <td>readOnly</td>
+                  <td>boolean</td>
+                  <td>읽기 전용 여부</td>
+                </tr>
+                <tr>
+                  <td>disabled</td>
+                  <td>boolean</td>
+                  <td>비활성화 여부</td>
+                </tr>
+                <tr>
+                  <td>error</td>
+                  <td>boolean</td>
+                  <td>에러 상태</td>
+                </tr>
+                <tr>
+                  <td>errorMsg</td>
+                  <td>ReactNode</td>
+                  <td>에러 메시지</td>
+                </tr>
+                <tr>
+                  <td>errorPs</td>
+                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
+                  <td>에러 메시지 위치</td>
+                </tr>
+              </tbody>
+            </table>
 
-<Textarea
-  variant="outline"
-  placeholder="상세 내용을 입력하세요"
-/>
-\`\`\`
+            <h2>Variant</h2>
+            <p>Textarea 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Textarea className="w-xs min-h-24" variant="default" value="default style" readOnly />
+                  <Textarea className="w-xs min-h-24" variant="outline" value="outline style" readOnly />
+                </Grow>
+              </Gcol>
+            </Unstyled>
 
-<br>
-#### **Error Textarea: Usage**
-\`\`\`tsx
-import { Textarea } from '@uiux/Textarea';
+            <h2>State</h2>
+            <p>readOnly, disabled 상태를 지원합니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Textarea className="w-xs min-h-24" value="읽기 전용" readOnly />
+                  <Textarea className="w-xs min-h-24" value="비활성화" disabled />
+                </Grow>
+              </Gcol>
+            </Unstyled>
 
-<Textarea
-  variant="default"
-  error
-  errorMsg="에러 메시지를 입력하세요."
-  errorPs="bl"
-  placeholder="내용을 입력하세요"
-/>
-\`\`\`
-        `,
+            <h2>Error</h2>
+            <p>Textarea 컴포넌트에서 사용할 수 있는 에러 메시지 위치 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="tl" errorMsg="top left" />
+                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="tc" errorMsg="top center" />
+                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="tr" errorMsg="top right" />
+                </Grow>
+                <Grow gap={8}>
+                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="bl" errorMsg="bottom left" />
+                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="bc" errorMsg="bottom center" />
+                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="br" errorMsg="bottom right" />
+                </Grow>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
       },
-      argTypes: { expanded: false },
     },
     controls: { expanded: false },
   },
   argTypes: {
     variant: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['default', 'outline'],
-      description: 'Textarea 스타일 유형',
-      table: { category: 'Appearance' },
+      table: { category: '스타일 props' },
     },
+
+    readOnly: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    placeholder: {
+      control: { type: 'text' },
+      table: { category: '설정 props' },
+    },
+
     error: {
-      control: 'boolean',
-      description: '에러 상태 여부',
-      table: { category: 'Error' },
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
     },
     errorMsg: {
-      control: 'text',
-      description: '에러 메시지',
-      table: { category: 'Error' },
+      control: { type: 'text' },
+      table: { category: '에러 props' },
     },
     errorPs: {
-      control: 'select',
-      options: ['tl', 'tr', 'bl', 'br'],
-      description: '에러 메시지 위치',
-      table: { category: 'Error' },
+      control: { type: 'select' },
+      options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
+      table: { category: '에러 props' },
+    },
+
+    className: {
+      table: { disable: true },
+    },
+    value: {
+      table: { disable: true },
+    },
+    onChange: {
+      table: { disable: true },
     },
   },
   args: {
     placeholder: '내용을 입력하세요',
     variant: 'default',
+    readOnly: false,
+    disabled: false,
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
@@ -99,11 +209,11 @@ type Story = StoryObj<typeof Textarea>;
 
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState((args.value as string) ?? '');
-    const { value: _, onChange, ...restArgs } = args;
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, ...restArgs } = args;
 
     React.useEffect(() => {
-      setValue((args.value as string) ?? '');
+      setValue(args.value ?? '');
     }, [args.value]);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -111,34 +221,16 @@ export const Default: Story = {
       args.onChange?.(e);
     };
 
-    return (
-      <StoryWrap className="flex-row">
-        <StoryBox>
-          <Textarea {...restArgs} value={value} onChange={handleChange} className="w-xs min-h-40" />
-        </StoryBox>
-        <StoryBox>
-          <Grow placement="cc" className="gap-2">
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <Textarea className="w-xs min-h-24" variant="outline" value="outline Textarea" readOnly />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <Textarea className="w-xs min-h-24" value="에러 Textarea" error errorMsg="에러 메시지입니다." errorPs="bl" />
-            </Gcol>
-          </Grow>
-        </StoryBox>
-      </StoryWrap>
-    );
+    return <Textarea {...restArgs} value={value} onChange={handleChange} className="w-xs min-h-40" />;
   },
 };
 
 export const Outline: Story = {
   args: {
-    variant: 'outline'
+    variant: 'outline',
   },
   render: (args) => <Textarea {...args} className="w-md min-h-40" />,
 };
-
-
 
 export const Error: Story = {
   args: {
@@ -147,33 +239,13 @@ export const Error: Story = {
     errorPs: 'tl',
   },
   render: (args) => {
-    const [value, setValue] = React.useState((args.value as string) ?? '');
-    const { value: _, onChange, ...restArgs } = args;
+    const [value, setValue] = React.useState(args.value ?? '');
+    const { value: _, ...restArgs } = args;
 
     React.useEffect(() => {
-      setValue((args.value as string) ?? '');
+      setValue(args.value ?? '');
     }, [args.value]);
 
-  
-    return (
-      <StoryWrap className="flex-row">
-        <StoryBox>
-          <Grow placement="cc" className="gap-2">
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <Textarea className="w-xs min-h-24" value="에러" error errorPs="tl" errorMsg="top left" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <Textarea className="w-xs min-h-24" value="에러" error errorPs="tr" errorMsg="top right" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <Textarea className="w-xs min-h-24" value="에러" error errorPs="bl" errorMsg="bottom left" />
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <Textarea className="w-xs min-h-24" value="에러" error errorPs="br" errorMsg="bottom right" />
-            </Gcol>
-          </Grow>
-        </StoryBox>
-      </StoryWrap>
-    );
+    return <Textarea {...restArgs} value={value} onChange={(e) => setValue(e.target.value)} className="w-xs min-h-40" />;
   },
 };

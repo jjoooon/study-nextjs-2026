@@ -1,380 +1,445 @@
-import type { Meta, StoryObj } from '@storybook/react';
+﻿import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, FormItem} from '@atoms';
-import { FormTable, FormCell} from '@common/FormTable';
-import { TableRow } from '@uiux/Table';
-import { Checkbox } from '@uiux/Checkbox';
-import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
-import { useState } from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Checkbox> = {
-    title: 'Components/UIUX/Checkbox',
-    component: Checkbox,
-    tags: ['autodocs'],
-    parameters: {
-        layout: 'centered',
-        docs: {
-            description: {
-                component: `
-Checkbox는 사용자가 여러 옵션 중에서 하나 이상의 값을 선택할 때 사용하는 컴포넌트이다.
-설정 변경, 동의/비동의, 목록 필터링 등 다양한 상황에서 활용된다.
+  title: 'Components/Form/Checkbox',
+  component: Checkbox,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br />
+            <br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Checkbox 컴포넌트는 사용자가 단일 또는 복수 옵션을 선택할 때 사용하는 폼 입력 UI입니다.
+                <br />
+                디자인 시스템에 맞춘 variant, 크기, 색상, 상태(checked/indeterminate/disabled)를 지원합니다.
+              </p>
+            </div>
 
-- **기본 체크박스** 방식과 **버튼 체크박스** 두가지로 크게 나누어진다.
-- 스타일로는 **default**, **favorite**, **noneText**, **button**이 있다.
+            <Primary />
+            <Controls />
 
-- - -
-
-<br>
-#### **기본 체크박스: Usage**
+            <h2>Usage</h2>
+            <p>Checkbox 컴포넌트는 다양한 형태로 사용할 수 있습니다.</p>
+            <ul>
+              <li>기본 체크박스(default)</li>
+              <li>아이콘형 favorite, 텍스트형 text, 라벨 미노출 noneText</li>
+              <li>토글 버튼형 button</li>
+              <li>indeterminate(부분 선택) 및 disabled 상태</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 import { useState } from 'react';
 
-const [checked, setChecked] = useState(false);
-
+const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
+// 단일선택
 <Checkbox
-  variant={"default | favorite | noneText"}
-  size={"lg | sm"}
-  color={"primary | information | secondary"}
   checked={checked}
   onCheckedChange={setChecked}
-  disabled={true | false}
+
+  variant={'default' | 'favorite' | 'noneText' | 'button' | 'text'}
+  size={'default' | 'sm'}
+  color={'primary' | 'info'}
+
+  required={false | true}
+  disabled={false | true}
+
+  error={false | true}
+  errorMsg={'선택은 필수입니다.'}
+  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
 >
   Label
 </Checkbox>
-\`\`\`
 
-<br>
-#### **버튼 체크박스: Usage**
-\`\`\`tsx
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { useState } from 'react';
+// 그룹선택
+<CheckboxGroup
+  value={values}
+  onValueChange={handleGroupChange}
 
-const [checked, setChecked] = useState(false);
+  variant={'default' | 'favorite' | 'noneText' | 'button' | 'text'}
+  size={'default' | 'sm'}
+  color={'primary' | 'info'}
 
-<Checkbox
-  variant="button"
-  size={"lg | sm"}
-  color={"primary | information | secondary"}
-  checked={checked}
-  onCheckedChange={setChecked}
-  disabled={true | false}
+  minSelected={0 | 1 | 2 | 3 ...}
+  required={false | true}
+
+  error={false | true}
+  errorMsg={'2개 이상 선택은 필수입니다.'}
+  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
 >
-  Button Label
-</Checkbox>
+  <CheckboxGroupItem value="a">옵션 A</CheckboxGroupItem>
+  <CheckboxGroupItem value="b">옵션 B</CheckboxGroupItem>
+  <CheckboxGroupItem value="c">옵션 C</CheckboxGroupItem>
+</CheckboxGroup>
 \`\`\`
-        `,
-            },
-            argTypes: { expanded: false },
-        },
-        controls: { expanded: false },
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>Checkbox 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>variant</td>
+                  <td>'default', 'favorite', 'noneText', 'button', 'text'</td>
+                  <td>체크박스 스타일</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>'default', 'sm'</td>
+                  <td>체크박스 크기</td>
+                </tr>
+                <tr>
+                  <td>color</td>
+                  <td>'primary', 'info'</td>
+                  <td>체크박스 색상 테마</td>
+                </tr>
+                <tr>
+                  <td>checked</td>
+                  <td>boolean | 'indeterminate'</td>
+                  <td>체크 상태</td>
+                </tr>
+                <tr>
+                  <td>required</td>
+                  <td>boolean</td>
+                  <td>필수 선택 상태 스타일</td>
+                </tr>
+                <tr>
+                  <td>error</td>
+                  <td>boolean</td>
+                  <td>에러 상태 여부</td>
+                </tr>
+                <tr>
+                  <td>errorMsg</td>
+                  <td>ReactNode</td>
+                  <td>에러 메시지 내용</td>
+                </tr>
+                <tr>
+                  <td>errorPs</td>
+                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
+                  <td>에러 메시지 위치</td>
+                </tr>
+                <tr>
+                  <td>disabled</td>
+                  <td>boolean</td>
+                  <td>비활성화 상태</td>
+                </tr>
+                <tr>
+                  <td>children</td>
+                  <td>ReactNode</td>
+                  <td>라벨 텍스트</td>
+                </tr>
+                <tr>
+                  <td>onCheckedChange</td>
+                  <td>(checked) =&gt; void</td>
+                  <td>체크 상태 변경 이벤트</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h2>Variant</h2>
+            <p>Checkbox 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">default</Typo>
+                  <Grow className="w-[12rem]">
+                    <Checkbox variant="default">default</Checkbox>
+                  </Grow>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">favorite</Typo>
+                  <Grow className="w-[12rem]">
+                    <Checkbox variant="favorite" />
+                  </Grow>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">noneText</Typo>
+                  <Grow className="w-[12rem]">
+                    <Checkbox variant="noneText">noneText</Checkbox>
+                  </Grow>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">button</Typo>
+                  <Grow className="w-[12rem]">
+                    <Checkbox variant="button">button</Checkbox>
+                  </Grow>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">text</Typo>
+                  <Grow className="w-[12rem]">
+                    <Checkbox variant="text">text</Checkbox>
+                  </Grow>
+                </Grow>
+                
+              </Gcol>
+            </Unstyled>
+
+            <h2>Size</h2>
+            <p>Checkbox 컴포넌트에서 사용할 수 있는 size 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Checkbox>default: 20</Checkbox>
+                  <Checkbox size="sm">sm: 14</Checkbox>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Color</h2>
+            <p>Checkbox 컴포넌트에서 사용할 수 있는 color 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Checkbox color="primary" checked>
+                    primary
+                  </Checkbox>
+                  <Checkbox color="info" checked>
+                    info
+                  </Checkbox>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>State</h2>
+            <p>checked, indeterminate, disabled 상태를 지원합니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">unchecked</Typo>
+                  <Checkbox variant="default">default</Checkbox>
+                  <Checkbox variant="favorite" />
+                  <Checkbox variant="noneText">noneText</Checkbox>
+                  <Checkbox variant="button">button</Checkbox>
+                  <Checkbox variant="text">
+                    text
+                  </Checkbox>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">hover</Typo>
+                  <Checkbox variant="default" className="border-[var(--color-border-primary)]">default</Checkbox>
+                  <Checkbox variant="favorite" className="border-[var(--color-border-primary)]" />
+                  <Checkbox variant="noneText" className="border-[var(--color-border-primary)]">noneText</Checkbox>
+                  <Checkbox variant="button" className="border-[var(--color-border-primary)]">button</Checkbox>
+                  <Checkbox variant="text" className="underline underline-offset-4 font-bold!">
+                    text
+                  </Checkbox>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">checked</Typo>
+                  <Checkbox checked variant="default">default</Checkbox>
+                  <Checkbox checked variant="favorite" />
+                  <Checkbox checked variant="noneText">noneText</Checkbox>
+                  <Checkbox checked variant="button">button</Checkbox>
+                  <Checkbox checked variant="text">
+                    text
+                  </Checkbox>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">disabled</Typo>
+                  <Checkbox disabled variant="default">default</Checkbox>
+                  <Checkbox disabled variant="favorite" />
+                  <Checkbox disabled variant="noneText">noneText</Checkbox>
+                  <Checkbox disabled variant="button">button</Checkbox>
+                  <Checkbox disabled variant="text">
+                    text
+                  </Checkbox>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">checked+disabled</Typo>
+                  <Checkbox checked disabled variant="default">default</Checkbox>
+                  <Checkbox checked disabled variant="favorite" />
+                  <Checkbox checked disabled variant="noneText">noneText</Checkbox>
+                  <Checkbox checked disabled variant="button">button</Checkbox>
+                  <Checkbox checked disabled variant="text">
+                    text
+                  </Checkbox>
+                </Grow>
+                <Grow gap={8}>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">required</Typo>
+                  <Checkbox required variant="default">default</Checkbox>
+                  <Checkbox required variant="favorite" />
+                  <Checkbox required variant="noneText">noneText</Checkbox>
+                  <Checkbox required variant="button">button</Checkbox>
+                  <Checkbox required variant="text">
+                    text
+                  </Checkbox>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Error</h2>
+            <p>Checkbox 컴포넌트에서 사용할 수 있는 에러 메시지 위치 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16" >
+                <Grow className="gap-[8rem]">
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tl">default</Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tc">default</Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tr">default</Checkbox>
+                </Grow>
+                <Grow className="gap-[8rem]">
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="bl">default</Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="bc">default</Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="br">default</Checkbox>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
+      },
     },
-    argTypes: {
-        // 1. Appearance
-        variant: {  
-            control: 'select', 
-            options: ['default', 'favorite', 'noneText', 'button', 'text'],
-            description: '체크박스 스타일 유형',
-            table: { 
-                category: 'Appearance',
-                type: { summary: 'default | favorite | noneText | button | text' },
-            },
-        },
-        size: { 
-            control: 'select', 
-            options: ['lg', 'sm'],
-            description: '체크박스 크기',
-            table: { 
-                category: 'Appearance',
-                type: { summary: 'lg | sm' },
-            },
-        },
-        color: { 
-            control: 'select', 
-            options: ['primary', 'information', 'secondary'],
-            description: '체크박스 색상',
-            table: { 
-                category: 'Appearance',
-                type: { summary: 'primary | information | secondary' },
-            },
-        },
-
-        // 2. State
-        checked: {
-            control: 'select',
-            options: [true, false, 'indeterminate'],
-            description: '체크박스 선택 상태',
-            table: { 
-                category: 'State',
-                type: { summary: 'true | false | indeterminate' },
-            },
-        },
-        disabled: {
-            control: 'boolean',
-            description: '비활성화 여부',
-            table: { category: 'State' },
-        },
-
-        // 3. Content
-        children: {
-            control: 'text',
-            description: '체크박스 라벨',
-            table: { category: 'Content' },
-        },
-
-        // 4. Events
-        onCheckedChange: { 
-            action: 'checked changed', 
-            description: '체크 상태 변경 시 발생하는 이벤트',
-            table: { category: 'Events' } 
-        },
-
-        className: { table: { disable: true } },
+  },
+  argTypes: {
+    variant: {
+      control: { type: 'select' },
+      options: ['default', 'favorite', 'noneText', 'button', 'text'],
+      table: { category: '스타일 props' },
     },
-    args: {
-        variant: 'default',
-        size: 'lg',
-        color: 'primary',
-        disabled: false,
-        children: 'Checkbox Label',
+    size: {
+      control: { type: 'select' },
+      options: ['default', 'sm'],
+      table: { category: '스타일 props' },
     },
+    color: {
+      control: { type: 'select' },
+      options: ['primary', 'info'],
+      table: { category: '스타일 props' },
+    },
+
+    checked: {
+      control: { type: 'select' },
+      options: [false, true, 'indeterminate'],
+      table: { category: '설정 props' },
+    },
+    error: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
+    errorMsg: {
+      control: { type: 'text' },
+      table: { category: '에러 props' },
+    },
+    errorPs: {
+      control: { type: 'select' },
+      options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
+      table: { category: '에러 props' },
+    },
+    required: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+
+    showErrorMsg: {
+      table: { disable: true },
+    },
+    children: {
+      table: { disable: true },
+    },
+    onCheckedChange: {
+      table: { disable: true },
+    },
+    className: {
+      table: { disable: true },
+    },
+  },
+  args: {
+    variant: 'default',
+    size: 'default',
+    color: 'primary',
+    required: false,
+    error: false,
+    errorMsg: '선택은 필수입니다.',
+    errorPs: 'bl',
+    checked: false,
+    disabled: false,
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
-const renderInteractive: Story['render'] = (args) => {
+export const Default: Story = {
+  render: (args) => {
     const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
+    const { checked: _, ...restArgs } = args;
+    const [values, setValues] = React.useState<string[]>([]);
+
+    const [groupError, setGroupError] = React.useState(false);
+    const minSelected = 2;
 
     React.useEffect(() => {
-        setChecked(args.checked ?? false);
-    }, [args.checked, args.variant]);
+      setChecked(args.checked ?? false);
+    }, [args.checked]);
 
-    const handleCheckedChange = (isChecked: boolean | 'indeterminate') => {
-        setChecked(isChecked);
-        args.onCheckedChange?.(isChecked);
+    const handleCheckedChange = (value: boolean | 'indeterminate') => {
+      setChecked(value);
+      args.onCheckedChange?.(value);
     };
 
-    const children = args.variant === 'button' ? 'Button Variant' : args.children;
-    
-    const { checked: _checked, onCheckedChange: _onCheckedChange, ...restArgs } = args;
+    const handleGroupChange = (nextValues: string[]) => {
+      setValues(nextValues);
+      if (groupError && nextValues.length >= minSelected) {
+        setGroupError(false);
+      }
+    };
 
     return (
-        <StoryWrap>
-            <StoryBox>
-                <Grow>
-                    <Checkbox {...restArgs} checked={checked} variant={args.variant} onCheckedChange={handleCheckedChange}>
-                        {children}
-                    </Checkbox>
-                </Grow>
-            </StoryBox>
-        </StoryWrap>
+      <>
+        <Gcol gap={8}>
+          <Checkbox {...restArgs} checked={checked} onCheckedChange={handleCheckedChange}>
+            단일체크
+          </Checkbox>
+
+          <Grow gap={2}>
+            <Typo tag="div" className="w-[8rem]">그룹체크</Typo>
+            <CheckboxGroup
+              value={values}
+              onValueChange={handleGroupChange}
+              
+              variant={args.variant}
+              size={args.size}
+              color={args.color}
+
+              minSelected={minSelected}
+              required={args.required}
+
+              error={args.error}
+              errorPs={args.errorPs}
+              errorMsg={`${minSelected}개 이상 선택해 주세요.`}
+
+              className="gap-3"
+            >
+              <CheckboxGroupItem value="a">옵션 A</CheckboxGroupItem>
+              <CheckboxGroupItem value="b">옵션 B</CheckboxGroupItem>
+              <CheckboxGroupItem value="c">옵션 C</CheckboxGroupItem>
+            </CheckboxGroup>
+          </Grow>
+        </Gcol>
+      </>
     );
+  },
 };
-
-export const Default: Story = { 
-    render: (args) => {
-        // 이전에는 컴포넌트 내부에서 상태를 관리했기 때문에
-        // 외부에서 제어하기 위해 추가 로직이 필요했으나
-        // 이제 props.checked / onCheckedChange로 완전히 제어 가능합니다.
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
-
-        React.useEffect(() => {
-            setChecked(args.checked ?? false);
-        }, [args.checked, args.variant]);
-
-        const handleCheckedChange = (isChecked: boolean | 'indeterminate') => {
-            setChecked(isChecked);
-            args.onCheckedChange?.(isChecked);
-        };
-
-        const children = args.variant === 'button' ? 'Button Variant' : args.children;
-
-        const { checked: _checked, onCheckedChange: _onCheckedChange, ...restArgs } = args;
-
-        return (
-            <StoryWrap className='flex-row'>
-                <StoryBox>
-                    <Checkbox {...restArgs} checked={checked} variant={args.variant} onCheckedChange={handleCheckedChange}>
-                        {children}
-                    </Checkbox>
-                </StoryBox>
-                <StoryBox>
-                    <Grow placement="cc" className="gap-2">
-                        <Gcol placement="ss" className="gap-[0.4rem]">
-                            <Checkbox variant="text">Label</Checkbox>
-                        </Gcol>
-                        <Gcol placement="ss" className="gap-[0.4rem]">
-                            <Checkbox checked>Label</Checkbox>
-                        </Gcol>
-                        <Gcol placement="ss" className="gap-[0.4rem]">
-                            <Checkbox checked="indeterminate">Label</Checkbox>
-                        </Gcol>
-                        <Gcol placement="ss" className="gap-[0.4rem]">
-                            <Checkbox disabled>Label</Checkbox>
-                        </Gcol>
-                        <Gcol placement="ss" className="flex items-[normal] gap-[0.2rem] w-[20px] h-auto">
-                            <Checkbox variant="favorite" className='h-auto'/>
-                        </Gcol>
-                        <Gcol placement="ss" className="gap-[0.4rem]">
-                            <Checkbox variant="button">Button Variant</Checkbox>
-                        </Gcol>
-                        <Gcol placement="ss" className="gap-[0.4rem]">
-                            <Checkbox variant="noneText">noneText Variant</Checkbox>
-                        </Gcol>
-                    </Grow>
-                </StoryBox>
-            </StoryWrap>
-        )
-    }
-};
-
-export const NoneText: Story = {
-    args: {
-        variant: 'noneText',
-        children: '',
-    },
-};
-
-
-export const Text: Story = {
-    args: {
-        variant: 'text',
-        children: 'Text ONLY Checkbox',
-    },
-};
-
-
-
-export const Favorite: Story = {
-    args: {
-        variant: 'favorite',
-    },
-    render: (args) => {
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
-        const { children, ...restArgs } = args;
-
-        return (
-            <div className='pd-0'>
-                <Checkbox className='w-auto h-auto' {...restArgs} checked={checked} onCheckedChange={setChecked} />
-            </div>
-        );
-    },
-};
-
-export const Button: Story = {
-     args: {
-        variant: 'button',
-        children: '버튼 체크박스'
-    },
-    render: (args) => {
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>(args.checked ?? false);
-
-        return (
-            <Checkbox variant="button" checked={checked} onCheckedChange={setChecked}>
-                {args.children}
-            </Checkbox>
-        );
-    },
-};
-
-export const Indeterminate: Story = {
-    args: {
-        checked: 'indeterminate',
-        children: '부분 선택 상태',
-    },
-    render: (args) => {
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>('indeterminate');
-        return (
-            <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
-        );
-    }
-};
-
-export const Disabled: Story = {
-    args: {
-        disabled: true,
-        children: '비활성화 상태',
-    },
-    render: (args) => {        
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>('indeterminate');
-        return (
-            <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
-        );
-    }
-};
-
-export const DisabledChecked: Story = {
-    args: {
-        disabled: true,
-        checked: true,
-        children: '비활성화된 선택 상태',
-    },
-    render: (args) => {
-        const [checked, setChecked] = React.useState<boolean | 'indeterminate'>('indeterminate');
-        return (
-            <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
-        );
-    }
-};
-
-export const Form: Story = {
-    render: () => {
-        const [checked, setChecked] = React.useState(false);
-        return (
-            <FormTable variant="boxIn" caption="약관 동의" cols={['w-[10rem] min-w-[10rem]', '']}>
-                <TableRow>
-                    <FormCell title="서비스 이용약관">
-                        <FormItem>
-                            <Checkbox checked={checked} onCheckedChange={(c) => setChecked(c === true)}>
-                                (필수) 서비스 이용약관에 동의합니다.
-                            </Checkbox>
-                        </FormItem>
-                    </FormCell>
-                </TableRow>
-            </FormTable>
-        );
-    },
-};
-
-
-export const list: Story = {
-    render: () => {
-        const [checkedList, setCheckedList] = useState([true, false, false]);
-        const handleCheckedChange = (idx: number) => (checked: boolean | 'indeterminate') => {
-            setCheckedList(
-                list => list.map((v, i) => (i === idx ? !!checked : v))
-            );
-        }
-        return (
-            <div className='flex flex-col gap-2'>
-                <div className='flex flex-row gap-2'>
-                    <Checkbox checked={checkedList[0]} onCheckedChange={handleCheckedChange(0)}>전체</Checkbox>
-                    <Checkbox checked={checkedList[1]} onCheckedChange={handleCheckedChange(1)}>선택</Checkbox>
-                    <Checkbox checked={checkedList[2]} onCheckedChange={handleCheckedChange(2)}>미선택</Checkbox>
-                </div>
-            </div>
-        );
-    },
-};
-
-export const Map: Story = {
-    render: () => {
-        const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({ all: true, selected: false, unselected: false });
-
-        const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
-            setCheckedMap(map => ({ ...map, [key]: !!checked }));
-        };
-
-        return (
-            <div className='flex flex-col gap-2'>
-                <div className='flex flex-row gap-2'>
-                    <Checkbox checked={checkedMap.all} onCheckedChange={handleCheckedChange('all')}>전체</Checkbox>
-                    <Checkbox checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>선택</Checkbox>
-                    <Checkbox checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>미선택</Checkbox>
-                </div>
-            </div>
-        );
-    },
-};
-
+ 

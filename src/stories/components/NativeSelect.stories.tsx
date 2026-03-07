@@ -2,91 +2,320 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 interface NativeSelectStoryArgs extends React.ComponentProps<typeof NativeSelect> {}
 
 const meta: Meta<NativeSelectStoryArgs> = {
-	title: 'Components/UIUX/NativeSelect',
+	title: 'Components/Form/NativeSelect',
 	component: NativeSelect,
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 		docs: {
-			description: {
-				component: `
-NativeSelect는 <select> 태그를 기반으로 요소를 스타일링한 컴포넌트입니다.
-폼에서 간단한 드롭다운 선택이 필요할 때 사용하세요.
+			page: () => {
+				return (
+					<>
+						<Title />
+						<br />
+						<br />
+						<h2>Overview</h2>
+						<div>
+							<p>
+								NativeSelect 컴포넌트는 브라우저의 기본 {'<select>'} 요소를 디자인 시스템에 맞게 스타일링한 폼 선택 UI입니다.
+								<br />
+								일관된 크기/너비/상태 표현과 에러 메시지 위치 제어를 지원합니다.
+							</p>
+						</div>
 
-- **기본 구조**: \`NativeSelect\`와 \`NativeSelectOption\` 조합으로 사용합니다.
-- **에러 표시**: \`error\` 속성을 \`true\`로 설정했을 때만 \`errorMsg\`가 표시됩니다.
-- **상태 지원**: \`required\`, \`readOnly\`, \`disabled\` 등 다양한 입력 상태를 지원합니다.
+						<Primary />
+						<Controls />
 
----
-
-<br>
-#### **기본 사용법: Usage**
+						<h2>Usage</h2>
+						<p>NativeSelect 컴포넌트는 아래와 같은 시나리오에 사용할 수 있습니다.</p>
+						<ul>
+							<li>기본 드롭다운 선택</li>
+							<li>사전 정의된 스타일(variant, size, width)</li>
+							<li>필수/읽기 전용/비활성화 상태 표시</li>
+							<li>에러 메시지와 메시지 위치 제어</li>
+						</ul>
+						<Markdown>
+							{`
 \`\`\`tsx
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useState } from 'react';
 
 <NativeSelect
-  variant="default"
-  size={"lg | sm"}
-  width={"full | max | 2xs | xs | sm | md | lg | xl | 2xl"}
-  value={value}
-  disabled={true | false}
-  readOnly={true | false}
-  required={true | false}
-  error={true | false}
-  errorMsg="선택은 필수입니다"
-  errorPs={"tl | tr | bl | br"}
+  variant={'default'}
+  size={'md' | 'sm'}
+  width={'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '??rem'}
+
+  required={false | true}
+  readOnly={false | true}
+  disabled={false | true}
+
+  error={false | true}
+  errorMsg={'선택은 필수입니다.'}
+  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
 >
   <NativeSelectOption value="">선택하세요</NativeSelectOption>
   <NativeSelectOption value="apple">Apple</NativeSelectOption>
   <NativeSelectOption value="banana">Banana</NativeSelectOption>
 </NativeSelect>
 \`\`\`
-				`,
+							`}
+						</Markdown>
+
+						<h2>API Reference</h2>
+						<p>NativeSelect 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+						<table style={{ width: '100%', borderCollapse: 'collapse' }}>
+							<thead>
+								<tr>
+									<th>prop</th>
+									<th>타입/옵션</th>
+									<th>설명</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>variant</td>
+									<td>'default'</td>
+									<td>셀렉트 스타일</td>
+								</tr>
+								<tr>
+									<td>size</td>
+									<td>'md', 'sm'</td>
+									<td>셀렉트 높이</td>
+								</tr>
+								<tr>
+									<td>width</td>
+									<td>'full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', number, '??rem'</td>
+									<td>셀렉트 너비</td>
+								</tr>
+								<tr>
+									<td>required</td>
+									<td>boolean</td>
+									<td>필수 선택 여부</td>
+								</tr>
+								<tr>
+									<td>readOnly</td>
+									<td>boolean</td>
+									<td>읽기 전용 상태</td>
+								</tr>
+
+								<tr>
+									<td>error</td>
+									<td>boolean</td>
+									<td>에러 상태</td>
+								</tr>
+								<tr>
+									<td>errorMsg</td>
+									<td>ReactNode</td>
+									<td>에러 메시지</td>
+								</tr>
+								<tr>
+									<td>errorPs</td>
+									<td>'tl' | 'tr' | 'bl' | 'br'</td>
+									<td>에러 메시지 위치</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<h2>Variant</h2>
+						<p>현재 제공되는 variant는 default 1종입니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-16">
+								<NativeSelect width="md" variant="default" value="apple" onChange={() => undefined}>
+									<NativeSelectOption value="apple">default</NativeSelectOption>
+									<NativeSelectOption value="banana">banana</NativeSelectOption>
+								</NativeSelect>
+							</Gcol>
+						</Unstyled>
+
+						<h2>Size</h2>
+						<p>NativeSelect 컴포넌트에서 사용할 수 있는 size 옵션은 다음과 같습니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-16">
+								<Grow gap={8}>
+									<NativeSelect width="md" size="md" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">md: 28</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="md" size="sm" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">sm: 25</NativeSelectOption>
+									</NativeSelect>
+								</Grow>
+							</Gcol>
+						</Unstyled>
+
+						<h2>Width</h2>
+						<p>NativeSelect 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-8">
+								<Gcol gap={2} className="w-[60rem] p-2">
+									<NativeSelect width="full" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">full</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="auto" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">auto</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="max" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">max</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="min" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">min</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="2xs" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">2xs</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="xs" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">xs</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="sm" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">sm</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="md" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">md</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="lg" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">lg</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="xl" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">xl</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="2xl" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">2xl</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="24rem" value="apple" onChange={() => undefined}>
+										<NativeSelectOption value="apple">24rem</NativeSelectOption>
+									</NativeSelect>
+								</Gcol>
+							</Gcol>
+						</Unstyled>
+
+						<h2>Required</h2>
+						<p>required 옵션이 활성화되면 강조 스타일로 표시됩니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-16">
+								<NativeSelect width="md" required value="apple" onChange={() => undefined}>
+									<NativeSelectOption value="apple">필수 선택</NativeSelectOption>
+									<NativeSelectOption value="banana">banana</NativeSelectOption>
+								</NativeSelect>
+							</Gcol>
+						</Unstyled>
+
+						<h2>ReadOnly</h2>
+						<p>readOnly 옵션이 활성화되면 사용자 입력이 차단됩니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-16">
+								<NativeSelect width="md" readOnly value="apple" onChange={() => undefined}>
+									<NativeSelectOption value="apple">readOnly</NativeSelectOption>
+									<NativeSelectOption value="banana">banana</NativeSelectOption>
+								</NativeSelect>
+							</Gcol>
+						</Unstyled>
+
+						<h2>Disabled</h2>
+						<p>disabled 옵션이 활성화되면 비활성화 스타일이 적용됩니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-16">
+								<NativeSelect width="md" disabled value="apple" onChange={() => undefined}>
+									<NativeSelectOption value="apple">disabled</NativeSelectOption>
+									<NativeSelectOption value="banana">banana</NativeSelectOption>
+								</NativeSelect>
+							</Gcol>
+						</Unstyled>
+
+						<h2>Error</h2>
+						<p>error 옵션이 활성화되면 에러 스타일과 메시지가 함께 표시됩니다.</p>
+						<Unstyled>
+							<Gcol gap={4} variant="box-line" className="p-16">
+								<Grow gap={8}>
+									<NativeSelect width="lg" value="" error errorPs="tl" errorMsg="top left" onChange={() => undefined}>
+										<NativeSelectOption value="">error</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="lg" value="" error errorPs="tr" errorMsg="top right" onChange={() => undefined}>
+										<NativeSelectOption value="">error</NativeSelectOption>
+									</NativeSelect>
+								</Grow>
+								<Grow gap={8}>
+									<NativeSelect width="lg" value="" error errorPs="bl" errorMsg="bottom left" onChange={() => undefined}>
+										<NativeSelectOption value="">error</NativeSelectOption>
+									</NativeSelect>
+									<NativeSelect width="lg" value="" error errorPs="br" errorMsg="bottom right" onChange={() => undefined}>
+										<NativeSelectOption value="">error</NativeSelectOption>
+									</NativeSelect>
+								</Grow>
+							</Gcol>
+						</Unstyled>
+					</>
+				);
 			},
-			argTypes: { expanded: false },
 		},
 		controls: { expanded: false },
 	},
 	argTypes: {
-        variant: {
-            control: 'select',
-            options: ['default'],
-            description: '스타일 유형',
-            table: { category: 'Appearance' },
-        },
+		variant: {
+			control: { type: 'select' },
+			options: ['default'],
+			table: { category: '스타일 props' },
+		},
 		size: {
-			control: 'select',
-			options: ['lg', 'sm'],
-			description: '높이 (lg | sm)',
-			table: { category: 'Appearance' },
+			control: { type: 'select' },
+			options: ['md', 'sm'],
+			table: { category: '스타일 props' },
 		},
 		width: {
-			control: 'select',
-			options: ['full', 'max', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-			table: { category: 'Appearance' },
+			control: { type: 'select' },
+			options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+			table: { category: '스타일 props' },
 		},
-		disabled: { control: 'boolean', table: { category: 'State' } },
-		required: { control: 'boolean', table: { category: 'State' } },
-		readOnly: { control: 'boolean', table: { category: 'State' } },
-		error: { control: 'boolean', table: { category: 'Error' } },
-		errorMsg: { control: 'text', table: { category: 'Error' } },
-		errorPs: { control: 'select', options: ['tl', 'tr', 'bl', 'br'], table: { category: 'Error' } },
-		className: { table: { disable: true } },
+
+		required: {
+			control: { type: 'boolean' },
+			table: { category: '설정 props' },
+		},
+		readOnly: {
+			control: { type: 'boolean' },
+			table: { category: '설정 props' },
+		},
+
+		error: {
+			control: { type: 'boolean' },
+			table: { category: '에러 props' },
+		},
+		errorPs: {
+			control: { type: 'select' },
+			options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
+			table: { category: '에러 props' },
+		},
+		errorMsg: {
+			control: { type: 'text' },
+			table: { category: '에러 props' },
+		},
+
+		disabled: {
+			table: { disable: true },
+		},
+		className: {
+			table: { disable: true },
+		},
+		children: {
+			table: { disable: true },
+		},
+		value: {
+			table: { disable: true },
+		},
+		onChange: {
+			table: { disable: true },
+		},
 	},
 	args: {
-        variant: 'default',
-		size: 'lg',
-		width: 'md',
+		variant: 'default',
+		size: 'md',
+		width: 'full',
+		disabled: false,
 		required: false,
 		readOnly: false,
 		error: false,
-		disabled: false,
 		errorMsg: '선택은 필수입니다.',
 		errorPs: 'bl',
 	},
@@ -103,105 +332,6 @@ const options = [
 
 export const Default: Story = {
 	render: (args) => {
-		const [value, setValue] = React.useState((args as any).value ?? '');
-		const { value: _v, onChange, ...restArgs } = args as any;
-
-		React.useEffect(() => {
-			setValue((args as any).value ?? '');
-		}, [(args as any).value]);
-
-		const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-			setValue(e.target.value);
-			args.onChange?.(e);
-		};
-
-		return (
-			<StoryWrap className="flex-row">
-				<StoryBox>
-					<NativeSelect {...restArgs} value={value} onChange={handleChange}>
-						<NativeSelectOption value="">{(args as any).placeholder ?? '선택하세요'}</NativeSelectOption>
-						{options.map((o) => (
-							<NativeSelectOption key={o.value} value={o.value}>
-								{o.label}
-							</NativeSelectOption>
-						))}
-					</NativeSelect>
-				</StoryBox>
-
-				<StoryBox>
-					<Grow placement="cc" className="gap-2">
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="sm" value="" readOnly>
-								<NativeSelectOption value="">읽기전용</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="sm" value="apple" required>
-								<NativeSelectOption value="apple">필수선택</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="sm" value="banana" error errorMsg="선택해주세요">
-								<NativeSelectOption value="banana">에러</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-					</Grow>
-				</StoryBox>
-			</StoryWrap>
-		);
-	},
-};
-
-export const Sizes: Story = {
-	render: () => {
-		const [valueLg, setValueLg] = React.useState('apple');
-		const [valueSm, setValueSm] = React.useState('apple');
-
-		return (
-			<div className="flex gap-[0.2rem]" >
-				<NativeSelect value={valueLg} size="lg" onChange={(e) => setValueLg(e.target.value)}>
-					<NativeSelectOption value="apple">Sizes1</NativeSelectOption>
-					<NativeSelectOption value="banana">Sizes2</NativeSelectOption>
-					<NativeSelectOption value="cherry">Sizes3</NativeSelectOption>
-				</NativeSelect>
-				<NativeSelect value={valueSm} size="sm" onChange={(e) => setValueSm(e.target.value)}>
-					<NativeSelectOption value="apple">Sizes1</NativeSelectOption>
-					<NativeSelectOption value="banana">Sizes2</NativeSelectOption>
-					<NativeSelectOption value="cherry">Sizes3</NativeSelectOption>
-				</NativeSelect>
-			</div>
-		);
-	},
-};    
-
-
-export const required: Story = {
-    render: () => {
-        return (
-            <NativeSelect aria-label="플랜 선택" width="md" required>
-                <NativeSelectOption value="">required1</NativeSelectOption>
-                <NativeSelectOption value="basic">required2</NativeSelectOption>
-                <NativeSelectOption value="premium">required3</NativeSelectOption>
-            </NativeSelect>
-        );
-    },
-};
-
-export const readOnly: Story = {
-    render: () => {
-        return (
-            <NativeSelect aria-label="플랜 선택" width="md" readOnly>
-                <NativeSelectOption value="">readOnly1</NativeSelectOption>
-                <NativeSelectOption value="basic">readOnly2</NativeSelectOption>
-                <NativeSelectOption value="premium">readOnly3</NativeSelectOption>
-            </NativeSelect>
-        );
-    },
-};
-
-export const Error: Story = {
-	args: { error: true, errorMsg: '선택해주세요', errorPs: 'tl' },
-	render: (args) => {
 		const [value, setValue] = React.useState(args.value ?? '');
 		const { value: _, onChange, ...restArgs } = args;
 
@@ -215,45 +345,14 @@ export const Error: Story = {
 		};
 
 		return (
-			<StoryWrap className="flex-row">
-				<StoryBox>
-					<NativeSelect {...restArgs} value={value} onChange={handleChange}>
-						<NativeSelectOption value="">선택하세요</NativeSelectOption>
-						{options.map((o) => (
-							<NativeSelectOption key={o.value} value={o.value}>
-								{o.label}
-							</NativeSelectOption>
-						))}
-					</NativeSelect>
-				</StoryBox>
-				<StoryBox>
-					<Grow placement="cc" className="gap-2">
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="lg" value="" error errorPs="tl" errorMsg="top left">
-								<NativeSelectOption value="">error</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="lg" value="" error errorPs="tr" errorMsg="top right">
-								<NativeSelectOption value="">error</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="lg" value="" error errorPs="bl" errorMsg="bottom left">
-								<NativeSelectOption value="">error</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-						<Gcol placement="ss" className="gap-[0.2rem]">
-							<NativeSelect width="lg" value="" error errorPs="br" errorMsg="bottom right">
-								<NativeSelectOption value="">error</NativeSelectOption>
-							</NativeSelect>
-						</Gcol>
-					</Grow>
-				</StoryBox>
-			</StoryWrap>
+			<NativeSelect {...restArgs} value={value} onChange={handleChange}>
+				<NativeSelectOption value="">선택하세요</NativeSelectOption>
+				{options.map((o) => (
+					<NativeSelectOption key={o.value} value={o.value}>
+						{o.label}
+					</NativeSelectOption>
+				))}
+			</NativeSelect>
 		);
 	},
-};    
-
-
-
+};

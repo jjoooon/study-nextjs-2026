@@ -7,7 +7,7 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
   variant?: 'default' | 'outline';
   error?: boolean;
   errorMsg?: React.ReactNode;
-  errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
 
 function Textarea({

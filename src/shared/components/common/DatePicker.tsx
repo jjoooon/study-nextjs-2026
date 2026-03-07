@@ -65,7 +65,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   required?: boolean;
   error?: boolean;
   errorMsg?: React.ReactNode;
-  errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
 
 export function DatePickerInput({
@@ -74,7 +74,7 @@ export function DatePickerInput({
   rangeValue,
   mode = 'single',
   onChange,
-  size = 'lg',
+  size = 'default',
   width = 'full',
   required = false,
   readOnly = false,
@@ -158,8 +158,16 @@ export function DatePickerInput({
     if (Array.isArray(selectedValue)) {
       const last = selectedValue[selectedValue.length - 1];
       if (last) setMonth(last);
-      const formattedValue = formatDate(last);
-      setNumericValue(formattedValue.replace(/\D/g, ''));
+
+      const formattedValue = selectedValue
+        .slice()
+        .sort((a, b) => a.getTime() - b.getTime())
+        .map((date) => formatDate(date))
+        .filter(Boolean)
+        .join(', ');
+
+      // multiple 모드는 캘린더 선택값만 표시하므로 숫자 버퍼는 비워둔다.
+      setNumericValue('');
       setInvalidDate(false);
       onChange?.(last, formattedValue);
       return;
@@ -293,6 +301,17 @@ export function DatePickerInput({
 
   // 화면에 표시할 포맷된 값 (마스킹 없음)
   const displayValue = (() => {
+    if (mode === 'multiple') {
+      if (!Array.isArray(selected) || selected.length === 0) return '';
+
+      return selected
+        .slice()
+        .sort((a, b) => a.getTime() - b.getTime())
+        .map((date) => formatDate(date))
+        .filter(Boolean)
+        .join(', ');
+    }
+
     if (numericValue.length === 0) return '';
 
     if (mode === 'range') {
@@ -340,8 +359,9 @@ export function DatePickerInput({
     ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1px solid #F4F4F4' }
     : inlineWidthStyle;
 
-  const sizeClass = size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]';
-  const buttonSizeClass = size === 'lg' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
+  const sizeClass = size === 'default' ? 'h-[2.8rem]' : 'h-[2.5rem]';
+  const buttonSizeClass = size === 'default' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
+  const isCalendarButtonDisabled = disabled || readOnly;
 
   // range 모드일 때 더 큰 너비
   // const rangeModeWidth = mode === 'range' ? 'w-[28rem]' : '';
@@ -445,11 +465,11 @@ export function DatePickerInput({
           value={displayValue}
           placeholder="____-__-__"
           disabled={disabled}
-          readOnly={readOnly}
+          readOnly={readOnly || mode === 'multiple'}
           required={required}
           aria-invalid={error || invalidDate ? true : undefined}
           aria-describedby={error || invalidDate ? errorId : undefined}
-          onChange={handleDateChange}
+          onChange={mode === 'multiple' ? undefined : handleDateChange}
           onKeyDown={(e) => {
             if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
               e.preventDefault();
@@ -466,65 +486,64 @@ export function DatePickerInput({
           data-width={width}
         />
       )}
-      {!disabled && !readOnly && (
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              id={`${finalId}-button`}
-              variant="outlined"
-              only="icon" size="md"
-              color="gray-light"
-              aria-label="Select date"
-              className={buttonSizeClass}
-            >
-              <CalendarIcon color="var(--color-icon-primary)" />
-              <span className="sr-only">Select date</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            className="w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
-            align="end"
-            alignOffset={-8}
-            sideOffset={10}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            id={`${finalId}-button`}
+            variant="outlined"
+            only="icon" size="md"
+            color="gray-light"
+            aria-label="Select date"
+            className={buttonSizeClass}
+            disabled={isCalendarButtonDisabled}
           >
-            {mode === 'range' ? (
-              <Calendar
-                mode="range"
-                defaultMonth={rangeSelected?.from}
-                selected={rangeSelected}
-                onSelect={handleSelect}
-                captionLayout="dropdown"
-                month={month}
-                onMonthChange={setMonth}
-                numberOfMonths={2}
-                className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
-                required={true}
-              />
-            ) : mode === 'multiple' ? (
-              <Calendar
-                mode="multiple"
-                selected={multiSelected}
-                onSelect={handleSelect}
-                captionLayout="dropdown"
-                month={month}
-                onMonthChange={setMonth}
-                className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
-                required={required}
-              />
-            ) : (
-              <Calendar
-                mode="single"
-                selected={singleSelected}
-                onSelect={handleSelect}
-                captionLayout="dropdown"
-                month={month}
-                onMonthChange={setMonth}
-                className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
-              />
-            )}
-          </PopoverContent>
-        </Popover>
-      )}
+            <CalendarIcon color="var(--color-icon-primary)" />
+            <span className="sr-only">Select date</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
+          align="end"
+          alignOffset={-8}
+          sideOffset={10}
+        >
+          {mode === 'range' ? (
+            <Calendar
+              mode="range"
+              defaultMonth={rangeSelected?.from}
+              selected={rangeSelected}
+              onSelect={handleSelect}
+              captionLayout="dropdown"
+              month={month}
+              onMonthChange={setMonth}
+              numberOfMonths={2}
+              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              required={true}
+            />
+          ) : mode === 'multiple' ? (
+            <Calendar
+              mode="multiple"
+              selected={multiSelected}
+              onSelect={handleSelect}
+              captionLayout="dropdown"
+              month={month}
+              onMonthChange={setMonth}
+              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              required={required}
+            />
+          ) : (
+            <Calendar
+              mode="single"
+              selected={singleSelected}
+              onSelect={handleSelect}
+              captionLayout="dropdown"
+              month={month}
+              onMonthChange={setMonth}
+              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+            />
+          )}
+        </PopoverContent>
+      </Popover>
       {(error || invalidDate) && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {invalidDate && !error ? '유효하지 않은 날짜입니다.' : errorMsg}

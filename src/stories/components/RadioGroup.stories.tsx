@@ -1,129 +1,355 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol, Grow,} from '@atoms';
-import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
+import { Gcol, Grow } from '@atoms';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type RadioGroupStoryProps = React.ComponentProps<typeof RadioGroup> &
-  // RadioGroupItem의 props를 Storybook controls에서 사용하기 위해 추가
+  // RadioGroupItem props를 Storybook controls에서 함께 제어
   Pick<React.ComponentProps<typeof RadioGroupItem>, 'variant' | 'size' | 'color'>;
 
 const meta: Meta<RadioGroupStoryProps> = {
-  title: 'Components/UIUX/RadioGroup',
+  title: 'Components/Form/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-RadioGroup은 사용자가 여러 옵션 중에서 단 하나의 값만 선택할 때 사용하는 컴포넌트이다.
-일관된 디자인 시스템을 유지하면서 다양한 선택 시나리오에 대응할 수 있도록 설계되었다.
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br />
+            <br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                RadioGroup 컴포넌트는 여러 옵션 중 단 하나를 선택할 때 사용하는 선택 UI입니다.
+                <br />
+                기본 원형 스타일과 버튼형 스타일을 제공하며, 필수/에러/비활성화 상태를 지원합니다.
+              </p>
+            </div>
 
-- **기본 라디오 그룹**과 **버튼 라디오 그룹** 두 가지 스타일을 제공한다.
-- **default** variant는 원형 라디오 버튼 형태이다.
-- **button** variant는 버튼 형태의 라디오 버튼이다.
+            <Primary />
+            <Controls />
 
----
-
-<br>
-#### **기본 라디오 그룹: Usage**
+            <h2>Usage</h2>
+            <p>RadioGroup 컴포넌트는 다양한 형태로 사용할 수 있습니다.</p>
+            <ul>
+              <li>기본 라디오 그룹(default)</li>
+              <li>버튼형 라디오 그룹(button)</li>
+              <li>size, color 스타일 제어</li>
+              <li>disabled, required, error 상태 제어</li>
+            </ul>
+            <Markdown>
+              {`
 \`\`\`tsx
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { useState } from 'react';
 
 const [value, setValue] = useState('option1');
 
-<RadioGroup value={value} onValueChange={setValue}>
-  <RadioGroupItem value="option1" id="r1">Option 1</RadioGroupItem>
-  <RadioGroupItem value="option2" id="r2">Option 2</RadioGroupItem>
-  <RadioGroupItem value="option3" id="r3">Option 3</RadioGroupItem>
+<RadioGroup
+  value={value}
+  onValueChange={setValue}
+  width={'full' | 'auto'}
+  required={false | true}
+  disabled={false | true}
+  error={false | true}
+  errorMsg={'하나를 선택해주세요.'}
+  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
+>
+  <RadioGroupItem
+    variant={'default' | 'button'}
+    size={'defalut' | 'sm'}
+    color={'primary' | 'info'}
+    value="option1"
+    id="r1"
+  >
+    Option 1
+  </RadioGroupItem>
 </RadioGroup>
 \`\`\`
+              `}
+            </Markdown>
 
-<br>
-#### **버튼 라디오 그룹: Usage**
-\`\`\`tsx
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useState } from 'react';
+            <h2>API Reference</h2>
+            <p>RadioGroup/RadioGroupItem에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>variant</td>
+                  <td>'default', 'button'</td>
+                  <td>라디오 아이템 스타일</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>'defalut', 'sm'</td>
+                  <td>라디오 아이템 크기</td>
+                </tr>
+                <tr>
+                  <td>color</td>
+                  <td>'primary', 'info'</td>
+                  <td>라디오 아이템 색상</td>
+                </tr>
+                <tr>
+                  <td>width</td>
+                  <td>'full', 'auto'</td>
+                  <td>그룹 너비</td>
+                </tr>
+                <tr>
+                  <td>required</td>
+                  <td>boolean</td>
+                  <td>필수 선택 여부</td>
+                </tr>
+                <tr>
+                  <td>disabled</td>
+                  <td>boolean</td>
+                  <td>비활성화 여부</td>
+                </tr>
+                <tr>
+                  <td>error</td>
+                  <td>boolean</td>
+                  <td>에러 상태</td>
+                </tr>
+                <tr>
+                  <td>errorMsg</td>
+                  <td>ReactNode</td>
+                  <td>에러 메시지</td>
+                </tr>
+                <tr>
+                  <td>errorPs</td>
+                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
+                  <td>에러 메시지 위치</td>
+                </tr>
+              </tbody>
+            </table>
 
-const [value, setValue] = useState('option1');
+            <h2>Variant</h2>
+            <p>RadioGroupItem의 variant 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem variant="default" value="1" id="doc-v-1">
+                      Default 1
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem variant="button" value="1" id="doc-b-1">
+                      Button 1
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+              </Gcol>
+            </Unstyled>
 
-<RadioGroup value={value} onValueChange={setValue}>
-  <RadioGroupItem variant="button" value="option1" id="b1">Option 1</RadioGroupItem>
-  <RadioGroupItem variant="button" value="option2" id="b2">Option 2</RadioGroupItem>
-  <RadioGroupItem variant="button" value="option3" id="b3">Option 3</RadioGroupItem>
-</RadioGroup>
-\`\`\`
-        `,
+            <h2>Size</h2>
+            <p>RadioGroupItem의 size 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem size="default" value="1" id="doc-s-default-1">
+                      Large
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem size="sm" value="1" id="doc-s-sm-1">
+                      Small
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Color</h2>
+            <p>RadioGroupItem의 color 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem color="primary" value="1" id="doc-c-p-1">
+                      primary
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem color="info" value="1" id="doc-c-i-1">
+                      info
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>State</h2>
+            <p>disabled, required 상태를 지원합니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <RadioGroup defaultValue="1" required className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-r-1">
+                      Required 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-r-2">
+                      Required 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" disabled className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-d-1">
+                      Disabled 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-d-2">
+                      Disabled 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>Error</h2>
+            <p>RadioGroup의 에러 메시지 위치 옵션은 다음과 같습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={8}>
+                  <RadioGroup defaultValue="1" error errorMsg="top left" errorPs="tl" className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-e-tl-1">
+                      Error 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-e-tl-2">
+                      Error 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" error errorMsg="top center" errorPs="tc" className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-e-tc-1">
+                      Error 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-e-tc-2">
+                      Error 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" error errorMsg="top right" errorPs="tr" className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-e-tr-1">
+                      Error 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-e-tr-2">
+                      Error 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+                <Grow gap={8}>
+                  <RadioGroup defaultValue="1" error errorMsg="bottom left" errorPs="bl" className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-e-bl-1">
+                      Error 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-e-bl-2">
+                      Error 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" error errorMsg="bottom center" errorPs="bc" className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-e-bc-1">
+                      Error 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-e-bc-2">
+                      Error 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" error errorMsg="bottom right" errorPs="br" className="gap-2" width="auto">
+                    <RadioGroupItem value="1" id="doc-e-br-1">
+                      Error 1
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-e-br-2">
+                      Error 2
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+          </>
+        );
       },
     },
     controls: { expanded: false },
   },
   argTypes: {
-    // RadioGroup Props
-    disabled: {
-      control: 'boolean',
-      description: '모든 라디오 아이템 비활성화 여부',
-      table: { category: 'State' },
-    },
-    required: {
-      control: 'boolean',
-      description: '필수 선택 여부',
-      table: { category: 'State' },
-    },
-    error: {
-      control: 'boolean',
-      description: '에러 상태 여부',
-      table: { category: 'Error' },
-    },
-    errorMsg: {
-      control: 'text',
-      description: '에러 메시지 내용',
-      table: { category: 'Error' },
-    },
-    errorPs: {
-      control: 'select',
-      options: ['tl', 'tr', 'bl', 'br'],
-      description: '에러 메시지 위치',
-      table: { category: 'Error' },
-    },
-    onValueChange: {
-      action: 'value changed',
-      description: '값 변경 시 발생하는 이벤트',
-      table: { category: 'Events' },
-    },
-    // RadioGroupItem Props (Story에서 제어하기 위해 argTypes에 추가)
     variant: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['default', 'button'],
-      description: '라디오 아이템 스타일 유형',
-      table: { category: 'Appearance' },
+      table: { category: '스타일 props' },
     },
     size: {
-      control: 'select',
-      options: ['large', 'small'],
-      description: '라디오 아이템 크기',
-      table: { category: 'Appearance' },
+      control: { type: 'select' },
+      options: ['default', 'sm'],
+      table: { category: '스타일 props' },
     },
     color: {
-      control: 'select',
-      options: ['primary', 'information'],
-      description: '라디오 아이템 색상 (hover/checked 상태)',
-      table: { category: 'Appearance' },
+      control: { type: 'select' },
+      options: ['primary', 'info'],
+      table: { category: '스타일 props' },
     },
-    className: { table: { disable: true } },
-    value: { table: { disable: true } },
-    defaultValue: { table: { disable: true } },
+    width: {
+      control: { type: 'select' },
+      options: ['full', 'auto'],
+      table: { category: '스타일 props' },
+    },
+
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    required: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+
+    error: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
+    errorMsg: {
+      control: { type: 'text' },
+      table: { category: '에러 props' },
+    },
+    errorPs: {
+      control: { type: 'select' },
+      options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
+      table: { category: '에러 props' },
+    },
+
+    onValueChange: {
+      table: { disable: true },
+    },
+
+    className: {
+      table: { disable: true },
+    },
+    value: {
+      table: { disable: true },
+    },
+    defaultValue: {
+      table: { disable: true },
+    },
+    children: {
+      table: { disable: true },
+    },
   },
   args: {
+    value: 'option1',
+    width: 'full',
     disabled: false,
     required: false,
     error: false,
     errorMsg: '하나를 선택해주세요.',
     errorPs: 'bl',
     variant: 'default',
-    size: 'large',
+    size: 'default',
     color: 'primary',
   },
 };
@@ -133,154 +359,23 @@ type Story = StoryObj<RadioGroupStoryProps>;
 
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState('option1');
-    const { variant, size, color, ...groupArgs } = args;
+    const [value, setValue] = React.useState(args.value ?? 'option1');
+    const { variant, size, color, value: _, ...groupArgs } = args;
 
-    return (
-      <StoryWrap className="flex-row">
-        <StoryBox>
-          <RadioGroup {...groupArgs} value={value} onValueChange={setValue} className="gap-2">
-            <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">
-              {variant === 'button' ? 'Button Option1' : 'Option1'}
-            </RadioGroupItem>
-            <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">
-              {variant === 'button' ? 'Button Option2' : 'Option2'}
-            </RadioGroupItem>
-            <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>
-              {variant === 'button' ? 'Disabled Option3' : 'Disabled Option3'}
-            </RadioGroupItem>
-          </RadioGroup>
-        </StoryBox>
-        <StoryBox>
-          <Grow placement="cc" className="gap-2">
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <RadioGroup defaultValue="1" className="gap-2">
-                <RadioGroupItem value="1" id="s1">
-                  Default1
-                </RadioGroupItem>
-                <RadioGroupItem value="2" id="s2">
-                  Default2
-                </RadioGroupItem>
-              </RadioGroup>
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <RadioGroup defaultValue="1" className="gap-2">
-                <RadioGroupItem variant="button" value="1" id="sb1">
-                  Button1
-                </RadioGroupItem>
-                <RadioGroupItem variant="button" value="2" id="sb2">
-                  Button2
-                </RadioGroupItem>
-              </RadioGroup>
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <RadioGroup defaultValue="1" disabled className="gap-2">
-                <RadioGroupItem value="1" id="sd1">
-                  Disabled1
-                </RadioGroupItem>
-                <RadioGroupItem value="2" id="sd2">
-                  Disabled2
-                </RadioGroupItem>
-              </RadioGroup>
-            </Gcol>
-            <Gcol placement="ss" className="gap-[0.2rem]">
-              <RadioGroup defaultValue="1" error errorMsg="에러!" className="gap-2">
-                <RadioGroupItem value="1" id="se1">
-                  Error1
-                </RadioGroupItem>
-                <RadioGroupItem value="2" id="se2">
-                  Error2
-                </RadioGroupItem>
-              </RadioGroup>
-            </Gcol>
-          </Grow>
-        </StoryBox>
-      </StoryWrap>
-    );
-  },
-};
+    React.useEffect(() => {
+      setValue(args.value ?? 'option1');
+    }, [args.value]);
 
-export const Button: Story = {
-  args: {
-    variant: 'button',
-  },
-  render: (args) => {
-    const [value, setValue] = React.useState('1');
-    const { variant, size, color, ...groupArgs } = args;
     return (
       <RadioGroup {...groupArgs} value={value} onValueChange={setValue} className="gap-2">
-        <RadioGroupItem variant={variant} size={size} color={color} value="1" id="b1">
-          Button 1
+        <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">
+          {variant === 'button' ? 'Button Option1' : 'Option1'}
         </RadioGroupItem>
-        <RadioGroupItem variant={variant} size={size} color={color} value="2" id="b2">
-          Button 2
+        <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">
+          {variant === 'button' ? 'Button Option2' : 'Option2'}
         </RadioGroupItem>
-        <RadioGroupItem variant={variant} size={size} color={color} value="3" id="b3">
-          Button 3
-        </RadioGroupItem>
-      </RadioGroup>
-    );
-  },
-};
-
-export const Sizes: Story = {
-  render: () => {
-    const [value, setValue] = React.useState('1');
-    return (
-      <div className="flex flex-col items-start gap-4">
-        <RadioGroup value={value} onValueChange={setValue} className="gap-2">
-          <RadioGroupItem size="large" value="1" id="l1">
-            Large
-          </RadioGroupItem>
-          <RadioGroupItem size="large" value="2" id="l2">
-            Large
-          </RadioGroupItem>
-        </RadioGroup>
-        <RadioGroup value={value} onValueChange={setValue} className="gap-2">
-          <RadioGroupItem size="small" value="1" id="s1">
-            Small
-          </RadioGroupItem>
-          <RadioGroupItem size="small" value="2" id="s2">
-            Small
-          </RadioGroupItem>
-        </RadioGroup>
-      </div>
-    );
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-  render: (args) => {
-    return (
-      <RadioGroup defaultValue="1" {...args} className="gap-2">
-        <RadioGroupItem value="1" id="dis1">
-          Option 1
-        </RadioGroupItem>
-        <RadioGroupItem value="2" id="dis2">
-          Option 2
-        </RadioGroupItem>
-      </RadioGroup>
-    );
-  },
-};
-
-export const Error: Story = {
-  args: {
-    error: true,
-    errorMsg: 'This field is required.',
-    errorPs: 'bl',
-  },
-  render: (args) => {
-    return (
-      <RadioGroup {...args} className="gap-2">
-        <RadioGroupItem value="1" id="err1">
-          Option 1
-        </RadioGroupItem>
-        <RadioGroupItem value="2" id="err2">
-          Option 2
+        <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>
+          Disabled Option3
         </RadioGroupItem>
       </RadioGroup>
     );

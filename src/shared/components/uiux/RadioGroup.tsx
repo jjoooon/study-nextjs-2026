@@ -9,23 +9,27 @@ import { cn } from '@/shared/lib/shadcn/utils';
 // RadioGroup Context to pass error state to RadioGroupItems
 const RadioGroupContext = React.createContext<{
   error?: boolean;
+  required?: boolean;
+  disabled?: boolean;
 }>({
   error: false,
+  required: false,
+  disabled: false,
 });
 
 const radioGroupItemVariants = cva(
-  'transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+  'transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-100 disabled:border-[var(--color-gray-30)] disabled:data-[state=checked]:border-[var(--color-gray-30)]',
   {
     variants: {
       variant: {
         default:
           'rounded-full border bg-[var(--color-element-inverse)] data-[state=checked]:border-[var(--color-border-gray-light)] data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
         button:
-          'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[state=checked]:bg-[#fff7f4] data-[state=checked]:text-[#ff3800] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)] data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
+          'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
       },
       size: {
-        large: '',
-        small: '',
+        default: '',
+        sm: '',
       },
       width: {
         full: 'w-full',
@@ -33,52 +37,73 @@ const radioGroupItemVariants = cva(
       },
       color: {
         primary: 'border-[var(--color-border-gray-light)] hover:border-[var(--color-element-primary)]',
-        information:
-          'border-[var(--color-border-gray-light)] hover:border-[#006ff2] data-[state=checked]:border-[#006ff2]',
+        info:'border-[var(--color-border-gray-light)] hover:border-[#006ff2]',
       },
     },
     compoundVariants: [
       // default variant + size
       {
         variant: 'default',
-        size: 'large',
+        size: 'default',
         className: 'h-[2rem] w-[2rem]',
       },
       {
         variant: 'default',
-        size: 'small',
+        size: 'sm',
         className: 'h-[1.4rem] w-[1.4rem]',
       },
       // button variant + size
       {
         variant: 'button',
-        size: 'large',
+        size: 'default',
         className: 'h-[2.8rem] px-[1rem] text-[1.4rem] tracking-[-0.042rem] w-auto',
       },
       {
         variant: 'button',
-        size: 'small',
+        size: 'sm',
         className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto',
+      },
+      {
+        variant: 'button',
+        color: 'primary',
+        className:
+          'data-[state=checked]:bg-[#fff7f4] data-[state=checked]:text-[#ff3800] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)]',
+      },
+      {
+        variant: 'button',
+        color: 'info',
+        className:
+          'data-[state=checked]:bg-[#f0f7ff] data-[state=checked]:text-[#006ff2] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]',
       },
     ],
     defaultVariants: {
       variant: 'default',
-      size: 'large',
+      size: 'default',
       color: 'primary',
       width: 'full',
     },
   }
 );
 
-const radioIndicatorVariants = cva('absolute rounded-full bg-[var(--color-element-primary)]', {
+const radioIndicatorVariants = cva('absolute rounded-full', {
   variants: {
     size: {
-      large: 'h-[1rem] w-[1rem]',
-      small: 'h-[0.6rem] w-[0.6rem]',
+      default: 'h-[1rem] w-[1rem]',
+      sm: 'h-[0.6rem] w-[0.6rem]',
+    },
+    color: {
+      primary: 'bg-[var(--color-element-primary)]',
+      info: 'bg-[#006ff2]',
+    },
+    disabled: {
+      true: 'bg-[var(--color-gray-30)]',
+      false: '',
     },
   },
   defaultVariants: {
-    size: 'large',
+    size: 'default',
+    color: 'primary',
+    disabled: false,
   },
 });
 
@@ -87,14 +112,16 @@ const RadioGroup = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & {
     error?: boolean;
     errorMsg?: React.ReactNode;
-    errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+    errorPs?: 'tl' | 'tc' |  'tr' | 'bl' | 'bc'| 'br';
     width?: 'full' | 'auto';
   }
 >(({ className, error, errorMsg, width='full', errorPs = 'bl', ...props }, ref) => {
   const errorId = React.useId();
+  const groupRequired = Boolean(props.required);
+  const groupDisabled = Boolean(props.disabled);
 
   return (
-    <RadioGroupContext.Provider value={{ error }}>
+    <RadioGroupContext.Provider value={{ error, required: groupRequired, disabled: groupDisabled }}>
       <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
         <RadioGroupPrimitive.Root
           className={cn('flex items-center justify-start flex-wrap', className)}
@@ -116,19 +143,19 @@ const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> &
     VariantProps<typeof radioGroupItemVariants> & {
-      size?: 'large' | 'small';
-      color?: 'primary' | 'information';
+      size?: 'default' | 'sm';
+      color?: 'primary' | 'info';
       children?: React.ReactNode;
       error?: boolean;
       errorMsg?: React.ReactNode;
-      errorPs?: 'tl' | 'tr' | 'bl' | 'br';
+      errorPs?: 'tl' | 'tc' |  'tr' | 'bl' | 'bc'| 'br';
     }
 >(
   (
     {
       className,
       variant,
-      size = 'large',
+      size = 'default',
       color = 'primary',
       children,
       error = false,
@@ -142,8 +169,10 @@ const RadioGroupItem = React.forwardRef<
     const generatedId = React.useId();
     const radioId = props.id || generatedId;
     const errorId = React.useId();
-    const { error: groupError } = React.useContext(RadioGroupContext);
+    const { error: groupError, required: groupRequired, disabled: groupDisabled } = React.useContext(RadioGroupContext);
     const isError = error || groupError;
+    const isRequired = Boolean(props.required || groupRequired);
+    const isDisabled = Boolean(props.disabled || groupDisabled);
 
     return (
       <div className={`relative flex items-center gap-[.5rem] ${isButton ? '' : ''}`}>
@@ -154,17 +183,17 @@ const RadioGroupItem = React.forwardRef<
             radioGroupItemVariants({ variant, size, color }),
             'relative whitespace-nowrap',
             isError && 'bg-[var(--color-input-surface-error)]! border-[var(--color-input-border-error)]!',
-            props.required && 'data-[state=checked]:border-[var(--color-input-border-highlight)]',
+            isRequired && 'data-[state=checked]:border-[var(--color-input-border-highlight)]',
             className
           )}
-          data-required={props.required}
+          data-required={isRequired}
           data-invalid={isError ? '' : undefined}
           aria-invalid={isError ? true : undefined}
           {...props}
         >
           {!isButton && (
             <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap">
-              <div className={cn(radioIndicatorVariants({ size }))} />
+              <div className={cn(radioIndicatorVariants({ size, color, disabled: isDisabled }))} />
             </RadioGroupPrimitive.Indicator>
           )}
           {children && isButton && children}

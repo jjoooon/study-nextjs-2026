@@ -5,7 +5,7 @@ import { Input } from '@uiux/Input';
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Input> = {
-  title: 'Components/UIUX/Input',
+  title: 'Components/Form/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: {
@@ -113,8 +113,8 @@ import { Input } from '@uiux/Input';
             <h2>Width</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
-                <Gcol gap={2} variant="box" className="w-[60rem] p-2">
+              <Gcol gap={4} variant="box-line" className="p-8" >
+                <Gcol gap={2} className="w-[60rem] p-2">
                   <Input width="full" value="full" />
                   <Input width="max" value="max" />
                   <Input width="min" value="min" />
@@ -133,9 +133,7 @@ import { Input } from '@uiux/Input';
             <p>Input 컴포넌트에서 사용할 수 있는 금액에 자동으로 생성되는 콤마 옵션은 다음과 같습니다.</p>
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16" >
-                <Gcol gap={2} variant="box" className="p-2">
-                  <Input width="full" commaAmount={true} value="9123814000" />
-                </Gcol>
+                <Input width="lg" commaAmount={true} value="9123814000" />
               </Gcol>
             </Unstyled>
 

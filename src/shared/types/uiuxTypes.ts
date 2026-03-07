@@ -8,7 +8,7 @@
  * - 'lg': 기본 크기, 28px
  * - 'sm': 컴팩트한 크기, 24px
  */
-export type FormItemSize = 'lg' | 'sm';
+export type FormItemSize = 'default' | 'sm';
 
 /**
  * UI/UX Form Item Width Types
