@@ -7,7 +7,7 @@ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-d
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
 
 const meta: Meta<DatePickerInputStoryProps> = {
-  title: 'Components/Form/DatePickerInput',
+  title: 'Components/Forms/DatePickerInput',
   component: DatePickerInput,
   tags: ['autodocs'],
   parameters: {

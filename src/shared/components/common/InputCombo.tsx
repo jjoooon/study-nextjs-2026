@@ -137,10 +137,10 @@ export function InputCombo({
 	};
 
 
-	// popover 위치 스타일 (fixed + body portal)
+	// popover 위치 스타일 (absolute + body portal)
 	const popoverStyle: React.CSSProperties | undefined = popoverPos
 		? {
-				position: 'fixed',
+				position: 'absolute',
 				top: popoverPos.top,
 				left: popoverPos.left,
 				// width: popoverPos.width,

@@ -7,7 +7,7 @@ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-d
 interface NativeSelectStoryArgs extends React.ComponentProps<typeof NativeSelect> {}
 
 const meta: Meta<NativeSelectStoryArgs> = {
-	title: 'Components/Form/NativeSelect',
+	title: 'Components/Forms/NativeSelect',
 	component: NativeSelect,
 	tags: ['autodocs'],
 	parameters: {

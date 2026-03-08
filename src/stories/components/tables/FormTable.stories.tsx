@@ -42,7 +42,7 @@ const toFormCellTitleNode = (value?: string): React.ReactNode => {
 };
 
 const meta: Meta<FormTableStoryProps> = {
-  title: 'Components/Table/FormTable',
+  title: 'Components/Tables/FormTable',
   component: FormTable,
   tags: ['autodocs'],
   parameters: {

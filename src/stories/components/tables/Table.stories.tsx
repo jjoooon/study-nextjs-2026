@@ -10,7 +10,7 @@ type ContentTableStoryProps = React.ComponentProps<typeof Table> & {
 };
 
 const meta: Meta<ContentTableStoryProps> = {
-  title: 'Components/Table/ContentTable',
+  title: 'Components/Tables/ContentTable',
   component: Table,
   tags: ['autodocs'],
   parameters: {

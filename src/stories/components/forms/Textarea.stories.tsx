@@ -5,7 +5,7 @@ import { Textarea } from '@uiux/Textarea';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Textarea> = {
-  title: 'Components/Form/Textarea',
+  title: 'Components/Forms/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   parameters: {

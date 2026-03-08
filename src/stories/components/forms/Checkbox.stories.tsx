@@ -5,7 +5,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'Components/Form/Checkbox',
+  title: 'Components/Forms/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   parameters: {

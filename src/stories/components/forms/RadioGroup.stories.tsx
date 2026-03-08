@@ -9,7 +9,7 @@ type RadioGroupStoryProps = React.ComponentProps<typeof RadioGroup> &
   Pick<React.ComponentProps<typeof RadioGroupItem>, 'variant' | 'size' | 'color'>;
 
 const meta: Meta<RadioGroupStoryProps> = {
-  title: 'Components/Form/RadioGroup',
+  title: 'Components/Forms/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
   parameters: {

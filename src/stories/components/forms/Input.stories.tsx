@@ -5,7 +5,7 @@ import { Input } from '@uiux/Input';
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Input> = {
-  title: 'Components/Form/Input',
+  title: 'Components/Forms/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: {
