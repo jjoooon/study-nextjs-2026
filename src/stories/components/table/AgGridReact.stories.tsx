@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Description, Primary, Stories, Title } from '@storybook/addon-docs/blocks';
+import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as React from 'react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type {
@@ -11,50 +11,52 @@ import type {
   CellClassParams,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
-import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 type GridRow = LTRA350DataType['mainBody']['agGridTable1'][number];
 
 interface AgGridReactStoryProps {
-  hideAside?: boolean;
-  rowSelection?: 'single' | 'multiple';
+  selectionMode?: 'singleRow' | 'multiRow';
+  headerCheckbox?: boolean;
+  checkboxes?: boolean;
+  enableClickSelection?: boolean;
+  showProductNameTooltip?: boolean;
 }
 
 const AgGridReactStoryComponent = (_props: AgGridReactStoryProps) => null;
 
 const meta: Meta<AgGridReactStoryProps> = {
-  title: 'Components/Common/AgGridReact',
+  title: 'Components/Table/AgGridReact',
   component: AgGridReactStoryComponent,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {
-      page: () => (
-        <>
-          <Title />
-          <Description />
-          <Primary />
-          <Stories includePrimary={false} />
-        </>
-      ),
-      description: {
-        component: `
-AgGridReact 케이스는 LTRA350MainBody 내부의 AgGrid 설정을 기준으로 구성한 스토리이다.
-컬럼 고정, 체크박스 선택, 편집 가능한 셀, 커스텀 셀 렌더러를 독립적으로 확인할 수 있다.
+      page: () => {
+        return (
+          <>
+            <Title /><br /><br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                AgGridReact 케이스는 LTRA350MainBody 내부의 AgGrid 설정을 기준으로 구성된 스토리입니다.
+                컬럼 고정, 체크박스 선택, 편집 가능한 셀, 커스텀 셀 렌더러를 독립적으로 확인할 수 있습니다.
+              </p>
+            </div>
 
----
+            <Primary />
+            <Controls />
 
-<br>
-#### **기본 AgGridReact: Usage**
+            <h2>Usage</h2>
+            <p>기본 사용 예시는 아래와 같습니다.</p>
+            <Markdown>
+              {`
 \`\`\`tsx
 import { AgGridReact } from 'ag-grid-react';
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
@@ -66,28 +68,68 @@ import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
   singleClickEdit={true}
 />
 \`\`\`
-        `,
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>스토리에서 노출하는 주요 컨트롤입니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>selectionMode</td><td>'singleRow' | 'multiRow'</td><td>행 선택 모드</td></tr>
+                <tr><td>headerCheckbox</td><td>boolean</td><td>헤더 전체 선택 체크박스</td></tr>
+                <tr><td>checkboxes</td><td>boolean</td><td>행 체크박스 표시</td></tr>
+                <tr><td>enableClickSelection</td><td>boolean</td><td>행 클릭 선택 허용</td></tr>
+                <tr><td>showProductNameTooltip</td><td>boolean</td><td>담보명 툴팁 표시 여부</td></tr>
+              </tbody>
+            </table>
+          </>
+        );
       },
       argTypes: { expanded: false },
     },
     controls: { expanded: false },
   },
   argTypes: {
-    hideAside: {
-      control: 'boolean',
-      description: '담보명 컬럼 폭 전환용 플래그',
-      table: { category: 'State' },
-    },
-    rowSelection: {
+    selectionMode: {
       control: 'select',
-      options: ['single', 'multiple'],
+      options: ['singleRow', 'multiRow'],
       description: '행 선택 모드',
       table: { category: 'Behavior' },
     },
+    headerCheckbox: {
+      control: 'boolean',
+      description: '헤더 전체 선택 체크박스 표시',
+      table: { category: 'Behavior' },
+    },
+    checkboxes: {
+      control: 'boolean',
+      description: '행 체크박스 표시',
+      table: { category: 'Behavior' },
+    },
+    enableClickSelection: {
+      control: 'boolean',
+      description: '행 클릭 선택 허용',
+      table: { category: 'Behavior' },
+    },
+    showProductNameTooltip: {
+      control: 'boolean',
+      description: '담보명 툴팁 표시 여부',
+      table: { category: 'UI' },
+    },
   },
   args: {
-    hideAside: false,
-    rowSelection: 'multiple',
+    selectionMode: 'multiRow',
+    headerCheckbox: true,
+    checkboxes: true,
+    enableClickSelection: false,
+    showProductNameTooltip: true,
   },
 };
 
@@ -96,7 +138,7 @@ type Story = StoryObj<AgGridReactStoryProps>;
 
 const productNameRenderer = (params: ICellRendererParams<GridRow>) => {
   return (
-    <Grow placement="bwc">
+    <Grow placement="bwc" className="h-full">
       <p className="truncate w-full">{params.data?.productName}</p>
       {params.data?.badge && (
         <Grow className="gap-1 shrink-0">
@@ -120,16 +162,7 @@ const duplicateRenderer = (params: ICellRendererParams<GridRow>) => {
   );
 };
 
-const buildColumnDefs = (hideAside: boolean): ColDef<GridRow>[] => [
-  {
-    headerName: '',
-    checkboxSelection: true,
-    width: 30,
-    cellClass: 'text-center p-0!',
-    sortable: false,
-    filter: false,
-    pinned: 'left',
-  },
+const columnDefs: ColDef<GridRow>[] = [
   {
     headerName: '',
     field: 'id',
@@ -143,10 +176,11 @@ const buildColumnDefs = (hideAside: boolean): ColDef<GridRow>[] => [
   {
     headerName: '담보명',
     field: 'productName',
-    width: hideAside ? 510 : 390,
+    width: 390,
     cellClass: 'text-left',
     sortable: false,
     filter: false,
+    tooltipValueGetter: (params) => params.data?.productName ?? '',
     autoHeight: true,
     pinned: 'left',
     cellRenderer: productNameRenderer,
@@ -230,25 +264,46 @@ const buildColumnDefs = (hideAside: boolean): ColDef<GridRow>[] => [
 
 const renderGrid: Story['render'] = (args) => {
   const rowData = DUMMY_LTRA350_DATA.mainBody.agGridTable1;
-  const columnDefs = React.useMemo(() => buildColumnDefs(args.hideAside ?? false), [args.hideAside]);
-
   return (
-    <StoryWrap>
-      <StoryBox className="w-full h-[80vh]">
-        <div className="h-full ag-theme-alpine" style={{ width: '100%', height: '100%' }}>
-          <AgGridReact<GridRow>
-            rowData={rowData}
-            columnDefs={columnDefs}
-            rowSelection={args.rowSelection}
-            suppressRowClickSelection={true}
-            singleClickEdit={true}
-            tooltipShowDelay={0}
-            tooltipHideDelay={9999}
-            tooltipMouseTrack={true}
-          />
-        </div>
-      </StoryBox>
-    </StoryWrap>
+    <div className="p-5">
+      <div className="w-full h-[40vh]! ag-theme-alpine">
+        <AgGridReact<GridRow>
+          rowData={rowData}
+          columnDefs={columnDefs}
+
+          rowSelection={{
+            mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
+            headerCheckbox: args.headerCheckbox ?? true,
+            checkboxes: args.checkboxes ?? true,
+            enableClickSelection: args.enableClickSelection ?? false,
+            isRowSelectable: (params) => !params.data?.locked,
+          }}
+          selectionColumnDef={{
+            width: 40,
+            pinned: 'left',
+            cellClass: 'text-center p-0!',
+            cellClassRules: {
+              'pointer-events-none': params => !!params.data?.locked,
+            },
+          }}
+
+          onGridReady={(params) => {
+            params.api.forEachNode((node) => {
+              if (node.data?.locked) node.setSelected(true);
+            });
+          }}
+          // isRowSelectable={(node) => !node.data?.locked}
+
+          suppressRowHoverHighlight={false}
+          // onSelectionChanged={handleSelectionChanged}
+          singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+          tooltipShowDelay={args.showProductNameTooltip ? 0 : undefined}
+          tooltipHideDelay={args.showProductNameTooltip ? 9999 : undefined}
+          tooltipMouseTrack={args.showProductNameTooltip ? true : undefined}
+          getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+        />
+      </div>
+    </div>
   );
 };
 

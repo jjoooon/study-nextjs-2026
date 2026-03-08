@@ -35,6 +35,7 @@ interface FormTableProps {
   cols?: string[]; // ["col-s", "", "col-l", ""]
   children?: ReactNode;
   className?: string;
+  lineTop?: boolean;
 }
 
 export const FormCell = ({
@@ -71,7 +72,7 @@ export const FormCell = ({
   );
 };
 
-export const FormTable = ({ cols, caption, children, className, variant = 'default' }: FormTableProps) => {
+export const FormTable = ({ cols, caption, children, className, variant = 'default', lineTop = true }: FormTableProps) => {
   const variantStyles = {
     default: '',
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
@@ -84,27 +85,25 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   };
 
   return (
-    <Table
-      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], className)}
-      data-variant={variant}
-    >
-      {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
-      {cols && cols.length > 0 && (
-        <colgroup>
-          {cols.map((colClass, index) => (
-            <col key={index} className={colClass || undefined} />
-          ))}
-        </colgroup>
-      )}
-      <TableBody>{children}</TableBody>
-    </Table>
+    <div className={cn('w-full', lineTop && 'border-t border-t-[.2rem] border-t-[#61554F]')}>
+      <Table
+        className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], className)}
+        data-variant={variant}
+      >
+        {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
+        {cols && cols.length > 0 && (
+          <colgroup>
+            {cols.map((colClass, index) => (
+              <col key={index} className={colClass || undefined} />
+            ))}
+          </colgroup>
+        )}
+        <TableBody>{children}</TableBody>
+      </Table>
+    </div>
   );
 };
 
 export const FormRow = ({ children }: { children: ReactNode }) => {
   return <tr>{children}</tr>;
-};
-
-export const FormTableLine = ({ children }: { children: ReactNode }) => {
-  return <div className="w-full border-t border-t-[.2rem] border-t-[#61554F]">{children}</div>;
 };

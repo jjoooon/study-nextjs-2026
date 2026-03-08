@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Button> = {
-  title: 'Components/UIUX/Button',
+  title: 'Components/Form/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {
