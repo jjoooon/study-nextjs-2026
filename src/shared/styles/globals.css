@@ -180,6 +180,10 @@ input::placeholder {
   background-color: #FFF;
 }
 
+.sbdocs.sbdocs-content {
+  max-width: 100% !important;
+}
+
 /* 1. 설계도: 변수를 Tailwind 유틸리티로 등록 */
 @theme {
   /* Spacing Scale (p-*, m-*, gap-*, etc.) */

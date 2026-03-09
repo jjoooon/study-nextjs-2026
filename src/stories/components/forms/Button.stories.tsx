@@ -173,10 +173,7 @@ import { Button } from '@uiux/Button';
       options: ['default', 'icon'],
       table: { category: '스타일 props' },
     },
-    asChild: {
-      control: { type: 'boolean' },
-      table: { category: '설정 props' },
-    },
+  
     disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
@@ -189,6 +186,10 @@ import { Button } from '@uiux/Button';
       table: { disable: true },
     },
     type: {
+      table: { disable: true },
+    },
+    asChild: {
+      control: { type: 'boolean' },
       table: { disable: true },
     },
   },
@@ -209,8 +210,3 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {
   render: (args) => <Button {...args}>{args.children}</Button>,
 };
-
-export const Playground: Story = {
-  render: (args) => <Button {...args}>{args.children}</Button>,
-};
-

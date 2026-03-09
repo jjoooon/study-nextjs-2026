@@ -32,7 +32,7 @@ function ModesPreview() {
 }
 
 const meta: Meta<typeof Calendar> = {
-  title: 'Components/UIUX/Calendar',
+  title: 'Components/Common/Calendar',
   component: Calendar,
   tags: ['autodocs'],
   parameters: {

@@ -4,7 +4,7 @@ import { Badge } from '@uiux/Badge';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Badge> = {
-  title: 'Components/UIUX/Badge',
+  title: 'Components/Common/Badge',
   component: Badge,
   tags: ['autodocs'],
   parameters: {

@@ -224,28 +224,4 @@ export const Default: Story = {
     return <Textarea {...restArgs} value={value} onChange={handleChange} className="w-xs min-h-40" />;
   },
 };
-
-export const Outline: Story = {
-  args: {
-    variant: 'outline',
-  },
-  render: (args) => <Textarea {...args} className="w-md min-h-40" />,
-};
-
-export const Error: Story = {
-  args: {
-    error: true,
-    errorMsg: '에러 메시지를 입력하세요.',
-    errorPs: 'tl',
-  },
-  render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? '');
-    const { value: _, ...restArgs } = args;
-
-    React.useEffect(() => {
-      setValue(args.value ?? '');
-    }, [args.value]);
-
-    return <Textarea {...restArgs} value={value} onChange={(e) => setValue(e.target.value)} className="w-xs min-h-40" />;
-  },
-};
+ 

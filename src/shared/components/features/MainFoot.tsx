@@ -10,7 +10,7 @@ import { ArrowNext, ResetIcon } from '@icons';
 
 export function DesignStart() {
   return (
-    <Grow placement="ec" className="w-full px-2.5 pt-2 pb-2.5 ">
+    <Grow placement="ec" className="w-full px-2.5 pt-2 pb-2.5 min-w-[93.2rem]">
       <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('초기화')}>
         <ResetIcon />
         초기화
@@ -31,7 +31,7 @@ export function DesignStart() {
 }
 export function DesignGeneration() {
   return (
-    <Grow placement="bwc" className="w-full px-2.5 pt-2 pb-2.5 ">
+    <Grow placement="bwc" className="w-full px-2.5 pt-2 pb-2.5 min-w-[93.2rem]">
       <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('추천내용 비교')}>
         추천내용 비교
       </Button>
@@ -63,7 +63,7 @@ export function LTRA350Step2() {
   const [testError, setTestError] = useState(false);
 
   return (
-    <Gcol className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
+    <Gcol className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] min-w-[93.2rem]">
       <form
         id="page2-MainForm"
         className="w-full"
@@ -74,7 +74,7 @@ export function LTRA350Step2() {
         noValidate
       >
         <Grid className="grid-cols-[1fr_auto] gap-3 px-3 pb-2 pt-2.5 w-full">
-          <FormTable className="w-auto" variant="none" cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}>
+          <FormTable lineTop={false} className="w-auto" variant="none" cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}>
             <FormRow>
               <FormCell title="만기금(환급률)">
                 <Button variant="outlined" color="gray" size="sm">
@@ -119,7 +119,7 @@ export function LTRA350Step2() {
               </FormCell>
             </FormRow>
           </FormTable>
-          <FormTable className="w-auto" variant="none" cols={['w-[7rem]', '']}>
+          <FormTable lineTop={false} className="w-auto" variant="none" cols={['w-[7rem]', '']}>
             <FormRow>
               <FormCell title="합계보험료">
                 <Input
@@ -127,7 +127,7 @@ export function LTRA350Step2() {
                   commaAmount={true}
                   value={amount}
                   clear={true}
-                  width="lg"
+                  width="lg" 
                   onChange={(e) => {
                     setAmount(e.target.value);
                     setTestError(!e.target.value);
@@ -176,7 +176,7 @@ export function LTRA350Step2() {
 
 export function LTRA350Step1() {
   return (
-    <Gcol className="w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
+    <Gcol className="w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] min-w-[93.2rem]">
       <Grow placement="bwc" className="px-3 pt-2 pb-2.5 bg-[var(--color-gray-5)]">
         <Button variant="outlined" color="gray" size="xl" onClick={() => console.log('동영상매뉴얼')}>
           동영상매뉴얼

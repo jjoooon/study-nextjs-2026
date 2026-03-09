@@ -26,7 +26,7 @@ export function PageTitle({ data }: PageTitleProps) {
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
   return (
-    <Grow placement="bwc" className="w-full py-1 gap-3">
+    <Grow placement="bwc" className="w-full py-1 gap-3 min-w-[118.4rem]">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
         <Typo tag="h2" variant="heading-lg">
           {safeData.title}
@@ -81,7 +81,7 @@ export function PageTitleProduct({ data }: PageTitleProps) {
   }));
 
   return (
-    <Grow placement="bwc" className="w-full py-1 gap-3">
+    <Grow placement="bwc" className="w-full py-1 gap-3 min-w-[118.4rem]">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
         <ViewMode state={simpleMode} onChange={setSimpleMode as (value: boolean) => void} />
         <Typo tag="h2" variant="heading-lg">
@@ -98,7 +98,7 @@ export function PageTitleProduct({ data }: PageTitleProps) {
           <MemoIcon />
           메모
         </Button>
-        <FormTable caption="계약자 관련 정보 입력하세요." cols={['', '']} variant="none">
+        <FormTable caption="계약자 관련 정보 입력하세요." cols={['', '']} variant="none" lineTop={false}>
           <FormRow>
             <FormCell title="설계번호" className="pr-[0.4rem]!">
               {/* <Input
