@@ -199,6 +199,8 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'storybook-static/**',
     'coverage',
     '.prettierrc.cjs',
+    'public',
+    'public/**',
   ]
 }, ...storybook.configs["flat/recommended"], {
   rules: {
