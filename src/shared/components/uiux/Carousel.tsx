@@ -144,7 +144,7 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
       <div
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 h-full flex-col",
+          orientation === "horizontal" ? "-ml-1" : "-mt-1 h-full flex-col",
           className
         )}
         {...props}
@@ -163,7 +163,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="carousel-item"
       className={cn(
         "min-w-0 min-h-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
+        orientation === "horizontal" ? "pl-1" : "pt-1",
         className
       )}
       {...props}
@@ -231,6 +231,44 @@ function CarouselNext({
   )
 }
 
+function CarouselPagination() {
+  const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [slideCount, setSlideCount] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!api) return;
+      setSlideCount(api.scrollSnapList().length);
+    setSelectedIndex(api.selectedScrollSnap());
+    const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
+    api.on('select', onSelect);
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
+
+  if (slideCount <= 1) return null;
+
+  return (
+    <div className="flex justify-center items-center gap-1 absolute bottom-0 w-full" data-slot="carousel-pagination">
+      {Array.from({ length: slideCount }).map((_, idx) => (
+        <button
+          key={idx}
+          type="button"
+          aria-label={`Go to slide ${idx + 1}`}
+          className={
+            "w-1 h-1 rounded-full transition-all " +
+            (selectedIndex === idx
+              ? "w-3 bg-[var(--color-coolgray-50)]"
+              : "bg-[var(--color-coolgray-40)]")
+          }
+          onClick={() => api && api.scrollTo(idx)}
+        />
+      ))}
+    </div>
+  );
+}
+
 export {
   type CarouselApi,
   Carousel,
@@ -239,4 +277,5 @@ export {
   CarouselPrevious,
   CarouselNext,
   useCarousel,
+  CarouselPagination,
 }

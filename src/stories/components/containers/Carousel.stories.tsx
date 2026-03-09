@@ -161,10 +161,3 @@ export const Default: Story = {
   },
 };
 
-export const Vertical: Story = {
-  args: {
-    orientation: 'vertical',
-    className: 'h-104 w-60',
-  },
-  render: (args) => <CarouselPreview orientation={args.orientation} className={args.className} />,
-};
