@@ -183,6 +183,8 @@ input::placeholder {
 .sbdocs.sbdocs-content {
   max-width: 100% !important;
 }
+[data-state="active"] .vertical-icon-hide {display: block;}
+.vertical-icon-hide {display: none;}
 
 /* 1. 설계도: 변수를 Tailwind 유틸리티로 등록 */
 @theme {
@@ -300,6 +302,7 @@ input::placeholder {
   --color-primary-15: #FFCCBE;
   --color-primary-10: #FFEFEA;
   --color-primary-5: #FFF7F4;
+  
   --color-gray-95: #131416;
   --color-gray-90: #1E2124;
   --color-gray-80: #323232;

@@ -166,7 +166,3 @@ type Story = StoryObj<typeof Badge>;
 export const Default: Story = {
   render: (args) => <Badge {...args}>{args.children}</Badge>,
 };
-
-export const Playground: Story = {
-  render: (args) => <Badge {...args}>{args.children}</Badge>,
-};
