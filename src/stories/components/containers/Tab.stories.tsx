@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
-import { Grow } from '@atoms';
+import { Gcol, Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabHead } from '@common/TabHead';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@uiux/Tabs';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 import { Button } from '@uiux/Button';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 import { useTabs } from '@/shared/hooks/useTabs';
-import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Containers/Tabs',
@@ -19,105 +19,106 @@ const meta: Meta<typeof Tabs> = {
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-탭은 버튼을 눌러 상호배타적인 여러 개의 콘텐츠 섹션을 전환할 수 있는 컴포넌트이다.    
-콘텐츠 섹션은 동일한 영역 내에서 전환되기 때문에 정보를 탐색하는 맥락을 유지할 수 있고 작은 공간에 많은 양의 콘텐츠를 효과적으로 표현할 수 있다.
+      page: () => {
+        return (
+          <>
+            <Title /><br /><br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Tabs 컴포넌트는 상호 배타적인 여러 콘텐츠 영역을 하나의 화면에서 전환해 보여주는 UI입니다.
+                <br />
+                기본 탭(`Tabs`)과 페이징 탭(`TabHead`) 두 가지 패턴을 지원하며, `default`/`sub`/`box` 스타일을 제공합니다.
+              </p>
+            </div>
 
-- **기본 탭** 방식과 **페이징 탭** 두가지로 크게 나누어진다. 
-- 스타일로는 **default**, **sub**, **box**가 있다.
+            <Primary />
+            <Controls />
 
-- - -
+            <h2>Usage</h2>
+            <p>기본 탭과 페이징 탭은 아래와 같이 사용할 수 있습니다.</p>
 
-<br>
-#### **기본 탭: Usage**
+            <h3>기본 탭</h3>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from "@uiux/Tabs";
-import { useTabs } from "@/shared/hooks/useTabs";
+import { Tabs, TabsContent, TabsList, TabsLine, TabsTrigger } from '@uiux/Tabs';
+import { useTabs } from '@/shared/hooks/useTabs';
 
-const {
-  tabs: name_tabs,
-  active: name_active,
-  setActive: name_setActive,
-  handleRemove: name_handleRemove,
-} = useTabs(DATA_TABS_1);
+const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS_1);
 
 <Tabs
-  variant={"default | sub | box"}
-  removable={true | false}
-  onRemove={name_handleRemove}
-  value={name_active}
-  onValueChange={name_setActive}
-  className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+  variant={'default'}
+  removable={false}
+  onRemove={handleRemove}
+  value={active}
+  onValueChange={setActive}
 >
   <TabsLine>
     <TabsList>
-      {name_tabs.map((tab) => (
+      {tabs.map((tab) => (
         <TabsTrigger value={tab.value} key={tab.value}>
           {tab.label}
         </TabsTrigger>
       ))}
     </TabsList>
   </TabsLine>
-  {name_tabs.map((tab) => (
-    <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+  {tabs.map((tab) => (
+    <TabsContent value={tab.value} key={tab.value}>
       {tab.label}
     </TabsContent>
   ))}
 </Tabs>
 \`\`\`
+              `}
+            </Markdown>
 
-<br>
-#### **페이징 탭: Usage**
+            <h3>페이징 탭</h3>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from "@uiux/Tabs";
-import { Button } from "@uiux/Button";
 import { TabHead } from '@common/TabHead';
-import { useTabs } from "@/shared/hooks/useTabs";
+import { useTabs } from '@/shared/hooks/useTabs';
 
-const {
-  tabs: name_tabs,
-  active: name_active,
-  setActive: name_setActive,
-  handleRemove: name_handleRemove,
-} = useTabs(DATA_TABS_1);
+const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS_3);
 
-<TabHead 
-  variant={"default | sub | box"}
-  data={name_tabs}
-  active={name_active}
-  setActive={name_setActive}
-  removable={true | false}
-  onRemove={name_handleRemove}
+<TabHead
+  data={tabs}
+  active={active}
+  setActive={setActive}
+  removable={false}
+  onRemove={handleRemove}
   visibleCount={4}
-  getValue={tab => String(tab.value)}
-  renderButtons={
-    //추가 버튼이 필요한 경우
-  }
-  renderTab={tab => (
-    //탭 렌더링 커스텀마이징 필요한 경우
-  )}
-  renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
-    <Button
-      variant="text"
-      key={String(tab.value)}
-      onClick={() => {
-        setActive(String(tab.value));
-        const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-        if (idx !== -1) {
-          const page = Math.floor(idx / visibleCount);
-          setVisibleStart(page * visibleCount);
-        }
-      }}
-    >
-      //리스트 형식으로 드롭다운 아이템이 필요한 경우
-    </Button>
-  )}
+  variant={'default'}
+  getValue={(tab) => String(tab.value)}
 >
-  하단내용
+  내용
 </TabHead>
 \`\`\`
-        `,
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>스토리에서 자주 사용하는 주요 prop은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>variant</td><td>'default' | 'sub' | 'box'</td><td>탭 스타일</td></tr>
+                <tr><td>removable</td><td>boolean</td><td>탭 제거 가능 여부</td></tr>
+                <tr><td>value</td><td>string</td><td>현재 활성 탭 값</td></tr>
+                <tr><td>onValueChange</td><td>{'(value: string) => void'}</td><td>활성 탭 변경 핸들러</td></tr>
+                <tr><td>onRemove</td><td>{'(value: string) => void'}</td><td>탭 삭제 핸들러</td></tr>
+                <tr><td>visibleCount</td><td>number</td><td>페이징 탭의 노출 개수(`TabHead`)</td></tr>
+              </tbody>
+            </table>
+          </>
+        );
       },
       argTypes: { expanded: false },
     },
@@ -443,10 +444,126 @@ export const Default: Story = {
       handleRemove: pagination_handleRemove,
     } = useTabs(DATA_TABS_3);
     return (
-      <StoryWrap>
-        <StoryBox>
+        <Gcol gap={4} className="w-full">
+          <h3 className="font-bold">Default Tabs</h3>
+          <Grow className="p-16">
+            <Tabs
+              variant={args.variant}
+              removable={args.removable}
+              onRemove={default_handleRemove}
+              value={default_active}
+              onValueChange={default_setActive}
+              className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+            >
+              <TabsLine>
+                <TabsList>
+                  {default_tabs.map((tab) => (
+                    <TabsTrigger value={tab.value} key={tab.value}>
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </TabsLine>
+              {default_tabs.map((tab) => (
+                <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+                  {tab.label}
+                </TabsContent>
+              ))}
+            </Tabs>
+          </Grow>
+          <h3 className="font-bold mt-4">Pagination Tabs</h3>
+          <Grow className="p-16">
+            <TabHead 
+              data={pagination_tabs}
+              active={pagination_active}
+              setActive={pagination_setActive}
+              removable={args.removable}
+              onRemove={pagination_handleRemove}
+              visibleCount={4}
+              variant={args.variant}
+              getValue={tab => String(tab.value)}
+              renderButtons={
+                <Grow className="gap-1">
+                  <Button variant="outlined" color="gray" size="md">
+                    버튼1 
+                  </Button>
+                  <Button variant="outlined" color="gray" size="md">
+                    버튼2
+                  </Button>
+                </Grow>
+              }
+              renderTab={tab => (
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <div>
+                      <span className="flex items-center">
+                        <span className="max-w-20 truncate block">{tab.name}</span>
+                        <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                      </span>
+                      {tab.error && (
+                        <ErrorMsg aria-live="polite" show={true} position="tl" id="test">
+                          입력하세요.
+                        </ErrorMsg>
+                      )}
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <BulletList>
+                      {tab.info.map((info, index) => (
+                        <BulletListItem key={index} type="dot">
+                          {info}
+                        </BulletListItem>
+                      ))}
+                    </BulletList>
+                  </HoverCardContent>
+                </HoverCard>
+              )}
+              renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
+                <Button
+                  variant="text"
+                  key={String(tab.value)}
+                  onClick={() => {
+                    setActive(String(tab.value));
+                    const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                    if (idx !== -1) {
+                      const page = Math.floor(idx / visibleCount);
+                      setVisibleStart(page * visibleCount);
+                    }
+                  }}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="block">{tab.name}</span>
+                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                  </span>
+                </Button>
+              )}
+            >
+              내용
+            </TabHead>
+          </Grow>
+        </Gcol>
+    );
+  },
+};
+export const TabsDefault: Story = {
+  parameters: {
+    controls: {
+      exclude: ['variant'],
+    },
+  },
+  render: (args) => {
+    const {
+      tabs: default_tabs,
+      active: default_active,
+      setActive: default_setActive,
+      handleRemove: default_handleRemove,
+    } = useTabs(DATA_TABS_1);
+    return (
+      <Gcol gap={4} className="w-full">
+        <h3 className="font-bold">Tabs Default</h3>
+        <Grow className="p-16">
           <Tabs
-            variant={args.variant}
+            variant="default"
             removable={args.removable}
             onRemove={default_handleRemove}
             value={default_active}
@@ -468,8 +585,117 @@ export const Default: Story = {
               </TabsContent>
             ))}
           </Tabs>
-        </StoryBox>
-        <StoryBox>
+        </Grow>
+      </Gcol>
+    );
+  },
+};
+export const TabsSub: Story = {
+  parameters: {
+    controls: {
+      exclude: ['variant'],
+    },
+  },
+  render: (args) => {
+    // variant를 고정
+    const {
+      tabs: sub_tabs,
+      active: sub_active,
+      setActive: sub_setActive,
+      handleRemove: sub_handleRemove,
+    } = useTabs(DATA_TABS_1);
+    return (
+      <Gcol gap={4} className="w-full">
+        <h3 className="font-bold">Tabs Sub</h3>
+        <Grow className="p-16">
+          <Tabs
+            variant="sub"
+            removable={args.removable}
+            onRemove={sub_handleRemove}
+            value={sub_active}
+            onValueChange={sub_setActive}
+            className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+          >
+            <TabsLine>
+              <TabsList>
+                {sub_tabs.map((tab) => (
+                  <TabsTrigger value={tab.value} key={tab.value}>
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </TabsLine>
+            {sub_tabs.map((tab) => (
+              <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+                {tab.label}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </Grow>
+      </Gcol>
+    );
+  },
+};
+export const TabsBox: Story = {
+  parameters: {
+    controls: {
+      exclude: ['variant'],
+    },
+  },
+  render: (args) => {
+    args.variant = 'box';
+     const {
+      tabs: box_tabs,
+      active: box_active,
+      setActive: box_setActive,
+      handleRemove: box_handleRemove,
+    } = useTabs(DATA_TABS_2);
+    return (
+      <Gcol gap={4} className="w-full">
+        <h3 className="font-bold">Tabs Box</h3>
+        <Grow className="p-16">
+          <Tabs
+            variant="box"
+            removable={args.removable}
+            onRemove={box_handleRemove}
+            value={box_active}
+            onValueChange={box_setActive}
+            className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
+          >
+            <TabsLine>
+              <TabsList>
+                {box_tabs.map((tab) => (
+                  <TabsTrigger value={tab.value} key={tab.value}>
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </TabsLine>
+            {box_tabs.map((tab) => (
+              <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
+                {tab.label}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </Grow>
+      </Gcol>
+    );
+  },
+};
+
+export const TabsPagination: Story = {
+  render: (args) => {
+    const {
+      tabs: pagination_tabs,
+      active: pagination_active,
+      setActive: pagination_setActive,
+      handleRemove: pagination_handleRemove,
+    } = useTabs(DATA_TABS_3);
+
+    return (
+      <Gcol gap={4} className="w-full">
+        <h3 className="font-bold">Tabs Pagination</h3>
+        <Grow className="p-16">
           <TabHead 
             data={pagination_tabs}
             active={pagination_active}
@@ -492,17 +718,10 @@ export const Default: Story = {
             renderTab={tab => (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <div>
-                    <span className="flex items-center">
-                      <span className="max-w-20 truncate block">{tab.name}</span>
-                      <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                    </span>
-                    {tab.error && (
-                      <ErrorMsg aria-live="polite" show={true} position="tl" id="test">
-                        입력하세요.
-                      </ErrorMsg>
-                    )}
-                  </div>
+                  <span className="flex items-center">
+                    <span className="max-w-20 truncate block">{tab.name}</span>
+                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                  </span>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <BulletList>
@@ -537,204 +756,8 @@ export const Default: Story = {
           >
             내용
           </TabHead>
-        </StoryBox>
-      </StoryWrap>
-    );
-  },
-};
-export const TabsDefault: Story = {
-  parameters: {
-    controls: {
-      exclude: ['variant'],
-    },
-  },
-  render: (args) => {
-    const {
-      tabs: default_tabs,
-      active: default_active,
-      setActive: default_setActive,
-      handleRemove: default_handleRemove,
-    } = useTabs(DATA_TABS_1);
-    return (
-      <Tabs
-        variant="default"
-        removable={args.removable}
-        onRemove={default_handleRemove}
-        value={default_active}
-        onValueChange={default_setActive}
-        className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
-      >
-        <TabsLine>
-          <TabsList>
-            {default_tabs.map((tab) => (
-              <TabsTrigger value={tab.value} key={tab.value}>
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </TabsLine>
-        {default_tabs.map((tab) => (
-          <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
-            {tab.label}
-          </TabsContent>
-        ))}
-      </Tabs>
-    );
-  },
-};
-export const TabsSub: Story = {
-  parameters: {
-    controls: {
-      exclude: ['variant'],
-    },
-  },
-  render: (args) => {
-    // variant를 고정
-    const {
-      tabs: sub_tabs,
-      active: sub_active,
-      setActive: sub_setActive,
-      handleRemove: sub_handleRemove,
-    } = useTabs(DATA_TABS_1);
-    return (
-      <Tabs
-        variant="sub"
-        removable={args.removable}
-        onRemove={sub_handleRemove}
-        value={sub_active}
-        onValueChange={sub_setActive}
-        className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
-      >
-        <TabsLine>
-          <TabsList>
-            {sub_tabs.map((tab) => (
-              <TabsTrigger value={tab.value} key={tab.value}>
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </TabsLine>
-        {sub_tabs.map((tab) => (
-          <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
-            {tab.label}
-          </TabsContent>
-        ))}
-      </Tabs>
-    );
-  },
-};
-export const TabsBox: Story = {
-  parameters: {
-    controls: {
-      exclude: ['variant'],
-    },
-  },
-  render: (args) => {
-    args.variant = 'box';
-     const {
-      tabs: box_tabs,
-      active: box_active,
-      setActive: box_setActive,
-      handleRemove: box_handleRemove,
-    } = useTabs(DATA_TABS_2);
-    return (
-      <Tabs
-        variant="box"
-        removable={args.removable}
-        onRemove={box_handleRemove}
-        value={box_active}
-        onValueChange={box_setActive}
-        className="grid grid-rows-[auto_1fr] w-full h-full gap-[1rem]"
-      >
-        <TabsLine>
-          <TabsList>
-            {box_tabs.map((tab) => (
-              <TabsTrigger value={tab.value} key={tab.value}>
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </TabsLine>
-        {box_tabs.map((tab) => (
-          <TabsContent value={tab.value} key={tab.value} className="w-full h-full relative">
-            {tab.label}
-          </TabsContent>
-        ))}
-      </Tabs>
-    );
-  },
-};
-
-export const TabsPagination: Story = {
-  render: (args) => {
-    const {
-      tabs: pagination_tabs,
-      active: pagination_active,
-      setActive: pagination_setActive,
-      handleRemove: pagination_handleRemove,
-    } = useTabs(DATA_TABS_3);
-
-    return (
-      <TabHead 
-        data={pagination_tabs}
-        active={pagination_active}
-        setActive={pagination_setActive}
-        removable={args.removable}
-        onRemove={pagination_handleRemove}
-        visibleCount={4}
-        variant={args.variant}
-        getValue={tab => String(tab.value)}
-        renderButtons={
-          <Grow className="gap-1">
-            <Button variant="outlined" color="gray" size="md">
-              버튼1 
-            </Button>
-            <Button variant="outlined" color="gray" size="md">
-              버튼2
-            </Button>
-          </Grow>
-        }
-        renderTab={tab => (
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <span className="flex items-center">
-                <span className="max-w-20 truncate block">{tab.name}</span>
-                <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-              </span>
-            </HoverCardTrigger>
-            <HoverCardContent>
-              <BulletList>
-                {tab.info.map((info, index) => (
-                  <BulletListItem key={index} type="dot">
-                    {info}
-                  </BulletListItem>
-                ))}
-              </BulletList>
-            </HoverCardContent>
-          </HoverCard>
-        )}
-        renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
-          <Button
-            variant="text"
-            key={String(tab.value)}
-            onClick={() => {
-              setActive(String(tab.value));
-              const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-              if (idx !== -1) {
-                const page = Math.floor(idx / visibleCount);
-                setVisibleStart(page * visibleCount);
-              }
-            }}
-          >
-            <span className="flex items-center gap-2">
-              <span className="block">{tab.name}</span>
-              <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-            </span>
-          </Button>
-        )}
-      >
-        내용
-      </TabHead>
+        </Grow>
+      </Gcol>
     );
   },
 };

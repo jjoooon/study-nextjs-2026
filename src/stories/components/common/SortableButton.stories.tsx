@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
 import { SortableButton } from '@common/SortableButton';
-import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type SortOrder = 'asc' | 'desc' | 'none';
 
@@ -17,31 +17,61 @@ const meta: Meta<SortableButtonStoryProps> = {
   parameters: {
     layout: 'centered',
     docs: {
-      description: {
-        component: `
-SortableButton은 컬럼 정렬 상태를 표시하고 정렬 변경 이벤트를 발생시키는 버튼 컴포넌트이다.
-현재 정렬 컬럼과 정렬 방향(asc/desc/none)에 따라 아이콘이 자동으로 바뀐다.
+      page: () => {
+        return (
+          <>
+            <Title /><br /><br />
+            <h2>Overview</h2>
+            <div>
+              <p>
+                SortableButton은 컬럼 정렬 상태를 표시하고 정렬 변경 이벤트를 발생시키는 버튼 컴포넌트입니다.<br />
+                현재 정렬 컬럼과 정렬 방향(asc/desc/none)에 따라 아이콘이 자동으로 바뀝니다.
+              </p>
+            </div>
 
----
+            <Primary />
+            <Controls />
 
-<br>
-#### **SortableButton: Usage**
+            <h2>Usage</h2>
+            <p>SortableButton 컴포넌트는 정렬 대상 컬럼 키와 현재 정렬 상태를 전달받아 동작합니다.</p>
+            <Markdown>
+              {`
 \`\`\`tsx
-import { SortableButton } from '@/shared/components/common';
+import { SortableButton } from '@/shared/components/common/SortableButton';
 
 <SortableButton
   label="보험료"
   columnKey="premium"
-  currentSortColumn={"premium"}
-  currentSortOrder={"asc | desc | none"}
+  currentSortColumn="premium"
+  currentSortOrder="asc"
   onSort={(columnKey) => console.log(columnKey)}
 />
 \`\`\`
-        `,
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>SortableButton 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>label</td><td>string</td><td>버튼 라벨 텍스트</td></tr>
+                <tr><td>columnKey</td><td>string</td><td>정렬 대상 컬럼 키</td></tr>
+                <tr><td>currentSortColumn</td><td>string | null</td><td>현재 정렬된 컬럼 키</td></tr>
+                <tr><td>currentSortOrder</td><td>'asc' | 'desc' | 'none'</td><td>현재 정렬 방향</td></tr>
+                <tr><td>onSort</td><td>(columnKey: string) ={'>'} void</td><td>정렬 클릭 이벤트 핸들러</td></tr>
+              </tbody>
+            </table>
+          </>
+        );
       },
-      argTypes: { expanded: false },
     },
-    controls: { expanded: false },
   },
   argTypes: {
     // 1. Content
@@ -113,27 +143,18 @@ export const Default: Story = {
     };
 
     return (
-      <StoryWrap className="flex-row">
-        <StoryBox>
-          <Grow placement="sc">
-            <SortableButton
-              label={args.label}
-              columnKey={args.columnKey}
-              currentSortColumn={currentSortColumn}
-              currentSortOrder={currentSortOrder}
-              onSort={handleSort}
-            />
-          </Grow>
-        </StoryBox>
-
-        <StoryBox>
-          <Gcol className="gap-2">
-            <Typo variant="body-sm" color="gray">
-              currentSortOrder: {currentSortOrder}
-            </Typo>
-          </Gcol>
-        </StoryBox>
-      </StoryWrap>
+      <Gcol className="gap-4 items-center">
+        <SortableButton
+          label={args.label}
+          columnKey={args.columnKey}
+          currentSortColumn={currentSortColumn}
+          currentSortOrder={currentSortOrder}
+          onSort={handleSort}
+        />
+        <Typo variant="body-sm" color="gray">
+          currentSortOrder: {currentSortOrder}
+        </Typo>
+      </Gcol>
     );
   },
 };

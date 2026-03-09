@@ -31,7 +31,7 @@ const meta: Meta<typeof Badge> = {
               <li>기본 상태 표시</li>
               <li>variant + color 조합</li>
               <li>크기 변경 (sm, md, lg)</li>
-              <li>asChild를 통한 링크/버튼 형태</li>
+              <li>asChild를 통한 링크/버튼 형태</li> 
             </ul>
             <Markdown>
               {`
