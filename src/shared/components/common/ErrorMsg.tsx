@@ -94,12 +94,12 @@ export function ErrorMsg({
   if (!show) return null;
 
   return (
-    <div
+    <span
       id={id}
       data-component="error-msg"
       ref={containerRef}
       className={cn(
-        'absolute z-10 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT',
+        'block absolute z-10 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT',
         'after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]',
         'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 ',
         positionStyles[position]
@@ -107,11 +107,11 @@ export function ErrorMsg({
     >
       <Typo
         variant="body-sm"
-        tag="div"
-        className="relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
+        tag="span"
+        className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
       >
         {children}
       </Typo>
-    </div>
+    </span>
   );
 }

@@ -1,4 +1,4 @@
-'user client';
+    'user client';
 
 import React from 'react';
 import { Gcol, Grow, Grid, Typo } from '@atoms';

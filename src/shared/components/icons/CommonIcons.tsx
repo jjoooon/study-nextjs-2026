@@ -651,7 +651,6 @@ export const HashIcon: React.FC<IconProps> = ({ className = '', size = 14, color
   </svg>
 );
 
-
 export const RefIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -670,7 +669,6 @@ export const RefIcon: React.FC<IconProps> = ({ className = '', size = 10, color 
   </svg>
 );
 
-
 export const QuestionMark: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -686,3 +684,15 @@ export const QuestionMark: React.FC<IconProps> = ({ className = '', size = 14, c
 </svg>
 );
 
+export const FlagCheckIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(16)}
+    height={toRem(18)}
+    viewBox="0 0 16 18"
+    fill="none"
+    className={className}
+  >
+    <path d="M12.4457 0H3.55429C1.6 0 0 1.56283 0 3.47172V16.153C0 17.7716 1.18857 18.4637 2.64 17.6712L7.13143 15.2265C7.61143 14.9697 8.38857 14.9697 8.85714 15.2265L13.3486 17.6712C14.8114 18.4526 16 17.7716 16 16.153V3.47172C16 1.56283 14.4 0 12.4457 0Z" fill={color}/>
+  </svg>
+);
