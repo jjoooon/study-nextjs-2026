@@ -240,7 +240,7 @@ export function LTRA350_1_MainBody({
                       color="primary"
                       checked={checked}
                       onCheckedChange={(c) => setChecked(c === true)}
-                      size="lg"
+                      size="sm"
                       variant="default"
                     >
                       가족연계할인
@@ -251,7 +251,6 @@ export function LTRA350_1_MainBody({
                   </FormCell>  
                 </FormRow>
              </FormTable>
-             <FormTableLine>
               <FormTable caption="행/열 병합 케이스" cols={['w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem]', 'w-[calc(50%-14rem)]']}>
                 <FormRow>
                   <FormCell title={<b className="text-[var(--color-text-primary)] text-[15px]">계약자</b>} >
@@ -265,7 +264,7 @@ export function LTRA350_1_MainBody({
                           color="primary"
                           checked={checked}
                           onCheckedChange={(c) => setChecked(c === true)}
-                          size="lg"
+                          size="sm"
                           variant="default"
                         >
                           개인사업자
@@ -311,7 +310,7 @@ export function LTRA350_1_MainBody({
                       color="primary"
                       checked={checked}
                       onCheckedChange={(c) => setChecked(c === true)}
-                      size="lg"
+                      size="sm"
                       variant="default"
                     >
                       가입
@@ -333,7 +332,6 @@ export function LTRA350_1_MainBody({
                   </FormCell>    
                 </FormRow>
               </FormTable>
-             </FormTableLine>
             </Gcol>
           </div>
         </TabHead>
