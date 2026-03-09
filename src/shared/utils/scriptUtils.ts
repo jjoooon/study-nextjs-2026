@@ -9,6 +9,11 @@ export interface LoadScriptOptions {
   attributes?: Record<string, string>;
 }
 
+export interface WaitForGlobalOptions {
+  timeout?: number; // ms
+  interval?: number; // ms
+}
+
 /**
  * 외부 스크립트를 동적으로 로드
  * @param src - 로드할 스크립트 URL
@@ -70,4 +75,57 @@ export function unloadScript(srcOrId: string): void {
  */
 export function isScriptLoaded(srcOrId: string): boolean {
   return !!(document.querySelector(`script[src="${srcOrId}"]`) || document.getElementById(srcOrId));
+}
+
+/**
+ * 전역 변수가 생성될 때까지 대기
+ * @param name - 전역 변수 이름
+ * @param options - 대기 옵션
+ */
+export function waitForGlobal(name: string, options: WaitForGlobalOptions = {}): Promise<void> {
+  const { timeout = 5000, interval = 50 } = options;
+
+  return new Promise((resolve, reject) => {
+    const startTime = Date.now();
+
+    const checkGlobal = () => {
+      if (window[name as keyof Window] !== undefined) {
+        resolve();
+        return;
+      }
+
+      if (Date.now() - startTime >= timeout) {
+        reject(new Error(`Timeout waiting for global variable: ${name}`));
+        return;
+      }
+
+      setTimeout(checkGlobal, interval);
+    };
+
+    checkGlobal();
+  });
+}
+
+/**
+ * 여러 전역 변수가 생성될 때까지 대기
+ * @param names - 전역 변수 이름 배열
+ * @param options - 대기 옵션
+ */
+export function waitForGlobals(names: string[], options: WaitForGlobalOptions = {}): Promise<void> {
+  return Promise.all(names.map((name) => waitForGlobal(name, options))).then(() => {});
+}
+
+/**
+ * 스크립트를 로드하고 특정 전역 변수가 생성될 때까지 대기
+ * @param src - 로드할 스크립트 URL
+ * @param globalName - 기다릴 전역 변수 이름
+ * @param options - 로드 옵션
+ */
+export async function loadScriptWithGlobal(
+  src: string,
+  globalName: string,
+  options: LoadScriptOptions = {}
+): Promise<void> {
+  await loadScript(src, options);
+  await waitForGlobal(globalName);
 }
