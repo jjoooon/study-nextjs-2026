@@ -7,7 +7,7 @@ import { StoryBox, StoryWrap } from '@/shared/components/storybook/StoryWrap';
 type ConfirmDialogStoryProps = React.ComponentProps<typeof ConfirmDialog>;
 
 const meta: Meta<ConfirmDialogStoryProps> = {
-  title: 'Components/Common/ConfirmDialog',
+  title: 'Components/Containers/ConfirmDialog',
   component: ConfirmDialog,
   tags: ['autodocs'],
   parameters: {

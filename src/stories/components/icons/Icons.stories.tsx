@@ -4,7 +4,7 @@ import * as Icons from '@/shared/components/icons/CommonIcons';
 const iconList = Object.entries(Icons).filter(([name, Comp]) => typeof Comp === 'function');
 
 const meta: Meta = {
-  title: 'Components/Common/Icons',
+  title: 'Components/Icons/Icons',
   tags: ['autodocs'],
 };
 

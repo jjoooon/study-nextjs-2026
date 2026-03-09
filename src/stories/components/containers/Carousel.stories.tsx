@@ -34,7 +34,7 @@ function CarouselPreview({ orientation = 'horizontal', className = 'w-lg' }: { o
 }
 
 const meta: Meta<typeof Carousel> = {
-  title: 'Components/UIUX/Carousel',
+  title: 'Components/Containers/Carousel',
   component: Carousel,
   tags: ['autodocs'],
   parameters: {

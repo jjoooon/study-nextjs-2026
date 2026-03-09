@@ -100,7 +100,6 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId, onSelectPlan
       <div className="w-full h-full flex items-center justify-center ">
         <Checkbox
           variant="button"
-          color="secondary"
           checked={allSelected}
           onCheckedChange={(checked) => {
             if (checked) {

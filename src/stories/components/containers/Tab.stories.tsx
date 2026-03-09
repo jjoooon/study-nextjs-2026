@@ -13,7 +13,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { StoryWrap, StoryBox } from '@/shared/components/storybook/StoryWrap';
 
 const meta: Meta<typeof Tabs> = {
-  title: 'Components/UIUX/Tabs',
+  title: 'Components/Containers/Tabs',
   component: Tabs,
   tags: ['autodocs'],
   parameters: {

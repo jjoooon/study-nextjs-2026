@@ -1,4 +1,4 @@
-import { Grow } from '@/shared/components/common';
+import { Grow } from '@atoms';
 import { ArrowNext } from '@/shared/components/icons';
 import { LayoutControls } from '@/shared/components/layout/Cabinet';
 

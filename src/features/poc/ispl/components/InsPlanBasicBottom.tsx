@@ -1,5 +1,5 @@
-import { Grow } from '@/shared/components/common';
-import { ArrowNext } from '@/shared/components/icons';
+import { Grow } from '@atoms';
+import { ArrowNext } from '@icons';
 import { LayoutControls } from '@/shared/components/layout/Cabinet';
 
 export default function InsPlanBasicBottom() {

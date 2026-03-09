@@ -143,7 +143,6 @@ const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> &
     VariantProps<typeof radioGroupItemVariants> & {
-      size?: 'default' | 'sm';
       color?: 'primary' | 'info';
       children?: React.ReactNode;
       error?: boolean;

@@ -350,35 +350,35 @@ export default function Chart1Page() {
               <div className="flex gap-2 flex-wrap">
                 <Button
                   onClick={() => setChartType('line')}
-                  variant={chartType === 'line' ? 'contained' : 'outline'}
+                  variant={chartType === 'line' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   📈 Line Chart
                 </Button>
                 <Button
                   onClick={() => setChartType('bar')}
-                  variant={chartType === 'bar' ? 'contained' : 'outline'}
+                  variant={chartType === 'bar' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   📊 Bar Chart
                 </Button>
                 <Button
                   onClick={() => setChartType('area')}
-                  variant={chartType === 'area' ? 'contained' : 'outline'}
+                  variant={chartType === 'area' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   📉 Area Chart
                 </Button>
                 <Button
                   onClick={() => setChartType('scatter')}
-                  variant={chartType === 'scatter' ? 'contained' : 'outline'}
+                  variant={chartType === 'scatter' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   📍 Scatter Plot
                 </Button>
                 <Button
                   onClick={() => setChartType('pie')}
-                  variant={chartType === 'pie' ? 'contained' : 'outline'}
+                  variant={chartType === 'pie' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   🥧 Pie Chart
@@ -391,14 +391,14 @@ export default function Chart1Page() {
               <div className="flex gap-2">
                 <Button
                   onClick={() => setTheme('light')}
-                  variant={theme === 'light' ? 'contained' : 'outline'}
+                  variant={theme === 'light' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   ☀️ Light
                 </Button>
                 <Button
                   onClick={() => setTheme('dark')}
-                  variant={theme === 'dark' ? 'contained' : 'outline'}
+                  variant={theme === 'dark' ? 'contained' : 'outlined'}
                   color="primary"
                 >
                   🌙 Dark
