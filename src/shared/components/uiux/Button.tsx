@@ -366,11 +366,8 @@ const buttonVariants = cva(
 );
 
 interface UIButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>, VariantProps<typeof buttonVariants> {
-  variant?: VariantProps<typeof buttonVariants>['variant'];
-  color?: VariantProps<typeof buttonVariants>['color'];
-  size?: VariantProps<typeof buttonVariants>['size'];
-  only?: VariantProps<typeof buttonVariants>['only'];
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
+    VariantProps<typeof buttonVariants> {
   children?: React.ReactNode;
   asChild?: boolean;
 }
