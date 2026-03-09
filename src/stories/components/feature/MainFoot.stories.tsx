@@ -38,8 +38,6 @@ import { MainFoot } from '@/shared/components/features/MainFoot';
 \`\`\`
             `}
           </Markdown>
-
-          <h2>Preview</h2>
         </>
       ),
     },
