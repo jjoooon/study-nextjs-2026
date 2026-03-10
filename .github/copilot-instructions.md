@@ -41,3 +41,9 @@
 
 ## storybook 생성
 - MUST: `input.stories` 구성을 참고하여 생성한다.
+
+## JSX 속성 값과 className 사용
+속성 값은 {''} (JSX 표현식), className은 "" (문자열)로 구분하는 방식은 매우 일반적이고 권장되는 패턴입니다.
+- JSX에서 {''}는 동적 값, ""는 정적 문자열에 사용합니다.
+- className에 ""를 쓰면 tailwind, css-in-js, 일반 CSS 모두 최적화에 문제 없습니다.
+- 동적 className이 필요할 때만 {``} 또는 {classnames()} 등으로 처리하면 됩니다.
