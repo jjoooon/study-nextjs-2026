@@ -50,7 +50,7 @@ const DummyData: DummyDataType = {
 
 
 const meta: Meta<typeof UserSearchHead> = {
-  title: 'components/Feature/UserSearchHead',
+  title: 'Components/Features/UserSearchHead',
   component: UserSearchHead,
   tags: ['autodocs'],
   parameters: {

@@ -82,7 +82,7 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
                 </tr>
               </thead>
               <tbody>
-                <tr><td>type</td><td>'dot' | 'dash' | 'square' | 'hash' | 'ref'</td><td>불릿 마커 스타일 (기본값: 'dot')</td></tr>
+                <tr><td>type</td><td>'dot' | 'hash' | 'ref'</td><td>불릿 마커 스타일 (기본값: 'dot')</td></tr>
                 <tr><td>size</td><td>'sm' | 'md' | 'lg'</td><td>텍스트 크기 (기본값: 'md')</td></tr>
                 <tr><td>children</td><td>ReactNode</td><td>아이템 내용</td></tr>
               </tbody>
@@ -152,11 +152,11 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
     },
     type: {
       control: 'select',
-      options: ['dot', 'dash', 'square', 'hash', 'ref'],
+      options: ['dot', 'hash', 'ref'],
       description: '아이템 마커 스타일',
       table: {
         category: 'Appearance',
-        type: { summary: 'dot | dash | square | hash | ref' },
+        type: { summary: 'dot | hash | ref' },
       },
     },
     size: {

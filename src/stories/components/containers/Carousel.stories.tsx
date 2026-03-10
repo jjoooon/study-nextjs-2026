@@ -22,7 +22,9 @@ function CarouselPreview({ orientation = 'horizontal', className = 'w-lg' }: { o
         <CarouselContent>
           {slides.map((text) => (
             <CarouselItem key={text} className='basis-1/5'>
-              <div className="h-32 rounded-md border flex items-center justify-center text-[1.3rem]">{text}</div>
+              <div
+                className={`${orientation === 'vertical' ? 'h-10' : 'h-32'} rounded-md border flex items-center justify-center text-[1.3rem]`}
+              >{text}</div>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -109,8 +111,8 @@ import {
             <h2>Orientation</h2>
             <p>Carousel 컴포넌트에서 사용할 수 있는 방향 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={4} className="flex-wrap items-start">
+              <Gcol gap={4}>
+                <Grow gap={4} className="flex-wrap flex-col align-items-center">
                   <CarouselPreview orientation="horizontal" className="w-lg" />
                   <CarouselPreview orientation="vertical" className="h-104 w-60" />
                 </Grow>
@@ -160,4 +162,3 @@ export const Default: Story = {
     return <CarouselPreview orientation={args.orientation} className={args.className} />;
   },
 };
-
