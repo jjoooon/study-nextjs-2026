@@ -44,7 +44,7 @@ import { Button } from '@uiux/Button';
 
 <Button
   variant={'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state'}
-  color={'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'success' | 'link' | 'transparent'}
+  color={'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'}
   size={'xl' | 'lg' | 'md' | 'sm' | 'xs'}
   only={'default' | 'icon'}
 >
@@ -74,7 +74,7 @@ import { Button } from '@uiux/Button';
               </thead>
               <tbody>
                 <tr><td>variant</td><td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state'</td><td>버튼 스타일</td></tr>
-                <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
+                <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
                 <tr><td>size</td><td>'xl' | 'lg' | 'md' | 'sm' | 'xs'</td><td>버튼 크기</td></tr>
                 <tr><td>only</td><td>'default' | 'icon'</td><td>일반/아이콘 전용 모드</td></tr>
                 <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
@@ -107,9 +107,29 @@ import { Button } from '@uiux/Button';
                   <Button color="gray">gray</Button>
                   <Button color="gray-light">gray-light</Button>
                   <Button color="coolgray">coolgray</Button>
+                  <Button color="coolgray-light">coolgray-light</Button>
                   <Button color="success">success</Button>
                   <Button color="link">link</Button>
                   <Button color="transparent">transparent</Button>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h3>Coolgray Tone</h3>
+            <p>Button.tsx에 추가된 coolgray 계열 스타일 차이는 아래 예시로 확인할 수 있습니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Grow gap={2} className="flex-wrap">
+                  <Button variant="contained" color="coolgray">contained coolgray</Button>
+                  <Button variant="contained" color="coolgray-light">contained coolgray-light</Button>
+                </Grow>
+                <Grow gap={2} className="flex-wrap">
+                  <Button variant="outlined" color="coolgray">outlined coolgray</Button>
+                  <Button variant="outlined" color="coolgray-light">outlined coolgray-light</Button>
+                </Grow>
+                <Grow gap={2} className="flex-wrap">
+                  <Button variant="text" color="coolgray">text coolgray</Button>
+                  <Button variant="text" color="coolgray-light">text coolgray-light</Button>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -160,7 +180,7 @@ import { Button } from '@uiux/Button';
     },
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'gray', 'gray-light', 'coolgray', 'success', 'link', 'transparent'],
+      options: ['primary', 'secondary', 'gray', 'gray-light', 'coolgray', 'coolgray-light', 'success', 'link', 'transparent'],
       table: { category: '스타일 props' },
     },
     size: {
