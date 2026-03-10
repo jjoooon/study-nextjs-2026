@@ -13,7 +13,7 @@ const meta: Meta<typeof PageID> = {
   component: PageID,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     docs: {
       page: () => (
         <>
@@ -87,7 +87,7 @@ type Story = StoryObj<typeof PageID>;
 
 export const Default: Story = {
   render: (args) => (
-    <div className="w-[80rem] border border-gray-200 bg-white p-4">
+    <div className="p-8">
       <PageID {...args} />
     </div>
   ),

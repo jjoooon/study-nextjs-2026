@@ -125,7 +125,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                         {tab.data[selectedIdx].age ?? '-'}세({tab.data[selectedIdx].gender ?? '-'})
                       </Typo>
                     </Gcol>
-                    <Grid className="grid-cols-[1fr_1fr] flex-1 place-content-center  gap-x-6 gap-y-[1rem] ">
+                    <Grid className="grid-cols-[1fr_1fr] flex-1 place-content-center  gap-x-6 gap-y-[0.6rem] ">
                       <Grow gap={'0'} placement={'bwc'}>
                         <Typo variant={'body-sm'}>직업</Typo>
                         <Typo variant={'body-md'} weight={'bold'}>
