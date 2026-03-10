@@ -2,7 +2,7 @@
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
-import { CloseDialog } from '@icons';
+import { CloseIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -167,7 +167,7 @@ function DialogContent({
             data-slot="dialog-close"
             className="flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.8rem] right-[3.2rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none "
           >
-            <CloseDialog color="#2C2724" />
+            <CloseIcon color="#2C2724" />
           </DialogPrimitive.Close>
         )}
         {/* Resize Handles - Only shown when resizable is true */}

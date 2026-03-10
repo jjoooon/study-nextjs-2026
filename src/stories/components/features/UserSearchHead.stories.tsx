@@ -40,9 +40,9 @@ const DummyData: DummyDataType = {
     id : '2',
     tabName: '미등록고객',
     data : [
-      { id: '1', date: '206.03.04', age: 30, gender: '남', grade: '1', },
-      { id: '2', date: '206.03.04', age: 30, gender: '여', grade: '1', },
-      { id: '3', date: '206.03.04', age: 25, gender: '여', grade: '2', },
+      { id: '1', date: '2026.03.04', age: 30, gender: '남', grade: '1', },
+      { id: '2', date: '2026.03.04', age: 30, gender: '여', grade: '1', },
+      { id: '3', date: '2026.03.04', age: 25, gender: '여', grade: '2', },
 
     ]
   }

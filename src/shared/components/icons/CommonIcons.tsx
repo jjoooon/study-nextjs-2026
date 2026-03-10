@@ -28,32 +28,6 @@ export const AddIcon: React.FC<IconProps> = ({ className = '', size = 16, color 
   </svg>
 );
 
-export const ArrowSideBg: React.FC<IconProps> = () => (
-  <svg width="10" height="64" viewBox="0 0 10 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M0 0L8.24264 8.24264C9.36786 9.36786 10 10.894 10 12.4853L10 51.5147C10 53.106 9.36786 54.6321 8.24264 55.7574L0 64L0 0Z"
-      fill="#61554F"
-    />
-  </svg>
-);
-export const ArrowSide: React.FC<IconProps> = ({
-  className = '',
-  size = 10,
-  strokeWidth = '1.6',
-  color = 'currentColor',
-}) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 10 10`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path d="M6.5 1L3 5L6.5 9" stroke={color} strokeWidth={strokeWidth} />
-  </svg>
-);
-
 export const ArrowNext: React.FC<IconProps> = ({
   className = '',
   size = 24,
@@ -95,26 +69,6 @@ export const ArrowIcon: React.FC<IconProps> = ({ className = '', size = 16, colo
   </svg>
 );
 
-// B
-export const BackArrow: React.FC<IconProps> = ({ className = '', size = 24 }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M19 12H5M5 12L12 19M5 12L12 5"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 // C
 export const CalendarIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
   <svg
@@ -149,21 +103,6 @@ export const ChevronDownIcon: React.FC<IconProps> = ({ className = '', size = 24
   </svg>
 );
 
-export const CloseDialog: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 14 14`}
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M12.293 0.292969C12.6835 -0.0975551 13.3165 -0.0975551 13.707 0.292969C14.0976 0.683493 14.0976 1.31651 13.707 1.70703L8.41406 7L13.707 12.293C14.0976 12.6835 14.0976 13.3165 13.707 13.707C13.3165 14.0976 12.6835 14.0976 12.293 13.707L7 8.41406L1.70703 13.707C1.31651 14.0976 0.683493 14.0976 0.292969 13.707C-0.0975552 13.3165 -0.0975554 12.6835 0.292969 12.293L5.58594 7L0.292969 1.70703C-0.0975549 1.31651 -0.0975549 0.683493 0.292969 0.292969C0.683493 -0.0975553 1.31651 -0.097555 1.70703 0.292969L7 5.58594L12.293 0.292969Z"
-      fill={color}
-    />
-  </svg>
-);
 export const CheckIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -179,27 +118,7 @@ export const CheckIcon: React.FC<IconProps> = ({ className = '', size = 16, colo
     />
   </svg>
 );
-
 // D
-
-export const DownArrow: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M12 5V19M12 19L19 12M12 19L5 12"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 // F
 export const Favorite: React.FC<IconProps> = ({ className = '', size = 20, color = 'currentColor' }) => (
@@ -218,25 +137,6 @@ export const Favorite: React.FC<IconProps> = ({ className = '', size = 20, color
   </svg>
 );
 
-export const ForwardArrow: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M5 12H19M19 12L12 5M19 12L12 19"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 // H
 export const HomeIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
   <svg width={toRem(size)} height={toRem(size)} viewBox={`0 0 24 24`} fill="none" className={className}>
@@ -249,24 +149,6 @@ export const HomeIcon: React.FC<IconProps> = ({ className = '', size = 24, color
     />
   </svg>
 );
-
-// M
-export const MenuIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path d="M5 7H19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    <path d="M5 12H19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    <path d="M5 17H19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-// P
 
 // R
 export const ResetIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
@@ -320,46 +202,7 @@ export const SearchIcon: React.FC<IconProps> = ({ className = '', size = 16, col
   </svg>
 );
 
-export const SettingsIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" />
-    <path
-      d="M19.4 15A1.65 1.65 0 0 0 18.7 13.8L19.4 15ZM20.6 9A1.65 1.65 0 0 0 19.9 10.2L20.6 9ZM17.6 6.9A1.65 1.65 0 0 0 16.4 6.1L17.6 6.9ZM6.4 17.1A1.65 1.65 0 0 0 7.6 17.9L6.4 17.1ZM3.4 9A1.65 1.65 0 0 0 4.1 10.2L3.4 9ZM4.6 15A1.65 1.65 0 0 0 5.3 13.8L4.6 15Z"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 // U
-export const UpArrow: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M12 19V5M12 5L5 12M12 5L19 12"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 export const UserIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
   <svg width={toRem(size)} height={toRem(size)} viewBox={`0 0 24 24`} fill="none" className={className}>
     <path
@@ -389,21 +232,6 @@ export const CloseIcon = ({ className = '', size = 16, color = 'currentColor' }:
   </svg>
 );
 
-export const ArrowLightIcon: React.FC<IconProps> = ({ className = '', size = 15, color = 'currentColor' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox="0 0 15 15"
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M4.50281 1.99153C4.77124 1.72336 5.20607 1.72336 5.47449 1.99153L10.4971 7.01411C10.7654 7.28261 10.7655 7.71795 10.4971 7.9864L5.47449 13.0084C5.20603 13.2767 4.77126 13.2767 4.50281 13.0084C4.23437 12.7399 4.23446 12.3052 4.50281 12.0367L9.03833 7.50056L4.50281 2.96382C4.23437 2.69538 4.23446 2.26003 4.50281 1.99153Z"
-      fill={color}
-    />
-  </svg>
-);
 export const ListIcon: React.FC<IconProps> = ({ className = '', size = 15, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -459,21 +287,6 @@ export const ZoomInIcon: React.FC<IconProps> = ({ className = '', size = 20, col
   </svg>
 );
 
-export const CheckboxIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox="0 0 14 14"
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M10.0196 4.24094C10.2546 3.97585 10.6602 3.95143 10.9254 4.18626C11.1906 4.42129 11.215 4.82681 10.9801 5.09202L6.43019 10.2252C6.19788 10.4873 5.79831 10.5147 5.5324 10.2868L3.08229 8.18699C2.81338 7.95634 2.78222 7.55137 3.01279 7.28237C3.24337 7.01339 3.64835 6.98241 3.91741 7.21287L5.88787 8.90191L10.0196 4.24094Z"
-      fill={color}
-    />
-  </svg>
-);
 export const PaperIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
