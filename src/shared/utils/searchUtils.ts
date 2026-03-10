@@ -125,75 +125,89 @@ export const findChosungMatchIndices = (text: string, chosungQuery: string): num
 /**
  * 하이라이팅 정보를 반환
  * @param text 하이라이팅할 텍스트
- * @param query 검색어
+ * @param query 검색어 (문자열 또는 문자열 배열)
  * @returns 하이라이팅 구간 배열 {text, highlight}
  *
  * @example
  * getHighlightRanges('사망후유', 'ㅅㅁㅎㅇ') // [{text: '사망후유', highlight: true}]
  * getHighlightRanges('AXA손해보험', 'ㅅㅎ') // [{text: 'AXA', highlight: false}, {text: '손해', highlight: true}, {text: '보험', highlight: false}]
  * getHighlightRanges('Hello World', 'ello') // [{text: 'H', highlight: false}, {text: 'ello', highlight: true}, {text: ' World', highlight: false}]
+ * getHighlightRanges('AXA손해보험', ['ㅅㅎ', '보험']) // 여러 검색어 모두 하이라이트
+ * getHighlightRanges('Hello World', ['ello', 'World']) // 여러 검색어 모두 하이라이트
  */
-export const getHighlightRanges = (text: string, query: string): Array<{ text: string; highlight: boolean }> => {
-  if (query.length === 0) return [{ text, highlight: false }];
+export const getHighlightRanges = (
+  text: string,
+  query: string | string[]
+): Array<{ text: string; highlight: boolean }> => {
+  const queries = Array.isArray(query) ? query : [query];
 
-  // 초성 검색인 경우 (정확한 초성 일치)
-  if (isChosungQuery(query)) {
-    const matchIndices = findChosungMatchIndices(text, query);
-
-    if (matchIndices.length === 0) return [{ text, highlight: false }];
-
-    // 연속된 인덱스를 그룹화하여 구간 단위로 하이라이팅
-    const result: Array<{ text: string; highlight: boolean }> = [];
-    let lastIndex = 0;
-    let i = 0;
-
-    while (i < matchIndices.length) {
-      const startIndex = matchIndices[i];
-
-      // 이전 텍스트 추가
-      if (startIndex > lastIndex) {
-        result.push({ text: text.slice(lastIndex, startIndex), highlight: false });
-      }
-
-      // 연속된 구간 찾기
-      let endIndex = startIndex확하
-      while (i + 1 < matchIndices.length && matchIndices[i + 1] === endIndex + 1) {
-        i++;
-        endIndex = matchIndices[i];
-      }
-
-      result.push({ text: text.slice(startIndex, endIndex + 1), highlight: true });
-
-      lastIndex = endIndex + 1;
-      i++;
-    }
-
-    // 남은 텍스트 추가
-    if (lastIndex < text.length) {
-      result.push({ text: text.slice(lastIndex), highlight: false });
-    }
-
-    return result;
+  // 모든 쿼리가 비어있는 경우
+  if (queries.length === 0 || queries.every((q) => q.length === 0)) {
+    return [{ text, highlight: false }];
   }
 
-  // 일반 텍스트 검색인 경우 (정확한 부분 문자열 일치, 띄어쓰기 포함)
-  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(`(${escapedQuery})`, 'gi');
+  // 모든 하이라이트 범위를 추적하기 위한 배열 (시작, 끝)
+  const highlightRanges: Array<[number, number]> = [];
+
+  for (const singleQuery of queries) {
+    if (singleQuery.length === 0) continue;
+
+    // 초성 검색인 경우 (정확한 초성 일치)
+    if (isChosungQuery(singleQuery)) {
+      const matchIndices = findChosungMatchIndices(text, singleQuery);
+
+      if (matchIndices.length > 0) {
+        const startIndex = matchIndices[0];
+        const endIndex = matchIndices[matchIndices.length - 1];
+        highlightRanges.push([startIndex, endIndex]);
+      }
+    } else {
+      // 일반 텍스트 검색인 경우 (정확한 부분 문자열 일치, 띄어쓰기 포함)
+      const escapedQuery = singleQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedQuery, 'gi');
+      let match: RegExpExecArray | null;
+
+      while ((match = regex.exec(text)) !== null) {
+        highlightRanges.push([match.index, match.index + match[0].length - 1]);
+      }
+    }
+  }
+
+  // 범위가 없으면 하이라이트 없이 반환
+  if (highlightRanges.length === 0) {
+    return [{ text, highlight: false }];
+  }
+
+  // 범위 병합 (겹치는 또는 인접한 범위들을 합침)
+  highlightRanges.sort((a, b) => a[0] - b[0]);
+  const mergedRanges: Array<[number, number]> = [highlightRanges[0]];
+
+  for (let i = 1; i < highlightRanges.length; i++) {
+    const lastRange = mergedRanges[mergedRanges.length - 1];
+    const currentRange = highlightRanges[i];
+
+    // 범위가 겹치거나 인접하면 병합
+    if (currentRange[0] <= lastRange[1] + 1) {
+      lastRange[1] = Math.max(lastRange[1], currentRange[1]);
+    } else {
+      mergedRanges.push(currentRange);
+    }
+  }
+
+  // 병합된 범위를 기반으로 결과 구성
   const result: Array<{ text: string; highlight: boolean }> = [];
-  let match: RegExpExecArray | null;
   let lastIndex = 0;
 
-  // 단일 패스로 매칭과 비매칭 부분 모두 추출
-  while ((match = regex.exec(text)) !== null) {
-    // 매칭되지 않은 이전 부분 추가
-    if (match.index > lastIndex) {
-      result.push({ text: text.slice(lastIndex, match.index), highlight: false });
+  for (const [startIndex, endIndex] of mergedRanges) {
+    // 하이라이트되지 않은 텍스트 추가
+    if (startIndex > lastIndex) {
+      result.push({ text: text.slice(lastIndex, startIndex), highlight: false });
     }
 
-    // 매칭된 부분 추가
-    result.push({ text: match[1], highlight: true });
+    // 하이라이트된 텍스트 추가
+    result.push({ text: text.slice(startIndex, endIndex + 1), highlight: true });
 
-    lastIndex = regex.lastIndex;
+    lastIndex = endIndex + 1;
   }
 
   // 남은 텍스트 추가
