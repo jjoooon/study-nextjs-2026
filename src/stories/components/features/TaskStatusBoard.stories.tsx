@@ -1,23 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
+import TaskStatusBoard from '@features/TaskStatusBoard';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
-const MOCK_DATA = {
-  state: [
-    { id: 1, status: '정상', label: '누적' },
-    { id: 2, status: '경고', label: '중복' },
-    { id: 3, status: '중지', label: '직업' },
-    { id: 4, status: '정상', label: '기타' },
-  ],
+// 꼭 확인해야 할 일!
+type DataTaskState = {
+  id: number;
+  status: '정상' | '경고' | '중지';
+  label: string;
+  sum: number;
 };
+const dataTaskState: DataTaskState[] = [
+  { id: 1, status: '정상', label: '누적', sum: 24 },
+  { id: 2, status: '경고', label: '중복', sum: 0 },
+  { id: 3, status: '중지', label: '직업', sum: 2 },
+  { id: 4, status: '중지', label: '기타', sum: 0 },
+];
 
 const meta: Meta<typeof TaskStatusBoard> = {
   title: 'Components/Features/TaskStatusBoard',
   component: TaskStatusBoard,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     docs: {
       page: () => (
         <>
@@ -41,18 +45,22 @@ const meta: Meta<typeof TaskStatusBoard> = {
           <Markdown>
             {`
 \`\`\`tsx
-import TaskStatusBoard from '@/shared/components/features/TaskStatusBoard';
+import TaskStatusBoard from '@features/TaskStatusBoard';
 
-const data = {
-  state: [
-    { id: 1, status: '정상', label: '누적' },
-    { id: 2, status: '경고', label: '중복' },
-    { id: 3, status: '중지', label: '직업' },
-    { id: 4, status: '정상', label: '기타' },
-  ],
+type DataTaskState = {
+  id: number;
+  status: '정상' | '경고' | '중지';
+  label: string;
+  sum: number;
 };
+const dataTaskState: DataTaskState[] = [
+  { id: 1, status: '정상', label: '누적', sum: 24 },
+  { id: 2, status: '경고', label: '중복', sum: 0 },
+  { id: 3, status: '중지', label: '직업', sum: 2 },
+  { id: 4, status: '중지', label: '기타', sum: 0 },
+];
 
-<TaskStatusBoard {...data} />
+<TaskStatusBoard state={dataTaskState} />
 \`\`\`
             `}
           </Markdown>
@@ -70,7 +78,7 @@ const data = {
             <tbody>
               <tr>
                 <td>state</td>
-                <td>{`{ id: number; status: '정상' | '경고' | '중지'; label: string }[]`}</td>
+                <td>{`{ id: number; status: '정상' | '경고' | '중지'; label: string, sum: number }[]`}</td>
                 <td>표시할 작업 상태 데이터 배열.</td>
               </tr>
             </tbody>
@@ -85,7 +93,7 @@ const data = {
       description: '작업 상태 데이터 배열',
     },
   },
-  args: MOCK_DATA,
+  args: { state: dataTaskState },
 };
 
 export default meta;
@@ -93,7 +101,7 @@ type Story = StoryObj<typeof TaskStatusBoard>;
 
 export const Default: Story = {
   render: (args) => (
-    <div className="p-4">
+    <div className="p-4 flex justify-center items-center">
       <TaskStatusBoard {...args} />
     </div>
   ),

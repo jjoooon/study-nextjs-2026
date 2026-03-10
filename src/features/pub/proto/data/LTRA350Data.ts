@@ -46,7 +46,7 @@ export interface LTRA350DataType {
       badge?: string[]; 
     }>;
   };
-  taskState: Array<{ id: number; status: string; label: string }>;
+  taskState: Array<{ id: number; status: string; label: string; sum: number }>;
   aside: {
     simpleContractInfo: {
       date: string;
@@ -607,10 +607,10 @@ export const DUMMY_LTRA350_DATA: LTRA350DataType = {
     ],
   },
   taskState:[
-    { id: 1, status: '정상', label: '누적' },
-    { id: 2, status: '경고', label: '중복' },
-    { id: 3, status: '중지', label: '직업' },
-    { id: 4, status: '정상', label: '기타' },
+    { id: 1, status: '정상', label: '누적', sum: 24 },
+    { id: 2, status: '경고', label: '중복', sum: 24 },
+    { id: 3, status: '중지', label: '직업', sum: 24 },
+    { id: 4, status: '정상', label: '기타', sum: 24 },
   ],
   aside: {
     simpleContractInfo: {

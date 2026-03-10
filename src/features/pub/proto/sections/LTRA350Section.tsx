@@ -18,6 +18,20 @@ import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
 
 import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
 
+// TaskStatusBoard: 꼭 확인해야 할 일!
+type DataTaskState = {
+  id: number;
+  status: '정상' | '경고' | '중지';
+  label: string;
+  sum: number;
+};
+const dataTaskState: DataTaskState[] = [
+  { id: 1, status: '정상', label: '누적', sum: 24 },
+  { id: 2, status: '경고', label: '중복', sum: 0 },
+  { id: 3, status: '중지', label: '직업', sum: 2 },
+  { id: 4, status: '중지', label: '기타', sum: 0 },
+];
+
 export default function LTRA350Section() {
   const [hideAside, setHideAside] = useState(false);
   const data = DUMMY_LTRA350_DATA;
@@ -41,7 +55,7 @@ export default function LTRA350Section() {
       }
       mainFoot={<MainFoot />}
 
-      asideHead={<TaskStatusBoard state={data.taskState} />}
+      asideHead={<TaskStatusBoard state={dataTaskState} />}
       asideBody={<AsideBody data={data.aside} />}
       asideFoot={<AsideFoot />}
       
