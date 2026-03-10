@@ -93,7 +93,7 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
     >
       <Gcol variant="box" placement="ss" className="w-full">
         <Grow className="gap-3">
-          <Button variant="contained" color="gray-cool" size="md">
+          <Button variant="contained" color="coolgray" size="md">
             <PaperIcon />
             담보패키지 선택
           </Button>
@@ -118,7 +118,7 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
             <HashList data={data.hashList} />
           </Grow>
           <Grow placement="ec">
-            <Button variant="contained" color="gray-cool" size="lg">
+            <Button variant="contained" color="coolgray" size="lg">
               <ResetIcon />
               초기화
             </Button>

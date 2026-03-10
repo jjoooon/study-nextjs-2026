@@ -34,7 +34,8 @@ const buttonVariants = cva(
         'secondary': '',
         'gray': '',
         'gray-light': '',
-        'gray-cool': '',
+        'coolgray': '',
+        'coolgray-light': '',
         'success': '',
         'link': 'text-[var(--color-information-50)]',
         'transparent': `bg-transparent text-[var(--color-text-primary)] border-transparent`,
@@ -110,7 +111,7 @@ const buttonVariants = cva(
       },
       {
         variant: 'contained',
-        color: 'gray-cool',
+        color: 'coolgray',
         className: `border border-[var(--color-coolgray-50)] 
         bg-[var(--color-coolgray-50)] 
         text-[var(--color-gray-0)] 
@@ -274,7 +275,7 @@ const buttonVariants = cva(
       },
       {
         variant: 'outlined',
-        color: 'gray-cool',
+        color: 'coolgray',
         className: `border border-[var(--color-coolgray-20)] 
         bg-[var(--color-gray-0)] 
         text-[var(--color-gray-100)] 
@@ -342,7 +343,7 @@ const buttonVariants = cva(
       },
       {
         variant: 'text',
-        color: 'gray-cool',
+        color: 'coolgray',
         className: `text-[var(--color-coolgray-70)]`,
       },
       {

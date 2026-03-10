@@ -58,7 +58,8 @@ export type UIUXcolor =
 
   | 'gray'
   | 'gray-light'
-  | 'gray-cool'
+  | 'coolgray'
+  | 'coolgray-light'
 
   | 'blue'
   | 'red'
