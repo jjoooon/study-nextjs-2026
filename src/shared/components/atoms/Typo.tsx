@@ -13,6 +13,7 @@ const typoVariants = cva('', {
       'body-lg': 'text-[1.5rem] leading-[150%] tracking-[-0.13rem]',
       'body-md': 'text-[1.3rem] leading-[150%] tracking-[-0.13rem]',
       'body-sm': 'text-[1.2rem] leading-[150%] tracking-[-0.13rem]',
+      'body-xs': 'text-[1.1rem] leading-[150%] tracking-[-0.13rem]',
 
       'button-lg': 'text-[1.4rem] leading-[100%] tracking-[-0.13rem]',
       'button-md': 'text-[1.3rem] leading-[100%] tracking-[-0.13rem]',
