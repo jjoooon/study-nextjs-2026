@@ -7,7 +7,7 @@ import { DatePickerInput } from '@common/DatePicker';
 import { Button } from "@uiux/Button"
 import { Input } from "@uiux/Input"
 import { Checkbox } from "@uiux/Checkbox"
-import { TabHead } from '@common/TabHead';
+import { TabPager } from '@common/TabPager';
 import { SearchIcon, PlusIcon, QuestionMark } from '@icons';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from "@uiux/RadioGroup"
@@ -139,7 +139,7 @@ export function LTRA350_1_MainBody({
           </FormTable>
       </Grow>
       <Gcol placement="ss" className={className ?? 'w-full'}>
-        <TabHead
+        <TabPager
           variant="default"
           data={tabs}
           active={tabValue}
@@ -334,7 +334,7 @@ export function LTRA350_1_MainBody({
               </FormTable>
             </Gcol>
           </div>
-        </TabHead>
+        </TabPager>
       </Gcol>
     </Gcol>
   );

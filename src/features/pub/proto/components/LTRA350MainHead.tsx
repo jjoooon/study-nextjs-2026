@@ -9,7 +9,7 @@ import { PaperIcon, ResetIcon } from '@icons';
 // components - common
 import { ErrorMsg } from '@common/ErrorMsg';
 import { HashList } from '@common/HashList';
-import { TabHead } from '@common/TabHead';
+import { TabPager } from '@common/TabPager';
 import { BulletList, BulletListItem } from '@common/BulletList';
 // components - uiux
 import { Button } from '@uiux/Button';
@@ -36,7 +36,7 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
   } = useTabs(stringifiedData);
 
   return (
-    <TabHead 
+    <TabPager 
       // removable={true}
       // onRemove={LTRA350_handleRemove}
       variant="outlined"
@@ -125,6 +125,6 @@ export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
           </Grow>
         </Grow>
       </Gcol>
-    </TabHead>
+    </TabPager>
   );
 }
