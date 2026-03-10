@@ -4,7 +4,7 @@ import UserSearchHead  from '@/shared/components/features/UserSearchHead';
 import { Title, Primary, Controls, Canvas, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof UserSearchHead> = {
-  title: 'components/feature/UserSearchHead',
+  title: 'Components/Features/UserSearchHead',
   component: UserSearchHead,
   tags: ['autodocs'],
   parameters: {

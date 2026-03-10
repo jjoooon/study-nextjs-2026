@@ -3,7 +3,7 @@ import { PageTitle, PageTitleProduct } from '@/shared/components/features/PageTi
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof PageTitleProduct> = {
-  title: 'components/feature/PageTitle',
+  title: 'Components/Features/PageTitle',
   component: PageTitleProduct,
   tags: ['autodocs'],
   parameters: {

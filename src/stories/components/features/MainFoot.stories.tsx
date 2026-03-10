@@ -4,7 +4,7 @@ import { DesignStart, DesignGeneration, LTRA350Step1, LTRA350Step2 } from '@/sha
 import { Title, Subtitle, Primary, Controls, Canvas, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof DesignStart> = {
-  title: 'components/feature/MainFoot',
+  title: 'Components/Features/MainFoot',
   component: DesignStart,
   tags: ['autodocs'],
   parameters: {

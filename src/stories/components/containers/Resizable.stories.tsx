@@ -138,7 +138,7 @@ export const Default: Story = {
         <ResizablePanel defaultSize={30}>
           <div className="h-full flex items-center justify-center bg-gray-300">Panel 1</div>
         </ResizablePanel>
-        <ResizableHandle withHandle />
+        <ResizableHandle />
         <ResizablePanel defaultSize={70}>
           <div className="h-full flex items-center justify-center bg-gray-300">Panel 2</div>
         </ResizablePanel>
