@@ -69,12 +69,12 @@ const hashList = ['암', '뇌', '심', '수술', '특정', '표적', '치료'];
             <Unstyled>
               <Gcol gap={4} className="w-full">
                 <h3 className="font-bold">Short List</h3>
-                <div className="border border-gray-200 bg-white p-4" style={{ width: '64rem' }}>
+                <div>
                   <HashList data={SHORT_HASH_DATA} />
                 </div>
 
                 <h3 className="font-bold mt-4">Long List (More)</h3>
-                <div className="border border-gray-200 bg-white p-4" style={{ width: '64rem' }}>
+                <div>
                   <HashList data={LONG_HASH_DATA} />
                 </div>
               </Gcol>
