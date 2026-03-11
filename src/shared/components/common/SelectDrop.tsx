@@ -68,6 +68,7 @@ export type SelectDropProps<TValue extends string = string> = Omit<
     error?: boolean;
     errorMsg?: React.ReactNode;
     errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+    sideOffset?: 0;
 };
 
 /**
@@ -97,6 +98,7 @@ function SelectDrop<TValue extends string = string>({
     error = false,
     errorMsg = '입력은 필수입니다.',
     errorPs = 'bl',
+    sideOffset = 0,
     ...contentProps
 }: SelectDropProps<TValue>) {
   const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
@@ -106,7 +108,6 @@ function SelectDrop<TValue extends string = string>({
       return { width: `${width / 10}rem` };
     }
     if (typeof width === 'string' && !WIDTH_MAP[width as UIUXsize]) {
-      // It's a string like "15rem" or "200px"
       return { width };
     }
     return undefined;
