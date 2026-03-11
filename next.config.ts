@@ -27,6 +27,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
 
+  // Component caching
+  cacheComponents: true,
+
   // Experimental features
   experimental: {
     // Optimize CSS
