@@ -35,14 +35,30 @@ const meta: Meta<SelectDropStoryProps> = {
     layout: 'centered',
   },
   argTypes: {
+    // 사용자 요청 순서
     selectionMode: {
       control: { type: 'inline-radio' },
       options: ['checkbox', 'radio'],
       table: { category: '선택 모드' },
     },
+    width: {
+      control: { type: 'select' },
+      options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '15rem', '200px'],
+      table: { category: '스타일 props' },
+    },
+    options: {
+      table: { disable: true },
+    },
+    defaultValue: {
+      table: { disable: true },
+    },
+    placeholder: {
+      control: { type: 'text' },
+      table: { category: '내용 props' },
+    },
     side: {
       control: { type: 'select' },
-      options: ['top', 'right', 'bottom', 'left'],
+      options: ['top', 'bottom', 'left', 'right'],
       table: { category: '위치 props' },
     },
     align: {
@@ -54,32 +70,37 @@ const meta: Meta<SelectDropStoryProps> = {
       control: { type: 'number' },
       table: { category: '위치 props' },
     },
-    className: {
-      control: { type: 'text' },
-      table: { category: '스타일 props' },
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: '상태 props' },
     },
-    options: {
-      table: { disable: true },
-    },
-    defaultValue: {
-      table: { disable: true },
-    },
-    value: {
-      table: { disable: true },
-    },
-    onValueChange: {
-      table: { disable: true },
-    },
+
+    // 나머지 props 숨김 처리
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    allowCustomInput: { table: { disable: true } },
+    customInputLabel: { table: { disable: true } },
+    customInputValue: { table: { disable: true } },
+    defaultCustomInputValue: { table: { disable: true } },
+    onCustomInputValueChange: { table: { disable: true } },
+    triggerClassName: { table: { disable: true } },
+    listClassName: { table: { disable: true } },
+    contentClassName: { table: { disable: true } },
+    resetLabel: { table: { disable: true } },
+    confirmLabel: { table: { disable: true } },
+    closeOnConfirm: { table: { disable: true } },
+    className: { table: { disable: true } },
   },
   args: {
     selectionMode: 'checkbox',
+    width: 'md',
     options: demoOptions,
     defaultValue: ['수술/치료', '재물/배상'],
     placeholder: '선택',
     side: 'bottom',
     align: 'start',
-    sideOffset: 6,
-    contentClassName: 'w-[14rem]',
+    sideOffset: 0,
+    disabled: false,
   },
 };
 
@@ -116,8 +137,8 @@ export const SingleWithCustomInput: StoryObj<SelectDropStoryProps> = {
     placeholder: '선택',
     allowCustomInput: true,
     customInputLabel: '직접입력',
+    width: 'md',
     defaultValue: ['6-9만원'],
-    contentClassName: 'w-[14rem]',
   },
   render: (args) => <SelectDrop {...args} />,
 };

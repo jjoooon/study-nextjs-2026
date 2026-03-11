@@ -9,8 +9,23 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { cn } from '@/shared/lib/shadcn/utils';
+import type { UIUXsize } from '@/shared/types/uiuxTypes';
 
 const CUSTOM_INPUT_VALUE = '__custom_input__' as const;
+
+const WIDTH_MAP: Record<UIUXsize, string> = {
+    full: 'w-full',
+    auto: 'w-auto',
+    max: 'w-max',
+    min: 'w-min',
+    '2xs': 'w-[4rem]',
+    xs: 'w-[8rem]',
+    sm: 'w-[10rem]',
+    md: 'w-[12rem]',
+    lg: 'w-[14rem]',
+    xl: 'w-[16rem]',
+    '2xl': 'w-[18rem]',
+};
 
 function formatAmount(value: string): string {
     const num = value.replace(/[^0-9]/g, '');
@@ -39,8 +54,8 @@ export type SelectDropProps<TValue extends string = string> = Omit<
     defaultCustomInputValue?: string;
     onCustomInputValueChange?: (value: string) => void;
     placeholder?: string;
+    width?: UIUXsize | number | string;
     triggerClassName?: string;
-    contentClassName?: string;
     listClassName?: string;
     resetLabel?: string;
     confirmLabel?: string;
@@ -60,8 +75,8 @@ function SelectDrop<TValue extends string = string>({
     defaultCustomInputValue = '',
     onCustomInputValueChange,
     placeholder = '선택',
+    width = 'md',
     triggerClassName,
-    contentClassName,
     listClassName,
     resetLabel = '초기화',
     confirmLabel = '설정완료',
@@ -72,6 +87,19 @@ function SelectDrop<TValue extends string = string>({
     sideOffset = 0,
     ...contentProps
 }: SelectDropProps<TValue>) {
+    const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
+
+    const inlineWidthStyle = (() => {
+        if (typeof width === 'number') {
+            return { width: `${width / 10}rem` };
+        }
+        if (typeof width === 'string' && !WIDTH_MAP[width as UIUXsize]) {
+            // It's a string like "15rem" or "200px"
+            return { width };
+        }
+        return undefined;
+    })();
+
     const [open, setOpen] = React.useState(false);
     const [internalCustomInputValue, setInternalCustomInputValue] = React.useState(defaultCustomInputValue);
     const [internalValues, setInternalValues] = React.useState<TValue[]>(() => {
@@ -116,11 +144,19 @@ function SelectDrop<TValue extends string = string>({
     );
 
     const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues]);
-    const resolvedCustomInputValue = customInputValue ?? internalCustomInputValue;
-    const isCustomInputSelected =
-        selectionMode === 'radio' &&
-        allowCustomInput &&
-        selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue);
+
+    const resolvedCustomInputValue = React.useMemo(
+        () => customInputValue ?? internalCustomInputValue,
+        [customInputValue, internalCustomInputValue]
+    );
+
+    const isCustomInputSelected = React.useMemo(
+        () =>
+            selectionMode === 'radio' &&
+            allowCustomInput &&
+            selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue),
+        [allowCustomInput, selectedValues, selectionMode]
+    );
 
     const displayText = React.useMemo(() => {
         if (isCustomInputSelected) {
@@ -197,11 +233,12 @@ function SelectDrop<TValue extends string = string>({
             <PopoverPrimitive.Trigger asChild disabled={disabled}>
                 <button
                     type="button"
-                    style={{ width: '12rem' }}
+                    style={inlineWidthStyle}
                     className={cn(
                         'flex h-[2.8rem] items-center justify-between gap-1 rounded-[0.4rem] border border-(--color-coolgray-30) bg-(--color-gray-0) px-1.5 text-[1.3rem] text-gray-100',
                         'disabled:cursor-not-allowed disabled:bg-(--color-coolgray-10) disabled:text-gray-50',
-                        triggerClassName
+                        widthClass,
+                        triggerClassName,
                     )}
                 >
                     <span className="truncate text-left">{displayText}</span>
@@ -216,15 +253,15 @@ function SelectDrop<TValue extends string = string>({
                 <PopoverPrimitive.Content
                     side={side}
                     align={align}
-                    sideOffset={0.4}
-                    style={{ width: '12rem' }}
+                    sideOffset={sideOffset}
+                    style={inlineWidthStyle}
                     className={cn(
-                        'z-50 w-60 rounded-[0.4rem] bg-(--color-gray-0) p-0 shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
-                        contentClassName
+                        'z-50 rounded-[0.4rem] bg-(--color-gray-0) p-0 shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
+                        widthClass,
                     )}
                     {...contentProps}
                 > 
-                    <Gcol className="px-2 pt-2" placement={'ss'} gap={0}>
+                    <Gcol className={cn('px-2 pt-2', listClassName)} placement={'ss'} gap={0}>
                         {selectionMode === 'radio' ? (
                             <RadioGroup
                                 value={selectedValues[0] ?? ''}
@@ -290,7 +327,7 @@ function SelectDrop<TValue extends string = string>({
                     </Gcol>
 
                     {selectionMode === 'radio' ? (
-                        <Gcol className="border-[var(--color-coolgray-20)] px-1 py-1">
+                        <Gcol className="px-1 py-1">
                             <Button
                                 type="button"
                                 size="md"
