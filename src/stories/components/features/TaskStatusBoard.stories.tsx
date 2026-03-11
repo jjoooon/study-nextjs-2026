@@ -17,7 +17,7 @@ const dataTaskState: DataTaskState[] = [
 ];
 
 const meta: Meta<typeof TaskStatusBoard> = {
-  title: 'Components/Features/TaskStatusBoard',
+  title: 'Components/Features/Aside/신호등(TaskStatusBoard)',
   component: TaskStatusBoard,
   tags: ['autodocs'],
   parameters: {

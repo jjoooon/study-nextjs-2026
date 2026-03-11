@@ -54,8 +54,6 @@ type Story = StoryObj<typeof PageProcess>;
 
 export const Default: Story = {
   render: () => (
-    <div className="h-[70rem] bg-gray-50 p-8 flex justify-center items-start">
-      <PageProcess />
-    </div>
+    <PageProcess />
   ),
 };

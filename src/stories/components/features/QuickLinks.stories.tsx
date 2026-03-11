@@ -4,7 +4,7 @@ import { QuickLinks } from '@/shared/components/features/QuickLinks';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof QuickLinks> = {
-  title: 'Components/Features/QuickLinks',
+  title: 'Components/Features/Aside/바로가기(QuickLinks)',
   component: QuickLinks,
   tags: ['autodocs'],
   parameters: {
@@ -52,8 +52,6 @@ type Story = StoryObj<typeof QuickLinks>;
 
 export const Default: Story = {
   render: () => (
-    <div className="w-[30rem] p-4 border border-dashed">
-      <QuickLinks />
-    </div>
+    <QuickLinks />
   ),
 };

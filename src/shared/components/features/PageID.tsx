@@ -18,16 +18,16 @@ export default function PageID({ data }: PageIDProps) {
   const safeData = data ?? {};
 
   return (
-    <Grow placement="bwc" className="w-full py-1">
-      <Grow className="gap-1">
-        <Typo tag="h1" variant="heading-sm">
+    <Grow placement={'bwc'} className="w-full py-1">
+      <Grow>
+        <Typo tag={'h1'} variant={'heading-sm'}>
           {safeData.pageName}
         </Typo>
         <Typo>({safeData.pageId})</Typo>
       </Grow>
-      <Grow className="gap-1">
+      <Grow>
         <ZoomControl />
-        <Button variant="none" only="icon" size="md">
+        <Button variant={'none'} only={'icon'} size={'md'} aria-label="페이지 닫기">
           <CloseIcon />
         </Button>
       </Grow>

@@ -17,6 +17,9 @@ import {
   LayoutAsideBody,
   LayoutAsideFoot,
 } from '@layout/BaseLayout';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+import { Gcol, Grow } from '@atoms';
+
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 interface Props {
@@ -58,7 +61,15 @@ export const LayoutTemplateA = ({
       </LayoutMain>
       <LayoutAside className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
-        <LayoutAsideBody>{asideBody}</LayoutAsideBody>
+        <LayoutAsideBody>
+          <LayoutScrollWrap>
+            <LayoutScrollItem>
+              <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
+                {asideBody}
+              </Gcol>
+            </LayoutScrollItem>
+          </LayoutScrollWrap>
+        </LayoutAsideBody>
         <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
       </LayoutAside>
     </LayoutBody>

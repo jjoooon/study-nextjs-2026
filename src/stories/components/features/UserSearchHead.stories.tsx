@@ -49,7 +49,7 @@ const DummyData: DummyDataType = {
 
 
 const meta: Meta<typeof UserSearchHead> = {
-  title: 'Components/Features/UserSearchHead',
+  title: 'Components/Features/고객검색(UserSearchHead)',
   component: UserSearchHead,
   tags: ['autodocs'],
   parameters: {

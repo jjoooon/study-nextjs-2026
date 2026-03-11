@@ -153,11 +153,11 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                   <CarouselPagination />
                 </Carousel>
                 <Gcol> 
-                  <Button color={'coolgray'} size={'lg'} onClick={() => handleSelectIdx(tab.value, 0)}>
+                  <Button id="btnRA" color={'coolgray'} size={'lg'} onClick={() => handleSelectIdx(tab.value, 0)}>
                     고객찾기
                     <SearchIcon size={16} color={'#FFF'} />
                   </Button>
-                  <Button variant={'outlined'} size={'lg'} color={'coolgray'} onClick={() => handleSelectIdx(tab.value, 0)}>
+                  <Button id="btnRC" variant={'outlined'} size={'lg'} color={'coolgray'} onClick={() => handleSelectIdx(tab.value, 0)}>
                     고객등록
                     <ZoomInIcon size={16} color={'#374151'} />
                   </Button>

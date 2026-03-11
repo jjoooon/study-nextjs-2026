@@ -8,10 +8,13 @@ import { LayoutTemplateA } from '@layout/LayoutTemplate';
 import PageID from '@features/PageID';
 import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
 import PageProcess from '@features/PageProcess';
-import AsideBody from '@features/AsideBody';
-import AsideFoot from '@features/AsideFoot';
+
 import { LTRA350Step2 as MainFoot } from '@features/MainFoot';
+
 import TaskStatusBoard from '@features/TaskStatusBoard';
+import { QuickLinks } from '@features/QuickLinks';
+import { InfoContract } from '@features/InfoContract';
+import AsideFoot from '@features/AsideFoot';
 
 // LTRA350 - components
 import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
@@ -56,7 +59,12 @@ export default function LTRA350Section() {
       mainFoot={<MainFoot />}
 
       asideHead={<TaskStatusBoard state={dataTaskState} />}
-      asideBody={<AsideBody data={data.aside} />}
+      asideBody={
+        <>
+          <InfoContract data={data.aside} />
+          <QuickLinks />
+        </>
+      }
       asideFoot={<AsideFoot />}
       
       hideAside={hideAside}
