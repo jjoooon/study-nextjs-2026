@@ -3,8 +3,8 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { SelectDropIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
@@ -27,6 +27,9 @@ const WIDTH_MAP: Record<UIUXsize, string> = {
   '2xl': 'w-[18rem]',
 };
 
+/**
+ * 숫자를 3자리마다 콤마를 찍어 포맷팅합니다.
+ */
 function formatAmount(value: string): string {
   const num = value.replace(/[^0-9]/g, '');
   if (!num) return '';
@@ -39,53 +42,64 @@ export type SelectDropOption<TValue extends string = string> = {
   disabled?: boolean;
 };
 
+/**
+ * SelectDrop Props Definition
+ */
 export type SelectDropProps<TValue extends string = string> = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
   'children'
 > & {
-  selectionMode?: 'checkbox' | 'radio';
-  options: ReadonlyArray<SelectDropOption<TValue>>;
-  value?: ReadonlyArray<TValue>;
-  defaultValue?: ReadonlyArray<TValue>;
-  onValueChange?: (values: TValue[]) => void;
-  allowCustomInput?: boolean;
-  customInputLabel?: string;
-  customInputValue?: string;
-  defaultCustomInputValue?: string;
-  onCustomInputValueChange?: (value: string) => void;
-  placeholder?: string;
-  width?: UIUXsize | number | string;
-  triggerClassName?: string;
-  listClassName?: string;
-  resetLabel?: string;
-  confirmLabel?: string;
-  closeOnConfirm?: boolean;
-  disabled?: boolean;
+    variant?: 'checkbox' | 'radio';
+    options: ReadonlyArray<SelectDropOption<TValue>>;
+    value?: ReadonlyArray<TValue>;
+    defaultValue?: ReadonlyArray<TValue>;
+    onValueChange?: (values: TValue[]) => void;
+    allowCustomInput?: boolean;
+    customInputLabel?: string;
+    customInputValue?: string;
+    defaultCustomInputValue?: string;
+    onCustomInputValueChange?: (value: string) => void;
+    placeholder?: string;
+    width?: UIUXsize | number | string;
+    size?: UIUXsize;
+    required?: boolean;
+    readOnly?: boolean;
+    triggerClassName?: string;
+    error?: boolean;
+    errorMsg?: React.ReactNode;
+    errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+    sideOffset?: 0;
 };
 
+/**
+ * SelectDrop Component
+ *
+ * Popover 기반의 커스텀 셀렉트 컴포넌트입니다.
+ * 체크박스(다중 선택)와 라디오(단일 선택) 모드를 지원하며,
+ * 라디오 모드에서는 직접 입력 기능을 옵션으로 제공합니다.
+ */
 function SelectDrop<TValue extends string = string>({
-  selectionMode = 'checkbox',
-  options,
-  value,
-  defaultValue,
-  onValueChange,
-  allowCustomInput = false,
-  customInputLabel = '직접입력',
-  customInputValue,
-  defaultCustomInputValue = '',
-  onCustomInputValueChange,
-  placeholder = '선택',
-  width = 'md',
-  triggerClassName,
-  listClassName,
-  resetLabel = '초기화',
-  confirmLabel = '설정완료',
-  closeOnConfirm = true,
-  disabled = false,
-  side = 'bottom',
-  align = 'start',
-  sideOffset = 0,
-  ...contentProps
+    variant = 'checkbox',
+    options,
+    value,
+    defaultValue,
+    onValueChange,
+    allowCustomInput = false,
+    customInputLabel = '직접입력',
+    customInputValue,
+    defaultCustomInputValue = '',
+    onCustomInputValueChange,
+    placeholder = '선택',
+    width = 'md',
+    triggerClassName,
+    size = 'md',
+    required = false,
+    readOnly = false,
+    error = false,
+    errorMsg = '입력은 필수입니다.',
+    errorPs = 'bl',
+    sideOffset = 0,
+    ...contentProps
 }: SelectDropProps<TValue>) {
   const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
 
@@ -94,19 +108,22 @@ function SelectDrop<TValue extends string = string>({
       return { width: `${width / 10}rem` };
     }
     if (typeof width === 'string' && !WIDTH_MAP[width as UIUXsize]) {
-      // It's a string like "15rem" or "200px"
       return { width };
     }
     return undefined;
   })();
 
-  const [open, setOpen] = React.useState(false);
-  const [internalCustomInputValue, setInternalCustomInputValue] = React.useState(defaultCustomInputValue);
-  const [internalValues, setInternalValues] = React.useState<TValue[]>(() => {
-    if (selectionMode === 'radio') {
-      const firstValue = defaultValue?.[0];
-      return firstValue ? [firstValue] : [];
-    }
+    const errorId = React.useId();
+    const isDisabled = readOnly;
+    const heightClass = size === 'sm' ? 'h-[2.5rem]' : 'h-[2.8rem]';
+
+    const [open, setOpen] = React.useState(false);
+    const [internalCustomInputValue, setInternalCustomInputValue] = React.useState(defaultCustomInputValue);
+    const [internalValues, setInternalValues] = React.useState<TValue[]>(() => {
+        if (variant === 'radio') {
+            const firstValue = defaultValue?.[0];
+            return firstValue ? [firstValue] : [];
+        }
 
     return [...(defaultValue ?? [])];
   });
@@ -116,32 +133,32 @@ function SelectDrop<TValue extends string = string>({
     () => {
       const nextValues = isControlled ? [...value] : internalValues;
 
-      if (selectionMode === 'radio') {
-        const firstValue = nextValues[0];
-        return firstValue ? [firstValue] : [];
-      }
+            if (variant === 'radio') {
+                const firstValue = nextValues[0];
+                return firstValue ? [firstValue] : [];
+            }
 
-      return nextValues;
-    },
-    [internalValues, isControlled, selectionMode, value]
-  );
+            return nextValues;
+        },
+        [internalValues, isControlled, variant, value]
+    );
 
-  const setSelectedValues = React.useCallback(
-    (nextValues: TValue[]) => {
-      const normalizedValues =
-        selectionMode === 'radio'
-          ? nextValues.length > 0
-            ? [nextValues[0] as TValue]
-            : []
-          : nextValues;
+    const setSelectedValues = React.useCallback(
+        (nextValues: TValue[]) => {
+            const normalizedValues =
+                variant === 'radio'
+                    ? nextValues.length > 0
+                        ? [nextValues[0] as TValue]
+                        : []
+                    : nextValues;
 
-      if (!isControlled) {
-        setInternalValues(normalizedValues);
-      }
-      onValueChange?.(normalizedValues);
-    },
-    [isControlled, onValueChange, selectionMode]
-  );
+            if (!isControlled) {
+                setInternalValues(normalizedValues);
+            }
+            onValueChange?.(normalizedValues);
+        },
+        [isControlled, onValueChange, variant]
+    );
 
   const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues]);
 
@@ -150,13 +167,13 @@ function SelectDrop<TValue extends string = string>({
     [customInputValue, internalCustomInputValue]
   );
 
-  const isCustomInputSelected = React.useMemo(
-    () =>
-      selectionMode === 'radio' &&
-      allowCustomInput &&
-      selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue),
-    [allowCustomInput, selectedValues, selectionMode]
-  );
+    const isCustomInputSelected = React.useMemo(
+        () =>
+            variant === 'radio' &&
+            allowCustomInput &&
+            selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue),
+        [allowCustomInput, selectedValues, variant]
+    );
 
   const displayText = React.useMemo(() => {
     if (isCustomInputSelected) {
@@ -217,156 +234,139 @@ function SelectDrop<TValue extends string = string>({
     },
     [customInputValue, onCustomInputValueChange]
   );
+    const triggerStyle = cn(
+        'flex items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem]',
+        heightClass,
+        error
+            ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)]'
+            : required
+              ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
+              : 'text-[var(--color-text-basic)] border-(--color-coolgray-30) bg-(--color-gray-0)',
+        error
+            ? 'hover:border-[var(--color-input-border-error)] focus:border-[var(--color-input-border-error)] focus:ring-[var(--color-input-surface-error)]'
+            : required
+              ? 'hover:border-[var(--color-input-border-highlight-bold)] focus:border-[var(--color-input-border-highlight-bold)]'
+              : 'hover:border-[var(--color-input-border-hover)] focus:border-[var(--color-input-border-hover)] focus:ring-[var(--color-gray-5)]',
+        'focus:outline-none focus:ring-1',
+        readOnly && 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none',
+        'disabled:cursor-not-allowed disabled:bg-(--color-coolgray-10) disabled:text-gray-50',
+        widthClass,
+        triggerClassName,
+    );
 
-  const handleReset = React.useCallback(() => {
-    setSelectedValues([]);
-  }, [setSelectedValues]);
+    const arrowStateColor = error
+        ? 'var(--color-danger-50)'
+        : required
+          ? 'var(--color-icon-gray)'
+          : readOnly
+            ? 'var(--color-icon-gray-lighter)'
+            : 'currentColor';
 
-  const handleConfirm = React.useCallback(() => {
-    if (closeOnConfirm) {
-      setOpen(false);
-    }
-  }, [closeOnConfirm]);
-
-  return (
-    <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
-      <PopoverPrimitive.Trigger asChild disabled={disabled}>
-        <button
-          type="button"
-          style={inlineWidthStyle}
-          className={cn(
-            'flex h-[2.8rem] items-center justify-between gap-1 rounded-[0.4rem] border border-(--color-coolgray-30) bg-(--color-gray-0) px-1.5 text-[1.3rem] text-gray-100',
-            'disabled:cursor-not-allowed disabled:bg-(--color-coolgray-10) disabled:text-gray-50',
-            widthClass,
-            triggerClassName,
-          )}
-        >
-          <span className="truncate text-left">{displayText}</span>
-          <SelectDropIcon
-            size={16}
-            className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
-          />
-        </button>
-      </PopoverPrimitive.Trigger>
-
-      <PopoverPrimitive.Portal>
-        <PopoverPrimitive.Content
-          side={side}
-          align={align}
-          sideOffset={sideOffset}
-          style={inlineWidthStyle}
-          className={cn(
-            'z-50 rounded-[0.4rem] bg-(--color-gray-0) p-0 shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
-            widthClass,
-          )}
-          {...contentProps}
-        >
-          <Gcol className={cn('px-2 pt-2', listClassName)} placement={'ss'} gap={0}>
-            {selectionMode === 'radio' ? (
-              <RadioGroup
-                value={selectedValues[0] ?? ''}
-                onValueChange={handleRadioValueChange}
-                className="flex-col items-start"
-                width="full"
-                disabled={disabled}
-              >
-                {options.map((option) => {
-                  return (
-                    <Grow key={option.value} placement={'sc'} className="min-h-[2.8rem]">
-                      <RadioGroupItem
-                        value={option.value}
-                        disabled={option.disabled}
-                        size="sm"
-                      >
-                        {option.label}
-                      </RadioGroupItem>
-                    </Grow>
-                  );
-                })}
-
-                {allowCustomInput && (
-                  <>
-                    <Grow placement={'sc'} className="min-h-[2.8rem]">
-                      <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="sm">
-                        {customInputLabel}
-                      </RadioGroupItem>
-                    </Grow>
-                    {isCustomInputSelected && (
-                      <Grow className="mx-[-0.3rem] w-[calc(100% + 0.6rem)]">
-                        <Input
-                          value={resolvedCustomInputValue}
-                          onChange={handleCustomInputChange}
-                          commaAmount={true}
-                          size="sm"
-                          width="full"
-                          after={<span className="text-[1.3rem]">원</span>}
-                        />
-                      </Grow>
-                    )}
-                  </>
-                )}
-              </RadioGroup>
-            ) : (
-              options.map((option) => {
-                return (
-                  <Grow key={option.value} placement={'ss'} className="min-h-[2.8rem]">
-                    <Checkbox
-                      checked={selectedSet.has(option.value)}
-                      onCheckedChange={(checked) => {
-                        handleCheckedChange(option.value, checked);
-                      }}
-                      disabled={option.disabled}
-                      size="sm"
+    return (
+        <div className={cn('relative', widthClass)} style={inlineWidthStyle}>
+            <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+                <PopoverPrimitive.Trigger asChild disabled={isDisabled}>
+                    <button
+                        type="button"
+                        tabIndex={readOnly ? -1 : undefined}
+                        aria-invalid={error || undefined}
+                        aria-describedby={error ? errorId : undefined}
+                        aria-readonly={readOnly || undefined}
+                        className={triggerStyle}
                     >
-                      {option.label}
-                    </Checkbox>
-                  </Grow>
-                );
-              })
-            )}
-          </Gcol>
+                        <span className="truncate text-left">{displayText}</span>
+                        <SelectDropIcon
+                            size={16}
+                            color={arrowStateColor}
+                            className={cn('shrink-0 transition-transform duration-200', open && !isDisabled && 'rotate-180')}
+                        />
+                    </button>
+                </PopoverPrimitive.Trigger>
 
-          {selectionMode === 'radio' ? (
-            <Gcol className="px-1 py-1">
-              <Button
-                type="button"
-                size="md"
-                variant="contained"
-                color="primary"
-                className="h-[2.8rem] w-full"
-                onClick={handleConfirm}
-              >
-                {confirmLabel}
-              </Button>
-            </Gcol>
-          ) : (
-            <Grow placement={'ss'} className="px-1 py-1" gap={1}>
-              <Button
-                type="button"
-                size="md"
-                variant="outlined"
-                color="gray"
-                className="h-[2.8rem] flex-1"
-                onClick={handleReset}
-              >
-                {resetLabel}
-              </Button>
-              <Button
-                type="button"
-                size="md"
-                variant="contained"
-                color="primary"
-                className="h-[2.8rem] flex-1"
-                onClick={handleConfirm}
-              >
-                {confirmLabel}
-              </Button>
-            </Grow>
-          )}
-        </PopoverPrimitive.Content>
-      </PopoverPrimitive.Portal>
-    </PopoverPrimitive.Root>
-  );
+                <PopoverPrimitive.Portal>
+                    <PopoverPrimitive.Content
+                        style={inlineWidthStyle}
+                        className={cn(
+                            'z-50 min-w-48 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
+                            widthClass,
+                        )}
+                        {...contentProps}
+                    >
+                        <Gcol className={cn('p-1 px-2')} placement={'ss'} gap={0}>
+                            {variant === 'radio' ? (
+                                <RadioGroup
+                                    value={selectedValues[0] ?? ''}
+                                    onValueChange={handleRadioValueChange}
+                                    className="flex-col items-start"
+                                    width="full"
+                                    disabled={isDisabled}
+                                >
+                                    {options.map((option) => {
+                                        return (
+                                            <Grow key={option.value} placement={'sc'} className="min-h-[2.8rem]">
+                                                <RadioGroupItem
+                                                    value={option.value}
+                                                    disabled={option.disabled || readOnly}
+                                                    size="sm"
+                                                >
+                                                    {option.label}
+                                                </RadioGroupItem>
+                                            </Grow>
+                                        );
+                                    })}
+
+                                    {allowCustomInput && (
+                                        <>
+                                            <Grow placement={'sc'} className="min-h-[2.8rem]">
+                                                <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="sm" disabled={readOnly}>
+                                                    {customInputLabel}
+                                                </RadioGroupItem>
+                                            </Grow>
+                                            {isCustomInputSelected && (
+                                                <Grow className="mx-[-0.3rem] w-[calc(100% + 0.6rem)]">
+                                                    <Input
+                                                        value={resolvedCustomInputValue}
+                                                        onChange={handleCustomInputChange}
+                                                        commaAmount={true}
+                                                        size="sm"
+                                                        width="full"
+                                                        readOnly={readOnly}
+                                                        after={<span className="text-[1.3rem]">원</span>}
+                                                    />
+                                                </Grow>
+                                            )}
+                                        </>
+                                    )}
+                                </RadioGroup>
+                            ) : (
+                                options.map((option) => {
+                                    return (
+                                        <Grow key={option.value} placement={'ss'} className="min-h-[2.8rem]">
+                                            <Checkbox
+                                                checked={selectedSet.has(option.value)}
+                                                onCheckedChange={(checked) => {
+                                                    handleCheckedChange(option.value, checked);
+                                                }}
+                                                disabled={option.disabled || readOnly}
+                                                size="sm"
+                                            >
+                                                {option.label}
+                                            </Checkbox>
+                                        </Grow>
+                                    );
+                                })
+                            )}
+                        </Gcol>
+                    </PopoverPrimitive.Content>
+                </PopoverPrimitive.Portal>
+            </PopoverPrimitive.Root>
+            {error && (
+                <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+                    {errorMsg}
+                </ErrorMsg>
+            )}
+        </div>
+    );
 }
 
 export default SelectDrop;
