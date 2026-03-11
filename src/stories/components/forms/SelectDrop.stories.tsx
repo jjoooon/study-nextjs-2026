@@ -1,11 +1,11 @@
+import * as React from 'react';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import SelectDrop from '@common/SelectDrop';
 import type { SelectDropProps } from '@common/SelectDrop';
 
-type DemoValue = '사망장해' | '진단비' | '입원/통원' | '수술/치료' | '골절/화상' | '검사/지원' | '운전/비용' | '재물/배상' | '기타';
-
 type SelectDropStoryProps = SelectDropProps<string>;
-
+type DemoValue = '사망장해' | '진단비' | '입원/통원' | '수술/치료' | '골절/화상' | '검사/지원' | '운전/비용' | '재물/배상' | '기타';
 type PriceValue = '5만원이하' | '6-9만원' | '10~14만원' | '15만원 이상';
 
 const demoOptions: ReadonlyArray<{ label: string; value: DemoValue }> = [
@@ -28,18 +28,102 @@ const priceOptions: ReadonlyArray<{ label: string; value: PriceValue }> = [
 ] as const;
 
 const meta: Meta<SelectDropStoryProps> = {
-  title: 'Components/Common/SelectDrop',
+  title: 'Components/Forms/SelectDrop',
   component: SelectDrop<string>,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br />
+            <br />
+
+            <h2>Overview</h2>
+            <div>
+              <p>
+                SelectDrop 컴포넌트는 체크박스/라디오 기반으로 옵션을 선택할 수 있는 드롭다운 UI입니다.
+                <br />
+                단일 선택/다중 선택, 커스텀 입력, 위치 제어(side/align/offset) 등을 지원합니다.
+              </p>
+            </div>
+
+            <Primary />
+            <Controls />
+
+            <h2>Usage</h2>
+            <p>SelectDrop 컴포넌트는 다음과 같은 구조로 사용할 수 있습니다.</p>
+            <Markdown>
+              {`
+\`\`\`tsx
+import SelectDrop from '@common/SelectDrop';
+
+<SelectDrop
+  selectionMode={'checkbox' | 'radio'}
+  width={'md'}
+  options={[{ label: '옵션명', value: '옵션값' }]}
+  defaultValue={['옵션값']}
+  placeholder={'선택'}
+  side={'bottom'}
+  align={'start'}
+  sideOffset={0}
+  disabled={false}
+/>
+\`\`\`
+              `}
+            </Markdown>
+
+            <h2>API Reference</h2>
+            <p>SelectDrop 컴포넌트에서 자주 사용하는 주요 props는 다음과 같습니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>selectionMode</td><td>'checkbox' | 'radio'</td><td>선택 모드</td></tr>
+                <tr><td>width</td><td>'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | string</td><td>트리거 너비</td></tr>
+                <tr><td>options</td><td>Array&lt;{`{ label, value }`}&gt;</td><td>표시할 옵션 목록</td></tr>
+                <tr><td>defaultValue</td><td>string[]</td><td>초기 선택값</td></tr>
+                <tr><td>placeholder</td><td>string</td><td>선택 전 안내 문구</td></tr>
+                <tr><td>side / align / sideOffset</td><td>position props</td><td>드롭다운 위치 제어</td></tr>
+                <tr><td>disabled</td><td>boolean</td><td>비활성화 여부</td></tr>
+              </tbody>
+            </table>
+
+            <h2>Selection Mode</h2>
+            <p>selectionMode 값에 따라 옵션/기본값/커스텀 입력 여부가 달라집니다.</p>
+            <Unstyled>
+              <div className="w-[34rem] p-8 border rounded-md">
+                <SelectDrop
+                  selectionMode="checkbox"
+                  width="md"
+                  options={demoOptions}
+                  defaultValue={['수술/치료', '재물/배상']}
+                  placeholder="선택"
+                  side="bottom"
+                  align="start"
+                  sideOffset={0}
+                  disabled={false}
+                />
+              </div>
+            </Unstyled>
+          </>
+        );
+      },
+    },
   },
   argTypes: {
     // 사용자 요청 순서
     selectionMode: {
       control: { type: 'inline-radio' },
       options: ['checkbox', 'radio'],
-      table: { category: '선택 모드' },
+      table: { category: '타입 props' },
     },
     width: {
       control: { type: 'select' },
@@ -85,7 +169,6 @@ const meta: Meta<SelectDropStoryProps> = {
     onCustomInputValueChange: { table: { disable: true } },
     triggerClassName: { table: { disable: true } },
     listClassName: { table: { disable: true } },
-    contentClassName: { table: { disable: true } },
     resetLabel: { table: { disable: true } },
     confirmLabel: { table: { disable: true } },
     closeOnConfirm: { table: { disable: true } },
@@ -128,17 +211,4 @@ export const Default: Story = {
 
     return <SelectDrop {...mappedArgs} />;
   },
-};
-
-export const SingleWithCustomInput: StoryObj<SelectDropStoryProps> = {
-  args: {
-    selectionMode: 'radio',
-    options: priceOptions,
-    placeholder: '선택',
-    allowCustomInput: true,
-    customInputLabel: '직접입력',
-    width: 'md',
-    defaultValue: ['6-9만원'],
-  },
-  render: (args) => <SelectDrop {...args} />,
 };
