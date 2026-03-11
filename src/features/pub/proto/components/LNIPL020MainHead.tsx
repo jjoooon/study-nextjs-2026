@@ -16,33 +16,33 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 
-import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+import type { LNIPL020DataType } from '@/features/pub/proto/data/LNIPL020Data';
 import { useTabs } from '@/shared/hooks/useTabs';
 
-interface LTRA350MainHeadProps {
-  data: LTRA350DataType['mainHead'];
+interface LNIPL020MainHeadProps {
+  data: LNIPL020DataType['mainHead'];
 }
 
-export function LTRA350MainHead({ data }: LTRA350MainHeadProps) {
+export function LNIPL020MainHead({ data }: LNIPL020MainHeadProps) {
   const stringifiedData = data.tabList.map(item => ({
     ...item,
     value: String(item.value),
   }));
   const {
-    tabs: LTRA350_tabs,
-    active: LTRA350_active,
-    setActive: LTRA350_setActive,
-    handleRemove: LTRA350_handleRemove,
+    tabs: LNIPL020_tabs,
+    active: LNIPL020_active,
+    setActive: LNIPL020_setActive,
+    handleRemove: LNIPL020_handleRemove,
   } = useTabs(stringifiedData);
 
   return (
     <TabPager 
       // removable={true}
-      // onRemove={LTRA350_handleRemove}
+      // onRemove={LNIPL020_handleRemove}
       variant="outlined"
-      data={LTRA350_tabs} 
-      active={LTRA350_active}
-      setActive={LTRA350_setActive}
+      data={LNIPL020_tabs} 
+      active={LNIPL020_active}
+      setActive={LNIPL020_setActive}
       visibleCount={data.visibleCount}
       getValue={tab => String(tab.value)}
       renderTab={tab => (

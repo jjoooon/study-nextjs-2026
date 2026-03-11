@@ -1,6 +1,6 @@
 
-// DUMMY_LTRA350_DATA 타입 정의
-export interface LTRA350DataType {
+// DUMMY_LNIPL020_DATA 타입 정의
+export interface LNIPL020DataType {
   pageID: {
     pageName: string;
     pageId: string;
@@ -65,10 +65,10 @@ export interface LTRA350DataType {
 }
 
 // PageHead에 전달할 데이터 예시
-export const DUMMY_LTRA350_DATA: LTRA350DataType = {
+export const DUMMY_LNIPL020_DATA: LNIPL020DataType = {
   pageID : {
     pageName: '가입설계',
-    pageId: 'LTRA350',
+    pageId: 'LNIPL020',
   },
   pageTitle : {
     simpleMode: true,

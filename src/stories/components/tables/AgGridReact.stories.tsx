@@ -11,15 +11,15 @@ import type {
   CellClassParams,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
-import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
+import type { LNIPL020DataType } from '@/features/pub/proto/data/LNIPL020Data';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type GridRow = LTRA350DataType['mainBody']['agGridTable1'][number];
+type GridRow = LNIPL020DataType['mainBody']['agGridTable1'][number];
 
 interface AgGridReactStoryProps {
   selectionMode?: 'singleRow' | 'multiRow';
@@ -45,7 +45,7 @@ const meta: Meta<AgGridReactStoryProps> = {
             <h2>Overview</h2>
             <div>
               <p>
-                AgGridReact 케이스는 LTRA350MainBody 내부의 AgGrid 설정을 기준으로 구성된 스토리입니다.
+                AgGridReact 케이스는 LNIPL020MainBody 내부의 AgGrid 설정을 기준으로 구성된 스토리입니다.
                 컬럼 고정, 체크박스 선택, 편집 가능한 셀, 커스텀 셀 렌더러를 독립적으로 확인할 수 있습니다.
               </p>
             </div>
@@ -59,10 +59,10 @@ const meta: Meta<AgGridReactStoryProps> = {
               {`
 \`\`\`tsx
 import { AgGridReact } from 'ag-grid-react';
-import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
 
 <AgGridReact
-  rowData={DUMMY_LTRA350_DATA.mainBody.agGridTable1}
+  rowData={DUMMY_LNIPL020_DATA.mainBody.agGridTable1}
   columnDefs={columnDefs}
   rowSelection="multiple"
   singleClickEdit={true}
@@ -263,7 +263,7 @@ const columnDefs: ColDef<GridRow>[] = [
 ];
 
 const renderGrid: Story['render'] = (args) => {
-  const rowData = DUMMY_LTRA350_DATA.mainBody.agGridTable1;
+  const rowData = DUMMY_LNIPL020_DATA.mainBody.agGridTable1;
   return (
     <div className="p-5">
       <div className="w-full h-[40vh]! ag-theme-alpine">

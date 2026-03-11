@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { HashList } from '@common/HashList';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { Gcol } from '@atoms';
-import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
 
 const SHORT_HASH_DATA = ['암', '뇌', '심', '수술', '특정'];
 
-const LONG_HASH_DATA = DUMMY_LTRA350_DATA.mainHead.hashList;
+const LONG_HASH_DATA = DUMMY_LNIPL020_DATA.mainHead.hashList;
 
 const meta: Meta<typeof HashList> = {
   title: 'Components/Common/HashList',

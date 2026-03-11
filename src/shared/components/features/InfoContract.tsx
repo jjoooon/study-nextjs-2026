@@ -5,7 +5,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerA } from '@common/Spinner';
 import { CalendarIcon } from '@icons';
 
-import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+import type { LNIPL020DataType } from '@/features/pub/proto/data/LNIPL020Data';
 
 import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
@@ -13,7 +13,7 @@ import { Badge } from '@uiux/Badge';
 import Link from "next/link"
 
 
-export function InfoContract({ data }: { data: LTRA350DataType['aside'] }) {
+export function InfoContract({ data }: { data: LNIPL020DataType['aside'] }) {
   const info = data?.simpleContractInfo;
   return (
     <Gcol className="w-full gap-1">
