@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Controls, Markdown, Primary, Title, Unstyled } from '@storybook/addon-docs/blocks';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Gcol, Grow } from '@atoms';
 import SelectDrop from '@common/SelectDrop';
@@ -42,7 +42,7 @@ const priceOptions: ReadonlyArray<{ label: string; value: PriceValue }> = [
 ] as const;
 
 const meta: Meta<SelectDropStoryProps> = {
-  title: 'Components/Common/SelectDrop',
+  title: 'Components/Forms/SelectDrop',
   component: SelectDrop<string>,
   tags: ['autodocs'],
   parameters: {
@@ -116,7 +116,7 @@ import SelectDrop from '@common/SelectDrop';
               </thead>
               <tbody>
                 <tr>
-                  <td>selectionMode</td>
+                  <td>variant</td>
                   <td>'checkbox' | 'radio'</td>
                   <td>선택 방식</td>
                 </tr>
@@ -169,13 +169,13 @@ import SelectDrop from '@common/SelectDrop';
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <SelectDrop
-                    selectionMode="checkbox"
+                    variant="checkbox"
                     width="md"
                     options={demoOptions}
                     defaultValue={['수술/치료', '재물/배상']}
                   />
                   <SelectDrop
-                    selectionMode="radio"
+                    variant="radio"
                     width="md"
                     options={priceOptions}
                     defaultValue={['6-9만원']}
@@ -191,8 +191,8 @@ import SelectDrop from '@common/SelectDrop';
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <SelectDrop selectionMode="checkbox" width="md" size="md" options={demoOptions} placeholder="md: 28" />
-                  <SelectDrop selectionMode="checkbox" width="md" size="sm" options={demoOptions} placeholder="sm: 25" />
+                  <SelectDrop variant="checkbox" width="md" size="md" options={demoOptions} placeholder="md: 28" />
+                  <SelectDrop variant="checkbox" width="md" size="sm" options={demoOptions} placeholder="sm: 25" />
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -234,14 +234,6 @@ import SelectDrop from '@common/SelectDrop';
               </Gcol>
             </Unstyled>
 
-            <h2>Disabled</h2>
-            <p>disabled 옵션이 활성화되면 비활성화 스타일이 적용됩니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <SelectDrop width="md" disabled options={demoOptions} defaultValue={['진단비']} />
-              </Gcol>
-            </Unstyled>
-
             <h2>Error</h2>
             <p>error 옵션이 활성화되면 에러 스타일과 메시지가 함께 표시됩니다.</p>
             <Unstyled>
@@ -262,7 +254,7 @@ import SelectDrop from '@common/SelectDrop';
     },
   },
   argTypes: {
-    selectionMode: {
+    variant: {
       control: { type: 'inline-radio' },
       options: ['checkbox', 'radio'],
       table: { category: '설정 props' },
@@ -286,10 +278,6 @@ import SelectDrop from '@common/SelectDrop';
       table: { category: '설정 props' },
     },
     readOnly: {
-      control: { type: 'boolean' },
-      table: { category: '설정 props' },
-    },
-    disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
@@ -367,13 +355,12 @@ import SelectDrop from '@common/SelectDrop';
     },
   },
   args: {
-    selectionMode: 'checkbox',
+    variant: 'checkbox',
     size: 'md',
     width: 'md',
     placeholder: '선택',
     required: false,
     readOnly: false,
-    disabled: false,
     error: false,
     errorMsg: '선택은 필수입니다.',
     errorPs: 'bl',
@@ -389,12 +376,12 @@ type Story = StoryObj<SelectDropStoryProps>;
 
 export const Default: Story = {
   render: (args) => {
-    const isRadioMode = args.selectionMode === 'radio';
+    const isRadioMode = args.variant === 'radio';
 
     const mappedArgs: SelectDropStoryProps = isRadioMode
       ? {
           ...args,
-          selectionMode: 'radio',
+          variant: 'radio',
           options: priceOptions,
           allowCustomInput: true,
           customInputLabel: '직접입력',
@@ -402,18 +389,18 @@ export const Default: Story = {
         }
       : {
           ...args,
-          selectionMode: 'checkbox',
+          variant: 'checkbox',
           options: demoOptions,
           defaultValue: ['수술/치료', '재물/배상'],
         };
 
-    return <SelectDrop key={`${args.selectionMode}-${String(args.readOnly)}-${String(args.error)}`} {...mappedArgs} />;
+    return <SelectDrop key={`${args.variant}-${String(args.readOnly)}-${String(args.error)}`} {...mappedArgs} />;
   },
 };
 
 export const SingleWithCustomInput: Story = {
   args: {
-    selectionMode: 'radio',
+    variant: 'radio',
     width: 'md',
     placeholder: '선택',
     allowCustomInput: true,
@@ -421,5 +408,5 @@ export const SingleWithCustomInput: Story = {
     options: priceOptions,
     defaultValue: ['6-9만원'],
   },
-  render: (args) => <SelectDrop key="radio-custom-input" {...args} />,
+  render: (args) => <SelectDrop key={`radio-custom-input-${String(args.readOnly)}-${String(args.error)}`} {...args} />,
 };

@@ -15,34 +15,34 @@ import type { UIUXsize } from '@/shared/types/uiuxTypes';
 const CUSTOM_INPUT_VALUE = '__custom_input__' as const;
 
 const WIDTH_MAP: Record<UIUXsize, string> = {
-    full: 'w-full',
-    auto: 'w-auto',
-    max: 'w-max',
-    min: 'w-min',
-    '2xs': 'w-[4rem]',
-    xs: 'w-[8rem]',
-    sm: 'w-[10rem]',
-    md: 'w-[12rem]',
-    lg: 'w-[14rem]',
-    xl: 'w-[16rem]',
-    '2xl': 'w-[18rem]',
+  full: 'w-full',
+  auto: 'w-auto',
+  max: 'w-max',
+  min: 'w-min',
+  '2xs': 'w-[4rem]',
+  xs: 'w-[8rem]',
+  sm: 'w-[10rem]',
+  md: 'w-[12rem]',
+  lg: 'w-[14rem]',
+  xl: 'w-[16rem]',
+  '2xl': 'w-[18rem]',
 };
 
 function formatAmount(value: string): string {
-    const num = value.replace(/[^0-9]/g, '');
-    if (!num) return '';
-    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const num = value.replace(/[^0-9]/g, '');
+  if (!num) return '';
+  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export type SelectDropOption<TValue extends string = string> = {
-    label: string;
-    value: TValue;
-    disabled?: boolean;
+  label: string;
+  value: TValue;
+  disabled?: boolean;
 };
 
 export type SelectDropProps<TValue extends string = string> = Omit<
-    React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
-    'children'
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
+  'children'
 > & {
     variant?: 'checkbox' | 'radio';
     options: ReadonlyArray<SelectDropOption<TValue>>;
@@ -95,18 +95,18 @@ function SelectDrop<TValue extends string = string>({
     errorPs = 'bl',
     ...contentProps
 }: SelectDropProps<TValue>) {
-    const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
+  const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
 
-    const inlineWidthStyle = (() => {
-        if (typeof width === 'number') {
-            return { width: `${width / 10}rem` };
-        }
-        if (typeof width === 'string' && !WIDTH_MAP[width as UIUXsize]) {
-            // It's a string like "15rem" or "200px"
-            return { width };
-        }
-        return undefined;
-    })();
+  const inlineWidthStyle = (() => {
+    if (typeof width === 'number') {
+      return { width: `${width / 10}rem` };
+    }
+    if (typeof width === 'string' && !WIDTH_MAP[width as UIUXsize]) {
+      // It's a string like "15rem" or "200px"
+      return { width };
+    }
+    return undefined;
+  })();
 
     const errorId = React.useId();
     const isDisabled = readOnly;
@@ -120,13 +120,13 @@ function SelectDrop<TValue extends string = string>({
             return firstValue ? [firstValue] : [];
         }
 
-        return [...(defaultValue ?? [])];
-    });
+    return [...(defaultValue ?? [])];
+  });
 
-    const isControlled = value !== undefined;
-    const selectedValues = React.useMemo(
-        () => {
-            const nextValues = isControlled ? [...value] : internalValues;
+  const isControlled = value !== undefined;
+  const selectedValues = React.useMemo(
+    () => {
+      const nextValues = isControlled ? [...value] : internalValues;
 
             if (variant === 'radio') {
                 const firstValue = nextValues[0];
@@ -155,12 +155,12 @@ function SelectDrop<TValue extends string = string>({
         [isControlled, onValueChange, variant]
     );
 
-    const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues]);
+  const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues]);
 
-    const resolvedCustomInputValue = React.useMemo(
-        () => customInputValue ?? internalCustomInputValue,
-        [customInputValue, internalCustomInputValue]
-    );
+  const resolvedCustomInputValue = React.useMemo(
+    () => customInputValue ?? internalCustomInputValue,
+    [customInputValue, internalCustomInputValue]
+  );
 
     const isCustomInputSelected = React.useMemo(
         () =>
@@ -170,75 +170,75 @@ function SelectDrop<TValue extends string = string>({
         [allowCustomInput, selectedValues, variant]
     );
 
-    const displayText = React.useMemo(() => {
-        if (isCustomInputSelected) {
-            const formatted = formatAmount(resolvedCustomInputValue);
-            return formatted ? `${formatted}원` : customInputLabel;
-        }
+  const displayText = React.useMemo(() => {
+    if (isCustomInputSelected) {
+      const formatted = formatAmount(resolvedCustomInputValue);
+      return formatted ? `${formatted}원` : customInputLabel;
+    }
 
-        const checkedOptions = options.filter((option) => selectedSet.has(option.value));
+    const checkedOptions = options.filter((option) => selectedSet.has(option.value));
 
-        if (checkedOptions.length === 0) {
-            return placeholder;
-        }
+    if (checkedOptions.length === 0) {
+      return placeholder;
+    }
 
-        const firstLabel = checkedOptions[0]?.label;
+    const firstLabel = checkedOptions[0]?.label;
 
-        if (!firstLabel) {
-            return placeholder;
-        }
+    if (!firstLabel) {
+      return placeholder;
+    }
 
-        if (checkedOptions.length === 1) {
-            return firstLabel;
-        }
+    if (checkedOptions.length === 1) {
+      return firstLabel;
+    }
 
-        return `${firstLabel} 외 ${checkedOptions.length - 1}`;
-    }, [customInputLabel, isCustomInputSelected, options, placeholder, resolvedCustomInputValue, selectedSet]);
+    return `${firstLabel} 외 ${checkedOptions.length - 1}`;
+  }, [customInputLabel, isCustomInputSelected, options, placeholder, resolvedCustomInputValue, selectedSet]);
 
-    const handleCheckedChange = React.useCallback(
-        (optionValue: TValue, checked: boolean | 'indeterminate') => {
-            const nextSelected = new Set(selectedSet);
+  const handleCheckedChange = React.useCallback(
+    (optionValue: TValue, checked: boolean | 'indeterminate') => {
+      const nextSelected = new Set(selectedSet);
 
-            if (checked === true) {
-                nextSelected.add(optionValue);
-            } else {
-                nextSelected.delete(optionValue);
-            }
+      if (checked === true) {
+        nextSelected.add(optionValue);
+      } else {
+        nextSelected.delete(optionValue);
+      }
 
-            setSelectedValues(Array.from(nextSelected));
-        },
-        [selectedSet, setSelectedValues]
-    );
+      setSelectedValues(Array.from(nextSelected));
+    },
+    [selectedSet, setSelectedValues]
+  );
 
-    const handleRadioValueChange = React.useCallback(
-        (nextValue: string) => {
-            setSelectedValues(nextValue ? [nextValue as TValue] : []);
-        },
-        [setSelectedValues]
-    );
+  const handleRadioValueChange = React.useCallback(
+    (nextValue: string) => {
+      setSelectedValues(nextValue ? [nextValue as TValue] : []);
+    },
+    [setSelectedValues]
+  );
 
-    const handleCustomInputChange = React.useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            const nextValue = event.target.value;
+  const handleCustomInputChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const nextValue = event.target.value;
 
-            if (customInputValue === undefined) {
-                setInternalCustomInputValue(nextValue);
-            }
+      if (customInputValue === undefined) {
+        setInternalCustomInputValue(nextValue);
+      }
 
-            onCustomInputValueChange?.(nextValue);
-        },
-        [customInputValue, onCustomInputValueChange]
-    );
+      onCustomInputValueChange?.(nextValue);
+    },
+    [customInputValue, onCustomInputValueChange]
+  );
 
-    const handleReset = React.useCallback(() => {
-        setSelectedValues([]);
-    }, [setSelectedValues]);
+  const handleReset = React.useCallback(() => {
+    setSelectedValues([]);
+  }, [setSelectedValues]);
 
-    const handleConfirm = React.useCallback(() => {
-        if (closeOnConfirm) {
-            setOpen(false);
-        }
-    }, [closeOnConfirm]);
+  const handleConfirm = React.useCallback(() => {
+    if (closeOnConfirm) {
+      setOpen(false);
+    }
+  }, [closeOnConfirm]);
 
     const triggerStyle = cn(
         'flex items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem]',
