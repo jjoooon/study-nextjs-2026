@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
+
 import { Gcol } from '@atoms';
-import { AmountUnitInput } from '@/shared/components/features/AmountUnitInput';
+import { AmountUnitInput } from '@features/AmountUnitInput';
+
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof AmountUnitInput> = {
-  title: 'Components/Features/AmountUnitInput',
+  title: 'Components/Forms/AmountUnitInput',
   component: AmountUnitInput,
   tags: ['autodocs'],
   parameters: {
@@ -34,7 +36,7 @@ const meta: Meta<typeof AmountUnitInput> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { AmountUnitInput } from '@/shared/components/features/AmountUnitInput';
+import { AmountUnitInput } from '@features/AmountUnitInput';
 import { useState } from 'react';
 
 const MyComponent = () => {

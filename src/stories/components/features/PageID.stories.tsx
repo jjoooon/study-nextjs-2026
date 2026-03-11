@@ -9,7 +9,7 @@ const MOCK_DATA = {
 };
 
 const meta: Meta<typeof PageID> = {
-  title: 'Components/Features/화면아이디(PageID)',
+  title: 'Components/Features/header/화면아이디(PageID)',
   component: PageID,
   tags: ['autodocs'],
   parameters: {
