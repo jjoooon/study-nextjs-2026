@@ -345,7 +345,7 @@ import SelectDrop from '@common/SelectDrop';
     errorPs: 'bl',
     side: 'bottom',
     align: 'start',
-    sideOffset: 4,
+    sideOffset: 0,
   },
 };
 
