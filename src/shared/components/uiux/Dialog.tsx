@@ -41,17 +41,27 @@ function DialogContent({
   children,
   showCloseButton = true,
   resizable = false,
+  defaultPosition,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
   resizable?: boolean;
+  defaultPosition?: {
+    x: number;
+    y: number;
+  };
 }) {
-  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [size, setSize] = React.useState({ width: 0, height: 0 });
   const [isDragging, setIsDragging] = React.useState(false);
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
   const contentRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!defaultPosition) return;
+    setPosition(defaultPosition);
+  }, [defaultPosition]);
 
   const contentStyle = React.useMemo<React.CSSProperties>(
     () => ({
@@ -77,6 +87,7 @@ function DialogContent({
 
       // Resize handle에서 시작하면 resize 모드
       if (resizeHandle) {
+        e.preventDefault();
         setIsResizing(resizeHandle.getAttribute('data-direction'));
         setDragStart({ x: e.clientX, y: e.clientY });
         return;
@@ -84,6 +95,7 @@ function DialogContent({
 
       // Header가 있고 Header 내부이거나, Header가 없으면 드래그 허용
       if (dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]')) {
+        e.preventDefault();
         setIsDragging(true);
         setDragStart({
           x: e.clientX - position.x,
@@ -108,22 +120,41 @@ function DialogContent({
         const deltaX = e.clientX - dragStart.x;
         const deltaY = e.clientY - dragStart.y;
 
+        const baseWidth = size.width || rect.width;
+        const baseHeight = size.height || rect.height;
+        let shiftX = 0;
+        let shiftY = 0;
+
         const newSize = { ...size };
 
         if (isResizing.includes('e')) {
-          newSize.width = Math.max(300, (size.width || rect.width) + deltaX);
+          const nextWidth = Math.max(300, baseWidth + deltaX);
+          newSize.width = nextWidth;
+          shiftX += (nextWidth - baseWidth) / 2;
         }
         if (isResizing.includes('w')) {
-          newSize.width = Math.max(300, (size.width || rect.width) - deltaX);
+          const nextWidth = Math.max(300, baseWidth - deltaX);
+          newSize.width = nextWidth;
+          shiftX -= (nextWidth - baseWidth) / 2;
         }
         if (isResizing.includes('s')) {
-          newSize.height = Math.max(200, (size.height || rect.height) + deltaY);
+          const nextHeight = Math.max(200, baseHeight + deltaY);
+          newSize.height = nextHeight;
+          shiftY += (nextHeight - baseHeight) / 2;
         }
         if (isResizing.includes('n')) {
-          newSize.height = Math.max(200, (size.height || rect.height) - deltaY);
+          const nextHeight = Math.max(200, baseHeight - deltaY);
+          newSize.height = nextHeight;
+          shiftY -= (nextHeight - baseHeight) / 2;
         }
 
         setSize(newSize);
+        if (shiftX !== 0 || shiftY !== 0) {
+          setPosition((prev) => ({
+            x: prev.x + shiftX,
+            y: prev.y + shiftY,
+          }));
+        }
         setDragStart({ x: e.clientX, y: e.clientY });
       }
     };
@@ -162,6 +193,15 @@ function DialogContent({
         {...props}
       >
         {children}
+        {(isDragging || !!isResizing) && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-40 bg-transparent"
+            style={{
+              cursor: isDragging ? 'grabbing' : undefined,
+            }}
+          />
+        )}
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"

@@ -5,6 +5,8 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { ZoomInIcon } from '@icons';
 
+import AIChatBot from './AIChatBot';
+
 export default function AsideFoot() {
   return (
     <Gcol className="w-full gap-1 pb-1.5 relative">
@@ -43,14 +45,15 @@ export default function AsideFoot() {
         </Grow>
       </Gcol>
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
-        <Button variant={'outlined'} color={'secondary'} size={'lg'} className="justify-between!">
+        <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
           제안서
            <ZoomInIcon color={'var(--color-secondary-50)'} />
         </Button>
-        <Button variant={'outlined'} color={'secondary'} size={'lg'} className="justify-between!">
+        <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
           출력
           <ZoomInIcon color={'var(--color-secondary-50)'} />
         </Button>
+        <AIChatBot />
       </Grow>
     </Gcol>
   );
