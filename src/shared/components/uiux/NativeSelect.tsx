@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectArrowIcon } from '@icons';
+import { ChevronDownIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiuxTypes';
 
@@ -112,7 +112,7 @@ function NativeSelect({
           // disabled={readOnly || props.disabled}
           {...props}
         />
-        <SelectArrowIcon
+        <ChevronDownIcon
           className="pointer-events-none absolute top-1/2 right-[0.8rem] size-[1.6rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]"
           aria-hidden="true"
           color={arrowStateStyle}
