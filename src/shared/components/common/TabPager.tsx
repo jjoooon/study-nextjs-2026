@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { Grow, Typo } from '@atoms';
-import { ArrowLightIcon, ListIcon } from '@icons';
+import { ArrowIcon, ListIcon } from '@icons';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -130,7 +130,7 @@ export function TabPager<T>({
                 onClick={handlePrev}
                 disabled={visibleStart === 0}
               >
-                <ArrowLightIcon className="rotate-180" />
+                <ArrowIcon />
               </Button>
               <Button 
                 variant="outlined" 
@@ -140,7 +140,7 @@ export function TabPager<T>({
                 onClick={handleNext} 
                 disabled={isLastPage}
               >
-                <ArrowLightIcon />
+                <ArrowIcon className="rotate-180" />
               </Button>
               {renderDropdownItem && (
                 <DropdownMenu>

@@ -28,32 +28,6 @@ export const AddIcon: React.FC<IconProps> = ({ className = '', size = 16, color 
   </svg>
 );
 
-export const ArrowSideBg: React.FC<IconProps> = () => (
-  <svg width="10" height="64" viewBox="0 0 10 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M0 0L8.24264 8.24264C9.36786 9.36786 10 10.894 10 12.4853L10 51.5147C10 53.106 9.36786 54.6321 8.24264 55.7574L0 64L0 0Z"
-      fill="#61554F"
-    />
-  </svg>
-);
-export const ArrowSide: React.FC<IconProps> = ({
-  className = '',
-  size = 10,
-  strokeWidth = '1.6',
-  color = 'currentColor',
-}) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 10 10`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path d="M6.5 1L3 5L6.5 9" stroke={color} strokeWidth={strokeWidth} />
-  </svg>
-);
-
 export const ArrowNext: React.FC<IconProps> = ({
   className = '',
   size = 24,
@@ -95,26 +69,6 @@ export const ArrowIcon: React.FC<IconProps> = ({ className = '', size = 16, colo
   </svg>
 );
 
-// B
-export const BackArrow: React.FC<IconProps> = ({ className = '', size = 24 }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M19 12H5M5 12L12 19M5 12L12 5"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 // C
 export const CalendarIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
   <svg
@@ -149,21 +103,6 @@ export const ChevronDownIcon: React.FC<IconProps> = ({ className = '', size = 24
   </svg>
 );
 
-export const CloseDialog: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 14 14`}
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M12.293 0.292969C12.6835 -0.0975551 13.3165 -0.0975551 13.707 0.292969C14.0976 0.683493 14.0976 1.31651 13.707 1.70703L8.41406 7L13.707 12.293C14.0976 12.6835 14.0976 13.3165 13.707 13.707C13.3165 14.0976 12.6835 14.0976 12.293 13.707L7 8.41406L1.70703 13.707C1.31651 14.0976 0.683493 14.0976 0.292969 13.707C-0.0975552 13.3165 -0.0975554 12.6835 0.292969 12.293L5.58594 7L0.292969 1.70703C-0.0975549 1.31651 -0.0975549 0.683493 0.292969 0.292969C0.683493 -0.0975553 1.31651 -0.097555 1.70703 0.292969L7 5.58594L12.293 0.292969Z"
-      fill={color}
-    />
-  </svg>
-);
 export const CheckIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -179,27 +118,7 @@ export const CheckIcon: React.FC<IconProps> = ({ className = '', size = 16, colo
     />
   </svg>
 );
-
 // D
-
-export const DownArrow: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M12 5V19M12 19L19 12M12 19L5 12"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 // F
 export const Favorite: React.FC<IconProps> = ({ className = '', size = 20, color = 'currentColor' }) => (
@@ -218,25 +137,6 @@ export const Favorite: React.FC<IconProps> = ({ className = '', size = 20, color
   </svg>
 );
 
-export const ForwardArrow: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M5 12H19M19 12L12 5M19 12L12 19"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 // H
 export const HomeIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
   <svg width={toRem(size)} height={toRem(size)} viewBox={`0 0 24 24`} fill="none" className={className}>
@@ -249,24 +149,6 @@ export const HomeIcon: React.FC<IconProps> = ({ className = '', size = 24, color
     />
   </svg>
 );
-
-// M
-export const MenuIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path d="M5 7H19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    <path d="M5 12H19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    <path d="M5 17H19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-// P
 
 // R
 export const ResetIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
@@ -320,46 +202,7 @@ export const SearchIcon: React.FC<IconProps> = ({ className = '', size = 16, col
   </svg>
 );
 
-export const SettingsIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" />
-    <path
-      d="M19.4 15A1.65 1.65 0 0 0 18.7 13.8L19.4 15ZM20.6 9A1.65 1.65 0 0 0 19.9 10.2L20.6 9ZM17.6 6.9A1.65 1.65 0 0 0 16.4 6.1L17.6 6.9ZM6.4 17.1A1.65 1.65 0 0 0 7.6 17.9L6.4 17.1ZM3.4 9A1.65 1.65 0 0 0 4.1 10.2L3.4 9ZM4.6 15A1.65 1.65 0 0 0 5.3 13.8L4.6 15Z"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 // U
-export const UpArrow: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
-  <svg
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox={`0 0 24 24`}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M12 19V5M12 5L5 12M12 5L19 12"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 export const UserIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
   <svg width={toRem(size)} height={toRem(size)} viewBox={`0 0 24 24`} fill="none" className={className}>
     <path
@@ -389,21 +232,6 @@ export const CloseIcon = ({ className = '', size = 16, color = 'currentColor' }:
   </svg>
 );
 
-export const ArrowLightIcon: React.FC<IconProps> = ({ className = '', size = 15, color = 'currentColor' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox="0 0 15 15"
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M4.50281 1.99153C4.77124 1.72336 5.20607 1.72336 5.47449 1.99153L10.4971 7.01411C10.7654 7.28261 10.7655 7.71795 10.4971 7.9864L5.47449 13.0084C5.20603 13.2767 4.77126 13.2767 4.50281 13.0084C4.23437 12.7399 4.23446 12.3052 4.50281 12.0367L9.03833 7.50056L4.50281 2.96382C4.23437 2.69538 4.23446 2.26003 4.50281 1.99153Z"
-      fill={color}
-    />
-  </svg>
-);
 export const ListIcon: React.FC<IconProps> = ({ className = '', size = 15, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -459,21 +287,6 @@ export const ZoomInIcon: React.FC<IconProps> = ({ className = '', size = 20, col
   </svg>
 );
 
-export const CheckboxIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox="0 0 14 14"
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M10.0196 4.24094C10.2546 3.97585 10.6602 3.95143 10.9254 4.18626C11.1906 4.42129 11.215 4.82681 10.9801 5.09202L6.43019 10.2252C6.19788 10.4873 5.79831 10.5147 5.5324 10.2868L3.08229 8.18699C2.81338 7.95634 2.78222 7.55137 3.01279 7.28237C3.24337 7.01339 3.64835 6.98241 3.91741 7.21287L5.88787 8.90191L10.0196 4.24094Z"
-      fill={color}
-    />
-  </svg>
-);
 export const PaperIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -684,7 +497,7 @@ export const QuestionMark: React.FC<IconProps> = ({ className = '', size = 14, c
 </svg>
 );
 
-export const FlagCheckIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'currentColor' }) => (
+export const FlagCheckIcon: React.FC<IconProps> = ({ className = '', color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(16)}
@@ -709,3 +522,24 @@ export const SelectDropIcon: React.FC<IconProps> = ({ className = '', size = 10,
   <path d="M12.827 4.80219C13.1134 4.51581 13.5777 4.51581 13.8641 4.80219C14.1501 5.08851 14.1501 5.55233 13.8641 5.83865L8.50666 11.1961C8.22026 11.4822 7.75584 11.4824 7.46955 11.1961L2.11278 5.83865C1.82649 5.55236 1.82668 5.0886 2.11278 4.80219C2.39917 4.51581 2.86285 4.51581 3.14924 4.80219L7.98778 9.64008L12.827 4.80219Z" fill={color}/>
   </svg>
 );
+export const BadgeCheckIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
+   <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={className}
+  >
+    <g clip-path="url(#clip0_1247_13980)">
+      <path d="M11.934 3.3325C12.0713 3.66452 12.3348 3.92843 12.6666 4.06621L13.8301 4.54815C14.1621 4.68568 14.4259 4.94949 14.5634 5.28154C14.701 5.61358 14.701 5.98666 14.5634 6.3187L14.0819 7.48136C13.9443 7.81355 13.9441 8.18701 14.0823 8.51904L14.563 9.68136C14.6312 9.84582 14.6663 10.0221 14.6664 10.2001C14.6664 10.3782 14.6313 10.5545 14.5632 10.7189C14.4951 10.8834 14.3952 11.0328 14.2693 11.1587C14.1434 11.2846 13.9939 11.3844 13.8294 11.4525L12.6668 11.9341C12.3348 12.0714 12.0709 12.3349 11.9331 12.6667L11.4512 13.8302C11.3137 14.1622 11.0499 14.426 10.7179 14.5636C10.3858 14.7011 10.0128 14.7011 9.68073 14.5636L8.51811 14.082C8.18607 13.9448 7.81314 13.9451 7.4813 14.0828L6.31785 14.564C5.986 14.7012 5.61326 14.7011 5.2815 14.5637C4.94974 14.4263 4.68609 14.1628 4.54846 13.8311L4.0664 12.6672C3.92912 12.3352 3.66562 12.0713 3.33382 11.9335L2.17036 11.4516C1.83847 11.3141 1.57476 11.0505 1.43717 10.7186C1.29959 10.3868 1.2994 10.0138 1.43665 9.68186L1.91823 8.5192C2.05542 8.18714 2.05514 7.8142 1.91745 7.48235L1.43657 6.31802C1.36839 6.15356 1.33328 5.97728 1.33325 5.79925C1.33322 5.62122 1.36827 5.44493 1.4364 5.28045C1.50453 5.11597 1.6044 4.96653 1.7303 4.84066C1.8562 4.7148 2.00567 4.61498 2.17016 4.5469L3.33278 4.06531C3.6645 3.92814 3.92824 3.66496 4.06612 3.33353L4.54804 2.17004C4.68557 1.83799 4.94937 1.57419 5.2814 1.43665C5.61343 1.29911 5.9865 1.29911 6.31853 1.43665L7.48115 1.91824C7.81319 2.05544 8.18612 2.05516 8.51796 1.91746L9.6819 1.4374C10.0139 1.29994 10.3869 1.29996 10.7188 1.43747C11.0508 1.57498 11.3146 1.83872 11.4521 2.17067L11.9342 3.33452L11.934 3.3325Z" fill="white"/>
+      <path d="M5.99992 8.00016L7.33325 9.3335L10.3333 6.3335M11.934 3.3325C12.0713 3.66452 12.3348 3.92843 12.6666 4.06621L13.8301 4.54815C14.1621 4.68568 14.4259 4.94949 14.5634 5.28154C14.701 5.61358 14.701 5.98666 14.5634 6.3187L14.0819 7.48136C13.9443 7.81355 13.9441 8.18701 14.0823 8.51904L14.563 9.68136C14.6312 9.84582 14.6663 10.0221 14.6664 10.2001C14.6664 10.3782 14.6313 10.5544 14.5632 10.7189C14.4951 10.8834 14.3952 11.0328 14.2693 11.1587C14.1434 11.2846 13.9939 11.3844 13.8294 11.4525L12.6668 11.9341C12.3348 12.0714 12.0709 12.3349 11.9331 12.6667L11.4512 13.8302C11.3137 14.1622 11.0499 14.426 10.7179 14.5636C10.3858 14.7011 10.0128 14.7011 9.68073 14.5636L8.51811 14.082C8.18607 13.9448 7.81314 13.9451 7.4813 14.0828L6.31785 14.564C5.986 14.7012 5.61326 14.7011 5.2815 14.5637C4.94974 14.4263 4.68609 14.1628 4.54846 13.8311L4.0664 12.6672C3.92912 12.3352 3.66562 12.0713 3.33382 11.9335L2.17036 11.4516C1.83847 11.3141 1.57476 11.0505 1.43717 10.7186C1.29959 10.3868 1.2994 10.0138 1.43665 9.68186L1.91823 8.5192C2.05542 8.18714 2.05514 7.8142 1.91745 7.48235L1.43657 6.31802C1.36839 6.15356 1.33328 5.97728 1.33325 5.79925C1.33322 5.62122 1.36827 5.44493 1.4364 5.28045C1.50453 5.11597 1.6044 4.96653 1.7303 4.84066C1.8562 4.7148 2.00567 4.61498 2.17016 4.5469L3.33278 4.06531C3.6645 3.92814 3.92824 3.66496 4.06612 3.33353L4.54804 2.17004C4.68557 1.83799 4.94937 1.57419 5.2814 1.43665C5.61343 1.29911 5.9865 1.29911 6.31853 1.43665L7.48115 1.91824C7.81319 2.05544 8.18612 2.05516 8.51796 1.91746L9.6819 1.4374C10.0139 1.29994 10.3869 1.29996 10.7188 1.43747C11.0508 1.57498 11.3146 1.83872 11.4521 2.17067L11.9342 3.33452L11.934 3.3325Z" stroke="#414141" stroke-width="1.53846" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_1247_13980">
+        <rect width="16" height="16" fill="white"/>
+      </clipPath>
+    </defs>
+  </svg>
+);
+

@@ -4,7 +4,7 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
 import { ErrorMsg } from '@common/ErrorMsg';
 
-import { CheckIcon, CheckboxIcon, Favorite } from '@icons';
+import { CheckIcon, Favorite } from '@icons';
 import { Grow } from '@atoms';
 
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -187,7 +187,7 @@ function Checkbox({
           <Favorite color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
         ) : isButton ? (
           <Grow className="gap-[0.2rem]" placement="sc">
-            <CheckboxIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+            <CheckIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
             {children}
           </Grow>
         ) : (

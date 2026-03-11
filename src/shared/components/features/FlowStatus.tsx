@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowSide, ArrowSideBg } from '@icons';
 import { LayoutFlow } from '@layout/Cabinet';
 import { Toggle } from '@uiux/Toggle';
 
@@ -29,8 +28,6 @@ const FlowStatus = ({ onToggleChange, defaultPressed = false }: FlowStatusProps)
         onPressedChange={handleToggleChange}
         className="group/toggle absolute top-8 left-full z-10"
       >
-        <ArrowSide className="rotate-180 group-data-[state=on]/toggle:rotate-0 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]" />
-        <ArrowSideBg />
       </Toggle>
       <div className={`${isOpen ? 'px-[2rem]' : 'px-[1.4rem]'} py-[3.2rem]`}>
         <ol

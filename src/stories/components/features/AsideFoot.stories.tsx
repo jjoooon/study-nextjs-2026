@@ -4,7 +4,7 @@ import AsideFoot from '@/shared/components/features/AsideFoot';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof AsideFoot> = {
-  title: 'Components/Features/AsideFoot',
+  title: 'Components/Features/Aside/납입보험료(AsideFoot)',
   component: AsideFoot,
   tags: ['autodocs'],
   parameters: {
