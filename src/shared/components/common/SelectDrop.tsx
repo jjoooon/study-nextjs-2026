@@ -5,7 +5,6 @@ import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { SelectDropIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
@@ -28,6 +27,9 @@ const WIDTH_MAP: Record<UIUXsize, string> = {
   '2xl': 'w-[18rem]',
 };
 
+/**
+ * 숫자를 3자리마다 콤마를 찍어 포맷팅합니다.
+ */
 function formatAmount(value: string): string {
   const num = value.replace(/[^0-9]/g, '');
   if (!num) return '';
@@ -40,6 +42,9 @@ export type SelectDropOption<TValue extends string = string> = {
   disabled?: boolean;
 };
 
+/**
+ * SelectDrop Props Definition
+ */
 export type SelectDropProps<TValue extends string = string> = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
   'children'
@@ -60,15 +65,18 @@ export type SelectDropProps<TValue extends string = string> = Omit<
     required?: boolean;
     readOnly?: boolean;
     triggerClassName?: string;
-    listClassName?: string;
-    resetLabel?: string;
-    confirmLabel?: string;
-    closeOnConfirm?: boolean;
     error?: boolean;
     errorMsg?: React.ReactNode;
     errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 };
 
+/**
+ * SelectDrop Component
+ *
+ * Popover 기반의 커스텀 셀렉트 컴포넌트입니다.
+ * 체크박스(다중 선택)와 라디오(단일 선택) 모드를 지원하며,
+ * 라디오 모드에서는 직접 입력 기능을 옵션으로 제공합니다.
+ */
 function SelectDrop<TValue extends string = string>({
     variant = 'checkbox',
     options,
@@ -83,13 +91,9 @@ function SelectDrop<TValue extends string = string>({
     placeholder = '선택',
     width = 'md',
     triggerClassName,
-    listClassName,
     size = 'md',
     required = false,
     readOnly = false,
-    resetLabel = '초기화',
-    confirmLabel = '설정완료',
-    closeOnConfirm = true,
     error = false,
     errorMsg = '입력은 필수입니다.',
     errorPs = 'bl',
@@ -229,17 +233,6 @@ function SelectDrop<TValue extends string = string>({
     },
     [customInputValue, onCustomInputValueChange]
   );
-
-  const handleReset = React.useCallback(() => {
-    setSelectedValues([]);
-  }, [setSelectedValues]);
-
-  const handleConfirm = React.useCallback(() => {
-    if (closeOnConfirm) {
-      setOpen(false);
-    }
-  }, [closeOnConfirm]);
-
     const triggerStyle = cn(
         'flex items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem]',
         heightClass,
@@ -293,12 +286,12 @@ function SelectDrop<TValue extends string = string>({
                     <PopoverPrimitive.Content
                         style={inlineWidthStyle}
                         className={cn(
-                            'z-50 rounded-[0.4rem] bg-(--color-gray-0) p-0 shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
+                            'z-50 min-w-48 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
                             widthClass,
                         )}
                         {...contentProps}
                     >
-                        <Gcol className={cn('px-2 pt-2', listClassName)} placement={'ss'} gap={0}>
+                        <Gcol className={cn('p-1 px-2')} placement={'ss'} gap={0}>
                             {variant === 'radio' ? (
                                 <RadioGroup
                                     value={selectedValues[0] ?? ''}
@@ -363,47 +356,6 @@ function SelectDrop<TValue extends string = string>({
                                 })
                             )}
                         </Gcol>
-
-                        {variant === 'radio' ? (
-                            <Gcol className="border-t border-(--color-coolgray-20) px-1 py-1">
-                                <Button
-                                    type="button"
-                                    size="md"
-                                    variant="contained"
-                                    color="primary"
-                                    className="h-[2.8rem] w-full"
-                                    onClick={handleConfirm}
-                                    disabled={readOnly}
-                                >
-                                    {confirmLabel}
-                                </Button>
-                            </Gcol>
-                        ) : (
-                            <Grow placement={'ss'} className="border-t border-(--color-coolgray-20) px-1 py-1" gap={1}>
-                                <Button
-                                    type="button"
-                                    size="md"
-                                    variant="outlined"
-                                    color="gray"
-                                    className="h-[2.8rem] flex-1"
-                                    onClick={handleReset}
-                                    disabled={readOnly}
-                                >
-                                    {resetLabel}
-                                </Button>
-                                <Button
-                                    type="button"
-                                    size="md"
-                                    variant="contained"
-                                    color="primary"
-                                    className="h-[2.8rem] flex-1"
-                                    onClick={handleConfirm}
-                                    disabled={readOnly}
-                                >
-                                    {confirmLabel}
-                                </Button>
-                            </Grow>
-                        )}
                     </PopoverPrimitive.Content>
                 </PopoverPrimitive.Portal>
             </PopoverPrimitive.Root>

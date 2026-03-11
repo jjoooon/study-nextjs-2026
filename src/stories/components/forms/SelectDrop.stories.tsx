@@ -92,13 +92,9 @@ import SelectDrop from '@common/SelectDrop';
   placeholder={'선택'}
   required={false | true}
   readOnly={false | true}
-  disabled={false | true}
   error={false | true}
   errorMsg={'선택은 필수입니다.'}
   errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
-  side={'top' | 'bottom' | 'left' | 'right'}
-  align={'start' | 'center' | 'end'}
-  sideOffset={4}
 />
 \`\`\`
               `}
@@ -255,9 +251,9 @@ import SelectDrop from '@common/SelectDrop';
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['checkbox', 'radio'],
-      table: { category: '설정 props' },
+      table: { category: '스타일 props' },
     },
     size: {
       control: { type: 'select' },
@@ -295,18 +291,13 @@ import SelectDrop from '@common/SelectDrop';
       table: { category: '에러 props' },
     },
     side: {
-      control: { type: 'select' },
-      options: ['top', 'bottom', 'left', 'right'],
-      table: { category: '위치 props' },
+      table: { disable: true },
     },
     align: {
-      control: { type: 'select' },
-      options: ['start', 'center', 'end'],
-      table: { category: '위치 props' },
+      table: { disable: true },
     },
     sideOffset: {
-      control: { type: 'number' },
-      table: { category: '위치 props' },
+      table: { disable: true },
     },
     options: {
       table: { disable: true },
@@ -336,18 +327,6 @@ import SelectDrop from '@common/SelectDrop';
       table: { disable: true },
     },
     triggerClassName: {
-      table: { disable: true },
-    },
-    listClassName: {
-      table: { disable: true },
-    },
-    resetLabel: {
-      table: { disable: true },
-    },
-    confirmLabel: {
-      table: { disable: true },
-    },
-    closeOnConfirm: {
       table: { disable: true },
     },
     className: {
