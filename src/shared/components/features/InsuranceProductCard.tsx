@@ -100,20 +100,23 @@ export function InsuranceProductCard({
 
         {/* 상단 행: 체크박스 + 인수상태 배지 */}
         <Grow placement="sc" className="gap-[0.8rem] pr-[3.2rem]">
-          <Checkbox
-            checked={checked}
-            onCheckedChange={(val) => onCheckedChange?.(val === true)}
-          />
-          {isAccept ? (
-            <Badge variant="soft" color="green" size="sm" className="gap-[0.3rem]">
-              <BadgeCheckIcon size={12} color="var(--color-success-50)" />
-              인수가능
-            </Badge>
-          ) : (
-            <Badge variant="soft" color="red" size="sm">
-              인수불가
-            </Badge>
-          )}
+          <Grow>
+            <Checkbox
+              checked={checked}
+              onCheckedChange={(val) => onCheckedChange?.(val === true)}
+            />
+            {isAccept ? (
+              <Badge variant="contained" color="green" size="sm" className="gap-[0.3rem]">
+                <BadgeCheckIcon size={12} color="var(--color-success-50)" />
+                인수가능
+              </Badge>
+            ) : (
+              ""
+            )}
+          </Grow>
+          <Grow>
+            01
+          </Grow>
         </Grow>
 
         {/* 상품명 */}
