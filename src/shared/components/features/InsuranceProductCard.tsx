@@ -22,22 +22,6 @@ import { CircleCheckIcon, FlagCheckDoutoneIcon, SpeechBubbleIcon } from '@icons'
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
-// ─── 추천화법 채팅 아이콘 (인라인) ──────────────────────────────
-const ChatBubbleIcon = ({ className = '' }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="1.4rem"
-    height="1.4rem"
-    viewBox="0 0 16 16"
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M14 1H2C1.44772 1 1 1.44772 1 2V10C1 10.5523 1.44772 11 2 11H5V14.5L9.5 11H14C14.5523 11 15 10.5523 15 10V2C15 1.44772 14.5523 1 14 1Z"
-      fill="currentColor"
-    />
-  </svg>
-);
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -109,7 +93,7 @@ export function InsuranceProductCard({
       )}
 
       {/* ── 카드 본문 ── */}
-      <Gcol placement={'ss'} className="gap-1.5">
+      <Gcol placement={'ss'} className="gap-1.5 w-full">
 
         {/* 상단 행: 체크박스 + 인수상태 배지 */}
         <Grow className='flex items-center gap-[0.8rem]'>
@@ -127,7 +111,7 @@ export function InsuranceProductCard({
           )}
         </Grow>
 
-        <Grow className='flex flex-col items-start'>
+        <Grow className='w-full flex flex-col items-start'>
           <Grow className='flex flex-col items-start'>
             <Typo
               tag="strong"
