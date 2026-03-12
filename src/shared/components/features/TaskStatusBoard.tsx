@@ -89,7 +89,7 @@ export default function TaskStatusBoard<T extends {
           </div>
 
           <DialogFooter>
-            <Button variant="outlined" size="lg" color="gray" onClick={() => setDialogOpen(false)}>
+            <Button variant={'outlined'} size={'lg'} color={'gray'} onClick={() => setDialogOpen(false)}>
               닫기
             </Button>
           </DialogFooter>

@@ -11,15 +11,15 @@ import { TabPager } from '@common/TabPager';
 import { SearchIcon, PlusIcon, QuestionMark } from '@icons';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from "@uiux/RadioGroup"
-import type { LTRA350DataType } from '@/features/pub/proto/data/LTRA350Data';
+import type { LNIPL020DataType } from '@/features/pub/proto/data/LNIPL020Data';
 import { TabItem } from '../../poc/types/insPlanBasic';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { KeyValueItem } from '@/shared/components/common/KeyValueList';
 import { Badge } from '@/shared/components/uiux/Badge';
 
 
-type LTRA350_1_MainBodyProps = {
-  data?: LTRA350DataType['mainBody'];
+type LNIPL020_1_MainBodyProps = {
+  data?: LNIPL020DataType['mainBody'];
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   className?: string;
@@ -28,13 +28,13 @@ type LTRA350_1_MainBodyProps = {
 
 
 
-export function LTRA350_1_MainBody({
+export function LNIPL020_1_MainBody({
   data: _data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan: _onSelectPlan,
   className,
   children,
-}: LTRA350_1_MainBodyProps) {
+}: LNIPL020_1_MainBodyProps) {
   const [value, setValue] = useState('');
   const maskedIdentity = '900101 - 1******';
   const {

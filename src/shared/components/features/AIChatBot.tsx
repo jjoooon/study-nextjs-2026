@@ -64,7 +64,7 @@ export default function AIChatBot() {
         </DialogHeader>
         <div className="w-full h-full min-h-0">
           <iframe
-            src={'about:blank'}
+            src={'https://m.hwgeneralins.com/'}
             title={'AI 챗봇'}
             className="w-full h-full border-0"
             allow="clipboard-read; clipboard-write"

@@ -9,17 +9,18 @@ import PageID from '@features/PageID';
 import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
 import PageProcess from '@features/PageProcess';
 
-import { LTRA350Step2 as MainFoot } from '@features/MainFoot';
+import { LNIPL020Step2 as MainFoot } from '@features/MainFoot';
 
 import TaskStatusBoard from '@features/TaskStatusBoard';
 import { QuickLinks } from '@features/QuickLinks';
 import { InfoContract } from '@features/InfoContract';
 import AsideFoot from '@features/AsideFoot';
 
-// LTRA350 - components
-import { LTRA350MainHead, LTRA350MainBody } from '../components/index_LTRA350';
+// LNIPL020 - components
+import { LNIPL020MainHead, LNIPL020MainBody } from '../components/index_LNIPL020';
+import { LNIPL020_2 } from '../components/LNIPL020_2';
 
-import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
 
 // TaskStatusBoard: 꼭 확인해야 할 일!
 type DataTaskState = {
@@ -35,28 +36,25 @@ const dataTaskState: DataTaskState[] = [
   { id: 4, status: '중지', label: '기타', sum: 0 },
 ];
 
-export default function LTRA350Section() {
+export default function LNIPL020Section() {
   const [hideAside, setHideAside] = useState(false);
-  const data = DUMMY_LTRA350_DATA;
+  const data = DUMMY_LNIPL020_DATA;
  
   return (
+    // LayoutTemplateA
     <LayoutTemplateA
       pageID={<PageID data={data.pageID} />}
       pageTitle={<PageTitle data={data.pageTitle} />}
 
       pageProcess={<PageProcess />}
       
-      mainHead={
-        <LTRA350MainHead data={data.mainHead}/>
-      }
+  
       mainBody={
-        <LTRA350MainBody
-          data={data.mainBody}
+        <LNIPL020_2
           hideAside={hideAside}
           setHideAside={setHideAside}
         />
       }
-      mainFoot={<MainFoot />}
 
       asideHead={<TaskStatusBoard state={dataTaskState} />}
       asideBody={

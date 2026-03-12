@@ -9,17 +9,17 @@ import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitl
 import PageProcess from '@features/PageProcess';
 import AsideBody from '@features/AsideBody';
 import AsideFoot from '@features/AsideFoot';
-import { LTRA350Step1 as MainFoot } from '@features/MainFoot';
+import { LNIPL020Step1 as MainFoot } from '@features/MainFoot';
 import TaskStatusBoard from '@features/TaskStatusBoard';
 
-// LTRA350 - components
-import { LTRA350_1_MainBody } from '../components/index_LTRA350';
+// LNIPL020 - components
+import { LNIPL020_1_MainBody } from '../components/index_LNIPL020';
 
-import { DUMMY_LTRA350_DATA } from '@/features/pub/proto/data/LTRA350Data';
+import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
 
-export default function LTRA350_Section() {
+export default function LNIPL020_Section() {
   const [hideAside, setHideAside] = useState(false);
-  const data = DUMMY_LTRA350_DATA;
+  const data = DUMMY_LNIPL020_DATA;
  
   return (
     <LayoutTemplateB
@@ -28,7 +28,7 @@ export default function LTRA350_Section() {
       pageProcess={<PageProcess />}
 
       mainBody={
-        <LTRA350_1_MainBody />
+        <LNIPL020_1_MainBody />
       }
       mainFoot={<MainFoot />}
 

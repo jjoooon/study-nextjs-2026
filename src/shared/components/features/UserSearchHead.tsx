@@ -95,7 +95,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
   
 
   return (
-    <Grow className="w-full ">
+    <Grow className="w-full">
       <Tabs
         variant={"vertical"}
         onRemove={name_handleRemove}
@@ -113,7 +113,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
         {tabs.map((tab, tabIdx) => (
           <TabsContent value={tab.value} key={tab.value} className="min-w-[108.6rem] w-full h-full relative bg-[#F3F4F6] px-4 pt-3 rounded-tr-[1rem] rounded-br-[1rem] gap-4">
             <Grow gap={3} placement={'ss'}>
-              <Grow gap={'1'} placement={'cs'}>
+              <Grow gap={1} placement={'cs'}>
                 <Carousel opts={{ slidesToScroll: 4 }} className="w-[33rem] ">
                   <CarouselContent className="h-[6.8rem]">
                     {tab.data && Array.isArray(tab.data) && tab.data.map((item, idx) => (
@@ -129,7 +129,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                           }
                           onClick={() => handleSelectIdx(tab.value, idx)}
                         >
-                          <Gcol gap={'0'} placement={'cs'} className="h-full w-full p-2.5 tracking-tighter">
+                          <Gcol gap={0} placement={'cs'} className="h-full w-full p-2.5 tracking-tighter">
                           {item.name ? (
                             <>
                               <Typo variant={'body-sm'} weight={'bold'} className="text-[#000]">{item.name}</Typo>
@@ -174,26 +174,26 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                       </Typo>
                     </Gcol>
                     <Grid className="grid-cols-[1fr_1fr] flex-1 place-content-center  gap-x-6 gap-y-[0.6rem] ">
-                      <Grow gap={'0'} placement={'bwc'}>
+                      <Grow gap={0} placement={'bwc'}>
                         <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">직업</Typo>
                         <Typo variant={'body-md'} weight={'bold'}>
                           {currentTabData[selectedIdx]?.jab ?? '-'} 
                         </Typo>
                       </Grow>
-                      <Grow gap={'0'} placement={'bwc'}>
+                      <Grow gap={0} placement={'bwc'}>
                         <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">{currentTabData[selectedIdx]?.product ?? '-'} </Typo>
                         <Button variant={'text'} size={'sm'}>
                           <Typo variant={'body-md'} weight={'bold'}>동의</Typo>
                           <ArrowIcon size={12} color={'#000'} className="rotate-180" />
                         </Button>
                       </Grow>
-                      <Grow gap={'0'} placement={'bwc'}>
+                      <Grow gap={0} placement={'bwc'}>
                         <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">입원/수술</Typo>
                         <Typo variant={'body-md'} weight={'bold'}>
                           {currentTabData[selectedIdx]?.history ?? '-'} 
                         </Typo>
                       </Grow>
-                      <Grow gap={'0'} placement={'bwc'}>
+                      <Grow gap={0} placement={'bwc'}>
                         <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">보장분석 <span className="text-[var(--color-primary-50)]!">({currentTabData[selectedIdx]?.plan ?? '-'} )</span></Typo>
                         <Button variant={'text'} size={'sm'}>
                           <Typo variant={'body-md'} weight={'bold'}>보기</Typo>

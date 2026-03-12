@@ -106,8 +106,8 @@ export function ErrorMsg({
       )}
     >
       <Typo
-        variant="body-sm"
-        tag="span"
+        variant={'body-sm'}
+        tag={'span'}
         className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
       >
         {children}
