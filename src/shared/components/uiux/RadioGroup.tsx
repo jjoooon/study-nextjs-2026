@@ -18,7 +18,14 @@ const RadioGroupContext = React.createContext<{
 });
 
 const radioGroupItemVariants = cva(
-  'transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-100 disabled:border-[var(--color-gray-30)] disabled:data-[state=checked]:border-[var(--color-gray-30)]',
+  `transition-colors 
+  focus:outline-none 
+  focus-visible:ring-1 
+  focus-visible:ring-ring 
+  disabled:cursor-not-allowed 
+  disabled:opacity-100 
+  disabled:border-[var(--color-gray-15)] 
+  disabled:data-[state=checked]:border-[var(--color-gray-15)]`,
   {
     variants: {
       variant: {
@@ -115,20 +122,54 @@ const RadioGroup = React.forwardRef<
     errorPs?: 'tl' | 'tc' |  'tr' | 'bl' | 'bc'| 'br';
     width?: 'full' | 'auto';
   }
->(({ className, error, errorMsg, width='full', errorPs = 'bl', ...props }, ref) => {
+>(
+  ({
+    className,
+    error,
+    errorMsg,
+    width = 'full',
+    errorPs = 'bl',
+    value,
+    defaultValue,
+    onValueChange,
+    required,
+    disabled,
+    ...props
+  }, ref) => {
   const errorId = React.useId();
-  const groupRequired = Boolean(props.required);
-  const groupDisabled = Boolean(props.disabled);
+  const groupRequired = Boolean(required);
+  const groupDisabled = Boolean(disabled);
+
+  const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
+  const isControlled = value !== undefined;
+  const selectedValue = isControlled ? value : internalValue;
+  const hasSelection = typeof selectedValue === 'string' && selectedValue.length > 0;
+  const groupError = Boolean(error) && !hasSelection;
+
+  const handleValueChange = React.useCallback(
+    (nextValue: string) => {
+      if (!isControlled) {
+        setInternalValue(nextValue);
+      }
+      onValueChange?.(nextValue);
+    },
+    [isControlled, onValueChange]
+  );
 
   return (
-    <RadioGroupContext.Provider value={{ error, required: groupRequired, disabled: groupDisabled }}>
+    <RadioGroupContext.Provider value={{ error: groupError, required: groupRequired, disabled: groupDisabled }}>
       <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
         <RadioGroupPrimitive.Root
           className={cn('flex items-center justify-start flex-wrap', className)}
+          value={value}
+          defaultValue={defaultValue}
+          onValueChange={handleValueChange}
+          required={required}
+          disabled={disabled}
           {...props}
           ref={ref}
         />
-        {error && (
+        {groupError && (
           <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
             {errorMsg}
           </ErrorMsg>
@@ -136,7 +177,8 @@ const RadioGroup = React.forwardRef<
       </div>
     </RadioGroupContext.Provider>
   );
-});
+}
+);
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 
 const RadioGroupItem = React.forwardRef<
@@ -181,7 +223,7 @@ const RadioGroupItem = React.forwardRef<
           className={cn(
             radioGroupItemVariants({ variant, size, color }),
             'relative whitespace-nowrap',
-            isError && 'bg-[var(--color-input-surface-error)]! border-[var(--color-input-border-error)]!',
+            isError && 'bg-[var(--color-input-surface-error)]! border-[var(--color-input-border-error)]! border-[0.2rem]!',
             isRequired && 'data-[state=checked]:border-[var(--color-input-border-highlight)]',
             className
           )}

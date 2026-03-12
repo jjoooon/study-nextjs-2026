@@ -422,6 +422,7 @@ export const Default: Story = {
               variant={args.variant}
               size={args.size}
               color={args.color}
+              disabled={args.disabled}
 
               minSelected={minSelected}
               required={args.required}

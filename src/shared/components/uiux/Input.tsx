@@ -37,7 +37,7 @@ function formatAmount(value: string) {
 }
 
 function Input({
-  size = 'md',
+  size = 'lg',
   variant = 'default',
   width = 'full',
   className,
@@ -151,7 +151,7 @@ function Input({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
-  const sizeStyle = `${size === 'md' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+  const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),

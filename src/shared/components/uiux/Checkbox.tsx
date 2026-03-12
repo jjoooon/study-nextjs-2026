@@ -26,6 +26,7 @@ type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 type CheckboxGroupContextValue = {
   values: string[];
   required: boolean;
+  disabled: boolean;
   error: boolean;
   variant: UICheckboxProps['variant'];
   size: UICheckboxProps['size'];
@@ -70,16 +71,28 @@ function Checkbox({
 
   const colorStyles = {
     primary:
-      'hover:border-[var(--color-border-primary)] data-[state=checked]:bg-[var(--color-element-primary)] data-[state=checked]:border-[var(--color-border-primary)] data-[state=checked]:text-white',
+      `hover:border-[var(--color-border-primary)] 
+      data-[state=checked]:bg-[var(--color-element-primary)] 
+      data-[state=checked]:border-[var(--color-border-primary)] 
+      data-[state=checked]:text-white`,
     info:
-      'hover:border-[var(--color-border-information,#006ff2)] data-[state=checked]:bg-[var(--color-element-information,#006ff2)] data-[state=checked]:border-[var(--color-border-information,#006ff2)] data-[state=checked]:text-white',
+      `hover:border-[var(--color-border-information,#006ff2)] 
+      data-[state=checked]:bg-[var(--color-element-information,#006ff2)] 
+      data-[state=checked]:border-[var(--color-border-information,#006ff2)] 
+      data-[state=checked]:text-white`,
   };
 
   const buttonColorStyles = {
     primary:
-      'data-[state=checked]:bg-[#fff7f4] data-[state=checked]:text-[#ff3800] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)]',
+      `data-[state=checked]:bg-[#fff7f4] 
+      data-[state=checked]:text-[#ff3800] 
+      data-[state=checked]:border-[#ff6135] 
+      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)]`,
     info:
-      'data-[state=checked]:bg-[#f0f7ff] data-[state=checked]:text-[#006ff2] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]',
+      `data-[state=checked]:bg-[#f0f7ff] 
+      data-[state=checked]:text-[#006ff2] 
+      data-[state=checked]:border-[#006ff2] 
+      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]`,
   };
 
   const favoriteSizeStyles = {
@@ -95,7 +108,7 @@ function Checkbox({
   const iconSize = size === 'default' ? 16 : 14;
   const checkedColorStyles = {
     primary: 'var(--color-primary-50)',
-    info: 'var(--color-element-information,#006ff2)',
+    info: 'var(--color-element-information)',
   };
 
   // support both controlled and uncontrolled usage
@@ -163,7 +176,22 @@ function Checkbox({
         checked={checkedState}
         onCheckedChange={handleChange}
         className={cn(
-          'shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid=true]:bg-[var(--color-input-surface-error)] data-[invalid=true]:border-[var(--color-input-border-error)] disabled:cursor-not-allowed disabled:bg-[var(--color-element-gray-lighter)] disabled:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:bg-[var(--color-element-gray-lighter)] disabled:data-[state=checked]:border-[var(--color-border-gray-light)] disabled:data-[state=checked]:text-[#b3b3b3] [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]',
+          `shrink-0 transition-colors outline-none 
+          focus-visible:ring-2 
+          focus-visible:ring-ring 
+          focus-visible:ring-offset-2 
+          data-[required=true]:bg-[var(--color-input-surface-highlight)] 
+          data-[required=true]:border-[var(--color-input-border-highlight)] 
+          data-[invalid=true]:bg-[var(--color-input-surface-error)]! 
+          data-[invalid=true]:border-[var(--color-input-border-error)]! 
+          data-[invalid=true]:border-[0.2rem]! 
+          disabled:cursor-not-allowed 
+          disabled:bg-[var(--color-gray-10)] 
+          disabled:border-[var(--color-gray-20)] 
+          disabled:data-[state=checked]:bg-[var(--color-gray-10)] 
+          disabled:data-[state=checked]:border-[var(--color-gray-20)] 
+          disabled:data-[state=checked]:text-[var(--color-gray-30)] 
+          [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]`,
           // favorite 스타일
           isDefaultSm && 'translate-y-[0.1rem]',
           isFavorite && 'border-0 bg-transparent shadow-none',
@@ -222,6 +250,7 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   onValueChange?: (value: string[]) => void;
   onErrorChange?: (isError: boolean) => void;
   required?: boolean;
+  disabled?: boolean;
   minSelected?: number;
   validateMode?: 'manual' | 'auto';
   error?: boolean;
@@ -241,6 +270,7 @@ function CheckboxGroup({
   onValueChange,
   onErrorChange,
   required = false,
+  disabled = false,
   minSelected = 1,
   validateMode = 'manual',
   error = false,
@@ -300,8 +330,8 @@ function CheckboxGroup({
   const resolvedErrorMsg = errorMsg ?? `${minSelected}개 이상 선택해 주세요.`;
 
   const contextValue = React.useMemo(
-    () => ({ values, required, error: isError, variant, size, color, toggleValue }),
-    [color, isError, required, size, toggleValue, values, variant]
+    () => ({ values, required, disabled, error: isError, variant, size, color, toggleValue }),
+    [color, disabled, isError, required, size, toggleValue, values, variant]
   );
 
   return (
@@ -311,7 +341,9 @@ function CheckboxGroup({
           role="group"
           className={cn('flex items-center justify-start flex-wrap', className)}
           data-required={required ? 'true' : undefined}
+          data-disabled={disabled ? 'true' : undefined}
           data-invalid={isError ? 'true' : undefined}
+          aria-disabled={disabled ? true : undefined}
           aria-invalid={isError ? true : undefined}
           aria-describedby={isError ? errorId : undefined}
           {...props}
@@ -348,6 +380,7 @@ function CheckboxGroupItem({ value, ...props }: CheckboxGroupItemProps) {
       size={props.size ?? context.size}
       color={props.color ?? context.color}
       required={context.required || props.required}
+      disabled={context.disabled || props.disabled}
       error={context.error || props.error}
       showErrorMsg={false}
       checked={isChecked}

@@ -36,19 +36,19 @@ const dataTaskState: DataTaskState[] = [
 
 export default function LNIPL020Section() {
   const [activeStep, setActiveStep] = useState<PageProcessStep>(2);
+  const [isWidthExpanded, setIsWidthExpanded] = useState(false);
   const data = DUMMY_LNIPL020_DATA;
 
   const stepMainBodies: Record<PageProcessStep, ReactNode> = {
     1: <LNIPL020_1 />,
-    2: <LNIPL020_2 />,
-    3: <LNIPL020_2 />,
-    4: <LNIPL020_2 />,
-    5: <LNIPL020_2 />,
-    6: <LNIPL020_2 />,
+    2: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    3: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    4: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    5: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    6: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
   };
  
   return (
-    // LayoutTemplateA
     <LayoutTemplateA
       pageID={<PageID data={data.pageID} />}
       pageTitle={<PageTitle data={data.pageTitle} />}
@@ -56,6 +56,7 @@ export default function LNIPL020Section() {
       pageProcess={<PageProcess activeStep={activeStep} onStepChange={setActiveStep} />}
   
       mainBody={stepMainBodies[activeStep]}
+      hideAside={isWidthExpanded}
 
       asideHead={<TaskStatusBoard state={dataTaskState} />}
       asideBody={

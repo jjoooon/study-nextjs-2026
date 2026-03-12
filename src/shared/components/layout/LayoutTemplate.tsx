@@ -52,14 +52,15 @@ export const LayoutTemplateA = ({
       {pageID}
       {pageTitle}
     </LayoutHead>
-    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3" data-hide-aside={hideAside ? "true" : "false"}>
+    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
       
       <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
         {mainBody}
       </LayoutMain>
       
-      <LayoutAside className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
+      
+      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>
           <LayoutScrollWrap>
