@@ -20,7 +20,7 @@ const buttonVariants = cva(
         hover:underline 
         focus-visible:underline`,
         none: 'bg-transparent border-none',
-
+        rounded: 'rounded-full!',
         banner: 'bg-[var(--color-coolgray-20)] text-[var(--color-gray-100)] border border-[var(--color-coolgray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
         state:
           'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline rounded-[0.6rem]!',
@@ -76,7 +76,7 @@ const buttonVariants = cva(
       },
 
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'primary',
         className: `border border-[var(--color-primary-50)] 
         bg-[var(--color-primary-50)] 
@@ -93,7 +93,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-gray-10)]!`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'gray',
         className: `border border-[var(--color-gray-50)] 
         bg-[var(--color-gray-50)] 
@@ -110,7 +110,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-gray-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'coolgray',
         className: `border border-[var(--color-coolgray-70)] 
         bg-[var(--color-coolgray-70)] 
@@ -127,7 +127,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-coolgray-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'coolgray-light',
         className: `border border-[var(--color-coolgray-50)] 
         bg-[var(--color-coolgray-50)] 
@@ -144,7 +144,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-coolgray-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'gray-light',
         className: `border border-[var(--color-gray-20)] 
         bg-[var(--color-gray-20)] 
@@ -161,7 +161,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-gray-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'success',
         className: `border border-[var(--color-success-50)] 
         bg-[var(--color-success-50)] 
@@ -178,7 +178,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-success-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'link',
         className: `border border-[var(--color-information-50)] 
         bg-[var(--color-information-50)] 
@@ -195,7 +195,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-information-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'secondary',
         className: `border border-[var(--color-secondary-50)] 
         bg-[var(--color-secondary-50)] 
@@ -212,7 +212,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-gray-20)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'primary',
         size: 'xl',
         className: `disabled:text-[var(--color-gray-30)]
@@ -221,7 +221,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-gray-5)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'secondary',
         size: 'xl',
         className: `disabled:text-[var(--color-gray-30)]
@@ -229,7 +229,7 @@ const buttonVariants = cva(
         disabled:border-[var(--color-gray-5)]`,
       },
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'gray',
         size: 'xl',
         className: `disabled:text-[var(--color-gray-30)]
@@ -390,7 +390,7 @@ const buttonVariants = cva(
         variant: 'text',
         color: 'link',
         className: `text-[var(--color-information-50)]`,
-      },
+      }
     ],
     defaultVariants: {
       variant: 'contained',

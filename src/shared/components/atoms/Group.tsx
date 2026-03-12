@@ -238,27 +238,9 @@ export const Separator = ({
   return <div className="translate-y-[-.2rem]" style={style}>{children}</div>;
 };
 
-export const ButtonGroup = ({ 
-  children, 
-  placement = 'sc', 
-  variant = 'default',
-  gap = 1,
-  className, 
-  style 
+
+export const Divider = ({
+  className
 }: GroupProps) => {
-  return (
-    <div
-      data-group="row"
-      className={cn(
-        'relative flex flex-row', 
-        `gap-${gap}`,
-        VARIANT_MAP[variant], 
-        ROW_PLACEMENT_MAP[placement],
-        className
-      )}
-      style={style}
-    >
-      {children}
-    </div>
-  );
-};
+  return <hr className={cn("flex flex-col border-t w-full", className)} />;
+}

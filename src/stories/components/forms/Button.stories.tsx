@@ -43,7 +43,7 @@ import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 <Button
-  variant={'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state'}
+  variant={'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state' | 'rounded'}
   color={'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'}
   size={'xl' | 'lg' | 'md' | 'sm' | 'xs'}
   only={'default' | 'icon'}
@@ -73,7 +73,7 @@ import { Button } from '@uiux/Button';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>variant</td><td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state'</td><td>버튼 스타일</td></tr>
+                <tr><td>variant</td><td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state' | 'rounded'</td><td>버튼 스타일</td></tr>
                 <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
                 <tr><td>size</td><td>'xl' | 'lg' | 'md' | 'sm' | 'xs'</td><td>버튼 크기</td></tr>
                 <tr><td>only</td><td>'default' | 'icon'</td><td>일반/아이콘 전용 모드</td></tr>
@@ -89,6 +89,7 @@ import { Button } from '@uiux/Button';
                 <Grow gap={2} className="flex-wrap">
                   <Button variant="contained">contained</Button>
                   <Button variant="outlined">outlined</Button>
+                  <Button variant="rounded">rounded</Button>
                   <Button variant="text">text</Button>
                   <Button variant="none">none</Button>
                   <Button variant="banner" size="md" className="w-[16rem]">banner</Button>
@@ -175,7 +176,7 @@ import { Button } from '@uiux/Button';
     },
     variant: {
       control: { type: 'select' },
-      options: ['contained', 'outlined', 'text', 'none', 'banner', 'state'],
+      options: ['contained', 'outlined', 'text', 'none', 'banner', 'state', 'rounded'],
       table: { category: '스타일 props' },
     },
     color: {
