@@ -96,13 +96,13 @@ export function InsuranceProductCard({
   }
 
   return (
-    <Gcol placement={'ss'}  className={cn('relative w-full rounded-[1rem] p-4  bg-(--color-gray-0) shadow-md', className)}>
-
+    <Gcol placement={'ss'}  className={cn("relative w-full rounded-[1rem] border-[0.2rem] border-transparent bg-[var(--color-gray-0)] p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]",
+    className)}>
       {/* ── 오른쪽 상단 FlagCheckDuotone 순위 배지 ── */}
       {rank !== undefined && (
-        <div className="absolute top-[-0.3rem] right-4 flex items-start justify-end">
+        <div className="absolute top-[-0.6rem] right-4 flex items-start justify-end">
             <FlagCheckDoutoneIcon color={flagColor} color2={flagShadowColor} />
-            <span className="absolute top-[0.6rem] left-1/2 -translate-x-1/2 text-(--color-gray-0) text-[1.2rem] font-bold leading-none">
+            <span className="absolute top-[0.6rem] left-1/2 -translate-x-1/2 text-[var(--color-gray-0)] text-[1rem] font-bold leading-none">
               {String(rank).padStart(2, '0')}
             </span>
         </div>
@@ -138,7 +138,7 @@ export function InsuranceProductCard({
             <Typo
               tag="p"
               variant="body-xs"
-              className="text-(--color-gray-70)"
+              className="text-[var(--color-gray-70)]"
             >
               {subtitle}
             </Typo>
@@ -150,7 +150,7 @@ export function InsuranceProductCard({
             <BulletList className="pt-[0.2rem] gap-[0.2rem]">
               {features.map((feature, idx) => (
                 <BulletListItem key={idx} type="dot" size="sm">
-                  <Typo variant="body-xs" className='text-(--color-gray-70)'>
+                  <Typo variant="body-xs" className='text-[var(--color-gray-70)]'>
                     {feature}
                   </Typo>
                 </BulletListItem>
