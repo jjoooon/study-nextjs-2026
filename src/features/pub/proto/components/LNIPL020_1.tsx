@@ -17,8 +17,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { KeyValueItem } from '@/shared/components/common/KeyValueList';
 import { Badge } from '@/shared/components/uiux/Badge';
 
-
-type LNIPL020_1_MainBodyProps = {
+type LNIPL020_1Props = {
   data?: LNIPL020DataType['mainBody'];
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
@@ -26,15 +25,13 @@ type LNIPL020_1_MainBodyProps = {
   children?: ReactNode;
 };
 
-
-
-export function LNIPL020_1_MainBody({
+export function LNIPL020_1({
   data: _data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan: _onSelectPlan,
   className,
   children,
-}: LNIPL020_1_MainBodyProps) {
+}: LNIPL020_1Props) {
   const [value, setValue] = useState('');
   const maskedIdentity = '900101 - 1******';
   const {

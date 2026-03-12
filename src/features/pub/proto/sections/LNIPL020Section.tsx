@@ -1,26 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 
 // components - layout
 import { LayoutTemplateA } from '@layout/LayoutTemplate';
 // components - features
-import PageID from '@features/PageID';
-import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
-import PageProcess from '@features/PageProcess';
-
-import { LNIPL020Step2 as MainFoot } from '@features/MainFoot';
-
-import TaskStatusBoard from '@features/TaskStatusBoard';
-import { QuickLinks } from '@features/QuickLinks';
-import { InfoContract } from '@features/InfoContract';
 import AsideFoot from '@features/AsideFoot';
+import PageID from '@features/PageID';
+import PageProcess from '@features/PageProcess';
+import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
+import TaskStatusBoard from '@features/TaskStatusBoard';
+import { InfoContract } from '@features/InfoContract';
+import { QuickLinks } from '@features/QuickLinks';
+import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
+
+import type { PageProcessStep } from '@features/PageProcess';
 
 // LNIPL020 - components
-import { LNIPL020MainHead, LNIPL020MainBody } from '../components/index_LNIPL020';
-import { LNIPL020_2 } from '../components/LNIPL020_2';
-
-import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
+import { LNIPL020_1 } from '../components/LNIPL020_1'; // 01. 담보설계
+import { LNIPL020_2 } from '../components/LNIPL020_2'; // 02. 담보설계
 
 // TaskStatusBoard: 꼭 확인해야 할 일!
 type DataTaskState = {
@@ -37,8 +35,17 @@ const dataTaskState: DataTaskState[] = [
 ];
 
 export default function LNIPL020Section() {
-  const [hideAside, setHideAside] = useState(false);
+  const [activeStep, setActiveStep] = useState<PageProcessStep>(2);
   const data = DUMMY_LNIPL020_DATA;
+
+  const stepMainBodies: Record<PageProcessStep, ReactNode> = {
+    1: <LNIPL020_1 />,
+    2: <LNIPL020_2 />,
+    3: <LNIPL020_2 />,
+    4: <LNIPL020_2 />,
+    5: <LNIPL020_2 />,
+    6: <LNIPL020_2 />,
+  };
  
   return (
     // LayoutTemplateA
@@ -46,15 +53,9 @@ export default function LNIPL020Section() {
       pageID={<PageID data={data.pageID} />}
       pageTitle={<PageTitle data={data.pageTitle} />}
 
-      pageProcess={<PageProcess />}
-      
+      pageProcess={<PageProcess activeStep={activeStep} onStepChange={setActiveStep} />}
   
-      mainBody={
-        <LNIPL020_2
-          hideAside={hideAside}
-          setHideAside={setHideAside}
-        />
-      }
+      mainBody={stepMainBodies[activeStep]}
 
       asideHead={<TaskStatusBoard state={dataTaskState} />}
       asideBody={
@@ -65,7 +66,6 @@ export default function LNIPL020Section() {
       }
       asideFoot={<AsideFoot />}
       
-      hideAside={hideAside}
     />
   );
 }

@@ -2,22 +2,10 @@
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type {
-  CellClassParams,
-  ColDef,
-  EditableCallbackParams,
-  ICellRendererParams,
-  ITooltipParams,
-  SelectionChangedEvent,
-  ValueFormatterParams,
-} from 'ag-grid-community';
+import type { CellClassParams, ColDef, EditableCallbackParams, ICellRendererParams, ITooltipParams, SelectionChangedEvent, ValueFormatterParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import {
-  LayoutMainHead,
-  LayoutMainBody,
-  LayoutMainFoot,
-} from '@layout/BaseLayout';
+import { LayoutMainHead, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Grow, Gcol, Typo } from '@atoms';
 import { AmountUnitInput } from '@features/AmountUnitInput';
 import { LNIPL020Step2 as MainFoot } from '@features/MainFoot';
@@ -47,19 +35,19 @@ type PlanFiltersData = LTRA020_2_DataType['planFilters'];
 type MainHeadTab = PlanFiltersData['tabList'][number] & { value: string };
 type LNIPL020GridRow = LTRA020_2_DataType['coverageGrid']['agGridTable1'][number];
 
-interface LNIPL020MainBodyProps {
+interface LNIPL020_2Props {
   onSelectPlan?: (planId: number) => void;
-  hideAside: boolean;
-  setHideAside: (hide: boolean) => void;
 }
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export function LNIPL020_2({
   onSelectPlan,
-  hideAside,
-  setHideAside,
-}: LNIPL020MainBodyProps) {
+}: LNIPL020_2Props) {
+  // 테이블 크기 조정
+  const [isWidthExpanded, setIsWidthExpanded] = useState(false);
+  const [isHeightExpanded, setIsHeightExpanded] = useState(false);
+  
   // ---------------------------------------------------------------------------
   // INLINED STATE (default)
   // ---------------------------------------------------------------------------
@@ -218,7 +206,7 @@ export function LNIPL020_2({
       {
         headerName: '담보명',
         field: 'productName',
-        width: hideAside ? 510 : 426,
+        width: isWidthExpanded ? 510 : 426,
         cellClass: 'text-left p-0!',
         sortable: false,
         filter: false,
@@ -361,7 +349,7 @@ export function LNIPL020_2({
         resizable: false,
       },
     ],
-    [duplicateRenderer, expiryCellRenderer, hideAside, productNameHeader, titleRenderer]
+    [duplicateRenderer, expiryCellRenderer, isWidthExpanded, productNameHeader, titleRenderer]
   );
 
   // HOOK MODE (grid)
@@ -371,7 +359,7 @@ export function LNIPL020_2({
   //   handleSelectionChanged,
   //   showProductNameTooltip,
   // } = useLNIPL020Grid({
-  //   hideAside,
+  //   isWidthExpanded,
   //   onSelectPlan,
   // });
 
@@ -433,7 +421,7 @@ export function LNIPL020_2({
             </Button>
           )}
         >
-          <Gcol variant={'box'} placement={'ss'} className="w-full">
+          <Gcol variant={'box'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`} >
             <Grow gap={3}>
               <Button variant={'contained'} color={'coolgray'} size={'md'}>
                 <PaperIcon />
@@ -492,10 +480,10 @@ export function LNIPL020_2({
                     <NativeSelectOption value="">나만의 설계선택</NativeSelectOption>
                     <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
                   </NativeSelect>
-                  <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setHideAside(!hideAside)}>
+                  <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setIsHeightExpanded(!isHeightExpanded)}>
                     <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setHideAside(!hideAside)}>
+                  <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setIsWidthExpanded(!isWidthExpanded)}>
                     <SizeIcon color="var(--color-secondary-50)" />
                   </Button>
                 </Grow>
