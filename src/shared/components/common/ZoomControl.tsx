@@ -29,15 +29,15 @@ export const ZoomControl = () => {
   };
 
   return (
-    <Grow className="gap-1 items-center">
-      <Button variant="none" only="icon" size="sm" className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
+    <Grow className="items-center">
+      <Button variant={'none'} only={'icon'} size={'sm'} className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
         <ZoomOutIcon />
       </Button>
-      <Typo variant="button-sm">{fontSize * 10}%</Typo>
-      <Button variant="none" only="icon" size="sm" className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
+      <Typo variant={'button-sm'}>{fontSize * 10}%</Typo>
+      <Button variant={'none'} only={'icon'} size={'sm'} className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
         <ZoomInIcon />
       </Button>
-      <Button variant="outlined" color="gray" className="mr-[1rem]" size="sm" onClick={handleZoomRest}>
+      <Button variant={'outlined'} color={'gray'} className="mr-[1rem]" size={'sm'} onClick={handleZoomRest}>
         초기화
       </Button>
     </Grow>

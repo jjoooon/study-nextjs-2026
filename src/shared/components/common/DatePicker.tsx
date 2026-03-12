@@ -490,9 +490,10 @@ export function DatePickerInput({
         <PopoverTrigger asChild>
           <Button
             id={`${finalId}-button`}
-            variant="outlined"
-            only="icon" size="md"
-            color="gray-light"
+            variant={'outlined'}
+            only={'icon'} 
+            size={'md'}
+            color={'gray-light'}
             aria-label="Select date"
             className={buttonSizeClass}
             disabled={isCalendarButtonDisabled}
@@ -503,17 +504,17 @@ export function DatePickerInput({
         </PopoverTrigger>
         <PopoverContent
           className="w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
-          align="end"
+          align={'end'}
           alignOffset={-8}
           sideOffset={10}
         >
           {mode === 'range' ? (
             <Calendar
-              mode="range"
+              mode={'range'}
               defaultMonth={rangeSelected?.from}
               selected={rangeSelected}
               onSelect={handleSelect}
-              captionLayout="dropdown"
+              captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
               numberOfMonths={2}
@@ -522,10 +523,10 @@ export function DatePickerInput({
             />
           ) : mode === 'multiple' ? (
             <Calendar
-              mode="multiple"
+              mode={'multiple'}
               selected={multiSelected}
               onSelect={handleSelect}
-              captionLayout="dropdown"
+              captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
@@ -533,10 +534,10 @@ export function DatePickerInput({
             />
           ) : (
             <Calendar
-              mode="single"
+              mode={'single'}
               selected={singleSelected}
               onSelect={handleSelect}
-              captionLayout="dropdown"
+              captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"

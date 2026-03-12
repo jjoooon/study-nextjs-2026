@@ -113,30 +113,31 @@ export function TabPager<T>({
             <Grow className="gap-[.4rem] mb-[0.1rem]">
               {renderButtons}
               <Grow className="gap-[0.1rem]">
-                <Typo className="tracking-[0]!" color="default" weight="bold">
+                <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
                   {Math.ceil((visibleStart + visibleCount) / visibleCount)}
                 </Typo>
-                <Typo className="tracking-[0]!" color="gray-light" weight="bold">
+                <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
                   /
                 </Typo>
-                <Typo className="tracking-[0]!" color="gray-light" weight="bold">
+                <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
                   {Math.ceil(data.length / visibleCount)}
                 </Typo>
               </Grow>
               <Button
-                variant="outlined"
-                color="gray"
-                only="icon" size="md"
+                variant={'outlined'}
+                color={'gray'}
+                only={'icon'} 
+                size={'md'}
                 onClick={handlePrev}
                 disabled={visibleStart === 0}
               >
                 <ArrowIcon />
               </Button>
               <Button 
-                variant="outlined" 
-                color="gray" 
-                only="icon" 
-                size="md" 
+                variant={'outlined'} 
+                color={'gray'} 
+                only={'icon'} 
+                size={'md'} 
                 onClick={handleNext} 
                 disabled={isLastPage}
               >
@@ -145,11 +146,11 @@ export function TabPager<T>({
               {renderDropdownItem && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outlined" color="gray" only="icon" size="md">
+                    <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
                       <ListIcon />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align="end">
+                  <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align={'end'}>
                     {data.map(tab =>
                       renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount)
                     )}

@@ -165,23 +165,17 @@ export function AmountUnitInput({
             }
           }}
         >
-          <Gcol className="w-full gap-3" placement="ss">
-            {/* <Grow className="w-full gap-3" placement="bws">
-              <Typo variant="heading-sm">가입한도 인수단위(5만)</Typo>
-              <Button variant="none" only="icon" color="gray" size="sm" onClick={handleClose}>
-                <CloseIcon />
-              </Button>
-            </Grow> */}
+          <Gcol className="w-full gap-3" placement={'ss'}>
             <Grow className={growClass}>
               <Input
-                variant="default"
+                variant={'default'}
                 type="number"
                 value={inputValue ? Number(String(inputValue).replace(/,/g, '')) : ''}
                 step="100"
                 min={min}
                 max={max}
                 onChange={handleInputChange}
-                size="sm"
+                size={'sm'}
                 className="text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 commaAmount={true}
                 autoFocus
@@ -189,39 +183,38 @@ export function AmountUnitInput({
                 onKeyDown={handleKeyDown}
               />
             </Grow>
-            <Gcol className="gap-1.5" placement="ss">
-              <Grow className="gap-1.5" placement="bwc">
-                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(100)}>
+            <Gcol className="gap-1.5" placement={'ss'}>
+              <Grow className="gap-1.5" placement={'bwc'}>
+                <Button variant={'outlined'} color={'gray-light'} only={'icon'} onClick={() => handleAmountChange(100)}>
                   <PlusIcon color="var(--color-primary-50)" className="translate-y-[0.1rem]" />
                 </Button>
                 <Input
-                  variant="default"
+                  variant={'default'}
                   value={inputValue}
-                  size="sm"
+                  size={'sm'}
                   className="text-right flex-1"
                   commaAmount={true}
                   readOnly
-                  after="만원"
-                  width="min"
+                  after={'만원'}
+                  width={'min'}
                 />
-                <Button variant="outlined" color="gray-light" only="icon" onClick={() => handleAmountChange(-100)}>
+                <Button variant={'outlined'} color={'gray-light'} only={'icon'} onClick={() => handleAmountChange(-100)}>
                   <MinusIcon color="var(--color-primary-50)" />
                 </Button>
               </Grow>
-              <Grow className="gap-1">
-                <Button variant="contained" color="secondary" className="w-[8.4rem]" onClick={handleSetMin}>
+              <Grow>
+                <Button variant={'contained'} color={'secondary'} className="w-[8.4rem]" onClick={handleSetMin}>
                   최소 100만원
                 </Button>
-                <Button variant="contained" color="primary" className="w-[8.4rem]" onClick={handleSetMax}>
+                <Button variant={'contained'} color={'primary'} className="w-[8.4rem]" onClick={handleSetMax}>
                   최대 2억
                 </Button>
               </Grow>
-              <BulletItem type="ref">
+              <BulletItem type={'ref'}>
                 <Typo className="text-[var(--color-gray-50)]">
                   가입금액 입력단위:백만원
                 </Typo>
               </BulletItem>
-              
             </Gcol>
           </Gcol>
         </PopoverContent>

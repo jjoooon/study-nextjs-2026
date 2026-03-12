@@ -7,7 +7,7 @@ import { ZoomInIcon } from '@icons';
 
 export default function AsideFoot() {
   return (
-    <Gcol className="w-full gap-1 pb-1.5 relative">
+    <Gcol className="w-full pb-1.5 relative">
       <Grow
         placement={'bwc'}
         className="aside-1 rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
@@ -20,7 +20,7 @@ export default function AsideFoot() {
           <Typo variant={'heading-md'}>원</Typo>
         </Grow>
       </Grow>
-      <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] gap-1 bg-[var(--color-gray-0)]">
+      <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] bg-[var(--color-gray-0)]">
         <Grow placement={'bwc'}>
           <Typo variant={'heading-md'}>납입보험료</Typo>
           <Grow className="gap-[0.2rem]">
