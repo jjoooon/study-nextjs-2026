@@ -14,7 +14,7 @@ type Story = StoryObj;
 
 export const AllIcons: Story = {
   args: {
-    size: 32,
+    size: 16,
     color: '#333',
   },
   argTypes: {

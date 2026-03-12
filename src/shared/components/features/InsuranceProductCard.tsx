@@ -76,13 +76,32 @@ export function InsuranceProductCard({
 }: InsuranceProductCardProps) {
   const isAccept = status === 'accept';
 
+  // rank 값에 따라 아이콘 색상을 동적으로 결정합니다.
+  let flagColor: string;
+  let flagShadowColor: string;
+
+  // rank 값에 따라 분기 처리
+  if (rank === 1) {
+    // 1위일 경우: 금색 계열
+    flagColor = '#FF5C2E';
+    flagShadowColor = '#C94C28';
+  } else if (rank === 2) {
+    // 2위일 경우: 은색 계열
+    flagColor = '#374151';
+    flagShadowColor = '#0C1C35';
+  } else {
+    // 그 외 순위는 기본 주황색 계열
+    flagColor = '#FF5C2E';
+    flagShadowColor = '#C94C28';
+  }
+
   return (
     <Gcol placement={'ss'}  className={cn('relative w-full rounded-[1rem] p-4  bg-(--color-gray-0) shadow-md', className)}>
 
       {/* ── 오른쪽 상단 FlagCheckDuotone 순위 배지 ── */}
       {rank !== undefined && (
         <div className="absolute top-[-0.3rem] right-4 flex items-start justify-end">
-            <FlagCheckDoutoneIcon/>
+            <FlagCheckDoutoneIcon color={flagColor} color2={flagShadowColor} />
             <span className="absolute top-[0.6rem] left-1/2 -translate-x-1/2 text-(--color-gray-0) text-[1.2rem] font-bold leading-none">
               {String(rank).padStart(2, '0')}
             </span>
@@ -143,10 +162,10 @@ export function InsuranceProductCard({
 
         {/* 하단 행: 추천화법 버튼 */}
         <Button
-          variant="contained"
-          size="md"
-          color="gray"
-          className="gap-[0.4rem] "
+          variant={'rounded'}
+          size={'md'}
+          color={'gray'}
+          className="gap-[0.4rem] absolute bottom-0 right-0"
           onClick={onChatClick}
         >
           <SpeechBubbleIcon />

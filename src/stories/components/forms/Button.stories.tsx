@@ -89,6 +89,7 @@ import { Button } from '@uiux/Button';
                 <Grow gap={2} className="flex-wrap">
                   <Button variant="contained">contained</Button>
                   <Button variant="outlined">outlined</Button>
+                  <Button variant="rounded">rounded</Button>
                   <Button variant="text">text</Button>
                   <Button variant="none">none</Button>
                   <Button variant="banner" size="md" className="w-[16rem]">banner</Button>
