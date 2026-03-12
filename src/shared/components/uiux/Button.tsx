@@ -20,7 +20,7 @@ const buttonVariants = cva(
         hover:underline 
         focus-visible:underline`,
         none: 'bg-transparent border-none',
-
+        rounded: 'rounded-full',
         banner: 'bg-[var(--color-coolgray-20)] text-[var(--color-gray-100)] border border-[var(--color-coolgray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
         state:
           'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline rounded-[0.6rem]!',
@@ -391,6 +391,11 @@ const buttonVariants = cva(
         color: 'link',
         className: `text-[var(--color-information-50)]`,
       },
+      {
+        variant: 'rounded',
+        color: 'gray',
+        className: `text-[var(--color-gray-70)]`,
+      }
     ],
     defaultVariants: {
       variant: 'contained',
