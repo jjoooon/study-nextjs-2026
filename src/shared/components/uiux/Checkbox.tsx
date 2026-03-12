@@ -12,7 +12,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text';
-  size?: 'default' | 'sm';
+  size?: 'lg' | 'md';
   color?: 'primary' | 'info';
   required?: boolean;
   error?: boolean;
@@ -40,11 +40,11 @@ function Checkbox({
   className,
   children,
   variant = 'default',
-  size = 'default',
+  size = 'lg',
   color = 'primary',
   ...props
 }: UICheckboxProps) {
-  const isDefaultSm = variant === 'default' && size === 'sm';
+  const isDefaultMd = variant === 'default' && size === 'md';
   const isFavorite = variant === 'favorite';
   const isNoneText = variant === 'noneText';
   const isButton = variant === 'button';
@@ -65,8 +65,8 @@ function Checkbox({
   const errorId = React.useId();
 
   const sizeStyles = {
-    default: 'size-[2rem] rounded-[0.4rem]',
-    sm: 'size-[1.4rem] rounded-[0.3rem]',
+    lg: 'size-[2rem] rounded-[0.4rem]',
+    md: 'size-[1.4rem] rounded-[0.3rem]',
   };
 
   const colorStyles = {
@@ -96,16 +96,16 @@ function Checkbox({
   };
 
   const favoriteSizeStyles = {
-    default: 'size-[2rem]',
-    sm: 'size-[1.8rem]',
+    lg: 'size-[2rem]',
+    md: 'size-[1.8rem]',
   };
 
   const buttonSizeStyles = {
-    default: 'h-[2.5rem]',
-    sm: 'h-[2.2rem]',
+    lg: 'h-[2.5rem]',
+    md: 'h-[2.2rem]',
   };
 
-  const iconSize = size === 'default' ? 16 : 14;
+  const iconSize = size === 'lg' ? 16 : 14;
   const checkedColorStyles = {
     primary: 'var(--color-primary-50)',
     info: 'var(--color-element-information)',
@@ -193,7 +193,7 @@ function Checkbox({
           disabled:data-[state=checked]:text-[var(--color-gray-30)] 
           [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]`,
           // favorite 스타일
-          isDefaultSm && 'translate-y-[0.1rem]',
+          isDefaultMd && 'translate-y-[0.1rem]',
           isFavorite && 'border-0 bg-transparent shadow-none',
           isFavorite && favoriteSizeStyles[size],
           // button 스타일
@@ -221,7 +221,7 @@ function Checkbox({
         ) : (
           <CheckboxPrimitive.Indicator
             data-slot="checkbox-indicator"
-            className={cn('grid place-content-center text-current transition-none', size === 'sm' && 'translate-y-[-0.1rem]')}
+            className={cn('grid place-content-center text-current transition-none', size === 'md' && 'translate-y-[-0.1rem]')}
           >
             <CheckIcon size={iconSize} color={props.disabled ? 'var(--color-icon-gray-light)' : undefined} />
           </CheckboxPrimitive.Indicator>
@@ -258,7 +258,7 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   errorPs?: ErrorMsgPosition;
   width?: 'full' | 'auto';
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text';
-  size?: 'default' | 'sm';
+  size?: 'lg' | 'md';
   color?: 'primary' | 'info';
 }
 
@@ -278,7 +278,7 @@ function CheckboxGroup({
   errorPs = 'bl',
   width = 'full',
   variant = 'default',
-  size = 'default',
+  size = 'lg',
   color = 'primary',
   ...props
 }: CheckboxGroupProps) {

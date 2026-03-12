@@ -325,7 +325,7 @@ export function LNIPL020_1({
                       color="primary"
                       checked={checked}
                       onCheckedChange={(c) => setChecked(c === true)}
-                      size="sm"
+                      size="md"
                       variant="default"
                     >
                       가족연계할인
@@ -349,7 +349,7 @@ export function LNIPL020_1({
                         color="primary"
                         checked={checked}
                         onCheckedChange={(c) => setChecked(c === true)}
-                        size="sm"
+                        size="md"
                         variant="default"
                       >
                         개인사업자
@@ -395,7 +395,7 @@ export function LNIPL020_1({
                       color="primary"
                       checked={checked}
                       onCheckedChange={(c) => setChecked(c === true)}
-                      size="sm"
+                      size="md"
                       variant="default"
                     >
                       가입

@@ -168,7 +168,7 @@ export function LNIPL020_2({
         </Grow>
 
         <Grow placement={'sc'}>
-          <Checkbox size={'sm'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
+          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
             담보명 풍선말
           </Checkbox>
         </Grow>
