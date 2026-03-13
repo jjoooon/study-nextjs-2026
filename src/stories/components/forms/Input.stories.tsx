@@ -217,7 +217,7 @@ import { Input } from '@uiux/Input';
     },
     size: {
       control: { type: 'select' },
-      options: ['md', 'sm'],
+      options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
     width: {
@@ -277,7 +277,7 @@ import { Input } from '@uiux/Input';
   args: {
     variant: 'default',
     width: 'full',
-    size: 'md',
+    size: 'lg',
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',

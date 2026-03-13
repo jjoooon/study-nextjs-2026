@@ -50,7 +50,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   onCheckedChange={setChecked}
 
   variant={'default' | 'favorite' | 'noneText' | 'button' | 'text'}
-  size={'default' | 'sm'}
+  size={'lg' | 'md'}
   color={'primary' | 'info'}
 
   required={false | true}
@@ -69,7 +69,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   onValueChange={handleGroupChange}
 
   variant={'default' | 'favorite' | 'noneText' | 'button' | 'text'}
-  size={'default' | 'sm'}
+  size={'lg' | 'md'}
   color={'primary' | 'info'}
 
   minSelected={0 | 1 | 2 | 3 ...}
@@ -199,8 +199,8 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <Checkbox>default: 20</Checkbox>
-                  <Checkbox size="sm">sm: 14</Checkbox>
+                  <Checkbox>lg: 20</Checkbox>
+                  <Checkbox size="md">md: 14</Checkbox>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -315,12 +315,12 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'select' },
-      options: ['default', 'sm'],
+      control: { type: 'inline-radio' },
+      options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
     color: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['primary', 'info'],
       table: { category: '스타일 props' },
     },
@@ -367,7 +367,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   },
   args: {
     variant: 'default',
-    size: 'default',
+    size: 'lg',
     color: 'primary',
     required: false,
     error: false,
@@ -414,7 +414,7 @@ export const Default: Story = {
           </Checkbox>
 
           <Grow gap={2}>
-            <Typo tag="div" className="w-[8rem]">그룹체크</Typo>
+            <Typo tag={'div'} className="w-[8rem]">그룹체크</Typo>
             <CheckboxGroup
               value={values}
               onValueChange={handleGroupChange}
@@ -422,6 +422,7 @@ export const Default: Story = {
               variant={args.variant}
               size={args.size}
               color={args.color}
+              disabled={args.disabled}
 
               minSelected={minSelected}
               required={args.required}

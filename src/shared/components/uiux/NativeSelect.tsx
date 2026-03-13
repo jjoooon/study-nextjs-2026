@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ErrorMsg } from '@common/ErrorMsg';
-import { ChevronDownIcon } from '@icons';
+import { SelectDropIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiuxTypes';
 
@@ -62,23 +62,23 @@ function NativeSelect({
   const baseStyle = cn(
     'w-full rounded-[0.4rem] px-2 pr-7 text-[1.3rem] border box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
     isInvalid || error
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)]'
+      ? 'text-[var(--color-danger-50)] bg-[var(--color-danger-5)] border-[var(--color-danger-50)] border-[0.2rem] ring-1 ring-[var(--color-danger-5)]'
       : required
-        ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
+        ? 'text-[var(--color-text-basic)] bg-[var(--color-warning-10)] border-[var(--color-warning-30)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
   const hoverStyle =
     isInvalid || error
-      ? 'hover:border-[var(--color-input-border-error)]'
+      ? 'hover:border-[var(--color-danger-50)]'
       : required
-        ? 'hover:border-[var(--color-input-border-highlight-bold)]'
+        ? 'hover:border-[var(--color-warning-70)]'
         : 'hover:border-[var(--color-input-border-hover)]';
   const focusStyle = `${
     isInvalid || error
-      ? 'focus:border-[var(--color-input-border-error)] focus:ring-[var(--color-input-surface-error)]'
+      ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]'
       : required
-        ? 'focus:border-[var(--color-input-border-highlight-bold)]'
-        : 'focus:border-[var(--color-input-border-hover)]'
+        ? 'focus:border-[var(--color-warning-70)] focus:border-[0.2rem]'
+        : 'focus:border-[var(--color-gray-100)] focus:border-[0.2rem]'
   } 
     focus:ring-1 ${!isInvalid && !error ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
   const readonlyStyle = readOnly
@@ -112,8 +112,11 @@ function NativeSelect({
           // disabled={readOnly || props.disabled}
           {...props}
         />
-        <ChevronDownIcon
-          className="pointer-events-none absolute top-1/2 right-[0.8rem] size-[1.6rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]"
+        <SelectDropIcon
+          className={cn(
+            'pointer-events-none absolute top-1/2 right-[0.8rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]',
+            size === 'sm' ? 'size-[1.2rem]' : 'size-[1.6rem]'
+          )}
           aria-hidden="true"
           color={arrowStateStyle}
         />

@@ -6,9 +6,9 @@
  * 'lg' (large)와 'sm' (small) 두 가지 크기 옵션을 제공
  * @usage
  * - 'lg': 기본 크기, 28px
- * - 'sm': 컴팩트한 크기, 24px
+ * - 'md': 기본 크기, 25px
  */
-export type FormItemSize = 'default' | 'sm';
+export type FormItemSize = 'lg' | 'md';
 
 /**
  * UI/UX Form Item Width Types

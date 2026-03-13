@@ -74,7 +74,7 @@ export function DatePickerInput({
   rangeValue,
   mode = 'single',
   onChange,
-  size = 'default',
+  size = 'lg',
   width = 'full',
   required = false,
   readOnly = false,
@@ -356,11 +356,11 @@ export function DatePickerInput({
   })();
 
   const inputStyle: React.CSSProperties | undefined = readOnly
-    ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1px solid #F4F4F4' }
+    ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
     : inlineWidthStyle;
 
-  const sizeClass = size === 'default' ? 'h-[2.8rem]' : 'h-[2.5rem]';
-  const buttonSizeClass = size === 'default' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
+  const sizeClass = size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]';
+  const buttonSizeClass = size === 'lg' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
   const isCalendarButtonDisabled = disabled || readOnly;
 
   // range 모드일 때 더 큰 너비
@@ -395,7 +395,7 @@ export function DatePickerInput({
   const disabledClass = disabled
     ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
     : '';
-  const readOnlyClass = readOnly ? 'bg-[#F4F4F4]' : '';
+  const readOnlyClass = readOnly ? 'bg-[var(--color-gray-5)] border border-[var(--color-gray-20)]!' : '';
 
   const rangeSelected = selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
   const singleSelected = selected instanceof Date ? selected : undefined;
@@ -492,7 +492,7 @@ export function DatePickerInput({
             id={`${finalId}-button`}
             variant={'outlined'}
             only={'icon'} 
-            size={'md'}
+            size={'lg'}
             color={'gray-light'}
             aria-label="Select date"
             className={buttonSizeClass}

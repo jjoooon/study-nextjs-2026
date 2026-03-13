@@ -49,7 +49,7 @@ const [value, setValue] = useState('');
 
 <DatePickerInput
   mode={'single' | 'multiple' | 'range'}
-  size={'lg' | 'sm'}
+  size={'lg' | 'md'}
   width={'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '??rem' | '??px'}
 
   required={false | true}
@@ -85,7 +85,7 @@ const [value, setValue] = useState('');
                 </tr>
                 <tr>
                   <td>size</td>
-                  <td>'lg', 'sm'</td>
+                  <td>'lg', 'md'</td>
                   <td>입력 크기</td>
                 </tr>
                 <tr>
@@ -149,7 +149,7 @@ const [value, setValue] = useState('');
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-                  <DatePickerInput mode="single" size="sm" width="sm" value="2026-03-07" onChange={() => undefined} />
+                  <DatePickerInput mode="single" size="md" width="sm" value="2026-03-07" onChange={() => undefined} />
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -212,8 +212,8 @@ const [value, setValue] = useState('');
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'select' },
-      options: ['default', 'sm'],
+      control: { type: 'inline-radio' },
+      options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
     width: {
@@ -264,7 +264,7 @@ const [value, setValue] = useState('');
   },
   args: {
     mode: 'single',
-    size: 'default',
+    size: 'lg',
     width: 'sm',
     required: false,
     readOnly: false,

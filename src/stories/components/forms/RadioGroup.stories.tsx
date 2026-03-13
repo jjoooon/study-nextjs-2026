@@ -341,7 +341,7 @@ const [value, setValue] = useState('option1');
     },
   },
   args: {
-    value: 'option1',
+    value: undefined,
     width: 'full',
     disabled: false,
     required: false,
@@ -359,24 +359,19 @@ type Story = StoryObj<RadioGroupStoryProps>;
 
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? 'option1');
+    const initialValue = args.value ?? undefined;
+    const [value, setValue] = React.useState<string | undefined>(initialValue);
     const { variant, size, color, value: _, ...groupArgs } = args;
 
     React.useEffect(() => {
-      setValue(args.value ?? 'option1');
+      setValue(args.value ?? undefined);
     }, [args.value]);
 
     return (
       <RadioGroup {...groupArgs} value={value} onValueChange={setValue} className="gap-2">
-        <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">
-          {variant === 'button' ? 'Button Option1' : 'Option1'}
-        </RadioGroupItem>
-        <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">
-          {variant === 'button' ? 'Button Option2' : 'Option2'}
-        </RadioGroupItem>
-        <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>
-          Disabled Option3
-        </RadioGroupItem>
+        <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">Option1</RadioGroupItem>
+        <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">Option2</RadioGroupItem>
+        <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>Option3</RadioGroupItem>
       </RadioGroup>
     );
   },

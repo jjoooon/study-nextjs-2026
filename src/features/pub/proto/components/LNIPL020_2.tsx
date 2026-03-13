@@ -37,15 +37,18 @@ type LNIPL020GridRow = LTRA020_2_DataType['coverageGrid']['agGridTable1'][number
 
 interface LNIPL020_2Props {
   onSelectPlan?: (planId: number) => void;
+  isWidthExpanded?: boolean;
+  setIsWidthExpanded?: (value: boolean) => void;
 }
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export function LNIPL020_2({
   onSelectPlan,
+  isWidthExpanded = false,
+  setIsWidthExpanded,
 }: LNIPL020_2Props) {
   // 테이블 크기 조정
-  const [isWidthExpanded, setIsWidthExpanded] = useState(false);
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   
   // ---------------------------------------------------------------------------
@@ -165,7 +168,7 @@ export function LNIPL020_2({
         </Grow>
 
         <Grow placement={'sc'}>
-          <Checkbox size={'sm'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
+          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
             담보명 풍선말
           </Checkbox>
         </Grow>
@@ -212,6 +215,9 @@ export function LNIPL020_2({
         filter: false,
         autoHeight: true,
         pinned: 'left',
+        suppressMovable: true, // 이동 방지
+        lockPosition: 'left', // 왼쪽 고정 유지
+        lockPinned: true, // 고정 열에서 제외 방지
         tooltipValueGetter: (params: ITooltipParams<LNIPL020GridRow>) => {
           if (!params.data) return '';
           return `담보명: ${params.data.productName}`;
@@ -483,7 +489,7 @@ export function LNIPL020_2({
                   <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setIsHeightExpanded(!isHeightExpanded)}>
                     <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setIsWidthExpanded(!isWidthExpanded)}>
+                  <Button variant={'outlined'} color={'gray'} size={'md'} onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}>
                     <SizeIcon color="var(--color-secondary-50)" />
                   </Button>
                 </Grow>

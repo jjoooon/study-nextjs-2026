@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 // components - layout
 import { LayoutTemplateA } from '@layout/LayoutTemplate';
@@ -34,21 +34,49 @@ const dataTaskState: DataTaskState[] = [
   { id: 4, status: '중지', label: '기타', sum: 0 },
 ];
 
+const isPageProcessStep = (value: number): value is PageProcessStep => {
+  return value >= 1 && value <= 6;
+};
+
+const parseStepParam = (value: string | null): PageProcessStep | null => {
+  if (!value) return null;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed)) return null;
+  if (!isPageProcessStep(parsed)) return null;
+  return parsed;
+};
+
 export default function LNIPL020Section() {
-  const [activeStep, setActiveStep] = useState<PageProcessStep>(2);
+  const [activeStep, setActiveStep] = useState<PageProcessStep>(1);
+  const [isWidthExpanded, setIsWidthExpanded] = useState(false);
   const data = DUMMY_LNIPL020_DATA;
+
+  useEffect(() => {
+    const syncStepFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const activeStepFromQuery = parseStepParam(params.get('activeStep')) ?? parseStepParam(params.get('step'));
+      if (!activeStepFromQuery) return;
+      setActiveStep(activeStepFromQuery);
+    };
+
+    syncStepFromUrl();
+    window.addEventListener('popstate', syncStepFromUrl);
+
+    return () => {
+      window.removeEventListener('popstate', syncStepFromUrl);
+    };
+  }, []);
 
   const stepMainBodies: Record<PageProcessStep, ReactNode> = {
     1: <LNIPL020_1 />,
-    2: <LNIPL020_2 />,
-    3: <LNIPL020_2 />,
-    4: <LNIPL020_2 />,
-    5: <LNIPL020_2 />,
-    6: <LNIPL020_2 />,
+    2: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    3: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    4: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    5: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    6: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
   };
  
   return (
-    // LayoutTemplateA
     <LayoutTemplateA
       pageID={<PageID data={data.pageID} />}
       pageTitle={<PageTitle data={data.pageTitle} />}
@@ -56,6 +84,7 @@ export default function LNIPL020Section() {
       pageProcess={<PageProcess activeStep={activeStep} onStepChange={setActiveStep} />}
   
       mainBody={stepMainBodies[activeStep]}
+      hideAside={isWidthExpanded}
 
       asideHead={<TaskStatusBoard state={dataTaskState} />}
       asideBody={
