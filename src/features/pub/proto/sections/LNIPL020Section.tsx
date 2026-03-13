@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 // components - layout
 import { LayoutTemplateA } from '@layout/LayoutTemplate';
@@ -34,10 +34,38 @@ const dataTaskState: DataTaskState[] = [
   { id: 4, status: '중지', label: '기타', sum: 0 },
 ];
 
+const isPageProcessStep = (value: number): value is PageProcessStep => {
+  return value >= 1 && value <= 6;
+};
+
+const parseStepParam = (value: string | null): PageProcessStep | null => {
+  if (!value) return null;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed)) return null;
+  if (!isPageProcessStep(parsed)) return null;
+  return parsed;
+};
+
 export default function LNIPL020Section() {
-  const [activeStep, setActiveStep] = useState<PageProcessStep>(2);
+  const [activeStep, setActiveStep] = useState<PageProcessStep>(1);
   const [isWidthExpanded, setIsWidthExpanded] = useState(false);
   const data = DUMMY_LNIPL020_DATA;
+
+  useEffect(() => {
+    const syncStepFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const activeStepFromQuery = parseStepParam(params.get('activeStep')) ?? parseStepParam(params.get('step'));
+      if (!activeStepFromQuery) return;
+      setActiveStep(activeStepFromQuery);
+    };
+
+    syncStepFromUrl();
+    window.addEventListener('popstate', syncStepFromUrl);
+
+    return () => {
+      window.removeEventListener('popstate', syncStepFromUrl);
+    };
+  }, []);
 
   const stepMainBodies: Record<PageProcessStep, ReactNode> = {
     1: <LNIPL020_1 />,

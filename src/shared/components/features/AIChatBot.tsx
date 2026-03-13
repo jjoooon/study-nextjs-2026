@@ -43,7 +43,7 @@ export default function AIChatBot() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} modal={false}>
       <button
         ref={buttonRef}
         type="button"
@@ -56,7 +56,12 @@ export default function AIChatBot() {
 
       <DialogContent
         defaultPosition={defaultPosition}
+        showOverlay={false}
         resizable={true}
+        zIndex={2147483647}
+        onPointerDownOutside={(event) => event.preventDefault()}
+        onInteractOutside={(event) => event.preventDefault()}
+        onEscapeKeyDown={(event) => event.preventDefault()}
         className="w-[42rem] h-[56rem] min-w-[32rem] min-h-[32rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr]"
       >
         <DialogHeader className="min-h-[4.4rem] px-[1.6rem] py-[1.2rem] border-b border-[var(--color-gray-15)]">

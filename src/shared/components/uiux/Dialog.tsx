@@ -40,12 +40,18 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  showOverlay = true,
+  overlayClassName,
   resizable = false,
+  zIndex,
   defaultPosition,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
+  showOverlay?: boolean;
+  overlayClassName?: string;
   resizable?: boolean;
+  zIndex?: number;
   defaultPosition?: {
     x: number;
     y: number;
@@ -70,8 +76,9 @@ function DialogContent({
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: size.width > 0 ? `${size.width}px` : undefined,
       height: size.height > 0 ? `${size.height}px` : undefined,
+      zIndex,
     }),
-    [props.style, position.x, position.y, isDragging, isResizing, size]
+    [props.style, position.x, position.y, isDragging, isResizing, size, zIndex]
   );
 
   const handleMouseDown = React.useCallback(
@@ -178,7 +185,7 @@ function DialogContent({
 
   return (
     <DialogPortal data-slot="dialog-portal">
-      <DialogOverlay />
+      {showOverlay && <DialogOverlay className={overlayClassName} />}
       <DialogPrimitive.Content
         ref={contentRef}
         data-slot="dialog-content"
