@@ -5,7 +5,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { CellClassParams, ColDef, EditableCallbackParams, ICellRendererParams, ITooltipParams, SelectionChangedEvent, ValueFormatterParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { LayoutMainHead, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { LayoutMainHead, LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Grow, Gcol, Typo } from '@atoms';
 import { AmountUnitInput } from '@features/AmountUnitInput';
 import { LNIPL020Step2 as MainFoot } from '@features/MainFoot';
@@ -370,7 +370,7 @@ export function LNIPL020_2({
   // });
 
   return (
-    <>
+    <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
       <LayoutMainHead>
         <TabPager 
           // removable={true}
@@ -542,6 +542,6 @@ export function LNIPL020_2({
       <LayoutMainFoot>
          <MainFoot />
       </LayoutMainFoot>
-    </>
+    </LayoutMain>
   );
 }

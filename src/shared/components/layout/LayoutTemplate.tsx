@@ -55,9 +55,8 @@ export const LayoutTemplateA = ({
     <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
       
-      <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
-        {mainBody}
-      </LayoutMain>
+      
+      {mainBody}
       
       
       <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
