@@ -157,6 +157,7 @@ export function LNIPL020_1({
               </RadioGroup>
             </FormCell>
           </FormRow>
+
           <FormRow>
             <FormCell title="납입주기">
               <RadioGroup
@@ -185,6 +186,7 @@ export function LNIPL020_1({
               </RadioGroup>
             </FormCell>
           </FormRow>
+
           <FormRow>
             <FormCell title="고지유형" colSpan={3}>
               <RadioGroup
