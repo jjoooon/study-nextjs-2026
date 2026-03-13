@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import * as React from 'react';
 
 import { Gcol, Grow, Typo } from '@atoms';
 import { AiIcon } from '@icons';

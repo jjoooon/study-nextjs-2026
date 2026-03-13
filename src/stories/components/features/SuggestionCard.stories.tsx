@@ -62,13 +62,13 @@ import { SuggestionCard } from '@features/SuggestionCard';
     //   description: '상단 텍스트',
     // },
     type: {
-      control: 'radio',
+      control: 'select',
       options: ['type1', 'type2', 'type3'],
       description: '카드 타입',
     },
     showAiIcon: {
       control: 'boolean',
-      description: '우측 AI 아이콘 노출 여부',
+      description: 'AI 아이콘 노출 여부',
     },
   },
 };

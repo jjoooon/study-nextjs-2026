@@ -25,7 +25,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 
 // ─── Types ──────────────────────────────────────────────────────
 
-export interface InsuranceProductCardProps {
+export interface ProductCardProps {
   /** 오른쪽 상단 플래그 배지에 표시할 순위 (1자리~2자리) */
   rank?: number;
   /** 상품명 */
@@ -43,11 +43,13 @@ export interface InsuranceProductCardProps {
   /** 추천화법 버튼 클릭 핸들러 */
   onChatClick?: () => void;
   className?: string;
+  /** 카드 배경색 클래스 */
+  bgColor?: string;
 }
 
 // ─── Component ──────────────────────────────────────────────────
 
-export function InsuranceProductCard({
+export function ProductCard({
   rank,
   title,
   subtitle,
@@ -57,7 +59,8 @@ export function InsuranceProductCard({
   onCheckedChange,
   onChatClick,
   className,
-}: InsuranceProductCardProps) {
+  bgColor = 'bg-[var(--color-gray-0)]',
+}: ProductCardProps) {
   const isAccept = status === 'accept';
 
   // rank 값에 따라 아이콘 색상을 동적으로 결정합니다.
@@ -80,8 +83,11 @@ export function InsuranceProductCard({
   }
 
   return (
-    <Gcol placement={'ss'}  className={cn("relative w-full rounded-[1rem] border-[0.2rem] border-transparent bg-[var(--color-gray-0)] p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]",
-    className)}>
+    <Gcol
+      placement={'ss'}
+      className={cn('relative w-full rounded-[1rem] border-[0.2rem] border-transparent p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]',
+      bgColor, className)}
+    >
       {/* ── 오른쪽 상단 FlagCheckDuotone 순위 배지 ── */}
       {rank !== undefined && (
         <div className="absolute top-[-0.6rem] right-4 flex items-start justify-end">

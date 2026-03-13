@@ -2,15 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
 import { Gcol } from '@atoms';
-import { InsuranceProductCard } from '@features/InsuranceProductCard';
+import { ProductCard } from '@/shared/components/features/ProductCard';
 
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
-import type { InsuranceProductCardProps } from '@features/InsuranceProductCard';
+import type { ProductCardProps } from '@/shared/components/features/ProductCard';
 
-const meta: Meta<InsuranceProductCardProps> = {
-  title: 'Components/Features/InsuranceProductCard',
-  component: InsuranceProductCard,
+const meta: Meta<ProductCardProps> = {
+  title: 'Components/Features/ProductCard',
+  component: ProductCard,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -34,7 +34,7 @@ const meta: Meta<InsuranceProductCardProps> = {
 \`\`\`tsx
 import { InsuranceProductCard } from '@features/InsuranceProductCard';
 
-<InsuranceProductCard
+<ProductCard
   rank={1}
   title="한화 시그니처 여성 3N5간편건강보험3.0 2504"
   subtitle={"2종. 납입면제 강화형.\\n납입후 50% 해약환급금지급형"}
@@ -79,7 +79,7 @@ import { InsuranceProductCard } from '@features/InsuranceProductCard';
     title: { control: 'text', description: '상품명' },
     subtitle: { control: 'text', description: '부제목' },
     status: {
-      control: 'radio',
+      control: 'select',
       options: ['accept', 'reject'],
       description: '인수 가능 여부',
     },
@@ -104,7 +104,7 @@ import { InsuranceProductCard } from '@features/InsuranceProductCard';
 };
 
 export default meta;
-type Story = StoryObj<InsuranceProductCardProps>;
+type Story = StoryObj<ProductCardProps>;
 
 // ─── Default ──────────────────────────────────────────────────
 export const Default: Story = {
@@ -117,7 +117,7 @@ export const Default: Story = {
 
     return (
       <Gcol className="w-lg">
-        <InsuranceProductCard
+        <ProductCard
           {...args}
           checked={checked}
           onCheckedChange={(val) => {
@@ -132,10 +132,10 @@ export const Default: Story = {
 
 // ─── 인수불가 상태 ─────────────────────────────────────────────
 export const Rejected: Story = {
-  name: '인수불가',
+  name: '인수가능마크',
   render: (args) => (
     <Gcol className="w-lg">
-      <InsuranceProductCard {...args} />
+      <ProductCard {...args} />
     </Gcol>
   ),
   args: {
@@ -156,7 +156,7 @@ export const NoRank: Story = {
   name: '순위 배지 없음',
   render: (args) => (
     <Gcol className="w-lg">
-      <InsuranceProductCard {...args} />
+      <ProductCard {...args} />
     </Gcol>
   ),
   args: {
@@ -171,7 +171,7 @@ export const NoRank: Story = {
 export const List: Story = {
   name: '목록 (여러 카드)',
   render: () => {
-    const items: InsuranceProductCardProps[] = [
+    const items: ProductCardProps[] = [
       {
         rank: 1,
         title: '한화 시그니처 여성 3N5간편건강보험3.0 2504',
@@ -213,7 +213,7 @@ export const List: Story = {
     return (
       <Gcol className="w-lg gap-4">
         {items.map((item, idx) => (
-          <InsuranceProductCard
+          <ProductCard
             key={idx}
             {...item}
             checked={checkedSet.has(idx)}
