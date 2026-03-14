@@ -157,12 +157,12 @@ const [value, setValue] = useState('option1');
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <RadioGroup defaultValue="1" className="gap-2" width="auto">
-                    <RadioGroupItem size="default" value="1" id="doc-s-default-1">
+                    <RadioGroupItem size="lg" value="1" id="doc-s-default-1">
                       Large
                     </RadioGroupItem>
                   </RadioGroup>
                   <RadioGroup defaultValue="1" className="gap-2" width="auto">
-                    <RadioGroupItem size="sm" value="1" id="doc-s-sm-1">
+                    <RadioGroupItem size="md" value="1" id="doc-s-sm-1">
                       Small
                     </RadioGroupItem>
                   </RadioGroup>
@@ -280,22 +280,22 @@ const [value, setValue] = useState('option1');
   },
   argTypes: {
     variant: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['default', 'button'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'select' },
-      options: ['default', 'sm'],
+      control: { type: 'inline-radio' },
+      options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
     color: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['primary', 'info'],
       table: { category: '스타일 props' },
     },
     width: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['full', 'auto'],
       table: { category: '스타일 props' },
     },
@@ -349,7 +349,7 @@ const [value, setValue] = useState('option1');
     errorMsg: '하나를 선택해주세요.',
     errorPs: 'bl',
     variant: 'default',
-    size: 'default',
+    size: 'lg',
     color: 'primary',
   },
 };

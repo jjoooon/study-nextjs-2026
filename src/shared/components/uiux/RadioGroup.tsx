@@ -35,8 +35,8 @@ const radioGroupItemVariants = cva(
           'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
       },
       size: {
-        default: '',
-        sm: '',
+        lg: '',
+        md: '',
       },
       width: {
         full: 'w-full',
@@ -51,23 +51,23 @@ const radioGroupItemVariants = cva(
       // default variant + size
       {
         variant: 'default',
-        size: 'default',
+        size: 'lg',
         className: 'h-[2rem] w-[2rem]',
       },
       {
         variant: 'default',
-        size: 'sm',
+        size: 'md',
         className: 'h-[1.4rem] w-[1.4rem]',
       },
       // button variant + size
       {
         variant: 'button',
-        size: 'default',
+        size: 'lg',
         className: 'h-[2.8rem] px-[1rem] text-[1.4rem] tracking-[-0.042rem] w-auto',
       },
       {
         variant: 'button',
-        size: 'sm',
+        size: 'md',
         className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto',
       },
       {
@@ -85,7 +85,7 @@ const radioGroupItemVariants = cva(
     ],
     defaultVariants: {
       variant: 'default',
-      size: 'default',
+      size: 'lg',
       color: 'primary',
       width: 'full',
     },
@@ -95,8 +95,8 @@ const radioGroupItemVariants = cva(
 const radioIndicatorVariants = cva('absolute rounded-full', {
   variants: {
     size: {
-      default: 'h-[1rem] w-[1rem]',
-      sm: 'h-[0.6rem] w-[0.6rem]',
+      lg: 'h-[1rem] w-[1rem]',
+      md: 'h-[0.6rem] w-[0.6rem]',
     },
     color: {
       primary: 'bg-[var(--color-element-primary)]',
@@ -108,7 +108,7 @@ const radioIndicatorVariants = cva('absolute rounded-full', {
     },
   },
   defaultVariants: {
-    size: 'default',
+    size: 'lg',
     color: 'primary',
     disabled: false,
   },
@@ -196,7 +196,7 @@ const RadioGroupItem = React.forwardRef<
     {
       className,
       variant,
-      size = 'default',
+      size = 'lg',
       color = 'primary',
       children,
       error = false,
@@ -225,6 +225,7 @@ const RadioGroupItem = React.forwardRef<
             'relative whitespace-nowrap',
             isError && 'bg-[var(--color-input-surface-error)]! border-[var(--color-input-border-error)]! border-[0.2rem]!',
             isRequired && 'data-[state=checked]:border-[var(--color-input-border-highlight)]',
+            isButton && 'pl-[2.2rem]',
             className
           )}
           data-required={isRequired}
@@ -232,10 +233,27 @@ const RadioGroupItem = React.forwardRef<
           aria-invalid={isError ? true : undefined}
           {...props}
         >
-          {!isButton && (
+          {!isButton ? (
             <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap">
-              <div className={cn(radioIndicatorVariants({ size, color, disabled: isDisabled }))} />
+              <div
+                className={cn(
+                  radioIndicatorVariants({ size, color, disabled: isDisabled }),
+                  size === 'lg' && 'h-[1rem] w-[1rem]',
+                  size === 'md' && 'h-[0.6rem] w-[0.6rem]'
+                )}
+              />
             </RadioGroupPrimitive.Indicator>
+          ) : (
+            <div className="border border-[var(--color-gray-15)]! absolute left-[0.6rem] top-[0.55rem] h-[1.4rem] w-[1.4rem] rounded-full flex items-center justify-center bg-white">
+              <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap ">
+                <div
+                  className={cn(
+                    radioIndicatorVariants({ size: 'lg', color, disabled: isDisabled }),
+                    'h-[0.8rem] w-[0.8rem]'
+                  )}
+                />
+              </RadioGroupPrimitive.Indicator>
+            </div>
           )}
           {children && isButton && children}
         </RadioGroupPrimitive.Item>
