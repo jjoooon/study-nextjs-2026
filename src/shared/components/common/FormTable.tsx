@@ -21,6 +21,7 @@ const FormCellVariants = cva('', {
 
 interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   title?: ReactNode;
+  titleVariant?: 'default' | 'section';
   children?: ReactNode;
   className?: string;
   colSpan?: number;
@@ -40,6 +41,7 @@ interface FormTableProps {
 
 export const FormCell = ({
   title,
+  titleVariant = 'default',
   children,
   variant,
   className,
@@ -48,6 +50,9 @@ export const FormCell = ({
   titleColSpan,
   titleRowSpan,
 }: FormCellProps) => {
+  const titleTypoVariant = titleVariant === 'section' ? 'body-lg' : 'body-md';
+  const titleTypoColor = titleVariant === 'section' ? 'primary' : undefined;
+
   return (
     <>
       <TableHead
@@ -55,7 +60,7 @@ export const FormCell = ({
         {...(titleColSpan && { colSpan: titleColSpan })}
         {...(titleRowSpan && { rowSpan: titleRowSpan })}
       >
-        <Typo variant="body-md" weight="bold">
+        <Typo variant={titleTypoVariant} weight="bold" color={titleTypoColor}>
           {title}
         </Typo>
       </TableHead>
