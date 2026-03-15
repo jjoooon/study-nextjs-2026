@@ -27,6 +27,10 @@ const WIDTH_MAP: Record<UIUXsize, string> = {
   '2xl': 'w-[18rem]',
 };
 
+const TRIGGER_VARIANT_MAP = {
+  default: '',
+} as const;
+
 /**
  * 숫자를 3자리마다 콤마를 찍어 포맷팅합니다.
  */
@@ -49,7 +53,8 @@ export type SelectDropProps<TValue extends string = string> = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
   'children'
 > & {
-  variant?: 'checkbox' | 'radio';
+  typeMode?: 'checkbox' | 'radio';
+  variant?: keyof typeof TRIGGER_VARIANT_MAP;
   options: ReadonlyArray<SelectDropOption<TValue>>;
   value?: ReadonlyArray<TValue>;
   defaultValue?: ReadonlyArray<TValue>;
@@ -69,6 +74,8 @@ export type SelectDropProps<TValue extends string = string> = Omit<
   errorMsg?: React.ReactNode;
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   sideOffset?: 0;
+  /** 체크박스 최소 선택 갯수 (기본값 1) */
+  minCount?: number;
 };
 
 /**
@@ -79,7 +86,8 @@ export type SelectDropProps<TValue extends string = string> = Omit<
  * 라디오 모드에서는 직접 입력 기능을 옵션으로 제공합니다.
  */
 function SelectDrop<TValue extends string = string>({
-  variant = 'checkbox',
+  typeMode,
+  variant = 'default',
   options,
   value,
   defaultValue,
@@ -92,15 +100,17 @@ function SelectDrop<TValue extends string = string>({
   placeholder = '선택',
   width = 'md',
   triggerClassName,
-  size = 'md',
+  size = 'lg',
   required = false,
   readOnly = false,
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
   sideOffset = 0,
+  minCount = 1,
   ...contentProps
 }: SelectDropProps<TValue>) {
+  const selectionMode = typeMode ?? 'checkbox';
   const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
 
   const inlineWidthStyle = (() => {
@@ -115,12 +125,12 @@ function SelectDrop<TValue extends string = string>({
 
   const errorId = React.useId();
   const isDisabled = readOnly;
-  const heightClass = size === 'sm' ? 'h-[2.5rem]' : 'h-[2.8rem]';
+  const heightClass = size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]';
 
   const [open, setOpen] = React.useState(false);
   const [internalCustomInputValue, setInternalCustomInputValue] = React.useState(defaultCustomInputValue);
   const [internalValues, setInternalValues] = React.useState<TValue[]>(() => {
-    if (variant === 'radio') {
+    if (selectionMode === 'radio') {
       const firstValue = defaultValue?.[0];
       return firstValue ? [firstValue] : [];
     }
@@ -133,20 +143,20 @@ function SelectDrop<TValue extends string = string>({
     () => {
       const nextValues = isControlled ? [...value] : internalValues;
 
-      if (variant === 'radio') {
+      if (selectionMode === 'radio') {
         const firstValue = nextValues[0];
         return firstValue ? [firstValue] : [];
       }
 
       return nextValues;
     },
-    [internalValues, isControlled, variant, value]
+    [internalValues, isControlled, selectionMode, value]
   );
 
   const setSelectedValues = React.useCallback(
     (nextValues: TValue[]) => {
       const normalizedValues =
-        variant === 'radio'
+        selectionMode === 'radio'
           ? nextValues.length > 0
             ? [nextValues[0] as TValue]
             : []
@@ -157,7 +167,7 @@ function SelectDrop<TValue extends string = string>({
       }
       onValueChange?.(normalizedValues);
     },
-    [isControlled, onValueChange, variant]
+    [isControlled, onValueChange, selectionMode]
   );
 
   const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues]);
@@ -169,10 +179,10 @@ function SelectDrop<TValue extends string = string>({
 
   const isCustomInputSelected = React.useMemo(
     () =>
-      variant === 'radio' &&
+      selectionMode === 'radio' &&
       allowCustomInput &&
       selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue),
-    [allowCustomInput, selectedValues, variant]
+    [allowCustomInput, selectedValues, selectionMode]
   );
 
   const displayText = React.useMemo(() => {
@@ -234,15 +244,20 @@ function SelectDrop<TValue extends string = string>({
     },
     [customInputValue, onCustomInputValueChange]
   );
+  // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상)
+  const radioHasValue = selectionMode === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
+  const checkboxValid = selectionMode === 'checkbox' && selectedValues.length >= minCount;
+  const showError = error && !(radioHasValue || checkboxValid);
+
   const triggerStyle = cn(
     'flex items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem]',
     heightClass,
-    error
+    showError
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-(--color-coolgray-30) bg-(--color-gray-0)',
-    error
+    showError
       ? 'hover:border-[var(--color-input-border-error)] focus:border-[var(--color-input-border-error)] focus:ring-[var(--color-input-surface-error)]'
       : required
         ? 'hover:border-[var(--color-input-border-highlight-bold)] focus:border-[var(--color-input-border-highlight-bold)]'
@@ -250,17 +265,23 @@ function SelectDrop<TValue extends string = string>({
     'focus:outline-none focus:ring-1',
     readOnly && 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none',
     'disabled:cursor-not-allowed disabled:bg-(--color-coolgray-10) disabled:text-gray-50',
+    TRIGGER_VARIANT_MAP[variant],
     widthClass,
     triggerClassName,
   );
 
-  const arrowStateColor = error
+  const arrowStateColor = showError
     ? 'var(--color-danger-50)'
     : required
       ? 'var(--color-icon-gray)'
       : readOnly
         ? 'var(--color-icon-gray-lighter)'
         : 'currentColor';
+
+  // // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상)
+  // const radioHasValue = variant === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
+  // const checkboxValid = variant === 'checkbox' && selectedValues.length >= minCount;
+  // const showError = error && !(radioHasValue || checkboxValid);
 
   return (
     <div className={cn('relative', widthClass)} style={inlineWidthStyle}>
@@ -269,8 +290,8 @@ function SelectDrop<TValue extends string = string>({
           <button
             type="button"
             tabIndex={readOnly ? -1 : undefined}
-            aria-invalid={error || undefined}
-            aria-describedby={error ? errorId : undefined}
+            aria-invalid={showError || undefined}
+            aria-describedby={showError ? errorId : undefined}
             aria-readonly={readOnly || undefined}
             className={triggerStyle}
           >
@@ -278,7 +299,7 @@ function SelectDrop<TValue extends string = string>({
             <SelectDropIcon
               size={16}
               color={arrowStateColor}
-              className={cn('shrink-0 transition-transform duration-200', open && !isDisabled && 'rotate-180')}
+              className={cn('shrink-0')}
             />
           </button>
         </PopoverPrimitive.Trigger>
@@ -293,7 +314,7 @@ function SelectDrop<TValue extends string = string>({
             {...contentProps}
           >
             <Gcol className={cn('p-1 px-2')} placement={'ss'} gap={0}>
-              {variant === 'radio' ? (
+              {selectionMode === 'radio' ? (
                 <RadioGroup
                   value={selectedValues[0] ?? ''}
                   onValueChange={handleRadioValueChange}
@@ -307,7 +328,7 @@ function SelectDrop<TValue extends string = string>({
                         <RadioGroupItem
                           value={option.value}
                           disabled={option.disabled || readOnly}
-                          size="sm"
+                          size="md"
                         >
                           {option.label}
                         </RadioGroupItem>
@@ -318,7 +339,7 @@ function SelectDrop<TValue extends string = string>({
                   {allowCustomInput && (
                     <>
                       <Grow placement={'sc'} className="min-h-[2.8rem]">
-                        <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="sm" disabled={readOnly}>
+                        <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
                           {customInputLabel}
                         </RadioGroupItem>
                       </Grow>
@@ -348,7 +369,7 @@ function SelectDrop<TValue extends string = string>({
                           handleCheckedChange(option.value, checked);
                         }}
                         disabled={option.disabled || readOnly}
-                        size="sm"
+                        size="md"
                       >
                         {option.label}
                       </Checkbox>
@@ -360,7 +381,7 @@ function SelectDrop<TValue extends string = string>({
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
-      {error && (
+      {showError && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {errorMsg}
         </ErrorMsg>

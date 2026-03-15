@@ -51,6 +51,9 @@ import { Textarea } from '@uiux/Textarea';
   error={false | true}
   errorMsg={'입력은 필수입니다.'}
   errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
+
+  minLength={10}
+  showMinLengthCount={false | true}
 />
 \`\`\`
               `}
@@ -102,6 +105,16 @@ import { Textarea } from '@uiux/Textarea';
                   <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
                   <td>에러 메시지 위치</td>
                 </tr>
+                <tr>
+                  <td>minLength</td>
+                  <td>number</td>
+                  <td>최소 글자 수 (조건 미달 시 에러 유지, 충족 시 에러 자동 해제)</td>
+                </tr>
+                <tr>
+                  <td>showMinLengthCount</td>
+                  <td>boolean</td>
+                  <td>최소 글자 수 카운터 표시 여부 (minLength와 함께 사용)</td>
+                </tr>
               </tbody>
             </table>
 
@@ -124,6 +137,14 @@ import { Textarea } from '@uiux/Textarea';
                   <Textarea className="w-xs min-h-24" value="읽기 전용" readOnly />
                   <Textarea className="w-xs min-h-24" value="비활성화" disabled />
                 </Grow>
+              </Gcol>
+            </Unstyled>
+
+            <h2>MinLength</h2>
+            <p>minLength 설정 시 최소 글자 수 미달이면 에러가 유지되고, 충족하면 자동 해제됩니다.</p>
+            <Unstyled>
+              <Gcol gap={4} variant="box-line" className="p-16">
+                <Textarea className="w-xs min-h-24" error minLength={10} showMinLengthCount placeholder="10자 이상 입력하세요" />
               </Gcol>
             </Unstyled>
 
@@ -182,6 +203,14 @@ import { Textarea } from '@uiux/Textarea';
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
+    minLength: {
+      control: { type: 'number' },
+      table: { category: '에러 props' },
+    },
+    showMinLengthCount: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
 
     className: {
       table: { disable: true },
@@ -201,6 +230,7 @@ import { Textarea } from '@uiux/Textarea';
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
+    showMinLengthCount: false,
   },
 };
 
