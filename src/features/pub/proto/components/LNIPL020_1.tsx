@@ -68,6 +68,7 @@ type InsuredPersonFormItem = {
   driveType: string;
   motorcycle: string;
   isDiscountApplied: boolean;
+  relationWithContractor: string;
 };
 
 // --- Constants ---
@@ -109,6 +110,7 @@ const INITIAL_INSURED_FORM: Record<string, InsuredPersonFormItem> = Object.fromE
       driveType: DRIVE_VALUE_MAP[person.driveType] ?? '',
       motorcycle: MOTORCYCLE_VALUE_MAP[person.motorcycle] ?? '',
       isDiscountApplied: person.isDiscountApplied === 'Y',
+      relationWithContractor: person.relationWithContractor ?? '',
     },
   ])
 );
@@ -415,8 +417,16 @@ export function LNIPL020_1({
                         <FormRow>
                           <FormCell title="계약자와 관계">
                             <Input aria-label="피보험자명" width={'7.6rem'} value={currentPerson.name} readOnly />는 계약자의
-                            <NativeSelect aria-label="플랜 선택" width={'15.8rem'} required>
-                              <NativeSelectOption value="">{currentPerson.relationWithContractor}</NativeSelectOption>
+                            <NativeSelect
+                              aria-label="계약자와의 관계 선택"
+                              width={'15.8rem'}
+                              required
+                              value={insuredForm[tabValue]?.relationWithContractor ?? ''}
+                              onChange={(e) => updateInsuredField(tabValue, 'relationWithContractor', e.target.value)}
+                            >
+                              {LNIPL020_1_FORM_OPTIONS.ContractorType.map((option) => (
+                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                              ))}
                             </NativeSelect>
                           </FormCell>
                           <FormCell title="(실손)동시설계">

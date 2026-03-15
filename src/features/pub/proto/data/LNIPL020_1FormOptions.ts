@@ -12,6 +12,7 @@ type FormOptions = {
   notificationType: FormOptionItem[];
   drivingType: FormOptionItem[];
   motorcycleType: FormOptionItem[];
+  ContractorType: FormOptionItem[];
 };
 
 export const LNIPL020_1_FORM_OPTIONS: FormOptions = {
@@ -57,4 +58,11 @@ export const LNIPL020_1_FORM_OPTIONS: FormOptions = {
     { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
     { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
   ],
+
+  ContractorType: [
+    { value: 'Self', id: 'contractor-info-self', label: '본인' }, 
+    { value: 'Child', id: 'contractor-info-Child', label: '자녀' },
+    { value: 'Employer', id: 'contractor-info-Employer', label: '고용주' },
+  ]
+
 };
