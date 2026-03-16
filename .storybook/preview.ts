@@ -1,8 +1,15 @@
 
 import '../src/shared/styles/globals.css';
-import type { Preview } from '@storybook/nextjs-vite'
+import { createElement } from 'react';
+import { Provider } from 'react-redux';
+import type { Preview } from '@storybook/nextjs-vite';
+
+import { store } from '../src/redux';
 
 const preview: Preview = {
+  decorators: [
+    (Story) => createElement(Provider, { store, children: createElement(Story) }),
+  ],
   parameters: {
     controls: {
       matchers: {
