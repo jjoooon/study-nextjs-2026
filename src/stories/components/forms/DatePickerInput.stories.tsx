@@ -2,9 +2,54 @@
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
+import { Button } from '@uiux/Button';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
+
+function LniPl020DatePickerPreview() {
+  const [insuranceStartDate, setInsuranceStartDate] = React.useState('2024-05-08');
+
+  const handleTodayClick = () => {
+    setInsuranceStartDate(new Date().toISOString().slice(0, 10));
+  };
+
+  return (
+    <Gcol gap={3} variant="box-line" className="w-[44rem] p-8">
+      <Gcol gap={1}>
+        <span className="text-[1.3rem] text-[var(--color-text-gray)]">보험시기</span>
+        <Grow gap={2} className="items-center">
+          <DatePickerInput
+            value={insuranceStartDate}
+            mode={'single'}
+            width={'9rem'}
+            onChange={(_, formattedValue) => setInsuranceStartDate(formattedValue ?? '')}
+          />
+          <Button
+            color={'secondary'}
+            onClick={handleTodayClick}
+            only={'default'}
+            size={'lg'}
+            variant={'outlined'}
+          >
+            오늘
+          </Button>
+        </Grow>
+      </Gcol>
+
+      <Gcol gap={1}>
+        <span className="text-[1.3rem] text-[var(--color-text-gray)]">보험기간</span>
+        <DatePickerInput
+          readOnly
+          mode={'range'}
+          width={'9rem'}
+          rangeValue={{ from: '2024-05-08', to: '2024-06-30' }}
+          onChange={() => undefined}
+        />
+      </Gcol>
+    </Gcol>
+  );
+}
 
 const meta: Meta<DatePickerInputStoryProps> = {
   title: 'Components/Forms/DatePickerInput',
@@ -200,6 +245,12 @@ const [value, setValue] = useState('');
                 </Grow>
               </Gcol>
             </Unstyled>
+
+            <h2>LniPl020 Reference</h2>
+            <p>LniPl020 화면의 DatePicker 사용 방식(단일 입력 + 외부 오늘 버튼, 기간 readOnly)을 그대로 재현한 예시입니다.</p>
+            <Unstyled>
+              <LniPl020DatePickerPreview />
+            </Unstyled>
           </>
         );
       },
@@ -321,5 +372,10 @@ export const Default: Story = {
       />
     );
   },
+};
+
+export const LniPl020Reference: Story = {
+  parameters: { controls: { hideNoControlsWarning: true, exclude: /.*/ } },
+  render: () => <LniPl020DatePickerPreview />,
 };
  
