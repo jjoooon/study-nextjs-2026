@@ -63,7 +63,7 @@ function TooltipContent({
         align={align ?? (variant === 'default' || variant === 'light' ? 'start' : 'center')}
         alignOffset={alignOffset ?? 0}
         className={cn(
-          'zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit rounded-[0.4rem] text-[1.3rem] leading-[1.45] text-balance',
+          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-50 w-fit rounded-[0.4rem] text-[1.3rem] leading-[1.45] text-balance',
           variantStyles[variant],
           className
         )}
@@ -75,13 +75,14 @@ function TooltipContent({
             : children}
         </div>
         {variant === 'default' || variant === 'light' ? (
-          <span className="pointer-events-none absolute left-[0.6rem] top-full -translate-y-px z-50 animate-none">
-            <span className="absolute left-0 top-0 border-l-[6px] border-r-[6px] border-t-[7px] border-l-transparent border-r-transparent border-t-[#CCC]" />
-            <span
-              className="absolute left-[1px] top-0 border-l-[5px] border-r-[5px] border-t-[6px] border-l-transparent border-r-transparent border-t-[#FFF]"
-              
-            />
-          </span>
+          <TooltipPrimitive.Arrow asChild>
+            <svg width="12" height="7" viewBox="0 0 12 7" style={{ overflow: 'visible' }}>
+              {/* 흰 fill을 y=-2까지 올려 box border 연결선을 덮음 */}
+              <polygon points="0,-2 6,7 12,-2" fill="#FFF" />
+              {/* 양쪽 사선만 stroke — 상단 가로선 없음 */}
+              <polyline points="0,0 6,7 12,0" fill="none" stroke="#CCC" strokeWidth="1" />
+            </svg>
+          </TooltipPrimitive.Arrow>
         ) : (
           <TooltipPrimitive.Arrow
             className={cn(

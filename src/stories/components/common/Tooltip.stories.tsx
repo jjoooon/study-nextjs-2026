@@ -143,7 +143,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
   args: {
     variant: 'default',
     side: 'top',
-    sideOffset: 6,
+    sideOffset: 1,
     children: '문서서명/IM은 청약서상 고객이 청약서로<br> [전자적 방법의 안내동의여부]에 기재한 내용을<br> 화면에서 선택하시면 됩니다.<br> 전자서명/전자청약은 전자적 안내동의가<br> 필수사항입니다.',
   },
 };
