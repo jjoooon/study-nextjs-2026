@@ -17,7 +17,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 
-import type { LTRA020_2_DataType } from '@/features/pub/proto/data/LniPl020_2_Data';
+import type { LTRA020_2_DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
 
 export type LniPl020GridRow = LTRA020_2_DataType['coverageGrid']['agGridTable1'][number];
 

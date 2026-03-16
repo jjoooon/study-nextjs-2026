@@ -22,8 +22,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Checkbox } from '@uiux/Checkbox';
 
-import type { LTRA020_2_DataType } from '@/features/pub/proto/data/LniPl020_2_Data';
-import { DUMMY_LTRA020_DATA } from '@/features/pub/proto/data/LniPl020_2_Data';
+import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
+import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 // 기본은 인라인 구성.
@@ -31,11 +31,11 @@ import { useTabs } from '@/shared/hooks/useTabs';
 // import { useLniPl020Grid } from '@/features/pub/proto/hooks/useLniPl020Grid';
 // import { useLniPl020Tabs } from '@/features/pub/proto/hooks/useLniPl020Tabs';
 
-type PlanFiltersData = LTRA020_2_DataType['planFilters'];
+type PlanFiltersData = LniPl020Step2DataType['planFilters'];
 type MainHeadTab = PlanFiltersData['tabList'][number] & { value: string };
-type LniPl020GridRow = LTRA020_2_DataType['coverageGrid']['agGridTable1'][number];
+type LniPl020GridRow = LniPl020Step2DataType['coverageGrid']['agGridTable1'][number];
 
-interface LniPl020_2Props {
+interface LniPl020Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
@@ -43,11 +43,11 @@ interface LniPl020_2Props {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export function LniPl020_2({
+export function LniPl020Step2({
   onSelectPlan,
   isWidthExpanded = false,
   setIsWidthExpanded,
-}: LniPl020_2Props) {
+}: LniPl020Step2Props) {
   // 테이블 크기 조정
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   
@@ -67,8 +67,8 @@ export function LniPl020_2({
   // ---------------------------------------------------------------------------
   // 1) Data source
   // ---------------------------------------------------------------------------
-  const planFilters = DUMMY_LTRA020_DATA.planFilters;
-  const coverageGrid = DUMMY_LTRA020_DATA.coverageGrid;
+  const planFilters = LniPl020Step2Data.planFilters;
+  const coverageGrid = LniPl020Step2Data.coverageGrid;
 
   // ---------------------------------------------------------------------------
   // 2) Tabs
