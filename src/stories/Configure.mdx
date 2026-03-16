@@ -1,7 +1,7 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 import Image from "next/image";
 import Logo from "./assets/logo.svg";
-import LinkGo from "./Link";
+import { IAListWithPreview } from "./IAListWithPreview";
 
 <Meta title="한화손해보험 IA List" />
 
@@ -13,66 +13,91 @@ import LinkGo from "./Link";
     height={0}
     className="logo"
   />
-  <table className="w-full text-[1.2rem] IA-list">
-  <col className="w-[10rem]" />
-  <col className="" />
-  <thead>
-    <tr>
-      <th scope="col">화면ID</th>
-      <th scope="col">화면명</th>
-    </tr>
-  </thead>
-  <tbody>
-
-    <tr onClick={() => LinkGo('LNIPL020', 1)}>
-      <th scope="row">LNIPL020</th>
-      <td>차세대가입설계 > 가입설계 > 가입설계 > <b>계약사항</b></td>
-    </tr>
-    <tr onClick={() => LinkGo('LNIPL020', 2)}>
-      <th scope="row">LNIPL020</th>
-      <td>차세대가입설계 > 가입설계 > 가입설계 > <b>담보설계</b></td>
-    </tr>
-    <tr onClick={() => LinkGo('LNIPL020', 3)}>
-      <th scope="row">LNIPL020</th>
-      <td>차세대가입설계 > 가입설계 > 가입설계 > <b>알릴사항</b></td>
-    </tr>
-    <tr onClick={() => LinkGo('LNIPL020', 4)}>
-      <th scope="row">LNIPL020</th>
-      <td>차세대가입설계 > 가입설계 > 가입설계 > <b>심사요청</b></td>
-    </tr>
-    <tr onClick={() => LinkGo('LNIPL020', 5)}>
-      <th scope="row">LNIPL020</th>
-      <td>차세대가입설계 > 가입설계 > 가입설계 > <b>추가사항</b></td>
-    </tr>
-    <tr onClick={() => LinkGo('LNIPL020', 6)}>
-      <th scope="row">LNIPL020</th>
-      <td>차세대가입설계 > 가입설계 > 가입설계 > <b>수납</b></td>
-    </tr>
-
-  </tbody>
-  </table>
+  <IAListWithPreview />
 </div>
-<script>
-alert(1)
-</script>
+
 <style>
   {`
+    body{
+       overflow:hidden;
+    }
     .sb-container {
-      display:flex; width:100%; height:100%; align-items:center; justify-content:start; gap:1rem;
-      font-size:1.6rem; color:#fff; padding:2rem; flex-direction:column
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: start;
+      gap: 1rem;
+      font-size: 1.6rem;
+      color: #fff;
+      padding: 2rem;
+      flex-direction: column;
+     
     }
     .sbdocs.sbdocs-wrapper,
-    .sbdocs.sbdocs-content{
-      padding:0!important;
-      margin:0 !important;
-      max-width:100% !important;
+    .sbdocs.sbdocs-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
     }
-    .IA-list{
-      th {background:#f2f2f2; padding:0 0.2rem; font-size:1.2rem; height:auto; line-height:1; text-align:left}
-      td {background:#fff; padding:0 0.2rem; font-size:1.2rem; line-height:1;  height:auto;}
-      p,
-      a { font-size:1.2rem; line-height:1; text-decoration:underline; color:#006deb;}
-      td {cursor:pointer}
+    .ia-preview-root {
+      align-items: flex-start !important;
+    }
+    .IA-list {
+      border-collapse: collapse;
+      flex:1;
+      min-width: 36rem;
+    }
+    .IA-list th {
+      background: #f2f2f2;
+      padding: 0.6rem 0.8rem;
+      font-size: 1.2rem;
+      text-align: left;
+      color: #222;
+      border: 1px solid #ddd;
+      white-space: nowrap;
+    }
+    .IA-list td {
+      background: #fff;
+      padding: 0.2rem 0.8rem;
+      font-size: 1.2rem;
+      color: #222;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      line-height:1;
+    }
+    .IA-list tbody tr:hover td,
+    .IA-list tbody tr:hover th,
+    .IA-list tbody tr[data-active] td,
+    .IA-list tbody tr[data-active] th {
+      background: #dceeff;
+    }
+    .ia-preview-pane {
+      flex-shrink: 0;
+      width:90rem;
+      height: 100vh;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .ia-preview-label {
+      font-size: 1.2rem;
+      color: #555;
+      padding: 0.4rem 0;
+    }
+    .ia-preview-label b {
+      color: #222;
+    }
+    .ia-preview-iframe {
+      width: 128rem;
+      height: 100%;
+      flex: 1;
+      border: 1px solid #d9d9d9;
+      border-radius: 0.8rem;
+      background: #fff;
+      transform:scale(0.7);
+      transform-origin: 0 0;
     }
   `}
 </style>

@@ -5,6 +5,22 @@ import * as React from 'react';
 import { CloseIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 
+type DialogSizeValue = number | string;
+
+type DialogSize = {
+  width?: DialogSizeValue;
+  height?: DialogSizeValue;
+  minWidth?: DialogSizeValue;
+  minHeight?: DialogSizeValue;
+  maxWidth?: DialogSizeValue;
+  maxHeight?: DialogSizeValue;
+};
+
+const toCssSize = (value?: DialogSizeValue): string | undefined => {
+  if (typeof value === 'number') return `${value}px`;
+  return value;
+};
+
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
@@ -44,6 +60,7 @@ function DialogContent({
   overlayClassName,
   resizable = false,
   zIndex,
+  size,
   defaultPosition,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
@@ -52,13 +69,14 @@ function DialogContent({
   overlayClassName?: string;
   resizable?: boolean;
   zIndex?: number;
+  size?: DialogSize;
   defaultPosition?: {
     x: number;
     y: number;
   };
 }) {
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
-  const [size, setSize] = React.useState({ width: 0, height: 0 });
+  const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
   const [isDragging, setIsDragging] = React.useState(false);
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
@@ -74,11 +92,15 @@ function DialogContent({
       ...(props.style ?? {}),
       transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
-      width: size.width > 0 ? `${size.width}px` : undefined,
-      height: size.height > 0 ? `${size.height}px` : undefined,
+      width: resizedSize.width > 0 ? `${resizedSize.width}px` : toCssSize(size?.width),
+      height: resizedSize.height > 0 ? `${resizedSize.height}px` : toCssSize(size?.height),
+      minWidth: toCssSize(size?.minWidth),
+      minHeight: toCssSize(size?.minHeight),
+      maxWidth: toCssSize(size?.maxWidth),
+      maxHeight: toCssSize(size?.maxHeight),
       zIndex,
     }),
-    [props.style, position.x, position.y, isDragging, isResizing, size, zIndex]
+    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, size, zIndex]
   );
 
   const handleMouseDown = React.useCallback(
@@ -127,12 +149,12 @@ function DialogContent({
         const deltaX = e.clientX - dragStart.x;
         const deltaY = e.clientY - dragStart.y;
 
-        const baseWidth = size.width || rect.width;
-        const baseHeight = size.height || rect.height;
+        const baseWidth = resizedSize.width || rect.width;
+        const baseHeight = resizedSize.height || rect.height;
         let shiftX = 0;
         let shiftY = 0;
 
-        const newSize = { ...size };
+        const newSize = { ...resizedSize };
 
         if (isResizing.includes('e')) {
           const nextWidth = Math.max(300, baseWidth + deltaX);
@@ -155,7 +177,7 @@ function DialogContent({
           shiftY -= (nextHeight - baseHeight) / 2;
         }
 
-        setSize(newSize);
+        setResizedSize(newSize);
         if (shiftX !== 0 || shiftY !== 0) {
           setPosition((prev) => ({
             x: prev.x + shiftX,
@@ -181,7 +203,7 @@ function DialogContent({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, isResizing, dragStart, size]);
+  }, [isDragging, isResizing, dragStart, resizedSize]);
 
   return (
     <DialogPortal data-slot="dialog-portal">
@@ -192,7 +214,7 @@ function DialogContent({
         style={contentStyle}
         className={cn(
           'fixed left-[50%] top-[50%] z-50 grid grid-rows-[auto_1fr_auto] gap-[1.2rem] transition-none',
-          'bg-white rounded-lg border px-0 py-0 shadow-lg outline-none',
+          'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full',
           className
         )}
@@ -212,7 +234,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.8rem] right-[3.2rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none "
+            className="flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.2rem] right-[2.4rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none "
           >
             <CloseIcon color="#2C2724" />
           </DialogPrimitive.Close>
@@ -273,7 +295,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="dialog-header"
       className={cn(
-        'flex flex-col gap-2 text-center content-start cursor-grab active:cursor-grabbing min-h-[3.9rem] justify-center shrink-0 px-[3.2rem] pt-[2.6rem] pb-[1rem]',
+        'flex flex-row content-start cursor-grab w-full active:cursor-grabbing min-h-[3.9rem] justify-center shrink-0 px-6 pt-5',
         className
       )}
       {...props}
@@ -285,7 +307,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn('flex justify-center gap-2 pt-[2.4rem] pb-[2rem] px-[3.2erm]', className)}
+      className={cn('flex justify-between items-center gap-0 pt-5 pb-0 px-0 overflow-hidden rounded-bl-[.8rem] rounded-br-[.8rem] ', className)}
       {...props}
     />
   );
@@ -295,7 +317,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn('leading-none font-bold text-[1.8rem] tracking-tighter text-left ', className)}
+      className={cn('flex items-end gap-0.5 leading-none text-[1.6rem] tracking-tighter text-left border-b border-[var(--color-gray-90)] pb-3 w-full pr-6', className)}
       {...props}
     />
   );

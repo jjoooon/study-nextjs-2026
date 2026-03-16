@@ -3,7 +3,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import { Gcol, Grow } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -77,7 +77,11 @@ import { Button } from '@uiux/Button';
   <DialogTrigger asChild>
     <Button>다이얼로그 열기</Button>
   </DialogTrigger>
-  <DialogContent className="max-w-[48rem]" showCloseButton resizable={false}>
+  <DialogContent
+    showCloseButton
+    resizable={false}
+    size={{ width: '48rem', minHeight: '24rem' }}
+  >
     <DialogHeader>
       <DialogTitle>제목</DialogTitle>
       <DialogDescription>설명 텍스트</DialogDescription>
@@ -119,6 +123,11 @@ import { Button } from '@uiux/Button';
                   <td>defaultPosition</td>
                   <td>{`{ x: number; y: number }`}</td>
                   <td>다이얼로그 초기 위치 (중앙 기준 오프셋)</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>{`{ width?; height?; minWidth?; minHeight?; maxWidth?; maxHeight? }`}</td>
+                  <td>다이얼로그 크기 관련 CSS 값을 지정 (number는 px로 처리)</td>
                 </tr>
               </tbody>
             </table>
@@ -236,9 +245,14 @@ import { Button } from '@uiux/Button';
       description: '다이얼로그 초기 위치 (중앙 기준 오프셋 { x, y })',
       table: { category: 'Behavior', defaultValue: { summary: '{ x: 0, y: 0 }' } },
     },
+    size: {
+      control: 'object',
+      description: '다이얼로그 크기 설정 ({ width, height, minWidth, minHeight, maxWidth, maxHeight })',
+      table: { category: 'Layout' },
+    },
     className: {
       control: 'text',
-      description: '추가 CSS 클래스 (max-w-* 로 너비 제어)',
+      description: '추가 CSS 클래스',
       table: { category: 'Appearance' },
     },
     children: { table: { disable: true } },
@@ -248,7 +262,7 @@ import { Button } from '@uiux/Button';
     showCloseButton: true,
     resizable: false,
     defaultPosition: { x: 0, y: 0 },
-    className: 'max-w-[48rem]',
+    size: { width: '48rem', minHeight: '24rem' },
   },
 };
 
@@ -261,20 +275,40 @@ export const Default: Story = {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="contained">다이얼로그 열기</Button>
+          <Button variant={'contained'} >다이얼로그 열기</Button>
         </DialogTrigger>
+        
         <DialogContent {...args}>
           <DialogHeader>
-            <DialogTitle>다이얼로그 제목</DialogTitle>
-            <DialogDescription>헤더 영역을 드래그하여 위치를 이동할 수 있습니다.</DialogDescription>
+            <DialogTitle>
+              <Typo tag={'h2'} variant={'heading-lg'}>다이얼로그 제목</Typo>
+              <Typo tag={'p'} variant={'body-lg'}>(LRTAA010)</Typo>
+            </DialogTitle>
           </DialogHeader>
-          <div className="px-[3.2rem]">다이얼로그 본문 내용이 여기에 들어갑니다.</div>
+
+          <div className="px-6">
+            다이얼로그 본문 내용이 여기에 들어갑니다.
+          </div>
+          
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outlined" color="gray">취소</Button>
-            </DialogClose>
-            <Button variant="contained" onClick={() => setOpen(false)}>확인</Button>
-          </DialogFooter>
+            <Gcol className="w-full" gap={0}>
+              <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
+                <Grow>
+                  <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
+                </Grow>
+                <Grow>
+                  <Button variant={'contained'} size={'xl'} onClick={() => setOpen(false)}>확인</Button>
+                  <DialogClose asChild>
+                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>닫기</Button>
+                  </DialogClose>
+                </Grow>
+              </Grow>
+              <Grow variant={'box'} className="w-full py-1 px-2.5 border-t border-[var(--color-gray-20)]" placement={'bwc'}>
+                <Typo variant={'body-xs'} color={'gray'}>자료가 조회되었습니다.</Typo>
+
+              </Grow>
+            </Gcol>
+           </DialogFooter>
         </DialogContent>
       </Dialog>
     );

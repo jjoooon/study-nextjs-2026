@@ -16,7 +16,7 @@ const iconList: Array<[string, IconComponent]> = Object.entries(Icons).filter(
 );
 
 const meta: Meta<IconStoryArgs> = {
-  title: 'Components/Icons/Icons',
+  title: 'Components/Icons/SVGIcons',
   tags: ['autodocs'],
 };
 

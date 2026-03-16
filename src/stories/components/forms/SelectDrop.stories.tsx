@@ -82,19 +82,21 @@ const meta: Meta<SelectDropStoryProps> = {
 import SelectDrop from '@common/SelectDrop';
 
 <SelectDrop
-  selectionMode={'checkbox' | 'radio'}
+  typeMode={'checkbox' | 'radio'}
+  variant={'default'}
   options={[
     { label: '사망장해', value: '사망장해' },
     { label: '진단비', value: '진단비' },
   ]}
   width={'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '??rem'}
-  size={'md' | 'sm'}
+  size={'lg' | 'md'}
   placeholder={'선택'}
   required={false | true}
   readOnly={false | true}
   error={false | true}
   errorMsg={'선택은 필수입니다.'}
   errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
+  minCount={1}
 />
 \`\`\`
               `}
@@ -112,9 +114,14 @@ import SelectDrop from '@common/SelectDrop';
               </thead>
               <tbody>
                 <tr>
-                  <td>variant</td>
+                  <td>typeMode</td>
                   <td>'checkbox' | 'radio'</td>
                   <td>선택 방식</td>
+                </tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'default'</td>
+                  <td>트리거 스타일 타입</td>
                 </tr>
                 <tr>
                   <td>size</td>
@@ -156,6 +163,11 @@ import SelectDrop from '@common/SelectDrop';
                   <td>boolean</td>
                   <td>라디오 모드에서 직접입력 사용 여부</td>
                 </tr>
+                <tr>
+                  <td>minCount</td>
+                  <td>number</td>
+                  <td>체크박스 최소 선택 개수 (error=true일 때 검증)</td>
+                </tr>
               </tbody>
             </table>
 
@@ -165,13 +177,13 @@ import SelectDrop from '@common/SelectDrop';
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <SelectDrop
-                    variant="checkbox"
+                    typeMode="checkbox"
                     width="md"
                     options={demoOptions}
                     defaultValue={['수술/치료', '재물/배상']}
                   />
                   <SelectDrop
-                    variant="radio"
+                    typeMode="radio"
                     width="md"
                     options={priceOptions}
                     defaultValue={['6-9만원']}
@@ -187,8 +199,8 @@ import SelectDrop from '@common/SelectDrop';
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <SelectDrop variant="checkbox" width="md" size="md" options={demoOptions} placeholder="md: 28" />
-                  <SelectDrop variant="checkbox" width="md" size="sm" options={demoOptions} placeholder="sm: 25" />
+                  <SelectDrop typeMode="checkbox" width="md" size="lg" options={demoOptions} placeholder="lg: 28" />
+                  <SelectDrop typeMode="checkbox" width="md" size="md" options={demoOptions} placeholder="md: 25" />
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -250,14 +262,19 @@ import SelectDrop from '@common/SelectDrop';
     },
   },
   argTypes: {
-    variant: {
-      control: { type: 'select' },
+    typeMode: {
+      control: { type: 'inline-radio' },
       options: ['checkbox', 'radio'],
       table: { category: '스타일 props' },
     },
+    variant: {
+      control: { type: 'inline-radio' },
+      options: ['default'],
+      table: { category: '스타일 props' },
+    },
     size: {
-      control: { type: 'select' },
-      options: ['md', 'sm'],
+      control: { type: 'inline-radio' },
+      options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
     width: {
@@ -288,6 +305,10 @@ import SelectDrop from '@common/SelectDrop';
     },
     errorMsg: {
       control: { type: 'text' },
+      table: { category: '에러 props' },
+    },
+    minCount: {
+      control: { type: 'number' },
       table: { category: '에러 props' },
     },
     side: {
@@ -334,7 +355,8 @@ import SelectDrop from '@common/SelectDrop';
     },
   },
   args: {
-    variant: 'checkbox',
+    typeMode: 'checkbox',
+    variant: 'default',
     size: 'md',
     width: 'md',
     placeholder: '선택',
@@ -343,6 +365,7 @@ import SelectDrop from '@common/SelectDrop';
     error: false,
     errorMsg: '선택은 필수입니다.',
     errorPs: 'bl',
+    minCount: 1,
     side: 'bottom',
     align: 'start',
     sideOffset: 0,
@@ -355,37 +378,24 @@ type Story = StoryObj<SelectDropStoryProps>;
 
 export const Default: Story = {
   render: (args) => {
-    const isRadioMode = args.variant === 'radio';
+    const isRadioMode = args.typeMode === 'radio';
 
     const mappedArgs: SelectDropStoryProps = isRadioMode
       ? {
           ...args,
-          variant: 'radio',
+          typeMode: 'radio',
           options: priceOptions,
           allowCustomInput: true,
           customInputLabel: '직접입력',
-          defaultValue: ['6-9만원'],
+          defaultValue: undefined,
         }
       : {
           ...args,
-          variant: 'checkbox',
+          typeMode: 'checkbox',
           options: demoOptions,
-          defaultValue: ['수술/치료', '재물/배상'],
+          defaultValue: undefined,
         };
 
-    return <SelectDrop key={`${args.variant}-${String(args.readOnly)}-${String(args.error)}`} {...mappedArgs} />;
+    return <SelectDrop {...mappedArgs} />;
   },
-};
-
-export const SingleWithCustomInput: Story = {
-  args: {
-    variant: 'radio',
-    width: 'md',
-    placeholder: '선택',
-    allowCustomInput: true,
-    customInputLabel: '직접입력',
-    options: priceOptions,
-    defaultValue: ['6-9만원'],
-  },
-  render: (args) => <SelectDrop key={`radio-custom-input-${String(args.readOnly)}-${String(args.error)}`} {...args} />,
 };
