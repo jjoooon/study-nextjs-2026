@@ -18,8 +18,8 @@ import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
 import type { PageProcessStep } from '@features/PageProcess';
 
 // LniPl020 - components
-import { LniPl020_1 } from '../components/LniPl020_1'; // 01. 담보설계
-import { LniPl020_2 } from '../components/LniPl020_2'; // 02. 담보설계
+import { LniPl020Step1 } from '../components/LniPl020Step1'; // 01. 담보설계
+import { LniPl020Step2 } from '../components/LniPl020Step2'; // 02. 담보설계
 
 // 임시 Data
 const dataTaskState: Array<{
@@ -131,12 +131,12 @@ export default function LniPl020Section() {
   }, []);
 
   const stepMainBodies: Record<PageProcessStep, ReactNode> = {
-    1: <LniPl020_1 />,
-    2: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    4: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    5: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    6: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    1: <LniPl020Step1 />,
+    2: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    3: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    4: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    5: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    6: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
   };
  
   return (

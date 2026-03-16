@@ -1,6 +1,6 @@
 import { useTabs } from '@/shared/hooks/useTabs';
 
-import type { LTRA020_2_DataType } from '@/features/pub/proto/data/LniPl020_2_Data';
+import type { LTRA020_2_DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
 
 export type PlanFiltersData = LTRA020_2_DataType['planFilters'];
 export type MainHeadTab = PlanFiltersData['tabList'][number] & { value: string };
