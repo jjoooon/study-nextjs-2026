@@ -29,7 +29,7 @@ export default function TaskStatusBoard<T extends {
     <Gcol
       variant={'box'}
       placement={'ss'}
-      className="bg-[var(--color-coolgray-20)] rounded-[0.8rem] w-full gap-[0.6rem] px-2.5rem py-2 w-[19.8rem]"
+      className="bg-[var(--color-blue-gray-20)] rounded-[0.8rem] w-full gap-[0.6rem] px-2.5rem py-2 w-[19.8rem]"
     >
       <Grow className="gap-[0.2rem]">
         <BadgeCheckIcon />
@@ -62,7 +62,7 @@ export default function TaskStatusBoard<T extends {
                   {item.label}
                 </Typo>
                 {'sum' in item && typeof item.sum === 'number' && item.sum > 0 && (
-                  <span className={twMerge("block text-[1.1rem] font-bold bg-[var(--color-coolgray-20)] pl-1 pr-[0.6rem] h-[1.5rem] rounded-full leading-1 pt-[0.5rem]", "no-underline")}>{item.sum}</span>
+                  <span className={twMerge("block text-[1.1rem] font-bold bg-[var(--color-blue-gray-20)] pl-1 pr-[0.6rem] h-[1.5rem] rounded-full leading-1 pt-[0.5rem]", "no-underline")}>{item.sum}</span>
                 )}
               </span>
               <span className={cn(

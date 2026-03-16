@@ -131,7 +131,7 @@ const COL_PLACEMENT_MAP: Record<string, string> = {
 const VARIANT_MAP: Record<Variant, string> = {
   'default': '',
   'box': 'px-2.5 py-2.5 bg-[var(--color-gray-5)] gap-1.5',
-  'box-line': 'p-2 bg-[#FFF] border border-[var(--color-coolgray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
+  'box-line': 'p-2 bg-[#FFF] border border-[var(--color-blue-gray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
 };
 
 export const Gcol = ({ 

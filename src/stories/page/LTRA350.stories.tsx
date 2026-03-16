@@ -1,13 +1,13 @@
-import LNIPL020 from '@/app/pub/proto/pages/LNIPL020';
+import LniPl020 from '@/app/pub/proto/pages/LniPl020';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'page/proto/LNIPL020',
-  component: LNIPL020,
+  title: 'page/proto/LniPl020',
+  component: LniPl020,
 };
 
 export const Default = () => (
   <LayoutDoc>
-    <LNIPL020 />
+    <LniPl020 />
   </LayoutDoc>
 );

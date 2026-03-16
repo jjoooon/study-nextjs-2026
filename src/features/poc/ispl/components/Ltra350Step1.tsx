@@ -10,7 +10,7 @@ import type { TabKey } from '../constants/insPlanBasicData';
 import { useForm } from '../hooks/useForm';
 import { InsPlanBasic, InsPlanBasicStep1, InsPlanBasicStep2, InsPlanBasicStep3 } from './Page2Index';
 
-export default function LNIPL020Step1() {
+export default function LniPl020Step1() {
   const [testError, setTestError] = useState(false);
   const { active, setActive, handleRemove, visibleTabs } = useTabs(INITIAL_TABS);
 

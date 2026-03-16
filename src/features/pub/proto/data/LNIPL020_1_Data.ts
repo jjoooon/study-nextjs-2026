@@ -1,4 +1,4 @@
-export interface LNIPL020_1_DataType {
+export interface LniPl020_1_DataType {
   ContractorInfo: {
     insStartDate: string;
     insStartPeriod: string;
@@ -44,7 +44,7 @@ export interface LNIPL020_1_DataType {
   };
 }
 
-export const DUMMY_LNIPL020_DATA: LNIPL020_1_DataType = {
+export const DUMMY_LniPl020_DATA: LniPl020_1_DataType = {
     ContractorInfo: {
         insStartDate: "2026-03-04",      // 보험시기
         insStartPeriod: "2026-01-30",    // 보험기간 start
