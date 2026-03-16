@@ -4,21 +4,34 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerA } from '@common/Spinner';
 import { CalendarIcon } from '@icons';
-
-import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
+import Link from 'next/link';
 
 import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
 
-import Link from "next/link"
+export type InfoContractBaseData = {
+  date: string;
+  polName: string;
+  insName: string;
+  insAge: string;
+  insGender: string;
+  insGrade: string;
+  info: string[];
+  quoteExpiryDate: string;
+  insuranceAgeDate: string;
+  consentEndDate: string;
+  note: string;
+};
 
+interface InfoContractProps<TData extends InfoContractBaseData = InfoContractBaseData> {
+  data: TData;
+}
 
-export function InfoContract({ data }: { data: LniPl020DataType['aside'] }) {
-  const info = data?.simpleContractInfo;
+export function InfoContract<TData extends InfoContractBaseData = InfoContractBaseData>({ data }: InfoContractProps<TData>) {
   return (
     <Gcol className="w-full">
-      <Grow className="gap-2" placement={'bwc'}>
-        <Grow className="gap-1.5" >
+      <Grow gap={2} placement={'bwc'}>
+        <Grow gap={1.5} placement={'bwc'}>
           <Typo variant={'heading-md'}>계약정보</Typo>
           <Grow className="gap-[0.2rem]" placement={'cc'}>
             <Typo variant={'body-md'} className="text-[var(--color-danger-40)]">설계중</Typo>
@@ -32,24 +45,24 @@ export function InfoContract({ data }: { data: LniPl020DataType['aside'] }) {
           <BulletList className="pt-[0.4rem]">
             <BulletListItem type={'dot'} size={'sm'}>
               <Grow className="flex-1 text-[1.2rem] gap-[0.2rem]" placement={'bwc'}>
-                <Grow>보험시기 {info?.date} <CalendarIcon /></Grow>
+                <Grow>보험시기 {data.date} <CalendarIcon /></Grow>
                 <Badge color={'red'} size={'sm'} className="shrink-0">경과</Badge>
               </Grow>
             </BulletListItem>
             <BulletListItem className="text-[1.2rem]" type={'dot'} size={'sm'}>
-              {Array.isArray(info?.info) ? info.info.join('/') : info?.info}
+              {Array.isArray(data.info) ? data.info.join('/') : data.info}
             </BulletListItem>
           </BulletList>
         </Gcol>
         <Gcol className="w-full" placement={'ss'}>
           <Grow placement={'sc'}>
               <Badge className="bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">계</Badge>
-              <Typo variant={'body-sm'} weight="bold">{info?.polName}</Typo>
+              <Typo variant={'body-sm'} weight="bold">{data.polName}</Typo>
             </Grow>
             <Grow placement={'sc'}>
               <Badge className="bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">피</Badge>
               <Typo variant={'body-sm'} weight="bold">
-                {info?.insName} {info?.insAge}세({info?.insGender}) {info?.insGrade}
+                {data.insName} {data.insAge}세({data.insGender}) {data.insGrade}
               </Typo>
             </Grow>
           <BulletList className="w-full">
@@ -58,7 +71,7 @@ export function InfoContract({ data }: { data: LniPl020DataType['aside'] }) {
                 <Grow placement={'sc'}>
                   설계유효기간
                   <span className="inline-block text-[var(--color-gray-15)] text-[0.8rem] px-[.4rem] -translate-y-[0.1rem]">|</span>
-                  {info?.quoteExpiryDate}
+                  {data.quoteExpiryDate}
                 </Grow>
                 <Badge color={'red'} size={'sm'} className="shrink-0">임박</Badge>
               </Grow>
@@ -70,7 +83,7 @@ export function InfoContract({ data }: { data: LniPl020DataType['aside'] }) {
                     <Link href="/">상령일</Link>
                   </Button>
                   <span className="inline-block text-[var(--color-gray-15)] text-[0.8rem] px-[.4rem] -translate-y-[0.1rem]">|</span>
-                  {info?.insuranceAgeDate}
+                  {data.insuranceAgeDate}
                 </Grow>
                 <Badge color={'red'} size={'sm'}  className="shrink-0">임박</Badge>
               </Grow>
@@ -82,12 +95,12 @@ export function InfoContract({ data }: { data: LniPl020DataType['aside'] }) {
                     <Link href="/">동의종료일</Link>
                   </Button>
                   <span className="inline-block text-[var(--color-gray-15)] text-[0.8rem] px-[.4rem] -translate-y-[0.1rem]">|</span>
-                  {info?.consentEndDate}
+                  {data.consentEndDate}
                 </Grow>
                 <Badge color={'red'} size={'sm'} className="shrink-0">임박</Badge>
               </Grow>
             </BulletListItem>
-            <BulletListItem type={'dot'} size={'sm'}>{info?.note}</BulletListItem>
+            <BulletListItem type={'dot'} size={'sm'}>{data.note}</BulletListItem>
           </BulletList>
         </Gcol>
       </Gcol>
