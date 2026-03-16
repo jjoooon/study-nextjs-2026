@@ -7,25 +7,49 @@ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-d
 
 function ModesPreview() {
   const [singleDate, setSingleDate] = React.useState<Date | undefined>(new Date());
+  const [singleMonth, setSingleMonth] = React.useState<Date>(new Date());
   const [multipleDates, setMultipleDates] = React.useState<Date[] | undefined>([]);
+  const [multipleMonth, setMultipleMonth] = React.useState<Date>(new Date());
   const [range, setRange] = React.useState<DateRange | undefined>({
     from: new Date(2026, 2, 8),
     to: new Date(2026, 2, 12),
   });
+  const [rangeMonth, setRangeMonth] = React.useState<Date>(new Date(2026, 2, 1));
 
   return (
     <Grow className="gap-4 items-start">
       <Gcol className="gap-2">
         <h3 className="font-bold text-center mb-2">Single</h3>
-        <Calendar mode="single" selected={singleDate} onSelect={setSingleDate} />
+        <Calendar
+          mode="single"
+          captionLayout="dropdown"
+          selected={singleDate}
+          month={singleMonth}
+          onSelect={setSingleDate}
+          onMonthChange={setSingleMonth}
+        />
       </Gcol>
       <Gcol className="gap-2">
         <h3 className="font-bold text-center mb-2">Multiple</h3>
-        <Calendar mode="multiple" selected={multipleDates} onSelect={setMultipleDates} />
+        <Calendar
+          mode="multiple"
+          captionLayout="dropdown"
+          selected={multipleDates}
+          month={multipleMonth}
+          onSelect={setMultipleDates}
+          onMonthChange={setMultipleMonth}
+        />
       </Gcol>
       <Gcol className="gap-2">
         <h3 className="font-bold text-center mb-2">Range</h3>
-        <Calendar mode="range" selected={range} onSelect={setRange} />
+        <Calendar
+          mode="range"
+          captionLayout="dropdown"
+          selected={range}
+          month={rangeMonth}
+          onSelect={setRange}
+          onMonthChange={setRangeMonth}
+        />
       </Gcol>
     </Grow>
   );
@@ -70,6 +94,7 @@ const [date, setDate] = useState<Date | undefined>(new Date());
 
 <Calendar
   mode="single"
+  captionLayout="dropdown"
   selected={date}
   onSelect={setDate}
   className="rounded-md border"
@@ -134,11 +159,16 @@ const [date, setDate] = useState<Date | undefined>(new Date());
     classNames: { table: { disable: true } },
     components: { table: { disable: true } },
     formatters: { table: { disable: true } },
-    captionLayout: { table: { disable: true } },
+    captionLayout: {
+      control: 'select',
+      options: ['label', 'dropdown', 'dropdown-months', 'dropdown-years'],
+      description: '캡션 표시 방식 (dropdown 선택 시 년/월 select)',
+    },
     buttonVariant: { table: { disable: true } },
   },
   args: {
     mode: 'single',
+    captionLayout: 'dropdown',
     numberOfMonths: 1,
     showOutsideDays: true,
   },
@@ -150,7 +180,18 @@ type Story = StoryObj<typeof Calendar>;
 export const Default: Story = {
   render: (args) => {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
-    return <Calendar {...args} mode="single" selected={date} onSelect={setDate} />;
+    const [month, setMonth] = React.useState<Date>(new Date());
+    return (
+      <Calendar
+        {...args}
+        mode="single"
+        captionLayout={args.captionLayout ?? 'dropdown'}
+        selected={date}
+        month={month}
+        onSelect={setDate}
+        onMonthChange={setMonth}
+      />
+    );
   },
 };
 
@@ -162,9 +203,21 @@ export const Modes: Story = {
 export const MultipleMonths: Story = {
   args: {
     numberOfMonths: 2,
+    captionLayout: 'dropdown',
   },
   render: (args) => {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
-    return <Calendar {...args} mode="single" selected={date} onSelect={setDate} />;
+    const [month, setMonth] = React.useState<Date>(new Date());
+    return (
+      <Calendar
+        {...args}
+        mode="single"
+        captionLayout={args.captionLayout ?? 'dropdown'}
+        selected={date}
+        month={month}
+        onSelect={setDate}
+        onMonthChange={setMonth}
+      />
+    );
   },
 };

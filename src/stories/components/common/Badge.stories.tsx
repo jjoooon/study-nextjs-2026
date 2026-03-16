@@ -144,12 +144,12 @@ import { Badge } from '@uiux/Badge';
       table: { category: '스타일 props' },
     },
     asChild: {
-      control: { type: 'boolean' },
-      table: { category: '설정 props' },
+      control: false,
+      table: { disable: true },
     },
     children: {
-      control: { type: 'text' },
-      table: { category: '설정 props' },
+      control: false,
+      table: { disable: true },
     },
     className: {
       table: { disable: true },
