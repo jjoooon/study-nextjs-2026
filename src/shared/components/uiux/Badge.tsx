@@ -51,6 +51,10 @@ const badgeVariants = cva(
         blue: '',
         red: '',
         green: '',
+        primary: '',
+        gray: '',
+        bluegray: '',
+        secondary: '',
       },
     },
     compoundVariants: [
@@ -58,6 +62,10 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'blue', class: 'bg-[var(--color-information-10)] text-[var(--color-information-50)]' },
       { variant: 'contained', color: 'red', class: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]' },
       { variant: 'contained', color: 'green', class: 'bg-[var(--color-success-10)] text-[var(--color-success-50)]' },
+      { variant: 'contained', color: 'primary', class: 'bg-[var(--color-primary-10)] text-[var(--color-primary-50)]' },
+      { variant: 'contained', color: 'gray', class: 'bg-[var(--color-gray-10)] text-[var(--color-gray-70)]' },
+      { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)]' },
+      { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
       // Soft + Colors
       { variant: 'soft', color: 'blue', class: 'bg-[var(--color-information-10)] border-[var(--color-information-50)] text-[var(--color-information-50)]' },
       { variant: 'soft', color: 'red', class: 'bg-[var(--color-danger-10)] border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
