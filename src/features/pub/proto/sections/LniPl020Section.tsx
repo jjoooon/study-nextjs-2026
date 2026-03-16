@@ -21,7 +21,7 @@ import type { PageProcessStep } from '@features/PageProcess';
 import { LniPl020Step1 } from '../components/LniPl020Step1'; // 01. 담보설계
 import { LniPl020Step2 } from '../components/LniPl020Step2'; // 02. 담보설계
 
-// 임시 Data
+// 임시 공통 Data
 const dataTaskState: Array<{
   id: number;
   status: '정상' | '경고' | '중지';

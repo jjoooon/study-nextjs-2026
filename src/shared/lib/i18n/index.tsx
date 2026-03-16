@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import koCommon from './locales/ko/common.json';
 import enCommon from './locales/en/common.json';
 import jpCommon from './locales/jp/common.json';
+import koCommon from './locales/ko/common.json';
 
 /**
  * Initialize i18next for client-side usage with local locale files
@@ -13,25 +13,23 @@ export const initializeI18n = () => {
     return i18n;
   }
 
-  i18n
-    .use(initReactI18next)
-    .init({
-      lng: 'ko',
-      fallbackLng: 'ko',
-      defaultNS: 'common',
-      ns: ['common'],
-      resources: {
-        ko: { common: koCommon },
-        en: { common: enCommon },
-        jp: { common: jpCommon },
-      },
-      interpolation: {
-        escapeValue: false,
-      },
-      react: {
-        useSuspense: false,
-      },
-    });
+  i18n.use(initReactI18next).init({
+    lng: 'ko',
+    fallbackLng: 'ko',
+    defaultNS: 'common',
+    ns: ['common'],
+    resources: {
+      ko: { common: koCommon },
+      en: { common: enCommon },
+      jp: { common: jpCommon },
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
 
   return i18n;
 };

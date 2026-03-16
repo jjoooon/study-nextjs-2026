@@ -40,7 +40,7 @@ export const persistConfig = {
   storage: secureStorage, // 🔒 sessionStorage 사용
   version: 1, // 향후 마이그레이션을 위한 버전 관리
   // 지속성을 적용할 리듀서
-  whitelist: ['auth'],
+  whitelist: ['auth', 'ui'],
   // 🔒 transforms로 토큰 및 민감 데이터 자동 필터링
   // TODO: @YunJunmo auth 구현 후 주석 해제
   // transforms,

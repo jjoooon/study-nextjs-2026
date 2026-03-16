@@ -146,7 +146,7 @@ export function ConfirmDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
+          {description ? <AlertDialogDescription dangerouslySetInnerHTML={{ __html: description }} /> : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
           {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}

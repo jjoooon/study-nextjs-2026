@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import EChartsReact from 'echarts-for-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
+import { useState } from 'react';
 import { Button } from '@/shared/components/uiux/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
 
 /**
  * Apache ECharts 예제 페이지
@@ -331,18 +331,14 @@ export default function Chart1Page() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold mb-2">Apache ECharts 예제</h1>
-          <p className="text-gray-600">
-            강력하고 유연한 시각화 라이브러리로 고급 인터랙티브 차트를 만듭니다
-          </p>
+          <p className="text-gray-600">강력하고 유연한 시각화 라이브러리로 고급 인터랙티브 차트를 만듭니다</p>
         </div>
 
         {/* Chart Type Selector */}
         <Card>
           <CardHeader>
             <CardTitle>📊 차트 옵션</CardTitle>
-            <CardDescription>
-              차트 유형과 테마를 선택하세요
-            </CardDescription>
+            <CardDescription>차트 유형과 테마를 선택하세요</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -493,7 +489,7 @@ export default function Chart1Page() {
           </CardHeader>
           <CardContent className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
             <pre className="text-sm">
-{`import EChartsReact from 'echarts-for-react';
+              {`import EChartsReact from 'echarts-for-react';
 
 export default function MyChart() {
   const option = {
@@ -530,7 +526,7 @@ export default function MyChart() {
           </CardHeader>
           <CardContent className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
             <pre className="text-sm">
-{`// 1. 여러 차트 조합
+              {`// 1. 여러 차트 조합
 const option = {
   series: [
     { data: [1, 2, 3], type: 'line' },

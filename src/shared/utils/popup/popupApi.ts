@@ -34,7 +34,6 @@
  * });
  */
 
-import { store } from '@/redux';
 import {
   addPopup,
   registerPopupCallbacks,
@@ -43,6 +42,7 @@ import {
   getPopupCallbacks,
   type PopupCallbacksExtended,
 } from '@/shared/store/popupSlice';
+import { getStore } from '../globalRegistry';
 
 // ============================================================================
 // TYPES & CONSTANTS
@@ -95,6 +95,7 @@ export async function open<T = unknown, P = Record<string, unknown>>(
   props?: P,
   options: OpenPopupOptions = {}
 ): Promise<T> {
+  const store = getStore();
   const { timeout = 0 } = options;
 
   return new Promise<T>((resolve, reject) => {
