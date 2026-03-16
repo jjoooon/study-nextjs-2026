@@ -30,6 +30,7 @@ import type { ProductsUIState } from '@/features/products/types/storeTypes';
 import type { PopupState } from '@/shared/store/popupSlice';
 import type { SpinnerState } from '@/shared/store/spinnerSlice';
 import type { AuthState } from '@/shared/types/authTypes';
+import type { UIState } from '@/shared/types/uiTypes';
 import { globalRegistry, REGISTRY_KEYS } from '@/shared/utils/globalRegistry';
 import log from '@/shared/utils/logger';
 
@@ -175,6 +176,7 @@ export type RootState = {
   auth: AuthState;
   popup: PopupState;
   spinner: SpinnerState;
+  ui: UIState;
   dashboard: DashboardState;
   products: ProductsUIState;
 };
