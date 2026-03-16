@@ -11,8 +11,8 @@ import type {
   CellClassParams,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
-import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPL020Data';
+import type { LniPl020DataType } from '@/features/pub/proto/data/LniPL020Data';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';

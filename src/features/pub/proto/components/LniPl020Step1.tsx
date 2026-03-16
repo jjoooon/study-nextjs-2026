@@ -35,7 +35,10 @@ import { useTabs } from '@/shared/hooks/useTabs';
 // Data & Types
 import { LniPl020Step1Data as LniPl020Step1Data } from '@/features/pub/proto/data/LniPl020Step1Data';
 import { LniPl020Step1FormOptions } from '@/features/pub/proto/data/LniPl020Step1FormOptions';
-import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
+
+import type { LniPl020DataType } from '@/features/pub/proto/data/LniPL020Data';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
+
 
 // Props Type
 type LniPl020Step1Props = {
@@ -102,6 +105,17 @@ const MOTORCYCLE_VALUE_MAP: Record<string, string> = {
   운전안함: 'nondriver',
 };
 
+const TAX_FREE_TYPE_VALUE_MAP: Record<string, string> = {
+  월납식비과세: 'monthly',
+  비월납식비과세: 'nonemonthly',
+};
+
+const CUSTOMER_SELECTION_MAP: Record<string, string> = {
+  고객직접선택: 'selection',
+  선택: 'selection2',
+};
+
+
 // --- Initial State ---
 const INITIAL_INSURED_FORM: Record<string, InsuredPersonFormItem> = Object.fromEntries(
   LniPl020Step1Data.InsuredPerson.map((person, i) => [
@@ -159,6 +173,9 @@ export function LniPl020Step1({
   const [insuredForm, setInsuredForm] = useState<Record<string, InsuredPersonFormItem>>(INITIAL_INSURED_FORM);
   const [policyholderIsBusinessOwner, setPolicyholderIsBusinessOwner] = useState(POLICYHOLDER.isBusinessOwner === 'Y');
   const [taxFreeChecked, setTaxFreeChecked] = useState(false);
+  const [taxFreeTypeValue, setTaxFreeTypeValue] = useState(
+    TAX_FREE_TYPE_VALUE_MAP[POLICYHOLDER.taxFreeType] ?? POLICYHOLDER.taxFreeType ?? ''
+  );
 
   // ---------------------------------------------------------------------------
   // 3) Tabs
@@ -424,7 +441,7 @@ export function LniPl020Step1({
                               value={insuredForm[tabValue]?.relationWithContractor ?? ''}
                               onChange={(e) => updateInsuredField(tabValue, 'relationWithContractor', e.target.value)}
                             >
-                              {LNIPL020_1_FORM_OPTIONS.ContractorType.map((option) => (
+                              {LniPl020Step1FormOptions.contractorType.map((option) => (
                                 <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                               ))}
                             </NativeSelect>
@@ -477,6 +494,7 @@ export function LniPl020Step1({
                             <NativeSelect aria-label="개인정보취득경로 선택" width="20rem" required>
                               <NativeSelectOption value="">{POLICYHOLDER.infoAcquisitionPath}</NativeSelectOption>
                             </NativeSelect>
+
                           </FormCell>
                         </FormRow>
                         <FormRow>
@@ -497,7 +515,24 @@ export function LniPl020Step1({
                                 <KeyValueItem label="전자적안내동의">
                                   <Grow placement='sc' gap="0">
                                     <Badge color="green" size="md" variant="ghost">{POLICYHOLDER.electronicNoticeAgree}</Badge>
-                                    <QuestionMark color="#61554F" />
+                                    <Tooltip defaultOpen>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          only="icon"
+                                          size="md"
+                                          variant="none"
+                                        >
+                                          <QuestionMark color="#61554F" />
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent
+                                        side="top"
+                                        sideOffset={1}
+                                        variant="default"
+                                      >
+                                        {`문서서명/IM은 청약서상 고객이 청약서로<br> [전자적 방법의 안내동의여부]에 기재한 내용을<br> 화면에서 선택하시면 됩니다.<br> 전자서명/전자청약은 전자적 안내동의가<br> 필수사항입니다.`}
+                                      </TooltipContent>
+                                    </Tooltip>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
@@ -518,8 +553,15 @@ export function LniPl020Step1({
                             >
                               가입
                             </Checkbox>
-                            <NativeSelect aria-label="비과세 유형 선택" width="17rem">
-                              <NativeSelectOption value="">{POLICYHOLDER.taxFreeType}</NativeSelectOption>
+                            <NativeSelect 
+                              aria-label="비과세 유형 선택" 
+                              width="17rem"
+                              value={taxFreeTypeValue}
+                              onChange={(e) => setTaxFreeTypeValue(e.target.value)}
+                            > 
+                              {LniPl020Step1FormOptions.monthlypaymentType.map((option) => (
+                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                              ))}
                             </NativeSelect>
                             <Button color="secondary" size="lg" variant="outlined" onClick={() => { }}>
                               알림톡발송

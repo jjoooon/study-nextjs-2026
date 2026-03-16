@@ -145,7 +145,7 @@ export const LniPl020Step1Data: LniPl020Step1DataType = {
     isBusinessOwner: "Y",                 // 개인사업자
     email: "qwer@hwgi.kr",                // 이메일     
     electronicNoticeAgree: "Y",           // 전자적안내동의
-    taxFreeType: "월납식비과세",            // 보험차익비과세
+    taxFreeType: "비월납식비과세",            // 보험차익비과세
     designAmount: 33301,                  // 설계금액
     remainingLimit: 100000000             // 잔여한도 (예시값)
   }

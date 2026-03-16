@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { InfoContract } from '@/shared/components/features/InfoContract';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPL020Data';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof InfoContract> = {

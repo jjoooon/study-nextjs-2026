@@ -8,7 +8,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 // 테스트 시 마우스가 떠난 후에도 툴팁을 오래 유지하려면 skipDelayDuration 값을 늘려주세요. (예: 300000ms = 5분)
 function TooltipProvider({ delayDuration = 0, ...props }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   // return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
-  return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} skipDelayDuration={20000000} {...props} />;
+  return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} skipDelayDuration={200000000} {...props} />;
 }
 
 function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
@@ -77,8 +77,8 @@ function TooltipContent({
         {variant === 'default' || variant === 'light' ? (
           <TooltipPrimitive.Arrow asChild>
             <svg width="12" height="7" viewBox="0 0 12 7" style={{ overflow: 'visible' }}>
-              {/* 흰 fill을 y=-2까지 올려 box border 연결선을 덮음 */}
-              <polygon points="0,-2 6,7 12,-2" fill="#FFF" />
+              {/* 흰 fill을 y=-3까지 올려 box border 연결선을 덮음 */}
+              <polygon points="0,-1 6,7 12, -1" fill="#FFF" />
               {/* 양쪽 사선만 stroke — 상단 가로선 없음 */}
               <polyline points="0,0 6,7 12,0" fill="none" stroke="#CCC" strokeWidth="1" />
             </svg>

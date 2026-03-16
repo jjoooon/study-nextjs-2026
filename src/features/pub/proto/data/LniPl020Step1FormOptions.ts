@@ -12,7 +12,9 @@ type FormOptions = {
   notificationType: FormOptionItem[];
   drivingType: FormOptionItem[];
   motorcycleType: FormOptionItem[];
-  ContractorType: FormOptionItem[];
+  contractorType: FormOptionItem[];
+  monthlypaymentType: FormOptionItem[];
+  personalselectionType: FormOptionItem[];
 };
 
 export const LniPl020Step1FormOptions: FormOptions = {
@@ -66,10 +68,24 @@ export const LniPl020Step1FormOptions: FormOptions = {
     { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
   ],
 
-  ContractorType: [
+  // 계약자 유형
+  contractorType: [
     { value: 'Self', id: 'contractor-info-self', label: '본인' }, 
     { value: 'Child', id: 'contractor-info-Child', label: '자녀' },
     { value: 'Employer', id: 'contractor-info-Employer', label: '고용주' },
+  ],
+
+  // 개인정보취득경로
+  personalselectionType: [
+    { value: 'selection', id: 'personalinfo1', label: '고객직접선택' },
+    { value: 'selection2', id: 'personalinfo2', label: '선택' },
+  ],
+
+  // 월납식 비과세 유형
+  monthlypaymentType: [
+    { value: 'monthly', id: 'monthly-payment-monthly', label: '월납식비과세' },
+    { value: 'nonemonthly', id: 'monthly-payment-nonemonthly', label: '비월납식비과세' },
   ]
+
 
 };

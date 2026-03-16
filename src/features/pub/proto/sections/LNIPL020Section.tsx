@@ -13,7 +13,7 @@ import TaskStatusBoard from '@features/TaskStatusBoard';
 import { InfoContract } from '@features/InfoContract';
 import { QuickLinks } from '@features/QuickLinks';
 
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPL020Data';
 
 import type { PageProcessStep } from '@features/PageProcess';
 

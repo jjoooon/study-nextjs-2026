@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { HashList } from '@common/HashList';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { Gcol } from '@atoms';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPL020Data';
 
 const SHORT_HASH_DATA = ['암', '뇌', '심', '수술', '특정'];
 
