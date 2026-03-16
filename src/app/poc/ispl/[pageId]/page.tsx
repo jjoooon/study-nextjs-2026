@@ -1,11 +1,16 @@
 import { fileURLToPath } from 'url';
 import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation';
 import { getPageFiles } from '@/shared/utils/file/getPageFiles';
 import log from '@/shared/utils/logger';
 
 // 🔒 페이지 파일들 동적으로 발견 (현재 파일 기준 ../pages)
 const PAGE_IDS = getPageFiles(fileURLToPath(import.meta.url));
 type PageId = (typeof PAGE_IDS)[number];
+
+function isPageId(value: string): value is PageId {
+  return PAGE_IDS.includes(value);
+}
 
 // ==============================================================================
 // 정적 생성: 빌드 시 HTML 미리 생성
@@ -41,6 +46,11 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
   const { pageId } = await params;
   logger.debug(`pageId: ${pageId}`);
+
+  if (!isPageId(pageId)) {
+    logger.warn(`Invalid pageId: ${pageId}`);
+    notFound();
+  }
 
   // ✅ 개선된 에러 처리: 함수 컴포넌트를 올바르게 반환
   const PageComponent = dynamic(() => import(`../pages/${pageId}`), {

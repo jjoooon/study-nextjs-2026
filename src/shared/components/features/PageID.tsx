@@ -5,6 +5,11 @@ import { ZoomControl } from '@common/ZoomControl';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { getHeader } from '@/shared/utils/authUtils';
+import { selectZoom } from '@/shared/store/uiSelectors';
+import { setZoom } from '@/shared/store/uiSlice';
+
 type DefaultPageID = {
   pageName?: string;
   pageId?: string | number;
@@ -15,7 +20,17 @@ type PageIDProps = {
 };
 
 export default function PageID({ data }: PageIDProps) {
+  const dispatch = useAppDispatch();
   const safeData = data ?? {};
+
+  // 로그인 사용자 사번
+  // getHeader('pfmStfno');
+
+  // ui store 구독(selector)
+  // const zoom = useAppSelector(selectZoom);
+
+  // ui store 상태 변경(dispatch)
+  // dispatch(setZoom(3));
 
   return (
     <Grow placement={'bwc'} className="w-full py-1">
