@@ -15,11 +15,19 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
+import { local } from '@/shared/utils/storageUtils';
 import type { UIState } from '../types/uiTypes';
 
 // ============================================================================
 // CONSTANTS
 // ============================================================================
+
+/**
+ * Storage 키
+ */
+const STORAGE_KEY = {
+  UI_SETTINGS: 'ui-settings',
+} as const;
 
 /**
  * Zoom 배율 범위
@@ -38,18 +46,11 @@ const ZOOM_STEP = 0.1;
  * - localStorage에서 복원된 값이 없으면 기본값 사용
  */
 const getInitialState = (): UIState => {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('ui-settings');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return {
-          zoom: validateZoom(parsed.zoom),
-        };
-      } catch {
-        // 파싱 실패 시 기본값 사용
-      }
-    }
+  const saved = local.get<{ zoom: number }>(STORAGE_KEY.UI_SETTINGS);
+  if (saved?.zoom !== undefined) {
+    return {
+      zoom: validateZoom(saved.zoom),
+    };
   }
 
   return {
@@ -91,15 +92,7 @@ const uiSlice = createSlice({
      */
     setZoom: (state, action: { payload: number }) => {
       state.zoom = validateZoom(action.payload);
-
-      // localStorage에 저장 (Redux Persist 백업)
-      if (typeof window !== 'undefined') {
-        try {
-          localStorage.setItem('ui-settings', JSON.stringify({ zoom: state.zoom }));
-        } catch {
-          // localStorage 저장 실패 무시
-        }
-      }
+      local.set(STORAGE_KEY.UI_SETTINGS, { zoom: state.zoom });
     },
 
     /**
@@ -110,15 +103,7 @@ const uiSlice = createSlice({
     zoomIn: (state) => {
       const newZoom = Math.min(ZOOM_MAX, state.zoom + ZOOM_STEP);
       state.zoom = newZoom;
-
-      // localStorage에 저장
-      if (typeof window !== 'undefined') {
-        try {
-          localStorage.setItem('ui-settings', JSON.stringify({ zoom: state.zoom }));
-        } catch {
-          // localStorage 저장 실패 무시
-        }
-      }
+      local.set(STORAGE_KEY.UI_SETTINGS, { zoom: state.zoom });
     },
 
     /**
@@ -129,15 +114,7 @@ const uiSlice = createSlice({
     zoomOut: (state) => {
       const newZoom = Math.max(ZOOM_MIN, state.zoom - ZOOM_STEP);
       state.zoom = newZoom;
-
-      // localStorage에 저장
-      if (typeof window !== 'undefined') {
-        try {
-          localStorage.setItem('ui-settings', JSON.stringify({ zoom: state.zoom }));
-        } catch {
-          // localStorage 저장 실패 무시
-        }
-      }
+      local.set(STORAGE_KEY.UI_SETTINGS, { zoom: state.zoom });
     },
 
     /**
@@ -147,15 +124,7 @@ const uiSlice = createSlice({
      */
     resetZoom: (state) => {
       state.zoom = ZOOM_DEFAULT;
-
-      // localStorage에 저장
-      if (typeof window !== 'undefined') {
-        try {
-          localStorage.setItem('ui-settings', JSON.stringify({ zoom: state.zoom }));
-        } catch {
-          // localStorage 저장 실패 무시
-        }
-      }
+      local.set(STORAGE_KEY.UI_SETTINGS, { zoom: state.zoom });
     },
   },
 });
