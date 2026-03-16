@@ -42,35 +42,3 @@ export const selectZoom = (state: RootState): number => (state.ui as UIState).zo
 export const selectZoomPercent = createSelector([selectZoom], (zoom: number): number => {
   return Math.round(zoom * 100);
 });
-
-/**
- * Zoom CSS 값 선택자
- *
- * @example
- * const zoomValue = useAppSelector(selectZoomValue);
- * // <div style={{ transform: `scale(${zoomValue})` }}>
- */
-export const selectZoomValue = createSelector([selectZoom], (zoom: number): number => {
-  return zoom;
-});
-
-/**
- * Zoom 상태 정보 선택자
- *
- * @example
- * const zoomInfo = useAppSelector(selectZoomInfo);
- * // { current: 1.2, min: 0.5, max: 2.0, percent: 120, canZoomIn: true, canZoomOut: true }
- */
-export const selectZoomInfo = createSelector([selectZoom], (zoom: number) => {
-  const ZOOM_MIN = 0.5;
-  const ZOOM_MAX = 2.0;
-
-  return {
-    current: zoom,
-    min: ZOOM_MIN,
-    max: ZOOM_MAX,
-    percent: Math.round(zoom * 100),
-    canZoomIn: zoom < ZOOM_MAX,
-    canZoomOut: zoom > ZOOM_MIN,
-  };
-});
