@@ -333,7 +333,7 @@ input::placeholder {
   --color-primary-80: #832E15;
   --color-primary-70: #B54121;
   --color-primary-60: #E8542A;
-  --color-primary-50: #FF5C2D;
+  --color-primary-50: #FF5C2E;
   --color-primary-40: #FF7D58;
   --color-primary-30: #FF9273;
   --color-primary-20: #FFB49F;
@@ -415,7 +415,7 @@ input::placeholder {
   --color-information-30: #6FB1FF;
   --color-information-20: #A3CBFB;
   --color-information-15: #CBE2FF;
-  --color-information-10: #E0EEFF;
+  --color-information-10: #E0EFFF;
   --color-information-5: #EEF7FF;
   --color-success-90: #004720;
   --color-success-80: #005E2A;
@@ -426,7 +426,7 @@ input::placeholder {
   --color-success-30: #69D59A;
   --color-success-20: #ACE8C7;
   --color-success-15: #C8F2DB;
-  --color-success-10: #E9FDF2;
+  --color-success-10: #E9FEF2;
   --color-success-5: #F7FFFA;
   --typo-letter-spacing-n3: -1.2999999523162842;
   --typo-font-type: "Malgun Gothic";

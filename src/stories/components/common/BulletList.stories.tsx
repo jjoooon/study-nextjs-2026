@@ -173,6 +173,14 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
       description: '샘플 아이템 텍스트',
       table: { category: 'Content' },
     },
+    className: {
+      control: false,
+      table: { disable: true },
+    },
+    onClick: {
+      control: false,
+      table: { disable: true }
+    },
     children: { table: { disable: true } },
   },
   args: {
