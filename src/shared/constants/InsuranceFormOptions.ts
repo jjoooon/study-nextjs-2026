@@ -1,20 +1,20 @@
-type FormOptionItem = {
+type InsuranceFormOptionsItemType = {
   value: string;
   id: string;
   label: string;
   justifyStart?: boolean;
 };
-type FormOptions = {
-  maturity: FormOptionItem[];
-  paymentPeriod: FormOptionItem[];
-  paymentCycle: FormOptionItem[];
-  renewalCycle: FormOptionItem[];
-  notificationType: FormOptionItem[];
-  drivingType: FormOptionItem[];
-  motorcycleType: FormOptionItem[];
+type InsuranceFormOptionsType = {
+  maturity: InsuranceFormOptionsItemType[];
+  paymentPeriod: InsuranceFormOptionsItemType[];
+  paymentCycle: InsuranceFormOptionsItemType[];
+  renewalCycle: InsuranceFormOptionsItemType[];
+  notificationType: InsuranceFormOptionsItemType[];
+  drivingType: InsuranceFormOptionsItemType[];
+  motorcycleType: InsuranceFormOptionsItemType[];
 };
 
-export const LniPl020Step1FormOptions: FormOptions = {
+export const InsuranceFormOptions: InsuranceFormOptionsType = {
   // 만기
   maturity: [
     { value: '80', id: 'insurance-period-80', label: '80세' },
@@ -64,4 +64,5 @@ export const LniPl020Step1FormOptions: FormOptions = {
     { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
     { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
   ],
+  
 };

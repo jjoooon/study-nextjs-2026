@@ -32,9 +32,12 @@ import { SearchIcon, PlusIcon, QuestionMark } from '@icons';
 // Hooks
 import { useTabs } from '@/shared/hooks/useTabs';
 
-// Data & Types
-import { LniPl020Step1Data as LniPl020Step1Data } from '@/features/pub/proto/data/LniPl020Step1Data';
-import { LniPl020Step1FormOptions } from '@/features/pub/proto/data/LniPl020Step1FormOptions';
+
+// Data
+import { InsuranceFormOptions } from '@/shared/constants/InsuranceFormOptions';
+import { LniPl020Step1Data } from '@/features/pub/proto/data/LniPl020Step1Data';
+
+// Types
 import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
 
 // Props Type
@@ -57,13 +60,11 @@ type ContractFormState = {
 };
 
 type ContractFormField = keyof ContractFormState;
-
 type ContractFormAction = {
   type: 'setField';
   field: ContractFormField;
   value: string;
 };
-
 type InsuredPersonFormItem = {
   driveType: string;
   motorcycle: string;
@@ -115,11 +116,11 @@ const INITIAL_INSURED_FORM: Record<string, InsuredPersonFormItem> = Object.fromE
 
 const INITIAL_CONTRACT_FORM_STATE: ContractFormState = {
   insuranceStartDate: CONTRACTOR_INFO.insStartDate,
-  maturityValue: CONTRACTOR_INFO.expiryDate || LniPl020Step1FormOptions.maturity[0]?.value || '',
-  paymentPeriodValue: CONTRACTOR_INFO.payPeriod || LniPl020Step1FormOptions.paymentPeriod[0]?.value || '',
-  paymentCycleValue: PAYMENT_CYCLE_VALUE_MAP[CONTRACTOR_INFO.payCycle] ?? CONTRACTOR_INFO.payCycle ?? LniPl020Step1FormOptions.paymentCycle[0]?.value ?? '',
-  renewalCycleValue: CONTRACTOR_INFO.renewCycle || LniPl020Step1FormOptions.renewalCycle[0]?.value || '',
-  notificationTypeValue: NOTICE_TYPE_VALUE_MAP[CONTRACTOR_INFO.noticeType] ?? CONTRACTOR_INFO.noticeType ?? LniPl020Step1FormOptions.notificationType[0]?.value ?? '',
+  maturityValue: CONTRACTOR_INFO.expiryDate || InsuranceFormOptions.maturity[0]?.value || '',
+  paymentPeriodValue: CONTRACTOR_INFO.payPeriod || InsuranceFormOptions.paymentPeriod[0]?.value || '',
+  paymentCycleValue: PAYMENT_CYCLE_VALUE_MAP[CONTRACTOR_INFO.payCycle] ?? CONTRACTOR_INFO.payCycle ?? InsuranceFormOptions.paymentCycle[0]?.value ?? '',
+  renewalCycleValue: CONTRACTOR_INFO.renewCycle || InsuranceFormOptions.renewalCycle[0]?.value || '',
+  notificationTypeValue: NOTICE_TYPE_VALUE_MAP[CONTRACTOR_INFO.noticeType] ?? CONTRACTOR_INFO.noticeType ?? InsuranceFormOptions.notificationType[0]?.value ?? '',
 };
 
 // --- Reducer ---
@@ -236,7 +237,7 @@ export function LniPl020Step1({
                         onValueChange={(value) => handleContractFieldChange('maturityValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LniPl020Step1FormOptions.maturity.map((option) => (
+                        {InsuranceFormOptions.maturity.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -251,7 +252,7 @@ export function LniPl020Step1({
                         onValueChange={(value) => handleContractFieldChange('paymentPeriodValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LniPl020Step1FormOptions.paymentPeriod.map((option) => (
+                        {InsuranceFormOptions.paymentPeriod.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -267,7 +268,7 @@ export function LniPl020Step1({
                         onValueChange={(value) => handleContractFieldChange('paymentCycleValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LniPl020Step1FormOptions.paymentCycle.map((option) => (
+                        {InsuranceFormOptions.paymentCycle.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -280,7 +281,7 @@ export function LniPl020Step1({
                         onValueChange={(value) => handleContractFieldChange('renewalCycleValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LniPl020Step1FormOptions.renewalCycle.map((option) => (
+                        {InsuranceFormOptions.renewalCycle.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -297,7 +298,7 @@ export function LniPl020Step1({
                         width={'full'}
                         className='grid grid-cols-3 gap-x-6 gap-y-2 w-full'
                       >
-                        {LniPl020Step1FormOptions.notificationType.map((option) => (
+                        {InsuranceFormOptions.notificationType.map((option) => (
                           <RadioGroupItem
                             key={option.id}
                             className={option.justifyStart ? 'justify-start' : undefined}
@@ -391,7 +392,7 @@ export function LniPl020Step1({
                               onValueChange={(v) => updateInsuredField(tabValue, 'driveType', v)}
                               className='flex-row gap-3'
                             >
-                              {LniPl020Step1FormOptions.drivingType.map((option) => (
+                              {InsuranceFormOptions.drivingType.map((option) => (
                                 <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                                   {option.label}
                                 </RadioGroupItem>
@@ -404,7 +405,7 @@ export function LniPl020Step1({
                               onValueChange={(v) => updateInsuredField(tabValue, 'motorcycle', v)}
                               className='flex-row gap-3'
                             >
-                              {LniPl020Step1FormOptions.motorcycleType.map((option) => (
+                              {InsuranceFormOptions.motorcycleType.map((option) => (
                                 <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                                   {option.label}
                                 </RadioGroupItem>
