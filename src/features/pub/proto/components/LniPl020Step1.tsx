@@ -237,7 +237,12 @@ export function LniPl020Step1({
                         onValueChange={(value) => handleContractFieldChange('maturityValue', value)}
                         className='flex-row gap-3'
                       >
-                        {InsuranceFormOptions.maturity.map((option) => (
+                        {[
+                          { value: '80', id: 'insurance-period-80', label: '80세' },
+                          { value: '90', id: 'insurance-period-90', label: '90세' },
+                          { value: '100', id: 'insurance-period-100-a', label: '100세' },
+                          { value: '110', id: 'insurance-period-100-b', label: '110세' },
+                        ].map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
