@@ -20,8 +20,8 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
 import { Button } from '@/shared/components/uiux/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
 
 /**
  * Recharts 예제 페이지
@@ -68,15 +68,14 @@ export default function Chart2Page() {
   ];
 
   // Scatter 차트 데이터
-  const scatterData = monthData.map(item => ({
+  const scatterData = monthData.map((item) => ({
     sales: item.sales,
     revenue: item.revenue,
     name: item.month,
   }));
 
-
-  let displayData = monthData;
-  let xDataKey = 'month';
+  const displayData = monthData;
+  const xDataKey = 'month';
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
@@ -86,18 +85,14 @@ export default function Chart2Page() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold mb-2">Recharts 예제</h1>
-          <p className="text-gray-600">
-            완전히 React로 구성된 차트 라이브러리로 높은 커스터마이징이 가능합니다
-          </p>
+          <p className="text-gray-600">완전히 React로 구성된 차트 라이브러리로 높은 커스터마이징이 가능합니다</p>
         </div>
 
         {/* Controls */}
         <Card>
           <CardHeader>
             <CardTitle>📊 차트 옵션</CardTitle>
-            <CardDescription>
-              차트 유형과 테마를 선택하세요
-            </CardDescription>
+            <CardDescription>차트 유형과 테마를 선택하세요</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -185,27 +180,24 @@ export default function Chart2Page() {
             {chartType === 'line' && (
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={displayData}>
-                  <CartesianGrid 
-                    strokeDasharray="3 3" 
-                    stroke={theme === 'dark' ? '#444' : '#e5e7eb'}
-                  />
-                  <XAxis 
-                    dataKey={xDataKey} 
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#444' : '#e5e7eb'} />
+                  <XAxis
+                    dataKey={xDataKey}
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{
                       backgroundColor: theme === 'dark' ? '#333' : '#fff',
                       border: `1px solid ${theme === 'dark' ? '#555' : '#ddd'}`,
                       color: theme === 'dark' ? '#ccc' : '#000',
                     }}
                   />
-                  <Legend 
+                  <Legend
                     wrapperStyle={{
                       color: theme === 'dark' ? '#ccc' : '#333',
                     }}
@@ -239,27 +231,24 @@ export default function Chart2Page() {
             {chartType === 'bar' && (
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={displayData}>
-                  <CartesianGrid 
-                    strokeDasharray="3 3"
-                    stroke={theme === 'dark' ? '#444' : '#e5e7eb'}
-                  />
-                  <XAxis 
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#444' : '#e5e7eb'} />
+                  <XAxis
                     dataKey={xDataKey}
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{
                       backgroundColor: theme === 'dark' ? '#333' : '#fff',
                       border: `1px solid ${theme === 'dark' ? '#555' : '#ddd'}`,
                       color: theme === 'dark' ? '#ccc' : '#000',
                     }}
                   />
-                  <Legend 
+                  <Legend
                     wrapperStyle={{
                       color: theme === 'dark' ? '#ccc' : '#333',
                     }}
@@ -274,52 +263,31 @@ export default function Chart2Page() {
             {chartType === 'area' && (
               <ResponsiveContainer width="100%" height={400}>
                 <AreaChart data={displayData}>
-                  <CartesianGrid 
-                    strokeDasharray="3 3"
-                    stroke={theme === 'dark' ? '#444' : '#e5e7eb'}
-                  />
-                  <XAxis 
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#444' : '#e5e7eb'} />
+                  <XAxis
                     dataKey={xDataKey}
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{
                       backgroundColor: theme === 'dark' ? '#333' : '#fff',
                       border: `1px solid ${theme === 'dark' ? '#555' : '#ddd'}`,
                       color: theme === 'dark' ? '#ccc' : '#000',
                     }}
                   />
-                  <Legend 
+                  <Legend
                     wrapperStyle={{
                       color: theme === 'dark' ? '#ccc' : '#333',
                     }}
                   />
-                  <Area
-                    type="monotone"
-                    dataKey="sales"
-                    fill="#3b82f6"
-                    stroke="#3b82f6"
-                    fillOpacity={0.3}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="revenue"
-                    fill="#10b981"
-                    stroke="#10b981"
-                    fillOpacity={0.3}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="users"
-                    fill="#f59e0b"
-                    stroke="#f59e0b"
-                    fillOpacity={0.3}
-                  />
+                  <Area type="monotone" dataKey="sales" fill="#3b82f6" stroke="#3b82f6" fillOpacity={0.3} />
+                  <Area type="monotone" dataKey="revenue" fill="#10b981" stroke="#10b981" fillOpacity={0.3} />
+                  <Area type="monotone" dataKey="users" fill="#f59e0b" stroke="#f59e0b" fillOpacity={0.3} />
                 </AreaChart>
               </ResponsiveContainer>
             )}
@@ -341,7 +309,7 @@ export default function Chart2Page() {
                       <Cell key={`cell-${index}`} fill={entry.fill} />
                     ))}
                   </Pie>
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{
                       backgroundColor: theme === 'dark' ? '#333' : '#fff',
                       border: `1px solid ${theme === 'dark' ? '#555' : '#ddd'}`,
@@ -355,25 +323,22 @@ export default function Chart2Page() {
             {chartType === 'scatter' && (
               <ResponsiveContainer width="100%" height={400}>
                 <ScatterChart data={scatterData}>
-                  <CartesianGrid 
-                    strokeDasharray="3 3"
-                    stroke={theme === 'dark' ? '#444' : '#e5e7eb'}
-                  />
-                  <XAxis 
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#444' : '#e5e7eb'} />
+                  <XAxis
                     type="number"
                     dataKey="sales"
                     name="Sales"
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <YAxis 
+                  <YAxis
                     type="number"
                     dataKey="revenue"
                     name="Revenue"
                     stroke={theme === 'dark' ? '#999' : '#666'}
                     style={{ fontSize: '12px', fill: theme === 'dark' ? '#999' : '#666' }}
                   />
-                  <Tooltip 
+                  <Tooltip
                     cursor={{ strokeDasharray: '3 3' }}
                     contentStyle={{
                       backgroundColor: theme === 'dark' ? '#333' : '#fff',
@@ -381,11 +346,7 @@ export default function Chart2Page() {
                       color: theme === 'dark' ? '#ccc' : '#000',
                     }}
                   />
-                  <Scatter 
-                    dataKey="revenue"
-                    name="Sales vs Revenue"
-                    fill="#3b82f6"
-                  />
+                  <Scatter dataKey="revenue" name="Sales vs Revenue" fill="#3b82f6" />
                 </ScatterChart>
               </ResponsiveContainer>
             )}
@@ -449,7 +410,7 @@ export default function Chart2Page() {
           </CardHeader>
           <CardContent className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
             <pre className="text-sm">
-{`import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+              {`import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const data = [
   { month: 'Jan', sales: 4000, revenue: 2400 },
@@ -492,7 +453,7 @@ export default function MyChart() {
           </CardHeader>
           <CardContent className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
             <pre className="text-sm">
-{`// 커스텀 Tooltip
+              {`// 커스텀 Tooltip
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
@@ -560,7 +521,11 @@ const renderLabel = ({ name, value }) => {
                   <tr className="border-b">
                     <td className="p-2">React 통합</td>
                     <td className="p-2">완벽 (기본)</td>
-                    <td className="p-2">래퍼 필요<br/>(echarts-for-react)</td>
+                    <td className="p-2">
+                      래퍼 필요
+                      <br />
+                      (echarts-for-react)
+                    </td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-2">기본 기능</td>
