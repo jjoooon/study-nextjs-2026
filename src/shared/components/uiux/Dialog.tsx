@@ -7,7 +7,9 @@ import { cn } from '@/shared/lib/shadcn/utils';
 
 type DialogSizeValue = number | string;
 
-type DialogSize = {
+type DialogSizePreset = 'sm' | 'md' | 'lg' | 'full';
+
+type DialogSizeConfig = {
   width?: DialogSizeValue;
   height?: DialogSizeValue;
   minWidth?: DialogSizeValue;
@@ -16,9 +18,60 @@ type DialogSize = {
   maxHeight?: DialogSizeValue;
 };
 
+type DialogSize = DialogSizePreset | DialogSizeConfig;
+
+const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
+const DEFAULT_DIALOG_CONTENT_Z_INDEX = DEFAULT_DIALOG_OVERLAY_Z_INDEX + 1;
+const DIALOG_VIEWPORT_GAP = '2.4rem';
+const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
+const DIALOG_FULL_WIDTH = `calc(100vw - ${DIALOG_VIEWPORT_GAP})`;
+const DIALOG_FULL_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
+const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
+  sm: '37rem',
+  md: '56rem',
+  lg: '76rem',
+};
+
 const toCssSize = (value?: DialogSizeValue): string | undefined => {
   if (typeof value === 'number') return `${value}px`;
   return value;
+};
+
+const isDialogSizeConfig = (size?: DialogSize): size is DialogSizeConfig => {
+  return typeof size === 'object' && size !== null;
+};
+
+const resolveDialogSize = (size?: DialogSize) => {
+  if (size === 'full') {
+    return {
+      width: DIALOG_FULL_WIDTH,
+      height: DIALOG_FULL_HEIGHT,
+      maxHeight: DIALOG_FULL_HEIGHT,
+    };
+  }
+
+  if (size === 'sm' || size === 'md' || size === 'lg') {
+    return {
+      width: DIALOG_PRESET_WIDTH[size],
+      maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+    };
+  }
+
+  if (isDialogSizeConfig(size)) {
+    const hasHeight = size.height !== undefined;
+    return {
+      width: toCssSize(size.width),
+      height: toCssSize(size.height),
+      minWidth: toCssSize(size.minWidth),
+      minHeight: toCssSize(size.minHeight),
+      maxWidth: toCssSize(size.maxWidth),
+      maxHeight: toCssSize(size.maxHeight) ?? (hasHeight ? undefined : DIALOG_DEFAULT_MAX_HEIGHT),
+    };
+  }
+
+  return {
+    maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+  };
 };
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -62,12 +115,15 @@ function DialogContent({
   zIndex,
   size,
   defaultPosition,
+  onPointerDownOutside,
+  onInteractOutside,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
   showOverlay?: boolean;
   overlayClassName?: string;
   resizable?: boolean;
+  // 다이얼로그 레이어 우선순위 제어용 (기본값: overlay보다 1 높음)
   zIndex?: number;
   size?: DialogSize;
   defaultPosition?: {
@@ -87,20 +143,22 @@ function DialogContent({
     setPosition(defaultPosition);
   }, [defaultPosition]);
 
+  const resolvedSize = React.useMemo(() => resolveDialogSize(size), [size]);
+
   const contentStyle = React.useMemo<React.CSSProperties>(
     () => ({
       ...(props.style ?? {}),
       transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
-      width: resizedSize.width > 0 ? `${resizedSize.width}px` : toCssSize(size?.width),
-      height: resizedSize.height > 0 ? `${resizedSize.height}px` : toCssSize(size?.height),
-      minWidth: toCssSize(size?.minWidth),
-      minHeight: toCssSize(size?.minHeight),
-      maxWidth: toCssSize(size?.maxWidth),
-      maxHeight: toCssSize(size?.maxHeight),
-      zIndex,
+      width: resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
+      height: resizedSize.height > 0 ? `${resizedSize.height}px` : resolvedSize.height,
+      minWidth: resolvedSize.minWidth,
+      minHeight: resolvedSize.minHeight,
+      maxWidth: resolvedSize.maxWidth,
+      maxHeight: resolvedSize.maxHeight,
+      zIndex: zIndex ?? DEFAULT_DIALOG_CONTENT_Z_INDEX,
     }),
-    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, size, zIndex]
+    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, resolvedSize, zIndex]
   );
 
   const handleMouseDown = React.useCallback(
@@ -213,19 +271,31 @@ function DialogContent({
         data-slot="dialog-content"
         style={contentStyle}
         className={cn(
-          'fixed left-[50%] top-[50%] z-50 grid grid-rows-[auto_1fr_auto] gap-[1.2rem] transition-none',
+          'fixed left-[50%] top-[50%] grid grid-rows-[auto_1fr_auto] gap-[1.2rem] transition-none',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full',
           className
         )}
         onMouseDown={handleMouseDown}
+        onPointerDownOutside={(event) => {
+          onPointerDownOutside?.(event);
+          if (!showOverlay) {
+            event.preventDefault();
+          }
+        }}
+        onInteractOutside={(event) => {
+          onInteractOutside?.(event);
+          if (!showOverlay) {
+            event.preventDefault();
+          }
+        }}
         {...props}
       >
         {children}
         {(isDragging || !!isResizing) && (
           <div
             aria-hidden="true"
-            className="absolute inset-0 z-40 bg-transparent"
+            className="absolute inset-0 z-51 bg-transparent"
             style={{
               cursor: isDragging ? 'grabbing' : undefined,
             }}

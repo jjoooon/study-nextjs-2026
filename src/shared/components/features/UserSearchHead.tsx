@@ -125,7 +125,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                             `items-start h-[6rem] w-[7.8rem] rounded-md border flex items-center justify-center bg-[#FFF] text-[1.3rem] transition-colors ` +
                             (selectedIdx === idx && name_active === tab.value
                               ? 'border-[0.2rem] border-[#ff5c2e] shadow-[0.4rem_0.6rem_0.6rem_0_rgba(34,34,34,0.1)]'
-                              : 'text-black border-[var(--color-coolgray-30)] opacity-70 hover:border-[#ff5c2e]')
+                              : 'text-black border-[var(--color-blue-gray-30)] opacity-70 hover:border-[#ff5c2e]')
                           }
                           onClick={() => handleSelectIdx(tab.value, idx)}
                         >
@@ -165,9 +165,9 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
               </Grow>
               {tab.data && tab.data[selectedIdx] ? (
                 tab.value === 'userSearchHead1' ? (
-                  <Grow gap={4} placement={'sc'} className="w-full flex-1 h-[6.8rem] justify-stretch items-stretch p-0 overflow-hidden border border-[var(--color-coolgray-60)] rounded-[0.8rem] pr-[1.6rem] bg-[#fff]">
-                    <Gcol className="w-[13rem] px-3 bg-[var(--color-coolgray-10)]" placement={'cs'}>
-                      <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">고객정보</Typo>
+                  <Grow gap={4} placement={'sc'} className="w-full flex-1 h-[6.8rem] justify-stretch items-stretch p-0 overflow-hidden border border-[var(--color-blue-gray-60)] rounded-[0.8rem] pr-[1.6rem] bg-[#fff]">
+                    <Gcol className="w-[13rem] px-3 bg-[var(--color-blue-gray-10)]" placement={'cs'}>
+                      <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">고객정보</Typo>
                       <Typo variant={'body-md'} weight={'bold'}>
                         {currentTabData[selectedIdx]?.name ?? '-'} 
                         {currentTabData[selectedIdx]?.age ?? '-'}세({currentTabData[selectedIdx]?.gender ?? '-'})
@@ -175,26 +175,26 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                     </Gcol>
                     <Grid className="grid-cols-[1fr_1fr] flex-1 place-content-center  gap-x-6 gap-y-[0.6rem] ">
                       <Grow gap={0} placement={'bwc'}>
-                        <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">직업</Typo>
+                        <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">직업</Typo>
                         <Typo variant={'body-md'} weight={'bold'}>
                           {currentTabData[selectedIdx]?.jab ?? '-'} 
                         </Typo>
                       </Grow>
                       <Grow gap={0} placement={'bwc'}>
-                        <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">{currentTabData[selectedIdx]?.product ?? '-'} </Typo>
+                        <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">{currentTabData[selectedIdx]?.product ?? '-'} </Typo>
                         <Button variant={'text'} size={'sm'}>
                           <Typo variant={'body-md'} weight={'bold'}>동의</Typo>
                           <ArrowIcon size={12} color={'#000'} className="rotate-180" />
                         </Button>
                       </Grow>
                       <Grow gap={0} placement={'bwc'}>
-                        <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">입원/수술</Typo>
+                        <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">입원/수술</Typo>
                         <Typo variant={'body-md'} weight={'bold'}>
                           {currentTabData[selectedIdx]?.history ?? '-'} 
                         </Typo>
                       </Grow>
                       <Grow gap={0} placement={'bwc'}>
-                        <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">보장분석 <span className="text-[var(--color-primary-50)]!">({currentTabData[selectedIdx]?.plan ?? '-'} )</span></Typo>
+                        <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">보장분석 <span className="text-[var(--color-primary-50)]!">({currentTabData[selectedIdx]?.plan ?? '-'} )</span></Typo>
                         <Button variant={'text'} size={'sm'}>
                           <Typo variant={'body-md'} weight={'bold'}>보기</Typo>
                           <ArrowIcon size={12} color={'#000'} className="rotate-180" />
@@ -203,9 +203,9 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                     </Grid>
                   </Grow>
                 ) : (
-                  <Grow gap={4} placement={'bwc'} className="w-full flex-1 h-[6.8rem] px-4 overflow-hidden border border-[var(--color-coolgray-60)] rounded-[0.8rem] pr-[1.6rem] bg-[#fff]">
+                  <Grow gap={4} placement={'bwc'} className="w-full flex-1 h-[6.8rem] px-4 overflow-hidden border border-[var(--color-blue-gray-60)] rounded-[0.8rem] pr-[1.6rem] bg-[#fff]">
                     <Gcol className="" placement={'cs'}>
-                      <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">나이</Typo>
+                      <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">나이</Typo>
                       <Grow>
                         <Input
                           value={currentTabData[selectedIdx]?.age ?? ''}
@@ -233,7 +233,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                       </Grow>
                     </Gcol>
                     <Gcol className="" placement={'cs'}>
-                      <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">성별</Typo>
+                      <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">성별</Typo>
                       <RadioGroup
                         value={currentTabData[selectedIdx]?.gender ?? ''}
                         onValueChange={val => {
@@ -248,7 +248,7 @@ export default function UserSearchHead({ data }: UserSearchHeadProps) {
                       </RadioGroup>
                     </Gcol>
                     <Gcol className="" placement={'cs'}>
-                      <Typo variant={'body-sm'} className="text-[var( --color-coolgray-60)]">직업급수</Typo>
+                      <Typo variant={'body-sm'} className="text-[var( --color-blue-gray-60)]">직업급수</Typo>
                       <RadioGroup
                         value={currentTabData[selectedIdx]?.grade ?? ''}
                         onValueChange={val => {

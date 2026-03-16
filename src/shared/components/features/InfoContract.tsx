@@ -5,7 +5,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerA } from '@common/Spinner';
 import { CalendarIcon } from '@icons';
 
-import type { LNIPL020DataType } from '@/features/pub/proto/data/LNIPL020Data';
+import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
 
 import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
@@ -13,7 +13,7 @@ import { Badge } from '@uiux/Badge';
 import Link from "next/link"
 
 
-export function InfoContract({ data }: { data: LNIPL020DataType['aside'] }) {
+export function InfoContract({ data }: { data: LniPl020DataType['aside'] }) {
   const info = data?.simpleContractInfo;
   return (
     <Gcol className="w-full">
@@ -27,7 +27,7 @@ export function InfoContract({ data }: { data: LNIPL020DataType['aside'] }) {
         </Grow>
       </Grow>
 
-      <Gcol variant={'box-line'} className="w-full bg-[var(--color-coolgray-10)] gap-2" placement={'ss'}>
+      <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)] gap-2" placement={'ss'}>
         <Gcol variant={'box-line'} className="w-full py-[0.6rem]! border-none! shadow-none!" placement={'ss'}>
           <BulletList className="pt-[0.4rem]">
             <BulletListItem type={'dot'} size={'sm'}>
@@ -43,11 +43,11 @@ export function InfoContract({ data }: { data: LNIPL020DataType['aside'] }) {
         </Gcol>
         <Gcol className="w-full" placement={'ss'}>
           <Grow placement={'sc'}>
-              <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">계</Badge>
+              <Badge className="bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">계</Badge>
               <Typo variant={'body-sm'} weight="bold">{info?.polName}</Typo>
             </Grow>
             <Grow placement={'sc'}>
-              <Badge className="bg-[var(--color-coolgray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">피</Badge>
+              <Badge className="bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)] font-bold text-[1.1rem] indent-[-0.1rem]">피</Badge>
               <Typo variant={'body-sm'} weight="bold">
                 {info?.insName} {info?.insAge}세({info?.insGender}) {info?.insGrade}
               </Typo>

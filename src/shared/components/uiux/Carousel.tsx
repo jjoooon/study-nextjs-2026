@@ -259,8 +259,8 @@ function CarouselPagination() {
           className={
             "w-1 h-1 rounded-full transition-all " +
             (selectedIndex === idx
-              ? "w-3 bg-[var(--color-coolgray-50)]"
-              : "bg-[var(--color-coolgray-40)]")
+              ? "w-3 bg-[var(--color-blue-gray-50)]"
+              : "bg-[var(--color-blue-gray-40)]")
           }
           onClick={() => api && api.scrollTo(idx)}
         />

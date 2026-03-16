@@ -21,7 +21,7 @@ const buttonVariants = cva(
         focus-visible:underline`,
         none: 'bg-transparent border-none',
         rounded: 'rounded-full!',
-        banner: 'bg-[var(--color-coolgray-20)] text-[var(--color-gray-100)] border border-[var(--color-coolgray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
+        banner: 'bg-[var(--color-blue-gray-20)] text-[var(--color-gray-100)] border border-[var(--color-blue-gray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
         state:
           'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline rounded-[0.6rem]!',
       },
@@ -112,36 +112,36 @@ const buttonVariants = cva(
       {
         variant: ['contained', 'rounded'],
         color: 'coolgray',
-        className: `border border-[var(--color-coolgray-70)] 
-        bg-[var(--color-coolgray-70)] 
+        className: `border border-[var(--color-blue-gray-70)] 
+        bg-[var(--color-blue-gray-70)] 
         text-[var(--color-gray-0)] 
         font-bold
-        hover:bg-[var(--color-coolgray-80)] 
+        hover:bg-[var(--color-blue-gray-80)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
-        focus-visible:ring-[var(--color-coolgray-80)] 
+        focus-visible:ring-[var(--color-blue-gray-80)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)] 
         disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-coolgray-20)]
-        disabled:border-[var(--color-coolgray-20)]`,
+        disabled:bg-[var(--color-blue-gray-20)]
+        disabled:border-[var(--color-blue-gray-20)]`,
       },
       {
         variant: ['contained', 'rounded'],
         color: 'coolgray-light',
-        className: `border border-[var(--color-coolgray-50)] 
-        bg-[var(--color-coolgray-50)] 
+        className: `border border-[var(--color-blue-gray-50)] 
+        bg-[var(--color-blue-gray-50)] 
         text-[var(--color-gray-0)] 
         font-bold
-        hover:bg-[var(--color-coolgray-60)] 
+        hover:bg-[var(--color-blue-gray-60)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
-        focus-visible:ring-[var(--color-coolgray-60)] 
+        focus-visible:ring-[var(--color-blue-gray-60)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)] 
         disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-coolgray-20)]
-        disabled:border-[var(--color-coolgray-20)]`,
+        disabled:bg-[var(--color-blue-gray-20)]
+        disabled:border-[var(--color-blue-gray-20)]`,
       },
       {
         variant: ['contained', 'rounded'],
@@ -293,28 +293,28 @@ const buttonVariants = cva(
       {
         variant: 'outlined',
         color: 'coolgray',
-        className: `border border-[var(--color-coolgray-70)] 
+        className: `border border-[var(--color-blue-gray-70)] 
         bg-[var(--color-gray-0)] 
-        text-[var(--color-coolgray-70)] 
-        hover:bg-[var(--color-coolgray-5)] 
+        text-[var(--color-blue-gray-70)] 
+        hover:bg-[var(--color-blue-gray-5)] 
         hover:border-dashed 
-        hover:border-[var(--color-coolgray-70)] 
-        focus-visible:ring-[var(--color-coolgray-5)] 
+        hover:border-[var(--color-blue-gray-70)] 
+        focus-visible:ring-[var(--color-blue-gray-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-[var(--color-coolgray-70)]`,
+        focus-visible:border-[var(--color-blue-gray-70)]`,
       },
       {
         variant: 'outlined',
         color: 'coolgray-light',
-        className: `border border-[var(--color-coolgray-50)] 
+        className: `border border-[var(--color-blue-gray-50)] 
         bg-[var(--color-gray-0)] 
-        text-[var(--color-coolgray-50)] 
-        hover:bg-[var(--color-coolgray-5)] 
+        text-[var(--color-blue-gray-50)] 
+        hover:bg-[var(--color-blue-gray-5)] 
         hover:border-dashed 
-        hover:border-[var(--color-coolgray-60)] 
-        focus-visible:ring-[var(--color-coolgray-5)] 
+        hover:border-[var(--color-blue-gray-60)] 
+        focus-visible:ring-[var(--color-blue-gray-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-[var(--color-coolgray-60)]`,
+        focus-visible:border-[var(--color-blue-gray-60)]`,
       },
       {
         variant: 'outlined',
@@ -374,12 +374,12 @@ const buttonVariants = cva(
       {
         variant: 'text',
         color: 'coolgray',
-        className: `text-[var(--color-coolgray-70)]`,
+        className: `text-[var(--color-blue-gray-70)]`,
       },
       {
         variant: 'text',
         color: 'coolgray-light',
-        className: `text-[var(--color-coolgray-50)]`,
+        className: `text-[var(--color-blue-gray-50)]`,
       },
       {
         variant: 'text',

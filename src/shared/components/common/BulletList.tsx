@@ -71,7 +71,7 @@ export const BulletListItem = ({ children, type = 'dot', size = 'md', className,
   };
   const bulletStyles = {
     dot: `before:absolute before:left-0 before:translate-y-[-50%] before:content-[''] before:block  ${dotSizeMap[size]}`,
-    hash: "before:content-['#'] before:block before:text-[var(--color-coolgray-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-coolgray-60)]",
+    hash: "before:content-['#'] before:block before:text-[var(--color-blue-gray-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-blue-gray-60)]",
     ref: "pl-[1.2rem]",
   };
   const itemSize = {
@@ -99,7 +99,7 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', className, onC
   };
   const bulletStyles = {
     dot: `before:absolute before:left-0 before:translate-y-[-50%] before:content-[''] before:block  ${dotSizeMap[size]}`,
-    hash: "before:content-['#'] before:block before:text-[var(--color-coolgray-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-coolgray-60)]",
+    hash: "before:content-['#'] before:block before:text-[var(--color-blue-gray-50)] before:text-[1.3rem] before:font-bold text-[1.3rem] font-bold flex items-center text-[var(--color-blue-gray-60)]",
     ref: "pl-[1.2rem]",
   };
   const itemSize = {
