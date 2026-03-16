@@ -23,6 +23,7 @@ import { useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { useLoginMutation } from '@/shared/services/authService';
 import { setCredentials, setError } from '@/shared/store/authSlice';
+// import { getHeader } from '@/shared/utils/authUtils';
 // import { selectZoom } from '@/shared/store/uiSelectors';
 // import { setZoom } from '@/shared/store/uiSlice';
 
@@ -37,6 +38,9 @@ export default function LoginPage() {
 
   // returnUrl 쿼리 파라미터 추출 (AuthGuard에서 전달됨)
   const returnUrl = searchParams.get('returnUrl');
+
+  // 로그인 사용자 사번
+  // getHeader('pfmStfno');
 
   // ui store 구독(selector)
   // const zoom = useAppSelector(selectZoom);
