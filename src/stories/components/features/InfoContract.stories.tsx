@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { InfoContract } from '@/shared/components/features/InfoContract';
-import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof InfoContract> = {
@@ -25,14 +25,14 @@ const meta: Meta<typeof InfoContract> = {
           <Markdown>
             {`
 #### InfoContract 주요 Props
-- data: LNIPL020DataType['aside'] (계약정보 데이터)
+- data: LniPl020DataType['aside'] (계약정보 데이터)
 
 #### 예시
 \`\`\`tsx
 import { InfoContract } from '@/shared/components/features/InfoContract';
-import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
 
-<InfoContract data={DUMMY_LNIPL020_DATA.aside} />
+<InfoContract data={DUMMY_LniPl020_DATA.aside} />
 \`\`\`
             `}
           </Markdown>
@@ -42,13 +42,13 @@ import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
   },
   argTypes: {
     data: {
-      description: '계약정보 데이터 (LNIPL020DataType[\'aside\'])',
+      description: '계약정보 데이터 (LniPl020DataType[\'aside\'])',
       control: { type: 'object' },
       table: { category: 'Data' },
     },
   },
   args: {
-    data: DUMMY_LNIPL020_DATA.aside,
+    data: DUMMY_LniPl020_DATA.aside,
   },
 };
 
@@ -58,6 +58,6 @@ type Story = StoryObj<typeof InfoContract>;
 
 export const Default: Story = {
   args: {
-    data: DUMMY_LNIPL020_DATA.aside,
+    data: DUMMY_LniPl020_DATA.aside,
   },
 };

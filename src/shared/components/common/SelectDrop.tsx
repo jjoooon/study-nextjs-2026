@@ -256,7 +256,7 @@ function SelectDrop<TValue extends string = string>({
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
-        : 'text-[var(--color-text-basic)] border-(--color-coolgray-30) bg-(--color-gray-0)',
+        : 'text-[var(--color-text-basic)] border-(--color-blue-gray-30) bg-(--color-gray-0)',
     showError
       ? 'hover:border-[var(--color-input-border-error)] focus:border-[var(--color-input-border-error)] focus:ring-[var(--color-input-surface-error)]'
       : required
@@ -264,7 +264,7 @@ function SelectDrop<TValue extends string = string>({
         : 'hover:border-[var(--color-input-border-hover)] focus:border-[var(--color-input-border-hover)] focus:ring-[var(--color-gray-5)]',
     'focus:outline-none focus:ring-1',
     readOnly && 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none',
-    'disabled:cursor-not-allowed disabled:bg-(--color-coolgray-10) disabled:text-gray-50',
+    'disabled:cursor-not-allowed disabled:bg-(--color-blue-gray-10) disabled:text-gray-50',
     TRIGGER_VARIANT_MAP[variant],
     widthClass,
     triggerClassName,

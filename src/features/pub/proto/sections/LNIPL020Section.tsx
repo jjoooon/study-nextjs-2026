@@ -12,13 +12,13 @@ import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitl
 import TaskStatusBoard from '@features/TaskStatusBoard';
 import { InfoContract } from '@features/InfoContract';
 import { QuickLinks } from '@features/QuickLinks';
-import { DUMMY_LNIPL020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
+import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LNIPL020Data';
 
 import type { PageProcessStep } from '@features/PageProcess';
 
-// LNIPL020 - components
-import { LNIPL020_1 } from '../components/LNIPL020_1'; // 01. 담보설계
-import { LNIPL020_2 } from '../components/LNIPL020_2'; // 02. 담보설계
+// LniPl020 - components
+import { LniPl020_1 } from '../components/LNIPL020_1'; // 01. 담보설계
+import { LniPl020_2 } from '../components/LNIPL020_2'; // 02. 담보설계
 
 // TaskStatusBoard: 꼭 확인해야 할 일!
 type DataTaskState = {
@@ -46,10 +46,10 @@ const parseStepParam = (value: string | null): PageProcessStep | null => {
   return parsed;
 };
 
-export default function LNIPL020Section() {
+export default function LniPl020Section() {
   const [activeStep, setActiveStep] = useState<PageProcessStep>(1);
   const [isWidthExpanded, setIsWidthExpanded] = useState(false);
-  const data = DUMMY_LNIPL020_DATA;
+  const data = DUMMY_LniPl020_DATA;
 
   useEffect(() => {
     const syncStepFromUrl = () => {
@@ -68,12 +68,12 @@ export default function LNIPL020Section() {
   }, []);
 
   const stepMainBodies: Record<PageProcessStep, ReactNode> = {
-    1: <LNIPL020_1 />,
-    2: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    4: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    5: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    6: <LNIPL020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    1: <LniPl020_1 />,
+    2: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    3: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    4: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    5: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    6: <LniPl020_2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
   };
  
   return (
