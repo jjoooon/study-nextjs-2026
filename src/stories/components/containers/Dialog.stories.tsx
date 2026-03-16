@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import {
   Dialog,
   DialogContent,
@@ -49,6 +50,9 @@ const meta: Meta<DialogContentProps> = {
                   <b>defaultPosition</b>으로 초기 위치를 지정할 수 있습니다.
                 </li>
                 <li>
+                  <b>size</b>는 <b>sm/md/lg/full</b> preset 또는 width/height 객체를 지원합니다.
+                </li>
+                <li>
                   <b>showCloseButton</b>으로 우측 상단 닫기 버튼 표시 여부를 제어합니다.
                 </li>
               </ul>
@@ -80,7 +84,7 @@ import { Button } from '@uiux/Button';
   <DialogContent
     showCloseButton
     resizable={false}
-    size={{ width: '48rem', minHeight: '24rem' }}
+    size="md"
   >
     <DialogHeader>
       <DialogTitle>제목</DialogTitle>
@@ -126,8 +130,25 @@ import { Button } from '@uiux/Button';
                 </tr>
                 <tr>
                   <td>size</td>
-                  <td>{`{ width?; height?; minWidth?; minHeight?; maxWidth?; maxHeight? }`}</td>
-                  <td>다이얼로그 크기 관련 CSS 값을 지정 (number는 px로 처리)</td>
+                  <td>{`'sm' | 'md' | 'lg' | 'full' | { width?; height?; minWidth?; minHeight?; maxWidth?; maxHeight? }`}</td>
+                  <td>
+                    preset 또는 직접 크기 지정. height 미지정 시 내용 높이 기반 + max-height 제약 적용.
+                  </td>
+                </tr>
+                <tr>
+                  <td>zIndex</td>
+                  <td>number</td>
+                  <td>다이얼로그 레이어 우선순위. 기본값은 overlay보다 1 높은 값.</td>
+                </tr>
+                <tr>
+                  <td>showOverlay</td>
+                  <td>boolean (default: true)</td>
+                  <td>암막(overlay) 표시 여부</td>
+                </tr>
+                <tr>
+                  <td>overlayClassName</td>
+                  <td>string</td>
+                  <td>암막 스타일 커스터마이즈 클래스</td>
                 </tr>
               </tbody>
             </table>
@@ -222,6 +243,34 @@ import { Button } from '@uiux/Button';
                     </DialogContent>
                   </Dialog>
                 </Grow>
+
+                <h3 className="font-bold mt-4">Size Preset (sm / md / lg / full)</h3>
+                <p className="text-sm">프리셋 크기와 full 고정 크기를 확인할 수 있습니다.</p>
+                <Grow gap={4} variant="box-line" className="p-16 flex-wrap">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outlined" color="gray">size: sm</Button>
+                    </DialogTrigger>
+                    <DialogContent size="sm">
+                      <DialogHeader>
+                        <DialogTitle>Small Dialog</DialogTitle>
+                      </DialogHeader>
+                      <div className="px-[3.2rem]">가로 37rem, 높이 자동(max-height 제한)</div>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outlined" color="gray">size: full</Button>
+                    </DialogTrigger>
+                    <DialogContent size="full">
+                      <DialogHeader>
+                        <DialogTitle>Full Dialog</DialogTitle>
+                      </DialogHeader>
+                      <div className="px-[3.2rem]">가로/세로 viewport 기준 고정 크기</div>
+                    </DialogContent>
+                  </Dialog>
+                </Grow>
               </Gcol>
             </Unstyled>
           </>
@@ -247,22 +296,35 @@ import { Button } from '@uiux/Button';
     },
     size: {
       control: 'object',
-      description: '다이얼로그 크기 설정 ({ width, height, minWidth, minHeight, maxWidth, maxHeight })',
+      description: '크기 설정: sm/md/lg/full 또는 { width, height, minWidth, minHeight, maxWidth, maxHeight }',
       table: { category: 'Layout' },
     },
-    className: {
-      control: 'text',
-      description: '추가 CSS 클래스',
-      table: { category: 'Appearance' },
+    zIndex: {
+      control: 'number',
+      description: '다이얼로그 z-index (기본값: overlay보다 1 높음)',
+      table: { category: 'Layout' },
     },
+    
+    showOverlay: {
+      control: 'boolean',
+      description: '오버레이 표시 여부',
+      table: { category: 'Overlay props', defaultValue: { summary: 'true' } },
+    },
+    overlayClassName: {
+      control: 'text',
+      description: '오버레이에 추가할 CSS 클래스',
+      table: { category: 'Overlay props' },
+    },
+    className: { table: { disable: true } },
     children: { table: { disable: true } },
     style: { table: { disable: true } },
   },
   args: {
+    showOverlay: true,
     showCloseButton: true,
-    resizable: false,
+    resizable: true,
     defaultPosition: { x: 0, y: 0 },
-    size: { width: '48rem', minHeight: '24rem' },
+    size: 'md',
   },
 };
 
@@ -303,10 +365,7 @@ export const Default: Story = {
                   </DialogClose>
                 </Grow>
               </Grow>
-              <Grow variant={'box'} className="w-full py-1 px-2.5 border-t border-[var(--color-gray-20)]" placement={'bwc'}>
-                <Typo variant={'body-xs'} color={'gray'}>자료가 조회되었습니다.</Typo>
-
-              </Grow>
+              <DialogBottomInfo />
             </Gcol>
            </DialogFooter>
         </DialogContent>

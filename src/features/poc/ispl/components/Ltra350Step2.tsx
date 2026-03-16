@@ -7,7 +7,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { InsPlanBasic, InsPlanCov } from '../components/Page3Index';
 import { INITIAL_TABS2 } from '../constants/insPlanBasicData';
 
-export default function LNIPL020Step2() {
+export default function LniPl020Step2() {
   const { active, setActive, handleRemove, visibleTabs } = useTabs(INITIAL_TABS2);
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
 

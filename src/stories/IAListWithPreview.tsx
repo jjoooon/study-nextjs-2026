@@ -14,12 +14,12 @@ type IARow = {
 };
 
 const ROWS: IARow[] = [
-  { id: 'LNIPL020', step: 1, label: '계약사항',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
-  { id: 'LNIPL020', step: 2, label: '담보설계',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
-  { id: 'LNIPL020', step: 3, label: '알릴사항',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
-  { id: 'LNIPL020', step: 4, label: '심사요청',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
-  { id: 'LNIPL020', step: 5, label: '추가사항',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
-  { id: 'LNIPL020', step: 6, label: '수납',      breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
+  { id: 'LniPl020', step: 1, label: '계약사항',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
+  { id: 'LniPl020', step: 2, label: '담보설계',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
+  { id: 'LniPl020', step: 3, label: '알릴사항',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
+  { id: 'LniPl020', step: 4, label: '심사요청',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
+  { id: 'LniPl020', step: 5, label: '추가사항',  breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
+  { id: 'LniPl020', step: 6, label: '수납',      breadcrumb: '차세대가입설계 > 가입설계 > 가입설계' },
 
 ];
 

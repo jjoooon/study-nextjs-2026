@@ -1,6 +1,6 @@
 
-// DUMMY_LNIPL020_DATA 타입 정의
-export interface LNIPL020DataType {
+// DUMMY_LniPl020_DATA 타입 정의
+export interface LniPl020DataType {
   pageID: {
     pageName: string;
     pageId: string;
@@ -65,10 +65,10 @@ export interface LNIPL020DataType {
 }
 
 // PageHead에 전달할 데이터 예시
-export const DUMMY_LNIPL020_DATA: LNIPL020DataType = {
+export const DUMMY_LniPl020_DATA: LniPl020DataType = {
   pageID : {
     pageName: '가입설계',
-    pageId: 'LNIPL020',
+    pageId: 'LniPl020',
   },
   pageTitle : {
     simpleMode: true,

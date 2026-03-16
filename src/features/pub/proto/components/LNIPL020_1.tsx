@@ -24,7 +24,7 @@ import { TabPager } from '@common/TabPager';
 import { KeyValueItem } from '@common/KeyValueList';
 
 // Feature Components
-import { LNIPL020Step1 as MainFoot } from '@features/MainFoot';
+import { LniPl020Step1 as MainFoot } from '@features/MainFoot';
 
 // Icons
 import { SearchIcon, PlusIcon, QuestionMark } from '@icons';
@@ -33,13 +33,13 @@ import { SearchIcon, PlusIcon, QuestionMark } from '@icons';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 // Data & Types
-import { DUMMY_LNIPL020_DATA as DUMMY_LNIPL020_1_DATA } from '@/features/pub/proto/data/LNIPL020_1_Data';
-import { LNIPL020_1_FORM_OPTIONS } from '@/features/pub/proto/data/LNIPL020_1FormOptions';
-import type { LNIPL020DataType } from '@/features/pub/proto/data/LNIPL020Data';
+import { DUMMY_LniPl020_DATA as DUMMY_LniPl020_1_DATA } from '@/features/pub/proto/data/LniPl020_1_Data';
+import { LniPl020_1_FORM_OPTIONS } from '@/features/pub/proto/data/LniPl020_1FormOptions';
+import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
 
 // Props Type
-type LNIPL020_1Props = {
-  data?: LNIPL020DataType['mainBody'];
+type LniPl020_1Props = {
+  data?: LniPl020DataType['mainBody'];
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   className?: string;
@@ -72,8 +72,8 @@ type InsuredPersonFormItem = {
 };
 
 // --- Constants ---
-const CONTRACTOR_INFO = DUMMY_LNIPL020_1_DATA.ContractorInfo;
-const POLICYHOLDER = DUMMY_LNIPL020_1_DATA.Policyholder;
+const CONTRACTOR_INFO = DUMMY_LniPl020_1_DATA.ContractorInfo;
+const POLICYHOLDER = DUMMY_LniPl020_1_DATA.Policyholder;
 
 const PAYMENT_CYCLE_VALUE_MAP: Record<string, string> = {
   월납: 'month',
@@ -104,7 +104,7 @@ const MOTORCYCLE_VALUE_MAP: Record<string, string> = {
 
 // --- Initial State ---
 const INITIAL_INSURED_FORM: Record<string, InsuredPersonFormItem> = Object.fromEntries(
-  DUMMY_LNIPL020_1_DATA.InsuredPerson.map((person, i) => [
+  DUMMY_LniPl020_1_DATA.InsuredPerson.map((person, i) => [
     `tab${i + 1}`,
     {
       driveType: DRIVE_VALUE_MAP[person.driveType] ?? '',
@@ -117,11 +117,11 @@ const INITIAL_INSURED_FORM: Record<string, InsuredPersonFormItem> = Object.fromE
 
 const INITIAL_CONTRACT_FORM_STATE: ContractFormState = {
   insuranceStartDate: CONTRACTOR_INFO.insStartDate,
-  maturityValue: CONTRACTOR_INFO.expiryDate || LNIPL020_1_FORM_OPTIONS.maturity[0]?.value || '',
-  paymentPeriodValue: CONTRACTOR_INFO.payPeriod || LNIPL020_1_FORM_OPTIONS.paymentPeriod[0]?.value || '',
-  paymentCycleValue: PAYMENT_CYCLE_VALUE_MAP[CONTRACTOR_INFO.payCycle] ?? CONTRACTOR_INFO.payCycle ?? LNIPL020_1_FORM_OPTIONS.paymentCycle[0]?.value ?? '',
-  renewalCycleValue: CONTRACTOR_INFO.renewCycle || LNIPL020_1_FORM_OPTIONS.renewalCycle[0]?.value || '',
-  notificationTypeValue: NOTICE_TYPE_VALUE_MAP[CONTRACTOR_INFO.noticeType] ?? CONTRACTOR_INFO.noticeType ?? LNIPL020_1_FORM_OPTIONS.notificationType[0]?.value ?? '',
+  maturityValue: CONTRACTOR_INFO.expiryDate || LniPl020_1_FORM_OPTIONS.maturity[0]?.value || '',
+  paymentPeriodValue: CONTRACTOR_INFO.payPeriod || LniPl020_1_FORM_OPTIONS.paymentPeriod[0]?.value || '',
+  paymentCycleValue: PAYMENT_CYCLE_VALUE_MAP[CONTRACTOR_INFO.payCycle] ?? CONTRACTOR_INFO.payCycle ?? LniPl020_1_FORM_OPTIONS.paymentCycle[0]?.value ?? '',
+  renewalCycleValue: CONTRACTOR_INFO.renewCycle || LniPl020_1_FORM_OPTIONS.renewalCycle[0]?.value || '',
+  notificationTypeValue: NOTICE_TYPE_VALUE_MAP[CONTRACTOR_INFO.noticeType] ?? CONTRACTOR_INFO.noticeType ?? LniPl020_1_FORM_OPTIONS.notificationType[0]?.value ?? '',
 };
 
 // --- Reducer ---
@@ -137,13 +137,13 @@ function contractFormReducer(state: ContractFormState, action: ContractFormActio
   }
 }
 
-export function LNIPL020_1({
+export function LniPl020_1({
   data: _data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan: _onSelectPlan,
   className,
   children,
-}: LNIPL020_1Props) {
+}: LniPl020_1Props) {
   // ---------------------------------------------------------------------------
   // 1) Data source
   // ---------------------------------------------------------------------------
@@ -169,15 +169,15 @@ export function LNIPL020_1({
     setActive: setTabValue,
     handleRemove: handleRemoveTab,
   } = useTabs(
-    DUMMY_LNIPL020_1_DATA.InsuredPerson.map((person, i) => ({
+    DUMMY_LniPl020_1_DATA.InsuredPerson.map((person, i) => ({
       value: `tab${i + 1}`,
       label: person.name,
       error: false,
     }))
   );
 
-  const currentPersonIndex = DUMMY_LNIPL020_1_DATA.InsuredPerson.findIndex((_, i) => `tab${i + 1}` === tabValue);
-  const currentPerson = DUMMY_LNIPL020_1_DATA.InsuredPerson[currentPersonIndex >= 0 ? currentPersonIndex : 0]!;
+  const currentPersonIndex = DUMMY_LniPl020_1_DATA.InsuredPerson.findIndex((_, i) => `tab${i + 1}` === tabValue);
+  const currentPerson = DUMMY_LniPl020_1_DATA.InsuredPerson[currentPersonIndex >= 0 ? currentPersonIndex : 0]!;
 
   // ---------------------------------------------------------------------------
   // 4) Handlers
@@ -238,7 +238,7 @@ export function LNIPL020_1({
                         onValueChange={(value) => handleContractFieldChange('maturityValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LNIPL020_1_FORM_OPTIONS.maturity.map((option) => (
+                        {LniPl020_1_FORM_OPTIONS.maturity.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -253,7 +253,7 @@ export function LNIPL020_1({
                         onValueChange={(value) => handleContractFieldChange('paymentPeriodValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LNIPL020_1_FORM_OPTIONS.paymentPeriod.map((option) => (
+                        {LniPl020_1_FORM_OPTIONS.paymentPeriod.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -269,7 +269,7 @@ export function LNIPL020_1({
                         onValueChange={(value) => handleContractFieldChange('paymentCycleValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LNIPL020_1_FORM_OPTIONS.paymentCycle.map((option) => (
+                        {LniPl020_1_FORM_OPTIONS.paymentCycle.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -282,7 +282,7 @@ export function LNIPL020_1({
                         onValueChange={(value) => handleContractFieldChange('renewalCycleValue', value)}
                         className='flex-row gap-3'
                       >
-                        {LNIPL020_1_FORM_OPTIONS.renewalCycle.map((option) => (
+                        {LniPl020_1_FORM_OPTIONS.renewalCycle.map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -299,7 +299,7 @@ export function LNIPL020_1({
                         width={'full'}
                         className='grid grid-cols-3 gap-x-6 gap-y-2 w-full'
                       >
-                        {LNIPL020_1_FORM_OPTIONS.notificationType.map((option) => (
+                        {LniPl020_1_FORM_OPTIONS.notificationType.map((option) => (
                           <RadioGroupItem
                             key={option.id}
                             className={option.justifyStart ? 'justify-start' : undefined}
@@ -393,7 +393,7 @@ export function LNIPL020_1({
                               onValueChange={(v) => updateInsuredField(tabValue, 'driveType', v)}
                               className='flex-row gap-3'
                             >
-                              {LNIPL020_1_FORM_OPTIONS.drivingType.map((option) => (
+                              {LniPl020_1_FORM_OPTIONS.drivingType.map((option) => (
                                 <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                                   {option.label}
                                 </RadioGroupItem>
@@ -406,7 +406,7 @@ export function LNIPL020_1({
                               onValueChange={(v) => updateInsuredField(tabValue, 'motorcycle', v)}
                               className='flex-row gap-3'
                             >
-                              {LNIPL020_1_FORM_OPTIONS.motorcycleType.map((option) => (
+                              {LniPl020_1_FORM_OPTIONS.motorcycleType.map((option) => (
                                 <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                                   {option.label}
                                 </RadioGroupItem>

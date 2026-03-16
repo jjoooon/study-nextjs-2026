@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Gcol } from '@atoms';
-import { DesignStart, DesignGeneration, LNIPL020Step1, LNIPL020Step2 } from '@/shared/components/features/MainFoot';
+import { DesignStart, DesignGeneration, LniPl020Step1, LniPl020Step2 } from '@/shared/components/features/MainFoot';
 import { Title, Subtitle, Primary, Controls, Canvas, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof DesignStart> = {
@@ -33,8 +33,8 @@ import { MainFoot } from '@/shared/components/features/MainFoot';
 
 <DesignStart/>
 <DesignGeneration />
-<LNIPL020Step1 />
-<LNIPL020Step2 />
+<LniPl020Step1 />
+<LniPl020Step2 />
 \`\`\`
             `}
           </Markdown>
@@ -52,8 +52,8 @@ const Template = (args: any) => (
   <Gcol gap="4" style={args.style}>
     <DesignStart/>
     <DesignGeneration />
-    <LNIPL020Step1 />
-    <LNIPL020Step2 />
+    <LniPl020Step1 />
+    <LniPl020Step2 />
   </Gcol>
 );
 

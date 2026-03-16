@@ -15,7 +15,7 @@ type FormOptions = {
   ContractorType: FormOptionItem[];
 };
 
-export const LNIPL020_1_FORM_OPTIONS: FormOptions = {
+export const LniPl020_1_FORM_OPTIONS: FormOptions = {
   maturity: [
     { value: '80', id: 'insurance-period-80', label: '80세' },
     { value: '90', id: 'insurance-period-90', label: '90세' },
