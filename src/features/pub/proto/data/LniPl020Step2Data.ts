@@ -36,7 +36,6 @@ export interface LniPl020Step2DataType {
   };
 }
 
-// PageHead에 전달할 데이터 예시
 export const LniPl020Step2Data: LniPl020Step2DataType = {
   planFilters: {
     visibleCount: 6,

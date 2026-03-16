@@ -30,6 +30,8 @@ import type { ProductsUIState } from '@/features/products/types/storeTypes';
 import type { PopupState } from '@/shared/store/popupSlice';
 import type { SpinnerState } from '@/shared/store/spinnerSlice';
 import type { AuthState } from '@/shared/types/authTypes';
+import type { UIState } from '@/shared/types/uiTypes';
+import { globalRegistry, REGISTRY_KEYS } from '@/shared/utils/globalRegistry';
 import log from '@/shared/utils/logger';
 
 import { configureMiddleware, devToolsConfig } from './config';
@@ -174,6 +176,7 @@ export type RootState = {
   auth: AuthState;
   popup: PopupState;
   spinner: SpinnerState;
+  ui: UIState;
   dashboard: DashboardState;
   products: ProductsUIState;
 };
@@ -216,3 +219,9 @@ export { useAppDispatch, useAppSelector } from './hooks';
  */
 export { ejectReducer, injectReducer } from './registry/reducer';
 export type { EjectReducerAction, InjectReducerAction } from './registry/reducer';
+
+// 전역 스코프 레지스트리에 저장
+// 목적
+// 1. 직접 store 접근(비 react적 사용 or vanillajs)
+// 2. 순환 참조 방지 (ex. asxiosBaseQuery --> popupUtils --> redux --> ... -> axiosBaseQuery)
+globalRegistry.set(REGISTRY_KEYS.STORE, store);

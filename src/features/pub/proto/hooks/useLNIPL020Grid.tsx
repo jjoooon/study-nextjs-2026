@@ -17,9 +17,9 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 
-import type { LTRA020_2_DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
+import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
 
-export type LniPl020GridRow = LTRA020_2_DataType['coverageGrid']['agGridTable1'][number];
+export type LniPl020GridRow = LniPl020Step2DataType['coverageGrid']['agGridTable1'][number];
 
 interface UseLniPl020GridParams {
   hideAside: boolean;
@@ -102,7 +102,7 @@ export function useLniPl020Grid({ hideAside, onSelectPlan }: UseLniPl020GridPara
         </Grow>
 
         <Grow placement={'sc'}>
-          <Checkbox size={'sm'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
+          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
             담보명 풍선말
           </Checkbox>
         </Grow>
