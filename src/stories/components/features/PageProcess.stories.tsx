@@ -1,7 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import PageProcess from '@/shared/components/features/PageProcess';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+
+import PageProcess, { type PageProcessItem } from '@/shared/components/features/PageProcess';
+
+const demoItems: PageProcessItem[] = [
+  { step: 1, label: '계약사항' },
+  { step: 2, label: '담보설계' },
+  { step: 3, label: '알릴사항' },
+  { step: 4, label: '심사요청' },
+  { step: 5, label: '추가사항' },
+  { step: 6, label: '수납' },
+];
 
 const meta: Meta<typeof PageProcess> = {
   title: 'Components/Features/PageProcess',
@@ -28,32 +37,58 @@ const meta: Meta<typeof PageProcess> = {
           <Controls />
 
           <h2>Usage</h2>
-          <p>PageProcess 컴포넌트는 현재 props를 받지 않으며, 다음과 같이 간단하게 사용할 수 있습니다.</p>
+          <p>PageProcess 컴포넌트는 단계 목록/상태를 props로 전달받아 표시합니다.</p>
           <Markdown>
             {`
 \`\`\`tsx
 import PageProcess from '@/shared/components/features/PageProcess';
 
-<PageProcess />
+const items = [
+  { step: 1, label: '계약사항' },
+  { step: 2, label: '담보설계' },
+  { step: 3, label: '알릴사항' },
+];
+
+<PageProcess
+  items={items}
+  completeSteps={[1]}
+  activeStep={2}
+/>
 \`\`\`
             `}
           </Markdown>
 
           <h2>API Reference</h2>
-          <p>이 컴포넌트는 현재 외부로부터 props를 받지 않습니다. 각 단계의 상태(완료, 활성)는 컴포넌트 내부에 하드코딩된 `data-process` 속성으로 제어됩니다.</p>
+          <p>
+            필수 props는 <strong>items</strong>이며, 완료 단계는 <strong>completeSteps</strong>,
+            현재 단계는 <strong>activeStep</strong> 또는 <strong>defaultActiveStep</strong>으로 제어합니다.
+          </p>
         </>
       ),
     },
   },
-  argTypes: {},
-  args: {},
+  argTypes: {
+    onStepChange: { action: 'step changed' },
+  },
+  args: {
+    items: demoItems,
+    completeSteps: [1],
+    activeStep: 2,
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof PageProcess>;
 
 export const Default: Story = {
-  render: () => (
-    <PageProcess />
-  ),
+  render: (args) => <PageProcess {...args} />,
+};
+
+export const WithDefaultActiveOnly: Story = {
+  args: {
+    items: demoItems,
+    completeSteps: [1, 2],
+    activeStep: undefined,
+    defaultActiveStep: 3,
+  },
 };

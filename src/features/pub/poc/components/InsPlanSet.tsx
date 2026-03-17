@@ -42,7 +42,7 @@ export function InsPlanSet({ selectedCategory, selectedAge, onCategoryChange, on
         <FormCell title="상품구분">
           <RadioGroup value={selectedCategory} onValueChange={onCategoryChange} className="gap-1">
             {productCategories.map((category) => (
-              <RadioGroupItem key={category.value} variant="button" size="sm" value={category.value}>
+              <RadioGroupItem key={category.value} variant="button" size="md" value={category.value}>
                 {category.label}
               </RadioGroupItem>
             ))}
@@ -53,7 +53,7 @@ export function InsPlanSet({ selectedCategory, selectedAge, onCategoryChange, on
         <FormCell title="가입연령">
           <RadioGroup value={selectedAge} onValueChange={onAgeChange} className="gap-1">
             {ageCategories.map((category) => (
-              <RadioGroupItem key={category.value} variant="button" size="sm" value={category.value}>
+              <RadioGroupItem key={category.value} variant="button" size="md" value={category.value}>
                 {category.label}
               </RadioGroupItem>
             ))}

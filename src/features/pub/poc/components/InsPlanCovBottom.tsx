@@ -48,7 +48,7 @@ export default function InsPlanCovBottom() {
               </div>
               <div>|</div>
               <div>
-                <Checkbox size="sm">청약 지원</Checkbox>
+                <Checkbox size="md">청약 지원</Checkbox>
               </div>
             </Grow>
           </Grow>

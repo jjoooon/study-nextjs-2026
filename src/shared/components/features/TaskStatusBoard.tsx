@@ -48,7 +48,7 @@ export default function TaskStatusBoard<T extends {
           return (
             <Button
               key={item.id}
-              variant="none"
+              variant={'none'}
               className={twMerge(
                 "bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5 justify-between text-[1.2rem] h-[3.1rem] rounded-[0.6rem]"
               )}

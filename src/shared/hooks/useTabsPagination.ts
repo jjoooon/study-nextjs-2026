@@ -2,6 +2,18 @@
 
 import { useState, useEffect } from 'react';
 
+/**
+ * 탭 목록을 페이지 단위로 나눠 보여줄 때 사용하는 공통 훅.
+ *
+ * 역할
+ * - 현재 보이는 시작 인덱스(`visibleStart`) 관리
+ * - `active` 탭이 바뀌면 해당 탭이 포함된 페이지로 자동 이동
+ * - 이전/다음 페이지 이동 핸들러 제공
+ * - 마지막 페이지 여부(`isLastPage`) 및 렌더링 종료 인덱스(`end`) 계산
+ *
+ * 참고
+ * - `getValue`로 제네릭 데이터에서 탭 고유값을 추출해 타입 안전하게 동작
+ */
 export function useTabsPagination<T>(
   data: T[],
   visibleCount: number,
