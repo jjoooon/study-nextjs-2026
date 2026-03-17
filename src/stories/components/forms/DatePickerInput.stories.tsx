@@ -15,7 +15,7 @@ function LniPl020DatePickerPreview() {
   };
 
   return (
-    <Gcol gap={3} variant="box-line" className="w-[44rem] p-8">
+    <Gcol gap={3} variant="box-line" className="w-full p-8">
       <Gcol gap={1}>
         <span className="text-[1.3rem] text-[var(--color-text-gray)]">보험시기</span>
         <Grow gap={2} className="items-center">
@@ -40,7 +40,6 @@ function LniPl020DatePickerPreview() {
       <Gcol gap={1}>
         <span className="text-[1.3rem] text-[var(--color-text-gray)]">보험기간</span>
         <DatePickerInput
-          readOnly
           mode={'range'}
           width={'9rem'}
           rangeValue={{ from: '2024-05-08', to: '2024-06-30' }}

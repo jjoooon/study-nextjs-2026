@@ -214,46 +214,4 @@ export const Default: Story = {
   },
 };
 
-export const Row: Story = {
-  args: {
-    position: 'row',
-    className: 'gap-2',
-    type: 'hash',
-    size: 'md',
-  },
-  render: (args) => {
-    const { type = 'hash', size = 'md', ...listArgs } = args;
 
-    return (
-      <BulletList {...listArgs}>
-        <BulletListItem type={type} size={size} >
-          자동차
-        </BulletListItem>
-        <BulletListItem type={type} size={size} >
-          운전자
-        </BulletListItem>
-        <BulletListItem type={type} size={size} >
-          건강
-        </BulletListItem>
-      </BulletList>
-    );
-  },
-};
-
-export const Types: Story = {
-  render: () => {
-    return (
-      <div className="flex flex-col gap-3">
-        <BulletList className="gap-[0.2rem]">
-          <BulletListItem type="dot">dot bullet</BulletListItem>
-          <BulletListItem type="ref">ref bullet</BulletListItem>
-        </BulletList>
-        <BulletList position="row" className="gap-2">
-          <BulletListItem type="hash">hash</BulletListItem>
-          <BulletListItem type="hash">list</BulletListItem>
-          <BulletListItem type="hash">sample</BulletListItem>
-        </BulletList>
-      </div>
-    );
-  },
-};

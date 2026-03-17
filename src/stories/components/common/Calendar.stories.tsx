@@ -136,7 +136,7 @@ const [date, setDate] = useState<Date | undefined>(new Date());
   argTypes: {
     mode: {
       control: 'select',
-      options: ['single', 'multiple', 'range', 'default'],
+      options: ['single', 'multiple', 'range'],
       description: '날짜 선택 모드',
     },
     selected: {
@@ -161,7 +161,7 @@ const [date, setDate] = useState<Date | undefined>(new Date());
     formatters: { table: { disable: true } },
     captionLayout: {
       control: 'select',
-      options: ['label', 'dropdown', 'dropdown-months', 'dropdown-years'],
+      options: ['label', 'dropdown'],
       description: '캡션 표시 방식 (dropdown 선택 시 년/월 select)',
     },
     buttonVariant: { table: { disable: true } },
@@ -179,45 +179,54 @@ type Story = StoryObj<typeof Calendar>;
 
 export const Default: Story = {
   render: (args) => {
-    const [date, setDate] = React.useState<Date | undefined>(new Date());
+    const mode = args.mode ?? 'single';
+    const [singleDate, setSingleDate] = React.useState<Date | undefined>(new Date());
+    const [multipleDates, setMultipleDates] = React.useState<Date[] | undefined>([]);
+    const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>({
+      from: new Date(),
+      to: new Date(),
+    });
     const [month, setMonth] = React.useState<Date>(new Date());
+
+    if (mode === 'multiple') {
+      return (
+        <Calendar
+          {...args}
+          mode="multiple"
+          captionLayout={args.captionLayout ?? 'dropdown'}
+          selected={multipleDates}
+          month={month}
+          onSelect={setMultipleDates}
+          onMonthChange={setMonth}
+        />
+      );
+    }
+
+    if (mode === 'range') {
+      return (
+        <Calendar
+          {...args}
+          mode="range"
+          captionLayout={args.captionLayout ?? 'dropdown'}
+          selected={rangeDate}
+          month={month}
+          onSelect={setRangeDate}
+          onMonthChange={setMonth}
+        />
+      );
+    }
+
     return (
       <Calendar
         {...args}
         mode="single"
         captionLayout={args.captionLayout ?? 'dropdown'}
-        selected={date}
+        selected={singleDate}
         month={month}
-        onSelect={setDate}
+        onSelect={setSingleDate}
         onMonthChange={setMonth}
       />
     );
   },
 };
 
-export const Modes: Story = {
-  parameters: { controls: { hideNoControlsWarning: true, exclude: /.*/ } },
-  render: () => <ModesPreview />,
-};
-
-export const MultipleMonths: Story = {
-  args: {
-    numberOfMonths: 2,
-    captionLayout: 'dropdown',
-  },
-  render: (args) => {
-    const [date, setDate] = React.useState<Date | undefined>(new Date());
-    const [month, setMonth] = React.useState<Date>(new Date());
-    return (
-      <Calendar
-        {...args}
-        mode="single"
-        captionLayout={args.captionLayout ?? 'dropdown'}
-        selected={date}
-        month={month}
-        onSelect={setDate}
-        onMonthChange={setMonth}
-      />
-    );
-  },
-};
