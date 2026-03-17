@@ -385,6 +385,12 @@ const columnDefs: ColDef<GridRow>[] = [
     headerClass: 'px-0!',
     sortable: false,
     filter: false,
+    cellClassRules: {
+      'bg-[var(--color-primary-20)]!': (params) => {
+        const rowIndex = params.node.rowIndex ?? -1;
+        return rowIndex % 2 !== 0;
+      }, // 0부터 시작하므로 홀수 인덱스가 짝수행
+    },
     valueFormatter: (params: ValueFormatterParams<GridRow>) => (params.value ? params.value.toLocaleString() : ''),
   },
   {

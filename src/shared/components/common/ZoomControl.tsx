@@ -1,31 +1,35 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Grow, Typo } from '@atoms';
 import { ZoomOutIcon, ZoomInIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { selectZoomPercent } from '@/shared/store/uiSelectors';
+import { resetZoom, zoomIn, zoomOut } from '@/shared/store/uiSlice';
 import { setScale } from '@/shared/utils/scale';
 
 export const ZoomControl = () => {
-  const [fontSize, setFontSize] = useState(10);
-  const [scale, setScaleState] = useState(1);
+  const dispatch = useAppDispatch();
+  const zoomPercent = useAppSelector(selectZoomPercent);
+  const scale = zoomPercent / 100;
+
   useEffect(() => {
-    document.documentElement.style.fontSize = `${fontSize}px`;
+    document.documentElement.style.fontSize = `${scale * 10}px`;
     setScale(scale); // scale 값을 공용 함수에 반영
-  }, [fontSize, scale]);
+  }, [scale]);
 
   const handleZoomIn = () => {
-    setFontSize(fontSize + 1);
-    setScaleState(scale + 0.1);
+    dispatch(zoomIn());
   };
+
   const handleZoomOut = () => {
-    setFontSize(Math.max(1.4, fontSize - 1));
-    setScaleState(Math.max(0.8, scale - 0.1));
+    dispatch(zoomOut());
   };
+
   const handleZoomRest = () => {
-    setFontSize(10);
-    setScaleState(1);
+    dispatch(resetZoom());
   };
 
   return (
@@ -33,7 +37,7 @@ export const ZoomControl = () => {
       <Button variant={'none'} only={'icon'} size={'sm'} className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
         <ZoomOutIcon />
       </Button>
-      <Typo variant={'button-sm'}>{fontSize * 10}%</Typo>
+      <Typo variant={'button-sm'}>{zoomPercent}%</Typo>
       <Button variant={'none'} only={'icon'} size={'sm'} className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
         <ZoomInIcon />
       </Button>

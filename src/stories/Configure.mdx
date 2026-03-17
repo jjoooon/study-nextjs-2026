@@ -6,13 +6,6 @@ import { IAListWithPreview } from "./IAListWithPreview";
 <Meta title="한화손해보험 IA List" />
 
 <div className="sb-container">
-  <Image
-    src={Logo}
-    alt="A wall of logos representing different styling technologies"
-    width={200}
-    height={0}
-    className="logo"
-  />
   <IAListWithPreview />
 </div>
 
@@ -26,7 +19,7 @@ import { IAListWithPreview } from "./IAListWithPreview";
       width: 100%;
       height: 100%;
       align-items: center;
-      justify-content: start;
+      justify-content: center;
       gap: 1rem;
       font-size: 1.6rem;
       color: #fff;
@@ -45,26 +38,29 @@ import { IAListWithPreview } from "./IAListWithPreview";
     }
     .IA-list {
       border-collapse: collapse;
-      flex:1;
+      white:100%;
       min-width: 36rem;
     }
     .IA-list th {
       background: #f2f2f2;
-      padding: 0.6rem 0.8rem;
+      padding: 0.6rem 0.4rem;
       font-size: 1.2rem;
       text-align: left;
       color: #222;
       border: 1px solid #ddd;
       white-space: nowrap;
+      height:auto!;
+      line-height:1 !important;
     }
     .IA-list td {
       background: #fff;
-      padding: 0.2rem 0.8rem;
-      font-size: 1.2rem;
+      padding: 0.2rem 0.6rem !important;
+      font-size: 1.1rem;
       color: #222;
+      height:auto!;
       border: 1px solid #ddd;
       cursor: pointer;
-      line-height:1;
+      line-height:1 !important;
     }
     .IA-list tbody tr:hover td,
     .IA-list tbody tr:hover th,
@@ -73,10 +69,11 @@ import { IAListWithPreview } from "./IAListWithPreview";
       background: #dceeff;
     }
     .ia-preview-pane {
-      flex-shrink: 0;
-      width:90rem;
-      height: 100vh;
-      min-width: 0;
+      flex:1;
+      max-width:168rem;
+      min-width:90rem;
+      width:100%;
+      height: 130vh;
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
@@ -90,7 +87,8 @@ import { IAListWithPreview } from "./IAListWithPreview";
       color: #222;
     }
     .ia-preview-iframe {
-      width: 128rem;
+      min-width: 128rem;
+      width:140%;
       height: 100%;
       flex: 1;
       border: 1px solid #d9d9d9;
