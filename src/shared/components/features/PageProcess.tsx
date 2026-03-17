@@ -27,7 +27,7 @@ type PageProcessProps = {
 };
 
 export default function PageProcess({
-  activeStep = 2,
+  activeStep = 1,
   onStepChange,
 }: PageProcessProps) {
   const getStepState = (step: PageProcessStep) => {

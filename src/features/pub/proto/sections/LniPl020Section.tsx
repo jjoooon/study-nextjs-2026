@@ -21,7 +21,42 @@ import type { PageProcessStep } from '@features/PageProcess';
 import { LniPl020Step1 } from '../components/LniPl020Step1'; // 01. 담보설계
 import { LniPl020Step2 } from '../components/LniPl020Step2'; // 02. 담보설계
 
-// 임시 공통 Data
+// 임시 공통 Header 영역 Data
+const dataPageID: { 
+  pageName: string; 
+  pageId: string 
+} = {
+  pageName: '가입설계',
+  pageId: 'LniPl020',
+};
+const dataPageTitle: { 
+  simpleMode: boolean; 
+  title: string; 
+  options: string[]; 
+  planNumber: string[]; 
+  contractHolder: string; 
+  planNumberList: Array<{ 
+    label: string; 
+    value: string; 
+    name: string; 
+    amount: string; 
+    state: string 
+  }>
+} = {
+  simpleMode: true,
+  title: '한화 시그니처 여성 건강보험 3.0 2504',
+  options: ['납입면제 강화형', '기본형'],
+  planNumber: ['LA20234472050000', '2'],
+  contractHolder: '6012345 박하늘별님달',
+  planNumberList: [
+    { label: 'LA20234472050000', value: 'LA20234472050000', name: '김은빈', amount: '23,000', state: '설계중' },
+    { label: 'LA23234472050001', value: 'LA23234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
+    { label: 'LA20234472050002', value: 'LA20234472050002', name: '이도현', amount: '12,300', state: '심사중' },
+    { label: 'LA20234472050003', value: 'LA20234472050003', name: '최수영', amount: '99,900', state: '청약완료' },
+    { label: 'LA20234472050004', value: 'LA20234472050004', name: '한지민', amount: '77,700', state: '설계중' },
+  ]
+};
+// 임시 공통 aside 영역 Data
 const dataTaskState: Array<{
   id: number;
   status: '정상' | '경고' | '중지';
@@ -58,46 +93,8 @@ const dataAside: {
   consentEndDate: '2024-06-30',
   note: '알릴사항 비대상',
 }
-const dataPageID: { 
-  pageName: string; 
-  pageId: string 
-} = {
-  pageName: '가입설계',
-  pageId: 'LniPl020',
-};
-const dataPageTitle: { 
-  simpleMode: boolean; 
-  title: string; 
-  options: string[]; 
-  planNumber: string[]; 
-  contractHolder: string; 
-  planNumberList: Array<{ 
-    label: string; 
-    value: string; 
-    name: string; 
-    amount: string; 
-    state: string 
-  }>
-} = {
-  simpleMode: true,
-  title: '한화 시그니처 여성 건강보험 3.0 2504',
-  options: ['납입면제 강화형', '기본형'],
-  planNumber: ['LA20234472050000', '2'],
-  contractHolder: '6012345 박하늘별님달',
-  planNumberList: [
-    { label: 'LA20234472050000', value: 'LA20234472050000', name: '김은빈', amount: '23,000', state: '설계중' },
-    { label: 'LA23234472050001', value: 'LA23234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
-    { label: 'LA20234472050002', value: 'LA20234472050002', name: '이도현', amount: '12,300', state: '심사중' },
-    { label: 'LA20234472050003', value: 'LA20234472050003', name: '최수영', amount: '99,900', state: '청약완료' },
-    { label: 'LA20234472050004', value: 'LA20234472050004', name: '한지민', amount: '77,700', state: '설계중' },
-  ]
-};
 
-
-
-
-
-
+// pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
 const isPageProcessStep = (value: number): value is PageProcessStep => {
   return value >= 1 && value <= 6;
 };
@@ -130,7 +127,7 @@ export default function LniPl020Section() {
     };
   }, []);
 
-  const stepMainBodies: Record<PageProcessStep, ReactNode> = {
+  const stepMainBody: Record<PageProcessStep, ReactNode> = {
     1: <LniPl020Step1 />,
     2: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
     3: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
@@ -141,14 +138,17 @@ export default function LniPl020Section() {
  
   return (
     <LayoutTemplateA
+      // LayoutHead
       pageID={<PageID data={dataPageID} />}
       pageTitle={<PageTitle data={dataPageTitle} />}
 
+      // LayoutBody: process
       pageProcess={<PageProcess activeStep={activeStep} onStepChange={setActiveStep} />}
-  
-      mainBody={stepMainBodies[activeStep]}
-      hideAside={isWidthExpanded}
-
+     
+      // LayoutBody: main
+      mainBody={stepMainBody[activeStep]}
+      
+      // LayoutBody: aside
       asideHead={<TaskStatusBoard state={dataTaskState} />}
       asideBody={
         <>
@@ -157,7 +157,7 @@ export default function LniPl020Section() {
         </>
       }
       asideFoot={<AsideFoot />}
-      
+      hideAside={isWidthExpanded}
     />
   );
 }

@@ -20,8 +20,6 @@ import {
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { Gcol, Grow } from '@atoms';
 
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
-
 interface Props {
   pageID?: React.ReactNode;
   pageTitle?: React.ReactNode;
@@ -52,12 +50,11 @@ export const LayoutTemplateA = ({
       {pageID}
       {pageTitle}
     </LayoutHead>
+    
     <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
       
-      
       {mainBody}
-      
       
       <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>

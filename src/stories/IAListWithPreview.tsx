@@ -185,7 +185,7 @@ export function IAListWithPreview() {
 
       <div className="ia-preview-pane">
         <div className="ia-preview-label cursor-pointer" onClick={handleMovePage}>
-          {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt; <b>{activeRow.dep4}</b>
+          {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt; <b>{activeRow.dep4}({activeRow.id})</b>
         </div>
         {previewUrl ? (
           <iframe
