@@ -122,7 +122,7 @@ function Input({
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
+    'w-full rounded-[0.4rem] px-2 text-[1.4rem] border border-[0.1rem] box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
     isInvalid || error
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required

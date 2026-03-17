@@ -40,7 +40,7 @@ import { Badge } from '@uiux/Badge';
 
 <Badge
   variant={'contained' | 'soft' | 'outlined' | 'ghost'}
-  color={'blue' | 'red' | 'green'}
+  color={'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary'}
   size={'sm' | 'md' | 'lg'}
 >
   D-31
@@ -65,7 +65,7 @@ import { Badge } from '@uiux/Badge';
               </thead>
               <tbody>
                 <tr><td>variant</td><td>'contained' | 'soft' | 'outlined' | 'ghost'</td><td>배지 스타일</td></tr>
-                <tr><td>color</td><td>'blue' | 'red' | 'green'</td><td>배지 색상</td></tr>
+                <tr><td>color</td><td>'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary'</td><td>배지 색상</td></tr>
                 <tr><td>size</td><td>'sm' | 'md' | 'lg'</td><td>배지 크기</td></tr>
                 <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
                 <tr><td>children</td><td>ReactNode</td><td>배지 라벨</td></tr>
@@ -93,6 +93,10 @@ import { Badge } from '@uiux/Badge';
                   <Badge color="blue">blue</Badge>
                   <Badge color="red">red</Badge>
                   <Badge color="green">green</Badge>
+                  <Badge color="primary">primary</Badge>
+                  <Badge color="gray">gray</Badge>
+                  <Badge color="bluegray">bluegray</Badge>
+                  <Badge color="secondary">secondary</Badge>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -131,7 +135,7 @@ import { Badge } from '@uiux/Badge';
     },
     color: {
       control: { type: 'select' },
-      options: ['blue', 'red', 'green'],
+      options: ['blue', 'red', 'green', 'primary', 'gray', 'bluegray', 'secondary'],
       table: { category: '스타일 props' },
     },
     size: {
@@ -140,12 +144,12 @@ import { Badge } from '@uiux/Badge';
       table: { category: '스타일 props' },
     },
     asChild: {
-      control: { type: 'boolean' },
-      table: { category: '설정 props' },
+      control: false,
+      table: { disable: true },
     },
     children: {
-      control: { type: 'text' },
-      table: { category: '설정 props' },
+      control: false,
+      table: { disable: true },
     },
     className: {
       table: { disable: true },

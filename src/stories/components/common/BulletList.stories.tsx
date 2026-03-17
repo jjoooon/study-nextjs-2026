@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type BulletListStoryProps = React.ComponentProps<typeof BulletList> & {
@@ -43,12 +43,16 @@ const meta: Meta<BulletListStoryProps> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 
+// 목록형태
 <BulletList position="col" className="gap-1">
   <BulletListItem type="dot" size="md">목록 아이템 1</BulletListItem>
   <BulletListItem type="dot" size="md">목록 아이템 2</BulletListItem>
 </BulletList>
+
+// 단일형태
+<BulletItem type="dot" size="md">목록 아이템 2</BulletItem>
 \`\`\`
               `}
             </Markdown>
@@ -72,7 +76,7 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
               </tbody>
             </table>
 
-            <h3>BulletListItem</h3>
+            <h3>BulletListItem & BulletItem</h3>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
@@ -173,6 +177,14 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
       description: '샘플 아이템 텍스트',
       table: { category: 'Content' },
     },
+    className: {
+      control: false,
+      table: { disable: true },
+    },
+    onClick: {
+      control: false,
+      table: { disable: true }
+    },
     children: { table: { disable: true } },
   },
   args: {
@@ -191,61 +203,25 @@ export const Default: Story = {
     const { type = 'dot', size = 'md', itemText = '안내 문구입니다.', ...listArgs } = args;
 
     return (
-      <BulletList {...listArgs}>
-        <BulletListItem type={type} size={size} className="whitespace-nowrap">
+      <Grow gap={8} className="w-full items-start">
+        <BulletList {...listArgs}>
+          <BulletListItem type={type} size={size} className="whitespace-nowrap">
+            {itemText}
+          </BulletListItem>
+          <BulletListItem type={type} size={size} className="whitespace-nowrap">
+            두 번째 문구입니다.
+          </BulletListItem>
+          <BulletListItem type={type} size={size} className="whitespace-nowrap">
+            세 번째 문구입니다.
+          </BulletListItem>
+        </BulletList>
+
+        <BulletItem type={type} size={size} className="whitespace-nowrap">
           {itemText}
-        </BulletListItem>
-        <BulletListItem type={type} size={size} className="whitespace-nowrap">
-          두 번째 문구입니다.
-        </BulletListItem>
-        <BulletListItem type={type} size={size} className="whitespace-nowrap">
-          세 번째 문구입니다.
-        </BulletListItem>
-      </BulletList>
+        </BulletItem>
+      </Grow>
     );
   },
 };
 
-export const Row: Story = {
-  args: {
-    position: 'row',
-    className: 'gap-2',
-    type: 'hash',
-    size: 'md',
-  },
-  render: (args) => {
-    const { type = 'hash', size = 'md', ...listArgs } = args;
 
-    return (
-      <BulletList {...listArgs}>
-        <BulletListItem type={type} size={size} >
-          자동차
-        </BulletListItem>
-        <BulletListItem type={type} size={size} >
-          운전자
-        </BulletListItem>
-        <BulletListItem type={type} size={size} >
-          건강
-        </BulletListItem>
-      </BulletList>
-    );
-  },
-};
-
-export const Types: Story = {
-  render: () => {
-    return (
-      <div className="flex flex-col gap-3">
-        <BulletList className="gap-[0.2rem]">
-          <BulletListItem type="dot">dot bullet</BulletListItem>
-          <BulletListItem type="ref">ref bullet</BulletListItem>
-        </BulletList>
-        <BulletList position="row" className="gap-2">
-          <BulletListItem type="hash">hash</BulletListItem>
-          <BulletListItem type="hash">list</BulletListItem>
-          <BulletListItem type="hash">sample</BulletListItem>
-        </BulletList>
-      </div>
-    );
-  },
-};
