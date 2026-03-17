@@ -66,8 +66,8 @@ export const BulletListItem = ({ children, type = 'dot', size = 'md', className,
   // dot 타입에 사이즈별 블릿 크기 적용
   const dotSizeMap = {
     sm: 'pl-[0.6rem] before:top-[0.8rem] before:w-[.2rem] before:h-[.2rem] before:translate-y-[-20%] before:rounded-full before:bg-current tracking-[-0.08rem]',
-    md: 'pl-[1rem] before:top-[50%] before:w-[.4rem] before:h-[.4rem] before:translate-y-[-40%] before:rounded-full before:bg-current',
-    lg: 'pl-[1rem] before:top-[50%] before:w-[.5rem] before:h-[.5rem] before:translate-y-[-30%] before:rounded-full before:bg-current',
+    md: 'pl-[1rem] before:top-[50%] before:w-[.4rem] before:h-[.4rem] before:translate-y-[-50%] before:rounded-full before:bg-current',
+    lg: 'pl-[1rem] before:top-[50%] before:w-[.5rem] before:h-[.5rem] before:translate-y-[-40%] before:rounded-full before:bg-current',
   };
   const bulletStyles = {
     dot: `before:absolute before:left-0 before:content-[''] before:block  ${dotSizeMap[size]}`,
@@ -98,8 +98,8 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', className, onC
   // dot 타입에 사이즈별 블릿 크기 적용
   const dotSizeMap = {
     sm: 'pl-[0.6rem] before:top-[0.8rem] before:w-[.2rem] before:h-[.2rem] before:translate-y-[-20%] before:rounded-full before:bg-current tracking-[-0.08rem]',
-    md: 'pl-[1rem] before:top-[50%] before:w-[.4rem] before:h-[.4rem] before:translate-y-[-40%] before:rounded-full before:bg-current',
-    lg: 'pl-[1rem] before:top-[50%] before:w-[.5rem] before:h-[.5rem] before:translate-y-[-30%] before:rounded-full before:bg-current',
+    md: 'pl-[1rem] before:top-[50%] before:w-[.4rem] before:h-[.4rem] before:translate-y-[-50%] before:rounded-full before:bg-current',
+    lg: 'pl-[1rem] before:top-[50%] before:w-[.5rem] before:h-[.5rem] before:translate-y-[-40%] before:rounded-full before:bg-current',
   };
   const bulletStyles = {
     dot: `before:absolute before:left-0 before:translate-y-[-15%] before:content-[''] before:block  ${dotSizeMap[size]}`,
