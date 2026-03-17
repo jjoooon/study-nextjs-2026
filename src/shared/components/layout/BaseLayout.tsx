@@ -123,6 +123,7 @@ export const LayoutAsideBody = ({ children, className }: LayoutProps) => {
     </div>
   );
 };
+
 export const LayoutAsideFoot = ({ children, className }: LayoutProps) => {
   return (
     <div data-layout="aside-foot" className={cn('relative w-full flex shrink-0', className)}>
@@ -130,13 +131,6 @@ export const LayoutAsideFoot = ({ children, className }: LayoutProps) => {
     </div>
   );
 };
-
-
-
-
-
-
-
 
 export const LayoutScrollWrap = ({ children, className }: LayoutProps) => {
   return (

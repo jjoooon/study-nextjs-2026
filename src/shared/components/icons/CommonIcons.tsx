@@ -119,6 +119,18 @@ export const CheckIcon: React.FC<IconProps> = ({ className = '', size = 16, colo
     />
   </svg>
 );
+export const CheckBoldIcon: React.FC<IconProps> = ({ className = '', size = 12, color = '#fff' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox={`0 0 12 12`}
+    fill="none"
+    className={className}
+  >
+    <path d="M3 6.6L5.1 8.4L9 3.99999" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
 // D
 
 // F
@@ -676,3 +688,22 @@ export const DialogResetIcon: React.FC<IconProps> = ({ className = '', size = 14
     <path d="M12.2499 0.991695C12.6042 0.991715 12.8912 1.27887 12.8913 1.63313V5.13313C12.8913 5.4875 12.6042 5.77455 12.2499 5.77457H8.74987C8.39551 5.77455 8.10844 5.4875 8.10844 5.13313C8.10857 4.77888 8.39559 4.49172 8.74987 4.4917H10.9385C10.3926 3.59256 9.55421 2.90511 8.56075 2.54744C7.50501 2.16739 6.3467 2.18512 5.30342 2.59814C4.26017 3.01119 3.40323 3.79107 2.89375 4.79077C2.64005 5.28869 2.48092 5.82459 2.4198 6.37101C2.38042 6.72318 2.0633 6.97659 1.71114 6.93725C1.359 6.89785 1.10556 6.58074 1.14489 6.22859C1.22302 5.53005 1.4261 4.84516 1.75044 4.20857C2.40179 2.93035 3.4973 1.93339 4.83117 1.40527C6.16496 0.877241 7.64568 0.853902 8.9954 1.33976C10.0295 1.71205 10.9319 2.36429 11.6084 3.21394V1.63313C11.6086 1.27887 11.8956 0.991715 12.2499 0.991695Z" fill={color}/>
   </svg>
 );
+export const ProcessActiveIcon: React.FC<IconProps> = ({ className = '', size = 14, color = '#FF5C2E', color2 = '#FFD463' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 14 14"
+    fill="none"
+    className={className}
+  >
+    <path d="M11.356 6.59244C11.2706 5.67951 10.9005 4.8165 10.298 4.12531C9.69551 3.43411 8.8911 2.94968 7.99838 2.74044C7.10566 2.5312 6.16976 2.60773 5.32289 2.95922C4.47602 3.31071 3.76099 3.91939 3.27881 4.69928C2.79662 5.47917 2.57165 6.39084 2.63568 7.30552C2.69971 8.22019 3.0495 9.09163 3.63564 9.79674C4.22178 10.5018 5.01464 11.005 5.90222 11.235C6.7898 11.4651 7.72723 11.4105 8.5821 11.0789" stroke="url(#paint0_linear_1865_8670)" strokeWidth="3" strokeLinecap="round"/>
+    <defs>
+    <linearGradient id="paint0_linear_1865_8670" x1="7" y1="11.7635" x2="10.382" y2="4.81724" gradientUnits="userSpaceOnUse">
+      <stop stopColor={color}/>
+      <stop offset="0.984865" stopColor={color2}/>
+    </linearGradient>
+    </defs>
+  </svg>
+);
+
