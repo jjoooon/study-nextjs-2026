@@ -44,11 +44,11 @@
 
 import {
   type CellValueChangedEvent,
+  type CellClickedEvent,
   type ColDef,
   type GridApi,
   type GridReadyEvent,
   type ICellRendererParams,
-  type RowClickedEvent,
   type SelectionChangedEvent,
   AllCommunityModule,
   ModuleRegistry,
@@ -205,6 +205,7 @@ export default function AgGridFlgCdGroupSelection() {
    */
   const isHandlingRef = useRef(false);
 
+
   // ─── expandGroup ──────────────────────────────────────────────────────────
 
   /**
@@ -230,14 +231,7 @@ export default function AgGridFlgCdGroupSelection() {
     const childSum = childRows.reduce((sum, r) => sum + r.price, 0);
 
     /**
-     * [핵심 변경] setDisplayRows(React state) 대신 api.applyTransaction 사용
-     *
-     * 문제: setDisplayRows → React 리렌더 → AG Grid 노드 갱신은 비동기 흐름이다.
-     *   setTimeout(0)은 JS 이벤트 루프 한 턴을 양보하지만,
-     *   React 렌더링 커밋(Fiber commit phase)이 그 안에 완료된다는 보장이 없다.
-     *   결과적으로 forEachNode 순회 시 02 노드가 아직 그리드에 없어 선택이 안 된다.
-     *
-     * 해결: applyTransaction은 AG Grid 내부에서 동기적으로 처리된다.
+     * applyTransaction은 AG Grid 내부에서 동기적으로 처리된다.
      *   트랜잭션 호출이 끝난 즉시 노드가 존재하므로
      *   바로 다음 줄에서 forEachNode로 선택할 수 있다.
      *
@@ -336,10 +330,7 @@ export default function AgGridFlgCdGroupSelection() {
     });
 
     /**
-     * [핵심 변경] setDisplayRows 대신 applyTransaction으로 동기 제거
-     *
-     * setDisplayRows(filter)는 React 리렌더를 통해 rowData prop이 바뀌는 방식이라
-     * 비동기로 처리된다. applyTransaction({ remove })는 AG Grid 내부에서 동기적으로
+     * applyTransaction({ remove })는 AG Grid 내부에서 동기적으로
      * 노드를 제거하므로 이후 forEachNode 결과가 즉시 반영된다.
      */
     if (childRowsToRemove.length > 0) {
@@ -372,18 +363,12 @@ export default function AgGridFlgCdGroupSelection() {
 
   /**
    * @event onSelectionChanged
-   * 체크박스 직접 조작 시 진입하는 단일 처리 경로.
-   * handleRowClicked(행 클릭)도 내부에서 setSelected를 호출해 이 핸들러로 흐름을 통일한다.
+   * 체크박스 조작 시 진입하는 단일 처리 경로.
    *
-   * [A] 새로 선택된 03 → expandGroup
-   *   selectedGroupKeysRef에 없는 key의 03이 선택되면 그룹을 펼친다.
-   *
+   * [A] 새로 선택된 03 → expandGroup (02 노출 + 전체 선택)
    * [B] 펼쳐진 그룹 중 03 또는 02가 해제됨 → collapseGroup
-   *   그룹에 속한 노드 중 하나라도 선택이 빠지면 그룹 전체를 닫는다.
    *
-   * [재진입 방지]
-   *   isHandlingRef가 true인 동안(expandGroup/collapseGroup 내부 setSelected 실행 중)
-   *   이 핸들러는 즉시 return 한다.
+   * isHandlingRef가 true인 동안에는 재진입 차단.
    */
   const onSelectionChanged = useCallback((event: SelectionChangedEvent<IRow>) => {
     if (isHandlingRef.current) return;
@@ -419,34 +404,25 @@ export default function AgGridFlgCdGroupSelection() {
       if (broken) keysToCollapse.push(key);
     });
 
-    // collapse → expand 순서 보장
     keysToCollapse.forEach(key => collapseGroup(key));
     keysToExpand.forEach(({ key, row }) => expandGroup(key, row));
-
   }, [collapseGroup, expandGroup]);
 
-  // ─── handleRowClicked ────────────────────────────────────────────────────
+  // ─── onCellClicked ────────────────────────────────────────────────────────
 
   /**
-   * @handler handleRowClicked
-   * suppressRowClickSelection=true 이므로 행 클릭은 AG Grid 기본 선택에 영향을 주지 않는다.
-   * 이 핸들러에서 직접 node.setSelected()를 호출해 onSelectionChanged로 흐름을 통일한다.
-   *
-   * [01 / 03 행 클릭]
-   *   현재 선택 상태 반전. addToCurrentSelection(두 번째 인자 false)는
-   *   "단독 선택"이 아니라 "기존 선택에 추가/제거"를 뜻한다.
-   *   → false: 기존 선택 유지하며 해당 노드만 토글 (multiRow 모드에서의 올바른 동작)
-   *
-   * [02 행 클릭]
-   *   체크박스 직접 클릭만 허용. 행 클릭으로는 개별 토글하지 않는다.
+   * @handler onCellClicked
+   * price 컬럼(01·02)을 단일 클릭하면 즉시 편집 모드를 시작한다.
+   * 다른 컬럼 클릭은 아무 액션도 하지 않는다.
+   * singleClickEdit prop과 달리 컬럼별로 편집 활성화 여부를 제어할 수 있다.
    */
-  const handleRowClicked = useCallback((event: RowClickedEvent<IRow>) => {
-    const { data, node } = event;
-    if (!data) return;
-
-    if (data.flgCd === '01' || data.flgCd === '03') {
-      node.setSelected(!node.isSelected(), false, 'api');
-    }
+  const onCellClicked = useCallback((event: CellClickedEvent<IRow>) => {
+    if (event.colDef.field !== 'price') return;
+    if (event.data?.flgCd !== '01' && event.data?.flgCd !== '02') return;
+    event.api.startEditingCell({
+      rowIndex: event.rowIndex!,
+      colKey: 'price',
+    });
   }, []);
 
   // ─── onCellValueChanged ──────────────────────────────────────────────────
@@ -584,11 +560,11 @@ export default function AgGridFlgCdGroupSelection() {
             <span className="px-2 py-1 rounded-full bg-amber-50 text-amber-800">02 — 상세 행 (03 선택 시 표시)</span>
           </div>
           <p className="text-xs text-gray-500">
-            03 행 클릭 또는 체크박스 선택 → 동일 Lvl1/Lvl2/Lvl3의 02 행이 펼쳐지며 함께 선택됩니다.
-            여러 03 그룹을 동시에 펼칠 수 있습니다.
-            03의 Price는 02 합산으로 자동 갱신됩니다.
-            02 또는 03 체크박스 중 하나라도 해제되면 해당 그룹 전체가 닫힙니다.
-            01·02 행의 Price 셀은 더블클릭으로 직접 편집할 수 있습니다.
+            체크박스 클릭으로만 선택됩니다. (행 클릭은 선택에 영향 없음)
+            03 체크박스 선택 → 동일 Lvl1/Lvl2/Lvl3의 02 행이 펼쳐지며 함께 선택됩니다.
+            02 체크박스 해제 → 해당 그룹의 모든 02·03 선택이 함께 해제됩니다.
+            한번 선택된 행은 체크박스로 해제할 수 없습니다.
+            01·02 행의 Price 셀을 클릭하면 즉시 편집 모드로 진입합니다.
           </p>
         </div>
 
@@ -605,36 +581,38 @@ export default function AgGridFlgCdGroupSelection() {
             rowData={displayRows}
             columnDefs={colDefs}
             /**
-             * rowSelection — checkbox 기반 다중 선택 설정
-             *
-             * mode: 'multiRow'       다중 행 선택 활성화
-             * checkboxes: true       각 행에 체크박스 렌더링
-             * headerCheckbox: false  헤더 전체선택 체크박스 제거
-             *                        (03 그룹 연동 로직과 충돌하므로 비활성화)
+             * rowSelection
+             * - mode: 'multiRow'          다중 행 선택
+             * - checkboxes: true          체크박스 표시
+             * - headerCheckbox: false     헤더 전체선택 제거 (그룹 로직 충돌 방지)
+             * - enableClickSelection: false  행 클릭으로 선택 변경 불가
+             *                               체크박스 클릭으로만 선택/해제
              */
-            rowSelection={{ mode: 'multiRow', checkboxes: true, headerCheckbox: false }}
-            /**
-             * suppressRowClickSelection: true
-             * 행 클릭 자체가 선택 상태를 변경하지 않도록 막는다.
-             * 선택은 체크박스 클릭 또는 handleRowClicked 내부의 setSelected() 로만 제어한다.
-             * 이 옵션 없이 03 행을 클릭하면 handleRowClicked와 AG Grid 기본 선택이
-             * 동시에 작동해 onSelectionChanged 가 의도치 않게 트리거된다.
-             */
-            suppressRowClickSelection
+            rowSelection={{
+              mode: 'multiRow',
+              checkboxes: true,
+              headerCheckbox: false,
+              enableClickSelection: false,
+            }}
             animateRows
             getRowStyle={getRowStyle}
             onGridReady={onGridReady}
-            onRowClicked={handleRowClicked}
             onSelectionChanged={onSelectionChanged}
             /**
+             * onCellClicked
+             * price 컬럼(01·02)을 클릭하면 즉시 편집 모드 진입.
+             * 다른 셀 클릭은 아무 액션도 없음.
+             */
+            onCellClicked={onCellClicked}
+            /**
              * onCellValueChanged
-             * flgCd 02 price 편집 시 동일 그룹 03 price를 재합산한다.
+             * flgCd 02 price 편집 완료 시 동일 그룹 03 price 재합산.
              */
             onCellValueChanged={onCellValueChanged}
             /**
-             * getRowId: rowData가 변경될 때 AG Grid가 행 동일성을 id 기준으로
-             * 추적하도록 설정한다. 이 설정이 없으면 displayRows 변경 시
-             * 올바른 노드를 찾지 못해 선택 상태가 초기화될 수 있다.
+             * getRowId
+             * applyTransaction 행 동일성 판단 기준.
+             * 없으면 update/remove 시 #5 오류 발생.
              */
             getRowId={params => String(params.data.id)}
           />

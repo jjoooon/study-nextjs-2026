@@ -159,12 +159,12 @@ const ElectricBadgeCommunity = ({ value }: ICellRendererParams<IRow, string>) =>
 
 // ─── 초기 데이터 ──────────────────────────────────────────────────────────────
 const INITIAL_ROWS: IRow[] = [
-  { id: 1, make: 'Tesla',   model: 'Model Y',  price: 64950, electric: true  },
-  { id: 2, make: 'Ford',    model: 'F-Series', price: 33850, electric: false },
-  { id: 3, make: 'Toyota',  model: 'Corolla',  price: 29600, electric: false },
-  { id: 4, make: 'BMW',     model: 'i4',       price: 57995, electric: true  },
-  { id: 5, make: 'Hyundai', model: 'IONIQ 6',  price: 39450, electric: true  },
-  { id: 6, make: 'Honda',   model: 'Civic',    price: 25000, electric: false },
+  { id: 1, make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
+  { id: 2, make: 'Ford', model: 'F-Series', price: 33850, electric: false },
+  { id: 3, make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
+  { id: 4, make: 'BMW', model: 'i4', price: 57995, electric: true },
+  { id: 5, make: 'Hyundai', model: 'IONIQ 6', price: 39450, electric: true },
+  { id: 6, make: 'Honda', model: 'Civic', price: 25000, electric: false },
 ];
 
 let nextId = 7;
@@ -174,10 +174,10 @@ export default function AgGridExternalActions() {
   // gridApi ref: 외부 액션의 핵심 — onGridReady에서 저장 후 어디서든 호출 가능
   const gridApiRef = useRef<GridApi<IRow> | null>(null);
 
-  const [rowData, setRowData]       = useState<IRow[]>(INITIAL_ROWS);
-  const [logs, setLogs]             = useState<EventLog[]>([]);
-  const [editField, setEditField]   = useState<keyof IRow>('make');
-  const [editValue, setEditValue]   = useState('');
+  const [rowData, setRowData] = useState<IRow[]>(INITIAL_ROWS);
+  const [logs, setLogs] = useState<EventLog[]>([]);
+  const [editField, setEditField] = useState<keyof IRow>('make');
+  const [editValue, setEditValue] = useState('');
   const [quickFilter, setQuickFilter] = useState('');
 
   /** 이벤트 로그를 상단에 추가 */
@@ -213,8 +213,8 @@ export default function AgGridExternalActions() {
    * `applyTransaction`은 추가/수정/삭제를 한 번에 처리할 수 있는 배치 API입니다.
    */
   const addRow = useCallback(() => {
-    const makes  = ['Kia', 'Volvo', 'Rivian', 'Lucid', 'Audi'];
-    const models = ['EV6', 'XC90',  'R1T',    'Air',   'e-tron'];
+    const makes = ['Kia', 'Volvo', 'Rivian', 'Lucid', 'Audi'];
+    const models = ['EV6', 'XC90', 'R1T', 'Air', 'e-tron'];
     const i = Math.floor(Math.random() * makes.length);
     const newRow: IRow = {
       id: nextId++,
@@ -349,8 +349,9 @@ export default function AgGridExternalActions() {
     const api = gridApiRef.current;
     if (!api) return;
     const node = api.getDisplayedRowAtIndex(0);
-    if (node) { api.deselectAll(); node.setSelected(true);
-      api.setFocusedCell(node.rowIndex!, 'make'); 
+    if (node) {
+      api.deselectAll(); node.setSelected(true);
+      api.setFocusedCell(node.rowIndex!, 'make');
     }
     addLog('selectFirst', `id=${node?.data?.id}`);
   }, [addLog]);
@@ -365,8 +366,8 @@ export default function AgGridExternalActions() {
     if (!api) return;
     const count = api.getDisplayedRowCount();
     const node = api.getDisplayedRowAtIndex(count - 1);
-    if (node) { 
-      api.deselectAll(); node.setSelected(true); 
+    if (node) {
+      api.deselectAll(); node.setSelected(true);
       api.setFocusedCell(node.rowIndex!, 'make');
     }
     addLog('selectLast', `id=${node?.data?.id}`);
@@ -456,7 +457,7 @@ export default function AgGridExternalActions() {
   const filterElectric = useCallback(async () => {
     const api = gridApiRef.current;
     if (!api) return;
-    await api.setColumnFilterModel('electric', { filterType:'text', type:'equals', filter:'전기차' });
+    await api.setColumnFilterModel('electric', { filterType: 'text', type: 'equals', filter: '전기차' });
     api.onFilterChanged();
     addLog('columnFilterSet', 'electric=전기차 필터 적용');
   }, [addLog]);
@@ -630,11 +631,13 @@ export default function AgGridExternalActions() {
 
   // ─── 컬럼 정의 ──────────────────────────────────────────────────────────────
   const [colDefs] = useState<ColDef<IRow>[]>([
-    { field: 'id',       headerName: 'ID',      width: 70, sortable: true },
-    { field: 'make',     headerName: '제조사',   flex: 1,  sortable: true, editable: true, filter: true },
-    { field: 'model',    headerName: '모델',     flex: 1,  sortable: true, editable: true, filter: true },
-    { field: 'price',    headerName: '가격',     flex: 1,  sortable: true, editable: true, filter: 'agNumberColumnFilter',
-      valueFormatter: p => p.value != null ? `$${p.value.toLocaleString()}` : '' },
+    { field: 'id', headerName: 'ID', width: 70, sortable: true },
+    { field: 'make', headerName: '제조사', flex: 1, sortable: true, editable: true, filter: true },
+    { field: 'model', headerName: '모델', flex: 1, sortable: true, editable: true, filter: true },
+    {
+      field: 'price', headerName: '가격', flex: 1, sortable: true, editable: true, filter: 'agNumberColumnFilter',
+      valueFormatter: p => p.value != null ? `$${p.value.toLocaleString()}` : ''
+    },
     {
       /**
        * electric 컬럼
@@ -679,7 +682,7 @@ export default function AgGridExternalActions() {
           {/* 행 조작 */}
           <div className="bg-white rounded-xl border border-gray-200 p-3 space-y-2">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">행 조작</p>
-            <button onClick={addRow}            className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-green-200 text-green-700 hover:bg-green-50">+ 행 추가</button>
+            <button onClick={addRow} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-green-200 text-green-700 hover:bg-green-50">+ 행 추가</button>
             <button onClick={deleteSelectedRows} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50">선택 행 삭제</button>
             <button onClick={duplicateSelected} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">선택 행 복제</button>
           </div>
@@ -696,8 +699,8 @@ export default function AgGridExternalActions() {
             <input value={editValue} onChange={e => setEditValue(e.target.value)}
               placeholder="값 입력"
               className="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5" />
-            <button onClick={setCellValue}      className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-blue-200 text-blue-700 hover:bg-blue-50">값 설정</button>
-            <button onClick={startEditingCell}  className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">인라인 편집 시작</button>
+            <button onClick={setCellValue} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-blue-200 text-blue-700 hover:bg-blue-50">값 설정</button>
+            <button onClick={startEditingCell} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">인라인 편집 시작</button>
             <button onClick={() => stopEditing()} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">편집 저장</button>
             <button onClick={() => stopEditing(true)} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">편집 취소</button>
           </div>
@@ -705,20 +708,20 @@ export default function AgGridExternalActions() {
           {/* 선택 & 포커스 */}
           <div className="bg-white rounded-xl border border-gray-200 p-3 space-y-2">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">선택 & 포커스</p>
-            <button onClick={selectAll}      className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">전체 선택</button>
-            <button onClick={deselectAll}    className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">선택 해제</button>
+            <button onClick={selectAll} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">전체 선택</button>
+            <button onClick={deselectAll} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">선택 해제</button>
             <button onClick={selectFirstRow} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">첫 번째 행 선택</button>
-            <button onClick={selectLastRow}  className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">마지막 행 선택</button>
-            <button onClick={focusCell}      className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">셀 포커스</button>
+            <button onClick={selectLastRow} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">마지막 행 선택</button>
+            <button onClick={focusCell} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">셀 포커스</button>
           </div>
 
           {/* 정렬 & 필터 */}
           <div className="bg-white rounded-xl border border-gray-200 p-3 space-y-2">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">정렬 & 필터</p>
-            <button onClick={() => sortColumn('make', 'asc')}   className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">제조사 오름차순</button>
+            <button onClick={() => sortColumn('make', 'asc')} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">제조사 오름차순</button>
             <button onClick={() => sortColumn('price', 'desc')} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">가격 내림차순</button>
-            <button onClick={clearSort}       className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">정렬 초기화</button>
-            <button onClick={filterElectric}  className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">전기차만 표시</button>
+            <button onClick={clearSort} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">정렬 초기화</button>
+            <button onClick={filterElectric} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">전기차만 표시</button>
             <button onClick={clearAllFilters} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">필터 초기화</button>
           </div>
 
@@ -726,17 +729,17 @@ export default function AgGridExternalActions() {
           <div className="bg-white rounded-xl border border-gray-200 p-3 space-y-2">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">컬럼 제어</p>
             <button onClick={toggleElectricColumn} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">전기차 컬럼 토글</button>
-            <button onClick={togglePinMake}        className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">제조사 컬럼 고정</button>
-            <button onClick={autoSizeColumns}      className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">컬럼 너비 자동 조정</button>
+            <button onClick={togglePinMake} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">제조사 컬럼 고정</button>
+            <button onClick={autoSizeColumns} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">컬럼 너비 자동 조정</button>
           </div>
 
           {/* 데이터 & 뷰 */}
           <div className="bg-white rounded-xl border border-gray-200 p-3 space-y-2">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">데이터 & 뷰</p>
-            <button onClick={refreshData}    className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">데이터 리프레시</button>
-            <button onClick={exportCsv}      className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">CSV 내보내기</button>
+            <button onClick={refreshData} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">데이터 리프레시</button>
+            <button onClick={exportCsv} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">CSV 내보내기</button>
             <button onClick={scrollToBottom} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">맨 아래로 스크롤</button>
-            <button onClick={scrollToTop}    className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">맨 위로 스크롤</button>
+            <button onClick={scrollToTop} className="w-full text-left text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">맨 위로 스크롤</button>
           </div>
         </div>
 
@@ -755,7 +758,11 @@ export default function AgGridExternalActions() {
           <AgGridReact<IRow>
             rowData={rowData}
             columnDefs={colDefs}
-            rowSelection="multiple"
+            rowSelection={{
+              mode: 'multiRow',           // "multiple" 대체
+              enableClickSelection: true, // suppressRowClickSelection={false} 대체
+              // true = 행 클릭으로 선택 가능 (기존 동작 유지)
+            }}
             animateRows
             onGridReady={onGridReady}
             onRowClicked={onRowClicked}
