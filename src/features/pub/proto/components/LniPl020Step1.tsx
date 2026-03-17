@@ -36,13 +36,13 @@ import { useTabs } from '@/shared/hooks/useTabs';
 // Data
 import { InsuranceFormOptions } from '@/shared/constants/InsuranceFormOptions';
 import { LniPl020Step1Data } from '@/features/pub/proto/data/LniPl020Step1Data';
+import type { LniPl020Step1DataType } from '@/features/pub/proto/data/LniPl020Step1Data';
 
 // Types
-import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
 
 // Props Type
 type LniPl020Step1Props = {
-  data?: LniPl020DataType['mainBody'];
+  data?: LniPl020Step1DataType;
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   className?: string;
