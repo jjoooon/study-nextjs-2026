@@ -48,6 +48,8 @@ export function LniPl020Step2({
   isWidthExpanded = false,
   setIsWidthExpanded,
 }: LniPl020Step2Props) {
+  // TabPager 에러 상태 (보험료계산(지침) 클릭 시 토글)
+  const [tabError, setTabError] = useState(false);
   // 테이블 크기 조정
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   
@@ -375,26 +377,20 @@ export function LniPl020Step2({
         <TabPager 
           // removable={true}
           // onRemove={LniPl020_handleRemove}
-          variant={'outlined'}
           data={LniPl020_tabs} 
           active={LniPl020_active}
           setActive={LniPl020_setActive}
           visibleCount={planFilters.visibleCount}
+          error={tabError}
+          errorMsg="입력하세요."
           getValue={tab => String(tab.value)}
           renderTab={tab => (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <div>
-                  <span className="flex items-center">
-                    <span className="max-w-20 truncate block">{tab.name}</span>
-                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                  </span>
-                  {tab.error && (
-                    <ErrorMsg aria-live="polite" show={true} position={'tl'} id={'test'}>
-                      입력하세요.
-                    </ErrorMsg>
-                  )}
-                </div>
+                <span className="flex items-center">
+                  <span className="max-w-20 truncate block">{tab.name}</span>
+                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                </span>
               </HoverCardTrigger>
               <HoverCardContent>
                 <BulletList>
@@ -540,7 +536,7 @@ export function LniPl020Step2({
       </LayoutMainBody>
 
       <LayoutMainFoot>
-         <MainFoot />
+        <MainFoot onCalcGuidelineClick={() => setTabError((prev) => !prev)} />
       </LayoutMainFoot>
     </LayoutMain>
   );

@@ -131,11 +131,11 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           className={cn(
             tabsTriggerVariants({ variant: variant as 'default' | 'box' | 'vertical' | undefined }),
             removable && totalTabs! > 1 ? 'isRemovable' : '',
-            '[&[data-tab-error=true]:not([data-state=active])]:text-[var(--color-text-danger)]!',
-            '[&[data-tab-error=true]:not([data-state=active])]:border-[var(--color-text-danger)]!',
+            '[&[data-tab-error=true]:not([data-state=active])]:text-[var(--color-danger-50)]!',
+            '[&[data-tab-error=true]:not([data-state=active])]:border-[var(--color-danger-50)]!',
             '[&[data-tab-error=true]:not([data-state=active])]:border!',
             '[&[data-tab-error=true]:not([data-state=active])]:z-1!',
-            '[&[data-tab-error=true]:not([data-state=active])]:bg-[var(--color-input-surface-error)]!',
+            '[&[data-tab-error=true]:not([data-state=active])]:bg-[var(--color-danger-5)]!',
             className,
             'items-center ',
           )}
