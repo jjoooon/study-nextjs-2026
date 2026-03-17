@@ -16,7 +16,7 @@ export function DesignStart() {
         초기화
       </Button>
       <Button
-        type={'submit'}
+        type="submit"
         form={'page2-MainForm'}
         variant={'contained'}
         color={'primary'}
@@ -41,7 +41,7 @@ export function DesignGeneration() {
           초기화
         </Button>
          <Button
-          type={'submit'}
+          type="submit"
           form={'page2-MainForm'}
           variant={'contained'}
           color={'primary'}

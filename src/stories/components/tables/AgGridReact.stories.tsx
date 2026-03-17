@@ -15,6 +15,7 @@ import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
 
+import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
 import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
 import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
 
@@ -28,6 +29,10 @@ interface AgGridReactStoryProps {
   checkboxes?: boolean;
   enableClickSelection?: boolean;
   showProductNameTooltip?: boolean;
+  pagination?: boolean;
+  paginationPageSize?: number;
+  paginationPageSizeSelector?: number[] | boolean;
+  suppressPaginationPanel?: boolean;
 }
 
 const AgGridReactStoryComponent = (_props: AgGridReactStoryProps) => null;
@@ -304,6 +309,26 @@ const columnDefs: ColDef<LniPl020GridRow>[] = useMemo(
       description: '담보명 툴팁 표시 여부',
       table: { category: 'UI' },
     },
+    pagination: {
+      control: 'boolean',
+      description: '페이지네이션 사용 여부',
+      table: { category: 'Pagination' },
+    },
+    paginationPageSize: {
+      control: 'number',
+      description: '페이지당 행 수',
+      table: { category: 'Pagination' },
+    },
+    paginationPageSizeSelector: {
+      control: 'object',
+      description: '페이지 사이즈 선택 옵션 목록',
+      table: { category: 'Pagination' },
+    },
+    suppressPaginationPanel: {
+      control: 'boolean',
+      description: '기본 페이지네이션 패널 숨김 여부',
+      table: { category: 'Pagination' },
+    },
   },
   args: {
     selectionMode: 'multiRow',
@@ -311,6 +336,10 @@ const columnDefs: ColDef<LniPl020GridRow>[] = useMemo(
     checkboxes: true,
     enableClickSelection: false,
     showProductNameTooltip: true,
+    pagination: true,
+    paginationPageSize: 5,
+    paginationPageSizeSelector: [5, 10, 20, 50, 100],
+    suppressPaginationPanel: false,
   },
 };
 
@@ -453,7 +482,7 @@ const renderGrid: Story['render'] = (args) => {
   const rowData = LniPl020Step2Data.coverageGrid.agGridTable1;
   return (
     <div className="p-5">
-      <div className="w-full h-[40vh]! ag-theme-alpine">
+      <div className="w-full h-[40vh]! ag-theme-alpine aggrid-pagination-ko">
         <AgGridReact<GridRow>
           rowData={rowData}
           columnDefs={columnDefs}
@@ -488,6 +517,13 @@ const renderGrid: Story['render'] = (args) => {
           tooltipHideDelay={args.showProductNameTooltip ? 9999 : undefined}
           tooltipMouseTrack={args.showProductNameTooltip ? true : undefined}
           getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+
+          pagination={args.pagination ?? true}
+          paginationPageSize={args.paginationPageSize ?? 10}
+          paginationPageSizeSelector={args.paginationPageSizeSelector ?? [10, 20, 50, 100]}
+          suppressPaginationPanel={args.suppressPaginationPanel ?? false}
+          localeText={AG_GRID_LOCALE_KO}
+          paginationNumberFormatter={(params) => `${Number(params.value).toLocaleString('ko-KR')}`}
         />
       </div>
     </div>

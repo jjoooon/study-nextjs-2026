@@ -42,7 +42,7 @@ const buttonVariants = cva(
         'transparent': `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
-        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 [&>svg]:w-[1.6rem] min-w-[8rem] `,
+        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 [&>svg]:w-[1.6rem] min-w-[6rem] `,
         lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
         sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
