@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type BulletListStoryProps = React.ComponentProps<typeof BulletList> & {
@@ -43,12 +43,16 @@ const meta: Meta<BulletListStoryProps> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 
+// 목록형태
 <BulletList position="col" className="gap-1">
   <BulletListItem type="dot" size="md">목록 아이템 1</BulletListItem>
   <BulletListItem type="dot" size="md">목록 아이템 2</BulletListItem>
 </BulletList>
+
+// 단일형태
+<BulletItem type="dot" size="md">목록 아이템 2</BulletItem>
 \`\`\`
               `}
             </Markdown>
@@ -72,7 +76,7 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
               </tbody>
             </table>
 
-            <h3>BulletListItem</h3>
+            <h3>BulletListItem & BulletItem</h3>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
@@ -199,17 +203,23 @@ export const Default: Story = {
     const { type = 'dot', size = 'md', itemText = '안내 문구입니다.', ...listArgs } = args;
 
     return (
-      <BulletList {...listArgs}>
-        <BulletListItem type={type} size={size} className="whitespace-nowrap">
+      <Grow gap={8} className="w-full items-start">
+        <BulletList {...listArgs}>
+          <BulletListItem type={type} size={size} className="whitespace-nowrap">
+            {itemText}
+          </BulletListItem>
+          <BulletListItem type={type} size={size} className="whitespace-nowrap">
+            두 번째 문구입니다.
+          </BulletListItem>
+          <BulletListItem type={type} size={size} className="whitespace-nowrap">
+            세 번째 문구입니다.
+          </BulletListItem>
+        </BulletList>
+
+        <BulletItem type={type} size={size} className="whitespace-nowrap">
           {itemText}
-        </BulletListItem>
-        <BulletListItem type={type} size={size} className="whitespace-nowrap">
-          두 번째 문구입니다.
-        </BulletListItem>
-        <BulletListItem type={type} size={size} className="whitespace-nowrap">
-          세 번째 문구입니다.
-        </BulletListItem>
-      </BulletList>
+        </BulletItem>
+      </Grow>
     );
   },
 };
