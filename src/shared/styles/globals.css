@@ -175,28 +175,6 @@ input::placeholder {
   }
 }
 
-[data-process="complete"]>b {
-  background-color: #FF5C2E;
-  background-position: 50% 50%;
-  background-size: 1.2rem 1.2rem;
-  ;
-  background-repeat: no-repeat;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 6.60001L5.1 8.40001L9 4' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  color: transparent;
-}
-
-[data-process="active"] {
-  background: linear-gradient(344deg, #FF5C2E -17.78%, #FF8D02 88.79%);
-}
-
-[data-process="active"]>span {
-  color: #fff;
-}
-
-[data-process="active"]>b {
-  background-color: #FFF;
-}
-
 .sbdocs.sbdocs-content {
   max-width: 100% !important;
 }
@@ -333,7 +311,7 @@ input::placeholder {
   --color-primary-80: #832E15;
   --color-primary-70: #B54121;
   --color-primary-60: #E8542A;
-  --color-primary-50: #FF5C2D;
+  --color-primary-50: #FF5C2E;
   --color-primary-40: #FF7D58;
   --color-primary-30: #FF9273;
   --color-primary-20: #FFB49F;
@@ -415,18 +393,18 @@ input::placeholder {
   --color-information-30: #6FB1FF;
   --color-information-20: #A3CBFB;
   --color-information-15: #CBE2FF;
-  --color-information-10: #E0EEFF;
+  --color-information-10: #E0EFFF;
   --color-information-5: #EEF7FF;
   --color-success-90: #004720;
   --color-success-80: #005E2A;
   --color-success-70: #007D39;
-  --color-success-60: #009442;
+  --color-success-60: #009443;
   --color-success-50: #00AA4D;
   --color-success-40: #29C06D;
   --color-success-30: #69D59A;
   --color-success-20: #ACE8C7;
   --color-success-15: #C8F2DB;
-  --color-success-10: #E9FDF2;
+  --color-success-10: #E9FEF2;
   --color-success-5: #F7FFFA;
   --typo-letter-spacing-n3: -1.2999999523162842;
   --typo-font-type: "Malgun Gothic";
@@ -789,16 +767,15 @@ input::placeholder {
     text-align: center;
   }
 
-  [data-state=active] [data-component=error-msg] {
+  [data-state="active"] [data-component="error-msg"] {
     display: none !important;
   }
-
+/* 
   [data-tab-error="true"]:not([data-state="active"]) {
     color: var(--color-text-danger) !important;
     border-color: var(--color-text-danger) !important;
     background-color: var(--color-input-surface-error) !important;
-    z-index: 1;
-  }
+  } */
 
   /* [data-hide-aside="true"] [role="tabpanel"],
   [data-hide-aside="true"] [data-layout="aside"] {

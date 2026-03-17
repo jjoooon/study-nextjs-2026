@@ -20,8 +20,6 @@ import {
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { Gcol, Grow } from '@atoms';
 
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
-
 interface Props {
   pageID?: React.ReactNode;
   pageTitle?: React.ReactNode;
@@ -35,14 +33,12 @@ interface Props {
   pageProcess?: React.ReactNode;
 }
 
-export const LayoutTemplateA = ({
+export const LayoutTemplateAsideToggle = ({
   pageID,
   pageTitle,
-  mainHead,
   asideHead,
   mainBody,
   asideBody,
-  mainFoot,
   asideFoot,
   pageProcess,
   hideAside = false,
@@ -52,12 +48,11 @@ export const LayoutTemplateA = ({
       {pageID}
       {pageTitle}
     </LayoutHead>
+
     <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
       
-      
       {mainBody}
-      
       
       <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
@@ -76,6 +71,43 @@ export const LayoutTemplateA = ({
   </>
 );
 
+export const LayoutTemplateA = ({
+  pageID,
+  pageTitle,
+  asideHead,
+  mainBody,
+  asideBody,
+  asideFoot,
+  pageProcess,
+  hideAside = false,
+}: Props) => (
+  <>
+    <LayoutHead>
+      {pageID}
+      {pageTitle}
+    </LayoutHead>
+
+    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
+      <LayoutProcess>{pageProcess}</LayoutProcess>
+      
+      {mainBody}
+      
+      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
+        <LayoutAsideHead>{asideHead}</LayoutAsideHead>
+        <LayoutAsideBody>
+          <LayoutScrollWrap>
+            <LayoutScrollItem>
+              <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
+                {asideBody}
+              </Gcol>
+            </LayoutScrollItem>
+          </LayoutScrollWrap>
+        </LayoutAsideBody>
+        <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
+      </LayoutAside>
+    </LayoutBody>
+  </>
+);
 export const LayoutTemplateB = ({
   pageID,
   pageTitle,

@@ -103,7 +103,7 @@ import { Input } from '@uiux/Input';
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16" >
                 <Grow gap={8}>
-                  <Input size="md" value="md: 28" />
+                  <Input size="lg" value="lg: 28" />
                   <Input size="sm" value="sm: 25"  />
                 </Grow>
               </Gcol>
@@ -295,16 +295,27 @@ type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? '');
-    const { value: _, onChange, ...restArgs } = args;
+    const [value, setValue] = React.useState(args.value ?? (args.clear ? 'clear 버튼 확인용 값' : ''));
+    const { value: _, onChange, forceFocused, ...restArgs } = args;
+
     React.useEffect(() => {
-      setValue(args.value ?? '');
-    }, [args.value]);
+      setValue(args.value ?? (args.clear ? 'clear 버튼 확인용 값' : ''));
+    }, [args.value, args.clear]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
       args.onChange?.(e);
     };
-    return <Input {...restArgs} value={value} onChange={handleChange} placeholder="입력해주세요." />;
+
+    return (
+      <Input
+        {...restArgs}
+        value={value}
+        onChange={handleChange}
+        forceFocused={forceFocused ?? args.clear}
+        placeholder="입력해주세요."
+      />
+    );
   },
 };
 

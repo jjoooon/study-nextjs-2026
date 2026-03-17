@@ -35,13 +35,14 @@ import { SearchIcon, PlusIcon, QuestionMark } from '@icons';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 // Data
+
+import type { LniPl020Step1DataType } from '@/features/pub/proto/data/LniPl020Step1Data';
+
 // Types
-import type { LniPl020DataType } from '@/features/pub/proto/data/LniPl020Data';
-import { is } from 'date-fns/locale';
 
 // Props Type
 type LniPl020Step1Props = {
-  data?: LniPl020DataType['mainBody'];
+  data?: LniPl020Step1DataType;
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   className?: string;
@@ -967,7 +968,7 @@ export function LniPl020Step1({
                   active={tabValue}
                   setActive={setTabValue}
                   renderButtons={
-                    <Grow>
+                    <Grow gap={2.5}>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         피보험자
                         <PlusIcon color={'#61554F'} />

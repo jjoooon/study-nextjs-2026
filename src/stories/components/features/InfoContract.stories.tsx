@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { InfoContract } from '@/shared/components/features/InfoContract';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPL020Data';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+
+import { LniPl020Data } from '@/features/pub/proto/data/LniPl020Data';
+import { InfoContract } from '@/shared/components/features/InfoContract';
 
 const meta: Meta<typeof InfoContract> = {
   title: 'Components/Features/Aside/계약정보(InfoContract)',
@@ -30,9 +31,9 @@ const meta: Meta<typeof InfoContract> = {
 #### 예시
 \`\`\`tsx
 import { InfoContract } from '@/shared/components/features/InfoContract';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
+import { LniPl020Data } from '@/features/pub/proto/data/LniPl020Data';
 
-<InfoContract data={DUMMY_LniPl020_DATA.aside} />
+<InfoContract data={LniPl020Data.aside.simpleContractInfo} />
 \`\`\`
             `}
           </Markdown>
@@ -48,7 +49,7 @@ import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
     },
   },
   args: {
-    data: DUMMY_LniPl020_DATA.aside,
+    data: LniPl020Data.aside.simpleContractInfo,
   },
 };
 
@@ -58,6 +59,6 @@ type Story = StoryObj<typeof InfoContract>;
 
 export const Default: Story = {
   args: {
-    data: DUMMY_LniPl020_DATA.aside,
+    data: LniPl020Data.aside.simpleContractInfo,
   },
 };

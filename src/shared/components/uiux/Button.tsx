@@ -33,6 +33,7 @@ const buttonVariants = cva(
         'primary': '',
         'secondary': '',
         'gray': '',
+        'blue-gray': '',
         'gray-light': '',
         'coolgray': '',
         'coolgray-light': '',
@@ -42,10 +43,10 @@ const buttonVariants = cva(
       },
       size: {
         xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 [&>svg]:w-[1.6rem] min-w-[8rem] `,
-        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2 gap-1 [&>svg]:w-[1.6rem]`,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
-        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.1rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
-        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-0 gap-[0.2rem] [&>svg]:w-[1.32rem]`,
+        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
+        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem] [&>svg]:w-[1.32rem]`,
       },
     },
     compoundVariants: [
@@ -57,17 +58,17 @@ const buttonVariants = cva(
       {
         only: 'icon',
         size: 'lg',
-        className: 'h-[2.8rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
+        className: 'h-[2.8rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
       },
       {
         only: 'icon',
-        size: 'md',
+        size: 'md',              
         className: 'h-[2.5rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.4rem]',
       },
       {
         only: 'icon',
         size: 'sm',
-        className: 'h-[2.2rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]',
+        className: 'h-[2.2rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.32rem]',
       },
       {
         only: 'icon',
@@ -88,9 +89,9 @@ const buttonVariants = cva(
         focus-visible:ring-[var(--color-primary-60)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)]
-        disabled:text-[var(--color-gray-30)]
-        disabled:bg-[var(--color-gray-5)]
-        disabled:border-[var(--color-gray-10)]!`,
+        disabled:text-[var(--color-gray-0)]
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]!`,
       },
       {
         variant: ['contained', 'rounded'],
@@ -100,6 +101,23 @@ const buttonVariants = cva(
         text-[var(--color-gray-0)] 
         font-bold
         hover:bg-[var(--color-gray-60)] 
+        hover:border-dashed 
+        hover:border-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-gray-60)] 
+        focus-visible:border-dashed 
+        focus-visible:border-[var(--color-gray-0)] 
+        disabled:text-[var(--color-gray-0)]
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
+      },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'blue-gray',
+        className: `border border-[var(--color-blue-gray-50)] 
+        bg-[var(--color-blue-gray-50)] 
+        text-[var(--color-gray-0)] 
+        font-bold
+        hover:bg-[var(--color-blue-gray-60)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
         focus-visible:ring-[var(--color-gray-60)] 
@@ -174,8 +192,8 @@ const buttonVariants = cva(
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)] 
         disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-success-20)]
-        disabled:border-[var(--color-success-20)]`,
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
       },
       {
         variant: ['contained', 'rounded'],
@@ -201,10 +219,10 @@ const buttonVariants = cva(
         bg-[var(--color-secondary-50)] 
         text-[var(--color-gray-0)] 
         font-bold
-        hover:bg-[var(--color-secondary-70)] 
+        hover:bg-[var(--color-secondary-60)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-0)] 
-        focus-visible:ring-[var(--color-secondary-70)] 
+        focus-visible:ring-[var(--color-secondary-60)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)] 
         disabled:text-[var(--color-gray-0)]
@@ -218,7 +236,7 @@ const buttonVariants = cva(
         className: `disabled:text-[var(--color-gray-30)]
         disabled:bg-[var(--color-gray-5)]
         font-bold 
-        disabled:border-[var(--color-gray-5)]`,
+        disabled:border-[var(--color-gray-5)]!`,
       },
       {
         variant: ['contained', 'rounded'],
@@ -227,7 +245,7 @@ const buttonVariants = cva(
         className: `disabled:text-[var(--color-gray-30)]
         disabled:bg-[var(--color-gray-5)]
         disabled:border-[var(--color-gray-5)]`,
-      },
+      },      
       {
         variant: ['contained', 'rounded'],
         color: 'gray',
@@ -246,18 +264,21 @@ const buttonVariants = cva(
         hover:bg-[var(--color-primary-10)] 
         hover:border-dashed 
         hover:border-[var(--color-primary-50)] 
-        focus-visible:ring-[var(--color-primary-10)] 
+        focus-visible:ring-[var(--color-primary-50)] 
         focus-visible:border-dashed 
-        focus-visible:border-[var(--color-primary-50)]`,
+        focus-visible:border-[var(--color-primary-50)]
+        disabled:text-[var(--color-gray-30)]
+        disabled:bg-[var(--color-gray-5)]
+        disabled:border-[var(--color-gray-10)]`,
       },
       {
         variant: 'outlined',
         color: 'primary',
         size: 'sm',
         className: `border border-[var(--color-primary-50)] 
-        bg-[var(--color-gray-0)] 
+        bg-[var(--color-primary-5)] 
         text-[var(--color-primary-50)] 
-        hover:bg-[var(--color-gray-0)] 
+        hover:bg-[var(--color-primary-10)] 
         hover:border-dashed 
         hover:border-[var(--color-primary-50)] 
         focus-visible:ring-[var(--color-primary-50)] 
@@ -288,7 +309,8 @@ const buttonVariants = cva(
         hover:border-[var(--color-gray-100)] 
         focus-visible:ring-[var(--color-gray-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-[var(--color-gray-100)]`,
+        focus-visible:border-[var(--color-gray-100)]
+        disabled:bg-[var(--color-gray-5)]`,
       },
       {
         variant: 'outlined',
@@ -333,12 +355,12 @@ const buttonVariants = cva(
         variant: 'outlined',
         color: 'success',
         className: `border border-[var(--color-success-60)] 
-        bg-[var(--color-success-5)] 
+        bg-[var(--color-gray-0)] 
         text-[var(--color-success-60)] 
         hover:bg-[var(--color-success-5)] 
         hover:border-dashed 
         hover:border-[var(--color-success-60)] 
-        focus-visible:ring-[var(--color-success-5)] 
+        focus-visible:ring-[var(--color-gray-0)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-success-60)]`,
       },

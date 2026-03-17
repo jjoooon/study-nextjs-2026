@@ -11,15 +11,16 @@ import type {
   CellClassParams,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPL020Data';
-import type { LniPl020DataType } from '@/features/pub/proto/data/LniPL020Data';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
 
+import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
+import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type GridRow = LniPl020DataType['mainBody']['agGridTable1'][number];
+type GridRow = LniPl020Step2DataType['coverageGrid']['agGridTable1'][number];
 
 interface AgGridReactStoryProps {
   selectionMode?: 'singleRow' | 'multiRow';
@@ -60,7 +61,7 @@ const meta: Meta<AgGridReactStoryProps> = {
 \`\`\`tsx
 import { useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { DUMMY_LniPl020_DATA } from '@/features/pub/proto/data/LniPl020Data';
+import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
 
 const columnDefs: ColDef<LniPl020GridRow>[] = useMemo(
   () => [
@@ -449,7 +450,7 @@ const columnDefs: ColDef<GridRow>[] = [
 ];
 
 const renderGrid: Story['render'] = (args) => {
-  const rowData = DUMMY_LniPl020_DATA.mainBody.agGridTable1;
+  const rowData = LniPl020Step2Data.coverageGrid.agGridTable1;
   return (
     <div className="p-5">
       <div className="w-full h-[40vh]! ag-theme-alpine">
