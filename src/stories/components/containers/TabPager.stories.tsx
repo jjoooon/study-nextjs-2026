@@ -353,7 +353,7 @@ const meta: Meta<typeof TabPager> = {
             <div>
               <p>
                 <b>TabPager</b>는 많은 탭을 한 화면에 효율적으로 보여주기 위해 페이징, 드롭다운, 네비게이션, 에러 메시지 등 다양한 기능을 제공하는 고급 탭 컴포넌트입니다.<br />
-                <code>variant</code>, <code>removable</code>, <code>visibleCount</code>, <code>error</code>, <code>errorMsg</code>, <code>getValue</code>, <code>renderTab</code>, <code>renderDropdownItem</code> 등 다양한 props를 지원합니다.
+                <code>variant</code>, <code>hasTableBelow</code>, <code>removable</code>, <code>visibleCount</code>, <code>error</code>, <code>errorMsg</code>, <code>getValue</code>, <code>renderTab</code>, <code>renderDropdownItem</code> 등 다양한 props를 지원합니다.
               </p>
             </div>
 
@@ -378,6 +378,7 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
   onRemove={handleRemove}
   visibleCount={4}
   variant="default"
+  hasTableBelow={true}
   error={false}
   errorMsg="에러 메시지 예시"
   getValue={tab => String(tab.value)}
@@ -402,6 +403,7 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
               </thead>
               <tbody>
                 <tr><td>variant</td><td>'default' | 'sub' | 'outlined' | 'box'</td><td>탭 스타일</td></tr>
+                <tr><td>hasTableBelow</td><td>boolean</td><td>default variant에서 하단에 테이블이 있는 경우 라인 두께를 0.2rem로 사용</td></tr>
                 <tr><td>removable</td><td>boolean</td><td>탭 제거 가능 여부</td></tr>
                 <tr><td>active</td><td>string</td><td>현재 활성 탭 값</td></tr>
                 <tr><td>setActive</td><td>(value: string) =&gt; void</td><td>활성 탭 변경 핸들러</td></tr>
@@ -424,8 +426,13 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default','outlined', 'sub', 'box'],
+      options: ['default', 'box'],
       description: '탭 버튼 스타일',
+      table: { category: '스타일 props' },
+    },
+    hasTableBelow: {
+      control: 'boolean',
+      description: 'default variant에서 하단 테이블 유무에 따른 라인 두께 제어',
       table: { category: '스타일 props' },
     },
     removable: {
@@ -477,6 +484,7 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
   },
   args: {
     variant: 'default',
+    hasTableBelow: false,
     removable: false,
     error: false,
     visibleCount: 4,
@@ -501,6 +509,7 @@ export const Default: Story = {
           onRemove={handleRemove2}
           visibleCount={args.visibleCount}
           variant={args.variant}
+          hasTableBelow={args.hasTableBelow}
           error={args.error}
           getValue={tab => String(tab.value)}
           renderButtons={false}
@@ -523,11 +532,12 @@ export const Default: Story = {
           onRemove={handleRemove}
           visibleCount={args.visibleCount}
           variant={args.variant}
+          hasTableBelow={args.hasTableBelow}
           error={args.error}
           errorMsg="입력하세요."
           getValue={tab => String(tab.value)}
           renderButtons={
-            <Grow className="gap-1">
+            <Grow className="gap-2.5">
               <Button variant="outlined" color="gray" size="md">버튼1</Button>
               <Button variant="outlined" color="gray" size="md">버튼2</Button>
             </Grow>

@@ -55,7 +55,7 @@ const tabsTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "h-[3rem] px-2.5 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.4rem] rounded-tr-[0.4rem] text-[var(--color-gray-70)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+          "h-[3rem] px-2.5 py-[0.6rem] text-[1.2rem] -mr-px gap-1 bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-[var(--color-gray-100)] data-[state=active]:border-[var(--color-gray-15)] data-[state=active]:z-1 data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
         box: 'h-[3rem] flex items-center justify-center text-[1.3rem] font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]',
         vertical:
           'w-[calc(100%-1.2rem)] h-[4.4rem] px-0 py-2 bg-white border border-[var(--color-border-gray-light,#d8d8d8)] border-r-0 rounded-bl-[2.2rem] rounded-tl-[2.2rem] text-[1.2rem] text-[color:var(--color-text-gray,#414141)] text-center font-normal leading-none tracking-[-0.1rem] data-[state=active]:w-[100%] data-[state=active]:bg-[#f3f4f6] data-[state=active]:border-0 data-[state=active]:text-[1.3rem] data-[state=active]:font-bold data-[state=active]:text-[color:var(--color-button-text-primary,#ff5c2e)] [&_svg]:display-none data-[state=active]:[&_svg]:display-block',
@@ -131,6 +131,11 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           className={cn(
             tabsTriggerVariants({ variant: variant as 'default' | 'box' | 'vertical' | undefined }),
             removable && totalTabs! > 1 ? 'isRemovable' : '',
+            '[&[data-tab-error=true]:not([data-state=active])]:text-[var(--color-text-danger)]!',
+            '[&[data-tab-error=true]:not([data-state=active])]:border-[var(--color-text-danger)]!',
+            '[&[data-tab-error=true]:not([data-state=active])]:border!',
+            '[&[data-tab-error=true]:not([data-state=active])]:z-1!',
+            '[&[data-tab-error=true]:not([data-state=active])]:bg-[var(--color-input-surface-error)]!',
             className,
             'items-center ',
           )}
@@ -149,7 +154,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
         {removable && totalTabs! > 1 && (
           <button
             type="button"
-            className="absolute top-[calc(50%-0.6rem)] right-[1rem] z-10"
+            className="absolute top-[calc(50%-0.6rem)] right-[0.9rem] z-10"
             aria-label="탭 삭제"
             onClick={(e) => {
               e.stopPropagation();
@@ -217,17 +222,24 @@ const TabsLine = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & {
     children: React.ReactNode;
     borderColor?: string;
+    hasTableBelow?: boolean;
   }
->(({ className, borderColor = 'border-[#FF5C2E]', children, ...props }, ref) => {
+>(({ className, borderColor = 'border-[#FF5C2E]', children, hasTableBelow = false, ...props }, ref) => {
   const { variant } = useTabsContext();
-  const style = variant === 'box' ? 'border-none rounded-[0.8rem]' : '';
+  const style = variant === 'box' ? 'after:opacity-0 rounded-[0.8rem]' : '';
+  const lineHeightClass = variant === 'default' || !variant
+    ? hasTableBelow
+      ? 'after:h-[0.2rem]'
+      : 'after:h-[0.1rem]'
+    : 'after:h-[0.2rem]';
   return (
     <div
       data-tabs="tablist-wrap"
       ref={ref}
       className={cn(
         style,
-        'hide-scrollbar grid grid-cols-[1fr_auto] gap-2 relative after:absolute after:content-[""] after:w-full after:h-[0.2rem] after:bg-[#FF5C2E] after:bottom-0 after:left-0',
+        'hide-scrollbar grid grid-cols-[1fr_auto] gap-2 relative after:absolute after:content-[""] after:w-full after:bg-[#FF5C2E] after:bottom-0 after:left-0',
+        lineHeightClass,
         className
       )}
       data-variant={variant}

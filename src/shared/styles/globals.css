@@ -767,16 +767,15 @@ input::placeholder {
     text-align: center;
   }
 
-  [data-state=active] [data-component=error-msg] {
+  [data-state="active"] [data-component="error-msg"] {
     display: none !important;
   }
-
+/* 
   [data-tab-error="true"]:not([data-state="active"]) {
     color: var(--color-text-danger) !important;
     border-color: var(--color-text-danger) !important;
     background-color: var(--color-input-surface-error) !important;
-    z-index: 1;
-  }
+  } */
 
   /* [data-hide-aside="true"] [role="tabpanel"],
   [data-hide-aside="true"] [data-layout="aside"] {

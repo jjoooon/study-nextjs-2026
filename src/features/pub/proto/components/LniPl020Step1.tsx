@@ -325,7 +325,7 @@ export function LniPl020Step1({
                   active={tabValue}
                   setActive={setTabValue}
                   renderButtons={
-                    <Grow>
+                    <Grow gap={2.5}>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         피보험자
                         <PlusIcon color={'#61554F'} />

@@ -28,6 +28,7 @@ interface TabPagerProps<T> {
   visibleCount: number;
   children: React.ReactNode;
   variant?: string;
+  hasTableBelow?: boolean;
   removable?: boolean;
   error?: boolean;
   errorMsg?: string;
@@ -50,6 +51,7 @@ export function TabPager<T>({
   data, 
   active, 
   setActive,
+  hasTableBelow = false,
   removable,
   onRemove,
   visibleCount = 6, 
@@ -88,7 +90,7 @@ export function TabPager<T>({
   return (
     <>
       <Tabs {...tabsProps}>
-        <TabsLine>
+        <TabsLine hasTableBelow={hasTableBelow}>
           <TabsList activeValue={active ?? ""}>
             {data.slice(visibleStart, end).map((tab) => {
               // error 속성이 없는 타입도 허용
