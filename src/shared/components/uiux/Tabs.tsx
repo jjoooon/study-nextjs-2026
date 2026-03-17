@@ -40,8 +40,6 @@ const tabsListVariants = cva('inline-flex items-start', {
   variants: {
     variant: {
       default: 'bg-transparent',
-      outlined: 'bg-transparent',
-      sub: 'bg-transparent',
       box: 'w-full bg-[#E5E7EB] rounded-[0.8rem] p-[0.2rem] [&>div]:flex-1',
       vertical: 'flex-col gap-1 bg-transparent', // vertical일 때 gap 추가
     },
@@ -57,10 +55,7 @@ const tabsTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "h-[2.6rem] px-3 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.3rem] rounded-tr-[0.3rem] text-black data-[state=active]:bg-[#ff5c2e] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-white data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
-        outlined:
-          "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.4rem] rounded-tr-[0.4rem] text-[var(--color-gray-70)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
-        sub: "h-[2.6rem] px-2.5 pt-[0.6rem] pb-[.4rem] text-[1.2rem] -mr-px bg-(--color-element-gray-lighterest) border-t border-l border-r border-(--color-border-gray-light) text-black data-[state=active]:bg-(--color-element-inverse) data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
+          "h-[3rem] px-2.5 pt-[0.6rem] pb-[.6rem] text-[1.3rem] -mr-px bg-(--color-element-inverse) border-t border-l border-r border-[#e5e5e5] rounded-tl-[0.4rem] rounded-tr-[0.4rem] text-[var(--color-gray-70)] data-[state=active]:border-[#ff5c2e] data-[state=active]:z-1 data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:[font-variation-settings:'wght'_700] data-[state=active]:opacity-100",
         box: 'h-[3rem] flex items-center justify-center text-[1.3rem] font-bold text-[#9CA3AF] bg-transparent rounded-[0.6rem] px-2 flex-1 w-full data-[state=active]:bg-[var(--color-gray-0)] data-[state=active]:shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.12)] data-[state=active]:text-[#374151]',
         vertical:
           'w-[calc(100%-1.2rem)] h-[4.4rem] px-0 py-2 bg-white border border-[var(--color-border-gray-light,#d8d8d8)] border-r-0 rounded-bl-[2.2rem] rounded-tl-[2.2rem] text-[1.2rem] text-[color:var(--color-text-gray,#414141)] text-center font-normal leading-none tracking-[-0.1rem] data-[state=active]:w-[100%] data-[state=active]:bg-[#f3f4f6] data-[state=active]:border-0 data-[state=active]:text-[1.3rem] data-[state=active]:font-bold data-[state=active]:text-[color:var(--color-button-text-primary,#ff5c2e)] [&_svg]:display-none data-[state=active]:[&_svg]:display-block',
@@ -95,7 +90,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?
     const totalTabs = React.Children.count(children);
     return (
       <TabsPrimitive.List
-        className={cn(tabsListVariants({ variant: variant as 'default' | 'sub' | 'box' | undefined }), className)}
+        className={cn(tabsListVariants({ variant: variant as 'default' | 'box' | undefined }), className)}
         ref={ref}
         {...props}
       >
@@ -134,7 +129,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
         <TabsPrimitive.Trigger
           ref={ref}
           className={cn(
-            tabsTriggerVariants({ variant: variant as 'default' | 'sub' | 'box' | 'vertical' | undefined }),
+            tabsTriggerVariants({ variant: variant as 'default' | 'box' | 'vertical' | undefined }),
             removable && totalTabs! > 1 ? 'isRemovable' : '',
             className,
             'items-center ',
@@ -164,7 +159,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           >
             <CloseIcon
               size={14}
-              color={variant === 'sub' || variant === 'box' || variant === 'outlined' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'}
+              color={variant === 'sub' || variant === 'box' || variant === 'default' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'}
             />
           </button>
         )}
@@ -225,15 +220,14 @@ const TabsLine = React.forwardRef<
   }
 >(({ className, borderColor = 'border-[#FF5C2E]', children, ...props }, ref) => {
   const { variant } = useTabsContext();
-  const style = variant === 'box' ? 'border-none rounded-[0.8rem]' : 'border-b-[.2rem]';
+  const style = variant === 'box' ? 'border-none rounded-[0.8rem]' : '';
   return (
     <div
       data-tabs="tablist-wrap"
       ref={ref}
       className={cn(
         style,
-        borderColor,
-        'hide-scrollbar grid grid-cols-[1fr_auto] gap-2',
+        'hide-scrollbar grid grid-cols-[1fr_auto] gap-2 relative after:absolute after:content-[""] after:w-full after:h-[0.2rem] after:bg-[#FF5C2E] after:bottom-0 after:left-0',
         className
       )}
       data-variant={variant}

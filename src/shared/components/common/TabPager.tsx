@@ -110,58 +110,58 @@ export function TabPager<T>({
             })}
           </TabsList>
          
-            <Grow className="gap-[.4rem] mb-[0.1rem]">
-              {renderButtons}
-              {Math.ceil(data.length / visibleCount) > 1 && (
-                <>
-                  <Grow className="gap-[0.1rem]">
-                    <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
-                      {Math.ceil((visibleStart + visibleCount) / visibleCount)}
-                    </Typo>
-                    <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
-                      /
-                    </Typo>
-                    <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
-                      {Math.ceil(data.length / visibleCount)}
-                    </Typo>
-                  </Grow>
-                  <Button
-                    variant={'outlined'}
-                    color={'gray'}
-                    only={'icon'} 
-                    size={'md'}
-                    onClick={handlePrev}
-                    disabled={visibleStart === 0}
-                  >
-                    <ArrowIcon />
-                  </Button>
-                  <Button 
-                    variant={'outlined'} 
-                    color={'gray'} 
-                    only={'icon'} 
-                    size={'md'} 
-                    onClick={handleNext} 
-                    disabled={isLastPage}
-                  >
-                    <ArrowIcon className="rotate-180" />
-                  </Button>
-                  {renderDropdownItem && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
-                          <ListIcon />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align={'end'}>
-                        {data.map(tab =>
-                          renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount)
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-                </>
-              )}
-            </Grow>
+          <Grow className="gap-[.4rem] mb-[0.2rem]" placement={"es"}>
+            {renderButtons}
+            {Math.ceil(data.length / visibleCount) > 1 && (
+              <>
+                <Grow className="gap-[0.1rem] pt-[0.3rem]">
+                  <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
+                    {Math.ceil((visibleStart + visibleCount) / visibleCount)}
+                  </Typo>
+                  <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
+                    /
+                  </Typo>
+                  <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
+                    {Math.ceil(data.length / visibleCount)}
+                  </Typo>
+                </Grow>
+                <Button
+                  variant={'outlined'}
+                  color={'gray'}
+                  only={'icon'} 
+                  size={'md'}
+                  onClick={handlePrev}
+                  disabled={visibleStart === 0}
+                >
+                  <ArrowIcon />
+                </Button>
+                <Button 
+                  variant={'outlined'} 
+                  color={'gray'} 
+                  only={'icon'} 
+                  size={'md'} 
+                  onClick={handleNext} 
+                  disabled={isLastPage}
+                >
+                  <ArrowIcon className="rotate-180" />
+                </Button>
+                {renderDropdownItem && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
+                        <ListIcon />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align={'end'}>
+                      {data.map(tab =>
+                        renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount)
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+              </>
+            )}
+          </Grow>
         </TabsLine>
         <TabsContent value={active ?? ""}>{children}</TabsContent>
       </Tabs>
