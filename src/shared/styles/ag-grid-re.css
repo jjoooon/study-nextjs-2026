@@ -64,11 +64,11 @@
 /* ===== Header Styles ===== */
 .ag-header-cell,
 .ag-header-group-cell {
-  padding: 0.2rem 1rem !important;
-  background-color: var(--color-table-th-surface);
-  border-color: var(--color-table-border-border-gray);
-  border-right: 1px solid var(--color-table-border-border-gray) !important;
-  border-bottom: 1px solid var(--color-table-border-border-gray) !important;
+  padding: 0.2rem 0.2rem !important;
+  background-color: var(--color-gray-5);
+  border-color: var(--color-gray-10);
+  border-right: 1px solid var(--color-gray-10) !important;
+  border-bottom: 1px solid var(--color-gray-10) !important;
 }
 
 /* .ag-header-cell, .ag-cell {
