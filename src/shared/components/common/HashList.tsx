@@ -62,7 +62,7 @@ export const HashList = ({ data }: { data: string[] }) => {
         {showMore && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant={'outlined'} color={'gray'} size={'md'} aria-label="더보기">
+              <Button variant={'outlined'} only={'icon'} color={'gray'} size={'md'} aria-label="더보기">
                 <PlusIcon />
               </Button>
             </DropdownMenuTrigger>

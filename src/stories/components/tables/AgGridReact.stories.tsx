@@ -16,12 +16,12 @@ import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
 
 import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
-import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
-import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
+import { TestData } from './TestAgGridData';
+import type { TestDataType } from './TestAgGridData';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type GridRow = LniPl020Step2DataType['coverageGrid']['agGridTable1'][number];
+type GridRow = TestDataType['data'][number];
 
 interface AgGridReactStoryProps {
   selectionMode?: 'singleRow' | 'multiRow';
@@ -479,7 +479,7 @@ const columnDefs: ColDef<GridRow>[] = [
 ];
 
 const renderGrid: Story['render'] = (args) => {
-  const rowData = LniPl020Step2Data.coverageGrid.agGridTable1;
+  const rowData = TestData.data;
   return (
     <div className="p-5">
       <div className="w-full h-[40vh]! ag-theme-alpine aggrid-pagination-ko">
