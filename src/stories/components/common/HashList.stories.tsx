@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import { Gcol } from '@atoms';
+import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import { HashList } from '@common/HashList';
 
 import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
@@ -65,21 +64,6 @@ const hashList = ['암', '뇌', '심', '수술', '특정', '표적', '치료'];
                 <tr><td>data</td><td>string[]</td><td>해시 목록 데이터</td></tr>
               </tbody>
             </table>
-
-            <h2>Examples</h2>
-            <Unstyled>
-              <Gcol gap={4} className="w-full">
-                <h3 className="font-bold">Short List</h3>
-                <div>
-                  <HashList data={SHORT_HASH_DATA} />
-                </div>
-
-                <h3 className="font-bold mt-4">Long List (More)</h3>
-                <div>
-                  <HashList data={LONG_HASH_DATA} />
-                </div>
-              </Gcol>
-            </Unstyled>
           </>
         );
       },
@@ -101,17 +85,6 @@ export default meta;
 type Story = StoryObj<typeof HashList>;
 
 export const Default: Story = {
-  render: (args) => (
-    <div>
-      <HashList {...args} />
-    </div>
-  ),
-};
-
-export const ShortList: Story = {
-  args: {
-    data: SHORT_HASH_DATA,
-  },
   render: (args) => (
     <div>
       <HashList {...args} />
