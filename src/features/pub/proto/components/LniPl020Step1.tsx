@@ -83,6 +83,7 @@ type GroupInsuredFormItem = {
 
 
 // --- Constants ---
+{/* 인보험 */}
 const PERSONAL_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
     insStartDate: '2026-03-04',   // 보험시기
@@ -175,6 +176,7 @@ const PERSONAL_INSURANCE_STEP1_DATA = {
   },
 };
 
+{/* 태아보험 */}
 const CHILD_FETUS_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
     insStartDate: '2026-01-30',   // 보험시기
@@ -228,6 +230,7 @@ const CHILD_FETUS_INSURANCE_STEP1_DATA = {
   },
 };
 
+{/* 재물보험 */}
 const PROPERTY_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
     insStartDate: '2026-01-31',
@@ -302,6 +305,7 @@ const PROPERTY_INSURANCE_STEP1_DATA = {
   },
 };
 
+{/* 단체보험 */}
 const GROUP_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
     insStartDate: '2026-03-04',           // 보험시기
@@ -367,11 +371,42 @@ const GROUP_INSURANCE_STEP1_DATA = {
   },
 }
 
+{/* 연금저축보험 */}
+const PENSION_SAVINGS_INSURANCE_STEP1_DATA = {
+  ContractorInfo: {
+    insStartDate: '2026-03-04',   // 보험시기
+    insStartPeriod: '2026-01-30', // 보험기간 start
+    insEndPeriod: '2046-03-04',   // 보험기간 end
+    pensionAge: 55,             // 개시연령
+    payoutTerm: 10,             // 지급기간
+    receiveMode: 'monthly',     // 수령방법
+    payoutType: '정액형',        // 연금지급형
+    payPeriod: 10,              // 납기
+    payCycle: 'month',          // 납입주기
+  },
+  Policyholder: {
+    name: '김한화',                         // 계약자 이름
+    juminNumber: '900101-1******',         // 계약자 주민등록번호
+    infoAcquisitionPath: '단체계약',      // 개인정보취득경로
+    addresses: '경기도 부천시 원미구 역곡동',  // 주소
+    workAddress: '경상남도 진주시 (하대동)',  // 근무지 주소
+    contact: '010-1234-5678',               // 연락처
+    isBusinessOwner: 'Y',                   // 사업자 여부
+    email: 'qwer@hwgi.kr',                  // 이메일
+    electronicNoticeAgree: 'Y',             // 전자적 안내 동의 여부
+    taxFreeType: 'nonemonthly',             // 보험차익비과세
+    designAmount: 33301,                    // 설계금액
+    remainingLimit: 100000000,              // 잔여한도
+  },
+}
+
+
 
 const INSURANCE_STEP1_DATA_BY_PRODUCT = {
   personal: PERSONAL_INSURANCE_STEP1_DATA,
   childFetus: CHILD_FETUS_INSURANCE_STEP1_DATA,
   property: PROPERTY_INSURANCE_STEP1_DATA,
+  pensionSavings: PENSION_SAVINGS_INSURANCE_STEP1_DATA,
 } as const;
 
 type PropertyInsuredPersonItem = (typeof PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson)[number];
@@ -2168,7 +2203,7 @@ export function LniPl020Step1({
               {/*// 재물보험 */}
 
               {/* 단체보험 */}
-              <Grow placement={'ss'} className={className ?? 'w-full'}>
+              {/* <Grow placement={'ss'} className={className ?? 'w-full'}>
                 <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]']}>
                   <FormRow>
                     <FormCell title={'보험시기'}>
@@ -2285,12 +2320,12 @@ export function LniPl020Step1({
                   </FormRow>
                   <FormRow>
                     <FormCell title={'총인원수'}>
-                        <Input aria-label="총인원" width={'6rem'} value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.totalCount)} readOnly />
+                        <Input aria-label="총인원" width={'6rem'} value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.totalCount)} />명(전체 근로자 수)
                     </FormCell>
                     <FormCell title={'인원현황'}>
                       <Grow className='flex-nowrap'>
-                        <Input aria-label="가입인원" width={'6rem'} value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledCount)} readOnly />
-                        <Input aria-label="가입비율" width={'6rem'} value={`${GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledPercent}%`} readOnly />
+                        <Input aria-label="가입인원" width={'6rem'} value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledCount)} readOnly /> 명 / 가입비율
+                        <Input aria-label="가입비율" width={'6rem'} value={`${GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledPercent}`} readOnly />%
                       </Grow>
                     </FormCell>
                   </FormRow>
@@ -2320,16 +2355,35 @@ export function LniPl020Step1({
                     <Gcol placement={'ss'}>
                       <FormTable caption="그룹 정보" lineTop={false} cols={['w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem]', 'w-[calc(50%-14rem)]']}>
                         <FormRow>
-                          <FormCell colSpan={3} title={'그룹명'} titleVariant="section">
+                          <FormCell title={'그룹명'} titleVariant="section">
+                              <Input aria-label="그룹명" width={'12rem'} value={groupCurrentItem.groupName} />
                             <Grow className="flex-nowrap w-full" placement={'bwc'}>
-                              <Grow>
-                                <Input aria-label="그룹명" width={'12rem'} value={groupCurrentItem.groupName} readOnly />
-                                <Input aria-label="보험나이" width={'5rem'} value={`${groupCurrentItem.age}세`} readOnly />
-                                <Input aria-label="성별" width={'3.2rem'} value={groupCurrentItem.gender} readOnly />
-                                <Input aria-label="인원" width={'6rem'} value={`${groupCurrentItem.member}명`} readOnly />
-                              </Grow>
                             </Grow>
                           </FormCell>
+                          <FormCell title="보험나이">
+                              <Input aria-label="보험나이" width={'5rem'} value={`${groupCurrentItem.age}`} />세
+                          </FormCell>  
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title="성별">
+                            <RadioGroup
+                              value={groupCurrentItem.gender}
+                              onValueChange={() => {}}
+                              className='flex-row gap-3'
+                            >
+                              {[
+                                { value: '남', id: 'group-gender-male', label: '남' },
+                                { value: '여', id: 'group-gender-female', label: '여' },
+                              ].map((option) => (
+                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                  {option.label}
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          </FormCell>
+                          <FormCell title="인원">
+                              <Input aria-label="인원" width={'5rem'} value={`${groupCurrentItem.member}`}/>명
+                          </FormCell> 
                         </FormRow>
                         <FormRow>
                           <FormCell title="직업" colSpan={3}>
@@ -2361,8 +2415,22 @@ export function LniPl020Step1({
                               ))}
                             </RadioGroup>
                           </FormCell>
-                          <FormCell title="피보험자적">
-                            <Input aria-label="피보험자적" width={'14rem'} value={groupCurrentItem.insuredShip} readOnly />
+                          <FormCell title="계약자와 관계">
+                            <Input aria-label="계약자" width={'14rem'} value={groupCurrentItem.groupName} readOnly />
+                            <NativeSelect
+                              aria-label="계약자와 관계 선택"
+                              width={'14rem'}
+                              required
+                              value={groupCurrentItem.insuredShip}
+                              onChange={() => {}}
+                            >
+                              {[
+                                { value: '고용주(사업주)', id: 'group-insuredship-employer', label: '고용주(사업주)' },
+                                { value: '고용인(종업원)', id: 'group-insuredship-employee', label: '고용인(종업원)' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                              ))}
+                            </NativeSelect>
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -2483,8 +2551,21 @@ export function LniPl020Step1({
                     </Gcol>
                   </div>
                 </TabPager>
-              </Gcol>
+              </Gcol> */}
               {/*// 단체보험 */}
+
+              {/* 연금/저축보험 */}
+              <Grow placement={'ss'} className={"w-full"}>
+                <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]']}>
+                  <FormRow>
+                    <FormCell title={'보험시기'}>
+
+                    </FormCell>
+                  </FormRow>
+                </FormTable>  
+              </Grow>  
+
+              {/*// 연금/저축보험 */}
             </Gcol> 
           </LayoutScrollItem>
         </LayoutScrollWrap>
