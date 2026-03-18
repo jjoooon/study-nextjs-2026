@@ -71,28 +71,28 @@ function Checkbox({
 
   const colorStyles = {
     primary:
-      `hover:border-[var(--color-border-primary)] 
-      data-[state=checked]:bg-[var(--color-element-primary)] 
-      data-[state=checked]:border-[var(--color-border-primary)] 
+      `hover:border-[var(--color-primary-50)] 
+      data-[state=checked]:bg-[var(--color-primary-50)] 
+      data-[state=checked]:border-[var(--color-primary-50)] 
       data-[state=checked]:text-white`,
     info:
-      `hover:border-[var(--color-border-information,#006ff2)] 
-      data-[state=checked]:bg-[var(--color-element-information,#006ff2)] 
-      data-[state=checked]:border-[var(--color-border-information,#006ff2)] 
+      `hover:border-[var(--color-information-50)] 
+      data-[state=checked]:bg-[var(--color-information-50)] 
+      data-[state=checked]:border-[var(--color-information-50)] 
       data-[state=checked]:text-white`,
   };
 
   const buttonColorStyles = {
     primary:
-      `data-[state=checked]:bg-[#fff7f4] 
-      data-[state=checked]:text-[#ff3800] 
-      data-[state=checked]:border-[#ff6135] 
-      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)]`,
+      `data-[state=checked]:bg-[var(--color-primary-5)] 
+      data-[state=checked]:text-[var(--color-primary-50)] 
+      data-[state=checked]:border-[var(--color-primary-50)] 
+      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_var(--color-primary-50)r_g_b/_20%)]`,
     info:
-      `data-[state=checked]:bg-[#f0f7ff] 
-      data-[state=checked]:text-[#006ff2] 
-      data-[state=checked]:border-[#006ff2] 
-      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]`,
+      `data-[state=checked]:bg-[var(--color-information-50)] 
+      data-[state=checked]:text-[var(--color-information-50] 
+      data-[state=checked]:border-[var(--color-information-50] 
+      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_var(--color-information-50)r_g_b/_20%]`,
   };
 
   const favoriteSizeStyles = {

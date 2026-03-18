@@ -33,7 +33,6 @@ const buttonVariants = cva(
         'primary': '',
         'secondary': '',
         'gray': '',
-        'blue-gray': '',
         'gray-light': '',
         'coolgray': '',
         'coolgray-light': '',
@@ -58,7 +57,7 @@ const buttonVariants = cva(
       {
         only: 'icon',
         size: 'lg',
-        className: 'h-[2.8rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
+        className: 'h-[2.8rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
       },
       {
         only: 'icon',
@@ -112,23 +111,6 @@ const buttonVariants = cva(
       },
       {
         variant: ['contained', 'rounded'],
-        color: 'blue-gray',
-        className: `border border-[var(--color-blue-gray-50)] 
-        bg-[var(--color-blue-gray-50)] 
-        text-[var(--color-gray-0)] 
-        font-bold
-        hover:bg-[var(--color-blue-gray-60)] 
-        hover:border-dashed 
-        hover:border-[var(--color-gray-0)] 
-        focus-visible:ring-[var(--color-gray-60)] 
-        focus-visible:border-dashed 
-        focus-visible:border-[var(--color-gray-0)] 
-        disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-gray-20)]
-        disabled:border-[var(--color-gray-20)]`,
-      },
-      {
-        variant: ['contained', 'rounded'],
         color: 'coolgray',
         className: `border border-[var(--color-blue-gray-70)] 
         bg-[var(--color-blue-gray-70)] 
@@ -141,8 +123,8 @@ const buttonVariants = cva(
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)] 
         disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-blue-gray-20)]
-        disabled:border-[var(--color-blue-gray-20)]`,
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
       },
       {
         variant: ['contained', 'rounded'],
@@ -158,8 +140,8 @@ const buttonVariants = cva(
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-gray-0)] 
         disabled:text-[var(--color-gray-0)]
-        disabled:bg-[var(--color-blue-gray-20)]
-        disabled:border-[var(--color-blue-gray-20)]`,
+        disabled:bg-[var(--color-gray-20)]
+        disabled:border-[var(--color-gray-20)]`,
       },
       {
         variant: ['contained', 'rounded'],
@@ -357,7 +339,7 @@ const buttonVariants = cva(
         className: `border border-[var(--color-success-60)] 
         bg-[var(--color-gray-0)] 
         text-[var(--color-success-60)] 
-        hover:bg-[var(--color-success-5)] 
+        hover:bg-[var(--color-success-10)] 
         hover:border-dashed 
         hover:border-[var(--color-success-60)] 
         focus-visible:ring-[var(--color-gray-0)] 

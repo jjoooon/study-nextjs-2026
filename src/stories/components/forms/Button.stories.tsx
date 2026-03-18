@@ -44,7 +44,7 @@ import { Button } from '@uiux/Button';
 
 <Button
   variant={'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state' | 'rounded'}
-  color={'primary' | 'secondary' | 'gray' | 'blue-gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'}
+  color={'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'}
   size={'xl' | 'lg' | 'md' | 'sm' | 'xs'}
   only={'default' | 'icon'}
 >
@@ -74,7 +74,7 @@ import { Button } from '@uiux/Button';
               </thead>
               <tbody>
                 <tr><td>variant</td><td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state' | 'rounded'</td><td>버튼 스타일</td></tr>
-                <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'blue-gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
+                <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
                 <tr><td>size</td><td>'xl' | 'lg' | 'md' | 'sm' | 'xs'</td><td>버튼 크기</td></tr>
                 <tr><td>only</td><td>'default' | 'icon'</td><td>일반/아이콘 전용 모드</td></tr>
                 <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
@@ -106,7 +106,6 @@ import { Button } from '@uiux/Button';
                   <Button color="primary">primary</Button>
                   <Button color="secondary">secondary</Button>
                   <Button color="gray">gray</Button>
-                  <Button color="blue-gray">blue-gray</Button>
                   <Button color="gray-light">gray-light</Button>
                   <Button color="coolgray">coolgray</Button>
                   <Button color="coolgray-light">coolgray-light</Button>
@@ -117,7 +116,7 @@ import { Button } from '@uiux/Button';
               </Gcol>
             </Unstyled>
 
-            <h3>Coolgray Tone</h3>
+            <h2>Coolgray Tone</h2>
             <p>Button.tsx에 추가된 coolgray 계열 스타일 차이는 아래 예시로 확인할 수 있습니다.</p>
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
@@ -182,7 +181,7 @@ import { Button } from '@uiux/Button';
     },
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'gray', 'blue-gray', 'gray-light', 'coolgray', 'coolgray-light', 'success', 'link', 'transparent'],
+      options: ['primary', 'secondary', 'gray', 'gray-light', 'coolgray', 'coolgray-light', 'success', 'link', 'transparent'],
       table: { category: '스타일 props' },
     },
     size: {
