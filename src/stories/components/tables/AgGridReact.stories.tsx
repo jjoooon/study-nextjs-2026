@@ -559,7 +559,6 @@ function getSumRow(data: GridRow[]): GridRowWithSum {
     badge: [],
     // 아래는 GridRow 타입에 따라 추가 필드가 있을 경우 기본값 처리
     filePath: [],
-    type: 'File',
     isSumRow: true, // 커스텀 플래그(타입 확장 허용)
   };
 }
@@ -586,9 +585,10 @@ const renderGrid: Story['render'] = (args) => {
           rowData={rowData}
           columnDefs={columnDefs}
           pinnedBottomRowData={sumRow}
+
+          // 트리구조 (그룹핑) 설정
           treeData={true}
           getDataPath={(data: GridRow) => data.filePath}
-
           autoGroupColumnDef={{
             headerName: '코드',
             field: 'code',
@@ -604,8 +604,8 @@ const renderGrid: Story['render'] = (args) => {
               checkbox: true,
             },
           }}
-          
           groupDefaultExpanded={-1}
+          
           rowSelection={{
             mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
             headerCheckbox: args.headerCheckbox ?? true,

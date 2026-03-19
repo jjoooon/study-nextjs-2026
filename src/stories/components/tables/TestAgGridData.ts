@@ -19,7 +19,6 @@ export interface TestDataType {
     selected?: boolean;
     badge?: string[]; 
     filePath: string[]; // 트리 경로를 포함한 배열
-    type: 'Folder' | 'File';
   }>;
 }
 export const TestData: TestDataType = {
@@ -41,7 +40,6 @@ export const TestData: TestDataType = {
       canEditExpiry: true, 
       badge: ['독립', '갱신'],
       filePath: ['A001'], 
-      type: 'Folder',
     },
     {
       id: 2,
@@ -59,7 +57,6 @@ export const TestData: TestDataType = {
       isHighlighted: false,
       canEditExpiry: false,
       filePath: ['A001', '1'], 
-      type: 'File'
     },
     {
       id: 3,
@@ -78,7 +75,6 @@ export const TestData: TestDataType = {
       canEditExpiry: true,
       badge: ['독립'],
       filePath: ['A001', '2'], 
-      type: 'File'
     },
     {
       id: 4,
@@ -97,7 +93,6 @@ export const TestData: TestDataType = {
       canEditExpiry: false,
       badge: ['갱신'],
       filePath: ['A002'], 
-      type: 'Folder'
     },
     {
       id: 5,
@@ -115,7 +110,6 @@ export const TestData: TestDataType = {
       isHighlighted: false,
       canEditExpiry: true,
       filePath: ['A002', '1'], 
-      type: 'File'
     },
     {
       id: 6,
@@ -133,7 +127,6 @@ export const TestData: TestDataType = {
       isHighlighted: false,
       canEditExpiry: false,
       filePath: ['A002', '2'], 
-      type: 'File'
     },
   ],
 }
