@@ -857,10 +857,11 @@ export function LniPl020Step1({
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>
-            <Gcol placement={'ss'} className={className ?? 'w-full gap-[1.2rem]'}>
+            <Gcol placement={'ss'} className="w-full gap-[1.2rem]">
               
               {/* 인보험 */ }
-              {/* <Grow placement={'ss'} className={className ?? 'w-full'}>
+              <Typo variant={'heading-md'}>인보험(확인용 타이틀 추후 삭제)</Typo>
+              <Grow placement={'ss'} className="w-full">
                 <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]']}>
                   <FormRow>
                     <FormCell title={'보험시기'}>
@@ -890,7 +891,7 @@ export function LniPl020Step1({
                       <RadioGroup
                         value={contractForm.maturityValue}
                         onValueChange={(value) => handleContractFieldChange('maturityValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '80', id: 'insurance-period-80', label: '80세' },
@@ -910,7 +911,7 @@ export function LniPl020Step1({
                       <RadioGroup
                         value={contractForm.paymentPeriodValue}
                         onValueChange={(value) => handleContractFieldChange('paymentPeriodValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                             { value: '10', id: 'payment-period-10', label: '10년납' },
@@ -933,7 +934,7 @@ export function LniPl020Step1({
                       <RadioGroup
                         value={contractForm.paymentCycleValue}
                         onValueChange={(value) => handleContractFieldChange('paymentCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                             { value: 'month', id: 'payment-cycle-monthly', label: '월납' },
@@ -951,7 +952,7 @@ export function LniPl020Step1({
                       <RadioGroup
                         value={contractForm.renewalCycleValue}
                         onValueChange={(value) => handleContractFieldChange('renewalCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                             { value: '3', id: 'renewal-period-3', label: '3년' },
@@ -972,7 +973,7 @@ export function LniPl020Step1({
                         value={contractForm.notificationTypeValue}
                         onValueChange={(value) => handleContractFieldChange('notificationTypeValue', value)}
                         width={'full'}
-                        className='grid grid-cols-3 gap-x-6 gap-y-2 w-full'
+                        className="grid grid-cols-3 gap-x-6 gap-y-2 w-full"
                       >
                         {[
                             { value: 'type1', id: 'notification-type-1', label: '1형(일반고지형)', justifyStart: true },
@@ -995,8 +996,8 @@ export function LniPl020Step1({
                     </FormCell>
                   </FormRow>
                 </FormTable>
-              </Grow> */}
-              {/* <Gcol placement="ss" className={className ?? 'w-full'}>
+              </Grow> 
+              <Gcol placement="ss" className={'w-full'}>
                 <TabPager
                   variant={'default'}
                   data={tabs}
@@ -1127,7 +1128,7 @@ export function LniPl020Step1({
                           </FormCell>
                         </FormRow>
                         <FormRow>
-                          <FormCell title="할인적용" colSpan={3}>
+                          <FormCell title={'할인적용'} colSpan={3}>
                             <Checkbox
                               color="primary"
                               checked={insuredForm[tabValue]?.isDiscountApplied ?? false}
@@ -1268,11 +1269,12 @@ export function LniPl020Step1({
                     </Gcol>
                   </div>
                 </TabPager>
-              </Gcol> */}
+              </Gcol>
               {/*// 인보험 */ }
               
               {/* 어린이(태아) */}
-              {/* <Grow placement={'ss'} className={className ?? 'w-full'}>
+              <Typo variant={'heading-md'}>어린이(태아)(확인용 타이틀 추후 삭제)</Typo>
+              <Grow placement={'ss'} className={'w-full'}>
                 <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]']}>
                   <FormRow>
                     <FormCell title={'보험시기'}>
@@ -1412,8 +1414,8 @@ export function LniPl020Step1({
                     </FormCell>
                   </FormRow>
                 </FormTable>
-              </Grow> */}
-              {/* <Grow placement="ss" className={className ?? 'w-full'}>
+              </Grow>
+              <Grow placement="ss" className={'w-full'}>
                 <TabPager
                   variant={'default'}
                   data={childTabs}
@@ -1679,11 +1681,12 @@ export function LniPl020Step1({
                     </Gcol>
                   </div>
                 </TabPager>
-              </Grow> */}
+              </Grow>
               {/*// 어린이(태아) */}
               
               {/* 재물보험 */}
-              {/* <Grow placement={'ss'} className={className ?? 'w-full'}>
+              <Typo variant={'heading-md'}>재물보험(확인용 타이틀 추후 삭제)</Typo>
+              <Grow placement={'ss'} className={'w-full'}>
                 <FormTable caption="재물보험 정보" cols={['w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]']}>
                   <FormRow>
                     <FormCell title={'보험시기'}>
@@ -1785,7 +1788,7 @@ export function LniPl020Step1({
      
                 </FormTable>  
               </Grow>
-              <Grow placement={'ss'} className={className ?? 'w-full'}>
+              <Grow placement={'ss'} className={'w-full'}>
                 <TabPager
                   variant={'default'}
                   data={propertyTabs}
@@ -2199,11 +2202,12 @@ export function LniPl020Step1({
                     </Gcol>
                   </div>
                 </TabPager>
-              </Grow>   */}
+              </Grow>
               {/*// 재물보험 */}
 
               {/* 단체보험 */}
-              {/* <Grow placement={'ss'} className={className ?? 'w-full'}>
+              <Typo variant={'heading-md'}>단체보험(확인용 타이틀 추후 삭제)</Typo>
+              <Grow placement={'ss'} className={'w-full'}>
                 <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem] min-w-[14rem]', 'w-[calc(50%-14rem)]']}>
                   <FormRow>
                     <FormCell title={'보험시기'}>
@@ -2331,7 +2335,7 @@ export function LniPl020Step1({
                   </FormRow>
                 </FormTable>
               </Grow>
-              <Gcol placement="ss" className={className ?? 'w-full'}>
+              <Gcol placement="ss" className={'w-full'}>
                 <TabPager
                   variant={'default'}
                   data={groupTabs}
@@ -2551,7 +2555,7 @@ export function LniPl020Step1({
                     </Gcol>
                   </div>
                 </TabPager>
-              </Gcol> */}
+              </Gcol>
               {/*// 단체보험 */}
 
               {/* 연금/저축보험 */}

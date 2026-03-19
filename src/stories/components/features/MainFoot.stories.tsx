@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Gcol } from '@atoms';
-import { DesignStart, DesignGeneration, LniPl020Step1, LniPl020Step2 } from '@/shared/components/features/MainFoot';
 import { Title, Subtitle, Primary, Controls, Canvas, Markdown } from '@storybook/addon-docs/blocks';
+import { Gcol } from '@atoms';
+import { DesignStart, DesignGeneration, LniPl020Step1, LniPl020Step2 } from '@features/MainFoot';
 
 const meta: Meta<typeof DesignStart> = {
   title: 'Components/Features/MainFoot',
@@ -29,7 +29,7 @@ const meta: Meta<typeof DesignStart> = {
           <Markdown>
             {`
 \`\`\`tsx
-import { MainFoot } from '@/shared/components/features/MainFoot';
+import { MainFoot } from '@features/MainFoot';
 
 <DesignStart/>
 <DesignGeneration />
@@ -48,16 +48,14 @@ export default meta;
 
 type Story = StoryObj<typeof DesignStart>;
 
-const Template = (args: any) => (
-  <Gcol gap="4" style={args.style}>
-    <DesignStart/>
-    <DesignGeneration />
-    <LniPl020Step1 />
-    <LniPl020Step2 />
-  </Gcol>
-);
-
 export const Default: Story = {
-  render: Template,
+  render: () => (
+    <Gcol gap="4">
+      <DesignStart />
+      <DesignGeneration />
+      <LniPl020Step1 />
+      <LniPl020Step2 />
+    </Gcol>
+  ),
   args: {},
 };

@@ -16,7 +16,7 @@ export function DesignStart() {
         초기화
       </Button>
       <Button
-        type={'submit'}
+        type="submit"
         form={'page2-MainForm'}
         variant={'contained'}
         color={'primary'}
@@ -41,7 +41,7 @@ export function DesignGeneration() {
           초기화
         </Button>
          <Button
-          type={'submit'}
+          type="submit"
           form={'page2-MainForm'}
           variant={'contained'}
           color={'primary'}
@@ -57,7 +57,7 @@ export function DesignGeneration() {
   );
 }
 
-export function LniPl020Step2() {
+export function LniPl020Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: () => void }) {
   const [amount, setAmount] = useState('0');
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
@@ -163,7 +163,7 @@ export function LniPl020Step2() {
               variant={'contained'}
               color={'primary'}
               size={'xl'}
-              onClick={() => console.log('보험료계산(지침)')}
+              onClick={onCalcGuidelineClick}
             >
               보험료계산(지침)
             </Button>
