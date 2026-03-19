@@ -84,7 +84,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
                         <QuestionMark color="#61554F" />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent variant="default" side="top" sideOffset={8}>Default Tooltip</TooltipContent>
+                    <TooltipContent variant="dark" side="top" sideOffset={8}>Default Tooltip</TooltipContent>
                   </Tooltip>
 
                   <Tooltip defaultOpen>
@@ -102,7 +102,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
                         <QuestionMark color="#61554F" />
                     </Button>
                     </TooltipTrigger>
-                    <TooltipContent variant="light" side="top" sideOffset={8}>Light Tooltip</TooltipContent>
+                    <TooltipContent variant="dark" side="top" sideOffset={8}>Light Tooltip</TooltipContent>
                   </Tooltip>
                 </Grow>
               </Gcol>

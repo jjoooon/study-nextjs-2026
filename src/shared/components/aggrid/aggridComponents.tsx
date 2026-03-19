@@ -41,7 +41,9 @@ export const productNameTooltipValueGetter = <T extends { productName?: string }
  * 숫자 콤마 포매터 (공용)
  */
 export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
-  return params.value ? params.value.toLocaleString() : '';
+  if (params.value === null || params.value === undefined || params.value === '') return '';
+  // 0도 정상 노출
+  return Number(params.value).toLocaleString();
 };
 
 

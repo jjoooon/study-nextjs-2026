@@ -521,3 +521,42 @@
 [aria-disabled="true"] .ag-icon{
   opacity: 1 !important;
 }
+
+
+/* 필수입력 에러메시지 */
+.ag-cell.required{overflow: visible !important;}
+.ag-cell.required.ag-cell-error-border .ag-input-field-input.ag-text-field-input {
+  outline: 0.2rem solid var(--color-text-danger) !important;
+  outline-offset: -0.1rem;
+  border:0;
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after {
+  content: "필수 입력 필드입니다.";
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+  bottom: calc(100% + 0.6rem);
+  height: 2.4rem;
+  line-height: 1.1;
+  left: 0.4rem;
+  padding: 0 0.8rem;
+  font-size: 1.2rem;
+  color: var(--color-text-danger);
+  background-color: var(--color-input-surface-error); /* 배경색 (after와 맞춤) */
+  border: 0.1rem solid var(--color-input-border-error);
+  border-radius: 0.4rem; /* rounded-DEFAULT 기준 */
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+}
+.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:before{
+  content:"";
+  display: block;
+  position: absolute;
+  bottom: calc(100% - 0rem);
+  left:1rem;
+  width: 1.2rem;
+  z-index: 11;
+  height: 0.8rem;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFF4F4' stroke='%23E43939' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFF4F4'/%3E%3C/svg%3E%0A");
+}
