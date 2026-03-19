@@ -3,6 +3,9 @@ import { Gcol, Grow } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { FileUpload } from '@/shared/components/common/FileUpload';
 
+const SAMPLE_FILES = [{ name: '매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용' }];
+
+
 const meta: Meta<typeof FileUpload> = {
   title: 'Components/Common/FileUpload',
   component: FileUpload,
@@ -10,170 +13,120 @@ const meta: Meta<typeof FileUpload> = {
   parameters: {
     layout: 'centered',
     docs: {
-      page: () => {
-        return (
-          <>
-            <Title /><br /><br />
-            <h2>Overview</h2>
-            <div>
-              <p>
-                FileUpload 컴포넌트는 파일 선택 버튼과 선택된 파일 태그를 함께 제공하는 UI 요소입니다.<br />
-                단일/다중 파일 선택, 파일 형식 제한, 에러 메시지 표시 등을 지원합니다.
-              </p>
-            </div>
+      page: () => (
+        <>
+          <Title /><br /><br />
 
-            <Primary />
-            <Controls />
+          <h2>Overview</h2>
+          <p>
+            FileUpload 컴포넌트는 파일선택 버튼과 선택된 파일 태그를 함께 표시하는 UI 요소입니다.<br />
+            업로드 로직은 포함하지 않으며, 파일 목록과 이벤트 핸들러를 외부에서 주입하는 Controlled 컴포넌트입니다.<br />
+            파일명 hover 시 <span style={{ color: '#006FF2' }}>#006FF2</span> 파란색 + 밑줄, error 시 빨간색 + 밑줄로 표시됩니다.<br />
+            파일명 hover 시 파일명 전체를 툴팁으로 확인할 수 있습니다.
+          </p>
 
-            <h2>Usage</h2>
-            <p>FileUpload 컴포넌트는 다음과 같은 형태로 사용할 수 있습니다.</p>
-            <ul>
-              <li>기본 단일 파일 선택</li>
-              <li>다중 파일 선택 (multiple)</li>
-              <li>파일 형식 제한 (accept)</li>
-              <li>최대 파일 수 제한 (maxFiles)</li>
-              <li>에러 메시지 표시 (errorMessage)</li>
-              <li>비활성화 (disabled)</li>
-            </ul>
-            <Markdown>
-              {`
+          <Primary />
+          <Controls />
+
+          <h2>Usage</h2>
+          <p>FileUpload 컴포넌트는 다음과 같은 형태로 사용할 수 있습니다.</p>
+          <ul>
+            <li>파일선택 버튼만 표시 (파일 없음)</li>
+            <li>파일 태그 1개 이상 표시</li>
+            <li>Preview: 파일명 hover 시 파란색(#006FF2) + 밑줄 + 툴팁 표시</li>
+            <li>Error: 파일명 빨간색 + 밑줄 + 에러 메시지</li>
+          </ul>
+          <Markdown>
+            {`
 \`\`\`tsx
-import { FileUpload } from '@uiux/FileUpload';
+import { FileUpload } from '@/shared/components/common/FileUpload';
 
 <FileUpload
-  buttonLabel="파일선택"
-  multiple={false}
-  accept=".pdf,.png,.jpg"
-  maxFiles={5}
-  onChange={(files) => console.log(files)}
-  onRemove={(file, index) => console.log(file, index)}
-  errorMessage="파일을 선택해 주세요."
-  disabled={false}
+  files={[{ name: '첨부파일.png', key: 'file-1' }]}
+  onClickButton={() => { /* 파일 선택 다이얼로그 */ }}
+  onRemove={(file, index) => { /* 목록에서 제거 */ }}
 />
 \`\`\`
-              `}
-            </Markdown>
+            `}
+          </Markdown>
 
-            <h2>API Reference</h2>
-            <p>FileUpload 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>prop</th>
-                  <th>타입/옵션</th>
-                  <th>설명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>buttonLabel</td><td>string</td><td>파일 선택 버튼 텍스트 (기본값: '파일선택')</td></tr>
-                <tr><td>multiple</td><td>boolean</td><td>다중 파일 선택 여부</td></tr>
-                <tr><td>accept</td><td>string</td><td>허용할 파일 형식 (e.g. ".pdf,.png")</td></tr>
-                <tr><td>maxFiles</td><td>number</td><td>선택 가능한 최대 파일 수</td></tr>
-                <tr><td>disabled</td><td>boolean</td><td>비활성화 여부</td></tr>
-                <tr><td>errorMessage</td><td>string</td><td>에러 메시지 표시</td></tr>
-                <tr><td>onChange</td><td>(files: File[]) =&gt; void</td><td>파일 목록 변경 콜백</td></tr>
-                <tr><td>onRemove</td><td>(file: File, index: number) =&gt; void</td><td>파일 태그 삭제 콜백</td></tr>
-                <tr><td>className</td><td>string</td><td>추가 클래스명</td></tr>
-              </tbody>
-            </table>
+          <h2>API Reference</h2>
+          <p>FileUpload 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th>prop</th>
+                <th>타입</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>files</td><td>{'{ name: string; key?: string }[]'}</td><td>표시할 파일 목록</td></tr>
+              <tr><td>errorMessage</td><td>string</td><td>에러 문구 표시 + 파일명 빨간색 밑줄</td></tr>
+              <tr><td>onClickButton</td><td>{'() => void'}</td><td>파일선택 버튼 클릭 콜백</td></tr>
+              <tr><td>onRemove</td><td>{'(file, index) => void'}</td><td>파일 태그 X 클릭 콜백</td></tr>
+            </tbody>
+          </table>
 
-            <h2>기본</h2>
-            <p>기본 단일 파일 선택입니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <FileUpload buttonLabel="파일선택" />
-              </Gcol>
-            </Unstyled>
+          <h2>Default</h2>
+          <p>파일이 선택되지 않은 기본 상태입니다.</p>
+          <Unstyled>
+            <Gcol gap={4} variant="box-line" className="p-16">
+              <FileUpload files={[]} onClickButton={() => {}} onRemove={() => {}} />
+            </Gcol>
+          </Unstyled>
 
-            <h2>다중 파일 선택</h2>
-            <p>multiple을 사용하면 여러 파일을 선택할 수 있습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <FileUpload buttonLabel="파일선택" multiple />
-              </Gcol>
-            </Unstyled>
+          <h2>Preview</h2>
+          <p>파일명 hover 시 <strong style={{ color: '#006FF2' }}>#006FF2</strong> 파란색 + 밑줄로 변경되며, 파일명 전체가 툴팁으로 표시됩니다.</p>
+          <Unstyled>
+            <Gcol gap={4} variant="box-line" className="p-16">
+              <FileUpload files={SAMPLE_FILES} onClickButton={() => {}} onRemove={() => {}} />
+            </Gcol>
+          </Unstyled>
 
-            <h2>파일 형식 제한</h2>
-            <p>accept를 사용하면 선택 가능한 파일 형식을 제한할 수 있습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={4}>
-                  <FileUpload buttonLabel="이미지 선택" accept=".jpg,.jpeg,.png,.gif" />
-                  <FileUpload buttonLabel="PDF 선택" accept=".pdf" />
-                </Grow>
-              </Gcol>
-            </Unstyled>
-
-            <h2>에러 상태</h2>
-            <p>errorMessage를 전달하면 에러 메시지와 함께 에러 스타일이 적용됩니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <FileUpload
-                  buttonLabel="파일선택"
-                  errorMessage="파일을 선택해 주세요."
-                />
-              </Gcol>
-            </Unstyled>
-
-            <h2>비활성화</h2>
-            <p>disabled를 사용하면 파일 선택 버튼과 삭제 버튼이 비활성화됩니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <FileUpload buttonLabel="파일선택" disabled />
-              </Gcol>
-            </Unstyled>
-          </>
-        );
-      },
+          <h2>Error</h2>
+          <p>errorMessage 전달 시 파일명이 빨간색 + 밑줄로 표시되고, 에러 메시지가 함께 나타납니다.</p>
+          <Unstyled>
+            <Gcol gap={4} variant="box-line" className="p-16">
+              <FileUpload
+                files={SAMPLE_FILES}
+                errorMessage="파일 형식이 올바르지 않습니다."
+                onClickButton={() => {}}
+                onRemove={() => {}}
+              />
+            </Gcol>
+          </Unstyled>
+        </>
+      ),
     },
   },
   argTypes: {
-    buttonLabel: {
-      control: { type: 'text' },
-      table: { category: '텍스트 props' },
-    },
-    multiple: {
-      control: { type: 'boolean' },
-      table: { category: '기능 props' },
-    },
-    accept: {
-      control: { type: 'text' },
-      table: { category: '기능 props' },
-    },
-    maxFiles: {
-      control: { type: 'number' },
-      table: { category: '기능 props' },
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      table: { category: '상태 props' },
+    files: {
+      control: false,
+      description: '표시할 파일 목록',
+      table: { category: '데이터 props' },
     },
     errorMessage: {
-      control: { type: 'text' },
-      table: { category: '상태 props' },
+      control: 'text',
+      description: '에러 메시지 (파일명 빨간색 밑줄)',
+      table: { category: '스타일 props' },
     },
-    onChange: {
-      control: false,
-      table: { disable: true },
+    onClickButton: {
+      description: '파일선택 버튼 클릭 콜백',
+      table: { category: '이벤트 props' },
     },
     onRemove: {
-      control: false,
-      table: { disable: true },
+      description: '파일 태그 X 클릭 콜백 (file, index)',
+      table: { category: '이벤트 props' },
     },
-    className: {
-      table: { disable: true },
-    },
-    id: {
-      table: { disable: true },
-    },
+    id: { table: { disable: true } },
+    className: { table: { disable: true } },
   },
   args: {
-    buttonLabel: '파일선택',
-    multiple: false,
-    accept: undefined,
-    maxFiles: undefined,
-    disabled: false,
-    errorMessage: undefined,
+    files: SAMPLE_FILES,
+    errorMessage: '',
+    onClickButton: () => {},
+    onRemove: () => {},
   },
 };
 
@@ -184,49 +137,13 @@ export const Default: Story = {
   render: (args) => <FileUpload {...args} />,
 };
 
-export const Multiple: Story = {
-  args: {
-    multiple: true,
-    buttonLabel: '파일선택',
-  },
+export const Preview: Story = {
+  name: 'Preview (hover → 파란색 + 밑줄 + 툴팁)',
   render: (args) => <FileUpload {...args} />,
 };
 
 export const WithError: Story = {
-  args: {
-    errorMessage: '파일을 선택해 주세요.',
-  },
+  name: 'Error (빨간색 + 밑줄)',
   render: (args) => <FileUpload {...args} />,
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-  render: (args) => <FileUpload {...args} />,
-};
-
-export const AcceptImage: Story = {
-  args: {
-    accept: '.jpg,.jpeg,.png,.gif',
-    buttonLabel: '이미지 선택',
-  },
-  render: (args) => <FileUpload {...args} />,
-};
-
-export const AcceptPDF: Story = {
-  args: {
-    accept: '.pdf',
-    buttonLabel: 'PDF 선택',
-  },
-  render: (args) => <FileUpload {...args} />,
-};
-
-export const MaxFiles: Story = {
-  args: {
-    multiple: true,
-    maxFiles: 3,
-    buttonLabel: '최대 3개 선택',
-  },
-  render: (args) => <FileUpload {...args} />,
+  args: { errorMessage: '파일 형식이 올바르지 않습니다.' },
 };

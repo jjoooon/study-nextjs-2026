@@ -1,203 +1,147 @@
 'use client';
 
-import { useRef, useState, useId } from 'react';
+import { useId } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Typo } from '@atoms';
-import { FileUploadIcon } from '../icons';
+import { Grow, Typo } from '@atoms';
+import { FileUploadIcon, InputClearIcon } from '../icons';
+import { Button } from '../uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../uiux/Tooltip';
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+type FileItem = {
+  name: string;
+  /** 식별용 key (없으면 name 사용) */
+  key?: string;
+};
 
 type FileUploadProps = {
   id?: string;
-  accept?: string;
-  multiple?: boolean;
-  disabled?: boolean;
+  /** 표시할 파일 목록 */
+  files?: FileItem[];
   className?: string;
-  buttonLabel?: string;
-  onChange?: (files: File[]) => void;
-  onRemove?: (file: File, index: number) => void;
-  maxFiles?: number;
   errorMessage?: string;
+  /** 파일선택 버튼 클릭 */
+  onClickButton?: () => void;
+  /** 파일 태그 X 클릭 */
+  onRemove?: (file: FileItem, index: number) => void;
 };
+
+// ─── FileUpload ───────────────────────────────────────────────────────────────
 
 export function FileUpload({
   id,
-  accept,
-  multiple = false,
-  disabled = false,
-  className,
-  buttonLabel = '파일선택',
-  onChange,
-  onRemove,
-  maxFiles,
+  files = [],
   errorMessage,
+  onClickButton,
+  onRemove,
 }: FileUploadProps) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const generatedId = useId();
-  const inputId = id ?? generatedId;
-
-  const handleButtonClick = () => {
-    if (disabled) return;
-    inputRef.current?.click();
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newFiles = Array.from(event.target.files ?? []);
-    if (newFiles.length === 0) return;
-
-    const merged = multiple ? [...selectedFiles, ...newFiles] : newFiles;
-    const limited = maxFiles ? merged.slice(0, maxFiles) : merged;
-
-    setSelectedFiles(limited);
-    onChange?.(limited);
-
-    // reset so same file can be re-selected
-    event.target.value = '';
-  };
-
-  const handleRemove = (index: number) => {
-    const removed = selectedFiles[index];
-    const next = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(next);
-    onRemove?.(removed, index);
-    onChange?.(next);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleButtonClick();
-    }
-  };
+  const baseId = id ?? generatedId;
 
   return (
-    <div className={cn('flex flex-wrap items-center gap-2', className)}>
-      {/* Hidden file input */}
-      <input
-        ref={inputRef}
-        id={inputId}
-        type="file"
-        accept={accept}
-        multiple={multiple}
-        disabled={disabled}
-        className="sr-only"
-        aria-hidden="true"
-        tabIndex={-1}
-        onChange={handleChange}
-      />
-
-      {/* Upload button */}
-      <button
-        type="button"
-        aria-label={buttonLabel}
-        aria-describedby={errorMessage ? `${inputId}-error` : undefined}
+    <Grow>
+      {/* ── 파일선택 버튼 ── */}
+      <Button
+        variant={'outlined'}
+        color={'gray'}
+        size={'md'}
+        aria-label="파일선택"
+        aria-describedby={errorMessage ? `${baseId}-error` : undefined}
         aria-invalid={!!errorMessage}
-        disabled={disabled}
-        onClick={handleButtonClick}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          'inline-flex items-center gap-1.5 px-3 py-1.5',
-          'border border-[var(--color-input-border-default)] rounded-DEFAULT',
-          'bg-[var(--color-input-surface-default)]',
-          'text-[var(--color-text-default)]',
-          'cursor-pointer select-none',
-          'transition-colors duration-150',
-          'hover:bg-[var(--color-input-surface-hover)] hover:border-[var(--color-input-border-hover)]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]',
-          'disabled:opacity-40 disabled:cursor-not-allowed',
-          errorMessage && 'border-[var(--color-input-border-error)]'
-        )}
+        onClick={onClickButton}
+        className={errorMessage}
       >
         <FileUploadIcon />
+        파일선택
+      </Button>
 
-        <Typo variant="body-sm" tag="span">
-          {buttonLabel}
-        </Typo>
-      </button>
-
-      {/* File tags */}
-      {selectedFiles.map((file, index) => (
+      {/* ── 파일 태그 목록 ── */}
+      {files.map((file, index) => (
         <FileTag
-          key={`${file.name}-${index}`}
+          key={file.key ?? `${file.name}-${index}`}
           name={file.name}
-          onRemove={() => handleRemove(index)}
-          disabled={disabled}
+          hasError={!!errorMessage}
+          onRemove={() => onRemove?.(file, index)}
         />
       ))}
 
-      {/* Error message */}
+      {/* ── 에러 메시지 ── */}
       {errorMessage && (
         <p
-          id={`${inputId}-error`}
+          id={`${baseId}-error`}
           role="alert"
-          className="w-full mt-0.5 text-[var(--color-text-danger)]"
+          className="w-full mt-0.5"
         >
-          <Typo variant="body-sm" tag="span">
+          <Typo variant="body-sm" tag="span" className="text-[var(--color-text-danger)]">
             {errorMessage}
           </Typo>
         </p>
       )}
-    </div>
+    </Grow>
   );
 }
 
-// ─── FileTag ────────────────────────────────────────────────────────────────
+// ─── Utils ───────────────────────────────────────────────────────────────────
+
+/**
+ * 파일명이 길면 중간을 '...'으로 대체하고 마지막 글자를 보존합니다.
+ * 예) "매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용" → "매우 긴 파일명 입...용"
+ */
+function truncateTail(name: string, keepStart = 12, keepEnd = 1): string {
+  if (name.length <= keepStart + keepEnd) return name;
+  return `${name.slice(0, keepStart)}...${name.slice(-keepEnd)}`;
+}
+
+// ─── FileTag ─────────────────────────────────────────────────────────────────
 
 type FileTagProps = {
   name: string;
   onRemove: () => void;
-  disabled?: boolean;
+  hasError?: boolean;
 };
 
-function FileTag({ name, onRemove, disabled }: FileTagProps) {
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1 px-2 py-1',
-        'border border-[var(--color-input-border-default)] rounded-DEFAULT',
-        'bg-[var(--color-input-surface-default)]',
-        'max-w-[14rem]'
-      )}
-    >
-      <Typo
-        variant="body-sm"
-        tag="span"
-        className="truncate text-[var(--color-text-default)]"
-      >
-        {name}
-      </Typo>
+function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
+  const displayName = truncateTail(name);
 
+  return (
+    <Grow className="group">
+      {/* 파일명 — hover 시 tooltip + 파란색, error 시 빨간색 */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className="min-w-0 w-[12.3rem]">
+            <Typo
+              variant="body-sm"
+              tag="span"
+              className={cn(
+                'transition-colors duration-100 ',
+                hasError
+                  ? 'text-[var(--color-text-danger)] underline'
+                  : 'hover:text-[#006FF2] hover:underline'
+              )}
+            >
+              {displayName}
+            </Typo>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent variant="default" side="bottom" align="center" sideOffset={0}>
+          {name}
+        </TooltipContent>
+      </Tooltip>
+
+      {/* X 버튼 */}
       <button
         type="button"
         aria-label={`${name} 삭제`}
-        disabled={disabled}
         onClick={onRemove}
         className={cn(
-          'shrink-0 flex items-center justify-center',
-          'w-4 h-4 rounded-full',
-          'text-[var(--color-text-subtle)]',
-          'hover:text-[var(--color-text-danger)]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]',
-          'disabled:opacity-40 disabled:cursor-not-allowed',
-          'transition-colors duration-100'
+          'shrink-0 inline-flex items-center justify-center',
+          'w-3.5 h-3.5 rounded-full',
+          'text-[var(--color-text-subtle)]'
         )}
       >
-        {/* X icon */}
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M1.5 1.5L8.5 8.5M8.5 1.5L1.5 8.5"
-            stroke="currentColor"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
-        </svg>
+        <InputClearIcon color={'#6B7280'} size={16} />
       </button>
-    </span>
+    </Grow>
   );
 }
