@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { numberValueFormatter } from '@/shared/components/aggrid/aggridComponents';
+import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -16,6 +16,16 @@ const numberData: NumberDataType[] = [
   { id: 3, label: '오렌지', price: 1200 },
   { id: 4, label: '포도', price: 1500 },
   { id: 5, label: '수박', price: 0 },
+  { id: 6, label: '사과', price: 1000 },
+  { id: 7, label: '바나나', price: 0 },
+  { id: 8, label: '오렌지', price: 1200 },
+  { id: 9, label: '포도', price: 1500 },
+  { id: 10, label: '수박', price: 0 },
+  { id: 11, label: '사과', price: 1000 },
+  { id: 12, label: '바나나', price: 0 },
+  { id: 13, label: '오렌지', price: 1200 },
+  { id: 14, label: '포도', price: 1500 },
+  { id: 15, label: '수박', price: 0 },
 
 ];
 type StringDataType = { id: number; label: string; code: string };
@@ -41,10 +51,16 @@ const columnDefs: ColDef<NumberDataType>[] = [
     flex: 1,
     cellClass: 'text-right required editable-cell',
     editable: true, // 가격 직접 입력 가능
+    cellEditor: 'agNumberCellEditor',
+    cellEditorParams: {
+        min: 0,
+        max: 10000,
+        step:100
+    },
     valueParser: params => Number(params.newValue) || 0,
     valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     cellClassRules: {
-      'ag-cell-error-border': params => params.value === '' || params.value === undefined || Number(params.value) === 0,
+      'ag-cell-error-border': params => params.value === '' || params.value === undefined,
     },
   },
 ];
@@ -97,10 +113,12 @@ const meta: Meta<typeof AgGridReact<NumberDataType>> = {
           <Markdown>
             {`
 \`\`\`tsx
+import * as React from 'react';
+
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { numberValueFormatter } from '@/shared/components/aggrid/aggridComponents';
+import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid'
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -134,7 +152,19 @@ const columnDefs: ColDef<NumberDataType>[] = [
   },
 ];
 
- <div className="ag-theme-alpine aggrid-pagination-ko">
+
+const [rowData, setRowData] = React.useState<NumberDataType[]>(numberData);
+const [errorRows, setErrorRows] = React.useState<number[]>(
+  numberData.filter(row => !row.price).map(row => row.id)
+);
+
+// 공용 핸들러 활용
+const onCellValueChanged = React.useMemo(
+  () => createCellValueChangedHandler<NumberDataType, number>('price', setRowData, setErrorRows, 'id'),
+  [setRowData, setErrorRows]
+);
+
+<div className="ag-theme-alpine aggrid-pagination-ko">
   <AgGridReact<NumberDataType>
     rowData={rowData}
     columnDefs={columnDefs}
@@ -242,44 +272,34 @@ export const Default: StoryObj = {
       numberData.filter(row => !row.price).map(row => row.id)
     );
 
-    // 가격이 0 또는 빈 값인 행을 추적
-    const onCellValueChanged = React.useCallback((params: any) => {
-      if (params.colDef.field === 'price') {
-        setRowData((prev) =>
-          prev.map((row) =>
-            row.id === params.data.id ? { ...row, price: params.newValue } : row
-          )
-        );
-        setErrorRows((prev) => {
-          const isInvalid = params.newValue === '' || params.newValue === undefined || Number(params.newValue) === 0;
-          if (isInvalid && !prev.includes(params.data.id)) {
-            return [...prev, params.data.id];
-          } else if (!isInvalid && prev.includes(params.data.id)) {
-            return prev.filter((id) => id !== params.data.id);
-          }
-          return prev;
-        });
-      }
-    }, []);
+    // 공용 핸들러 활용
+    const onCellValueChanged = React.useMemo(
+      () => createCellValueChangedHandler<NumberDataType, number>('price', setRowData, setErrorRows, 'id'),
+      [setRowData, setErrorRows]
+    );
 
     return (
 
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko">
+        <div className="ag-theme-alpine aggrid-pagination-ko h-[30rem]!">
           <AgGridReact<NumberDataType>
             rowData={rowData}
             columnDefs={columnDefs}
+            animateRows={false}
+            alwaysShowHorizontalScroll={true}
+
             singleClickEdit={true}
-            domLayout="autoHeight"
             onCellValueChanged={onCellValueChanged}
           />
         </div>
-        <div className="ag-theme-alpine aggrid-pagination-ko">
+        <div className="ag-theme-alpine aggrid-pagination-ko h-[30rem]!">
           <AgGridReact<StringDataType>
             rowData={stringData}
             columnDefs={columnDefsString}
+            animateRows={false}
+            alwaysShowHorizontalScroll={true}
+
             singleClickEdit={true}
-            domLayout="autoHeight"
           />
         </div>
       </>

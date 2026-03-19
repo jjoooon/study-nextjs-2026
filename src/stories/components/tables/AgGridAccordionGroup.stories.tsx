@@ -131,22 +131,17 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => (
-    <div className="ag-theme-alpine aggrid-pagination-ko">
+    <div className="ag-theme-alpine aggrid-pagination-ko h-[30rem]!">
       <AgGridReact<TreeRow>
-        // 트리 구조로 표시할 데이터 배열
         rowData={treeData}
-        // 컬럼 정의 (트리 그룹 컬럼 포함)
         columnDefs={columnDefs}
-        // 트리 데이터 모드 활성화
+        animateRows={false}
+        alwaysShowHorizontalScroll={true}
+
         treeData={true}
-        // 각 row의 경로 배열 반환 (트리 구조 생성 기준)
         getDataPath={row => row.filePath}
-        // -1: 전체 트리 확장, 0: 닫힘
         groupDefaultExpanded={-1}
-        // 트리 그룹 컬럼 정의 (ex: 이름 컬럼)
         autoGroupColumnDef={{ headerName: '이름', field: 'name' }}
-        // 그리드 높이 자동 조정
-        domLayout="autoHeight"
       />
     </div>
   ),
