@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as React from 'react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+
+import { ModuleRegistry, AllCommunityModule, ClientSideRowModelModule } from 'ag-grid-community';
+import { RowGroupingModule } from 'ag-grid-enterprise';
+
+import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler } from '@/shared/components/aggrid/aggridComponents';
+
 import type {
   ColDef,
   ICellRendererParams,
@@ -16,12 +21,15 @@ import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
 
 import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
-import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
-import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import { TestData } from './TestAgGridData';
+import type { TestDataType } from './TestAgGridData';
 
-type GridRow = LniPl020Step2DataType['coverageGrid']['agGridTable1'][number];
+ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, RowGroupingModule]);
+
+type GridRow = TestDataType['data'][number];
+// 합계 행 타입 확장
+type GridRowWithSum = GridRow & { isSumRow?: boolean };
 
 interface AgGridReactStoryProps {
   selectionMode?: 'singleRow' | 'multiRow';
@@ -372,40 +380,59 @@ const duplicateRenderer = (params: ICellRendererParams<GridRow>) => {
   );
 };
 
+const expiryCellRenderer = (params: ICellRendererParams<GridRow>) => editableSelectCellRenderer<GridRow>(params);
+
 const columnDefs: ColDef<GridRow>[] = [
   {
-    headerName: '',
-    field: 'id',
+    headerName: '코드',
+    field: 'code',
+    rowGroup: true, 
+    hide: true,
     cellClass: 'text-center p-0!',
-    width: 30,
+    width: 50,
     sortable: false,
+    suppressMovable: true,
     filter: false,
     editable: false,
+    resizable: false,
     pinned: 'left',
+    cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? <b>합계</b> : params.value,
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 2 : 1,
   },
+ 
   {
     headerName: '담보명',
     field: 'productName',
     width: 390,
     cellClass: 'text-left',
+    showRowGroup: true,
+    cellRendererParams: {
+      suppressCount: false, // 자식 노드 개수(숫자)를 보여줄지 여부
+      checkbox: true,      // 이미지처럼 체크박스가 필요하다면 추가
+    },
+
     sortable: false,
     filter: false,
+    suppressMovable: true,
     tooltipValueGetter: (params) => params.data?.productName ?? '',
     autoHeight: true,
     pinned: 'left',
-    cellRenderer: productNameRenderer,
+    cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? null : productNameRenderer(params),
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 0 : 1,
   },
   {
     headerName: '가입금액(만원)',
     field: 'coverageAmount',
     flex: 1.6,
     headerClass: 'px-0!',
-    cellClass: () => 'text-right editable-cell',
+    cellClass: (params: CellClassParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? '' : 'text-right editable-cell',
     sortable: false,
     filter: false,
-    editable: true,
+    editable: (params: EditableCallbackParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? false : true,
     valueFormatter: (params: ValueFormatterParams<GridRow>) => (params.value ? params.value.toLocaleString() : ''),
     valueParser: (params: ValueParserParams<GridRow>) => Number(params.newValue),
+    cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? <b>합계2</b> : params.value,
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 4 : 1,
   },
   {
     headerName: '보험료(만원)',
@@ -421,7 +448,11 @@ const columnDefs: ColDef<GridRow>[] = [
         return rowIndex % 2 !== 0;
       }, // 0부터 시작하므로 홀수 인덱스가 짝수행
     },
-    valueFormatter: (params: ValueFormatterParams<GridRow>) => (params.value ? params.value.toLocaleString() : ''),
+    cellRenderer: (params: ICellRendererParams<GridRow>) =>
+      (params.data as GridRowWithSum)?.isSumRow
+        ? null
+        : numberValueFormatter<GridRow>(params as unknown as ValueFormatterParams<GridRow>),
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 0 : 1,
   },
   {
     headerName: '가능금액(만원)',
@@ -431,7 +462,11 @@ const columnDefs: ColDef<GridRow>[] = [
     headerClass: 'px-0!',
     sortable: false,
     filter: false,
-    valueFormatter: (params: ValueFormatterParams<GridRow>) => (params.value ? params.value.toLocaleString() : ''),
+    cellRenderer: (params: ICellRendererParams<GridRow>) =>
+      (params.data as GridRowWithSum)?.isSumRow
+        ? null
+        : numberValueFormatter<GridRow>(params as unknown as ValueFormatterParams<GridRow>),
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 0 : 1,
   },
   {
     headerName: '만기',
@@ -443,6 +478,8 @@ const columnDefs: ColDef<GridRow>[] = [
     editable: (params: EditableCallbackParams<GridRow>) => params.data?.canEditExpiry ?? false,
     cellEditor: 'agSelectCellEditor',
     cellEditorParams: { values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'] },
+    cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? null : expiryCellRenderer(params),
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 0 : 1,
   },
   {
     headerName: '납기',
@@ -451,6 +488,21 @@ const columnDefs: ColDef<GridRow>[] = [
     cellClass: 'text-center',
     sortable: false,
     filter: false,
+    editable: (params: EditableCallbackParams<GridRow>) => params.data?.canEditExpiry ?? false,
+    cellEditor: 'agSelectCellEditor',
+    cellEditorParams: {
+      values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+    },
+    cellRenderer: (params: ICellRendererParams<GridRow>) => {
+      const data = params.data as GridRowWithSum;
+      if (data?.isSumRow) {
+        // 합계 행: 가입금액 총합 콤마포맷
+        if (!params.column || !params.colDef) return null;
+        return <b>{numberValueFormatter<GridRow>({ ...params, value: data.coverageAmount, column: params.column, colDef: params.colDef })}</b>;
+      }
+      return expiryCellRenderer(params);
+    },
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 3 : 1,
   },
   {
     headerName: '예상UW',
@@ -466,6 +518,8 @@ const columnDefs: ColDef<GridRow>[] = [
       if (value === '거절' || value === '조건부인수') return { color: '#FB3F3F' };
       return undefined;
     },
+    cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? null : params.value,
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 0 : 1,
   },
   {
     headerName: '중복',
@@ -474,18 +528,71 @@ const columnDefs: ColDef<GridRow>[] = [
     cellClass: 'text-center',
     sortable: false,
     filter: false,
-    cellRenderer: duplicateRenderer,
+    cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? null : duplicateRenderer(params),
+    colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 0 : 1,
   },
 ];
 
+// 합계 행 생성 함수
+function getSumRow(data: GridRow[]): GridRowWithSum {
+  return {
+    id: -12, // number 타입, 실제 데이터와 겹치지 않는 값
+    code: '', // 합계 행은 code 없음
+    locked: false,
+    isDuplicate: false,
+    productName: '합계ㅇㅇㅇ',
+    coverageAmount: data.reduce((sum, row) => sum + (row.coverageAmount ?? 0), 0),
+    attribute: false,
+    premium: data.reduce((sum, row) => sum + (row.premium ?? 0), 0),
+    availableAmount: data.reduce((sum, row) => sum + (row.availableAmount ?? 0), 0),
+    expiryPeriod: '',
+    paymentPeriod: '',
+    expectedUwResult: '',
+    isHighlighted: false,
+    canEditExpiry: false,
+    badge: [],
+    isSumRow: true, // 커스텀 플래그(타입 확장 허용)
+  } as GridRow & { isSumRow?: boolean };
+}
+
 const renderGrid: Story['render'] = (args) => {
-  const rowData = LniPl020Step2Data.coverageGrid.agGridTable1;
+  const [rowData, setRowData] = React.useState<GridRow[]>(TestData.data);
+  const sumRow = React.useMemo(() => [getSumRow(rowData)], [rowData]);
+
+  // 셀 값 변경 시 rowData 갱신
+  const handleCellValueChanged = React.useCallback((params: any) => {
+    if (!params.data || (params.data as GridRowWithSum)?.isSumRow) return;
+    setRowData((prev) => {
+      // id 기준으로 해당 row만 교체
+      return prev.map((row) =>
+        row.id === params.data.id ? { ...row, ...params.data } : row
+      );
+    });
+  }, []);
+
   return (
     <div className="p-5">
       <div className="w-full h-[40vh]! ag-theme-alpine aggrid-pagination-ko">
         <AgGridReact<GridRow>
           rowData={rowData}
           columnDefs={columnDefs}
+          
+          pinnedBottomRowData={sumRow}
+
+          // groupDisplayType={'custom'}
+          autoGroupColumnDef={{
+            headerName: '코드',
+            field: 'code', // 그룹 컬럼에 담보명 표시
+            pinned: 'left',
+            cellClass: 'text-center p-0!',
+            width: 100,
+            sortable: false,
+            suppressMovable: true,
+            filter: false,
+            editable: false,
+            resizable: false,
+          
+          }}
 
           rowSelection={{
             mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
@@ -502,28 +609,29 @@ const renderGrid: Story['render'] = (args) => {
               'pointer-events-none': params => !!params.data?.locked,
             },
           }}
-
+          onCellValueChanged={handleCellValueChanged}
           onGridReady={(params) => {
             params.api.forEachNode((node) => {
               if (node.data?.locked) node.setSelected(true);
             });
           }}
-          // isRowSelectable={(node) => !node.data?.locked}
-
           suppressRowHoverHighlight={false}
-          // onSelectionChanged={handleSelectionChanged}
           singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
           tooltipShowDelay={args.showProductNameTooltip ? 0 : undefined}
           tooltipHideDelay={args.showProductNameTooltip ? 9999 : undefined}
           tooltipMouseTrack={args.showProductNameTooltip ? true : undefined}
-          getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
-
+          getRowClass={(params) => {
+            if ((params.data as any)?.isSumRow) return 'ag-row-sum';
+            return params.data?.isHighlighted ? 'ag-row-highlighted' : '';
+          }}
           pagination={args.pagination ?? true}
           paginationPageSize={args.paginationPageSize ?? 10}
           paginationPageSizeSelector={args.paginationPageSizeSelector ?? [10, 20, 50, 100]}
           suppressPaginationPanel={args.suppressPaginationPanel ?? false}
           localeText={AG_GRID_LOCALE_KO}
           paginationNumberFormatter={(params) => `${Number(params.value).toLocaleString('ko-KR')}`}
+
+          
         />
       </div>
     </div>

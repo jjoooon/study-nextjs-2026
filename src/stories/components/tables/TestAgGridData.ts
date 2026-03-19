@@ -1,16 +1,9 @@
 
-// LniPl020Step2Data 타입 정의
-export interface LniPl020Step2DataType {
-  tabList: Array<{
-    name: string;
-    age: string | number;
-    gender: string;
-    value: string;
-    error: boolean;
-    info: string[];
-  }>;
-  agGridTable1: Array<{
+// TestData 타입 정의
+export interface TestDataType {
+  data: Array<{
     id: number;
+    code: string;
     locked?: boolean; // 잠금 여부 추가
     isDuplicate: boolean;
     productName: string;
@@ -27,285 +20,12 @@ export interface LniPl020Step2DataType {
     badge?: string[]; 
   }>;
 }
-
-export const LniPl020Step2Data: LniPl020Step2DataType = {
-  tabList: [
-    {
-      name: '홍길동',
-      age: '1',
-      gender: '여',
-      value: 'tab1',
-      error: true,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '2',
-      gender: '남',
-      value: 'tab2',
-      error: true,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '3',
-      gender: '여',
-      value: 'tab3',
-      error: false,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '4',
-      gender: '남',
-      value: 'tab4',
-      error: false,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '5',
-      gender: '여',
-      error: false,
-      value: 'tab5',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '6',
-      gender: '여',
-      error: false,
-      value: 'tab6',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '7',
-      gender: '남',
-      error: false,
-      value: 'tab7',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '8',
-      gender: '남',
-      error: false,
-      value: 'tab8',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '9',
-      gender: '여',
-      error: false,
-      value: 'tab9',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '10',
-      gender: '남',
-      error: false,
-      value: 'tab10',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '11',
-      gender: '여',
-      error: true,
-      value: 'tab11',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '12',
-      gender: '남',
-      error: false,
-      value: 'tab12',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '13',
-      gender: '남',
-      error: false,
-      value: 'tab13',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '14',
-      gender: '여',
-      error: false,
-      value: 'tab14',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-    {
-      name: '반짝빛나리반짝빛나리',
-      age: '15',
-      gender: '남',
-      error: false,
-      value: 'tab15',
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-        '추가정보6',
-        '추가정보7',
-        '추가정보8',
-        '추가정보9',
-      ],
-    },
-  ],
-   
-  agGridTable1: [
+export const TestData: TestDataType = {
+  data: [
     {
       id: 1,
       locked: true,
+      code: 'A001',
       isDuplicate: true,
       productName: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
       coverageAmount: 500,
@@ -321,6 +41,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 2,
+      code: 'A001',
       locked: true,
       isDuplicate: true,
       productName: '무배당 메리츠 종합보험 무배당 메리츠 종합보험무배당 메리츠 종합보험무배당 메리츠 종합보험',
@@ -336,6 +57,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 3,
+      code: 'A001',
       locked: false,
       isDuplicate: true,
       productName: 'KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험',
@@ -352,6 +74,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 4,
+      code: 'A002',
       locked: false,
       isDuplicate: true,
       productName: '한화생명 의료실비보험',
@@ -369,6 +92,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     {
       id: 5,
       locked: false,
+      code: 'A002',
       isDuplicate: true,
       productName: '롯데생명 종신보험',
       coverageAmount: 100,
@@ -383,6 +107,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 6,
+      code: 'A002',
       locked: false,
       isDuplicate: true,
       productName: '현대생명 정기보험',
@@ -398,6 +123,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 7,
+      code: 'A002',
       locked: false,
       isDuplicate: true,
       productName: 'AXA손해보험 질병보험',
@@ -413,6 +139,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 8,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '삼성생명 어린이보험',
@@ -428,6 +155,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 9,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '교보생명 장기요양보험',
@@ -443,6 +171,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 10,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '신한생명 변액보험',
@@ -458,6 +187,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 11,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: 'DB손해보험 특정질병보험',
@@ -473,6 +203,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 12,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '우리생명 연금보험',
@@ -488,6 +219,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 13,
+      code: 'A004',
       locked: false,
       isDuplicate: true,
       productName: '동부화재 운전자보험',
@@ -503,6 +235,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 14,
+      code: 'A004',
       locked: false,
       isDuplicate: true,
       productName: '미래에셋생명 저축보험',
@@ -518,6 +251,7 @@ export const LniPl020Step2Data: LniPl020Step2DataType = {
     },
     {
       id: 15,
+      code: 'A004',
       locked: false,
       isDuplicate: true,
       productName: '하나생명 여행보험',

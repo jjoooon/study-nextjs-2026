@@ -53,27 +53,27 @@ const buttonVariants = cva(
       {
         only: 'icon',
         size: 'xl',
-        className: 'min-w-[0]! h-[3.2rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
+        className: 'min-w-[0]! h-[3.2rem] rounded-[0.6rem] px-0! aspect-square [&>svg]:w-[1.6rem]',
       },
       {
         only: 'icon',
         size: 'lg',
-        className: 'h-[2.8rem] rounded-[0.6rem] px-0 aspect-square [&>svg]:w-[1.6rem]',
+        className: 'h-[2.8rem] rounded-[0.6rem] px-0! aspect-square [&>svg]:w-[1.6rem]',
       },
       {
         only: 'icon',
         size: 'md',              
-        className: 'h-[2.5rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.4rem]',
+        className: 'h-[2.5rem] rounded-[0.4rem] px-0! aspect-square [&>svg]:w-[1.4rem]',
       },
       {
         only: 'icon',
         size: 'sm',
-        className: 'h-[2.2rem] rounded-[0.4rem] px-0 aspect-square [&>svg]:w-[1.32rem]',
+        className: 'h-[2.2rem] rounded-[0.4rem] px-0! aspect-square [&>svg]:w-[1.32rem]',
       },
       {
         only: 'icon',
         size: 'xs',
-        className: 'h-[1.6rem] rounded-[0.3rem] px-0 aspect-square [&>svg]:w-[1.32rem]',
+        className: 'h-[1.6rem] rounded-[0.3rem] px-0! aspect-square [&>svg]:w-[1.32rem]',
       },
 
       {

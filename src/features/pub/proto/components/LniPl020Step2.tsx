@@ -5,13 +5,13 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { CellClassParams, ColDef, EditableCallbackParams, ICellRendererParams, ITooltipParams, SelectionChangedEvent, ValueFormatterParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
+import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler } from '@/shared/components/aggrid/aggridComponents';
 import { LayoutMainHead, LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Grow, Gcol, Typo } from '@atoms';
 import { AmountUnitInput } from '@features/AmountUnitInput';
 import { LniPl020Step2 as MainFoot } from '@features/MainFoot';
-import { PaperIcon, PlusIcon, ResetIcon, SearchIcon, SelectArrowIcon, SizeIcon } from '@icons';
+import { PaperIcon, PlusIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-import { ErrorMsg } from '@common/ErrorMsg';
 import { HashList } from '@common/HashList';
 import { TabPager } from '@common/TabPager';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -21,19 +21,14 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Checkbox } from '@uiux/Checkbox';
-
-import type { LniPl020Step2DataType } from '@/features/pub/proto/data/LniPl020Step2Data';
-import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
 import { useTabs } from '@/shared/hooks/useTabs';
 
-// 기본은 인라인 구성.
-// 전용 훅으로 전환하려면 아래 import와 각 섹션의 HOOK MODE 코드를 사용.
-// import { useLniPl020Grid } from '@/features/pub/proto/hooks/useLniPl020Grid';
-// import { useLniPl020Tabs } from '@/features/pub/proto/hooks/useLniPl020Tabs';
+import type { LniPl020Step2DataType } from '../data/LniPl020Step2Data';
+import { LniPl020Step2Data } from '../data/LniPl020Step2Data';
 
-type PlanFiltersData = LniPl020Step2DataType['planFilters'];
-type MainHeadTab = PlanFiltersData['tabList'][number] & { value: string };
-type LniPl020GridRow = LniPl020Step2DataType['coverageGrid']['agGridTable1'][number];
+type tabListDataData = LniPl020Step2DataType['tabList'];
+type LniPl020GridRow = LniPl020Step2DataType['agGridTable1'][number];
+type MainHeadTab = tabListDataData[number] & { value: string };
 
 interface LniPl020Step2Props {
   onSelectPlan?: (planId: number) => void;
@@ -48,14 +43,14 @@ export function LniPl020Step2({
   isWidthExpanded = false,
   setIsWidthExpanded,
 }: LniPl020Step2Props) {
-  // TabPager 에러 상태 (보험료계산(지침) 클릭 시 토글)
+
+  // TEST용: TabPager 에러 상태 (보험료계산(지침) 클릭 시 토글)
   const [tabError, setTabError] = useState(false);
-  // 테이블 크기 조정
+
+  // ---------------------------------------------------------------------------
+  // 1) INLINED STATE (default)
+  // ---------------------------------------------------------------------------
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
-  
-  // ---------------------------------------------------------------------------
-  // INLINED STATE (default)
-  // ---------------------------------------------------------------------------
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
@@ -67,15 +62,9 @@ export function LniPl020Step2({
   };
 
   // ---------------------------------------------------------------------------
-  // 1) Data source
-  // ---------------------------------------------------------------------------
-  const planFilters = LniPl020Step2Data.planFilters;
-  const coverageGrid = LniPl020Step2Data.coverageGrid;
-
-  // ---------------------------------------------------------------------------
   // 2) Tabs
   // ---------------------------------------------------------------------------
-  const stringifiedTabs: MainHeadTab[] = planFilters.tabList.map((item) => ({
+  const stringifiedTabs: MainHeadTab[] = LniPl020Step2Data.tabList.map((item) => ({
     ...item,
     value: String(item.value),
   }));
@@ -86,31 +75,12 @@ export function LniPl020Step2({
     setActive: LniPl020_setActive,
   } = useTabs<MainHeadTab>(stringifiedTabs);
 
-  // HOOK MODE (tabs)
-  // const {
-  //   tabs: LniPl020_tabs,
-  //   active: LniPl020_active,
-  //   setActive: LniPl020_setActive,
-  // } = useLniPl020Tabs(planFilters);
-
   // ---------------------------------------------------------------------------
   // 3) Grid data
   // ---------------------------------------------------------------------------
-  const rowData = coverageGrid.agGridTable1;
+  const rowData = LniPl020Step2Data.agGridTable1;
 
-  const handleSelectionChanged = useCallback(
-    (event: SelectionChangedEvent<LniPl020GridRow>) => {
-      const selectedNodes = event.api.getSelectedNodes();
-      if (selectedNodes.length > 0) {
-        const selectedData = selectedNodes[0].data;
-        if (selectedData && typeof onSelectPlan === 'function') {
-          onSelectPlan(selectedData.id);
-        }
-      }
-    },
-    [onSelectPlan]
-  );
-
+  // 중복 셀 렌더러 (중복 여부에 따라 추가 버튼 노출)
   const duplicateRenderer = useCallback((params: ICellRendererParams<LniPl020GridRow>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
@@ -131,14 +101,13 @@ export function LniPl020Step2({
     );
   }, []);
 
+  // 담보명 헤더 렌더러 (선택/미선택 체크박스 + 검색창 + 담보명 풍선말 토글)
   const productNameHeader = useCallback(() => {
     const [coverageName, setCoverageName] = useState('');
-
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
       if (!checked) setGridKey((key) => key + 1);
     };
-
     return (
       <Grow className="w-full" placement={'bwc'}>
         <Grow className="gap-1.5" placement={'sc'}>
@@ -178,6 +147,7 @@ export function LniPl020Step2({
     );
   }, [checkedMap, showProductNameTooltip]);
 
+  // 담보명 셀 렌더러
   const titleRenderer = useCallback((params: ICellRendererParams<LniPl020GridRow>) => {
     return (
       <Grow className="h-full pr-1.5" placement={'bwc'}>
@@ -193,18 +163,29 @@ export function LniPl020Step2({
     );
   }, []);
 
-  const expiryCellRenderer = useCallback((params: ICellRendererParams<LniPl020GridRow>) => {
+  // 만기/납기 셀 렌더러 (공통 컴포넌트 활용)
+  const expiryCellRenderer = (params: ICellRendererParams<LniPl020GridRow>) => editableSelectCellRenderer<LniPl020GridRow>(params);
+
+  // 가입금액(만원) 셀 렌더러 (공통 컴포넌트 활용)
+  const coverageAmountCellRenderer = (params: ICellRendererParams<LniPl020GridRow>) => amountUnitInputCellRenderer<LniPl020GridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+
+  // 속성 셀 렌더러
+  const attributeRenderer = (params: ICellRendererParams<LniPl020GridRow>) => {
+    if (!params.value) return null;
     return (
-      <div className="flex items-center justify-center gap-1 w-full h-full">
-        <span className="block w-[6rem] text-right">{params.value}</span>
-        {params.data?.canEditExpiry ? (
-          <SelectArrowIcon size={14} color={'var(--color-gray-50)'} />
-        ) : (
-          <SelectArrowIcon size={14} color={'var(--color-gray-20)'} />
-        )}
+      <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
+        <Button only={'icon'} variant={'none'} size={'sm'}>
+          <SearchIcon color={'var(--color-primary-50)'} />
+        </Button>
       </div>
     );
-  }, []);
+  };
+
+  // 선택 행 정보 전달 (공용 핸들러 활용)
+  const handleSelectionChanged = useCallback(
+    createSelectionChangedHandler<LniPl020GridRow, number>('id', onSelectPlan),
+    [onSelectPlan]
+  );
 
   const columnDefs: ColDef<LniPl020GridRow>[] = useMemo(
     () => [
@@ -220,10 +201,7 @@ export function LniPl020Step2({
         suppressMovable: true, // 이동 방지
         lockPosition: 'left', // 왼쪽 고정 유지
         lockPinned: true, // 고정 열에서 제외 방지
-        tooltipValueGetter: (params: ITooltipParams<LniPl020GridRow>) => {
-          if (!params.data) return '';
-          return `담보명: ${params.data.productName}`;
-        },
+        tooltipValueGetter: productNameTooltipValueGetter<LniPl020GridRow>,
         headerComponent: productNameHeader,
         cellRenderer: titleRenderer,
       },
@@ -236,16 +214,7 @@ export function LniPl020Step2({
         sortable: false,
         filter: false,
         resizable: false,
-        cellRenderer: (params: ICellRendererParams<LniPl020GridRow>) => {
-          if (!params.value) return null;
-          return (
-            <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
-              <Button only={'icon'} variant={'none'} size={'sm'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-            </div>
-          );
-        },
+        cellRenderer: attributeRenderer,
       },
       {
         headerName: '가입금액(만원)',
@@ -256,25 +225,7 @@ export function LniPl020Step2({
         sortable: false,
         filter: false,
         editable: false,
-        cellRenderer: (params: ICellRendererParams<LniPl020GridRow>) => {
-          const rowIndex = params.node?.rowIndex ?? 0;
-          if (!amountInputRefs.current) amountInputRefs.current = [];
-          return (
-            <AmountUnitInput
-              value={params.value}
-              onChange={(newValue) => {
-                if (params.setValue) params.setValue(newValue);
-              }}
-              inputRef={(el) => {
-                amountInputRefs.current[rowIndex] = el;
-              }}
-              onEnter={() => {
-                const nextRef = amountInputRefs.current[rowIndex + 1];
-                if (nextRef) nextRef.focus();
-              }}
-            />
-          );
-        },
+        cellRenderer: coverageAmountCellRenderer,
       },
       {
         headerName: '가능금액(만원)',
@@ -284,9 +235,7 @@ export function LniPl020Step2({
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: (params: ValueFormatterParams<LniPl020GridRow>) => {
-          return params.value ? params.value.toLocaleString() : '';
-        },
+        valueFormatter: numberValueFormatter<LniPl020GridRow>,
       },
       {
         headerName: '만기',
@@ -326,9 +275,7 @@ export function LniPl020Step2({
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: (params: ValueFormatterParams<LniPl020GridRow>) => {
-          return params.value ? params.value.toLocaleString() : '';
-        },
+        valueFormatter: numberValueFormatter<LniPl020GridRow>,
       },
       {
         headerName: '예상UW',
@@ -380,7 +327,7 @@ export function LniPl020Step2({
           data={LniPl020_tabs} 
           active={LniPl020_active}
           setActive={LniPl020_setActive}
-          visibleCount={planFilters.visibleCount}
+          visibleCount={5}
           error={tabError}
           errorMsg="입력하세요."
           getValue={tab => String(tab.value)}
@@ -430,7 +377,16 @@ export function LniPl020Step2({
                 담보패키지 선택
               </Button>
               <Grow className="flex-wrap" placement={'ss'}>
-                {planFilters.checkboxList1.map((category: PlanFiltersData['checkboxList1'][number]) => (
+                {[
+                  { label: '사망후유', value: '0' },
+                  { label: '3대진단', value: '1' },
+                  { label: '입원일당', value: '2' },
+                  { label: '수술비', value: '3' },
+                  { label: '골절/화상', value: '4' },
+                  { label: '운전비용', value: '5' },
+                  { label: '치료비', value: '6' },
+                  { label: '기타', value: '7' },
+                ].map(category => (
                   <Checkbox key={category.value} variant={'button'}>
                     {category.label}
                   </Checkbox>
@@ -441,13 +397,16 @@ export function LniPl020Step2({
             <Grow gap={3} className="w-full" placement={'bwc'}>
               <Grow gap={3} className="w-full" placement={'ss'}>
                 <Grow className="flex-wrap shrink-0" placement={'ss'}>
-                  {planFilters.checkboxList2.map((category: PlanFiltersData['checkboxList2'][number]) => (
+                  {[
+                    { label: '갱신', value: '1' },
+                    { label: '비갱신', value: '2' },
+                  ].map(category => (
                     <Checkbox key={category.value} variant={'button'}>
                       {category.label}
                     </Checkbox>
                   ))}
                 </Grow>
-                <HashList data={planFilters.hashList} />
+                <HashList data={['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '심', '수술', '특정', '표적', '치료']} />
               </Grow>
               <Grow placement={'ec'}>
                 <Button variant={'contained'} color={'coolgray'} size={'lg'}>
