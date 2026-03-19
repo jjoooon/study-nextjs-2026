@@ -69,7 +69,7 @@ const columnDefsString: ColDef<StringDataType>[] = [
 ];
 
 const meta: Meta<typeof AgGridReact<NumberDataType>> = {
-  title: 'Components/Tables/AgGrid/Input',
+  title: 'Components/Tables/AgGrid/CellEditor Input',
   component: AgGridReact,
   tags: ['autodocs'],
   parameters: {
