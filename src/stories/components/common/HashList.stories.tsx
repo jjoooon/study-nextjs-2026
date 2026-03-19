@@ -5,9 +5,8 @@ import { HashList } from '@common/HashList';
 
 import { LniPl020Step2Data } from '@/features/pub/proto/data/LniPl020Step2Data';
 
-const SHORT_HASH_DATA = ['암', '뇌', '심', '수술', '특정'];
 
-const LONG_HASH_DATA = LniPl020Step2Data.planFilters.hashList;
+const LONG_HASH_DATA = ['암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정'];
 
 const meta: Meta<typeof HashList> = {
   title: 'Components/Common/HashList',
@@ -69,11 +68,6 @@ const hashList = ['암', '뇌', '심', '수술', '특정', '표적', '치료'];
             <h2>Examples</h2>
             <Unstyled>
               <Gcol gap={4} className="w-full">
-                <h3 className="font-bold">Short List</h3>
-                <div>
-                  <HashList data={SHORT_HASH_DATA} />
-                </div>
-
                 <h3 className="font-bold mt-4">Long List (More)</h3>
                 <div>
                   <HashList data={LONG_HASH_DATA} />
@@ -110,7 +104,7 @@ export const Default: Story = {
 
 export const ShortList: Story = {
   args: {
-    data: SHORT_HASH_DATA,
+    data: LONG_HASH_DATA
   },
   render: (args) => (
     <div>
