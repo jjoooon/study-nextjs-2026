@@ -199,7 +199,8 @@
 /* .ag-row-selected {
   background-color: var(--color-table-td-surface-selected) !important;
 } */
-
+.ag-cell .ag-icon,
+.ag-cell .ag-icon:before,
 .ag-header-cell-comp-wrapper :where(.ag-icon):before,
 .ag-header-cell-comp-wrapper .ag-icon {
   width: 1.6rem !important;
