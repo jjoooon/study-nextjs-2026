@@ -200,8 +200,8 @@
   background-color: var(--color-table-td-surface-selected) !important;
 } */
 
-:where(.ag-icon):before,
-.ag-icon {
+.ag-header-cell-comp-wrapper :where(.ag-icon):before,
+.ag-header-cell-comp-wrapper .ag-icon {
   width: 1.6rem !important;
   height: 1.6rem !important;
 }
