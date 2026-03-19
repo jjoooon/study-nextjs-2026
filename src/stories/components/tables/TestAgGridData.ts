@@ -3,6 +3,7 @@
 export interface TestDataType {
   data: Array<{
     id: number;
+    code: string;
     locked?: boolean; // 잠금 여부 추가
     isDuplicate: boolean;
     productName: string;
@@ -24,6 +25,7 @@ export const TestData: TestDataType = {
     {
       id: 1,
       locked: true,
+      code: 'A001',
       isDuplicate: true,
       productName: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
       coverageAmount: 500,
@@ -39,6 +41,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 2,
+      code: 'A001',
       locked: true,
       isDuplicate: true,
       productName: '무배당 메리츠 종합보험 무배당 메리츠 종합보험무배당 메리츠 종합보험무배당 메리츠 종합보험',
@@ -54,6 +57,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 3,
+      code: 'A001',
       locked: false,
       isDuplicate: true,
       productName: 'KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험KB손해보험 암보험',
@@ -70,6 +74,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 4,
+      code: 'A002',
       locked: false,
       isDuplicate: true,
       productName: '한화생명 의료실비보험',
@@ -87,6 +92,7 @@ export const TestData: TestDataType = {
     {
       id: 5,
       locked: false,
+      code: 'A002',
       isDuplicate: true,
       productName: '롯데생명 종신보험',
       coverageAmount: 100,
@@ -101,6 +107,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 6,
+      code: 'A002',
       locked: false,
       isDuplicate: true,
       productName: '현대생명 정기보험',
@@ -116,6 +123,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 7,
+      code: 'A002',
       locked: false,
       isDuplicate: true,
       productName: 'AXA손해보험 질병보험',
@@ -131,6 +139,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 8,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '삼성생명 어린이보험',
@@ -146,6 +155,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 9,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '교보생명 장기요양보험',
@@ -161,6 +171,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 10,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '신한생명 변액보험',
@@ -176,6 +187,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 11,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: 'DB손해보험 특정질병보험',
@@ -191,6 +203,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 12,
+      code: 'A003',
       locked: false,
       isDuplicate: true,
       productName: '우리생명 연금보험',
@@ -206,6 +219,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 13,
+      code: 'A004',
       locked: false,
       isDuplicate: true,
       productName: '동부화재 운전자보험',
@@ -221,6 +235,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 14,
+      code: 'A004',
       locked: false,
       isDuplicate: true,
       productName: '미래에셋생명 저축보험',
@@ -236,6 +251,7 @@ export const TestData: TestDataType = {
     },
     {
       id: 15,
+      code: 'A004',
       locked: false,
       isDuplicate: true,
       productName: '하나생명 여행보험',
