@@ -1,12 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+
 import * as React from 'react';
+import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ModuleRegistry, AllCommunityModule, ClientSideRowModelModule } from 'ag-grid-community';
-import { RowGroupingModule } from 'ag-grid-enterprise';
-
-import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-
+import { TreeDataModule } from 'ag-grid-enterprise';
 import type {
   ColDef,
   ICellRendererParams,
@@ -15,17 +13,26 @@ import type {
   ValueParserParams,
   CellClassParams,
 } from 'ag-grid-community';
+import { RowGroupingModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+
+import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
+import { 
+  amountUnitInputCellRenderer,
+  editableSelectCellRenderer, 
+  numberValueFormatter, 
+  productNameTooltipValueGetter, 
+  createSelectionChangedHandler 
+} from '@/shared/components/aggrid/aggridComponents';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
-
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
 
 import { TestData } from './TestAgGridData';
 import type { TestDataType } from './TestAgGridData';
 
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, RowGroupingModule]);
+ModuleRegistry.registerModules([TreeDataModule]);
 
 type GridRow = TestDataType['data'][number];
 // 합계 행 타입 확장
@@ -386,8 +393,6 @@ const columnDefs: ColDef<GridRow>[] = [
   {
     headerName: '코드',
     field: 'code',
-    rowGroup: true, 
-    hide: true,
     cellClass: 'text-center p-0!',
     width: 50,
     sortable: false,
@@ -396,6 +401,8 @@ const columnDefs: ColDef<GridRow>[] = [
     editable: false,
     resizable: false,
     pinned: 'left',
+    showRowGroup: true, // 트리 데이터에서 그룹핑 컬럼 지정
+    hide: true, // 트리 데이터에서는 코드 컬럼 숨김
     cellRenderer: (params: ICellRendererParams<GridRow>) => (params.data as GridRowWithSum)?.isSumRow ? <b>합계</b> : params.value,
     colSpan: (params) => (params.data as GridRowWithSum)?.isSumRow ? 2 : 1,
   },
@@ -405,12 +412,10 @@ const columnDefs: ColDef<GridRow>[] = [
     field: 'productName',
     width: 390,
     cellClass: 'text-left',
-    showRowGroup: true,
     cellRendererParams: {
-      suppressCount: false, // 자식 노드 개수(숫자)를 보여줄지 여부
-      checkbox: true,      // 이미지처럼 체크박스가 필요하다면 추가
+      suppressCount: false,
+      checkbox: true,
     },
-
     sortable: false,
     filter: false,
     suppressMovable: true,
@@ -535,6 +540,7 @@ const columnDefs: ColDef<GridRow>[] = [
 
 // 합계 행 생성 함수
 function getSumRow(data: GridRow[]): GridRowWithSum {
+  // GridRowWithSum의 모든 필수 필드를 명시적으로 채움
   return {
     id: -12, // number 타입, 실제 데이터와 겹치지 않는 값
     code: '', // 합계 행은 code 없음
@@ -551,8 +557,11 @@ function getSumRow(data: GridRow[]): GridRowWithSum {
     isHighlighted: false,
     canEditExpiry: false,
     badge: [],
+    // 아래는 GridRow 타입에 따라 추가 필드가 있을 경우 기본값 처리
+    filePath: [],
+    type: 'File',
     isSumRow: true, // 커스텀 플래그(타입 확장 허용)
-  } as GridRow & { isSumRow?: boolean };
+  };
 }
 
 const renderGrid: Story['render'] = (args) => {
@@ -576,24 +585,27 @@ const renderGrid: Story['render'] = (args) => {
         <AgGridReact<GridRow>
           rowData={rowData}
           columnDefs={columnDefs}
-          
           pinnedBottomRowData={sumRow}
+          treeData={true}
+          getDataPath={(data: GridRow) => data.filePath}
 
-          // groupDisplayType={'custom'}
           autoGroupColumnDef={{
             headerName: '코드',
-            field: 'code', // 그룹 컬럼에 담보명 표시
-            pinned: 'left',
-            cellClass: 'text-center p-0!',
+            field: 'code',
             width: 100,
             sortable: false,
             suppressMovable: true,
             filter: false,
             editable: false,
             resizable: false,
-          
+            pinned: 'left',
+            cellRendererParams: {
+              suppressCount: false,
+              checkbox: true,
+            },
           }}
-
+          
+          groupDefaultExpanded={-1}
           rowSelection={{
             mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
             headerCheckbox: args.headerCheckbox ?? true,
@@ -616,7 +628,7 @@ const renderGrid: Story['render'] = (args) => {
             });
           }}
           suppressRowHoverHighlight={false}
-          singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+          singleClickEdit={true}
           tooltipShowDelay={args.showProductNameTooltip ? 0 : undefined}
           tooltipHideDelay={args.showProductNameTooltip ? 9999 : undefined}
           tooltipMouseTrack={args.showProductNameTooltip ? true : undefined}
@@ -630,8 +642,6 @@ const renderGrid: Story['render'] = (args) => {
           suppressPaginationPanel={args.suppressPaginationPanel ?? false}
           localeText={AG_GRID_LOCALE_KO}
           paginationNumberFormatter={(params) => `${Number(params.value).toLocaleString('ko-KR')}`}
-
-          
         />
       </div>
     </div>
