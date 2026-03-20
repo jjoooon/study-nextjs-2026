@@ -571,3 +571,18 @@
   top: calc(100% - 0rem);
   transform: rotate(180deg);
 }
+
+.ag-cell-expandable {
+  display: flex !important;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+.ag-group-child-count {
+  display: none;
+}
+.ag-row-group-leaf-indent {
+  margin-left: 0 !important;
+}
+.ag-input-field-input.ag-number-field-input {
+  text-align: right;
+}
