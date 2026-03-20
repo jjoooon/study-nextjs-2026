@@ -32,6 +32,7 @@
       "@features/*": ["./src/shared/components/features/*"],
       "@layout/*": ["./src/shared/components/layout/*"],
 
+      "@aggrid": ["./src/shared/components/aggrid/index.ts"],
       "@atoms": ["./src/shared/components/atoms/index.ts"],
       "@icons": ["./src/shared/components/icons/index.ts"]
     }
