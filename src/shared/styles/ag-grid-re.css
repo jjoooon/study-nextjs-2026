@@ -160,24 +160,24 @@
   background-color: #fff;
 }
 
-.ag-theme-alpine .ag-row-odd {
+.striped-row-gray .ag-row-odd{
   background-color: var(--color-table-td-surface-gray);
 }
 .ag-theme-alpine.no-odd .ag-row-odd {
   background-color: #fff;
 }
 
-
-
 .ag-pinned-left-cols-container .ag-row {
   border-right: 1px solid var(--color-gray-10) !important;
 }
+.ag-row-focus .ag-cell,
 .ag-row-selected .editable-cell,
 .ag-row-selected:before,
 .ag-row.ag-row-selected,
 .ag-row-focus {
   background-color: var(--color-table-td-surface-selected) !important;
 }
+
 
 .ag-cell-focus {
   background-color: var(--color-table-td-surface-click) !important;
@@ -377,9 +377,9 @@
   right: 0;
   height: 100%;
   background-color: rgba(251, 63, 63, 0.04);
-  outline: .2rem solid #FB3F3F;
-  outline-offset: -.2rem;
-  border-radius: .4rem;
+  outline: 0.2rem solid #FB3F3F;
+  outline-offset: -0.2rem;
+  border-radius: 0.4rem;
   pointer-events: none;
   width: 100%;
   /* box-shadow: 0 14px 20px 0 rgba(251, 63, 63, 0.12); */
@@ -392,14 +392,14 @@
   background: var(--color-table-td-surface-editable) ;
 }
 .ag-cell-inline-editing {
-  padding:.4rem .6rem !important;
+  padding:0.2rem 0.6rem !important;
 }
 .ag-text-field-input {
   outline: 1px solid var(--color-gray-100);
   outline-offset: -1px;
-  border-radius: .4rem;;
+  border-radius: 0.4rem;;
   text-align: right;
-  padding:0 .8rem;
+  padding:0 0.8rem;
 }
 .space-bottom-12 .ag-body-viewport{
   padding-bottom: calc(9.8rem + 1.2rem) !important;
@@ -585,4 +585,58 @@
 }
 .ag-input-field-input.ag-number-field-input {
   text-align: right;
+}
+.ag-checkbox-disabled .ag-checkbox-input-wrapper { 
+  pointer-events: none; 
+}
+.ag-column-first.ag-cell {
+  padding: 0 !important;
+}
+.my-row-disabled .ag-column-first.ag-cell input {
+  pointer-events: none !important;
+}
+.my-row-disabled .ag-column-first.ag-cell .ag-checkbox-input-wrapper{
+  pointer-events: none !important;
+  background-color: var(--color-gray-10) !important;
+  border-color: var(--color-gray-20) !important;
+}
+.my-row-disabled .ag-column-first.ag-cell .ag-checkbox-input-wrapper.ag-checked:after {
+  background-color: var(--color-icon-gray-light) !important;
+}
+.ag-cell-wrapper>:where(:not(.ag-cell-value,.ag-group-value)) {
+  height: 100%;
+}
+.my-row-isCheck.my-row-disabled .ag-column-first.ag-cell .ag-checkbox-input-wrapper {
+  background-color: var(--color-primary-50) !important;
+  border-color: var(--color-primary-50) !important;
+}
+.my-row-isCheck.my-row-disabled .ag-column-first.ag-cell .ag-checkbox-input-wrapper {
+  background-color: var(--color-gray-10) !important;
+  border-color: var(--color-gray-20) !important;
+}
+.my-row-isCheck.my-row-disabled .ag-column-first.ag-cell .ag-checkbox-input-wrapper:after {
+  background-color: #fff !important;
+  mask-image: var(--ag-checkbox-checked-shape-image);
+  mask-size: 0.8rem !important;
+}
+.my-row-isCheck.my-row-disabled .ag-column-first.ag-cell .ag-checkbox-input-wrapper:after {
+  background-color: var(--color-icon-gray-light) !important;
+  mask-image: var(--ag-checkbox-checked-shape-image);
+  mask-size: 0.8rem !important;
+}
+.ag-checkbox-input-wrapper:where(.ag-disabled),
+.ag-checkbox-input-wrapper{
+  overflow: hidden;
+  opacity: 1;
+}
+.ag-checkbox-input:disabled, 
+.ag-radio-button-input:disabled {
+  background-color: var(--color-gray-10) !important;
+  border-color: var(--color-gray-20) !important;
+  opacity: 1 !important;
+}
+.ag-selection-checkbox input[type="checkbox"] {
+  width: 100%;
+  height: 100%;
+  border:0 !important
 }

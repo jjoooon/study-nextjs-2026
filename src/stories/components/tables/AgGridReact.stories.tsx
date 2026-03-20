@@ -448,7 +448,7 @@ const columnDefs: ColDef<GridRow>[] = [
     sortable: false,
     filter: false,
     cellClassRules: {
-      'bg-[var(--color-primary-20)]!': (params) => {
+      'bg-[var(--color-primary-20)]': (params) => {
         const rowIndex = params.node.rowIndex ?? -1;
         return rowIndex % 2 !== 0;
       }, // 0부터 시작하므로 홀수 인덱스가 짝수행
