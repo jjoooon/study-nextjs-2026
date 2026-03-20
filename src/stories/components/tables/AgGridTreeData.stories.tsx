@@ -35,8 +35,8 @@ import type { ColDef } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
-type TreeRow = { id: number; desc: string; name: string; filePath: string[] };
-const treeData: TreeRow[] = [
+type DummyDataType = { id: number; desc: string; name: string; filePath: string[] };
+const DummyData: DummyDataType[] = [
   { id: 1, desc: 'auw930445', name: '폴더A', filePath: ['폴더A'] },
   { id: 2, desc: 'auw3245445', name: '파일A-1', filePath: ['폴더A', '파일A-1'] },
   { id: 3, desc: 'auw2203445', name: '파일A-2', filePath: ['폴더A', '파일A-2'] },
@@ -49,7 +49,7 @@ const treeData: TreeRow[] = [
   { id: 10, desc: 'auw444444', name: '파일C-2', filePath: ['폴더C', '파일C-2'] },
 ];
 
-const columnDefs: ColDef<TreeRow>[] = [
+const columnDefs: ColDef<DummyDataType>[] = [
    {
     headerName: '내용',
     field: 'desc',
@@ -58,7 +58,7 @@ const columnDefs: ColDef<TreeRow>[] = [
   },
 ];
 
-const meta: Meta<typeof AgGridReact<TreeRow>> = {
+const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/TreeData',
   component: AgGridReact,
   tags: ['autodocs'],
@@ -87,8 +87,8 @@ import type { ColDef } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
-type TreeRow = { id: number; desc: string; name: string; filePath: string[] };
-const treeData: TreeRow[] = [
+type DummyDataType = { id: number; desc: string; name: string; filePath: string[] };
+const treeData: DummyDataType[] = [
   { id: 1, desc: 'auw930445', name: '폴더A', filePath: ['폴더A'] },
   { id: 2, desc: 'auw3245445', name: '파일A-1', filePath: ['폴더A', '파일A-1'] },
   { id: 3, desc: 'auw2203445', name: '파일A-2', filePath: ['폴더A', '파일A-2'] },
@@ -96,7 +96,7 @@ const treeData: TreeRow[] = [
   { id: 5, desc: 'auw563356', name: '파일B-1', filePath: ['폴더B', '파일B-1'] },
 ];
 
-const columnDefs: ColDef<TreeRow>[] = [
+const columnDefs: ColDef<DummyDataType>[] = [
   // 트리그룹에서는 첫번째 셀은 자동으로 그룹 렌더러가 적용되므로 name 필드 대신 desc 필드를 그룹 렌더러로 사용
   {
     headerName: '내용',
@@ -107,8 +107,8 @@ const columnDefs: ColDef<TreeRow>[] = [
 ];
 
 <div className="ag-theme-alpine aggrid-pagination-ko">
-  <AgGridReact<TreeRow>
-    rowData={treeData}
+  <AgGridReact<DummyDataType>
+    rowData={DummyData}
     columnDefs={columnDefs}
     
     treeData={true} // 트리 데이터 모드 활성화
@@ -131,9 +131,9 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => (
-    <div className="ag-theme-alpine aggrid-pagination-ko h-[30rem]!">
-      <AgGridReact<TreeRow>
-        rowData={treeData}
+    <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+      <AgGridReact<DummyDataType>
+        rowData={DummyData}
         columnDefs={columnDefs}
         animateRows={false}
         alwaysShowHorizontalScroll={true}

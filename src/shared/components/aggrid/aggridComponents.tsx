@@ -1,11 +1,15 @@
 
 // 외부 라이브러리
+import * as React from 'react';
 import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
 
 // 내부 공통 컴포넌트
+
 import { AmountUnitInput } from '@features/AmountUnitInput';
 import { SelectArrowIcon } from '@icons';
 
+import { DatePickerInput } from '@common/DatePicker';
+import type { ICellEditorParams } from 'ag-grid-community';
 
 /**
  * 선택 행 정보 전달 핸들러 생성기 (공용)
@@ -120,5 +124,39 @@ export function editableSelectCellRenderer<RowType extends { canEditExpiry?: boo
         <SelectArrowIcon size={14} color={'var(--color-gray-20)'} />
       )}
     </div>
+  );
+}
+
+export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams<RowType>) {
+  const [value, setValue] = React.useState<string>(props.value ?? '');
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  }, []);
+
+  const handleChange = (_: Date | undefined, formatted: string) => {
+    setValue(formatted);
+  };
+
+  // ag-Grid는 커스텀 에디터에 forwardedRef를 넘김
+  React.useImperativeHandle(
+    (props as any).forwardedRef,
+    () => ({
+      getValue: () => value,
+      isCancelAfterEnd: () => false,
+    }),
+    [value]
+  );
+
+  return (
+    <DatePickerInput
+      value={value}
+      onChange={handleChange}
+      size="md"
+      width="full"
+    />
   );
 }

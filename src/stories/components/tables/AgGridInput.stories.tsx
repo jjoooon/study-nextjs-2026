@@ -9,36 +9,27 @@ import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type NumberDataType = { id: number; label: string; price: number };
-const numberData: NumberDataType[] = [
+type DummyDataType = { id: number; label: string; price: number };
+const DummyData: DummyDataType[] = [
   { id: 1, label: '사과', price: 1000 },
   { id: 2, label: '바나나', price: 0 },
   { id: 3, label: '오렌지', price: 1200 },
   { id: 4, label: '포도', price: 1500 },
   { id: 5, label: '수박', price: 0 },
-  { id: 6, label: '사과', price: 1000 },
-  { id: 7, label: '바나나', price: 0 },
-  { id: 8, label: '오렌지', price: 1200 },
-  { id: 9, label: '포도', price: 1500 },
-  { id: 10, label: '수박', price: 0 },
-  { id: 11, label: '사과', price: 1000 },
-  { id: 12, label: '바나나', price: 0 },
-  { id: 13, label: '오렌지', price: 1200 },
-  { id: 14, label: '포도', price: 1500 },
-  { id: 15, label: '수박', price: 0 },
-
 ];
-type StringDataType = { id: number; label: string; code: string };
-const stringData: StringDataType[] = [
+type Dummy2DataType = { id: number; label: string; code: string };
+const Dummy2Data: Dummy2DataType[] = [
   { id: 1, label: '사과', code: '' },
   { id: 2, label: '바나나', code: 'afg43534' },
   { id: 3, label: '오렌지', code: '' },
   { id: 4, label: '포도', code: '' },
+  { id: 5, label: '메론', code: '' },
+  { id: 6, label: '수박', code: '' },
 ];
 
 
 // 커스텀 cellRenderer: 셀 내부에서 input과 ErrorMsg를 함께 렌더링
-const columnDefs: ColDef<NumberDataType>[] = [
+const columnDefs: ColDef<DummyDataType>[] = [
   {
     headerName: '이름',
     field: 'label',
@@ -53,9 +44,9 @@ const columnDefs: ColDef<NumberDataType>[] = [
     editable: true, // 가격 직접 입력 가능
     cellEditor: 'agNumberCellEditor',
     cellEditorParams: {
-        min: 0,
-        max: 10000,
-        step:100
+      min: 0,
+      max: 1000000,
+      step:10
     },
     valueParser: params => Number(params.newValue) || 0,
     valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -64,7 +55,7 @@ const columnDefs: ColDef<NumberDataType>[] = [
     },
   },
 ];
-const columnDefsString: ColDef<StringDataType>[] = [
+const columnDefsString: ColDef<Dummy2DataType>[] = [
   {
     headerName: '이름',
     field: 'label',
@@ -84,7 +75,7 @@ const columnDefsString: ColDef<StringDataType>[] = [
   },
 ];
 
-const meta: Meta<typeof AgGridReact<NumberDataType>> = {
+const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/CellEditor Input',
   component: AgGridReact,
   tags: ['autodocs'],
@@ -122,8 +113,8 @@ import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid'
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type NumberDataType = { id: number; label: string; price: number };
-const numberData: NumberDataType[] = [
+type DummyDataType = { id: number; label: string; price: number };
+const DummyData: DummyDataType[] = [
   { id: 1, label: '사과', price: 1000 },
   { id: 2, label: '바나나', price: 800 },
   { id: 3, label: '오렌지', price: 1200 },
@@ -131,7 +122,7 @@ const numberData: NumberDataType[] = [
   { id: 5, label: '수박', price: 0 },
 ];
 
-const columnDefs: ColDef<NumberDataType>[] = [
+const columnDefs: ColDef<DummyDataType>[] = [
   {
     headerName: '이름',
     field: 'label',
@@ -153,19 +144,19 @@ const columnDefs: ColDef<NumberDataType>[] = [
 ];
 
 
-const [rowData, setRowData] = React.useState<NumberDataType[]>(numberData);
+const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 const [errorRows, setErrorRows] = React.useState<number[]>(
-  numberData.filter(row => !row.price).map(row => row.id)
+  DummyData.filter(row => !row.price).map(row => row.id)
 );
 
 // 공용 핸들러 활용
 const onCellValueChanged = React.useMemo(
-  () => createCellValueChangedHandler<NumberDataType, number>('price', setRowData, setErrorRows, 'id'),
+  () => createCellValueChangedHandler<DummyDataType, number>('price', setRowData, setErrorRows, 'id'),
   [setRowData, setErrorRows]
 );
 
 <div className="ag-theme-alpine aggrid-pagination-ko">
-  <AgGridReact<NumberDataType>
+  <AgGridReact<DummyDataType>
     rowData={rowData}
     columnDefs={columnDefs}
 
@@ -267,22 +258,22 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => {
-    const [rowData, setRowData] = React.useState<NumberDataType[]>(numberData);
+    const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
     const [errorRows, setErrorRows] = React.useState<number[]>(
-      numberData.filter(row => !row.price).map(row => row.id)
+      DummyData.filter(row => !row.price).map(row => row.id)
     );
 
     // 공용 핸들러 활용
     const onCellValueChanged = React.useMemo(
-      () => createCellValueChangedHandler<NumberDataType, number>('price', setRowData, setErrorRows, 'id'),
+      () => createCellValueChangedHandler<DummyDataType, number>('price', setRowData, setErrorRows, 'id'),
       [setRowData, setErrorRows]
     );
 
     return (
 
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[30rem]!">
-          <AgGridReact<NumberDataType>
+        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+          <AgGridReact<DummyDataType>
             rowData={rowData}
             columnDefs={columnDefs}
             animateRows={false}
@@ -292,9 +283,9 @@ export const Default: StoryObj = {
             onCellValueChanged={onCellValueChanged}
           />
         </div>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[30rem]!">
-          <AgGridReact<StringDataType>
-            rowData={stringData}
+        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+          <AgGridReact<Dummy2DataType>
+            rowData={Dummy2Data}
             columnDefs={columnDefsString}
             animateRows={false}
             alwaysShowHorizontalScroll={true}
