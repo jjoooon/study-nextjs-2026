@@ -152,7 +152,7 @@ export function AmountUnitInput({
       </Grow>
       {open && (
         <PopoverContent
-          className="bbbbbbbb border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 "
+          className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 "
           align="end"
           motion="none"
           portalContainer={typeof window !== 'undefined' ? document.querySelector('.ag-body-viewport') as HTMLElement | null : undefined}

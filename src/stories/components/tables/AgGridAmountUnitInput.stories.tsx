@@ -1,12 +1,14 @@
 
+'use client';
 import * as React from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-import { useRef } from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -128,57 +130,55 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => {
-    const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-    const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.price).map(row => row.id)
+    // rowData를 useState가 아닌 useMemo로 고정 (입력값은 내부에서만 관리)
+    const rowData = useMemo(() => DummyData, []);
+
+    // useRef는 컴포넌트 외부에서 생성, useMemo로 context 전달
+    const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+    // cellRenderer는 useCallback으로 메모이제이션
+    const coverageAmountCellRenderer = useCallback(
+      (params: ICellRendererParams<DummyDataType>) =>
+        amountUnitInputCellRenderer<DummyDataType>({ ...params, amountInputRefs: amountInputRefs.current }),
+      []
     );
 
-    // 공용 핸들러 활용
-    const onCellValueChanged = React.useMemo(
-      () => createCellValueChangedHandler<DummyDataType, number>('price', setRowData, setErrorRows, 'id'),
-      [setRowData, setErrorRows]
+    // columnDefs도 useMemo로 메모이제이션
+    const columnDefs: ColDef<DummyDataType>[] = useMemo(
+      () => [
+        {
+          headerName: '이름',
+          field: 'label',
+          flex: 1,
+          editable: false,
+        },
+        {
+          headerName: '가격',
+          field: 'price',
+          flex: 1,
+          headerClass: 'px-0!',
+          cellClass: 'text-right',
+          sortable: false,
+          filter: false,
+          editable: false,
+          cellRenderer: coverageAmountCellRenderer,
+        },
+      ], [coverageAmountCellRenderer]
     );
 
-    // useRef는 함수 컴포넌트 내부에서만 호출해야 함
-    const amountInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
-
-    // ag-Grid context로 ref를 전달하고, cellRenderer를 React 컴포넌트로 감쌈
-    const AmountUnitInputCellRendererWrapper = (props: ICellRendererParams<DummyDataType>) => {
-      const { amountInputRefs } = props.context as { amountInputRefs: Array<HTMLInputElement | null> };
-      return amountUnitInputCellRenderer({ ...props, amountInputRefs });
-    };
-
-    const columnDefs: ColDef<DummyDataType>[] = [
-      {
-        headerName: '이름',
-        field: 'label',
-        flex: 1,
-        editable: false,
-      },
-      {
-        headerName: '가격',
-        field: 'price',
-        flex: 1,
-        editable: true, // 가격 직접 입력 가능
-        headerClass: 'px-0!',
-        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
-        sortable: false,
-        filter: false,
-        cellRenderer: AmountUnitInputCellRendererWrapper,
-      },
-    ];
+    // context도 useMemo로 전달
+    const gridContext = useMemo(() => ({ amountInputRefs: amountInputRefs.current }), []);
 
     return (
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+        <div className="ag-theme-alpine aggrid-pagination-ko h-[26rem]!">
           <AgGridReact<DummyDataType>
             rowData={rowData}
             columnDefs={columnDefs}
             animateRows={false}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
-            onCellValueChanged={onCellValueChanged}
-            context={{ amountInputRefs: amountInputRefs.current }}
+            context={gridContext}
           />
         </div>
       </>
