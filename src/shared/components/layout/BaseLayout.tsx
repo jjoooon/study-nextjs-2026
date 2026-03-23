@@ -33,6 +33,14 @@ export const LayoutBody = ({ children, className, ...rest }: LayoutProps) => {
   );
 };
 
+export const LayoutFoot = ({ children, className }: LayoutProps) => {
+  return (
+    <footer data-layout="foot" className={cn('relative flex justify-between items-center', className)}>
+      {children}
+    </footer>
+  );
+};
+
 export const LayoutProcess = ({ children, className }: LayoutProps) => {
   return (
     <div data-layout="process" className={cn('relative grid grid-cols-[1fr_auto] min-w-[4rem]', className)}>

@@ -5,9 +5,9 @@ import { Button } from '@uiux/Button';
 import { DialogListIcon, DialogResetIcon } from '@icons';
 import { TextBabbleIcon } from '@icons';
 
-export const DialogBottomInfo = () => {
+export const BottomBar = () => {
   const stateText = '자료가 조회되었습니다.';
-  
+
   return (
     <Grow variant={'box'} className="w-full py-0 px-2.5 border-t border-[var(--color-gray-20)]" placement={'bwc'}>
       <Grow gap={1} placement={'sc'}>
