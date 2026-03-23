@@ -1,29 +1,25 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, useState, useEffect } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Typo } from '@atoms';
-import { FileUploadIcon, InputClearIcon } from '../icons';
-import { Button } from '../uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../uiux/Tooltip';
+import { FileUploadIcon, InputClearIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type FileItem = {
   name: string;
-  /** 식별용 key (없으면 name 사용) */
   key?: string;
 };
 
 type FileUploadProps = {
   id?: string;
-  /** 표시할 파일 목록 */
   files?: FileItem[];
   className?: string;
   errorMessage?: string;
-  /** 파일선택 버튼 클릭 */
   onClickButton?: () => void;
-  /** 파일 태그 X 클릭 */
   onRemove?: (file: FileItem, index: number) => void;
 };
 
@@ -31,13 +27,25 @@ type FileUploadProps = {
 
 export function FileUpload({
   id,
-  files = [],
+  files: filesProp = [],
   errorMessage,
   onClickButton,
   onRemove,
 }: FileUploadProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
+
+  const [files, setFiles] = useState<FileItem[]>(filesProp);
+
+  // 외부 props가 바뀔 때 내부 state 동기화
+  useEffect(() => {
+    setFiles(filesProp);
+  }, [filesProp]);
+
+  const handleRemove = (file: FileItem, index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index)); // 화면 즉시 반영
+    onRemove?.(file, index);                                // 콜백 호출
+  };
 
   return (
     <Grow>
@@ -50,7 +58,6 @@ export function FileUpload({
         aria-describedby={errorMessage ? `${baseId}-error` : undefined}
         aria-invalid={!!errorMessage}
         onClick={onClickButton}
-        className={errorMessage}
       >
         <FileUploadIcon />
         파일선택
@@ -62,7 +69,7 @@ export function FileUpload({
           key={file.key ?? `${file.name}-${index}`}
           name={file.name}
           hasError={!!errorMessage}
-          onRemove={() => onRemove?.(file, index)}
+          onRemove={() => handleRemove(file, index)}
         />
       ))}
 
@@ -84,10 +91,6 @@ export function FileUpload({
 
 // ─── Utils ───────────────────────────────────────────────────────────────────
 
-/**
- * 파일명이 길면 중간을 '...'으로 대체하고 마지막 글자를 보존합니다.
- * 예) "매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용" → "매우 긴 파일명 입...용"
- */
 function truncateTail(name: string, keepStart = 12, keepEnd = 1): string {
   if (name.length <= keepStart + keepEnd) return name;
   return `${name.slice(0, keepStart)}...${name.slice(-keepEnd)}`;
@@ -106,7 +109,6 @@ function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
 
   return (
     <Grow className="group">
-      {/* 파일명 — hover 시 tooltip + 파란색, error 시 빨간색 */}
       <Tooltip>
         <TooltipTrigger asChild>
           <span className="min-w-0 w-[12.3rem]">
@@ -114,7 +116,7 @@ function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
               variant="body-sm"
               tag="span"
               className={cn(
-                'transition-colors duration-100 ',
+                'transition-colors duration-100',
                 hasError
                   ? 'text-[var(--color-text-danger)] underline'
                   : 'hover:text-[#006FF2] hover:underline'
@@ -129,7 +131,6 @@ function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
         </TooltipContent>
       </Tooltip>
 
-      {/* X 버튼 */}
       <button
         type="button"
         aria-label={`${name} 삭제`}
