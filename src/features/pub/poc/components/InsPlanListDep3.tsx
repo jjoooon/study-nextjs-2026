@@ -108,7 +108,7 @@ export function InsPlanListDep3({ dep3Data }: InsPlanListDep3Props) {
             {visibleTabs.map((tab) => {
               const tabData = getTabData(tab.planType);
               return (
-                <TabsTrigger key={tab.value} variant="sub" value={tab.value} disabled={tabData.length === 0}>
+                <TabsTrigger key={tab.value} variant="default" value={tab.value} disabled={tabData.length === 0}>
                   {tab.label}
                 </TabsTrigger>
               );

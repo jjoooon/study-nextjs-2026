@@ -81,15 +81,15 @@ export default meta;
 type Story = StoryObj<AsGridCellMergingProps>;
 
 const rowData: UnderwritingViolationRow[] = [
-	{ id: 1, target: '홍길순', criteria: '인수기준',                criteriaTone: 'danger',  details: [{ segments: [{ text: '시그니처여성 올인원플랜은 ' }, { text: '[상해사망 1.5억]', tone: 'blue', strong: true }, { text: ' 또는 ' }, { text: '[상해사망 5천만 + 상해/질병중환자실입원비 각 20만]', tone: 'blue', strong: true }, { text: ' 가입이 필수입니다.' }] }] },
-	{ id: 2, target: '홍길순', criteria: '인수기준',                criteriaTone: 'danger',  details: [{ segments: [{ text: '[암(유사암제외)진단비(암진단비 I)표준권누적 한도초과]' }] }, { segments: [{ text: '[인수한도: 10000 만원] ', tone: 'blue' }, { text: '[초과금액: 20,000 만원]', tone: 'red', strong: true }] }] },
-	{ id: 3, target: '홍길순', criteria: '인수기준',                criteriaTone: 'danger',  details: [{ segments: [{ text: '[암진단비 I + II + III(암)(재진단비포함)표준권누적 한도초과]' }] }, { segments: [{ text: '[인수한도: 10000 만원] ', tone: 'blue' }, { text: '[초과금액: 20,000 만원]', tone: 'red', strong: true }] }] },
-	{ id: 4, target: '홍길순', criteria: '인수기준',                criteriaTone: 'danger',  details: [{ segments: [{ text: '[유사암진단비/기타피부암][전체누적 한도초과] ' }, { text: '[가입금액 2.5배 적용]', tone: 'green', strong: true }] }, { segments: [{ text: '[인수한도: 3000 만원] ', tone: 'blue' }, { text: '[초과금액: 1,300 만원]', tone: 'red', strong: true }] }] },
+	{ id: 1, target: '홍길순', criteria: '인수기준', criteriaTone: 'danger',  details: [{ segments: [{ text: '시그니처여성 올인원플랜은 ' }, { text: '[상해사망 1.5억]', tone: 'blue', strong: true }, { text: ' 또는 ' }, { text: '[상해사망 5천만 + 상해/질병중환자실입원비 각 20만]', tone: 'blue', strong: true }, { text: ' 가입이 필수입니다.' }] }] },
+	{ id: 2, target: '홍길순', criteria: '인수기준', criteriaTone: 'danger',  details: [{ segments: [{ text: '[암(유사암제외)진단비(암진단비 I)표준권누적 한도초과]' }] }, { segments: [{ text: '[인수한도: 10000 만원] ', tone: 'blue' }, { text: '[초과금액: 20,000 만원]', tone: 'red', strong: true }] }] },
+	{ id: 3, target: '홍길순', criteria: '인수기준', criteriaTone: 'danger',  details: [{ segments: [{ text: '[암진단비 I + II + III(암)(재진단비포함)표준권누적 한도초과]' }] }, { segments: [{ text: '[인수한도: 10000 만원] ', tone: 'blue' }, { text: '[초과금액: 20,000 만원]', tone: 'red', strong: true }] }] },
+	{ id: 4, target: '홍길순', criteria: '인수기준', criteriaTone: 'danger',  details: [{ segments: [{ text: '[유사암진단비/기타피부암][전체누적 한도초과] ' }, { text: '[가입금액 2.5배 적용]', tone: 'green', strong: true }] }, { segments: [{ text: '[인수한도: 3000 만원] ', tone: 'blue' }, { text: '[초과금액: 1,300 만원]', tone: 'red', strong: true }] }] },
 	{ id: 5, target: '홍길순', criteria: '청약완료불가\n(정액)',     criteriaTone: 'success', details: [{ segments: [{ text: '[뇌졸중외부기공통기준암(유사암제외)진단비(암진단비 I)][전체누적 한도초과]' }] }, { segments: [{ text: '[인수한도: 20000 만원] ', tone: 'blue' }, { text: '[초과금액: 13,100 만원]', tone: 'red', strong: true }] }] },
 	{ id: 6, target: '홍길순', criteria: '청약완료불가\n(정액)',     criteriaTone: 'success', details: [{ segments: [{ text: '[암(유사암제외)진단비(암진단비 I)] 전체누적 한도초과' }] }, { segments: [{ text: '[인수한도: 10000 만원] ', tone: 'blue' }, { text: '[초과금액: 23,100 만원]', tone: 'red', strong: true }] }] },
 	{ id: 7, target: '홍길순', criteria: '청약완료불가\n(정액)',     criteriaTone: 'success', details: [{ segments: [{ text: '[암진단비 I + II + III(합)(재진단미포함)][전체누적 한도초과]' }] }, { segments: [{ text: '[인수한도: 10000 만원] ', tone: 'blue' }, { text: '[초과금액: 25,100 만원]', tone: 'red', strong: true }] }] },
 	{ id: 8, target: '홍길순', criteria: '청약완료불가\n(업계누적)',  criteriaTone: 'info',    details: [{ segments: [{ text: '[업계가입금액 초과 수납불가 당사+타사 암진단비 ' }, { text: '3억원', tone: 'red', strong: true }, { text: ' 초과시(업계 정액보상담보 포함) 가입이 불가합니다.]' }] }, { segments: [{ text: '[당사: 33100만원 / 타사: 1600만원]', tone: 'red', strong: true }] }] },
-	{ id: 9, target: '홍길순', criteria: '참고사항',                 criteriaTone: 'neutral', details: [{ segments: [{ text: '[한화NEWRICH간병입원플랜]' }] }] },
+	{ id: 9, target: '홍길순', criteria: '참고사항',  criteriaTone: 'neutral', details: [{ segments: [{ text: '[한화NEWRICH간병입원플랜]' }] }] },
 ];
 
 // 연속된 criteria 그룹 (모듈 레벨에서 한 번만 계산)

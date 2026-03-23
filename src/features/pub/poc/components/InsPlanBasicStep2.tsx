@@ -57,7 +57,7 @@ export function InsPlanBasicStep2({
               currentData.insured.map((insuredItem, index) => (
                 <TabsTrigger
                   key={index}
-                  variant="sub"
+                  variant="default"
                   value={String(index)}
                   removable
                   onRemove={() => handleRemoveInsured(index)}
@@ -66,7 +66,7 @@ export function InsPlanBasicStep2({
                 </TabsTrigger>
               ))
             ) : (
-              <TabsTrigger variant="sub" value="0">
+              <TabsTrigger variant="default" value="0">
                 피보험자 1
               </TabsTrigger>
             )}
