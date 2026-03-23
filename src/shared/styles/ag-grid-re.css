@@ -1,3 +1,23 @@
+/* rowSpan 셀 시각적 구분용 */
+.ag-rowspan-merged {
+  background: #f5f7fa;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+}
+.ag-rowspan-row.ag-row-no-focus:before,
+.ag-rowspan-row.ag-row-focus:before,
+.ag-rowspan-row.ag-row-focus,
+.ag-rowspan-hidden:hover{
+  background-color: transparent !important;
+}
+
+.ag-row-focus .ag-cell.ag-rowspan-hidden,
+.ag-rowspan-hidden {
+  opacity: 0 !important;
+  background-color: transparent !important;
+  /* pointer-events: none !important; */
+}
 /* ===== Wrapper & Layout ===== */
 :where(.ag-ltr) .ag-cell-wrapper {
   padding-left: 0 !important;
@@ -155,13 +175,18 @@
 .ag-row:first-child .ag-cell {
   border-top: 1px solid var(--color-gray-10);
 }
-
+.ag-theme-alpine .ag-row-even .ag-cell {
+  background-color: #fff;;
+}
+.ag-theme-alpine .ag-row-odd .ag-cell {
+  background-color: #fff;;
+}
 .ag-theme-alpine .ag-row-even {
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .striped-row-gray .ag-row-odd{
-  background-color: var(--color-table-td-surface-gray);
+  background-color: transparent;
 }
 .ag-theme-alpine.no-odd .ag-row-odd {
   background-color: #fff;
