@@ -23,7 +23,7 @@ ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 type RowKind = 'main' | 'sub';
 
-interface AsGridInputRow {
+interface AgGridInputRow {
   id: number;
   rowKind: RowKind;
   canEditExpiry?: boolean;
@@ -45,18 +45,18 @@ interface AsGridInputRow {
   notice?: string;
 }
 
-type EditableField = Exclude<keyof AsGridInputRow, 'id' | 'rowKind' | 'canEditExpiry'>;
+type EditableField = Exclude<keyof AgGridInputRow, 'id' | 'rowKind' | 'canEditExpiry'>;
 
-interface AsGridInputProps {
+interface AgGridInputProps {
   compactHeader?: boolean;
 }
 
-const AsGridInputComponent = (_props: AsGridInputProps) => null;
+const AgGridInputComponent = (_props: AgGridInputProps) => null;
 
-const meta: Meta<AsGridInputProps> = {
-  title: 'Components/Tables/AsGridInput',
-  id: 'components-tables-asgridinput',
-  component: AsGridInputComponent,
+const meta: Meta<AgGridInputProps> = {
+  title: 'Sample/Ha/AgGridInput_전환37',
+  id: 'sample-Ha-aggridinput_전환37',
+  component: AgGridInputComponent,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -108,9 +108,9 @@ const meta: Meta<AsGridInputProps> = {
 
 export default meta;
 
-type Story = StoryObj<AsGridInputProps>;
+type Story = StoryObj<AgGridInputProps>;
 
-const rowData: AsGridInputRow[] = [
+const rowData: AgGridInputRow[] = [
   { id: 1, rowKind: 'main' },
   { id: 2, rowKind: 'sub' },
   { id: 3, rowKind: 'main' },
@@ -142,8 +142,8 @@ const RequiredHeaderGroup = (props: any) => {
 
 const createSingleChildGroup = (
   headerName: string,
-  child: ColDef<AsGridInputRow>
-): ColGroupDef<AsGridInputRow> => {
+  child: ColDef<AgGridInputRow>
+): ColGroupDef<AgGridInputRow> => {
   const isRequired = headerName.endsWith('*');
   const cleanName = isRequired ? headerName.slice(0, -1) : headerName;
   return {
@@ -322,7 +322,7 @@ const renderGrid: Story['render'] = (args) => {
   });
 
   const renderSearchableInputCell = React.useCallback(
-    (params: ICellRendererParams<AsGridInputRow>, field: Extract<EditableField, 'name' | 'occupation'>): React.ReactNode => {
+    (params: ICellRendererParams<AgGridInputRow>, field: Extract<EditableField, 'name' | 'occupation'>): React.ReactNode => {
       const row = params.data;
       if (!row) return null;
       return (
@@ -339,10 +339,10 @@ const renderGrid: Story['render'] = (args) => {
   );
 
   const renderSelectCell = React.useCallback(
-    (params: ICellRendererParams<AsGridInputRow>, field: EditableField): React.ReactNode => {
+    (params: ICellRendererParams<AgGridInputRow>, field: EditableField): React.ReactNode => {
       const row = params.data;
       if (!row) return null;
-      return editableSelectCellRenderer<AsGridInputRow>({
+      return editableSelectCellRenderer<AgGridInputRow>({
         ...params,
         value: getValue(row.id, field),
         data: { ...row, canEditExpiry: true },
@@ -352,7 +352,7 @@ const renderGrid: Story['render'] = (args) => {
   );
 
   const createSelectEditorProps = React.useCallback(
-    (field: EditableField, selectValues: string[]): Partial<ColDef<AsGridInputRow>> => ({
+    (field: EditableField, selectValues: string[]): Partial<ColDef<AgGridInputRow>> => ({
       field,
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -369,7 +369,7 @@ const renderGrid: Story['render'] = (args) => {
         handleChange(rowId, field, String(params.newValue ?? ''));
         return true;
       },
-      cellRenderer: (params: ICellRendererParams<AsGridInputRow>) => renderSelectCell(params, field),
+      cellRenderer: (params: ICellRendererParams<AgGridInputRow>) => renderSelectCell(params, field),
     }),
     [getValue, handleChange, renderSelectCell]
   );
@@ -378,7 +378,7 @@ const renderGrid: Story['render'] = (args) => {
   const makeInputCol = (
     field: EditableField,
     maxLength?: number
-  ): Partial<ColDef<AsGridInputRow>> => ({
+  ): Partial<ColDef<AgGridInputRow>> => ({
     field,
     editable: false,
     cellClass: `${getInputAlignClass(field)} p-0!`,
@@ -387,7 +387,7 @@ const renderGrid: Story['render'] = (args) => {
       if (typeof rowId !== 'number') return '';
       return valuesRef.current[makeCellKey(rowId, field)] ?? '';
     },
-    cellRenderer: (params: ICellRendererParams<AsGridInputRow>) => {
+    cellRenderer: (params: ICellRendererParams<AgGridInputRow>) => {
       const row = params.data;
       if (!row) return null;
       return (
@@ -404,7 +404,7 @@ const renderGrid: Story['render'] = (args) => {
 
   // columnDefs는 최초 1회만 생성 (의존성 없음)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const columnDefs = React.useMemo<Array<ColDef<AsGridInputRow> | ColGroupDef<AsGridInputRow>>>(
+  const columnDefs = React.useMemo<Array<ColDef<AgGridInputRow> | ColGroupDef<AgGridInputRow>>>(
     () => [
       {
         headerName: '가입 설계동의 최소 필요 정보',
@@ -418,7 +418,7 @@ const renderGrid: Story['render'] = (args) => {
             suppressMovable: true,
             field: 'name',
             editable: false,
-            cellRenderer: (params: ICellRendererParams<AsGridInputRow>) => renderSearchableInputCell(params, 'name'),
+            cellRenderer: (params: ICellRendererParams<AgGridInputRow>) => renderSearchableInputCell(params, 'name'),
           }),
           createSingleChildGroup('주민등록번호*', {
             headerName: '',
@@ -464,7 +464,7 @@ const renderGrid: Story['render'] = (args) => {
             suppressMovable: true,
             field: 'occupation',
             editable: false,
-            cellRenderer: (params: ICellRendererParams<AsGridInputRow>) => renderSearchableInputCell(params, 'occupation'),
+            cellRenderer: (params: ICellRendererParams<AgGridInputRow>) => renderSearchableInputCell(params, 'occupation'),
           }),
           createSingleChildGroup('직업명', { headerName: '', width: 110, sortable: false, filter: false, suppressMovable: true, ...makeInputCol('jobName') }),
           createSingleChildGroup('업종', { headerName: '', width: 110, sortable: false, filter: false, suppressMovable: true, ...makeInputCol('industry') }),
@@ -479,7 +479,7 @@ const renderGrid: Story['render'] = (args) => {
     [] // 의존성 없음 — 최초 1회만 생성
   );
 
-  const defaultColDef = React.useMemo<ColDef<AsGridInputRow>>(
+  const defaultColDef = React.useMemo<ColDef<AgGridInputRow>>(
     () => ({
       resizable: false,
       cellClassRules: {
@@ -499,7 +499,7 @@ const renderGrid: Story['render'] = (args) => {
           }
         `}</style>
         <div className="new-table-grid ag-theme-alpine h-[37.5vh]! w-[1754px]">
-          <AgGridReact<AsGridInputRow>
+          <AgGridReact<AgGridInputRow>
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
