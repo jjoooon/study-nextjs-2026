@@ -54,8 +54,8 @@ interface AgGridInputProps {
 const AgGridInputComponent = (_props: AgGridInputProps) => null;
 
 const meta: Meta<AgGridInputProps> = {
-  title: 'Sample/Ha/AgGridInput_전환37',
-  id: 'sample-Ha-aggridinput_전환37',
+  title: 'Sample/Ha/전환_가입설계_0323/LTPZ064',
+  id: 'sample-Ha-ltpz064',
   component: AgGridInputComponent,
   tags: ['autodocs'],
   parameters: {
@@ -65,7 +65,7 @@ const meta: Meta<AgGridInputProps> = {
         return (
           <>
             <Title /><br /><br />
-            <h2>Overview</h2>
+            <h2>P37</h2>
             <p>
               AgGrid를 사용해 가입설계 입력 테이블 형태를 구성한 스토리입니다.
               그룹 헤더, 편집 가능한 입력셀/선택셀 패턴을 한 화면에서 확인할 수 있습니다.
@@ -574,6 +574,6 @@ const renderGrid: Story['render'] = (args) => {
   );
 };
 
-export const Default: Story = {
+export const LTRZ298: Story = {
   render: renderGrid,
 };

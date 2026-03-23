@@ -36,8 +36,8 @@ interface CellCheckboxRadioProps {}
 const CellCheckboxRadioComponent = (_props: CellCheckboxRadioProps) => null;
 
 const meta: Meta<CellCheckboxRadioProps> = {
-  title: 'Sample/Ha/checkboxRadio인수지침심사11',
-  id: 'sample-Ha-checkboxradio인수지침심사11',
+  title: 'Sample/Ha/인수지침심사_0316/LNIUW080',
+  id: 'sample-Ha-lniuw080',
   component: CellCheckboxRadioComponent,
   tags: ['autodocs'],
 
@@ -48,8 +48,7 @@ const meta: Meta<CellCheckboxRadioProps> = {
         <>
           <Title />
           <br /><br />
-          
-          <h2>Overview</h2>
+          <h2>P11</h2>
           <div>
             <p>
               AG Grid에서 체크박스(rowSelection)와 라디오 버튼을 셀 안에서 함께 사용하는 패턴입니다.<br />
@@ -609,7 +608,7 @@ const renderGrid: Story['render'] = () => {
   );
 };
 
-export const Default: Story = {
+export const lniuw080: Story = {
   render: renderGrid,
   parameters: {
     docs: {
