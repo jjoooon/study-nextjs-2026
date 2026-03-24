@@ -75,7 +75,7 @@ export function InfoBox({
     >
       {/* 타이틀 */}
       <Grow gap={1}>
-        {config.icon}
+        {(title || subTitle) && config.icon}
         {title && (
           <Typo
             color={'gray'}

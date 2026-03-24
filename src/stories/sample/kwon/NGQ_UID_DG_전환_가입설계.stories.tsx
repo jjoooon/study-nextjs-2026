@@ -956,7 +956,7 @@ const LTPZ021P = () => {
             </FormRow>
           </FormTable>
           <FormTable caption="포인트정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
-            <FormRow>
+            <FormRow vertical={true}>
               <FormCell title={'포인트정보'}>
               </FormCell>
             </FormRow>
