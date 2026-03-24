@@ -500,6 +500,8 @@ const renderGrid: Story['render'] = (args) => {
         `}</style>
         <div className="new-table-grid ag-theme-alpine h-[37.5vh]! w-[1754px]">
           <AgGridReact<AgGridInputRow>
+            // getRowId 적용: id 필드를 고유 식별자로 사용
+            getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
