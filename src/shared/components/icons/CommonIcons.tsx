@@ -749,3 +749,17 @@ export const InfoBoxWarningIcon: React.FC<IconProps> = ({ className = '', size =
   <path fill-rule="evenodd" clip-rule="evenodd" d="M6.39586 2.41051C7.16379 1.28569 8.83625 1.28568 9.60419 2.41051L9.67776 2.5264L14.8386 11.2998C15.6017 12.5975 14.6662 14.2333 13.1608 14.2334H2.83922C1.33369 14.2334 0.398186 12.5975 1.16148 11.2998L6.32229 2.5264L6.39586 2.41051ZM8.41344 3.26989C8.22779 2.95478 7.77226 2.95478 7.58661 3.26989L2.42581 12.0433C2.23764 12.3633 2.46803 12.7666 2.83922 12.7666H13.1608L13.2285 12.7621C13.559 12.7166 13.7505 12.3433 13.5742 12.0433L8.41344 3.26989Z" fill={color}/>
 </svg>
 );
+
+export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16, color = '#E43939' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 16 16" 
+    fill="none" 
+    className={className}
+    >
+  <path d="M15 7.07C15 3.72 11.87 1 8 1C4.13 1 1 3.72 1 7.07C1 10.11 3.59 12.63 6.96 13.06L10.0472 14.7518C10.2074 14.8396 10.3917 14.6844 10.3325 14.5116L9.79 12.93C12.79 12.24 15 9.88 15 7.07Z" fill="#FF5C2E"/>
+  <path d="M5.5 7.5L7.5 9L10.5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+);

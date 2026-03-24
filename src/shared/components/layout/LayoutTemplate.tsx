@@ -3,6 +3,7 @@
 import {
   LayoutHead,
   LayoutBody,
+  LayoutFoot,
   LayoutProcess,
   LayoutFolder,
   LayoutFolderHead,
@@ -19,6 +20,7 @@ import {
 } from '@layout/BaseLayout';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { Gcol, Grow } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
 
 interface Props {
   pageID?: React.ReactNode;
@@ -68,6 +70,10 @@ export const LayoutTemplateAsideToggle = ({
         <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
       </LayoutAside>
     </LayoutBody>
+
+    <LayoutFoot>
+      <BottomBar />
+    </LayoutFoot>
   </>
 );
 

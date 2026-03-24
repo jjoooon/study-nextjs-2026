@@ -195,6 +195,10 @@
 .ag-pinned-left-cols-container .ag-row {
   border-right: 1px solid var(--color-gray-10) !important;
 }
+.ag-row-odd {
+  background-color: var(--color-gray-5) !important;
+}
+.ag-row-focus .ag-cell.ag-cell-value,
 .ag-row-focus .ag-cell,
 .ag-row-selected .editable-cell,
 .ag-row-selected:before,
