@@ -21,7 +21,7 @@ interface AsGridCellMergingProps {}
 const AgGridCellMergingComponent = (_props: AsGridCellMergingProps) => null;
 
 const meta: Meta<AsGridCellMergingProps> = {
-  title: 'Components/Tables/AgGrid/CellEditor Span',
+  title: 'Components/Tables/AgGrid/RowSpan',
   component: AgGridCellMergingComponent,
   tags: ['autodocs'],
   parameters: {
