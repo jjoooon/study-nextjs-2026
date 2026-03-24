@@ -42,6 +42,17 @@ export interface FileUploaderProps {
   resolve: (result: FileUploadResult) => void;
 }
 
+// 파일 크기를 읽기 쉬운 단위로 변환
+function formatFileSize(bytes: number): string {
+  if (bytes === 0) return '0 Byte';
+
+  const k = 1024;
+  const sizes = ['Byte', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+}
+
 export default function FileUploader({ title = '파일업로드', resolve }: FileUploaderProps) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
@@ -61,11 +72,36 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
 
       if (isDuplicate) {
         logger.info('중복 파일 무시:', file.filename);
+        // FilePond에서 파일 제거
+        pondRef.current?.removeFile(file.id);
         return prev; // 기존 파일 목록 반환 (추가 안 함)
       }
 
       const updatedFiles = [...prev, file];
       logger.info('파일 추가됨:', file.filename, '전체 파일 수:', updatedFiles.length);
+
+      // 파일 개수 업데이트
+      setFileCount(updatedFiles.length);
+
+      // 전체 파일 크기 계산
+      const total = updatedFiles.reduce((sum, f) => {
+        return sum + (f.fileSize || 0);
+      }, 0);
+      setTotalSize(total);
+
+      return updatedFiles;
+    });
+  };
+
+  const handleRemoveFile = (error: any | null, file: any) => {
+    if (error) {
+      logger.error('파일 제거 오류:', error);
+      return;
+    }
+
+    setPondFiles((prev) => {
+      const updatedFiles = prev.filter((f) => f.id !== file.id);
+      logger.info('파일 제거됨:', file.filename, '전체 파일 수:', updatedFiles.length);
 
       // 파일 개수 업데이트
       setFileCount(updatedFiles.length);
@@ -144,8 +180,9 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
           <div>
             <FilePond
               ref={pondRef}
-              // files={[]}
+              files={pondFiles.map((f) => f.source)}
               onaddfile={handleAddFile}
+              onremovefile={handleRemoveFile}
               credits={false}
               allowMultiple={true}
               maxFiles={500}
@@ -155,6 +192,18 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
               instantUpload={false}
               server={{}}
             />
+          </div>
+
+          {/* Footer */}
+          <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] h-[2rem] border-t border-(--color-table-border-border-gray)">
+            <span>
+              최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
+              <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
+            </span>
+            <span>
+              <span className="text-(--color-text-danger) font-semibold">{fileCount}</span> 개,{' '}
+              <span className="text-(--color-text-danger) font-semibold"> {formatFileSize(totalSize)}</span> 추가됨
+            </span>
           </div>
         </div>
 
