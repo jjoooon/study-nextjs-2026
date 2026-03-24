@@ -457,6 +457,7 @@ export function LniPl020Step2({
                 key={gridKey}
                 rowData={rowData}
                 columnDefs={columnDefs}
+                getRowId={(params) => String(params.data.id)}
 
                 rowSelection={{
                   mode: 'multiRow' as const,

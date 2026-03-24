@@ -583,6 +583,8 @@ const renderGrid: Story['render'] = (args) => {
     <div className="p-5">
       <div className="w-full h-[40vh]! ag-theme-alpine aggrid-pagination-ko">
           <AgGridReact<GridRow>
+            // getRowId 적용: id 필드를 고유 식별자로 사용
+            getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
             pinnedBottomRowData={sumRow}
@@ -606,9 +608,6 @@ const renderGrid: Story['render'] = (args) => {
               },
             }}
             groupDefaultExpanded={-1}
-
-            // getRowId 적용: id 필드를 고유 식별자로 사용
-            getRowId={(params) => String(params.data.id)}
 
             rowSelection={{
               mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
