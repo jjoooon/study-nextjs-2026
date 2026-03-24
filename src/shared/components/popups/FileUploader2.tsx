@@ -116,6 +116,11 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     });
   };
 
+  const handleReorderFiles = (files: any[]) => {
+    logger.info('파일 순서 변경됨, 전체 파일 수:', files.length);
+    setPondFiles(files);
+  };
+
   const handleSearch = () => {
     pondRef.current?.browse();
   };
@@ -157,6 +162,15 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     //   });
     // }
 
+    const filesWithSource = pondFiles.map((file) => ({
+      id: file.id,
+      filename: file.filename,
+      fileSize: file.fileSize,
+      fileExtension: file.fileExtension,
+      fileType: file.fileType,
+    }));
+    logger.info('선택된 파일 목록:', filesWithSource);
+
     resolve({
       action: 'select',
       files: [],
@@ -183,8 +197,10 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
               files={pondFiles.map((f) => f.source)}
               onaddfile={handleAddFile}
               onremovefile={handleRemoveFile}
+              onreorderfiles={handleReorderFiles}
               credits={false}
               allowMultiple={true}
+              allowReorder={true}
               maxFiles={500}
               labelIdle="이곳을 클릭 또는 파일을 드래그 하세요."
               // stylePanelLayout="compact"
