@@ -6,13 +6,17 @@ import { Input } from '@uiux/Input';
 import { PlusIcon, SearchIcon } from '@icons';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Checkbox } from '@uiux/Checkbox';
+import { TabPager } from '@common/TabPager';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
 import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter } from '@aggrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell} from '@uiux/Table';
+import { InfoBox } from '@common/InfoBox';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { useCallback, useRef } from 'react';
 ;
 
@@ -187,7 +191,7 @@ const LTPZ010P = () => {
     <Gcol className="w-full">
       <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
         <FormRow>
-          <FormCell title={'계번호'}>
+          <FormCell title={'설계번호'}>
             <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
             <div className="separator">-</div>
             <Input aria-label="" width={'3rem'} value={'1'} readOnly />
@@ -475,6 +479,102 @@ export const LTPZ010: Story = {
 
 
 const LTPZ011P = () => {
+  const amountInputRefs2 = useRef<Array<HTMLInputElement | null>>([]);
+
+  type DummyDataType2 = {
+    id: number;
+    담보상태: string;
+    담보코드: string;
+    담보보험시기: string;
+    담보보험종기: string;
+    세부담보명: string;
+    보험료: number;
+    isSumRow?: boolean;
+  };
+
+  const DummyData2: DummyDataType2[] = [
+    { id: 1, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 1377 },
+    { id: 2, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 9999999 },
+    { id: 3, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 159999 },
+    { id: 4, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 2323230 },
+  ];
+
+  const premiumAmountCellRenderer2 = (params: ICellRendererParams<DummyDataType2>) =>
+    amountUnitInputCellRenderer<DummyDataType2>({ ...params, amountInputRefs: amountInputRefs2.current });
+
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '담보상태',
+      field: '담보상태',
+      width: 80,
+      cellClass: (params) => params.data?.isSumRow ? 'text-center font-bold' : 'text-center',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? <b>합계2</b> : params.value,
+      colSpan: (params) => params.data?.isSumRow ? 5 : 1,
+    },
+    {
+      headerName: '담보코드',
+      field: '담보코드',
+      width: 80,
+      cellClass: 'text-center',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
+      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+    },
+    {
+      headerName: '담보보험시기',
+      field: '담보보험시기',
+      width: 110,
+      cellClass: 'text-center',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
+      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+    },
+    {
+      headerName: '담보보험종기',
+      field: '담보보험종기',
+      width: 110,
+      cellClass: 'text-center',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
+      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+    },
+    {
+      headerName: '세부담보명',
+      field: '세부담보명',
+      flex: 1,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
+      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+    },
+    {
+      headerName: '보험료(원)',
+      field: '보험료',
+      width: 120,
+      cellClass: 'text-right',
+      headerClass: 'px-0!',
+      sortable: false,
+      filter: false,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (params.data?.isSumRow) {
+          return <b>{Number(params.value ?? 0).toLocaleString()}</b>;
+        }
+        return premiumAmountCellRenderer2(params);
+      },
+    },
+  ];
+
+  const rowData2 = React.useMemo(() => DummyData2, []);
+  const sumRow2 = React.useMemo<DummyDataType2[]>(
+    () => [{
+      id: -1,
+      담보상태: '합계2',
+      담보코드: '',
+      담보보험시기: '',
+      담보보험종기: '',
+      세부담보명: '',
+      보험료: rowData2.reduce((sum, row) => sum + row.보험료, 0),
+      isSumRow: true,
+    }],
+    [rowData2]
+  );
+
+
   return (
     <Gcol className="w-full">
       <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
@@ -484,12 +584,438 @@ const LTPZ011P = () => {
           </FormCell>
         </FormRow>
       </FormTable>
-      
+      <Grow className="w-full">
+        <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
+          <AgGridReact<DummyDataType2>
+            rowData={rowData2}
+            columnDefs={columnDefs2}
+            pinnedBottomRowData={sumRow2}
+            defaultColDef={{ sortable: false }}
+            animateRows={false}
+            alwaysShowHorizontalScroll={true}
+            singleClickEdit={true}
+            rowClassRules={{}}
+          />
+        </div>
+      </Grow>
     </Gcol>
   );
 };
 
 export const LTPZ011: Story = {
   render: () => <LTPZ011P />,
-};     
+};
 
+const LTPZ016P = () => {
+  return (
+    <Gcol className="w-full">
+      <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'설계번호'}>
+            <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
+            <div className="separator">-</div>
+            <Input aria-label="" width={'3rem'} value={'1'} readOnly />
+            <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+          </FormCell>
+        </FormRow>
+      </FormTable>
+    </Gcol>  
+  )
+}
+
+export const LTPZ016: Story = {
+  render: () => <LTPZ016P />,
+};
+
+const LTPZ017P = () => {
+  type DummyDataType = {
+    id: number;
+    isCheck: boolean;
+    planNo: number;
+    planName: string;
+    registrationDate: string;
+  };
+
+  const DummyData: DummyDataType[] = [
+    { id: 1, isCheck: false, planNo: 1, planName: '', registrationDate: '' },
+    { id: 2, isCheck: false, planNo: 2, planName: '', registrationDate: '' },
+    { id: 3, isCheck: true, planNo: 3, planName: '', registrationDate: '' },
+    { id: 4, isCheck: false, planNo: 4, planName: '', registrationDate: '' },
+  ];
+
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '플랜순번',
+      field: 'planNo',
+      flex: 1,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '플랜명',
+      field: 'planName',
+      flex: 1,
+    },
+    {
+      headerName: '등록일자',
+      field: 'registrationDate',
+      width: 120,
+      cellClass: 'text-center',
+    },
+  ];
+
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [errorRows, setErrorRows] = React.useState<number[]>(
+    DummyData.filter(row => !row.isCheck).map(row => row.id)
+  );
+
+  const onCellValueChanged = React.useMemo(
+    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
+    [setRowData, setErrorRows]
+  );
+
+  return (
+    <Gcol className="w-full">
+      <Grow placement='bwc' className="w-full" variant={'box'}>
+        <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+          <FormRow>
+            <FormCell title={'설계사'}>
+              <Input aria-label="" width={'10rem'} value={'text'} readOnly />
+            </FormCell>
+            <FormCell title={'상품명'}>
+              <Grow>
+                <Input aria-label="" width={'20rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+              </Grow>
+            </FormCell>
+          </FormRow>
+        </FormTable>
+        <Grow>
+          <Button aria-label="" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+            새로고침
+          </Button>
+        </Grow>
+      </Grow>
+      <Grow className="w-full">
+        <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
+          <AgGridReact<DummyDataType>
+            rowData={rowData}
+            columnDefs={columnDefs}
+            defaultColDef={{ sortable: false }}
+            animateRows={false}
+            alwaysShowHorizontalScroll={true}
+            singleClickEdit={true}
+            onCellValueChanged={onCellValueChanged}
+            rowSelection={{
+              mode: 'multiRow',
+              headerCheckbox: true,
+              checkboxes: true,
+              enableClickSelection: false,
+            }}
+            rowClassRules={{}}
+            onGridReady={params => {
+              params.api.forEachNode(node => {
+                if (node.data?.isCheck) {
+                  node.setSelected(true);
+                }
+              });
+            }}
+          />
+        </div>
+      </Grow>
+    </Gcol>
+  );
+};
+
+
+export const LTPZ017: Story = {
+  render: () => <LTPZ017P />,
+}
+
+type LTPZ020TabType = {
+  name: string;
+  value: string;
+  label: string;
+};
+
+const DATA_TABS: LTPZ020TabType[] = [
+  {
+    name: '인담보',
+    value: 'humanCoverage',
+    label: '인담보',
+  },
+  {
+    name: '재물담보',
+    value: 'propertyCoverage',
+    label: '재물담보',
+  },
+];
+
+const LTPZ020_01P = () => {
+  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
+
+  type InsuredListRow = {
+    id: number;
+    name: string;
+    grade: string;
+    choice: string;
+    gender: string;
+    age: number;
+  };
+
+  type CoverageListRow = {
+    id: number;
+    coverageCode: string;
+    coverageName: string;
+    insurancePeriod: string;
+    paymentPeriod: string;
+    designCoverageCode: string;
+    designCoverageName: string;
+  };
+
+  const insuredListData: InsuredListRow[] = [
+    { id: 1, choice:'', name: '', grade: '', gender: '', age: 0 },
+    { id: 2, choice:'', name: '', grade: '', gender: '', age: 0 },
+    { id: 3, choice:'', name: '', grade: '', gender: '', age: 0 },
+    { id: 4, choice:'', name: '', grade: '', gender: '', age: 0 },
+  ];
+
+  const coverageListData: CoverageListRow[] = [
+    { id: 1, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
+    { id: 2, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
+    { id: 3, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
+    { id: 4, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
+  ];
+
+  const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
+    { headerName: '선택', field: 'choice', width: 100, cellClass: 'text-center' },
+    { headerName: '성명', field: 'name', flex: 1, cellClass: 'text-center' },
+    { headerName: '급수', field: 'grade', width: 120, cellClass: 'text-center' },
+    { headerName: '성별', field: 'gender', width: 80, cellClass: 'text-center' },
+    { headerName: '연령', field: 'age', width: 80, cellClass: 'text-center' },
+  ];
+
+  const coverageListColumnDefs: ColDef<CoverageListRow>[] = [
+    { headerName: '담보코드', field: 'coverageCode', width: 100, cellClass: 'text-center' },
+    { headerName: '담보명', field: 'coverageName', flex: 1 },
+    { headerName: '보험기간', field: 'insurancePeriod', width: 100, cellClass: 'text-center' },
+    { headerName: '납입기간', field: 'paymentPeriod', width: 100, cellClass: 'text-center' },
+    { headerName: '설계담보코드', field: 'designCoverageCode', width: 120, cellClass: 'text-center' },
+    { headerName: '설계담보명', field: 'designCoverageName', flex: 1 },
+  ];
+
+  return (
+    <Gcol className="w-full">
+      <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'증권번호'}>
+            <Grow placement='bwc'>
+              <Grow>
+                <Input aria-label="" width={'10rem'} value={''} />
+                <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                  <SearchIcon color={'var(--color-primary-50)'} />
+                </Button>
+                <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
+              </Grow>
+              <Grow>
+                <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">
+                  조회
+                </Button>
+              </Grow>
+            </Grow>
+          </FormCell>
+        </FormRow>
+      </FormTable>
+      <TabPager
+        data={tabs}
+        active={active}
+        setActive={setActive}
+        removable={false}
+        onRemove={handleRemove}
+        visibleCount={4}
+        variant="default"
+        hasTableBelow={true}
+        error={false}
+        errorMsg="에러 메시지 예시"
+        renderButtons={
+          <CheckboxGroup
+            className="gap-3"
+            color="primary"
+            errorMsg="2개 이상 선택해 주세요."
+            errorPs="bl"
+            minSelected={0}
+            onValueChange={setCopyValues}
+            size="lg"
+            value={copyValues}
+            variant="default"
+            width="auto"
+          >
+            <CheckboxGroupItem value="insured-copy" >
+              피보험자복사
+            </CheckboxGroupItem>
+            <CheckboxGroupItem value="coverage-copy" disabled>
+              담보복사
+            </CheckboxGroupItem>
+          </CheckboxGroup>
+        }
+        getValue={tab => String(tab.value)}
+        renderTab={tab => <span>{tab.label}</span>}
+        renderDropdownItem={false}
+      >
+        {active === 'humanCoverage' ? (
+          <div className="w-full flex gap-2 pt-2">
+            <div className="w-[30%]">
+              <Typo variant={'heading-sm'} className="mb-1">피보험자목록</Typo>
+              <div className="ag-theme-alpine aggrid-pagination-ko w-full h-160!">
+                <AgGridReact<InsuredListRow>
+                  rowData={insuredListData}
+                  columnDefs={insuredListColumnDefs}
+                  defaultColDef={{ sortable: false }}
+                  animateRows={false}
+                  rowClassRules={{}}
+                />
+              </div>
+            </div>
+            <div className="w-[70%]">
+              <Typo variant={'heading-sm'} className="mb-1">담보목록</Typo>
+              <div className="ag-theme-alpine aggrid-pagination-ko w-full h-160!">
+                <AgGridReact<CoverageListRow>
+                  rowData={coverageListData}
+                  columnDefs={coverageListColumnDefs}
+                  defaultColDef={{ sortable: false }}
+                  animateRows={false}
+                  rowClassRules={{}}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full pt-2">
+            <Typo variant={'heading-sm'} className="mb-1">재물담보</Typo>
+            <div className="ag-theme-alpine aggrid-pagination-ko w-full h-160!">
+              <AgGridReact<CoverageListRow>
+                rowData={coverageListData}
+                columnDefs={coverageListColumnDefs}
+                defaultColDef={{ sortable: false }}
+                animateRows={false}
+                rowClassRules={{}}
+              />
+            </div>
+          </div>
+        )}
+      </TabPager>
+    </Gcol>
+  );
+};
+
+export const LTPZ020_01: Story = {
+  render: () => <LTPZ020_01P />,
+}  
+
+const LTPZ021P = () => {
+  return (
+    <Gcol className="w-full">
+     <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'설계번호'}>
+            <Input aria-label="" width={'10rem'} value={'123456789'} readOnly/>
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </FormCell>
+        </FormRow>
+      </FormTable>
+      <Grow className='w-full' gap={2}>
+        <Gcol className="w-full">
+          <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+          <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormRow>
+              <FormCell title={'계약자'} colSpan={3}>
+                김한화
+              </FormCell>
+            </FormRow>  
+            <FormRow>
+              <FormCell title={'상품명'} colSpan={3}>
+                한화실손의료보험(갱신형) 무배당2601
+              </FormCell>  
+            </FormRow>
+            <FormRow>
+              <FormCell title={'가입플랜'} colSpan={3}>
+                자유설계
+              </FormCell>  
+            </FormRow>
+            <FormRow>
+              <FormCell title={'보험기간'}>
+                05년 만기
+              </FormCell>
+              <FormCell title={'납입기간'}>
+                월납/전기납
+              </FormCell>  
+            </FormRow>
+          </FormTable>
+          <FormTable caption="포인트정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormRow>
+              <FormCell title={'포인트정보'}>
+              </FormCell>
+            </FormRow>
+          </FormTable>      
+          <Table variant="message" className="overflow-visible">
+            <TableHeader className='h-18'>
+              <TableRow>
+                <TableHead>
+                  보장P
+                </TableHead>
+                <TableHead>
+                  적립P
+                </TableHead>
+                <TableHead>
+                  입시납P
+                </TableHead>
+                <TableHead>
+                  합계P<br />
+                  (할인전)
+                </TableHead>
+                <TableHead>
+                  합계P<br />
+                  (할인후)
+                </TableHead >
+                <TableHead>
+                  만기환급금<br />
+                  (예상)
+                </TableHead>
+                <TableHead>
+                  환급률<br />
+                  (예상)
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>99</TableCell>
+                <TableCell>9999</TableCell>
+                <TableCell>9999</TableCell>
+                <TableCell>9999</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <InfoBox
+            title="만기환급급은 예상금으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수 있습니다."
+            variant={'info'}
+            bg={false}
+          ></InfoBox>
+        </Gcol>
+        <Gcol className="w-full">
+          <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+        </Gcol>  
+      </Grow>
+    </Gcol>
+  )
+}
+export const LTPZ021: Story = {
+  render: () => <LTPZ021P />,
+}

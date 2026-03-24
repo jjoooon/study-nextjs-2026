@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
-type TableVariant = 'default' | 'sub';
+type TableVariant = 'default' | 'sub' | 'message';
 
 interface TableProps extends React.ComponentProps<'table'> {
   variant?: TableVariant;
@@ -16,6 +16,8 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   const variantClass =
     variant === 'default'
       ? 'w-full rounded-0'
+      : variant === 'message'
+        ? 'w-full rounded-0 border-t-[.2rem] border-t-[#61554F]'
       : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
   return (
     <TableVariantContext.Provider value={variant}>
@@ -33,7 +35,9 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
       data-slot="table-header"
       className={cn(
         variant === 'default'
-          ? '[&_tr]:bg-[var(--color-table-th-surface-gray)] [&_th]:h-[3rem] [&_th]:py-[.2rem]'
+          ? '[&_tr]:bg-(--color-table-th-surface-gray) [&_th]:h-[3rem] [&_th]:py-[.2rem]'
+          : variant === 'message'
+            ? '[&_tr]:bg-[#F4F4F4] [&_th]:h-18'
           : '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
         className
       )}
@@ -70,7 +74,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
     <tr
       data-slot="table-row"
       className={cn(
-        variant === 'default'
+        variant === 'default' || variant === 'message'
           ? ''
           : 'hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-[#E5E5E5] transition-colors',
         className
@@ -87,7 +91,9 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
       data-slot="table-head"
       className={cn(
         variant === 'default'
-          ? 'text-[1.3rem] border border-[var(--color-table-border-border-gray)]'
+          ? 'text-[1.3rem] border border-(--color-table-border-border-gray)'
+          : variant === 'message'
+            ? 'bg-[#F4F4F4] border-b border-r border-[#E5E5E5] last:border-r-0 font-bold px-[1rem] py-[1.2rem] text-center text-[1.3rem]'
           : 'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
@@ -103,7 +109,9 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         variant === 'default'
-          ? 'border border-[var(--color-table-border-border-gray)] px-[.6rem] py-[.4rem] text-[1.3rem]'
+          ? 'border border-(--color-table-border-border-gray) px-[.6rem] py-[.4rem] text-[1.3rem]'
+          : variant === 'message'
+            ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
           : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}

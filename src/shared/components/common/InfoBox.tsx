@@ -16,6 +16,7 @@ export type InfoListItem = {
 
 export type InfoBoxProps = {
   variant?: InfoboxVariant;
+  bg?: boolean;
   title?: string;
   subTitle?: string;
   items?: InfoListItem[];
@@ -53,6 +54,7 @@ const VARIANT_CONFIG = {
 
 export function InfoBox({
   variant = 'info',
+  bg = true,
   title,
   subTitle,
   items,
@@ -67,7 +69,7 @@ export function InfoBox({
       placement='ss'
       className={cn(
         'rounded-[0.6rem] px-2.5 py-2 w-full',
-        config.wrap,
+        bg && config.wrap,
         className
       )}
     >
@@ -106,7 +108,7 @@ export function InfoBox({
                 <span className="shrink-0 flex items-center leading-[150%]" aria-hidden>
                   {config.icon}
                 </span>
-                <span className="text-[1.3rem] leading-[150%] text-[var(--color-text-base,#111827)]">
+                <span className="text-[1.3rem] leading-[150%] text-(--color-text-base,#111827)">
                   {item.text}
                 </span>
               </li>
