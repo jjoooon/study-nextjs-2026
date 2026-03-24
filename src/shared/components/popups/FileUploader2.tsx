@@ -1,14 +1,18 @@
 'use client';
 
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
-import { FilePond } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/shared/components/uiux';
 import log from '@/shared/utils/logger';
 
+// Register FilePond plugins
+registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-
 import './FileUploader2.css';
 
 const logger = log.getLogger('FileUploader');
@@ -58,6 +62,35 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
+
+  // 허용할 파일 MIME 타입 설정
+  const ACCEPTED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'text/plain',
+    'application/zip',
+    'application/x-zip-compressed',
+  ];
+
+  const MAX_FILE_SIZE = '1024MB'; // 1GB
+
+  const handleBeforeAddFile = (item: any) => {
+    // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
+    if (item.filename.includes('_temp')) {
+      logger.warn('임시 파일은 업로드할 수 없습니다:', item.filename);
+      return false;
+    }
+
+    return true;
+  };
 
   const handleAddFile = (error: any | null, file: any) => {
     if (error) {
@@ -119,6 +152,14 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   const handleReorderFiles = (files: any[]) => {
     logger.info('파일 순서 변경됨, 전체 파일 수:', files.length);
     setPondFiles(files);
+  };
+
+  const handleError = (error: any) => {
+    logger.error('파일 에러:', error?.main || error);
+  };
+
+  const handleWarning = (warning: any) => {
+    logger.warn('파일 경고:', warning?.main || warning);
   };
 
   const handleSearch = () => {
@@ -198,11 +239,22 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
               onaddfile={handleAddFile}
               onremovefile={handleRemoveFile}
               onreorderfiles={handleReorderFiles}
+              onerror={handleError}
+              onwarning={handleWarning}
+              beforeAddFile={handleBeforeAddFile}
               credits={false}
               allowMultiple={true}
               allowReorder={true}
               maxFiles={500}
+              acceptedFileTypes={ACCEPTED_FILE_TYPES}
+              maxFileSize={MAX_FILE_SIZE}
+              labelMaxFileSizeExceeded="1GB 이상의 파일은 업로드할 수 없습니다"
+              labelMaxFileSize="최대 1GB"
+              labelFileTypeNotAllowed="허용되지 않는 파일 형식입니다"
+              fileValidateTypeLabelExpectedTypes="허용되지 않는 파일 형식입니다"
               labelIdle="이곳을 클릭 또는 파일을 드래그 하세요."
+              allowFileTypeValidation={true}
+              allowFileSizeValidation={true}
               // stylePanelLayout="compact"
               dropValidation
               instantUpload={false}
