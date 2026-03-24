@@ -308,6 +308,10 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
                       <ContextMenuTrigger asChild>
                         <div
                           className={`flex border-b border-(--color-table-border-border-gray) hover:bg-muted/50 transition-colors ${activeFileId === file.id ? 'bg-muted' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveFileId(file.id);
+                          }}
                         >
                           <div className="w-16 flex items-center justify-center py-[0.4rem] relative z-10 pointer-events-auto">
                             <Checkbox
