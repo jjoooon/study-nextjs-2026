@@ -117,7 +117,7 @@ export function amountUnitInputCellRenderer<RowType>(
 export function editableSelectCellRenderer<RowType extends { canEditExpiry?: boolean }>(params: ICellRendererParams<RowType>) {
   return (
     <div className="flex items-center justify-center gap-1 w-full h-full">
-      <span className="block w-[6rem] text-right">{params.value}</span>
+      <span className="block w-auto text-right">{params.value}</span>
       {params.data?.canEditExpiry ? (
         <SelectArrowIcon size={14} color={'var(--color-gray-50)'} />
       ) : (
