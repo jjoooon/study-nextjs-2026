@@ -1,0 +1,38 @@
+/* FileUploader Custom Styles */
+
+/* FilePond panel height - 고정 높이 */
+.filepond--root {
+  min-height: 180px !important;
+  max-height: 180px !important;
+  height: 180px !important;
+}
+
+.filepond--panel {
+  min-height: 180px !important;
+  max-height: 180px !important;
+  height: 180px !important;
+  overflow: hidden !important;
+}
+
+/* FilePond drop label - 전체 높이와 중앙 정렬 */
+.filepond--drop-label {
+  min-height: 180px !important;
+  max-height: 180px !important;
+  height: 180px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* FilePond item list - 숨기기 */
+.filepond--list {
+  display: none !important;
+}
+
+.filepond--file {
+  display: none !important;
+}
+
+.filepond--file-wrapper {
+  display: none !important;
+}

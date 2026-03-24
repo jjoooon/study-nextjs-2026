@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FilePond } from 'react-filepond';
+import type { FilePond as FilePondInstance } from 'react-filepond';
 import {
   Button,
   Checkbox,
@@ -11,18 +12,35 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/components/uiux';
+import log from '@/shared/utils/logger';
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
+import './FileUploader.css';
 
-// Import the Image EXIF Orientation and Image Preview plugins
-// Note: These need to be installed separately
-// import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+const logger = log.getLogger('FileUploader');
+
+// FilePond 파일 아이템 타입 정의
+export interface FilePondFile {
+  id: string;
+  filename: string;
+  fileSize: number;
+  fileExtension: string;
+  fileType: string;
+  source: File;
+}
+
+export interface FileItem {
+  id: string;
+  filename: string;
+  fileSize: number;
+  fileExtension: string;
+  fileType: string;
+}
 
 export interface FileUploadResult {
   action: 'search' | 'select' | 'cancel';
-  files?: any[];
+  files?: FileItem[];
 }
 
 export interface FileUploaderProps {
@@ -30,8 +48,6 @@ export interface FileUploaderProps {
   /** Promise resolve 함수 (결과 반환) */
   resolve: (result: FileUploadResult) => void;
 }
-
-// registerPlugin(FilePondPluginImagePreview);
 
 // 파일 크기를 읽기 쉬운 단위로 변환
 function formatFileSize(bytes: number): string {
@@ -45,12 +61,12 @@ function formatFileSize(bytes: number): string {
 }
 
 export default function FileUploader({ title = '파일업로드', resolve }: FileUploaderProps) {
+  const pondRef = useRef<FilePondInstance>(null);
   const [selectAll, setSelectAll] = useState(false);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
-  const [files, setFiles] = useState<any[]>([]);
-
-  // 1GB in bytes
+  const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
+  const [selectedFileIds, setSelectedFileIds] = useState<Set<string>>(new Set());
 
   const handleSearch = () => {
     resolve({
@@ -58,9 +74,56 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     });
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
+    // TODO: @YunJunmo
+    // try {
+    //   // 1. FormData 생성
+    //   const formData = new FormData();
+
+    //   pondFiles.forEach((file) => {
+    //     // file.source가 실제 File 객체
+    //     formData.append('files', file.source);
+    //   });
+
+    //   // 2. 서버 업로드 API 호출 (예시)
+    //   const response = await fetch('/api/upload', {
+    //     method: 'POST',
+    //     body: formData,
+    //   });
+
+    //   // 3. 응답 처리
+    //   const result = await response.json();
+    //   logger.info('서버 업로드 결과:', result);
+
+    //   // 4. API 응답값을 resolve로 전달
+    //   resolve({
+    //     action: 'select',
+    //     files: result.uploadedFiles, // 서버에서 반환한 파일 정보
+    //   });
+    // } catch (error) {
+    //   logger.error('파일 업로드 실패:', error);
+
+    //   // 에러 시 사용자에게 알림 (옵션)
+    //   // alert({ message: '파일 업로드에 실패했습니다.' });
+
+    //   resolve({
+    //     action: 'cancel',
+    //   });
+    // }
+
+    const filesWithSource = pondFiles.map((file) => ({
+      id: file.id,
+      filename: file.filename,
+      fileSize: file.fileSize,
+      fileExtension: file.fileExtension,
+      fileType: file.fileType,
+    }));
+
+    logger.info('선택된 파일 목록:', filesWithSource);
+
     resolve({
-      action: 'cancel',
+      action: 'select',
+      files: filesWithSource,
     });
   };
 
@@ -70,17 +133,74 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     });
   };
 
-  const handleUpdateFiles = (fileItems: any[]) => {
-    setFiles(fileItems);
+  // FilePond에서 파일이 추가될 때 호출
+  const handleAddFile = (error: any | null, file: any) => {
+    if (error) {
+      logger.error('파일 추가 오류:', error);
+      return;
+    }
 
-    // 파일 개수 업데이트
-    setFileCount(fileItems.length);
+    // 함수형 업데이트로 클로저 문제 해결
+    setPondFiles((prev) => {
+      const updatedFiles = [...prev, file];
+      logger.info('파일 추가됨:', file.filename, '전체 파일 수:', updatedFiles.length);
 
-    // 전체 파일 크기 계산
-    const total = fileItems.reduce((sum, file) => {
-      return sum + (file.fileSize || 0);
-    }, 0);
+      // 파일 개수 업데이트
+      setFileCount(updatedFiles.length);
+
+      // 전체 파일 크기 계산
+      const total = updatedFiles.reduce((sum, f) => {
+        return sum + (f.fileSize || 0);
+      }, 0);
+      setTotalSize(total);
+
+      return updatedFiles;
+    });
+
+    // FilePond에서 해당 파일만 제거 (다른 파일들이 추가될 시간을 줌)
+    setTimeout(() => {
+      if (pondRef.current) {
+        pondRef.current.removeFile(file.id);
+      }
+    }, 100);
+  };
+
+  // 개별 파일 선택 토글
+  const toggleFileSelection = (fileId: string) => {
+    const newSelected = new Set(selectedFileIds);
+    if (newSelected.has(fileId)) {
+      newSelected.delete(fileId);
+    } else {
+      newSelected.add(fileId);
+    }
+    setSelectedFileIds(newSelected);
+    setSelectAll(newSelected.size === pondFiles.length && pondFiles.length > 0);
+  };
+
+  // 전체 선택 토글
+  const toggleSelectAll = () => {
+    const newState = !selectAll;
+
+    if (newState) {
+      // 전체 선택
+      setSelectedFileIds(new Set(pondFiles.map((f) => f.id)));
+    } else {
+      // 전체 해제
+      setSelectedFileIds(new Set());
+    }
+
+    setSelectAll(newState);
+  };
+
+  // 파일 삭제
+  const removeFile = (fileId: string) => {
+    const updated = pondFiles.filter((f) => f.id !== fileId);
+    setPondFiles(updated);
+    setFileCount(updated.length);
+    const total = updated.reduce((sum, file) => sum + (file.fileSize || 0), 0);
     setTotalSize(total);
+    selectedFileIds.delete(fileId);
+    setSelectedFileIds(new Set(selectedFileIds));
   };
 
   return (
@@ -89,40 +209,86 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <div className="flex-1 w-full px-[3.2rem]">
-          <div className="flex flex-col h-full border border-(--color-table-border-border-gray)">
+        <div className="flex-1 w-full px-[3.2rem] flex flex-col gap-4">
+          {/* FilePond Drop Area */}
+          <div>
+            <FilePond
+              ref={pondRef}
+              credits={false}
+              files={[]}
+              onaddfile={handleAddFile}
+              allowMultiple={true}
+              maxFiles={500}
+              labelIdle="이곳을 더블클릭 또는 파일을 드래그 하세요."
+              stylePanelLayout="compact"
+              dropValidation
+              instantUpload={false}
+              server={{}}
+            />
+          </div>
+
+          {/* File Table */}
+          <div className="flex-1 flex flex-col min-h-0 border border-(--color-table-border-border-gray)">
             {/* Header */}
             <div className="flex bg-(--color-table-th-surface-gray) border-b border-(--color-table-border-border-gray)">
-              <div className="w-16 flex items-center justify-center h-[3rem] py-[0.2rem]">
-                <Checkbox checked={selectAll} onCheckedChange={(checked) => setSelectAll(checked === true)} />
+              <div className="w-16 flex items-center justify-center h-[3rem] py-[0.2rem] relative z-10 pointer-events-auto">
+                <Checkbox checked={selectAll} onCheckedChange={() => toggleSelectAll()} />
               </div>
-              <div className="flex-1 flex items-center h-[3rem] py-[0.2rem] text-[1.3rem] border-x border-(--color-table-border-border-gray)">
+              <div className="flex-1 flex items-center py-[0.4rem] px-[0.6rem] text-[1.3rem] border-x border-(--color-table-border-border-gray)">
                 파일 이름
               </div>
-              <div className="w-32 flex items-center justify-end h-[3rem] py-[0.2rem] px-[0.6rem] text-[1.3rem]">
+              <div className="w-64 flex items-center justify-center h-[3rem] py-[0.2rem] px-[0.6rem] text-[1.3rem]">
                 파일 크기
               </div>
             </div>
 
-            {/* Body - FilePond Area */}
-            <div className="flex-1 min-h-64">
-              <FilePond
-                credits={false}
-                files={files}
-                onupdatefiles={handleUpdateFiles}
-                allowMultiple={true}
-                maxFiles={500}
-                name="files"
-                labelIdle="이곳을 더블클릭 또는 파일을 드래그 하세요."
-                stylePanelLayout="compact"
-              />
+            {/* File List */}
+            <div className="h-80 overflow-y-auto">
+              {pondFiles.length === 0 ? (
+                <div className="flex items-center justify-center h-full text-(--color-text-gray-light) text-[1.3rem]">
+                  파일이 없습니다
+                </div>
+              ) : (
+                <div>
+                  {pondFiles.map((file) => (
+                    <div
+                      key={file.id}
+                      className="flex border-b border-(--color-table-border-border-gray) hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="w-16 flex items-center justify-center py-[0.4rem] relative z-10 pointer-events-auto">
+                        <Checkbox
+                          checked={selectedFileIds.has(file.id)}
+                          onCheckedChange={() => toggleFileSelection(file.id)}
+                        />
+                      </div>
+                      <div className="flex-1 flex items-center py-[0.4rem] px-[0.6rem] text-[1.3rem] border-x border-(--color-table-border-border-gray)">
+                        {file.filename}
+                      </div>
+                      <div className="w-64 flex items-center justify-center gap-2 py-[0.4rem] px-[0.6rem] text-[1.3rem] relative z-10 pointer-events-auto">
+                        <span>{formatFileSize(file.fileSize || 0)}</span>
+                        <button
+                          onClick={() => removeFile(file.id)}
+                          className="text-(--color-text-gray-light) hover:text-(--color-text-danger) transition-colors cursor-pointer"
+                          aria-label="파일 삭제"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Footer */}
             <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] py-[0.4rem] border-t border-(--color-table-border-border-gray)">
-              <span>최대 500개 1 GB 제한</span>
               <span>
-                {fileCount} 개, {formatFileSize(totalSize)} 추가됨
+                최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
+                <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
+              </span>
+              <span>
+                <span className="text-(--color-text-danger) font-semibold">{fileCount}</span> 개,{' '}
+                <span className="text-(--color-text-danger) font-semibold"> {formatFileSize(totalSize)}</span> 추가됨
               </span>
             </div>
           </div>
@@ -132,10 +298,10 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
           <Button variant="outline" size="lg" color="gray" onClick={handleSearch}>
             파일검색
           </Button>
-          <Button variant="outline" size="lg" color="gray" onClick={handleCancel}>
+          <Button variant="outline" size="lg" color="gray" onClick={handleUpload}>
             선택완료
           </Button>
-          <Button variant="contained" size="lg" onClick={handleUpload}>
+          <Button variant="contained" size="lg" onClick={handleCancel}>
             닫기
           </Button>
         </DialogFooter>
