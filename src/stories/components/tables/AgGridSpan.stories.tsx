@@ -11,10 +11,7 @@ import {
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
-
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule, ClientSideRowModelModule]);
-
 
 interface AsGridCellMergingProps {}
 
@@ -50,7 +47,6 @@ const meta: Meta<AsGridCellMergingProps> = {
 
 export default meta;
 type Story = StoryObj<AsGridCellMergingProps>;
-
 
 interface UnderwritingViolationRow {
   id: number;
@@ -134,19 +130,6 @@ const rowData: UnderwritingViolationRow[] = [
   },
 ];
 
-// 연속된 criteria 그룹 (모듈 레벨에서 한 번만 계산)
-const criteriaGroups: number[][] = (() => {
-  const groups: number[][] = [];
-  let i = 0;
-  while (i < rowData.length) {
-    let span = 1;
-    while (i + span < rowData.length && rowData[i + span].criteria === rowData[i].criteria) span++;
-    groups.push(rowData.slice(i, i + span).map(r => r.id));
-    i += span;
-  }
-  return groups;
-})();
-
 const defaultColDef: ColDef<UnderwritingViolationRow> = {
   sortable: false,
   filter: false,
@@ -156,24 +139,8 @@ const defaultColDef: ColDef<UnderwritingViolationRow> = {
 };
 
 export const Default: Story = {
-  render: (args) => {
-    const [selectedId, setSelectedId] = React.useState<number>(1);
-    // React 19: ref는 반드시 useRef/forwardRef로만 접근해야 하며, JSX element의 .ref 직접 접근은 금지됩니다.
-    // 아래처럼 ref 객체를 직접 생성/전달해서만 사용하세요.
+  render: () => {
     const gridRef = React.useRef<AgGridReact<UnderwritingViolationRow>>(null);
-    // 예시: <AgGridReact ref={gridRef} ... />
-    // 잘못된 예시: element.ref (React 19에서 금지)
-
-    const selectedGroup = React.useMemo(
-      () => criteriaGroups.find(g => g.includes(selectedId)) ?? [],
-      [selectedId]
-    );
-
-    // selectedId 변경 시 전체 컬럼 강제 갱신
-    React.useEffect(() => {
-      gridRef.current?.api?.refreshCells({ columns: ['target', 'criteria', 'details'], force: true });
-    }, [selectedId]);
-
     const columnDefs = React.useMemo<ColDef<UnderwritingViolationRow>[]>(() => [
       {
         headerName: '대상',
@@ -181,8 +148,6 @@ export const Default: Story = {
         width: 110,
         spanRows: true,
         cellClass: 'flex! items-center! justify-center! text-center bg-white!',
-       
-        // 항상 흰색 고정 — 선택/hover 등 어떤 상태에서도 배경색 변경 없음
       },
       {
         headerName: '인수제한',
@@ -202,11 +167,17 @@ export const Default: Story = {
       {
         headerName: '위배내용',
         field: 'details',
+        wrapText: true,
+        autoHeight: true,
         flex: 1,
+        cellStyle: {
+          whiteSpace: 'normal',
+          wordWrap: 'break-word',
+        },
         cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => {
           return (
             <div
-              className="h-full w-full px-4 py-3 leading-[1.3]"
+              className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
               dangerouslySetInnerHTML={{ __html: String(params.data?.details ?? '') }}
             />
           );
@@ -215,15 +186,15 @@ export const Default: Story = {
           'ag-row-odd': (params) => {
             const rowIndex = params.node.rowIndex ?? -1;
             return rowIndex % 2 !== 0;
-          }, // 0부터 시작하므로 홀수 인덱스가 짝수행
+          },  
         },
       },
-    ], [selectedId, selectedGroup]);
+    ], [rowData]);
 
     return (
       <div className="p-5">
         <div className="overflow-x-auto">
-          <div className="ag-theme-alpine top-noline min-w-[980px] h-[30rem]!">
+          <div className="ag-theme-alpine top-noline h-[30rem]!">
             <AgGridReact<UnderwritingViolationRow>
               getRowId={(params) => String(params.data.id)}
               ref={gridRef}
@@ -232,9 +203,7 @@ export const Default: Story = {
               
               defaultColDef={defaultColDef} //모든 컬럼에 공통으로 적용할 기본 설정을 정의하는 객체
 
-
               enableCellSpan={true} //셀 병합 활성화
-              getRowHeight={(params) => Math.max(42, (params.data?.detailsLines ?? 1) * 28 + 6)}
 
               // onRowClicked={(params) => {
               //   if (params.data?.id !== undefined) setSelectedId(params.data.id);
