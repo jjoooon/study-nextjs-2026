@@ -149,6 +149,14 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
 
     // 함수형 업데이트로 클로저 문제 해결
     setPondFiles((prev) => {
+      // 중복 파일 체크 (파일명과 크기로 비교)
+      const isDuplicate = prev.some((f) => f.filename === file.filename && f.fileSize === file.fileSize);
+
+      if (isDuplicate) {
+        logger.info('중복 파일 무시:', file.filename);
+        return prev; // 기존 파일 목록 반환 (추가 안 함)
+      }
+
       const updatedFiles = [...prev, file];
       logger.info('파일 추가됨:', file.filename, '전체 파일 수:', updatedFiles.length);
 
@@ -336,32 +344,65 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
                       </ContextMenuTrigger>
                       <ContextMenuContent>
                         <ContextMenuGroup>
-                          <ContextMenuItem onClick={(e) => { e.stopPropagation(); pondRef.current?.browse(); }}>파일 추가</ContextMenuItem>
-                          <ContextMenuItem onClick={(e) => { e.stopPropagation(); removeFile(file.id); }}>선택된 항목제거</ContextMenuItem>
-                          <ContextMenuItem onClick={(e) => { e.stopPropagation(); removeAllFiles(); }}>전체 항목제거</ContextMenuItem>
+                          <ContextMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              pondRef.current?.browse();
+                            }}
+                          >
+                            파일 추가
+                          </ContextMenuItem>
+                          <ContextMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeFile(file.id);
+                            }}
+                          >
+                            선택된 항목제거
+                          </ContextMenuItem>
+                          <ContextMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeAllFiles();
+                            }}
+                          >
+                            전체 항목제거
+                          </ContextMenuItem>
                         </ContextMenuGroup>
                         <ContextMenuSeparator />
                         <ContextMenuGroup>
                           <ContextMenuItem
-                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'top'); }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              moveFile(file.id, 'top');
+                            }}
                             disabled={pondFiles.findIndex((f) => f.id === file.id) === 0}
                           >
                             맨 앞으로
                           </ContextMenuItem>
                           <ContextMenuItem
-                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'up'); }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              moveFile(file.id, 'up');
+                            }}
                             disabled={pondFiles.findIndex((f) => f.id === file.id) === 0}
                           >
                             앞으로
                           </ContextMenuItem>
                           <ContextMenuItem
-                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'down'); }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              moveFile(file.id, 'down');
+                            }}
                             disabled={pondFiles.findIndex((f) => f.id === file.id) === pondFiles.length - 1}
                           >
                             뒤로
                           </ContextMenuItem>
                           <ContextMenuItem
-                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'bottom'); }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              moveFile(file.id, 'bottom');
+                            }}
                             disabled={pondFiles.findIndex((f) => f.id === file.id) === pondFiles.length - 1}
                           >
                             맨 뒤로

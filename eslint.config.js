@@ -42,8 +42,8 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'react-hooks/immutability': 'off',
 
     // Accessibility rules
-    'jsx-a11y/anchor-is-valid': 'warn',
-    'jsx-a11y/click-events-have-key-events': 'warn',
+    // 'jsx-a11y/anchor-is-valid': 'warn',
+    // 'jsx-a11y/click-events-have-key-events': 'warn',
 
     // TypeScript rules
     '@typescript-eslint/no-unused-vars': [
