@@ -173,6 +173,7 @@ export const Default: StoryObj = {
       <>
         <div className="ag-theme-alpine aggrid-pagination-ko h-[26rem]!">
           <AgGridReact<DummyDataType>
+            getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
             animateRows={false}

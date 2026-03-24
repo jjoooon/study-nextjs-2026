@@ -225,6 +225,7 @@ export const Default: Story = {
         <div className="overflow-x-auto">
           <div className="ag-theme-alpine top-noline min-w-[980px] h-[30rem]!">
             <AgGridReact<UnderwritingViolationRow>
+              getRowId={(params) => String(params.data.id)}
               ref={gridRef}
               rowData={rowData}
               columnDefs={columnDefs}
