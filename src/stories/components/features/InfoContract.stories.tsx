@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
-import { LniPl020Data } from '@/features/pub/proto/data/LniPl020Data';
+import { LniPl020Data } from '@/features/pub/proto/data/LTPA350Data';
 import { InfoContract } from '@/shared/components/features/InfoContract';
 
 const meta: Meta<typeof InfoContract> = {

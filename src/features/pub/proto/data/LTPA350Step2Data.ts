@@ -1,6 +1,6 @@
 
-// LniPl020Step2Data 타입 정의
-export interface LniPl020Step2DataType {
+// LTPA350Step2Data 타입 정의
+export interface LTPA350Step2DataType {
   tabList: Array<{
     name: string;
     age: string | number;
@@ -28,7 +28,7 @@ export interface LniPl020Step2DataType {
   }>;
 }
 
-export const LniPl020Step2Data: LniPl020Step2DataType = {
+export const LTPA350Step2Data: LTPA350Step2DataType = {
   tabList: [
     {
       name: '홍길동',
