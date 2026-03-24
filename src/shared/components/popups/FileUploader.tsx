@@ -82,9 +82,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   };
 
   const handleSearch = () => {
-    resolve({
-      action: 'search',
-    });
+    pondRef.current?.browse();
   };
 
   const handleUpload = async () => {
@@ -265,7 +263,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
 
   return (
     <Dialog open onOpenChange={handleCancel}>
-      <DialogContent className="h-[80vh] w-360 min-w-7xl min-h-240" resizable={true}>
+      <DialogContent className="h-[35vh] w-360 min-w-7xl min-h-240" resizable={true}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -275,7 +273,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
             <FilePond
               ref={pondRef}
               credits={false}
-              files={[]}
+              // files={[]}
               onaddfile={handleAddFile}
               allowMultiple={true}
               maxFiles={500}
@@ -288,7 +286,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
           </div>
 
           {/* File Table */}
-          <div className="flex-1 flex flex-col min-h-0 border border-(--color-table-border-border-gray)">
+          <div className="flex-1 flex flex-col min-h-0 max-h-[16vh] border border-(--color-table-border-border-gray)">
             {/* Header */}
             <div className="flex bg-(--color-table-th-surface-gray) border-b border-(--color-table-border-border-gray)">
               <div className="w-16 flex items-center justify-center h-[3rem] py-[0.2rem] relative z-10 pointer-events-auto">
@@ -395,7 +393,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
             </div>
 
             {/* Footer */}
-            <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] py-[0.4rem] border-t border-(--color-table-border-border-gray)">
+            <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] h-[2rem] border-t border-(--color-table-border-border-gray)">
               <span>
                 최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
                 <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
