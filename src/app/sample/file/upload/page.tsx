@@ -8,7 +8,7 @@ import { registerDialog } from '@/shared/utils/popup/popupRegistry';
 
 export default function Page() {
   useMounted(() => {
-    registerDialog('fileUploader', () => import('@/shared//components/popups/FileUploader'));
+    registerDialog('fileUploader', () => import('@/shared/components/popups/FileUploader'));
   });
 
   const handleOpenFileUploader = async () => {
