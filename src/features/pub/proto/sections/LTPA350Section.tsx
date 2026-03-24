@@ -17,48 +17,48 @@ import { QuickLinks } from '@features/QuickLinks';
 import { useAsideToggleState } from '@/shared/hooks/useAsideToggleState';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
-// LniPl020 - components
-import { LniPl020Step1 } from '../components/LniPl020Step1'; // 01. 담보설계
-import { LniPl020Step2 } from '../components/LniPl020Step2'; // 02. 담보설계
+// LTPA350 - components
+import { LTPA350Step1 } from '../components/LTPA350Step1'; // 01. 담보설계
+import { LTPA350Step2 } from '../components/LTPA350Step2'; // 02. 담보설계
 
 // data
-import { LniPl020Data } from '../data/LniPl020Data';
-import type { LniPl020ProcessStep } from '../data/LniPl020Data';
+import { LTPA350Data } from '../data/LTPA350Data';
+import type { LTPA350ProcessStep } from '../data/LTPA350Data';
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
-const isPageProcessStep = (value: number): value is LniPl020ProcessStep => {
+const isPageProcessStep = (value: number): value is LTPA350ProcessStep => {
   if (!Number.isInteger(value)) return false;
-  return LniPl020Data.process.list.some((item) => item.step === value);
+  return LTPA350Data.process.list.some((item) => item.step === value);
 };
 
-export default function LniPl020Section() {
-  const defaultStep = LniPl020Data.process.state.active;
-  const { activeStep, setActiveStep } = useStepFromQuery<LniPl020ProcessStep>({
+export default function LTPA350Section() {
+  const defaultStep = LTPA350Data.process.state.active;
+  const { activeStep, setActiveStep } = useStepFromQuery<LTPA350ProcessStep>({
     defaultStep,
     isValidStep: isPageProcessStep,
   });
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
   const stepMainBody: Record<number, ReactNode> = {
-    1: <LniPl020Step1 />,
-    2: <LniPl020Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <LniPl020Step1 />,
-    4: <LniPl020Step1 />,
-    5: <LniPl020Step1 />,
-    6: <LniPl020Step1 />,
+    1: <LTPA350Step1 />,
+    2: <LTPA350Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    3: <LTPA350Step1 />,
+    4: <LTPA350Step1 />,
+    5: <LTPA350Step1 />,
+    6: <LTPA350Step1 />,
   };
  
   return (
     <LayoutTemplateAsideToggle
       // LayoutHead
-      pageID={<PageID data={LniPl020Data.head.pageID} />}
-      pageTitle={<PageTitle data={LniPl020Data.head.pageTitle} />}
+      pageID={<PageID data={LTPA350Data.head.pageID} />}
+      pageTitle={<PageTitle data={LTPA350Data.head.pageTitle} />}
 
       // LayoutBody: process
       pageProcess={
         <PageProcess
-          items={LniPl020Data.process.list}
-          completeSteps={LniPl020Data.process.state.complete}
-          defaultActiveStep={LniPl020Data.process.state.active}
+          items={LTPA350Data.process.list}
+          completeSteps={LTPA350Data.process.state.complete}
+          defaultActiveStep={LTPA350Data.process.state.active}
           activeStep={activeStep}
           onStepChange={setActiveStep}
         />
@@ -68,10 +68,10 @@ export default function LniPl020Section() {
       mainBody={stepMainBody[activeStep]}
       
       // LayoutBody: aside
-      asideHead={<TaskStatusBoard state={LniPl020Data.aside.taskState} />}
+      asideHead={<TaskStatusBoard state={LTPA350Data.aside.taskState} />}
       asideBody={
         <>
-          <InfoContract data={LniPl020Data.aside.simpleContractInfo} />
+          <InfoContract data={LTPA350Data.aside.simpleContractInfo} />
           <QuickLinks />
         </>
       }
