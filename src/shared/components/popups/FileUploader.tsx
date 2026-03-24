@@ -6,6 +6,12 @@ import type { FilePond as FilePondInstance } from 'react-filepond';
 import {
   Button,
   Checkbox,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
   Dialog,
   DialogContent,
   DialogFooter,
@@ -67,6 +73,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   const [totalSize, setTotalSize] = useState(0);
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
   const [selectedFileIds, setSelectedFileIds] = useState<Set<string>>(new Set());
+  const [activeFileId, setActiveFileId] = useState<string | null>(null);
 
   const handleSearch = () => {
     resolve({
@@ -203,6 +210,45 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     setSelectedFileIds(new Set(selectedFileIds));
   };
 
+  // 전체 파일 제거
+  const removeAllFiles = () => {
+    setPondFiles([]);
+    setFileCount(0);
+    setTotalSize(0);
+    setSelectedFileIds(new Set());
+    setSelectAll(false);
+  };
+
+  // 파일 순서 변경
+  const moveFile = (fileId: string, direction: 'up' | 'down' | 'top' | 'bottom') => {
+    const index = pondFiles.findIndex((f) => f.id === fileId);
+    if (index === -1) return;
+
+    const updated = [...pondFiles];
+    const [file] = updated.splice(index, 1);
+
+    switch (direction) {
+      case 'up':
+        if (index > 0) updated.splice(index - 1, 0, file);
+        else updated.splice(index, 0, file);
+        break;
+      case 'down':
+        if (index < updated.length) updated.splice(index + 1, 0, file);
+        else updated.splice(index, 0, file);
+        break;
+      case 'top':
+        updated.unshift(file);
+        break;
+      case 'bottom':
+        updated.push(file);
+        break;
+    }
+
+    setPondFiles(updated);
+    // 파일 이동 후 해당 파일 다시 활성화
+    setActiveFileId(fileId);
+  };
+
   return (
     <Dialog open onOpenChange={handleCancel}>
       <DialogContent className="h-[80vh] w-360 min-w-7xl min-h-240" resizable={true}>
@@ -243,7 +289,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
             </div>
 
             {/* File List */}
-            <div className="h-80 overflow-y-auto">
+            <div className="h-80 overflow-y-auto" onClick={() => setActiveFileId(null)}>
               {pondFiles.length === 0 ? (
                 <div className="flex items-center justify-center h-full text-(--color-text-gray-light) text-[1.3rem]">
                   파일이 없습니다
@@ -251,30 +297,74 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
               ) : (
                 <div>
                   {pondFiles.map((file) => (
-                    <div
+                    <ContextMenu
                       key={file.id}
-                      className="flex border-b border-(--color-table-border-border-gray) hover:bg-muted/50 transition-colors"
+                      onOpenChange={(open) => {
+                        if (open) {
+                          setActiveFileId(file.id);
+                        }
+                      }}
                     >
-                      <div className="w-16 flex items-center justify-center py-[0.4rem] relative z-10 pointer-events-auto">
-                        <Checkbox
-                          checked={selectedFileIds.has(file.id)}
-                          onCheckedChange={() => toggleFileSelection(file.id)}
-                        />
-                      </div>
-                      <div className="flex-1 flex items-center py-[0.4rem] px-[0.6rem] text-[1.3rem] border-x border-(--color-table-border-border-gray)">
-                        {file.filename}
-                      </div>
-                      <div className="w-64 flex items-center justify-center gap-2 py-[0.4rem] px-[0.6rem] text-[1.3rem] relative z-10 pointer-events-auto">
-                        <span>{formatFileSize(file.fileSize || 0)}</span>
-                        <button
-                          onClick={() => removeFile(file.id)}
-                          className="text-(--color-text-gray-light) hover:text-(--color-text-danger) transition-colors cursor-pointer"
-                          aria-label="파일 삭제"
+                      <ContextMenuTrigger asChild>
+                        <div
+                          className={`flex border-b border-(--color-table-border-border-gray) hover:bg-muted/50 transition-colors ${activeFileId === file.id ? 'bg-muted' : ''}`}
                         >
-                          ×
-                        </button>
-                      </div>
-                    </div>
+                          <div className="w-16 flex items-center justify-center py-[0.4rem] relative z-10 pointer-events-auto">
+                            <Checkbox
+                              checked={selectedFileIds.has(file.id)}
+                              onCheckedChange={() => toggleFileSelection(file.id)}
+                            />
+                          </div>
+                          <div className="flex-1 flex items-center py-[0.4rem] px-[0.6rem] text-[1.3rem] border-x border-(--color-table-border-border-gray) relative z-10 pointer-events-auto">
+                            {file.filename}
+                          </div>
+                          <div className="w-64 flex items-center justify-center gap-2 py-[0.4rem] px-[0.6rem] text-[1.3rem] relative z-10 pointer-events-auto">
+                            <span>{formatFileSize(file.fileSize || 0)}</span>
+                            <button
+                              onClick={() => removeFile(file.id)}
+                              className="text-(--color-text-gray-light) hover:text-(--color-text-danger) transition-colors cursor-pointer"
+                              aria-label="파일 삭제"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        </div>
+                      </ContextMenuTrigger>
+                      <ContextMenuContent>
+                        <ContextMenuGroup>
+                          <ContextMenuItem onClick={(e) => { e.stopPropagation(); pondRef.current?.browse(); }}>파일 추가</ContextMenuItem>
+                          <ContextMenuItem onClick={(e) => { e.stopPropagation(); removeFile(file.id); }}>선택된 항목제거</ContextMenuItem>
+                          <ContextMenuItem onClick={(e) => { e.stopPropagation(); removeAllFiles(); }}>전체 항목제거</ContextMenuItem>
+                        </ContextMenuGroup>
+                        <ContextMenuSeparator />
+                        <ContextMenuGroup>
+                          <ContextMenuItem
+                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'top'); }}
+                            disabled={pondFiles.findIndex((f) => f.id === file.id) === 0}
+                          >
+                            맨 앞으로
+                          </ContextMenuItem>
+                          <ContextMenuItem
+                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'up'); }}
+                            disabled={pondFiles.findIndex((f) => f.id === file.id) === 0}
+                          >
+                            앞으로
+                          </ContextMenuItem>
+                          <ContextMenuItem
+                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'down'); }}
+                            disabled={pondFiles.findIndex((f) => f.id === file.id) === pondFiles.length - 1}
+                          >
+                            뒤로
+                          </ContextMenuItem>
+                          <ContextMenuItem
+                            onClick={(e) => { e.stopPropagation(); moveFile(file.id, 'bottom'); }}
+                            disabled={pondFiles.findIndex((f) => f.id === file.id) === pondFiles.length - 1}
+                          >
+                            맨 뒤로
+                          </ContextMenuItem>
+                        </ContextMenuGroup>
+                      </ContextMenuContent>
+                    </ContextMenu>
                   ))}
                 </div>
               )}

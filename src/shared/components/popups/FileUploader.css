@@ -36,3 +36,13 @@
 .filepond--file-wrapper {
   display: none !important;
 }
+
+/* Context Menu Separator - 구분선 색상 */
+[role="separator"].bg-border {
+  background-color: var(--color-table-border-border-gray) !important;
+}
+
+/* Active row style for context menu selection */
+.bg-muted {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
