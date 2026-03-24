@@ -258,6 +258,25 @@ export const Default: Story = {
             <FormCell title="우측 2행">값 2</FormCell>
           </FormRow>
         </FormTable>
+
+        <FormTable
+          caption={args.caption}
+          variant={args.variant}
+          lineTop={args.lineTop}
+          className={args.tableClassName}
+        >
+          <FormRow vertical={true}>
+            <FormCell title="개인정보취득경로">
+              TEXT
+            </FormCell>
+            <FormCell title="colSpan 케이스">
+              전체 너비 확장 행
+            </FormCell>
+            <FormCell title="rowSpan 케이스">
+              2행 병합
+            </FormCell>
+          </FormRow>
+        </FormTable>
       </Gcol>           
     );
   },

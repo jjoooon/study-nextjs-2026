@@ -1,8 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 import { Typo, Grow } from '@atoms';
-import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Table, TableHeader, TableRow, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { fa } from 'zod/v4/locales';
 
 const FormCellVariants = cva('', {
   variants: {
@@ -12,6 +13,7 @@ const FormCellVariants = cva('', {
       secondary: 'bg-slate-100 text-slate-900',
       light: 'bg-gray-50',
       none: 'bg-transparent border-0! p-0 [&+td]:border-0!',
+      vertical: false,
     },
   },
   defaultVariants: {
@@ -28,6 +30,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   rowSpan?: number;
   titleColSpan?: number;
   titleRowSpan?: number;
+  vertical?: boolean;
 }
 
 interface FormTableProps {
@@ -37,6 +40,12 @@ interface FormTableProps {
   children?: ReactNode;
   className?: string;
   lineTop?: boolean;
+  vertical?: boolean;
+}
+
+interface FormTrProps {
+  children?: ReactNode;
+  vertical?: boolean;
 }
 
 export const FormCell = ({
@@ -109,6 +118,6 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   );
 };
 
-export const FormRow = ({ children }: { children: ReactNode }) => {
-  return <tr>{children}</tr>;
+export const FormRow = ({ children, vertical }: FormTrProps) => {
+  return <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>th+td]:border-t-0! [&>td~*]:border-l-0!' : ''}>{children}</tr>;
 };
