@@ -578,71 +578,75 @@ const renderGrid: Story['render'] = (args) => {
     });
   }, []);
 
+
   return (
     <div className="p-5">
       <div className="w-full h-[40vh]! ag-theme-alpine aggrid-pagination-ko">
-        <AgGridReact<GridRow>
-          rowData={rowData}
-          columnDefs={columnDefs}
-          pinnedBottomRowData={sumRow}
+          <AgGridReact<GridRow>
+            rowData={rowData}
+            columnDefs={columnDefs}
+            pinnedBottomRowData={sumRow}
 
-          // 트리구조 (그룹핑) 설정
-          treeData={true}
-          getDataPath={(data: GridRow) => data.filePath}
-          autoGroupColumnDef={{
-            headerName: '코드',
-            field: 'code',
-            width: 100,
-            sortable: false,
-            suppressMovable: true,
-            filter: false,
-            editable: false,
-            resizable: false,
-            pinned: 'left',
-            cellRendererParams: {
-              suppressCount: false,
-              checkbox: true,
-            },
-          }}
-          groupDefaultExpanded={-1}
-          
-          rowSelection={{
-            mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
-            headerCheckbox: args.headerCheckbox ?? true,
-            checkboxes: args.checkboxes ?? true,
-            enableClickSelection: args.enableClickSelection ?? false,
-            isRowSelectable: (params) => !params.data?.locked,
-          }}
-          selectionColumnDef={{
-            width: 40,
-            pinned: 'left',
-            cellClass: 'text-center p-0!',
-            cellClassRules: {
-              'pointer-events-none': params => !!params.data?.locked,
-            },
-          }}
-          onCellValueChanged={handleCellValueChanged}
-          onGridReady={(params) => {
-            params.api.forEachNode((node) => {
-              if (node.data?.locked) node.setSelected(true);
-            });
-          }}
-          suppressRowHoverHighlight={false}
-          singleClickEdit={true}
-          tooltipShowDelay={args.showProductNameTooltip ? 0 : undefined}
-          tooltipHideDelay={args.showProductNameTooltip ? 9999 : undefined}
-          tooltipMouseTrack={args.showProductNameTooltip ? true : undefined}
-          getRowClass={(params) => {
-            if ((params.data as any)?.isSumRow) return 'ag-row-sum';
-            return params.data?.isHighlighted ? 'ag-row-highlighted' : '';
-          }}
-          pagination={args.pagination ?? true}
-          paginationPageSize={args.paginationPageSize ?? 10}
-          paginationPageSizeSelector={args.paginationPageSizeSelector ?? [10, 20, 50, 100]}
-          suppressPaginationPanel={args.suppressPaginationPanel ?? false}
-          localeText={AG_GRID_LOCALE_KO}
-          paginationNumberFormatter={(params) => `${Number(params.value).toLocaleString('ko-KR')}`}
-        />
+            // 트리구조 (그룹핑) 설정
+            treeData={true}
+            getDataPath={(data: GridRow) => data.filePath}
+            autoGroupColumnDef={{
+              headerName: '코드',
+              field: 'code',
+              width: 100,
+              sortable: false,
+              suppressMovable: true,
+              filter: false,
+              editable: false,
+              resizable: false,
+              pinned: 'left',
+              cellRendererParams: {
+                suppressCount: false,
+                checkbox: true,
+              },
+            }}
+            groupDefaultExpanded={-1}
+
+            // getRowId 적용: id 필드를 고유 식별자로 사용
+            getRowId={(params) => String(params.data.id)}
+
+            rowSelection={{
+              mode: (args.selectionMode ?? 'multiRow') as 'singleRow' | 'multiRow',
+              headerCheckbox: args.headerCheckbox ?? true,
+              checkboxes: args.checkboxes ?? true,
+              enableClickSelection: args.enableClickSelection ?? false,
+              isRowSelectable: (params) => !params.data?.locked,
+            }}
+            selectionColumnDef={{
+              width: 40,
+              pinned: 'left',
+              cellClass: 'text-center p-0!',
+              cellClassRules: {
+                'pointer-events-none': params => !!params.data?.locked,
+              },
+            }}
+            onCellValueChanged={handleCellValueChanged}
+            onGridReady={(params) => {
+              params.api.forEachNode((node) => {
+                if (node.data?.locked) node.setSelected(true);
+              });
+            }}
+            suppressRowHoverHighlight={false}
+            singleClickEdit={true}
+            tooltipShowDelay={args.showProductNameTooltip ? 0 : undefined}
+            tooltipHideDelay={args.showProductNameTooltip ? 9999 : undefined}
+            tooltipMouseTrack={args.showProductNameTooltip ? true : undefined}
+            getRowClass={(params) => {
+              if ((params.data as any)?.isSumRow) return 'ag-row-sum';
+              return params.data?.isHighlighted ? 'ag-row-highlighted' : '';
+            }}
+            pagination={args.pagination ?? true}
+            paginationPageSize={args.paginationPageSize ?? 10}
+            paginationPageSizeSelector={args.paginationPageSizeSelector ?? [10, 20, 50, 100]}
+            suppressPaginationPanel={args.suppressPaginationPanel ?? false}
+            localeText={AG_GRID_LOCALE_KO}
+            paginationNumberFormatter={(params) => `${Number(params.value).toLocaleString('ko-KR')}`}
+          />
       </div>
     </div>
   );
