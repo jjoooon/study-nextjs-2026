@@ -56,7 +56,7 @@ const column2Defs: ColDef<DummyDataType>[] = [
 ];
 
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
-  title: 'Components/Tables/AgGrid/CellEditor Striped Line',
+  title: 'Components/Tables/AgGrid/Striped Line',
   component: AgGridReact,
   tags: ['autodocs'],
   parameters: {
