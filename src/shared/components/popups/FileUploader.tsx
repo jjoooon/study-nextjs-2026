@@ -279,7 +279,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
               onaddfile={handleAddFile}
               allowMultiple={true}
               maxFiles={500}
-              labelIdle="이곳을 더블클릭 또는 파일을 드래그 하세요."
+              labelIdle="이곳을 클릭 또는 파일을 드래그 하세요."
               stylePanelLayout="compact"
               dropValidation
               instantUpload={false}
