@@ -198,7 +198,7 @@ const P8 = () => {
     <Gcol className="w-full p-8">
       <div className="w-full border-t-[.2rem] border-t-[#61554F]">
       <Table variant="default" className="overflow-visible">
-        <TableHeader className='h-[4.5rem]'>
+        <TableHeader className='h-18'>
           <TableRow>
             <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[1.2rem] text-left">
               구분

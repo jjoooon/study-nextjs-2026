@@ -114,7 +114,7 @@ export function LniPl020Step2({
           <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
             선택 24건
           </Checkbox>
-          <Typo variant={'body-sm'} className="text-[var(--color-gray-20)] text-[1.1rem]">
+          <Typo variant={'body-sm'} className="text-(--color-gray-20) text-[1.1rem]">
             |
           </Typo>
           <Checkbox variant={'text'} checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>
@@ -151,7 +151,7 @@ export function LniPl020Step2({
   const titleRenderer = useCallback((params: ICellRendererParams<LniPl020GridRow>) => {
     return (
       <Grow className="h-full pr-1.5" placement={'bwc'}>
-        <div className="border-r border-[var(--color-gray-10)] h-full flex items-center w-[3rem] justify-center">{params.data?.id}</div>
+        <div className="border-r border-(--color-gray-10) h-full flex items-center w-[3rem] justify-center">{params.data?.id}</div>
         <p className="truncate w-full pl-2 flex-1">{params.data?.productName}</p>
         {params.data?.badge && (
           <Grow className="shrink-0">

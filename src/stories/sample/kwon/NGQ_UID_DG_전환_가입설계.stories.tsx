@@ -3,22 +3,20 @@ import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { SearchIcon } from '@icons';
+import { PlusIcon, SearchIcon } from '@icons';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Checkbox } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { createCellValueChangedHandler } from '@aggrid';
-import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/shared/components/uiux/Table';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { Form } from 'lucide-react';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
+import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter } from '@aggrid';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useCallback, useRef } from 'react';
 ;
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
 
 
 const meta: Meta = {
@@ -45,78 +43,30 @@ const meta: Meta = {
 export default meta;
 
 const LTPZ010P = () => {
+  const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [relationValue, setRelationValue] = React.useState('');
 
-  type DummyDataType = {
-      id: number;
-      isCheck: boolean;
-      seq: number;
-      docName: string;
-      printSeq: string;
-      issueSeq: string;
-      customerName: string;
-      scanDateTime: string;
-      scanProcessor: string;
-      compare: string;
-    };
+  // 중복 셀 렌더러 (중복 여부에 따라 추가 버튼 노출)
+  const duplicateRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
+    const isDuplicate = params.value as boolean;
+    return isDuplicate ? (
+      <Grow className="w-full h-full flex items-center justify-center">
+        <Button
+          aria-label="고객 추가"
+          variant={'outlined'}
+          only={'icon'}
+          size={'sm'}
+          color={'gray-light'}
+          onClick={() => alert('추가')}
+        >
+          <PlusIcon color={'var(--color-gray-30)'} />
+        </Button>
+      </Grow>
+    ) : (
+      ''
+    );
+  }, []);
   
-    const DummyData: DummyDataType[] = [
-      { id: 1, isCheck: false, seq: 1, docName: '보험청약서', printSeq: 'P001', issueSeq: 'I001', customerName: '홍길동', scanDateTime: '2026-01-15 09:12:33', scanProcessor: '김처리', compare: '일치'},
-      { id: 2, isCheck: false, seq: 2, docName: '개인정보동의서', printSeq: 'P002', issueSeq: 'I002', customerName: '이영희', scanDateTime: '2026-01-15 10:05:21', scanProcessor: '김처리', compare: '불일치' },
-      { id: 3, isCheck: true, seq: 3, docName: '자필서명확인서', printSeq: 'P003', issueSeq: 'I003', customerName: '박철수', scanDateTime: '2026-01-16 11:30:00', scanProcessor: '이처리', compare: '일치' },
-      { id: 4, isCheck: false, seq: 4, docName: '상품설명서', printSeq: 'P004', issueSeq: 'I004', customerName: '최지수', scanDateTime: '2026-01-16 14:22:45', scanProcessor: '이처리', compare: '일치' },
-    ];
-  
-    const columnDefs: ColDef<DummyDataType>[] = [
-      {
-        headerName: '중복',
-        field: 'seq',
-        width: 70,
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '문서명',
-        field: 'docName',
-        flex: 2,
-      },
-      {
-        headerName: '출력순번',
-        field: 'printSeq',
-        width: 100,
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '발행순번',
-        field: 'issueSeq',
-        width: 100,
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '고객명',
-        field: 'customerName',
-        width: 100,
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '스캔일시',
-        field: 'scanDateTime',
-        flex: 1.5,
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '스캔처리자',
-        field: 'scanProcessor',
-        width: 110,
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '비교',
-        field: 'compare',
-        width: 80,
-        cellClass: 'text-center',
-      },
-    ];
-    
   // 속성 셀 렌더러
   const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
     if (!params.value) return null;
@@ -127,12 +77,106 @@ const LTPZ010P = () => {
         </Button>
       </div>
     );
+
   };
+  // 가입금액(만원) 셀 렌더러 (공통 컴포넌트 활용)
+  const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) => editableSelectCellRenderer<DummyDataType>(params);
+
+  // 보험요(원) 셀 렌더러 (공통 컴포넌트 활용)
+  const premiumAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) => amountUnitInputCellRenderer<DummyDataType>({ ...params, amountInputRefs: amountInputRefs.current });
+
+
+  type DummyDataType = {
+    id: number;
+    isCheck: boolean;
+    isDuplicate: boolean;
+    productName: string;
+    attribute: boolean;
+    coverageAmount: string;
+    premium: number;
+    expiryPeriod: string;
+    paymentPeriod: string;
+    canEditExpiry: boolean;
+  };
+
+  const DummyData: DummyDataType[] = [
+    { id: 1, isCheck: false, isDuplicate: true, productName: '기본형 실손의료비(상해급여)(갱신형)', attribute: true, coverageAmount: '5천만원(통원20만원)', premium: 1377, expiryPeriod:'01년만기', paymentPeriod:'전기납', canEditExpiry: true, },
+    { id: 2, isCheck: false, isDuplicate: true, productName: '기본형 실손의료비(상해급여)(갱신형)', attribute: false, coverageAmount: '2천만원(통원20만원)', premium: 9999999, expiryPeriod:'01년만기', paymentPeriod:'전기납', canEditExpiry: false },
+    { id: 3, isCheck: true, isDuplicate: false, productName: '기본형 실손의료비(상해급여)(갱신형)', attribute: true, coverageAmount: '3천만원(통원20만원)', premium: 159999, expiryPeriod:'01년만기', paymentPeriod:'전기납', canEditExpiry: false },
+    { id: 4, isCheck: false, isDuplicate: true, productName: '기본형 실손의료비(상해급여)(갱신형)', attribute: false, coverageAmount: '4천만원(통원20만원)', premium: 2323230, expiryPeriod:'01년만기', paymentPeriod:'전기납', canEditExpiry: false },
+  ];
+
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '중복',
+      field: 'isDuplicate',
+      width: 50,
+      cellClass: 'text-center',
+      cellRenderer: duplicateRenderer,
+    },
+    {
+      headerName: '담보명',
+      field: 'productName',
+      flex: 1,
+    },
+    {
+      headerName: '속성',
+      field: 'attribute',
+      width: 50,
+      cellClass: 'text-center',
+      cellRenderer: attributeRenderer,
+    },
+    {
+      headerName: '가입금액(만원)',
+      field: 'coverageAmount',
+      width: 200,
+      cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
+      sortable: false,
+      filter: false,
+      editable: (params: EditableCallbackParams<DummyDataType>) => params.data?.canEditExpiry ?? false,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
+        },
+      cellRenderer: coverageAmountCellRenderer,
+      },
+    {
+      headerName: '보험료(만원)',
+      field: 'premium',
+      width: 100,
+      cellClass: 'text-right',
+      headerClass: 'px-0!',
+      sortable: false,
+      filter: false,
+      cellRenderer: premiumAmountCellRenderer,
+    },
+    {
+      headerName: '만기',
+      field: 'expiryPeriod',
+      width: 60,
+      cellClass: 'text-center editable-cell px-[0.2rem]!',
+      sortable: false,
+      filter: false,
+    },
+    {
+      headerName: '납기',
+      field: 'paymentPeriod',
+      width: 60,
+      cellClass: 'text-center editable-cell px-[0.2rem]!',
+      sortable: false,
+      filter: false,
+    },
+  ];
+
+
+
+
+
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
     DummyData.filter(row => !row.isCheck).map(row => row.id)
   );
-  
+
 
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
@@ -151,7 +195,7 @@ const LTPZ010P = () => {
           </FormCell>
         </FormRow>
       </FormTable>
-      <FormTable caption='계약기본사항' cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+      <FormTable caption='계약기본사항' cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
         <FormRow >
           <FormCell title={'상품선택'} colSpan={3}>
             <RadioGroup
@@ -249,7 +293,7 @@ const LTPZ010P = () => {
                 value="option1"
                 variant="default"
                 checked={true}
-              >  
+              >
                 월납
               </RadioGroupItem>
               <RadioGroupItem
@@ -317,7 +361,7 @@ const LTPZ010P = () => {
               color="primary"
               errorMsg="선택은 필수입니다."
               errorPs="bl"
-              onCheckedChange={() => {}}
+              onCheckedChange={() => { }}
               size="lg"
               variant="default"
             >
@@ -330,36 +374,44 @@ const LTPZ010P = () => {
           </FormCell>
         </FormRow>
       </FormTable>
-      <FormTable caption='피보험자' cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+      <FormTable caption='피보험자' cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
         <FormRow>
           <FormCell title={'피보험자'}>
-             <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
+            <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
             <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
           </FormCell>
           <FormCell title={'알림사항'}>
-            <Checkbox
-              color="primary"
-              errorMsg="선택은 필수입니다."
-              errorPs="bl"
-              onCheckedChange={() => {}}
-              size="lg"
-              variant="default"
-            >
-              의료급여수급권자할인
-            </Checkbox>
+            <Grow placement='bwc'>
+              <Grow>
+                <Input aria-label="" width={'4rem'} value={'무'} readOnly />
+                <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">
+                  입력
+                </Button>
+              </Grow>
+              <Checkbox
+                color="primary"
+                errorMsg="선택은 필수입니다."
+                errorPs="bl"
+                onCheckedChange={() => { }}
+                size="lg"
+                variant="default"
+              >
+                의료급여수급권자할인
+              </Checkbox>
+            </Grow>
           </FormCell>
-        </FormRow>  
+        </FormRow>
         <FormRow>
           <FormCell title={'계약자'}>
             <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
             <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
           </FormCell>
           <FormCell title={'주피와관계'}>
-            주피보험자(김한화)는 계약자의   
+            주피보험자(김한화)는 계약자의
             <NativeSelect
               aria-label="개인정보취득경로 선택"
               width="10rem"
-              required
+              readOnly
               value={relationValue}
               onChange={(e) => setRelationValue(e.target.value)}
             >
@@ -377,7 +429,7 @@ const LTPZ010P = () => {
         <FormRow>
           <FormCell title={'합계보험료'}>
             <Input aria-label="" width={'10rem'} value={'123,456원'} readOnly />
-            <Button color="secondary" onClick={() => {}} only="default" size="md" variant="contained">
+            <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">
               보험료 계산
             </Button>
           </FormCell>
@@ -420,3 +472,24 @@ type Story = StoryObj<typeof meta>;
 export const LTPZ010: Story = {
   render: () => <LTPZ010P />,
 };
+
+
+const LTPZ011P = () => {
+  return (
+    <Gcol className="w-full">
+      <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'대표담보명'}>
+            <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
+          </FormCell>
+        </FormRow>
+      </FormTable>
+      
+    </Gcol>
+  );
+};
+
+export const LTPZ011: Story = {
+  render: () => <LTPZ011P />,
+};     
+
