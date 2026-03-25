@@ -208,10 +208,10 @@ export const createFieldRenderer = <T extends Record<string, any>>(
 
       return (
         <Gcol className="w-full h-[5.6rem] justify-start divide-y divide-gray-200" gap={0} >
-          <div className='h-[2.8rem] w-full flex items-center justify-center'>
+          <div className='h-[2.8rem] w-full leading-[2.8rem]'>
             {renderCell(aNode)}
           </div>
-          <div className="h-[2.8rem] w-full flex items-center justify-center">
+          <div className="h-[2.8rem] w-full leading-[2.8rem]">
             {renderCell(bNode)}
           </div>
         </Gcol>
