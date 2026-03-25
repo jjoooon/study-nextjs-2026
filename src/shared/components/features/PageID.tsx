@@ -6,6 +6,7 @@ import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 import { getHeader } from '@/shared/utils/authUtils';
+import { size } from 'zod';
 
 type DefaultPageID = {
   pageName?: string;
@@ -25,7 +26,7 @@ export default function PageID({ data }: PageIDProps) {
   return (
     <Grow placement={'bwc'} className="w-full py-1">
       <Grow>
-        <Typo tag={'h1'} variant={'heading-sm'}>
+        <Typo tag={'h1'} variant={'heading-sm'} style={{ fontSize: '13px !important' }}>
           {safeData.pageName}
         </Typo>
         <Typo>({safeData.pageId})</Typo>

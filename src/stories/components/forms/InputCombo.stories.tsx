@@ -3,6 +3,8 @@ import * as React from 'react';
 import { InputCombo } from '@common/InputCombo';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import { useFormFields } from '@hooks/useFormFields';
+import { Gcol } from '@atoms';
+import { ar } from 'date-fns/locale';
 
 const meta: Meta<typeof InputCombo> = {
   title: 'Components/Forms/InputCombo',
@@ -141,21 +143,21 @@ export default meta;
 type Story = StoryObj<typeof InputCombo>;
 
 const sampleOptions = [
-  { value: 'LA25094848895', label: <div className="type--design-number"><div>LA25094848895</div><div>박은빈</div><div>72,300</div><div>설계중</div></div> },
-  { value: 'LA24094848896', label: <div className="type--design-number"><div>LA24094848896</div><div>김민지</div><div>55,000</div><div>청약완료</div></div> },
-  { value: 'LA25094848897', label: <div className="type--design-number"><div>LA25094848897</div><div>이도현</div><div>120,000</div><div>심사중</div></div> },
-  // { value: 'LA25094848898', label: <div className="type--design-number"><div>LA25094848898</div><div>최수영</div><div>88,800</div><div>설계중</div></div> },
-  // { value: 'LA25094848899', label: <div className="type--design-number"><div>LA25094848899</div><div>박보검</div><div>99,900</div><div>계약완료</div></div> },
-  // { value: 'LA25094848900', label: <div className="type--design-number"><div>LA25094848900</div><div>한지민</div><div>77,700</div><div>설계중</div></div> },
+  { value: 'LA25094848895', label: <><td>LA25094848895</td><td>박은빈</td><td>72,300</td><td>설계중</td></> },
+  { value: 'LA24094848896', label: <><td>LA24094848896</td><td>김민지</td><td>55,000</td><td>청약완료</td></> },
+  { value: 'LA25094848897', label: <><td>LA25094848897</td><td>이도현</td><td>120,000</td><td>심사중</td></> },
+  // { value: 'LA25094848898', label: <><td>LA25094848898</td><td>최수영</td><td>88,800</td><td>설계중</td></> },
+  // { value: 'LA25094848899', label: <><td>LA25094848899</td><td>박보검</td><td>99,900</td><td>계약완료</td></> },
+  // { value: 'LA25094848900', label: <><td>LA25094848900</td><td>한지민</td><td>77,700</td><td>설계중</td></> },
 ];
 
 const sampleOptions2 = [
-  { value: '한기성', label: <div className="type--design-number">한기성</div> },
-  { value: '한기성', label: <div className="type--design-number">한기성</div> },
-  { value: '한기성', label: <div className="type--design-number">한기성</div> },
-  { value: '한기성', label: <div className="type--design-number">한기성</div> },
-  { value: '한기성', label: <div className="type--design-number">한기성</div> },
-  { value: '한기성', label: <div className="type--design-number">한기성</div> },
+  { value: '김민수', label: <td>김민수</td> },
+  { value: '이수진', label: <td>이수진</td> },
+  { value: '박지훈', label: <td>박지훈</td> },
+  { value: '최유리', label: <td>최유리</td> },
+  { value: '정해인', label: <td>정해인</td> },
+  { value: '오세훈', label: <td>오세훈</td> },
 ];
 
 export const Default: Story = {
@@ -163,20 +165,22 @@ export const Default: Story = {
     const [form, setFormField] = useFormFields({ combo1: '', combo2: '' });
 
     return (
-      <div style={{ width: 360 }}>
+      <Gcol>
         <InputCombo
           {...args}
           options={sampleOptions}
+          col={1}
           value={form.combo1}
           onChange={(value) => setFormField('combo1', value)}
         />
-         <InputCombo
+        <InputCombo
           {...args}
-          options={sampleOptions}
+          options={sampleOptions2}
           value={form.combo2}
           onChange={(value) => setFormField('combo2', value)}
+          col={args.col}
         />
-      </div>
+      </Gcol>
     );
   },
 };

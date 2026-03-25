@@ -48,8 +48,9 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
   tag?: string;
   children?: ReactNode;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export const Typo = ({ tag = 'span', variant, weight, color, children, className }: TypoProps) => {
-  return createElement(tag, { className: cn(typoVariants({ variant, weight, color }), className) }, children);
-};
+export const Typo = ({ tag = 'span', variant, weight, color, children, className, style }: TypoProps) => {
+  return createElement(tag, { className: cn(typoVariants({ variant, weight, color }), className), style }, children);
+}

@@ -6,6 +6,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Input } from "@uiux/Input";
+import { cn } from "@/shared/lib/shadcn/utils";
 
 // 고유 ID 생성을 위한 유틸
 function getRandomId(prefix = "inputcombo-") {
@@ -28,6 +29,7 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
   clear?: boolean;
   inputId?: string; // 고유 id를 외부에서 지정 가능
   ulClassName?: string;
+  col?: number; // 옵션 리스트의 컬럼 수 (기본 1)
 }
 
 export function InputCombo({
@@ -36,6 +38,7 @@ export function InputCombo({
   onChange,
   popoverPlacement = "bottom",
   inputId,
+  col = 1,
   clear,
   ulClassName,
   ...restProps
@@ -173,25 +176,36 @@ export function InputCombo({
                 <div
                   ref={popoverRef}
                   tabIndex={-1}
-                  className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem]"
+                  className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem] "
                   style={popoverStyle}
                 >
-                  <ul className={ulClassName}>
+                  <table
+                    className={cn(
+                      `[&_td]:px-2 [&_td]:py-1 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm`, 
+                      ulClassName,
+                      col !== 1
+                        ? `grid grid-cols-${col} [&_tr]:border-0 [&_tr]:-ml-[0.1rem] [&_tr]:-mt-[0.1rem]`
+                        : '',
+                    )}
+                  >
                     {filtered.map((opt, idx) => (
-                      <li
+                      <tr
                         key={opt.value}
                         className={
-                          "cursor-pointer hover:bg-[var(--color-warning-10)] " +
-                          (hoveredIdx === idx ? "bg-[var(--color-warning-10)]" : "")
+                          cn(
+                            "cursor-pointer",
+                            "hover:[&_td]:bg-[var(--color-warning-10)]",
+                            hoveredIdx === idx ? "[&_td]:bg-[var(--color-warning-10)]" : undefined
+                          )
                         }
                         onMouseDown={e => e.preventDefault()}
                         onClick={() => handleOptionClick(opt)}
                         onMouseEnter={() => setHoveredIdx(idx)}
                       >
                         {opt.label}
-                      </li>
+                      </tr>
                     ))}
-                  </ul>
+                  </table>
                 </div>,
                 document.body
               )
