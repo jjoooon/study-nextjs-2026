@@ -9,7 +9,7 @@ import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFor
 import { LayoutMainHead, LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Grow, Gcol, Typo } from '@atoms';
 import { AmountUnitInput } from '@features/AmountUnitInput';
-import { LniPl020Step2 as MainFoot } from '@features/MainFoot';
+import { LTPA350Step2 as MainFoot } from '@features/MainFoot';
 import { PaperIcon, PlusIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { HashList } from '@common/HashList';
@@ -23,14 +23,14 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Checkbox } from '@uiux/Checkbox';
 import { useTabs } from '@/shared/hooks/useTabs';
 
-import type { LniPl020Step2DataType } from '../data/LniPl020Step2Data';
-import { LniPl020Step2Data } from '../data/LniPl020Step2Data';
+import type { LTPA350Step2DataType } from '../data/LTPA350Step2Data';
+import { LTPA350Step2Data } from '../data/LTPA350Step2Data';
 
-type tabListDataData = LniPl020Step2DataType['tabList'];
-type LniPl020GridRow = LniPl020Step2DataType['agGridTable1'][number];
+type tabListDataData = LTPA350Step2DataType['tabList'];
+type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number];
 type MainHeadTab = tabListDataData[number] & { value: string };
 
-interface LniPl020Step2Props {
+interface LTPA350Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
@@ -38,11 +38,11 @@ interface LniPl020Step2Props {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export function LniPl020Step2({
+export function LTPA350Step2({
   onSelectPlan,
   isWidthExpanded = false,
   setIsWidthExpanded,
-}: LniPl020Step2Props) {
+}: LTPA350Step2Props) {
 
   // TEST용: TabPager 에러 상태 (보험료계산(지침) 클릭 시 토글)
   const [tabError, setTabError] = useState(false);
@@ -64,24 +64,24 @@ export function LniPl020Step2({
   // ---------------------------------------------------------------------------
   // 2) Tabs
   // ---------------------------------------------------------------------------
-  const stringifiedTabs: MainHeadTab[] = LniPl020Step2Data.tabList.map((item) => ({
+  const stringifiedTabs: MainHeadTab[] = LTPA350Step2Data.tabList.map((item) => ({
     ...item,
     value: String(item.value),
   }));
 
   const {
-    tabs: LniPl020_tabs,
-    active: LniPl020_active,
-    setActive: LniPl020_setActive,
+    tabs: LTPA350_tabs,
+    active: LTPA350_active,
+    setActive: LTPA350_setActive,
   } = useTabs<MainHeadTab>(stringifiedTabs);
 
   // ---------------------------------------------------------------------------
   // 3) Grid data
   // ---------------------------------------------------------------------------
-  const rowData = LniPl020Step2Data.agGridTable1;
+  const rowData = LTPA350Step2Data.agGridTable1;
 
   // 중복 셀 렌더러 (중복 여부에 따라 추가 버튼 노출)
-  const duplicateRenderer = useCallback((params: ICellRendererParams<LniPl020GridRow>) => {
+  const duplicateRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
     const isDuplicate = params.value as boolean;
     return isDuplicate ? (
       <Grow className="w-full h-full flex items-center justify-center">
@@ -148,7 +148,7 @@ export function LniPl020Step2({
   }, [checkedMap, showProductNameTooltip]);
 
   // 담보명 셀 렌더러
-  const titleRenderer = useCallback((params: ICellRendererParams<LniPl020GridRow>) => {
+  const titleRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
     return (
       <Grow className="h-full pr-1.5" placement={'bwc'}>
         <div className="border-r border-(--color-gray-10) h-full flex items-center w-[3rem] justify-center">{params.data?.id}</div>
@@ -164,13 +164,13 @@ export function LniPl020Step2({
   }, []);
 
   // 만기/납기 셀 렌더러 (공통 컴포넌트 활용)
-  const expiryCellRenderer = (params: ICellRendererParams<LniPl020GridRow>) => editableSelectCellRenderer<LniPl020GridRow>(params);
+  const expiryCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) => editableSelectCellRenderer<LTPA350GridRow>(params);
 
   // 가입금액(만원) 셀 렌더러 (공통 컴포넌트 활용)
-  const coverageAmountCellRenderer = (params: ICellRendererParams<LniPl020GridRow>) => amountUnitInputCellRenderer<LniPl020GridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+  const coverageAmountCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) => amountUnitInputCellRenderer<LTPA350GridRow>({ ...params, amountInputRefs: amountInputRefs.current });
 
   // 속성 셀 렌더러
-  const attributeRenderer = (params: ICellRendererParams<LniPl020GridRow>) => {
+  const attributeRenderer = (params: ICellRendererParams<LTPA350GridRow>) => {
     if (!params.value) return null;
     return (
       <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
@@ -183,11 +183,11 @@ export function LniPl020Step2({
 
   // 선택 행 정보 전달 (공용 핸들러 활용)
   const handleSelectionChanged = useCallback(
-    createSelectionChangedHandler<LniPl020GridRow, number>('id', onSelectPlan),
+    createSelectionChangedHandler<LTPA350GridRow, number>('id', onSelectPlan),
     [onSelectPlan]
   );
 
-  const columnDefs: ColDef<LniPl020GridRow>[] = useMemo(
+  const columnDefs: ColDef<LTPA350GridRow>[] = useMemo(
     () => [
       {
         headerName: '담보명',
@@ -201,7 +201,7 @@ export function LniPl020Step2({
         suppressMovable: true, // 이동 방지
         lockPosition: 'left', // 왼쪽 고정 유지
         lockPinned: true, // 고정 열에서 제외 방지
-        tooltipValueGetter: productNameTooltipValueGetter<LniPl020GridRow>,
+        tooltipValueGetter: productNameTooltipValueGetter<LTPA350GridRow>,
         headerComponent: productNameHeader,
         cellRenderer: titleRenderer,
       },
@@ -235,7 +235,7 @@ export function LniPl020Step2({
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: numberValueFormatter<LniPl020GridRow>,
+        valueFormatter: numberValueFormatter<LTPA350GridRow>,
       },
       {
         headerName: '만기',
@@ -245,7 +245,7 @@ export function LniPl020Step2({
         sortable: false,
         filter: false,
         resizable: false,
-        editable: (params: EditableCallbackParams<LniPl020GridRow>) => params.data?.canEditExpiry ?? false,
+        editable: (params: EditableCallbackParams<LTPA350GridRow>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
@@ -260,7 +260,7 @@ export function LniPl020Step2({
         sortable: false,
         filter: false,
         resizable: false,
-        editable: (params: EditableCallbackParams<LniPl020GridRow>) => params.data?.canEditExpiry ?? false,
+        editable: (params: EditableCallbackParams<LTPA350GridRow>) => params.data?.canEditExpiry ?? false,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
@@ -275,7 +275,7 @@ export function LniPl020Step2({
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: numberValueFormatter<LniPl020GridRow>,
+        valueFormatter: numberValueFormatter<LTPA350GridRow>,
       },
       {
         headerName: '예상UW',
@@ -285,7 +285,7 @@ export function LniPl020Step2({
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
-        cellStyle: (params: CellClassParams<LniPl020GridRow>) => {
+        cellStyle: (params: CellClassParams<LTPA350GridRow>) => {
           const value = params.value as string;
           if (value === '인수') return { color: '#006FF2' };
           if (value === '거절' || value === '조건부인수') return { color: '#FB3F3F' };
@@ -313,7 +313,7 @@ export function LniPl020Step2({
   //   gridKey,
   //   handleSelectionChanged,
   //   showProductNameTooltip,
-  // } = useLniPl020Grid({
+  // } = useLTPA350Grid({
   //   isWidthExpanded,
   //   onSelectPlan,
   // });
@@ -323,10 +323,10 @@ export function LniPl020Step2({
       <LayoutMainHead>
         <TabPager 
           // removable={true}
-          // onRemove={LniPl020_handleRemove}
-          data={LniPl020_tabs} 
-          active={LniPl020_active}
-          setActive={LniPl020_setActive}
+          // onRemove={LTPA350_handleRemove}
+          data={LTPA350_tabs} 
+          active={LTPA350_active}
+          setActive={LTPA350_setActive}
           visibleCount={5}
           error={tabError}
           errorMsg="입력하세요."
@@ -453,7 +453,7 @@ export function LniPl020Step2({
           </LayoutScrollItem>
           <LayoutScrollItem className="w-full">
             <div className="ag-theme-alpine">
-              <AgGridReact<LniPl020GridRow>
+              <AgGridReact<LTPA350GridRow>
                 key={gridKey}
                 rowData={rowData}
                 columnDefs={columnDefs}

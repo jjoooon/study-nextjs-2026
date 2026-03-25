@@ -1,19 +1,19 @@
 
-export type LniPl020ProcessStep = number;
+export type LTPA350ProcessStep = number;
 
 // process
-export type LniPl020ProcessItem = {
-  step: LniPl020ProcessStep;
+export type LTPA350ProcessItem = {
+  step: LTPA350ProcessStep;
   label: string;
 };
 
-export type LniPl020ProcessState = {
-  complete: LniPl020ProcessStep[];
-  active: LniPl020ProcessStep;
+export type LTPA350ProcessState = {
+  complete: LTPA350ProcessStep[];
+  active: LTPA350ProcessStep;
 };
 
 // aside
-export type LniPl020TaskStateItem = {
+export type LTPA350TaskStateItem = {
   id: number;
   status: '정상' | '경고' | '중지';
   label: string;
@@ -21,7 +21,7 @@ export type LniPl020TaskStateItem = {
 };
 
 // root
-export interface LniPl020DataType {
+export interface LTPA350DataType {
   head: {
     pageID: {
       pageName: string;
@@ -43,11 +43,11 @@ export interface LniPl020DataType {
     };
   };
   process: {
-    list: LniPl020ProcessItem[];
-    state: LniPl020ProcessState;
+    list: LTPA350ProcessItem[];
+    state: LTPA350ProcessState;
   };
   aside: {
-    taskState: LniPl020TaskStateItem[];
+    taskState: LTPA350TaskStateItem[];
     simpleContractInfo: {
       date: string;
       polName: string;
@@ -65,11 +65,11 @@ export interface LniPl020DataType {
 }
 
 // PageHead에 전달할 데이터 예시
-export const LniPl020Data: LniPl020DataType = {
+export const LTPA350Data: LTPA350DataType = {
   head: {
     pageID: {
       pageName: '가입설계',
-      pageId: 'LniPl020',
+      pageId: 'LTPA350',
     },
     pageTitle: {
       simpleMode: true,

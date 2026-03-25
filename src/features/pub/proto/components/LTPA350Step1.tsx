@@ -26,7 +26,7 @@ import { KeyValueItem } from '@common/KeyValueList';
 import { TableTooltip } from '@/shared/components/tooltip/TableTooltip';
 
 // Feature Components
-import { LniPl020Step1 as MainFoot } from '@features/MainFoot';
+import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
 
 // Icons
 import { SearchIcon, PlusIcon } from '@icons';
@@ -36,14 +36,14 @@ import { useTabs } from '@/shared/hooks/useTabs';
 
 // Data
 
-import type { LniPl020Step1DataType } from '@/features/pub/proto/data/LniPl020Step1Data';
+import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
 import { InputCombo } from '@/shared/components/common/InputCombo';
 
 // Types
 
 // Props Type
-type LniPl020Step1Props = {
-  data?: LniPl020Step1DataType;
+type LTPA350Step1Props = {
+  data?: LTPA350Step1DataType;
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   className?: string;
@@ -516,12 +516,12 @@ function contractFormReducer(state: ContractFormState, action: ContractFormActio
   }
 }
 
-export function LniPl020Step1({
+export function LTPA350Step1({
   data: _data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan: _onSelectPlan,
   className,
-}: LniPl020Step1Props) {
+}: LTPA350Step1Props) {
   // ---------------------------------------------------------------------------
   // 1) Data source
   // ---------------------------------------------------------------------------
