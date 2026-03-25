@@ -10,7 +10,7 @@ import { TabPager } from '@common/TabPager';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
 import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter } from '@aggrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -82,8 +82,8 @@ const LTPZ010P = () => {
         </Button>
       </div>
     );
-
   };
+
   // 가입금액(만원) 셀 렌더러 (공통 컴포넌트 활용)
   const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) => editableSelectCellRenderer<DummyDataType>(params);
 
@@ -1320,10 +1320,185 @@ const LTPZ010_01P = () => {
     type08: '',
   });
 
+  type DummyDataType3 = {
+    id: number;
+    isCheck: boolean;
+    field01: string;
+    field02: string;
+    field03: string;
+    field04: string;
+    field05: string;
+    field06: string;
+    field07: string;
+    field08: string;
+    field09: string;
+    field10: string;
+    field11: string;
+    field12: string;
+    field13: string;
+    field14: string;
+    field15: string;
+    field16: string;
+    field17: string;
+    field18: string;
+    field19: string;
+  };
+  // field01Renderer를 먼저 선언
+
+
+  const fieldRenderer = (params: ICellRendererParams<DummyDataType3>) => {
+    if (!params.value) return null;
+    return (
+      <Gcol className='w-full'>
+        <Typo>asdfasd</Typo>
+        <Typo>asdfasd</Typo>
+      </Gcol>
+    );
+  };
+
+
+  const DummyData: DummyDataType3[] = [
+    { id: 1, isCheck: true, field01: '', field02: '1111', field03: '2222', field04: '3333', field05: '44444', field06: 'true', field07: 'true', field08: 'true', field09: 'true', field10: 'true', field11: 'true', field12: 'true', field13: 'true', field14: 'true', field15: 'true', field16: 'true', field17: 'true', field18: 'true', field19: 'true' },
+ 
+  ];
+
+  const columnDefs: (ColDef<DummyDataType3> | ColGroupDef<DummyDataType3>)[] = [
+    {
+      headerName: '설계번호',
+      field: 'field01',
+      flex: 1,
+      cellClass: 'text-center',
+      cellRenderer: fieldRenderer,
+    },  
+    {
+      headerName: '상품명/구분',
+      field: 'field02',
+      flex: 1,
+      cellClass: 'text-center',
+      cellRenderer: fieldRenderer,
+      children: [
+        {
+          field: 'field03',
+          headerName: '플랜명/차량번호',
+          cellRenderer: fieldRenderer,
+        }
+      ]
+    },
+    {
+      headerName: '계약자',
+      field: 'field04',
+      flex: 1,
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '생년월일',
+          field: 'field05',
+        }
+      ]
+    },
+    {
+      headerName: '보험료(원)',
+      field: 'field06',
+      flex: 1,
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '',
+        }
+      ]
+    },
+    {
+      headerName: '설계일자',
+      field: 'field06',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '유효기간',
+          field: 'field07',
+        }
+      ]
+    },
+    {
+      headerName: '설계상태',
+      field: 'field08',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '심사결과',
+          field: 'field09',
+        }
+      ]
+    },
+    {
+      headerName: '청약서출력',
+      field: 'field10',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '스캔여부',
+          field: 'field11',
+        }
+      ]
+    },
+    {
+      headerName: '취급기관/팀',
+      field: 'field12',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '취급자',
+          field: 'field13',
+        }
+      ]
+    },
+    {
+      headerName: '최초설계자',
+      field: 'field14',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: 'SM',
+          field: 'field15',
+        }
+      ]
+    },
+    {
+      headerName: '사용인',
+      field: 'field16',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '부실유의',
+          field: 'field17',
+        }
+      ]
+    },
+    {
+      headerName: '설계종료',
+      field: 'field18',
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '증권번호',
+          field: 'field19',
+        }
+      ]
+    }
+  ];
+
+  const [rowData, setRowData] = React.useState<DummyDataType3[]>(DummyData);
+  const [errorRows, setErrorRows] = React.useState<number[]>(
+    DummyData.filter(row => !row.isCheck).map(row => row.id)
+  );
+
+  const onCellValueChanged = React.useMemo(
+    () => createCellValueChangedHandler<DummyDataType3, number>('isCheck', setRowData, setErrorRows, 'id'),
+    [setRowData, setErrorRows]
+  );
 
   return (
-    <Grow className="w-full">
-      <Grow className='w-full' variant="box" placement={'bwe'}>
+    <Gcol className="w-full" gap={4}>
+      <Grow className='w-full' variant="box-round" placement={'bwe'}>
         <FormTable variant={'none'} caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]','w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
           <FormRow>
             <FormCell title={'보종군'}>
@@ -1455,11 +1630,50 @@ const LTPZ010_01P = () => {
             </FormCell>    
           </FormRow>
         </FormTable>  
-        <div>sdddd</div>
+        <Grow>
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>  
+          <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">
+            새로고침
+          </Button>
+        </Grow>
       </Grow>
-    </Grow>
+      <Grow className="w-full">
+        <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
+          <AgGridReact<DummyDataType3>
+            rowData={rowData}
+            columnDefs={columnDefs}
+            defaultColDef={{ sortable: false }}
+            animateRows={false}
+            alwaysShowHorizontalScroll={true}
+            singleClickEdit={true}
+            onCellValueChanged={onCellValueChanged}
+            rowSelection={{
+              mode: 'multiRow',
+              headerCheckbox: false,
+              checkboxes: true,
+              enableClickSelection: false,
+            }}
+            selectionColumnDef={{
+              headerName: '선택',
+            }}
+            rowClassRules={{}}
+            onGridReady={params => {
+              params.api.forEachNode(node => {
+                if (node.data?.isCheck) {
+                  node.setSelected(true);
+                }
+              });
+            }}
+          />
+        </div>
+      </Grow>
+    </Gcol>
   )
 }
 export const LTPZ010_01: Story = {
   render: () => <LTPZ010_01P />,
 }
+
+
