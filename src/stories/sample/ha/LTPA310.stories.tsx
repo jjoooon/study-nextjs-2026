@@ -2,7 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { SearchIcon } from '@icons';
 import { DatePickerInput } from '@common/DatePicker';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
@@ -10,6 +13,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { CellClassParams, CellStyle, ColDef, ColGroupDef, ICellRendererParams, RowSpanParams } from 'ag-grid-community';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { useFormFields } from '@hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -207,7 +211,7 @@ const spanCellStyle = (params: CellClassParams<FlatRow>, withRightBorder: boolea
         borderBottom: 'none',
         borderLeft: 'none',
         padding: 0,
-        background: 'transparent',
+        background: 'var(--ag-background-color, #fff) !important',
       };
 
 // ─────────────────────────────────────────────────────────────
@@ -219,7 +223,7 @@ const columnDefs: Array<ColDef<FlatRow> | ColGroupDef<FlatRow>> = [
   {
     headerName: '선택',
     field: 'contractId',
-    width: 60,
+    width: 50,
     sortable: false, filter: false, suppressMovable: true, resizable: false,
     headerClass: 'ag-header-cell-center',
     rowSpan: spanTwoOnRow1,
@@ -229,7 +233,6 @@ const columnDefs: Array<ColDef<FlatRow> | ColGroupDef<FlatRow>> = [
     },
     cellStyle: (p) => spanCellStyle(p, true),
     checkboxSelection: (p) => p.data?.subRow === false,
-    headerCheckboxSelection: true,
     showDisabledCheckboxes: false,
   },
 
@@ -243,13 +246,52 @@ const columnDefs: Array<ColDef<FlatRow> | ColGroupDef<FlatRow>> = [
         children: [{
           headerName: '상품명',
           field: 'securitiesNo',
-          width: 180,
+          width: 170,
           sortable: false, filter: false, suppressMovable: true, resizable: true,
           headerClass: 'ag-header-cell-center',
           cellStyle: { borderRight: '1px solid var(--ag-border-color, #d9d9d9)', borderBottom: '1px solid var(--ag-border-color, #d9d9d9)', padding: 0 },
           cellRenderer: (p: ICellRendererParams<FlatRow>) => {
-            const v = p.data?.subRow === false ? p.data.securitiesNo : (p.data?.productName ?? '');
-            return <CellBox v={v} />;
+            // const v = p.data?.subRow === false ? p.data.securitiesNo : (p.data?.productName ?? '');
+            // return <CellBox v={v} />;
+             if (p.data?.subRow === false) {
+              return (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      height: '100%', width: '100%', padding: '0 6px',
+                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                      color: 'var(--color-primary-50)', textDecoration: 'underline', cursor: 'pointer',
+                    }}>
+                      {p.data.securitiesNo}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent align="center" side="bottom" sideOffset={0} variant="default">
+                    <Gcol>
+                      <Button
+                        color="primary"
+                        only="default"
+                        size="lg"
+                        variant="contained"
+                        className="w-full"
+                      >
+                        계약상세
+                      </Button>
+                      <Button
+                        color="primary"
+                        only="default"
+                        size="lg"
+                        variant="contained"
+                        className="w-full"
+                      >
+                        메모장
+                      </Button>
+                    </Gcol>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            }
+            return <CellBox v={p.data?.productName ?? ''} />;
           },
         }],
       },
@@ -258,7 +300,7 @@ const columnDefs: Array<ColDef<FlatRow> | ColGroupDef<FlatRow>> = [
         children: [{
           headerName: '피보험자명',
           field: 'contractor',
-          width: 100,
+          width: 125,
           sortable: false, filter: false, suppressMovable: true, resizable: true,
           headerClass: 'ag-header-cell-center',
           cellStyle: { borderRight: '1px solid var(--ag-border-color, #d9d9d9)', borderBottom: '1px solid var(--ag-border-color, #d9d9d9)', padding: 0 },
@@ -461,43 +503,85 @@ const columnDefs: Array<ColDef<FlatRow> | ColGroupDef<FlatRow>> = [
 const LTPA310 = () => {
   const rowData = React.useMemo(() => flattenContracts(contracts), []);
 
-  const [paymentStatus, setPaymentStatus] = React.useState('all');
-  const [scanStatus, setScanStatus]       = React.useState('all');
-  const [sendStatus, setSendStatus]       = React.useState('all');
-  const [receiptStatus, setReceiptStatus] = React.useState('all');
-
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+    type03: '',
+  });
+  
   return (
     <Gcol className="w-full gap-[1.2rem]">
-      <Grow className="w-full">
-        <FormTable
+      <Grow className="w-full" variant="box" placement={'bwe'}>
+        <FormTable variant={'none'}
           caption="실손 재가입대상계약현황 테이블"
           cols={[
-            'w-[16rem]', 'min-w-[20rem] flex-1',
-            'w-[12rem]', 'min-w-[16rem] flex-1',
-            'w-[14rem]', 'min-w-[18rem] flex-1',
-            'w-[14rem]', 'min-w-[18rem] flex-1',
+            'w-[10rem]', 'min-w-[14rem] flex-1',
+            'w-[10rem]', 'min-w-[14rem] flex-1',
+            'w-[10rem]', 'min-w-[14rem] flex-1',
+            'w-[10rem]', 'min-w-[14rem] flex-1',
           ]}
         >
           <FormRow>
+            <FormCell title={'조회구분'}>
+              <NativeSelect
+                aria-label="조회구분 선택"
+                width="12rem"
+                value={form.type01}
+                onChange={(e) => setFormField('type01', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type01-1', label: '취급기관2' },
+                  { value: 'selection2', id: 'type01-2', label: '취급기관2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+              <Input aria-label="" width={'8rem'} value={'12345678'} />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button> 
+              <Input aria-label="" width={'12rem'} value={'신부산GA지점'} readOnly />
+            </FormCell>
             <FormCell title={'모계약종류'}>
-              <NativeSelect onChange={() => {}} size="md" value="" variant="default" width="full">
-                <NativeSelectOption value="">유병자실손</NativeSelectOption>
-                <NativeSelectOption value="loss01">유병자실손</NativeSelectOption>
-                <NativeSelectOption value="loss02">유병자실손</NativeSelectOption>
+              <NativeSelect
+                aria-label="모계약종류 선택"
+                width="12rem"
+                value={form.type02}
+                onChange={(e) => setFormField('type02', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type02-1', label: '유병자실손' },
+                  { value: 'selection2', id: 'type02-2', label: '유병자실손2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
               </NativeSelect>
             </FormCell>
             <FormCell title={'완납여부'}>
-              <RadioGroup className="gap-2" value={paymentStatus} onValueChange={setPaymentStatus} width="full">
-                <RadioGroupItem color="primary" id="pay_all"  size="lg" value="all"  variant="default">전체</RadioGroupItem>
-                <RadioGroupItem color="primary" id="pay_done" size="lg" value="done" variant="default">완납</RadioGroupItem>
-                <RadioGroupItem color="primary" id="pay_not"  size="lg" value="not"  variant="default">미완납</RadioGroupItem>
+              <RadioGroup width="full" className="gap-2">
+                <RadioGroupItem color="primary" id="pay_all"  size="lg" value="all"  variant="default" checked={true}>
+                  전체
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="pay_done" size="lg" value="done" variant="default">
+                  완납
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="pay_not"  size="lg" value="not"  variant="default">
+                  미완납
+                </RadioGroupItem>
               </RadioGroup>
             </FormCell>
             <FormCell title={'스캔여부'}>
-              <RadioGroup className="gap-2" value={scanStatus} onValueChange={setScanStatus} width="full">
-                <RadioGroupItem color="primary" id="scan_all"  size="lg" value="all"  variant="default">전체</RadioGroupItem>
-                <RadioGroupItem color="primary" id="scan_done" size="lg" value="done" variant="default">완료</RadioGroupItem>
-                <RadioGroupItem color="primary" id="scan_not"  size="lg" value="not"  variant="default">미완료</RadioGroupItem>
+              <RadioGroup width="full" className="gap-2">
+                <RadioGroupItem color="primary"
+                 id="scan_all"  size="lg" value="all"  variant="default" checked={true}>
+                  전체
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="scan_done" size="lg" value="done" variant="default">
+                  완료
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="scan_not"  size="lg" value="not"  variant="default">
+                  미완료
+                </RadioGroupItem>
               </RadioGroup>
             </FormCell>
           </FormRow>
@@ -505,21 +589,85 @@ const LTPA310 = () => {
             <FormCell title={'재계약도래'}>
               <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" />
             </FormCell>
-            <FormCell title={'처리상태'} />
+            <FormCell title={'처리상태'}>
+              <NativeSelect
+                aria-label="처리상태 선택"
+                width="12rem"
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type03-1', label: '재가입거절완료' },
+                  { value: 'selection2', id: 'type03-2', label: '재가입거절완료2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
             <FormCell title={'발송여부'}>
-              <RadioGroup className="gap-2" value={sendStatus} onValueChange={setSendStatus} width="full">
-                <RadioGroupItem color="primary" id="send_all"  size="lg" value="all"  variant="default">전체</RadioGroupItem>
-                <RadioGroupItem color="primary" id="send_done" size="lg" value="done" variant="default">발송</RadioGroupItem>
-                <RadioGroupItem color="primary" id="send_not"  size="lg" value="not"  variant="default">미발송</RadioGroupItem>
+              <RadioGroup width="full" className="gap-2">
+                <RadioGroupItem color="primary" id="send_all"  size="lg" value="all"  variant="default" checked={true}>
+                  전체
+                  </RadioGroupItem>
+                <RadioGroupItem color="primary" id="send_done" size="lg" value="done" variant="default">
+                  발송
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="send_not"  size="lg" value="not"  variant="default">
+                  미발송
+                </RadioGroupItem>
               </RadioGroup>
             </FormCell>
             <FormCell title={'수납여부'}>
-              <RadioGroup className="gap-2" value={receiptStatus} onValueChange={setReceiptStatus} width="full">
-                <RadioGroupItem color="primary" id="receipt_all"  size="lg" value="all"  variant="default">전체</RadioGroupItem>
-                <RadioGroupItem color="primary" id="receipt_done" size="lg" value="done" variant="default">완납</RadioGroupItem>
-                <RadioGroupItem color="primary" id="receipt_not"  size="lg" value="not"  variant="default">미완납</RadioGroupItem>
+              <RadioGroup className="gap-2" width="full">
+                <RadioGroupItem color="primary" id="receipt_all"  size="lg" value="all"  variant="default" checked={true}>
+                  전체
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="receipt_done" size="lg" value="done" variant="default">
+                  완납
+                </RadioGroupItem>
+                <RadioGroupItem color="primary" id="receipt_not"  size="lg" value="not"  variant="default">
+                  미완납
+                </RadioGroupItem>
               </RadioGroup>
-              <Input aria-label="" width={'10rem'} value={''} readOnly />
+            </FormCell>
+          </FormRow>
+        </FormTable>
+        <Grow>
+          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+            조회
+          </Button>
+          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+            새로고침
+          </Button>
+        </Grow>
+      </Grow>
+
+      <Grow className="w-full">
+        <FormTable
+          caption="실손 재가입대상계약현황 테이블"
+          cols={[
+            'w-[14rem]', 'min-w-[14rem] flex-1',
+            'w-[14rem]', 'min-w-[14rem] flex-1',
+            'w-[14rem]', 'min-w-[14rem] flex-1',
+            'w-[14rem]', 'min-w-[14rem] flex-1',
+            'w-[14rem]', 'min-w-[14rem] flex-1',
+          ]}
+        >
+          <FormRow>
+            <FormCell title={'전체대상'}>
+              10건
+            </FormCell>
+            <FormCell title={'신청가능'}>
+              10건
+            </FormCell>
+            <FormCell title={'신계약전환중'}>
+              10건
+            </FormCell>
+            <FormCell title={'신계약전환완료'}>
+              10건
+            </FormCell>
+            <FormCell title={'재가입거절완료'}>
+              10건
             </FormCell>
           </FormRow>
         </FormTable>
@@ -550,11 +698,12 @@ const LTPA310 = () => {
         </div>
       </Grow>
     </Gcol>
+
   );
 };
 
 type Story = StoryObj<typeof meta>;
 
-export const Page143: Story = {
+export const Page144: Story = {
   render: () => <LTPA310 />,
 };

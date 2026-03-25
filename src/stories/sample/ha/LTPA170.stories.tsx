@@ -229,7 +229,7 @@ const LTPA170 = () => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Gcol className="w-full gap-[1.2rem]">
