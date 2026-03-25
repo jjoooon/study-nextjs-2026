@@ -21,8 +21,8 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
       : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
   return (
     <TableVariantContext.Provider value={variant}>
-      <div data-slot="table-container" className="relative w-full">
-        <table data-slot="table" className={cn(variantClass, className)} {...props} />
+      <div data-slot="table-container" className={cn(variantClass, className)}>
+        <table data-slot="table" className="w-full" {...props} />
       </div>
     </TableVariantContext.Provider>
   );

@@ -164,9 +164,9 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   // variant가 'none'이면 lineTop을 무시
   const showLineTop = lineTop && variant !== 'none';
   return (
-    <div className={cn('w-full', showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]')}>
+    // <div className={cn('w-full', showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]')}>
       <Table
-        className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], className)}
+        className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]', className)}
         data-variant={variant}
       >
         {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
@@ -179,7 +179,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
         )}
         <TableBody>{children}</TableBody>
       </Table>
-    </div>
+    // </div>
   );
 };
 

@@ -183,7 +183,7 @@ function Input({
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={clear ? { paddingRight: '2.5rem' } : undefined }
+              style={clear && isFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined }
               {...props}
             />
             {clear && isFocused && displayValue !== '' && (
@@ -225,7 +225,7 @@ function Input({
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            style={clear ? { paddingRight: '2.5rem' } : undefined }
+            style={clear && isFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined }
             {...props}
           />
           {clear && isFocused && displayValue !== '' && (

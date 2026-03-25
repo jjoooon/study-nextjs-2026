@@ -24,6 +24,7 @@ import { DatePickerInput } from '@common/DatePicker';
 import { TabPager } from '@common/TabPager';
 import { KeyValueItem } from '@common/KeyValueList';
 import { TableTooltip } from '@/shared/components/tooltip/TableTooltip';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 // Feature Components
 import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
@@ -3127,7 +3128,25 @@ export function LTPA350Step1({
         </LayoutScrollWrap>
       </LayoutMainBody>
       <LayoutMainFoot>
-        <MainFoot />
+        <MainBottom>
+          <MainBottomItem>
+            <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('동영상매뉴얼')}>
+              동영상매뉴얼
+            </Button>
+            <Grow gap={1}>
+              <Button
+                type="submit"
+                form={'page2-MainForm'}
+                variant={'contained'}
+                color={'primary'}
+                size={'xl'}
+                onClick={() => console.log('저장')}
+              >
+                저장
+              </Button>
+            </Grow>
+          </MainBottomItem>
+        </MainBottom>
       </LayoutMainFoot>
     </LayoutMain>
   );
