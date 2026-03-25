@@ -250,6 +250,11 @@
 .ag-cell.no-padding {
   padding: 0rem !important;
 }
+/* Remove left/right padding for grids that need cells to touch each other */
+.ag-theme-alpine.ag-no-side-padding .ag-cell {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .ag-cell-wrapper {
   min-height: 100%;
   display: grid;
