@@ -5,14 +5,14 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { SearchIcon } from '@icons';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Checkbox } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { createCellValueChangedHandler } from '@aggrid';
-import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell} from '@/shared/components/uiux/Table';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell} from '@uiux/Table';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 ;
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -196,20 +196,20 @@ export const Page6: Story = {
 const P8 = () => {
   return (
     <Gcol className="w-full p-8">
-      <div className="w-full border-t-[.2rem] border-t-[#61554F]">
-      <Table variant="default" className="overflow-visible">
+      <div className="w-full">
+      <Table variant="message" className="overflow-visible">
         <TableHeader className='h-18'>
           <TableRow>
-            <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[1.2rem] text-left">
+            <TableHead>
               구분
             </TableHead>
-            <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[1.2rem] text-left">
+            <TableHead>
               기존발송번호
             </TableHead>
-            <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[1.2rem] text-left">
+            <TableHead>
               신규발송번호
             </TableHead>
-            <TableHead className="bg-[#F4F4F4] border-b border-[#E5E5E5] font-bold px-[1rem] py-[1.2rem] text-left">
+            <TableHead>
               <Grow placement="cc">
                 <RadioGroup
                   className="gap-2 justify-center"
@@ -241,50 +241,50 @@ const P8 = () => {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[0.8rem] text-left">
+            <TableHead className="border-r py-[0.8rem]">
               모집자
             </TableHead>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]">
+            <TableCell>
               <Input onChange={() => {}} placeholder="입력해주세요." readOnly size="lg" value="010-****-1234" width="full"
                 />
             </TableCell>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]">
+            <TableCell>
               <Input onChange={() => {}} placeholder="입력해주세요."  size="lg" value="" width="full"
                 />
             </TableCell>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center">
+            <TableCell className="text-center">
               <Button color="secondary" onClick={() => {}} only="default" size="md" variant="contained">발송</Button>
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[0.8rem] text-left">
+            <TableHead className="border-r py-[0.8rem]">
               계약자
             </TableHead>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]">
+            <TableCell>
               <Input onChange={() => {}} placeholder="입력해주세요." readOnly size="lg" value="010-****-1234" width="full"
                 />
             </TableCell>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]">
+            <TableCell>
               <Input onChange={() => {}} placeholder="입력해주세요."  size="lg" value="" width="full"
                 />
             </TableCell>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center">
+            <TableCell className="text-center">
               <Button color="secondary" onClick={() => {}} only="default" size="md" variant="contained">발송</Button>
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableHead className="bg-[#F4F4F4] border-r border-b border-[#E5E5E5] font-bold px-[1rem] py-[0.8rem] text-left">
+            <TableHead className="border-r py-[0.8rem]">
               피보험자
             </TableHead>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]">
+            <TableCell>
               <Input onChange={() => {}} placeholder="입력해주세요." readOnly size="lg" value="010-****-1234" width="full"
                 />
             </TableCell>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]">
+            <TableCell>
               <Input onChange={() => {}} placeholder="입력해주세요."  size="lg" value="" width="full"
                 />
             </TableCell>
-            <TableCell className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center">
+            <TableCell className="text-center">
               <Button color="secondary" onClick={() => {}} only="default" size="md" variant="contained">발송</Button>
             </TableCell>
           </TableRow>

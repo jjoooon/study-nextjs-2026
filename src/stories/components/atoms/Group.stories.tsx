@@ -12,7 +12,7 @@ const placementOptions = [
   'evs', 'evc', 'eve',
 ] as const;
 
-const variantOptions = ['default', 'box', 'box-line'] as const;
+const variantOptions = ['default', 'box', 'box-line', 'box-round'] as const;
 
 const meta: Meta<typeof Gcol> = {
   title: 'Components/Atoms/Group',
@@ -59,6 +59,11 @@ import { Gcol, Grow } from '@atoms';
 <Gcol variant="box" placement="cc">
   <p>Styled Box</p>
 </Gcol>
+
+// 박스+둥근 모서리
+<Gcol variant="box-round" placement="cc">
+  <p>Styled Box Round</p>
+</Gcol>
 \`\`\`
               `}
             </Markdown>
@@ -75,7 +80,7 @@ import { Gcol, Grow } from '@atoms';
               </thead>
               <tbody>
                 <tr><td>placement</td><td>LayoutPlacement</td><td>정렬 옵션 (justify-content + align-items)</td></tr>
-                <tr><td>variant</td><td>'default' | 'box' | 'box-line'</td><td>시각적 스타일 변형</td></tr>
+                <tr><td>variant</td><td>'default' | 'box' | 'box-line' | 'box-round'</td><td>시각적 스타일 변형<br />box-round: box + 둥근 모서리</td></tr>
                 <tr><td>gap</td><td>number</td><td>아이템 간격 (gap)</td></tr>
                 <tr><td>className</td><td>string</td><td>추가 클래스</td></tr>
                 <tr><td>style</td><td>CSSProperties</td><td>인라인 스타일</td></tr>

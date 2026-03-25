@@ -31,6 +31,7 @@
       "@common/*": ["./src/shared/components/common/*"],
       "@features/*": ["./src/shared/components/features/*"],
       "@layout/*": ["./src/shared/components/layout/*"],
+      "@hooks/*": ["./src/shared/hooks/*"],
 
       "@aggrid": ["./src/shared/components/aggrid/index.ts"],
       "@atoms": ["./src/shared/components/atoms/index.ts"],
