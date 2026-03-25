@@ -46,6 +46,7 @@ interface FormTableProps {
 interface FormTrProps {
   children?: ReactNode;
   vertical?: boolean;
+  cols?: string[]; // ["col-s", "", "col-l", ""]
 }
 
 export const FormCell = ({
@@ -118,6 +119,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   );
 };
 
-export const FormRow = ({ children, vertical }: FormTrProps) => {
-  return <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>th+td]:border-t-0! [&>td~*]:border-l-0!' : ''}>{children}</tr>;
+export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
+  
+  return <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>th+td]:border-t-0! [&>td~*]:border-l-0! grid-cols-[60rem_repeat(auto-fill,15rem)]' : ''}>{children}</tr>;
 };
