@@ -1,5 +1,6 @@
 'use client';
 
+import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { useRef, useState } from 'react';
@@ -16,16 +17,6 @@ import 'filepond/dist/filepond.min.css';
 import './FileUploader2.css';
 
 const logger = log.getLogger('FileUploader');
-
-// FilePond 파일 아이템 타입 정의
-export interface FilePondFile {
-  id: string;
-  filename: string;
-  fileSize: number;
-  fileExtension: string;
-  fileType: string;
-  source: File;
-}
 
 export interface FileItem {
   id: string;
@@ -82,7 +73,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
 
   const MAX_FILE_SIZE = '1024MB'; // 1GB
 
-  const handleBeforeAddFile = (item: any) => {
+  const handleBeforeAddFile = (item: FilePondFile) => {
     // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
     if (item.filename.includes('_temp')) {
       logger.warn('임시 파일은 업로드할 수 없습니다:', item.filename);
@@ -92,7 +83,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     return true;
   };
 
-  const handleAddFile = (error: any | null, file: any) => {
+  const handleAddFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
     if (error) {
       logger.error('파일 추가 오류:', error);
       return;
@@ -126,7 +117,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     });
   };
 
-  const handleRemoveFile = (error: any | null, file: any) => {
+  const handleRemoveFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
     if (error) {
       logger.error('파일 제거 오류:', error);
       return;
@@ -149,17 +140,17 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
     });
   };
 
-  const handleReorderFiles = (files: any[]) => {
+  const handleReorderFiles = (files: FilePondFile[]) => {
     logger.info('파일 순서 변경됨, 전체 파일 수:', files.length);
     setPondFiles(files);
   };
 
-  const handleError = (error: any) => {
-    logger.error('파일 에러:', error?.main || error);
+  const handleError = (error: FilePondErrorDescription) => {
+    logger.error('파일 에러:', error?.body || error);
   };
 
-  const handleWarning = (warning: any) => {
-    logger.warn('파일 경고:', warning?.main || warning);
+  const handleWarning = (warning: FilePondErrorDescription) => {
+    logger.warn('파일 경고:', warning?.body || warning);
   };
 
   const handleSearch = () => {

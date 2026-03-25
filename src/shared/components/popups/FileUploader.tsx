@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { FilePond } from 'react-filepond';
+import { FilePondErrorDescription, FilePondFile } from 'filepond';
+import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
+import { FilePond } from 'react-filepond';
 import {
   Button,
   Checkbox,
@@ -25,16 +26,6 @@ import 'filepond/dist/filepond.min.css';
 import './FileUploader.css';
 
 const logger = log.getLogger('FileUploader');
-
-// FilePond 파일 아이템 타입 정의
-export interface FilePondFile {
-  id: string;
-  filename: string;
-  fileSize: number;
-  fileExtension: string;
-  fileType: string;
-  source: File;
-}
 
 export interface FileItem {
   id: string;
@@ -145,7 +136,7 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   };
 
   // FilePond에서 파일이 추가될 때 호출
-  const handleAddFile = (error: any | null, file: any) => {
+  const handleAddFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
     if (error) {
       logger.error('파일 추가 오류:', error);
       return;
