@@ -1,9 +1,12 @@
+
+import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { ReactNode } from 'react';
-import { Typo, Grow } from '@atoms';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import { Table, TableHeader, TableRow, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Typo, Grow } from '@atoms';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { fa } from 'zod/v4/locales';
+
+
 
 const FormCellVariants = cva('', {
   variants: {
@@ -50,6 +53,58 @@ interface FormTrProps {
   cols?: string[]; // ["col-s", "", "col-l", ""]
 }
 
+// vertical context 생성
+const VerticalContext = createContext<boolean | undefined>(undefined);
+
+// Grow(혹은 그 내부 텍스트)가 잘릴 때 Tooltip을 보여주는 HOC
+function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isOverflow, setIsOverflow] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const checkOverflow = () => {
+      setIsOverflow(el.scrollWidth > el.clientWidth);
+    };
+    checkOverflow();
+
+    // ResizeObserver로 크기 변화 감지
+    const resizeObserver = new (window as any).ResizeObserver(checkOverflow);
+    resizeObserver.observe(el);
+
+    // window resize도 감지
+    window.addEventListener('resize', checkOverflow);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [children]);
+  let text: string | undefined = undefined;
+  if (typeof children === 'string') {
+    text = children;
+  } else if (React.isValidElement(children) && typeof (children as any).props.children === 'string') {
+    text = (children as any).props.children;
+  }
+  const triggerChild =
+    typeof children === 'string'
+      ? <span tabIndex={0} role="presentation">{children}</span>
+      : children;
+  return (
+    <div ref={ref} className="w-full">
+      {isOverflow && text ? (
+        <Tooltip>
+          <TooltipTrigger asChild className='flex w-full'>{triggerChild}</TooltipTrigger>
+          <TooltipContent>{text}</TooltipContent>
+        </Tooltip>
+      ) : (
+        <div className='w-full text-center'>{children}</div>
+      )}
+    </div>
+  );
+}
+
 export const FormCell = ({
   title,
   titleVariant = 'default',
@@ -62,6 +117,7 @@ export const FormCell = ({
   titleRowSpan,
   tdClassName = 'justify-start items-center',
 }: FormCellProps) => {
+  const contextVertical = useContext(VerticalContext);
   const titleTypoVariant = titleVariant === 'section' ? 'body-lg' : 'body-md';
   const titleTypoColor = titleVariant === 'section' ? 'primary' : undefined;
 
@@ -81,9 +137,13 @@ export const FormCell = ({
         {...(colSpan && { colSpan })}
         {...(rowSpan && { rowSpan })}
       >
-        <Grow className={cn( tdClassName)} >
-          {children}
-        </Grow>
+        {contextVertical ? (
+          <TooltipIfOverflow>{children}</TooltipIfOverflow>
+        ) : (
+          <Grow className={cn(tdClassName)}>
+            {children}
+          </Grow>
+        )}
       </TableCell>
     </>
   );
@@ -124,6 +184,11 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
 };
 
 export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
-  
-  return <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>th]:text-center [&>th+td]:border-t-0! [&>td~*]:border-l-0! ' : ''}>{children}</tr>;
+  return (
+    <VerticalContext.Provider value={vertical}>
+      <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>th]:text-center [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>*]:py-1 [&>th>span]:leading-[1.1] [&>td]:min-h-[3rem] [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem] [&>td]:px-1 [&>td]:text-center [&>th]:first-of-type:border-l-0! [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! [&>th]:last-of-type:border-r-0! ' : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'}>
+        {children}
+      </tr>
+    </VerticalContext.Provider>
+  );
 };
