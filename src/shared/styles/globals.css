@@ -735,7 +735,7 @@ input::placeholder {
   [role="tabpanel"][data-state="inactive"] {
     display: none;
   }
-
+/* 
   .type--design-number {
     display: grid;
     grid-template-columns: 1fr 6rem 6rem 6rem;
@@ -765,7 +765,7 @@ input::placeholder {
 
   .type--design-number>*:nth-child(4) {
     text-align: center;
-  }
+  } */
 
   [data-state="active"] [data-component="error-msg"] {
     display: none !important;
