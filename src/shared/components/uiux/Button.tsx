@@ -16,7 +16,8 @@ const buttonVariants = cva(
         outlined: `disabled:text-[var(--color-gray-30)]
         disabled:bg-[var(--color-gray-5)]
         disabled:border-[var(--color-gray-10)]`,
-        text: `px-0! text-[var(--color-secondary-70)] bg-transparent border-none underline-offset-3 
+        text: `px-0! text-[var(--color-secondary-70)] bg-transparent border-none 
+        underline underline-offset-3 
         hover:underline 
         focus-visible:underline`,
         none: 'bg-transparent border-none',
