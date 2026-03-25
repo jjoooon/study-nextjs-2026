@@ -739,20 +739,20 @@ input::placeholder {
   .type--design-number {
     display: grid;
     grid-template-columns: 1fr 6rem 6rem 6rem;
-    border-right: 0.1rem solid var(--color-gray-20);
+    border-right: 0.1rem solid var(--color-gray-10);
+
     margin-top: -0.1rem;
-    /* border-bottom:0.1rem solid var(--color-gray-20); */
+    border-bottom:0.1rem solid var(--color-gray-10);
   }
 
   .type--design-number>div {
     padding: 0.4rem 0.4rem;
-    border-left: 0.1rem solid var(--color-gray-20);
-    border-top: 0.1rem solid var(--color-gray-20);
+    border-left: 0.1rem solid var(--color-gray-10);
+    border-top: 0.1rem solid var(--color-gray-10);
   }
 
   .type--design-number>*:nth-child(1) {
     text-align: left;
-    border-left: 0;
   }
 
   .type--design-number>*:nth-child(2) {

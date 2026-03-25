@@ -173,7 +173,7 @@ export function InputCombo({
                 <div
                   ref={popoverRef}
                   tabIndex={-1}
-                  className="bg-white border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein"
+                  className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem]"
                   style={popoverStyle}
                 >
                   <ul className={ulClassName}>
@@ -181,8 +181,8 @@ export function InputCombo({
                       <li
                         key={opt.value}
                         className={
-                          "cursor-pointer hover:bg-[var(--color-gray-5)] " +
-                          (hoveredIdx === idx ? "bg-[var(--color-gray-10)]" : "")
+                          "cursor-pointer hover:bg-[var(--color-warning-10)] " +
+                          (hoveredIdx === idx ? "bg-[var(--color-warning-10)]" : "")
                         }
                         onMouseDown={e => e.preventDefault()}
                         onClick={() => handleOptionClick(opt)}
