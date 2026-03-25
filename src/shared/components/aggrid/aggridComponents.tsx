@@ -2,6 +2,7 @@
 // 외부 라이브러리
 import * as React from 'react';
 import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import { Typo, Gcol, Grow } from '@atoms';
 
 // 내부 공통 컴포넌트
 
@@ -160,3 +161,60 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
     />
   );
 }
+
+export const createFieldRenderer = <T extends Record<string, any>>(
+    field1: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>,
+    field2?: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>,
+  ) => {
+    return (params: ICellRendererParams<T>) => {
+      const data = params.data as T | undefined;
+
+      // field1, field2 공통 resolver
+      const resolveNode = (
+        field: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any> | undefined
+      ): React.ReactNode => {
+        if (field === undefined || field === null) return '';
+
+        if (typeof field === 'function') {
+          try {
+            const result = (field as any)(data);
+            if (React.isValidElement(result) || typeof result === 'string' || typeof result === 'number') {
+              return result;
+            }
+            return React.createElement(field as React.ComponentType<any>, { data });
+          } catch {
+            try {
+              return React.createElement(field as React.ComponentType<any>, { data });
+            } catch {
+              return '';
+            }
+          }
+        }
+
+        if (typeof field === 'string' && data && (field as keyof T) in data) {
+          return String(data?.[field as keyof T] ?? '');
+        }
+
+        return (field as React.ReactNode) ?? '';
+      };
+
+      const aNode = resolveNode(field1);
+      const bNode = resolveNode(field2);
+
+      const renderCell = (value: React.ReactNode) => {
+        if (React.isValidElement(value)) return value;
+        return <Typo>{String(value ?? '')}</Typo>;
+      };
+
+      return (
+        <Gcol className="w-full h-[5.6rem] justify-start divide-y divide-gray-200" gap={0} >
+          <div className='h-[2.8rem] w-full'>
+            {renderCell(aNode)}
+          </div>
+          <div className="h-[2.8rem] w-full">
+            {renderCell(bNode)}
+          </div>
+        </Gcol>
+      );
+    };
+  };

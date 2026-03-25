@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { PlusIcon, SearchIcon } from '@icons';
+import { PlusIcon, SearchIcon, MemoIcon, QuestionMark } from '@icons';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -11,10 +11,10 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
-import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter } from '@aggrid';
+import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter, createFieldRenderer } from '@aggrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell} from '@uiux/Table';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { InfoBox } from '@common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { useCallback, useRef } from 'react';
@@ -46,6 +46,8 @@ const meta: Meta = {
 };
 
 export default meta;
+
+
 
 const LTPZ010P = () => {
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -446,7 +448,7 @@ const LTPZ010P = () => {
           <AgGridReact<DummyDataType>
             rowData={rowData}
             columnDefs={columnDefs}
-            defaultColDef={{ sortable: false }}
+            defaultColDef={{ sortable: false, cellClass: 'p-0', cellStyle: { padding: 0 } }}
             animateRows={false}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
@@ -1343,144 +1345,189 @@ const LTPZ010_01P = () => {
     field18: string;
     field19: string;
   };
-  // field01Renderer를 먼저 선언
-
-
-  const fieldRenderer = (params: ICellRendererParams<DummyDataType3>) => {
-    if (!params.value) return null;
-    return (
-      <Gcol className='w-full'>
-        <Typo>asdfasd</Typo>
-        <Typo>asdfasd</Typo>
-      </Gcol>
-    );
-  };
-
 
   const DummyData: DummyDataType3[] = [
-    { id: 1, isCheck: true, field01: '', field02: '1111', field03: '2222', field04: '3333', field05: '44444', field06: 'true', field07: 'true', field08: 'true', field09: 'true', field10: 'true', field11: 'true', field12: 'true', field13: 'true', field14: 'true', field15: 'true', field16: 'true', field17: 'true', field18: 'true', field19: 'true' },
- 
+    { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoCreate', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
+    { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoView', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
+    { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: '', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
   ];
 
   const columnDefs: (ColDef<DummyDataType3> | ColGroupDef<DummyDataType3>)[] = [
     {
       headerName: '설계번호',
-      field: 'field01',
       flex: 1,
-      cellClass: 'text-center',
-      cellRenderer: fieldRenderer,
-    },  
+      cellClass: 'text-center px-0!',
+      cellRenderer: createFieldRenderer<DummyDataType3>('field01'),
+      autoHeight: true,
+    },
     {
       headerName: '상품명/구분',
-      field: 'field02',
-      flex: 1,
-      cellClass: 'text-center',
-      cellRenderer: fieldRenderer,
       children: [
         {
-          field: 'field03',
+          flex: 1.2,
           headerName: '플랜명/차량번호',
-          cellRenderer: fieldRenderer,
-        }
-      ]
+          cellClass: 'text-center px-0! ',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>(
+            'field02',
+            ({ data }: ICellRendererParams<DummyDataType3>) => {
+              if (data?.field03 === 'memoCreate') {
+                return (
+                  <Grow placement='ee' className='h-full pr-1'>
+                    <Button aria-label="메모" variant={'none'} only="icon" size={'lg'} color={'gray-light'}>
+                      <MemoIcon />
+                    </Button>
+                  </Grow>
+                );
+              } else if (data?.field03 === 'memoView') {
+                return (
+                  <Grow placement='ec' className='h-full pr-1' >
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">3대진단</Button>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          align="center"
+                          side="bottom"
+                          sideOffset={0}
+                          variant="default"
+                        >
+                          {`3대 진단비+특정치료비 지원해야하는 고객`}
+                        </TooltipContent>
+                      </Tooltip>
+                  </Grow>
+                );
+              } else if (data?.field03 === '') {
+                return null;
+              }
+            }
+          ),
+        },
+      ],
     },
     {
       headerName: '계약자',
-      field: 'field04',
-      flex: 1,
-      cellClass: 'text-center',
+      cellClass: 'text-center px-0!',
+      autoHeight: true,
       children: [
         {
           headerName: '생년월일',
-          field: 'field05',
+          flex: 1,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field04', 'field05'),
         }
       ]
     },
     {
       headerName: '보험료(원)',
-      field: 'field06',
-      flex: 1,
-      cellClass: 'text-center',
+      autoHeight: true,
       children: [
         {
           headerName: '',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field06', 'field07'),
         }
       ]
     },
     {
       headerName: '설계일자',
-      field: 'field06',
-      cellClass: 'text-center',
+      autoHeight: true,
       children: [
         {
           headerName: '유효기간',
-          field: 'field07',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>(
+          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+            2026-01-01
+          </Button>, 
+          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+            2026-01-01
+          </Button>)
         }
       ]
     },
     {
       headerName: '설계상태',
-      field: 'field08',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '심사결과',
-          field: 'field09',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field08', 'field09'),
         }
       ]
     },
     {
       headerName: '청약서출력',
-      field: 'field10',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '스캔여부',
-          field: 'field11',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>( <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+            미출력
+          </Button>, 'field11'),
         }
       ]
     },
     {
       headerName: '취급기관/팀',
-      field: 'field12',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '취급자',
-          field: 'field13',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field12', 'field13'),
         }
       ]
     },
     {
       headerName: '최초설계자',
-      field: 'field14',
-      cellClass: 'text-center',
       children: [
         {
           headerName: 'SM',
-          field: 'field15',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field14', 
+          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+            ID
+          </Button>),
         }
       ]
     },
     {
       headerName: '사용인',
-      field: 'field16',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '부실유의',
-          field: 'field17',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field16', 'field17'),
         }
       ]
     },
     {
       headerName: '설계종료',
-      field: 'field18',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '증권번호',
-          field: 'field19',
+          cellClass: 'text-center px-0!',
+          flex: 1,
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType3>('field18', 
+          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+            LA20143129023123912
+          </Button>),
         }
       ]
     }
