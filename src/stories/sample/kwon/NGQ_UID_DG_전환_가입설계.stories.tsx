@@ -18,6 +18,7 @@ import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell} from '@u
 import { InfoBox } from '@common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { useCallback, useRef } from 'react';
+import { DatePickerInput } from '@/shared/components/common/DatePicker';
 ;
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -927,9 +928,16 @@ const LTPZ021P = () => {
           </FormCell>
         </FormRow>
       </FormTable>
-      <Grow className='w-full' gap={2}>
+      <Grow placement='ss' className='w-full' gap={2}>
         <Gcol className="w-full">
-          <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+          <Grow placement='bwc' className="w-full">
+            <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+            <Grow>
+              <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
+              <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
+              <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
+            </Grow>
+          </Grow>
           <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
             <FormRow>
               <FormCell title={'계약자'} colSpan={3}>
@@ -955,54 +963,31 @@ const LTPZ021P = () => {
               </FormCell>  
             </FormRow>
           </FormTable>
-          <FormTable caption="포인트정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+          <FormTable caption="포인트정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
             <FormRow vertical={true}>
-              <FormCell title={'포인트정보'}>
+              <FormCell title={'보장P'} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={'적립P'} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={'입시납P'} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={<span>합계P <br /> (할인전)</span>} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={<span>합계P <br /> (할인후)</span>} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={<span>만기환급금 <br /> (예상)</span>} tdClassName="justify-center items-center">
+                99
+              </FormCell> 
+              <FormCell title={<span>환급률 <br /> (예상)</span>} tdClassName="justify-center items-center">    
+                99
               </FormCell>
             </FormRow>
           </FormTable>      
-          <Table variant="message" className="overflow-visible">
-            <TableHeader className='h-18'>
-              <TableRow>
-                <TableHead>
-                  보장P
-                </TableHead>
-                <TableHead>
-                  적립P
-                </TableHead>
-                <TableHead>
-                  입시납P
-                </TableHead>
-                <TableHead>
-                  합계P<br />
-                  (할인전)
-                </TableHead>
-                <TableHead>
-                  합계P<br />
-                  (할인후)
-                </TableHead >
-                <TableHead>
-                  만기환급금<br />
-                  (예상)
-                </TableHead>
-                <TableHead>
-                  환급률<br />
-                  (예상)
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>99</TableCell>
-                <TableCell>9999</TableCell>
-                <TableCell>9999</TableCell>
-                <TableCell>9999</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
           <InfoBox
             title="만기환급급은 예상금으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수 있습니다."
             variant={'info'}
@@ -1010,12 +995,467 @@ const LTPZ021P = () => {
           ></InfoBox>
         </Gcol>
         <Gcol className="w-full">
-          <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+          <Grow placement='bwc' className="w-full">
+            <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+            <Grow>
+              <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
+              <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
+              <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
+            </Grow>
+          </Grow>
+          <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormRow>
+              <FormCell title={'계약자'} colSpan={3}>
+                김한화
+              </FormCell>
+            </FormRow>  
+            <FormRow>
+              <FormCell title={'상품명'} colSpan={3}>
+                한화실손의료보험(갱신형) 무배당2601
+              </FormCell>  
+            </FormRow>
+            <FormRow>
+              <FormCell title={'가입플랜'} colSpan={3}>
+                자유설계
+              </FormCell>  
+            </FormRow>
+            <FormRow>
+              <FormCell title={'보험기간'}>
+                05년 만기
+              </FormCell>
+              <FormCell title={'납입기간'}>
+                월납/전기납
+              </FormCell>  
+            </FormRow>
+          </FormTable>
+          <FormTable caption="포인트정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+            <FormRow vertical={true}>
+              <FormCell title={'보장P'} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={'적립P'} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={'입시납P'} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={<span>합계P <br /> (할인전)</span>} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={<span>합계P <br /> (할인후)</span>} tdClassName="justify-center items-center">
+                99
+              </FormCell>
+              <FormCell title={<span>만기환급금 <br /> (예상)</span>} tdClassName="justify-center items-center">
+                99
+              </FormCell> 
+              <FormCell title={<span>환급률 <br /> (예상)</span>} tdClassName="justify-center items-center">    
+                99
+              </FormCell>
+            </FormRow>
+          </FormTable>
+          <InfoBox
+            title="만기환급급은 예상금으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수 있습니다."
+            variant={'info'}
+            bg={false}
+          ></InfoBox>
         </Gcol>  
       </Grow>
+      <Grow placement='ss' className='w-full' gap={2}>
+        <Grow className="w-full">
+          {/* 인보험/물보험 TabPager 예시 */}
+          <Gcol className="w-full" placement='ss'>
+            <Typo variant={'heading-sm'} className="mb-1">피보험자정보</Typo>
+            {(() => {
+              const [tabActive, setTabActive] = React.useState('human');
+              const tabData = [
+                { label: '인보험', value: 'human' },
+                { label: '물보험', value: 'property' },
+              ];
+              return (
+                <TabPager
+                  data={tabData}
+                  active={tabActive}
+                  setActive={setTabActive}
+                  getValue={tab => tab.value}
+                  renderTab={tab => <span>{tab.label}</span>}
+                  visibleCount={2}
+                >
+                  {tabActive === 'human' ? (
+                    <Gcol className="w-full">
+                      <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'피보험자'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'연령'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'직업명'}>
+                            회사사무직종사자
+                          </FormCell>
+                          <FormCell title={'급수'}>
+                            1급
+                          </FormCell>
+                          <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                      <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'담보명'}>
+                          </FormCell>
+                          <FormCell title={'보험기간'}>
+                          </FormCell>
+                          <FormCell title={'납입기간'}>
+                          </FormCell>
+                          <FormCell title={'가입금액'}>
+                          </FormCell>
+                          <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                            
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Gcol> 
+                  ) : (
+                    <Gcol className="w-full">
+                      <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'소유자'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'직업업종'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'급수'}>
+                            1급
+                          </FormCell>
+                          <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                      <FormTable caption="소재지" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                        <FormRow>
+                          <FormCell title={'소재지'}
+                          >
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                       <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'화재기본담보'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'가입금액'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                       <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'화재특약담보'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'보험기간'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'납입기간'}>
+                            
+                          </FormCell>
+                          <FormCell title={'가입금액'}>
+                            
+                          </FormCell>
+                          <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Gcol>  
+                  )}
+                </TabPager>
+              );
+            })()}
+          </Gcol>
+        </Grow>
+        <Grow className="w-full">
+           {/* 인보험/물보험 TabPager 예시 */}
+          <Gcol className="w-full" placement='ss'>
+            <Typo variant={'heading-sm'} className="mb-1">피보험자정보</Typo>
+            {(() => {
+              const [tabActive, setTabActive] = React.useState('human');
+              const tabData = [
+                { label: '인보험', value: 'human' },
+                { label: '물보험', value: 'property' },
+              ];
+              return (
+                <TabPager
+                  data={tabData}
+                  active={tabActive}
+                  setActive={setTabActive}
+                  getValue={tab => tab.value}
+                  renderTab={tab => <span>{tab.label}</span>}
+                  visibleCount={2}
+                >
+                  {tabActive === 'human' ? (
+                    <Gcol className="w-full">
+                      <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'피보험자'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'연령'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'직업명'}>
+                            회사사무직종사자
+                          </FormCell>
+                          <FormCell title={'급수'}>
+                            1급
+                          </FormCell>
+                          <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                      <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'담보명'}>
+                          </FormCell>
+                          <FormCell title={'보험기간'}>
+                          </FormCell>
+                          <FormCell title={'납입기간'}>
+                          </FormCell>
+                          <FormCell title={'가입금액'}>
+                          </FormCell>
+                          <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                            
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Gcol> 
+                  ) : (
+                    <Gcol className="w-full">
+                      <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'소유자'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'직업업종'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'급수'}>
+                            1급
+                          </FormCell>
+                          <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                      <FormTable caption="소재지" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                        <FormRow>
+                          <FormCell title={'소재지'}
+                          >
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                       <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'화재기본담보'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'가입금액'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                       <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                        <FormRow vertical={true}>
+                          <FormCell title={'화재특약담보'}>
+                            김한화
+                          </FormCell>
+                          <FormCell title={'보험기간'}>
+                            30
+                          </FormCell>
+                          <FormCell title={'납입기간'}>
+                            
+                          </FormCell>
+                          <FormCell title={'가입금액'}>
+                            
+                          </FormCell>
+                          <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                            0
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Gcol>  
+                  )}
+                </TabPager>
+              );
+            })()}
+          </Gcol>
+        </Grow>
+      </Grow>    
     </Gcol>
   )
 }
 export const LTPZ021: Story = {
   render: () => <LTPZ021P />,
+}
+
+const LTPZ010_01P = () => {
+  const [form, setForm] = React.useState({
+    type01: '',
+    type02: '',
+    type03: '',
+    type04: '',
+    type05: '',
+    type07: '',
+  });
+
+
+  return (
+    <Grow className="w-full">
+      <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]','w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'보종군'}>
+            <NativeSelect
+              aria-label="보종군 선택"
+              width="10rem"
+              value={form.type01}
+              onChange={(e) => setForm({ ...form, type01: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'type01-1', label: '전체' },
+                { value: 'selection2', id: 'type01-2', label: '전체2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormCell>
+          <FormCell title={'조회구분'}>
+            <NativeSelect
+              aria-label="조회구분 선택"
+              width="10rem"
+              value={form.type02}
+              onChange={(e) => setForm({ ...form, type02: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'type02-1', label: '전체' },
+                { value: 'selection2', id: 'type02-2', label: '전체2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormCell>  
+          <FormCell title={'설계구분'}>
+            <NativeSelect
+              aria-label="설계구분 선택"
+              width="10rem"
+              value={form.type03}
+              onChange={(e) => setForm({ ...form, type03: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'type03-1', label: '전체' },
+                { value: 'selection2', id: 'type03-2', label: '전체2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormCell>  
+          <FormCell title={'설계상태'}>
+            <NativeSelect
+              aria-label="설계상태 선택"
+              width="10rem"
+              value={form.type04}
+              onChange={(e) => setForm({ ...form, type04: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'personalinfo-1', label: '전체' },
+                { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormCell>  
+          <FormCell title={'설계경로'}>
+            <NativeSelect
+              aria-label="설계경로 선택"
+              width="10rem"
+              value={form.type05}
+              onChange={(e) => setForm({ ...form, type05: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'personalinfo-1', label: '전체' },
+                { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormCell>
+        </FormRow>
+        <FormRow>
+          <FormCell title={'설계조직'} colSpan={3}>
+            <NativeSelect
+              aria-label="설계조직 선택"
+              width="10rem"
+              value={form.type07}
+              onChange={(e) => setForm({ ...form, type07: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'type06-1', label: '선택1' },
+                { value: 'selection2', id: 'type06-2', label: '선택2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+            <Input aria-label="" width={'16rem'} value={'12345678'} />
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>  
+            <Input aria-label="" width={'16rem'} value={''} readOnly />
+          </FormCell>  
+          <FormCell title={'영업가족'}>
+            <NativeSelect
+              aria-label="영업가족 선택"
+              width="10rem"
+              value={form.type07}
+              onChange={(e) => setForm({ ...form, type07: e.target.value })}
+            >
+              {[
+                { value: 'selection', id: 'type07-1', label: '선택1' },
+                { value: 'selection2', id: 'type07-2', label: '선택2' },
+              ].map((option) => (
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormCell>
+          <FormCell title={'설계일자'} colSpan={3}>
+            <DatePickerInput
+              errorMsg="입력은 필수입니다."
+              errorPs="bl"
+              mode="range"
+              onChange={() => {}}
+              rangeValue={{
+                from: '2026-03-01',
+                to: '2026-03-07'
+              }}
+              required
+              size="lg"
+              width="sm"
+            />
+          </FormCell>    
+        </FormRow>
+      </FormTable>  
+    </Grow>
+  )
+}
+export const LTPZ010_01: Story = {
+  render: () => <LTPZ010_01P />,
 }

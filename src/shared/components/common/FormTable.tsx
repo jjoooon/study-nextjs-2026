@@ -31,6 +31,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   titleColSpan?: number;
   titleRowSpan?: number;
   vertical?: boolean;
+  tdClassName?: string;
 }
 
 interface FormTableProps {
@@ -58,6 +59,7 @@ export const FormCell = ({
   rowSpan,
   titleColSpan,
   titleRowSpan,
+  tdClassName = 'justify-start items-center',
 }: FormCellProps) => {
   const titleTypoVariant = titleVariant === 'section' ? 'body-lg' : 'body-md';
   const titleTypoColor = titleVariant === 'section' ? 'primary' : undefined;
@@ -78,7 +80,7 @@ export const FormCell = ({
         {...(colSpan && { colSpan })}
         {...(rowSpan && { rowSpan })}
       >
-        <Grow className="gap-1" placement="sc">
+        <Grow className={cn( tdClassName)} >
           {children}
         </Grow>
       </TableCell>
@@ -119,5 +121,5 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
 };
 
 export const FormRow = ({ children, vertical }: FormTrProps) => {
-  return <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>th+td]:border-t-0! [&>td~*]:border-l-0!' : ''}>{children}</tr>;
+  return <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th]:text-center [&>th]:flex [&>th]:items-center [&>th]:justify-center [&>th]:py-0.5!' : ''}>{children}</tr>;
 };
