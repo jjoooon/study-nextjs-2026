@@ -62,13 +62,13 @@ function TooltipContent({
         align={align}
         alignOffset={alignOffset ?? 0}
         className={cn(
-          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-50 w-fit rounded-[0.4rem] text-[1.3rem] leading-[1.45] text-balance',
+          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-50 w-auto rounded-[0.4rem] text-[1.3rem] leading-[1.45] text-balance max-w-[24rem]',
           variantStyles[variant],
           className
         )}
         {...props}
       >
-        <div className={cn('px-[1rem] py-[0.8rem] relative z-51', contentStyles[variant])}>
+        <div className={cn('px-[1rem] py-[0.8rem] relative z-51 whitespace-normal', contentStyles[variant])}>
           {typeof children === 'string'
             ? <span dangerouslySetInnerHTML={{ __html: children }} />
             : children}

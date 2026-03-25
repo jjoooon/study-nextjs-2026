@@ -266,13 +266,13 @@ export const Default: Story = {
           className={args.tableClassName}
         >
           <FormRow vertical={true}>
-            <FormCell title="개인정보취득경로">
-              TEXT
+            <FormCell title={<span>개인정보<br/>취득경로</span>}>
+              FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다. FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다.
             </FormCell>
             <FormCell title="colSpan 케이스">
-              전체 너비 확장 행
+              FormTable은 폼 테이블 영역의 상단 
             </FormCell>
-            <FormCell title="rowSpan 케이스">
+            <FormCell title="rowSpan 케이스" className='text-right'>
               2행 병합
             </FormCell>
           </FormRow>

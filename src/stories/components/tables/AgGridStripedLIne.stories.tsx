@@ -6,6 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
+import type { ICellRendererParams } from 'ag-grid-community';
 import { createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
@@ -31,6 +32,19 @@ const columnDefs: ColDef<DummyDataType>[] = [
     flex: 1,
     cellClass: 'text-right',
     editable: false, // 나이 직접 입력 가능
+    cellRenderer: (params: ICellRendererParams) => {
+      const value = params.value ?? '';
+      return ( 
+        <div>
+          <span>
+            {params.label}
+          </span>
+          <span>
+            {params.age}
+          </span>
+        </div>
+      );
+    }
   },
 ];
 const column2Defs: ColDef<DummyDataType>[] = [
