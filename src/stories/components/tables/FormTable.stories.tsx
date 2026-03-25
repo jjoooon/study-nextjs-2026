@@ -272,8 +272,8 @@ export const Default: Story = {
             <FormCell title="colSpan 케이스">
               FormTable은 폼 테이블 영역의 상단 
             </FormCell>
-            <FormCell title="rowSpan 케이스" className='text-right'>
-              2행 병합
+            <FormCell title="rowSpan 케이스">
+              <p className="text-right w-full">2행 병합</p>
             </FormCell>
           </FormRow>
         </FormTable>
