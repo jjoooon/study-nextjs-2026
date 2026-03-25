@@ -71,7 +71,8 @@ type LayoutPlacement = Extract<UIUXposition, 'ss' | 'sc' | 'se' | 'cs' | 'cc' | 
 type Variant =
   | 'default'
   | 'box'
-  | 'box-line';
+  | 'box-line'
+  | 'box-round';
 
 interface GroupProps {
   children?: ReactNode;
@@ -132,6 +133,7 @@ const VARIANT_MAP: Record<Variant, string> = {
   'default': '',
   'box': 'px-2.5 py-2.5 bg-[var(--color-gray-5)] gap-1.5',
   'box-line': 'p-2 bg-[#FFF] border border-[var(--color-blue-gray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
+  'box-round': 'px-2.5 py-2.5 bg-[#F3F4F6] gap-1.5 rounded-[0.6rem]',
 };
 
 export const Gcol = ({ 

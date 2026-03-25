@@ -67,6 +67,7 @@ const meta: Meta<InfoBoxArgs> = {
             InfoBox 컴포넌트는 안내/주의/상세 정보를 시각적으로 강조하여 표시하는 UI 요소입니다.<br />
             variant로 info(파란색), warning(빨간색), detail(베이지)을 선택할 수 있으며,<br />
             info/warning은 아이템별 highlight로 개별 항목을 강조할 수 있습니다.<br />
+            bg로 배경색 표시 여부(true/false)를 제어할 수 있습니다.<br />
             items 대신 children으로 커스텀 컴포넌트나 HTML을 직접 넣을 수도 있습니다.
           </p>
 
@@ -82,6 +83,7 @@ import { InfoBox } from '@common/InfoBox';
 {/* info */}
 <InfoBox
   variant="info"
+  bg={true}
   title="타이틀"
   subTitle="서브타이틀"
   items={[
@@ -93,6 +95,7 @@ import { InfoBox } from '@common/InfoBox';
 {/* warning */}
 <InfoBox
   variant="warning"
+  bg={true}
   title="타이틀"
   items={[
     { text: '텍스트 목록' },
@@ -103,6 +106,7 @@ import { InfoBox } from '@common/InfoBox';
 {/* detail — 타이틀 없음, ※ 아이콘 */}
 <InfoBox
   variant="detail"
+  bg={true}
   items={[
     { text: '텍스트 목록' },
     { text: '텍스트 목록' },
@@ -114,6 +118,9 @@ import { InfoBox } from '@common/InfoBox';
   <p>직접 넣은 내용</p>
   <a href="#">링크</a>
 </InfoBox>
+
+{/* bg off */}
+<InfoBox variant="info" bg={false} title="타이틀" items={[{ text: '텍스트 목록' }]} />
 \`\`\`
             `}
           </Markdown>
@@ -130,6 +137,7 @@ import { InfoBox } from '@common/InfoBox';
             </thead>
             <tbody>
               <tr><td>variant</td><td>'info' | 'warning' | 'detail'</td><td>'info'</td><td>색상/아이콘 스타일</td></tr>
+              <tr><td>bg</td><td>boolean</td><td>true</td><td>배경색 표시 여부</td></tr>
               <tr><td>title</td><td>string</td><td>-</td><td>타이틀 텍스트</td></tr>
               <tr><td>subTitle</td><td>string</td><td>-</td><td>서브타이틀 텍스트</td></tr>
               <tr><td>items</td><td>InfoListItem[]</td><td>-</td><td>목록 아이템 배열 (children 없을 때 렌더링)</td></tr>
@@ -142,7 +150,7 @@ import { InfoBox } from '@common/InfoBox';
 
           <h2>Info</h2>
           <Unstyled>
-            <Gcol gap={4} variant="box-line" className="p-16 w-[40rem]">
+            <Gcol gap={4} variant="box-line" className="p-16 w-160">
               <Grow gap={16} placement="ss">
                 <InfoBox variant="info" title="타이틀" items={[{ text: '텍스트 목록' }]} />
                 <span style={{ fontSize: '1.2rem', color: '#9CA3AF' }}>single / 타이틀 있음</span>
@@ -172,7 +180,7 @@ import { InfoBox } from '@common/InfoBox';
 
           <h2>Warning</h2>
           <Unstyled>
-            <Gcol gap={4} variant="box-line" className="p-16 w-[40rem]">
+            <Gcol gap={4} variant="box-line" className="p-16 w-160">
               <Grow gap={16} placement="ss">
                 <InfoBox variant="warning" title="타이틀" items={[{ text: '텍스트 목록' }]} />
                 <span style={{ fontSize: '1.2rem', color: '#9CA3AF' }}>single / 타이틀 있음</span>
@@ -202,7 +210,7 @@ import { InfoBox } from '@common/InfoBox';
 
           <h2>Detail</h2>
           <Unstyled>
-            <Gcol gap={4} variant="box-line" className="p-16 w-[40rem]">
+            <Gcol gap={4} variant="box-line" className="p-16 w-160">
               <Grow gap={16} placement="ss">
                 <InfoBox variant="detail" items={[{ text: '텍스트 목록' }]} />
                 <span style={{ fontSize: '1.2rem', color: '#9CA3AF' }}>single</span>
@@ -226,6 +234,11 @@ import { InfoBox } from '@common/InfoBox';
       control: { type: 'select' },
       options: ['info', 'warning', 'detail'],
       table: { category: '스타일 props' },
+    },
+    bg: {
+      control: { type: 'boolean' },
+      description: '배경색 사용 여부',
+      table: { category: '스타일 props', defaultValue: { summary: 'true' } },
     },
     showTitle: {
       control: { type: 'boolean' },
@@ -278,6 +291,7 @@ import { InfoBox } from '@common/InfoBox';
   },
   args: {
     variant: 'info',
+    bg: true,
     showTitle: true,
     title: '타이틀',
     showSubTitle: true,
