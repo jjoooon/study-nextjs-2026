@@ -1391,6 +1391,7 @@ const LTPZ010_01P = () => {
                           side="bottom"
                           sideOffset={0}
                           variant="default"
+                          className="w-[16rem]"
                         >
                           {`3대 진단비+특정치료비 지원해야하는 고객`}
                         </TooltipContent>
