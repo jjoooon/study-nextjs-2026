@@ -19,7 +19,7 @@ import { InfoBox } from '@common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { useCallback, useRef } from 'react';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
-;
+import { useFormFields } from '@hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -1310,149 +1310,153 @@ export const LTPZ021: Story = {
 }
 
 const LTPZ010_01P = () => {
-  const [form, setForm] = React.useState({
+  const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
     type03: '',
     type04: '',
     type05: '',
     type07: '',
+    type08: '',
   });
 
 
   return (
     <Grow className="w-full">
-      <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]','w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
-        <FormRow>
-          <FormCell title={'보종군'}>
-            <NativeSelect
-              aria-label="보종군 선택"
-              width="10rem"
-              value={form.type01}
-              onChange={(e) => setForm({ ...form, type01: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'type01-1', label: '전체' },
-                { value: 'selection2', id: 'type01-2', label: '전체2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormCell>
-          <FormCell title={'조회구분'}>
-            <NativeSelect
-              aria-label="조회구분 선택"
-              width="10rem"
-              value={form.type02}
-              onChange={(e) => setForm({ ...form, type02: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'type02-1', label: '전체' },
-                { value: 'selection2', id: 'type02-2', label: '전체2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormCell>  
-          <FormCell title={'설계구분'}>
-            <NativeSelect
-              aria-label="설계구분 선택"
-              width="10rem"
-              value={form.type03}
-              onChange={(e) => setForm({ ...form, type03: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'type03-1', label: '전체' },
-                { value: 'selection2', id: 'type03-2', label: '전체2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormCell>  
-          <FormCell title={'설계상태'}>
-            <NativeSelect
-              aria-label="설계상태 선택"
-              width="10rem"
-              value={form.type04}
-              onChange={(e) => setForm({ ...form, type04: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'personalinfo-1', label: '전체' },
-                { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormCell>  
-          <FormCell title={'설계경로'}>
-            <NativeSelect
-              aria-label="설계경로 선택"
-              width="10rem"
-              value={form.type05}
-              onChange={(e) => setForm({ ...form, type05: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'personalinfo-1', label: '전체' },
-                { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormCell>
-        </FormRow>
-        <FormRow>
-          <FormCell title={'설계조직'} colSpan={3}>
-            <NativeSelect
-              aria-label="설계조직 선택"
-              width="10rem"
-              value={form.type07}
-              onChange={(e) => setForm({ ...form, type07: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'type06-1', label: '선택1' },
-                { value: 'selection2', id: 'type06-2', label: '선택2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-            <Input aria-label="" width={'16rem'} value={'12345678'} />
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>  
-            <Input aria-label="" width={'16rem'} value={''} readOnly />
-          </FormCell>  
-          <FormCell title={'영업가족'}>
-            <NativeSelect
-              aria-label="영업가족 선택"
-              width="10rem"
-              value={form.type07}
-              onChange={(e) => setForm({ ...form, type07: e.target.value })}
-            >
-              {[
-                { value: 'selection', id: 'type07-1', label: '선택1' },
-                { value: 'selection2', id: 'type07-2', label: '선택2' },
-              ].map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormCell>
-          <FormCell title={'설계일자'} colSpan={3}>
-            <DatePickerInput
-              errorMsg="입력은 필수입니다."
-              errorPs="bl"
-              mode="range"
-              onChange={() => {}}
-              rangeValue={{
-                from: '2026-03-01',
-                to: '2026-03-07'
-              }}
-              required
-              size="lg"
-              width="sm"
-            />
-          </FormCell>    
-        </FormRow>
-      </FormTable>  
+      <Grow className='w-full' variant="box" placement={'bwe'}>
+        <FormTable variant={'none'} caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]','w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+          <FormRow>
+            <FormCell title={'보종군'}>
+              <NativeSelect
+                aria-label="보종군 선택"
+                width="10rem"
+                value={form.type01}
+                onChange={(e) => setFormField('type01', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type01-1', label: '전체' },
+                  { value: 'selection2', id: 'type01-2', label: '전체2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+            <FormCell title={'조회구분'}>
+              <NativeSelect
+                aria-label="조회구분 선택"
+                width="10rem"
+                value={form.type02}
+                onChange={(e) => setFormField('type02', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type02-1', label: '전체' },
+                  { value: 'selection2', id: 'type02-2', label: '전체2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>  
+            <FormCell title={'설계구분'}>
+              <NativeSelect
+                aria-label="설계구분 선택"
+                width="10rem"
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type03-1', label: '전체' },
+                  { value: 'selection2', id: 'type03-2', label: '전체2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>  
+            <FormCell title={'설계상태'}>
+              <NativeSelect
+                aria-label="설계상태 선택"
+                width="10rem"
+                value={form.type04}
+                onChange={(e) => setFormField('type04', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'personalinfo-1', label: '전체' },
+                  { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>  
+            <FormCell title={'설계경로'}>
+              <NativeSelect
+                aria-label="설계경로 선택"
+                width="10rem"
+                value={form.type05}
+                onChange={(e) => setFormField('type05', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'personalinfo-1', label: '전체' },
+                  { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+          </FormRow>
+          <FormRow>
+            <FormCell title={'설계조직'} colSpan={3}>
+              <NativeSelect
+                aria-label="설계조직 선택"
+                width="10rem"
+                value={form.type07}
+                onChange={(e) => setFormField('type07', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type06-1', label: '선택1' },
+                  { value: 'selection2', id: 'type06-2', label: '선택2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+              <Input aria-label="" width={'16rem'} value={'12345678'} />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>  
+              <Input aria-label="" width={'16rem'} value={''} readOnly />
+            </FormCell>  
+            <FormCell title={'영업가족'}>
+              <NativeSelect
+                aria-label="영업가족 선택"
+                width="10rem"
+                value={form.type08}
+                onChange={(e) => setFormField('type08', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type08-1', label: '선택1' },
+                  { value: 'selection2', id: 'type08-2', label: '선택2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+            <FormCell title={'설계일자'} colSpan={3}>
+              <DatePickerInput
+                errorMsg="입력은 필수입니다."
+                errorPs="bl"
+                mode="range"
+                onChange={() => {}}
+                rangeValue={{
+                  from: '2026-03-01',
+                  to: '2026-03-07'
+                }}
+                required
+                size="lg"
+                width="sm"
+              />
+            </FormCell>    
+          </FormRow>
+        </FormTable>  
+        <div>sdddd</div>
+      </Grow>
     </Grow>
   )
 }
