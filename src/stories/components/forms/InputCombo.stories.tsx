@@ -3,6 +3,7 @@ import * as React from 'react';
 import { InputCombo } from '@common/InputCombo';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import { useFormFields } from '@hooks/useFormFields';
+import { Gcol } from '@atoms';
 import { ar } from 'date-fns/locale';
 
 const meta: Meta<typeof InputCombo> = {
@@ -164,7 +165,7 @@ export const Default: Story = {
     const [form, setFormField] = useFormFields({ combo1: '', combo2: '' });
 
     return (
-      <div style={{ width: '10rem' }}>
+      <Gcol>
         <InputCombo
           {...args}
           options={sampleOptions}
@@ -179,7 +180,7 @@ export const Default: Story = {
           onChange={(value) => setFormField('combo2', value)}
           col={args.col}
         />
-      </div>
+      </Gcol>
     );
   },
 };

@@ -183,10 +183,10 @@ function Input({
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={clear && (isFocused || forceFocused) && displayValue !== '' ? { paddingRight: '2rem' } : undefined}
+              style={clear ? { paddingRight: '2.5rem' } : undefined }
               {...props}
             />
-            {clear && (isFocused || forceFocused) && displayValue !== '' && (
+            {clear && isFocused && displayValue !== '' && (
               <Button
                 variant="none"
                 color="gray"
@@ -212,11 +212,11 @@ function Input({
           {after && <div>{after}</div>}
         </div>
       ) : (
-        <>
+        <div className="relative w-full">
           <input
             type={type}
             data-slot="input"
-            className={cn(variantStyles[variant], commaAmount && 'text-right', className, '[:focus]:px-[0.7rem]')}
+            className={cn(variantStyles[variant], commaAmount && 'w-full text-right', className, '[:focus]:px-[0.7rem]')}
             required={required}
             readOnly={readOnly}
             aria-invalid={error || undefined}
@@ -225,10 +225,10 @@ function Input({
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            style={clear && (isFocused || forceFocused) && displayValue !== '' ? { paddingRight: '2.8rem' } : undefined}
+            style={clear ? { paddingRight: '2.5rem' } : undefined }
             {...props}
           />
-          {clear && (isFocused || forceFocused) && displayValue !== '' && (
+          {clear && isFocused && displayValue !== '' && (
             <Button
               variant="none"
               only="icon" size="xs"
@@ -249,7 +249,7 @@ function Input({
               <InputClearIcon size={size === 'lg' ? 16 : 12} color="var(--color-gray-30)" />
             </Button>
           )}
-        </>
+        </div>
       )}
 
       {error && (
