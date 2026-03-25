@@ -2,10 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import { HashList } from '@common/HashList';
 
-import { LniPl020Step2Data } from '@/features/pub/proto/data/LTPA350Step2Data';
-
-
-const LONG_HASH_DATA = ['암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정'];
+const LONG_HASH_DATA = ['암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정', '암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정', '암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정'];
 
 const meta: Meta<typeof HashList> = {
   title: 'Components/Common/HashList',
