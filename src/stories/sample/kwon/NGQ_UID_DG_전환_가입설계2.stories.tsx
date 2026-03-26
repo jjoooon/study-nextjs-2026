@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { PlusIcon, SearchIcon, MemoIcon, QuestionMark } from '@icons';
+import { ResetIcon, MemoIcon } from '@icons';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -11,7 +11,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
-import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter, createFieldRenderer } from '@aggrid';
+import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter, createFieldRenderer, AgGridEmptyComponent } from '@aggrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -72,203 +72,98 @@ const LTPA296P = () => {
     field08: string | number;
     field09: string | number;
     field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoCreate', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
-    { id: 2, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoView', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
-    { id: 3, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: '', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
+    { id: 1, isCheck: true, field01: 'Text', field02: '10명', field03: '31110', field04: '회사 사무직 종사자', field05: '1/A', field06: '', field07: '999999999', field08: '', field09: '', field10: '', },
   ];
 
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '설계번호',
+      headerName: '그룹명',
       flex: 1,
-      cellClass: 'text-center px-0!',
-      cellRenderer: createFieldRenderer<DummyDataType>('field01'),
+      field: 'field01',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
+      editable: true
     },
     {
-      headerName: '상품명/구분',
-      children: [
-        {
-          flex: 1.2,
-          headerName: '플랜명/차량번호',
-          cellClass: 'text-center px-0! ',
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>(
-            'field02',
-            ({ data }: ICellRendererParams<DummyDataType>) => {
-              if (data?.field03 === 'memoCreate') {
-                return (
-                  <Grow placement='ee' className='h-full pr-1'>
-                    <Button aria-label="메모" variant={'none'} only="icon" size={'lg'} color={'gray-light'}>
-                      <MemoIcon />
-                    </Button>
-                  </Grow>
-                );
-              } else if (data?.field03 === 'memoView') {
-                return (
-                  <Grow placement='ec' className='h-full pr-1' >
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">3대진단</Button>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          align="center"
-                          side="bottom"
-                          sideOffset={0}
-                          variant="default"
-                          className="w-[16rem]"
-                        >
-                          {`3대 진단비+특정치료비 지원해야하는 고객`}
-                        </TooltipContent>
-                      </Tooltip>
-                  </Grow>
-                );
-              } else if (data?.field03 === '') {
-                return null;
-              }
-            }
-          ),
-        },
-      ],
-    },
-    {
-      headerName: '계약자',
-      cellClass: 'text-center px-0!',
+      headerName: '인원',
+      flex: 1,
+      field: 'field02',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
-      children: [
-        {
-          headerName: '생년월일',
-          flex: 1,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field04', 'field05'),
-        }
-      ]
+      editable: true
     },
     {
-      headerName: '보험료(원)',
+      headerName: '성별',
+      flex: 1,
+      field: 'field03',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
-      children: [
-        {
-          headerName: '',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field06', 'field07'),
-        }
-      ]
+      editable: true
     },
     {
-      headerName: '설계일자',
+      headerName: '평균연령',
+      flex: 1,
+      field: 'field04',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
-      children: [
-        {
-          headerName: '유효기간',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>(
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            2026-01-01
-          </Button>, 
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            2026-01-01
-          </Button>)
-        }
-      ]
+      editable: true
     },
     {
-      headerName: '설계상태',
-      children: [
-        {
-          headerName: '심사결과',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field08', 'field09'),
-        }
-      ]
+      headerName: '직업코드',
+      flex: 1,
+      field: 'field05',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      editable: true
     },
     {
-      headerName: '청약서출력',
-      children: [
-        {
-          headerName: '스캔여부',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>( <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            미출력
-          </Button>, 'field11'),
-        }
-      ]
+      headerName: '직업명',
+      flex: 1,
+      field: 'field06',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      editable: true
     },
     {
-      headerName: '취급기관/팀',
-      children: [
-        {
-          headerName: '취급자',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field12', 'field13'),
-        }
-      ]
+      headerName: '급수',
+      flex: 1,
+      field: 'field07',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      editable: true
     },
     {
-      headerName: '최초설계자',
-      children: [
-        {
-          headerName: 'SM',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field14', 
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            ID
-          </Button>),
-        }
-      ]
+      headerName: '운전용도',
+      flex: 1,
+      field: 'field08',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      editable: true
     },
     {
-      headerName: '사용인',
-      children: [
-        {
-          headerName: '부실유의',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field16', 'field17'),
-        }
-      ]
+      headerName: '보험료',
+      flex: 1,
+      field: 'field09',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      editable: true,
+      valueParser: params => Number(params.newValue) || 0,
+      valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+      cellClassRules: {
+        'ag-cell-error-border': params => params.value === '' || params.value === undefined || Number(params.value) === 0,
+      },
     },
     {
-      headerName: '설계종료',
-      children: [
-        {
-          headerName: '증권번호',
-          cellClass: 'text-center px-0!',
-          flex: 1,
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field18', 
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            LA20143129023123912
-          </Button>),
-        }
-      ]
-    }
+      headerName: '등록인원',
+      flex: 1,
+      field: 'field10',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      editable: true
+    },
   ];
   
   // rowSelection 사용시
@@ -280,23 +175,27 @@ const LTPA296P = () => {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
+    
+
 
   return (
     <Gcol className="w-full" gap={4}>
       <Grow className='w-full' variant="box-round" placement={'bwe'}>
-        <FormTable variant={'none'} caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]']}>
+        <FormTable variant={'none'} caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
           <FormRow>
             <FormCell title={'설계번호'}>
               <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
             </FormCell>
             <FormCell title={'발행후변경순번'}>
+              <Input aria-label="" width={'20rem'} value={'Text'} readOnly />
             </FormCell>
-            <FormCell title={'발행후변경순번'}>
+            <FormCell title={'피보험자찾기'}>
               <NativeSelect
                 aria-label="설계번호 선택"
                 width="10rem"
                 value={form.type01}
                 onChange={(e) => setFormField('type01', e.target.value)}
+                readOnly
               >
                 {[
                   { value: 'selection', id: 'type01-1', label: '전체' },
@@ -305,15 +204,16 @@ const LTPA296P = () => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
+              <Input aria-label="" width={'20rem'} value={'Text'} readOnly />
             </FormCell>
           </FormRow>
         </FormTable>  
         <Grow>
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
+            <ResetIcon />
           </Button>  
           <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">
-            새로고침
+            조회
           </Button>
         </Grow>
       </Grow>
@@ -321,6 +221,7 @@ const LTPA296P = () => {
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType>
             getRowId={params => String(params.data.id)}
+            noRowsOverlayComponent={AgGridEmptyComponent}
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={{ 
@@ -337,7 +238,7 @@ const LTPA296P = () => {
               mode: 'multiRow',
               headerCheckbox: false,
               checkboxes: true,
-              enableClickSelection: false,
+              enableClickSelection: true,
             }}
             selectionColumnDef={{
               headerName: '선택',

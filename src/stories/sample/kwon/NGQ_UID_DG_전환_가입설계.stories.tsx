@@ -11,7 +11,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
-import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter, createFieldRenderer } from '@aggrid';
+import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -446,6 +446,7 @@ const LTPZ010P = () => {
       <Grow className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType>
+            noRowsOverlayComponent={AgGridEmptyComponent}
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={{ sortable: false, cellClass: 'p-0', cellStyle: { padding: 0 } }}
@@ -590,6 +591,7 @@ const LTPZ011P = () => {
       <Grow className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType2>
+            noRowsOverlayComponent={AgGridEmptyComponent}
             rowData={rowData2}
             columnDefs={columnDefs2}
             pinnedBottomRowData={sumRow2}
@@ -703,6 +705,7 @@ const LTPZ017P = () => {
       <Grow className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType>
+            noRowsOverlayComponent={AgGridEmptyComponent}
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={{ sortable: false }}
@@ -873,6 +876,7 @@ const LTPZ020_01P = () => {
               <Typo variant={'heading-sm'} className="mb-1">피보험자목록</Typo>
               <div className="ag-theme-alpine aggrid-pagination-ko w-full h-160!">
                 <AgGridReact<InsuredListRow>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={insuredListData}
                   columnDefs={insuredListColumnDefs}
                   defaultColDef={{ sortable: false }}
@@ -885,6 +889,7 @@ const LTPZ020_01P = () => {
               <Typo variant={'heading-sm'} className="mb-1">담보목록</Typo>
               <div className="ag-theme-alpine aggrid-pagination-ko w-full h-160!">
                 <AgGridReact<CoverageListRow>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={coverageListData}
                   columnDefs={coverageListColumnDefs}
                   defaultColDef={{ sortable: false }}
@@ -899,6 +904,7 @@ const LTPZ020_01P = () => {
             <Typo variant={'heading-sm'} className="mb-1">재물담보</Typo>
             <div className="ag-theme-alpine aggrid-pagination-ko w-full h-160!">
               <AgGridReact<CoverageListRow>
+                noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={coverageListData}
                 columnDefs={coverageListColumnDefs}
                 defaultColDef={{ sortable: false }}
@@ -1695,6 +1701,7 @@ const LTPZ010_01P = () => {
       <Gcol className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType>
+            noRowsOverlayComponent={AgGridEmptyComponent}
             getRowId={params => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
@@ -1787,6 +1794,7 @@ const LTPZ010_03P = () => {
       </FormTable>
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType>
+          noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={params => String(params.data.id)}
           rowData={rowData}
           columnDefs={columnDefs}
@@ -1858,6 +1866,7 @@ const LTPZ010_04P = () => {
       </FormTable>
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType>
+          noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={params => String(params.data.id)}
           rowData={rowData}
           columnDefs={columnDefs}
@@ -2052,6 +2061,7 @@ const LTPZ110P = () => {
 
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType1>
+          noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={params => String(params.data.id)}
           rowData={rowData1}
           columnDefs={columnDefs1}
@@ -2081,6 +2091,7 @@ const LTPZ110P = () => {
 
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType2>
+          noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={params => String(params.data.id)}
           rowData={rowData2}
           columnDefs={columnDefs2}

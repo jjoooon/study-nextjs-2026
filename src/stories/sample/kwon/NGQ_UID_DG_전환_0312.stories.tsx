@@ -10,7 +10,7 @@ import { Checkbox } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { createCellValueChangedHandler } from '@aggrid';
+import { createCellValueChangedHandler, AgGridEmptyComponent  } from '@aggrid';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell} from '@uiux/Table';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 ;
@@ -160,6 +160,7 @@ const P6 = () => {
           <AgGridReact<DummyDataType>
             rowData={rowData}
             columnDefs={columnDefs}
+            noRowsOverlayComponent={AgGridEmptyComponent}
             defaultColDef={{ sortable: false }}
             animateRows={false}
             alwaysShowHorizontalScroll={true}
