@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { createCellValueChangedHandler } from '@aggrid';
+import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -269,29 +269,34 @@ export const Default: StoryObj = {
       <>
         <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
           <AgGridReact<DummyDataType>
-            getRowId={(params) => String(params.data.id)}
-            rowData={rowData}
-            columnDefs={columnDefs}
-            animateRows={false} // 행 애니메이션 비활성화(성능 최적화)
-            alwaysShowHorizontalScroll={true} // 가로 스크롤 항상 표시
-            singleClickEdit={true} // 셀 한 번 클릭 시 에디터 진입
-            onCellValueChanged={onCellValueChanged} // 셀 값 변경 핸들러
+            // 필수
+            getRowId={(params) => String(params.data.id)} 
+            rowData={rowData} 
+            columnDefs={columnDefs} 
+            noRowsOverlayComponent={AgGridEmptyComponent} 
+
 
             // ag-Grid selection(좌측 체크박스) 옵션
             rowSelection={{
+              
               mode: 'multiRow', // 다중 선택 모드
               headerCheckbox: true, // 헤더(전체 선택) 체크박스 표시
               checkboxes: true, // 각 행에 체크박스 표시
               enableClickSelection: false, // 셀 클릭 시 selection 변경 비활성화(오직 체크박스 클릭만 허용)
               isRowSelectable: params => !params.data?.disabled && !params.data?.allDisabled, // disabled/allDisabled 행은 선택 불가
             }}
-            // selectionColumnDef 제거: selection 컬럼은 columnDefs에서 직접 정의
+            selectionColumnDef={{
+              width: 30,
+            }}
 
             // 행 상태별 스타일 적용 예시
             rowClassRules={{
-              'my-row-disabled': params => !!params.data?.disabled, // disabled: true면 비활성화 스타일
-              'my-row-isCheck': params => !!params.data?.checked,   // checked: true면 강조 스타일
-              'my-all-disabled': params => !!params.data?.allDisabled, // allDisabled: true면 완전 비활성화 스타일
+              'my-row-disabled': params => !!params.data?.disabled, 
+              // disabled: true면 비활성화 스타일
+              'my-row-isCheck': params => !!params.data?.checked,   
+              // checked: true면 강조 스타일
+              'my-all-disabled': params => !!params.data?.allDisabled, 
+              // allDisabled: true면 완전 비활성화 스타일
               // ...다른 규칙 추가 가능
             }}
 

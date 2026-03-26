@@ -13,6 +13,7 @@ import { UIUXsize } from '@/shared/types/uiuxTypes';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
+type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'ghost' | 'default';
   size?: UIUXsize;
@@ -28,6 +29,14 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   commaAmount?: boolean;
   clear?: boolean;
   forceFocused?: boolean;
+  formatter?: FormatterType;
+}
+// 주민등록번호 입력 포맷터: 6자리-7자리, 빈자리는 언더바
+function formatJumin(input: string): string {
+  const digits = input.replace(/\D/g, '').slice(0, 13);
+  const front = digits.slice(0, 6).padEnd(6, '_');
+  const back = digits.slice(6, 13).padEnd(7, '_');
+  return `${front}-${back}`;
 }
 
 function formatAmount(value: string) {
@@ -55,28 +64,63 @@ function Input({
   forceFocused = false,
   onChange,
   value,
+  formatter,
   ...props
 }: UIInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
-  // 입력 중에는 원본 값, blur 시에는 콤마 포함 값
-  const displayValue =
-    commaAmount && typeof value === 'string'
-      ? (isFocused || forceFocused)
-        ? value // 입력 중에는 그대로
-        : formatAmount(value) // blur 시 콤마 적용
-      : (value ?? '');
+  // 주민등록번호 마스킹: value에는 숫자만 저장, displayValue는 마스킹 적용
+  let displayValue = value ?? '';
+  if (formatter === 'jumin' && typeof value === 'string') {
+    displayValue = formatJumin(value);
+  } else if (commaAmount && typeof value === 'string') {
+    displayValue = (isFocused || forceFocused)
+      ? value
+      : formatAmount(value);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value.replace(/[^0-9]/g, '');
-    if (commaAmount) {
+    let val = e.target.value;
+    // 주민등록번호: 숫자만 추출해서 부모에 전달
+    if (formatter === 'jumin') {
+      const onlyNum = val.replace(/[^0-9]/g, '').slice(0, 13);
+      if (onChange) {
+        const syntheticEvent = {
+          ...e,
+          target: {
+            ...e.target,
+            value: onlyNum,
+          },
+        } as React.ChangeEvent<HTMLInputElement>;
+        onChange(syntheticEvent);
+        return;
+      }
+    }
+    // 커스텀 포맷터 함수
+    if (formatter && typeof formatter === 'function') {
+      val = formatter(val);
       if (onChange) {
         const syntheticEvent = {
           ...e,
           target: {
             ...e.target,
             value: val,
-            formattedValue: formatAmount(val),
+          },
+        } as React.ChangeEvent<HTMLInputElement>;
+        onChange(syntheticEvent);
+        return;
+      }
+    }
+    // commaAmount가 있으면 기존 로직 적용
+    if (commaAmount) {
+      const onlyNum = val.replace(/[^0-9]/g, '');
+      if (onChange) {
+        const syntheticEvent = {
+          ...e,
+          target: {
+            ...e.target,
+            value: onlyNum,
+            formattedValue: formatAmount(onlyNum),
           },
         } as React.ChangeEvent<HTMLInputElement> & {
           target: HTMLInputElement & { formattedValue: string };
@@ -158,6 +202,9 @@ function Input({
     ghost: cn(ghostStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
   };
 
+  // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
+  const resolvedPlaceholder = formatter === 'jumin' && !props.placeholder ? '______-_______' : props.placeholder;
+
   return (
     <div className={cn('relative', withStyle())} style={inlineWidthStyle}>
       {before || after ? (
@@ -184,6 +231,7 @@ function Input({
               onFocus={handleFocus}
               onBlur={handleBlur}
               style={clear && isFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined }
+              placeholder={resolvedPlaceholder}
               {...props}
             />
             {clear && isFocused && displayValue !== '' && (
@@ -196,9 +244,16 @@ function Input({
                 onClick={() => {
                   // input 값을 지우는 이벤트 발생
                   if (onChange) {
+                    let clearedValue = '';
+                    // 주민등록번호: 빈 문자열 전달
+                    if (formatter === 'jumin') {
+                      clearedValue = '';
+                    } else if (formatter && typeof formatter === 'function') {
+                      clearedValue = formatter('');
+                    }
                     const event = {
                       target: {
-                        value: '',
+                        value: clearedValue,
                       },
                     } as React.ChangeEvent<HTMLInputElement>;
                     onChange(event);
@@ -226,6 +281,7 @@ function Input({
             onFocus={handleFocus}
             onBlur={handleBlur}
             style={clear && isFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined }
+            placeholder={resolvedPlaceholder}
             {...props}
           />
           {clear && isFocused && displayValue !== '' && (
