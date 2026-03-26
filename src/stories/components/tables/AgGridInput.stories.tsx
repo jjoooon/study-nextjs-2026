@@ -70,7 +70,11 @@ const columnDefsString: ColDef<Dummy2DataType>[] = [
     editable: true, // 코드 직접 입력 가능 
     valueParser: params => params.newValue || '', // 빈 문자열일 때도 ""으로 표시
     cellClassRules: {
-      'ag-cell-error-border': params => params.value === '' || params.value === undefined || Number(params.value) === 0,
+      'ag-cell-error-border': params =>
+        params.value === '' ||
+        params.value === undefined ||
+        Number(params.value) === 0 ||
+        (typeof params.value === 'string' && params.value.length <= 2),
     },
   },
 ];
@@ -272,7 +276,7 @@ export const Default: StoryObj = {
     return (
 
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+        <div className="ag-theme-alpine h-[16rem]!">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
@@ -284,7 +288,7 @@ export const Default: StoryObj = {
             onCellValueChanged={onCellValueChanged}
           />
         </div>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+        <div className="ag-theme-alpine h-[16rem]!">
           <AgGridReact<Dummy2DataType>
             getRowId={(params) => String(params.data.id)}
             rowData={Dummy2Data}
@@ -293,6 +297,36 @@ export const Default: StoryObj = {
             alwaysShowHorizontalScroll={true}
 
             singleClickEdit={true}
+
+            readOnlyEdit={true}
+            onCellEditRequest={(params) => {
+              const { newValue, rowIndex, column, api, data } = params;
+              const colId = column.getId();
+
+              // 'code' 컬럼에 대해서만 3글자 제한 검증 수행
+              if (colId === 'code') {
+                if (typeof newValue !== 'string' || newValue.trim().length < 3) {
+                  
+                  // 편집창이 닫히지 않도록 즉시 다시 열기 (약간의 지연시간 필요)
+                  setTimeout(() => {
+                    api.startEditingCell({
+                      rowIndex: rowIndex!,
+                      colKey: colId,
+                    });
+                  }, 100);
+                  return; // 여기서 함수를 종료하여 데이터 반영을 막음
+                }
+              }
+
+              // 검증 통과 시 또는 다른 컬럼일 경우 데이터 업데이트
+              // 실제 프로젝트에서는 Dummy2Data를 업데이트하는 setState 함수를 호출해야 합니다.
+              const updatedData = { ...data, [colId]: newValue };
+              
+              // 그리드 UI에 즉시 반영 (임시 반영 방식)
+              api.applyTransaction({ update: [updatedData] });
+              
+              // 만약 상위 state를 관리 중이라면 여기서 setDummy2Data 등으로 상태를 갱신하세요.
+            }}
           />
         </div>
       </>

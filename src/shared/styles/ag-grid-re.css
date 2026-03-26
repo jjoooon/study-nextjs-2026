@@ -183,12 +183,12 @@
 .ag-row:first-child .ag-cell {
   border-top: 1px solid var(--color-gray-10);
 }
-.ag-theme-alpine .ag-row-even .ag-cell {
+.ag-row-even .ag-cell {
   background-color: #fff;
 }
-.ag-theme-alpine .ag-row-odd .ag-cell {
+/* .ag-theme-alpine .ag-row-odd .ag-cell {
   background-color: var(--color-gray-5);
-}
+} */
 .ag-theme-alpine .ag-row-even {
   background-color: transparent;
 }
@@ -196,16 +196,16 @@
 .striped-row-gray .ag-row-odd{
   background-color: transparent;
 }
-.ag-theme-alpine.no-odd .ag-row-odd {
+/* .ag-theme-alpine.no-odd .ag-row-odd {
   background-color: #fff;
-}
+} */
 
 .ag-pinned-left-cols-container .ag-row {
   border-right: 1px solid var(--color-gray-10) !important;
 }
-.ag-row-odd {
+/* .ag-row-odd {
   background-color: var(--color-gray-5) !important;
-}
+} */
 .ag-row-focus .ag-cell.ag-cell-value,
 .ag-row-focus .ag-cell,
 .ag-row-selected .editable-cell,
@@ -242,6 +242,9 @@
 .ag-header-cell-comp-wrapper .ag-icon {
   width: 1.6rem !important;
   height: 1.6rem !important;
+}
+.ag-cell-not-inline-editing.ag-cell.ag-column-first {
+  padding: 0rem !important;
 }
 
 .ag-cell {
@@ -434,7 +437,14 @@
   background: var(--color-information-15) ;
 }
 .editable-cell {
-  background: var(--color-table-td-surface-editable) ;
+  background: var(--color-table-td-surface-editable) !important;
+}
+.ag-row-focus .ag-selection-checkbox {
+  background-color: var(--color-table-td-surface-selected) !important;
+}
+
+.ag-cell.ag-cell-focus {
+  background-color: var(--color-warning-15) !important;
 }
 .ag-cell-inline-editing {
   padding:0.2rem 0.6rem !important;
@@ -443,7 +453,7 @@
   outline: 1px solid var(--color-gray-100);
   outline-offset: -1px;
   border-radius: 0.4rem;;
-  text-align: right;
+  /* text-align: right; */
   padding:0 0.8rem;
 }
 .space-bottom-12 .ag-body-viewport{
@@ -467,6 +477,8 @@
 .ag-selection-checkbox {
   background-color: var(--color-table-td-surface-editable);
 }
+
+
 /* 선택 시 체크박스 배경색(구형 브라우저 대응) */
 .ag-theme-alpine .ag-checkbox-input-wrapper.ag-checked {
   background-color: var(--color-primary-50);
@@ -569,6 +581,8 @@
 /* .ag-column-first.ag-cell {
   padding: 0 !important;
 } */
+
+/* checkbox cell */
 .my-row-disabled .ag-column-first.ag-cell input {
   pointer-events: none !important;
 }
@@ -601,6 +615,7 @@
   mask-image: var(--ag-checkbox-checked-shape-image);
   mask-size: 0.8rem !important;
 }
+
 .ag-checkbox-input-wrapper:where(.ag-disabled),
 .ag-checkbox-input-wrapper{
   overflow: hidden;
@@ -639,10 +654,6 @@
   mask-repeat: no-repeat;
   color: var(--color-information-50);
 }
-
-
-
-
 
 
 

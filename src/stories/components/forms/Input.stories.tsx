@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol } from '@atoms';
 import { Input } from '@uiux/Input';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Grow, Gcol } from '@atoms';
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof Input> = {
@@ -238,6 +238,11 @@ import { Input } from '@uiux/Input';
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
+    formatter: {
+      control: { type: 'select' },
+      options: ['default', 'jumin'],
+      table: { category: '스타일 props' },
+    },
 
     before: {
       table: { category: '설정 props' },
@@ -287,6 +292,7 @@ import { Input } from '@uiux/Input';
     commaAmount: false,
     before: '',
     after: '',
+    formatter: 'default'
   },
 };
 
@@ -312,8 +318,8 @@ export const Default: Story = {
         {...restArgs}
         value={value}
         onChange={handleChange}
+        formatter={args.formatter}
         forceFocused={forceFocused ?? args.clear}
-        placeholder="입력해주세요."
       />
     );
   },
