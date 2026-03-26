@@ -5,9 +5,10 @@ import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
+import { Input } from '@/shared/components/uiux/Input';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -81,16 +82,20 @@ const LTPA430P = () => {
   
   return (
     <Gcol className="w-full">
-      <Gcol className="w-full">
-        <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+      <Gcol className="w-full" variant='box-round'>
+        <FormTable caption="설계번호" cols={["w-[14rem] min-w-[14rem]", 'w-auto'] } variant='none'>
           <FormRow>
             <FormCell title={'설계번호'}>
-              LA1212312312312
+              <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
+              <div className="separator">-</div>
+              <Input aria-label="" width={'3rem'} value={'1'} readOnly />
+              <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+              <Input aria-label="" width={'10rem'} value={'1형(345간편고지형)'} readOnly />
             </FormCell>
           </FormRow>
-        </FormTable>  
-        <InfoBox title="아래 내용은 청약완료시까지 해소되지 않을경우 수납이 불가능합니다.(청양완료 불가)" variant="info" bg={false} />
+        </FormTable>
       </Gcol>
+      <InfoBox title="아래 내용은 청약완료시까지 해소되지 않을경우 수납이 불가능합니다.(청양완료 불가)" variant="info" bg={false} />
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType>
           getRowId={params => String(params.data.id)}
