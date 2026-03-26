@@ -585,9 +585,9 @@ React가 `<App />`을 받아서 실제 화면에 표시하기까지의 전체 �
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  2. JSX → createElement 변환 (JSX Transformation)          │
+│  2. JSX → _jsx 변환 (JSX Transformation - React 17+)        │
 │     • <div>Hello</div>                                      │
-│     • → React.createElement('div', null, 'Hello')          │
+│     • → _jsx('div', { children: 'Hello' })                │
 └────────────────────────┬────────────────────────────────────┘
                          │
                          ▼
@@ -959,7 +959,8 @@ startTransition(() => {
 │     • 컴포넌트 함수 호출                                │
 │     • JSX 반환                                          │
 │     • Virtual DOM 트리 생성                             │
-│     • (중단 가능 in Concurrent Mode)                    │
+│     • (중단 가능 in Concurrent Mode - React 18+)        │
+│     • 높은 우선순위 업데이트 시 중단되고 나중에 재개     │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
@@ -1568,40 +1569,65 @@ JSX는 선택 사항입니다. JSX 없이도 React를 사용할 수 있지만, �
 
 #### React.createElement: JSX의 본질
 
-JSX는 실제로는 **`React.createElement`** 함수 호출을 편리하게 작성하는 문법적 설탕(Syntactic Sugar)입니다.
+JSX는 실제로는 **JSX 변환기가 처리하는 문법**입니다.
 
-**JSX 변환 예시:**
+#### JSX 변환 방식의 변화
+
+**React 17+ (현재 표준 - New JSX Transform):**
 ```jsx
 // 작성하는 코드 (JSX)
 const element = <h1 className="greeting">안녕하세요!</h1>;
 
-// 실제 실행되는 코드
-const element = React.createElement(
-  'h1',           // 태그 이름
-  { className: 'greeting' },  // 속성 (props)
-  '안녕하세요!'   // 자식 요소 (children)
+// 실제 실행되는 코드 (React 17+)
+import { jsx as _jsx } from 'react/jsx-runtime';
+
+const element = _jsx(
+  'h1',
+  { className: 'greeting', children: '안녕하세요!' }
 );
 ```
 
+**React 16 이전 (레거시 - 참고용만):**
+```jsx
+// 작성하는 코드 (JSX)
+const element = <h1 className="greeting">안녕하세요!</h1>;
+
+// 실제 실행되는 코드 (React 16)
+import React from 'react';
+
+const element = React.createElement(
+  'h1',
+  { className: 'greeting' },
+  '안녕하세요!'
+);
+```
+
+**변화된 점 (React 17+):**
+- ✅ `import React` 더 이상 불필요
+- ✅ 번들 크기 감소
+- ✅ 나중에 더 나은 최적화 가능
+- ✅ JSX 런타임 자동 import
+
 **간단한 컴포넌트 비교:**
 
-JSX 사용 (일반적):
+JSX 사용 (현대적):
 ```jsx
 function Greeting({ name }) {
   return <h1>안녕하세요, {name}님!</h1>;
 }
 ```
 
-JSX 없이 작성:
+JSX 없이 작성 (교육용 - 권장하지 않음):
 ```javascript
+// ❌ 권장하지 않음 - 가독성이 떨어짐
 function Greeting({ name }) {
-  return React.createElement('h1', null, `안녕하세요, ${name}님!`);
+  return _jsx('h1', { children: `안녕하세요, ${name}님!` });
 }
 ```
 
 **복잡한 컴포넌트 비교:**
 
-JSX 사용:
+JSX 사용 (권장):
 ```jsx
 function UserCard({ user }) {
   return (
@@ -1619,8 +1645,11 @@ function UserCard({ user }) {
 }
 ```
 
-JSX 없이 작성:
+JSX 없이 작성 (교육용 - 실제로는 사용하지 않음):
 ```javascript
+// ⚠️ 이 코드는 React 내부 동작 이해를 위한 것입니다
+// 실제 프로젝트에서는 절대 이렇게 작성하지 마세요!
+
 function UserCard({ user }) {
   return React.createElement('div', { className: 'card' },
     React.createElement('img', {
@@ -1638,9 +1667,32 @@ function UserCard({ user }) {
     )
   );
 }
+
+// React 17+에서 실제로는 이렇게 변환됩니다:
+import { jsx as _jsx } from 'react/jsx-runtime';
+
+function UserCard({ user }) {
+  return _jsx('div', { className: 'card', children: [
+    _jsx('img', {
+      src: user.avatar,
+      alt: user.name,
+      className: 'avatar'
+    }),
+    _jsx('div', { className: 'info', children: [
+      _jsx('h3', { className: 'name', children: user.name }),
+      _jsx('p', { className: 'email', children: user.email }),
+      _jsx('button', {
+        className: 'btn-follow',
+        onClick: () => alert('팔로우!')
+      }, '팔로우')
+    ]})
+  ]});
+}
 ```
 
-#### React.createElement 상세
+#### React.createElement 상세 (교육용)
+
+**⚠️ 중요**: React 17부터는 `createElement`를 직접 사용할 필요가 없습니다. 이 섹션은 React 내부 동작을 이해하기 위한 것입니다.
 
 **함수 시그니처:**
 ```javascript
@@ -1650,6 +1702,39 @@ React.createElement(
   ...children  // 자식 요소들 (가변 인자)
 )
 ```
+
+**매개변수 설명:**
+
+1. **type**: 문자열(HTML 태그) 또는 함수(React 컴포넌트)
+   ```javascript
+   'div'                          // HTML 태그
+   'span'                         // HTML 태그
+   UserCard                       // 컴포넌트 함수
+   ```
+
+2. **props**: 속성 객체
+   ```javascript
+   { className: 'container', id: 'app' }
+   null                           // 속성 없음
+   ```
+
+3. **children**: 자식 요소
+   ```javascript
+   '텍스트'                       // 텍스트 노드
+   React.createElement('span')     // 단일 자식
+   [child1, child2, child3]       // 여러 자식
+   ```
+
+**현대적 사용 (React 17+):**
+
+| 구분 | React 16 이전 | React 17+ (현재) |
+|------|--------------|-----------------|
+| **import** | `import React from 'react'` | 불필요 |
+| **변환** | `React.createElement` | `_jsx` (auto-import) |
+| **번들 크기** | 더 큼 | 더 작음 |
+| **사용** | 직접 사용 가능 | JSX로만 사용 |
+
+**결론**: `createElement`는 React 내부 동작을 이해하는 데 도움이 되지만, 실제 개발에서는 **항상 JSX를 사용**하세요.
 
 **매개변수 설명:**
 
@@ -1844,8 +1929,9 @@ function ImageExample() {
       />
 
       {/* 2. 로컬 이미지 (import 사용) */}
+      {/* Vite, Create React App 등 */}
       <img
-        src={require('./images/logo.png')}
+        src={logo}
         alt="로고"
       />
 
@@ -1907,7 +1993,7 @@ function ImageExample() {
 }
 ```
 
-**Next.js (Image 컴포넌트 사용 권장):**
+**Next.js 13+ (Image 컴포넌트 사용 필수):**
 ```jsx
 import Image from 'next/image';
 import myImage from './images/my-image.png';
@@ -1915,17 +2001,28 @@ import myImage from './images/my-image.png';
 function ImageExample() {
   return (
     <div>
-      {/* Next.js Image 컴포넌트 - 최적화됨 */}
+      {/* Next.js Image 컴포넌트 - 자동 최적화 */}
       <Image
         src={myImage}
         alt="최적화된 이미지"
         width={500}
         height={300}
-        // placeholder="blur"  // 블러 효과
-        // priority           // 우선 로딩
+        placeholder="blur"       // 블러 효과로 로딩 개선
+        priority                 // LCP( Largest Contentful Paint) 이미지 우선 로딩
       />
 
-      {/* 외부 URL 사용시 */}
+      {/* 외부 URL 사용시 - next.config.js에 domains 설정 필요 */}
+      {/* next.config.js:
+      images: {
+        domains: ['example.com'],
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: '**.example.com',
+          },
+        ],
+      },
+      */}
       <Image
         src="https://example.com/image.jpg"
         alt="외부 이미지"
@@ -1936,6 +2033,12 @@ function ImageExample() {
   );
 }
 ```
+
+**⚠️ Next.js Image 주의사항:**
+1. 외부 이미지는 `next.config.js`에 `domains` 또는 `remotePatterns` 설정 필수
+2. `width`와 `height`는 필수 prop (레이아웃 이동 방지)
+3. `priority`를 사용하여 중요한 이미지를 미리 로드
+4. `placeholder="blur"`를 사용하여 LCP 개선
 
 #### public 폴더 사용
 
@@ -2774,4 +2877,306 @@ function PasswordResetForm() {
 > **Over-abstraction**은 **under-abstraction**만큼 해롭습니다.
 
 **경험칙**: 컴포넌트가 **복잡해지거나 재사용 필요성이 생길 때** 분리하세요. 처음부터 완벽하게 분리하려 하지 마세요!
+
+---
+
+## ⚠️ React 컴포넌트 개발 시 피해야 할 안티패턴
+
+React 컴포넌트를 개발할 때 흔히 발생하는 실수들과 그 해결책을 알아봅시다.
+
+### 1. 배열 인덱스를 key로 사용 (The Most Common Mistake)
+
+**문제**: 배열 인덱스를 key로 사용하면 React가 항목을 제대로 추적하지 못합니다.
+
+```jsx
+// ❌ 안티패턴: 배열 인덱스를 key로 사용
+function TodoList({ todos }) {
+  return (
+    <ul>
+      {todos.map((todo, index) => (
+        <li key={index}>  {/* ❌ 문제 발생! */}
+          {todo.text}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// 문제: 첫 번째 항목을 삭제하면?
+// 이전: [{id: 1, text: "A"}, {id: 2, text: "B"}]
+//       key: 0                    key: 1
+// 이후: [{id: 2, text: "B"}]
+//       key: 0 (이전의 "B"가 아니라 "A"였던 위치!)
+// 결과: React가 "B"를 "A"로 잘못 인식하여 불필요한 리렌더링 발생
+```
+
+**해결책**: 고유하고 안정적인 ID를 key로 사용
+
+```jsx
+// ✅ 올바른 방법: 고유한 ID 사용
+function TodoList({ todos }) {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>  {/* ✅ 고유한 ID */}
+          {todo.text}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### 2. 인라인 함수 생성 (Unnecessary Re-renders)
+
+**문제**: JSX에서 인라인으로 함수를 만들면 매 렌더링마다 새 함수가 생성됩니다.
+
+```jsx
+// ❌ 안티패턴: 매 렌더링마다 새 함수 생성
+function UserList({ users }) {
+  return (
+    <div>
+      {users.map(user => (
+        <UserCard
+          key={user.id}
+          user={user}
+          onDelete={() => handleDelete(user.id)}  {/* ❌ 새 함수! */}
+          onEdit={() => handleEdit(user.id)}      {/* ❌ 새 함수! */}
+        />
+      ))}
+    </div>
+  );
+}
+// 문제: UserCard가 불필요하게 리렌더링됨
+```
+
+**해결책**: `useCallback` 또는 ID를 인자로 전달
+
+```jsx
+// ✅ 해결책 1: ID를 인자로 전달 (더 간단)
+function UserList({ users }) {
+  return (
+    <div>
+      {users.map(user => (
+        <UserCard
+          key={user.id}
+          user={user}
+          onDelete={handleDelete}  {/* ✅ 함수 참조 */}
+          onEdit={handleEdit}      {/* ✅ 함수 참조 */}
+          userId={user.id}
+        />
+      ))}
+    </div>
+  );
+}
+
+function UserCard({ user, onDelete, onEdit, userId }) {
+  const handleDeleteClick = () => onDelete(userId);
+  const handleEditClick = () => onEdit(userId);
+
+  return (
+    <div>
+      <h3>{user.name}</h3>
+      <button onClick={handleDeleteClick}>삭제</button>
+      <button onClick={handleEditClick}>편집</button>
+    </div>
+  );
+}
+
+// ✅ 해결책 2: useCallback 사용 (복잡한 경우)
+import { useCallback } from 'react';
+
+function UserList({ users }) {
+  const deleteUser = useCallback((id) => {
+    handleDelete(id);
+  }, []);
+
+  return (
+    <div>
+      {users.map(user => (
+        <UserCard
+          key={user.id}
+          user={user}
+          onDelete={deleteUser}
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+### 3. useEffect 남용 (useEffect for Everything)
+
+**문제**: 모든 로직을 useEffect에 넣으려고 합니다.
+
+```jsx
+// ❌ 안티패턴: 데이터 페칭에 useEffect 사용
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUser() {
+      setLoading(true);
+      const response = await fetch(`/api/users/${userId}`);
+      const data = await response.json();
+      setUser(data);
+      setLoading(false);
+    }
+    fetchUser();
+  }, [userId]);
+
+  if (loading) return <p>로딩 중...</p>;
+  return <div>{user.name}</div>;
+}
+```
+
+**해결책**: React Query, SWR 또는 Server Components 사용
+
+```jsx
+// ✅ 현대적 방법: React Query 사용
+import { useQuery } from '@tanstack/react-query';
+
+function UserProfile({ userId }) {
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => fetch(`/api/users/${userId}`).then(r => r.json())
+  });
+
+  if (isLoading) return <p>로딩 중...</p>;
+  return <div>{user.name}</div>;
+}
+
+// ✅ 또는 Server Components (Next.js 13+)
+// async function UserProfile({ userId }) {
+//   const user = await fetch(`/api/users/${userId}`).then(r => r.json());
+//   return <div>{user.name}</div>;
+// }
+```
+
+### 4. 의존성 배열 누락 (Missing Dependencies)
+
+**문제**: useEffect의 의존성 배열을 빈 값으로 두거나 불완전하게 작성합니다.
+
+```jsx
+// ❌ 안티패턴: 의존성 배열 누락
+function UserProfile({ userId }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(`User ${userId} count: ${count}`);  // count 사용하지만 의존성 없음
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [userId]);  // ❌ count가 의존성에 없음!
+
+  // 문제: count는 항상 0만 출력 (stale closure)
+}
+```
+
+**해결책**: ESLint react-hooks-plugin 사용 및 정확한 의존성
+
+```jsx
+// ✅ 올바른 방법: 모든 의존성 포함
+function UserProfile({ userId }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(`User ${userId} count: ${count}`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [userId, count]);  // ✅ count 포함
+
+  // 또는 함수형 업데이트 사용
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(c => {
+        console.log(`User ${userId} count: ${c}`);
+        return c + 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [userId]);  // ✅ count가 필요 없음
+}
+```
+
+### 5. Props Drilling (Props 전달 지옥)
+
+**문제**: 데이터를 전달하기 위해 여러 층의 컴포넌트를 거쳐야 합니다.
+
+```jsx
+// ❌ 안티패턴: Props Drilling
+function App() {
+  const [user, setUser] = useState(null);
+  return (
+    <div>
+      <Header user={user} />
+      <Main>
+        <Sidebar user={user} />
+        <Content>
+          <Profile user={user} />  {/* 3단계 거쳐서 전달 */}
+        </Content>
+      </Main>
+    </div>
+  );
+}
+```
+
+**해결책**: Context API 또는 상태 관리 라이브러리
+
+```jsx
+// ✅ 해결책 1: Context API
+import { createContext, useContext } from 'react';
+
+const UserContext = createContext();
+
+function App() {
+  const [user, setUser] = useState(null);
+  return (
+    <UserContext.Provider value={user}>
+      <Header />
+      <Main>
+        <Sidebar />
+        <Content>
+          <Profile />  {/* props 없이 직접 접근 */}
+        </Content>
+      </Main>
+    </UserContext.Provider>
+  );
+}
+
+function Profile() {
+  const user = useContext(UserContext);  // 어디서든 직접 접근
+  return <div>{user.name}</div>;
+}
+
+// ✅ 해결책 2: Zustand 등 상태 관리 (더 간단)
+// import { create } from 'zustand';
+// const useUserStore = create((set) => ({
+//   user: null,
+//   setUser: (user) => set({ user })
+// }));
+//
+// function Profile() {
+//   const user = useUserStore(state => state.user);
+//   return <div>{user.name}</div>;
+// }
+```
+
+### 요약: 컴포넌트 안티패턴 점검표
+
+```
+□ 배열 인덱스를 key로 사용하지 않았나요?
+□ 인라인 함수를 너무 많이 생성하나요?
+□ useEffect에 모든 것을 넣으려 하나요?
+□ 의존성 배열을 정확하게 작성했나요?
+□ Props가 3단계 이상 drilling되나요?
+□ 컴포넌트가 200줄을 넘었나요?
+```
+
+**핵심 교훈**: React는 단순성을 선호합니다. 복잡한 패턴은 대신 더 간단하고 명확한 접근 방식을 사용하세요.
 
