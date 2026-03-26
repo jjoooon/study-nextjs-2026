@@ -176,6 +176,21 @@
   border-bottom: 1px solid var(--color-gray-10) !important;
 }
 
+/* Make row height controllable via role="row" instead of fixed viewport height
+   - Targets rows inside center-cols viewport to ensure grid layout remains intact
+   - Uses existing --ag-row-height variable (fallback 3rem) and allows overriding
+*/
+.ag-center-cols-viewport [role="row"],
+.ag-center-cols-viewport .ag-row {
+  height: var(--ag-row-height, 3rem) !important;
+  min-height: var(--ag-row-height, 3rem) !important;
+}
+
+/* Avoid forcing a fixed height on the viewport itself so rows control their own height */
+.ag-center-cols-viewport {
+  height: auto !important;
+}
+
 /* .ag-row:last-child {
   border-bottom: 0 !important;
 } */
