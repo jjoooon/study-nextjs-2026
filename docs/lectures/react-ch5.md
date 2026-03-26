@@ -1371,3 +1371,1912 @@ function TodoApp() {
   <Component key={item.id} />  // 고유 ID 사용
 ))}
 ```
+
+---
+
+## 5.4 React Server Components와 리스트/조건부 렌더링
+
+React Server Components (RSC)에서는 리스트 렌더링과 조건부 렌더링이 어떻게 다르게 작동하는지 이해해야 합니다.
+
+---
+
+### Server Component에서의 리스트 렌더링
+
+**핵심**: Server Component에서는 map(), filter(), sort() 등의 JavaScript 배열 메서드를 자유롭게 사용할 수 있습니다.
+
+```jsx
+// ✅ Server Component: 리스트 렌더링 가능
+async function UserList() {
+  const users = await fetchUsers();  // DB에서 직접 조회
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>
+          {user.name} - {user.email}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 복잡한 필터링도 가능
+async function FilteredList({ minAge }) {
+  const users = await fetchUsers();
+
+  const adults = users.filter(user => user.age >= minAge);
+
+  return (
+    <ul>
+      {adults.map(user => (
+        <li key={user.id}>
+          {user.name} ({user.age}세)
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**중요**: Server Component에서는 state와 event handlers를 사용할 수 없습니다.
+
+```jsx
+// ❌ Server Component: useState 사용 불가
+function UserList() {
+  const [users, setUsers] = useState([]);  // 에러!
+  // ...
+}
+
+// ❌ Server Component: 이벤트 핸들러 사용 불가
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>
+          {user.name}
+          <button onClick={() => deleteUser(user.id)}>삭제</button>  // 에러!
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### Server Component에서의 조건부 렌더링
+
+Server Component에서도 &&, ||, ??, 삼항 연산자 등 모든 조건부 렌더링 패턴을 사용할 수 있습니다.
+
+```jsx
+// ✅ Server Component: 조건부 렌더링 가능
+async function UserProfile({ userId }) {
+  const user = await fetchUser(userId);
+
+  if (!user) {
+    return <div>사용자를 찾을 수 없습니다.</div>;
+  }
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      {user.isPremium && <span className="badge">프리미엄</span>}
+    </div>
+  );
+}
+
+// ✅ 다양한 조건부 렌더링 패턴
+async function Dashboard() {
+  const stats = await fetchStats();
+
+  return (
+    <div>
+      {/* 삼항 연산자 */}
+      {stats.error ? (
+        <ErrorMessage message={stats.error} />
+      ) : (
+        <StatsData data={stats} />
+      )}
+
+      {/* && 연산자 */}
+      {stats.isLoading && <LoadingSpinner />}
+
+      {/* ?? 연산자 */}
+      <p>총 방문자: {stats.visitors ?? 0}명</p>
+    </div>
+  );
+}
+```
+
+---
+
+### Client Component로 변환해야 하는 경우
+
+다음 경우에는 반드시 `'use client'` 지시어를 추가해야 합니다:
+
+1. **useState, useReducer 사용**
+2. **이벤트 핸들러 (onClick, onChange 등)**
+3. **useEffect, useLayoutEffect**
+4. **브라우저 전용 API (localStorage, window 등)**
+
+```jsx
+'use client';
+
+import { useState } from 'react';
+
+function InteractiveUserList({ initialUsers }) {
+  const [users, setUsers] = useState(initialUsers);
+  const [filter, setFilter] = useState('all');
+
+  // 이벤트 핸들러
+  const handleDelete = (id) => {
+    setUsers(users.filter(user => user.id !== id));
+  };
+
+  const filteredUsers = users.filter(user => {
+    if (filter === 'active') return user.isActive;
+    if (filter === 'inactive') return !user.isActive;
+    return true;
+  });
+
+  return (
+    <div>
+      <button onClick={() => setFilter('all')}>전체</button>
+      <button onClick={() => setFilter('active')}>활성</button>
+      <button onClick={() => setFilter('inactive')}>비활성</button>
+
+      <ul>
+        {filteredUsers.map(user => (
+          <li key={user.id}>
+            {user.name}
+            <button onClick={() => handleDelete(user.id)}>삭제</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+---
+
+### Server와 Client Component 결합 패턴
+
+**권장**: 데이터 가져오기와 정렬/필터링은 Server Component, 인터랙티브 기능은 Client Component로 분리합니다.
+
+```jsx
+// ✅ Server Component: 데이터 가져오기
+async function UserListPage() {
+  const users = await fetchUsers();
+
+  // 정렬은 서버에서
+  const sortedUsers = [...users].sort((a, b) => b.score - a.score);
+
+  return <InteractiveUserList users={sortedUsers} />;
+}
+
+// ✅ Client Component: 인터랙티브 기능
+'use client';
+
+function InteractiveUserList({ users }) {
+  const [selectedUsers, setSelectedUsers] = useState(new Set());
+
+  const toggleUser = (userId) => {
+    const newSelected = new Set(selectedUsers);
+    if (newSelected.has(userId)) {
+      newSelected.delete(userId);
+    } else {
+      newSelected.add(userId);
+    }
+    setSelectedUsers(newSelected);
+  };
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li
+          key={user.id}
+          className={selectedUsers.has(user.id) ? 'selected' : ''}
+          onClick={() => toggleUser(user.id)}
+        >
+          {user.name} - {user.score}점
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### RSC에서의 Key Props 주의사항
+
+Server Component에서도 key props는 동일하게 중요합니다:
+
+```jsx
+// ✅ Server Component에서도 key는 필수
+async function PostList() {
+  const posts = await fetchPosts();
+
+  return (
+    <div>
+      {posts.map(post => (
+        <PostCard key={post.id} post={post} />
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+### RSC와 Suspense 결합
+
+Server Component에서 Suspense를 사용하여 로딩 상태를 선언적으로 처리할 수 있습니다:
+
+```jsx
+import { Suspense } from 'react';
+
+async function UserList() {
+  const users = await fetchUsers();
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <UserList />
+    </Suspense>
+  );
+}
+```
+
+**중요**: Suspense는 Server Component에서 직접 사용할 수 있지만, `<Suspense>` 내부의 컴포넌트가 비동기 작업을 수행해야 의미가 있습니다.
+
+---
+
+### 요약: Server Component에서의 리스트/조건부 렌더링
+
+| 기능 | Server Component | Client Component |
+|------|------------------|------------------|
+| **map(), filter(), sort()** | ✅ 가능 | ✅ 가능 |
+| **조건부 렌더링 (&&, \|\|, ??)** | ✅ 가능 | ✅ 가능 |
+| **useState, useReducer** | ❌ 불가능 | ✅ 가능 |
+| **이벤트 핸들러** | ❌ 불가능 | ✅ 가능 |
+| **useEffect** | ❌ 불가능 | ✅ 가능 |
+| **데이터 가져오기 (async/await)** | ✅ 가능 | ⚠️ 가능하지만 권장하지 않음 |
+| **Suspense** | ✅ 가능 | ✅ 가능 |
+
+---
+
+## 5.5 Suspense와 로딩 상태
+
+React 18+의 Suspense를 사용하여 리스트와 조건부 렌더링에서의 로딩 상태를 선언적으로 처리할 수 있습니다.
+
+---
+
+### 기본 Suspense 사용법
+
+Suspense는 데이터가 로딩되는 동안 fallback UI를 보여줍니다:
+
+```jsx
+import { Suspense } from 'react';
+
+function UserList({ users }) {
+  if (users === null) {
+    throw fetchUsers();  // Promise를 throw하면 Suspense가 감지
+  }
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <UserList users={null} />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### React 19의 use() 훅
+
+React 19에서는 `use()` 훅을 사용하여 Promise를 더 간단하게 처리할 수 있습니다:
+
+```jsx
+import { Suspense, use } from 'react';
+
+function UserList({ usersPromise }) {
+  const users = use(usersPromise);  // Promise가 resolve될 때까지 기다림
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  const usersPromise = fetchUsers();
+
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <UserList usersPromise={usersPromise} />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### 리스트에서의 Suspense 활용
+
+대용량 리스트를 페이지별로 로딩할 때 Suspense를 활용할 수 있습니다:
+
+```jsx
+import { Suspense, use } from 'react';
+
+function UserPage({ page }) {
+  const users = use(fetchUsers(page));
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+function PaginatedUserList() {
+  const [page, setPage] = useState(1);
+
+  return (
+    <div>
+      <button onClick={() => setPage(p => p - 1)} disabled={page === 1}>
+        이전
+      </button>
+      <span>페이지 {page}</span>
+      <button onClick={() => setPage(p => p + 1)}>
+        다음
+      </button>
+
+      <Suspense fallback={<div>페이지 {page} 로딩 중...</div>}>
+        <UserPage page={page} />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+---
+
+### 조건부 렌더링과 Suspense
+
+조건부로 다른 데이터를 로딩할 때도 Suspense를 활용할 수 있습니다:
+
+```jsx
+import { Suspense, use } from 'react';
+
+function UserProfile({ userId }) {
+  const user = use(fetchUser(userId));
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      {user.hasPosts && (
+        <Suspense fallback={<div>게시글 로딩 중...</div>}>
+          <UserPosts userId={userId} />
+        </Suspense>
+      )}
+    </div>
+  );
+}
+
+function UserPosts({ userId }) {
+  const posts = use(fetchUserPosts(userId));
+
+  return (
+    <ul>
+      {posts.map(post => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### 여러 Suspense 경계
+
+독립적인 로딩 상태를 위해 여러 Suspense 경계를 사용할 수 있습니다:
+
+```jsx
+function Dashboard() {
+  return (
+    <div>
+      <h1>대시보드</h1>
+
+      <section>
+        <h2>사용자</h2>
+        <Suspense fallback={<UserListSkeleton />}>
+          <UserList />
+        </Suspense>
+      </section>
+
+      <section>
+        <h2>최근 게시글</h2>
+        <Suspense fallback={<PostListSkeleton />}>
+          <PostList />
+        </Suspense>
+      </section>
+
+      <section>
+        <h2>통계</h2>
+        <Suspense fallback={<StatsSkeleton />}>
+          <Stats />
+        </Suspense>
+      </section>
+    </div>
+  );
+}
+```
+
+---
+
+### Skeleton UI 패턴
+
+로딩 중에 실제 콘텐츠와 유사한 Skeleton을 보여주면 사용자 경험이 개선됩니다:
+
+```jsx
+function UserListSkeleton() {
+  return (
+    <ul>
+      {[1, 2, 3, 4, 5].map(i => (
+        <li key={i} className="skeleton">
+          <div className="skeleton-avatar" />
+          <div className="skeleton-text" />
+          <div className="skeleton-text short" />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function UserPage() {
+  return (
+    <div>
+      <h1>사용자 목록</h1>
+      <Suspense fallback={<UserListSkeleton />}>
+        <UserList />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+---
+
+### Error Boundary와 결합
+
+Suspense는 Error Boundary와 함께 사용하여 로딩과 에러 상태를 모두 처리할 수 있습니다:
+
+```jsx
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+
+function UserList() {
+  const users = use(fetchUsers());
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+function UserListError({ error, reset }) {
+  return (
+    <div>
+      <p>에러 발생: {error.message}</p>
+      <button onClick={reset}>다시 시도</button>
+    </div>
+  );
+}
+
+function UserPage() {
+  return (
+    <ErrorBoundary FallbackComponent={UserListError}>
+      <Suspense fallback={<div>로딩 중...</div>}>
+        <UserList />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+---
+
+### 요약: Suspense 활용
+
+| 패턴 | 설명 | 사용 시나리오 |
+|------|------|--------------|
+| **단일 Suspense** | 전체 페이지 로딩 | 단순 페이지 로딩 |
+| **다중 Suspense** | 독립적인 로딩 상태 | 여러 섹션 독립 로딩 |
+| **Skeleton UI** | 콘텐츠 모방 로딩 | 사용자 경험 개선 |
+| **Error Boundary** | 에러 처리 | 로딩 실패 대응 |
+| **use() 훅** | Promise 대기 | React 19+ 비동기 데이터 |
+
+---
+
+## 5.6 리스트 성능 최적화
+
+대용량 리스트를 렌더링할 때 성능을 최적화하는 방법을 알아봅니다.
+
+---
+
+### Key Props 최적화
+
+**핵심**: Key는 항상 고유하고 안정적인 값을 사용해야 합니다.
+
+```jsx
+// ❌ 나쁜 예시: 인덱스를 key로 사용
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ❌ 나쁜 예시: 중복 가능성이 있는 값
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.email}>  {/* email이 중복될 수 있음 */}
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시: 고유한 ID 사용
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ ID가 없는 경우: 고유한 키 생성
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map((user, index) => (
+        <li key={`${user.name}-${index}`}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**주의**: 정적 리스트(순서가 바뀌지 않는 리스트)에서는 인덱스를 key로 사용해도 괜찮습니다:
+
+```jsx
+// ✅ 정적 리스트에서는 인덱스 사용 가능
+function WeekDays() {
+  const days = ['월', '화', '수', '목', '금', '토', '일'];
+
+  return (
+    <ul>
+      {days.map((day, index) => (
+        <li key={index}>{day}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### React.memo로 리스트 아이템 최적화
+
+같은 props로 다시 렌더링되는 것을 방지하기 위해 `React.memo`를 사용합니다:
+
+```jsx
+import { memo } from 'react';
+
+// ✅ memo로 최적화
+const UserItem = memo(function UserItem({ user, onDelete }) {
+  console.log('UserItem 렌더링:', user.id);
+  return (
+    <li>
+      {user.name}
+      <button onClick={() => onDelete(user.id)}>삭제</button>
+    </li>
+  );
+});
+
+function UserList() {
+  const [users, setUsers] = useState([
+    { id: 1, name: 'John' },
+    { id: 2, name: 'Jane' },
+    { id: 3, name: 'Bob' },
+  ]);
+
+  // onDelete 함수가 매번 새로 생성되면 memo가 효과가 없음
+  const handleDelete = useCallback((id) => {
+    setUsers(users.filter(user => user.id !== id));
+  }, [users]);
+
+  return (
+    <ul>
+      {users.map(user => (
+        <UserItem
+          key={user.id}
+          user={user}
+          onDelete={handleDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+```
+
+**주의**: 함수 props는 `useCallback`으로 감싸야 `memo`가 효과가 있습니다.
+
+---
+
+### useMemo로 필터링/정렬 최적화
+
+비싼 필터링이나 정렬 연산을 `useMemo`로 캐싱합니다:
+
+```jsx
+import { useMemo, useState } from 'react';
+
+function UserList({ users }) {
+  const [filter, setFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('name');
+
+  // ✅ 필터링과 정렬을 useMemo로 최적화
+  const filteredAndSortedUsers = useMemo(() => {
+    let result = users;
+
+    // 필터링
+    if (filter === 'active') {
+      result = result.filter(user => user.isActive);
+    } else if (filter === 'inactive') {
+      result = result.filter(user => !user.isActive);
+    }
+
+    // 정렬
+    result = [...result].sort((a, b) => {
+      if (sortBy === 'name') {
+        return a.name.localeCompare(b.name);
+      } else if (sortBy === 'age') {
+        return a.age - b.age;
+      }
+      return 0;
+    });
+
+    return result;
+  }, [users, filter, sortBy]);
+
+  return (
+    <div>
+      <button onClick={() => setFilter('all')}>전체</button>
+      <button onClick={() => setFilter('active')}>활성</button>
+      <button onClick={() => setSortBy('name')}>이름 정렬</button>
+      <button onClick={() => setSortBy('age')}>나이 정렬</button>
+
+      <ul>
+        {filteredAndSortedUsers.map(user => (
+          <li key={user.id}>
+            {user.name} - {user.age}세
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+---
+
+### useCallback으로 핸들러 최적화
+
+리스트 아이템에 전달하는 핸들러 함수를 `useCallback`으로 최적화합니다:
+
+```jsx
+import { useCallback, useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Task 1', completed: false },
+    { id: 2, text: 'Task 2', completed: false },
+  ]);
+
+  // ✅ useCallback으로 함수 최적화
+  const toggleTodo = useCallback((id) => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
+    );
+  }, []);
+
+  const deleteTodo = useCallback((id) => {
+    setTodos(prevTodos =>
+      prevTodos.filter(todo => todo.id !== id)
+    );
+  }, []);
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={toggleTodo}
+          onDelete={deleteTodo}
+        />
+      ))}
+    </ul>
+  );
+}
+
+const TodoItem = memo(function TodoItem({ todo, onToggle, onDelete }) {
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => onToggle(todo.id)}
+      />
+      <span
+        style={{
+          textDecoration: todo.completed ? 'line-through' : 'none'
+        }}
+      >
+        {todo.text}
+      </span>
+      <button onClick={() => onDelete(todo.id)}>삭제</button>
+    </li>
+  );
+});
+```
+
+---
+
+### map() 내부의 inline 함수 피하기
+
+map() 내부에서 inline 함수를 만들면 매번 새로운 함수가 생성되어 성능 문제가 발생할 수 있습니다:
+
+```jsx
+// ❌ 나쁜 예시: map() 내부의 inline 함수
+function TodoList() {
+  const [todos, setTodos] = useState([...]);
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={() => setTodos(prev =>  // 매번 새 함수 생성
+            prev.map(t =>
+              t.id === todo.id
+                ? { ...t, completed: !t.completed }
+                : t
+            )
+          )}
+          onDelete={() => setTodos(prev =>  // 매번 새 함수 생성
+            prev.filter(t => t.id !== todo.id)
+          )}
+        />
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시: useCallback로 핸들러 생성
+function TodoList() {
+  const [todos, setTodos] = useState([...]);
+
+  const handleToggle = useCallback((id) => {
+    setTodos(prev =>
+      prev.map(t =>
+        t.id === id
+          ? { ...t, completed: !t.completed }
+          : t
+      )
+    );
+  }, []);
+
+  const handleDelete = useCallback((id) => {
+    setTodos(prev => prev.filter(t => t.id !== id));
+  }, []);
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### 불필요한 재렌더링 방지
+
+`React.memo`와 함수형 업데이트를 결합하여 불필요한 재렌더링을 방지합니다:
+
+```jsx
+import { memo, useCallback, useState } from 'react';
+
+const TodoItem = memo(function TodoItem({ todo, onToggle, onDelete }) {
+  console.log('TodoItem 렌더링:', todo.id);
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => onToggle(todo.id)}
+      />
+      <span>{todo.text}</span>
+      <button onClick={() => onDelete(todo.id)}>삭제</button>
+    </li>
+  );
+});
+
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Task 1', completed: false },
+    { id: 2, text: 'Task 2', completed: false },
+  ]);
+
+  // 함수형 업데이트로 의존성 제거
+  const handleToggle = useCallback((id) => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
+    );
+  }, []);  // 빈 의존성 배열
+
+  const handleDelete = useCallback((id) => {
+    setTodos(prevTodos =>
+      prevTodos.filter(todo => todo.id !== id)
+    );
+  }, []);  // 빈 의존성 배열
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### 요약: 리스트 성능 최적화
+
+| 기법 | 사용 목적 | 주의 사항 |
+|------|----------|----------|
+| **Key Props** | 리conciliation 최적화 | 고유하고 안정적인 ID 사용 |
+| **React.memo** | 불필요한 재렌더링 방지 | 함수 props는 useCallback과 함께 |
+| **useMemo** | 비싼 연산 캐싱 | 필터링, 정렬 등에 사용 |
+| **useCallback** | 함수 참조 안정화 | map() 내부 inline 함수 피하기 |
+| **함수형 업데이트** | 의존성 제거 | 최신 state 기반 업데이트 |
+
+---
+
+## 5.7 대용량 리스트와 가상화
+
+1000개 이상의 아이템을 렌더링할 때는 가상화(Virtualization) 기술을 사용해야 합니다.
+
+---
+
+### 왜 가상화가 필요한가요?
+
+대용량 리스트를 모두 렌더링하면 다음 문제가 발생합니다:
+
+1. **DOM 노드 과다**: 수천 개의 DOM 노드 생성
+2. **메모리 사용**: 각 아이템의 메모리 소비
+3. **렌더링 성능**: 스크롤 시 느려짐
+4. **사용자 경험**: 페이지가 느리게 느껴짐
+
+```jsx
+// ❌ 문제: 10,000개 아이템 전부 렌더링
+function LargeList() {
+  const items = Array.from({ length: 10000 }, (_, i) => ({
+    id: i,
+    name: `Item ${i}`,
+  }));
+
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### react-window로 가상화 구현
+
+`react-window`는 화면에 보이는 아이템만 렌더링합니다:
+
+```bash
+npm install react-window
+```
+
+**기본 사용법**:
+
+```jsx
+import { FixedSizeList } from 'react-window';
+
+function Row({ index, style }) {
+  return (
+    <div style={style}>
+      Item {index}
+    </div>
+  );
+}
+
+function VirtualList() {
+  const items = Array.from({ length: 10000 }, (_, i) => i);
+
+  return (
+    <FixedSizeList
+      height={600}           // 뷰포트 높이
+      itemCount={items.length}  // 전체 아이템 수
+      itemSize={50}          // 각 아이템 높이
+      width="100%"
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}
+```
+
+**동적인 높이**:
+
+```jsx
+import { VariableSizeList } from 'react-window';
+
+function getItemSize(index) {
+  // 인덱스에 따라 다른 높이 반환
+  if (index % 3 === 0) return 100;
+  return 50;
+}
+
+function VariableList() {
+  const items = Array.from({ length: 1000 }, (_, i) => i);
+
+  return (
+    <VariableSizeList
+      height={600}
+      itemCount={items.length}
+      itemSize={getItemSize}
+      width="100%"
+    >
+      {Row}
+    </VariableSizeList>
+  );
+}
+```
+
+---
+
+### react-virtualized 사용
+
+`react-virtualized`는 더 많은 기능을 제공합니다:
+
+```bash
+npm install react-virtualized
+```
+
+```jsx
+import { List } from 'react-virtualized';
+
+function VirtualList() {
+  const items = Array.from({ length: 10000 }, (_, i) => ({
+    id: i,
+    name: `Item ${i}`,
+  }));
+
+  const rowRenderer = ({ index, key, style }) => (
+    <div key={key} style={style}>
+      {items[index].name}
+    </div>
+  );
+
+  return (
+    <List
+      width="100%"
+      height={600}
+      rowCount={items.length}
+      rowHeight={50}
+      rowRenderer={rowRenderer}
+    />
+  );
+}
+```
+
+---
+
+### Infinite Scroll 구현
+
+가상화와 무한 스크롤을 결합하여 대용량 데이터를 처리합니다:
+
+```jsx
+import { useState, useCallback, useRef } from 'react';
+import { FixedSizeList } from 'react-window';
+
+function InfiniteList() {
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const listRef = useRef(null);
+
+  const loadMore = useCallback(async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+    const newItems = await fetchMoreItems(items.length);
+    setItems(prev => [...prev, ...newItems]);
+    setIsLoading(false);
+  }, [items.length, isLoading]);
+
+  const handleScroll = useCallback(({ scrollOffset, scrollDirection }) => {
+    if (scrollDirection === 'forward' && !isLoading) {
+      const list = listRef.current;
+      if (list) {
+        const { scrollHeight, clientHeight } = list._outerRef;
+        if (scrollOffset + clientHeight >= scrollHeight - 200) {
+          loadMore();
+        }
+      }
+    }
+  }, [isLoading, loadMore]);
+
+  const Row = useCallback(({ index, style }) => (
+    <div style={style}>
+      {items[index] ? items[index].name : 'Loading...'}
+    </div>
+  ), [items]);
+
+  return (
+    <FixedSizeList
+      ref={listRef}
+      height={600}
+      itemCount={items.length + 1}
+      itemSize={50}
+      width="100%"
+      onScroll={handleScroll}
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}
+```
+
+---
+
+### 가상화와 상태 관리
+
+가상화된 리스트에서 상태를 관리할 때는 주의가 필요합니다:
+
+```jsx
+import { useState, useCallback, useRef } from 'react';
+import { FixedSizeList } from 'react-window';
+
+function VirtualTodoList() {
+  const [todos, setTodos] = useState(() =>
+    Array.from({ length: 1000 }, (_, i) => ({
+      id: i,
+      text: `Task ${i}`,
+      completed: false,
+    }))
+  );
+
+  // 토글 핸들러 최적화
+  const handleToggle = useCallback((id) => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
+    );
+  }, []);
+
+  // 삭제 핸들러 최적화
+  const handleDelete = useCallback((id) => {
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+  }, []);
+
+  // Row 컴포넌트 메모이제이션
+  const Row = useCallback(({ index, style }) => {
+    const todo = todos[index];
+
+    if (!todo) return null;
+
+    return (
+      <div style={style}>
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={() => handleToggle(todo.id)}
+        />
+        <span
+          style={{
+            textDecoration: todo.completed ? 'line-through' : 'none'
+          }}
+        >
+          {todo.text}
+        </span>
+        <button onClick={() => handleDelete(todo.id)}>삭제</button>
+      </div>
+    );
+  }, [todos, handleToggle, handleDelete]);
+
+  return (
+    <FixedSizeList
+      height={600}
+      itemCount={todos.length}
+      itemSize={50}
+      width="100%"
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}
+```
+
+---
+
+### 가상화와 검색/필터링
+
+가상화된 리스트에서 검색과 필터링을 결합할 수 있습니다:
+
+```jsx
+import { useState, useMemo, useCallback } from 'react';
+import { FixedSizeList } from 'react-window';
+
+function SearchableVirtualList() {
+  const [items] = useState(() =>
+    Array.from({ length: 10000 }, (_, i) => ({
+      id: i,
+      name: `Item ${i}`,
+      category: i % 3 === 0 ? 'A' : i % 3 === 1 ? 'B' : 'C',
+    }))
+  );
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+
+  // 필터링 최적화
+  const filteredItems = useMemo(() => {
+    return items.filter(item => {
+      const matchesSearch = item.name.toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesCategory = categoryFilter === 'all' ||
+        item.category === categoryFilter;
+      return matchesSearch && matchesCategory;
+    });
+  }, [items, searchQuery, categoryFilter]);
+
+  const Row = useCallback(({ index, style }) => {
+    const item = filteredItems[index];
+
+    return (
+      <div style={style}>
+        <strong>{item.name}</strong>
+        <span> ({item.category})</span>
+      </div>
+    );
+  }, [filteredItems]);
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="검색..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
+      <select
+        value={categoryFilter}
+        onChange={(e) => setCategoryFilter(e.target.value)}
+      >
+        <option value="all">전체</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+
+      <FixedSizeList
+        height={600}
+        itemCount={filteredItems.length}
+        itemSize={50}
+        width="100%"
+      >
+        {Row}
+      </FixedSizeList>
+
+      <p>총 {filteredItems.length}개 항목</p>
+    </div>
+  );
+}
+```
+
+---
+
+### 요약: 가상화
+
+| 기술 | 라이브러리 | 사용 시나리오 |
+|------|----------|--------------|
+| **react-window** | react-window | 가볍고 빠른 가상화 |
+| **react-virtualized** | react-virtualized | 다양한 컴포넌트 (Grid, List 등) |
+| **Infinite Scroll** | react-window + 커스텀 | 무한 스크롤 |
+| **검색/필터링** | useMemo + 가상화 | 필터링된 대용량 리스트 |
+
+**권장**: 새로운 프로젝트에서는 `react-window`를 사용합니다.
+
+---
+
+## 5.8 리스트와 조건부 렌더링 Anti-patterns
+
+흔히 발생하는 문제点和 해결 방안을 정리합니다.
+
+---
+
+### Anti-pattern 1: Key로 인덱스 사용
+
+**문제**: 배열 순서가 바뀌면 리conciliation이 제대로 작동하지 않습니다.
+
+```jsx
+// ❌ 나쁜 예시
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**해결**: 항상 고유하고 안정적인 ID를 key로 사용합니다.
+
+---
+
+### Anti-pattern 2: Map 내에서 Inline 함수 생성
+
+**문제**: 매번 새 함수가 생성되어 성능 저하가 발생합니다.
+
+```jsx
+// ❌ 나쁜 예시
+function TodoList() {
+  const [todos, setTodos] = useState([...]);
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onDelete={() => setTodos(prev =>
+            prev.filter(t => t.id !== todo.id)
+          )}
+        />
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시
+function TodoList() {
+  const [todos, setTodos] = useState([...]);
+
+  const handleDelete = useCallback((id) => {
+    setTodos(prev => prev.filter(t => t.id !== id));
+  }, []);
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onDelete={handleDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+```
+
+**해결**: `useCallback`으로 핸들러를 메모이제이션합니다.
+
+---
+
+### Anti-pattern 3: 중첩된 삼항 연산자
+
+**문제**: 가독성이 떨어지고 유지보수가 어렵습니다.
+
+```jsx
+// ❌ 나쁜 예시
+function UserCard({ user }) {
+  return (
+    <div>
+      {user ? (
+        user.isPremium ? (
+          user.isActive ? (
+            <PremiumActiveCard user={user} />
+          ) : (
+            <PremiumInactiveCard user={user} />
+          )
+        ) : (
+          <NormalCard user={user} />
+        )
+      ) : (
+        <GuestCard />
+      )}
+    </div>
+  );
+}
+
+// ✅ 좋은 예시: 컴포넌트로 분리
+function UserCard({ user }) {
+  if (!user) return <GuestCard />;
+  if (user.isPremium) {
+    return user.isActive
+      ? <PremiumActiveCard user={user} />
+      : <PremiumInactiveCard user={user} />;
+  }
+  return <NormalCard user={user} />;
+}
+```
+
+**해결**: 복잡한 조건부 로직을 컴포넌트로 분리하거나 early return을 사용합니다.
+
+---
+
+### Anti-pattern 4: 불필요한 재렌더링
+
+**문제**: 부모가 렌더링될 때 모든 자식도 다시 렌더링됩니다.
+
+```jsx
+// ❌ 나쁜 예시
+function TodoItem({ todo, onToggle, onDelete }) {
+  console.log('TodoItem 렌더링');
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => onToggle(todo.id)}
+      />
+      <span>{todo.text}</span>
+      <button onClick={() => onDelete(todo.id)}>삭제</button>
+    </li>
+  );
+}
+
+// ✅ 좋은 예시
+const TodoItem = memo(function TodoItem({ todo, onToggle, onDelete }) {
+  console.log('TodoItem 렌더링:', todo.id);
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => onToggle(todo.id)}
+      />
+      <span>{todo.text}</span>
+      <button onClick={() => onDelete(todo.id)}>삭제</button>
+    </li>
+  );
+});
+```
+
+**해결**: `React.memo`로 컴포넌트를 메모이제이션합니다.
+
+---
+
+### Anti-pattern 5: useEffect로 Derived State 계산
+
+**문제**: 불필요한 재렌더링과 복잡한 dependency 추적이 필요합니다.
+
+```jsx
+// ❌ 나쁜 예시
+function UserList({ users }) {
+  const [activeUsers, setActiveUsers] = useState([]);
+
+  useEffect(() => {
+    setActiveUsers(users.filter(user => user.isActive));
+  }, [users]);
+
+  return (
+    <ul>
+      {activeUsers.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시
+function UserList({ users }) {
+  // useMemo로 derived state 계산
+  const activeUsers = useMemo(() => {
+    return users.filter(user => user.isActive);
+  }, [users]);
+
+  return (
+    <ul>
+      {activeUsers.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**해결**: `useMemo`로 derived state를 계산합니다.
+
+---
+
+### Anti-pattern 6: && 연산자와 숫자 0
+
+**문제**: 0이 falsy라서 렌더링되지 않습니다.
+
+```jsx
+// ❌ 나쁜 예시
+function NotificationBadge({ count }) {
+  return (
+    <div>
+      {count && <span className="badge">{count}</span>}
+    </div>
+  );
+}
+
+// count가 0이면 아무것도 렌더링되지 않음!
+
+// ✅ 좋은 예시 1: 명시적 조건
+function NotificationBadge({ count }) {
+  return (
+    <div>
+      {count > 0 && <span className="badge">{count}</span>}
+    </div>
+  );
+}
+
+// ✅ 좋은 예시 2: 삼항 연산자
+function NotificationBadge({ count }) {
+  return (
+    <div>
+      {count ? <span className="badge">{count}</span> : null}
+    </div>
+  );
+}
+
+// ✅ 좋은 예시 3: 조건부로 숨기기
+function NotificationBadge({ count }) {
+  return (
+    <div>
+      <span className="badge" style={{ display: count ? 'block' : 'none' }}>
+        {count}
+      </span>
+    </div>
+  );
+}
+```
+
+**해결**: 명시적 조건을 사용하거나 삼항 연산자를 사용합니다.
+
+---
+
+### Anti-pattern 7: 조건부 스타일 인라인 객체 생성
+
+**문제**: 매번 새 객체가 생성되어 성능 저하가 발생합니다.
+
+```jsx
+// ❌ 나쁜 예시
+function TodoItem({ todo, onToggle }) {
+  return (
+    <li
+      style={{
+        textDecoration: todo.completed ? 'line-through' : 'none',
+        color: todo.completed ? 'gray' : 'black',
+        opacity: todo.completed ? 0.7 : 1,
+      }}
+      onClick={() => onToggle(todo.id)}
+    >
+      {todo.text}
+    </li>
+  );
+}
+
+// ✅ 좋은 예시: useMemo로 스타일 최적화
+function TodoItem({ todo, onToggle }) {
+  const textStyle = useMemo(() => ({
+    textDecoration: todo.completed ? 'line-through' : 'none',
+    color: todo.completed ? 'gray' : 'black',
+    opacity: todo.completed ? 0.7 : 1,
+  }), [todo.completed]);
+
+  return (
+    <li style={textStyle} onClick={() => onToggle(todo.id)}>
+      {todo.text}
+    </li>
+  );
+}
+
+// ✅ 더 좋은 예시: CSS 클래스
+function TodoItem({ todo, onToggle }) {
+  return (
+    <li
+      className={todo.completed ? 'completed' : 'active'}
+      onClick={() => onToggle(todo.id)}
+    >
+      {todo.text}
+    </li>
+  );
+}
+```
+
+**해결**: 스타일을 메모이제이션하거나 CSS 클래스를 사용합니다.
+
+---
+
+### Anti-pattern 8: 대용량 리스트 미가상화
+
+**문제**: 1000개 이상의 아이템을 렌더링하면 성능이 저하됩니다.
+
+```jsx
+// ❌ 나쁜 예시
+function LargeList() {
+  const items = Array.from({ length: 10000 }, (_, i) => ({
+    id: i,
+    name: `Item ${i}`,
+  }));
+
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시: react-window로 가상화
+import { FixedSizeList } from 'react-window';
+
+function LargeList() {
+  const items = Array.from({ length: 10000 }, (_, i) => ({
+    id: i,
+    name: `Item ${i}`,
+  }));
+
+  const Row = ({ index, style }) => (
+    <div style={style}>{items[index].name}</div>
+  );
+
+  return (
+    <FixedSizeList
+      height={600}
+      itemCount={items.length}
+      itemSize={35}
+      width="100%"
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}
+```
+
+**해결**: `react-window`나 `react-virtualized`로 가상화를 구현합니다.
+
+---
+
+### Anti-pattern 9: useState로 복잡한 State 관리
+
+**문제**: 여러 useState로 state를 분산하면 관리가 어렵습니다.
+
+```jsx
+// ❌ 나쁜 예시
+function TodoList() {
+  const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('date');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedIds, setSelectedIds] = useState(new Set());
+
+  // state 업데이트 로직이 복잡해짐
+  // ...
+}
+
+// ✅ 좋은 예시: useReducer로 복잡한 state 관리
+function todoReducer(state, action) {
+  switch (action.type) {
+    case 'SET_FILTER':
+      return { ...state, filter: action.payload };
+    case 'SET_SORT':
+      return { ...state, sortBy: action.payload };
+    case 'SET_SEARCH':
+      return { ...state, searchQuery: action.payload };
+    case 'TOGGLE_SELECTION':
+      const newSelected = new Set(state.selectedIds);
+      if (newSelected.has(action.payload)) {
+        newSelected.delete(action.payload);
+      } else {
+        newSelected.add(action.payload);
+      }
+      return { ...state, selectedIds: newSelected };
+    default:
+      return state;
+  }
+}
+
+function TodoList() {
+  const [state, dispatch] = useReducer(todoReducer, {
+    todos: [],
+    filter: 'all',
+    sortBy: 'date',
+    searchQuery: '',
+    selectedIds: new Set(),
+  });
+
+  // 명확한 action dispatch
+  dispatch({ type: 'SET_FILTER', payload: 'active' });
+  dispatch({ type: 'TOGGLE_SELECTION', payload: todoId });
+}
+```
+
+**해결**: `useReducer`로 복잡한 state를 관리합니다.
+
+---
+
+### Anti-pattern 10: Server Component에서 useState 사용
+
+**문제**: Server Component에서는 useState를 사용할 수 없습니다.
+
+```jsx
+// ❌ 나쁜 예시: Server Component에서 state 사용
+async function UserList() {
+  const [users, setUsers] = useState([]);  // 에러!
+  const [filter, setFilter] = useState('all');  // 에러!
+
+  const filteredUsers = users.filter(user => {
+    if (filter === 'active') return user.isActive;
+    return true;
+  });
+
+  return (
+    <ul>
+      {filteredUsers.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+// ✅ 좋은 예시: Server Component와 Client Component 분리
+async function UserListPage() {
+  const users = await fetchUsers();
+
+  return <UserListClient initialUsers={users} />;
+}
+
+'use client';
+
+function UserListClient({ initialUsers }) {
+  const [users, setUsers] = useState(initialUsers);
+  const [filter, setFilter] = useState('all');
+
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      if (filter === 'active') return user.isActive;
+      return true;
+    });
+  }, [users, filter]);
+
+  return (
+    <ul>
+      {filteredUsers.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**해결**: Server Component는 데이터 가져오기만 담당하고, 인터랙티브 기능은 Client Component로 분리합니다.
+
+---
+
+## 5.9 요약
+
+### 리스트 렌더링 핵심 개념
+
+```javascript
+1. map()으로 렌더링
+   {items.map(item => <Component key={item.id} />)}
+
+2. Key 사용: 고유하고 안정적인 ID
+   <li key={item.id}>{item.name}</li>
+
+3. 필터링: filter()
+   items.filter(item => item.isActive)
+
+4. 정렬: sort() (불변성 유지)
+   [...items].sort((a, b) => a.score - b.score)
+
+5. State 업데이트 (불변성 유지)
+   추가: [...items, newItem]
+   삭제: items.filter(item => item.id !== id)
+   수정: items.map(item => item.id === id ? {...item, ...updates} : item)
+```
+
+### 조건부 렌더링 선택 가이드
+
+```
+1. early return이 필요한가?
+   → YES: if 문 사용
+
+2. 두 가지 옵션 중 하나를 선택?
+   → YES: 삼항 연산자 (?:)
+
+3. true일 때만 렌더링?
+   → YES: && 연산자
+
+4. 기본값이 필요한가?
+   → YES: ?? 또는 || 연산자
+```
+
+### 성능 최적화 체크리스트
+
+| 항목 | 최적화 기법 | 적용 시점 |
+|------|------------|----------|
+| **Key Props** | 고유 ID 사용 | 항상 |
+| **React.memo** | 불필요한 재렌더링 방지 | 100+ 아이템 |
+| **useMemo** | 필터링/정렬 캐싱 | 복잡한 연산 |
+| **useCallback** | 핸들러 메모이제이션 | map() 내부 함수 |
+| **가상화** | react-window | 1000+ 아이템 |
+| **함수형 업데이트** | 의존성 최적화 | 이전 state 기반 |
+
+### Server vs Client Component
+
+| 기능 | Server Component | Client Component |
+|------|------------------|------------------|
+| **데이터 가져오기** | ✅ 권장 | ⚠️ 가능하지만 서버 권장 |
+| **map(), filter()** | ✅ 가능 | ✅ 가능 |
+| **조건부 렌더링** | ✅ 가능 | ✅ 가능 |
+| **useState** | ❌ 불가능 | ✅ 가능 |
+| **이벤트 핸들러** | ❌ 불가능 | ✅ 가능 |
+| **브라우저 API** | ❌ 불가능 | ✅ 가능 |
+
+### React 18+ 기능
+
+| 기능 | 사용 목적 | 예시 |
+|------|----------|------|
+| **Suspense** | 로딩 상태 | `<Suspense fallback={...}>` |
+| **use()** | Promise 대기 (React 19) | `const data = use(promise)` |
+| **Error Boundary** | 에러 처리 | `<ErrorBoundary>` |
+| **useTransition** | 긴급 업데이트 분리 | `startTransition(() => ...)` |
+
+### Anti-patterns 방지
+
+```
+❌ 인덱스를 key로 사용 (정적 리스트 제외)
+✅ 고유한 ID를 key로 사용
+
+❌ map() 내부의 inline 함수
+✅ useCallback으로 핸들러 메모이제이션
+
+❌ useEffect로 derived state 계산
+✅ useMemo로 derived state 계산
+
+❌ 1000+ 아이템 전부 렌더링
+✅ react-window로 가상화
+
+❌ 중첩된 삼항 연산자
+✅ 컴포넌트 분리 또는 early return
+
+❌ && 연산자와 숫자 0
+✅ 명시적 조건 (count > 0)
+```
+
+### 권장 학습 순서
+
+1. **기본**: map(), key, 필터링, 정렬
+2. **조건부 렌더링**: &&, ||, ??, 삼항 연산자, if 문
+3. **성능**: React.memo, useMemo, useCallback
+4. **가상화**: react-window (대용량 리스트)
+5. **Server Components**: 데이터 가져오기 vs 인터랙티브 기능 분리
+6. **고급 기능**: Suspense, useTransition, Error Boundary
+
+### 추가 학습 자료
+
+- **react-window**: https://github.com/bvaughn/react-window
+- **react-virtualized**: https://github.com/bvaughn/react-virtualized
+- **React Server Components**: https://react.dev/reference/react/use
+- **Suspense**: https://react.dev/reference/react/Suspense
