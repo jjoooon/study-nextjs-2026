@@ -28,10 +28,7 @@ const columnDefs: ColDef<DummyDataType>[] = [
       if (params.data?.id === 0) return 2;
       return 1;
     },
-    cellClass: (params) => {
-      if (params.data?.id === 0) return 'font-bold bg-[var(--color-gray-10)]!';
-      return '';
-    },
+  
   },
   {
     headerName: '서브레이블',
@@ -174,15 +171,6 @@ export default meta;
 export const Default: StoryObj = {
   render: () => {
     const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-    const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.age).map(row => row.id)
-    );
-
-    // 공용 핸들러 활용
-    const onCellValueChanged = React.useMemo(
-      () => createCellValueChangedHandler<DummyDataType, number>('age', setRowData, setErrorRows, 'id'),
-      [setRowData, setErrorRows]
-    );
 
     // 합계 행 생성 (age가 숫자인 값만 합산)
     const sumRow = React.useMemo(() => {
@@ -199,19 +187,21 @@ export const Default: StoryObj = {
     }, [rowData]);
 
     return (
-      <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[26rem]! striped-row-gray">
+      <div style={{ width: '100%', height:'20rem', marginBottom: '6rem' }}>
+
+        <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
-            getRowId={(params) => String(params.data.id)}
-            rowData={rowData}
-            columnDefs={columnDefs}
-            animateRows={false}
+            // 필수
+            getRowId={(params) => String(params.data.id)} // 각 row의 고유 id 지정(React key 역할)
+            rowData={rowData} // 표시할 데이터 배열
+            columnDefs={columnDefs} // 컬럼 정의
+
+            // 합계 행 설정
             pinnedBottomRowData={sumRow}
-            singleClickEdit={true}
-            onCellValueChanged={onCellValueChanged}
           />
         </div>
-      </>
+
+      </div>
     );
   },
 };

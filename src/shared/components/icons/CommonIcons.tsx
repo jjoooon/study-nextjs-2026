@@ -763,3 +763,30 @@ export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16,
   <path d="M5.5 7.5L7.5 9L10.5 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 );
+
+export const PageArrowDoubleIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var(--color-gray-30)' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 16 16" 
+    fill="none" 
+    className={className}
+  >
+    <path d="M8.14838 2.66174C8.41294 2.39723 8.84112 2.39729 9.10573 2.66174C9.37016 2.92634 9.37024 3.35453 9.10573 3.61909L4.6357 8.09001L9.10573 12.5609C9.37031 12.8255 9.37029 13.2546 9.10573 13.5192C8.84122 13.7833 8.41291 13.7833 8.14838 13.5192L3.19833 8.56913C2.9339 8.30455 2.93388 7.87545 3.19833 7.61089L8.14838 2.66174Z" fill={color}/>
+    <path d="M11.8442 2.66174C12.1088 2.39723 12.537 2.39729 12.8016 2.66174C13.066 2.92634 13.0661 3.35453 12.8016 3.61909L8.33155 8.09001L12.8016 12.5609C13.0662 12.8255 13.0661 13.2546 12.8016 13.5192C12.5371 13.7833 12.1088 13.7833 11.8442 13.5192L6.89418 8.56913C6.62975 8.30455 6.62972 7.87545 6.89418 7.61089L11.8442 2.66174Z" fill={color}/>
+  </svg>
+);
+export const PageArrowIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var(--color-gray-30)' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 16 16" 
+    fill="none" 
+    className={className}
+  >
+    <path d="M9.89973 2.83211C10.1515 2.58033 10.5593 2.58042 10.8111 2.83211C11.063 3.08394 11.063 3.49168 10.8111 3.74351L6.55699 7.99822L10.8111 12.2535C11.063 12.5053 11.063 12.9136 10.8111 13.1655C10.5593 13.4169 10.1515 13.417 9.89973 13.1655L5.18875 8.45449C4.9371 8.20268 4.93707 7.79431 5.18875 7.54252L9.89973 2.83211Z" fill={color}/>
+
+  </svg>
+);
