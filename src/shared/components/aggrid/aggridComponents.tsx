@@ -43,16 +43,19 @@ export function createSelectionChangedHandler<RowType, IDType = unknown>(
  * @param idKey id 필드명 (기본값: 'id')
  */
 export function createCellValueChangedHandler<RowType extends Record<string, unknown>, IDType = number>(
-  field: keyof RowType,
+  fields: keyof RowType | Array<keyof RowType>,
   setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
   setErrorRows: React.Dispatch<React.SetStateAction<IDType[]>>,
   idKey: keyof RowType = 'id' as keyof RowType
 ) {
+  const fieldArr = Array.isArray(fields) ? fields : [fields];
   return (params: { colDef: { field?: string }; data: RowType; newValue: unknown }) => {
-    if (params.colDef.field === field) {
+    if (params.colDef.field && fieldArr.includes(params.colDef.field as keyof RowType)) {
       setRowData((prev) =>
         prev.map((row) =>
-          row[idKey] === params.data[idKey] ? { ...row, [field]: params.newValue } : row
+          row[idKey] === params.data[idKey]
+            ? { ...row, [params.colDef.field as keyof RowType]: params.newValue }
+            : row
         )
       );
       setErrorRows((prev) => {

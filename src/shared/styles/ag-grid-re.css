@@ -184,10 +184,10 @@
   border-top: 1px solid var(--color-gray-10);
 }
 .ag-theme-alpine .ag-row-even .ag-cell {
-  background-color: #fff;;
+  background-color: #fff;
 }
 .ag-theme-alpine .ag-row-odd .ag-cell {
-  background-color: #fff;;
+  background-color: var(--color-gray-5);
 }
 .ag-theme-alpine .ag-row-even {
   background-color: transparent;
@@ -553,16 +553,12 @@
   transform: rotate(180deg);
 }
 
-.ag-cell-expandable {
-  display: flex !important;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-}
+
 .ag-group-child-count {
   display: none;
 }
 .ag-row-group-leaf-indent {
-  margin-left: 0 !important;
+  margin-left: 2rem !important;
 }
 .ag-input-field-input.ag-number-field-input {
   text-align: right;
@@ -570,9 +566,9 @@
 .ag-checkbox-disabled .ag-checkbox-input-wrapper { 
   pointer-events: none; 
 }
-.ag-column-first.ag-cell {
+/* .ag-column-first.ag-cell {
   padding: 0 !important;
-}
+} */
 .my-row-disabled .ag-column-first.ag-cell input {
   pointer-events: none !important;
 }
@@ -621,6 +617,40 @@
   height: 100%;
   border:0 !important
 }
+
+/* Tree data */
+.ag-cell-expandable {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: start;
+  gap:0.2rem;
+}
+.ag-theme-alpine .ag-icon-tree-closed::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M7.99992 5.66667C8.36811 5.66667 8.66658 5.96514 8.66658 6.33333V8H10.3333C10.7014 8 10.9999 8.29848 10.9999 8.66667C10.9999 9.03486 10.7014 9.33333 10.3333 9.33333H8.66658V11C8.66658 11.3682 8.36811 11.6667 7.99992 11.6667C7.63173 11.6667 7.33325 11.3682 7.33325 11V9.33333H5.66659C5.2984 9.33333 4.99992 9.03486 4.99992 8.66667C4.99992 8.29848 5.2984 8 5.66659 8H7.33325V6.33333C7.33325 5.96514 7.63173 5.66667 7.99992 5.66667Z' fill='%23006FF2'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.1145 1.93359C6.66244 1.93365 7.18793 2.15102 7.57544 2.53841L8.12817 3.09115C8.24063 3.20348 8.39305 3.26687 8.552 3.26693H12.6666C13.808 3.26693 14.733 4.19195 14.733 5.33333V12C14.733 13.1414 13.808 14.0664 12.6666 14.0664H3.33325C2.19186 14.0664 1.26685 13.1414 1.26685 12V4C1.26685 2.85861 2.19186 1.93359 3.33325 1.93359H6.1145ZM3.33325 3.39974C3.00188 3.39974 2.73299 3.66863 2.73299 4V12C2.73299 12.3314 3.00188 12.6003 3.33325 12.6003H12.6666C12.998 12.6003 13.2668 12.3314 13.2668 12V5.33333C13.2668 5.00196 12.998 4.73307 12.6666 4.73307H8.552C8.00407 4.73302 7.47857 4.51564 7.09106 4.12826L6.53833 3.57552C6.42588 3.46319 6.27345 3.39979 6.1145 3.39974H3.33325Z' fill='%23006FF2'/%3E%3C/svg%3E");
+  mask-position: 50% 50%;
+  mask-size: 1.6rem 1.6rem;
+  mask-repeat: no-repeat;
+  color: var(--color-information-50);
+}
+.ag-theme-alpine .ag-icon-tree-open::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M10.3333 8C10.7014 8 10.9999 8.29848 10.9999 8.66667C10.9999 9.03486 10.7014 9.33333 10.3333 9.33333H5.66659C5.2984 9.33333 4.99992 9.03486 4.99992 8.66667C4.99992 8.29848 5.2984 8 5.66659 8H10.3333Z' fill='%23006FF2'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.1145 1.93359C6.66244 1.93365 7.18793 2.15102 7.57544 2.53841L8.12817 3.09115C8.24063 3.20348 8.39305 3.26687 8.552 3.26693H12.6666C13.808 3.26693 14.733 4.19195 14.733 5.33333V12C14.733 13.1414 13.808 14.0664 12.6666 14.0664H3.33325C2.19186 14.0664 1.26685 13.1414 1.26685 12V4C1.26685 2.85861 2.19186 1.93359 3.33325 1.93359H6.1145ZM3.33325 3.39974C3.00188 3.39974 2.73299 3.66863 2.73299 4V12C2.73299 12.3314 3.00188 12.6003 3.33325 12.6003H12.6666C12.998 12.6003 13.2668 12.3314 13.2668 12V5.33333C13.2668 5.00196 12.998 4.73307 12.6666 4.73307H8.552C8.00407 4.73302 7.47857 4.51564 7.09106 4.12826L6.53833 3.57552C6.42588 3.46319 6.27345 3.39979 6.1145 3.39974H3.33325Z' fill='%23006FF2'/%3E%3C/svg%3E");
+  mask-position: 50% 50%;
+  mask-size: 1.6rem 1.6rem;
+  mask-repeat: no-repeat;
+  color: var(--color-information-50);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
