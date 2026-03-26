@@ -1702,6 +1702,8 @@ const LTPZ010_01P = () => {
               sortable: false,
               resizable: false,
             }}
+
+            // 에디터 시
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
             
@@ -1735,6 +1737,44 @@ export const LTPZ010_01: Story = {
 
 const LTPZ010_03P = () => {
   
+   type DummyDataType = {
+    id: number;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+  };
+  const DummyData: DummyDataType[] = [
+    { id: 1, field01: '최종설계저장', field02: '간편설계', field03: '수정일사: 2026-03-24 11:19:15 김한화(341234123)' },
+    { id: 2, field01: '가입설계동의', field02: '', field03: '' },
+    { id: 3, field01: '설계심사', field02: '심사요청전', field03: '' },
+    { id: 4, field01: '서류출력', field02: '미출력', field03: '' },
+    { id: 5, field01: '서류스캔', field02: '미스캔', field03: '' },
+  ];
+
+    const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '업무구분',
+      width: 120,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field01',
+    },
+    {
+      headerName: '상품명/구분',
+      width: 150,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field02',
+    },
+    {
+      headerName: '계약자',
+      flex: 1,
+      cellClass: 'text-left flex [&>div>span]:h-auto!',
+      field: 'field03',
+    },
+  ];
+  
+  // rowSelection 사용시
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+
   return (
     <Gcol className="w-full">
       <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
@@ -1745,11 +1785,19 @@ const LTPZ010_03P = () => {
           </FormCell>
         </FormRow>
       </FormTable>
-      <FormTable caption="업무 조회" cols={['w-[14rem] min-w-[14rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
-        <FormRow>
-          
-        </FormRow>
-      </FormTable>
+      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+        <AgGridReact<DummyDataType>
+          getRowId={params => String(params.data.id)}
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={{ 
+            sortable: false,
+            resizable: false,
+            autoHeight: true,
+          }}
+          domLayout='autoHeight'
+        />
+      </div>
     </Gcol>  
   );
 }
@@ -1757,3 +1805,296 @@ const LTPZ010_03P = () => {
 export const LTPZ010_03: Story = { 
   render: () => <LTPZ010_03P />,
 } 
+
+const LTPZ010_04P = () => {
+  type DummyDataType = {
+    id: number;
+    field01: string | number;
+    field02: string | number;
+  };
+  const DummyData: DummyDataType[] = [
+    { id: 1, field01: '설계일 ~ 최대 30일', field02: '2026-04-22' },
+    { id: 2, field01: '보험나이변경일', field02: '2026-04-22' },
+    { id: 3, field01: '상품판매종료일', field02: '2026-04-22' },
+    { id: 4, field01: '담보판매종료일', field02: '2026-04-22' },
+    { id: 5, field01: '직업코드 변경 종료일자', field02: '' },
+  ];
+
+    const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '유료설계 기한항목',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field01',
+    },
+    {
+      headerName: '유효일자',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field02',
+    },
+  ];
+  
+  // rowSelection 사용시
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  return (
+    <Gcol className="w-full" gap={4}>
+      <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'설계번호'}>
+            LA10392481032489012
+          </FormCell>
+          <FormCell title={'보험시기'}>
+            2026-03-24
+          </FormCell>
+        </FormRow>
+        <FormRow>
+          <FormCell title={'유효기간'}>
+            2026-03-24
+          </FormCell>
+          <FormCell title={''}>
+          </FormCell>
+        </FormRow>
+      </FormTable>
+      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+        <AgGridReact<DummyDataType>
+          getRowId={params => String(params.data.id)}
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={{ 
+            sortable: false,
+            resizable: false,
+            autoHeight: true,
+          }}
+          domLayout='autoHeight'
+        />
+      </div>
+      <InfoBox title="상기 유효설계 기한항목 중 가장 날짜로 설정됨 " variant="info" bg={false} />
+    </Gcol>
+  )
+} 
+
+export const LTPZ010_04: Story = {
+  render: () => <LTPZ010_04P />,
+}
+
+const LTPZ110P = () => {
+  
+  
+
+  type DummyDataType1 = {
+    id: number;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+    field04: string | number;
+    field05: string | number;
+    field06: string | number;
+    field07: string | number;
+    field08: string | number;
+  };
+  const DummyData1: DummyDataType1[] = [
+    { id: 1, field01: 'LA123412341234', field02: '',  field03: '김한화', field04: '2026-09-01', field05: '99,999', field06: '한화 건강쑥쑥 어린이보험 무배당2304', field07: '설계중', field08: '' },
+    { id: 2, field01: 'LA123412341234', field02: '',  field03: '김한화', field04: '2026-09-01', field05: '99,999', field06: '한화 건강쑥쑥 어린이보험 무배당2304', field07: '설계중', field08: '' },
+  ];
+
+    const columnDefs1: (ColDef<DummyDataType1> | ColGroupDef<DummyDataType1>)[] = [
+    {
+      headerName: '설계번호',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field01',
+    },
+    {
+      headerName: '증권번호',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field02',
+    },
+    {
+      headerName: '계약자',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field03',
+    },
+    {
+      headerName: '보험시기',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field04',
+    },
+    {
+      headerName: '보험료',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field05',
+    },
+    {
+      headerName: '상품명',
+      flex: 1,
+      cellClass: 'text-center flex [&>div>span]:h-auto!',
+      field: 'field06',
+    },
+    {
+      headerName: '상태',
+      flex: 1.2,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field07',
+    },
+  ];
+  // rowSelection 사용시
+  const [rowData1, setRowData1] = React.useState<DummyDataType1[]>(DummyData1);
+
+  type DummyDataType2 = {
+    id: number;
+    isCheck: boolean;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+    field04: string | number;
+    field05: string | number;
+    field06: string | number;
+    field07: string | number;
+    field08: string | number;
+  };
+  const DummyData2: DummyDataType2[] = [
+    { id: 1, isCheck: false, field01: 'LA123412341234', field02: '',  field03: '김한화', field04: '2026-09-01', field05: '99,999', field06: '한화 건강쑥쑥 어린이보험 무배당2304', field07: '설계중', field08: '' },
+    { id: 2, isCheck: false, field01: 'LA123412341234', field02: '',  field03: '김한화', field04: '2026-09-01', field05: '99,999', field06: '한화 건강쑥쑥 어린이보험 무배당2304', field07: '설계중', field08: '' },
+  ];
+
+    const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
+    {
+      headerName: '설계번호',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field01',
+    },
+    {
+      headerName: '증권번호',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field02',
+    },
+    {
+      headerName: '계약자',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field03',
+    },
+    {
+      headerName: '보험시기',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field04',
+    },
+    {
+      headerName: '보험료',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field05',
+    },
+    {
+      headerName: '상품명',
+      flex: 1,
+      cellClass: 'text-center flex [&>div>span]:h-auto!',
+      field: 'field06',
+    },
+    {
+      headerName: '상태',
+      flex: 1.2,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      field: 'field07',
+    },
+    { headerName: '삭제', 
+      flex: 1, 
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!', 
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (
+        <Grow className="w-full">
+          <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">삭제</Button>
+        </Grow>
+      ),
+    },
+  ];
+  
+  // rowSelection 사용시
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const [errorRows, setErrorRows] = React.useState<number[]>(
+    DummyData2.filter(row => !row.isCheck).map(row => row.id)
+  );
+  const onCellValueChanged2 = React.useMemo(
+    () => createCellValueChangedHandler<DummyDataType2, number>('isCheck', setRowData2, setErrorRows, 'id'),
+    [setRowData2, setErrorRows]
+  );
+
+
+  return (
+    <Gcol className="w-full">
+      <FormTable caption="다테아 설계연계관리" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'보종군'}>
+            장기보험
+          </FormCell>
+          <FormCell title={'유형'}>
+            다테아설계 - 피보험자
+          </FormCell>
+        </FormRow>
+        <FormRow>
+          <FormCell title={'임산부 정보'} colSpan={3}>
+            김한화(910202-2******)
+          </FormCell>
+        </FormRow>
+        <FormRow>
+          <FormCell title={'출산예정년월'} colSpan={3}>
+            <Input aria-label="" width={'14rem'} value={'2026-03'} />
+          </FormCell>
+        </FormRow>
+      </FormTable>
+
+      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+        <AgGridReact<DummyDataType1>
+          getRowId={params => String(params.data.id)}
+          rowData={rowData1}
+          columnDefs={columnDefs1}
+          defaultColDef={{ 
+            sortable: false,
+            resizable: false,
+            autoHeight: true,
+          }}
+          animateRows={false}
+          alwaysShowHorizontalScroll={true}
+          singleClickEdit={true}
+          rowSelection={{
+            mode: 'multiRow',
+            headerCheckbox: false,
+            enableClickSelection: false,
+          }}
+          selectionColumnDef={{
+            headerName: '선택',
+          }}
+          rowClassRules={{}}
+          domLayout='autoHeight'
+        />
+        
+      </div>  
+
+
+
+      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+        <AgGridReact<DummyDataType2>
+          getRowId={params => String(params.data.id)}
+          rowData={rowData2}
+          columnDefs={columnDefs2}
+          defaultColDef={{ 
+            sortable: false,
+            resizable: false,
+            autoHeight: true,
+          }}
+          domLayout='autoHeight'
+        />
+      </div>
+    </Gcol>  
+  )
+}
+export const LTPZ110: Story = {
+  render: () => <LTPZ110P />,
+}
