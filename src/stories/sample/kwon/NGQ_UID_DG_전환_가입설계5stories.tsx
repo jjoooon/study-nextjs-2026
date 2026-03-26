@@ -25,7 +25,7 @@ const meta: Meta = {
             <Title />
             <br />
             <br />
-            <h2>LTPA390</h2>
+            <h2>LTPA430</h2>
             <Primary />
           </>
         );
@@ -38,7 +38,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const LTPA390P = () => {
+const LTPA430P = () => {
   // dummy data
   type DummyDataType = {
     id: number;
@@ -107,6 +107,6 @@ const LTPA390P = () => {
     </Gcol>
   );
 }
-export const LTPA390: Story = {
-  render: () => <LTPA390P />,
+export const LTPA430: Story = {
+  render: () => <LTPA430P />,
 }
