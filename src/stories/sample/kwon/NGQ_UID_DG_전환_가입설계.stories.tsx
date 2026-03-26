@@ -1312,6 +1312,7 @@ export const LTPZ021: Story = {
 }
 
 const LTPZ010_01P = () => {
+  // form event
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -1321,43 +1322,44 @@ const LTPZ010_01P = () => {
     type07: '',
     type08: '',
   });
-
-  type DummyDataType3 = {
+  
+  // dummy data
+  type DummyDataType = {
     id: number;
     isCheck: boolean;
-    field01: string;
-    field02: string;
-    field03: string;
-    field04: string;
-    field05: string;
-    field06: string;
-    field07: string;
-    field08: string;
-    field09: string;
-    field10: string;
-    field11: string;
-    field12: string;
-    field13: string;
-    field14: string;
-    field15: string;
-    field16: string;
-    field17: string;
-    field18: string;
-    field19: string;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+    field04: string | number;
+    field05: string | number;
+    field06: string | number;
+    field07: string | number;
+    field08: string | number;
+    field09: string | number;
+    field10: string | number;
+    field11: string | number;
+    field12: string | number;
+    field13: string | number;
+    field14: string | number;
+    field15: string | number;
+    field16: string | number;
+    field17: string | number;
+    field18: string | number;
+    field19: string | number;
   };
-
-  const DummyData: DummyDataType3[] = [
+  const DummyData: DummyDataType[] = [
     { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoCreate', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
-    { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoView', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
-    { id: 1, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: '', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
+    { id: 2, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: 'memoView', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
+    { id: 3, isCheck: true, field01: 'LA2131234123', field02: '한화실손의료보헌갱신형2601', field03: '', field04: '김한화', field05: '2009-01-01', field06: '9,999,999', field07: '', field08: '설계중', field09: '', field10: '', field11: '', field12: '신부산GA지점/00팀', field13: '박한화(123123)', field14: '박한화(123123)', field15: '', field16: '박한화(123123)', field17: '', field18: '배서설계', field19: '' },
   ];
 
-  const columnDefs: (ColDef<DummyDataType3> | ColGroupDef<DummyDataType3>)[] = [
+  // AgGrid Column 
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '설계번호',
       flex: 1,
       cellClass: 'text-center px-0!',
-      cellRenderer: createFieldRenderer<DummyDataType3>('field01'),
+      cellRenderer: createFieldRenderer<DummyDataType>('field01'),
       autoHeight: true,
     },
     {
@@ -1368,9 +1370,9 @@ const LTPZ010_01P = () => {
           headerName: '플랜명/차량번호',
           cellClass: 'text-center px-0! ',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>(
+          cellRenderer: createFieldRenderer<DummyDataType>(
             'field02',
-            ({ data }: ICellRendererParams<DummyDataType3>) => {
+            ({ data }: ICellRendererParams<DummyDataType>) => {
               if (data?.field03 === 'memoCreate') {
                 return (
                   <Grow placement='ee' className='h-full pr-1'>
@@ -1416,7 +1418,7 @@ const LTPZ010_01P = () => {
           flex: 1,
           cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field04', 'field05'),
+          cellRenderer: createFieldRenderer<DummyDataType>('field04', 'field05'),
         }
       ]
     },
@@ -1429,7 +1431,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field06', 'field07'),
+          cellRenderer: createFieldRenderer<DummyDataType>('field06', 'field07'),
         }
       ]
     },
@@ -1442,7 +1444,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>(
+          cellRenderer: createFieldRenderer<DummyDataType>(
           <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
             2026-01-01
           </Button>, 
@@ -1460,7 +1462,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field08', 'field09'),
+          cellRenderer: createFieldRenderer<DummyDataType>('field08', 'field09'),
         }
       ]
     },
@@ -1472,7 +1474,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>( <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          cellRenderer: createFieldRenderer<DummyDataType>( <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
             미출력
           </Button>, 'field11'),
         }
@@ -1486,7 +1488,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field12', 'field13'),
+          cellRenderer: createFieldRenderer<DummyDataType>('field12', 'field13'),
         }
       ]
     },
@@ -1498,7 +1500,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field14', 
+          cellRenderer: createFieldRenderer<DummyDataType>('field14', 
           <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
             ID
           </Button>),
@@ -1513,7 +1515,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field16', 'field17'),
+          cellRenderer: createFieldRenderer<DummyDataType>('field16', 'field17'),
         }
       ]
     },
@@ -1525,7 +1527,7 @@ const LTPZ010_01P = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType3>('field18', 
+          cellRenderer: createFieldRenderer<DummyDataType>('field18', 
           <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
             LA20143129023123912
           </Button>),
@@ -1533,14 +1535,14 @@ const LTPZ010_01P = () => {
       ]
     }
   ];
-
-  const [rowData, setRowData] = React.useState<DummyDataType3[]>(DummyData);
+  
+  // rowSelection 사용시
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
     DummyData.filter(row => !row.isCheck).map(row => row.id)
   );
-
   const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType3, number>('isCheck', setRowData, setErrorRows, 'id'),
+    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
 
@@ -1569,6 +1571,7 @@ const LTPZ010_01P = () => {
                 aria-label="조회구분 선택"
                 width="10rem"
                 value={form.type02}
+                required
                 onChange={(e) => setFormField('type02', e.target.value)}
               >
                 {[
@@ -1578,6 +1581,7 @@ const LTPZ010_01P = () => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
+              <Input aria-label="" width={'16rem'} value={'123123'} required/>
             </FormCell>  
             <FormCell title={'설계구분'}>
               <NativeSelect
@@ -1631,6 +1635,7 @@ const LTPZ010_01P = () => {
                 aria-label="설계조직 선택"
                 width="10rem"
                 value={form.type07}
+                required
                 onChange={(e) => setFormField('type07', e.target.value)}
               >
                 {[
@@ -1640,11 +1645,11 @@ const LTPZ010_01P = () => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'16rem'} value={'12345678'} />
+              <Input aria-label="" width={'16rem'} value={'12345678'} required/>
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>  
-              <Input aria-label="" width={'16rem'} value={''} readOnly />
+              <Input aria-label="" width={'16rem'} value={''} required/>
             </FormCell>  
             <FormCell title={'영업가족'}>
               <NativeSelect
@@ -1687,16 +1692,20 @@ const LTPZ010_01P = () => {
           </Button>
         </Grow>
       </Grow>
-      <Grow className="w-full">
+      <Gcol className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
-          <AgGridReact<DummyDataType3>
+          <AgGridReact<DummyDataType>
+            getRowId={params => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-            defaultColDef={{ sortable: false }}
-            animateRows={false}
-            alwaysShowHorizontalScroll={true}
+            defaultColDef={{ 
+              sortable: false,
+              resizable: false,
+            }}
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
+            
+            // 체크박스 시
             rowSelection={{
               mode: 'multiRow',
               headerCheckbox: false,
@@ -1706,7 +1715,6 @@ const LTPZ010_01P = () => {
             selectionColumnDef={{
               headerName: '선택',
             }}
-            rowClassRules={{}}
             onGridReady={params => {
               params.api.forEachNode(node => {
                 if (node.data?.isCheck) {
@@ -1716,7 +1724,8 @@ const LTPZ010_01P = () => {
             }}
           />
         </div>
-      </Grow>
+        <InfoBox title="설계조회 가능기간: 취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일) " variant="info" bg={false} />
+      </Gcol>
     </Gcol>
   )
 }
@@ -1724,4 +1733,27 @@ export const LTPZ010_01: Story = {
   render: () => <LTPZ010_01P />,
 }
 
+const LTPZ010_03P = () => {
+  
+  return (
+    <Gcol className="w-full">
+      <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          <FormCell title={'설계번호'}>
+            <Input aria-label="" width={'16rem'} value={'12345678'} readOnly/>
+            <Input aria-label="" width={'16rem'} value={'테아'} readOnly/>
+          </FormCell>
+        </FormRow>
+      </FormTable>
+      <FormTable caption="업무 조회" cols={['w-[14rem] min-w-[14rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+        <FormRow>
+          
+        </FormRow>
+      </FormTable>
+    </Gcol>  
+  );
+}
 
+export const LTPZ010_03: Story = { 
+  render: () => <LTPZ010_03P />,
+} 
