@@ -1569,6 +1569,7 @@ const LTPZ010_01P = () => {
                 aria-label="조회구분 선택"
                 width="10rem"
                 value={form.type02}
+                required
                 onChange={(e) => setFormField('type02', e.target.value)}
               >
                 {[
@@ -1578,6 +1579,7 @@ const LTPZ010_01P = () => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
+              <Input aria-label="" width={'16rem'} value={'123123'} required/>
             </FormCell>  
             <FormCell title={'설계구분'}>
               <NativeSelect
@@ -1631,6 +1633,7 @@ const LTPZ010_01P = () => {
                 aria-label="설계조직 선택"
                 width="10rem"
                 value={form.type07}
+                required
                 onChange={(e) => setFormField('type07', e.target.value)}
               >
                 {[
@@ -1640,11 +1643,11 @@ const LTPZ010_01P = () => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'16rem'} value={'12345678'} />
+              <Input aria-label="" width={'16rem'} value={'12345678'} required/>
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>  
-              <Input aria-label="" width={'16rem'} value={''} readOnly />
+              <Input aria-label="" width={'16rem'} value={''} required/>
             </FormCell>  
             <FormCell title={'영업가족'}>
               <NativeSelect
@@ -1687,7 +1690,7 @@ const LTPZ010_01P = () => {
           </Button>
         </Grow>
       </Grow>
-      <Grow className="w-full">
+      <Gcol className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType3>
             rowData={rowData}
@@ -1716,7 +1719,8 @@ const LTPZ010_01P = () => {
             }}
           />
         </div>
-      </Grow>
+        <InfoBox title="설계조회 가능기간: 취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일) " variant="info" bg={false} />
+      </Gcol>
     </Gcol>
   )
 }
@@ -1725,3 +1729,13 @@ export const LTPZ010_01: Story = {
 }
 
 
+const LTPZ010_02P = () => {
+  return (
+    <Gcol className="w-full">
+    </Gcol>  
+  );
+}
+
+export const LTPZ010_02: Story = { 
+  render: () => <LTPZ010_02P />,
+} 
