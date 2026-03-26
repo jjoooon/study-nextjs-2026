@@ -32,6 +32,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-community';
+import { AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
@@ -131,19 +132,29 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => (
-    <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
-      <AgGridReact<DummyDataType>
-        getRowId={(params) => String(params.data.id)}
-        rowData={DummyData}
-        columnDefs={columnDefs}
-        animateRows={false}
-        alwaysShowHorizontalScroll={true}
+    <div style={{ width: '100%', height:'40rem', }}>
 
-        treeData={true}
-        getDataPath={row => row.filePath}
-        groupDefaultExpanded={-1}
-        autoGroupColumnDef={{ headerName: '이름', field: 'name' }}
-      />
+      <div className="ag-theme-alpine">
+        <AgGridReact<DummyDataType>
+          // 필수
+          getRowId={(params) => String(params.data.id)} // 각 row의 고유 id 지정(React key 역할)
+          rowData={DummyData} // 표시할 데이터 배열
+          columnDefs={columnDefs} // 컬럼 정의
+          noRowsOverlayComponent={AgGridEmptyComponent} // 데이터 없을 때 표시할 컴포넌트
+
+          // 선택
+          domLayout="normal" // 높이 선택 normal, autoHeight, print
+
+          treeData={true}
+          getDataPath={row => row.filePath}
+          groupDefaultExpanded={-1}
+          autoGroupColumnDef={{ 
+            headerName: '이름', 
+            field: 'name',
+          }}
+        />
+
+      </div>
     </div>
   ),
 };
