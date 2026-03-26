@@ -7,12 +7,13 @@ import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTab
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, CellSpanModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
+import { AgGridEmptyComponent, useAgGridPagination } from '@/shared/components/aggrid/aggridComponents';
 
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule]);
 
 
 const meta: Meta = {
-  title: 'Sample/Ha/전환_인수지침_심사_0323/LTPA904_02',
+  title: 'Sample/Ha/전환_가입설계_0326/LTPA904_02',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -23,7 +24,7 @@ const meta: Meta = {
             <Title />
             <br />
             <br />
-            <h2>가입설계 &gt; 설계데이터조회 &gt; 추천보험료 P141</h2>
+            <h2>가입설계 &gt; 설계데이터조회 &gt; 납입예정리스트 LTPA904_02</h2>
             <Primary />
           </>
         );
@@ -34,36 +35,40 @@ const meta: Meta = {
 
 export default meta;
 
-const LTPA904_02 = () => {
+type LTPA904_02Props = {
+  isNoData?: boolean;
+};
+
+const LTPA904_02 = ({ isNoData = false }: LTPA904_02Props) => {
   type DummyDataType = {
     id: number;
-    security01: string | number;
-    security02: string | number;
-    security03: string | number;
-    security04: string | number;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+    field04: string | number;
   };
 
   const DummyData: DummyDataType[] = [
     { 
       id: 1,
-      security01: '', 
-      security02: '',                    
-      security03: '', 
-      security04: '', 
+      field01: '', 
+      field02: '',                    
+      field03: '', 
+      field04: '', 
     },
     { 
       id: 2,
-      security01: '', 
-      security02: '',                    
-      security03: '', 
-      security04: '', 
+      field01: '', 
+      field02: '',                    
+      field03: '', 
+      field04: '', 
     },
     { 
       id: 3,
-      security01: '', 
-      security02: '',                    
-      security03: '', 
-      security04: '', 
+      field01: '', 
+      field02: '',                    
+      field03: '', 
+      field04: '', 
     },
     
   ];
@@ -71,51 +76,46 @@ const LTPA904_02 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '납입회차',
-      field: 'security01',
+      field: 'field01',
       flex: 1,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       spanRows: false,
       cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center bg-white!`,
     },
     {
       headerName: '납입_응당일',
-      field: 'security02',
+      field: 'field02',
       flex: 1,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-center bg-white!`,
     },
     {
-      headerName: '계약_영업보험료',
-      field: 'security03',
+      headerName: '담보코드',
+      field: 'field03',
       flex: 1,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
-      headerName: '계약_영업보험료_이전',
-      field: 'security04',
+      headerName: '담보보험료',
+      field: 'field04',
       flex: 1,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
   ];
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
+  // ag-Grid + TablePagination 연동 (공통 훅 사용)
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
+  const pageSize = 5;
+  const {
+    currentPage,
+    totalPages,
+    handleGridReady,
+    handlePageChange
+  } = useAgGridPagination(gridRef, pageSize);
+
   return (
     <Gcol className="w-full gap-[1.2rem]">
+      {/* agGrid */}
       <Grow className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType>
@@ -123,9 +123,14 @@ const LTPA904_02 = () => {
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-            defaultColDef={{ sortable: false }}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            defaultColDef={{ 
+              sortable: false, 
+              resizable: false,
+            }}
             enableCellSpan={true}
             alwaysShowHorizontalScroll={true}
+            singleClickEdit={true}
           />
         </div>
       </Grow>
@@ -194,7 +199,7 @@ const LTPA904_02 = () => {
                 size="lg"
                 value=""
                 variant="default"
-                width="20.2rem"
+                width="21.5rem"
               />
               원
             </FormCell>
@@ -296,8 +301,11 @@ const LTPA904_02 = () => {
 
 type Story = StoryObj<typeof meta>;
 
-export const Page141: Story = {
+export const LTPA904Story: Story = {
   render: () => <LTPA904_02/>,
 };
 
+export const LTPA904_02NoData: Story = {
+  render: () => <LTPA904_02 isNoData={true} />,
+};
 

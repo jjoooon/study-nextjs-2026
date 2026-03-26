@@ -19,7 +19,7 @@ import { useFormFields } from '@hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const meta: Meta = {
-  title: 'Sample/Ha/전환_가입설계_0326/LTPA310',
+  title: 'Sample/Ha/전환_가입설계_0326/LTPA400_01',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -28,7 +28,7 @@ const meta: Meta = {
         <>
           <Title />
           <br /><br />
-          <h2>가입설계 &gt; 설계관리 &gt; 실손 재가입대상계약현황 LTPA310</h2>
+          <h2>가입설계 &gt; 설계관리 &gt; 실손 재가입대상계약현황 LTPA400_01</h2>
           <Primary />
         </>
       ),
@@ -38,11 +38,11 @@ const meta: Meta = {
 
 export default meta;
 
-type LTPA310Props = {
+type LTPA400_01Props = {
   isNoData?: boolean;
 };
 
-const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
+const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
 
   // dummy data
   type DummyDataType = {
@@ -306,25 +306,24 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
     <Gcol className="w-full gap-[1.2rem]">
       <Grow className="w-full" variant="box-round" placement={'bwe'}>
         <FormTable variant={'none'}
-          caption="실손 재가입대상계약현황 테이블"
+          caption="장기보험 가입설계 조회 테이블"
           cols={[
-            'w-[10rem]', 'min-w-[14rem] flex-1',
             'w-[10rem]', 'min-w-[14rem] flex-1',
             'w-[10rem]', 'min-w-[14rem] flex-1',
             'w-[10rem]', 'min-w-[14rem] flex-1',
           ]}
         >
           <FormRow>
-            <FormCell title={'조회구분'}>
+            <FormCell title={'소속'}>
               <NativeSelect
-                aria-label="조회구분 선택"
+                aria-label="소속 선택"
                 width="12rem"
                 value={form.type01}
                 onChange={(e) => setFormField('type01', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type01-1', label: '취급기관2' },
-                  { value: 'selection2', id: 'type01-2', label: '취급기관2' },
+                  { value: 'selection', id: 'type01-1', label: '소속1' },
+                  { value: 'selection2', id: 'type01-2', label: '소속2' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -514,10 +513,10 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA310Story: Story = {
-  render: () => <LTPA310 />,
+export const LTPA400_01Story: Story = {
+  render: () => <LTPA400_01 />,
 };
 
-export const LTPA310NoData: Story = {
-  render: () => <LTPA310 isNoData={true} />,
+export const LTPA400_01NoData: Story = {
+  render: () => <LTPA400_01 isNoData={true} />,
 };

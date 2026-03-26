@@ -1,610 +1,539 @@
-﻿import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
-import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Button } from '@uiux/Button';
+import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule, CellSpanModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridEmptyComponent, createFieldRenderer, useAgGridPagination } from '@aggrid';
+import { useFormFields } from '@hooks/useFormFields';
 
-ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule]);
-
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 const meta: Meta = {
-  title: 'Sample/Ha/전환_인수지침_심사_0323/LTPA904_01',
+  title: 'Sample/Ha/전환_가입설계_0326/LTPA904',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {
-      page: () => {
-        return (
-          <>
-            <Title />
-            <br />
-            <br />
-            <h2>가입설계 &gt; 설계데이터조회 &gt; 추천보험료 P139</h2>
-            <Primary />
-          </>
-        );
-      },
+      page: () => (
+        <>
+          <Title />
+          <br /><br />
+          <h2>가입설계 &gt; 설계데이터조회 &gt; 납입예정리스트 LTPA904</h2>
+          <Primary />
+        </>
+      ),
     },
   },
 };
 
 export default meta;
 
-const LTPA904_01 = () => {
+type LTPA904Props = {
+  isNoData?: boolean;
+};
+
+const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
+
+  // dummy data
   type DummyDataType = {
     id: number;
-    payment01: string | number;
-    payment02: string | number;
-    payment03: string | number;
-    payment04: string | number;
-    payment05: string | number;
-    payment06: string | number;
-    payment07: string | number;
-    payment08: string | number;
-    payment09: string | number;
-    payment10: string | number;
-    payment11: string | number;
-    payment12: string | number;
-    payment13: string | number;
-    payment14: string | number;
-    payment15: string | number;
-    payment16: string | number;
-    payment17: string | number;
-    payment18: string | number;
-    payment19: string | number;
-    payment20: string | number;
-    payment21: string | number;
-    payment22: string | number;
-    payment23: string | number;
-    payment24: string | number;
-    payment25: string | number;
-    payment26: string | number;
-    payment27: string | number;
-    payment28: string | number;
-    payment29: string | number;
-    payment30: string | number;
-    payment31: string | number;
-    payment32: string | number;
-    payment33: string | number;
-    payment34: string | number;
-    payment35: string | number;
-    payment36: string | number;
-    payment37: string | number;
-    payment38: string | number;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+    field04: string | number;
+    field05: string | number;
+    field06: string | number;
+    field07: string | number;
+    field08: string | number;
+    field09: string | number;
+    field10: string | number;
+    field11: string | number;
+    field12: string | number;
+    field13: string | number;
+    field14: string | number;
+    field15: string | number;
+    field16: string | number;
+    field17: string | number;
+    field18: string | number;
+    field19: string | number;
+    field20: string | number;
+    field21: string | number;
+    field22: string | number;
+    field23: string | number;
+    field24: string | number;
+    field25: string | number;
+    field26: string | number;
+    field27: string | number;
+    field28: string | number;
+    field29: string | number;
+    field30: string | number;
+    field31: string | number;
+    field32: string | number;
+    field33: string | number;
+    field34: string | number;
+    field35: string | number;
+    field36: string | number;
+    field37: string | number;
+    field38: string | number;
   };
-
   const DummyData: DummyDataType[] = [
     { 
       id: 1,
-      payment01: '', 
-      payment02: '',                    
-      payment03: '', 
-      payment04: '', 
-      payment05: '', 
-      payment06: '', 
-      payment07: '', 
-      payment08: '', 
-      payment09: '', 
-      payment10: '', 
-      payment11: '', 
-      payment12: '', 
-      payment13: '', 
-      payment14: '', 
-      payment15: '', 
-      payment16: '', 
-      payment17: '', 
-      payment18: '', 
-      payment19: '', 
-      payment20: '', 
-      payment21: '', 
-      payment22: '', 
-      payment23: '', 
-      payment24: '', 
-      payment25: '', 
-      payment26: '', 
-      payment27: '', 
-      payment28: '', 
-      payment29: '', 
-      payment30: '', 
-      payment31: '', 
-      payment32: '', 
-      payment33: '', 
-      payment34: '', 
-      payment35: '', 
-      payment36: '', 
-      payment37: '', 
-      payment38: '', 
+      field01: '', 
+      field02: '',                    
+      field03: '', 
+      field04: '', 
+      field05: '', 
+      field06: '', 
+      field07: '', 
+      field08: '', 
+      field09: '', 
+      field10: '', 
+      field11: '', 
+      field12: '', 
+      field13: '', 
+      field14: '', 
+      field15: '', 
+      field16: '', 
+      field17: '', 
+      field18: '', 
+      field19: '', 
+      field20: '', 
+      field21: '', 
+      field22: '', 
+      field23: '', 
+      field24: '', 
+      field25: '', 
+      field26: '', 
+      field27: '', 
+      field28: '', 
+      field29: '', 
+      field30: '', 
+      field31: '', 
+      field32: '', 
+      field33: '', 
+      field34: '', 
+      field35: '', 
+      field36: '', 
+      field37: '', 
+      field38: '', 
     },
     { 
       id: 2,
-      payment01: '', 
-      payment02: '',                    
-      payment03: '', 
-      payment04: '', 
-      payment05: '', 
-      payment06: '', 
-      payment07: '', 
-      payment08: '', 
-      payment09: '', 
-      payment10: '', 
-      payment11: '', 
-      payment12: '', 
-      payment13: '', 
-      payment14: '', 
-      payment15: '', 
-      payment16: '', 
-      payment17: '', 
-      payment18: '', 
-      payment19: '', 
-      payment20: '', 
-      payment21: '', 
-      payment22: '', 
-      payment23: '', 
-      payment24: '', 
-      payment25: '', 
-      payment26: '', 
-      payment27: '', 
-      payment28: '', 
-      payment29: '', 
-      payment30: '', 
-      payment31: '', 
-      payment32: '', 
-      payment33: '', 
-      payment34: '', 
-      payment35: '', 
-      payment36: '', 
-      payment37: '', 
-      payment38: '', 
+      field01: '', 
+      field02: '',                    
+      field03: '', 
+      field04: '', 
+      field05: '', 
+      field06: '', 
+      field07: '', 
+      field08: '', 
+      field09: '', 
+      field10: '', 
+      field11: '', 
+      field12: '', 
+      field13: '', 
+      field14: '', 
+      field15: '', 
+      field16: '', 
+      field17: '', 
+      field18: '', 
+      field19: '', 
+      field20: '', 
+      field21: '', 
+      field22: '', 
+      field23: '', 
+      field24: '', 
+      field25: '', 
+      field26: '', 
+      field27: '', 
+      field28: '', 
+      field29: '', 
+      field30: '', 
+      field31: '', 
+      field32: '', 
+      field33: '', 
+      field34: '', 
+      field35: '', 
+      field36: '', 
+      field37: '', 
+      field38: '', 
     },
-    { 
-      id: 3,
-      payment01: '', 
-      payment02: '',                    
-      payment03: '', 
-      payment04: '', 
-      payment05: '', 
-      payment06: '', 
-      payment07: '', 
-      payment08: '', 
-      payment09: '', 
-      payment10: '', 
-      payment11: '', 
-      payment12: '', 
-      payment13: '', 
-      payment14: '', 
-      payment15: '', 
-      payment16: '', 
-      payment17: '', 
-      payment18: '', 
-      payment19: '', 
-      payment20: '', 
-      payment21: '', 
-      payment22: '', 
-      payment23: '', 
-      payment24: '', 
-      payment25: '', 
-      payment26: '', 
-      payment27: '', 
-      payment28: '', 
-      payment29: '', 
-      payment30: '', 
-      payment31: '', 
-      payment32: '', 
-      payment33: '', 
-      payment34: '', 
-      payment35: '', 
-      payment36: '', 
-      payment37: '', 
-      payment38: '', 
-    },
-    
   ];
 
+  // AgGrid Column 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '납입회차',
-      field: 'payment01',
-      width: 120,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
-      spanRows: false,
+      field: 'field01',
+      width: 100,
       cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center bg-white!`,
     },
     {
       headerName: '납입_응당일',
-      field: 'payment02',
-      width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field02',
+      width: 120,
       cellClass: `text-center bg-white!`,
     },
     {
       headerName: '계약_영업보험료',
-      field: 'payment03',
+      field: 'field03',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '계약_영업보험료_이전',
-      field: 'payment04',
-      width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field04',
+      width: 160,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립보험료',
-      field: 'payment05',
+      field: 'field05',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center bg-white!`,
     },
     {
       headerName: '적립보험료 이전',
-      field: 'payment06',
-      width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field06',
+      width: 160,
       cellClass: `text-center bg-white!`,
     },
     {
       headerName: '계약_적용보험료',
-      field: 'payment07',
+      field: 'field07',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '계약_적용보험료_이전',
-      field: 'payment08',
-      width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field08',
+      width: 160,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '계약_할인_보험료',
-      field: 'payment09',
+      field: 'field09',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '계약_할인_보험료_이전',
-      field: 'payment10',
-      width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field10',
+      width: 160,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '담보_적용보험료_합계',
-      field: 'payment11',
+      field: 'field11',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '담보_적용보험료_합계_이전',
-      field: 'payment12',
-      width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field12',
+      width: 160,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '할인_적립_담보_보험료',
-      field: 'payment13',
+      field: 'field13',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '할인_적립_담보_보험료_이전',
-      field: 'payment14',
-      width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field14',
+      width: 160,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립순보험료',
-      field: 'payment15',
+      field: 'field15',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립순보험료_이전',
-      field: 'payment16',
-      width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field16',
+      width: 160,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립_계수_01',
-      field: 'payment17',
+      field: 'field17',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립_계수_02',
-      field: 'payment18',
+      field: 'field18',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립금',
-      field: 'payment19',
+      field: 'field19',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '실손의료비예상납입보험료',
-      field: 'payment20',
+      field: 'field20',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립보험료대체납입특약보험료',
-      field: 'payment21',
+      field: 'field21',
       width: 200,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '신계약비초년도영업보험료비율[α1]',
-      field: 'payment22',
+      field: 'field22',
       width: 220,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '신계약비초년도영업보험료비율[α2]',
-      field: 'payment23',
+      field: 'field23',
       width: 220,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '신계약비가입금액비율[αs]',
-      field: 'payment24',
+      field: 'field24',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '신계약비일정금액[αc]',
-      field: 'payment25',
+      field: 'field25',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '손해조사비차감유지비율[β(a%)]',
-      field: 'payment26',
+      field: 'field26',
       width: 200,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '손해조사비차감유지한도비율[β(b%)]',
-      field: 'payment27',
+      field: 'field27',
       width: 230,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '완납전유지비년납한도금액[β(c)]',
-      field: 'payment28',
+      field: 'field28',
       width: 200,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '완납전유지비일정금액[βc]',
-      field: 'payment29',
+      field: 'field29',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '수금비영업보험료비율[β5]',
-      field: 'payment30',
+      field: 'field30',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '손해조사비율[Ce(a%)]',
-      field: 'payment31',
+      field: 'field31',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '손해조사비고정금액[Ce(c)]',
-      field: 'payment32',
+      field: 'field32',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '회차_라운드_다운_여부',
-      field: 'payment33',
+      field: 'field33',
       width: 180,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '중도인출금액적립액',
-      field: 'payment34',
+      field: 'field34',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '적립대체보험료',
-      field: 'payment35',
+      field: 'field35',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '준비금대체보험료',
-      field: 'payment36',
+      field: 'field36',
       width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '할인율납입',
-      field: 'payment37',
-      width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field37',
+      width: 120,
       cellClass: `text-right bg-white!`,
     },
     {
       headerName: '할인율만기',
-      field: 'payment38',
-      width: 150,
-      sortable: false, 
-      filter: false, 
-      suppressMovable: true, 
-      resizable: true,
+      field: 'field38',
+      width: 120,
       cellClass: `text-right bg-white!`,
     },
   ];
+   
+  // rowSelection 사용시
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(isNoData ? [] : DummyData);
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  // form event
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+    type03: '',
+  });
+
+  // ag-Grid + TablePagination 연동 (공통 훅 사용)
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
+  const pageSize = 5;
+  const {
+    currentPage,
+    totalPages,
+    handleGridReady,
+    handlePageChange
+  } = useAgGridPagination(gridRef, pageSize);
 
   return (
     <Gcol className="w-full gap-[1.2rem]">
+      {/* 조회 폼 */}
+      <Grow className="w-full" variant="box-round" placement={'bwe'}>
+        <FormTable variant={'none'}
+          caption="납입예정 리스트 테이블"
+          cols={[
+            'w-[10rem]', 'min-w-[16rem] flex-1',
+            'w-[10rem]', 'min-w-[16rem] flex-1',
+            'w-[10rem]', 'min-w-[16rem] flex-1',
+            'w-[10rem]', 'min-w-[16rem] flex-1',
+            'w-[10rem]', 'min-w-[16rem] flex-1',
+          ]}
+        >
+          <FormRow>
+            <FormCell title={'설계번호'}>
+              <Input aria-label="" width={'14rem'} value={''} />
+            </FormCell>
+            <FormCell title={'발행후변경순번'}>
+              <Input aria-label="" width={'14rem'} value={''} />
+            </FormCell>
+            <FormCell title={'증권번호'}>
+              <Input aria-label="" width={'14rem'} value={''} />
+            </FormCell>
+            <FormCell title={'시작납입회차'}>
+              <Input aria-label="" width={'14rem'} value={''} />
+            </FormCell>
+          </FormRow>
+          <FormRow>
+            <FormCell title={'업무구분1'}>
+              <NativeSelect
+                aria-label="업무구분1 선택"
+                width="14rem"
+                value={form.type01}
+                onChange={(e) => setFormField('type01', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type01-1', label: '(10)가입설계' },
+                  { value: 'selection2', id: 'type01-2', label: '(20)변경설계' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+            <FormCell title={'업무구분2'}>
+              <NativeSelect
+                aria-label="업무구분2 선택"
+                width="14rem"
+                value={form.type02}
+                onChange={(e) => setFormField('type02', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type02-1', label: '(11)예상만기' },
+                  { value: 'selection2', id: 'type02-2', label: '(13)최소최대' },
+                  { value: 'selection3', id: 'type02-3', label: '(21)추천' },
+                  { value: 'selection4', id: 'type02-4', label: '(12)인수심사' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+            <FormCell title={'환급률'}>
+              <Input aria-label="" width={'14rem'} value={'9999'} />
+            </FormCell>
+            <FormCell title={'환급금'}>
+              <Input aria-label="" width={'14rem'} value={'9999'} />
+            </FormCell>
+            <FormCell title={'추천구분'}>
+              <NativeSelect
+                aria-label="추천구분 선택"
+                width="14rem"
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type03-1', label: '(10)목표환급율' },
+                  { value: 'selection2', id: 'type03-2', label: '(01)목표환급율' },
+                  { value: 'selection3', id: 'type03-3', label: '(02)목표환급금' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+          </FormRow>
+        </FormTable>
+        <Grow>
+          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+            조회
+          </Button>
+          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+            새로고침
+          </Button>
+        </Grow>
+      </Grow>
+
+      {/* agGrid */}
       <Grow className="w-full">
         <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
           <AgGridReact<DummyDataType>
-            // getRowId 적용: id 필드를 고유 식별자로 사용
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-            defaultColDef={{ sortable: false }}
-            enableCellSpan={true}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            defaultColDef={{ 
+              sortable: false, 
+              resizable: false,
+            }}
             alwaysShowHorizontalScroll={true}
+            singleClickEdit={true}
           />
         </div>
       </Grow>
+
+      {/* 예상만기환급금 테이블 */}
       <Grow className="w-full">
         <FormTable caption="예상만기환급금 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
           <FormRow>
@@ -651,6 +580,8 @@ const LTPA904_01 = () => {
           </FormRow>
         </FormTable>
       </Grow>
+
+      {/* 추천보험료 테이블 */}
       <Grow className="w-full">
         <FormTable caption="추천보험료 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
           <FormRow>
@@ -670,7 +601,7 @@ const LTPA904_01 = () => {
                 size="lg"
                 value=""
                 variant="default"
-                width="20.2rem"
+                width="21.5rem"
               />
               원
             </FormCell>
@@ -719,6 +650,8 @@ const LTPA904_01 = () => {
           </FormRow>
         </FormTable>
       </Grow>
+
+      {/* 기타 테이블 */}
       <Grow className="w-full">
         <FormTable caption="기타 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
           <FormRow>
@@ -766,14 +699,15 @@ const LTPA904_01 = () => {
         </FormTable>
       </Grow>
     </Gcol>
-    
   );
-};
+}
 
 type Story = StoryObj<typeof meta>;
 
-export const Page139: Story = {
-  render: () => <LTPA904_01/>,
+export const LTPA904Story: Story = {
+  render: () => <LTPA904 />,
 };
 
-
+export const LTPA904NoData: Story = {
+  render: () => <LTPA904 isNoData={true} />,
+};
