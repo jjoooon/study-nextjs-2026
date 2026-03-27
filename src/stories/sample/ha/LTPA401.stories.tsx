@@ -177,7 +177,6 @@ const LTPA401 = (props: LTPA401Props) => {
                 width="full"
                 readOnly
               />
-              원
             </FormCell>
           </FormRow>
           <FormRow>
@@ -190,7 +189,6 @@ const LTPA401 = (props: LTPA401Props) => {
                 width="full"
                 readOnly
               />
-              원
             </FormCell>
           </FormRow>
         </FormTable>

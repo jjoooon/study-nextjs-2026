@@ -408,6 +408,26 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
     type01: '',
     type02: '',
     type03: '',
+    type04: '',
+    type05: '',
+    type06: '',
+    type07: '',
+    type08: '',
+    type09: '',
+    type10: '',
+    type11: '',
+    type12: '',
+    type13: '',
+    type14: '',
+    type15: '',
+    type16: '',
+    type17: '',
+    type18: '',
+    type19: '',
+    type20: '',
+    type21: '',
+    type22: '',
+    type23: '', 
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -436,16 +456,32 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
         >
           <FormRow>
             <FormCell title={'설계번호'}>
-              <Input aria-label="" width={'14rem'} value={''} />
+              <Input aria-label="" 
+                width={'14rem'} 
+                value={form.type01} 
+                onChange={e => setFormField('type01', e.target.value)}
+              />
             </FormCell>
             <FormCell title={'발행후변경순번'}>
-              <Input aria-label="" width={'14rem'} value={''} />
+              <Input aria-label="" 
+                width={'14rem'} 
+                value={form.type02} 
+                onChange={e => setFormField('type02', e.target.value)} 
+              />
             </FormCell>
             <FormCell title={'증권번호'}>
-              <Input aria-label="" width={'14rem'} value={''} />
+              <Input aria-label="" 
+                width={'14rem'} 
+                value={form.type03} 
+                onChange={e => setFormField('type03', e.target.value)} 
+              />
             </FormCell>
             <FormCell title={'시작납입회차'}>
-              <Input aria-label="" width={'14rem'} value={''} />
+              <Input aria-label="" 
+                width={'14rem'} 
+                value={form.type04} 
+                onChange={e => setFormField('type04', e.target.value)} 
+              />
             </FormCell>
           </FormRow>
           <FormRow>
@@ -453,12 +489,12 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
               <NativeSelect
                 aria-label="업무구분1 선택"
                 width="14rem"
-                value={form.type01}
-                onChange={(e) => setFormField('type01', e.target.value)}
+                value={form.type05}
+                onChange={(e) => setFormField('type05', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type01-1', label: '(10)가입설계' },
-                  { value: 'selection2', id: 'type01-2', label: '(20)변경설계' },
+                  { value: 'selection', id: 'type05-1', label: '(10)가입설계' },
+                  { value: 'selection2', id: 'type05-2', label: '(20)변경설계' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -468,36 +504,44 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
               <NativeSelect
                 aria-label="업무구분2 선택"
                 width="14rem"
-                value={form.type02}
-                onChange={(e) => setFormField('type02', e.target.value)}
+                value={form.type06}
+                onChange={(e) => setFormField('type06', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type02-1', label: '(11)예상만기' },
-                  { value: 'selection2', id: 'type02-2', label: '(13)최소최대' },
-                  { value: 'selection3', id: 'type02-3', label: '(21)추천' },
-                  { value: 'selection4', id: 'type02-4', label: '(12)인수심사' },
+                  { value: 'selection', id: 'type06-1', label: '(11)예상만기' },
+                  { value: 'selection2', id: 'type06-2', label: '(13)최소최대' },
+                  { value: 'selection3', id: 'type06-3', label: '(21)추천' },
+                  { value: 'selection4', id: 'type06-4', label: '(12)인수심사' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
             </FormCell>
             <FormCell title={'환급률'}>
-              <Input aria-label="" width={'14rem'} value={'9999'} />
+              <Input aria-label="" 
+                width={'14rem'} 
+                value={form.type07} 
+                onChange={e => setFormField('type07', e.target.value)} 
+              />
             </FormCell>
             <FormCell title={'환급금'}>
-              <Input aria-label="" width={'14rem'} value={'9999'} />
+              <Input aria-label="" 
+                width={'14rem'} 
+                value={form.type08} 
+                onChange={e => setFormField('type08', e.target.value)}
+              />
             </FormCell>
             <FormCell title={'추천구분'}>
               <NativeSelect
                 aria-label="추천구분 선택"
                 width="14rem"
-                value={form.type03}
-                onChange={(e) => setFormField('type03', e.target.value)}
+                value={form.type09}
+                onChange={(e) => setFormField('type09', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type03-1', label: '(10)목표환급율' },
-                  { value: 'selection2', id: 'type03-2', label: '(01)목표환급율' },
-                  { value: 'selection3', id: 'type03-3', label: '(02)목표환급금' },
+                  { value: 'selection', id: 'type09-1', label: '(10)목표환급율' },
+                  { value: 'selection2', id: 'type09-2', label: '(01)목표환급율' },
+                  { value: 'selection3', id: 'type09-3', label: '(02)목표환급금' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -525,7 +569,7 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
             noRowsOverlayComponent={AgGridEmptyComponent}
             defaultColDef={{ 
               sortable: false, 
-              resizable: false,
+              resizable: true,
             }}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
@@ -541,41 +585,48 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                commaAmount={true}
+                after="원"
+                value={form.type10} 
+                onChange={e => setFormField('type10', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'중도환급금'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                commaAmount={true}
+                after="원"
+                value={form.type11} 
+                onChange={e => setFormField('type11', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'예상만기환급금'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                commaAmount={true}
+                after="원"
+                value={form.type12}
+                onChange={e => setFormField('type12', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'예상만기환급율'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
-                variant="default"
                 width="full"
+                variant="default"
+                after="%"
+                value={form.type13}
+                onChange={e => setFormField('type13', e.target.value)}
               />
-              %
             </FormCell>
           </FormRow>
         </FormTable>
@@ -589,21 +640,25 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                commaAmount={true}
+                after="원"
+                value={form.type14}
+                onChange={e => setFormField('type14', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'최소추천(출생후)'} colSpan={5}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="21.5rem"
+                after="원"
+                commaAmount={true}
+                value={form.type15}
+                onChange={e => setFormField('type15', e.target.value)}
               />
-              원
             </FormCell>
           </FormRow>
           <FormRow>
@@ -611,41 +666,47 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                after="원"
+                commaAmount={true}
+                value={form.type16}
+                onChange={e => setFormField('type16', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'최소예상만기환급율'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                after="%"
+                value={form.type17}
+                onChange={e => setFormField('type17', e.target.value)}
               />
-              %
             </FormCell>
             <FormCell title={'최대추천보험료'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                after="원"
+                commaAmount={true}
+                value={form.type18}
+                onChange={e => setFormField('type18', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'최대예상만기환급율'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                after="%"
+                value={form.type19}
+                onChange={e => setFormField('type19', e.target.value)}
               />
-              %
             </FormCell>
           </FormRow>
         </FormTable>
@@ -659,41 +720,49 @@ const LTPA904 = ({ isNoData = false }: LTPA904Props) => {
               <Input
                 placeholder=""
                 size="lg"
-                value=""
                 variant="default"
                 width="full"
+                after="원"
+                commaAmount={true}
+                value={form.type20}
+                onChange={e => setFormField('type20', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'적립보험료대체납입특약보험료'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
-                variant="default"
                 width="full"
+                after="원"
+                commaAmount={true}
+                variant="default"
+                value={form.type21}
+                onChange={e => setFormField('type21', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'실손의료비예상납입보험료'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
-                variant="default"
                 width="full"
+                variant="default"
+                after="원"
+                commaAmount={true}
+                value={form.type22}
+                onChange={e => setFormField('type22', e.target.value)}
               />
-              원
             </FormCell>
             <FormCell title={'만기유지보너스'}>
               <Input
                 placeholder=""
                 size="lg"
-                value=""
-                variant="default"
                 width="full"
+                variant="default"
+                after="원"
+                commaAmount={true}
+                value={form.type23}
+                onChange={e => setFormField('type23', e.target.value)}
               />
-              원
             </FormCell>
           </FormRow>
         </FormTable>
