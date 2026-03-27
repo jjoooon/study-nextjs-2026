@@ -65,7 +65,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
       field04: '',
       field05: '',        
       field06: '',
-      field07: '',              
+      field07: '김한화',              
       field08: '',
       field09: '',
     },
@@ -78,7 +78,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
       field04: '',
       field05: '',        
       field06: '',
-      field07: '김한화',              
+      field07: '',              
       field08: '',
       field09: '',
     },
@@ -114,7 +114,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
       cellClass: 'editable-cell text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택', '선택2'] },
+      cellEditorParams: { values: ['선택', '(개인영업-전속)청약서류출력제한', '(개인영업-교차)청약서류출력제한', '(전략영업)청약서류출력제한', '(개인영업-전속)휴대폰전자서명요청제한', '(개인영업-교차)휴대폰전자서명요청제한', '(전략영업-전속)휴대폰전자서명요청제한'] },
     },
     {
       headerName: '판매채널',
@@ -138,7 +138,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
       field: 'field05',
       flex: 1,
       editable: true, // 날짜 직접 입력 가능
-      cellClass: 'editable-cell flex! items-center! justify-center!',
+      cellClass: 'text-center editable-cell',
       cellEditor: DatePickerCellEditor,
     },
     {
@@ -146,7 +146,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
       field: 'field06',
       flex: 1,
       editable: true, // 날짜 직접 입력 가능
-      cellClass: 'editable-cell flex! items-center! justify-center!',
+      cellClass: 'text-center editable-cell',
       cellEditor: DatePickerCellEditor,
     },
     {
@@ -231,14 +231,19 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
             <FormCell title={'적용사항'}>
               <NativeSelect
                 aria-label="적용사항 선택"
-                width="18rem"
+                width="23rem"
                 value={form.type02}
                 onChange={(e) => setFormField('type02', e.target.value)}
                 required
               >
                 {[
                   { value: 'selection', id: 'type02-1', label: '선택' },
-                  { value: 'selection2', id: 'type02-2', label: '항목2' },
+                  { value: 'selection2', id: 'type02-2', label: '(개인영업-전속)청약서류출력제한' },
+                  { value: 'selection3', id: 'type02-3', label: '(개인영업-교차)청약서류출력제한' },
+                  { value: 'selection4', id: 'type02-4', label: '(전략영업)청약서류출력제한' },
+                  { value: 'selection5', id: 'type02-5', label: '(개인영업-전속)휴대폰전자서명요청제한' },
+                  { value: 'selection6', id: 'type02-6', label: '(개인영업-교차)휴대폰전자서명요청제한' },
+                  { value: 'selection7', id: 'type02-7', label: '(전략영업-전속)휴대폰전자서명요청제한' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}

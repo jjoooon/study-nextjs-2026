@@ -152,6 +152,8 @@ const LTPA200 = ({ isNoData = false }: LTPA200Props) => {
     type01: '',
     type02: '',
     type03: '',
+    type04: '',
+    type05: '',
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -207,21 +209,31 @@ const LTPA200 = ({ isNoData = false }: LTPA200Props) => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'15rem'} value={'12345678'} readOnly />
+              <Input
+                aria-label=""
+                width={'15rem'}
+                value={form.type03}
+                onChange={e => setFormField('type03', e.target.value)}
+              />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
-              <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+              <Input aria-label="" 
+                width={'15rem'} 
+                value={form.type04 || '김한화'}
+                onChange={e => setFormField('type04', e.target.value)}
+                readOnly
+              />
               <Grow className="ml-[8rem]">
                 <NativeSelect
                   aria-label="조직구분 선택"
                   width="12rem"
-                  value={form.type02}
-                  onChange={(e) => setFormField('type02', e.target.value)}
+                  value={form.type05}
+                  onChange={(e) => setFormField('type05', e.target.value)}
                 >
                   {[
-                    { value: 'selection', id: 'type02-1', label: '선택' },
-                    { value: 'selection2', id: 'type02-2', label: '항목2' },
+                    { value: 'selection', id: 'type05-1', label: '선택' },
+                    { value: 'selection2', id: 'type05-2', label: '항목2' },
                   ].map((option) => (
                     <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                   ))}

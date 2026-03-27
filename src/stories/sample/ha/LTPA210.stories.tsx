@@ -152,6 +152,8 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
     type01: '',
     type02: '',
     type03: '',
+    type03: '',
+    type03: '',
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
