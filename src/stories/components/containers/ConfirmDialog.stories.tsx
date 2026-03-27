@@ -20,6 +20,11 @@ const meta: Meta<ConfirmDialogStoryProps> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.27 수정</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div>
               <p>
@@ -212,7 +217,7 @@ import { Button } from '@uiux/Button';
   args: {
     defaultOpen: false,
     title: '알림',
-    description: '작업을 계속 진행할까요?',
+    description: '시스템의 중요한 상태 변화, 처리 결과, <br />또는 즉각적인 주의가 필요한 정보를 <br />사용자에게 전달합니다.',
     confirmLabel: '확인',
     cancelLabel: '취소',
     tone: 'info',
