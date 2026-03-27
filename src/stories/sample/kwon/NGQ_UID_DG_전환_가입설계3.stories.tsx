@@ -12,7 +12,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 const meta: Meta = {
-  title: 'Sample/kwon/NGQ_UID_DG_V0.22/가입설계도우미 알림톡발송',
+  title: 'Sample/kwon/NGQ_UID_DG_V0.22/3_가입설계도우미 알림톡발송',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -36,7 +36,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const LTPA351 = () => {
+const LTPA351P = () => {
   // dummy data
   type DummyDataType = {
     id: number;
@@ -118,6 +118,6 @@ const LTPA351 = () => {
     </Gcol>
   );
 }
-export const LTPA296: Story = {
-  render: () => <LTPA351 />,
+export const LTPA351: Story = {
+  render: () => <LTPA351P />,
 }
