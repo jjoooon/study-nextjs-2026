@@ -8,18 +8,16 @@ import { SearchIcon } from '@icons';
 import { DatePickerInput } from '@common/DatePicker';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, useAgGridPagination } from '@aggrid';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { AgGridEmptyComponent, createCellValueChangedHandler, useAgGridPagination } from '@aggrid';
 import { useFormFields } from '@hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const meta: Meta = {
-  title: 'Sample/Ha/전환_가입설계_0326/LTPA400_01',
+  title: 'Sample/Ha/전환_가입설계_0326/LTPA200',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -28,7 +26,7 @@ const meta: Meta = {
         <>
           <Title />
           <br /><br />
-          <h2>가입설계 &gt; 설계데이터조회 &gt; 장기보험-가입설계요청 LTPA400_01</h2>
+          <h2>가입설계 &gt; 설계데이터조회 &gt; 신계약스캔권한관리 LTPA200</h2>
           <Primary />
         </>
       ),
@@ -38,11 +36,11 @@ const meta: Meta = {
 
 export default meta;
 
-type LTPA400_01Props = {
+type LTPA200Props = {
   isNoData?: boolean;
 };
 
-const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
+const LTPA200 = ({ isNoData = false }: LTPA200Props) => {
 
   // dummy data
   type DummyDataType = {
@@ -55,110 +53,86 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
     field05: string | number;
     field06: string | number;
     field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
   };
   const DummyData: DummyDataType[] = [
     {
-      id: 1, 
+      id: 1,
       isCheck: false,
       field01: '',  
-      field02: ' ',
-      field03: '',             
-      field04: '',
+      field02: '',
+      field03: '2023-03-01',             
+      field04: '9999-12-31',
       field05: '',        
       field06: '',
       field07: '',              
-      field08: '',
-      field09: '',        
-      field10: '',
-      field11: '',    
-      field12: '',
+    },
+    {
+      id: 2,
+      isCheck: false,
+      field01: '',  
+      field02: '',
+      field03: '2023-03-01',             
+      field04: '9999-12-31',
+      field05: '',        
+      field06: '',
+      field07: '김한화',              
+    },
+    {
+      id: 3,
+      isCheck: false,
+      field01: '',  
+      field02: '',
+      field03: '2023-03-01',             
+      field04: '9999-12-31',
+      field05: '',        
+      field06: '',
+      field07: '',              
     },
   ];
 
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: 'No',
-      field: 'id',
-      width: 80,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '지점',
+      headerName: '구분',
       field: 'field01',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '대리점코드',
+      headerName: '대상',
       field: 'field02',
-      flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      flex: 2,
+      cellClass: 'flex! items-center! justify-center!',
 
     },
     {
-      headerName: '대리점명',
+      headerName: '적용시작일자',
       field: 'field03',
-      flex: 0.8,
+      flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '사용인코드',
+      headerName: '적용종료일자',
       field: 'field04',
-      flex: 0.8,
+      flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '사용인명',
+      headerName: '상태',
       field: 'field05',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '상품명',
+      headerName: '적용사유',
       field: 'field06',
-      flex: 1,
+      flex: 2,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '플랜명',
+      headerName: '등록자',
       field: 'field07',
-      flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '고객명',
-      field: 'field08',
-      flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '설계일자',
-      field: 'field09',
-      flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '담당SM',
-      field: 'field10',
-      flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '설계번호',
-      field: 'field11',
-      flex: 1.4,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '증권번호',
-      field: 'field12',
-      flex: 1.4,
+      flex: 0.7,
       cellClass: 'flex! items-center! justify-center!' 
     },
   ];
@@ -178,7 +152,6 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
     type01: '',
     type02: '',
     type03: '',
-    type04: '',
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -203,88 +176,66 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
           ]}
         >
           <FormRow>
-            <FormCell title={'소속'}>
+            <FormCell title={'등록항목'}>
               <NativeSelect
-                aria-label="본부 선택"
+                aria-label="항목 선택"
                 width="12rem"
                 value={form.type01}
                 onChange={(e) => setFormField('type01', e.target.value)}
-                readOnly
+                required
               >
                 {[
-                  { value: 'selection', id: 'type01-1', label: 'GA영업2본부' },
-                  { value: 'selection2', id: 'type01-2', label: 'GA영업2본부2' },
-                ].map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                ))}
-              </NativeSelect>
-              <NativeSelect
-                aria-label="사업단 선택"
-                width="15.2rem"
-                value={form.type02}
-                onChange={(e) => setFormField('type02', e.target.value)}
-                readOnly
-              >
-                {[
-                  { value: 'selection', id: 'type02-1', label: '부산GA사업단' },
-                  { value: 'selection2', id: 'type02-2', label: '부산GA사업단2' },
-                ].map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                ))}
-              </NativeSelect>
-              <NativeSelect
-                aria-label="지점 선택"
-                width="15rem"
-                value={form.type03}
-                onChange={(e) => setFormField('type03', e.target.value)}
-                readOnly
-              >
-                {[
-                  { value: 'selection', id: 'type03-1', label: '신부산GA지점' },
-                  { value: 'selection2', id: 'type03-2', label: '신부산GA지점2' },
+                  { value: 'selection', id: 'type01-1', label: '장기보험' },
+                  { value: 'selection2', id: 'type01-2', label: '장기보험2' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
             </FormCell>
-            <FormCell title={'담당SM'}>
+            <FormCell title={'조직구분'}>
+              <NativeSelect
+                aria-label="조직구분 선택"
+                width="12rem"
+                value={form.type02}
+                onChange={(e) => setFormField('type02', e.target.value)}
+                required
+              >
+                {[
+                  { value: 'selection', id: 'type02-1', label: '선택' },
+                  { value: 'selection2', id: 'type02-2', label: '항목2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
               <Input aria-label="" width={'15rem'} value={'12345678'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
               <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
-            </FormCell>
-            <FormCell title={'설계일자'}>
-              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" />
-            </FormCell>
-          </FormRow>
-          <FormRow>
-            <FormCell title={'대리인'}>
-              <NativeSelect
-                aria-label="대리점 선택"
-                width="12rem"
-                value={form.type04}
-                onChange={(e) => setFormField('type04', e.target.value)}
-              >
-                {[
-                  { value: 'selection', id: 'type04-1', label: '구분' },
-                  { value: 'selection2', id: 'type04-2', label: '대리점' },
-                ].map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                ))}
-              </NativeSelect>
-              <Input aria-label="" width={'12rem'} value={'12345678'} />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button> 
-              <Input aria-label="" width={'15rem'} value={'신부산지점GA지점'} readOnly/>
-            </FormCell>
-            <FormCell title={'사용인'}>
-              <Input aria-label="" width={'15rem'} value={'12345678'} />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>               
-              <Input aria-label="" width={'15rem'} value={'12345678'} readOnly />
+              <Grow className="ml-[8rem]">
+                <NativeSelect
+                  aria-label="조직구분 선택"
+                  width="12rem"
+                  value={form.type02}
+                  onChange={(e) => setFormField('type02', e.target.value)}
+                >
+                  {[
+                    { value: 'selection', id: 'type02-1', label: '선택' },
+                    { value: 'selection2', id: 'type02-2', label: '항목2' },
+                  ].map((option) => (
+                    <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                  ))}
+                </NativeSelect>
+                <DatePickerInput
+                  errorMsg="입력은 필수입니다."
+                  errorPs="bl"
+                  mode="single"
+                  onChange={() => {}}
+                  size="lg"
+                  value=""
+                  width="sm"
+                />
+              </Grow>
             </FormCell>
           </FormRow>
         </FormTable>
@@ -311,16 +262,17 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
             }}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
+            onCellValueChanged={onCellValueChanged}
 
             // 체크박스 시
             rowSelection={{
               mode: 'multiRow',
-              headerCheckbox: true,
+              headerCheckbox: false,
               checkboxes: true,
               enableClickSelection: false,
             }}
             selectionColumnDef={{
-              headerName: 'checkbox',
+              headerName: '√',
             }}
             onGridReady={params => {
               params.api.forEachNode(node => {
@@ -339,10 +291,10 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA400_01Story: Story = {
-  render: () => <LTPA400_01 />,
+export const LTPA200Story: Story = {
+  render: () => <LTPA200 />,
 };
 
-export const LTPA400_01NoData: Story = {
-  render: () => <LTPA400_01 isNoData={true} />,
+export const LTPA200NoData: Story = {
+  render: () => <LTPA200 isNoData={true} />,
 };
