@@ -518,6 +518,9 @@
 
 
 /* 필수입력 에러메시지 */
+.ag-cell.required.ag-cell-error-border {
+  background-color: var(--color-input-surface-error) !important;
+}
 .ag-cell.required{overflow: visible !important;}
 .ag-cell.required.ag-cell-error-border .ag-input-field-input.ag-text-field-input {
   outline: 0.2rem solid var(--color-text-danger) !important;

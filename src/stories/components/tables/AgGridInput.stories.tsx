@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
 
@@ -17,14 +17,14 @@ const DummyData: DummyDataType[] = [
   { id: 4, label: '포도', price: 1500 },
   { id: 5, label: '수박', price: 0 },
 ];
-type Dummy2DataType = { id: number; label: string; code: string };
+type Dummy2DataType = { id: number; label: string; code: string | null };
 const Dummy2Data: Dummy2DataType[] = [
-  { id: 1, label: '사과', code: '' },
+  { id: 1, label: '사과', code: null },
   { id: 2, label: '바나나', code: 'afg43534' },
-  { id: 3, label: '오렌지', code: '' },
-  { id: 4, label: '포도', code: '' },
-  { id: 5, label: '메론', code: '' },
-  { id: 6, label: '수박', code: '' },
+  { id: 3, label: '오렌지', code: null },
+  { id: 4, label: '포도', code: null },
+  { id: 5, label: '메론', code: null },
+  { id: 6, label: '수박', code: null },
 ];
 
 
@@ -68,16 +68,74 @@ const columnDefsString: ColDef<Dummy2DataType>[] = [
     flex: 1,
     cellClass: 'required editable-cell',
     editable: true, // 코드 직접 입력 가능 
-    valueParser: params => params.newValue || '', // 빈 문자열일 때도 ""으로 표시
-    cellClassRules: {
-      'ag-cell-error-border': params =>
-        params.value === '' ||
-        params.value === undefined ||
-        Number(params.value) === 0 ||
-        (typeof params.value === 'string' && params.value.length <= 2),
+    valueSetter: params => {
+      const newVal = params.newValue ?? null;
+      params.data.code = newVal;
+      return true; 
     },
+    cellClassRules: {
+      // 저장된 값을 기준으로 실시간 에러 테두리 표시
+      'ag-cell-error-border': (params: { value: string | null | undefined }) => {
+        const val = params.value;
+        if (val === null || val === undefined ) return false;
+        if (Number(val) === 0) return true;
+        if (typeof val === 'string' && val.length <= 2) return true;
+        return false;
+      },
+      // 에러 메시지용 클래스 추가
+      'has-error-msg': (params: { value: string | null | undefined }) => {
+        return (typeof params.value === 'string' && params.value.length <= 2);
+      }
+    },
+
   },
 ];
+
+export const Default: StoryObj = {
+  render: () => {
+    const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+    const [rowData2, setRowData2] = React.useState<Dummy2DataType[]>(Dummy2Data);
+
+    // 가격 컬럼용 공용 핸들러
+    const onCellValueChanged = React.useMemo(
+      () => createCellValueChangedHandler<DummyDataType, number>('price', setRowData, () => {}, 'id'),
+      [setRowData]
+    );
+
+    // 코드 컬럼 실시간 에러 체크 및 반영
+    const onCellEditingStopped = React.useCallback((params: any) => {
+      if (params.colDef.field !== 'code') return;
+      const val = params.value;
+      // 에러 조건: null/undefined 제외, 0 또는 2글자 이하
+      const isError = val !== null && val !== undefined && (Number(val) === 0 || (typeof val === 'string' && val.length <= 2));
+      // rowData2를 강제로 갱신하여 cellClassRules가 즉시 반영되게 함
+      setRowData2(prev => [...prev]);
+    }, []);
+
+    return (
+      <>
+        <div className="ag-theme-alpine h-[16rem]!">
+          <AgGridReact<DummyDataType>
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            singleClickEdit={true}
+            onCellValueChanged={onCellValueChanged}
+          />
+        </div>
+        <div className="ag-theme-alpine h-[16rem]!">
+          <AgGridReact<Dummy2DataType>
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData2}
+            columnDefs={columnDefsString}
+            singleClickEdit={true}
+            onCellEditingStopped={onCellEditingStopped}
+          />
+        </div>
+      </>
+    );
+  },
+};
 
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/CellEditor Input',
@@ -259,77 +317,3 @@ const MyEditor = (props) => (
 };
 
 export default meta;
-
-export const Default: StoryObj = {
-  render: () => {
-    const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-    const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.price).map(row => row.id)
-    );
-
-    // 공용 핸들러 활용
-    const onCellValueChanged = React.useMemo(
-      () => createCellValueChangedHandler<DummyDataType, number>('price', setRowData, setErrorRows, 'id'),
-      [setRowData, setErrorRows]
-    );
-
-    return (
-
-      <>
-        <div className="ag-theme-alpine h-[16rem]!">
-          <AgGridReact<DummyDataType>
-            getRowId={(params) => String(params.data.id)}
-            rowData={rowData}
-            columnDefs={columnDefs}
-            animateRows={false}
-            alwaysShowHorizontalScroll={true}
-
-            singleClickEdit={true}
-            onCellValueChanged={onCellValueChanged}
-          />
-        </div>
-        <div className="ag-theme-alpine h-[16rem]!">
-          <AgGridReact<Dummy2DataType>
-            getRowId={(params) => String(params.data.id)}
-            rowData={Dummy2Data}
-            columnDefs={columnDefsString}
-            animateRows={false}
-            alwaysShowHorizontalScroll={true}
-
-            singleClickEdit={true}
-
-            readOnlyEdit={true}
-            onCellEditRequest={(params) => {
-              const { newValue, rowIndex, column, api, data } = params;
-              const colId = column.getId();
-
-              // 'code' 컬럼에 대해서만 3글자 제한 검증 수행
-              if (colId === 'code') {
-                if (typeof newValue !== 'string' || newValue.trim().length < 3) {
-                  
-                  // 편집창이 닫히지 않도록 즉시 다시 열기 (약간의 지연시간 필요)
-                  setTimeout(() => {
-                    api.startEditingCell({
-                      rowIndex: rowIndex!,
-                      colKey: colId,
-                    });
-                  }, 100);
-                  return; // 여기서 함수를 종료하여 데이터 반영을 막음
-                }
-              }
-
-              // 검증 통과 시 또는 다른 컬럼일 경우 데이터 업데이트
-              // 실제 프로젝트에서는 Dummy2Data를 업데이트하는 setState 함수를 호출해야 합니다.
-              const updatedData = { ...data, [colId]: newValue };
-              
-              // 그리드 UI에 즉시 반영 (임시 반영 방식)
-              api.applyTransaction({ update: [updatedData] });
-              
-              // 만약 상위 state를 관리 중이라면 여기서 setDummy2Data 등으로 상태를 갱신하세요.
-            }}
-          />
-        </div>
-      </>
-    );
-  },
-};
