@@ -9,7 +9,7 @@ import { InfoBoxWarningIcon } from '@icons';
 // 내부 공통 컴포넌트
 
 import { AmountUnitInput } from '@features/AmountUnitInput';
-import { SelectArrowIcon } from '@icons';
+import { SelectDropIcon } from '@icons';
 
 import { DatePickerInput } from '@common/DatePicker';
 import type { ICellEditorParams } from 'ag-grid-community';
@@ -122,12 +122,12 @@ export function amountUnitInputCellRenderer<RowType>(
  */
 export function editableSelectCellRenderer<RowType extends { canEditExpiry?: boolean }>(params: ICellRendererParams<RowType>) {
   return (
-    <div className="flex items-center justify-center gap-1 w-full h-full">
+    <div className="flex items-center justify-end gap-1 w-full h-full">
       <span className="block w-auto text-right">{params.value}</span>
       {params.data?.canEditExpiry ? (
-        <SelectArrowIcon size={14} color={'var(--color-gray-50)'} />
+        <SelectDropIcon size={14} color={'var(--color-gray-50)'} />
       ) : (
-        <SelectArrowIcon size={14} color={'var(--color-gray-20)'} />
+        <SelectDropIcon size={14} color={'var(--color-gray-20)'} />
       )}
     </div>
   );
