@@ -25,7 +25,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 const meta: Meta = {
-  title: 'Sample/kwon/NGQ_UID_DG_전환_가입설계',
+  title: 'Sample/kwon/1_NGQ_UID_DG_전환_가입설계',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -761,6 +761,8 @@ const DATA_TABS: LTPZ020TabType[] = [
 const LTPZ020_01P = () => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
   const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
+  const [policySearchPart, setPolicySearchPart] = React.useState('');
+  const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
 
   type InsuredListRow = {
     id: number;
@@ -819,7 +821,7 @@ const LTPZ020_01P = () => {
           <FormCell title={'증권번호'}>
             <Grow placement='bwc'>
               <Grow>
-                <Input aria-label="" width={'10rem'} value={''} />
+                <Input aria-label="증권번호 검색" width={'10rem'} value={policySearchPart} onChange={(e) => setPolicySearchPart(e.target.value)} />
                 <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                   <SearchIcon color={'var(--color-primary-50)'} />
                 </Button>
@@ -1953,6 +1955,7 @@ const LTPZ110P = () => {
   ];
   // rowSelection 사용시
   const [rowData1, setRowData1] = React.useState<DummyDataType1[]>(DummyData1);
+  const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
 
   type DummyDataType2 = {
     id: number;
@@ -2053,8 +2056,8 @@ const LTPZ110P = () => {
           </FormCell>
         </FormRow>
         <FormRow>
-          <FormCell title={'출산예정년월'} colSpan={3}>
-            <Input aria-label="" width={'14rem'} value={'2026-03'} />
+            <FormCell title={'출산예정년월'} colSpan={3}>
+            <Input aria-label="출산예정년월" width={'14rem'} value={expectedDelivery} onChange={(e) => setExpectedDelivery(e.target.value)} />
           </FormCell>
         </FormRow>
       </FormTable>

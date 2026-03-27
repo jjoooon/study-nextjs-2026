@@ -17,7 +17,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 const meta: Meta = {
-  title: 'Sample/kwon/NGQ_UID_DG_V0.22/담보별피보험자명세관리',
+  title: 'Sample/kwon/NGQ_UID_DG_V0.22/2_담보별피보험자명세관리',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',

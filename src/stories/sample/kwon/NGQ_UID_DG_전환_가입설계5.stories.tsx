@@ -4,18 +4,19 @@ import { Grow, Gcol, Typo } from '@atoms';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
 import { Input } from '@/shared/components/uiux/Input';
+import { Button } from '@/shared/components/uiux/Button';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 const meta: Meta = {
-  title: 'Sample/kwon/NGQ_UID_DG_V0.22/고지유형별 보험료비교',
+  title: 'Sample/kwon/NGQ_UID_DG_V0.22/5_고지유형별 보험료비교',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -46,35 +47,111 @@ const LTPA430P = () => {
     field01: string | number;
     field02: string | number;
     field03: string | number;
+    field04: string | number;
+    field05: string | number;
+    field06: string | number;
+    field07: string | number; 
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, field01: '', field02: '', field03: '',},
-    { id: 2, field01: '', field02: '', field03: '',},
+    { id: 1, field01: '9,999', field02: '999,999,999', field03: '999,999,999', field04: '999,999,999', field05: '999,999,999', field06: '999,999,999', field07: '999,999,999'},
   ];
 
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: 'No',
-      width: 80,
-      field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,   
+      headerName: '구분',
+      flex: 1,
+      cellClass: 'text-center px-0! flex bg-[#f4f4f4]! [&>div>span]:h-auto! ',
+      autoHeight: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+        <Grow className="w-full px-1 py-1" >
+          <Typo className='w-[6.5rem] whitespace-pre-wrap' color="gray" tag="span" variant="body-md" weight="bold">보장보험료 합계(원)</Typo>
+        </Grow>
+      ),   
     },
     {
-      headerName: '피보험자',
+      headerName: '1형(355간편고지형)',
       flex: 1,
-      field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field01', 
+        <Button color="secondary" disabled onClick={() => {}} only="default" size="sm" variant="contained">
+          설계생성
+        </Button>
+      ),
     },
     {
-      headerName: '위배내용',
+      headerName: '2형(305간편고지형)',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field02', 
+        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
+          설계생성
+        </Button>
+      ),
+    },
+    {
+      headerName: '3형(305간편고지형)',
       flex: 1,
       field: 'field03',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field03', 
+        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
+          설계생성
+        </Button>
+      ),
     },
+    {
+      headerName: '4형(305간편고지형)',
+      flex: 1,
+      field: 'field04',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field04', 
+        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
+          설계생성
+        </Button>
+      ),
+    },
+    {
+      headerName: '5형(305간편고지형)',
+      flex: 1,
+      field: 'field05',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field05', 
+        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
+          설계생성
+        </Button>
+      ),
+    },
+    {
+      headerName: '6형(305간편고지형)',
+      flex: 1,
+      field: 'field06',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field06', 
+        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
+          설계생성
+        </Button>
+      ),
+    },
+    {
+      headerName: '7형(305간편고지형)',
+      flex: 1,
+      field: 'field07',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>('field07', 
+        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
+          설계생성
+        </Button>
+      ),
+    },
+    
   ];
   
   // rowSelection 사용시
@@ -95,7 +172,11 @@ const LTPA430P = () => {
           </FormRow>
         </FormTable>
       </Gcol>
-      <InfoBox title="아래 내용은 청약완료시까지 해소되지 않을경우 수납이 불가능합니다.(청양완료 불가)" variant="info" bg={false} />
+      <InfoBox title="간편고지 유혈별 보험료 예시" variant="info" bg={false} 
+      items={[
+          { text: '이 상품은 일반심사보험대비 보험료가 할증되어 있으며, \'간편고지\' 유형에 따라 할증수준이 다릅니다. 보험료수준은 할증폭이 가장 큰 305간편고지에서 355간편고지순으로 저렴해집니다' },
+        ]} 
+      />
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType>
           getRowId={params => String(params.data.id)}
@@ -108,6 +189,8 @@ const LTPA430P = () => {
           }}
           domLayout="autoHeight" 
         />
+        
+        <InfoBox title="현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)" variant="detail" bg={false} />
       </div>
     </Gcol>
   );

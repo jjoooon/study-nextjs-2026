@@ -12,6 +12,8 @@ export type InfoListItem = {
   text: string;
   /** 아이템 개별 색상 강조 */
   highlight?: boolean;
+  /** 아이템에 추가로 적용할 클래스 이름 */
+  className?: string;
 };
 
 export type InfoBoxProps = {
@@ -108,7 +110,10 @@ export function InfoBox({
                 <span className="shrink-0 flex items-center leading-[150%]" aria-hidden>
                   {config.icon}
                 </span>
-                <span className="text-[1.3rem] leading-[150%] text-(--color-text-base,#111827)">
+                <span className={cn(
+                  'text-[1.3rem] leading-[150%] text-(--color-text-base,#111827)',
+                  item.className
+                )}>
                   {item.text}
                 </span>
               </li>
@@ -132,7 +137,8 @@ export function InfoBox({
                   className={cn(
                     item.highlight
                       ? config.highlightTextColor
-                      : 'text-[#414141]'
+                      : 'text-[#414141]',
+                    item.className
                   )}
                 >
                   {item.text}
