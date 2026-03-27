@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Grow, Gcol, Typo } from '@atoms';
+import { Gcol } from '@atoms';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
 
@@ -14,7 +14,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 const meta: Meta = {
-  title: 'Sample/kwon/NGQ_UID_DG_V0.22/청약불가 사전안내',
+  title: 'Sample/kwon/NGQ_UID_DG_V0.22/4_청약불가 사전안내',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
