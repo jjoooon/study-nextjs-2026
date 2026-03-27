@@ -65,7 +65,7 @@ interface AgGridReactStoryProps {
 const AgGridReactStoryComponent = (_props: AgGridReactStoryProps) => null;
 
 const meta: Meta<AgGridReactStoryProps> = {
-  title: 'Components/Tables/AgGridReact',
+  title: 'Components/Tables/AgGrid/AgGridDefault',
   component: AgGridReactStoryComponent,
   tags: ['autodocs'],
   parameters: {

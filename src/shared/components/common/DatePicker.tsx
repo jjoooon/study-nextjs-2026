@@ -54,6 +54,22 @@ function parseDateFromDigits(digits: string) {
   return isActualValid ? dateObj : undefined;
 }
 
+/**
+ * DatePickerInput Props
+ * @property {string} [id] - input id
+ * @property {string} [value] - 단일 날짜 값(YYYY-MM-DD)
+ * @property {{from?: string, to?: string}} [rangeValue] - 기간 값(YYYY-MM-DD)
+ * @property {'single'|'multiple'|'range'} [mode] - 날짜 선택 모드
+ * @property {(date: Date | undefined, formattedValue: string) => void} [onChange] - 값 변경 콜백
+ * @property {FormItemSize} [size] - 입력 높이
+ * @property {FormItemWidth} [width] - 입력 너비
+ * @property {boolean} [required] - 필수 여부
+ * @property {boolean} [error] - 에러 상태
+ * @property {React.ReactNode} [errorMsg] - 에러 메시지
+ * @property {'tl'|'tc'|'tr'|'bl'|'bc'|'br'} [errorPs] - 에러 메시지 위치
+ * @property {boolean} [monthOnly] - 월만 선택하는 모드(월 그리드)
+ * @property {(month: number) => void} [onMonthSelect] - 월 선택 시 콜백(1~12)
+ */
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
   id?: string;
   value?: string;
@@ -66,6 +82,10 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   error?: boolean;
   errorMsg?: React.ReactNode;
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  /** 월만 선택하는 모드(월 그리드) */
+  monthOnly?: boolean;
+  /** 월 선택 시 콜백(1~12) */
+  onMonthSelect?: (month: number) => void;
 }
 
 export function DatePickerInput({
@@ -82,6 +102,8 @@ export function DatePickerInput({
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
+  monthOnly = false,
+  onMonthSelect,
 }: UIInputProps) {
   const generatedId = React.useId();
   const finalId = id || generatedId;
@@ -508,7 +530,13 @@ export function DatePickerInput({
           alignOffset={-8}
           sideOffset={10}
         >
-          {mode === 'range' ? (
+          {monthOnly ? (
+            <Calendar
+              monthOnly
+              onMonthSelect={onMonthSelect}
+              className="border-none"
+            />
+          ) : mode === 'range' ? (
             <Calendar
               mode={'range'}
               defaultMonth={rangeSelected?.from}

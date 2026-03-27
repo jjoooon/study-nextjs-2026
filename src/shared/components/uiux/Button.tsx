@@ -338,12 +338,12 @@ const buttonVariants = cva(
         variant: 'outlined',
         color: 'success',
         className: `border border-[var(--color-success-60)] 
-        bg-[var(--color-gray-0)] 
+        bg-[var(--color-success-5)] 
         text-[var(--color-success-60)] 
         hover:bg-[var(--color-success-10)] 
         hover:border-dashed 
         hover:border-[var(--color-success-60)] 
-        focus-visible:ring-[var(--color-gray-0)] 
+        focus-visible:ring-[var(--color-success-5)] 
         focus-visible:border-dashed 
         focus-visible:border-[var(--color-success-60)]`,
       },
