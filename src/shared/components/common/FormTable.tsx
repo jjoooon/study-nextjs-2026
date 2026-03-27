@@ -26,7 +26,7 @@ const FormCellVariants = cva('', {
 
 interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   title?: ReactNode;
-  titleVariant?: 'default' | 'section';
+  titleVariant?: 'default' | 'primary' | 'section' | 'blueGray';
   children?: ReactNode;
   className?: string;
   colSpan?: number;
@@ -55,6 +55,10 @@ interface FormTrProps {
 
 // vertical context 생성
 const VerticalContext = createContext<boolean | undefined>(undefined);
+
+// variant context: allow FormTable to provide a default variant for FormCell
+type FormVariant = VariantProps<typeof FormCellVariants>['variant'];
+const VariantContext = createContext<FormVariant | undefined>(undefined);
 
 // Grow(혹은 그 내부 텍스트)가 잘릴 때 Tooltip을 보여주는 HOC
 function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
@@ -118,13 +122,15 @@ export const FormCell = ({
   tdClassName = 'justify-start items-center',
 }: FormCellProps) => {
   const contextVertical = useContext(VerticalContext);
+  const contextVariant = useContext(VariantContext);
+  const usedVariant = variant ?? contextVariant ?? 'default';
   const titleTypoVariant = titleVariant === 'section' ? 'body-lg' : 'body-md';
-  const titleTypoColor = titleVariant === 'section' ? 'primary' : undefined;
+  const titleTypoColor = titleVariant === 'section' ? 'primary' : contextVariant === 'none' ? 'blueGray' : 'default';
 
   return (
     <>
       <TableHead
-        className={cn(FormCellVariants({ variant }), 'text-left', className)}
+        className={cn(FormCellVariants({ variant: usedVariant }), 'text-left', className)}
         {...(titleColSpan && { colSpan: titleColSpan })}
         {...(titleRowSpan && { rowSpan: titleRowSpan })}
       >
@@ -164,22 +170,22 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   // variant가 'none'이면 lineTop을 무시
   const showLineTop = lineTop && variant !== 'none';
   return (
-    // <div className={cn('w-full', showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]')}>
-      <Table
-        className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]', className)}
-        data-variant={variant}
-      >
-        {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
-        {cols && cols.length > 0 && (
-          <colgroup>
-            {cols.map((colClass, index) => (
-              <col key={index} className={colClass || undefined} />
-            ))}
-          </colgroup>
-        )}
+    <Table
+      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]', className)}
+      data-variant={variant}
+    >
+      {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
+      {cols && cols.length > 0 && (
+        <colgroup>
+          {cols.map((colClass, index) => (
+            <col key={index} className={colClass || undefined} />
+          ))}
+        </colgroup>
+      )}
+      <VariantContext.Provider value={variant as FormVariant}>
         <TableBody>{children}</TableBody>
-      </Table>
-    // </div>
+      </VariantContext.Provider>
+    </Table>
   );
 };
 

@@ -31,6 +31,7 @@ const typoVariants = cva('', {
       default: 'text-[var(--color-text-base)]',
       'gray-light': 'text-[var(--color-gray-30)]',
       gray: 'text-[var(--color-text-gray)]',
+      blueGray: 'text-[var(--color-blue-gray-50)]',
       danger: 'text-[var(--color-text-danger)]',
       primary: 'text-[var(--color-text-primary)]',
       secondary: 'text-[var(--color-text-secondary)]',
