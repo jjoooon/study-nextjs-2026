@@ -75,11 +75,12 @@ export function IAListWithPreview() {
 
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
-      <div className="h-[calc(100vh-4rem)] overflow-auto flex justify-center">
+      <div className="h-[calc(100vh-4rem)] overflow-auto flex justify-start">
         <table className="text-[1.2rem] IA-list m-0! shrink-0!">
           <colgroup>
-          <col style={{ width: '1rem' }} />
+            <col style={{ width: '1rem' }} />
             <col style={{ width: '8rem' }} />
+            <col />
             <col />
             <col style={{ width: '2rem' }} />
             <col />
@@ -93,6 +94,7 @@ export function IAListWithPreview() {
               <th scope="col">No</th>
               <th scope="col">ID</th>
               <th scope="col">화면명</th>  
+              <th scope="col">설계서명</th>  
               <th scope="col">1차</th>  
               <th scope="col">완료일</th>  
               <th scope="col">수정일</th>  
@@ -118,6 +120,10 @@ export function IAListWithPreview() {
                 </th>
                 <td className={workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : undefined}>
                   <b>{row.dep4}</b>
+                </td>
+
+                <td className={workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : undefined}>
+                 {row.file}
                 </td>
 
                 <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>

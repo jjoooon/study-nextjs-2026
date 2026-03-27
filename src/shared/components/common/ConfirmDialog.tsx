@@ -145,7 +145,7 @@ export function ConfirmDialog({
       {trigger ? <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger> : null}
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+          {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
           {description ? <AlertDialogDescription dangerouslySetInnerHTML={{ __html: description }} /> : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
