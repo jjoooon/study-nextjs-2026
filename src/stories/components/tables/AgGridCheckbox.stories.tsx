@@ -53,7 +53,7 @@ const columnDefs: ColDef<DummyDataType>[] = [
     field: 'isCheck',
     cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
     cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
-    
+    cellClass: 'text-center editable-cell',
     // 선택된 행이 아니고 allDisabled가 아닌 경우에만 편집 가능
     editable: params => !params.node.isSelected() && !params.data?.allDisabled, 
 
@@ -278,7 +278,6 @@ export const Default: StoryObj = {
 
             // ag-Grid selection(좌측 체크박스) 옵션
             rowSelection={{
-              
               mode: 'multiRow', // 다중 선택 모드
               headerCheckbox: true, // 헤더(전체 선택) 체크박스 표시
               checkboxes: true, // 각 행에 체크박스 표시
@@ -287,6 +286,7 @@ export const Default: StoryObj = {
             }}
             selectionColumnDef={{
               width: 30,
+              cellClass: 'text-center editable-cell',
             }}
 
             // 행 상태별 스타일 적용 예시
