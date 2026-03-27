@@ -4,6 +4,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { CloseIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Gcol } from '@atoms';
 
 type DialogSizeValue = number | string;
 
@@ -24,8 +25,8 @@ const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
 const DEFAULT_DIALOG_CONTENT_Z_INDEX = DEFAULT_DIALOG_OVERLAY_Z_INDEX + 1;
 const DIALOG_VIEWPORT_GAP = '2.4rem';
 const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
-const DIALOG_FULL_WIDTH = `calc(100vw - ${DIALOG_VIEWPORT_GAP})`;
-const DIALOG_FULL_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
+const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
+const DIALOG_FULL_HEIGHT = `calc(100vh - 2rem)`;
 const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   sm: '37rem',
   md: '56rem',
@@ -95,7 +96,7 @@ function DialogOverlay({ className, ...props }: React.ComponentProps<typeof Dial
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'fixed inset-0 z-50 bg-black/50',
+        'fixed inset-0 z-50 bg-black/60',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
         className
@@ -131,6 +132,7 @@ function DialogContent({
     y: number;
   };
 }) {
+  const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
   const [isDragging, setIsDragging] = React.useState(false);
@@ -163,6 +165,7 @@ function DialogContent({
 
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      if (isFullSize) return; // full 사이즈일 때 드래그/리사이즈 비활성화
       // DialogHeader 또는 드래그 가능한 영역에서만 시작
       const target = e.target as HTMLElement;
       const dialogHeader = target.closest('[data-slot="dialog-header"]');
@@ -190,7 +193,7 @@ function DialogContent({
         });
       }
     },
-    [position]
+    [position, isFullSize]
   );
 
   React.useEffect(() => {
@@ -292,7 +295,7 @@ function DialogContent({
         {...props}
       >
         {children}
-        {(isDragging || !!isResizing) && (
+        {(isDragging || !!isResizing) && !isFullSize && (
           <div
             aria-hidden="true"
             className="absolute inset-0 z-51 bg-transparent"
@@ -309,8 +312,8 @@ function DialogContent({
             <CloseIcon color="#2C2724" />
           </DialogPrimitive.Close>
         )}
-        {/* Resize Handles - Only shown when resizable is true */}
-        {resizable && (
+        {/* Resize Handles - Only shown when resizable is true and not full size */}
+        {resizable && !isFullSize && (
           <>
             <div
               data-slot="resize-handle"
@@ -378,6 +381,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="dialog-footer"
       className={cn('flex justify-between items-center gap-0 pt-5 pb-0 px-0 overflow-hidden rounded-bl-[.8rem] rounded-br-[.8rem] ', className)}
+      
       {...props}
     />
   );
@@ -387,7 +391,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn('flex items-end gap-0.5 leading-none text-[1.6rem] tracking-tighter text-left border-b border-[var(--color-gray-90)] pb-3 w-full pr-6', className)}
+      className={cn('flex items-end gap-0.5 leading-none text-[1.6rem] tracking-tighter text-left border-b border-b-[0.1rem] border-[var(--color-gray-20)] pb-3 w-full pr-6', className)}
       {...props}
     />
   );
@@ -403,7 +407,23 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
   );
 }
 
+function DialogSection({ children, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+  return (
+    <Gcol
+      gap={4}
+      placement={'ss'}
+      data-slot="dialog-section"
+      className={cn('px-6 text-[1.4rem] text-[#000000] overflow-auto', className)}
+      {...props}
+    >
+      {children}
+    </Gcol>
+  );
+}
+
+
 export {
+  DialogSection,
   Dialog,
   DialogClose,
   DialogContent,
