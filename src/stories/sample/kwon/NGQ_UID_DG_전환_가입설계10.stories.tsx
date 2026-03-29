@@ -7,11 +7,9 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Input } from '@/shared/components/uiux/Input';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';  
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 import { Button } from '@/shared/components/uiux/Button';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
@@ -59,105 +57,60 @@ const LTPZ042P = () => {
     field04: string | number;
     field05: string | number;
     field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: false, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '', field10: '', field11: '', field12: '' },
-    { id: 2, isCheck: false, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '', field10: '', field11: '', field12: '' },
-    { id: 3, isCheck: false, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '', field10: '', field11: '', field12: '' },
+    { id: 1, isCheck: false, field01: '123456', field02: '한화생명1', field03: '123', field04: '서울', field05: '123', field06: '김한화' },
+    { id: 2, isCheck: false, field01: '123456', field02: '한화생명1', field03: '124', field04: '서울', field05: '123', field06: '김한화' },
+    { id: 3, isCheck: false, field01: '123456', field02: '한화생명1', field03: '125', field04: '서울', field05: '123', field06: '김한화' },
+    { id: 4, isCheck: false, field01: '123456', field02: '한화생명1', field03: '126', field04: '서울', field05: '123', field06: '김한화' },
+    { id: 5, isCheck: false, field01: '123456', field02: '한화생명1', field03: '127', field04: '서울', field05: '123', field06: '김한화' },
+    { id: 6, isCheck: false, field01: '123456', field02: '한화생명1', field03: '128', field04: '서울', field05: '123', field06: '김한화' },
   ];
 
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '상태',
-      width: 80,
+      headerName: '직원번호',
+      flex: 1,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,   
     },
     {
-      headerName: '증권번허',
+      headerName: '직원명',
       flex: 1,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
-      headerName: '상품명',
+      headerName: '지점번호',
       flex: 1,
       field: 'field03',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
-      headerName: '담보명',
+      headerName: '지점명',
       flex: 1,
       field: 'field04',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
-      headerName: '가입금액(원)',
+      headerName: '유자격자번호',
       flex: 1,
       field: 'field05',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
-      headerName: '보험료',
+      headerName: '유자격자명',
       flex: 1,
       field: 'field06',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
-    },
-    {
-      headerName: '담보코드',
-      flex: 1,
-      field: 'field07',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '보험시기',
-      flex: 1,
-      field: 'field08',
-      cellClass: 'text-left px-1 flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '보험종기',
-      flex: 1,
-      field: 'field09',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '상태',
-      flex: 1,
-      field: 'field10',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '계약자',
-      flex: 1,
-      field: 'field11',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '취급기관',
-      flex: 1,
-      field: 'field12',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
+    }
   ];
   
    const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
@@ -175,28 +128,23 @@ const LTPZ042P = () => {
       <Grow className='w-full' variant="box-round" placement={'bwe'}>
         <FormTable variant={'none'} caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
           <FormRow>
-            <FormCell title={'보종군'}>
+            <FormCell title={'조회구분'}>
               <NativeSelect
-                aria-label="보종군 선택"
+                aria-label="조회구분 선택"
                 width="10rem"
                 value={form.type01}
                 onChange={(e) => setFormField('type01', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type01-1', label: '전체' },
-                  { value: 'selection2', id: 'type01-2', label: '장기보험' },
-                  { value: 'selection3', id: 'type01-3', label: '자동차보험' },
-                  { value: 'selection4', id: 'type01-4', label: '화재특종' },
-                  { value: 'selection5', id: 'type01-5', label: '해상보험' },
-                  { value: 'selection6', id: 'type01-6', label: '퇴직연금' },
-                  { value: 'selection7', id: 'type01-7', label: '단체증권' },
+                  { value: 'selection', id: 'type01-1', label: '유자격자' },
+                  { value: 'selection2', id: 'type01-2', label: '직원번호' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
             </FormCell>
-            <FormCell title={'조회구분'}>
-              <Input aria-label="" width={'16rem'} value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} />
+            <FormCell title={'유자격자명'}>
+              <Input aria-label="유자격자명 입력" width={'16rem'} value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} />
             </FormCell>
           </FormRow>
         </FormTable>  
@@ -241,26 +189,6 @@ const LTPZ042P = () => {
           />
         </div>
       </Gcol>
-      <InfoBox
-          bg
-          items={[
-            {
-              text: '전화전 계약과 동일한 초건(담보, 가입금액 등)으로 전환용 계약 설계에 반영됩니다.'
-            },
-            {
-              text: '전환전 계약에 「특정 신체부위 질병 보장제한부 인수 특별약관」, 「특별조건부 특별약관」 등이 부가되어 있을 경우, 전환용 계약에 전화전 계약의 조건과 동일하게 부가하여 효력을 갖을수 있습니다.'
-            },
-            {
-              text: '전화전 계약의 해약일 또는 변경기준일자와 전환후 신계약 보험시기가 동일하여야 청약완료 가능합니다.',
-              className: 'font-bold'
-            },
-            {
-              text: '천환용 신계약 설계유효기간은 전화전 계약 의료비 담보의 보험종기까지입니다.',
-              className: 'font-bold'
-            }
-          ]}
-          variant="detail"
-        />
     </Gcol>    
   )
 }

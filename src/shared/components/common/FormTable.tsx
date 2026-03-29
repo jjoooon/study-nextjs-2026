@@ -110,9 +110,9 @@ function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
 }
 
 export const FormCell = ({
-  title,
+  title = '',
   titleVariant = 'default',
-  children,
+  children = null,
   variant,
   className,
   colSpan,
@@ -129,28 +129,32 @@ export const FormCell = ({
 
   return (
     <>
-      <TableHead
-        className={cn(FormCellVariants({ variant: usedVariant }), 'text-left', className)}
-        {...(titleColSpan && { colSpan: titleColSpan })}
-        {...(titleRowSpan && { rowSpan: titleRowSpan })}
-      >
-        <Typo variant={titleTypoVariant} weight="bold" color={titleTypoColor}>
-          {title}
-        </Typo>
-      </TableHead>
-      <TableCell
-        className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]"
-        {...(colSpan && { colSpan })}
-        {...(rowSpan && { rowSpan })}
-      >
-        {contextVertical ? (
-          <TooltipIfOverflow>{children}</TooltipIfOverflow>
-        ) : (
-          <Grow className={cn(tdClassName)}>
-            {children}
-          </Grow>
-        )}
-      </TableCell>
+      {title !== '' && (
+        <TableHead
+          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left', className) }
+          {...(titleColSpan && { colSpan: titleColSpan })}
+          {...(titleRowSpan && { rowSpan: titleRowSpan })}
+        >
+          <Typo variant={titleTypoVariant} weight="bold" color={titleTypoColor}>
+            {title}
+          </Typo>
+        </TableHead>
+      )}
+      {children !== null && (
+        <TableCell
+          className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]"
+          {...(colSpan && { colSpan })}
+          {...(rowSpan && { rowSpan })}
+        >
+          {contextVertical ? (
+            <TooltipIfOverflow>{children}</TooltipIfOverflow>
+          ) : (
+            <Grow className={cn(tdClassName)}>
+              {children}
+            </Grow>
+          )}
+        </TableCell>
+      )}
     </>
   );
 };
