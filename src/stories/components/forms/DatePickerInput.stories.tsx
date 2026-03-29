@@ -2,14 +2,10 @@
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
-import { Button } from '@uiux/Button';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
 type Story = StoryObj<DatePickerInputStoryProps>;
-
-
 
 const meta: Meta<DatePickerInputStoryProps> = {
   title: 'Components/Forms/DatePickerInput',
@@ -24,6 +20,11 @@ const meta: Meta<DatePickerInputStoryProps> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
+
             <h2>Overview</h2>
             <div>
               <p>
@@ -214,7 +215,7 @@ const [value, setValue] = useState('');
     mode: {
       control: { type: 'select' },
       options: ['single', 'multiple', 'range'],
-      table: { category: '스타일 props' },
+      table: { category: '설정 props' },
     },
     size: {
       control: { type: 'inline-radio' },
@@ -293,20 +294,54 @@ export default meta;
    
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? '');
+    // 오늘 날짜를 YYYY-MM-DD 형식으로 반환
+    const getToday = () => {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    };
+    
+    const [value, setValue] = React.useState(args.value ?? getToday());
+    // multiple 모드: 기본값(오늘) 또는 args.value를 배열로 초기화
+    const initialMultiple = React.useMemo(() => {
+      if (args.value) {
+        const arr = args.value.split(',').map((v) => v.trim()).filter(Boolean);
+        return arr.length > 0 ? arr : [getToday()];
+      }
+      return [getToday()];
+    }, [args.value]);
+    const [multipleValue, setMultipleValue] = React.useState<string[]>(initialMultiple);
     const [rangeValue, setRangeValue] = React.useState<{ from?: string; to?: string }>({
       from: '2026-03-01',
       to: '2026-03-07',
     });
 
     React.useEffect(() => {
-      setValue(args.value ?? '');
+      setValue(args.value ?? getToday());
     }, [args.value]);
 
-    if (args.mode === 'range') {
+    // multiple 모드에서 args.value가 바뀌면 multipleValue도 동기화
+    React.useEffect(() => {
+      if (args.mode === 'multiple') {
+        if (args.value) {
+          const arr = args.value.split(',').map((v) => v.trim()).filter(Boolean);
+          setMultipleValue(arr.length > 0 ? arr : [getToday()]);
+        } else {
+          setMultipleValue([getToday()]);
+        }
+      }
+    }, [args.value, args.mode]);
+
+    // monthOnly가 true면 mode를 무조건 single로 강제
+    const effectiveMode = args.monthOnly ? 'single' : args.mode;
+
+    if (effectiveMode === 'range') {
       return (
         <DatePickerInput
           {...args}
+          mode={effectiveMode}
           rangeValue={rangeValue}
           onChange={(date, formattedValue) => {
             if (!formattedValue) {
@@ -323,15 +358,43 @@ export const Default: Story = {
       );
     }
 
+    if (effectiveMode === 'multiple') {
+      return (
+        <DatePickerInput
+          {...args}
+          mode={effectiveMode}
+          value={multipleValue.join(', ')}
+          onChange={(_date, formattedValue) => {
+            // formattedValue: 'YYYY-MM-DD, YYYY-MM-DD, ...'
+            const arr = formattedValue ? formattedValue.split(',').map((v) => v.trim()).filter(Boolean) : [];
+            setMultipleValue(arr);
+            args.onChange?.(_date, formattedValue ?? '');
+          }}
+        />
+      );
+    }
+
+    // monthOnly일 때 value를 YYYY-MM 형식으로 변환
+    let displayValue = value;
+    if (args.monthOnly && value) {
+      // value가 YYYY-MM-DD라면 YYYY-MM으로 변환
+      const match = value.match(/^(\d{4})-(\d{2})/);
+      if (match) {
+        displayValue = `${match[1]}-${match[2]}`;
+      }
+    }
     return (
-      <DatePickerInput
-        {...args}
-        value={value}
-        onChange={(date, formattedValue) => {
-          setValue(formattedValue ?? '');
-          args.onChange?.(date, formattedValue ?? '');
-        }}
-      />
+      <>
+        <DatePickerInput
+          {...args}
+          mode={effectiveMode}
+          value={displayValue}
+          onChange={(date, formattedValue) => {
+            setValue(formattedValue ?? '');
+            args.onChange?.(date, formattedValue ?? '');
+          }}
+        />
+      </>
     );
   },
 };

@@ -85,7 +85,7 @@ function NativeSelect({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
-  const sizeStyle = `${size === 'md' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+  const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
@@ -115,7 +115,7 @@ function NativeSelect({
         <SelectDropIcon
           className={cn(
             'pointer-events-none absolute top-1/2 right-[0.8rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]',
-            size === 'sm' ? 'size-[1.2rem]' : 'size-[1.6rem]'
+            size === 'lg' ? 'size-[1.6rem]' : 'size-[1.2rem]'
           )}
           aria-hidden="true"
           color={arrowStateStyle}

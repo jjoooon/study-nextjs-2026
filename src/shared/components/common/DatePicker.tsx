@@ -388,37 +388,28 @@ export function DatePickerInput({
   // range 모드일 때 더 큰 너비
   // const rangeModeWidth = mode === 'range' ? 'w-[28rem]' : '';
 
-  const baseStyle = `px-[0.8rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border
-    ${
-      error || invalidDate
-        ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)]'
-        : required
-          ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
-          : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
-    }`;
-
-  const hoverStyle =
+  const baseStyle = `px-[0.8rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border ${
     error || invalidDate
-      ? 'hover:border-[var(--color-input-border-error)]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)]'
       : required
-        ? 'hover:border-[var(--color-input-border-highlight-bold)]'
-        : 'hover:border-[var(--color-input-border-hover)]';
-
-  const focusClass = `
-    ${
-      error || invalidDate
-        ? 'focus:border-[var(--color-input-border-error)]'
-        : required
-          ? 'focus:border-[var(--color-input-border-highlight-bold)]'
-          : 'focus:border-[var(--color-input-border-hover)]'
-    }
-    focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.7rem]`;
-
+        ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
+        : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
+  }`;
+  const hoverStyle = error || invalidDate
+    ? 'hover:border-[var(--color-input-border-error)]'
+    : required
+      ? 'hover:border-[var(--color-input-border-highlight-bold)]'
+      : 'hover:border-[var(--color-input-border-hover)]';
+  const focusClass = `${ error || invalidDate 
+    ? 'focus:border-[var(--color-input-border-error)]' 
+    : required
+      ? 'focus:border-[var(--color-input-border-highlight-bold)]'
+      : 'focus:border-[var(--color-input-border-hover)]'
+    } focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.7rem]`;
   const disabledClass = disabled
     ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
     : '';
   const readOnlyClass = readOnly ? 'bg-[var(--color-gray-5)] border border-[var(--color-gray-20)]!' : '';
-
   const rangeSelected = selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
   const singleSelected = selected instanceof Date ? selected : undefined;
   const multiSelected = Array.isArray(selected) ? selected : undefined;
@@ -485,7 +476,7 @@ export function DatePickerInput({
           id={finalId}
           type="tel"
           value={displayValue}
-          placeholder="____-__-__"
+          placeholder={monthOnly ? '____-__' : '____-__-__'}
           disabled={disabled}
           readOnly={readOnly || mode === 'multiple'}
           required={required}
@@ -532,9 +523,24 @@ export function DatePickerInput({
         >
           {monthOnly ? (
             <Calendar
-              monthOnly
+              mode={'single'}
+              selected={singleSelected}
+              onSelect={handleSelect}
+              captionLayout={'dropdown'}
+              month={month}
+              onMonthChange={setMonth}
+
+              monthOnly={true}
               onMonthSelect={onMonthSelect}
-              className="border-none"
+              onChange={(val) => {
+                if (val && val.year && val.month) {
+                  // YYYY-MM 형식으로 input 값 변경
+                  const formatted = `${val.year}-${String(val.month).padStart(2, '0')}`;
+                  if (onChange) onChange(new Date(val.year, val.month - 1, 1), formatted);
+                }
+              }}
+              onClose={() => setOpen(false)}
+              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           ) : mode === 'range' ? (
             <Calendar

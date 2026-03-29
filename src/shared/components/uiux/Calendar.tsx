@@ -4,14 +4,24 @@ import { ChevronDownIcon } from 'lucide-react';
 import * as React from 'react';
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 
+
 import { ArrowIcon } from '@icons';
 import { Button, buttonVariants } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { cn } from '@/shared/lib/shadcn/utils';
-
 type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
   monthOnly?: boolean;
   onMonthSelect?: (month: number) => void;
+  /**
+   * monthOnly 모드에서 월 클릭 시 호출됨
+   * @param value { year: number; month: number }
+   */
+  onChange?: (value: { year: number; month: number }) => void;
+  /**
+   * monthOnly 모드에서 월 클릭 후 닫기용
+   */
+  onClose?: () => void;
 };
 
 function Calendar({
@@ -28,25 +38,130 @@ function Calendar({
 }: CalendarProps) {
   const defaultClassNames = getDefaultClassNames();
 
-  if (monthOnly) {
-    // 월만 선택하는 그리드 렌더링
-    const months = [
-      "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
-    ];
+  // Dedicated month grid renderer for monthOnly mode (Figma style)
+  // 연도별로 선택된 월을 기억하는 ref
+  const monthMemoryRef = React.useRef<{ [year: number]: number | undefined }>({});
+  const today = new Date();
+  const initialYear = (props.month instanceof Date ? props.month : today).getFullYear();
+  const [currentYear, setCurrentYear] = React.useState<number>(initialYear);
+  // selectedMonth: 우선 메모리에서, 없으면 props.month에서 추론
+  let selectedMonth = monthMemoryRef.current[currentYear];
+  // 최초 렌더링에서만 props.month로 초기화 (useRef로 최초 렌더링 여부 관리)
+  const didInitRef = React.useRef(false);
+  if (
+    !didInitRef.current &&
+    selectedMonth === undefined &&
+    props.month instanceof Date &&
+    props.month.getFullYear() === currentYear
+  ) {
+    selectedMonth = props.month.getMonth() + 1;
+    monthMemoryRef.current[currentYear] = selectedMonth;
+    didInitRef.current = true;
+  }
+  const renderMonthOnlyGrid = () => {
+    // Year range: 10 years before and after current year
+    const yearOptions = Array.from({ length: 21 }, (_, i) => currentYear - 10 + i);
+
+    // 연도 변경 핸들러: 해당 연도에 저장된 월 복원
+    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const newYear = Number(e.target.value);
+      setCurrentYear(newYear);
+      // 월 복원: monthMemoryRef.current[newYear]가 있으면 그 값, 없으면 undefined
+      // (selectedMonth는 currentYear에 따라 자동으로 바뀜)
+      props.onMonthChange?.(new Date(newYear, 0, 1));
+    };
+
+    // 이전/다음 연도 버튼 클릭 시 월 복원
+    const handlePrevYear = () => {
+      const newYear = currentYear - 1;
+      setCurrentYear(newYear);
+      props.onMonthChange?.(new Date(newYear, 0, 1));
+    };
+    const handleNextYear = () => {
+      const newYear = currentYear + 1;
+      setCurrentYear(newYear);
+      props.onMonthChange?.(new Date(newYear, 0, 1));
+    };
+
     return (
-      <div className={cn("grid grid-cols-3 gap-2 p-4 w-64 bg-background rounded-md", className)}>
-        {months.map((label, idx) => (
-          <button
-            key={label}
-            type="button"
-            className="h-12 rounded-md border border-input hover:bg-accent hover:text-accent-foreground transition-colors text-lg font-medium"
-            onClick={() => onMonthSelect?.(idx + 1)}
+      <div className="flex flex-col items-center justify-center p-4">
+        <div className="mb-4 flex w-full items-center justify-between gap-3">
+          <Button
+            variant="outlined"
+            color="gray-light"
+            size="lg"
+            only="icon"
+            className="pointer-events-auto"
+            onClick={handlePrevYear}
+            data-role="month-prev"
           >
-            {label}
-          </button>
-        ))}
+            <ArrowIcon color={'var(--color-primary-50)'} />
+          </Button>
+          <div className='w-[7.2rem] shrink-0'>
+            <NativeSelect
+              aria-label="연도 선택"
+              value={currentYear}
+              onChange={handleYearChange}
+              width="full"
+              size="md"
+            >
+              {yearOptions.map((year) => (
+                <NativeSelectOption key={year} value={year}>
+                  {year}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </div>
+          <Button
+            variant="outlined"
+            color="gray-light"
+            size="lg"
+            only="icon"
+            className="pointer-events-auto"
+            onClick={handleNextYear}
+            data-role="month-next"
+          >
+            <ArrowIcon className="rotate-180" color={'var(--color-primary-50)'} />
+          </Button>
+        </div>
+        <div className="grid grid-cols-4 gap-3">
+          {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => {
+            const isSelected = selectedMonth === month;
+            return (
+              <button
+                key={month}
+                type="button"
+                data-month={`${currentYear}-${String(month).padStart(2, '0')}`}
+                data-today={
+                  today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined
+                }
+                data-selected-month={isSelected ? 'true' : undefined}
+                aria-label={`${currentYear}년 ${month}월`}
+                className={cn(
+                  "w-[2.6rem] h-[2.6rem] flex items-center rounded-full justify-center text-[1.4rem] hover:bg-[var(--color-gray-10)] transition-all relative",
+                  isSelected && "bg-[var(--color-primary-50)] text-[#fff]"
+                )}
+                onClick={() => {
+                  monthMemoryRef.current[currentYear] = month;
+                  onMonthSelect?.(month);
+                  if (props.onChange) props.onChange({ year: currentYear, month });
+                  if (props.onClose) props.onClose();
+                }}
+              >
+                {month}
+                {today.getFullYear() === currentYear && today.getMonth() + 1 === month && (
+                  <div className="absolute bottom-[0] left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ff5c2e] rounded-full"></div>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
     );
+  };
+
+  if (monthOnly) {
+    return renderMonthOnlyGrid();
   }
 
   return (
@@ -60,7 +175,8 @@ function Calendar({
       )}
       captionLayout={captionLayout}
       formatters={{
-        formatMonthDropdown: (date) => date.toLocaleString("default", { month: "short" }),
+        formatMonthDropdown: (date) => String(date.getMonth() + 1).padStart(2, '0'),
+        // 필요시 캡션도 01, 02로: formatMonthCaption: (date) => String(date.getMonth() + 1).padStart(2, '0'),
         formatWeekdayName: (date) => {
           const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
           return weekdays[date.getDay()];
@@ -77,12 +193,12 @@ function Calendar({
         ),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
-          "h-[2.8rem] w-[2.8rem] border border-[var(--color-input-border)] select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)]",
+          "h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!",
           defaultClassNames.button_previous
         ),
         button_next: cn(
           buttonVariants({ variant: buttonVariant }),
-          "h-[2.8rem] w-[2.8rem] border border-[var(--color-input-border)] select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)]",
+          "h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!",
           defaultClassNames.button_next
         ),
         month_caption: cn(
@@ -94,7 +210,7 @@ function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          "has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-input-border)]",
+          "has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)]",
           defaultClassNames.dropdown_root
         ),
         dropdown: cn("bg-popover absolute inset-0 opacity-0", defaultClassNames.dropdown),
@@ -133,13 +249,11 @@ function Calendar({
         },
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
-            return <ArrowIcon className={cn("", className)} {...props} />;
+            return <ArrowIcon color={'var(--color-primary-50)'} className={cn("", className)} {...props} />;
           }
-
           if (orientation === "right") {
-            return <ArrowIcon className={cn("rotate-180", className)} {...props} />;
+            return <ArrowIcon color={'var(--color-primary-50)'} className={cn("rotate-180", className)} {...props} />;
           }
-
           return <ChevronDownIcon className={cn("size-4", className)} {...props} />;
         },
         MonthCaption: ({ ...captionProps }) => {
@@ -147,22 +261,20 @@ function Calendar({
             onMonthChange?: (date: Date) => void;
           };
           const today = new Date();
-
           const handleTodayClick = () => {
             if (onMonthChange) {
               onMonthChange(today);
             }
           };
-
           return (
-            <div
-              className="flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]"
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center gap-1">
-                {captionProps.children}
-                {onMonthChange && (
+            <>
+              <div
+                className="flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center gap-1">
+                  {captionProps.children}
                   <Button
                     variant="outlined"
                     color="gray"
@@ -172,9 +284,9 @@ function Calendar({
                   >
                     오늘
                   </Button>
-                )}
+                </div>
               </div>
-            </div>
+            </>
           );
         },
         DayButton: CalendarDayButton,
@@ -191,7 +303,7 @@ function Calendar({
     />
   );
 }
-
+ 
 function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
 
@@ -206,7 +318,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
   const isSunday = day.date.getDay() === 0;
   const isDisabled = modifiers.disabled;
   const isOutside = modifiers.outside;
-
+  
   return (
     <button
       ref={ref}
