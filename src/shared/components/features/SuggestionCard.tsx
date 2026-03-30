@@ -51,7 +51,7 @@ export function SuggestionCard({ type = 'type1', showAiIcon = false, className }
             height={24}
             className="inline-flex items-center"
           />
-          <Typo tag="strong" variant="body-lg" className="font-bold text-[var(--color-gray-0)]">
+          <Typo tag="strong" variant="body-xl" className="font-bold text-[var(--color-gray-0)]">
             {title}
           </Typo>
         </Grow>
