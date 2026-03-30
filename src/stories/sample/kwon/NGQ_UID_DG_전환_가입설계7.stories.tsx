@@ -7,10 +7,10 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Button } from '@/shared/components/uiux/Button';
+import { Button } from '@uiux/Button';
 import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
 
