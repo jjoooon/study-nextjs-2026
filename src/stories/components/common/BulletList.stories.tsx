@@ -219,12 +219,12 @@ export const Default: Story = {
           <BulletListItem type={type} data-before="①" size={size} color={color} className="whitespace-nowrap">
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
-          <BulletListItem type={type} data-before="㉠" size={size} color={color} className="whitespace-nowrap">
+          <BulletListItem type={type} data-before="㉠" size={size} color={color} className="whitespace-nowrap" onClick={() => alert('Clicked!')}>
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
         </BulletList>
 
-        <BulletItem type={type} size={size} color={color} data-before="ⓐ" className="whitespace-nowrap">
+        <BulletItem type={type} size={size} color={color} data-before="ⓐ" className="whitespace-nowrap" onClick={() => alert('Clicked2!')}>
           {itemText}
         </BulletItem>
       </Grow>
