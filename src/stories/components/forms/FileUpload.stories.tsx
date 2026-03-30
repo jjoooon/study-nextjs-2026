@@ -7,7 +7,7 @@ const SAMPLE_FILES = [{ name: '매우 긴 파일명 입니다.이렇게 길면 �
 
 
 const meta: Meta<typeof FileUpload> = {
-  title: 'Components/Common/FileUpload',
+  title: 'Components/Forms/FileUpload',
   component: FileUpload,
   tags: ['autodocs'],
   parameters: {

@@ -349,10 +349,14 @@ const meta: Meta<typeof TabPager> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
             <h2>Overview</h2>
             <div>
               <p>
-                <b>TabPager</b>는 많은 탭을 한 화면에 효율적으로 보여주기 위해 페이징, 드롭다운, 네비게이션, 에러 메시지 등 다양한 기능을 제공하는 고급 탭 컴포넌트입니다.<br />
+                <b>Tab</b>는 많은 탭을 한 화면에 효율적으로 보여주기 위해 페이징, 드롭다운, 네비게이션, 에러 메시지 등 다양한 기능을 제공하는 고급 탭 컴포넌트입니다.<br />
                 <code>variant</code>, <code>hasTableBelow</code>, <code>removable</code>, <code>visibleCount</code>, <code>error</code>, <code>errorMsg</code>, <code>getValue</code>, <code>renderTab</code>, <code>renderDropdownItem</code> 등 다양한 props를 지원합니다.
               </p>
             </div>
@@ -521,7 +525,9 @@ export const Default: Story = {
           )}
           renderDropdownItem={false}
         >
-          내용{active2}
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">
+            내용{active2}
+          </div>
         </TabPager>
 
         <TabPager
@@ -537,9 +543,15 @@ export const Default: Story = {
           errorMsg="입력하세요."
           getValue={tab => String(tab.value)}
           renderButtons={
-            <Grow className="gap-2.5">
-              <Button variant="outlined" color="gray" size="md">버튼1</Button>
-              <Button variant="outlined" color="gray" size="md">버튼2</Button>
+            <Grow gap={2.5}>
+              <Grow>
+                <Button variant="outlined" color="gray" size="md">버튼1</Button>
+                <Button variant="outlined" color="gray" size="md">버튼2</Button>
+              </Grow>
+              <Grow>
+                <Button variant="outlined" color="gray" size="md">버튼1</Button>
+                <Button variant="outlined" color="gray" size="md">버튼2</Button>
+              </Grow>
             </Grow>
           }
           renderTab={tab => (
@@ -579,7 +591,9 @@ export const Default: Story = {
             </Button>
             )}
           >
-          내용{active}
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">
+            테이블{active2}
+          </div>
         </TabPager>
       </Gcol>
     );

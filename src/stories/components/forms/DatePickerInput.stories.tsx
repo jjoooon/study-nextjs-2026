@@ -2,53 +2,10 @@
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
-import { Button } from '@uiux/Button';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
-
-function LniPl020DatePickerPreview() {
-  const [insuranceStartDate, setInsuranceStartDate] = React.useState('2024-05-08');
-
-  const handleTodayClick = () => {
-    setInsuranceStartDate(new Date().toISOString().slice(0, 10));
-  };
-
-  return (
-    <Gcol gap={3} variant="box-line" className="w-full p-8">
-      <Gcol gap={1}>
-        <span className="text-[1.3rem] text-[var(--color-text-gray)]">보험시기</span>
-        <Grow gap={2} className="items-center">
-          <DatePickerInput
-            value={insuranceStartDate}
-            mode={'single'}
-            width={'9rem'}
-            onChange={(_, formattedValue) => setInsuranceStartDate(formattedValue ?? '')}
-          />
-          <Button
-            color={'secondary'}
-            onClick={handleTodayClick}
-            only={'default'}
-            size={'lg'}
-            variant={'outlined'}
-          >
-            오늘
-          </Button>
-        </Grow>
-      </Gcol>
-
-      <Gcol gap={1}>
-        <span className="text-[1.3rem] text-[var(--color-text-gray)]">보험기간</span>
-        <DatePickerInput
-          mode={'range'}
-          width={'9rem'}
-          rangeValue={{ from: '2024-05-08', to: '2024-06-30' }}
-          onChange={() => undefined}
-        />
-      </Gcol>
-    </Gcol>
-  );
-}
+type Story = StoryObj<DatePickerInputStoryProps>;
 
 const meta: Meta<DatePickerInputStoryProps> = {
   title: 'Components/Forms/DatePickerInput',
@@ -63,6 +20,11 @@ const meta: Meta<DatePickerInputStoryProps> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
+
             <h2>Overview</h2>
             <div>
               <p>
@@ -244,12 +206,6 @@ const [value, setValue] = useState('');
                 </Grow>
               </Gcol>
             </Unstyled>
-
-            <h2>LniPl020 Reference</h2>
-            <p>LniPl020 화면의 DatePicker 사용 방식(단일 입력 + 외부 오늘 버튼, 기간 readOnly)을 그대로 재현한 예시입니다.</p>
-            <Unstyled>
-              <LniPl020DatePickerPreview />
-            </Unstyled>
           </>
         );
       },
@@ -259,7 +215,7 @@ const [value, setValue] = useState('');
     mode: {
       control: { type: 'select' },
       options: ['single', 'multiple', 'range'],
-      table: { category: '스타일 props' },
+      table: { category: '설정 props' },
     },
     size: {
       control: { type: 'inline-radio' },
@@ -299,6 +255,14 @@ const [value, setValue] = useState('');
       table: { category: '에러 props' },
     },
 
+    monthOnly: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '월만 선택하는 모드',
+    },
+    onMonthSelect: {
+      table: { disable: true },
+    },
     id: {
       table: { disable: true },
     },
@@ -322,28 +286,62 @@ const [value, setValue] = useState('');
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
+    monthOnly: false,
   },
 };
 
 export default meta;
-type Story = StoryObj<DatePickerInputStoryProps>;
-
+   
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? '');
+    // 오늘 날짜를 YYYY-MM-DD 형식으로 반환
+    const getToday = () => {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    };
+    
+    const [value, setValue] = React.useState(args.value ?? getToday());
+    // multiple 모드: 기본값(오늘) 또는 args.value를 배열로 초기화
+    const initialMultiple = React.useMemo(() => {
+      if (args.value) {
+        const arr = args.value.split(',').map((v) => v.trim()).filter(Boolean);
+        return arr.length > 0 ? arr : [getToday()];
+      }
+      return [getToday()];
+    }, [args.value]);
+    const [multipleValue, setMultipleValue] = React.useState<string[]>(initialMultiple);
     const [rangeValue, setRangeValue] = React.useState<{ from?: string; to?: string }>({
       from: '2026-03-01',
       to: '2026-03-07',
     });
 
     React.useEffect(() => {
-      setValue(args.value ?? '');
+      setValue(args.value ?? getToday());
     }, [args.value]);
 
-    if (args.mode === 'range') {
+    // multiple 모드에서 args.value가 바뀌면 multipleValue도 동기화
+    React.useEffect(() => {
+      if (args.mode === 'multiple') {
+        if (args.value) {
+          const arr = args.value.split(',').map((v) => v.trim()).filter(Boolean);
+          setMultipleValue(arr.length > 0 ? arr : [getToday()]);
+        } else {
+          setMultipleValue([getToday()]);
+        }
+      }
+    }, [args.value, args.mode]);
+
+    // monthOnly가 true면 mode를 무조건 single로 강제
+    const effectiveMode = args.monthOnly ? 'single' : args.mode;
+
+    if (effectiveMode === 'range') {
       return (
         <DatePickerInput
           {...args}
+          mode={effectiveMode}
           rangeValue={rangeValue}
           onChange={(date, formattedValue) => {
             if (!formattedValue) {
@@ -360,21 +358,44 @@ export const Default: Story = {
       );
     }
 
+    if (effectiveMode === 'multiple') {
+      return (
+        <DatePickerInput
+          {...args}
+          mode={effectiveMode}
+          value={multipleValue.join(', ')}
+          onChange={(_date, formattedValue) => {
+            // formattedValue: 'YYYY-MM-DD, YYYY-MM-DD, ...'
+            const arr = formattedValue ? formattedValue.split(',').map((v) => v.trim()).filter(Boolean) : [];
+            setMultipleValue(arr);
+            args.onChange?.(_date, formattedValue ?? '');
+          }}
+        />
+      );
+    }
+
+    // monthOnly일 때 value를 YYYY-MM 형식으로 변환
+    let displayValue = value;
+    if (args.monthOnly && value) {
+      // value가 YYYY-MM-DD라면 YYYY-MM으로 변환
+      const match = value.match(/^(\d{4})-(\d{2})/);
+      if (match) {
+        displayValue = `${match[1]}-${match[2]}`;
+      }
+    }
     return (
-      <DatePickerInput
-        {...args}
-        value={value}
-        onChange={(date, formattedValue) => {
-          setValue(formattedValue ?? '');
-          args.onChange?.(date, formattedValue ?? '');
-        }}
-      />
+      <>
+        <DatePickerInput
+          {...args}
+          mode={effectiveMode}
+          value={displayValue}
+          onChange={(date, formattedValue) => {
+            setValue(formattedValue ?? '');
+            args.onChange?.(date, formattedValue ?? '');
+          }}
+        />
+      </>
     );
   },
 };
 
-export const LniPl020Reference: Story = {
-  parameters: { controls: { hideNoControlsWarning: true, exclude: /.*/ } },
-  render: () => <LniPl020DatePickerPreview />,
-};
- 

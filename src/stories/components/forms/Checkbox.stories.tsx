@@ -17,6 +17,10 @@ const meta: Meta<typeof Checkbox> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
             <h2>Overview</h2>
             <div>
               <p>
@@ -29,15 +33,6 @@ const meta: Meta<typeof Checkbox> = {
             <Primary />
             <Controls />
 
-            <h2>Usage</h2>
-            <p>Checkbox 컴포넌트는 다양한 형태로 사용할 수 있습니다.</p>
-            <ul>
-              <li>기본 체크박스(default)</li>
-              <li>아이콘형 favorite, 텍스트형 text, 라벨 미노출 noneText</li>
-              <li>토글 버튼형 button</li>
-              <li>해시태그 칩형 chipText(pill), chipBox(rounded)</li>
-              <li>indeterminate(부분 선택) 및 disabled 상태</li>
-            </ul>
             <Markdown>
               {`
 \`\`\`tsx
@@ -50,7 +45,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   checked={checked}
   onCheckedChange={setChecked}
 
-  variant={'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipText' | 'chipBox'}
+  variant={'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox'}
   size={'lg' | 'md'}
   color={'primary' | 'info'}
 
@@ -69,7 +64,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   value={values}
   onValueChange={handleGroupChange}
 
-  variant={'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipText' | 'chipBox'}
+  variant={'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox'}
   size={'lg' | 'md'}
   color={'primary' | 'info'}
 
@@ -191,12 +186,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                     <Checkbox variant="text">text</Checkbox>
                   </Grow>
                 </Grow>
-                <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">chipText</Typo>
-                  <Grow className="w-[12rem]">
-                    <Checkbox variant="chipText">text</Checkbox>
-                  </Grow>
-                </Grow>
+
                 <Grow gap={8}>
                   <Typo tag="div" className="w-[9rem] tracking-normal">chipBox</Typo>
                   <Grow className="w-[12rem]">
@@ -243,7 +233,6 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                   <Checkbox variant="noneText">noneText</Checkbox>
                   <Checkbox variant="button">button</Checkbox>
                   <Checkbox variant="text">text</Checkbox>
-                  <Checkbox variant="chipText">text</Checkbox>
                   <Checkbox variant="chipBox">text<span>text</span></Checkbox>
                 </Grow>
                 <Grow gap={8}>
@@ -253,7 +242,6 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                   <Checkbox variant="noneText" className="border-[var(--color-border-primary)]">noneText</Checkbox>
                   <Checkbox variant="button" className="border-[var(--color-border-primary)]">button</Checkbox>
                   <Checkbox variant="text" className="underline underline-offset-4 font-bold!">text</Checkbox>
-                  <Checkbox variant="chipText" className="border-[var(--color-border-primary)]">text</Checkbox>
                   <Checkbox variant="chipBox" className="border-[var(--color-border-primary)]">text<span>text</span></Checkbox>
                 </Grow>
                 <Grow gap={8}>
@@ -263,7 +251,6 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                   <Checkbox checked variant="noneText">noneText</Checkbox>
                   <Checkbox checked variant="button">button</Checkbox>
                   <Checkbox checked variant="text">text</Checkbox>
-                  <Checkbox checked variant="chipText">text</Checkbox>
                   <Checkbox checked variant="chipBox">text<span>text</span></Checkbox>
                 </Grow>
                 <Grow gap={8}>
@@ -273,7 +260,6 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                   <Checkbox disabled variant="noneText">noneText</Checkbox>
                   <Checkbox disabled variant="button">button</Checkbox>
                   <Checkbox disabled variant="text">text</Checkbox>
-                  <Checkbox disabled variant="chipText">text</Checkbox>
                   <Checkbox disabled variant="chipBox">text<span>text</span></Checkbox>
                 </Grow>
                 <Grow gap={8}>
@@ -283,7 +269,6 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                   <Checkbox checked disabled variant="noneText">noneText</Checkbox>
                   <Checkbox checked disabled variant="button">button</Checkbox>
                   <Checkbox checked disabled variant="text">text</Checkbox>
-                  <Checkbox checked disabled variant="chipText">text</Checkbox>
                   <Checkbox checked disabled variant="chipBox">text<span>text</span></Checkbox>
                 </Grow>
                 <Grow gap={8}>
@@ -293,7 +278,6 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
                   <Checkbox required variant="noneText">noneText</Checkbox>
                   <Checkbox required variant="button">button</Checkbox>
                   <Checkbox required variant="text">text</Checkbox>
-                  <Checkbox required variant="chipText">text</Checkbox>
                   <Checkbox required variant="chipBox">text<span>text</span></Checkbox>
                 </Grow>
               </Gcol>
@@ -322,7 +306,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   },
   argTypes: {
     variant: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['default', 'favorite', 'noneText', 'button', 'text', 'chipText', 'chipBox'],
       table: { category: '스타일 props' },
     },

@@ -21,6 +21,10 @@ const meta: Meta<RadioGroupStoryProps> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
             <h2>Overview</h2>
             <div>
               <p>
@@ -145,6 +149,14 @@ const [value, setValue] = useState('option1');
                   <RadioGroup defaultValue="1" className="gap-2" width="auto">
                     <RadioGroupItem variant="button" value="1" id="doc-b-1">
                       Button 1
+                    </RadioGroupItem>
+                  </RadioGroup>
+                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                    <RadioGroupItem variant="chipBox" value="1" id="doc-chip-1">
+                      ChipBox 1
+                    </RadioGroupItem>
+                    <RadioGroupItem variant="chipBox" value="2" id="doc-chip-2">
+                      ChipBox 2
                     </RadioGroupItem>
                   </RadioGroup>
                 </Grow>
@@ -281,7 +293,7 @@ const [value, setValue] = useState('option1');
   argTypes: {
     variant: {
       control: { type: 'inline-radio' },
-      options: ['default', 'button'],
+      options: ['default', 'button', 'chipBox'],
       table: { category: '스타일 props' },
     },
     size: {
