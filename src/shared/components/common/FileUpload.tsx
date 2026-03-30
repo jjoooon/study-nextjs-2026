@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type FileItem = {
   name: string;
+  ext?: string;
   key?: string;
 };
 
@@ -50,18 +51,39 @@ export function FileUpload({
   return (
     <Grow>
       {/* ── 파일선택 버튼 ── */}
-      <Button
-        variant={'outlined'}
-        color={'gray'}
-        size={'md'}
-        aria-label="파일선택"
-        aria-describedby={errorMessage ? `${baseId}-error` : undefined}
-        aria-invalid={!!errorMessage}
-        onClick={onClickButton}
-      >
-        <FileUploadIcon />
-        파일선택
-      </Button>
+      <div className="relative w-[7.7rem] h-[2.5rem]">
+        <input
+          type="file"
+          className="w-full h-full border opacity-0 cursor-pointer"
+          onChange={e => {
+            const fileList = e.target.files;
+            if (!fileList || fileList.length === 0) return;
+            const newFiles: FileItem[] = Array.from(fileList).map(f => {
+              const fullName = f.name;
+              const lastDot = fullName.lastIndexOf('.')
+              const hasExt = lastDot > 0;
+              const name = hasExt ? fullName.slice(0, lastDot) : fullName;
+              const ext = hasExt ? fullName.slice(lastDot + 1) : '';
+              return [name, ext] ;
+            });
+            setFiles(newFiles);
+          }}
+        />
+        <Button
+          variant={'outlined'}
+          color={'gray'}
+          size={'md'}
+          aria-label="파일선택"
+          aria-describedby={errorMessage ? `${baseId}-error` : undefined}
+          aria-invalid={!!errorMessage}
+          onClick={onClickButton}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+        >
+          <FileUploadIcon />
+          파일선택
+        </Button>
+      </div>
+      
 
       {/* ── 파일 태그 목록 ── */}
       {files.map((file, index) => (
@@ -100,12 +122,14 @@ function truncateTail(name: string, keepStart = 12, keepEnd = 1): string {
 
 type FileTagProps = {
   name: string;
+  ext?: string;
   onRemove: () => void;
   hasError?: boolean;
 };
 
-function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
+function FileTag({ name, ext, onRemove, hasError = false }: FileTagProps) {
   const displayName = truncateTail(name);
+  const displayExt = truncateTail(ext ?? '');
 
   return (
     <Grow className="group">
@@ -122,7 +146,7 @@ function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
                   : 'hover:text-[#006FF2] hover:underline'
               )}
             >
-              {displayName}
+              {displayName}{displayExt ? `.${displayExt}` : ''}
             </Typo>
           </span>
         </TooltipTrigger>
