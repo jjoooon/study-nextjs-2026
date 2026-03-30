@@ -5,22 +5,28 @@ import { X } from "lucide-react";
 import { Badge } from "@uiux/Badge";
 import { Button } from "@uiux/Button";
 import { InputClearIcon } from "@icons";
+import { ErrorMsg } from '@common/ErrorMsg';
+
 import { Grow } from "@atoms";
 import { cn } from '@/shared/lib/shadcn/utils';
 
 export interface InputTagProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value?: string[];
+  variant?: 'default' | 'box-line';
   onChange?: (value: string[]) => void;
   placeholder?: string;
   maxTags?: number; // 최대 태그 수 제한 (옵션)
+  error?: boolean;
+  errorMsg?: string;
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
 
 const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
-  ({ className, value = [], onChange, placeholder = "텍스트 영역입니다.", maxTags, ...props }, ref) => {
+  ({ className, value = [], onChange, placeholder = "텍스트 영역입니다.", maxTags, error, errorMsg, errorPs, variant = 'default', ...props }, ref) => {
     const [inputValue, setInputValue] = React.useState("");
     const [isFocused, setIsFocused] = React.useState(false);
-    
+    const errorId = React.useId();
     // 내부 input 요소에 대한 ref
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -60,11 +66,12 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
     return (
       <Grow
         placement="ss"
-        variant={'box-line'}
+        variant={variant}
         onClick={handleDivClick}
         // 중요: 여기가 shadcn Input의 포커스 스타일을 흉내내는 부분입니다.
         className={cn(
           "flex flex-wrap",
+          (error ? "border-[var(--color-danger-50)] bg-[var(--color-danger-5)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]" : "border-[var(--color-gray-20)]"),
           className
         )}
       >
@@ -111,6 +118,12 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
           // 태그 최대 개수 도달 시 입력 막기
           disabled={maxTags ? value.length >= maxTags : false}
         />
+
+        {error && (
+          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+            {errorMsg}
+          </ErrorMsg>
+        )}
       </Grow>
     );
   }
