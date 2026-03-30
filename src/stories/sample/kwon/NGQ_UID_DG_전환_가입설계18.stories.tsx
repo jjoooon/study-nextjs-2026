@@ -46,9 +46,6 @@ type Story = StoryObj<typeof meta>;
 const LTPZ053P = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
   });
   type DummyDataType = {
     id: number;
@@ -133,7 +130,7 @@ const LTPZ053P = () => {
         <FormTable caption="월클릭스켄" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']} variant={'none'}>
           <FormRow>
             <FormCell title={'설계번호'}>
-              <Input aria-label="" width={'16rem'} value={'12345678'}/>
+              <Input aria-label="" width={'16rem'} onChange={(e) => setFormField('type01', e.target.value)} value={form.type01}/>
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>

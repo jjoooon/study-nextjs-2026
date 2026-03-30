@@ -128,7 +128,8 @@ const LTPZ052P = () => {
           width: 100,
           editable: true,
           field: 'isAuthcheck2',
-          cellClass: 'text-center px-0! editable-cell',
+          headerClass: 'border-r-0!',
+          cellClass: 'text-center px-0! editable-cell border-r-0!',
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -146,7 +147,7 @@ const LTPZ052P = () => {
       minWidth: 360,
       field: 'field01',
       headerClass: 'border-l border-[#d4d4d5]',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto! border-l border-[#d4d4d5]',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto! ',
       autoHeight: true,
       editable: true,
       suppressNavigable: true,
@@ -182,7 +183,7 @@ const LTPZ052P = () => {
       headerName: '주민번호',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto! border-l border-[#d4d4d5]',
       autoHeight: true,
     },
      {
