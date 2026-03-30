@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ErrorMsg } from '@common/ErrorMsg';
 
+import { Grow } from '@atoms';
+import { ReSizeIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -10,6 +12,7 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   /** 최소 글자 수 표시 및 에러 조건 연동 */
   showMinLengthCount?: boolean;
+  maxLength?: number; // 최대 글자 수 (optional, but commonly used with textarea)
 }
 
 function Textarea({
@@ -18,7 +21,8 @@ function Textarea({
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
-  showMinLengthCount = false,
+  showMinLengthCount = true,
+  maxLength = 1000,
   ...props
 }: UITextareaProps) {
   const errorId = React.useId();
@@ -40,34 +44,38 @@ function Textarea({
     : '';
 
   return (
-    <div className="relative w-full">
-      <textarea
-        data-slot="textarea"
-        aria-invalid={showError || undefined}
-        aria-describedby={showError ? errorId : undefined}
-        className={cn(
-          'border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-[0.2rem] text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-          variantStyles[variant],
-          errorStyle,
-          className
-        )}
-        {...props}
-      />
-
-      {showMinLengthCount && props.minLength !== undefined && (
-        <div className={cn(
-          'mt-1 text-right text-[1.2rem]',
-          minLengthSatisfied ? 'text-[var(--color-text-subtle)]' : 'text-[var(--color-text-danger)]',
-        )}>
-          {currentLength} / 최소 {props.minLength}자
+    <div className="w-[60rem]">
+      <div className="relative border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 pb-0 w-[24rem]">
+        <textarea
+          data-slot="textarea"
+          aria-invalid={showError || undefined}
+          aria-describedby={showError ? errorId : undefined}
+          className={cn(
+            'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content h-full w-full bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
+            variantStyles[variant],
+            errorStyle,
+            className
+          )}
+          {...props}
+        />
+        <div className="absolute bottom-[2.4rem] right-1 pointer-events-none text-gray-400 event-none bg-[#fff]">
+          <ReSizeIcon />
         </div>
-      )}
 
-      {showError && (
-        <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
-          {errorMsg}
-        </ErrorMsg>
-      )}
+        {maxLength && (
+          <Grow placement={'ec'} className={cn(
+            'text-right text-[1.3rem] text-[var(--color-gray-30)] min-h-[2.8rem] ',
+          )}>
+            <span className="text-[var(--color-gray-100)]">{currentLength}</span> / {maxLength}byte
+          </Grow>
+        )}
+
+        {showError && (
+          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+            {errorMsg}
+          </ErrorMsg>
+        )}
+      </div>
     </div>
   );
 }

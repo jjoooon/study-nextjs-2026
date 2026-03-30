@@ -68,7 +68,7 @@ export function IAListWithPreview() {
   }, [activeRow.id, activeStep]);
 
   const workList = [
-    'LTPA350'
+    'LTPA350', 
   ];
 
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);

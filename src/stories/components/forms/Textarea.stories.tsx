@@ -230,7 +230,7 @@ import { Textarea } from '@uiux/Textarea';
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
-    showMinLengthCount: false,
+    showMinLengthCount: true,
   },
 };
 
@@ -251,7 +251,7 @@ export const Default: Story = {
       args.onChange?.(e);
     };
 
-    return <Textarea {...restArgs} value={value} onChange={handleChange} className="w-xs min-h-40" />;
+    return <Textarea {...restArgs} value={value} onChange={handleChange} />;
   },
 };
  
