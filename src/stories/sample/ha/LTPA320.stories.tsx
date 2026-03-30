@@ -258,6 +258,7 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
+    type03: '',
   });
   
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -296,7 +297,11 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'8rem'} value={'12345678'} />
+              <Input aria-label="" 
+                width={'9rem'} 
+                value={form.type02 || '12345678'} 
+                onChange={e => setFormField('type02', e.target.value)}
+              />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
@@ -306,15 +311,15 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
               <NativeSelect
                 aria-label="모계약종류 선택"
                 width="12rem"
-                value={form.type02}
-                onChange={(e) => setFormField('type02', e.target.value)}
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type02-1', label: '노후실손' },
-                  { value: 'selection2', id: 'type02-2', label: '차도리CEO' },
-                  { value: 'selection3', id: 'type02-3', label: '유병자실손' },
+                  { value: 'selection', id: 'type03-1', label: '노후실손' },
+                  { value: 'selection2', id: 'type03-2', label: '차도리CEO' },
+                  { value: 'selection3', id: 'type03-3', label: '유병자실손' },
                 ].map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
             </FormCell>
@@ -371,6 +376,7 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
             suppressRowTransform={true}
+            
 
             // 체크박스 시
             rowSelection={{

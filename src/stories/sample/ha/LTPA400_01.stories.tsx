@@ -179,6 +179,8 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
     type02: '',
     type03: '',
     type04: '',
+    type05: '',
+    type06: '',
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -273,14 +275,22 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'12rem'} value={'12345678'} />
+              <Input aria-label="" 
+                width={'12rem'} 
+                value={form.type05 || '12345678'} 
+                onChange={e => setFormField('type05', e.target.value)}
+              />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
               <Input aria-label="" width={'15rem'} value={'신부산지점GA지점'} readOnly/>
             </FormCell>
             <FormCell title={'사용인'}>
-              <Input aria-label="" width={'15rem'} value={'12345678'} />
+              <Input aria-label="" 
+                width={'15rem'}
+                value={form.type06 || '12345678'}
+                onChange={e => setFormField('type06', e.target.value)}
+              />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>               
@@ -307,7 +317,7 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
             noRowsOverlayComponent={AgGridEmptyComponent}
             defaultColDef={{ 
               sortable: false, 
-              resizable: false,
+              resizable: true,
             }}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}

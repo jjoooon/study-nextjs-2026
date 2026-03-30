@@ -175,6 +175,7 @@ const LTPA400 = ({ isNoData = false }: LTPA400Props) => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
+    type03: '',
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -213,7 +214,11 @@ const LTPA400 = ({ isNoData = false }: LTPA400Props) => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'15rem'} value={'12345678'} />
+              <Input aria-label="" 
+                width={'15rem'} 
+                value={form.type02 || '12345678'} 
+                onChange={e => setFormField('type02', e.target.value)}
+              />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
@@ -226,12 +231,12 @@ const LTPA400 = ({ isNoData = false }: LTPA400Props) => {
               <NativeSelect
                 aria-label="진행상태 선택"
                 width="12rem"
-                value={form.type02}
-                onChange={(e) => setFormField('type02', e.target.value)}
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type02-1', label: '전체' },
-                  { value: 'selection2', id: 'type02-2', label: '진행중' },
+                  { value: 'selection', id: 'type03-1', label: '전체' },
+                  { value: 'selection2', id: 'type03-2', label: '진행중' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -258,7 +263,7 @@ const LTPA400 = ({ isNoData = false }: LTPA400Props) => {
             noRowsOverlayComponent={AgGridEmptyComponent}
             defaultColDef={{ 
               sortable: false, 
-              resizable: false,
+              resizable: true,
             }}
             alwaysShowHorizontalScroll={true}
           />
