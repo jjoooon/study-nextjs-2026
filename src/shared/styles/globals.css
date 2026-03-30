@@ -713,6 +713,17 @@ input::placeholder {
   *:focus-visible {
     box-shadow: none !important;
   }
+  .symbol-attr {
+    text-indent: -1.6rem;
+  }
+  .symbol-attr::before {
+    content: attr(data-before);
+    margin-right: 0.2rem;
+    width: 1.4rem;
+    text-align: right;
+    display: inline-block;
+    transform: translateY(-0.1rem);
+  }
 
   .bg-popover {
     background-color: #fff;

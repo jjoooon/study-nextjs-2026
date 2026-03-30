@@ -124,7 +124,7 @@ export const FormCell = ({
   const contextVertical = useContext(VerticalContext);
   const contextVariant = useContext(VariantContext);
   const usedVariant = variant ?? contextVariant ?? 'default';
-  const titleTypoVariant = titleVariant === 'section' ? 'body-lg' : 'body-md';
+  const titleTypoVariant = titleVariant === 'section' ? 'body-xl' : 'body-md';
   const titleTypoColor = titleVariant === 'section' ? 'primary' : contextVariant === 'none' ? 'blueGray' : 'default';
 
   return (

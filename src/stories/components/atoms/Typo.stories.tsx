@@ -8,12 +8,18 @@ const VARIANT_OPTIONS = [
   'heading-md',
   'heading-sm',
   'heading-xs',
+
+  'body-xl',
   'body-lg',
   'body-md',
   'body-sm',
+  'body-xs',
+
   'button-lg',
   'button-md',
   'button-sm',
+  'button-xs',
+
   'amount-md',
   'amount-xs',
 ] as const;
@@ -21,6 +27,8 @@ const VARIANT_OPTIONS = [
 const WEIGHT_OPTIONS = ['normal', 'bold', 'semibold'] as const;
 const COLOR_OPTIONS = ['default', 'gray-light', 'gray', 'danger', 'primary', 'secondary', 'information'] as const;
 const TAG_OPTIONS = ['span', 'p', 'div', 'strong', 'label', 'h1', 'h2', 'h3'] as const;
+
+const ICON_OPTIONS = [null, 'info', 'warning', 'detail', 'dot', 'dotBig', 'hash', 'dash', 'star'] as const;
 
 const meta: Meta<typeof Typo> = {
   title: 'Components/Atoms/Typo',
@@ -33,6 +41,11 @@ const meta: Meta<typeof Typo> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div>
               <p>
@@ -78,6 +91,7 @@ import { Typo } from '@atoms';
                 <tr><td>variant</td><td>{VARIANT_OPTIONS.join(' | ')}</td><td>텍스트 스타일 유형</td></tr>
                 <tr><td>weight</td><td>{WEIGHT_OPTIONS.join(' | ')}</td><td>텍스트 굵기</td></tr>
                 <tr><td>color</td><td>{COLOR_OPTIONS.join(' | ')}</td><td>텍스트 색상</td></tr>
+                <tr><td>icon</td><td>{ICON_OPTIONS.join(' | ')}</td><td>텍스트 왼쪽에 아이콘 표시</td></tr>
                 <tr><td>children</td><td>ReactNode</td><td>표시할 텍스트</td></tr>
               </tbody>
             </table>
@@ -110,6 +124,15 @@ import { Typo } from '@atoms';
     controls: { expanded: false },
   },
   argTypes: {
+    icon: {
+      control: 'inline-radio',
+      options: ICON_OPTIONS,
+      description: '텍스트 왼쪽에 아이콘 표시',
+      table: {
+        category: 'Appearance',
+        type: { summary: ICON_OPTIONS.join(' | ') },
+      },
+    },
     variant: {
       control: 'select',
       options: VARIANT_OPTIONS,
@@ -150,13 +173,15 @@ import { Typo } from '@atoms';
       table: { category: 'Content' },
     },
     className: { table: { disable: true } },
+    style: { table: { disable: true } },
   },
   args: {
     tag: 'span',
     variant: 'body-md',
     weight: 'normal',
     color: 'default',
-    children: '샘플용 Typography 0123',
+    icon: undefined,
+    children: '샘플용 Typography 0123<br/>샘플용 Typography 0123',
   },
 };
 
@@ -167,7 +192,7 @@ export const Default: Story = {
   render: (args) => {
     return (
       <>
-        <Typo {...args}>{args.children}</Typo>
+        <Typo {...args}>샘플용 Typography 0123<br/>샘플용 Typography 0123</Typo>
       </>
       
     );

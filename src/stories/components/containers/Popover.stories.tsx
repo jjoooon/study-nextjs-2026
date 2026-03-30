@@ -1,85 +1,170 @@
-import React from 'react';
+'use client';
+
+import * as React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { Button } from '@uiux/Button';
 import { PlusIcon } from '@icons';
-import { Gcol } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 
-export default {
- title: 'Components/Containers/Popover',
-  component: Popover,
+
+type PopoverContentProps = React.ComponentProps<typeof PopoverContent>;
+
+const meta: Meta<PopoverContentProps> = {
+  title: 'Components/Containers/Popover',
+  component: PopoverContent,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
+            <h2>Overview</h2>
+            <div>
+              <p>
+                Popover 컴포넌트는 다양한 트리거와 컨텐츠, 애니메이션, 커스텀 스타일을 지원하는 오버레이 UI입니다.<br />
+                <b>PopoverContent</b>의 props를 통해 다양한 동작과 스타일을 제어할 수 있습니다.
+              </p>
+            </div>
+            <Primary />
+            <Controls />
+            <h2>Usage</h2>
+            <Markdown>
+              {`
+  import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
+
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button>트리거</Button>
+    </PopoverTrigger>
+    <PopoverContent motion="fade" closeButton align="start">
+      Popover 내용
+    </PopoverContent>
+  </Popover>
+              `}
+            </Markdown>
+            <h2>API Reference</h2>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>prop</th>
+                  <th>타입/옵션</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>motion</td><td>'fade' | 'scale' | 'none'</td><td>애니메이션 효과</td></tr>
+                <tr><td>variant</td><td>'default' 등</td><td>스타일 variant</td></tr>
+                <tr><td>closeButton</td><td>boolean</td><td>닫기 버튼 표시</td></tr>
+                <tr><td>align</td><td>'start' | 'center' | 'end'</td><td>정렬</td></tr>
+                <tr><td>side</td><td>'top' | 'right' | 'bottom' | 'left'</td><td>위치</td></tr>
+                <tr><td>className</td><td>string</td><td>커스텀 클래스</td></tr>
+              </tbody>
+            </table>
+          </>
+        );
+      },
+    },
+  },
+  argTypes: {
+    motion: {
+      control: { type: 'inline-radio' },
+      options: ['fade', 'scale', 'none'],
+      description: '애니메이션 모션',
+      table: { category: 'PopoverContent' },
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['default'],
+      description: 'PopoverContent variant',
+      table: { category: 'PopoverContent' },
+    },
+    closeButton: {
+      control: { type: 'boolean' },
+      description: '닫기 버튼 표시',
+      table: { category: 'PopoverContent' },
+    },
+    align: {
+      control: { type: 'inline-radio' },
+      options: ['start', 'center', 'end'],
+      description: '정렬',
+      table: { category: 'PopoverContent' },
+    },
+    side: {
+      control: { type: 'inline-radio' },
+      options: ['top', 'right', 'bottom', 'left'],
+      description: '위치',
+      table: { category: 'PopoverContent' },
+    },
+
+    children: {table: { disable: true } },
+    portalContainer: { table: { disable: true } },
+    classWrap: { table: { disable: true } },
+    variantStyles: { table: { disable: true } },
+    className: { table: { disable: true } },
+  },
+  args: {
+    motion: 'fade',
+    variant: 'default',
+    closeButton: true,
+    align: 'center',
+    side: 'bottom',
+    className: '',
+    children: 'Popover 내용',
+  },
 };
 
-export const Default = () => (
-  <div style={{ padding: 40 }}>
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant={'outlined'} color={'coolgray'}>
-          기본 Popover
-          <PlusIcon />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent variant="default" closeButton={true} align="start">
-        <Gcol className="w-[11rem] [&>*]:w-full">
-          <Button variant={'outlined'} color={'coolgray'}>옵션 1</Button>
-          <Button variant={'outlined'} color={'coolgray'}>옵션 2</Button>
-        </Gcol>
-      </PopoverContent>
-    </Popover>
+export default meta;
+type Story = StoryObj<PopoverContentProps>;
 
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant={'text'} color={'link'}>
-          기본 Popover
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent variant="default" closeButton={true} side="left">
-        <Gcol className="w-[11rem] [&>*]:w-full">
-          <Button variant={'outlined'} color={'coolgray'}>옵션 1</Button>
-          <Button variant={'outlined'} color={'coolgray'}>옵션 2</Button>
-        </Gcol>
-      </PopoverContent>
-    </Popover>
-  </div>
-);
+export const Default: Story = {
+  render: (args) => {
+    return (
+      <Grow>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant={'outlined'} color={'coolgray'}>
+              기본 Popover
+              <PlusIcon />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent {...args}>
+            <Gcol className="w-[11rem] [&>*]:w-full">
+              <Button variant={'outlined'} color={'coolgray'}>옵션 1</Button>
+              <Button variant={'outlined'} color={'coolgray'}>옵션 2</Button>
+            </Gcol>
+          </PopoverContent>
+        </Popover>
 
-export const MotionFade = () => (
-  <div style={{ padding: 40 }}>
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant={'outlined'}>
-          Fade 모션 Popover
-          <PlusIcon />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent motion="fade">
-        Fade 모션 Popover<br />애니메이션 효과 확인
-      </PopoverContent>
-    </Popover>
-  </div>
-);
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant={'text'} color={'link'}>
+              기본 Popover
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent {...args}>
+            <Gcol className="w-[11rem] [&>*]:w-full">
+              <Grow>
+                <Typo variant={'body-xl'}>안면부창상봉합술치료발생금(1일1회,급여)(CLA09217)</Typo>
 
-export const MotionScale = () => (
-  <div style={{ padding: 40 }}>
-    <Popover>
-      <PopoverTrigger asChild>
-        <button type="button">Scale 모션 Popover</button>
-      </PopoverTrigger>
-      <PopoverContent motion="scale">
-        Scale 모션 Popover<br />애니메이션 효과 확인
-      </PopoverContent>
-    </Popover>
-  </div>
-);
-
-export const CustomWidth = () => (
-  <div style={{ padding: 40 }}>
-    <Popover>
-      <PopoverTrigger asChild>
-        <button type="button">넓은 Popover</button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[400px]">
-        400px 넓이의 Popover<br />컨텐츠가 넓게 표시됩니다.
-      </PopoverContent>
-    </Popover>
-  </div>
-);
+              </Grow>
+              <Gcol>
+                <Typo variant={'body-sm'}>질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)</Typo>
+              </Gcol>
+            </Gcol>
+          </PopoverContent>
+        </Popover>
+      </Grow>
+    );
+},
+};
+ 
