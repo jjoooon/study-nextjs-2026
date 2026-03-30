@@ -3,9 +3,12 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { Badge } from "@uiux/Badge";
+import { Button } from "@uiux/Button";
+import { InputClearIcon } from "@icons";
+import { Grow } from "@atoms";
 import { cn } from '@/shared/lib/shadcn/utils';
 
-export interface TagsInputProps
+export interface InputTagProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value?: string[];
   onChange?: (value: string[]) => void;
@@ -13,8 +16,8 @@ export interface TagsInputProps
   maxTags?: number; // 최대 태그 수 제한 (옵션)
 }
 
-const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
-  ({ className, value = [], onChange, placeholder, maxTags, ...props }, ref) => {
+const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
+  ({ className, value = [], onChange, placeholder = "텍스트 영역입니다.", maxTags, ...props }, ref) => {
     const [inputValue, setInputValue] = React.useState("");
     const [isFocused, setIsFocused] = React.useState(false);
     
@@ -55,12 +58,13 @@ const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
     };
 
     return (
-      <div
+      <Grow
+        placement="ss"
+        variant={'box-line'}
         onClick={handleDivClick}
         // 중요: 여기가 shadcn Input의 포커스 스타일을 흉내내는 부분입니다.
         className={cn(
-          "flex flex-wrap gap-2 p-1.5 min-h-10 w-full rounded-md border border-input bg-background text-sm ring-offset-background cursor-text",
-          isFocused ? "ring-2 ring-ring ring-offset-2 border-input" : "", // 포커스 시 스타일
+          "flex flex-wrap",
           className
         )}
       >
@@ -69,20 +73,25 @@ const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
           <Badge
             key={`${tag}-${index}`}
             variant="contained"
-            className="gap-1 px-2 py-0.5 text-sm font-normal"
+            color="gray" 
+            className="gap-1 px-1 py-0.5 text-[1.2rem] font-bold" 
           >
             {tag}
-            <button
+            <Button
               type="button"
+              variant={'none'}
+              size={'sm'}
+              only={'icon'} 
+              className="w-[1.4rem]! h-[1.4rem]! p-0 "
+             
               onClick={(e) => {
                 e.stopPropagation(); // div 클릭 이벤트 전파 방지
                 removeTag(index);
               }}
-              className="outline-none hover:text-destructive text-muted-foreground/80 hover:bg-transparent"
               aria-label={`Remove ${tag} tag`}
             >
-              <X className="w-3.5 h-3.5" />
-            </button>
+              <InputClearIcon  color={'var(--color-blue-gray-50)'} />
+            </Button>
           </Badge>
         ))}
 
@@ -96,17 +105,17 @@ const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
           onKeyDown={handleKeyDown}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={value.length === 0 ? placeholder : ""} // 태그가 하나라도 있으면 placeholder 숨김
+          placeholder={placeholder} // 태그가 하나라도 있으면 placeholder 숨김
           // Input 스타일 리셋
           className="flex-1 min-w-[120px] bg-transparent outline-none text-sm disabled:cursor-not-allowed disabled:opacity-50"
           // 태그 최대 개수 도달 시 입력 막기
           disabled={maxTags ? value.length >= maxTags : false}
         />
-      </div>
+      </Grow>
     );
   }
 );
 
-TagsInput.displayName = "TagsInput";
+InputTag.displayName = "InputTag";
 
-export { TagsInput };
+export { InputTag };

@@ -83,6 +83,7 @@ interface GroupProps {
   variant?: Variant;
   gap?: number | string;
   className?: string;
+  onClick?: () => void;
   style?: React.CSSProperties;
 }
 
@@ -148,7 +149,8 @@ export const Gcol = ({
   variant = 'default', 
   gap = 1,
   className, 
-  style 
+  style,
+  onClick
 }: GroupProps) => {
   return (
     <div

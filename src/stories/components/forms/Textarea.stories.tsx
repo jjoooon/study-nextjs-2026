@@ -17,6 +17,10 @@ const meta: Meta<typeof Textarea> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
             <h2>Overview</h2>
             <div>
               <p>
@@ -171,11 +175,7 @@ import { Textarea } from '@uiux/Textarea';
     controls: { expanded: false },
   },
   argTypes: {
-    variant: {
-      control: { type: 'select' },
-      options: ['default', 'outline'],
-      table: { category: '스타일 props' },
-    },
+    variant:{table: { disable: true },},
 
     readOnly: {
       control: { type: 'boolean' },
@@ -199,22 +199,13 @@ import { Textarea } from '@uiux/Textarea';
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
-    minLength: {
-      control: { type: 'number' },
-      table: { category: '에러 props' },
-    },
-    showMinLengthCount: {
-      control: { type: 'boolean' },
-      table: { category: '에러 props' },
-    },
-
-    className: {
-      table: { disable: true },
-    },
+    minLength:  {table: { disable: true },},
+    showMinLengthCount: {table: { disable: true },},
+    className: {table: { disable: true },},
     value: {
       table: { disable: true },
     },

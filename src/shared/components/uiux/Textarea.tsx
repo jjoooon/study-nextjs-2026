@@ -22,7 +22,7 @@ function Textarea({
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
   showMinLengthCount = true,
-  maxLength = 1000,
+  maxLength = 0,
   ...props
 }: UITextareaProps) {
   const errorId = React.useId();
@@ -44,25 +44,25 @@ function Textarea({
     : '';
 
   return (
-    <div className="w-[60rem]">
-      <div className="relative border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 pb-0 w-[24rem]">
+    <div>
+      <div className={`relative border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 w-[24rem] ${(maxLength === 0) ? 'pb-2' : 'pb-0'} ${showError ? 'bg-[var(--color-danger-5)] border-[var(--color-danger-50)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]' : ''}`}>
         <textarea
           data-slot="textarea"
           aria-invalid={showError || undefined}
           aria-describedby={showError ? errorId : undefined}
           className={cn(
-            'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content h-full w-full bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
-            variantStyles[variant],
+            'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-[] h-[7.4rem] w-full bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
+            variantStyles[variant], 
             errorStyle,
             className
           )}
           {...props}
         />
-        <div className="absolute bottom-[2.4rem] right-1 pointer-events-none text-gray-400 event-none bg-[#fff]">
+        <div className={`absolute  right-1 pointer-events-none text-gray-400 event-none bg-[#fff] ${(maxLength === 0) ? 'bottom-[0.6rem]' : 'bottom-[2.4rem]'}`}>
           <ReSizeIcon />
         </div>
 
-        {maxLength && (
+        {maxLength !== 0 && (
           <Grow placement={'ec'} className={cn(
             'text-right text-[1.3rem] text-[var(--color-gray-30)] min-h-[2.8rem] ',
           )}>
