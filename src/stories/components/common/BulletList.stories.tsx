@@ -7,6 +7,7 @@ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-d
 type BulletListStoryProps = React.ComponentProps<typeof BulletList> & {
   type?: React.ComponentProps<typeof BulletListItem>['type'];
   size?: React.ComponentProps<typeof BulletListItem>['size'];
+  color?: React.ComponentProps<typeof BulletListItem>['color'];
   itemText?: string;
 };
 
@@ -88,6 +89,7 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
               <tbody>
                 <tr><td>type</td><td>'dot' | 'hash' | 'ref'</td><td>불릿 마커 스타일 (기본값: 'dot')</td></tr>
                 <tr><td>size</td><td>'sm' | 'md' | 'lg'</td><td>텍스트 크기 (기본값: 'md')</td></tr>
+                <tr><td>color</td><td>'default' | 'gray' | 'primary' | 'danger' | 'information'</td><td>텍스트 색상</td></tr>
                 <tr><td>children</td><td>ReactNode</td><td>아이템 내용</td></tr>
               </tbody>
             </table>
@@ -156,11 +158,11 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
     },
     type: {
       control: 'select',
-      options: ['dot', 'hash', 'ref'],
+      options: ['dot', 'dotBig', 'hash', 'ref', 'star', 'dash', 'symbols'],
       description: '아이템 마커 스타일',
       table: {
         category: 'Appearance',
-        type: { summary: 'dot | hash | ref' },
+        type: { summary: 'dot | dotBig | hash | ref | star | dash | symbols' },
       },
     },
     size: {
@@ -170,6 +172,15 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
       table: {
         category: 'Appearance',
         type: { summary: 'sm | md | lg' },
+      },
+    },
+    color: {
+      control: 'select',
+      options: ['default', 'info', 'detail', 'warning'],
+      description: '텍스트 색상',
+      table: {
+        category: 'Appearance',
+        type: { summary: 'default | info | detail | warning' },
       },
     },
     itemText: {
@@ -191,6 +202,7 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
     position: 'col',
     type: 'dot',
     size: 'md',
+    color: 'default',
     itemText: '안내 문구입니다.',
   },
 };
@@ -200,23 +212,23 @@ type Story = StoryObj<BulletListStoryProps>;
 
 export const Default: Story = {
   render: (args) => {
-    const { type = 'dot', size = 'md', itemText = '안내 문구입니다.', ...listArgs } = args;
+    const { type = 'dot', size = 'md', color = 'default', itemText = '안내 문구입니다.', ...listArgs } = args;
 
     return (
       <Grow gap={8} className="w-full items-start">
         <BulletList {...listArgs}>
-          <BulletListItem type={type} size={size} className="whitespace-nowrap">
-            {itemText}
+          <BulletListItem type={type} data-before="1." size={size} color={color} className="whitespace-nowrap">
+            두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
-          <BulletListItem type={type} size={size} className="whitespace-nowrap">
-            두 번째 문구입니다.
+          <BulletListItem type={type} data-before="①" size={size} color={color} className="whitespace-nowrap">
+            두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
-          <BulletListItem type={type} size={size} className="whitespace-nowrap">
-            세 번째 문구입니다.
+          <BulletListItem type={type} data-before="㉠" size={size} color={color} className="whitespace-nowrap">
+            두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
         </BulletList>
 
-        <BulletItem type={type} size={size} className="whitespace-nowrap">
+        <BulletItem type={type} size={size} color={color} data-before="ⓐ" className="whitespace-nowrap">
           {itemText}
         </BulletItem>
       </Grow>

@@ -12,7 +12,7 @@ const placementOptions = [
   'evs', 'evc', 'eve',
 ] as const;
 
-const variantOptions = ['default', 'box', 'box-line', 'box-round'] as const;
+const variantOptions = ['default', 'box', 'box-line', 'box-info', 'box-warning', 'box-detail', 'box-round'] as const;
 
 const meta: Meta<typeof Gcol> = {
   title: 'Components/Atoms/Group',

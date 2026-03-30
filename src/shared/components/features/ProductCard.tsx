@@ -121,7 +121,7 @@ export function ProductCard({
           <Grow className='flex flex-col items-start'>
             <Typo
               tag="strong"
-              variant="body-lg"
+              variant="body-xl"
             >
               {title}
             </Typo>

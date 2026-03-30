@@ -788,7 +788,7 @@ export const PageArrowIcon: React.FC<IconProps> = ({ className = '', size = 16, 
   </svg>
 );
 
-export const TreeOpenIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var( --color-information-50)' }) => (
+export const TreeOpenIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var(--color-information-50)' }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width={toRem(size)} 
@@ -802,7 +802,7 @@ export const TreeOpenIcon: React.FC<IconProps> = ({ className = '', size = 16, c
 
   </svg>
 );
-export const TreeCloseIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var( --color-information-50)' }) => (
+export const TreeCloseIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var(--color-information-50)' }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width={toRem(size)} 
@@ -816,7 +816,7 @@ export const TreeCloseIcon: React.FC<IconProps> = ({ className = '', size = 16, 
   </svg>
 );
 
-export const FileExportIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'var( --color-success-40)', color2 = 'var( --color-success-60)' }) => (
+export const FileExportIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'var(--color-success-40)', color2 = 'var(--color-success-60)' }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width={toRem(size)} 
@@ -829,7 +829,7 @@ export const FileExportIcon: React.FC<IconProps> = ({ className = '', size = 14,
     <path d="M11.6665 4.66675L8.1665 1.16675V3.73341C8.1665 4.24888 8.58437 4.66675 9.09984 4.66675H11.6665Z" fill={color2}/>
   </svg>
 );
-export const FileImportIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'var( --color-success-40)', color2 = 'var( --color-success-60)' }) => (
+export const FileImportIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'var(--color-success-40)', color2 = 'var(--color-success-60)' }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width={toRem(size)} 
@@ -840,5 +840,44 @@ export const FileImportIcon: React.FC<IconProps> = ({ className = '', size = 14,
   >
     <path d="M11.667 4.66699V11.667C11.6668 12.3111 11.1442 12.833 10.5 12.833H3.5C2.85579 12.833 2.33321 12.3112 2.33301 11.667V2.33301C2.33316 1.68881 2.85576 1.16699 3.5 1.16699H8.16699L11.667 4.66699ZM7 5.19141C6.6459 5.19159 6.3586 5.47891 6.3584 5.83301V8.36719L5.7041 7.71289C5.45355 7.46234 5.04649 7.46242 4.7959 7.71289C4.54567 7.96351 4.54543 8.37063 4.7959 8.62109L6.5459 10.3711L6.64648 10.4531C6.71304 10.4971 6.78689 10.5254 6.8623 10.542C6.87189 10.5441 6.88186 10.5452 6.8916 10.5469C6.92299 10.5522 6.95457 10.555 6.98633 10.5557C6.99081 10.5558 6.99549 10.5576 7 10.5576C7.00506 10.5576 7.01061 10.5558 7.01562 10.5557C7.04673 10.5549 7.07764 10.5521 7.1084 10.5469C7.12018 10.5449 7.132 10.5427 7.14355 10.54C7.17072 10.5338 7.1973 10.5254 7.22363 10.5156C7.23473 10.5115 7.24604 10.5077 7.25684 10.5029C7.32803 10.4718 7.39585 10.4293 7.4541 10.3711L9.2041 8.62109C9.45453 8.37054 9.45453 7.96345 9.2041 7.71289C8.95355 7.46234 8.54649 7.46242 8.2959 7.71289L7.6416 8.36719V5.83301C7.6414 5.47887 7.35416 5.19153 7 5.19141Z" fill={color}/>
     <path d="M11.6665 4.66675L8.1665 1.16675V3.73341C8.1665 4.24888 8.58437 4.66675 9.09984 4.66675H11.6665Z" fill={color2}/>
+  </svg>
+);
+
+export const StarIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'var(--color-secondary-50)' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 10 10" 
+    fill="none" 
+    className={className}
+  >
+    <path d="M4.99994 2V8" stroke={color} strokeWidth="0.75" strokeLinecap="round"/>
+    <path d="M7.59784 3.5L2.40169 6.5" stroke={color} strokeWidth="0.75" strokeLinecap="round"/>
+    <path d="M7.59784 6.5L2.40169 3.5" stroke={color} strokeWidth="0.75" strokeLinecap="round"/>
+  </svg>
+);
+export const DotIcon: React.FC<IconProps> = ({ className = '', size = 4, color = 'var(--color-blue-gray-50)' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 4 4" 
+    fill="none" 
+    className={className}
+  >
+    <circle cx="2" cy="2" r="1" fill={color}/>
+  </svg>
+);
+export const DashIcon: React.FC<IconProps> = ({ className = '', size = 5, color = 'var(--color-secondary-50)' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height="1" 
+    viewBox="0 0 5 1" 
+    fill="none" 
+    className={className}
+  >
+    <rect width="5" height="1" fill={color}/>
   </svg>
 );
