@@ -19,6 +19,11 @@ const meta: Meta<NativeSelectStoryArgs> = {
 						<Title />
 						<br />
 						<br />
+						<h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
+						
 						<h2>Overview</h2>
 						<div>
 							<p>
@@ -46,7 +51,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 <NativeSelect
   variant={'default'}
-  size={'md' | 'sm'}
+  size={'lg' | 'md'}
   width={'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '??rem'}
 
   required={false | true}
@@ -83,7 +88,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 								</tr>
 								<tr>
 									<td>size</td>
-									<td>'md', 'sm'</td>
+									<td>'lg', 'md'</td>
 									<td>셀렉트 높이</td>
 								</tr>
 								<tr>
@@ -254,13 +259,13 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 	},
 	argTypes: {
 		variant: {
-			control: { type: 'select' },
+			control: { type: 'inline-radio' },
 			options: ['default'],
 			table: { category: '스타일 props' },
 		},
 		size: {
-			control: { type: 'select' },
-			options: ['md', 'sm'],
+			control: { type: 'inline-radio' },
+			options: ['lg', 'md'],
 			table: { category: '스타일 props' },
 		},
 		width: {
@@ -310,7 +315,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 	},
 	args: {
 		variant: 'default',
-		size: 'md',
+		size: 'lg',
 		width: 'full',
 		disabled: false,
 		required: false,

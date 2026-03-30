@@ -11,7 +11,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
-  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipText' | 'chipBox';
+  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
   size?: 'lg' | 'md';
   color?: 'primary' | 'info';
   required?: boolean;
@@ -49,7 +49,6 @@ function Checkbox({
   const isNoneText = variant === 'noneText';
   const isButton = variant === 'button';
   const isText = variant === 'text';
-  const isChipText = variant === 'chipText';
   const isChipBox = variant === 'chipBox';
 
   const generatedId = React.useId();
@@ -71,6 +70,18 @@ function Checkbox({
     lg: 'size-[2rem] rounded-[0.4rem]',
     md: 'size-[1.4rem] rounded-[0.3rem]',
   };
+  const chipBoxSizeStyles = {
+    lg: 'h-[2.8rem] px-[1rem]',
+    md: 'h-[2.5rem] px-[0.8rem]',
+  };
+  const favoriteSizeStyles = {
+    lg: 'size-[2rem]',
+    md: 'size-[1.8rem]',
+  };
+  const buttonSizeStyles = {
+    lg: 'h-[2.5rem]',
+    md: 'h-[2.2rem]',
+  };
 
   const colorStyles = {
     primary:
@@ -84,47 +95,29 @@ function Checkbox({
       data-[state=checked]:border-[var(--color-information-50)] 
       data-[state=checked]:text-white`,
   };
-
   const buttonColorStyles = {
     primary:
       `data-[state=checked]:bg-[var(--color-primary-5)] 
       data-[state=checked]:text-[var(--color-primary-50)] 
       data-[state=checked]:border-[var(--color-primary-50)] 
-      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_var(--color-primary-50)r_g_b/_20%)]`,
+      data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(255,92,46,0.20)]`,
     info:
       `data-[state=checked]:bg-[var(--color-information-50)] 
-      data-[state=checked]:text-[var(--color-information-50] 
-      data-[state=checked]:border-[var(--color-information-50] 
-      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_var(--color-information-50)r_g_b/_20%]`,
+      data-[state=checked]:text-[var(--color-information-50)] 
+      data-[state=checked]:border-[var(--color-information-50)] 
+      data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(0,111,242,0.20)]`,
   };
-
-  // ✅ chipBox: rounded-[1.6rem], checked시 bg --color-primary-50
   const chipBoxColorStyles = {
     primary:
       `data-[state=checked]:bg-[var(--color-primary-50)] 
       data-[state=checked]:text-[#FFF] 
       data-[state=checked]:border-[#ff6135] 
-      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)]`,
+      data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(255,92,46,0.19)]`,
     info:
       `data-[state=checked]:bg-[#006ff2] 
       data-[state=checked]:text-[#FFF] 
       data-[state=checked]:border-[#006ff2] 
-      data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]`,
-  };
-
-  const chipSizeStyles = {
-    lg: 'h-[2.5rem] px-[1rem]',
-    md: 'h-[2.2rem] px-[0.8rem]',
-  };
-
-  const favoriteSizeStyles = {
-    lg: 'size-[2rem]',
-    md: 'size-[1.8rem]',
-  };
-
-  const buttonSizeStyles = {
-    lg: 'h-[2.5rem]',
-    md: 'h-[2.2rem]',
+      data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(0,111,242,0.19)]`,
   };
 
   const iconSize = size === 'lg' ? 16 : 14;
@@ -155,7 +148,7 @@ function Checkbox({
       : 'text-[var(--color-primary-50)]';
 
     const labelClass = [
-      "text-[1.3rem] font-normal select-none cursor-pointer",
+      "text-[1.3rem] font-normal select-none cursor-pointer tracking-[-0.13rem]",
       checkedState === true && `underline underline-offset-4 font-bold! ${checkedColor}`,
     ]
       .filter(Boolean)
@@ -191,92 +184,7 @@ function Checkbox({
       </div>
     );
   }
-
-  // ✅ chipText: text variant 기반, # before + strong/span 조합, height 28px 고정
-  if (isChipText) {
-    const checkedColor = color === 'info'
-      ? 'text-[var(--color-element-information,#006ff2)]'
-      : 'text-[var(--color-primary-50)]';
-
-    const labelClass = [
-      "inline-flex items-center h-[2.8rem] text-[1.3rem] font-normal select-none cursor-pointer",
-      checkedState === true && checkedColor,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    return (
-      <div className="relative w-fit">
-        <label
-          htmlFor={checkboxId}
-          className={cn(labelClass, hasErrorState && 'text-[var(--color-text-danger)]', className)}
-        >
-          <CheckboxPrimitive.Root
-            data-slot="checkbox"
-            id={checkboxId}
-            required={isRequired}
-            aria-required={isRequired ? true : undefined}
-            data-required={isRequired ? 'true' : undefined}
-            data-invalid={hasErrorState ? 'true' : undefined}
-            aria-invalid={hasErrorState ? true : undefined}
-            aria-describedby={hasErrorState ? errorId : undefined}
-            checked={checkedState}
-            onCheckedChange={handleChange}
-            className="hidden"
-            {...restProps}
-          />
-          <span className="before:content-['#']">{children}</span>
-        </label>
-        {hasErrorState && showErrorMsg && (
-          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
-            {errorMsg}
-          </ErrorMsg>
-        )}
-      </div>
-    );
-  }
-
-  // ✅ chipBox: 박스형 chip, # before + strong/span 조합, height 28px 고정
-  if (isChipBox) {
-    return (
-      <div className={cn('relative w-fit')}>
-        <CheckboxPrimitive.Root
-          data-slot="checkbox"
-          id={checkboxId}
-          required={isRequired}
-          aria-required={isRequired ? true : undefined}
-          data-required={isRequired ? 'true' : undefined}
-          data-invalid={hasErrorState ? 'true' : undefined}
-          aria-invalid={hasErrorState ? true : undefined}
-          aria-describedby={hasErrorState ? errorId : undefined}
-          checked={checkedState}
-          onCheckedChange={handleChange}
-          className={cn(
-            `inline-flex items-center h-[2.8rem] px-[1rem]
-            shrink-0 transition-colors outline-none cursor-pointer select-none
-            focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
-            text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[1.6rem] border
-            border-[var(--color-gray-20)] bg-[var(--color-gray-0)]
-            font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap
-            disabled:cursor-not-allowed disabled:bg-[var(--color-gray-10)]
-            disabled:border-[var(--color-gray-20)] disabled:text-[var(--color-gray-30)]`,
-            chipBoxColorStyles[color],
-            className
-          )}
-          {...restProps}
-        >
-          <div className="inline-flex items-center gap-[0.2rem] before:content-['#'] before:font-bold">
-            {children}
-          </div>
-        </CheckboxPrimitive.Root>
-        {hasErrorState && showErrorMsg && (
-          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
-            {errorMsg}
-          </ErrorMsg>
-        )}
-      </div>
-    );
-  }
+ 
   return (
     <div className={cn('relative', `flex items-center gap-1 ${isFavorite ? 'h-full' : ''}`)}>
       <CheckboxPrimitive.Root
@@ -291,15 +199,20 @@ function Checkbox({
         checked={checkedState}
         onCheckedChange={handleChange}
         className={cn(
-          `shrink-0 transition-colors outline-none 
+          `shrink-0 transition-colors outline-none tracking-[-0.13rem] 
+
           focus-visible:ring-2 
           focus-visible:ring-ring 
           focus-visible:ring-offset-2 
-          data-[required=true]:bg-[var(--color-input-surface-highlight)] 
-          data-[required=true]:border-[var(--color-input-border-highlight)] 
+
+          data-[required=true]:bg-[var(--color-warning-10)] 
+          data-[required=true]:border-[var(--color-warning-30)] 
+          data-[required=true]:hover:border-[var(--color-primary-50)] 
+
           data-[invalid=true]:bg-[var(--color-input-surface-error)]! 
           data-[invalid=true]:border-[var(--color-input-border-error)]! 
           data-[invalid=true]:border-[0.2rem]! 
+
           disabled:cursor-not-allowed 
           disabled:bg-[var(--color-gray-10)] 
           disabled:border-[var(--color-gray-20)] 
@@ -307,27 +220,39 @@ function Checkbox({
           disabled:data-[state=checked]:border-[var(--color-gray-20)] 
           disabled:data-[state=checked]:text-[var(--color-gray-30)] 
           [state=checked]:shadow-[0_0.1rem_0.1rem_0_rgba(255,92,46,0.20)]`,
+
           isDefaultMd && 'translate-y-[0.1rem]',
           isFavorite && 'border-0 bg-transparent shadow-none',
           isFavorite && favoriteSizeStyles[size],
+
           isButton &&
             'px-1.5 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[0.4rem] border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap',
+          
           isButton && buttonSizeStyles[size],
           isButton && buttonColorStyles[color],
-          !isFavorite &&
-            !isButton &&
+
+          isChipBox &&
+            'px-2 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap',
+          isChipBox && chipBoxSizeStyles[size],
+          isChipBox && chipBoxColorStyles[color],
+
+          !isFavorite && !isButton &&
             'border border-[var(--color-border-gray-light)] bg-[var(--color-element-inverse)]',
-          !isFavorite && !isButton && sizeStyles[size],
-          !isFavorite && !isButton && colorStyles[color],
+          !isFavorite && !isChipBox &&
+            'border border-[var(--color-border-gray-light)] bg-[var(--color-element-inverse)]',
+          !isFavorite && !isButton && !isChipBox && sizeStyles[size],
+          !isFavorite && !isButton && !isChipBox && colorStyles[color],
           className
         )}
         {...restProps}
       >
         {isFavorite ? (
           <Favorite color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
-        ) : isButton ? (
-          <Grow className="gap-[0.2rem]" placement="sc">
-            <CheckIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+        ) : isButton || isChipBox ? (
+          <Grow className="gap-[0.2rem] tracking-[-0.13rem]" placement="sc">
+            {isButton && (
+              <CheckIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+            )}
             {children}
           </Grow>
         ) : (
@@ -339,10 +264,11 @@ function Checkbox({
           </CheckboxPrimitive.Indicator>
         )}
       </CheckboxPrimitive.Root>
-      {children && !isNoneText && !isButton && !isFavorite && !isChipText && !isChipBox && (
+
+      {children && !isNoneText && !isButton && !isChipBox && !isFavorite && (
         <label
           htmlFor={checkboxId}
-          className={cn('text-[1.3rem] font-normal cursor-pointer select-none', hasErrorState && 'text-[var(--color-text-danger)]')}
+          className={cn('text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.13rem]', hasErrorState && 'text-[var(--color-text-danger)]')}
         >
           {children}
         </label>
@@ -369,7 +295,7 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   errorMsg?: React.ReactNode;
   errorPs?: ErrorMsgPosition;
   width?: 'full' | 'auto';
-  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipText' | 'chipBox';
+  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
   size?: 'lg' | 'md';
   color?: 'primary' | 'info';
 }

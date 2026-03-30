@@ -15,6 +15,11 @@ const meta: Meta<typeof Input> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div> 
               <p>
@@ -211,12 +216,12 @@ import { Input } from '@uiux/Input';
       table: { disable: true },
     },
     variant: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['default', 'ghost'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
@@ -237,11 +242,6 @@ import { Input } from '@uiux/Input';
     clear: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
-    },
-    formatter: {
-      control: { type: 'select' },
-      options: ['default', 'jumin'],
-      table: { category: '스타일 props' },
     },
 
     before: {
@@ -292,7 +292,6 @@ import { Input } from '@uiux/Input';
     commaAmount: false,
     before: '',
     after: '',
-    formatter: 'default'
   },
 };
 
@@ -314,13 +313,15 @@ export const Default: Story = {
     };
 
     return (
-      <Input
-        {...restArgs}
-        value={value}
-        onChange={handleChange}
-        formatter={args.formatter}
-        forceFocused={forceFocused ?? args.clear}
-      />
+      <Grow style={{ width: '30rem' }}>
+        <Input
+          {...restArgs}
+          value={value}
+          onChange={handleChange}
+          forceFocused={forceFocused ?? args.clear}
+        />
+      </Grow>
+     
     );
   },
 };

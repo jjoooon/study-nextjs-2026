@@ -27,6 +27,7 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
   onChange: (value: string) => void;
   popoverPlacement?: "bottom" | "top";
   clear?: boolean;
+  size?: 'md' | 'lg';
   inputId?: string; // 고유 id를 외부에서 지정 가능
   ulClassName?: string;
   col?: number; // 옵션 리스트의 컬럼 수 (기본 1)
@@ -40,6 +41,7 @@ export function InputCombo({
   inputId,
   col = 1,
   clear,
+  size = 'lg',
   ulClassName,
   ...restProps
 }: InputComboProps) {
@@ -52,6 +54,8 @@ export function InputCombo({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [popoverPos, setPopoverPos] = useState<{ top: number, left: number, width: number }>();
+  // Input의 실제 focus 상태를 동기화
+  const [isFocused, setIsFocused] = useState(false);
   // popoverRef 불필요 (Radix Popover 사용)
 
   // 옵션을 value/label로 통일
@@ -76,7 +80,8 @@ export function InputCombo({
   }, [value]);
 
   // input 포커스/블러 관리
-  const handleFocus = () => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true);
     setOpen(true);
     // Input 내부의 실제 input 엘리먼트를 찾아서 ref에 할당
     setTimeout(() => {
@@ -91,8 +96,13 @@ export function InputCombo({
         });
       }
     }, 0);
+    // restProps.onFocus가 있으면 호출
+    if (typeof restProps.onFocus === 'function') {
+      restProps.onFocus(e);
+    }
   };
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(false);
     setTimeout(() => {
       const active = document.activeElement;
       // inputRef, popoverRef 모두에 포커스가 없을 때만 닫기
@@ -104,6 +114,10 @@ export function InputCombo({
         setHoveredIdx(null);
       }
     }, 100);
+    // restProps.onBlur가 있으면 호출
+    if (typeof restProps.onBlur === 'function') {
+      restProps.onBlur(e);
+    }
   };
 
   // input 입력 처리
@@ -156,6 +170,7 @@ export function InputCombo({
   return (
     <div className={"relative " + (restProps.className ?? "")}>
       <Input
+        size={size}
         value={inputValue}
         onChange={handleInputChange}
         onFocus={handleFocus}
@@ -164,7 +179,8 @@ export function InputCombo({
         autoComplete="off"
         data-comboid={testId}
         clear={clear}
-        forceFocused={open}
+        isFocused={open || isFocused}
+        debug={true}
         {...restProps}
       />
       {open && filtered.length > 0 && popoverPos && typeof window !== 'undefined'
@@ -176,7 +192,7 @@ export function InputCombo({
                 <div
                   ref={popoverRef}
                   tabIndex={-1}
-                  className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem] "
+                  className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem]"
                   style={popoverStyle}
                 >
                   <table
@@ -188,12 +204,13 @@ export function InputCombo({
                         : '',
                     )}
                   >
+                    <tbody>
                     {filtered.map((opt, idx) => (
                       <tr
                         key={opt.value}
                         className={
                           cn(
-                            "cursor-pointer",
+                            "cursor-pointer [&_td]:text-[1.3rem]",
                             "hover:[&_td]:bg-[var(--color-warning-10)]",
                             hoveredIdx === idx ? "[&_td]:bg-[var(--color-warning-10)]" : undefined
                           )
@@ -205,6 +222,7 @@ export function InputCombo({
                         {opt.label}
                       </tr>
                     ))}
+                    </tbody>
                   </table>
                 </div>,
                 document.body

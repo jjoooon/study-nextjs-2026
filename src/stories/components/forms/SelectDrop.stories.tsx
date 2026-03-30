@@ -55,6 +55,10 @@ const meta: Meta<SelectDropStoryProps> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
             <h2>Overview</h2>
             <div>
               <p>
@@ -359,7 +363,7 @@ import SelectDrop from '@common/SelectDrop';
     variant: 'default',
     size: 'md',
     width: 'md',
-    placeholder: '선택',
+    placeholder: '선택해주세요.',
     required: false,
     readOnly: false,
     error: false,

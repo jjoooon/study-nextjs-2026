@@ -53,7 +53,7 @@ const columnDefs: ColDef<DummyDataType>[] = [
     field: 'isCheck',
     cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
     cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
-    
+    cellClass: 'text-center editable-cell',
     // 선택된 행이 아니고 allDisabled가 아닌 경우에만 편집 가능
     editable: params => !params.node.isSelected() && !params.data?.allDisabled, 
 
@@ -87,23 +87,21 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
           <br /><br />
           <h2>Overview</h2>
           <div>
-            <p>
-              이 예제는 <b>ag-Grid 기본 selection 체크박스</b>와 <b>셀 에디터 체크박스</b>를 동시에 사용하는 패턴을 보여줍니다.<br/>
-              <ul>
-                <li><b>좌측 selection 체크박스</b>: ag-Grid의 기본 행 선택 기능(멀티 선택, 전체 선택, disabled/비활성화 지원)</li>
-                <li><b>"선택여부" 컬럼 체크박스</b>: cellEditor/cellRenderer로 구현된 독립 체크박스(행 데이터의 isCheck 필드와 연결, selection과는 별개로 동작)</li>
-                <li><b>allDisabled</b>가 true인 행: 모든 입력 및 체크박스가 비활성화(선택, 편집, 클릭 모두 불가, 스타일로도 구분)</li>
-                <li>홀수행 배경색, disabled/checked 등 다양한 상태별 스타일 적용 예시 포함</li>
-              </ul>
-              <br/>
-              <b>구성 요약</b>:
-              <ul>
-                <li>좌측 selection 체크박스와 "선택여부" 컬럼 체크박스는 서로 연결되지 않고 독립적으로 동작</li>
-                <li>각 체크박스의 disabled/편집 가능 여부는 <code>disabled</code>, <code>allDisabled</code> 필드로 제어</li>
-                <li>cellRendererParams, cellEditorParams로 커스텀 체크박스에 disabled 전달</li>
-                <li>rowClassRules, cellClassRules로 상태별 스타일 지정</li>
-              </ul>
-            </p>
+            <p>이 예제는 <b>ag-Grid 기본 selection 체크박스</b>와 <b>셀 에디터 체크박스</b>를 동시에 사용하는 패턴을 보여줍니다.<br/></p>
+            <ul>
+              <li><b>좌측 selection 체크박스</b>: ag-Grid의 기본 행 선택 기능(멀티 선택, 전체 선택, disabled/비활성화 지원)</li>
+              <li><b>"선택여부" 컬럼 체크박스</b>: cellEditor/cellRenderer로 구현된 독립 체크박스(행 데이터의 isCheck 필드와 연결, selection과는 별개로 동작)</li>
+              <li><b>allDisabled</b>가 true인 행: 모든 입력 및 체크박스가 비활성화(선택, 편집, 클릭 모두 불가, 스타일로도 구분)</li>
+              <li>홀수행 배경색, disabled/checked 등 다양한 상태별 스타일 적용 예시 포함</li>
+            </ul>
+            <br/>
+            <b>구성 요약</b>:
+            <ul>
+              <li>좌측 selection 체크박스와 "선택여부" 컬럼 체크박스는 서로 연결되지 않고 독립적으로 동작</li>
+              <li>각 체크박스의 disabled/편집 가능 여부는 <code>disabled</code>, <code>allDisabled</code> 필드로 제어</li>
+              <li>cellRendererParams, cellEditorParams로 커스텀 체크박스에 disabled 전달</li>
+              <li>rowClassRules, cellClassRules로 상태별 스타일 지정</li>
+            </ul>
           </div>
           <Primary />
 
@@ -278,7 +276,6 @@ export const Default: StoryObj = {
 
             // ag-Grid selection(좌측 체크박스) 옵션
             rowSelection={{
-              
               mode: 'multiRow', // 다중 선택 모드
               headerCheckbox: true, // 헤더(전체 선택) 체크박스 표시
               checkboxes: true, // 각 행에 체크박스 표시
@@ -287,6 +284,7 @@ export const Default: StoryObj = {
             }}
             selectionColumnDef={{
               width: 30,
+              cellClass: 'text-center editable-cell',
             }}
 
             // 행 상태별 스타일 적용 예시

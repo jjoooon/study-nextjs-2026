@@ -293,11 +293,11 @@ function SelectDrop<TValue extends string = string>({
             aria-invalid={showError || undefined}
             aria-describedby={showError ? errorId : undefined}
             aria-readonly={readOnly || undefined}
-            className={triggerStyle}
+            className={cn(triggerStyle, 'aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]')}
           >
             <span className="truncate text-left">{displayText}</span>
             <SelectDropIcon
-              size={16}
+              size={size === 'lg' ? 16 : 12}
               color={arrowStateColor}
               className={cn('shrink-0')}
             />
@@ -313,7 +313,21 @@ function SelectDrop<TValue extends string = string>({
             )}
             {...contentProps}
           >
-            <Gcol className={cn('p-1 px-2')} placement={'ss'} gap={0}>
+            <Gcol className={cn('p-[0.2rem]')} placement={'ss'} gap={0}>
+              <button
+                type="button"
+                value={placeholder}
+                className={`w-full px-2 hover:bg-[var(--color-warning-10)] flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                onClick={() => {
+                  setSelectedValues([]);
+                  if (allowCustomInput && customInputValue === undefined) {
+                    setInternalCustomInputValue('');
+                  }
+                  setOpen(false);
+                }}
+              >
+                선택
+              </button>
               {selectionMode === 'radio' ? (
                 <RadioGroup
                   value={selectedValues[0] ?? ''}
@@ -324,7 +338,7 @@ function SelectDrop<TValue extends string = string>({
                 >
                   {options.map((option) => {
                     return (
-                      <Grow key={option.value} placement={'sc'} className="min-h-[2.8rem]">
+                      <Grow key={option.value} placement={'sc'} className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}>
                         <RadioGroupItem
                           value={option.value}
                           disabled={option.disabled || readOnly}
@@ -338,13 +352,13 @@ function SelectDrop<TValue extends string = string>({
 
                   {allowCustomInput && (
                     <>
-                      <Grow placement={'sc'} className="min-h-[2.8rem]">
+                      <Grow placement={'sc'} className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}>
                         <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
                           {customInputLabel}
                         </RadioGroupItem>
                       </Grow>
                       {isCustomInputSelected && (
-                        <Grow className="mx-[-0.3rem] w-[calc(100% + 0.6rem)]">
+                        <Grow className={`w-[calc(100% + 0.6rem)] w-full px-2`}>
                           <Input
                             value={resolvedCustomInputValue}
                             onChange={handleCustomInputChange}
@@ -362,7 +376,7 @@ function SelectDrop<TValue extends string = string>({
               ) : (
                 options.map((option) => {
                   return (
-                    <Grow key={option.value} placement={'ss'} className="min-h-[2.8rem]">
+                    <Grow key={option.value} placement={'ss'} className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}>
                       <Checkbox
                         checked={selectedSet.has(option.value)}
                         onCheckedChange={(checked) => {
@@ -370,6 +384,7 @@ function SelectDrop<TValue extends string = string>({
                         }}
                         disabled={option.disabled || readOnly}
                         size="md"
+                        className="-translate-y-[0.1rem]"
                       >
                         {option.label}
                       </Checkbox>

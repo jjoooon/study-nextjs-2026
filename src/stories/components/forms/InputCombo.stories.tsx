@@ -17,6 +17,11 @@ const meta: Meta<typeof InputCombo> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.29</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div>
               <p>
@@ -133,7 +138,7 @@ function Example() {
     clear: true,
     placeholder: '증권번호를 입력하세요',
     variant: 'default',
-    size: 'md',
+    size: 'lg',
     width: 'full',
     readOnly: false,
     required: false,
@@ -170,6 +175,7 @@ export const Default: Story = {
           {...args}
           options={sampleOptions}
           col={1}
+          clear={true}
           value={form.combo1}
           onChange={(value) => setFormField('combo1', value)}
         />
@@ -177,6 +183,7 @@ export const Default: Story = {
           {...args}
           options={sampleOptions2}
           value={form.combo2}
+          clear={true}
           onChange={(value) => setFormField('combo2', value)}
           col={args.col}
         />
