@@ -245,8 +245,10 @@ function SelectDrop<TValue extends string = string>({
     [customInputValue, onCustomInputValueChange]
   );
   // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상)
+  // minCount는 1 이상으로 보정
+  const safeMinCount = Math.max(1, minCount ?? 1);
   const radioHasValue = selectionMode === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
-  const checkboxValid = selectionMode === 'checkbox' && selectedValues.length >= minCount;
+  const checkboxValid = selectionMode === 'checkbox' && selectedValues.length >= safeMinCount;
   const showError = error && !(radioHasValue || checkboxValid);
 
   const triggerStyle = cn(

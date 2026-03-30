@@ -90,17 +90,8 @@ function Example() {
     value: { table: { disable: true } },
     onChange: { table: { disable: true } },
     inputId: { table: { disable: true } },
-    popoverPlacement: {
-      control: 'select',
-      options: ['bottom', 'top'],
-      description: '목록 표시 위치',
-      table: { category: 'InputCombo' },
-    },
-    clear: {
-      control: 'boolean',
-      description: '클리어 버튼 표시',
-      table: { category: 'InputCombo' },
-    },
+    popoverPlacement:{ table: { disable: true } },
+    clear: { table: { disable: true } },
     placeholder: {
       control: 'text',
       description: 'placeholder 텍스트',
@@ -115,23 +106,29 @@ function Example() {
       table: { category: 'Input' },
     },
     variant: {
-      control: 'select',
+      control: 'inline-radio',
       options: ['default', 'ghost'],
       table: { category: 'Input' },
     },
     size: {
-      control: 'select',
-      options: ['md', 'sm'],
+      control: 'inline-radio',
+      options: ['lg', 'md'],
       table: { category: 'Input' },
     },
     width: {
-      control: 'select',
+      control: 'inline-radio',
       options: ['full', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      table: { category: 'Input' },
+    },
+    col: {
+      control: 'inline-radio',
+      options: [1,2,3,4],
       table: { category: 'Input' },
     },
     className: { table: { disable: true } },
     forceFocused: { table: { disable: true } },
     disabled: { table: { disable: true } },
+    ulClassName: { table: { disable: true } },
   },
   args: {
     popoverPlacement: 'bottom',
@@ -142,6 +139,7 @@ function Example() {
     width: 'full',
     readOnly: false,
     required: false,
+    col:1,
   },
 };
 export default meta;

@@ -31,7 +31,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   forceFocused?: boolean;
   formatter?: FormatterType;
   isFocused?: boolean;
-  debug?: boolean;
+  // debug?: boolean;
 }
 // 주민등록번호 입력 포맷터: 6자리-7자리, 빈자리는 언더바
 function formatJumin(input: string): string {
@@ -76,13 +76,13 @@ function Input({
   // 주민등록번호 마스킹: value에는 숫자만 저장, displayValue는 마스킹 적용
   let displayValue = value ?? '';
   
-  // if (formatter === 'jumin' && typeof value === 'string') {
-  //   displayValue = formatJumin(value);
-  // } else if (commaAmount && typeof value === 'string') {
-  //   displayValue = (isFocused || forceFocused)
-  //     ? value
-  //     : formatAmount(value);
-  // }
+  if (formatter === 'jumin' && typeof value === 'string') {
+    displayValue = formatJumin(value);
+  } else if (commaAmount && typeof value === 'string') {
+    displayValue = (isFocused || forceFocused)
+      ? value
+      : formatAmount(value);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
@@ -116,6 +116,7 @@ function Input({
     //     return;
     //   }
     // }
+    
     // commaAmount가 있으면 기존 로직 적용
     if (commaAmount) {
       const onlyNum = val.replace(/[^0-9]/g, '');
@@ -210,10 +211,10 @@ function Input({
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter === 'jumin' && !props.placeholder ? '______-_______' : props.placeholder;
 
-  if (props.debug) {
-    // eslint-disable-next-line no-console
-    console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
-  }
+  // if (props.debug) {
+  //   // eslint-disable-next-line no-console
+  //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
+  // }
   return (
     <div className={cn('relative', withStyle())} style={inlineWidthStyle}>
       {before || after ? (

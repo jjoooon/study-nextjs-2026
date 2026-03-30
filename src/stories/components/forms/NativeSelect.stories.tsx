@@ -269,7 +269,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 			table: { category: '스타일 props' },
 		},
 		width: {
-			control: { type: 'select' },
+			control: { type: 'inline-radio' },
 			options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
 			table: { category: '스타일 props' },
 		},
@@ -288,7 +288,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 			table: { category: '에러 props' },
 		},
 		errorPs: {
-			control: { type: 'select' },
+			control: { type: 'inline-radio' },
 			options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
 			table: { category: '에러 props' },
 		},

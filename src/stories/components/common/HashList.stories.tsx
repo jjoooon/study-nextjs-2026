@@ -25,7 +25,7 @@ const meta: Meta<typeof HashList> = {
             </div>
 
             <Primary />
-            <Controls />
+            {/* <Controls /> */}
 
             <h2>Usage</h2>
             <p>HashList는 문자열 배열(`data`)을 전달해 사용합니다.</p>
@@ -67,9 +67,7 @@ const hashList = ['암', '뇌', '심', '수술', '특정', '표적', '치료'];
   },
   argTypes: {
     data: {
-      control: 'object',
-      description: '해시 목록 문자열 배열',
-      table: { category: 'Data' },
+      table: { disable: true },
     },
   },
   args: {

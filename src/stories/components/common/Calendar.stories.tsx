@@ -66,6 +66,11 @@ const meta: Meta<typeof Calendar> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div>
               <p>
@@ -139,23 +144,22 @@ const [date, setDate] = useState<Date | undefined>(new Date());
       options: ['single', 'multiple', 'range'],
       description: '날짜 선택 모드',
     },
-    selected: {
-      control: 'date',
-      description: '선택된 날짜 (Date, Date[], DateRange)',
-    },
     numberOfMonths: {
-      control: 'number',
+      control: 'select',
+      options: [1, 2, 3],
       description: '표시할 월 개수',
     },
     showOutsideDays: {
       control: 'boolean',
       description: '다른 월의 날짜 표시 여부',
     },
-    disabled: {
-      control: 'object',
-      description: '비활성화할 날짜',
+    monthOnly: {
+      control: 'boolean',
+      description: '월 단위 선택 모드 여부',
     },
     // 내부 구현 prop 숨기기
+    selected: { table: { disable: true } },
+    disabled: { table: { disable: true } },
     classNames: { table: { disable: true } },
     components: { table: { disable: true } },
     formatters: { table: { disable: true } },
@@ -164,11 +168,15 @@ const [date, setDate] = useState<Date | undefined>(new Date());
       options: ['label', 'dropdown'],
       description: '캡션 표시 방식 (dropdown 선택 시 년/월 select)',
     },
+    onMonthSelect: { table: { disable: true } },
+    onChange: { table: { disable: true } },
+    onClose: { table: { disable: true } },
     buttonVariant: { table: { disable: true } },
   },
   args: {
     mode: 'single',
     captionLayout: 'dropdown',
+    monthOnly: false,
     numberOfMonths: 1,
     showOutsideDays: true,
   },

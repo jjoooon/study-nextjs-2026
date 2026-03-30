@@ -330,7 +330,7 @@ const [value, setValue] = useState('option1');
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },

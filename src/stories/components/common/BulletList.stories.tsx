@@ -22,6 +22,12 @@ const meta: Meta<BulletListStoryProps> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
+
+
             <h2>Overview</h2>
             <div>
               <p>
@@ -57,90 +63,6 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 \`\`\`
               `}
             </Markdown>
-
-            <h2>API Reference</h2>
-            <p>BulletList 및 BulletListItem 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
-            
-            <h3>BulletList</h3>
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
-              <thead>
-                <tr>
-                  <th>prop</th>
-                  <th>타입/옵션</th>
-                  <th>설명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>position</td><td>'col' | 'row'</td><td>목록 배치 방향 (기본값: 'col')</td></tr>
-                <tr><td>children</td><td>ReactNode</td><td>BulletListItem 요소들</td></tr>
-                <tr><td>className</td><td>string</td><td>추가 스타일 클래스</td></tr>
-              </tbody>
-            </table>
-
-            <h3>BulletListItem & BulletItem</h3>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>prop</th>
-                  <th>타입/옵션</th>
-                  <th>설명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>type</td><td>'dot' | 'hash' | 'ref'</td><td>불릿 마커 스타일 (기본값: 'dot')</td></tr>
-                <tr><td>size</td><td>'sm' | 'md' | 'lg'</td><td>텍스트 크기 (기본값: 'md')</td></tr>
-                <tr><td>color</td><td>'default' | 'gray' | 'primary' | 'danger' | 'information'</td><td>텍스트 색상</td></tr>
-                <tr><td>children</td><td>ReactNode</td><td>아이템 내용</td></tr>
-              </tbody>
-            </table>
-
-            <h2>Position</h2>
-            <p>BulletList의 position 속성을 통해 목록을 수직(col) 또는 수평(row)으로 배치할 수 있습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={4} className="w-full items-start">
-                  <div className="flex-1">
-                    <h4 className="mb-2 font-bold">Column (Default)</h4>
-                    <BulletList position="col">
-                      <BulletListItem>아이템 1</BulletListItem>
-                      <BulletListItem>아이템 2</BulletListItem>
-                    </BulletList>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="mb-2 font-bold">Row</h4>
-                    <BulletList position="row" className="gap-4">
-                      <BulletListItem type="hash">태그1</BulletListItem>
-                      <BulletListItem type="hash">태그2</BulletListItem>
-                      <BulletListItem type="hash">태그3</BulletListItem>
-                    </BulletList>
-                  </div>
-                </Grow>
-              </Gcol>
-            </Unstyled>
-
-            <h2>Type</h2>
-            <p>BulletListItem의 type 속성을 통해 다양한 불릿 스타일을 적용할 수 있습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <BulletList className="gap-2">
-                  <BulletListItem type="dot">dot (기본)</BulletListItem>
-                  <BulletListItem type="ref">ref (참조)</BulletListItem>
-                  <BulletListItem type="hash">hash (해시태그)</BulletListItem>
-                </BulletList>
-              </Gcol>
-            </Unstyled>
-
-            <h2>Size</h2>
-            <p>BulletListItem의 size 속성을 통해 텍스트 크기를 조절할 수 있습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <BulletList className="gap-2">
-                  <BulletListItem size="sm">Small (sm)</BulletListItem>
-                  <BulletListItem size="md">Medium (md)</BulletListItem>
-                  <BulletListItem size="lg">Large (lg)</BulletListItem>
-                </BulletList>
-              </Gcol>
-            </Unstyled>
           </>
         );
       },
@@ -148,50 +70,45 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
   },
   argTypes: {
     position: {
-      control: 'select',
+      control: 'inline-radio',
       options: ['col', 'row'],
       description: '목록 배치 방향',
       table: {
-        category: 'Appearance',
+        category: '설정 props',
         type: { summary: 'col | row' },
       },
     },
     type: {
-      control: 'select',
+      control: 'inline-radio',
       options: ['dot', 'dotBig', 'hash', 'ref', 'star', 'dash', 'symbols'],
       description: '아이템 마커 스타일',
       table: {
-        category: 'Appearance',
+        category: '설정 props',
         type: { summary: 'dot | dotBig | hash | ref | star | dash | symbols' },
       },
     },
     size: {
-      control: 'select',
+      control: 'inline-radio',
       options: ['sm', 'md', 'lg'],
       description: '아이템 텍스트 크기',
       table: {
-        category: 'Appearance',
+        category: '설정 props',
         type: { summary: 'sm | md | lg' },
       },
     },
     color: {
-      control: 'select',
+      control: 'inline-radio',
       options: ['default', 'info', 'detail', 'warning'],
       description: '텍스트 색상',
       table: {
-        category: 'Appearance',
+        category: '설정 props',
         type: { summary: 'default | info | detail | warning' },
       },
     },
-    itemText: {
-      control: 'text',
-      description: '샘플 아이템 텍스트',
-      table: { category: 'Content' },
-    },
-    className: {
-      control: false,
-      table: { disable: true },
-    },
+    itemText: { table: { disable: true } },
+    className: { table: { disable: true } },
+    dataBefore: { table: { disable: true } },
+    onClick: { table: { disable: true } },
     children: { table: { disable: true } },
   },
   args: {
