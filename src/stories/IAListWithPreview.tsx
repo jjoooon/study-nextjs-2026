@@ -68,7 +68,7 @@ export function IAListWithPreview() {
   }, [activeRow.id, activeStep]);
 
   const workList = [
-    'LTPA350', 
+    'LTPA350_1', 'LTPA350_2', 
   ];
 
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
@@ -107,40 +107,40 @@ export function IAListWithPreview() {
           <tbody>
             {ROWS.map((row, index) => {
               return (
-              <tr
-                key={`${row.id}-${index}`}
-                data-active={hoveredIndex === index ? 'true' : undefined}
-                onClick={() => setHoveredIndex(index)}
-              >
-                <td className={workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : undefined}>
-                  <b>{index + 1}</b>
-                </td>
-                <th scope="row" className={`${workIdSet.has(row.id) ? 'bg-[#c5bfbf]!' : ''}`}>
-                  {row.id}{row.subId ? (<><br /> ({row.subId})</>) : ''}
-                </th>
-                <td className={workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : undefined}>
-                  <b>{row.dep4}</b>
-                </td>
+                <tr
+                  key={`${row.id}-${index}`}
+                  data-active={hoveredIndex === index ? 'true' : undefined}
+                  onClick={() => setHoveredIndex(index)}
+                >
+                  <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
+                    <b>{index + 1}</b>
+                  </td>
+                  <th scope="row" className={`${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#c5bfbf]!' : ''}`}>
+                    {row.id}{row.subId ? (<><br /> ({row.subId})</>) : ''}
+                  </th>
+                  <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
+                    <b>{row.dep4}</b>
+                  </td>
 
-                <td className={workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : undefined}>
-                 {row.file}
-                </td>
+                  <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
+                    {row.file}
+                  </td>
 
-                <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>
-                  <b>{row.phase === 'Y' ? 'Y' : ''}</b>
-                </td>
+                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>
+                    <b>{row.phase === 'Y' ? 'Y' : ''}</b>
+                  </td>
 
-                <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>
-                  <b>{row.date}</b>
-                </td>
-                <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>
-                  <b>{row.modify}</b>
-                </td>
+                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>
+                    <b>{row.date}</b>
+                  </td>
+                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>
+                    <b>{row.modify}</b>
+                  </td>
 
-                <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>{row.plan}</td>
-                <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>{row.pub}</td>
-                <td className={`text-center ${workIdSet.has(row.id) ? 'bg-[#fff3cd]!' : ''}`}>{row.dev}</td>
-              </tr>
+                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>{row.plan}</td>
+                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>{row.pub}</td>
+                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>{row.dev}</td>
+                </tr>
               );
             })}
           </tbody>

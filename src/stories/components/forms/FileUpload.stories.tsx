@@ -123,7 +123,7 @@ import { FileUpload } from '@/shared/components/common/FileUpload';
     className: { table: { disable: true } },
   },
   args: {
-    files: SAMPLE_FILES,
+    files: [],
     errorMessage: '',
     onClickButton: () => {},
     onRemove: () => {},
@@ -135,15 +135,4 @@ type Story = StoryObj<typeof FileUpload>;
 
 export const Default: Story = {
   render: (args) => <FileUpload {...args} />,
-};
-
-export const Preview: Story = {
-  name: 'Preview (hover → 파란색 + 밑줄 + 툴팁)',
-  render: (args) => <FileUpload {...args} />,
-};
-
-export const WithError: Story = {
-  name: 'Error (빨간색 + 밑줄)',
-  render: (args) => <FileUpload {...args} />,
-  args: { errorMessage: '파일 형식이 올바르지 않습니다.' },
 };
