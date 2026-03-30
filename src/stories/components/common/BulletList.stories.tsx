@@ -192,10 +192,6 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
       control: false,
       table: { disable: true },
     },
-    onClick: {
-      control: false,
-      table: { disable: true }
-    },
     children: { table: { disable: true } },
   },
   args: {

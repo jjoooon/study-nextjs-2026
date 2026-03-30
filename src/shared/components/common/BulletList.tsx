@@ -1,15 +1,15 @@
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
+import { Grow } from '@atoms';
 
-interface BulletListProps {
+interface BulletListProps extends HTMLAttributes<HTMLLIElement> {
   children?: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xs';
   position?: 'col' | 'row';
   color?: 'default' | 'info' | 'detail' | 'warning';
   type?: 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
   className?: string;
-  onClick?: () => void;
   dataBefore?: string;
 }
 
@@ -20,7 +20,7 @@ export const BulletList = ({ children, position = 'col', className }: BulletList
     </ul>
   );
 };
-export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'default', className, onClick, ...rest }: BulletListProps) => {
+export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'default', className, ...rest }: BulletListProps) => {
   const bulletStyles = {
     dot: '-indent-[0.9rem] ml-[0.9rem]',
     dotBig: '-indent-[1.1rem] ml-[1.1rem]',
@@ -52,10 +52,7 @@ export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'd
         itemSize[size], 
         className)
       }
-      
-      {...(type === 'hash' && onClick ? { onClick } : {})}
       {...rest}
-     
     >
       {type === 'ref' && (
         <RefIcon
@@ -98,10 +95,7 @@ export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'd
   );
 };
 
-
-
-
-export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'default', className, onClick, ...rest }: BulletListProps) => {
+export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'default', className, ...rest }: BulletListProps) => {
   // dot 타입에 사이즈별 블릿 크기 적용
   const bulletStyles = {
     dot: '-indent-[0.9rem] ml-[0.9rem]',
@@ -125,7 +119,7 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'defau
     warning: 'text-[var(--color-danger-50)]',
   }
   return (
-    <div
+    <Grow
       className={cn(`relative`, bulletStyles[type], itemSize[size], itemColor[color], className)}
       {...rest}
     >
@@ -166,6 +160,6 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'defau
         />
       )}
       {children}
-    </div>
+    </Grow>
   );
 };

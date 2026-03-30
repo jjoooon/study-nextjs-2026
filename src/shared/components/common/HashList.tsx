@@ -51,6 +51,7 @@ export const HashList = ({ data }: { data: string[] }) => {
                   // eslint-disable-next-line no-console
                   console.log('디버깅 데이터:', hash);
                 }}
+                style={{ cursor: 'pointer' }}
               >
                 {hash}
               </BulletListItem>

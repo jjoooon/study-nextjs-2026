@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 
  
 const meta: Meta = {
@@ -41,6 +41,52 @@ const meta: Meta = {
             {`
 \`\`\`tsx
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
+
+<Gcol variant={'box-info'} placement={'ss'} className='w-full'>
+  <Typo variant={'body-sm'} icon={'info'}>
+    <b>제목</b>들어갑니다.
+  </Typo>
+
+  <BulletList>
+    <BulletListItem size={'sm'}>
+      텍스트 목록입니다.
+    </BulletListItem>
+      <BulletListItem size={'sm'} color={'info'}>
+      텍스트 목록입니다.
+    </BulletListItem>
+  </BulletList>
+</Gcol>
+<Gcol placement={'ss'} className='w-full'>
+  <Typo variant={'body-sm'} icon={'info'}>
+    <b>제목</b>들어갑니다.
+  </Typo>
+</Gcol>
+
+<Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
+  <Typo variant={'body-sm'} icon={'warning'}>
+    <b>제목</b>들어갑니다.
+  </Typo>
+
+  <BulletList>
+    <BulletListItem size={'sm'}>
+      텍스트 목록입니다.
+    </BulletListItem>
+    <BulletListItem size={'sm'} color={'warning'}>
+      텍스트 목록입니다.
+    </BulletListItem>
+  </BulletList>
+</Gcol>
+
+<Gcol variant={'box-detail'} placement={'ss'} className='w-full'>
+  <Typo variant={'body-sm'} icon={'detail'}>
+    <b>제목</b>들어갑니다.
+  </Typo>
+  <Typo variant={'body-sm'} icon={'detail'}>
+    <b>제목</b>들어갑니다.
+  </Typo>
+</Gcol>
+
  
 \`\`\`
             `}
