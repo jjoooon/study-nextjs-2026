@@ -106,15 +106,16 @@ const LTPA030 = ({ isNoData = false }: LTPA030Props) => {
       headerName: '대상',
       field: 'field02',
       flex: 2,
+      autoHeight: true,
       editable: true, 
-      cellClass: 'text-center editable-cell',
+      cellClass: 'text-center  flex! items-center justify-center! editable-cell',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
         <Grow className="w-full px-1" >
-          <Input aria-label="" width={'100%'} value={'1234567'} readOnly />
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-            <SearchIcon />
+          <Input aria-label="" width={'100%'} value={'1234567'} size="sm" readOnly />
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <SearchIcon  color={'var(--color-primary-50)'} />
           </Button>
-          <Input aria-label="" width={'100%'} value={'김한화'} readOnly />
+          <Input aria-label="" width={'100%'} value={'김한화'} size="sm" readOnly />
         </Grow>
       ),
     },

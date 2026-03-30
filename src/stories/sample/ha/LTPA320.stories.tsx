@@ -376,6 +376,7 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
             suppressRowTransform={true}
+            
 
             // 체크박스 시
             rowSelection={{

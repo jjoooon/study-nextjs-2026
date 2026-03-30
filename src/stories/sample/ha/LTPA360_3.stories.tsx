@@ -137,7 +137,7 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
   ];
 
   // AgGrid Column 
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '사고담보코드',
       field: 'field01',
@@ -145,7 +145,6 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
       autoHeight: true,
       editable: true,
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      cellEditorParams: { values: ['선택', ''] },
     },
     {
       headerName: '사고담보명(100byte초과금지)',
@@ -160,6 +159,8 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
       flex: 1,
       editable: true,
       cellClass: 'text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['99:기타', ''] },
     },
     {
       headerName: '보상구분',
@@ -167,6 +168,8 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
       flex: 1,
       editable: true,
       cellClass: 'flex! items-center! justify-center!' ,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['99:기타', ''] },
     },
     {
       headerName: '표준체사고코드',
@@ -201,7 +204,9 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
       field: 'field09',
       flex: 0.9,
       editable: true,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!' ,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['2025-09-11', ''] },
     },
     {
       headerName: '요청자',
@@ -223,7 +228,9 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
       field: 'field11',
       flex: 1,
       editable: true,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['2025-10-13', ''] },
     },
   ];
    
@@ -327,7 +334,7 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
             <FormCell title={'요청자'}>
               <Input
                 aria-label=""
-                width={'15rem'}
+                width={'10rem'}
                 value={form.type05 || '12345678'}
                 onChange={e => setFormField('type05', e.target.value)}
               />
@@ -345,12 +352,12 @@ const LTPA360_03 = ({ isNoData = false }: LTPA360_03Props) => {
               <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm"  readOnly />
               <NativeSelect
                 aria-label="요청일자 선택"
-                width="17rem"
+                width="10rem"
                 value={form.type02}
                 onChange={(e) => setFormField('type02', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type02-1', label: '선택' },
+                  { value: 'selection', id: 'type02-1', label: '전체' },
                   { value: 'selection2', id: 'type02-2', label: '' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>

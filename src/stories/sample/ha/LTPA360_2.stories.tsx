@@ -62,79 +62,72 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
     {
       id: 1,
       isCheck: false,
-      field01: 'LAC8399197',  
-      field02: '급여 메일리 영유아발달검사 이용률(연연)',
-      field03: '99기타',             
-      field04: '99기타',
-      field05: 'LAC1208303',        
-      field06: 'F552102',
-      field07: '암 치료',              
-      field08: '삭제(기 판매 위)',
-      field09: '2025-09-11',
-      field10: '',
+      field01: 'CLA70772',  
+      field02: '고열동반특정패혈증진단비',
+      field03: '0',             
+      field04: '90',
+      field05: '',        
+      field06: '세부담보 중 일부 면적',
+      field07: '[담보]보험기간 중에 진단확정된 질병 또는 상해의 직접 결과로써 생활기능 또는 업무능력에 지장을 가져오면서 "고열"로 인하여 중환자실에 입원하여 치료를 받은 경우 보험가입금액 지급', 
+      field08: '간편고지/독립/모담보',
+      field09: '2026-03-17',
+      field10: '박한화',
       field11: '2025-10-13',              
     },
     {
       id: 2,
       isCheck: false,
-      field01: 'LAC8399198',  
-      field02: '급여 메일리 영유아발달검사 이용률(연연)',
-      field03: '99기타',             
-      field04: '99기타',
-      field05: 'LAC1208303',        
-      field06: 'F552102',
-      field07: '암 치료',              
-      field08: '삭제(기 판매 위)',
-      field09: '2025-09-11',
+      field01: 'CLA70772',  
+      field02: '고열동반특정패혈증진단비',
+      field03: '0',             
+      field04: '90',
+      field05: '',        
+      field06: '없음',
+      field07: '[담보]보장개시일 이후에 약관에서 정한 "암(특정유사암포함)"으로 진단확정되고, 그 질병으로 입원 중에 "급여 암(특정유사암포함) 재활치료"를 받은 경우 또는 통원하여 "급여 암(특정유사암포함) 재활치료"를 받은 경우 보험가입금액 지급',              
+      field08: '간편고지/독립',
+      field09: '2026-03-17',
       field10: '',
       field11: '2025-10-13',                          
     },
     {
       id: 3,
       isCheck: false,
-      field01: 'LAC8399199',  
-      field02: '급여 메일리 영유아발달검사 이용률(연연)',
-      field03: '99기타',             
-      field04: '99기타',
-      field05: 'LAC1208303',        
-      field06: 'F552102',
-      field07: '암 치료',              
-      field08: '삭제(기 판매 위)',
-      field09: '2025-09-11',
+      field01: 'CLA70772',  
+      field02: '고열동반특정패혈증진단비',
+      field03: '0',             
+      field04: '90',
+      field05: '',        
+      field06: '세부담보 중 일부 면적',
+      field07: '',              
+      field08: '',
+      field09: '2026-03-17',
       field10: '',
       field11: '2025-10-13',                 
     },
     {
       id: 4,
       isCheck: false,
-      field01: 'LAC8399199',  
-      field02: '급여 메일리 영유아발달검사 이용률(연연)',
-      field03: '99기타',             
-      field04: '99기타',
-      field05: 'LAC1208303',        
-      field06: 'F552102',
-      field07: '암 치료',              
-      field08: '삭제(기 판매 위)',
-      field09: '2025-09-11',
-      field10: '',
-      field11: '2025-10-13',                 
-    },
-    {
-      id: 5,
-      isCheck: false,
       field01: '신규',  
-      field02: '급여 메일리 영유아발달검사 이용률(연연)',
-      field03: '99기타',             
-      field04: '99기타',
-      field05: 'LAC1208303',        
-      field06: 'F552102',
-      field07: '암 치료',              
+      field02: '',
+      field03: '',             
+      field04: '',
+      field05: '',        
+      field06: '',
+      field07: '',              
       field08: '삭제(기 판매 위)',
-      field09: '2025-09-11',
+      field09: '2026-03-17',
       field10: '',
       field11: '2025-10-13',                 
     },
   ];
+
+  const defaultColDef: ColDef<DummyDataType> = {
+    sortable: false,
+    filter: false,
+    resizable: false,
+    suppressMovable: true,
+    headerClass: 'ag-header-center',
+  };
 
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -144,34 +137,33 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
       flex: 1,
       autoHeight: true,
       editable: true,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      cellEditorParams: { values: ['선택', ''] },
+      cellClass: 'flex! items-center! justify-center! text-center!',
     },
     {
       headerName: '담보명',
       field: 'field02',
-      flex: 1.8,
+      flex: 2,
       editable: true,
-      cellClass: 'truncate text-left'
+      cellClass: 'truncate flex! items-center! justify-center! text-center!'
     },
     {
       headerName: '면책(일수)',
       field: 'field03',
-      flex: 1,
+      flex: 0.9,
       editable: true,
-      cellClass: 'text-center',
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '감액(일수)',
       field: 'field04',
-      flex: 1,
+      flex: 0.9,
       editable: true,
       cellClass: 'flex! items-center! justify-center!' ,
     },
     {
       headerName: '감액(비율)',
       field: 'field05',
-      flex: 1.2,
+      flex: 0.9,
       editable: true,
       cellClass: 'flex! items-center! justify-center!' ,
     },
@@ -185,9 +177,10 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
     {
       headerName: '보장내용',
       field: 'field07',
-      flex: 1,
+      flex: 1.5,
       editable: true,
-      cellClass: 'flex! items-center! justify-center!' ,
+      autoHeight: true,
+      cellClass: 'flex! items-center! justify-center! break-all! whitespace-pre-line!',
     },
     {
       headerName: '비고',
@@ -208,7 +201,7 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
       field: 'field10',
       flex: 1.5,
       editable: true,
-      cellClass: 'text-center',
+      cellClass: 'flex! items-center! justify-center! text-center!',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
         <Grow className="w-full px-1" >
           <Input aria-label="" width={'100%'} value={'박한화'} readOnly />
@@ -222,8 +215,11 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
       headerName: '상품판매일자',
       field: 'field11',
       flex: 1,
+      autoHeight: true,
       editable: true,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', '2025-10-13', '2025-10-14'] },
     },
   ];
    
@@ -295,9 +291,10 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
                 {[
                   { value: 'selection', id: 'type02-1', label: '선택' },
                   { value: 'selection2', id: 'type02-2', label: '신규' },
-                  { value: 'selection3', id: 'type02-3', label: '담보 일반' },
-                  { value: 'selection4', id: 'type02-4', label: '모담보' },
-                  { value: 'selection5', id: 'type02-5', label: '독립특약' },
+                  { value: 'selection3', id: 'type02-3', label: '제도성 일반' },
+                  { value: 'selection4', id: 'type02-4', label: '담보일반' },
+                  { value: 'selection5', id: 'type02-5', label: '모담 보' },
+                  { value: 'selection6', id: 'type02-6', label: '독립특약' },
                   { value: 'selection6', id: 'type02-6', label: '판매취소' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
@@ -312,8 +309,8 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
                 onChange={(e) => setFormField('type03', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type03-1', label: '사고담보명' },
-                  { value: 'selection2', id: 'type03-2', label: '사고담보코드' },
+                  { value: 'selection', id: 'type03-1', label: '담보코드' },
+                  { value: 'selection2', id: 'type03-2', label: '담보명' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -330,7 +327,7 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
             <FormCell title={'요청자'}>
               <Input
                 aria-label=""
-                width={'15rem'}
+                width={'10rem'}
                 value={form.type05 || '12345678'}
                 onChange={e => setFormField('type05', e.target.value)}
               />
@@ -345,10 +342,10 @@ const LTPA360_02 = ({ isNoData = false }: LTPA360_02Props) => {
               />
             </FormCell>
             <FormCell title={'요청일자'} colSpan={3}>
-              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm"  readOnly />
+              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" readOnly />
               <NativeSelect
                 aria-label="요청일자 선택"
-                width="17rem"
+                width="10rem"
                 value={form.type02}
                 onChange={(e) => setFormField('type02', e.target.value)}
               >
