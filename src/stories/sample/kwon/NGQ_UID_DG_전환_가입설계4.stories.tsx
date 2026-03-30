@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Gcol } from '@atoms';
+import { Gcol, Grow } from '@atoms';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
@@ -81,16 +81,16 @@ const LTPA390P = () => {
   
   return (
     <Gcol className="w-full">
-      <Gcol className="w-full">
-        <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+      <Grow className='w-full' variant="box-round">
+        <FormTable variant='none' caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
           <FormRow>
             <FormCell title={'설계번호'}>
               LA1212312312312
             </FormCell>
           </FormRow>
         </FormTable>  
-        <InfoBox title="아래 내용은 청약완료시까지 해소되지 않을경우 수납이 불가능합니다.(청양완료 불가)" variant="info" bg={false} />
-      </Gcol>
+      </Grow>
+      <InfoBox title="아래 내용은 청약완료시까지 해소되지 않을경우 수납이 불가능합니다.(청양완료 불가)" variant="info" bg={false} />
       <div className="ag-theme-alpine aggrid-pagination-ko w-full">
         <AgGridReact<DummyDataType>
           getRowId={params => String(params.data.id)}

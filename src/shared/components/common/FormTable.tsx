@@ -129,7 +129,7 @@ export const FormCell = ({
 
   return (
     <>
-      {title !== '' && (
+      {title !== null && (
         <TableHead
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left', className) }
           {...(titleColSpan && { colSpan: titleColSpan })}

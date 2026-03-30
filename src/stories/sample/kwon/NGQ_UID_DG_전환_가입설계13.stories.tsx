@@ -6,7 +6,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Input } from '@uiux/Input';
-import { Button } from '@/shared/components/uiux/Button';
+import { Button } from '@uiux/Button';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
