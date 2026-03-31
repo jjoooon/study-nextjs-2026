@@ -121,7 +121,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
 
   return (  
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="lg">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>
@@ -131,7 +131,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant='none'>
+            <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant='head'>
               <FormRow>
                 <FormCell title={'대표담보명'}>
                   <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />

@@ -227,7 +227,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} className="w-[110rem]">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>동시가입설계상세</Typo>
@@ -237,7 +237,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
 
         <DialogSection>
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant='none'>
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant='head'>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
@@ -253,7 +253,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
             <TableFoldHead title="계약기본사항">
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable caption={'계약기본사항'} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+              <FormTable caption={'계약기본사항'} cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'상품선택'} colSpan={3}>
                     <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
@@ -333,7 +333,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
             <TableFoldHead title="피보험자/계약자">
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+              <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'피보험자'}>
                     <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />

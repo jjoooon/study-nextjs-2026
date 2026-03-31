@@ -104,7 +104,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>설계복사</Typo>
@@ -113,7 +113,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
           <Grow placement='bwc' className="w-full" variant={'box'}>
-            <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant={'none'}>
+            <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
                 <FormCell title={'증권번호'}>
                   <Grow placement='bwc'>

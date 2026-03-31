@@ -41,7 +41,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
           <Grow className="w-full" placement='ss' gap={5}>
             <Gcol placement='ss' className='w-full' gap={5}>
                 <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='head'>
                     <FormRow>
                       <FormCell title={'설계번호'}>
                         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
