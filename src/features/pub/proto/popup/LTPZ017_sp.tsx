@@ -39,6 +39,9 @@ export const LTPZ017P = () => {
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
               <Grow>
+                 <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                    버튼
+                  </Button>
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
