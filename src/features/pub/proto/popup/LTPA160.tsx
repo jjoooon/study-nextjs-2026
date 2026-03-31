@@ -213,7 +213,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>
@@ -227,7 +227,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                 <FormCell title={'조회구분'}>
                   <NativeSelect
                     aria-label="항목 선택"
-                    width="12rem"
+                    className='w-[10rem]'
                     value={form.type01}
                     required
                     onChange={(e) => setFormField('type01', e.target.value)}
@@ -240,20 +240,19 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                     ))}
                   </NativeSelect>
                   <Input aria-label="" 
-                    width={'15rem'} 
+                    className='w-[10rem]'
                     value={form.type02 || 'LA260204310632'}
                     onChange={e => setFormField('type02', e.target.value)}
                   />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" width={'19rem'} value={'한화 더 건강한 1040종합..'} readOnly />
+                  <Input aria-label="" value={'한화 더 건강한 1040종합..'} readOnly />
                 </FormCell>
                 <FormCell title={'피보험자정보'}>
                   <Grow>
                     <NativeSelect
                       aria-label="항목 선택"
-                      width="18rem"
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
@@ -277,7 +276,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               </Button>
             </Grow>
           </Grow>
-          <Gcol placement='ss' className='w-full'>
+          <Gcol placement='ss' className='w-full' gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)">
                 <Grow>
@@ -292,7 +291,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               </TableFoldHead>
               <TableFoldBody>
                 <Grow className="w-full">
-                  <FormTable caption="피보험자의 위험정보 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
+                  <FormTable caption="피보험자의 위험정보 테이블" cols={['w-[6rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[6rem]', 'flex-1', 'w-[6rem]', 'flex-1',]}>
                     <FormRow>
                       <FormCell title={'직업'}>
                         전기공학 개발자 및 연구원
@@ -316,26 +315,20 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)">
               </TableFoldHead>
               <TableFoldBody>
-                ㅇㄴㅁㅇㄻㄴㅇㄹ
-                <Gcol className="w-full gap-[1.2rem]">
-                  <Grow className="w-full">
-                    <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-                      <AgGridReact<DummyDataType>
-                        // getRowId 적용: id 필드를 고유 식별자로 사용
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={{ sortable: false }}
-                        enableCellSpan={true}
-                      />
-                    </div>
-                  </Grow>
-                </Gcol>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType>
+                    // getRowId 적용: id 필드를 고유 식별자로 사용
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ sortable: false }}
+                    enableCellSpan={true}
+                  />
+                </div>
                 <InfoBox bg subTitle="주의사항 노출 영역" variant="warning" className='mt-2' ></InfoBox>        
                 <InfoBox title="자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다." variant="detail" bg={false} />
               </TableFoldBody>
             </TableFold>
-
           </Gcol>
           
         </DialogSection> 

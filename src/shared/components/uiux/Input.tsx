@@ -216,13 +216,12 @@ function Input({
   //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
   // }
   return (
-    <div className={cn('relative', withStyle())} style={inlineWidthStyle}>
+    <div className={cn('relative', withStyle(), )} style={inlineWidthStyle}>
       {before || after ? (
         <div
           className={cn(
             variantStyles[variant],
-            className,
-            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]'
+            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]',
           )}
           style={inlineWidthStyle}
         >
@@ -231,7 +230,7 @@ function Input({
             <input
               type={type}
               data-slot="input"
-              className={cn('bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none', commaAmount && 'text-right', className)}
+              className={cn('bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none', commaAmount && 'text-right')}
               required={required}
               readOnly={readOnly}
               aria-invalid={error || undefined}
@@ -281,7 +280,7 @@ function Input({
           <input
             type={type}
             data-slot="input"
-            className={cn(variantStyles[variant], commaAmount && 'w-full text-right', className, '[:focus]:px-[0.7rem]')}
+            className={cn(variantStyles[variant], commaAmount && 'w-full text-right', '[:focus]:px-[0.7rem]')}
             required={required}
             readOnly={readOnly}
             aria-invalid={error || undefined}
