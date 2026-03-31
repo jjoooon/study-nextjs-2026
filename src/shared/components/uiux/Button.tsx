@@ -42,38 +42,38 @@ const buttonVariants = cva(
         'transparent': `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
-        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 [&>svg]:w-[1.6rem] min-w-[6rem] `,
-        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1 [&>svg]:w-[1.6rem]`,
-        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem] [&>svg]:w-[1.4rem]`,
-        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] [&>svg]:w-[1.32rem]`, 
-        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem] [&>svg]:w-[1.32rem]`,
+        xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 min-w-[6rem] `,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1`,
+        md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem]`,
+        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`, 
+        xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem]`,
       },
     },
     compoundVariants: [
       {
         only: 'icon',
         size: 'xl',
-        className: 'min-w-[0]! h-[3.2rem] rounded-[0.6rem] px-0! aspect-square [&>svg]:w-[1.6rem]',
+        className: 'min-w-[0]! h-[3.2rem] rounded-[0.6rem] px-0! aspect-square',
       },
       {
         only: 'icon',
         size: 'lg',
-        className: 'h-[2.8rem] rounded-[0.6rem] px-0! aspect-square [&>svg]:w-[1.6rem]',
+        className: 'h-[2.8rem] rounded-[0.6rem] px-0! aspect-square',
       },
       {
         only: 'icon',
         size: 'md',              
-        className: 'h-[2.5rem] rounded-[0.4rem] px-0! aspect-square [&>svg]:w-[1.4rem]',
+        className: 'h-[2.5rem] rounded-[0.4rem] px-0! aspect-square',
       },
       {
         only: 'icon',
         size: 'sm',
-        className: 'h-[2.2rem] rounded-[0.4rem] px-0! aspect-square [&>svg]:w-[1.32rem]',
+        className: 'h-[2.2rem] rounded-[0.4rem] px-0! aspect-square',
       },
       {
         only: 'icon',
         size: 'xs',
-        className: 'h-[1.6rem] rounded-[0.3rem] px-0! aspect-square [&>svg]:w-[1.32rem]',
+        className: 'h-[1.6rem] rounded-[0.3rem] px-0! aspect-square',
       },
 
       {

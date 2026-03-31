@@ -19,6 +19,10 @@ const meta: Meta<TableFoldProps> = {
         <>
           <Title />
           <br />
+          <h2>History</h2>
+          <ul>
+            <li>2026.03.31</li>
+          </ul>
           <h2>Overview</h2>
           <div>
             <p>

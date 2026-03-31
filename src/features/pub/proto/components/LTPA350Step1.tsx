@@ -30,7 +30,7 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
 
 // Icons
-import { SearchIcon, PlusIcon } from '@icons';
+import { SearchIcon, AddIcon } from '@icons';
 
 // Hooks
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -477,10 +477,8 @@ function isPropertyOwnerPerson(person: unknown): person is PropertyOwnerPerson {
 }
 
 const personalInsuranceStep1Data = INSURANCE_STEP1_DATA_BY_PRODUCT.personal;
-
 const CONTRACTOR_INFO = personalInsuranceStep1Data.ContractorInfo;
 const POLICYHOLDER = personalInsuranceStep1Data.Policyholder;
-
 
 // --- Initial State ---
 const INITIAL_INSURED_FORM: Record<string, InsuredPersonFormItem> = Object.fromEntries(
@@ -1155,7 +1153,7 @@ export function LTPA350Step1({
                     <Grow gap={2.5}>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         피보험자
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                     </Grow>
                   }
@@ -1632,7 +1630,7 @@ export function LTPA350Step1({
                     <Grow>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         피보험자
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                     </Grow>
                   }
@@ -2070,11 +2068,11 @@ export function LTPA350Step1({
                     <Grow>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         피보험자
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         목적물
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                     </Grow>
                   }
@@ -2669,15 +2667,15 @@ export function LTPA350Step1({
                     <Grow>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         그룹추가
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         단쳬입력
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                       <Button color={'gray'} size={'md'} variant={'outlined'}>
                         단체규약
-                        <PlusIcon color={'#61554F'} />
+                        <AddIcon color={'#61554F'} />
                       </Button>
                     </Grow>
                   }

@@ -33,7 +33,7 @@ interface TableFoldHeadProps {
 }
 
 
-export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
+export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => {
   return (
     <TableFoldContext.Provider value={{ variant }}>
       {variant === 'default' ? (

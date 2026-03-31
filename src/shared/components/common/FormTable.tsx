@@ -142,7 +142,7 @@ export const FormCell = ({
       )}
       {children !== null && (
         <TableCell
-          className="border-b border-[#E5E5E5] px-[1rem] py-[0.8rem]"
+          className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] h-[3.8rem]"
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
         >
