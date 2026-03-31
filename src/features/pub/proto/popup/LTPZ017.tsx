@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,7 +19,12 @@ import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPZ017P = () => {
+export interface LTPZ017PProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
  
   type DummyDataType = {
     id: number;
@@ -65,12 +70,8 @@ export const LTPZ017P = () => {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
-
-
-  const [open] = useState(true);
-
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
@@ -134,7 +135,7 @@ export const LTPZ017P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
                   닫기
                 </Button>
               </Grow>
@@ -143,7 +144,7 @@ export const LTPZ017P = () => {
           </Gcol>
         </DialogFooter>
     </DialogContent>
-  </Dialog>    
+  </Dialog>
   );
 };
 

@@ -1,12 +1,11 @@
 'use client';
 
-import * as React from 'react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogTrigger } from '@uiux/Dialog';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 
@@ -238,7 +237,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
 
         <DialogSection>
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-auto min-w-auto', 'w-auto']} variant='none'>
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant='none'>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />

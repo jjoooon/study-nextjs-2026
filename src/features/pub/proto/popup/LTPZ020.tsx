@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -22,7 +22,12 @@ import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Check
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPZ020P = () => {
+export interface LTPZ020PProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   type LTPZ020TabType = {
     name: string;
     value: string;
@@ -97,12 +102,8 @@ export const LTPZ020P = () => {
   const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
   const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
-
-
-  const [open] = useState(true);
-
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
@@ -235,7 +236,7 @@ export const LTPZ020P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
                   닫기
                 </Button>
               </Grow>
@@ -244,7 +245,7 @@ export const LTPZ020P = () => {
           </Gcol>
         </DialogFooter>
     </DialogContent>
-  </Dialog>    
+  </Dialog>
   );
 };
 

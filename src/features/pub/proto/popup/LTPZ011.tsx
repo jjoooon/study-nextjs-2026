@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { useRef } from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
@@ -15,10 +15,15 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+export interface LTPZ011PProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 
-export const LTPZ011P = () => {
+export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
   const amountInputRefs2 = useRef<Array<HTMLInputElement | null>>([]);
 
   type DummyDataType2 = {
@@ -114,10 +119,8 @@ export const LTPZ011P = () => {
     [rowData2]
   );
 
-  const [open] = useState(false);
-
-  return (
-    <Dialog open={open}>
+  return (  
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -128,7 +131,7 @@ export const LTPZ011P = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+            <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant='none'>
               <FormRow>
                 <FormCell title={'대표담보명'}>
                   <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
@@ -139,7 +142,7 @@ export const LTPZ011P = () => {
           <TableFold variant="default">
             <TableFoldHead title="">
               <Grow>
-                <Typo variant="body-xl">(단위: 원)</Typo>
+                <Typo variant="body-md">(단위: 원)</Typo>
               </Grow>   
             </TableFoldHead>
             <TableFoldBody>
@@ -168,7 +171,7 @@ export const LTPZ011P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
                   닫기
                 </Button>
               </Grow>
@@ -177,7 +180,7 @@ export const LTPZ011P = () => {
           </Gcol>
         </DialogFooter>
     </DialogContent>
-  </Dialog>    
+  </Dialog>
   );
 };
 
