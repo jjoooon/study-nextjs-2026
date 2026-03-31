@@ -78,9 +78,10 @@ export const LTPZ017P = () => {
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
           </DialogTitle>
         </DialogHeader>
+
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow placement='bwc' className="w-full" variant={'box'}>
-            <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+          <Grow placement='bwc' className="w-full" variant={'box-round'}>
+            <FormTable variant={'head'} lineTop={false} caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계사'}>
                   <Input aria-label="" width={'10rem'} value={'text'} readOnly />
@@ -93,39 +94,39 @@ export const LTPZ017P = () => {
               </FormRow>
             </FormTable>
           </Grow>
-            <TableFold variant={'accordion'}>
-              <TableFoldHead title="계약기본사항">
-              </TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType>
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false }}
-                    animateRows={false}
-                    alwaysShowHorizontalScroll={true}
-                    singleClickEdit={true}
-                    onCellValueChanged={onCellValueChanged}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: true,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    rowClassRules={{}}
-                    onGridReady={params => {
-                      params.api.forEachNode(node => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>  
+          <TableFold variant={'accordion'}>
+            <TableFoldHead title="계약기본사항" />
+            <TableFoldBody>
+              <div className="ag-theme-alpine">
+                <AgGridReact<DummyDataType>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ sortable: false }}
+                  animateRows={false}
+                  alwaysShowHorizontalScroll={true}
+                  singleClickEdit={true}
+                  onCellValueChanged={onCellValueChanged}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: true,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  rowClassRules={{}}
+                  onGridReady={params => {
+                    params.api.forEachNode(node => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>  
         </DialogSection>  
+        
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">

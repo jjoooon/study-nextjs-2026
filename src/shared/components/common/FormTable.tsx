@@ -6,8 +6,6 @@ import { Table, TableHeader, TableRow, TableBody, TableCaption, TableCell, Table
 import { Typo, Grow } from '@atoms';
 import { cn } from '@/shared/lib/shadcn/utils';
 
-
-
 const FormCellVariants = cva('', {
   variants: {
     variant: {
@@ -16,6 +14,7 @@ const FormCellVariants = cva('', {
       secondary: 'bg-slate-100 text-slate-900',
       light: 'bg-gray-50',
       none: 'bg-transparent border-0! p-0 [&+td]:border-0!',
+      head: 'bg-transparent border-0! p-0 [&+td]:border-0!',
       vertical: false,
     },
   },
@@ -168,6 +167,12 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
       'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none!',
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
+    head:
+      `w-full border-none 
+      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none!
+      [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! 
+      [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_tr~tr>*]:pt-[0.6rem]!
+      [&_td+th]:pl-[1.6rem]!`,
     none: 'border-0! bg-transparent [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_td]:border-0! [&_tr]:border-0! [&_td]:p-0! [&_td+th]:pl-[1rem]! [&_th]:w-max [&_tr~tr>*]:pt-[0.6rem]!'
   };
 

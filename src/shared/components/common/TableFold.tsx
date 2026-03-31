@@ -49,7 +49,7 @@ export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) =
           className="w-full grid h-full"
           variant={"tableHead"}
         >
-          <AccordionItem data-table-fold="wrap" value="shipping" className="grid-rows-[auto_1fr] h-full w-full gap-1.5">
+          <AccordionItem data-table-fold="wrap" value="shipping" className="grid grid-rows-[auto_1fr] h-full w-full gap-[0.6rem] relative">
             {children}
           </AccordionItem>
         </Accordion>
@@ -89,7 +89,7 @@ export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
     return <>{children}</>;
   }
   return (
-    <AccordionContent data-table-fold="body" className={cn('justify-between w-full pb-0! relative h-[10rem]')}>
+    <AccordionContent data-table-fold="body" className={cn('w-full pb-0! relative h-full')}>
       {children}
     </AccordionContent>
   );
