@@ -14,6 +14,7 @@ import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
@@ -126,7 +127,7 @@ export const LTPZ011P = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Gcol className="w-full">
+          <Gcol className="w-full" gap={5}>
             <Grow className='w-full' variant="box-round" placement={'ss'}>
               <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
                 <FormRow>
@@ -136,22 +137,33 @@ export const LTPZ011P = () => {
                 </FormRow>
               </FormTable>
             </Grow>
-            <Grow className="w-full">
-              
-              <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
-                <AgGridReact<DummyDataType2>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData2}
-                  columnDefs={columnDefs2}
-                  pinnedBottomRowData={sumRow2}
-                  defaultColDef={{ sortable: false }}
-                  animateRows={false}
-                  alwaysShowHorizontalScroll={true}
-                  singleClickEdit={true}
-                  rowClassRules={{}}
-                />
-              </div>
-            </Grow>
+            <TableFold variant="default">
+              <TableFoldHead title="">
+                <Grow>
+                  <Typo variant="body-xl">(단위: 원)</Typo>
+                </Grow>   
+              </TableFoldHead>
+               <TableFoldBody>
+                  <Grow className="w-full">
+                    <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
+                      <AgGridReact<DummyDataType2>
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={rowData2}
+                        columnDefs={columnDefs2}
+                        pinnedBottomRowData={sumRow2}
+                         defaultColDef={{ 
+                          sortable: false, 
+                          resizable: false,
+                        }}
+                        animateRows={false}
+                        alwaysShowHorizontalScroll={true}
+                        singleClickEdit={true}
+                        rowClassRules={{}}
+                      />
+                    </div>
+                  </Grow>
+               </TableFoldBody>
+            </TableFold>
           </Gcol>
         </DialogSection>  
         <DialogFooter>
