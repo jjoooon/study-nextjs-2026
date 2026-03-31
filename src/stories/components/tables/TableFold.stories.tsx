@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { Grow } from '@atoms';
+import { Gcol, Grow } from '@atoms';
 import { Button } from '@uiux/Button';
 import { FileExportIcon, FileImportIcon } from '@icons';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
@@ -72,13 +72,16 @@ import { Button } from '@uiux/Button';
     },
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'TableFold 내부 컨텐츠',
-      table: { category: 'Content' },
+    variant: {
+      control: 'inline-radio',
+      options: ['default', 'accordion'],
+      description: '테이블 폴드 변형',
     },
+    children: { table: { disable: true } },
   },
-  args: {},
+  args: {
+    variant: 'accordion',
+  },
 };
 
 export default meta;
@@ -87,8 +90,8 @@ type Story = StoryObj<TableFoldProps>;
 export const Default: Story = {
   args: {},
   render: (args) => (
-    <div style={{ width: '80rem' }}>
-      <TableFold variant="accordion" {...args}>
+    <Gcol gap={2} className="w-[60rem]">
+      <TableFold variant={args.variant} {...args}>
         <TableFoldHead title={'모바일 판매 불가 상품'}>
           <Grow>
             <Button variant={'outlined'} color={'success'}>
@@ -107,26 +110,6 @@ export const Default: Story = {
           </div>
         </TableFoldBody>
       </TableFold>
-
-      <TableFold variant="default" {...args}>
-        <TableFoldHead title={'모바일 판매 불가 상품'}>
-          <Grow>
-            <Button variant={'outlined'} color={'success'}>
-              엑셀내보내기
-              <FileExportIcon />
-            </Button>
-            <Button variant={'outlined'} color={'success'}>
-              엑셀가져오기
-              <FileImportIcon />
-            </Button>
-          </Grow>
-        </TableFoldHead>
-        <TableFoldBody>
-          <div className="w-full p-10 border border-dashed flex items-center justify-center">
-            table 영역
-          </div>
-        </TableFoldBody>
-      </TableFold>
-    </div>
+    </Gcol>
   ),
 };

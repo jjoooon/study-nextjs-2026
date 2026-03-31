@@ -64,7 +64,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
   if (v === 'default') {
     return (
       <Grow placement={'bwc'} className={cn('w-full', className)}>
-        <Typo tag={'h3'} variant={'heading-sm'}>
+        <Typo tag={'h3'} variant={'heading-md'}>
           {title}
         </Typo>
         <Grow>
