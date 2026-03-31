@@ -1176,7 +1176,7 @@ export function LTPA350Step1({
                                 <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="피보험자 나이" width={'4.6rem'} value={`${currentPerson.age}세`} readOnly />
+                                <Input aria-label="피보험자 나이" width={'4.8rem'} value={`${currentPerson.age}세`} readOnly />
                                 <Input aria-label="피보험자 성별" width={'3.2rem'} value={currentPerson.gender} readOnly />
                               </Grow>
                               <Grow gap={2}>
