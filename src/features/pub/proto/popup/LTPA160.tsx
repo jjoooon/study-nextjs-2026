@@ -279,15 +279,6 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
           <Gcol placement='ss' className='w-full' gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)">
-                <Grow>
-                  <Button
-                    color="success"
-                    variant="outlined"
-                  >
-                    엑셀내보내기
-                    <FileExportIcon />
-                  </Button>
-                </Grow>
               </TableFoldHead>
               <TableFoldBody>
                 <Grow className="w-full">
@@ -313,6 +304,15 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                       
             <TableFold>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)">
+                <Grow>
+                  <Button
+                    color="success"
+                    variant="outlined"
+                  >
+                    엑셀내보내기
+                    <FileExportIcon />
+                  </Button>
+                </Grow>
               </TableFoldHead>
               <TableFoldBody>
                 <div className="ag-theme-alpine">
