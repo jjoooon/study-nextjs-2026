@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogTrigger } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
@@ -114,10 +114,13 @@ export const LTPZ011P = () => {
     [rowData2]
   );
 
-  const [open] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button id="btnRQ" variant={'outlined'} size={'xl'}>LTPZ011 팝업 열기</Button>
+      </DialogTrigger>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
@@ -128,7 +131,7 @@ export const LTPZ011P = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+            <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant='none'>
               <FormRow>
                 <FormCell title={'대표담보명'}>
                   <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
@@ -168,7 +171,7 @@ export const LTPZ011P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={() => setOpen(false)}>
                   닫기
                 </Button>
               </Grow>

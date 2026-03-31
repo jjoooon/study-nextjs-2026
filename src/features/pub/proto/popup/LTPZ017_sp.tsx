@@ -20,10 +20,11 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ017P = () => {
  
-  const [open] = useState(true);
+    const [open, setOpen] = useState(false);
+
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>

@@ -5,7 +5,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogTrigger } from '@uiux/Dialog';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 
@@ -219,11 +219,14 @@ export const LTPZ010P = () => {
 		[setRowData, setErrorRows],
 	);
 
-  const [open] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog open={open} >
+    <Dialog open={open} onOpenChange={setOpen}>
 
+      <DialogTrigger asChild>
+        <Button id="btnRP" variant={'outlined'} size={'xl'}>LTPZ010 팝업 열기</Button>
+      </DialogTrigger>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
@@ -234,7 +237,7 @@ export const LTPZ010P = () => {
 
         <DialogSection>
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-auto min-w-auto', 'w-auto']} variant='none'>
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant='none'>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
@@ -436,7 +439,7 @@ export const LTPZ010P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={() => setOpen(false)}>
                   닫기
                 </Button>
               </Grow>
