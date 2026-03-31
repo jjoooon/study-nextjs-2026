@@ -37,18 +37,19 @@ export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => 
   return (
     <TableFoldContext.Provider value={{ variant }}>
       {variant === 'default' ? (
-        <Grid gap={1.5} className="w-full grid-rows-[auto_1fr] h-full" placement={'bwc'}>
+        <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] h-full" placement={'bwc'}>
           {children}
         </Grid>
       ) : (
         <Accordion
+
           type="single"
           collapsible
           defaultValue="shipping"
           className="w-full grid h-full"
           variant={"tableHead"}
         >
-          <AccordionItem value="shipping" className="grid-rows-[auto_1fr] h-full w-full gap-1.5">
+          <AccordionItem data-table-fold="wrap" value="shipping" className="grid-rows-[auto_1fr] h-full w-full gap-1.5">
             {children}
           </AccordionItem>
         </Accordion>
@@ -63,7 +64,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
   const v = variant ?? context?.variant ?? 'accordion';
   if (v === 'default') {
     return (
-      <Grow placement={'bwc'} className={cn('w-full', className)}>
+      <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
         <Typo tag={'h3'} variant={'heading-md'}>
           {title}
         </Typo>
@@ -74,7 +75,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
     );
   }
   return (
-    <AccordionTrigger title={title} className={cn('justify-between w-full pt-0!', className)}>
+    <AccordionTrigger data-table-fold="head" title={title} className={cn('justify-between w-full pt-0!', className)}>
       {children}
     </AccordionTrigger>
   );
@@ -85,10 +86,10 @@ export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
   if (v === 'default') {
-    return <div className="w-full h-full">{children}</div>;
+    return <>{children}</>;
   }
   return (
-    <AccordionContent className={cn('justify-between w-full pb-0! relative')}>
+    <AccordionContent data-table-fold="body" className={cn('justify-between w-full pb-0! relative')}>
       {children}
     </AccordionContent>
   );

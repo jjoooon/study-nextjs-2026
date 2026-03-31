@@ -4,7 +4,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { CloseIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Gcol } from '@atoms';
+import { Gcol, Grid } from '@atoms';
 
 type DialogSizeValue = number | string;
 
@@ -409,15 +409,14 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
 
 function DialogSection({ children, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
-    <Gcol
-      gap={4}
-      placement={'ss'}
+    <Grid
+      gap={5}
       data-slot="dialog-section"
-      className={cn('px-6 text-[1.4rem] text-[#000000] overflow-auto', className)}
+      className={cn('px-6 w-full h-full', className)}
       {...props}
     >
       {children}
-    </Gcol>
+    </Grid>
   );
 }
 

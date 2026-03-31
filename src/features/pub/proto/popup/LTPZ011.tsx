@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
@@ -126,25 +126,24 @@ export const LTPZ011P = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
-          <Gcol className="w-full" gap={5}>
-            <Grow className='w-full' variant="box-round" placement={'ss'}>
-              <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
-                <FormRow>
-                  <FormCell title={'대표담보명'}>
-                    <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-            <TableFold variant="default">
-              <TableFoldHead title="">
-                <Grow>
-                  <Typo variant="body-xl">(단위: 원)</Typo>
-                </Grow>   
-              </TableFoldHead>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow className='w-full' variant="box-round" placement={'ss'}>
+            <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+              <FormRow>
+                <FormCell title={'대표담보명'}>
+                  <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <TableFold variant="default">
+            <TableFoldHead title="">
+              <Grow>
+                <Typo variant="body-xl">(단위: 원)</Typo>
+              </Grow>   
+            </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine w-full absolute top-0 left-0 h-full">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData2}
@@ -154,16 +153,14 @@ export const LTPZ011P = () => {
                       sortable: false, 
                       resizable: false,
                     }}
-                    animateRows={false}
-                    alwaysShowHorizontalScroll={true}
                     singleClickEdit={true}
                     rowClassRules={{}}
                   />
                 </div>
               </TableFoldBody>
-            </TableFold>
-          </Gcol>
+          </TableFold>
         </DialogSection>  
+
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
