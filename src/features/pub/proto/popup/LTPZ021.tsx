@@ -38,19 +38,20 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
-          <Gcol className="w-full">
-            <Grow placement='ss' className='w-full' gap={2}>
-              <Gcol className="w-full">
-                <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'설계번호'}>
-                      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
+          <Grow className="w-full" placement='ss' gap={5}>
+            <Gcol placement='ss' className='w-full' gap={5}>
+                <Grow className='w-full' variant="box-round">
+                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+                    <FormRow>
+                      <FormCell title={'설계번호'}>
+                        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Grow>
                 <TableFold variant="accordion">
                   <TableFoldHead title="계약정보">
                     <Grow>
@@ -117,18 +118,8 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                     ></InfoBox>
                   </TableFoldBody>
                 </TableFold>
-              </Gcol>
-              <Gcol className="w-full">
-                <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'설계번호'}>
-                      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
+              
+               
                 <Grow placement='bwc' className="w-full">
                   <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
                   <Grow>
@@ -192,8 +183,24 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                   variant={'info'}
                   bg={false}
                 ></InfoBox>
-              </Gcol>  
-            </Grow>
+            </Gcol>
+            <Grow className="w-full" placement={'ss'} gap={5}>
+               <Grow className='w-full' variant="box-round">
+                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+                    <FormRow>
+                      <FormCell title={'설계번호'}>
+                        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Grow>
+                <Grow placement='bwc' className='w-full'>
+                </Grow>  
+            </Grow>  
+
             <Grow placement='ss' className='w-full' gap={2}>
               <Grow className="w-full">
                 {/* 인보험/물보험 TabPager 예시 */}
@@ -436,7 +443,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                 </Gcol>
               </Grow>
             </Grow>    
-          </Gcol>
+          </Grow>
         </DialogSection>  
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
