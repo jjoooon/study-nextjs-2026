@@ -33,14 +33,14 @@ interface TableFoldHeadProps {
 }
 
 
-export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => {
+export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
   return (
     <TableFoldContext.Provider value={{ variant }}>
-      {/* {variant === 'default' ? (
+      {variant === 'default' ? (
         <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] h-full" placement={'bwc'}>
           {children}
         </Grid>
-      ) : ( */}
+      ) : ( 
         <Accordion
 
           type="single"
@@ -53,7 +53,7 @@ export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => 
             {children}
           </AccordionItem>
         </Accordion>
-      {/* )} */}
+      )}
     </TableFoldContext.Provider>
   );
 };
@@ -62,18 +62,18 @@ export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => 
 export const TableFoldHead = ({ children, title, className, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
-  // if (v === 'default') {
-  //   return (
-  //     <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
-  //       <Typo tag={'h3'} variant={'heading-md'}>
-  //         {title}
-  //       </Typo>
-  //       <Grow>
-  //         {children}
-  //       </Grow>
-  //     </Grow>
-  //   );
-  // }
+  if (v === 'default') {
+    return (
+      <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
+        <Typo tag={'h3'} variant={'heading-md'}>
+          {title}
+        </Typo>
+        <Grow>
+          {children}
+        </Grow>
+      </Grow>
+    );
+  }
   return (
     <AccordionTrigger data-table-fold="head" title={title} className={cn('justify-between w-full pt-0!', className)}>
       {children}
@@ -85,11 +85,11 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
 export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
-  // if (v === 'default') {
-  //   return <>{children}</>;
-  // }
+  if (v === 'default') {
+    return <>{children}</>;
+  }
   return (
-    <AccordionContent data-table-fold="body" className={cn('justify-between w-full pb-0! relative')}>
+    <AccordionContent data-table-fold="body" className={cn('justify-between w-full pb-0! relative h-[10rem]')}>
       {children}
     </AccordionContent>
   );
