@@ -1,11 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogTrigger } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
@@ -21,16 +21,15 @@ import { TabPager } from '@/shared/components/common/TabPager';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPZ021P = () => {
- 
-    const [open, setOpen] = useState(false);
+export interface LTPZ021PProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 
+export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button id="btnRS" variant={'outlined'} size={'xl'}>LTPZ021 팝업 열기</Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
@@ -449,7 +448,7 @@ export const LTPZ021P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
                   닫기
                 </Button>
               </Grow>
@@ -458,7 +457,7 @@ export const LTPZ021P = () => {
           </Gcol>
         </DialogFooter>
     </DialogContent>
-  </Dialog>    
+  </Dialog>
   );
 };
 
