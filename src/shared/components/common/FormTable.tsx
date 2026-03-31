@@ -168,8 +168,10 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
     head:
-      `w-full border-none 
-      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none!
+      `w-full border-none flex flex-col 
+      [&_colgroup]:hidden 
+      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none! [&_tr]:w-full 
+      [&_th]:flex [&_th]:items-center [&_th]:justify-start [&_th]:gap-2 [&_th]:border-none! [&_th]:w-max
       [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! 
       [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_tr~tr>*]:pt-[0.6rem]!
       [&_td+th]:pl-[1.6rem]!`,

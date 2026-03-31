@@ -72,7 +72,7 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
   );
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>나만의설계</Typo>
