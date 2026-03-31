@@ -56,19 +56,19 @@ export function IAListWithPreview() {
   }, []);
 
   const activeStep = toPageStep(activeRow?.subId ?? '');
-  const previewUrl = activeStep ? getStoryIframeUrl(activeRow.id, activeStep) : undefined;
-
+  const previewUrl = activeStep ? getStoryIframeUrl(activeRow.id, activeStep, activeRow?.popup) : getStoryIframeUrl(activeRow.id, undefined, activeRow?.popup);
+console.log('previewUrl', previewUrl)
   const handleMovePage = React.useCallback(() => {
     if (activeStep) {
-      LinkGo(activeRow.id, activeStep);
+      LinkGo(activeRow.id, activeStep, activeRow.popup);
       return;
     }
 
-    LinkGo(activeRow.id);
-  }, [activeRow.id, activeStep]);
+    LinkGo(activeRow.id, undefined, activeRow.popup);
+  }, [activeRow.id, activeStep, activeRow.popup]);
 
   const workList = [
-    'LTPA350_1', 'LTPA350_2', 
+    'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPZ021', 'LTPA160',  
   ];
 
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
