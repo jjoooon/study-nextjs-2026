@@ -189,7 +189,6 @@ const LTPA430P = () => {
           }}
           domLayout="autoHeight" 
         />
-        
         <InfoBox title="현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)" variant="detail" bg={false} />
       </div>
     </Gcol>

@@ -119,7 +119,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
       <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>설계복사</Typo>
+            <Typo tag={'span'} variant={'heading-lg'}>설계복사</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ020)</Typo>
           </DialogTitle>
         </DialogHeader>

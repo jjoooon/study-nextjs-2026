@@ -100,7 +100,7 @@ const LTPA030 = ({ isNoData = false }: LTPA030Props) => {
       cellClass: 'editable-cell text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택', ''] },
+      cellEditorParams: { values: ['선택', '취급직원', '사용인', '설계'] },
     },
     {
       headerName: '대상',
@@ -235,7 +235,7 @@ const LTPA030 = ({ isNoData = false }: LTPA030Props) => {
             <FormCell title={'적용대상'}>
               <NativeSelect
                 aria-label="적용대상 선택"
-                width="23rem"
+                width="15rem"
                 value={form.type03}
                 onChange={(e) => setFormField('type03', e.target.value)}
               >
@@ -248,19 +248,21 @@ const LTPA030 = ({ isNoData = false }: LTPA030Props) => {
               </NativeSelect>
               <Input
                 aria-label=""
-                width={'15rem'}
+                size="md"
+                width={'10rem'}
                 value={'1234567'}
+                variant="default"
                 readOnly
               />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
               <Input 
-
-              
                 aria-label="" 
-                width={'15rem'} 
+                width={'10rem'}
+                size="md"
                 value={'김한화'}
+                variant="default"
                 readOnly
               />
             </FormCell>

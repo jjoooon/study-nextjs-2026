@@ -137,7 +137,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
             '[&[data-tab-error=true]:not([data-state=active])]:z-1!',
             '[&[data-tab-error=true]:not([data-state=active])]:bg-[var(--color-danger-5)]!',
             className,
-            'items-center ',
+            'items-center shadow-[0_0.1rem_0_#ffff]!',
           )}
           onClick={(e) => {
             e.currentTarget.scrollIntoView({

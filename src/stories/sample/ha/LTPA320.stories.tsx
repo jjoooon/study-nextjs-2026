@@ -239,7 +239,8 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
           headerName: '합계보험료',
           field: 'field14',
           width: 85,
-          cellClass: 'text-center flex! items-center justify-center!',
+          cellClass: 'text-center flex! items-center justify-end!',
+          valueFormatter: 'numberValueFormatter',
         },
         {
           headerName: '비고',
