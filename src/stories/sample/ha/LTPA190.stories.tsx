@@ -249,7 +249,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
               </NativeSelect>
             </FormCell>
             <FormCell title={'조회일자'}>
-              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" required />
+              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="md" width="sm" required />
             </FormCell>
           </FormRow>
         </FormTable>
