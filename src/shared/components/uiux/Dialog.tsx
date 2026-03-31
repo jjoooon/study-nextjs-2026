@@ -8,7 +8,7 @@ import { Gcol, Grid } from '@atoms';
 
 type DialogSizeValue = number | string;
 
-type DialogSizePreset = 'sm' | 'md' | 'lg' | 'full';
+type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 type DialogSizeConfig = {
   width?: DialogSizeValue;
@@ -31,6 +31,7 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   sm: '37rem',
   md: '56rem',
   lg: '76rem',
+  xl: '96rem',
 };
 
 const toCssSize = (value?: DialogSizeValue): string | undefined => {
@@ -276,7 +277,7 @@ function DialogContent({
         className={cn(
           'fixed left-[50%] top-[50%] grid grid-rows-[auto_1fr_auto] gap-[1.2rem] transition-none',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
-          'w-full',
+          'w-full grid grid-rows-[auto_1fr_auto]' ,
           className
         )}
         onMouseDown={handleMouseDown}
@@ -368,7 +369,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="dialog-header"
       className={cn(
-        'flex flex-row content-start cursor-grab w-full active:cursor-grabbing min-h-[3.9rem] justify-center shrink-0 px-6 pt-5',
+        'flex flex-row content-start cursor-grab w-full active:cursor-grabbing min-h-[5.6rem] justify-center shrink-0 px-6 pt-5 shrink-0',
         className
       )}
       {...props}
@@ -412,7 +413,7 @@ function DialogSection({ children, className, ...props }: React.ComponentProps<t
     <Grid
       gap={5}
       data-slot="dialog-section"
-      className={cn('px-6 w-full h-full text-[1.4rem]', className)}
+      className={cn('px-6 w-full h-full text-[1.4rem] overflow-auto', className)}
       {...props}
     >
       {children}

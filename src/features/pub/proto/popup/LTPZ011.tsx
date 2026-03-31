@@ -114,11 +114,11 @@ export const LTPZ011P = () => {
     [rowData2]
   );
 
-  const [open] = useState(true);
+  const [open] = useState(false);
 
   return (
     <Dialog open={open}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>

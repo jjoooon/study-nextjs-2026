@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -25,76 +26,81 @@ import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-gri
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPZ010P = () => {
+export interface LTPZ010PProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
     
   type DummyDataType = {
-      id: number;
-      isCheck: boolean;
-      isDuplicate: boolean;
-      productName: string;
-      badge?: string[];
-      attribute: boolean;
-      coverageAmount: string;
-      premium: number;
-      expiryPeriod: string;
-      paymentPeriod: string;
-      canEditExpiry: boolean;
-    };
+    id: number;
+    isCheck: boolean;
+    isDuplicate: boolean;
+    productName: string;
+    badge?: string[];
+    attribute: boolean;
+    coverageAmount: string;
+    premium: number;
+    expiryPeriod: string;
+    paymentPeriod: string;
+    canEditExpiry: boolean;
+  };
     
-    const dummyData: DummyDataType[] = [
-      {
-        id: 1,
-        isCheck: false,
-        isDuplicate: true,
-        productName: '기본형 실손의료비(상해급여)(갱신형)',
-        badge: ['갱신'],
-        attribute: true,
-        coverageAmount: '5천만원(통원20만원)',
-        premium: 1377,
-        expiryPeriod: '01년만기',
-        paymentPeriod: '전기납',
-        canEditExpiry: true,
-      },
-      {
-        id: 2,
-        isCheck: false,
-        isDuplicate: true,
-        productName: '기본형 실손의료비(상해급여)(갱신형)',
-        badge: ['갱신'],
-        attribute: false,
-        coverageAmount: '2천만원(통원20만원)',
-        premium: 9999999,
-        expiryPeriod: '01년만기',
-        paymentPeriod: '전기납',
-        canEditExpiry: false,
-      },
-      {
-        id: 3,
-        isCheck: true,
-        isDuplicate: false,
-        productName: '기본형 실손의료비(상해급여)(갱신형)',
-        badge: ['갱신'],
-        attribute: true,
-        coverageAmount: '3천만원(통원20만원)',
-        premium: 159999,
-        expiryPeriod: '01년만기',
-        paymentPeriod: '전기납',
-        canEditExpiry: false,
-      },
-      {
-        id: 4,
-        isCheck: false,
-        isDuplicate: true,
-        productName: '기본형 실손의료비(상해급여)(갱신형)',
-        badge: ['갱신'],
-        attribute: false,
-        coverageAmount: '4천만원(통원20만원)',
-        premium: 2323230,
-        expiryPeriod: '01년만기',
-        paymentPeriod: '전기납',
-        canEditExpiry: false,
-      },
-    ];
+  const dummyData: DummyDataType[] = [
+    {
+      id: 1,
+      isCheck: false,
+      isDuplicate: true,
+      productName: '기본형 실손의료비(상해급여)(갱신형)',
+      badge: ['갱신'],
+      attribute: true,
+      coverageAmount: '5천만원(통원20만원)',
+      premium: 1377,
+      expiryPeriod: '01년만기',
+      paymentPeriod: '전기납',
+      canEditExpiry: true,
+    },
+    {
+      id: 2,
+      isCheck: false,
+      isDuplicate: true,
+      productName: '기본형 실손의료비(상해급여)(갱신형)',
+      badge: ['갱신'],
+      attribute: false,
+      coverageAmount: '2천만원(통원20만원)',
+      premium: 9999999,
+      expiryPeriod: '01년만기',
+      paymentPeriod: '전기납',
+      canEditExpiry: false,
+    },
+    {
+      id: 3,
+      isCheck: true,
+      isDuplicate: false,
+      productName: '기본형 실손의료비(상해급여)(갱신형)',
+      badge: ['갱신'],
+      attribute: true,
+      coverageAmount: '3천만원(통원20만원)',
+      premium: 159999,
+      expiryPeriod: '01년만기',
+      paymentPeriod: '전기납',
+      canEditExpiry: false,
+    },
+    {
+      id: 4,
+      isCheck: false,
+      isDuplicate: true,
+      productName: '기본형 실손의료비(상해급여)(갱신형)',
+      badge: ['갱신'],
+      attribute: false,
+      coverageAmount: '4천만원(통원20만원)',
+      premium: 2323230,
+      expiryPeriod: '01년만기',
+      paymentPeriod: '전기납',
+      canEditExpiry: false,
+    },
+  ];
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 	const [relationValue, setRelationValue] = useState('');
 	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
@@ -219,12 +225,10 @@ export const LTPZ010P = () => {
 		[setRowData, setErrorRows],
 	);
 
-  const [open] = useState(true);
 
   return (
-    <Dialog open={open} >
-
-      <DialogContent showCloseButton resizable={false} size="full">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent showCloseButton resizable={true} className="w-[110rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>동시가입설계상세</Typo>
@@ -389,7 +393,7 @@ export const LTPZ010P = () => {
             </TableFoldHead>
             <TableFoldBody>
             <Grow className="w-full">
-              <div className="ag-theme-alpine aggrid-pagination-ko h-104! w-full">
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
@@ -400,8 +404,6 @@ export const LTPZ010P = () => {
                     cellClass: 'p-0', 
                     cellStyle: { padding: 0 },
                   }}
-                  animateRows={false}
-                  alwaysShowHorizontalScroll={true}
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
                   rowSelection={{
