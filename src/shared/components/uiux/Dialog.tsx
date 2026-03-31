@@ -52,7 +52,7 @@ const resolveDialogSize = (size?: DialogSize) => {
     };
   }
 
-  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl'  ) {
+  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl') {
     return {
       width: DIALOG_PRESET_WIDTH[size],
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
