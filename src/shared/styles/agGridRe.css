@@ -120,6 +120,9 @@
 .ag-floating-bottom .ag-row-focus {
   background: var(--color-primary-10);
 }
+.ag-theme-alpine{
+  min-height:18rem;
+}
 .ag-theme-alpine .ag-floating-bottom-container {
   width: 100%;
 }
