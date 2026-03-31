@@ -27,6 +27,7 @@ type IARow = {
   modify: string;
   file?: string;
   phase?: string;
+  popup?: string;
 };
 
 
