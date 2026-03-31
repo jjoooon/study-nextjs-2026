@@ -16,6 +16,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { tr } from 'date-fns/locale';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
@@ -26,32 +27,52 @@ export interface LTPZ017PProps {
 
 export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
  
+  // 검색버튼 여부에 따른 셀 렌더러
+	const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
+		if (!params.value) {
+			return null;
+		}
+
+		return (
+			<div className="flex h-full w-full flex-wrap items-center justify-center gap-1">
+				<Button only={'icon'} variant={'none'} size={'sm'}>
+					<SearchIcon color={'var(--color-primary-50)'} />
+				</Button>
+			</div>
+		);
+	};
+
   type DummyDataType = {
     id: number;
     isCheck: boolean;
-    planNo: number;
     planName: string;
+    myPlanName: string;
+    target: boolean | string;
     registrationDate: string;
   };
 
   const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: false, planNo: 1, planName: '', registrationDate: '' },
-    { id: 2, isCheck: false, planNo: 2, planName: '', registrationDate: '' },
-    { id: 3, isCheck: true, planNo: 3, planName: '', registrationDate: '' },
-    { id: 4, isCheck: false, planNo: 4, planName: '', registrationDate: '' },
+    { id: 1, isCheck: false, planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8', myPlanName: '3대진단형', registrationDate: '2026-03-22', target: true },
+    { id: 2, isCheck: false, planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8', myPlanName: '3대진단형', registrationDate: '2026-03-22', target: true },
+    { id: 3, isCheck: true, planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8', myPlanName: '3대진단형', registrationDate: '2026-03-22', target: true },
   ];
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '플랜순번',
-      field: 'planNo',
-      flex: 1,
+      headerName: '순번',
+      field: 'id',
+      width: 50,
       cellClass: 'text-center',
     },
     {
-      headerName: '플랜명',
+      headerName: '회사플랜명',
       field: 'planName',
       flex: 1,
+    },
+    {
+      headerName: '나만의플랜명',
+      field: 'myPlanName',
+      width: 120,
     },
     {
       headerName: '등록일자',
@@ -59,7 +80,17 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
       width: 120,
       cellClass: 'text-center',
     },
+    {
+      headerName: '적용대상',
+      field: 'target',
+      width: 80,
+      cellClass: 'text-center',
+      cellRenderer: attributeRenderer,
+    },
+
   ];
+
+  
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
@@ -85,45 +116,57 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
             <FormTable variant={'head'} lineTop={false} caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계사'}>
-                  <Input aria-label="" width={'10rem'} value={'text'} readOnly />
+                  <Input aria-label="" width={'10rem'} value={'김한화'} readOnly />
                 </FormCell>
                 <FormCell title={'상품명'}>
                   <Grow>
-                    <Input aria-label="" width={'20rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                    <Input aria-label="" width={'40rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                   </Grow>
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
           <TableFold variant={'accordion'}>
-            <TableFoldHead title="계약기본사항" />
+            <TableFoldHead title="플랜등록사항" />
+            <Gcol className="w-full" placement="ss" variant="box-detail">
+              <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 전체 노출)</Typo>
+              {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
+            </Gcol>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
-                <AgGridReact<DummyDataType>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{ sortable: false }}
-                  animateRows={false}
-                  alwaysShowHorizontalScroll={true}
-                  singleClickEdit={true}
-                  onCellValueChanged={onCellValueChanged}
-                  rowSelection={{
-                    mode: 'multiRow',
-                    headerCheckbox: true,
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  rowClassRules={{}}
-                  onGridReady={params => {
-                    params.api.forEachNode(node => {
-                      if (node.data?.isCheck) {
-                        node.setSelected(true);
-                      }
-                    });
-                  }}
-                />
-              </div>
+              <Gcol>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType>
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ 
+                      sortable: false, 
+                      resizable: false,
+                      cellClass: 'p-0', 
+                      cellStyle: { padding: 0 },
+                    }}
+                    singleClickEdit={true}
+                    onCellValueChanged={onCellValueChanged}
+                    rowSelection={{
+                      mode: 'singleRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      cellClass: 'text-center editable-cell',
+                    }}
+                    domLayout="autoHeight" 
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
+                        if (node.data?.isCheck) {
+                          node.setSelected(true);
+                        }
+                      });
+                    }}
+                  />
+                </div>
+              </Gcol>
             </TableFoldBody>
           </TableFold>  
         </DialogSection>  
@@ -132,6 +175,9 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
               <Grow>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  삭제
+                </Button>
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>

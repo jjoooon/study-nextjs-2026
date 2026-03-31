@@ -170,7 +170,7 @@ const LTPZ042P = () => {
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
             rowSelection={{
-              mode: 'singleRow',
+              mode: 'multiRow',
               checkboxes: true,
               enableClickSelection: false,
             }}

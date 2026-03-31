@@ -46,6 +46,19 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
       label: '재물담보',
     },
   ];
+
+  const DATA_SUB_TABS: LTPZ020TabType[] = [
+    {
+      name: '화재담보',
+      value: 'fireCoverage',
+      label: '화재담보',
+    },
+    {
+      name: '화재기타',
+      value: 'fireEtcCoverage',
+      label: '화재기타',
+    },
+  ];
   
   
   type InsuredListRow = {
@@ -74,29 +87,30 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   ];
   
   const coverageListData: CoverageListRow[] = [
-    { id: 1, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
+    { id: 1, coverageCode: 'CLA05417', coverageName: '보통약관(화재상해후유장해3)', insurancePeriod: '15년만기', paymentPeriod: '전기납', designCoverageCode: 'CLA05417', designCoverageName: '보통약관(화재상해후유장해)' },
     { id: 2, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
     { id: 3, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
     { id: 4, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
   ];
   
   const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
-    { field: 'name', headerName: '성명', flex: 1, cellClass: 'text-center' },
-    { field: 'grade', headerName: '급수', width: 120, cellClass: 'text-center' },
+    { field: 'name', headerName: '성명', width: 120, cellClass: 'text-center' },
+    { field: 'grade', headerName: '급수', flex: 1,  cellClass: 'text-center' },
     { field: 'gender', headerName: '성별', width: 80, cellClass: 'text-center' },
     { field: 'age', headerName: '연령', width: 80, cellClass: 'text-center' },
   ];
 
   const coverageListColumnDefs: ColDef<CoverageListRow>[] = [
-    { headerName: '담보코드', field: 'coverageCode', width: 100, cellClass: 'text-center' },
+    { headerName: '담보코드', field: 'coverageCode', width: 80, cellClass: 'text-center' },
     { headerName: '담보명', field: 'coverageName', flex: 1 },
-    { headerName: '보험기간', field: 'insurancePeriod', width: 100, cellClass: 'text-center' },
-    { headerName: '납입기간', field: 'paymentPeriod', width: 100, cellClass: 'text-center' },
-    { headerName: '설계담보코드', field: 'designCoverageCode', width: 120, cellClass: 'text-center' },
+    { headerName: '보험기간', field: 'insurancePeriod', width: 80, cellClass: 'text-center' },
+    { headerName: '납입기간', field: 'paymentPeriod', width: 80, cellClass: 'text-center' },
+    { headerName: '설계담보코드', field: 'designCoverageCode', width: 100, cellClass: 'text-center' },
     { headerName: '설계담보명', field: 'designCoverageName', flex: 1 },
   ];
   
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const { tabs: subTabs, active: subActive, setActive: setSubActive, handleRemove: handleSubRemove } = useTabs(DATA_SUB_TABS);
   const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
   const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
@@ -168,7 +182,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
           >
             {active === 'humanCoverage' ? (
               <div className="w-full flex gap-2 pt-2">
-                <div className="w-[30%]">
+                <div className="w-[40%]">
                    <TableFold variant={'accordion'}>
                       <TableFoldHead title="피보험자목록">
                       </TableFoldHead>
@@ -185,7 +199,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                             animateRows={false}
                             rowClassRules={{}}
                             rowSelection={{
-                              mode: 'singleRow',
+                              mode: 'multiRow',
                               checkboxes: true,
                               enableClickSelection: false,
                             }}
@@ -198,7 +212,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                       </TableFoldBody>
                     </TableFold>  
                 </div>
-                <div className="w-[70%]">
+                <div className="w-[60%]">
                   <TableFold variant={'accordion'}>
                       <TableFoldHead title="담보목록">
                       </TableFoldHead>
@@ -222,24 +236,39 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
               </div>
             ) : (
               <div className="w-full pt-2">
-                <Typo variant={'heading-sm'} className="mb-1">재물담보</Typo>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<CoverageListRow>
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={coverageListData}
-                    columnDefs={coverageListColumnDefs}
-                    defaultColDef={{ 
-                      sortable: false, 
-                      resizable: false,
-                    }}
-                    animateRows={false}
-                    rowClassRules={{}}
-                  />
-                </div>
+                <TabPager
+                  data={subTabs}
+                  active={subActive}
+                  setActive={setSubActive}
+                  removable={false}
+                  onRemove={handleSubRemove}
+                  visibleCount={4}
+                  variant="default"
+                  hasTableBelow={true}
+                  error={false}
+                  errorMsg="에러 메시지 예시"
+                  getValue={tab => String(tab.value)}
+                  renderTab={tab => <span>{tab.label}</span>}
+                  renderDropdownItem={false}
+                >
+                  <div className="ag-theme-alpine pt-2">
+                    <AgGridReact<CoverageListRow>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={coverageListData}
+                      columnDefs={coverageListColumnDefs}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      animateRows={false}
+                      rowClassRules={{}}
+                    />
+                  </div>
+                </TabPager>
               </div>
             )}
           </TabPager>
-        </DialogSection>  
+        </DialogSection>
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
@@ -255,8 +284,8 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
             <DialogBottomInfo />
           </Gcol>
         </DialogFooter>
-    </DialogContent>
-  </Dialog>
+      </DialogContent>
+    </Dialog>
   );
 };
 
