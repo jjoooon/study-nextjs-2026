@@ -739,31 +739,28 @@ export const LTPZ017: Story = {
   render: () => <LTPZ017P />,
 }
 
-type LTPZ020TabType = {
-  name: string;
-  value: string;
-  label: string;
-};
-
-const DATA_TABS: LTPZ020TabType[] = [
-  {
-    name: '인담보',
-    value: 'humanCoverage',
-    label: '인담보',
-  },
-  {
-    name: '재물담보',
-    value: 'propertyCoverage',
-    label: '재물담보',
-  },
-];
 
 const LTPZ020_01P = () => {
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
-  const [policySearchPart, setPolicySearchPart] = React.useState('');
-  const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
-
+  type LTPZ020TabType = {
+    name: string;
+    value: string;
+    label: string;
+  };
+  
+  const DATA_TABS: LTPZ020TabType[] = [
+    {
+      name: '인담보',
+      value: 'humanCoverage',
+      label: '인담보',
+    },
+    {
+      name: '재물담보',
+      value: 'propertyCoverage',
+      label: '재물담보',
+    },
+  ];
+  
+  
   type InsuredListRow = {
     id: number;
     name: string;
@@ -772,7 +769,7 @@ const LTPZ020_01P = () => {
     gender: string;
     age: number;
   };
-
+  
   type CoverageListRow = {
     id: number;
     coverageCode: string;
@@ -789,14 +786,14 @@ const LTPZ020_01P = () => {
     { id: 3, choice:'', name: '', grade: '', gender: '', age: 0 },
     { id: 4, choice:'', name: '', grade: '', gender: '', age: 0 },
   ];
-
+  
   const coverageListData: CoverageListRow[] = [
     { id: 1, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
     { id: 2, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
     { id: 3, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
     { id: 4, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
   ];
-
+  
   const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
     { headerName: '선택', field: 'choice', width: 100, cellClass: 'text-center' },
     { headerName: '성명', field: 'name', flex: 1, cellClass: 'text-center' },
@@ -813,7 +810,12 @@ const LTPZ020_01P = () => {
     { headerName: '설계담보코드', field: 'designCoverageCode', width: 120, cellClass: 'text-center' },
     { headerName: '설계담보명', field: 'designCoverageName', flex: 1 },
   ];
-
+  
+  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
+  const [policySearchPart, setPolicySearchPart] = React.useState('');
+  const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
+  
   return (
     <Gcol className="w-full">
       <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>

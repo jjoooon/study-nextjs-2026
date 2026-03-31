@@ -234,7 +234,7 @@ export const LTPZ010P = () => {
 
         <DialogSection>
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+            <FormTable caption="보험정보" cols={['w-auto min-w-auto', 'w-auto']} variant='none'>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
@@ -413,6 +413,7 @@ export const LTPZ010P = () => {
                     headerName: '선택',
                     cellClass: 'text-center editable-cell',
                   }}
+                  domLayout="autoHeight" 
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {
                       if (node.data?.isCheck) {
