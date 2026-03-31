@@ -324,6 +324,7 @@ const LTPA360_01 = ({ isNoData = false }: LTPA360_01Props) => {
           width: 120,
           autoHeight: true,
           editable: true,
+          // isFocused: true,
           cellClass: 'text-center flex! items-center justify-center!',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Grow className="w-full px-1" >
@@ -407,13 +408,19 @@ const LTPA360_01 = ({ isNoData = false }: LTPA360_01Props) => {
     },
     {
       headerName: '체크 리스트',
-      field: 'field11',
+      field: 'isCheck',
       width: 60,
-      autoHeight: true,
-      cellClass: 'text-center editable-cell flex! items-center justify-center!',
-      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
-      editable: true,
+      cellClass: 'text-center flex! items-center justify-center! editable-cell',
+      cellRenderer: 'agCheckboxCellRenderer',
+      cellEditor: 'agCheckboxCellEditor',
+      editable: params => !params.node.isSelected(),
+      cellRendererParams: (params: { data: DummyDataType }) => ({
+        disabled: false,
+      }),
+      cellEditorParams: (params: { data: DummyDataType }) => ({
+        disabled: false,
+      }),
+      cellClassRules: {},
       wrapText: true,
       headerComponent: () => (
         <div className="w-full h-full flex items-center justify-center text-center whitespace-normal leading-5">
@@ -612,12 +619,15 @@ const LTPA360_01 = ({ isNoData = false }: LTPA360_01Props) => {
               <Input
                 aria-label=""
                 width={'17rem'}
+                size={'sm'}
                 value={form.type03 || '12345678'}
+                isFocused
                 onChange={e => setFormField('type03', e.target.value)}
               />
                <NativeSelect
                 aria-label="조회구분 선택"
                 width="9rem"
+                size={'md'}
                 value={form.type04}
                 onChange={(e) => setFormField('type04', e.target.value)}
               >
@@ -629,12 +639,13 @@ const LTPA360_01 = ({ isNoData = false }: LTPA360_01Props) => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+              <Button aria-label="검색" variant={'outlined'}  only="icon" size={'md'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
               <Input
                 aria-label=""
                 width={'15rem'}
+                size={'sm'}
                 value={'신부산GA지점'}
                 readOnly
               />
@@ -665,7 +676,6 @@ const LTPA360_01 = ({ isNoData = false }: LTPA360_01Props) => {
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
-
 
             // 체크박스 시
             rowSelection={{
