@@ -413,6 +413,7 @@ export const LTPZ010P = () => {
                     headerName: '선택',
                     cellClass: 'text-center editable-cell',
                   }}
+                  domLayout="autoHeight" 
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {
                       if (node.data?.isCheck) {

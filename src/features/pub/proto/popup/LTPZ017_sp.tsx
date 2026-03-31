@@ -31,7 +31,7 @@ export const LTPZ017P = () => {
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection>
+        <DialogSection className='grid-rows-[auto_1fr]'>
           
 
         </DialogSection>  

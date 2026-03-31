@@ -142,22 +142,22 @@ export const LTPZ011P = () => {
                 <Typo variant="body-xl">(단위: 원)</Typo>
               </Grow>   
             </TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType2>
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData2}
-                    columnDefs={columnDefs2}
-                    pinnedBottomRowData={sumRow2}
-                      defaultColDef={{ 
-                      sortable: false, 
-                      resizable: false,
-                    }}
-                    singleClickEdit={true}
-                    rowClassRules={{}}
-                  />
-                </div>
-              </TableFoldBody>
+            <TableFoldBody>
+              <div className="ag-theme-alpine">
+                <AgGridReact<DummyDataType2>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData2}
+                  columnDefs={columnDefs2}
+                  pinnedBottomRowData={sumRow2}
+                    defaultColDef={{ 
+                    sortable: false, 
+                    resizable: false,
+                  }}
+                  singleClickEdit={true}
+                  rowClassRules={{}}
+                />
+              </div>
+            </TableFoldBody>
           </TableFold>
         </DialogSection>  
 

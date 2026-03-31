@@ -78,7 +78,7 @@ export const LTPZ017P = () => {
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement='bwc' className="w-full" variant={'box'}>
             <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
               <FormRow>
@@ -97,34 +97,32 @@ export const LTPZ017P = () => {
               <TableFoldHead title="계약기본사항">
               </TableFoldHead>
               <TableFoldBody>
-                <Grow className="w-full">
-                  <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-                    <AgGridReact<DummyDataType>
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
-                      animateRows={false}
-                      alwaysShowHorizontalScroll={true}
-                      singleClickEdit={true}
-                      onCellValueChanged={onCellValueChanged}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: true,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      rowClassRules={{}}
-                      onGridReady={params => {
-                        params.api.forEachNode(node => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                    />
-                  </div>
-                </Grow>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType>
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ sortable: false }}
+                    animateRows={false}
+                    alwaysShowHorizontalScroll={true}
+                    singleClickEdit={true}
+                    onCellValueChanged={onCellValueChanged}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: true,
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    rowClassRules={{}}
+                    onGridReady={params => {
+                      params.api.forEachNode(node => {
+                        if (node.data?.isCheck) {
+                          node.setSelected(true);
+                        }
+                      });
+                    }}
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>  
         </DialogSection>  
