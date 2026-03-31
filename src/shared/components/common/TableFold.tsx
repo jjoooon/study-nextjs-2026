@@ -33,14 +33,14 @@ interface TableFoldHeadProps {
 }
 
 
-export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => {
+export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
   return (
     <TableFoldContext.Provider value={{ variant }}>
       {variant === 'default' ? (
         <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] h-full" placement={'bwc'}>
           {children}
         </Grid>
-      ) : (
+      ) : ( 
         <Accordion
 
           type="single"
@@ -89,7 +89,7 @@ export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
     return <>{children}</>;
   }
   return (
-    <AccordionContent data-table-fold="body" className={cn('justify-between w-full pb-0! relative')}>
+    <AccordionContent data-table-fold="body" className={cn('justify-between w-full pb-0! relative h-[10rem]')}>
       {children}
     </AccordionContent>
   );

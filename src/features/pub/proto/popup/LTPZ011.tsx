@@ -114,14 +114,11 @@ export const LTPZ011P = () => {
     [rowData2]
   );
 
-  const [open, setOpen] = useState(false);
+  const [open] = useState(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button id="btnRQ" variant={'outlined'} size={'xl'}>LTPZ011 팝업 열기</Button>
-      </DialogTrigger>
-      <DialogContent showCloseButton resizable={false} size="full">
+    <Dialog open={open}>
+      <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>
@@ -171,7 +168,7 @@ export const LTPZ011P = () => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={() => setOpen(false)}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
                 </Button>
               </Grow>
