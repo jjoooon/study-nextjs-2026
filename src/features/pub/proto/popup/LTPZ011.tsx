@@ -47,7 +47,7 @@ export const LTPZ011P = () => {
       field: '담보상태',
       width: 80,
       cellClass: (params) => params.data?.isSumRow ? 'text-center font-bold' : 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? <b>합계2</b> : params.value,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? <b>합계</b> : params.value,
       colSpan: (params) => params.data?.isSumRow ? 5 : 1,
     },
     {
@@ -116,25 +116,28 @@ export const LTPZ011P = () => {
   const [open] = useState(true);
 
   return (
-    <Dialog open={open} onOpenChange={() => {}}>
+    <Dialog open={open}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>다이얼로그 제목</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ010)</Typo>
+            <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ011)</Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection>
           <Gcol className="w-full">
-            <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
-              <FormRow>
-                <FormCell title={'대표담보명'}>
-                  <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
-                </FormCell>
-              </FormRow>
-            </FormTable>
+            <Grow className='w-full' variant="box-round" placement={'ss'}>
+              <FormTable caption="대표담보명" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+                <FormRow>
+                  <FormCell title={'대표담보명'}>
+                    <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
             <Grow className="w-full">
+              
               <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
                 <AgGridReact<DummyDataType2>
                   noRowsOverlayComponent={AgGridEmptyComponent}

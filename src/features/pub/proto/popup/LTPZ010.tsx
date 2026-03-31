@@ -6,6 +6,7 @@ import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 
 import { Checkbox } from '@uiux/Checkbox';
@@ -95,10 +96,10 @@ export const LTPZ010P = () => {
       },
     ];
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const [open] = useState(true);
 	const [relationValue, setRelationValue] = useState('');
 	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
 	const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
+  
 
   //중복버튼 여부에 따른 셀 렌더러
 	const duplicateRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
@@ -133,7 +134,6 @@ export const LTPZ010P = () => {
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return (
       <Grow className="h-full pr-1.5" placement={'bwc'}>
-        <div className="h-full w-[3rem] border-r border-(--color-gray-10) flex items-center justify-center">{params.data?.id}</div>
         <p className="w-full flex-1 truncate pl-2">{params.data?.productName}</p>
         {params.data?.badge && (
           <Grow className="shrink-0">
@@ -199,7 +199,7 @@ export const LTPZ010P = () => {
 		{
 			headerName: '만기',
 			field: 'expiryPeriod',
-			width: 60,
+			width: 80,
       cellClass: 'text-center px-[0.2rem]!',
 			sortable: false,
 			filter: false,
@@ -207,7 +207,7 @@ export const LTPZ010P = () => {
 		{
 			headerName: '납기',
 			field: 'paymentPeriod',
-			width: 60,
+			width: 80,
 			cellClass: 'text-center px-[0.2rem]!',
 			sortable: false,
 			filter: false,
@@ -219,13 +219,15 @@ export const LTPZ010P = () => {
 		[setRowData, setErrorRows],
 	);
 
+  const [open] = useState(true);
+
   return (
-    <Dialog open={open} onOpenChange={() => {}}>
+    <Dialog open={open} >
 
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>다이얼로그 제목</Typo>
+            <Typo tag={'h2'} variant={'heading-lg'}>동시가입설계상세</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ010)</Typo>
           </DialogTitle>
         </DialogHeader>
@@ -235,7 +237,7 @@ export const LTPZ010P = () => {
             <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
                   <div className="separator">-</div>
                   <Input aria-label="" width={'3rem'} value={'1'} readOnly />
                   <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
@@ -244,120 +246,132 @@ export const LTPZ010P = () => {
             </FormTable>
           </Grow>
 
-          <FormTable caption={'계약기본사항'} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
-            <FormRow>
-              <FormCell title={'상품선택'} colSpan={3}>
-                <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                  <RadioGroupItem color="primary" id="SelectProduct1" size="lg" value="option1" variant="default" checked={true}>
-                    4세대신손
-                  </RadioGroupItem>
-                  <RadioGroupItem color="primary" id="SelectProduct2" size="lg" value="option2" variant="default">
-                    간편실손
-                  </RadioGroupItem>
-                </RadioGroup>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={'보험시기'}>2026-03-06</FormCell>
-              <FormCell title={'유효설계'}>2026-03-06까지</FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={'보장내용변경주기'}>
-                <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                  <RadioGroupItem color="primary" id="BenefitPeriod1" size="lg" value="option1" variant="default" checked={true}>
-                    05년만기
-                  </RadioGroupItem>
-                </RadioGroup>
-              </FormCell>
-              <FormCell title={'납기'}>
-                <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                  <RadioGroupItem color="primary" id="FullTerm1" size="lg" value="option1" variant="default" checked={true}>
-                    전기납
-                  </RadioGroupItem>
-                </RadioGroup>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={'납기주기'}>
-                <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                  <RadioGroupItem color="primary" id="Monthly1" size="lg" value="option1" variant="default" checked={true}>
-                    월납
-                  </RadioGroupItem>
-                  <RadioGroupItem color="primary" id="Monthly2" size="lg" value="option2" variant="default">
-                    2월납
-                  </RadioGroupItem>
-                  <RadioGroupItem color="primary" id="Monthly3" size="lg" value="option3" variant="default">
-                    3월납
-                  </RadioGroupItem>
-                  <RadioGroupItem color="primary" id="Monthly6" size="lg" value="option4" variant="default">
-                    6월납
-                  </RadioGroupItem>
-                  <RadioGroupItem color="primary" id="Yearly1" size="lg" value="option5" variant="default">
-                    년납
-                  </RadioGroupItem>
-                </RadioGroup>
-              </FormCell>
-              <FormCell title={'갱신주기'}>
-                <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                  <RadioGroupItem color="primary" id="1year" size="lg" value="option1" variant="default" checked={true}>
-                    1년
-                  </RadioGroupItem>
-                </RadioGroup>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={'태아여부'}>
-                <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">
-                  가입
-                </Checkbox>
-              </FormCell>
-              <FormCell title={'일신부'}>
-                <Input aria-label="" width={'7rem'} value={''} readOnly />
-                <Input aria-label="" width={'14rem'} value={''} readOnly />
-              </FormCell>
-            </FormRow>
-          </FormTable>
+          <TableFold variant={'default'}>
+            <TableFoldHead title="계약기본사항">
+            </TableFoldHead>
+            <TableFoldBody>
+              <FormTable caption={'계약기본사항'} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                <FormRow>
+                  <FormCell title={'상품선택'} colSpan={3}>
+                    <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
+                      <RadioGroupItem color="primary" id="SelectProduct1" size="lg" value="option1" variant="default" checked={true}>
+                        4세대신손
+                      </RadioGroupItem>
+                      <RadioGroupItem color="primary" id="SelectProduct2" size="lg" value="option2" variant="default">
+                        간편실손
+                      </RadioGroupItem>
+                    </RadioGroup>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'보험시기'}>2026-03-06</FormCell>
+                  <FormCell title={'유효설계'}>2026-03-06까지</FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'보장내용변경주기'}>
+                    <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
+                      <RadioGroupItem color="primary" id="BenefitPeriod1" size="lg" value="option1" variant="default" checked={true}>
+                        05년만기
+                      </RadioGroupItem>
+                    </RadioGroup>
+                  </FormCell>
+                  <FormCell title={'납기'}>
+                    <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
+                      <RadioGroupItem color="primary" id="FullTerm1" size="lg" value="option1" variant="default" checked={true}>
+                        전기납
+                      </RadioGroupItem>
+                    </RadioGroup>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'납기주기'}>
+                    <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
+                      <RadioGroupItem color="primary" id="Monthly1" size="lg" value="option1" variant="default" checked={true}>
+                        월납
+                      </RadioGroupItem>
+                      <RadioGroupItem color="primary" id="Monthly2" size="lg" value="option2" variant="default">
+                        2월납
+                      </RadioGroupItem>
+                      <RadioGroupItem color="primary" id="Monthly3" size="lg" value="option3" variant="default">
+                        3월납
+                      </RadioGroupItem>
+                      <RadioGroupItem color="primary" id="Monthly6" size="lg" value="option4" variant="default">
+                        6월납
+                      </RadioGroupItem>
+                      <RadioGroupItem color="primary" id="Yearly1" size="lg" value="option5" variant="default">
+                        년납
+                      </RadioGroupItem>
+                    </RadioGroup>
+                  </FormCell>
+                  <FormCell title={'갱신주기'}>
+                    <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
+                      <RadioGroupItem color="primary" id="1year" size="lg" value="option1" variant="default" checked={true}>
+                        1년
+                      </RadioGroupItem>
+                    </RadioGroup>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'태아여부'}>
+                    <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">
+                      가입
+                    </Checkbox>
+                  </FormCell>
+                  <FormCell title={'일신부'}>
+                    <Input aria-label="" width={'7rem'} value={''} readOnly />
+                    <Input aria-label="" width={'14rem'} value={''} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </TableFoldBody>
+          </TableFold>
 
-          <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
-            <FormRow>
-              <FormCell title={'피보험자'}>
-                <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
-                <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
-              </FormCell>
-              <FormCell title={'알림사항'}>
-                <Grow placement={'bwc'}>
-                  <Grow>
-                    <Input aria-label="" width={'4rem'} value={'무'} readOnly />
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      입력
-                    </Button>
-                  </Grow>
-                  <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">
-                    의료급여수급권자할인
-                  </Checkbox>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={'계약자'}>
-                <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
-                <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
-              </FormCell>
-              <FormCell title={'주피와관계'}>
-                주피보험자(김한화)는 계약자의
-                <NativeSelect aria-label="개인정보취득경로 선택" width="10rem" readOnly value={relationValue} onChange={(event) => setRelationValue(event.target.value)}>
-                  {[
-                    { value: 'selection', id: 'personalinfo-1', label: '선택1' },
-                    { value: 'selection2', id: 'personalinfo-2', label: '선택2' },
-                  ].map((option) => (
-                    <NativeSelectOption key={option.id} value={option.value}>
-                      {option.label}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-              </FormCell>
-            </FormRow>
-          </FormTable>
+           <TableFold variant={'default'}>
+            <TableFoldHead title="피보험자/계약자">
+            </TableFoldHead>
+            <TableFoldBody>
+              <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                <FormRow>
+                  <FormCell title={'피보험자'}>
+                    <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
+                    <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
+                  </FormCell>
+                  <FormCell title={'알림사항'}>
+                    <Grow placement={'bwc'}>
+                      <Grow>
+                        <Input aria-label="" width={'4rem'} value={'무'} readOnly />
+                        <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                          입력
+                        </Button>
+                      </Grow>
+                      <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">
+                        의료급여수급권자할인
+                      </Checkbox>
+                    </Grow>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'계약자'}>
+                    <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
+                    <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
+                  </FormCell>
+                  <FormCell title={'주피와관계'}>
+                    주피보험자(김한화)는 계약자의
+                    <NativeSelect aria-label="개인정보취득경로 선택" width="10rem" readOnly value={relationValue} onChange={(event) => setRelationValue(event.target.value)}>
+                      {[
+                        { value: 'selection', id: 'personalinfo-1', label: '선택1' },
+                        { value: 'selection2', id: 'personalinfo-2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </TableFoldBody>
+          </TableFold>  
 
           <FormTable caption={'합계보험료'} cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
             <FormRow>
@@ -370,41 +384,48 @@ export const LTPZ010P = () => {
             </FormRow>
           </FormTable>
 
-          <Grow className="w-full">
-            <div className="ag-theme-alpine aggrid-pagination-ko h-104! w-full">
-              <AgGridReact<DummyDataType>
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={{ 
-                  sortable: false, 
-                  resizable: false,
-                  cellClass: 'p-0', 
-                  cellStyle: { padding: 0 },
-                }}
-                animateRows={false}
-                alwaysShowHorizontalScroll={true}
-                singleClickEdit={true}
-                onCellValueChanged={onCellValueChanged}
-                rowSelection={{
-                  mode: 'singleRow',
-                  checkboxes: true,
-                  enableClickSelection: false,
-                }}
-                selectionColumnDef={{
-                  headerName: '선택',
-                  cellClass: 'text-center editable-cell',
-                }}
-                onGridReady={(params) => {
-                  params.api.forEachNode((node) => {
-                    if (node.data?.isCheck) {
-                      node.setSelected(true);
-                    }
-                  });
-                }}
-              />
-            </div>
-          </Grow>
+           <TableFold variant={'default'}>
+            <TableFoldHead title="담보가입사항">
+            </TableFoldHead>
+            <TableFoldBody>
+            <Grow className="w-full">
+              <div className="ag-theme-alpine aggrid-pagination-ko h-104! w-full">
+                <AgGridReact<DummyDataType>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ 
+                    sortable: false, 
+                    resizable: false,
+                    cellClass: 'p-0', 
+                    cellStyle: { padding: 0 },
+                  }}
+                  animateRows={false}
+                  alwaysShowHorizontalScroll={true}
+                  singleClickEdit={true}
+                  onCellValueChanged={onCellValueChanged}
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    cellClass: 'text-center editable-cell',
+                  }}
+                  onGridReady={(params) => {
+                    params.api.forEachNode((node) => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                />
+              </div>
+            </Grow>
+            </TableFoldBody>
+          </TableFold>
+
         </DialogSection>
 
         <DialogFooter>
