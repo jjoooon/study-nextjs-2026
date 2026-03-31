@@ -437,7 +437,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
                 <Button variant={'contained'} size={'xl'}>
                   저장
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
                   닫기
                 </Button>
               </Grow>
