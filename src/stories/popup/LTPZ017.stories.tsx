@@ -1,0 +1,38 @@
+import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { LTPZ017P } from '@/features/pub/proto/popup/LTPZ017';
+import { LayoutDoc } from '@layout/BaseLayout';
+
+const meta: Meta<typeof LTPZ017P> = {
+  title: 'popup/LTPZ017',
+  component: LTPZ017P,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+    docs: {
+      page: () => {
+        return (
+          <>
+            <Title />
+            <br />
+            <Primary />
+            <Controls />
+          </>
+        );
+      },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  render: () => (
+    <LayoutDoc>
+      <LTPZ017P />
+    </LayoutDoc>
+  ),
+};
