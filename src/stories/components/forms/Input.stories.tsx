@@ -226,7 +226,7 @@ import { Input } from '@uiux/Input';
       table: { category: '스타일 props' },
     },
     width: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['full', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       table: { category: '스타일 props' },
     },
@@ -262,7 +262,7 @@ import { Input } from '@uiux/Input';
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
@@ -270,14 +270,16 @@ import { Input } from '@uiux/Input';
       control: { type: 'text' },
       table: { category: '에러 props' },
     },
+
+    isFocused: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
    
     // 숨기고 싶은 prop 예시
-    value: {
-      table: { disable: true },
-    },
-    onChange: {
-      table: { disable: true },
-    },
+    value: {table: { disable: true },},
+    onChange: {table: { disable: true },},
+    formatter: { table: { disable: true },},
   },
   args: {
     variant: 'default',

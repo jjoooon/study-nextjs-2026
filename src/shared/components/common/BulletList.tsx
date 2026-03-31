@@ -11,16 +11,41 @@ interface BulletListProps extends HTMLAttributes<HTMLLIElement> {
   type?: 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
   className?: string;
   dataBefore?: string;
+  onClick?: () => void;
 }
+  interface BulletItemProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+    size?: 'sm' | 'md' | 'lg' | 'xs';
+    color?: 'default' | 'info' | 'detail' | 'warning';
+    type?: 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
+    className?: string;
+    dataBefore?: string;
+  }
 
-export const BulletList = ({ children, position = 'col', className }: BulletListProps) => {
+export const BulletList = ({ 
+  children, 
+  position = 'col', 
+  className 
+}: BulletListProps) => {
   return (
-    <ul className={cn(position === 'row' ? 'flex flex-row flex-wrap items-center' : 'flex flex-col', className)}>
+    <ul className={cn(
+      position === 'row' ? 'flex flex-row flex-wrap items-center' : 'flex flex-col', 
+      className
+    )}>
       {children}
     </ul>
   );
 };
-export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'default', className, ...rest }: BulletListProps) => {
+
+export const BulletListItem = ({ 
+  children, 
+  type = 'dot', 
+  size = 'md', 
+  color = 'default', 
+  className, 
+  onClick,
+  ...rest 
+}: BulletListProps) => {
   const bulletStyles = {
     dot: '-indent-[0.9rem] ml-[0.9rem]',
     dotBig: '-indent-[1.1rem] ml-[1.1rem]',
@@ -46,12 +71,13 @@ export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'd
   return (
     <li
       className={cn(
-        `relative [counter-increment:dep1]`, 
+        `relative ${onClick ? 'cursor-pointer' : ''}`, 
         itemColor[color], 
         bulletStyles[type], 
         itemSize[size], 
         className)
       }
+      onClick={onClick}
       {...rest}
     >
       {type === 'ref' && (
@@ -95,7 +121,15 @@ export const BulletListItem = ({ children, type = 'dot', size = 'md', color = 'd
   );
 };
 
-export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'default', className, ...rest }: BulletListProps) => {
+export const BulletItem = ({ 
+  children, 
+  type = 'dot', 
+  size = 'md', 
+  color = 'default', 
+  onClick, 
+  className, 
+  ...rest 
+  }: BulletItemProps) => {
   // dot 타입에 사이즈별 블릿 크기 적용
   const bulletStyles = {
     dot: '-indent-[0.9rem] ml-[0.9rem]',
@@ -119,9 +153,15 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'defau
     warning: 'text-[var(--color-danger-50)]',
   }
   return (
-    <Grow
-      className={cn(`relative`, bulletStyles[type], itemSize[size], itemColor[color], className)}
-      {...rest}
+    <div
+      className={cn(
+        `relative ${onClick ? 'cursor-pointer' : ''}`, 
+        bulletStyles[type], 
+        itemSize[size], 
+        itemColor[color], 
+        className
+      )}
+      onClick={onClick}
     >
       {type === 'ref' && (
         <RefIcon
@@ -152,7 +192,6 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'defau
           className={cn('inline-flex -translate-y-[0.15rem] mr-[0.2rem]')}
         />
       )}
-
       {type === 'hash' && (
         <HashIcon
           className={cn('inline-flex -translate-y-[0.1rem] mr-[0.2rem]')}
@@ -160,6 +199,6 @@ export const BulletItem = ({ children, type = 'dot', size = 'md', color = 'defau
         />
       )}
       {children}
-    </Grow>
+    </div>
   );
 };

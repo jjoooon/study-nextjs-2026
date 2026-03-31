@@ -6,6 +6,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Badge } from '@uiux/Badge';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 type TaskStatusBoardProps<T extends { 
@@ -62,7 +63,9 @@ export default function TaskStatusBoard<T extends {
                   {item.label}
                 </Typo>
                 {'sum' in item && typeof item.sum === 'number' && item.sum > 0 && (
-                  <span className={twMerge("block text-[1.1rem] font-bold bg-[var(--color-blue-gray-20)] pl-1 pr-[0.6rem] h-[1.5rem] rounded-full leading-1 pt-[0.5rem]", "no-underline")}>{item.sum}</span>
+                  <Badge variant={'rounded'} size={'sm'}>
+                    {item.sum}
+                  </Badge>
                 )}
               </span>
               <span className={cn(

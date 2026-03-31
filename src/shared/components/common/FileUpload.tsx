@@ -2,16 +2,19 @@
 
 import { useId, useState, useEffect } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow, Typo } from '@atoms';
+import { Grow, Gcol, Typo } from '@atoms';
 import { FileUploadIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { FileItemIcon } from '@icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type FileItem = {
   name: string;
+  ext?: string;
   key?: string;
+  nameLastWord?: string;
 };
 
 type FileUploadProps = {
@@ -48,30 +51,60 @@ export function FileUpload({
   };
 
   return (
-    <Grow>
+    <Grow placement={'ss'} gap={1.5}>
       {/* ── 파일선택 버튼 ── */}
-      <Button
-        variant={'outlined'}
-        color={'gray'}
-        size={'md'}
-        aria-label="파일선택"
-        aria-describedby={errorMessage ? `${baseId}-error` : undefined}
-        aria-invalid={!!errorMessage}
-        onClick={onClickButton}
-      >
-        <FileUploadIcon />
-        파일선택
-      </Button>
+      <div className="relative w-[7.7rem] h-[2.5rem]">
+        <input
+          type="file" 
+          multiple 
+          className="w-full h-full border opacity-0 cursor-pointer"
+          onChange={e => {
+            const fileList = e.target.files;
+            let filesData = []
+            for (let i = 0; i < (fileList?.length ?? 0); i++) { 
+              filesData.push({ 
+                name: fileList?.[i]?.name ?? `file-${i}`,
+                ext: fileList?.[i]?.name.split('.').slice(-1)[0] ?? '',
+                nameLastWord: (() => {
+                  const fullName = fileList?.[i]?.name ?? '';
+                  const dotIdx = fullName.lastIndexOf('.');
+                  const nameWithoutExt = dotIdx > 0 ? fullName.slice(0, dotIdx) : fullName;
+                  return nameWithoutExt.length > 0 ? nameWithoutExt.slice(-1) : '';
+                })(),
+              });
+            }
+            setFiles(filesData);
+          }}
+        />
+        <Button
+          variant={'outlined'}
+          color={'gray'}
+          size={'md'}
+          aria-label="파일선택"
+          aria-describedby={errorMessage ? `${baseId}-error` : undefined}
+          aria-invalid={!!errorMessage}
+          onClick={onClickButton}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+        >
+          <FileUploadIcon />
+          파일선택
+        </Button>
+      </div>
+      
 
       {/* ── 파일 태그 목록 ── */}
-      {files.map((file, index) => (
-        <FileTag
-          key={file.key ?? `${file.name}-${index}`}
-          name={file.name}
-          hasError={!!errorMessage}
-          onRemove={() => handleRemove(file, index)}
-        />
-      ))}
+      <Gcol className="pt-[0.2rem]" gap={1.5} placement={'ss'}>
+        {files.map((file, index) => (
+          <FileTag
+            key={file.key ?? `${file.name}-${index}`}
+            name={file.name}
+            ext={file.ext}
+            lastname={file.nameLastWord}
+            hasError={!!errorMessage}
+            onRemove={() => handleRemove(file, index)}
+          />
+        ))}
+      </Gcol>
 
       {/* ── 에러 메시지 ── */}
       {errorMessage && (
@@ -100,49 +133,66 @@ function truncateTail(name: string, keepStart = 12, keepEnd = 1): string {
 
 type FileTagProps = {
   name: string;
+  ext?: string;
+  lastname?: string;
   onRemove: () => void;
   hasError?: boolean;
 };
 
-function FileTag({ name, onRemove, hasError = false }: FileTagProps) {
+function FileTag({ name, ext, lastname, onRemove, hasError = false }: FileTagProps) {
   const displayName = truncateTail(name);
+  const isTruncated = displayName !== name;
 
   return (
-    <Grow className="group">
+    <Grow placement={'sc'}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="min-w-0 w-[12.3rem]">
+          <Grow className="w-full max-w-[12.3rem] gap-[0.2rem] hover:[&>div]:underline hover:[&>div]:text-[#006FF2]" placement={'sc'}>
+            <FileItemIcon className="shrink-0" />
+            
             <Typo
               variant="body-sm"
-              tag="span"
+              tag= "div"
               className={cn(
-                'transition-colors duration-100',
+                'transition-colors duration-100 truncate tracking-0 pr-[0.3rem]',
                 hasError
                   ? 'text-[var(--color-text-danger)] underline'
                   : 'hover:text-[#006FF2] hover:underline'
               )}
             >
-              {displayName}
+              {name}
             </Typo>
-          </span>
+
+            {isTruncated && (
+              <Typo
+                variant="body-sm"
+                tag="div"
+                className="tracking-0"
+              >
+                {ext ? `${lastname}.${ext}` : ''}
+              </Typo>
+            )}
+          </Grow>
         </TooltipTrigger>
         <TooltipContent variant="default" side="bottom" align="center" sideOffset={0}>
           {name}
         </TooltipContent>
       </Tooltip>
 
-      <button
+      <Button
         type="button"
         aria-label={`${name} 삭제`}
         onClick={onRemove}
+        only={'icon'}
+        variant={'none'} 
         className={cn(
           'shrink-0 inline-flex items-center justify-center',
-          'w-3.5 h-3.5 rounded-full',
-          'text-[var(--color-text-subtle)]'
+          'w-[1.6rem] h-[1.6rem] rounded-full',
+          'text-[var(--color-text-subtle)] translate-y-[0.1rem]',
         )}
       >
         <InputClearIcon color={'#6B7280'} size={16} />
-      </button>
+      </Button>
     </Grow>
   );
 }

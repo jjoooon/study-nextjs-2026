@@ -290,6 +290,7 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
     type01: '',
     type02: '',
     type03: '',
+    type04: '',
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -329,7 +330,11 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
-              <Input aria-label="" width={'8rem'} value={'12345678'} />
+              <Input aria-label="" 
+                width={'9rem'} 
+                value={form.type02 || '12345678'}
+                onChange={e => setFormField('type02', e.target.value)}
+              />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
@@ -339,12 +344,12 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
               <NativeSelect
                 aria-label="모계약종류 선택"
                 width="13.5rem"
-                value={form.type02}
-                onChange={(e) => setFormField('type02', e.target.value)}
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type02-1', label: '유병자실손' },
-                  { value: 'selection2', id: 'type02-2', label: '유병자실손2' },
+                  { value: 'selection', id: 'type03-1', label: '유병자실손' },
+                  { value: 'selection2', id: 'type03-2', label: '유병자실손2' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -386,12 +391,12 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
               <NativeSelect
                 aria-label="처리상태 선택"
                 width="13.5rem"
-                value={form.type03}
-                onChange={(e) => setFormField('type03', e.target.value)}
+                value={form.type04}
+                onChange={(e) => setFormField('type04', e.target.value)}
               >
                 {[
-                  { value: 'selection', id: 'type03-1', label: '재가입거절완료' },
-                  { value: 'selection2', id: 'type03-2', label: '재가입거절완료2' },
+                  { value: 'selection', id: 'type04-1', label: '재가입거절완료' },
+                  { value: 'selection2', id: 'type04-2', label: '재가입거절완료2' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -475,7 +480,7 @@ const LTPA310 = ({ isNoData = false }: LTPA310Props) => {
             noRowsOverlayComponent={AgGridEmptyComponent}
             defaultColDef={{ 
               sortable: false, 
-              resizable: false,
+              resizable: true,
             }}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}

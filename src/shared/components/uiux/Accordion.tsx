@@ -75,7 +75,7 @@ function AccordionTrigger({ className, title, children, ...props }: React.Compon
     minimal:
       'flex flex-1 items-center justify-between gap-4 py-2 text-base text-left font-medium transition-all hover:text-gray-600 [&[data-state=open]>svg]:rotate-180',
     tableHead:
-      'flex items-center justify-start gap-1 py-2 text-base text-left font-medium transition-all hover:text-gray-600 [&[data-state=open]>svg]:rotate-0',
+      'flex items-center justify-start gap-1 py-0 text-base text-left font-medium transition-all hover:text-gray-600 [&[data-state=open]>svg]:rotate-0',
   };
 
   return (

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
-import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Button } from '@uiux/Button';
 import { DatePickerInput } from '@common/DatePicker';
@@ -100,7 +99,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '체크단계',
+      headerName: '구분',
       field: 'field01',
       flex: 1,
       editable: true,
@@ -273,7 +272,7 @@ const LTPA190 = ({ isNoData = false }: LTPA190Props) => {
             noRowsOverlayComponent={AgGridEmptyComponent}
             defaultColDef={{ 
               sortable: false, 
-              resizable: false,
+              resizable: true,
             }}
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}

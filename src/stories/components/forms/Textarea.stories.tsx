@@ -17,6 +17,10 @@ const meta: Meta<typeof Textarea> = {
             <Title />
             <br />
             <br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
             <h2>Overview</h2>
             <div>
               <p>
@@ -58,112 +62,7 @@ import { Textarea } from '@uiux/Textarea';
 \`\`\`
               `}
             </Markdown>
-
-            <h2>API Reference</h2>
-            <p>Textarea 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>prop</th>
-                  <th>타입/옵션</th>
-                  <th>설명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>variant</td>
-                  <td>'default', 'outline'</td>
-                  <td>Textarea 스타일</td>
-                </tr>
-                <tr>
-                  <td>placeholder</td>
-                  <td>string</td>
-                  <td>플레이스홀더 텍스트</td>
-                </tr>
-                <tr>
-                  <td>readOnly</td>
-                  <td>boolean</td>
-                  <td>읽기 전용 여부</td>
-                </tr>
-                <tr>
-                  <td>disabled</td>
-                  <td>boolean</td>
-                  <td>비활성화 여부</td>
-                </tr>
-                <tr>
-                  <td>error</td>
-                  <td>boolean</td>
-                  <td>에러 상태</td>
-                </tr>
-                <tr>
-                  <td>errorMsg</td>
-                  <td>ReactNode</td>
-                  <td>에러 메시지</td>
-                </tr>
-                <tr>
-                  <td>errorPs</td>
-                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
-                  <td>에러 메시지 위치</td>
-                </tr>
-                <tr>
-                  <td>minLength</td>
-                  <td>number</td>
-                  <td>최소 글자 수 (조건 미달 시 에러 유지, 충족 시 에러 자동 해제)</td>
-                </tr>
-                <tr>
-                  <td>showMinLengthCount</td>
-                  <td>boolean</td>
-                  <td>최소 글자 수 카운터 표시 여부 (minLength와 함께 사용)</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h2>Variant</h2>
-            <p>Textarea 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <Textarea className="w-xs min-h-24" variant="default" value="default style" readOnly />
-                  <Textarea className="w-xs min-h-24" variant="outline" value="outline style" readOnly />
-                </Grow>
-              </Gcol>
-            </Unstyled>
-
-            <h2>State</h2>
-            <p>readOnly, disabled 상태를 지원합니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <Textarea className="w-xs min-h-24" value="읽기 전용" readOnly />
-                  <Textarea className="w-xs min-h-24" value="비활성화" disabled />
-                </Grow>
-              </Gcol>
-            </Unstyled>
-
-            <h2>MinLength</h2>
-            <p>minLength 설정 시 최소 글자 수 미달이면 에러가 유지되고, 충족하면 자동 해제됩니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Textarea className="w-xs min-h-24" error minLength={10} showMinLengthCount placeholder="10자 이상 입력하세요" />
-              </Gcol>
-            </Unstyled>
-
-            <h2>Error</h2>
-            <p>Textarea 컴포넌트에서 사용할 수 있는 에러 메시지 위치 옵션은 다음과 같습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="tl" errorMsg="top left" />
-                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="tc" errorMsg="top center" />
-                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="tr" errorMsg="top right" />
-                </Grow>
-                <Grow gap={8}>
-                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="bl" errorMsg="bottom left" />
-                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="bc" errorMsg="bottom center" />
-                  <Textarea className="w-xs min-h-24" value="에러" error errorPs="br" errorMsg="bottom right" />
-                </Grow>
-              </Gcol>
-            </Unstyled>
+ 
           </>
         );
       },
@@ -171,11 +70,7 @@ import { Textarea } from '@uiux/Textarea';
     controls: { expanded: false },
   },
   argTypes: {
-    variant: {
-      control: { type: 'select' },
-      options: ['default', 'outline'],
-      table: { category: '스타일 props' },
-    },
+    variant:{table: { disable: true },},
 
     readOnly: {
       control: { type: 'boolean' },
@@ -199,22 +94,13 @@ import { Textarea } from '@uiux/Textarea';
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
-    minLength: {
-      control: { type: 'number' },
-      table: { category: '에러 props' },
-    },
-    showMinLengthCount: {
-      control: { type: 'boolean' },
-      table: { category: '에러 props' },
-    },
-
-    className: {
-      table: { disable: true },
-    },
+    minLength:  {table: { disable: true },},
+    showMinLengthCount: {table: { disable: true },},
+    className: {table: { disable: true },},
     value: {
       table: { disable: true },
     },
@@ -230,7 +116,7 @@ import { Textarea } from '@uiux/Textarea';
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
-    showMinLengthCount: false,
+    showMinLengthCount: true,
   },
 };
 
@@ -251,7 +137,7 @@ export const Default: Story = {
       args.onChange?.(e);
     };
 
-    return <Textarea {...restArgs} value={value} onChange={handleChange} className="w-xs min-h-40" />;
+    return <Textarea {...restArgs} value={value} onChange={handleChange} />;
   },
 };
  

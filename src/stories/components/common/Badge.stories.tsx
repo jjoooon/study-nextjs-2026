@@ -14,6 +14,11 @@ const meta: Meta<typeof Badge> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div>
               <p>
@@ -130,7 +135,7 @@ import { Badge } from '@uiux/Badge';
   argTypes: {
     variant: {
       control: { type: 'inline-radio' },
-      options: ['contained', 'soft', 'outlined', 'ghost'],
+      options: ['contained', 'soft', 'outlined', 'ghost', 'rounded'],
       table: { category: '스타일 props' },
     },
     color: {

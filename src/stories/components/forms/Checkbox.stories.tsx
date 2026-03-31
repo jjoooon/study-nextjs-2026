@@ -307,7 +307,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   argTypes: {
     variant: {
       control: { type: 'inline-radio' },
-      options: ['default', 'favorite', 'noneText', 'button', 'text', 'chipText', 'chipBox'],
+      options: ['default', 'favorite', 'noneText', 'button', 'text', 'chipBox'],
       table: { category: '스타일 props' },
     },
     size: {
@@ -322,7 +322,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
     },
 
     checked: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: [false, true, 'indeterminate'],
       table: { category: '설정 props' },
     },
@@ -335,7 +335,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },

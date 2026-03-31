@@ -1,23 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
-import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Button } from '@uiux/Button';
-import { SearchIcon } from '@icons';
 import { DatePickerInput } from '@common/DatePicker';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler, useAgGridPagination } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridEmptyComponent, createCellValueChangedHandler, DatePickerCellEditor, useAgGridPagination } from '@aggrid';
 import { useFormFields } from '@hooks/useFormFields';
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Input } from '@/shared/components/uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const meta: Meta = {
-  title: 'Sample/Ha/전환_가입설계_0326/LTPA210',
+  title: 'Sample/Ha/전환_가입설계_0326/LTPA030',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -26,7 +26,7 @@ const meta: Meta = {
         <>
           <Title />
           <br /><br />
-          <h2>가입설계 &gt; 설계데이터조회 &gt; 장기보험-가입설계요청 LTPA210</h2>
+          <h2>가입설계 &gt; 설계데이터관리 &gt; 신계약기준관리 LTPA030</h2>
           <Primary />
         </>
       ),
@@ -36,11 +36,11 @@ const meta: Meta = {
 
 export default meta;
 
-type LTPA210Props = {
+type LTPA030Props = {
   isNoData?: boolean;
 };
 
-const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
+const LTPA030 = ({ isNoData = false }: LTPA030Props) => {
 
   // dummy data
   type DummyDataType = {
@@ -60,19 +60,19 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
       isCheck: false,
       field01: '',  
       field02: '',
-      field03: '2026-03-01',             
-      field04: '9999-12-31',
+      field03: '',             
+      field04: '',
       field05: '',        
       field06: '',
-      field07: '김한화',              
+      field07: '',              
     },
     {
       id: 2,
       isCheck: false,
       field01: '',  
       field02: '',
-      field03: '2026-03-01',             
-      field04: '9999-12-31',
+      field03: '',             
+      field04: '',
       field05: '',        
       field06: '',
       field07: '김한화',              
@@ -82,11 +82,11 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
       isCheck: false,
       field01: '',  
       field02: '',
-      field03: '2026-03-01',             
-      field04: '9999-12-31',
+      field03: '',             
+      field04: '',
       field05: '',        
       field06: '',
-      field07: '김한화',              
+      field07: '',
     },
   ];
 
@@ -94,45 +94,71 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '구분',
-      field: 'field01',
+      field: 'field02',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      editable: true,
+      cellClass: 'editable-cell text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', ''] },
     },
     {
       headerName: '대상',
       field: 'field02',
       flex: 2,
-      cellClass: 'flex! items-center! justify-center!',
-
+      autoHeight: true,
+      editable: true, 
+      cellClass: 'text-center  flex! items-center justify-center! editable-cell',
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+        <Grow className="w-full px-1" >
+          <Input aria-label="" width={'100%'} value={'1234567'} size="sm" readOnly />
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <SearchIcon  color={'var(--color-primary-50)'} />
+          </Button>
+          <Input aria-label="" width={'100%'} value={'김한화'} size="sm" readOnly />
+        </Grow>
+      ),
     },
     {
       headerName: '적용시작일자',
       field: 'field03',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      editable: true,
+      cellClass: 'editable-cell text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellEditor: DatePickerCellEditor,
     },
     {
       headerName: '적용종료일자',
       field: 'field04',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      editable: true,
+      cellClass: 'editable-cell text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellEditor: DatePickerCellEditor,
     },
     {
       headerName: '상태',
       field: 'field05',
-      flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!' 
+      flex: 0.7,
+      editable: true, 
+      cellClass: 'editable-cell text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', '정상', '고객환불', '조치완료', '취소'] },
     },
     {
-      headerName: '적용사유',
+      headerName: '비고',
       field: 'field06',
-      flex: 2,
-      cellClass: 'flex! items-center! justify-center!' 
+      flex: 1.5,
+      editable: true,
+      cellClass: 'editable-cell' 
     },
     {
       headerName: '등록자',
       field: 'field07',
       flex: 0.7,
+      editable: true,
       cellClass: 'flex! items-center! justify-center!' 
     },
   ];
@@ -151,8 +177,7 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
-    type03: '',
-    type04: '',
+    type03: '', 
   });
 
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
@@ -169,7 +194,7 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
     <Gcol className="w-full gap-[1.2rem]">
       <Grow className="w-full" variant="box-round" placement={'bwe'}>
         <FormTable variant={'none'}
-          caption="장기보험 모집자 설계 조회 테이블"
+          caption="장기신계약 조회 테이블"
           cols={[
             'w-[10rem]', 'min-w-[14rem] flex-1',
             'w-[10rem]', 'min-w-[14rem] flex-1',
@@ -177,33 +202,46 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
           ]}
         >
           <FormRow>
-            <FormCell title={'등록항목'}>
+            <FormCell title={'보종군'}>
               <NativeSelect
                 aria-label="항목 선택"
                 width="12rem"
                 value={form.type01}
                 onChange={(e) => setFormField('type01', e.target.value)}
-                required
               >
                 {[
-                  { value: 'selection', id: 'type01-1', label: '-' },
-                  { value: 'selection2', id: 'type01-2', label: '항목2' },
+                  { value: 'selection', id: 'type01-1', label: '공통' },
+                  { value: 'selection2', id: 'type01-2', label: '' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
               </NativeSelect>
             </FormCell>
-            <FormCell title={'조직구분'}>
+            <FormCell title={'적용사항'}>
               <NativeSelect
-                aria-label="조직구분 선택"
-                width="12rem"
+                aria-label="적용사항 선택"
+                width="17rem"
                 value={form.type02}
                 onChange={(e) => setFormField('type02', e.target.value)}
-                required
               >
                 {[
                   { value: 'selection', id: 'type02-1', label: '선택' },
-                  { value: 'selection2', id: 'type02-2', label: '항목2' },
+                  { value: 'selection2', id: 'type02-2', label: '모집자실명제준수 예외' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FormCell>
+            <FormCell title={'적용대상'}>
+              <NativeSelect
+                aria-label="적용대상 선택"
+                width="23rem"
+                value={form.type03}
+                onChange={(e) => setFormField('type03', e.target.value)}
+              >
+                {[
+                  { value: 'selection', id: 'type03-1', label: '선택' },
+                  { value: 'selection2', id: 'type03-2', label: '모집자실명제준수 예외' },
                 ].map((option) => (
                   <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                 ))}
@@ -211,43 +249,20 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
               <Input
                 aria-label=""
                 width={'15rem'}
-                value={form.type03}
-                onChange={e => setFormField('type03', e.target.value)}
+                value={'1234567'}
+                readOnly
               />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button> 
-              <Input aria-label="" 
+              <Input 
+
+              
+                aria-label="" 
                 width={'15rem'} 
                 value={'김한화'}
                 readOnly
               />
-              <Grow className="ml-[8rem]">
-                <NativeSelect
-                  aria-label="조직구분 선택"
-                  width="12rem"
-                  value={form.type04}
-                  onChange={(e) => setFormField('type04', e.target.value)}
-                  required
-                >
-                  {[
-                    { value: 'selection', id: 'type04-1', label: '선택' },
-                    { value: 'selection2', id: 'type04-2', label: '항목2' },
-                  ].map((option) => (
-                    <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                  ))}
-                </NativeSelect>
-                <DatePickerInput
-                  errorMsg="입력은 필수입니다."
-                  errorPs="bl"
-                  mode="single"
-                  onChange={() => {}}
-                  size="lg"
-                  value=""
-                  width="sm"
-                  required
-                />
-              </Grow>
             </FormCell>
           </FormRow>
         </FormTable>
@@ -303,10 +318,10 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA210Story: Story = {
-  render: () => <LTPA210 />,
+export const LTPA030Story: Story = {
+  render: () => <LTPA030 />,
 };
 
-export const LTPA210NoData: Story = {
-  render: () => <LTPA210 isNoData={true} />,
+export const LTPA030NoData: Story = {
+  render: () => <LTPA030 isNoData={true} />,
 };

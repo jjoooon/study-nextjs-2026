@@ -25,6 +25,11 @@ const meta: Meta<typeof Gcol> = {
         return (
           <>
             <Title /><br /><br />
+            <h2>History</h2>
+            <ul>
+              <li>2026.03.30</li>
+            </ul>
+            
             <h2>Overview</h2>
             <div>
               <p>
@@ -251,7 +256,7 @@ import { Gcol, Grow } from '@atoms';
       table: { disable: true },
     },
     placement: {
-      control: 'select',
+      control: 'inline-radio',
       options: placementOptions,
       description: '정렬 옵션 (justify-content + align-items)',
       table: {
@@ -259,7 +264,7 @@ import { Gcol, Grow } from '@atoms';
       },
     },
     variant: {
-      control: 'select',
+      control: 'inline-radio',
       options: variantOptions,
       description: '시각적 스타일 변형',
       table: {
@@ -267,11 +272,7 @@ import { Gcol, Grow } from '@atoms';
       },
     },
     gap: {
-      control: { type: 'number', min: 0, max: 12, step: 0.5 },
-      description: '아이템 간격 (gap)',
-      table: {
-        type: { summary: 'number' },
-      },
+      table: { disable: true },
     },
     className: {
       table: { disable: true },

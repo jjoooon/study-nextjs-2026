@@ -180,7 +180,6 @@ export function InputCombo({
         data-comboid={testId}
         clear={clear}
         isFocused={open || isFocused}
-        debug={true}
         {...restProps}
       />
       {open && filtered.length > 0 && popoverPos && typeof window !== 'undefined'
@@ -199,12 +198,13 @@ export function InputCombo({
                     className={cn(
                       `[&_td]:px-2 [&_td]:py-1 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm`, 
                       ulClassName,
+                    )}
+                  >
+                    <tbody className={cn(
                       col !== 1
                         ? `grid grid-cols-${col} [&_tr]:border-0 [&_tr]:-ml-[0.1rem] [&_tr]:-mt-[0.1rem]`
                         : '',
-                    )}
-                  >
-                    <tbody>
+                    )}>
                     {filtered.map((opt, idx) => (
                       <tr
                         key={opt.value}

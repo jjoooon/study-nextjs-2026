@@ -40,12 +40,13 @@ const badgeVariants = cva(
         contained: '',
         soft: 'border',
         outlined: 'border bg-transparent',
+        rounded: 'rounded-full bg-[var(--color-blue-gray-15)] text-[#000] h-[1.5rem] text-[1.1rem] font-bold px-[0.4rem]',
         ghost: '',
       },
       size: {
         lg: 'h-[2.4rem] text-[1.4rem] font-bold px-2 [&>svg]:size-[1.4rem] pt-[0.1rem]',
         md: 'h-[2rem] text-[1.2rem] font-bold px-1.5 [&>svg]:size-[1.2rem]',
-        sm: 'h-[1.5rem] text-[1.1rem] font-bold px-[0.2rem] pt-[0.1rem]',
+        sm: `h-[1.5rem] text-[1.1rem] font-bold px-[0.2rem] pt-[0.1rem] [&>svg]:size-[1.1rem]`,
       },
       color: {
         blue: '',
@@ -66,6 +67,9 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'gray', class: 'bg-[var(--color-blue-gray-15)] text-[var(--color-gray-70)]' },
       { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
+
+      { variant: 'rounded', size: 'sm', class: 'pl-[0.4rem] pr-[0.6rem]' },
+
       // Soft + Colors
       { variant: 'soft', color: 'blue', class: 'bg-[var(--color-information-10)] border-[var(--color-information-50)] text-[var(--color-information-50)]' },
       { variant: 'soft', color: 'red', class: 'bg-[var(--color-danger-10)] border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
