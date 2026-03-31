@@ -13,7 +13,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { useFormFields } from '@hooks/useFormFields';
 import { useAgGridPagination } from '@aggrid';
-import { MonthPicker } from '@/shared/components/common/MonthPicker';
+
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
