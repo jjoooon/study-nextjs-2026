@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@uiux/Accordion";
-import { Grow, Gcol, Typo } from '@atoms';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 
 import React, { createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -33,22 +33,22 @@ interface TableFoldHeadProps {
 }
 
 
-export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
+export const TableFold = ({ children, variant = 'default' }: TableFoldProps) => {
   return (
     <TableFoldContext.Provider value={{ variant }}>
       {variant === 'default' ? (
-        <Gcol gap={1.5} className="w-full">
+        <Grid gap={1.5} className="w-full grid-rows-[auto_1fr] h-full" placement={'bwc'}>
           {children}
-        </Gcol>
+        </Grid>
       ) : (
         <Accordion
           type="single"
           collapsible
           defaultValue="shipping"
-          className="w-full"
+          className="w-full grid h-full"
           variant={"tableHead"}
         >
-          <AccordionItem value="shipping" className="flex flex-col w-full gap-1.5">
+          <AccordionItem value="shipping" className="grid-rows-[auto_1fr] h-full w-full gap-1.5">
             {children}
           </AccordionItem>
         </Accordion>
@@ -85,10 +85,10 @@ export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
   if (v === 'default') {
-    return <div className="w-full">{children}</div>;
+    return <div className="w-full h-full">{children}</div>;
   }
   return (
-    <AccordionContent className={cn('justify-between w-full pb-0!')}>
+    <AccordionContent className={cn('justify-between w-full pb-0! relative')}>
       {children}
     </AccordionContent>
   );

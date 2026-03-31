@@ -71,12 +71,12 @@ export function PageTitleProduct({ data }: PageTitleProps) {
   }) => ({
     value: item.value,
     label: (
-      <div className="type--design-number">
-        <div>{item.label}</div>
-        <div>{item.name}</div>
-        <div>{item.amount}</div>
-        <div>{item.state}</div>
-      </div>
+      <>
+        <td>{item.label}</td>
+        <td>{item.name}</td>
+        <td>{item.amount}</td>
+        <td>{item.state}</td>
+      </>
     )
   }));
 

@@ -19,6 +19,10 @@ const meta: Meta<TableFoldProps> = {
         <>
           <Title />
           <br />
+          <h2>History</h2>
+          <ul>
+            <li>2026.03.31</li>
+          </ul>
           <h2>Overview</h2>
           <div>
             <p>
@@ -90,7 +94,7 @@ type Story = StoryObj<TableFoldProps>;
 export const Default: Story = {
   args: {},
   render: (args) => (
-    <Gcol gap={2} className="w-[60rem]">
+    <Gcol placement='ss' gap={2} className="w-[60rem] h-[80rem]">
       <TableFold variant={args.variant} {...args}>
         <TableFoldHead title={'모바일 판매 불가 상품'}>
           <Grow>

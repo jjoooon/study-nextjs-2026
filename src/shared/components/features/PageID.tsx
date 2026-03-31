@@ -34,7 +34,7 @@ export default function PageID({ data }: PageIDProps) {
       <Grow>
         <ZoomControl />
         <Button variant={'none'} only={'icon'} size={'md'} aria-label="페이지 닫기">
-          <CloseIcon />
+          <CloseIcon size={16} />
         </Button>
       </Grow>
     </Grow>

@@ -34,14 +34,14 @@ export const ZoomControl = () => {
 
   return (
     <Grow className="items-center">
-      <Button variant={'none'} only={'icon'} size={'sm'} className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
-        <ZoomOutIcon />
+      <Button variant={'none'} only={'icon'} className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
+        <ZoomOutIcon size={20} />
       </Button>
       <Typo variant={'button-sm'}>{zoomPercent}%</Typo>
-      <Button variant={'none'} only={'icon'} size={'sm'} className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
-        <ZoomInIcon />
+      <Button variant={'none'} only={'icon'} className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
+        <ZoomInIcon size={20} />
       </Button>
-      <Button variant={'outlined'} color={'gray'} className="mr-[1rem]" size={'sm'} onClick={handleZoomRest}>
+      <Button variant={'outlined'} color={'gray'} size={'sm'} onClick={handleZoomRest}>
         초기화
       </Button>
     </Grow>
