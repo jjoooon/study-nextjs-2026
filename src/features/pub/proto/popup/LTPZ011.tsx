@@ -152,7 +152,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
                   rowData={rowData2}
                   columnDefs={columnDefs2}
                   pinnedBottomRowData={sumRow2}
-                    defaultColDef={{ 
+                  defaultColDef={{ 
                     sortable: false, 
                     resizable: false,
                   }}

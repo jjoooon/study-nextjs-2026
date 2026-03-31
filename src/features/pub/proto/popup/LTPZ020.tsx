@@ -52,7 +52,6 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
     id: number;
     name: string;
     grade: string;
-    choice: string;
     gender: string;
     age: number;
   };
@@ -68,10 +67,10 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   };
 
   const insuredListData: InsuredListRow[] = [
-    { id: 1, choice:'', name: '', grade: '', gender: '', age: 0 },
-    { id: 2, choice:'', name: '', grade: '', gender: '', age: 0 },
-    { id: 3, choice:'', name: '', grade: '', gender: '', age: 0 },
-    { id: 4, choice:'', name: '', grade: '', gender: '', age: 0 },
+    { id: 1, name: '김한화', grade: '1', gender: '남자', age: 33 },
+    { id: 2, name: '', grade: '', gender: '', age: 0 },
+    { id: 3, name: '', grade: '', gender: '', age: 0 },
+    { id: 4, name: '', grade: '', gender: '', age: 0 },
   ];
   
   const coverageListData: CoverageListRow[] = [
@@ -82,11 +81,10 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   ];
   
   const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
-    { headerName: '선택', field: 'choice', width: 100, cellClass: 'text-center' },
-    { headerName: '성명', field: 'name', flex: 1, cellClass: 'text-center' },
-    { headerName: '급수', field: 'grade', width: 120, cellClass: 'text-center' },
-    { headerName: '성별', field: 'gender', width: 80, cellClass: 'text-center' },
-    { headerName: '연령', field: 'age', width: 80, cellClass: 'text-center' },
+    { field: 'name', headerName: '성명', flex: 1, cellClass: 'text-center' },
+    { field: 'grade', headerName: '급수', width: 120, cellClass: 'text-center' },
+    { field: 'gender', headerName: '성별', width: 80, cellClass: 'text-center' },
+    { field: 'age', headerName: '연령', width: 80, cellClass: 'text-center' },
   ];
 
   const coverageListColumnDefs: ColDef<CoverageListRow>[] = [
@@ -104,7 +102,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'h2'} variant={'heading-lg'}>설계복사</Typo>
@@ -112,11 +110,11 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
-          <Grow placement='bwc' className="w-full" variant={'box'}>
+          <Grow placement='bwe' className="w-full" variant={'box-round'} gap={5}>
             <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
-                <FormCell title={'증권번호'}>
-                  <Grow placement='bwc'>
+                <FormCell title={'증권번호'} className='w-full'>
+                  <Grow className='w-full'>
                     <Grow>
                       <Input aria-label="증권번호 검색" width={'10rem'} value={policySearchPart} onChange={(e) => setPolicySearchPart(e.target.value)} />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
@@ -124,15 +122,13 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                       </Button>
                       <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
                     </Grow>
-                    <Grow>
-                      <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">
-                        조회
-                      </Button>
-                    </Grow>
                   </Grow>
                 </FormCell>
               </FormRow>
             </FormTable>
+            <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="outlined" className='-translate-y-[0.4rem]!'>
+              조회
+            </Button>
           </Grow>
           <TabPager
             data={tabs}
@@ -182,9 +178,21 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={insuredListData}
                             columnDefs={insuredListColumnDefs}
-                            defaultColDef={{ sortable: false }}
+                             defaultColDef={{ 
+                              sortable: false, 
+                              resizable: false,
+                            }}
                             animateRows={false}
                             rowClassRules={{}}
+                            rowSelection={{
+                              mode: 'singleRow',
+                              checkboxes: true,
+                              enableClickSelection: false,
+                            }}
+                            selectionColumnDef={{
+                              headerName: '선택',
+                              cellClass: 'text-center editable-cell',
+                            }}
                           />
                         </div>
                       </TableFoldBody>
@@ -200,7 +208,10 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={coverageListData}
                             columnDefs={coverageListColumnDefs}
-                            defaultColDef={{ sortable: false }}
+                            defaultColDef={{ 
+                              sortable: false, 
+                              resizable: false,
+                            }}
                             animateRows={false}
                             rowClassRules={{}}
                           />
@@ -217,7 +228,10 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={coverageListData}
                     columnDefs={coverageListColumnDefs}
-                    defaultColDef={{ sortable: false }}
+                    defaultColDef={{ 
+                      sortable: false, 
+                      resizable: false,
+                    }}
                     animateRows={false}
                     rowClassRules={{}}
                   />
@@ -230,11 +244,8 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
               <Grow>
-                <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                  버튼
-                </Button>
                 <Button variant={'contained'} size={'xl'}>
-                  저장
+                  확인
                 </Button>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
                   닫기
