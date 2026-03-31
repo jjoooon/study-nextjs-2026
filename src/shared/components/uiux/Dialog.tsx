@@ -412,7 +412,7 @@ function DialogSection({ children, className, ...props }: React.ComponentProps<t
     <Grid
       gap={5}
       data-slot="dialog-section"
-      className={cn('px-6 w-full h-full', className)}
+      className={cn('px-6 w-full h-full text-[1.4rem]', className)}
       {...props}
     >
       {children}
