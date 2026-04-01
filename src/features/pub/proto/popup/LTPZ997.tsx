@@ -25,12 +25,12 @@ import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-gri
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPZ998Props {
+export interface LTPZ997Props {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export const LTPZ998 = ({ open, onOpenChange }: LTPZ998Props) => {
+export const LTPZ997 = ({ open, onOpenChange }: LTPZ997Props) => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -79,7 +79,7 @@ export const LTPZ998 = ({ open, onOpenChange }: LTPZ998Props) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>화면권한보기</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ998)</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ997)</Typo>
           </DialogTitle>
         </DialogHeader>
 
@@ -107,4 +107,4 @@ export const LTPZ998 = ({ open, onOpenChange }: LTPZ998Props) => {
 	);
 };
 
-export default LTPZ998;
+export default LTPZ997;
