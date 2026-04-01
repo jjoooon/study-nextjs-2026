@@ -373,3 +373,10 @@
 .ag-center-cols-viewport {
   min-height: 0rem !important;
 }
+
+.ag-overlay {
+  position: relative;
+}
+.ag-overlay-wrapper {
+  padding-bottom: 3rem;
+}

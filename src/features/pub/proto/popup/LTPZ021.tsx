@@ -7,19 +7,11 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
-import { Input } from '@uiux/Input';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { InfoBox } from '@/shared/components/common/InfoBox';
 import { TabPager } from '@/shared/components/common/TabPager';
-ModuleRegistry.registerModules([AllCommunityModule]);
-
 
 export interface LTPZ021PProps {
   open?: boolean;

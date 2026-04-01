@@ -5,6 +5,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, } from '@uiux/Dialog';
+import { AgGridEmptyComponent } from '@aggrid';
 
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -15,9 +16,8 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 interface LTPZ999Props {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  showOverlay?: boolean;
 }
-export const LTPZ999 = ({ open, onOpenChange, showOverlay = true }: LTPZ999Props) => {
+export const LTPZ999 = ({ open, onOpenChange }: LTPZ999Props) => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -144,7 +144,7 @@ export const LTPZ999 = ({ open, onOpenChange, showOverlay = true }: LTPZ999Props
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton showOverlay={showOverlay} resizable={true} size="md" className="h-[40rem]">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>메시지내용</Typo>
@@ -153,15 +153,17 @@ export const LTPZ999 = ({ open, onOpenChange, showOverlay = true }: LTPZ999Props
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine" >
+          <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}
+              noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{ 
                 sortable: true, 
                 resizable: true,
               }}
+              domLayout='autoHeight'
             />
           </div>
         </DialogSection>

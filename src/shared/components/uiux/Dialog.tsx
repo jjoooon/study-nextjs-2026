@@ -77,8 +77,72 @@ const resolveDialogSize = (size?: DialogSize) => {
   };
 };
 
-function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+// 열린 다이얼로그 depth 추적 — 가장 높은 depth 만 암막 표시
+const _openDialogs = new Map<string, number>(); // id → depth
+const _overlayListeners = new Set<() => void>();
+
+function _registerDialog(id: string, depth: number) {
+  _openDialogs.set(id, depth);
+  _overlayListeners.forEach(fn => fn());
+}
+function _unregisterDialog(id: string) {
+  _openDialogs.delete(id);
+  _overlayListeners.forEach(fn => fn());
+}
+function _getMaxOpenDepth() {
+  return _openDialogs.size > 0 ? Math.max(..._openDialogs.values()) : 0;
+}
+function _getOpenCount() {
+  return _openDialogs.size;
+}
+function _subscribeOverlay(fn: () => void) {
+  _overlayListeners.add(fn);
+  return () => { _overlayListeners.delete(fn); };
+}
+
+const DialogDepthContext = React.createContext<number>(0);
+
+function Dialog({
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  const parentDepth = React.useContext(DialogDepthContext);
+  const newDepth = parentDepth + 1;
+  const dialogId = React.useId();
+
+  // controlled / uncontrolled open 상태 모두 추적
+  const [openState, setOpenState] = React.useState(defaultOpen ?? false);
+  const isControlled = openProp !== undefined;
+  const isOpen = isControlled ? openProp : openState;
+
+  const handleOpenChange = React.useCallback(
+    (val: boolean) => {
+      if (!isControlled) setOpenState(val);
+      onOpenChange?.(val);
+    },
+    [isControlled, onOpenChange]
+  );
+
+  // open 상태일 때만 _openDialogs 에 등록
+  React.useEffect(() => {
+    if (!isOpen) return;
+    _registerDialog(dialogId, newDepth);
+    return () => _unregisterDialog(dialogId);
+  }, [isOpen, dialogId, newDepth]);
+
+  return (
+    <DialogDepthContext.Provider value={newDepth}>
+      <DialogPrimitive.Root
+        data-slot="dialog"
+        open={openProp}
+        defaultOpen={defaultOpen}
+        onOpenChange={handleOpenChange}
+        {...props}
+      />
+    </DialogDepthContext.Provider>
+  );
 }
 
 function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
@@ -93,12 +157,13 @@ function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.C
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
-function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+function DialogOverlay({ className, style, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
+      style={style}
       className={cn(
-        'fixed inset-0 z-50 bg-black/60',
+        'fixed inset-0 bg-black/60',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
         className
@@ -112,7 +177,7 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
-  showOverlay = true,
+  showOverlay,
   overlayClassName,
   resizable = false,
   zIndex,
@@ -134,6 +199,22 @@ function DialogContent({
     y: number;
   };
 }) {
+  const depth = React.useContext(DialogDepthContext);
+  // depth 기반 z-index: 상위 다이얼로그 content 위에 하위 암막/content가 올라옴
+  const overlayZIndex = DEFAULT_DIALOG_OVERLAY_Z_INDEX + (depth - 1) * 2;
+  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (depth - 1) * 2;
+
+  // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
+  const [maxOpenDepth, setMaxOpenDepth] = React.useState(_getMaxOpenDepth);
+  const [openCount, setOpenCount] = React.useState(_getOpenCount);
+
+  React.useEffect(() => _subscribeOverlay(() => {
+    setMaxOpenDepth(_getMaxOpenDepth());
+    setOpenCount(_getOpenCount());
+  }), []);
+
+  // 단일 팝업 → 항상 암막 표시 / 중첩 → 가장 위(depth === maxOpenDepth)만 표시
+  const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || depth >= maxOpenDepth);
   const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
@@ -160,9 +241,9 @@ function DialogContent({
       minHeight: resolvedSize.minHeight,
       maxWidth: resolvedSize.maxWidth,
       maxHeight: resolvedSize.maxHeight,
-      zIndex: zIndex ?? DEFAULT_DIALOG_CONTENT_Z_INDEX,
+      zIndex: zIndex ?? autoContentZIndex,
     }),
-    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, resolvedSize, zIndex]
+    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, resolvedSize, zIndex, autoContentZIndex]
   );
 
   const handleMouseDown = React.useCallback(
@@ -270,7 +351,7 @@ function DialogContent({
 
   return (
     <DialogPortal data-slot="dialog-portal">
-      {showOverlay && <DialogOverlay className={overlayClassName} />}
+      {resolvedShowOverlay && <DialogOverlay style={{ zIndex: overlayZIndex }} className={overlayClassName} />}
       <DialogPrimitive.Content
         ref={contentRef}
         data-slot="dialog-content"
@@ -284,15 +365,9 @@ function DialogContent({
         onMouseDown={handleMouseDown}
         onPointerDownOutside={(event) => {
           onPointerDownOutside?.(event);
-          if (!showOverlay) {
-            event.preventDefault();
-          }
         }}
         onInteractOutside={(event) => {
           onInteractOutside?.(event);
-          if (!showOverlay) {
-            event.preventDefault();
-          }
         }}
         {...props}
       >

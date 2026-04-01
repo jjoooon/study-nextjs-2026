@@ -73,6 +73,7 @@ type Variant =
   | 'box'
   | 'box-line'
   | 'box-info'
+  | 'box-info-line'
   | 'box-warning'
   | 'box-detail'
   | 'box-round';
@@ -141,6 +142,8 @@ const VARIANT_MAP: Record<Variant, string> = {
   'box-warning': 'px-2.5 py-2 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem]',
   'box-detail': 'px-2.5 py-2 bg-[var(--color-warning-5)] gap-1.5 rounded-[0.6rem]',
   'box-round': 'px-2.5 py-2.5 bg-[#F3F4F6] gap-1.5 rounded-[0.6rem]',
+
+  'box-info-line': 'px-2.5 py-2.5 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem] border! border-[var(--color-information-15)]',
 };
 
 export const Gcol = ({ 

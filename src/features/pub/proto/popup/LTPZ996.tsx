@@ -4,11 +4,11 @@ import { useMemo, useState } from 'react';
 import { Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, } from '@uiux/Dialog';
-import { LTPZ999 } from './LTPZ999';
 
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -26,7 +26,6 @@ export const LTPZ996 = ({ open, onOpenChange }: LTPZ996Props) => {
     field4: string;
     field5: string;
   };
-    
   const dummyData: DummyDataType[] = [
     { 
       id: 1, 
@@ -39,8 +38,6 @@ export const LTPZ996 = ({ open, onOpenChange }: LTPZ996Props) => {
     
   ];
 	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-  const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false);
-
   const columnDefs: ColDef<DummyDataType>[] = useMemo(() => [
 		{
 			headerName: '통신레코드',
@@ -75,8 +72,7 @@ export const LTPZ996 = ({ open, onOpenChange }: LTPZ996Props) => {
             type="button"
             className="cursor-pointer text-[#006FF2] underline underline-offset-4"
             onClick={event => {
-              event.stopPropagation();
-              setIsMessageDialogOpen(true);
+              console.log('메세지코드 클릭:', params.value);
             }}
           >
             {String(params.value)}
@@ -105,6 +101,7 @@ export const LTPZ996 = ({ open, onOpenChange }: LTPZ996Props) => {
         <DialogSection className="grid-rows-[1fr]">
           <div className="ag-theme-alpine" >
             <AgGridReact<DummyDataType>
+              noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}
@@ -123,8 +120,6 @@ export const LTPZ996 = ({ open, onOpenChange }: LTPZ996Props) => {
           </Gcol>
         </DialogFooter>
       </DialogContent>
-
-      <LTPZ999 open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen} showOverlay={false} />
     </Dialog>
 	);
 };
