@@ -113,15 +113,16 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement='bwc' className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'} lineTop={false} caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={[
+              'w-[1rem]', 'w-[10rem]', 
+              'w-[1rem]', 'w-auto'
+              ]}>
               <FormRow>
                 <FormCell title={'설계사'}>
-                  <Input aria-label="" width={'10rem'} value={'김한화'} readOnly />
+                  <Input value={'김한화'} readOnly />
                 </FormCell>
                 <FormCell title={'상품명'}>
-                  <Grow>
-                    <Input aria-label="" width={'40rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
-                  </Grow>
+                  <Input value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>

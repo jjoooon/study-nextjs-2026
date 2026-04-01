@@ -6,23 +6,10 @@ import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogTrigger } from '@uiux/Dialog';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-
-
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { PlusIcon, SearchIcon } from '@icons';
 
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 export interface LTPZ997Props {
@@ -50,28 +37,7 @@ export const LTPZ997 = ({ open, onOpenChange }: LTPZ997Props) => {
     { id: 9, field1: '통계-영업실적', field2: '경영기획 담당자', field3: '조회' },
     { id: 10, field1: '시스템관리-권한설정', field2: '시스템 관리자', field3: '조회,등록,수정,삭제' },
   ];
-	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
 
-	const columnDefs: ColDef<DummyDataType>[] = [
-		{
-			headerName: '메뉴명',
-			field: 'field1',
-			flex: 1,
-			cellClass: 'text-center',
-		},
-		{
-			headerName: '역할명',
-			field: 'field2',
-			flex: 1,
-      cellClass: 'text-center',
-		},
-    {
-			headerName: '역할권한',
-			field: 'field3',
-			flex: 1,
-      cellClass: 'text-center',
-		},
-	];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -84,17 +50,7 @@ export const LTPZ997 = ({ open, onOpenChange }: LTPZ997Props) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine" >
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              rowData={rowData}
-              columnDefs={columnDefs}
-              defaultColDef={{ 
-                sortable: true, 
-                resizable: true,
-              }}
-            />
-          </div>
+          
         </DialogSection>
 
         <DialogFooter>
