@@ -66,5 +66,5 @@ export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
   const isHidden = v === 'accordion' && !context?.open;
-  return <div style={isHidden ? { display: 'none' } : undefined}>{children}</div>;
+  return <div style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}>{children}</div>;
 };

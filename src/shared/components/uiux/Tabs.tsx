@@ -182,8 +182,10 @@ const TabsContent = React.forwardRef<
   return (
     <TabsPrimitive.Content
       ref={ref}
+      forceMount
       className={cn(
         'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+        'data-[state=inactive]:h-0 data-[state=inactive]:overflow-hidden',
         className
       )}
       data-variant={variant}
