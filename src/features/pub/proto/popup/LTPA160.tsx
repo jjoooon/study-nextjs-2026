@@ -7,6 +7,7 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
+import { ResetIcon } from '@icons'
 import { Input } from '@uiux/Input';
 import { FileExportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 
@@ -209,10 +210,10 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'span'} variant={'heading-lg'}>
+            <Typo tag={'strong'} variant={'heading-lg'}>
               담보내용상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
@@ -226,8 +227,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
             <FormTable
               variant={'head'}
               lineTop={false}
-              caption="누적조회"
-              cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}
+              caption=""
             >
               <FormRow>
                 <FormCell title={'조회구분'}>
@@ -278,17 +278,18 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                 </FormCell>
               </FormRow>
             </FormTable>
+
             <Grow>
-              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                새로고침
+              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                <ResetIcon />
               </Button>
             </Grow>
           </Grow>
 
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+          <Gcol placement="ss" className="w-full" gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)">
                 <Grow>
@@ -302,7 +303,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                 <Grow className="w-full">
                   <FormTable
                     caption="피보험자의 위험정보 테이블"
-                    cols={['w-[6rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[6rem]', 'flex-1', 'w-[6rem]', 'flex-1']}
+                    cols={['w-[5rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[5rem]', 'flex-1', 'w-[5rem]', 'flex-1']}
                   >
                     <FormRow>
                       <FormCell title={'직업'}>전기공학 개발자 및 연구원</FormCell>
@@ -317,33 +318,35 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
 
             <TableFold>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
-              <TableFoldBody className="grid grid-rows-[1fr_auto] w-full">
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType>
-                    // getRowId 적용: id 필드를 고유 식별자로 사용
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false }}
-                    enableCellSpan={true}
-                  />
-                </div>
-                <Gcol>
-                  <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
-                    <Typo variant={'body-sm'} icon={'warning'}>
-                      <b>주의사항 노출 영역</b>
-                    </Typo>
-                  </Gcol>
-                  <Gcol placement={'ss'} className='w-full'>
-                    <Typo variant={'body-sm'} icon={'detail'}>
-                      자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다.
-                    </Typo>
+              <TableFoldBody>
+                <Gcol className="w-full" gap={5}>
+                  <div className="ag-theme-alpine min-h-[18rem]">
+                    <AgGridReact<DummyDataType>
+                      // getRowId 적용: id 필드를 고유 식별자로 사용
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{ sortable: false }}
+                      enableCellSpan={true}
+                    />
+                  </div>
+                  <Gcol className='w-full'>
+                    <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'warning'}>
+                        <b>주의사항 노출 영역</b>
+                      </Typo>
+                    </Gcol>
+                    <Gcol placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'detail'}>
+                        자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다.
+                      </Typo>
+                    </Gcol>
                   </Gcol>
                 </Gcol>
                 
               </TableFoldBody>
             </TableFold>
-          </Grid>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>

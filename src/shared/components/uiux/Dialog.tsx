@@ -8,7 +8,7 @@ import { Gcol, Grid } from '@atoms';
 
 type DialogSizeValue = number | string;
 
-type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | '2xl' |'full';
 
 type DialogSizeConfig = {
   width?: DialogSizeValue;
@@ -32,6 +32,7 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   md: '56rem',
   lg: '76rem',
   xl: '96rem',
+  '2xl': '112rem',
 };
 
 const toCssSize = (value?: DialogSizeValue): string | undefined => {
@@ -52,7 +53,7 @@ const resolveDialogSize = (size?: DialogSize) => {
     };
   }
 
-  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl') {
+  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl' || size === '2xl') {
     return {
       width: DIALOG_PRESET_WIDTH[size],
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
@@ -275,7 +276,7 @@ function DialogContent({
         data-slot="dialog-content"
         style={contentStyle}
         className={cn(
-          'fixed left-[50%] top-[50%] grid grid-rows-[auto_1fr_auto] gap-[1.2rem] transition-none',
+          'fixed left-[50%] top-[50%] grid grid-rows-[auto_1fr_auto] gap-5 transition-none',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]' ,
           className
@@ -381,7 +382,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn('flex justify-between items-center gap-0 pt-5 pb-0 px-0 overflow-hidden rounded-bl-[.8rem] rounded-br-[.8rem] ', className)}
+      className={cn('flex justify-between items-center gap-0 pb-0 px-0 overflow-hidden rounded-bl-[.8rem] rounded-br-[.8rem] ', className)}
       
       {...props}
     />

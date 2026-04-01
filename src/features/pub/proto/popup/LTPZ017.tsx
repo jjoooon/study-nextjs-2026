@@ -106,7 +106,7 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>나만의설계</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>나만의설계</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
           </DialogTitle>
         </DialogHeader>
@@ -126,6 +126,7 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
               </FormRow>
             </FormTable>
           </Grow>
+
           <TableFold variant={'accordion'}>
             <TableFoldHead title="플랜등록사항" />
             <Gcol className="w-full" placement="ss" variant="box-detail">
@@ -133,40 +134,32 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
               {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
             </Gcol>
             <TableFoldBody>
-              <Gcol>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType>
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{ 
-                      sortable: false, 
-                      resizable: false,
-                      cellClass: 'p-0', 
-                      cellStyle: { padding: 0 },
-                    }}
-                    singleClickEdit={true}
-                    onCellValueChanged={onCellValueChanged}
-                    rowSelection={{
-                      mode: 'singleRow',
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    domLayout="autoHeight" 
-                    onGridReady={(params) => {
-                      params.api.forEachNode((node) => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                  />
-                </div>
-              </Gcol>
+              <div className="ag-theme-alpine min-h-[18rem]">
+                <AgGridReact<DummyDataType>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ sortable: false }}
+                  animateRows={false}
+                  alwaysShowHorizontalScroll={true}
+                  singleClickEdit={true}
+                  onCellValueChanged={onCellValueChanged}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: true,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  rowClassRules={{}}
+                  onGridReady={params => {
+                    params.api.forEachNode(node => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                />
+              </div>
             </TableFoldBody>
           </TableFold>  
         </DialogSection>  

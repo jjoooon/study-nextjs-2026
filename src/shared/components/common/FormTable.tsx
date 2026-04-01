@@ -168,12 +168,12 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
     head:
-      `w-full border-none flex flex-col 
+      `w-full border-none flex flex-col bg-[transparent] 
       [&_colgroup]:hidden 
-      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none! [&_tr]:w-full 
+      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none! [&_tr]:w-full [&_tr~tr>*]:pt-[0.6rem]! 
       [&_th]:flex [&_th]:items-center [&_th]:justify-start [&_th]:gap-2 [&_th]:border-none! [&_th]:w-max
-      [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! 
-      [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_tr~tr>*]:pt-[0.6rem]!
+      [&_th]:h-auto! [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! 
+      [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_td]:h-[auto] 
       [&_td+th]:pl-[1.6rem]!`,
     none: 'border-0! bg-transparent [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_td]:border-0! [&_tr]:border-0! [&_td]:p-0! [&_td+th]:pl-[1rem]! [&_th]:w-max [&_tr~tr>*]:pt-[0.6rem]!'
   };
@@ -203,7 +203,11 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
 export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
-      <tr className={vertical ? 'grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>th]:text-center [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>*]:py-1 [&>th>span]:leading-[1.1] [&>td]:min-h-[3rem] [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem] [&>td]:px-1 [&>td]:text-center [&>th]:first-of-type:border-l-0! [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! [&>th]:last-of-type:border-r-0! ' : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'}>
+      <tr className={vertical ? 
+      `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
+      [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
+      [&>th]:text-center [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] [&>td]:min-h-[3rem] [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem] [&>td]:px-1 [&>td]:text-center [&>th]:first-of-type:border-l-0! [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! [&>th]:last-of-type:border-r-0! ` 
+        : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'}>
         {children}
       </tr>
     </VerticalContext.Provider>
