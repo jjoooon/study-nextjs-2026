@@ -15,9 +15,9 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon, ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
@@ -125,6 +125,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   };
   const propertyListData: PropertyListRow[] = [
     { isCheck: false, id: 1, owner: '김한화', ownerNo: '901231-1111111', location: '서울시 강남구 역삼동', businessType: '아파트', appliedRate: '아파트', marketCode: '123', specialBuilding: '1231' },
+    { isCheck: false, id: 2, owner: '김한화', ownerNo: '901231-1111111', location: '서울시 강남구 역삼동', businessType: '아파트', appliedRate: '아파트', marketCode: '123', specialBuilding: '1231' },
   ];  
 
   const propertyListDataColumnDefs: ColDef<PropertyListRow>[] = [
@@ -138,11 +139,13 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
       headerName: '소유자',
       field: 'owner',
       width: 120,
+      cellClass: 'text-center',
     },
     {
       headerName: '소유자번호',
       field: 'ownerNo',
       width: 150,
+      cellClass: 'text-center',
     },
     { 
       headerName: '소재지',
@@ -171,6 +174,8 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
       cellClass: 'text-center' },
   ];  
 
+
+  //소재지 별 건물(수용장소)의 목록
   type BuildingByLocationRow = {
     id: number;
     columnType: string;
@@ -225,22 +230,58 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
     },
   ];
 
-  const buildingByLocationColumnDefs: ColDef<BuildingByLocationRow>[] = [
-    { headerName: '기둥', field: 'columnType', flex: 1 },
-    { headerName: '외벽', field: 'outerWall', flex: 1 },
-    { headerName: '지상(층)', field: 'aboveGroundFloors', width: 100, cellClass: 'text-center' },
-    { headerName: '지하(층)', field: 'belowGroundFloors', width: 100, cellClass: 'text-center' },
-    {
-      headerName: '연 면적',
-      field: 'grossFloorArea',
-      width: 120,
-      cellClass: 'text-right',
-      valueFormatter: (params) => params.value?.toLocaleString() ?? '',
+  const buildingByLocationColumnDefs: Array<ColDef<BuildingByLocationRow> | ColGroupDef<BuildingByLocationRow>> = [
+    { 
+      headerName: '기둥',
+      field: 'columnType', 
+      flex: 1, 
+      cellClass: 'text-center',
     },
-    { headerName: '기타구조', field: 'etcStructure', flex: 1 },
-    { headerName: '수용장소', field: 'accommodationPlace', width: 120, cellClass: 'text-center' },
+    { 
+      headerName: '외벽', 
+      field: 'outerWall', 
+      flex: 1,
+      cellClass: 'text-center',
+    },
+    { 
+      headerName: '건물규모', 
+      flex: 1,
+      cellClass: 'text-center',
+      children: [
+        { 
+          headerName: '지상(층)', 
+          field: 'aboveGroundFloors', 
+          width: 100, 
+          cellClass: 'text-center' 
+        },
+        { 
+          headerName: '지하(층)', 
+          field: 'belowGroundFloors', 
+          width: 100, 
+          cellClass: 'text-center' 
+        },
+        {
+          headerName: '연 면적(㎡)',
+          field: 'grossFloorArea',
+          width: 120,
+          cellClass: 'text-center',
+          valueFormatter: (params) => params.value?.toLocaleString() ?? '',
+        },
+      ]
+    },
+    { 
+      headerName: '기타구조', 
+      field: 'etcStructure',
+      cellClass: 'text-center border-l border-[#e5e5e5]',
+    },
+    { 
+      headerName: '수용장소',
+      field: 'accommodationPlace', 
+      width: 200,
+      cellClass: 'text-center' },
   ];
 
+  //보험목적물
   type InsuranceObjectRow = {
     id: number;
     category: string;
@@ -264,9 +305,23 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   ];
 
   const insuranceObjectColumnDefs: ColDef<InsuranceObjectRow>[] = [
-    { headerName: '구분', field: 'category', width: 140 },
-    { headerName: '급수', field: 'grade', width: 100, cellClass: 'text-center' },
-    { headerName: '보험기간', field: 'insurancePeriod', width: 120, cellClass: 'text-center' },
+    { 
+      headerName: '구분', 
+      field: 'category', 
+      width: 140 
+    },
+    { 
+      headerName: '급수',
+      field: 'grade', 
+      width: 100, 
+      cellClass: 'text-center' 
+    },
+    { 
+      headerName: '보험기간', 
+      field: 'insurancePeriod', 
+      width: 120, 
+      cellClass: 'text-center' 
+    },
     {
       headerName: '가입금액(원)',
       field: 'subscriptionAmount',
@@ -274,8 +329,98 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
       cellClass: 'text-right',
       valueFormatter: (params) => params.value?.toLocaleString() ?? '',
     },
-    { headerName: '보험목적물', field: 'insuranceObject', flex: 1 },
-    { headerName: '수용장소', field: 'accommodationPlace', width: 120, cellClass: 'text-center' },
+    { 
+      headerName: '보험목적물', 
+      field: 'insuranceObject', 
+      flex: 1 
+    },
+    { 
+      headerName: '수용장소', 
+      field: 'accommodationPlace', 
+      width: 120, 
+      cellClass: 'text-center' 
+    },
+  ];
+
+  //담보 상세 정보
+  type CoverageDetailRow = {
+    id: number;
+    coverageCode: string;
+    coverageName: string;
+    insuranceStartDate: string;
+    insuranceEndDate: string;
+    insurancePeriod: string;
+    paymentPeriod: string;
+    subscriptionAmount: number;
+    designCoverageCode: string;
+    designCoverageName: string;
+  };
+
+  const coverageDetailData: CoverageDetailRow[] = [
+    {
+      id: 1,
+      coverageCode: 'CLA05417',
+      coverageName: '보통약관(화재상해후유장해3)',
+      insuranceStartDate: '2026-01-01',
+      insuranceEndDate: '2041-01-01',
+      insurancePeriod: '15년만기',
+      paymentPeriod: '전기납',
+      subscriptionAmount: 1000000,
+      designCoverageCode: 'CLA05417',
+      designCoverageName: '보통약관(화재상해후유장해)',
+    },
+  ];
+
+  const coverageDetailColumnDefs: ColDef<CoverageDetailRow>[] = [
+    {
+      headerName: '담보명(담보코드)',
+      flex: 1,
+      cellClass: 'text-left',
+      valueGetter: (params) => `${params.data?.coverageName} (${params.data?.coverageCode})`,
+    },
+    {
+      headerName: '보험시기',
+      field: 'insuranceStartDate',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험종기',
+      field: 'insuranceEndDate',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험기간',
+      field: 'insurancePeriod',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '납입기간',
+      field: 'paymentPeriod',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '가입금액(원)',
+      field: 'subscriptionAmount',
+      width: 120,
+      cellClass: 'text-center',
+      valueFormatter: (params) => params.value?.toLocaleString() ?? '',
+    },
+    {
+      headerName: '설계담보코드',
+      field: 'designCoverageCode',
+      width: 120,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '설계담보명',
+      field: 'designCoverageName',
+      flex: 1,
+      cellClass: 'text-left',
+    },
   ];
 
 const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData);
@@ -319,7 +464,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="outlined">
+              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
                 조회
               </Button>
             </Grow>
