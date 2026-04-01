@@ -7,6 +7,7 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
+import { ResetIcon } from '@icons'
 import { Input } from '@uiux/Input';
 import { FileExportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 
@@ -209,7 +210,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -226,8 +227,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
             <FormTable
               variant={'head'}
               lineTop={false}
-              caption="누적조회"
-              cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}
+              caption=""
             >
               <FormRow>
                 <FormCell title={'조회구분'}>
@@ -278,12 +278,13 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                 </FormCell>
               </FormRow>
             </FormTable>
+
             <Grow>
-              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                새로고침
+              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                <ResetIcon />
               </Button>
             </Grow>
           </Grow>

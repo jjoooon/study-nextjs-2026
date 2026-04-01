@@ -8,6 +8,8 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
@@ -102,7 +104,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>설계복사</Typo>
@@ -110,26 +112,28 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
+          
           <Grow placement='bwe' className="w-full" variant={'box-round'} gap={5}>
             <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
                 <FormCell title={'증권번호'} className='w-full'>
-                  <Grow className='w-full'>
-                    <Grow>
-                      <Input aria-label="증권번호 검색" width={'10rem'} value={policySearchPart} onChange={(e) => setPolicySearchPart(e.target.value)} />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                      <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
-                    </Grow>
+                  <Grow>
+                    <Input aria-label="증권번호 검색" width={'10rem'} value={policySearchPart} onChange={(e) => setPolicySearchPart(e.target.value)} />
+                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                    <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
                   </Grow>
                 </FormCell>
               </FormRow>
             </FormTable>
-            <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="outlined" className='-translate-y-[0.4rem]!'>
-              조회
-            </Button>
+            <Grow>
+              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="outlined">
+                조회
+              </Button>
+            </Grow>
           </Grow>
+
           <TabPager
             data={tabs}
             active={active}
@@ -167,13 +171,15 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
             renderDropdownItem={false}
           >
             {active === 'humanCoverage' ? (
-              <div className="w-full flex gap-2 pt-2">
-                <div className="w-[30%]">
-                   <TableFold variant={'accordion'}>
-                      <TableFoldHead title="피보험자목록">
-                      </TableFoldHead>
+              <ResizablePanelGroup
+                orientation="horizontal"
+                className="w-full"
+              >
+                <ResizablePanel defaultSize={30}>
+                  <TableFold variant={'accordion'}>
+                      <TableFoldHead title="피보험자목록"/>
                       <TableFoldBody>
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine min-h-[18rem]">
                           <AgGridReact<InsuredListRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={insuredListData}
@@ -196,14 +202,14 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                           />
                         </div>
                       </TableFoldBody>
-                    </TableFold>  
-                </div>
-                <div className="w-[70%]">
-                  <TableFold variant={'accordion'}>
-                      <TableFoldHead title="담보목록">
-                      </TableFoldHead>
+                    </TableFold>
+                </ResizablePanel>
+                <ResizableHandle />
+                <ResizablePanel defaultSize={70}>
+                   <TableFold variant={'accordion'}>
+                      <TableFoldHead title="담보목록"/>
                       <TableFoldBody>
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine min-h-[18rem]">
                           <AgGridReact<CoverageListRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={coverageListData}
@@ -218,12 +224,12 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                         </div>
                       </TableFoldBody>
                   </TableFold>
-                </div>
-              </div>
+                </ResizablePanel>
+              </ResizablePanelGroup>
             ) : (
               <div className="w-full pt-2">
                 <Typo variant={'heading-sm'} className="mb-1">재물담보</Typo>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18rem]">
                   <AgGridReact<CoverageListRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={coverageListData}

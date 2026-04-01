@@ -15,7 +15,13 @@ const ResizableHandle = ({
 }: React.ComponentProps<typeof Separator> & {
   withHandle?: boolean;
 }) => (
-  <Separator className={cn('resize-separator', className)} {...props}>
+  <Separator
+    className={cn('resize-separator', className)}
+    onMouseDown={e => e.stopPropagation()}
+    onPointerDown={e => e.stopPropagation()}
+    onClick={e => e.stopPropagation()}
+    {...props}
+  >
     {withHandle && <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border"></div>}
   </Separator>
 );
