@@ -15,7 +15,7 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   // 스타일 variant별로 분리
   const variantClass =
     variant === 'default'
-      ? 'w-full rounded-0'
+      ? 'w-full rounded-0 border-t-[.2rem] border-t-[#000]'
       : variant === 'message'
         ? 'w-full rounded-0 border-t-[.2rem] border-t-[#61554F]'
       : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
