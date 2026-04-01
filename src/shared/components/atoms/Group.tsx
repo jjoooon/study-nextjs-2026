@@ -249,8 +249,30 @@ export const Separator = ({
 };
 
 
+interface DividerProps {
+  className?: string;
+  direction?: 'horizontal' | 'vertical';
+  color?: 'gray' | 'gray-light' 
+};
+
+
 export const Divider = ({
-  className
-}: GroupProps) => {
-  return <hr className={cn("flex flex-col border-t w-full", className)} />;
-}
+  className,
+  direction = 'horizontal',
+  color = 'gray',
+}: DividerProps) => {
+  const colorMap: Record<string, string> = {
+    gray: 'var(--color-gray-15)',
+    'gray-light': 'var(--color-gray-10)',
+  };
+
+  return (
+    <hr
+      className={cn(
+        'shrink-0 border-0 inline-block',
+        `border-[${colorMap[color]}]`,
+        direction === 'horizontal' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t',
+        className
+      )}
+    />
+  );}

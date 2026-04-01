@@ -45,8 +45,8 @@ const badgeVariants = cva(
       },
       size: {
         lg: 'h-[2.4rem] text-[1.4rem] font-bold px-2 [&>svg]:size-[1.4rem] pt-[0.1rem] tracking-[-0.13rem]',
-        md: 'h-[1.8rem] text-[1.1rem] font-bold px-1 [&>svg]:size-[1.2rem] tracking-[-0.13rem]',
-        sm: `h-[1.5rem] text-[1.1rem] font-bold px-[0.2rem] pt-[0.1rem] [&>svg]:size-[1.1rem] tracking-[-0.13rem]`,
+        md: 'h-[1.8rem] text-[1.1rem] font-bold px-1 pr-[0.6rem] [&>svg]:size-[1.2rem] tracking-[-0.13rem]',
+        sm: `h-[1.5rem] text-[1.1rem] font-bold pl-[0.2rem] pr-[0.4rem] pt-[0.1rem] [&>svg]:size-[1.1rem] tracking-[-0.13rem]`,
       },
       color: {
         blue: '',

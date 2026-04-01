@@ -355,3 +355,6 @@
  position: absolute;
  width: 100%; 
 } */
+.ag-center-cols-viewport {
+  min-height: 0rem !important;
+}

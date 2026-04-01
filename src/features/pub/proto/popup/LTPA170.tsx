@@ -1,24 +1,21 @@
 'use client';
-
+// 허승하
 import * as React from 'react';
-import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-// import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 import { FileExportIcon } from '@/shared/components/icons/CommonIcons';
 import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
-import { formatCurrency } from '@/shared/utils/stringUtils';
-ModuleRegistry.registerModules([AllCommunityModule]);
+import { numberValueFormatter, useAgGridColumnVisibility } from '@/shared/components/aggrid/aggridComponents';
 
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export interface LTPA170PProps {
   open?: boolean;
@@ -105,51 +102,51 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
     {
       headerName: '증권(설계번호)',
       field: 'field01',
-      width: 190,
+      width: 170,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
     {
       headerName: '상품명',
       field: 'field02',
-      width: 250,
+      width: 270,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-left flex items-center justify-start',
     },
     {
       headerName: '보험시기',
       field: 'field03',
-      width: 120,
+      width: 110,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
     {
       headerName: '보험종기',
       field: 'field04',
-      width: 120,
+      width: 110,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
     {
       headerName: '최종월드',
       field: 'field05',
-      width: 120,
+      width: 110,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'truncate text-center flex items-center justify-left',
     },
     {
@@ -159,7 +156,7 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
     {
@@ -169,28 +166,28 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-right flex items-center justify-end ',
-      // valueFormatter: (params) => formatCurrency(params.value),
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '누적위험명',
       field: 'field08',
-      width: 110,
+      width: 130,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
     {
       headerName: '누적배수',
       field: 'field09',
-      width: 110,
+      width: 100,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
     {
@@ -200,8 +197,9 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
-      cellClass: 'text-center flex items-center justify-center',
+      resizable: false,
+      cellClass: 'text-right flex items-center justify-end',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '계약(설계상태)',
@@ -210,27 +208,31 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
-      resizable: true,
+      resizable: false,
       cellClass: 'text-center flex items-center justify-center',
     },
   ];
   
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
-  const [copyValues, setCopyValues] = React.useState<string[]>([]);
+  const gridRef = React.useRef<AgGridReact<DummyDataType> | null>(null);
+  const toggleFields = ['field03', 'field04', 'field05'] as const;
+  const { visibleFields, onVisibleFieldsChange, onGridReady } = useAgGridColumnVisibility<DummyDataType>({
+    gridRef,
+    toggleFields,
+  });
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>계약별누적위험</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>계약별누적위험</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPA170)</Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
           <Grow placement='bwc' className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'} lineTop={false} caption="누적조회" cols={['w-[14rem] min-w-[14rem]', 'w-[20rem] min-w-[20rem]', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormTable variant={'head'} lineTop={false} caption="누적조회">
               <FormRow>
                 <FormCell title={'조회구분'}>
                   김한화
@@ -264,50 +266,64 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
             </TableFold>  
             <TableFold>
               <TableFoldHead title="보험증권별 위험별 누적">
-                <Grow>
+                <Grow gap={2}>
                   <CheckboxGroup
                     className="gap-3"
                     color="primary"
                     minSelected={0}
-                    onValueChange={setCopyValues}
+                    onValueChange={onVisibleFieldsChange}
                     size="lg"
-                    value={copyValues}
+                    value={visibleFields}
                     variant="default"
                     width="auto"
                   >
-                    <CheckboxGroupItem value="display01" >
+                    <CheckboxGroupItem value="field03" >
                       보험시기 표시
                     </CheckboxGroupItem>
-                    <CheckboxGroupItem value="display02">
+                    <CheckboxGroupItem value="field04">
                       보험종기 표시
                     </CheckboxGroupItem>
-                    <CheckboxGroupItem value="display03">
+                    <CheckboxGroupItem value="field05">
                       최종월드 표시
                     </CheckboxGroupItem>
                   </CheckboxGroup>
-                  <Button
-                    color="success"
-                    variant="outlined"
-                  >
-                    엑셀내보내기
-                    <FileExportIcon />
-                  </Button>
+                  <Grow>
+                    <Button
+                      color="success"
+                      variant="outlined"
+                    >
+                      엑셀내보내기
+                      <FileExportIcon />
+                    </Button>
+                  </Grow>
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
                 <Gcol className="w-full" gap={5}>
-                  <div className="ag-theme-alpine min-h-[18rem]">
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
+                      onGridReady={onGridReady}
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
+                      domLayout='autoHeight'
                     />
                   </div>
-                  <InfoBox bg subTitle="안내사항 노출 영역" variant="warning" className='mt-2' ></InfoBox>        
-                  <InfoBox title="누적위험 초과인수기준 클릭시에도 조회가 안되는 경우 해당 설계로 인한 누적위험 초과입니다." variant="detail" bg={false} />
+                  <Gcol className='w-full'>
+                    <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'warning'}>
+                        <b>안내사항 노출 영역</b>
+                        </Typo>
+                    </Gcol>
+                    <Gcol placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'detail'}>
+                        누적위험 초과인수기준 클릭시에도 조회가 안되는 경우 해당 설계로 인한 누적위험 초과입니다.</Typo>
+                    </Gcol>
+                  </Gcol>
                 </Gcol>
               </TableFoldBody>
             </TableFold>

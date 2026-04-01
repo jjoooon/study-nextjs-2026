@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRef } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
@@ -190,6 +190,36 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
   const buildingByLocationData: BuildingByLocationRow[] = [
     {
       id: 1,
+      columnType: '철골철근콘크리트',
+      outerWall: '콘크리트벽',
+      aboveGroundFloors: 18,
+      belowGroundFloors: 3,
+      grossFloorArea: 322,
+      etcStructure: '철골철근콘크리트',
+      accommodationPlace: '02',
+    },
+     {
+      id: 2,
+      columnType: '철골철근콘크리트',
+      outerWall: '콘크리트벽',
+      aboveGroundFloors: 18,
+      belowGroundFloors: 3,
+      grossFloorArea: 322,
+      etcStructure: '철골철근콘크리트',
+      accommodationPlace: '02',
+    },
+     {
+      id: 3,
+      columnType: '철골철근콘크리트',
+      outerWall: '콘크리트벽',
+      aboveGroundFloors: 18,
+      belowGroundFloors: 3,
+      grossFloorArea: 322,
+      etcStructure: '철골철근콘크리트',
+      accommodationPlace: '02',
+    },
+     {
+      id: 4,
       columnType: '철골철근콘크리트',
       outerWall: '콘크리트벽',
       aboveGroundFloors: 18,
@@ -535,10 +565,9 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                 </ResizablePanel>
               </ResizablePanelGroup>
             ) : (
-              <div className="w-full pt-2">
+              <Grid className="w-full pt-2 grid-rows-[auto_1fr]" gap={5}>
                 <TableFold>
-                  <TableFoldHead title="목적물 소유자 및 소재지">
-                  </TableFoldHead>
+                  <TableFoldHead title="목적물 소유자 및 소재지"/>
                   <TableFoldBody>
                     <div className="ag-theme-alpine">
                       <AgGridReact<PropertyListRow>
@@ -592,7 +621,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                   renderDropdownItem={false}
                 >
                   {subActive === 'fireCoverage' ? (
-                    <div>
+                    <Gcol className="pt-2 w-full" placement='ss' gap={2}>
                       <TableFold>
                         <TableFoldHead title="소재지별 건물(수용장소)의 목록" />
                         <TableFoldBody>
@@ -606,6 +635,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                                 resizable: false,
                               }}
                               animateRows={false}
+                              domLayout='autoHeight'
                             />
                           </div>
                         </TableFoldBody>
@@ -624,37 +654,19 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                                 resizable: false,
                               }}
                               animateRows={false}
+                              domLayout='autoHeight'
                             />
                           </div>
                         </TableFoldBody>
                       </TableFold>
-                    </div>
-                  ) : (
-                    <div className="pt-2">
-                      <TableFold>
-                        <TableFoldHead title="담보 상세 정보" />
-                        <TableFoldBody>
-                          <div className="ag-theme-alpine min-h-72">
-                            <AgGridReact<CoverageDetailRow>
-                              noRowsOverlayComponent={AgGridEmptyComponent}
-                              rowData={coverageDetailData}
-                              columnDefs={coverageDetailColumnDefs}
-                              defaultColDef={{
-                                sortable: false,
-                                resizable: false,
-                              }}
-                              animateRows={false}
-                            />
-                          </div>
-                        </TableFoldBody>
-                      </TableFold>
-                    </div>
-                  )}
+                    </Gcol>
+                  ) : null}
                 </TabPager>
-              </div>
+              </Grid>
             )}
           </TabPager>
         </DialogSection>
+
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
