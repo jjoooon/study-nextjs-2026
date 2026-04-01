@@ -13,6 +13,8 @@ type TableFoldProps = {
 
 interface TableFoldContextValue {
   variant: TableFoldVariant;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 const TableFoldContext = createContext<TableFoldContextValue | undefined>(undefined);
@@ -28,8 +30,9 @@ interface TableFoldHeadProps {
 
 
 export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
+  const [open, setOpen] = React.useState(true);
   return (
-    <TableFoldContext.Provider value={{ variant }}>
+    <TableFoldContext.Provider value={{ variant, open, setOpen }}>
       <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] " placement={'bwc'}>
         {children}
       </Grid>
@@ -41,11 +44,16 @@ export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) =
 export const TableFoldHead = ({ children, title, className, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
+  const handleClick = () => {
+    if (v === 'accordion' && context?.setOpen) context.setOpen(!context.open);
+  };
   return (
     <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
-      <Typo tag={'h3'} variant={'heading-md'}>
-        {title}
-      </Typo>
+      <div onClick={handleClick} style={v === 'accordion' ? { cursor: 'pointer' } : {}}>
+        <Typo tag={'h3'} variant={'heading-md'}>
+          {title}
+        </Typo>
+      </div>
       <Grow>
         {children}
       </Grow>
@@ -57,5 +65,6 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
 export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
-  return <>{children}</>;
+  const isHidden = v === 'accordion' && !context?.open;
+  return <div style={isHidden ? { display: 'none' } : undefined}>{children}</div>;
 };

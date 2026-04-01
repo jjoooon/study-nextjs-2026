@@ -316,7 +316,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               </TableFoldBody>
             </TableFold>
 
-            <TableFold variant={'default'}>
+            <TableFold>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
               <TableFoldBody>
                 <Gcol className="w-full" gap={5}>
