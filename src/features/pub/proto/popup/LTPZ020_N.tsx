@@ -312,6 +312,87 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
     },
   ];
 
+  //담보 상세 정보
+  type CoverageDetailRow = {
+    id: number;
+    coverageCode: string;
+    coverageName: string;
+    insuranceStartDate: string;
+    insuranceEndDate: string;
+    insurancePeriod: string;
+    paymentPeriod: string;
+    subscriptionAmount: number;
+    designCoverageCode: string;
+    designCoverageName: string;
+  };
+
+  const coverageDetailData: CoverageDetailRow[] = [
+    {
+      id: 1,
+      coverageCode: 'CLA05417',
+      coverageName: '보통약관(화재상해후유장해3)',
+      insuranceStartDate: '2026-01-01',
+      insuranceEndDate: '2041-01-01',
+      insurancePeriod: '15년만기',
+      paymentPeriod: '전기납',
+      subscriptionAmount: 1000000,
+      designCoverageCode: 'CLA05417',
+      designCoverageName: '보통약관(화재상해후유장해)',
+    },
+  ];
+
+  const coverageDetailColumnDefs: ColDef<CoverageDetailRow>[] = [
+    {
+      headerName: '담보명(담보코드)',
+      flex: 1,
+      cellClass: 'text-left',
+      valueGetter: (params) => `${params.data?.coverageName} (${params.data?.coverageCode})`,
+    },
+    {
+      headerName: '보험시기',
+      field: 'insuranceStartDate',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험종기',
+      field: 'insuranceEndDate',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험기간',
+      field: 'insurancePeriod',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '납입기간',
+      field: 'paymentPeriod',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '가입금액(원)',
+      field: 'subscriptionAmount',
+      width: 120,
+      cellClass: 'text-center',
+      valueFormatter: (params) => params.value?.toLocaleString() ?? '',
+    },
+    {
+      headerName: '설계담보코드',
+      field: 'designCoverageCode',
+      width: 120,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '설계담보명',
+      field: 'designCoverageName',
+      flex: 1,
+      cellClass: 'text-left',
+    },
+  ];
+
 const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
     propertyListData.filter(row => !row.isCheck).map(row => row.id)
@@ -459,7 +540,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                   <TableFoldHead title="목적물 소유자 및 소재지">
                   </TableFoldHead>
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18rem]">
+                    <div className="ag-theme-alpine">
                       <AgGridReact<PropertyListRow>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
@@ -511,11 +592,11 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                   renderDropdownItem={false}
                 >
                   {subActive === 'fireCoverage' ? (
-                    <div className="pt-2">
+                    <div>
                       <TableFold>
                         <TableFoldHead title="소재지별 건물(수용장소)의 목록" />
                         <TableFoldBody>
-                          <div className="ag-theme-alpine min-h-[18rem]">
+                          <div className="ag-theme-alpine">
                             <AgGridReact<BuildingByLocationRow>
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={buildingByLocationData}
@@ -533,7 +614,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                       <TableFold>
                         <TableFoldHead title="보험목적물" />
                         <TableFoldBody>
-                          <div className="ag-theme-alpine min-h-[18rem]">
+                          <div className="ag-theme-alpine">
                             <AgGridReact<InsuranceObjectRow>
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={insuranceObjectData}
@@ -548,7 +629,27 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                         </TableFoldBody>
                       </TableFold>
                     </div>
-                  ) : null}
+                  ) : (
+                    <div className="pt-2">
+                      <TableFold>
+                        <TableFoldHead title="담보 상세 정보" />
+                        <TableFoldBody>
+                          <div className="ag-theme-alpine min-h-72">
+                            <AgGridReact<CoverageDetailRow>
+                              noRowsOverlayComponent={AgGridEmptyComponent}
+                              rowData={coverageDetailData}
+                              columnDefs={coverageDetailColumnDefs}
+                              defaultColDef={{
+                                sortable: false,
+                                resizable: false,
+                              }}
+                              animateRows={false}
+                            />
+                          </div>
+                        </TableFoldBody>
+                      </TableFold>
+                    </div>
+                  )}
                 </TabPager>
               </div>
             )}
