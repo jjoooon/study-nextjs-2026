@@ -1,7 +1,7 @@
 'use client';
 // 권오택
 import * as React from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
@@ -9,10 +9,9 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/aggrid/aggridComponents';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@/shared/components/uiux/Input';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

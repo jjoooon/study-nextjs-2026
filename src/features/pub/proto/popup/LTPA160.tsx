@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';

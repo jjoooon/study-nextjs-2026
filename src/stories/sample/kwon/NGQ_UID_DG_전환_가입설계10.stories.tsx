@@ -113,10 +113,10 @@ const LTPZ042P = () => {
     }
   ];
   
-   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-    const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.isCheck).map(row => row.id)
-    );
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [errorRows, setErrorRows] = React.useState<number[]>(
+    DummyData.filter(row => !row.isCheck).map(row => row.id)
+  );
   
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
