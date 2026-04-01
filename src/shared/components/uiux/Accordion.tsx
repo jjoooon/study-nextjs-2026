@@ -124,16 +124,16 @@ function AccordionContent({ className, children, ...props }: React.ComponentProp
     box: 'px-4 pb-4 pt-0 text-gray-600',
     line: 'pt-0 pb-3 pl-4 text-gray-700',
     minimal: 'pt-0 pb-2 text-sm text-gray-600',
-    tableHead: 'pt-0 pb-2 text-sm text-gray-600',
+    tableHead: 'p-0',
   };
 
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm h-full"
+      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden h-full"
       {...props}
     >
-      <div className={cn(contentStyles[variant], className)}>{children}</div>
+      {children}
     </AccordionPrimitive.Content>
   );
 }

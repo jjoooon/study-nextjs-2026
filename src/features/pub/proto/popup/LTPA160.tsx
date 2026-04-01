@@ -212,7 +212,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'span'} variant={'heading-lg'}>
+            <Typo tag={'strong'} variant={'heading-lg'}>
               담보내용상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
@@ -288,7 +288,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
             </Grow>
           </Grow>
 
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+          <Gcol placement="ss" className="w-full" gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)">
                 <Grow>
@@ -302,7 +302,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                 <Grow className="w-full">
                   <FormTable
                     caption="피보험자의 위험정보 테이블"
-                    cols={['w-[6rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[6rem]', 'flex-1', 'w-[6rem]', 'flex-1']}
+                    cols={['w-[5rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[5rem]', 'flex-1', 'w-[5rem]', 'flex-1']}
                   >
                     <FormRow>
                       <FormCell title={'직업'}>전기공학 개발자 및 연구원</FormCell>
@@ -315,10 +315,10 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               </TableFoldBody>
             </TableFold>
 
-            <TableFold>
+            <TableFold variant={'default'}>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
-              <TableFoldBody className="grid grid-rows-[1fr_auto] w-full">
-                <div className="ag-theme-alpine">
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[18rem]">
                   <AgGridReact<DummyDataType>
                     // getRowId 적용: id 필드를 고유 식별자로 사용
                     getRowId={(params) => String(params.data.id)}
@@ -328,7 +328,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                     enableCellSpan={true}
                   />
                 </div>
-                <Gcol>
+                <Gcol className='w-full'>
                   <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
                     <Typo variant={'body-sm'} icon={'warning'}>
                       <b>주의사항 노출 영역</b>
@@ -343,7 +343,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                 
               </TableFoldBody>
             </TableFold>
-          </Grid>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>

@@ -33,7 +33,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>설계비교</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>설계비교</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ021)</Typo>
           </DialogTitle>
         </DialogHeader>

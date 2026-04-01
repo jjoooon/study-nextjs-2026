@@ -124,7 +124,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>담보내용상세</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ011)</Typo>
           </DialogTitle>
         </DialogHeader>
@@ -139,14 +139,14 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <TableFold variant="default">
+          <TableFold variant={'default'}>
             <TableFoldHead title="">
               <Grow>
                 <Typo variant="body-md">(단위: 원)</Typo>
               </Grow>   
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType2>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
