@@ -45,7 +45,7 @@ export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) =
           type="single"
           collapsible
           defaultValue="shipping"
-          className="w-full grid"
+          className="w-full"
           variant={"tableHead"}
         >
           <AccordionItem data-table-fold="wrap" value="shipping" className="grid grid-rows-[auto_1fr] w-full gap-[0.6rem] relative">
