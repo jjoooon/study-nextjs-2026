@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { LTPZ021P } from '../../features/pub/proto/popup/LTPZ021';
+import { LTPZ021P } from '../../features/pub/proto/popup/LTPZ021_N';
 
 const meta: Meta<typeof LTPZ021P> = {
   title: 'popup/LTPZ021',

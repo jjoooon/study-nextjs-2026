@@ -52,11 +52,17 @@
 .ag-header-row {
   background: var(--color-gray-5) !important;
 }
-.ag-header-cell-comp-wrapper {
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-left-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-left-divider {
+  border-left: 0.1rem solid var(--color-gray-10) !important;
 }
-.ag-row {
-  /* border-bottom: 0 !important; */
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-right-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-right-divider {
+  border-right: 0.1rem solid var(--color-gray-10) !important;
 }
+
 .ag-cell {
   border:0;
   border-right: 1px solid var(--color-gray-10);
@@ -97,6 +103,33 @@
 .ag-row.ag-row-selected .editable-cell,
 .ag-row-selected {
   background-color: var(--color-warning-10);
+}
+
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
+  color: #ff5c2e !important;
+}
+
+.ag-theme-alpine .ag-row.ag-row-state-true {
+  --color-text-base: #ff5c2e;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-cell-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-selection-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 합계 */

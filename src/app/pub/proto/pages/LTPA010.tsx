@@ -1,4 +1,4 @@
-import LTPA010Section from '@/features/pub/proto/sections/LTPA350Section';
+import LTPA010Section from '@/features/pub/proto/sections/LTPA010Section';
 
 export default function Page() {
   return (

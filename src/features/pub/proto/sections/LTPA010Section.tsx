@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 
 // components - layout
-import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
 // components - features
 import PageID from '@features/PageID';
 import PageProcess from '@features/PageProcess';
@@ -38,21 +38,10 @@ export default function LTPA350Section() {
   
 
   return (
-    <LayoutTemplateAsideToggle
+    <LayoutTemplate
       // LayoutHead
       pageID={<PageID data={LTPA350Data.head.pageID} />}
       pageTitle={<PageTitle data={LTPA350Data.head.pageTitle} />}
-
-      // LayoutBody: process
-      pageProcess={
-        <PageProcess
-          items={LTPA350Data.process.list}
-          completeSteps={LTPA350Data.process.state.complete}
-          defaultActiveStep={LTPA350Data.process.state.active}
-          activeStep={activeStep}
-          onStepChange={setActiveStep}
-        />
-      }
      
       // LayoutBody: main
       mainBody={<LTPA010Main />}
