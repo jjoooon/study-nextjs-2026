@@ -15,7 +15,7 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   // 스타일 variant별로 분리
   const variantClass =
     variant === 'default'
-      ? 'w-full rounded-0'
+      ? 'w-full rounded-0 border-t-[.2rem] border-t-[#000]'
       : variant === 'message'
         ? 'w-full rounded-0 border-t-[.2rem] border-t-[#61554F]'
       : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
@@ -35,7 +35,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
       data-slot="table-header"
       className={cn(
         variant === 'default'
-          ? '[&_tr]:bg-(--color-table-th-surface-gray) [&_th]:h-[3rem] [&_th]:py-[.2rem]'
+          ? '[&_tr]:bg-[var(--color-gray-5)]'
           : variant === 'message'
             ? '[&_tr]:bg-[#F4F4F4] [&_th]:h-18'
           : '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
@@ -91,7 +91,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
       data-slot="table-head"
       className={cn(
         variant === 'default'
-          ? 'text-[1.3rem] border border-(--color-table-border-border-gray)'
+          ? 'border text-[1.3rem] bg-[var(--color-gray-5)] h-[3rem] py-[.2rem] px-[.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0'
           : variant === 'message'
             ? 'bg-[#F4F4F4] border-b border-r border-[#E5E5E5] last:border-r-0 font-bold px-[1rem] py-[1.2rem] text-center text-[1.3rem]'
           : 'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
@@ -109,7 +109,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         variant === 'default'
-          ? 'border border-(--color-table-border-border-gray) px-[.6rem] py-[.4rem] text-[1.3rem]'
+          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3rem]'
           : variant === 'message'
             ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
           : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',

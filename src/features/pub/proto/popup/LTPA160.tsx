@@ -12,14 +12,13 @@ import { Input } from '@uiux/Input';
 import { FileExportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { numberValueFormatter } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export interface LTPA160PProps {

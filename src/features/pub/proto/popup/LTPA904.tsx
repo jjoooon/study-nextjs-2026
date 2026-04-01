@@ -7,7 +7,7 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
-import { ResetIcon } from '@icons'
+import { FileExportIcon, ResetIcon } from '@icons'
 import { Input } from '@uiux/Input';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -803,9 +803,15 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                 {/* 예상만기환급금 테이블 */}
                 <TableFold variant={'accordion'}>
                   <TableFoldHead title="납입예정">
+                     <Grow>
+                      <Button color="success" variant="outlined">
+                        엑셀내보내기
+                        <FileExportIcon />
+                      </Button>
+                    </Grow>
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="예상만기환급금 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
+                    <FormTable caption="예상만기환급금 테이블"  cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
                     <FormRow>
                       <FormCell title={'총예상납입보험료'}>
                         <Input commaAmount={true} after="원" value={form.type10} onChange={e => setFormField('type10', e.target.value)} />
@@ -817,7 +823,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                         <Input commaAmount={true} after="원" value={form.type12} onChange={e => setFormField('type12', e.target.value)} />
                       </FormCell>
                       <FormCell title={'예상만기환급율'}>
-                        <Input size="lg" width="full" variant="default" after="%" value={form.type13} onChange={e => setFormField('type13', e.target.value)} />
+                        <Input after="%" value={form.type13} onChange={e => setFormField('type13', e.target.value)} />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -829,13 +835,13 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                   <TableFoldHead title="추천보험료">
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="추천보험료 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1',]}>
+                    <FormTable caption="추천보험료 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
                       <FormRow>
                         <FormCell title={'추천보험료'}>
                           <Input commaAmount={true} after="원" value={form.type14} onChange={e => setFormField('type14', e.target.value)} />
                         </FormCell>
-                        <FormCell title={'최소추천(출생후)'}>
-                          <Input width={'full'}  after="원" commaAmount={true} value={form.type15} onChange={e => setFormField('type15', e.target.value)} />
+                        <FormCell title={'최소추천(출생후)1'}>
+                          <Input after="원" commaAmount={true} value={form.type15} onChange={e => setFormField('type15', e.target.value)} />
                         </FormCell>
                         <FormCell title={null} colSpan={4}></FormCell>
                       </FormRow>
@@ -866,10 +872,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                       <FormRow>
                         <FormCell title={'만기환급담보환급금'}>
                           <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
                             after="원"
                             commaAmount={true}
                             value={form.type20}
@@ -878,10 +880,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                         </FormCell>
                         <FormCell title={'적립보험료대체납입특약보험료'}>
                           <Input
-                            placeholder=""
-                            size="lg"
-                            width="full"
-                            after="원"
                             commaAmount={true}
                             variant="default"
                             value={form.type21}
@@ -890,11 +888,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                         </FormCell>
                         <FormCell title={'실손의료비예상납입보험료'}>
                           <Input
-                            placeholder=""
-                            size="lg"
-                            width="full"
-                            variant="default"
-                            after="원"
                             commaAmount={true}
                             value={form.type22}
                             onChange={e => setFormField('type22', e.target.value)}
@@ -902,11 +895,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                         </FormCell>
                         <FormCell title={'만기유지보너스'}>
                           <Input
-                            placeholder=""
-                            size="lg"
-                            width="full"
-                            variant="default"
-                            after="원"
                             commaAmount={true}
                             value={form.type23}
                             onChange={e => setFormField('type23', e.target.value)}
@@ -943,6 +931,12 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                 {/* 예상만기환급금 */}
                 <TableFold variant={'accordion'}>
                   <TableFoldHead title="예상만기환급금">
+                     <Grow>
+                      <Button color="success" variant="outlined">
+                        엑셀내보내기
+                        <FileExportIcon />
+                      </Button>
+                    </Grow>
                   </TableFoldHead>
                   <TableFoldBody>
                     <FormTable caption="예상만기환급금 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1',]}>
@@ -1008,36 +1002,25 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                         <FormRow>
                           <FormCell title={'추천보험료'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type05}
                               onChange={e => setFormField('type05', e.target.value)}
                             />
                           </FormCell>
-                          <FormCell title={'최소추천(출생후)'} colSpan={5}>
+                          <FormCell title={'최소추천(출생후)'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="21.5rem"
                               after="원"
                               commaAmount={true}
                               value={form.type06}
                               onChange={e => setFormField('type06', e.target.value)}
                             />
+                            <FormCell title={null} colSpan={4}></FormCell>
                           </FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title={'최소추천보험료'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type07}
@@ -1046,10 +1029,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                           </FormCell>
                           <FormCell title={'최소예상만기환급율'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="%"
                               value={form.type08}
                               onChange={e => setFormField('type08', e.target.value)}
@@ -1057,10 +1036,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                           </FormCell>
                           <FormCell title={'최대추천보험료'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type09}
@@ -1069,10 +1044,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                           </FormCell>
                           <FormCell title={'최대예상만기환급율'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="%"
                               value={form.type10}
                               onChange={e => setFormField('type10', e.target.value)}
@@ -1094,10 +1065,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                         <FormRow>
                           <FormCell title={'만기환급담보환급금'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type11}
@@ -1106,10 +1073,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                           </FormCell>
                           <FormCell title={'적립보험료대체납입특약보험료'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type12}
@@ -1118,10 +1081,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                           </FormCell>
                           <FormCell title={'실손의료비예상납입보험료'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type13}
@@ -1130,10 +1089,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                           </FormCell>
                           <FormCell title={'만기유지보너스'}>
                             <Input
-                              placeholder=""
-                              size="lg"
-                              variant="default"
-                              width="full"
                               after="원"
                               commaAmount={true}
                               value={form.type14}

@@ -128,13 +128,13 @@ export const Default: Story = {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell>cell1</TableCell>
+            <TableHead>header1</TableHead>
             <TableCell>cell2</TableCell>
             <TableCell>cell3</TableCell>
           </TableRow>
           {args.showSecondRow && (
             <TableRow>
-              <TableCell>cell4</TableCell>
+              <TableHead>header1</TableHead>
               <TableCell>cell5</TableCell>
               <TableCell>cell6</TableCell>
             </TableRow>
