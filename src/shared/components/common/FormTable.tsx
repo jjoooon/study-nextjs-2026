@@ -203,6 +203,17 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
     </Table>
   );
 };
+export const FormHead = ({ children, vertical, cols }: FormTrProps) => {
+  return (
+    <VerticalContext.Provider value={vertical}>
+      <thead>
+        <tr>
+          
+        </tr>
+      </thead>
+    </VerticalContext.Provider>
+  );
+};
 
 export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
   return (
