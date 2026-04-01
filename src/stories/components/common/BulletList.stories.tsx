@@ -89,11 +89,11 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
     },
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       description: '아이템 텍스트 크기',
       table: {
         category: '설정 props',
-        type: { summary: 'sm | md | lg' },
+        type: { summary: 'xs | sm | md | lg' },
       },
     },
     color: {
@@ -107,7 +107,7 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
     },
     itemText: { table: { disable: true } },
     className: { table: { disable: true } },
-    dataBefore: { table: { disable: true } },
+    before: { table: { disable: true } },
     onClick: { table: { disable: true } },
     children: { table: { disable: true } },
   },
@@ -130,18 +130,18 @@ export const Default: Story = {
     return (
       <Grow gap={8} className="w-full items-start">
         <BulletList {...listArgs}>
-          <BulletListItem type={type} data-before="1." size={size} color={color} className="whitespace-nowrap">
+          <BulletListItem type={type} before="1." size={size} color={color} className="whitespace-nowrap">
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
-          <BulletListItem type={type} data-before="①" size={size} color={color} className="whitespace-nowrap">
+          <BulletListItem type={type} before="①" size={size} color={color} className="whitespace-nowrap">
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
-          <BulletListItem type={type} data-before="㉠" size={size} color={color} className="whitespace-nowrap" onClick={() => alert('Clicked!')}>
+          <BulletListItem type={type} before="㉠" size={size} color={color} className="whitespace-nowrap" onClick={() => alert('Clicked!')}>
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
         </BulletList>
 
-        <BulletItem type={type} size={size} color={color} data-before="ⓐ" className="whitespace-nowrap" onClick={() => alert('Clicked2!')}>
+        <BulletItem type={type} size={size} color={color} before="ⓐ" className="whitespace-nowrap" onClick={() => alert('Clicked2!')}>
           {itemText}
         </BulletItem>
       </Grow>
