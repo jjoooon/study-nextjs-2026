@@ -7,20 +7,15 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
-import { ResetIcon } from '@icons'
 import { Input } from '@uiux/Input';
-import { FileExportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
+
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { numberValueFormatter } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { InfoBox } from '@/shared/components/common/InfoBox';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export interface LTPA401PProps {
@@ -114,7 +109,7 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
               <TableFoldBody>
                 <Gcol className="w-full" gap={5}>
                   <Grow className="w-full">
-                    <FormTable caption="처리결과 등록 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1']}>
+                    <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
                       <FormRow>
                         <FormCell title={'처리결과'}>
                           <RadioGroup
@@ -125,21 +120,15 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
                             width="full"
                           >
                             <RadioGroupItem
-                              color="primary"
                               id="result1"
-                              size="lg"
                               value="option1"
-                              variant="default"
                               checked={true}
                             >
                               설계완료
                             </RadioGroupItem>
                             <RadioGroupItem
-                              color="primary"
                               id="result2"
-                              size="lg"
                               value="option2"
-                              variant="default"
                             >
                               반려
                             </RadioGroupItem>
@@ -150,10 +139,8 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
                         <FormCell title={'설계번호'}>
                           <Input
                             placeholder=""
-                            size="lg"
                             value=""
-                            variant="default"
-                            width="full"
+                            width="20rem"
                             readOnly
                           />
                         </FormCell>
@@ -162,28 +149,19 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
                         <FormCell title={'메모'}>
                           <Input
                             placeholder=""
-                            size="lg"
                             value=""
-                            variant="default"
-                            width="full"
                             readOnly
                           />
                         </FormCell>
                       </FormRow>
                     </FormTable>
                   </Grow>
-                  <Gcol className='w-full'>
-                    <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
-                      <Typo variant={'body-sm'} icon={'warning'}>
-                        <b>주의사항 노출 영역</b>
-                      </Typo>
-                    </Gcol>
-                    <Gcol placement={'ss'} className='w-full'>
-                      <Typo variant={'body-sm'} icon={'detail'}>
-                        자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다.
-                      </Typo>
-                    </Gcol>
-                  </Gcol>
+                 <InfoBox
+                    title="처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다."
+                    variant={'info'}
+                    bg={false}
+                  >
+                  </InfoBox>
                 </Gcol>
                 
               </TableFoldBody>
@@ -193,13 +171,11 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
 
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
-            <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
+            <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
               <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  지침확인결과
+                <Button variant={'contained'} size={'xl'} color={'primary'}>
+                  처리결과저장
                 </Button>
-              </Grow>
-              <Grow>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
                 </Button>
