@@ -1,10 +1,4 @@
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@uiux/Accordion";
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 
 import React, { createContext, useContext } from 'react';
@@ -19,6 +13,8 @@ type TableFoldProps = {
 
 interface TableFoldContextValue {
   variant: TableFoldVariant;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 const TableFoldContext = createContext<TableFoldContextValue | undefined>(undefined);
@@ -34,25 +30,12 @@ interface TableFoldHeadProps {
 
 
 export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
+  const [open, setOpen] = React.useState(true);
   return (
-    <TableFoldContext.Provider value={{ variant }}>
-      {variant === 'default' ? (
-        <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] " placement={'bwc'}>
-          {children}
-        </Grid>
-      ) : ( 
-        <Accordion
-          type="single"
-          collapsible
-          defaultValue="shipping"
-          className="w-full"
-          variant={"tableHead"}
-        >
-          <AccordionItem data-table-fold="wrap" value="shipping" className="grid grid-rows-[auto_1fr] w-full gap-[0.6rem] relative">
-            {children}
-          </AccordionItem>
-        </Accordion>
-      )}
+    <TableFoldContext.Provider value={{ variant, open, setOpen }}>
+      <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] " placement={'bwc'}>
+        {children}
+      </Grid>
     </TableFoldContext.Provider>
   );
 };
@@ -61,22 +44,20 @@ export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) =
 export const TableFoldHead = ({ children, title, className, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
-  if (v === 'default') {
-    return (
-      <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
+  const handleClick = () => {
+    if (v === 'accordion' && context?.setOpen) context.setOpen(!context.open);
+  };
+  return (
+    <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
+      <div onClick={handleClick} style={v === 'accordion' ? { cursor: 'pointer' } : {}}>
         <Typo tag={'h3'} variant={'heading-md'}>
           {title}
         </Typo>
-        <Grow>
-          {children}
-        </Grow>
+      </div>
+      <Grow>
+        {children}
       </Grow>
-    );
-  }
-  return (
-    <AccordionTrigger data-table-fold="head" title={title} className={cn('justify-between w-full pt-0!', className)}>
-      {children}
-    </AccordionTrigger>
+    </Grow>
   );
 };
 
@@ -84,12 +65,6 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
 export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
-  if (v === 'default') {
-    return <>{children}</>;
-  }
-  return (
-    <AccordionContent data-table-fold="body" className={cn('w-full pb-0! relative ')}>
-      {children}
-    </AccordionContent>
-  );
+  const isHidden = v === 'accordion' && !context?.open;
+  return <div style={isHidden ? { display: 'none' } : undefined}>{children}</div>;
 };

@@ -331,7 +331,7 @@
 .ag-theme-alpine{
  position: relative; 
 }
-.ag-theme-alpine > div{
+/* .ag-theme-alpine > div{
  position: absolute;
  width: 100%; 
-}
+} */

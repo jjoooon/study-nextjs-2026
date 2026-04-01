@@ -404,7 +404,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                   <TableFold variant={'accordion'}>
                       <TableFoldHead title="피보험자목록"/>
                       <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18rem]">
+                        <div className="ag-theme-alpine">
                           <AgGridReact<InsuredListRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={insuredListData}
@@ -424,6 +424,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                               headerName: '선택',
                               cellClass: 'text-center editable-cell',
                             }}
+                            domLayout={'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
@@ -434,7 +435,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                    <TableFold variant={'accordion'}>
                       <TableFoldHead title="담보목록"/>
                       <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18rem]">
+                        <div className="ag-theme-alpine">
                           <AgGridReact<CoverageListRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={coverageListData}
@@ -445,6 +446,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                             }}
                             animateRows={false}
                             rowClassRules={{}}
+                            domLayout={'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
