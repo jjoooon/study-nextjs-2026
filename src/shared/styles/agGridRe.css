@@ -119,6 +119,19 @@
   justify-content: center;
 }
 
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-cell-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-selection-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* 합계 */
 .ag-floating-bottom + .ag-body-horizontal-scroll {
   border-top:0.1rem solid var(--color-gray-10);
