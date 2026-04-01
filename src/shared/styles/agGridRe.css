@@ -120,9 +120,9 @@
 .ag-floating-bottom .ag-row-focus {
   background: var(--color-primary-10);
 }
-.ag-theme-alpine{
+/* .ag-theme-alpine{
   min-height:18rem;
-}
+} */
 .ag-theme-alpine .ag-floating-bottom-container {
   width: 100%;
 }
@@ -325,4 +325,13 @@
   mask-size: 1.6rem 1.6rem;
   mask-repeat: no-repeat;
   color: var(--color-information-50);
+}
+
+/* 아코디언 안에 감싸져들어갈때 문제 */
+.ag-theme-alpine{
+ position: relative; 
+}
+.ag-theme-alpine > div{
+ position: absolute;
+ width: 100%; 
 }

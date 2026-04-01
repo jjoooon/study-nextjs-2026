@@ -75,7 +75,7 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>나만의설계</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>나만의설계</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
           </DialogTitle>
         </DialogHeader>
@@ -95,10 +95,11 @@ export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
               </FormRow>
             </FormTable>
           </Grow>
+
           <TableFold variant={'accordion'}>
             <TableFoldHead title="계약기본사항" />
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18rem]">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}

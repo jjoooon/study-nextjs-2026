@@ -198,7 +198,7 @@ export const Default: Story = {
         <DialogContent {...args}>
           <DialogHeader>
             <DialogTitle>
-              <Typo tag={'h2'} variant={'heading-lg'}>다이얼로그 제목</Typo>
+              <Typo tag={'strong'} variant={'heading-lg'}>다이얼로그 제목</Typo>
               <Typo tag={'p'} variant={'body-xl'}>(LRTAA010)</Typo>
             </DialogTitle>
           </DialogHeader>

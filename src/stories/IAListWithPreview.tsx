@@ -111,6 +111,7 @@ console.log('previewUrl', previewUrl)
                 <tr
                   key={`${row.id}-${index}`}
                   data-active={hoveredIndex === index ? 'true' : undefined}
+                  className={hoveredIndex === index ? 'selected' : ''}
                   onClick={() => setHoveredIndex(index)}
                 >
                   <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
