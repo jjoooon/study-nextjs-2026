@@ -90,8 +90,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
     field37: string | number;
     field38: string | number;
   };
-
-  // tab1
   const DummyData: DummyDataType[] = [
     { 
       id: 1,
@@ -176,9 +174,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
       field38: '', 
     },
   ];
-
-  // tab1 AgGrid Column 
-  const columnDefs: ColDef<DummyDataType>[] = [
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(() => [
     {
       headerName: '납입회차',
       field: 'field01',
@@ -546,47 +542,44 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
       editable: false,
       cellClass: 'flex! items-center! justify-center! text-center',
     },
-  ];
+  ], []);
 
-   // tab2 dummy data
+  // tab2 dummy data
   type DummyDataType2 = {
     id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
+    field2_01: string | number;
+    field2_02: string | number;
+    field2_03: string | number;
+    field2_04: string | number;
   };
-
-  // tab2
   const DummyData2: DummyDataType2[] = [
     { 
       id: 1,
-      field01: '', 
-      field02: '',                    
-      field03: '', 
-      field04: '', 
+      field2_01: '', 
+      field2_02: '',                    
+      field2_03: '', 
+      field2_04: '', 
     },
     { 
       id: 2,
-      field01: '', 
-      field02: '',                    
-      field03: '', 
-      field04: '', 
+      field2_01: '', 
+      field2_02: '',                    
+      field2_03: '', 
+      field2_04: '', 
     },
     { 
       id: 3,
-      field01: '', 
-      field02: '',                    
-      field03: '', 
-      field04: '', 
+      field2_01: '', 
+      field2_02: '',                    
+      field2_03: '', 
+      field2_04: '', 
     },
   ];
-  
   // tab2 AgGrid Column
-  const columnDefs2: ColDef<DummyDataType2>[] = [
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(() => [
     {
       headerName: '납입회차',
-      field: 'field01',
+      field: 'field2_01',
       width: 300,
       editable: false,
       autoHeight: true, 
@@ -594,7 +587,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
     },
     {
       headerName: '납입_응당일',
-      field: 'field02',
+      field: 'field2_02',
       flex: 1,
       editable: false,
       autoHeight: true, 
@@ -602,14 +595,14 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
     },
     {
       headerName: '담보코드',
-      field: 'field03',
+      field: 'field2_03',
       flex: 1,
       editable: false,
       cellClass: 'flex! items-center! justify-center! text-center',
     },
     {
       headerName: '담보보험료',
-      field: 'field04',
+      field: 'field2_04',
       flex: 1,
       autoHeight: true, 
       editable: false,
@@ -617,7 +610,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
     },
-  ];
+  ], []);
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -651,8 +644,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
     type23: '', 
   });
 
- 
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="full">
@@ -668,38 +659,34 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
             <FormTable variant={'none'}
               caption="납입예정 리스트 테이블"
               cols={[
-                'w-[10rem]', 'min-w-[16rem] flex-1',
-                'w-[10rem]', 'min-w-[16rem] flex-1',
-                'w-[10rem]', 'min-w-[16rem] flex-1',
-                'w-[10rem]', 'min-w-[16rem] flex-1',
-                'w-[10rem]', 'min-w-[16rem] flex-1',
+                'flex-auto', 'flex-1',
+                'flex-auto', 'flex-1',
+                'flex-auto', 'flex-1',
+                'flex-auto', 'flex-1',
+                'flex-auto', 'flex-1',
               ]}
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" 
-                    width={'14rem'} 
+                  <Input 
                     value={form.type01} 
                     onChange={e => setFormField('type01', e.target.value)}
                   />
                 </FormCell>
                 <FormCell title={'발행후변경순번'}>
-                  <Input aria-label="" 
-                    width={'14rem'} 
+                  <Input 
                     value={form.type02} 
                     onChange={e => setFormField('type02', e.target.value)} 
                   />
                 </FormCell>
                 <FormCell title={'증권번호'}>
-                  <Input aria-label="" 
-                    width={'14rem'} 
+                  <Input 
                     value={form.type03} 
                     onChange={e => setFormField('type03', e.target.value)} 
                   />
                 </FormCell>
                 <FormCell title={'시작납입회차'}>
-                  <Input aria-label="" 
-                    width={'14rem'} 
+                  <Input 
                     value={form.type04} 
                     onChange={e => setFormField('type04', e.target.value)} 
                   />
@@ -709,7 +696,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                 <FormCell title={'업무구분1'}>
                   <NativeSelect
                     aria-label="업무구분1 선택"
-                    width="14rem"
                     value={form.type05}
                     onChange={(e) => setFormField('type05', e.target.value)}
                   >
@@ -724,7 +710,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                 <FormCell title={'업무구분2'}>
                   <NativeSelect
                     aria-label="업무구분2 선택"
-                    width="14rem"
                     value={form.type06}
                     onChange={(e) => setFormField('type06', e.target.value)}
                   >
@@ -739,15 +724,13 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                   </NativeSelect>
                 </FormCell>
                 <FormCell title={'환급률'}>
-                  <Input aria-label="" 
-                    width={'14rem'} 
+                  <Input 
                     value={form.type07} 
                     onChange={e => setFormField('type07', e.target.value)} 
                   />
                 </FormCell>
                 <FormCell title={'환급금'}>
-                  <Input aria-label="" 
-                    width={'14rem'} 
+                  <Input 
                     value={form.type08} 
                     onChange={e => setFormField('type08', e.target.value)}
                   />
@@ -755,7 +738,6 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                 <FormCell title={'추천구분'}>
                   <NativeSelect
                     aria-label="추천구분 선택"
-                    width="14rem"
                     value={form.type09}
                     onChange={(e) => setFormField('type09', e.target.value)}
                   >
@@ -770,6 +752,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                 </FormCell>
               </FormRow>
             </FormTable>
+            
             <Grow>
               <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
                 조회
@@ -803,6 +786,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                   <TableFoldBody>
                     <div className="ag-theme-alpine w-full">
                       <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={DummyData}
                         columnDefs={columnDefs}
@@ -824,16 +808,16 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                     <FormTable caption="예상만기환급금 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
                     <FormRow>
                       <FormCell title={'총예상납입보험료'}>
-                        <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} after="원" value={form.type10} onChange={e => setFormField('type10', e.target.value)} />
+                        <Input commaAmount={true} after="원" value={form.type10} onChange={e => setFormField('type10', e.target.value)} />
                       </FormCell>
                       <FormCell title={'중도환급금'}>
-                        <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} after="원" value={form.type11} onChange={e => setFormField('type11', e.target.value)} />
+                        <Input commaAmount={true} after="원" value={form.type11} onChange={e => setFormField('type11', e.target.value)} />
                       </FormCell>
                       <FormCell title={'예상만기환급금'}>
-                        <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} after="원" value={form.type12} onChange={e => setFormField('type12', e.target.value)} />
+                        <Input commaAmount={true} after="원" value={form.type12} onChange={e => setFormField('type12', e.target.value)} />
                       </FormCell>
                       <FormCell title={'예상만기환급율'}>
-                        <Input placeholder="" size="lg" width="full" variant="default" after="%" value={form.type13} onChange={e => setFormField('type13', e.target.value)} />
+                        <Input size="lg" width="full" variant="default" after="%" value={form.type13} onChange={e => setFormField('type13', e.target.value)} />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -848,24 +832,26 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                     <FormTable caption="추천보험료 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1',]}>
                       <FormRow>
                         <FormCell title={'추천보험료'}>
-                          <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} after="원" value={form.type14} onChange={e => setFormField('type14', e.target.value)} />
+                          <Input commaAmount={true} after="원" value={form.type14} onChange={e => setFormField('type14', e.target.value)} />
                         </FormCell>
-                        <FormCell title={'최소추천(출생후)'} colSpan={5}>
-                          <Input placeholder="" size="lg" variant="default" width="22.3rem"  after="원" commaAmount={true} value={form.type15} onChange={e => setFormField('type15', e.target.value)} />
+                        <FormCell title={'최소추천(출생후)'}>
+                          <Input width={'full'}  after="원" commaAmount={true} value={form.type15} onChange={e => setFormField('type15', e.target.value)} />
                         </FormCell>
+                        <FormCell title={null} colSpan={4}></FormCell>
                       </FormRow>
+                      
                       <FormRow>
                         <FormCell title={'최소추천보험료'}>
-                          <Input placeholder="" size="lg" variant="default" width="full" after="원" commaAmount={true} value={form.type16} onChange={e => setFormField('type16', e.target.value)} />
+                          <Input after="원" commaAmount={true} value={form.type16} onChange={e => setFormField('type16', e.target.value)} />
                         </FormCell>
                         <FormCell title={'최소예상만기환급율'}>
-                          <Input placeholder="" size="lg" variant="default" after="%" value={form.type17} onChange={e => setFormField('type17', e.target.value)} />
+                          <Input after="%" value={form.type17} onChange={e => setFormField('type17', e.target.value)} />
                         </FormCell>
                         <FormCell title={'최다추천보험료'}>
-                          <Input placeholder="" size="lg" variant="default" width="full" after="%" value={form.type18} onChange={e => setFormField('type18', e.target.value)} />
+                          <Input after="%" value={form.type18} onChange={e => setFormField('type18', e.target.value)} />
                         </FormCell>
                         <FormCell title={'최대추천보험료'}>
-                          <Input placeholder="" size="lg" variant="default" width="full" after="원" commaAmount={true} value={form.type19} onChange={e => setFormField('type19', e.target.value)} />
+                          <Input after="원" commaAmount={true} value={form.type19} onChange={e => setFormField('type19', e.target.value)} />
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -939,6 +925,7 @@ export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
                   <TableFoldBody>
                     <div className="ag-theme-alpine w-full h-[200rem]">
                       <AgGridReact<DummyDataType2>
+                        getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={DummyData2}
                         columnDefs={columnDefs2}

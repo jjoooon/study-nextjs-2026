@@ -20,7 +20,7 @@ function NativeSelect({
   className,
   variant = 'default',
   size = 'lg',
-  width = 'auto',
+  width = 'full',
   required = false,
   readOnly = false,
   error = false,
