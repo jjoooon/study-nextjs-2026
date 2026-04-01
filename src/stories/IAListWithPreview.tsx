@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { Grow } from '@atoms';
-import LinkGo, { getStoryIframeUrl, getStoryUrl } from './Link';
+import LinkGo, { getStoryIframeUrl } from './Link';
 import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
@@ -32,17 +32,28 @@ type IARow = {
 
 
 const ROWS: IARow[] = iaListData as IARow[];
+
+const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
   
 
 export function IAListWithPreview() {
-  const [hoveredIndex, setHoveredIndex] = React.useState<number>(0);
+  const [showPhaseOnly, setShowPhaseOnly] = React.useState(false);
+  const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
-  const activeRow = ROWS[hoveredIndex] ?? ROWS[0];
+  const visibleRows = React.useMemo(() => {
+    if (!showPhaseOnly) {
+      return ROWS;
+    }
+
+    return ROWS.filter(row => row.phase === 'Y');
+  }, [showPhaseOnly]);
+
+  const activeRow = React.useMemo(() => {
+    return visibleRows.find(row => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
+  }, [activeRowKey, visibleRows]);
 
   const toPageStep = React.useCallback((subId: string): PageProcessStep | undefined => {
     const match = subId.match(/_(\d)$/);
-
-    console.log('toPageStep', { subId, match });
 
     if (!match) {
       return undefined;
@@ -57,16 +68,24 @@ export function IAListWithPreview() {
   }, []);
 
   const activeStep = toPageStep(activeRow?.subId ?? '');
-  const previewUrl = activeStep ? getStoryIframeUrl(activeRow.id, activeStep, activeRow?.popup) : getStoryIframeUrl(activeRow.id, undefined, activeRow?.popup);
-console.log('previewUrl', previewUrl)
+  const previewUrl = activeRow
+    ? activeStep
+      ? getStoryIframeUrl(activeRow.id, activeStep, activeRow.popup)
+      : getStoryIframeUrl(activeRow.id, undefined, activeRow.popup)
+    : '';
+
   const handleMovePage = React.useCallback(() => {
+    if (!activeRow) {
+      return;
+    }
+
     if (activeStep) {
       LinkGo(activeRow.id, activeStep, activeRow.popup);
       return;
     }
 
     LinkGo(activeRow.id, undefined, activeRow.popup);
-  }, [activeRow.id, activeStep, activeRow.popup]);
+  }, [activeRow, activeStep]);
 
   const workList = [
     'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPZ021', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPA170', 'LTPA904'
@@ -96,7 +115,13 @@ console.log('previewUrl', previewUrl)
               <th scope="col">ID</th>
               <th scope="col">화면명</th>  
               <th scope="col">설계서명</th>  
-              <th scope="col">1차</th>  
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => setShowPhaseOnly(prev => !prev)}
+              >
+                1차{showPhaseOnly ? ' ✓' : ''}
+              </th>
               <th scope="col">완료일</th>  
               <th scope="col">수정일</th>  
               
@@ -106,13 +131,15 @@ console.log('previewUrl', previewUrl)
             </tr>
           </thead>
           <tbody>
-            {ROWS.map((row, index) => {
+            {visibleRows.map((row, index) => {
+              const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
+
               return (
                 <tr
-                  key={`${row.id}-${index}`}
-                  data-active={hoveredIndex === index ? 'true' : undefined}
-                  className={hoveredIndex === index ? 'selected' : ''}
-                  onClick={() => setHoveredIndex(index)}
+                  key={`${getRowKey(row)}-${index}`}
+                  data-active={isActive ? 'true' : undefined}
+                  className={isActive ? 'selected' : ''}
+                  onClick={() => setActiveRowKey(getRowKey(row))}
                 >
                   <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
                     <b>{index + 1}</b>
@@ -150,9 +177,13 @@ console.log('previewUrl', previewUrl)
       </div>
 
       <div className="ia-preview-pane">
-        <div className="ia-preview-label cursor-pointer" onClick={handleMovePage}>
-          {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt; <b>{activeRow.dep4}({activeRow.id})</b>
-        </div>
+        {activeRow ? (
+          <div className="ia-preview-label cursor-pointer" onClick={handleMovePage}>
+            {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt; <b>{activeRow.dep4}({activeRow.id})</b>
+          </div>
+        ) : (
+          <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>
+        )}
         {previewUrl ? (
           <iframe
             key={previewUrl}
