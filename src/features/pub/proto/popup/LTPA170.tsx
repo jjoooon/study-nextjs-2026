@@ -1,7 +1,6 @@
 'use client';
 // 허승하
 import * as React from 'react';
-import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -14,9 +13,9 @@ import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { FileExportIcon } from '@/shared/components/icons/CommonIcons';
 import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
-import { numberValueFormatter } from '@/shared/components/aggrid/aggridComponents';
-ModuleRegistry.registerModules([AllCommunityModule]);
+import { numberValueFormatter, useAgGridColumnVisibility } from '@/shared/components/aggrid/aggridComponents';
 
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export interface LTPA170PProps {
   open?: boolean;
@@ -205,7 +204,7 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
     {
       headerName: '계약(설계상태)',
       field: 'field11',
-      flex: 1,
+      width: 110,
       sortable: false, 
       filter: false, 
       suppressMovable: true, 
@@ -215,8 +214,12 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
   ];
   
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
-  const [copyValues, setCopyValues] = React.useState<string[]>([]);
+  const gridRef = React.useRef<AgGridReact<DummyDataType> | null>(null);
+  const toggleFields = ['field03', 'field04', 'field05'] as const;
+  const { visibleFields, onVisibleFieldsChange, onGridReady } = useAgGridColumnVisibility<DummyDataType>({
+    gridRef,
+    toggleFields,
+  });
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -263,24 +266,24 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
             </TableFold>  
             <TableFold>
               <TableFoldHead title="보험증권별 위험별 누적">
-                <Grow>
+                <Grow gap={2}>
                   <CheckboxGroup
                     className="gap-3"
                     color="primary"
                     minSelected={0}
-                    onValueChange={setCopyValues}
+                    onValueChange={onVisibleFieldsChange}
                     size="lg"
-                    value={copyValues}
+                    value={visibleFields}
                     variant="default"
                     width="auto"
                   >
-                    <CheckboxGroupItem value="display01" >
+                    <CheckboxGroupItem value="field03" >
                       보험시기 표시
                     </CheckboxGroupItem>
-                    <CheckboxGroupItem value="display02">
+                    <CheckboxGroupItem value="field04">
                       보험종기 표시
                     </CheckboxGroupItem>
-                    <CheckboxGroupItem value="display03">
+                    <CheckboxGroupItem value="field05">
                       최종월드 표시
                     </CheckboxGroupItem>
                   </CheckboxGroup>
@@ -299,12 +302,15 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
                 <Gcol className="w-full" gap={5}>
                   <div className="ag-theme-alpine min-h-[18rem]">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
+                      onGridReady={onGridReady}
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
+                      domLayout='autoHeight'
                     />
                   </div>
                   <Gcol className='w-full'>
