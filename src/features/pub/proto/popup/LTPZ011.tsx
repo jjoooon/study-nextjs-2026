@@ -28,20 +28,20 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
 
   type DummyDataType2 = {
     id: number;
-    담보상태: string;
-    담보코드: string;
-    담보보험시기: string;
-    담보보험종기: string;
-    세부담보명: string;
-    보험료: number;
+    field1: string;
+    field2: string;
+    field3: string;
+    field4: string;
+    field5: string;
+    field6: number;
     isSumRow?: boolean;
   };
 
   const DummyData2: DummyDataType2[] = [
-    { id: 1, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 1377 },
-    { id: 2, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 9999999 },
-    { id: 3, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 159999 },
-    { id: 4, 담보상태: '', 담보코드: '', 담보보험시기: '', 담보보험종기: '', 세부담보명: '', 보험료: 2323230 },
+    { id: 1, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 1377 },
+    { id: 2, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 9999999 },
+    { id: 3, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 159999 },
+    { id: 4, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 2323230 },
   ];
 
   const premiumAmountCellRenderer2 = (params: ICellRendererParams<DummyDataType2>) =>
@@ -50,7 +50,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '담보상태',
-      field: '담보상태',
+      field: 'field1',
       width: 80,
       cellClass: (params) => params.data?.isSumRow ? 'text-center font-bold' : 'text-center',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? <b>합계</b> : params.value,
@@ -58,7 +58,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
     },
     {
       headerName: '담보코드',
-      field: '담보코드',
+      field: 'field2',
       width: 80,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
@@ -66,7 +66,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
     },
     {
       headerName: '담보보험시기',
-      field: '담보보험시기',
+      field: 'field3',
       width: 110,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
@@ -74,7 +74,7 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
     },
     {
       headerName: '담보보험종기',
-      field: '담보보험종기',
+      field: 'field4',
       width: 110,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
@@ -82,14 +82,14 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
     },
     {
       headerName: '세부담보명',
-      field: '세부담보명',
+      field: 'field5',
       flex: 1,
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
       colSpan: (params) => params.data?.isSumRow ? 0 : 1,
     },
     {
       headerName: '보험료(원)',
-      field: '보험료',
+      field: 'field6',
       width: 120,
       cellClass: 'text-right',
       headerClass: 'px-0!',
@@ -108,12 +108,12 @@ export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
   const sumRow2 = React.useMemo<DummyDataType2[]>(
     () => [{
       id: -1,
-      담보상태: '합계',
-      담보코드: '',
-      담보보험시기: '',
-      담보보험종기: '',
-      세부담보명: '',
-      보험료: rowData2.reduce((sum, row) => sum + row.보험료, 0),
+      field1: '합계',
+      field2: '',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: rowData2.reduce((sum, row) => sum + row.field6, 0),
       isSumRow: true,
     }],
     [rowData2]
