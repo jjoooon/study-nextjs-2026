@@ -77,6 +77,29 @@ export const LayoutTemplateAsideToggle = ({
   </>
 );
 
+export const LayoutTemplate = ({
+  pageID,
+  pageTitle,
+  mainBody,
+}: Props) => (
+  <>
+    <LayoutHead>
+      {pageID}
+    </LayoutHead>
+
+    <LayoutBody className="grid grid-cols-[1fr] gap-3 pl-[1rem]">
+      
+      {mainBody}
+      
+    </LayoutBody>
+
+    <LayoutFoot>
+      <BottomBar />
+    </LayoutFoot>
+  </>
+);
+
+
 export const LayoutTemplateA = ({
   pageID,
   pageTitle,

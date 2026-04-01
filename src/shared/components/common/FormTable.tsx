@@ -124,7 +124,7 @@ export const FormCell = ({
   const contextVariant = useContext(VariantContext);
   const usedVariant = variant ?? contextVariant ?? 'default';
   const titleTypoVariant = titleVariant === 'section' ? 'body-xl' : 'body-md';
-  const titleTypoColor = titleVariant === 'section' ? 'primary' : contextVariant === 'none' ? 'blueGray' : 'default';
+  const titleTypoColor = titleVariant === 'section' ? 'primary' : contextVariant === 'none' || contextVariant === 'head' ? 'blueGray' : 'default';
 
   return (
     <>
@@ -175,10 +175,11 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
       [&_th]:h-auto! [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! 
       [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_td]:h-[auto] 
       [&_td+th]:pl-[1.6rem]!`,
-    none: `border-0! bg-transparent 
-    [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_th]:h-auto! [&_th]:break-keep!   
-    [&_td]:border-0! [&_td]:p-0! [&_td]:h-auto!   
-    [&_tr]:border-0! [&_td+th]:pl-[2.4rem]! [&_tr~tr>*]:pt-[0.6rem]!`
+    none: 
+      `border-0! bg-transparent 
+      [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_th]:h-auto! [&_th]:break-keep!   
+      [&_td]:border-0! [&_td]:p-0! [&_td]:h-auto!   
+      [&_tr]:border-0! [&_td+th]:pl-[2.4rem]! [&_tr~tr>*]:pt-[0.6rem]!`
   };
 
   // variant가 'none'이면 lineTop을 무시

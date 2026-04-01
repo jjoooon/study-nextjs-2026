@@ -52,11 +52,17 @@
 .ag-header-row {
   background: var(--color-gray-5) !important;
 }
-.ag-header-cell-comp-wrapper {
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-left-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-left-divider {
+  border-left: 0.1rem solid var(--color-gray-10) !important;
 }
-.ag-row {
-  /* border-bottom: 0 !important; */
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-right-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-right-divider {
+  border-right: 0.1rem solid var(--color-gray-10) !important;
 }
+
 .ag-cell {
   border:0;
   border-right: 1px solid var(--color-gray-10);
@@ -97,6 +103,33 @@
 .ag-row.ag-row-selected .editable-cell,
 .ag-row-selected {
   background-color: var(--color-warning-10);
+}
+
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
+  color: #ff5c2e !important;
+}
+
+.ag-theme-alpine .ag-row.ag-row-state-true {
+  --color-text-base: #ff5c2e;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-cell-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-selection-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 합계 */
@@ -275,7 +308,9 @@
   height: 0.8rem;
   background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFF4F4' stroke='%23E43939' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFF4F4'/%3E%3C/svg%3E%0A");
 }
-
+.ag-row .ag-column-last{
+  border-right:0!important;
+}
 .ag-row[row-index="0"] .ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after {
   bottom:auto;
   top: calc(100% + 0.6rem);

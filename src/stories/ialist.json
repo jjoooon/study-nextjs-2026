@@ -1,5 +1,5 @@
 [
-  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "공통", "popup": "", "id": "LTPZ999", "dep4": "메세지내용", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
+  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "공통", "popup": "Y", "id": "LTPZ999", "dep4": "메세지내용", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "", "id": "LTPZ001", "dep4": "출력", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "", "id": "LTPZ002", "dep4": "가입설계검색", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "상품플랜설계", "popup": "", "id": "LTPA020", "dep4": "상품 플랜 설계", "file": "상품_플랜", "plan": "안혜은", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
@@ -238,7 +238,7 @@
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "지침관리", "popup": "", "id": "LTPZ085", "dep4": "통합/세트담보누적조정", "file": "", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계모니터링", "popup": "", "id": "LTPA410", "dep4": "가입설계모니터링", "file": "", "plan": "안혜은", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "상품판매모니터링", "popup": "", "id": "LTPA420", "dep4": "상품판매모니터링", "file": "", "plan": "안혜은", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "" },
-  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "화면권한보기", "popup": "", "id": "LTPZ998", "dep4": "화면권한보기", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
+  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "화면권한보기", "popup": "Y", "id": "LTPZ998", "dep4": "화면권한보기", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "화면담당자", "popup": "", "id": "LTPZ997", "dep4": "화면담당자", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "거래이력리스트", "popup": "", "id": "LTPZ996", "dep4": "거래이력리스트", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "파일 업로드", "popup": "", "id": "LTPZ995", "dep4": "파일 업로드", "file": "", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
