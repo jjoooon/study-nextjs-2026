@@ -20,6 +20,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/com
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { InfoBox } from '@/shared/components/common/InfoBox';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export interface LTPA401PProps {
@@ -39,7 +40,7 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -73,7 +74,7 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
                 <Grow className="w-full">
                   <FormTable
                     caption="피보험자의 위험정보 테이블"
-                    cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
+                    cols={['w-[12rem]', 'flex-1', 'w-[12rem]', 'flex-1', 'w-[12rem]', 'flex-1']}
                   >
                     <FormRow>
                       <FormCell title={'접수번호'}>26012723081</FormCell>
@@ -87,18 +88,21 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'상품(상품유형)'}>운전자보험</FormCell>
-                      <FormCell title={'플랜'}>    </FormCell>
+                      <FormCell title={'플랜'}>&nbsp;</FormCell>
                       <FormCell title={'희망보험료'}>5만원이하</FormCell>
                     </FormRow>
                     <FormRow>
                       <FormCell title={'계약자명'}>박한화</FormCell>
                       <FormCell title={'계약자 생년월일'}>2000-01-01</FormCell>
-                      <FormCell title={''}> </FormCell>
+                      <FormCell title={''}>&nbsp;</FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'계약자명'}>박한화</FormCell>
-                      <FormCell title={'계약자 생년월일'}>2000-01-01</FormCell>
-                      <FormCell title={''}> </FormCell>
+                      <FormCell title={'피보험자'}>박한화</FormCell>
+                      <FormCell title={'피보험자 생년월일'}>2000-01-01</FormCell>
+                      <FormCell title={'상해급수'}>3급</FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'기타요청내용'} colSpan={5}>text</FormCell>
                     </FormRow>
                   </FormTable>
                 </Grow>
@@ -106,20 +110,68 @@ export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
             </TableFold>
 
             <TableFold>
-              <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
+              <TableFoldHead title="처리결과" />
               <TableFoldBody>
                 <Gcol className="w-full" gap={5}>
-                  {/* <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      // getRowId 적용: id 필드를 고유 식별자로 사용
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
-                      enableCellSpan={true}
-                      domLayout='autoHeight'
-                    />
-                  </div> */}
+                  <Grow className="w-full">
+                    <FormTable caption="처리결과 등록 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1']}>
+                      <FormRow>
+                        <FormCell title={'처리결과'}>
+                          <RadioGroup
+                            className="gap-2"
+                            errorMsg="하나를 선택해주세요."
+                            errorPs="bl"
+                            onValueChange={() => { }}
+                            width="full"
+                          >
+                            <RadioGroupItem
+                              color="primary"
+                              id="result1"
+                              size="lg"
+                              value="option1"
+                              variant="default"
+                              checked={true}
+                            >
+                              설계완료
+                            </RadioGroupItem>
+                            <RadioGroupItem
+                              color="primary"
+                              id="result2"
+                              size="lg"
+                              value="option2"
+                              variant="default"
+                            >
+                              반려
+                            </RadioGroupItem>
+                          </RadioGroup>
+                        </FormCell>
+                      </FormRow> 
+                      <FormRow>
+                        <FormCell title={'설계번호'}>
+                          <Input
+                            placeholder=""
+                            size="lg"
+                            value=""
+                            variant="default"
+                            width="full"
+                            readOnly
+                          />
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'메모'}>
+                          <Input
+                            placeholder=""
+                            size="lg"
+                            value=""
+                            variant="default"
+                            width="full"
+                            readOnly
+                          />
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                  </Grow>
                   <Gcol className='w-full'>
                     <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
                       <Typo variant={'body-sm'} icon={'warning'}>
