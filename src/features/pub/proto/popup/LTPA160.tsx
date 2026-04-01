@@ -316,11 +316,11 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               </TableFoldBody>
             </TableFold>
 
-            <TableFold>
+            <TableFold variant={'default'}>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
               <TableFoldBody>
                 <Gcol className="w-full" gap={5}>
-                  <div className="ag-theme-alpine min-h-[18rem]">
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
@@ -328,6 +328,7 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
+                      domLayout='autoHeight'
                     />
                   </div>
                   <Gcol className='w-full'>

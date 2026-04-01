@@ -179,7 +179,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                   <TableFold variant={'accordion'}>
                       <TableFoldHead title="피보험자목록"/>
                       <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18rem]">
+                        <div className="ag-theme-alpine">
                           <AgGridReact<InsuredListRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={insuredListData}
@@ -199,6 +199,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                               headerName: '선택',
                               cellClass: 'text-center editable-cell',
                             }}
+                            domLayout={'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
@@ -209,7 +210,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                    <TableFold variant={'accordion'}>
                       <TableFoldHead title="담보목록"/>
                       <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18rem]">
+                        <div className="ag-theme-alpine">
                           <AgGridReact<CoverageListRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={coverageListData}
@@ -220,6 +221,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                             }}
                             animateRows={false}
                             rowClassRules={{}}
+                            domLayout={'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
@@ -229,7 +231,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
             ) : (
               <div className="w-full pt-2">
                 <Typo variant={'heading-sm'} className="mb-1">재물담보</Typo>
-                <div className="ag-theme-alpine min-h-[18rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<CoverageListRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={coverageListData}
@@ -240,6 +242,7 @@ export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
                     }}
                     animateRows={false}
                     rowClassRules={{}}
+                     domLayout={'autoHeight'}
                   />
                 </div>
               </div>
