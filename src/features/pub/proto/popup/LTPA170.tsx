@@ -223,7 +223,7 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>계약별누적위험</Typo>
@@ -300,7 +300,7 @@ export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
               </TableFoldHead>
               <TableFoldBody>
                 <Gcol className="w-full" gap={5}>
-                  <div className="ag-theme-alpine min-h-[18rem]">
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       ref={gridRef}
                       onGridReady={onGridReady}
