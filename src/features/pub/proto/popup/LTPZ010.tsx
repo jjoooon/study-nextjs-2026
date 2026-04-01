@@ -410,6 +410,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
                     checkboxes: true,
                     enableClickSelection: false,
                   }}
+                  
                   selectionColumnDef={{
                     headerName: '선택',
                     cellClass: 'text-center editable-cell',
