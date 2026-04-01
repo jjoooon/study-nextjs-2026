@@ -19,8 +19,8 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
 function NativeSelect({
   className,
   variant = 'default',
-  size = 'md',
-  width = 'full',
+  size = 'lg',
+  width = 'auto',
   required = false,
   readOnly = false,
   error = false,
@@ -101,11 +101,11 @@ function NativeSelect({
           : 'var(--color-icon-secondary)';
 
   return (
-    <div className={cn('relative', withStyle())} style={inlineWidthStyle}>
+    <div className={cn('relative', withStyle(), className)} style={inlineWidthStyle}>
       <div className="group/native-select relative has-[select:disabled]:opacity-50" data-slot="native-select-wrapper">
         <select
           data-slot="native-select"
-          className={cn(variantStyles[variant], className)}
+          className={cn(variantStyles[variant])}
           tabIndex={readOnly ? -1 : props.tabIndex}
           aria-invalid={error || undefined}
           aria-describedby={error ? errorId : undefined}
