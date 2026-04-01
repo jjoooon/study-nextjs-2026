@@ -8,7 +8,7 @@ import { Gcol, Grid } from '@atoms';
 
 type DialogSizeValue = number | string;
 
-type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | '2xl' |'full';
 
 type DialogSizeConfig = {
   width?: DialogSizeValue;
@@ -32,6 +32,7 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   md: '56rem',
   lg: '76rem',
   xl: '96rem',
+  '2xl': '112rem',
 };
 
 const toCssSize = (value?: DialogSizeValue): string | undefined => {
@@ -52,7 +53,7 @@ const resolveDialogSize = (size?: DialogSize) => {
     };
   }
 
-  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl') {
+  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl' || size === '2xl') {
     return {
       width: DIALOG_PRESET_WIDTH[size],
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
