@@ -69,7 +69,7 @@ console.log('previewUrl', previewUrl)
   }, [activeRow.id, activeStep, activeRow.popup]);
 
   const workList = [
-    'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPZ021', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998',
+    'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPZ021', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPA170', 'LTPA904'
   ];
 
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
