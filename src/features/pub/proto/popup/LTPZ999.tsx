@@ -15,8 +15,9 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 interface LTPZ999Props {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  showOverlay?: boolean;
 }
-export const LTPZ999 = ({ open, onOpenChange }: LTPZ999Props) => {
+export const LTPZ999 = ({ open, onOpenChange, showOverlay = true }: LTPZ999Props) => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -143,7 +144,7 @@ export const LTPZ999 = ({ open, onOpenChange }: LTPZ999Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="md" className="h-[40rem]">
+      <DialogContent showCloseButton showOverlay={showOverlay} resizable={true} size="md" className="h-[40rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>메시지내용</Typo>
