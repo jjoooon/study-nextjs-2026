@@ -33,10 +33,9 @@ export const LTPA430 = ({ open, onOpenChange }: LTPA430Props) => {
     field04: string | number;
     field05: string | number;
     field06: string | number;
-    field07: string | number; 
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, field01: '9,999', field02: '999,999,999', field03: '999,999,999', field04: '999,999,999', field05: '999,999,999', field06: '999,999,999', field07: '999,999,999'},
+    { id: 1, field01: '9,999', field02: '999,999,999', field03: '999,999,999', field04: '999,999,999', field05: '999,999,999', field06: '999,999,999'},
   ];
 
   // AgGrid Column 
@@ -122,18 +121,6 @@ export const LTPA430 = ({ open, onOpenChange }: LTPA430Props) => {
         </Button>
       ),
     },
-    {
-      headerName: '7형(305간편고지형)',
-      flex: 1,
-      field: 'field07',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>('field07', 
-        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
-          설계생성
-        </Button>
-      ),
-    },
     
   ];
   
@@ -151,51 +138,49 @@ export const LTPA430 = ({ open, onOpenChange }: LTPA430Props) => {
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
           
-          <Grow placement='bwc' className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'} lineTop={false} caption="설계번호">
-              <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
-                  <div className="separator">-</div>
-                  <Input aria-label="" width={'3rem'} value={'1'} readOnly />
-                  <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
-                  <Input aria-label="" width={'10rem'} value={'1형(345간편고지형)'} readOnly />
-                </FormCell>
-              </FormRow>
-            </FormTable>
-          </Grow>
-
-         <InfoBox title="간편고지 유혈별 보험료 예시" variant="info" bg={false} 
-          items={[
-              { text: '이 상품은 일반심사보험대비 보험료가 할증되어 있으며, \'간편고지\' 유형에 따라 할증수준이 다릅니다. 보험료수준은 할증폭이 가장 큰 305간편고지에서 355간편고지순으로 저렴해집니다' },
-            ]} 
-      />
-      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-        <AgGridReact<DummyDataType>
-          getRowId={params => String(params.data.id)}
-          noRowsOverlayComponent={AgGridEmptyComponent}
-          rowData={rowData}
-          columnDefs={columnDefs}
-          defaultColDef={{ 
-            sortable: false,
-            resizable: false,
-          }}
-          domLayout="autoHeight" 
-        />
+          <Gcol>
+            <Grow placement='bwc' className="w-full" variant={'box-round'}>
+              <FormTable variant={'head'} lineTop={false} caption="설계번호">
+                <FormRow>
+                  <FormCell title={'설계번호'}>
+                    <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
+                    <div className="separator">-</div>
+                    <Input aria-label="" width={'3rem'} value={'1'} readOnly />
+                    <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                    <Input aria-label="" width={'10rem'} value={'1형(345간편고지형)'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+            <InfoBox title="간편고지 유혈별 보험료 예시" variant="info" bg={true} 
+              items={[
+                  { text: '이 상품은 일반심사보험대비 보험료가 할증되어 있으며, \'간편고지\' 유형에 따라 할증수준이 다릅니다. 보험료수준은 할증폭이 가장 큰 305간편고지에서 355간편고지순으로 저렴해집니다' },
+                ]} 
+              />
+          </Gcol>
+        <div className="ag-theme-alpine ">
+          <AgGridReact<DummyDataType>
+            getRowId={params => String(params.data.id)}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            defaultColDef={{ 
+              sortable: false,
+              resizable: false,
+            }}
+            domLayout="autoHeight" 
+          />
+        </div>
         <InfoBox title="현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)" variant="detail" bg={false} />
-      </div>
+        
         </DialogSection> 
 
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
             <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
               <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>엑셀내보내기</Button>
               </Grow>
               <Grow>
-                 <Button variant={'contained'} size={'xl'}>
-                  확인
-                </Button>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
                 </Button>
