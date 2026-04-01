@@ -315,29 +315,31 @@ export const LTPA160P = ({ open, onOpenChange }: LTPA160PProps) => {
               </TableFoldBody>
             </TableFold>
 
-            <TableFold variant={'default'}>
+            <TableFold>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18rem]">
-                  <AgGridReact<DummyDataType>
-                    // getRowId 적용: id 필드를 고유 식별자로 사용
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false }}
-                    enableCellSpan={true}
-                  />
-                </div>
-                <Gcol className='w-full'>
-                  <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
-                    <Typo variant={'body-sm'} icon={'warning'}>
-                      <b>주의사항 노출 영역</b>
-                    </Typo>
-                  </Gcol>
-                  <Gcol placement={'ss'} className='w-full'>
-                    <Typo variant={'body-sm'} icon={'detail'}>
-                      자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다.
-                    </Typo>
+                <Gcol className="w-full" gap={5}>
+                  <div className="ag-theme-alpine min-h-[18rem]">
+                    <AgGridReact<DummyDataType>
+                      // getRowId 적용: id 필드를 고유 식별자로 사용
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{ sortable: false }}
+                      enableCellSpan={true}
+                    />
+                  </div>
+                  <Gcol className='w-full'>
+                    <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'warning'}>
+                        <b>주의사항 노출 영역</b>
+                      </Typo>
+                    </Gcol>
+                    <Gcol placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'detail'}>
+                        자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다.
+                      </Typo>
+                    </Gcol>
                   </Gcol>
                 </Gcol>
                 

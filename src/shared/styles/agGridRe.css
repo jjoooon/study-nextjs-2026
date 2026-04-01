@@ -326,3 +326,12 @@
   mask-repeat: no-repeat;
   color: var(--color-information-50);
 }
+
+/* 아코디언 안에 감싸져들어갈때 문제 */
+.ag-theme-alpine{
+ position: relative; 
+}
+.ag-theme-alpine > div{
+ position: absolute;
+ width: 100%; 
+}
