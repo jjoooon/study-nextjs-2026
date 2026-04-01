@@ -28,7 +28,7 @@ export const LTPZ017P = () => {
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>담보내용상세</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>담보내용상세</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
           </DialogTitle>
         </DialogHeader>
