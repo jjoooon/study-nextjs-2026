@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
@@ -263,24 +263,20 @@ export const LTPZ039 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection> 
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-              </Grow>
-              <Grow>
-                <Button variant={'contained'} size={'xl'}>
-                  확인
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
-                </Button>
-              </Grow>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                닫기
+              </Button>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>    
   );
 };
 

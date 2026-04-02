@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
@@ -664,19 +664,17 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
         </DialogSection>
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-                <Button variant={'contained'} size={'xl'}>
-                  확인
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
-                  닫기
-                </Button>
-              </Grow>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
+                닫기
+              </Button>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

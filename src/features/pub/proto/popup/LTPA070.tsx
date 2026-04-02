@@ -9,7 +9,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
 import { AgGridEmptyComponent } from '@aggrid';
 
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
@@ -90,19 +90,17 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection> 
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'ec'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-                <Button variant={'contained'} size={'xl'}>
-                  확인
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
-                </Button>
-              </Grow>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                닫기
+              </Button>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
     </DialogContent>
   </Dialog>    

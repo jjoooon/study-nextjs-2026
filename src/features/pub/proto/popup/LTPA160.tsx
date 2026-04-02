@@ -1,24 +1,25 @@
 'use client';
 
 import * as React from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-
-import { ResetIcon } from '@icons'
-import { Input } from '@uiux/Input';
-import { FileExportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { numberValueFormatter } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { ResetIcon } from '@icons'
+import { numberValueFormatter } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { FileExportIcon, SearchIcon } from '@icons';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+
+import type { ColDef } from 'ag-grid-community';
 import type { PopupBaseProps } from './types';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -101,7 +102,6 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       upperTotalAmt: '1000000',
     },
   ];
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -112,7 +112,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       suppressMovable: true,
       resizable: true,
       spanRows: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center bg-white!`,
+      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
     },
     {
       headerName: '누적위험명',
@@ -122,7 +122,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-center bg-white!`,
+      cellClass: `text-center`,
     },
     {
       headerName: '설계별 누적금액',
@@ -132,7 +132,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-right bg-white!`,
+      cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
     },
@@ -144,7 +144,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-right bg-white!`,
+      cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
     },
@@ -157,7 +157,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       suppressMovable: true,
       resizable: true,
       spanRows: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center bg-white!`,
+      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
     },
     {
       headerName: '누적위험명',
@@ -167,7 +167,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-center bg-white!`,
+      cellClass: `text-center`,
     },
     {
       headerName: '설계별 누적금액',
@@ -177,7 +177,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-right bg-white!`,
+      cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
     },
@@ -189,7 +189,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-right bg-white!`,
+      cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
     },
@@ -217,6 +217,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
+          {/* 조회 */}
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable
               variant={'head'}
@@ -242,7 +243,6 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
                     ))}
                   </NativeSelect>
                   <Input
-                    aria-label=""
                     className="w-[10rem]"
                     value={form.type02 || 'LA260204310632'}
                     onChange={(e) => setFormField('type02', e.target.value)}
@@ -250,7 +250,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" value={'한화 더 건강한 1040종합..'} readOnly />
+                  <Input value={'한화 더 건강한 1040종합..'} readOnly />
                 </FormCell>
                 <FormCell title={'피보험자정보'}>
                   <Grow>
@@ -282,7 +282,8 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
           </Grow>
-
+        
+          {/* 조회 정보 */}
           <Gcol placement="ss" className="w-full" gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)">
@@ -297,7 +298,12 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Grow className="w-full">
                   <FormTable
                     caption="피보험자의 위험정보 테이블"
-                    cols={['w-[5rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[5rem]', 'flex-1', 'w-[5rem]', 'flex-1']}
+                    cols={[
+                      'w-[5rem]', 'flex-1', 
+                      'w-[8rem]', 'flex-1', 
+                      'w-[5rem]', 'flex-1', 
+                      'w-[5rem]', 'flex-1'
+                    ]}
                   >
                     <FormRow>
                       <FormCell title={'직업'}>전기공학 개발자 및 연구원</FormCell>
@@ -313,10 +319,9 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
               <TableFoldBody>
-                <Gcol className="w-full" gap={5}>
+                <Gcol gap={5}>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
-                      // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
@@ -338,28 +343,25 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Gcol>
                   </Gcol>
                 </Gcol>
-                
               </TableFoldBody>
             </TableFold>
           </Gcol>
         </DialogSection>
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  지침확인결과
-                </Button>
-              </Grow>
-              <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
-                </Button>
-              </Grow>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                지침확인결과
+              </Button>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+            <Grow>
+              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                닫기
+              </Button>
+            </Grow>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

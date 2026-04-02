@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
@@ -231,7 +231,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection>  
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
-            <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
+            <DialogFooterArea>
               <Grow>
                 <Button variant={'outlined'} size={'xl'} color={'gray'}>지침확인결과</Button>
               </Grow>
@@ -246,7 +246,7 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
                   닫기
                 </Button>
               </Grow>
-            </Grow>
+            </DialogFooterArea>
             <DialogBottomInfo />
           </Gcol>
         </DialogFooter>
