@@ -111,8 +111,8 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="xl" >
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>특별조건특약조회</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ049)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>고객 직업정보(상해급수)변경안내</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ051)</Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>

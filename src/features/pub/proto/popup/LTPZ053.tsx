@@ -20,7 +20,7 @@ import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [policySearchPart, setPolicySearchPart] = React.useState('');
 
   const [form, setFormField] = useFormFields({
@@ -310,4 +310,4 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 };
 
-export default LTPZ052;
+export default LTPZ053;
