@@ -193,8 +193,6 @@ export const Default: StoryObj = {
           onPageChange={handlePageChange}
           itemsPerPage={pageSize}
         />
-
-         
       </div>
     );
   },

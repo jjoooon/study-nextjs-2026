@@ -61,7 +61,7 @@ export const LTPZ010_01 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (  
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>가입설계 이력조회</Typo>
@@ -118,5 +118,3 @@ export const LTPZ010_01 = ({ open, onOpenChange }: PopupBaseProps) => {
   </Dialog>
   );
 };
-
-export default LTPZ010_01;
