@@ -74,6 +74,9 @@ export const BulletList = ({
     <BulletListContext.Provider value={{ type, size, color }}>
       <ul className={cn(
         position === 'row' ? 'flex flex-row flex-wrap items-center' : 'flex flex-col', 
+        color === 'warning' ? '[&>li_em]:text-[var(--color-danger-50)] [&>li_em]:font-bold [&>li_em]:not-italic!' : '',
+        color === 'detail' ? '[&>li_em]:text-[var(--color-primary-50)] [&>li_em]:font-bold [&>li_em]:not-italic!' : '',
+        color === 'info' ? '[&>li_em]:text-[var(--color-information-50)] [&>li_em]:font-bold [&>li_em]:not-italic!' : '',
         className
       )}>
         {children}
@@ -95,7 +98,7 @@ export const BulletListItem = ({
   const context = useBulletListContext();
   const resolvedType = type ?? context.type ?? 'dot';
   const resolvedSize = size ?? context.size ?? 'md';
-  const resolvedColor = color ?? context.color ?? 'default';
+  const resolvedColor = color ?? 'default';
 
   return (
     <li

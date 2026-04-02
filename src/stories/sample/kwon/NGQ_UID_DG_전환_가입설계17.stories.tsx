@@ -247,7 +247,7 @@ const LTPZ052P = () => {
       <InfoBox bg variant="info"
         subTitle="고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당 신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행 이전에 배서(청약중 이후) 진행 필요"
       />
-      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+      <div className="ag-theme-alpine ">
         <AgGridReact<DummyDataType>
           rowData={rowData}
           columnDefs={columnDefs}

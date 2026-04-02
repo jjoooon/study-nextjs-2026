@@ -5,45 +5,37 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogFooterArea, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams, IHeaderParams, SuppressKeyboardEventParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import type { ColDef, ColGroupDef, GridApi, IHeaderParams } from 'ag-grid-community';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { Checkbox } from '@uiux/Checkbox';
 import type { PopupBaseProps } from './types';
-import { Input } from '@/shared/components/uiux/Input';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { Input } from '@uiux/Input';
+import { SearchIcon } from '@icons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const [policySearchPart, setPolicySearchPart] = React.useState('');
-
+  
   const [form, setFormField] = useFormFields({
     type01: '',
-    type02: '',
   });
-  
   type DummyDataType = {
     id: number;
     isCheck: boolean;
-    isAuthcheck1: boolean;
-    isAuthcheck2: boolean;
     field01: string | number;
     field02: string | number;
     field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: true, isAuthcheck1: true, isAuthcheck2: true, field01: '12312312', field02: '911212-1111111', field03: '010-1234-5678', field04: '', field05: '', field06: '', field07: ''},
-    { id: 2, isCheck: true, isAuthcheck1: true, isAuthcheck2: true, field01: '12312312', field02: '911212-1111111', field03: '010-1234-5678', field04: '', field05: '', field06: '', field07: ''},
+    { id: 1, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678'},
+    { id: 2, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678'},
+    { id: 3, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678'},
   ];
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
@@ -75,124 +67,28 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
     );
   };
 
-  const suppressGridKeyboardOnInput = (params: SuppressKeyboardEventParams<DummyDataType>) => params.event?.target instanceof HTMLInputElement;
-
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '순번',
-      width: 80,
-      field: 'id',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      headerName: '고객명',
+      width: 100,
+      field: 'field01',
+      cellClass: 'text-left flex [&>div>span]:h-auto!',
       autoHeight: true,   
     },
     {
-      headerName: '인증방법',
-      
-      children: [
-        {
-          headerName: '동의서',
-          width: 100,
-          editable: true,
-          field: 'isAuthcheck1',
-          cellClass: 'text-center px-0! editable-cell',
-          cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-          cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
-          suppressKeyboardEvent: suppressGridKeyboardOnInput,
-          headerComponent: HeaderCheckbox,
-          headerComponentParams: {
-            getAllChecked: () => rowData.length > 0 && rowData.every((row) => Boolean(row.isAuthcheck1)),
-            toggleAll: (next: boolean) => setRowData((prev) => prev.map((row) => ({ ...row, isAuthcheck1: next }))),
-          },
-        },
-        {
-          headerName: '모바일',
-          width: 100,
-          editable: true,
-          field: 'isAuthcheck2',
-          headerClass: 'border-r-0!',
-          cellClass: 'text-center px-0! editable-cell border-r-0!',
-          cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-          cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
-          suppressKeyboardEvent: suppressGridKeyboardOnInput,
-          headerComponent: HeaderCheckbox,
-          headerComponentParams: {
-            getAllChecked: () => rowData.length > 0 && rowData.every((row) => Boolean(row.isAuthcheck2)),
-            toggleAll: (next: boolean) => setRowData((prev) => prev.map((row) => ({ ...row, isAuthcheck2: next }))),
-          },
-        }
-      ]
-    },
-    {
-      headerName: '고객명',
-      flex: 1,
-      minWidth: 240,
-      field: 'field01',
-      headerClass: 'border-l border-[#d4d4d5]',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      editable: true,
-      suppressNavigable: true,
-      suppressKeyboardEvent: suppressGridKeyboardOnInput,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        return (
-          <Grow className="w-full h-full flex items-center justify-center px-2 border-l border-[#d4d4d5]">
-            <div
-              onClick={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-              onMouseDown={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-              onDoubleClick={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-              onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => event.stopPropagation()}
-              className="w-full h-full flex items-center justify-center gap-1"
-            >
-              <div className="w-[16rem] min-w-[16rem] max-w-[16rem] shrink-0">
-                <Input
-                  aria-label=""
-                  width={'full'}
-                  value={String(params.value ?? '')}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    params.node.setDataValue('field01', value);
-                  }}
-                />
-              </div>
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-            </div>
-          </Grow>
-        );
-      },
-    },
-    {
-      headerName: '주민번호',
+      headerName: '실명증표진위여부 확인서',
       flex: 1,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
      {
-      headerName: '전화번호',
+      headerName: '타인사망피보험자 동의확인서',
       flex: 1,
       field: 'field03',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
-    },
-    {
-      headerName: '변경전 직업정보',
-      children: [
-        {
-          headerName: '상해급수',
-          flex: 1,
-          field: 'field04',
-          cellClass: 'text-center px-0! whitespace-nowrap',
-        },
-        {
-          headerName: '직업',
-          flex: 1,
-          field: 'field05',
-          cellClass: 'text-center px-0! whitespace-nowrap',
-        }
-      ]
     },
   ];
   
@@ -204,11 +100,11 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
-
+    
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl" >
+      <DialogContent showCloseButton resizable={true} size="xl" >
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>원클릭스캔</Typo>
@@ -217,93 +113,158 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
           <Grow placement='bwe' className="w-full" variant={'box-round'} gap={5}>
-            <FormTable caption="증권번호" cols={['w-[14rem]', 'w-auto','w-[14rem]', 'w-auto']} variant={'head'}>
+            <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto','w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
-                <FormCell title={'증권번호'} className='w-full'>
+                <FormCell title={'설계번호'} className='w-full'>
                   <Grow>
-                    <Input aria-label="증권번호 검색" width={'10rem'} value={policySearchPart} onChange={(e) => setPolicySearchPart(e.target.value)} />
+                    <Input aria-label="설계번호 검색" width={'10rem'} value={form.type01}  onChange={(e) => setFormField('type01', e.target.value)}/>
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
                   </Grow>
                 </FormCell>
-                <FormCell title={'증권번호'} className='w-full'>
-                  <Grow>
-                    <Input aria-label="" width={'6rem'} value={'123'} />
-                    <Input aria-label="" width={'6rem'} value={'1234'} />
-                    <Input aria-label="" width={'6rem'} value={'1234'} />
-                  </Grow>
+                <FormCell title={'상품명'} className='w-full'>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">한화 더건강한 한아름종합보험2601</Typo>
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol className='w-full' gap={2.5}>
-              <TableFold variant="accordion">
-                <TableFoldHead title="고객정보">
-                  <Grow>
-                     <Button variant={'outlined'} size={'xl'} color={'gray'}>행추가</Button>
-                     <Button variant={'outlined'} size={'xl'} color={'gray'}>행삭제</Button>
-                  </Grow>
-                </TableFoldHead>
-                <TableFoldBody>
-                  <div className="ag-theme-alpine ">
-                    <AgGridReact<DummyDataType>
-                      getRowId={params => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      defaultColDef={{ 
-                        sortable: false,
-                        resizable: false,
-                      }}
-                      animateRows={false}
-                      alwaysShowHorizontalScroll={true}
-                      rowClassRules={{}}
-                      domLayout="autoHeight" 
-                      // 체크박스 시
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: true,
-                        checkboxes: true,
-                        enableClickSelection: true,
-                      }}
-                      onGridReady={params => {
-                        gridApiRef.current = params.api;
-                        params.api.forEachNode(node => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-           </Gcol>
-     
-        </DialogSection> 
+          <div className="ag-theme-alpine">
+            <AgGridReact<DummyDataType>
+              getRowId={params => String(params.data.id)}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              defaultColDef={{ 
+                sortable: false,
+                resizable: false,
+              }}
+              animateRows={false}
+              alwaysShowHorizontalScroll={true}
+              rowClassRules={{}}
+              domLayout="autoHeight" 
+              // 체크박스 시
+              rowSelection={{
+                mode: 'multiRow',
+                headerCheckbox: false,
+                checkboxes: true,
+                enableClickSelection: true,
+              }}
+              selectionColumnDef={{
+                headerName: '선택',
+              }}
+              onGridReady={params => {
+                gridApiRef.current = params.api;
+                params.api.forEachNode(node => {
+                  if (node.data?.isCheck) {
+                    node.setSelected(true);
+                  }
+                });
+              }}
+            />
+          </div>
+          <TableFold variant="accordion">
+            <TableFoldHead title="조회항목"></TableFoldHead>
+            <TableFoldBody>
+              <FormTable caption="월클릭스켄" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormRow >
+                    <FormCell title={'구분'} colSpan={5}>
+                      <RadioGroup
+                        className="gap-2"
+                        errorMsg="하나를 선택해주세요."
+                        errorPs="bl"
+                        onValueChange={() => {}}
+                        width="full"
+                      >
+                        <RadioGroupItem
+                          color="primary"
+                          id="d1"
+                          size="lg"
+                          value="option1"
+                          variant="default"
+                        >
+                          주민등록증
+                        </RadioGroupItem>
+                        <RadioGroupItem
+                          color="primary"
+                          id="d2"
+                          size="lg"
+                          value="option2"
+                          variant="default"
+                        >
+                          운전면허증
+                        </RadioGroupItem>
+                        <RadioGroupItem
+                          color="primary"
+                          id="d3"
+                          size="lg"
+                          value="option3"
+                          variant="default"
+                        >
+                          외국인등록증
+                        </RadioGroupItem>
+                        <RadioGroupItem
+                          color="primary"
+                          id="d4"
+                          size="lg"
+                          value="option4"
+                          variant="default"
+                        >
+                          사업자등록번호
+                        </RadioGroupItem>
+                      </RadioGroup>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'취급자 연락처'}>
+                      <Input aria-label="" width={'16rem'} value={'12345678'} required readOnly/>
+                    </FormCell>
+                    <FormCell title={'주민등록번호'}>
+                      <Input aria-label="" width={'16rem'} value={'12345678'} required readOnly/>
+                    </FormCell>
+                    <FormCell title={'발급일자'}>
+                      <Input aria-label="" width={'16rem'} value={'12345678'} required readOnly/>
+                      <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">신원확인</Button>
+                    </FormCell>
+                  </FormRow>
+              </FormTable>
+            </TableFoldBody>
+          </TableFold>
+          <TableFold variant="accordion">
+          <TableFoldHead title="신원확인결과"></TableFoldHead>
+          <TableFoldBody>
+            <FormTable caption="월클릭스켄" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+              <FormRow >
+                <FormCell title={'진위여부'}>
+                  <Input aria-label="" width={'16rem'} value={'12345678'} readOnly/>
+                </FormCell>
+                <FormCell title={'사유'}>
+                  <Input aria-label="" width={'30rem'} value={'12345678'} readOnly/>
+                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">확인서발행</Button>
 
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </TableFoldBody>
+        </TableFold>  
+      </DialogSection> 
+      <DialogFooter>
+        <DialogFooterArea>
+          <Grow>
+            <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+              이미지조회
+            </Button>
+          </Grow>
+          <Grow>
+            <DialogClose asChild>
               <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                이미지
+                닫기
               </Button>
-            </Grow>
-            <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                출력/발송
-              </Button>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
-                </Button>
-              </DialogClose>
-            </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
+            </DialogClose>
+          </Grow>
+        </DialogFooterArea>
+        <DialogBottomInfo />
+      </DialogFooter>
     </DialogContent>
   </Dialog>    
   );
