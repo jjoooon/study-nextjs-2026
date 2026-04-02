@@ -21,12 +21,12 @@ import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPA030PProps {
+export interface LTPA030Props {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export const LTPA030P = ({ open, onOpenChange }: LTPA030PProps) => {
+export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
 
   // dummy data
   type DummyDataType = {
@@ -331,6 +331,3 @@ export const LTPA030P = ({ open, onOpenChange }: LTPA030PProps) => {
   </Dialog>    
   );
 };
-
-
-export const LTPA030 = LTPA030P;

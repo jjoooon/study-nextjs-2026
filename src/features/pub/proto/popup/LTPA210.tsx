@@ -23,7 +23,7 @@ import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA210P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPA210 = ({ open, onOpenChange }: PopupBaseProps) => {
   // dummy data
   type DummyDataType = {
     id: number;

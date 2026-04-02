@@ -19,7 +19,7 @@ import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPZ011P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
   const amountInputRefs2 = useRef<Array<HTMLInputElement | null>>([]);
 
   type DummyDataType2 = {
