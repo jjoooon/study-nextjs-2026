@@ -20,15 +20,11 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPA904PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA904P = ({ open, onOpenChange }: LTPA904PProps) => {
+export const LTPA904P = ({ open, onOpenChange }: PopupBaseProps) => {
   type LTPA904TabType = {
     name: string;
     value: string;

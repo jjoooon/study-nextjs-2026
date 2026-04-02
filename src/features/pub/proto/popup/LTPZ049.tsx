@@ -12,15 +12,11 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
 import { InfoBox } from '@/shared/components/common/InfoBox';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ049Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ049 = ({ open, onOpenChange }: LTPZ049Props) => {
+export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
 
    type DummyDataType = {
       id: number;

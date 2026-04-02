@@ -12,13 +12,9 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/com
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { InfoBox } from '@/shared/components/common/InfoBox';
 import { TabPager } from '@/shared/components/common/TabPager';
+import type { PopupBaseProps } from './types';
 
-export interface LTPZ021PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
+export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

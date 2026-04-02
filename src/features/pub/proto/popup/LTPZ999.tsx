@@ -10,14 +10,11 @@ import { AgGridEmptyComponent } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ999Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-export const LTPZ999 = ({ open, onOpenChange }: LTPZ999Props) => {
+export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
     id: number;
     field1: string;

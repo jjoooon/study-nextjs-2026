@@ -20,14 +20,10 @@ import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/Nativ
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useState } from 'react';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export interface LTPA210PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA210P = ({ open, onOpenChange }: LTPA210PProps) => {
+export const LTPA210P = ({ open, onOpenChange }: PopupBaseProps) => {
   // dummy data
   type DummyDataType = {
     id: number;

@@ -14,15 +14,11 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/com
 import { FileExportIcon } from '@/shared/components/icons/CommonIcons';
 import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
 import { numberValueFormatter, useAgGridColumnVisibility } from '@/shared/components/aggrid/aggridComponents';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export interface LTPA170PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA170P = ({ open, onOpenChange }: LTPA170PProps) => {
+export const LTPA170P = ({ open, onOpenChange }: PopupBaseProps) => {
 
   type DummyDataType = {
     id: number;

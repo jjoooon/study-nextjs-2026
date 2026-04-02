@@ -13,15 +13,11 @@ import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Checkbox } from '@uiux/Checkbox';
 import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export interface LTPA390Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA390 = ({ open, onOpenChange }: LTPA390Props) => {
+export const LTPA390 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   type DummyDataType = {
     id: number;

@@ -16,15 +16,11 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ038Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ038 = ({ open, onOpenChange }: LTPZ038Props) => {
+export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
 
    const [form, setFormField] = useFormFields({
     type01: '',

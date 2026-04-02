@@ -32,6 +32,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   rowSpan?: number;
   titleColSpan?: number;
   titleRowSpan?: number;
+  lineTop?: boolean;
   vertical?: boolean;
   tdClassName?: string;
 }
@@ -115,6 +116,7 @@ export const FormCell = ({
   variant,
   className,
   colSpan,
+  lineTop,
   rowSpan,
   titleColSpan,
   titleRowSpan,
@@ -130,7 +132,7 @@ export const FormCell = ({
     <>
       {title !== null && (
         <TableHead
-          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left', className) }
+          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className) }
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
@@ -141,7 +143,7 @@ export const FormCell = ({
       )}
       {children !== null && (
         <TableCell
-          className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] h-[3.8rem]"
+          className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] "
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
         >
@@ -186,7 +188,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   const showLineTop = lineTop && variant !== 'none';
   return (
     <Table
-      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]', className)}
+      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0', className)}
       data-variant={variant}
     >
       {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
@@ -221,7 +223,9 @@ export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
       <tr className={vertical ? 
       `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
       [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
-      [&>th]:text-center [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] [&>td]:min-h-[3rem] [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem] [&>td]:px-1 [&>td]:text-center [&>th]:first-of-type:border-l-0! [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! [&>th]:last-of-type:border-r-0! ` 
+      [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
+      [&>td]:min-h-[3rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
+      [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! ` 
         : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'}>
         {children}
       </tr>

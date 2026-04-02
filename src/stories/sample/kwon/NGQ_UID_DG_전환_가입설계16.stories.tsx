@@ -41,6 +41,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const LTPZ051P = () => {
+  
   type LTPZ051Tab = { name: string; value: string; label: string };
   const DATA_TABS: LTPZ051Tab[] = [
     { name: '직업정보(상해급수)변경대상(d건)', value: 'basic', label: '직업정보(상해급수)변경대상(d건)' },

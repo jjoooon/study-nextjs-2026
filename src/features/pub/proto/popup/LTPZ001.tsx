@@ -23,18 +23,11 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent } from '@aggrid';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { TreeDataModule } from 'ag-grid-enterprise';
-
-
-
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
-interface LTPZ001Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ001 = ({ open, onOpenChange }: LTPZ001Props) => {
+export const LTPZ001 = ({ open, onOpenChange }: PopupBaseProps) => {
   
   type DummyDataType = { 
     id: number; 
