@@ -141,7 +141,7 @@ const LTPZ053P = () => {
           </FormRow>
         </FormTable>
       </Grow>
-      <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+      <div className="ag-theme-alpine">
         <AgGridReact<DummyDataType>
           rowData={rowData}
           columnDefs={columnDefs}
