@@ -49,63 +49,63 @@ const LTPZ046P   = () => {
       field04: string | number;
       field05: string | number;
     };
-    const DummyData: DummyDataType[] = [
-      { id: 1, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 2, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 3, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 4, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 5, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 6, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
-    ];
+  const DummyData: DummyDataType[] = [
+    { id: 1, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 2, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 3, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 4, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 5, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 6, isCheck: false, field01: '', field02: '', field03: '', field04: '9,999,999,999', field05: '9,999,999,999' },
+  ];
   
     // AgGrid Column 
-    const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-      {
-        headerName: '부호',
-        width: 80,
-        field: 'field01',
-        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-        autoHeight: true,   
-      },
-      {
-        headerName: '구분',
-        flex: 1,
-        field: 'field02',
-        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-      {
-        headerName: '급수',
-        width: 150,
-        field: 'field03',
-        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-      {
-        headerName: '목적물가입금액',
-        flex: 1,
-        field: 'field04',
-        cellClass: 'text-right flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-      {
-        headerName: '가입금액',
-        flex: 1,
-        field: 'field05',
-        cellClass: 'text-right flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-    ];
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '부호',
+      width: 80,
+      field: 'field01',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,   
+    },
+    {
+      headerName: '구분',
+      flex: 1,
+      field: 'field02',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '급수',
+      width: 150,
+      field: 'field03',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '목적물가입금액',
+      flex: 1,
+      field: 'field04',
+      cellClass: 'text-right flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '가입금액',
+      flex: 1,
+      field: 'field05',
+      cellClass: 'text-right flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+  ];
     
-     const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-      const [errorRows, setErrorRows] = React.useState<number[]>(
-        DummyData.filter(row => !row.isCheck).map(row => row.id)
-      );
-    
-    const onCellValueChanged = React.useMemo(
-      () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-      [setRowData, setErrorRows]
-    );
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [errorRows, setErrorRows] = React.useState<number[]>(
+    DummyData.filter(row => !row.isCheck).map(row => row.id)
+  );
+  
+  const onCellValueChanged = React.useMemo(
+    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
+    [setRowData, setErrorRows]
+  );
 
   return(
     <Gcol>

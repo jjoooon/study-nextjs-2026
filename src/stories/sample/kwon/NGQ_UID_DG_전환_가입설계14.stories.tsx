@@ -49,69 +49,69 @@ const LTPZ049P   = () => {
       field04: string | number;
       field05: string | number;
     };
-    const DummyData: DummyDataType[] = [
-      { id: 1, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 2, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 3, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 4, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 5, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
-      { id: 6, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
-    ];
+  const DummyData: DummyDataType[] = [
+    { id: 1, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 2, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 3, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 4, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 5, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
+    { id: 6, isCheck: false, field01: '', field02: '', field03: '9,999,999,999', field04: '9,999,999,999', field05: '9,999,999,999' },
+  ];
   
-    // AgGrid Column 
-    const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-      {
-        headerName: '할증담보',
-        flex: 1,
-        field: 'field01',
-        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-        colSpan: (params: any) => params.data?.isSumRow ? 2 : 1,
-        autoHeight: true,   
-      },
-      {
-        headerName: '보험기간',
-        flex: 1,
-        field: 'field02',
-        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-        colSpan: (params: any) => params.data?.isSumRow ? 0 : 1,
-        autoHeight: true,
-      },
-      {
-        headerName: '표준체보험료(원)',
-        width: 150,
-        field: 'field03',
-        cellClass: 'text-right flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-      {
-        headerName: '할증보험료(원)',
-        flex: 1,
-        field: 'field04',
-        cellClass: 'text-right flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-      {
-        headerName: '적용보험료(원)',
-        flex: 1,
-        field: 'field05',
-        cellClass: 'text-right flex [&>div>span]:h-auto!',
-        autoHeight: true,
-      },
-    ];
+  // AgGrid Column 
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '할증담보',
+      flex: 1,
+      field: 'field01',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      colSpan: (params: any) => params.data?.isSumRow ? 2 : 1,
+      autoHeight: true,   
+    },
+    {
+      headerName: '보험기간',
+      flex: 1,
+      field: 'field02',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      colSpan: (params: any) => params.data?.isSumRow ? 0 : 1,
+      autoHeight: true,
+    },
+    {
+      headerName: '표준체보험료(원)',
+      width: 150,
+      field: 'field03',
+      cellClass: 'text-right flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '할증보험료(원)',
+      flex: 1,
+      field: 'field04',
+      cellClass: 'text-right flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '적용보험료(원)',
+      flex: 1,
+      field: 'field05',
+      cellClass: 'text-right flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+  ];
     
-     const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-     const sumRow = React.useMemo(() => {
-       const parse = (v: string | number) => {
-         if (typeof v === 'number') return v;
-         if (!v) return 0;
-         const n = Number(String(v).replace(/,/g, ''));
-         return Number.isFinite(n) ? n : 0;
-       };
-       const total03 = rowData.reduce((s, r) => s + parse(r.field03), 0);
-       const total04 = rowData.reduce((s, r) => s + parse(r.field04), 0);
-       const total05 = rowData.reduce((s, r) => s + parse(r.field05), 0);
-      return [{ id: -1, isSumRow: true, field01: '합계', field02: '', field03: total03.toLocaleString(), field04: total04.toLocaleString(), field05: total05.toLocaleString() }];
-     }, [rowData]);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const sumRow = React.useMemo(() => {
+    const parse = (v: string | number) => {
+      if (typeof v === 'number') return v;
+      if (!v) return 0;
+      const n = Number(String(v).replace(/,/g, ''));
+      return Number.isFinite(n) ? n : 0;
+    };
+    const total03 = rowData.reduce((s, r) => s + parse(r.field03), 0);
+    const total04 = rowData.reduce((s, r) => s + parse(r.field04), 0);
+    const total05 = rowData.reduce((s, r) => s + parse(r.field05), 0);
+  return [{ id: -1, isSumRow: true, field01: '합계', field02: '', field03: total03.toLocaleString(), field04: total04.toLocaleString(), field05: total05.toLocaleString() }];
+  }, [rowData]);
       
   
 
