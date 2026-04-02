@@ -438,7 +438,7 @@ export function DatePickerInput({
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            className={`transition-[color,box-shadow] outline-none w-[9.1rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
             data-width={width}
@@ -464,7 +464,7 @@ export function DatePickerInput({
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            className={`transition-[color,box-shadow] outline-none w-[9.1rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
             data-width={width}
@@ -493,7 +493,7 @@ export function DatePickerInput({
               setOpen(false);
             }
           }}
-          className={`transition-[color,box-shadow] outline-none ${sizeClass} ${widthClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+          className={`transition-[color,box-shadow] outline-none w-[9.1rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
           style={inputStyle}
           data-size={size}
           data-width={width}
