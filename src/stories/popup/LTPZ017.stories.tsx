@@ -2,13 +2,13 @@ import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
-import { LTPZ017P } from '@/features/pub/proto/popup/LTPZ017';
+import { LTPZ017 } from '@/features/pub/proto/popup/LTPZ017';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
-const meta: Meta<typeof LTPZ017P> = {
+const meta: Meta<typeof LTPZ017> = {
   title: 'popup/LTPZ017',
-  component: LTPZ017P,
+  component: LTPZ017,
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -43,7 +43,7 @@ export const Default: Story = {
           </Button>
         </div>
 
-        <LTPZ017P open={open} onOpenChange={setOpen} />
+        <LTPZ017 open={open} onOpenChange={setOpen} />
       </LayoutDoc>
     );
   },

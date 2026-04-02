@@ -21,7 +21,7 @@ import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPZ017P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
  
   // 검색버튼 여부에 따른 셀 렌더러
 	const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
