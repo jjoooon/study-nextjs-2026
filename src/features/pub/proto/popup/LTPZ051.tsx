@@ -15,6 +15,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import type { PopupBaseProps } from './types';
+import { Bold } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -68,6 +69,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '변경전 직업정보',
+      headerClass: 'ag-header-right-divider',
       children: [
         {
           headerName: '상해급수',
@@ -157,31 +159,40 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <FormCell title={'직업정보'}>1급/회사원</FormCell>
                     </FormRow>
                   </FormTable>
-                  <Typo variant="body-sm" color="primary">직업정보(상해급수) 상이 계약
-                    <Typo variant="body-sm" color="primary">99건</Typo>
-                  </Typo>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      getRowId={params => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      defaultColDef={{ 
-                        sortable: false,
-                        resizable: false,
-                      }}
-                      domLayout="autoHeight" 
-                    />
-                  </div>
+                  <Gcol>
+                    <Grow className="w-full" gap={1} placement='se'>
+                      <Typo variant="body-md" color="default">직업정보(상해급수) 상이 계약
+                      </Typo>
+                      <Typo variant="body-md" weight={'bold'} color="primary">99건</Typo>
+                    </Grow>
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType>
+                        getRowId={params => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        defaultColDef={{ 
+                          sortable: false,
+                          resizable: false,
+                        }}
+                        domLayout="autoHeight" 
+                      />
+                    </div>
+                  </Gcol>
                 </Gcol>
               ) : (
-                <Gcol>
+                <Gcol className='w-full' gap={4}>
                   <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
                     <FormRow>
                       <FormCell title={'고객명'}>김한화2</FormCell>
                       <FormCell title={'직업정보'}>1급/회사원2</FormCell>
                     </FormRow>
                   </FormTable>
+                  <Gcol>
+                  <Grow className="w-full" gap={1} placement='se'>
+                    <Typo variant="body-md" color="default">이륜차부담보 가입 사이 계약</Typo>
+                    <Typo variant="body-md" weight={'bold'} color="primary">99건</Typo>
+                  </Grow>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       getRowId={params => String(params.data.id)}
@@ -195,6 +206,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
                       domLayout="autoHeight" 
                     />
                   </div>
+                  </Gcol>
                 </Gcol>
               )}
             </TabPager>

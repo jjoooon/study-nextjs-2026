@@ -47,28 +47,27 @@ export const LTPZ040 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
 			headerName: '상태',
 			field: 'field01',
-			width: 50,
+			width: 45,
 			cellClass: 'text-center',
 		},
     {
 			headerName: '증권번호',
 			field: 'field02',
       spanRows: true,
-			width: 120,
+			width: 110,
 			cellClass: 'flex! items-center! justify-center! text-center',
 		},
     {
 			headerName: '상품명',
 			field: 'field03',
       spanRows: true,
-			width: 120,
+			width: 110,
 			cellClass: 'flex! items-center! justify-center! text-center',
 		},
     {
 			headerName: '담보명',
 			field: 'field04',
-			flex: 1,
-      width: 120,
+      flex: 1,
 			cellClass: 'text-center',
 		},
     {
@@ -86,39 +85,39 @@ export const LTPZ040 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
 			headerName: '담보코드',
 			field: 'field07',
-			width: 90,
+			width: 80,
 			cellClass: 'text-center',
 		},
     {
 			headerName: '보험시기',
 			field: 'field08',
-			width: 90,
+			width: 80,
 			cellClass: 'text-center',
 		},
     {
 			headerName: '보험종기',
 			field: 'field09',
-			width: 90,
+			width: 80,
 			cellClass: 'text-center',
 		},
     {
 			headerName: '상태',
 			field: 'field10',
-			width: 60,
+			width: 45,
 			cellClass: 'text-center',
 		},
     {
 			headerName: '계약자',
 			field: 'field11',
       spanRows: true,
-			width: 80,
+			width: 70,
 			cellClass: 'flex! items-center! justify-center! text-center',
 		},
     {
 			headerName: '취급기관',
 			field: 'field12',
       spanRows: true,
-			width: 100,
+			width: 80,
 			cellClass: 'flex! items-center! justify-center! text-center ',
       headerStyle: {
         borderRight: 'none',
@@ -141,7 +140,7 @@ export const LTPZ040 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl" >
+      <DialogContent showCloseButton resizable={true} size="full" >
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>실손의료비 전환 계약 조회</Typo>
