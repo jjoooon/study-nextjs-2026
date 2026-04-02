@@ -2,7 +2,7 @@
 
 // 외부 라이브러리
 import * as React from 'react';
-import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent, IDatasource, IGetRowsParams } from 'ag-grid-community';
 import { Typo, Gcol, Grow } from '@atoms';
 import { InfoBoxWarningIcon } from '@icons';
 
@@ -260,6 +260,64 @@ export function useAgGridPagination(gridRef: React.RefObject<any>, pageSize: num
     totalPages,
     handleGridReady,
     handlePageChange,
+  };
+}
+
+interface UseAgGridInfiniteAppendParams<TData> {
+  allRows: TData[];
+  pageSize: number;
+  initialLoadedCount?: number;
+}
+
+/**
+ * infinite rowModel + 더보기(append) 공통 훅
+ * - 다음: pageSize 만큼 로드 범위 증가
+ * - 전체조회: 전체 건수로 로드 범위 확장
+ */
+export function useAgGridInfiniteAppend<TData>({
+  allRows,
+  pageSize,
+  initialLoadedCount,
+}: UseAgGridInfiniteAppendParams<TData>) {
+  const totalCount = allRows.length;
+  const safeInitial = Math.max(0, Math.min(initialLoadedCount ?? pageSize, totalCount));
+
+  const [loadedCount, setLoadedCount] = React.useState<number>(safeInitial);
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  const currentPage = Math.max(1, Math.ceil(Math.max(loadedCount, 1) / pageSize));
+  const isLastPage = loadedCount >= totalCount;
+
+  const handleLoadNext = React.useCallback(() => {
+    setLoadedCount((prev) => Math.min(totalCount, prev + pageSize));
+  }, [pageSize, totalCount]);
+
+  const handleLoadAll = React.useCallback(() => {
+    setLoadedCount(totalCount);
+  }, [totalCount]);
+
+  const dataSource = React.useMemo<IDatasource>(() => {
+    return {
+      getRows: (params: IGetRowsParams) => {
+        const safeEnd = Math.min(params.endRow, loadedCount);
+        const rowsThisBlock = allRows.slice(params.startRow, safeEnd);
+        const lastRow = loadedCount >= totalCount ? totalCount : loadedCount;
+
+        params.successCallback(rowsThisBlock, lastRow);
+      },
+    };
+  }, [allRows, loadedCount, totalCount]);
+
+  return {
+    loadedCount,
+    totalCount,
+    totalPages,
+    currentPage,
+    isLastPage,
+    setLoadedCount,
+    handleLoadNext,
+    handleLoadAll,
+    dataSource,
   };
 }
 

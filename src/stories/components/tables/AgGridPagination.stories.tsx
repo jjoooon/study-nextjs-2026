@@ -6,8 +6,8 @@ import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent } from '@aggrid';
-import { TablePagination } from '@common/TablePagination';
+import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { TablePagination, TableMore } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
@@ -143,7 +143,7 @@ export const Default: StoryObj = {
             columnDefs={columnDefs} // 컬럼 정의
 
             // 선택
-            domLayout="normal" // 높이 선택 normal, autoHeight, print
+            domLayout="autoHeight" // 높이 선택 normal, autoHeight, print
 
             // pagination 설정 (TablePagination과 연동)
             pagination={true} // ag-Grid의 페이징 기능 활성화
@@ -160,6 +160,44 @@ export const Default: StoryObj = {
           totalPages={totalPages}
           onPageChange={handlePageChange}
           itemsPerPage={pageSize}
+        />
+
+         
+      </div>
+    );
+  },
+};
+
+export const TableMoreAppendLoad: StoryObj = {
+  render: () => {
+    const pageSize = 5;
+    const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+      allRows: DummyData,
+      pageSize,
+    });
+
+    return (
+      <div style={{ width: '100%', marginBottom: '6rem' }}>
+        <div className="ag-theme-alpine">
+          <AgGridReact<DummyDataType>
+            key={loadedCount}
+            getRowId={(params) => String(params.data.id)}
+            columnDefs={columnDefs}
+            domLayout="autoHeight"
+
+            rowModelType="infinite"
+            cacheBlockSize={pageSize}
+            maxBlocksInCache={2}
+            datasource={dataSource}
+           
+          />
+        </div>
+        <TableMore
+          loadedCount={loadedCount}
+          totalCount={totalCount}
+          pageSize={pageSize}
+          onLoadAll={handleLoadAll}
+          onLoadNext={handleLoadNext}
         />
       </div>
     );
