@@ -70,9 +70,9 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
 export const Typo = ({ tag = 'span', variant, weight, color, children, className, icon, style }: TypoProps) => {
   let IconComponent: ReactNode = null;
 
-  if (icon === 'info') IconComponent = <InfoBoxInfoIcon className="inline-flex -translate-y-[0.2rem] mr-1" color="var(--color-information-50)" size={16}  />;
+  if (icon === 'info') IconComponent = <InfoBoxInfoIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-information-50)" size={16}  />;
   if (icon === 'warning') IconComponent = <InfoBoxWarningIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-danger-50)" size={16} />;
-  if (icon === 'detail') IconComponent = <RefIcon className="inline-flex -translate-y-[0.2rem] mr-1" color="var(--color-primary-50)" size={10} />;
+  if (icon === 'detail') IconComponent = <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />;
 
   if (icon === 'ref') IconComponent = <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />;
   if (icon === 'dot') IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-1" />;

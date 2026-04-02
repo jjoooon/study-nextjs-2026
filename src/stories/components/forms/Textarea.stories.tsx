@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { Textarea } from '@uiux/Textarea';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
@@ -124,20 +123,6 @@ export default meta;
 type Story = StoryObj<typeof Textarea>;
 
 export const Default: Story = {
-  render: (args) => {
-    const [value, setValue] = React.useState(args.value ?? '');
-    const { value: _, ...restArgs } = args;
-
-    React.useEffect(() => {
-      setValue(args.value ?? '');
-    }, [args.value]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setValue(e.target.value);
-      args.onChange?.(e);
-    };
-
-    return <Textarea {...restArgs} value={value} onChange={handleChange} />;
-  },
+  render: (args) => <Textarea {...args} />,
 };
  

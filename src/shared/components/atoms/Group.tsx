@@ -57,7 +57,7 @@
  *   <button>Submit</button>
  * </ButtonGroup>
  * 
- * @version 1.0.0
+ * @rowsion 1.0.0
  * @since 2026-03-05
  * @lastModified 2026-03-05
  */
@@ -65,6 +65,7 @@
 import { ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiuxTypes';
+import { dir } from 'console';
 
 type LayoutPlacement = Extract<UIUXposition, 'ss' | 'sc' | 'se' | 'cs' | 'cc' | 'ce' | 'es' | 'ec' | 'ee' | 'bws' | 'bwc' | 'bwe' | 'ars' | 'arc' | 'are' | 'evs' | 'evc' | 'eve'>;
 
@@ -159,7 +160,7 @@ export const Gcol = ({
     <div
       data-group="col"
       className={cn(
-        'flex flex-col relative',
+        'flex flex-col relative w-full',
         VARIANT_MAP[variant],
         COL_PLACEMENT_MAP[placement],
         `gap-${gap}`,
@@ -184,7 +185,7 @@ export const Grow = ({
     <div
       data-group="row"
       className={cn(
-        'flex flex-row relative', 
+        'flex flex-row relative',
         VARIANT_MAP[variant], 
         ROW_PLACEMENT_MAP[placement], 
         `gap-${gap}`,
@@ -254,14 +255,14 @@ export const Separator = ({
 
 interface DividerProps {
   className?: string;
-  direction?: 'horizontal' | 'vertical';
+  dir?: 'col' | 'row';
   color?: 'gray' | 'gray-light' 
 };
 
 
 export const Divider = ({
   className,
-  direction = 'horizontal',
+  dir = 'col',
   color = 'gray',
 }: DividerProps) => {
   const colorMap: Record<string, string> = {
@@ -274,7 +275,7 @@ export const Divider = ({
       className={cn(
         'shrink-0 border-0 inline-block',
         `border-[${colorMap[color]}]`,
-        direction === 'horizontal' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t',
+        dir === 'col' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t',
         className
       )}
     />

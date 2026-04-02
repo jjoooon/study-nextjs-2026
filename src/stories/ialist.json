@@ -12,6 +12,7 @@
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "", "id": "LTPZ005", "dep4": "꼭 확인해야 할 일_기타지침사항", "file": "상품_플랜", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "", "id": "LTPZ005", "dep4": "꼭 확인해야 할 일_직업상이 해소", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "", "id": "LTPZ005", "dep4": "꼭 확인해야 할 일_예상UW결과", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
+
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "설계관리", "popup": "", "id": "LTPZ006", "dep4": "해야 할 업무", "file": "전환_가입설계", "plan": "서영진", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
 
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "공통", "popup": "", "id": "LTPZ009", "dep4": "메모입력", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },

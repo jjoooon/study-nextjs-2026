@@ -45,6 +45,7 @@ interface TabPagerProps<T> {
     visibleCount: number
   ) => React.ReactNode);
   getValue: (tab: T) => string;
+  contentClass?: string;
 }
 
 export function TabPager<T>({ 
@@ -63,6 +64,7 @@ export function TabPager<T>({
   renderDropdownItem,
   renderButtons,
   getValue,
+  contentClass
 }: TabPagerProps<T>) {
   // const [active, setActive] = React.useState<string>(
   //   data.length > 0 ? String(getValue(data[0])) : ''
@@ -165,7 +167,7 @@ export function TabPager<T>({
             )}
           </Grow>
         </TabsLine>
-        <TabsContent value={active ?? ""}>{children}</TabsContent>
+        <TabsContent value={active ?? ""} className={contentClass}>{children}</TabsContent>
       </Tabs>
     </>
   );
