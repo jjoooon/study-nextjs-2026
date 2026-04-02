@@ -1,47 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react';
+'use client';
+// 권오택
 import * as React from 'react';
-import { Grow, Gcol, Typo } from '@atoms';
-import { Title, Primary } from '@storybook/addon-docs/blocks';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { InfoBox } from '@common/InfoBox';
-import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/aggrid/aggridComponents';
-import { AgGridReact } from 'ag-grid-react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { Gcol, Grow, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AgGridReact } from 'ag-grid-react';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
+import { InfoBox } from '@/shared/components/common/InfoBox';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { TabPager } from '@/shared/components/common/TabPager';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+interface LTPZ051Props {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 
-const meta: Meta = {
-  title: 'Sample/kwon/NGQ_UID_DG_V0.22/16_고객 직업정보',
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'padded',
-    docs: {
-      page: () => {
-        return (
-          <>
-            <Title />
-            <br />
-            <br />
-            <h2>LTPZ051</h2>
-            <Primary />
-          </>
-        );
-      },
-    },
-  },
-};
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-const LTPZ051P = () => {
-  
+export const LTPZ051 = ({ open, onOpenChange }: LTPZ051Props) => {
+   
   type LTPZ051Tab = { name: string; value: string; label: string };
   const DATA_TABS: LTPZ051Tab[] = [
     { name: '직업정보(상해급수)변경대상(d건)', value: 'basic', label: '직업정보(상해급수)변경대상(d건)' },
@@ -126,24 +109,41 @@ const LTPZ051P = () => {
   
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   
-    
   return (
-    <Gcol>
-      <Grow className='w-full' variant="box-round">
-        <FormTable caption="부실유의계약 선별인수 확인서" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']} variant={'none'}>
-          <FormRow>
-            <FormCell title={'상품명'}>
-              Text
-            </FormCell>
-            <FormCell title={'설계번호'}>
-              LA123123123
-            </FormCell>
-          </FormRow>
-        </FormTable>
-      </Grow>
-      <InfoBox bg variant="info"
-        subTitle="고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당 신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행 이전에 배서(청약중 이후) 진행 필요"
-      />
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent showCloseButton resizable={true} size="xl" >
+        <DialogHeader>
+          <DialogTitle>
+            <Typo tag={'strong'} variant={'heading-lg'}>특별조건특약조회</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ049)</Typo>
+          </DialogTitle>
+        </DialogHeader>
+        <DialogSection className='grid-rows-[auto_1fr]'>
+          
+          <Gcol className='w-full' gap={5}>
+            <Grow className='w-full' variant="box-round">
+              <FormTable variant={'head'}
+              lineTop={false}
+              caption="">
+                <FormRow>
+                  <FormCell title={'상품명'}>
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">Text</Typo>
+                  </FormCell>
+                  <FormCell title={'설계번호'}>
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">LA123123123123</Typo>
+                  </FormCell>  
+                </FormRow>
+              </FormTable>
+            </Grow>
+          </Gcol>
+          <InfoBox bg variant="info"
+            subTitle="고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당 신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행 이전에 배서(청약중 이후) 진행 필요"
+          />
+          <Gcol className="w-full" placement="ss" variant="box-warning">
+            <Typo variant="body-sm">
+              <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시 <Typo weight="bold" color="primary">신계약 청약완료불가</Typo>)</Checkbox>
+            </Typo>
+          </Gcol>
       <TabPager
         data={tabs}
         active={active}
@@ -203,10 +203,28 @@ const LTPZ051P = () => {
           </Gcol>
         )}
       </TabPager>
-    </Gcol>
+        </DialogSection> 
+
+        <DialogFooter>
+          <Gcol className="w-full" gap={0}>
+            <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
+              <Grow>
+              </Grow>
+              <Grow>
+                <Button variant={'contained'} size={'xl'}>
+                  확인
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </Grow>
+            </Grow>
+            <DialogBottomInfo />
+          </Gcol>
+        </DialogFooter>
+    </DialogContent>
+  </Dialog>    
   );
 };
-export const LTPZ051: Story = {
-  render: () => <LTPZ051P />,
 
-}
+export default LTPZ051;
