@@ -516,7 +516,7 @@ export function DatePickerInput({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
+          className="z-[1100] w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
           align={'end'}
           alignOffset={-8}
           sideOffset={10}

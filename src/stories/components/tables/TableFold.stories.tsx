@@ -94,7 +94,7 @@ type Story = StoryObj<TableFoldProps>;
 export const Default: Story = {
   args: {},
   render: (args) => (
-    <Gcol placement='ss' gap={2} className="w-[60rem] h-[80rem]">
+    <Gcol placement='ss' gap={2} >
       <TableFold variant={args.variant} {...args}>
         <TableFoldHead title={'모바일 판매 불가 상품'}>
           <Grow>

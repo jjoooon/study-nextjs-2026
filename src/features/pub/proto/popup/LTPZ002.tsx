@@ -1,9 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Gcol, Typo } from '@atoms';
+import { Gcol, Typo, Grow, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, } from '@uiux/Dialog';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -99,19 +101,53 @@ export const LTPZ002 = ({ open, onOpenChange }: LTPZ002Props) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine" >
-            <AgGridReact<DummyDataType>
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              getRowId={(params) => String(params.data.id)}
-              rowData={rowData}
-              columnDefs={columnDefs}
-              defaultColDef={{ 
-                sortable: true, 
-                resizable: true,
-              }}
-              domLayout='autoHeight'
-            />
-          </div>
+          <TableFold variant={'default'}>
+            <TableFoldHead title={'고객정보'} />
+            <TableFoldBody className="grid-rows-[auto_1fr]">
+              <Grow variant='box-round'>
+                <FormTable variant={'none'}
+                  caption="납입예정 리스트 테이블"
+                  cols={[
+                    'flex-auto', 'flex-1',
+                    'flex-auto', 'flex-1',
+                    'flex-auto', 'flex-1',
+                    'flex-auto', 'flex-1',
+                    'flex-auto', 'flex-1',
+                  ]}
+                >
+                  <FormRow>
+                    <FormCell title={'조회구분'}>
+
+                    </FormCell>
+                    <FormCell title={'설계상태'}>
+                      
+                    </FormCell>
+                    <FormCell title={'설계일자'}>
+                      
+                    </FormCell>
+                    <FormCell title={'고객명(영문)'}>
+                      
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </Grow>
+
+              <div className="ag-theme-alpine" >
+                <AgGridReact<DummyDataType>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ 
+                    sortable: true, 
+                    resizable: true,
+                  }}
+                  domLayout='autoHeight'
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
+          
         </DialogSection>
 
         <DialogFooter>
