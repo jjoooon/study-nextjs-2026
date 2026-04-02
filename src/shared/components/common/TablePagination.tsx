@@ -39,23 +39,23 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
           <Button
             variant={'none'}
             only={'icon'}
-            className="w-5! h-5! p-0"
             disabled={currentPage === 1}
             onClick={() => {
               onPageChange(1);
             }}
+            className={currentPage === 1 ? 'hidden!' : ''}
           >
             <PageArrowDoubleIcon />
           </Button>
           <Button
             variant={'none'}
             only={'icon'}
-            className="w-5! h-5! p-0"
             disabled={currentPage === 1}
             onClick={() => {
               if (currentPage === 1) return;
               onPageChange(currentPage - 1);
             }}
+            className={currentPage === 1 ? 'hidden!' : ''}
           >
             <PageArrowIcon />
           </Button>
@@ -86,6 +86,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
                 onPageChange(currentPage + 1);
               }
             }}
+             className={currentPage === totalPages ? 'hidden!' : ''}
           >
             <PageArrowIcon className='rotate-180' />
           </Button>
@@ -96,13 +97,14 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
             onClick={() => {
               onPageChange(totalPages);
             }}
+            className={currentPage === totalPages ? 'hidden!' : ''}
           >
             <PageArrowDoubleIcon className='rotate-180' />
           </Button>
         </Grow>
       </Grow>
 
-      <Grow>
+      <Grow className='text-[1.3rem]'>
         View 1-{totalPages} of {currentPage}
       </Grow>
     </Grow>

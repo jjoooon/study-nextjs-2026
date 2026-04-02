@@ -680,5 +680,3 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
     </Dialog>
   );
 };
-
-export default LTPZ020P;

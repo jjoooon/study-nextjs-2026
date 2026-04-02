@@ -344,5 +344,3 @@ export const LTPA170P = ({ open, onOpenChange }: PopupBaseProps) => {
   </Dialog>    
   );
 };
-
-export default LTPA170P;

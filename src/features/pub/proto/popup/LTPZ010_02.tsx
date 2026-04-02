@@ -61,7 +61,7 @@ export const LTPZ010_02 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (  
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>가입설계 이력조회</Typo>
@@ -70,7 +70,7 @@ export const LTPZ010_02 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="설계번호" variant='none' cols={[
+            <FormTable caption="설계번호" variant='head' cols={[
               'w-[1rem]', 'w-auto','w-[1rem]', 'w-auto'
               ]}>
               <FormRow>
@@ -83,7 +83,7 @@ export const LTPZ010_02 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
               <FormRow>
                 <FormCell title={'유효기한'}>
-
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">2026-12-31</Typo>
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -124,5 +124,3 @@ export const LTPZ010_02 = ({ open, onOpenChange }: PopupBaseProps) => {
   </Dialog>
   );
 };
-
-export default LTPZ010_02;
