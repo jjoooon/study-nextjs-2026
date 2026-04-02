@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
@@ -57,7 +57,7 @@ export const LTPZ047 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormTable>
             </Grow>
             <Grow className='w-full'>
-              <FormTable caption="화재배상" cols={['w-[10rem] min-w-[10rem]', 'w-[10rem] min-w-[10rem]', 'w-auto', 'w-[15rem] min-w-[15rem]', 'w-auto']}>
+              <FormTable caption="화재배상" cols={['w-[10rem]', 'w-[10rem]', 'w-auto', 'w-[15rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'업주성명(법인명)'} titleColSpan={2}>
                     <Input size="lg" value="" variant="default" width="18rem" readOnly/>
@@ -177,9 +177,11 @@ export const LTPZ047 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

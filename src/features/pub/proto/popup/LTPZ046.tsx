@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
@@ -111,6 +111,7 @@ export const LTPZ046 = ({ open, onOpenChange }: PopupBaseProps) => {
             <Grow className='w-full'>
               <div className="ag-theme-alpine aggrid-pagination-ko w-full">
                 <AgGridReact<DummyDataType>
+                  getRowId={params => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -144,7 +145,7 @@ export const LTPZ046 = ({ open, onOpenChange }: PopupBaseProps) => {
               </div>
             </Grow>
             <Grow className='w-full'>
-              <FormTable caption="담보" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+              <FormTable caption="담보" cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'담보명'}>
                     <Input size="lg" value="" variant="default" width="18rem" readOnly/>
@@ -165,9 +166,11 @@ export const LTPZ046 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button variant={'contained'} size={'xl'}>
                 확인
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+             <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

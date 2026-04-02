@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
@@ -121,6 +121,7 @@ export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
             <Grow className='w-full'>
               <div className="ag-theme-alpine aggrid-pagination-ko w-full">
                 <AgGridReact<DummyDataType>
+                  getRowId={params => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
                   pinnedBottomRowData={sumRow}
@@ -151,9 +152,11 @@ export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>      
             </Grow>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

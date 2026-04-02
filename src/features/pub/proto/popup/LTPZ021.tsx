@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
@@ -29,7 +29,7 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
           <Grow className="w-full" placement='ss' gap={5}>
             <Gcol placement='ss' className='w-full' gap={5}>
                 <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='head'>
+                  <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='head'>
                     <FormRow>
                       <FormCell title={'설계번호'}>
                         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
@@ -49,7 +49,7 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Grow>   
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                    <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'계약자'} colSpan={3}>
                           김한화
@@ -116,7 +116,7 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
                   </Grow>
                 </Grow>
-                <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'계약자'} colSpan={3}>
                       김한화
@@ -174,7 +174,7 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
             </Gcol>
             <Grow className="w-full" placement={'ss'} gap={5}>
                <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+                  <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='none'>
                     <FormRow>
                       <FormCell title={'설계번호'}>
                         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
@@ -264,7 +264,7 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </FormCell>
                               </FormRow>
                             </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
                               <FormRow>
                                 <FormCell title={'소재지'}
                                 >
@@ -384,7 +384,7 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </FormCell>
                               </FormRow>
                             </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
                               <FormRow>
                                 <FormCell title={'소재지'}
                                 >
@@ -442,9 +442,11 @@ export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

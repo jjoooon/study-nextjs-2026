@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FileExportIcon, ResetIcon } from '@icons'
 import { Input } from '@uiux/Input';
@@ -807,7 +807,7 @@ export const LTPA904P = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Grow>
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="예상만기환급금 테이블"  cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
+                    <FormTable caption="예상만기환급금 테이블"  cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1',]}>
                     <FormRow>
                       <FormCell title={'총예상납입보험료'}>
                         <Input commaAmount={true} after="원" value={form.type10} onChange={e => setFormField('type10', e.target.value)} />
@@ -831,7 +831,7 @@ export const LTPA904P = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFoldHead title="추천보험료">
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="추천보험료 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
+                    <FormTable caption="추천보험료 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1',]}>
                       <FormRow>
                         <FormCell title={'추천보험료'}>
                           <Input commaAmount={true} after="원" value={form.type14} onChange={e => setFormField('type14', e.target.value)} />
@@ -864,7 +864,7 @@ export const LTPA904P = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFoldHead title="기타">
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="기타 테이블" cols={['w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1', 'w-[14rem]', 'min-w-[18rem] flex-1',]}>
+                    <FormTable caption="기타 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1',]}>
                       <FormRow>
                         <FormCell title={'만기환급담보환급금'}>
                           <Input
@@ -1108,9 +1108,11 @@ export const LTPA904P = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button variant={'contained'} size={'xl'}>
                 확인
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

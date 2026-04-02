@@ -4,19 +4,20 @@ import * as React from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from './types';
+import { TableMore } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -45,6 +46,8 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
     { id: 1, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
     { id: 2, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
     { id: 3, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
+    { id: 4, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
+    { id: 5, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
   ];
 
   // AgGrid Column 
@@ -116,7 +119,12 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
   
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  
+
+  const pageSize = 3;
+  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -243,8 +251,9 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           <Gcol className='w-full'>
-            <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+            <div className="ag-theme-alpine">
               <AgGridReact<DummyDataType>
+                key={loadedCount}
                 getRowId={params => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={rowData}
@@ -253,9 +262,21 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                   sortable: false,
                   resizable: false,
                 }}
-                domLayout="autoHeight" 
+                domLayout="autoHeight"
+
+                rowModelType="infinite"
+                  cacheBlockSize={pageSize}
+                  maxBlocksInCache={2}
+                  datasource={dataSource}
               />
             </div>
+            <TableMore
+              loadedCount={loadedCount}
+              totalCount={totalCount}
+              pageSize={pageSize}
+              onLoadAll={handleLoadAll}
+              onLoadNext={handleLoadNext}
+            />
           </Gcol>  
         
         
@@ -264,9 +285,11 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

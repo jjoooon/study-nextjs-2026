@@ -4,18 +4,18 @@ import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import type { PopupBaseProps } from './types';
+import { Bold } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -69,6 +69,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '변경전 직업정보',
+      headerClass: 'ag-header-right-divider',
       children: [
         {
           headerName: '상해급수',
@@ -110,8 +111,8 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="xl" >
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>특별조건특약조회</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ049)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>고객 직업정보(상해급수)변경안내</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ051)</Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
@@ -151,36 +152,50 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
               removable={false}
             >
               {active === 'basic' ? (
-                <Gcol>
+                <Gcol className='w-full' gap={4}>
                   <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
                     <FormRow>
                       <FormCell title={'고객명'}>김한화</FormCell>
                       <FormCell title={'직업정보'}>1급/회사원</FormCell>
                     </FormRow>
                   </FormTable>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      defaultColDef={{ 
-                        sortable: false,
-                        resizable: false,
-                      }}
-                      domLayout="autoHeight" 
-                    />
-                  </div>
+                  <Gcol>
+                    <Grow className="w-full" gap={1} placement='se'>
+                      <Typo variant="body-md" color="default">직업정보(상해급수) 상이 계약
+                      </Typo>
+                      <Typo variant="body-md" weight={'bold'} color="primary">99건</Typo>
+                    </Grow>
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType>
+                        getRowId={params => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        defaultColDef={{ 
+                          sortable: false,
+                          resizable: false,
+                        }}
+                        domLayout="autoHeight" 
+                      />
+                    </div>
+                  </Gcol>
                 </Gcol>
               ) : (
-                <Gcol>
+                <Gcol className='w-full' gap={4}>
                   <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
                     <FormRow>
                       <FormCell title={'고객명'}>김한화2</FormCell>
                       <FormCell title={'직업정보'}>1급/회사원2</FormCell>
                     </FormRow>
                   </FormTable>
+                  <Gcol>
+                  <Grow className="w-full" gap={1} placement='se'>
+                    <Typo variant="body-md" color="default">이륜차부담보 가입 사이 계약</Typo>
+                    <Typo variant="body-md" weight={'bold'} color="primary">99건</Typo>
+                  </Grow>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      getRowId={params => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -191,6 +206,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
                       domLayout="autoHeight" 
                     />
                   </div>
+                  </Gcol>
                 </Gcol>
               )}
             </TabPager>
@@ -204,9 +220,11 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button variant={'contained'} size={'xl'}>
                 확인
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

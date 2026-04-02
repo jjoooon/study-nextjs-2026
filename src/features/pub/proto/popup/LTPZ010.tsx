@@ -5,7 +5,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Badge } from '@uiux/Badge';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogTrigger } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogTrigger, DialogClose } from '@uiux/Dialog';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 
@@ -250,7 +250,7 @@ export const LTPZ010P = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldHead title="계약기본사항">
               </TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'상품선택'} colSpan={3}>
                       <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
@@ -330,7 +330,7 @@ export const LTPZ010P = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldHead title="피보험자/계약자">
               </TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'피보험자'}>
                       <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
@@ -373,7 +373,7 @@ export const LTPZ010P = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldBody>
             </TableFold>  
 
-            <FormTable caption={'합계보험료'} cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'합계보험료'}>
                   <Input aria-label="" width={'20rem'} value={'123,456원'} readOnly />
@@ -391,6 +391,7 @@ export const LTPZ010P = ({ open, onOpenChange }: PopupBaseProps) => {
               <Grow className="w-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
+                    getRowId={params => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
                     columnDefs={columnDefs}
@@ -433,9 +434,11 @@ export const LTPZ010P = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

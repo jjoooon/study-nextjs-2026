@@ -10,7 +10,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon } from '@icons'
 import { numberValueFormatter } from '@aggrid';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { FileExportIcon, SearchIcon } from '@icons';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -356,9 +356,11 @@ export const LTPA160P = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+             <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
