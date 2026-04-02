@@ -48,35 +48,35 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
   type DummyDataType = {
     id: number;
     isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
+    field01_01: string;
+    field02_01: string | number;
+    field03_01: string | number;
+    field04_01: string | number;
+    field05_01: string | number;
+    field06_01: string | number;
+    field07_01: string | number;
+    field08_01: string | number;
+    field09_01: string | number;
+    field10_01: string | number;
+    field11_01: string | number;
+    field12_01: string | number;
   };
   const DummyData: DummyDataType[] = [
     {
       id: 1, 
       isCheck: false,
-      field01: '',  
-      field02: ' ',
-      field03: '',             
-      field04: '',
-      field05: '',        
-      field06: '',
-      field07: '',              
-      field08: '',
-      field09: '',        
-      field10: '',
-      field11: '',    
-      field12: '',
+      field01_01: '',  
+      field02_01: ' ',
+      field03_01: '',             
+      field04_01: '',
+      field05_01: '',        
+      field06_01: '',
+      field07_01: '',              
+      field08_01: '',
+      field09_01: '',        
+      field10_01: '',
+      field11_01: '',    
+      field12_01: '',
     },
   ];
 
@@ -90,74 +90,74 @@ const LTPA400_01 = ({ isNoData = false }: LTPA400_01Props) => {
     },
     {
       headerName: '지점',
-      field: 'field01',
+      field: 'field01_01',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '대리점코드',
-      field: 'field02',
+      field: 'field02_01',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
 
     },
     {
       headerName: '대리점명',
-      field: 'field03',
+      field: 'field03_01',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '사용인코드',
-      field: 'field04',
+      field: 'field04_01',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '사용인명',
-      field: 'field05',
+      field: 'field05_01',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '상품명',
-      field: 'field06',
+      field: 'field06_01',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '플랜명',
-      field: 'field07',
+      field: 'field07_01',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '고객명',
-      field: 'field08',
+      field: 'field08_01',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '설계일자',
-      field: 'field09',
+      field: 'field09_01',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '담당SM',
-      field: 'field10',
+      field: 'field10_01',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '설계번호',
-      field: 'field11',
+      field: 'field11_01',
       flex: 1.4,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
       headerName: '증권번호',
-      field: 'field12',
+      field: 'field12_01',
       flex: 1.4,
       cellClass: 'flex! items-center! justify-center!' 
     },

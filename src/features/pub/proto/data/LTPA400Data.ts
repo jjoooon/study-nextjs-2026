@@ -1,103 +1,149 @@
 export type LTPA400DummyDataRow = {
-	id: number;
-	isCheck: boolean;
-  isState: boolean;
-	field01: string | number;
-	field02: string | number;
-	field03: string | number;
-	field04: string | number;
-	field05: string | number;
-	field06: string | number;
-	field07: string | number;
-	field08: string | number;
-	field09: string | number;
-	field10: string | number;
-	field11: string | number;
-	field12: string | number;
-	field13: string | number;
-	field14: string | number;
-	field15: string | number;
-	field16: string | number;
-	field17: string | number;
-	field18: string | number;
-	field19: string | number;
-	field20: string | number;
+
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
 };
 
 export const LTPA400DummyData: LTPA400DummyDataRow[] = [
+  {
+    id: 1,
+    field01: '26020923141',  
+    field02: '신부산GA지점',
+    field03: '에이플러스-서면(34577)',             
+    field04: '김한화(4649111)',
+    field05: '기타',        
+    field06: '박한화',
+    field07: '2026-03-11 14:33',              
+    field08: '2026-03-11 15:33',
+    field09: '신청중',        
+    field10: '김한화',
+    field11: '심한화',    
+    field12: 'LA251028678825',
+  },
+  {
+    id: 2,
+    field01: '26020923141',  
+    field02: '신부산GA지점',
+    field03: '에이플러스-서면(34577)',             
+    field04: '김한화(4649111)',
+    field05: '종합보험',        
+    field06: '박한화',
+    field07: '2026-03-11 14:33',              
+    field08: '2026-03-11 15:33',
+    field09: '요청취소',        
+    field10: '김한화',
+    field11: '심한화',    
+    field12: 'LA251028678825',
+  },
+];
+
+export type LTPA400DummyDataRow2 = {
+	id: number;
+  isCheck: boolean;
+  field01_01: string | number;
+  field02_01: string | number;
+  field03_01: string | number;
+  field04_01: string | number;
+  field05_01: string | number;
+  field06_01: string | number;
+  field07_01: string | number;
+  field08_01: string | number;
+  field09_01: string | number;
+  field10_01: string | number;
+  field11_01: string | number;
+  field12_01: string | number;
+};
+
+export const LTPA400DummyData2: LTPA400DummyDataRow2[] = [
 	{
-	id: 1,
-	isCheck: true,
-  isState: false,
-	field01: 'LA2131234123',
-	field02: '한화실손의료보헌갱신형2601',
-	field03: '고지유형/플랜명/차량번호 값',
-	field04: 'memoCreate',
-	field05: '김한화',
-	field06: '2009-01-01',
-	field07: '9,999,999',
-	field08: '2.1',
-	field09: '설계중',
-	field10: '설계중',
-	field11: '',
-	field12: '신부산GA지점/00팀',
-	field13: '인카금융-다이렉트',
-	field14: '박한화(123123)',
-	field15: '박한화14',
-	field16: '박한화15',
-	field17: '박한화(123123)',
-	field18: '배서설계',
-	field19: 'LA20143129023123912',
-	field20: '',
-	},
-	{
-	id: 2,
-	isCheck: false,
-    isState: true,
-	field01: 'LA2131234123',
-	field02: '한화실손의료보헌갱신형2601',
-	field03: '고지유형/플랜명/차량번호 값',
-	field04: 'memoView',
-	field05: '김한화',
-	field06: '2009-01-01',
-	field07: '9,999,999',
-	field08: '2.1',
-	field09: '설계중',
-	field10: '설계중',
-	field11: '',
-	field12: '신부산GA지점/00팀',
-	field13: '인카금융-다이렉트',
-	field14: '박한화(123123)',
-	field15: '박한화(123123)',
-	field16: '박한화15',
-	field17: '박한화(123123)',
-	field18: '배서설계',
-	field19: 'LA20143129023123912',
-	field20: '',
-	},
-	{
-	id: 3,
-	isCheck: true,
-    isState: false,
-	field01: 'LA2131234123',
-	field02: '한화실손의료보헌갱신형2601',
-	field03: '고지유형/플랜명/차량번호 값',
-	field04: 'memoCreate',
-	field05: '김한화',
-	field06: '2009-01-01',
-	field07: '9,999,999',
-	field08: '2.1',
-	field09: '설계중',
-	field10: '설계중',
-	field11: '',
-	field12: '신부산GA지점/00팀',
-	field13: '인카금융-다이렉트',
-	field14: '박한화(123123)',
-	field15: '박한화(123123)',
-	field16: '',
-	field17: '박한화(123123)',
-	field18: '배서설계',
-	field19: 'LA20143129023123912',
-	field20: '',
-	},
+    id: 1,
+    isCheck: false,
+    field01_01: '',  
+    field02_01: ' ',
+    field03_01: '',             
+    field04_01: '',
+    field05_01: '',        
+    field06_01: '',
+    field07_01: '',              
+    field08_01: '',
+    field09_01: '',        
+    field10_01: '',
+    field11_01: '',    
+    field12_01: '',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01_01: '',  
+    field02_01: ' ',
+    field03_01: '',             
+    field04_01: '',
+    field05_01: '',        
+    field06_01: '',
+    field07_01: '',              
+    field08_01: '',
+    field09_01: '',        
+    field10_01: '',
+    field11_01: '',    
+    field12_01: '',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01_01: '',  
+    field02_01: ' ',
+    field03_01: '',             
+    field04_01: '',
+    field05_01: '',        
+    field06_01: '',
+    field07_01: '',              
+    field08_01: '',
+    field09_01: '',        
+    field10_01: '',
+    field11_01: '',    
+    field12_01: '',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01_01: '',  
+    field02_01: ' ',
+    field03_01: '',             
+    field04_01: '',
+    field05_01: '',        
+    field06_01: '',
+    field07_01: '',              
+    field08_01: '',
+    field09_01: '',        
+    field10_01: '',
+    field11_01: '',    
+    field12_01: '',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01_01: '',  
+    field02_01: ' ',
+    field03_01: '',             
+    field04_01: '',
+    field05_01: '',        
+    field06_01: '',
+    field07_01: '',              
+    field08_01: '',
+    field09_01: '',        
+    field10_01: '',
+    field11_01: '',    
+    field12_01: '',
+  },
 ];

@@ -88,7 +88,7 @@ export function IAListWithPreview() {
   }, [activeRow, activeStep]);
 
   const workList = [
-    'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPZ021', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ043'
+    'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPZ021', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ043', 'LTPA400', 'LTPA210', 'LTPA200', 'LTPA190',
   ];
 
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
