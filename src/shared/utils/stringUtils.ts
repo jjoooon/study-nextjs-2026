@@ -18,7 +18,10 @@
  *   maskPhone,
  *   formatNumber,
  *   formatBytes,
- *   secureShortId
+ *   secureShortId,
+ *   replaceAll,
+ *   replaceMultiple,
+ *   replaceBetween
  * } from '@/shared/utils/stringUtils';
  *
  * // 대문자 변환
@@ -34,6 +37,11 @@
  * // 마스킹
  * maskEmail('user@example.com'); // 'u***@example.com'
  * maskPhone('01012345678'); // '010-****-5678'
+ *
+ * // 치환
+ * replaceAll('hello world hello', 'hello', 'hi'); // 'hi world hi'
+ * replaceMultiple('a-b_c.d', { '-': ' ', '_': ' ', '.': ' ' }); // 'a b c d'
+ * replaceBetween('Hello [NAME]!', '[', ']', 'World'); // 'Hello World!'
  *
  * // 보안 ID 생성
  * secureShortId(); // 'a7K9m2P4x8Q3r1T5'
@@ -832,6 +840,119 @@ export function formatCurrency(amount: number): string {
 export function formatPercent(value: number, isDecimal: boolean = true, decimals: number = 1): string {
   const percent = isDecimal ? value * 100 : value;
   return `${percent.toFixed(decimals)}%`;
+}
+
+// ============================================================================
+// REPLACE
+// ============================================================================
+
+/**
+ * 모든 occurrence 치환
+ *
+ * @description
+ * String.prototype.replaceAll의 폴리필 역할
+ * 정규식 특수 문자를 자동으로 이스케이프합니다.
+ *
+ * @param str - 원본 문자열
+ * @param search - 찾을 문자열
+ * @param replacement - 교체 문자열
+ * @returns 치환된 문자열
+ *
+ * @example
+ * replaceAll('hello world hello', 'hello', 'hi'); // 'hi world hi'
+ * replaceAll('a.b.c', '.', '-'); // 'a-b-c'
+ * replaceAll('100% 200%', '%', ' percent'); // '100 percent 200 percent'
+ */
+export function replaceAll(str: StringInput, search: StringInput, replacement: string): string {
+  if (isEmpty(str) || isEmpty(search)) return str || '';
+  const escaped = search!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return str!.replace(new RegExp(escaped, 'g'), replacement);
+}
+
+/**
+ * 여러 문자열 한 번에 치환
+ *
+ * @param str - 원본 문자열
+ * @param replacements - 치환 맵 { 찾을문자열: 교체문자열 }
+ * @returns 치환된 문자열
+ *
+ * @example
+ * replaceMultiple('Hello World', { 'Hello': 'Hi', 'World': 'Universe' }); // 'Hi Universe'
+ * replaceMultiple('a-b_c.d', { '-': ' ', '_': ' ', '.': ' ' }); // 'a b c d'
+ */
+export function replaceMultiple(str: StringInput, replacements: Record<string, string>): string {
+  if (isEmpty(str)) return '';
+  let result = str!;
+  for (const [search, replacement] of Object.entries(replacements)) {
+    result = replaceAll(result, search, replacement);
+  }
+  return result;
+}
+
+/**
+ * 두 문자열 사이의 내용 치환
+ *
+ * @param str - 원본 문자열
+ * @param start - 시작 문자열
+ * @param end - 끝 문자열
+ * @param replacement - 교체 문자열
+ * @returns 치환된 문자열
+ *
+ * @example
+ * replaceBetween('Hello [NAME]!', '[', ']', 'World'); // 'Hello World!'
+ * replaceBetween('<div>content</div>', '<div>', '</div>', 'new'); // 'new'
+ * replaceBetween('---abc---', '---', '---', 'XYZ'); // 'XYZabc---'
+ */
+export function replaceBetween(str: StringInput, start: string, end: string, replacement: string): string {
+  if (isEmpty(str)) return '';
+
+  const startIndex = str!.indexOf(start);
+  if (startIndex === -1) return str!;
+
+  const endIndex = str!.indexOf(end, startIndex + start.length);
+  if (endIndex === -1) return str!;
+
+  const before = str!.slice(0, startIndex + start.length);
+  const after = str!.slice(endIndex);
+
+  return before + replacement + after;
+}
+
+/**
+ * 문자열에서 모든 occurrence 제거
+ *
+ * @param str - 원본 문자열
+ * @param search - 제거할 문자열
+ * @returns 제거된 문자열
+ *
+ * @example
+ * removeAll('hello world hello', 'hello'); // ' world '
+ * removeAll('a-b-c', '-'); // 'abc'
+ * removeAll('  test  ', ' '); // 'test'
+ */
+export function removeAll(str: StringInput, search: StringInput): string {
+  return replaceAll(str, search, '');
+}
+
+/**
+ * 정규식을 이용한 치환 (함수 기반)
+ *
+ * @param str - 원본 문자열
+ * @param pattern - 정규식 패턴
+ * @param replacer - 치환 함수
+ * @returns 치환된 문자열
+ *
+ * @example
+ * replaceWithFunction('hello123world456', /\d+/g, (match) => `( ${match} )`); // 'hello( 123 )world( 456 )'
+ * replaceWithFunction('ABC DEF', /[A-Z]+/g, (match) => match.toLowerCase()); // 'abc def'
+ */
+export function replaceWithFunction(
+  str: StringInput,
+  pattern: RegExp,
+  replacer: (match: string, ...args: any[]) => string
+): string {
+  if (isEmpty(str)) return '';
+  return str!.replace(pattern, replacer);
 }
 
 // ============================================================================
