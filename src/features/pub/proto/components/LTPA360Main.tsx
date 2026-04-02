@@ -31,103 +31,52 @@ export const LTPA360Main = () => {
   // Tab 정의
   type LTPA360TabType = { name: string; value: string; label: string };
   const DATA_TABS: LTPA360TabType[] = [
-    { name: '설계요청', value: 'tab1', label: '설계요청' },
-    { name: '모집자 설계', value: 'tab2', label: '모집자 설계' },
+    { name: '총괄장표', value: 'tab1', label: '총괄장표' },
+    { name: '입력장표', value: 'tab2', label: '입력장표' },
+    { name: '담보코드요청', value: 'tab3', label: '담보코드요청' },
+    { name: '사고담보코드요청', value: 'tab4', label: '사고담보코드요청' },
   ];
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
   
   // Tab1 AGGrid Column
   const columnDefs: (ColDef<LTPA360DummyDataRow>)[] = [
-    {
-      headerName: '설계접수번호',
-      field: 'field01',
-      width: 150,
+     { 
+      headerName: '단계별 진행현황', 
+      field: 'field01', 
+      width: 150, 
+      cellClass: 'text-center flex! items-center! justify-center!', 
+      cellEditorParams: { values: ['선택', ''] } 
+    },
+    { 
+      headerName: '세부내용', 
+      field: 'field02', 
+      flex: 2.5, 
+      cellClass: 'text-center flex! items-center! justify-center!' 
+    },
+    { 
+      headerName: '계획일정', 
+      field: 'field03', 
+      width: 140, 
+      cellClass: 'text-center flex! items-center! justify-center!' 
+    },
+    { 
+      headerName: '완료일자', 
+      field: 'field04', 
+      width: 140, 
+      cellClass: 'text-center flex! items-center justify-center!' 
+    },
+    { 
+      headerName: '완료/대상', 
+      field: 'field05', 
+      flex: 1, 
+      cellClass: 'text-center flex! items-center justify-center!' 
+    },
+    { 
+      headerName: '진행율', 
+      field: 'field06', 
+      width: 500, 
+      editable: true, 
       cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '지점',
-      field: 'field02',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '대리점',
-      field: 'field03',
-      flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '사용인',
-      field: 'field04',
-      width: 160,
-      cellClass: 'flex! items-center! justify-center!',
-      cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow>) => (
-        <span className="flex items-center gap-1">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="none" size="md" only="icon">
-                {params.data?.field04}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent variant="default" side="top" align="center" sideOffset={5}>
-              {'사용인에 대한 안내 메시지입니다.'}
-            </TooltipContent>
-          </Tooltip>
-        </span>
-      ),
-    },
-    {
-      headerName: '상품',
-      field: 'field05',
-      width: 120,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '고객명',
-      field: 'field06',
-      width: 130,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '요청일시',
-      field: 'field07',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '처리일시',
-      field: 'field08',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '진행상태',
-      field: 'field09',
-      width: 130,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '담당SM',
-      field: 'field10',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!' 
-    },
-    {
-      headerName: '지원SM',
-      field: 'field11',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!'
-    },
-    {
-      headerName: '설계번호',
-      field: 'field12',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
-      cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow>) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-          { params.data?.field12 ?? '' }
-        </Button>
-      ),
     },
   ];
   
@@ -475,6 +424,298 @@ export const LTPA360Main = () => {
                   </div>
                   </>
                 )}
+                {active === 'tab3' && (
+                  <>
+                  <Grow className="w-full mb-3 mt-1" variant="box-round" placement={'bwe'}>
+                    <FormTable  variant={'none'} lineTop={false} 
+                      caption="장기보험 모집자 설계 조회 테이블"
+                      cols={[
+                        'flex-auto', 'flex-1',
+                        'flex-auto', 'flex-1',
+                        'flex-auto', 'flex-1',  
+                      ]}
+                    >
+                      <FormRow>
+                        <FormCell title={'소속'}>
+                          <NativeSelect
+                            aria-label="소속 선택"
+                            width="12rem"
+                            value={form.type04}
+                            onChange={(e) => setFormField('type04', e.target.value)}
+                            readOnly
+                          >
+                            {[
+                              { value: 'selection', id: "type04_1", label: 'GA영업2본부' },
+                              { value: 'selection2', id: "type04_2", label: 'GA영업2본부2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="사업단 선택"
+                            width="15.2rem"
+                            value={form.type05}
+                            onChange={(e) => setFormField('type05', e.target.value)}
+                            readOnly
+                          >
+                            {[
+                              { value: 'selection', id: 'type05-1', label: '부산GA사업단' },
+                              { value: 'selection2', id: 'type05-2', label: '부산GA사업단2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="지점 선택"
+                            width="15rem"
+                            value={form.type06}
+                            onChange={(e) => setFormField('type06', e.target.value)}
+                            readOnly
+                          >
+                            {[
+                              { value: 'selection', id: 'type06-1', label: '신부산GA지점' },
+                              { value: 'selection2', id: 'type06-2', label: '신부산GA지점2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                        <FormCell title={'담당SM'}>
+                          <Input aria-label="" width={'15rem'} value={'12345678'} readOnly />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button> 
+                          <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+                        </FormCell>
+                        <FormCell title={'설계일자'}>
+                          <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" />
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'대리인'}>
+                          <NativeSelect
+                            aria-label="대리점 선택"
+                            width="12rem"
+                            value={form.type07}
+                            onChange={(e) => setFormField('type07', e.target.value)}
+                          >
+                            {[
+                              { value: 'selection', id: 'type07-1', label: '구분' },
+                              { value: 'selection2', id: 'type07-2', label: '대리점' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <Input aria-label="" 
+                            width={'12rem'} 
+                            value={form.type07 || '12345678'} 
+                            onChange={e => setFormField('type07', e.target.value)}
+                          />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button> 
+                          <Input aria-label="" width={'15rem'} value={'신부산지점GA지점'} readOnly/>
+                        </FormCell>
+                        <FormCell title={'사용인'}>
+                          <Input aria-label="사용인" width={'15rem'} value={'12345678'} readOnly />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>               
+                          <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                    <Grow>
+                      <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+                          조회
+                      </Button>
+                      <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                        <ResetIcon />
+                      </Button>
+                    </Grow>
+                  </Grow>
+                  <Grow className="justify-end mb-1">
+                    <Button color="success" variant="outlined">
+                      엑셀내보내기
+                      <FileExportIcon />
+                    </Button>
+                  </Grow>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<LTPA360DummyDataRow2>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      getRowId={params => String(params.data.id)}
+                      rowData={LTPA360DummyData2}
+                      columnDefs={columnDefs2}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      singleClickEdit={true}
+                      onCellValueChanged={() => {}}
+                      rowSelection={{
+                        mode: 'singleRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{ headerName: '선택' }}
+                      onGridReady={params => {
+                        params.api.forEachNode(node => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      domLayout='autoHeight'
+                    />
+                  </div>
+                  </>
+                )}
+                {active === 'tab4' && (
+                  <>
+                  <Grow className="w-full mb-3 mt-1" variant="box-round" placement={'bwe'}>
+                    <FormTable  variant={'none'} lineTop={false} 
+                      caption="장기보험 모집자 설계 조회 테이블"
+                      cols={[
+                        'flex-auto', 'flex-1',
+                        'flex-auto', 'flex-1',
+                        'flex-auto', 'flex-1',  
+                      ]}
+                    >
+                      <FormRow>
+                        <FormCell title={'소속'}>
+                          <NativeSelect
+                            aria-label="소속 선택"
+                            width="12rem"
+                            value={form.type04}
+                            onChange={(e) => setFormField('type04', e.target.value)}
+                            readOnly
+                          >
+                            {[
+                              { value: 'selection', id: "type04_1", label: 'GA영업2본부' },
+                              { value: 'selection2', id: "type04_2", label: 'GA영업2본부2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="사업단 선택"
+                            width="15.2rem"
+                            value={form.type05}
+                            onChange={(e) => setFormField('type05', e.target.value)}
+                            readOnly
+                          >
+                            {[
+                              { value: 'selection', id: 'type05-1', label: '부산GA사업단' },
+                              { value: 'selection2', id: 'type05-2', label: '부산GA사업단2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="지점 선택"
+                            width="15rem"
+                            value={form.type06}
+                            onChange={(e) => setFormField('type06', e.target.value)}
+                            readOnly
+                          >
+                            {[
+                              { value: 'selection', id: 'type06-1', label: '신부산GA지점' },
+                              { value: 'selection2', id: 'type06-2', label: '신부산GA지점2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                        <FormCell title={'담당SM'}>
+                          <Input aria-label="" width={'15rem'} value={'12345678'} readOnly />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button> 
+                          <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+                        </FormCell>
+                        <FormCell title={'설계일자'}>
+                          <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" />
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'대리인'}>
+                          <NativeSelect
+                            aria-label="대리점 선택"
+                            width="12rem"
+                            value={form.type07}
+                            onChange={(e) => setFormField('type07', e.target.value)}
+                          >
+                            {[
+                              { value: 'selection', id: 'type07-1', label: '구분' },
+                              { value: 'selection2', id: 'type07-2', label: '대리점' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <Input aria-label="" 
+                            width={'12rem'} 
+                            value={form.type07 || '12345678'} 
+                            onChange={e => setFormField('type07', e.target.value)}
+                          />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button> 
+                          <Input aria-label="" width={'15rem'} value={'신부산지점GA지점'} readOnly/>
+                        </FormCell>
+                        <FormCell title={'사용인'}>
+                          <Input aria-label="사용인" width={'15rem'} value={'12345678'} readOnly />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>               
+                          <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                    <Grow>
+                      <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+                          조회
+                      </Button>
+                      <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                        <ResetIcon />
+                      </Button>
+                    </Grow>
+                  </Grow>
+                  <Grow className="justify-end mb-1">
+                    <Button color="success" variant="outlined">
+                      엑셀내보내기
+                      <FileExportIcon />
+                    </Button>
+                  </Grow>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<LTPA360DummyDataRow2>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      getRowId={params => String(params.data.id)}
+                      rowData={LTPA360DummyData2}
+                      columnDefs={columnDefs2}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      singleClickEdit={true}
+                      onCellValueChanged={() => {}}
+                      rowSelection={{
+                        mode: 'singleRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{ headerName: '선택' }}
+                      onGridReady={params => {
+                        params.api.forEachNode(node => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      domLayout='autoHeight'
+                    />
+                  </div>
+                  </>
+                )}
               </TabPager>
 
 
@@ -489,12 +730,42 @@ export const LTPA360Main = () => {
               <Button
                 type="submit"
                 form={'page2-MainForm'}
+                variant={'outlined'}
+                color={'gray'}
+                size={'xl'}
+                onClick={() => console.log('초기화')}
+              >
+                초기화
+              </Button>
+              <Button
+                type="submit"
+                form={'page2-MainForm'}
+                variant={'outlined'}
+                color={'gray'}
+                size={'xl'}
+                onClick={() => console.log('삭제')}
+              >
+                삭제
+              </Button>
+              <Button
+                type="submit"
+                form={'page2-MainForm'}
                 variant={'contained'}
                 color={'primary'}
                 size={'xl'}
-                onClick={() => console.log('상품선택')}
+                onClick={() => console.log('저장')}
               >
-                상품선택
+                저장
+              </Button>
+              <Button
+                type="submit"
+                form={'page2-MainForm'}
+                variant={'outlined'}
+                color={'primary'}
+                size={'xl'}
+                onClick={() => console.log('닫기')}
+              >
+                닫기
               </Button>
             </Grow>
           </MainBottomItem>
