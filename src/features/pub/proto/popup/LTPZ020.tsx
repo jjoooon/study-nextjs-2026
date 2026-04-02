@@ -25,7 +25,7 @@ import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPZ020P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
   type LTPZ020TabType = {
     name: string;
     value: string;

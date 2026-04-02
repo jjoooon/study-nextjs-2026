@@ -14,7 +14,7 @@ import { InfoBox } from '@/shared/components/common/InfoBox';
 import { TabPager } from '@/shared/components/common/TabPager';
 import type { PopupBaseProps } from './types';
 
-export const LTPZ021P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPZ021 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
