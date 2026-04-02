@@ -8,16 +8,16 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { DatePickerInput } from '@/shared/components/common/DatePicker';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -40,91 +40,127 @@ export const LTPA190P = ({ open, onOpenChange }: LTPA190PProps) => {
     field05: string | number;
     field06: string | number;
     field07: string | number;
+    field08: string | number;
+    field09: string | number;
   };
-  
   const DummyData: DummyDataType[] = [
     {
       id: 1,
       isCheck: false,
-      field01: '',  
+      field01: '청약완료',  
       field02: '',
-      field03: '2023-03-01',             
-      field04: '9999-12-31',
+      field03: '범용',             
+      field04: '',
       field05: '',        
       field06: '',
-      field07: '',              
+      field07: '김한화',              
+      field08: '',
+      field09: '',
     },
     {
       id: 2,
       isCheck: false,
       field01: '',  
       field02: '',
-      field03: '2023-03-01',             
-      field04: '9999-12-31',
+      field03: '',             
+      field04: '',
       field05: '',        
       field06: '',
-      field07: '김한화',              
+      field07: '',              
+      field08: '',
+      field09: '',
     },
     {
       id: 3,
       isCheck: false,
       field01: '',  
       field02: '',
-      field03: '2023-03-01',             
-      field04: '9999-12-31',
+      field03: '',             
+      field04: '',
       field05: '',        
       field06: '',
-      field07: '',              
+      field07: '',
+      field08: '',      
+      field09: '',
     },
   ];
-  
+
   // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType>)[] = [
     {
       headerName: '구분',
       field: 'field01',
       flex: 1,
+      editable: false,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '대상',
+      headerName: '신계약프로세스',
       field: 'field02',
       flex: 2,
-      cellClass: 'flex! items-center! justify-center!',
-
+      editable: true,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', '(개인영업-전속)청약서류출력제한', '(개인영업-교차)청약서류출력제한', '(전략영업)청약서류출력제한', '(개인영업-전속)휴대폰전자서명요청제한', '(개인영업-교차)휴대폰전자서명요청제한', '(전략영업-전속)휴대폰전자서명요청제한'] },
     },
     {
-      headerName: '적용시작일자',
+      headerName: '판매채널',
       field: 'field03',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      editable: false,
+      cellClass: 'flex! items-center! justify-center!', 
     },
     {
-      headerName: '적용종료일자',
+      headerName: '적용사항',
       field: 'field04',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      editable: true,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', '선택2'] }, 
     },
     {
-      headerName: '상태',
+      headerName: '적용시작일',
       field: 'field05',
+      width: 130,
+      editable: true, // 날짜 직접 입력 가능
+      cellClass: 'text-center',
+      cellEditor: DatePickerCellEditor,
+    },
+    {
+      headerName: '적용종료일',
+      field: 'field06',
+      width: 130,
+      editable: true, // 날짜 직접 입력 가능
+      cellClass: 'text-center',
+      cellEditor: DatePickerCellEditor,
+    },
+    {
+      headerName: '입력자',
+      field: 'field07',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!' 
     },
     {
-      headerName: '적용사유',
-      field: 'field06',
-      flex: 2,
-      cellClass: 'flex! items-center! justify-center!' 
+      headerName: '삭제여부',
+      field: 'isCheck',
+      flex: 0.7,
+      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
+      cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
+      editable: true,
     },
     {
-      headerName: '등록자',
-      field: 'field07',
-      flex: 0.7,
+      headerName: '비고',
+      field: 'field09',
+      flex: 1.5,
+      editable: true,
       cellClass: 'flex! items-center! justify-center!' 
     },
   ];
-  
+
+
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>([]);
 
@@ -132,16 +168,13 @@ export const LTPA190P = ({ open, onOpenChange }: LTPA190PProps) => {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
-  
-  
+    
   // form event
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
-    type03: '',
   });
 
-  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="2xl">
@@ -152,107 +185,71 @@ export const LTPA190P = ({ open, onOpenChange }: LTPA190PProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
-
+          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <FormTable variant={'none'} lineTop={false}
+              caption="장기신계약 조회 테이블"
+              cols={[
+                'w-[9rem]', 'flex-1',
+                'w-[9rem]', 'flex-1',
+                'w-[9rem]', 'flex-1',
+              ]}
+            >
+              <FormRow>
+                <FormCell title={'보종군'}>
+                  <NativeSelect
+                    aria-label="항목 선택"
+                    value={form.type01}
+                    onChange={(e) => setFormField('type01', e.target.value)}
+                    required
+                  >
+                    {[
+                      { value: 'selection', id: 'type01-1', label: '장기보험' },
+                      { value: 'selection2', id: 'type01-2', label: '장기보험2' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </FormCell>
+                <FormCell title={'적용사항'}>
+                  <NativeSelect
+                    aria-label="적용사항 선택"
+                    width={'15rem'}
+                    value={form.type02}
+                    onChange={(e) => setFormField('type02', e.target.value)}
+                    required
+                  >
+                    {[
+                      { value: 'selection', id: 'type02-1', label: '선택' },
+                      { value: 'selection2', id: 'type02-2', label: '(개인영업-전속)청약서류출력제한' },
+                      { value: 'selection3', id: 'type02-3', label: '(개인영업-교차)청약서류출력제한' },
+                      { value: 'selection4', id: 'type02-4', label: '(전략영업)청약서류출력제한' },
+                      { value: 'selection5', id: 'type02-5', label: '(개인영업-전속)휴대폰전자서명요청제한' },
+                      { value: 'selection6', id: 'type02-6', label: '(개인영업-교차)휴대폰전자서명요청제한' },
+                      { value: 'selection7', id: 'type02-7', label: '(전략영업-전속)휴대폰전자서명요청제한' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </FormCell>
+                <FormCell title={'조회일자'}>
+                  <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="md" width="sm" required />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+            <Grow>
+              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+                조회
+              </Button>
+              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                <ResetIcon />
+              </Button>
+            </Grow>
+          </Grow>
           <TableFold>
             <TableFoldHead title="등록사항">
             </TableFoldHead>
             <TableFoldBody>
-              <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                <FormTable variant={'none'}
-                  caption="장기보험 모집자 설계 조회 테이블"
-                  cols={[
-                    'w-[8rem]', 'flex-1',
-                    'w-[8rem]', 'flex-1',
-                  ]}
-                >
-                  <FormRow>
-                    <FormCell title={'등록항목'}>
-                      <NativeSelect
-                        aria-label="항목 선택"
-                        width={'9rem'}
-                        value={form.type01}
-                        onChange={(e) => setFormField('type01', e.target.value)}
-                        required
-                      >
-                        {[
-                          { value: 'selection', id: 'type01-1', label: '장기보험' },
-                          { value: 'selection2', id: 'type01-2', label: '장기보험2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                    </FormCell>
-                    <FormCell title={'조직구분'}>
-                      <NativeSelect
-                        aria-label="조직구분 선택"
-                        width={'9rem'}
-                        value={form.type02}
-                        onChange={(e) => setFormField('type02', e.target.value)}
-                        required
-                      >
-                        {[
-                          { value: 'selection', id: 'type02-1', label: '선택' },
-                          { value: 'selection', id: 'type02-2', label: '취급기관' },
-                          { value: 'selection2', id: 'type02-3', label: '취급직원' },
-                          { value: 'selection3', id: 'type02-4', label: '사용인' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                      <Input
-                        aria-label=""
-                        width={'11rem'}
-                        value={''}
-                        readOnly
-                      />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button> 
-                      <Input aria-label="" 
-                        width={'12rem'} 
-                        value={'김한화'}
-                        readOnly
-                      />
-                      <Grow className="ml-[8rem]">
-                        <NativeSelect
-                          aria-label="조직구분 선택"
-                          width={'9rem'}
-                          value={form.type03}
-                          onChange={(e) => setFormField('type03', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type03-1', label: '선택' },
-                            { value: 'selection2', id: 'type03-2', label: '기준일자' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <DatePickerInput
-                          errorMsg="입력은 필수입니다."
-                          errorPs="bl"
-                          mode="single"
-                          onChange={() => {}}
-                          size="lg"
-                          value=""
-                          width="sm"
-                        />
-                      </Grow>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-                <Grow>
-                  <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
-                    조회
-                  </Button>
-                  <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
-                    <ResetIcon />
-                  </Button>
-                </Grow>
-              </Grow>
-            </TableFoldBody>
-          </TableFold>  
-          <Gcol className="w-full gap-[1.2rem]">
-            <Grow className="w-full">
+              <Grow className="w-full">
               <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
                 <AgGridReact<DummyDataType>
                   // getRowId 적용: id 필드를 고유 식별자로 사용
@@ -264,6 +261,7 @@ export const LTPA190P = ({ open, onOpenChange }: LTPA190PProps) => {
                     sortable: false, 
                     resizable: false,
                   }}
+                  domLayout="autoHeight"
                   alwaysShowHorizontalScroll={true}
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
@@ -288,8 +286,8 @@ export const LTPA190P = ({ open, onOpenChange }: LTPA190PProps) => {
                 />
               </div>
             </Grow>
-          </Gcol>
-
+            </TableFoldBody>
+          </TableFold>  
         </DialogSection>  
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
