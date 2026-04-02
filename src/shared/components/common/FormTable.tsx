@@ -32,6 +32,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   rowSpan?: number;
   titleColSpan?: number;
   titleRowSpan?: number;
+  lineTop?: boolean;
   vertical?: boolean;
   tdClassName?: string;
 }
@@ -115,6 +116,7 @@ export const FormCell = ({
   variant,
   className,
   colSpan,
+  lineTop,
   rowSpan,
   titleColSpan,
   titleRowSpan,
@@ -186,7 +188,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
   const showLineTop = lineTop && variant !== 'none';
   return (
     <Table
-      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop && 'border-t border-t-[.2rem] border-t-[#61554F]', className)}
+      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0', className)}
       data-variant={variant}
     >
       {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}

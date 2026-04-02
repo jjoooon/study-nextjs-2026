@@ -119,90 +119,87 @@ export const LTPZ051 = ({ open, onOpenChange }: LTPZ051Props) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
-          
-          <Gcol className='w-full' gap={5}>
-            <Grow className='w-full' variant="box-round">
-              <FormTable variant={'head'}
-              lineTop={false}
-              caption="">
-                <FormRow>
-                  <FormCell title={'상품명'}>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">Text</Typo>
-                  </FormCell>
-                  <FormCell title={'설계번호'}>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">LA123123123123</Typo>
-                  </FormCell>  
-                </FormRow>
-              </FormTable>
-            </Grow>
-          </Gcol>
-          <InfoBox bg variant="info"
-            subTitle="고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당 신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행 이전에 배서(청약중 이후) 진행 필요"
-          />
-          <Gcol className="w-full" placement="ss" variant="box-warning">
-            <Typo variant="body-sm">
-              <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시 <Typo weight="bold" color="primary">신계약 청약완료불가</Typo>)</Checkbox>
-            </Typo>
-          </Gcol>
-      <TabPager
-        data={tabs}
-        active={active}
-        setActive={setActive}
-        getValue={(t) => t.value}
-        renderTab={(t) => t.label ?? t.value}
-        visibleCount={4}
-        removable={false}
-      >
-        {active === 'basic' ? (
-          <Gcol>
-            <FormTable caption="직업 상세" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']} lineTop={false}>
+          <Grow className='w-full' variant="box-round">
+            <FormTable variant={'head'}
+            lineTop={false}
+            caption="">
               <FormRow>
-                <FormCell title={'고객명'}>김한화</FormCell>
-                <FormCell title={'직업정보'}>1급/회사원</FormCell>
+                <FormCell title={'상품명'}>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">Text</Typo>
+                </FormCell>
+                <FormCell title={'설계번호'}>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">LA123123123123</Typo>
+                </FormCell>  
               </FormRow>
             </FormTable>
-            <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-              <AgGridReact<DummyDataType>
-                rowData={rowData}
-                columnDefs={columnDefs}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                defaultColDef={{ 
-                  sortable: false,
-                  resizable: false,
-                }}
-                animateRows={false}
-                alwaysShowHorizontalScroll={true}
-                rowClassRules={{}}
-                domLayout="autoHeight" 
-              />
-            </div>
-          </Gcol>
-        ) : (
-          <Gcol>
-            <FormTable caption="직업 상세" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']} lineTop={false}>
-              <FormRow>
-                <FormCell title={'고객명'}>김한화2</FormCell>
-                <FormCell title={'직업정보'}>1급/회사원2</FormCell>
-              </FormRow>
-            </FormTable>
-            <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-              <AgGridReact<DummyDataType>
-                rowData={rowData}
-                columnDefs={columnDefs}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                defaultColDef={{ 
-                  sortable: false,
-                  resizable: false,
-                }}
-                animateRows={false}
-                alwaysShowHorizontalScroll={true}
-                rowClassRules={{}}
-                domLayout="autoHeight" 
-              />
-            </div>
-          </Gcol>
-        )}
-      </TabPager>
+          </Grow>
+          <Gcol className='w-full' gap={2.5}>
+            <Gcol variant={'box-info'}>
+              <Typo variant="body-sm" icon={'info'}>
+                고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당 신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행 이전에 배서(청약중 이후) 진행 필요
+              </Typo>
+            </Gcol>
+            <Gcol className="w-full" placement="ss" variant="box-warning">
+              <Typo variant="body-sm">
+                <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시 <Typo weight="bold" color="primary">신계약 청약완료불가</Typo>)</Checkbox>
+              </Typo>
+            </Gcol>
+            <TabPager
+              data={tabs}
+              active={active}
+              setActive={setActive}
+              hasTableBelow={true}
+              getValue={(t) => t.value}
+              renderTab={(t) => t.label ?? t.value}
+              visibleCount={4}
+              removable={false}
+            >
+              {active === 'basic' ? (
+                <Gcol>
+                  <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
+                    <FormRow>
+                      <FormCell title={'고객명'}>김한화</FormCell>
+                      <FormCell title={'직업정보'}>1급/회사원</FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType>
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      defaultColDef={{ 
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      domLayout="autoHeight" 
+                    />
+                  </div>
+                </Gcol>
+              ) : (
+                <Gcol>
+                  <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
+                    <FormRow>
+                      <FormCell title={'고객명'}>김한화2</FormCell>
+                      <FormCell title={'직업정보'}>1급/회사원2</FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType>
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      defaultColDef={{ 
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      domLayout="autoHeight" 
+                    />
+                  </div>
+                </Gcol>
+              )}
+            </TabPager>
+           </Gcol>
+     
         </DialogSection> 
 
         <DialogFooter>
