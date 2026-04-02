@@ -108,6 +108,38 @@ const { currentPage, totalPages, handleGridReady, handlePageChange } = useAgGrid
   onPageChange={handlePageChange}
   itemsPerPage={pageSize}
 />
+
+
+
+// infinite scroll + TableMore 연동 (공통 훅 사용)
+import { useAgGridInfiniteAppend } from '@aggrid';
+
+const pageSize = 5;
+const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  allRows: DummyData,
+  pageSize,
+});
+<div className="ag-theme-alpine">
+  <AgGridReact<DummyDataType>
+    key={loadedCount}
+    getRowId={(params) => String(params.data.id)}
+    columnDefs={columnDefs}
+    domLayout="autoHeight"
+
+    rowModelType="infinite"
+    cacheBlockSize={pageSize}
+    maxBlocksInCache={2}
+    datasource={dataSource}
+    
+  />
+</div>
+<TableMore
+  loadedCount={loadedCount}
+  totalCount={totalCount}
+  pageSize={pageSize}
+  onLoadAll={handleLoadAll}
+  onLoadNext={handleLoadNext}
+/>
 \`\`\`
           `}
           </Markdown>
