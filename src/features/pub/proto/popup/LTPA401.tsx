@@ -19,7 +19,7 @@ import { InfoBox } from '@/shared/components/common/InfoBox';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA401P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
 
 
   // const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);

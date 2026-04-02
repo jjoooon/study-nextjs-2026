@@ -23,7 +23,7 @@ import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export const LTPA200P = ({ open, onOpenChange }: PopupBaseProps) => {
+export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   // dummy data
   type DummyDataType = {
