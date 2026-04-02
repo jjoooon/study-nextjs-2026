@@ -52,7 +52,7 @@ function Textarea({
   const showError = (error || isInvalid) && !minLengthSatisfied;
 
   const variantStyles = {
-    default: '',
+    default: 'w-full',
     outline: 'border-2 border-gray-300 focus:border-orange-500',
   };
 
@@ -61,43 +61,41 @@ function Textarea({
     : '';
 
   return (
-    <div>
-      <div className={`relative bg-[#fff] border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 w-[24rem] ${(maxLength === 0) ? 'pb-2' : 'pb-0'} ${showError ? 'bg-[var(--color-danger-5)] border-[var(--color-danger-50)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]' : ''}`}>
-        <textarea
-          data-slot="textarea"
-          aria-invalid={showError || undefined}
-          aria-describedby={showError ? errorId : undefined}
-          className={cn(
-            'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content h-[6.4rem] w-full bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
-            variantStyles[variant], 
-            errorStyle,
-            className,
-            resize ? 'resize' : 'resize-none'
-          )}
-          value={value}
-          onChange={handleChange}
-          {...props}
-        />
-        {resize && (
-          <div className={`absolute  right-1 pointer-events-none text-gray-400 event-none bg-[#fff] ${(maxLength === 0) ? 'bottom-[0.6rem]' : 'bottom-[2.4rem]'}`}>
-            <ReSizeIcon />
-          </div>
+    <div className={`relative w-full bg-[#fff] border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 w-[24rem] ${(maxLength === 0) ? 'pb-2' : 'pb-0'} ${showError ? 'bg-[var(--color-danger-5)] border-[var(--color-danger-50)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]' : ''}`}>
+      <textarea
+        data-slot="textarea"
+        aria-invalid={showError || undefined}
+        aria-describedby={showError ? errorId : undefined}
+        className={cn(
+          'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content h-[6.4rem] w-full bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
+          variantStyles[variant], 
+          errorStyle,
+          className,
+          resize ? 'resize' : 'resize-none'
         )}
+        value={value}
+        onChange={handleChange}
+        {...props}
+      />
+      {resize && (
+        <div className={`absolute  right-1 pointer-events-none text-gray-400 event-none bg-[#fff] ${(maxLength === 0) ? 'bottom-[0.6rem]' : 'bottom-[2.4rem]'}`}>
+          <ReSizeIcon />
+        </div>
+      )}
 
-        {maxLength !== 0 && (
-          <Grow placement={'ec'} className={cn(
-            'text-right text-[1.3rem] text-[var(--color-gray-30)] min-h-[2.8rem] ',
-          )}>
-            <span className="text-[var(--color-gray-100)]">{currentLength}</span> / {maxLength}byte
-          </Grow>
-        )}
+      {maxLength !== 0 && (
+        <Grow placement={'ec'} className={cn(
+          'text-right text-[1.3rem] text-[var(--color-gray-30)] min-h-[2.8rem] ',
+        )}>
+          <span className="text-[var(--color-gray-100)]">{currentLength}</span> / {maxLength}byte
+        </Grow>
+      )}
 
-        {showError && (
-          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
-            {errorMsg}
-          </ErrorMsg>
-        )}
-      </div>
+      {showError && (
+        <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+          {errorMsg}
+        </ErrorMsg>
+      )}
     </div>
   );
 }

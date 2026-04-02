@@ -496,7 +496,7 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
 function DialogSection({ children, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <Grid
-      gap={5}
+      gap={4}
       data-slot="dialog-section"
       className={cn('px-6 w-full h-full text-[1.4rem] overflow-auto', className)}
       {...props}
