@@ -1,10 +1,10 @@
 'use client';
-// 권오택
+
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogFooterArea, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogFooterArea, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
@@ -211,8 +211,8 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="2xl" >
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>일괄 가입설계동의 관리</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ052)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>원클릭스캔</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ053)</Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
@@ -288,19 +288,18 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                엑셀가져오기
-              </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                엑셀양식받기
+                이미지
               </Button>
             </Grow>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
                 출력/발송
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
