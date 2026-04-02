@@ -69,13 +69,17 @@ export const LTPA070 = ({ open, onOpenChange }: LTPA070Props) => {
         <DialogSection className='grid-rows-[auto_1fr]'>
           
           <Gcol className='w-full'>
-            <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
-              <FormRow>
-                <FormCell title={'견종검색(한글명)'}>
-                  <Input aria-label="견종검색" width={'30rem'} value={breedSearch} onChange={(e) => setBreedSearch(e.target.value)} />
-                </FormCell>
-              </FormRow>
-            </FormTable>
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <FormTable variant={'head'}
+              lineTop={false}
+              caption="">
+                <FormRow>
+                  <FormCell title={'견종검색(한글명)'}>
+                    <Input aria-label="견종검색" width={'30rem'} value={breedSearch} onChange={(e) => setBreedSearch(e.target.value)} />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
             <div className="ag-theme-alpine aggrid-pagination-ko w-full">
               <AgGridReact<DummyDataType>
                 getRowId={params => String(params.data.id)}
