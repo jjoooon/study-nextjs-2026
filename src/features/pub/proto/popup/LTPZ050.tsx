@@ -35,7 +35,7 @@ export const LTPZ050 = ({ open, onOpenChange }: LTPZ050Props) => {
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
           <Gcol className='w-full' gap={5}>
-            <FormTable caption="부실유의계약 선별인수 확인서" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']} lineTop variant="default">
+            <FormTable caption="부실유의계약 선별인수 확인서" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell title={'상품명'}>
                     Text

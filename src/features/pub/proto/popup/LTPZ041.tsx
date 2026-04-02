@@ -44,7 +44,7 @@ export const LTPZ041 = ({ open, onOpenChange }: LTPZ041Props) => {
             </TableFoldHead>
             <TableFoldBody>
                <Gcol>
-                <FormTable caption="사업자" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption="사업자" cols={['w-[14rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'사업자명'}>
                         <Input size="lg" value={form.type01} variant="default" width="md" onChange={(e) => setFormField('type01', e.target.value)} required />

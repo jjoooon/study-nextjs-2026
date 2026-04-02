@@ -33,7 +33,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
           <Grow className="w-full" placement='ss' gap={5}>
             <Gcol placement='ss' className='w-full' gap={5}>
                 <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='head'>
+                  <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='head'>
                     <FormRow>
                       <FormCell title={'설계번호'}>
                         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
@@ -53,7 +53,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                     </Grow>   
                   </TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                    <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'계약자'} colSpan={3}>
                           김한화
@@ -120,7 +120,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                     <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
                   </Grow>
                 </Grow>
-                <FormTable caption="계약정보" cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'계약자'} colSpan={3}>
                       김한화
@@ -178,7 +178,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
             </Gcol>
             <Grow className="w-full" placement={'ss'} gap={5}>
                <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant='none'>
+                  <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='none'>
                     <FormRow>
                       <FormCell title={'설계번호'}>
                         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
@@ -268,7 +268,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                                 </FormCell>
                               </FormRow>
                             </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
                               <FormRow>
                                 <FormCell title={'소재지'}
                                 >
@@ -388,7 +388,7 @@ export const LTPZ021P = ({ open, onOpenChange }: LTPZ021PProps) => {
                                 </FormCell>
                               </FormRow>
                             </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
                               <FormRow>
                                 <FormCell title={'소재지'}
                                 >

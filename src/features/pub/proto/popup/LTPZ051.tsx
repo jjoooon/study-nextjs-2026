@@ -11,7 +11,6 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
-import { InfoBox } from '@/shared/components/common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
@@ -155,15 +154,19 @@ export const LTPZ051 = ({ open, onOpenChange }: LTPZ051Props) => {
               removable={false}
             >
               {active === 'basic' ? (
-                <Gcol>
+                <Gcol className='w-full' gap={4}>
                   <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
                     <FormRow>
                       <FormCell title={'고객명'}>김한화</FormCell>
                       <FormCell title={'직업정보'}>1급/회사원</FormCell>
                     </FormRow>
                   </FormTable>
+                  <Typo variant="body-sm" color="primary">직업정보(상해급수) 상이 계약
+                    <Typo variant="body-sm" color="primary">99건</Typo>
+                  </Typo>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      getRowId={params => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -185,6 +188,7 @@ export const LTPZ051 = ({ open, onOpenChange }: LTPZ051Props) => {
                   </FormTable>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      getRowId={params => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       noRowsOverlayComponent={AgGridEmptyComponent}

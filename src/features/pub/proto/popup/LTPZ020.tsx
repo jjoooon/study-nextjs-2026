@@ -450,7 +450,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
         <DialogSection className='grid-rows-[auto_1fr]'>
           
           <Grow placement='bwe' className="w-full" variant={'box-round'} gap={5}>
-            <FormTable caption="증권번호" cols={['w-[14rem] min-w-[14rem]', 'w-auto']} variant={'head'}>
+            <FormTable caption="증권번호" cols={['w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
                 <FormCell title={'증권번호'} className='w-full'>
                   <Grow>
@@ -517,6 +517,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                       <TableFoldBody>
                         <div className="ag-theme-alpine">
                           <AgGridReact<InsuredListRow>
+                            getRowId={params => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={insuredListData}
                             columnDefs={insuredListColumnDefs}
@@ -548,6 +549,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                       <TableFoldBody>
                         <div className="ag-theme-alpine">
                           <AgGridReact<CoverageListRow>
+                            getRowId={params => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={coverageListData}
                             columnDefs={coverageListColumnDefs}
@@ -571,6 +573,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                   <TableFoldBody>
                     <div className="ag-theme-alpine">
                       <AgGridReact<PropertyListRow>
+                        getRowId={params => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={propertyListDataColumnDefs}
@@ -627,6 +630,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                         <TableFoldBody>
                           <div className="ag-theme-alpine">
                             <AgGridReact<BuildingByLocationRow>
+                              getRowId={params => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={buildingByLocationData}
                               columnDefs={buildingByLocationColumnDefs}
@@ -646,6 +650,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                         <TableFoldBody>
                           <div className="ag-theme-alpine">
                             <AgGridReact<InsuranceObjectRow>
+                              getRowId={params => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={insuranceObjectData}
                               columnDefs={insuranceObjectColumnDefs}

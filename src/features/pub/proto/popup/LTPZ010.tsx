@@ -254,7 +254,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
               <TableFoldHead title="계약기본사항">
               </TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'상품선택'} colSpan={3}>
                       <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
@@ -334,7 +334,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
               <TableFoldHead title="피보험자/계약자">
               </TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'w-auto', 'w-[14rem] min-w-[14rem]', 'w-auto']}>
+                <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'피보험자'}>
                       <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
@@ -377,7 +377,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
               </TableFoldBody>
             </TableFold>  
 
-            <FormTable caption={'합계보험료'} cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+            <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'합계보험료'}>
                   <Input aria-label="" width={'20rem'} value={'123,456원'} readOnly />
@@ -395,6 +395,7 @@ export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
               <Grow className="w-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
+                    getRowId={params => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
                     columnDefs={columnDefs}

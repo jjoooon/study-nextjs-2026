@@ -172,7 +172,7 @@ export const LTPZ040 = ({ open, onOpenChange }: LTPZ040Props) => {
               <TableFoldHead title="계약전환용 실손의료비(갱신형)" />
               <TableFoldBody className="grid-rows-[auto_1fr]">
                 <Gcol className='w-full' gap={4}>
-                  <FormTable caption={'피보험자'} cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+                  <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'피보험자'}>
                         김한화(901231-1234567)

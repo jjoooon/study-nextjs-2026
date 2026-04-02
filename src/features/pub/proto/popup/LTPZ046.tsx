@@ -115,6 +115,7 @@ export const LTPZ046 = ({ open, onOpenChange }: LTPZ046Props) => {
             <Grow className='w-full'>
               <div className="ag-theme-alpine aggrid-pagination-ko w-full">
                 <AgGridReact<DummyDataType>
+                  getRowId={params => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -148,7 +149,7 @@ export const LTPZ046 = ({ open, onOpenChange }: LTPZ046Props) => {
               </div>
             </Grow>
             <Grow className='w-full'>
-              <FormTable caption="담보" cols={['w-[14rem] min-w-[14rem]', 'w-auto']}>
+              <FormTable caption="담보" cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'담보명'}>
                     <Input size="lg" value="" variant="default" width="18rem" readOnly/>

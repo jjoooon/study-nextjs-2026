@@ -125,6 +125,7 @@ export const LTPZ049 = ({ open, onOpenChange }: LTPZ049Props) => {
             <Grow className='w-full'>
               <div className="ag-theme-alpine aggrid-pagination-ko w-full">
                 <AgGridReact<DummyDataType>
+                  getRowId={params => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
                   pinnedBottomRowData={sumRow}

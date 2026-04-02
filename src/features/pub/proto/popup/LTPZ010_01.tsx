@@ -91,6 +91,7 @@ export const LTPZ010_01 = ({ open, onOpenChange }: LTPZ010_01Props) => {
             <TableFoldBody>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
+                  getRowId={params => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
                   columnDefs={columnDefs}

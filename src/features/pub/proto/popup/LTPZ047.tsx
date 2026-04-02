@@ -61,7 +61,7 @@ export const LTPZ047 = ({ open, onOpenChange }: LTPZ047Props) => {
               </FormTable>
             </Grow>
             <Grow className='w-full'>
-              <FormTable caption="화재배상" cols={['w-[10rem] min-w-[10rem]', 'w-[10rem] min-w-[10rem]', 'w-auto', 'w-[15rem] min-w-[15rem]', 'w-auto']}>
+              <FormTable caption="화재배상" cols={['w-[10rem]', 'w-[10rem]', 'w-auto', 'w-[15rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'업주성명(법인명)'} titleColSpan={2}>
                     <Input size="lg" value="" variant="default" width="18rem" readOnly/>
