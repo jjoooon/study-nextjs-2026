@@ -6,11 +6,18 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, } from '@uiux/Dialog';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { SearchIcon, ResetIcon } from '@icons';
+import { DatePickerInput } from '@common/DatePicker';
+
 
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -27,68 +34,82 @@ export const LTPZ002 = ({ open, onOpenChange }: LTPZ002Props) => {
     field3: string;
     field4: string;
     field5: string;
+    field6: string;
+    field7: string;
   };
   const dummyData: DummyDataType[] = [
     { 
       id: 1, 
-      field1: 'sMenuInfo',
-      field2: 'transComG100', 
-      field3: 'RB',
-      field4: 'COM10107',
-      field5: '자료가 조회되었습니다.' 
+      field1: '구분정보',
+      field2: '보험종목명 ', 
+      field3: '설계번호',
+      field4: '계약자',
+      field5: '290000',
+      field6: '2023-01-01',
+      field7: '상태'
+    },
+    { 
+      id: 2, 
+      field1: '구분정보',
+      field2: '보험종목명 ', 
+      field3: '설계번호',
+      field4: '계약자',
+      field5: '290000',
+      field6: '2023-01-01',
+      field7: '상태'
+    },
+    { 
+      id: 3, 
+      field1: '구분정보',
+      field2: '보험종목명 ', 
+      field3: '설계번호',
+      field4: '계약자',
+      field5: '290000',
+      field6: '2023-01-01',
+      field7: '상태'
     },
     
   ];
 	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-  const columnDefs: ColDef<DummyDataType>[] = useMemo(() => [
+  const columnDefs: ColDef<DummyDataType>[] = [
 		{
-			headerName: '통신레코드',
+			headerName: '구분',
 			field: 'field1',
-			flex: 1,
-			cellClass: 'text-center',
+			width: 100,
 		},
 		{
-			headerName: '서비스코드',
+			headerName: '보험종목명',
 			field: 'field2',
 			flex: 1,
-      cellClass: 'text-center',
 		},
     {
-			headerName: '거래코드',
+			headerName: '설계번호',
 			field: 'field3',
-			flex: 1,
-      cellClass: 'text-center',
+			width: 100,
 		},
     {
-			headerName: '메세지코드',
+			headerName: '계약자',
 			field: 'field4',
-			flex: 1,
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        if (!params.value) {
-          return null;
-        }
-
-        return (
-          <button
-            type="button"
-            className="cursor-pointer text-[#006FF2] underline underline-offset-4"
-            onClick={event => {
-              console.log('메세지코드 클릭:', params.value);
-            }}
-          >
-            {String(params.value)}
-          </button>
-        );
-      },
+			width: 100,
 		},
     {
-			headerName: '메세지상세',
+			headerName: '보험료(원)',
 			field: 'field5',
-			flex: 1,
-      cellClass: 'text-center',
+      cellClass: 'text-right',
+			width: 120,
+      cellRenderer: numberValueFormatter,
 		},
-  ], []);
+    {
+			headerName: '설계일자',
+			field: 'field6',
+			width: 100,
+		},
+    {
+			headerName: '상태',
+			field: 'field7',
+			width: 80,
+		},
+  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -103,48 +124,106 @@ export const LTPZ002 = ({ open, onOpenChange }: LTPZ002Props) => {
         <DialogSection className="grid-rows-[1fr]">
           <TableFold variant={'default'}>
             <TableFoldHead title={'고객정보'} />
-            <TableFoldBody className="grid-rows-[auto_1fr]">
-              <Grow variant='box-round'>
+            <TableFoldBody className="grid-rows-[auto_1fr] gap-[2rem]">
+              <Grow className='w-full' variant='box-round' placement={'bwe'}>
                 <FormTable variant={'none'}
-                  caption="납입예정 리스트 테이블"
                   cols={[
-                    'flex-auto', 'flex-1',
-                    'flex-auto', 'flex-1',
-                    'flex-auto', 'flex-1',
-                    'flex-auto', 'flex-1',
-                    'flex-auto', 'flex-1',
+                    'w-1', 'w-[30rem]',
+                    'w-[10rem]', 'w-auto',
                   ]}
                 >
                   <FormRow>
                     <FormCell title={'조회구분'}>
-
+                      <NativeSelect required>
+                        <NativeSelectOption value="">피보험자번호</NativeSelectOption>
+                      </NativeSelect>
+                      <Input value={'000000-0******'} readOnly />
+                      <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
                     </FormCell>
                     <FormCell title={'설계상태'}>
-                      
+                      <NativeSelect width={'2xl'}>
+                        {['설계중', '간편설계', '설계심사중', '설계완료', '심사의뢰', '심사중', '심사완료','청약중', '청약완료', '수납완료', '구득심사중', '구득심사완료', '청약삭제', '보험료산출', '설계취소', '지로', '반려', '취소', '가설계', '1차보험료산출', '업셀링설계', '검증'].map(option => (
+                          <NativeSelectOption key={option} value={option}>{option}</NativeSelectOption>
+                        ))}
+
+                      </NativeSelect>
                     </FormCell>
+                  </FormRow>
+                  <FormRow>
                     <FormCell title={'설계일자'}>
-                      
+                      <DatePickerInput
+                        required
+                        mode={'range'}
+                      />
                     </FormCell>
                     <FormCell title={'고객명(영문)'}>
-                      
+                      <b>hong gum</b>
                     </FormCell>
                   </FormRow>
                 </FormTable>
+                <Grow>
+                  <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+                    조회
+                  </Button>
+                  <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                    <ResetIcon />
+                  </Button>
+                </Grow>
               </Grow>
+              
+              <Gcol gap={2.5} >
+                <FormTable 
+                  cols={[
+                    'w-[10rem]', 'w-auto',
+                    'w-[10rem]', 'w-auto',
+                    'w-[10rem]', 'w-auto',
+                  ]}
+                >
+                  <FormRow>
+                    <FormCell title={'동일모집인'}>
+                      동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.
+                    </FormCell>
+                    <FormCell title={'상장구분'}>
+                      <b>hong gum</b>
+                    </FormCell>
+                    <FormCell title={'설립일자'}>
+                      <Button color="gray" onClick={() => { }} size="lg" variant="contained">
+                        조회
+                      </Button>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
 
-              <div className="ag-theme-alpine" >
-                <AgGridReact<DummyDataType>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{ 
-                    sortable: true, 
-                    resizable: true,
-                  }}
-                  domLayout='autoHeight'
-                />
-              </div>
+                <div className="ag-theme-alpine" >
+                  <AgGridReact<DummyDataType>
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ 
+                      sortable: true, 
+                      resizable: true,
+                      cellClass: 'text-center',
+                    }}
+                    domLayout='autoHeight'
+
+                    // selection 설정
+                    rowSelection={{
+                      mode: 'singleRow',
+                      checkboxes: true, // 각 행에 체크박스 표시
+                      enableClickSelection: false, // 셀 클릭 시 selection 변경 비활성화(오직 체크박스 클릭만 허용)
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      width: 36,
+                      cellClass: 'text-center editable-cell',
+                    }}
+                    
+                  />
+                </div>
+              </Gcol>
             </TableFoldBody>
           </TableFold>
           

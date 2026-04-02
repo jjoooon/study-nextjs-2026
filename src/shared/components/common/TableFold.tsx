@@ -62,9 +62,9 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
 };
 
 
-export const TableFoldBody = ({ children, variant }: TableFoldHeadProps) => {
+export const TableFoldBody = ({ children, variant, className }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
   const isHidden = v === 'accordion' && !context?.open;
-  return <div style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}>{children}</div>;
+  return <div className={cn('grid w-full', className)} style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}>{children}</div>;
 };
