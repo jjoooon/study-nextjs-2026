@@ -7,278 +7,188 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { DatePickerInput } from '@common/DatePicker';
+import { Input } from '@/shared/components/uiux/Input';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { InfoBox } from '@/shared/components/common/InfoBox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ042Props {
+interface LTPZ043Props {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export const LTPZ043 = ({ open, onOpenChange }: LTPZ042Props) => {
-
-   const [form, setFormField] = useFormFields({
+export const LTPZ043 = ({ open, onOpenChange }: LTPZ043Props) => {
+  const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
+    type03: '',
+    type04: '',
+    type05: '',
+    type06: '',
+    type07: '',
+    type08: '',
   });
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: true, field01: '123456', field02: '한화생명1', field03: '123', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 2, isCheck: false, field01: '123456', field02: '한화생명1', field03: '124', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 3, isCheck: false, field01: '123456', field02: '한화생명1', field03: '125', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 4, isCheck: false, field01: '123456', field02: '한화생명1', field03: '126', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 5, isCheck: false, field01: '123456', field02: '한화생명1', field03: '127', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 6, isCheck: false, field01: '123456', field02: '한화생명1', field03: '128', field04: '서울', field05: '123', field06: '김한화' },
-  ];
-
-  // AgGrid Column 
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '직원번호',
-      flex: 1,
-      field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,   
-    },
-    {
-      headerName: '직원명',
-      flex: 1,
-      field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '지점번호',
-      flex: 1,
-      field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '지점명',
-      flex: 1,
-      field: 'field04',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '유자격자번호',
-      flex: 1,
-      field: 'field05',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '유자격자명',
-      flex: 1,
-      field: 'field06',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    }
-  ];
   
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter(row => !row.isCheck).map(row => row.id)
-  );
-  
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
-
-  // Grid2 dummy data (직원번호)
-  type DummyDataType2 = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number; // 직원번호
-    field02: string | number; // 직원명
-  };
-  const DummyData2: DummyDataType2[] = [
-    { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
-    { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
-  ];
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명',   flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
-  ];
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
-
-  // Grid3 dummy data (직원번호)
-  type DummyDataType3 = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number; // 직원번호
-    field02: string | number; // 직원명
-  };
-  const DummyData3: DummyDataType3[] = [
-    { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
-    { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
-  ];
-  const columnDefs3: ColDef<DummyDataType3>[] = [
-    { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명',   flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
-  ];
-  const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
-
-  // Grid4 dummy data
-  type DummyDataType4 = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number; // 직원번호
-    field02: string | number; // 직원명
-  };
-  const DummyData4: DummyDataType4[] = [
-    { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
-    { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
-  ];
-  const columnDefs4: ColDef<DummyDataType4>[] = [
-    { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명',   flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
-  ];
-  const [rowData4, setRowData4] = React.useState<DummyDataType4[]>(DummyData4);
-
-  const isEmpNo = form.type01 === 'selection2';
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="">
+      <DialogContent showCloseButton resizable={true} size="lg" >
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>은행유자격자조회</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>주차장배상책임</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ043)</Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className='grid-rows-[auto_1fr]'>
-          <Grow className='w-full' variant="box-round" placement={'bwe'}>
-            <FormTable 
-              variant={'head'}
+          
+          <Gcol className='w-full' gap={5}>
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <FormTable variant={'head'}
               lineTop={false}
               caption="">
+                <FormRow>
+                  <FormCell title={'설계번호'}>
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">LA123123123123</Typo>
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">설계번호의 상품명 text</Typo>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+
+             <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]',  'w-auto']}>
               <FormRow>
-                <FormCell title={'조회구분'}>
+                <FormCell title={'옥내주차장'} titleColSpan={2}>
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="noneText"
+                  >
+                  </Checkbox>
+                  <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type01', e.target.value)} size="lg" value={form.type01} variant="default" width="10rem" commaAmount after={'㎡'} required/>
+                  <div className="separator">↔</div>
+                  <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type02', e.target.value)} size="lg" value={form.type02} variant="default" width="10rem" commaAmount after={'평'} required/>
+                </FormCell>
+                <FormCell title={null}>
+                  <Input onChange={() => {}} size="lg" value={'10,000,000'} variant="default" width="12rem"  commaAmount after="원" readOnly/>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'2단주차기'} titleColSpan={2}>
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="noneText"
+                  >
+                  </Checkbox>
+                  <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type03', e.target.value)} size="lg" value={form.type03} variant="default" width="10rem" commaAmount after={'대'}/>
+                </FormCell>
+                <FormCell title={null}>
+                  <Input onChange={() => {}} size="lg" value={'10,000,000'} variant="default" width="12rem" commaAmount after="원" readOnly/>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'기계식주차기'} titleColSpan={2}>
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="noneText"
+                  >
+                  </Checkbox>
+                  <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type04', e.target.value)} size="lg" value={form.type04} variant="default" width="10rem" commaAmount after={'대'}/>
+                </FormCell>
+                <FormCell title={null}>
+                  <Input onChange={() => {}} size="lg" value={'10,000,000'} variant="default" width="12rem" commaAmount after="원" readOnly/>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'카리프트'} titleColSpan={2}>
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="noneText"
+                  >
+                  </Checkbox>
+                  <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type05', e.target.value)} size="lg" value={form.type05} variant="default" width="10rem" commaAmount after={'대'}/>
+                </FormCell>
+                <FormCell title={null}>
+                  <Input onChange={() => {}} size="lg" value={'10,000,000'} variant="default" width="12rem" commaAmount after="원" readOnly/>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'보상한도'} titleRowSpan={2}></FormCell>
+                <FormCell title={'대인보상'} colSpan={2}>
+                  (1사고당)
                   <NativeSelect
-                    aria-label="조회구분 선택"
+                    aria-label="선택"
                     width="10rem"
-                    value={form.type01}
-                    onChange={(e) => setFormField('type01', e.target.value)}
+                    value={form.type06}
+                    onChange={(e) => setFormField('type06', e.target.value)}
                   >
                     {[
-                      { value: 'selection', id: 'type01-1', label: '유자격자' },
-                      { value: 'selection2', id: 'type01-2', label: '직원번호' },
+                      { value: 'selection', id: 'type06-1', label: '선택1' },
+                      { value: 'selection2', id: 'type06-2', label: '선택2' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                  (1인장)
+                  <Input onChange={() => {}} size="lg" value={''} variant="default" width="10rem" readOnly/>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'대물보상'} colSpan={2}>
+                  (1사고당)
+                  <NativeSelect
+                    aria-label="선택"
+                    width="10rem"
+                    value={form.type06}
+                    onChange={(e) => setFormField('type06', e.target.value)}
+                  >
+                    {[
+                      { value: 'selection', id: 'type06-1', label: '선택1' },
+                      { value: 'selection2', id: 'type06-2', label: '선택2' },
                     ].map((option) => (
                       <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
-                {!isEmpNo && (
-                  <FormCell title={'유자격자명'}>
-                    <Input aria-label="유자격자명 입력" width={'16rem'} value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} />
-                  </FormCell>
-                )}
               </FormRow>
-              
-            </FormTable>  
-            <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
-                조회
-              </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
-                <ResetIcon />
-              </Button>
-            </Grow>
-          </Grow>
-
-          {/* 유자격자: Grid1 단독 */}
-          {!isEmpNo && (
-            <div className="ag-theme-alpine ltpa010-grid w-full">
-              <AgGridReact<DummyDataType>
-                getRowId={params => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={{ sortable: false, resizable: false }}
-                rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                selectionColumnDef={{ headerName: '선택' }}
-                domLayout="autoHeight"
-              />
-            </div>
-          )}
-          {/* 직원번호: Grid2~4 1/3씩 */}
-          {isEmpNo && (
-            <Grow className='w-full' gap={1} placement='ss'>
-              {/* Grid2 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3">
-                <AgGridReact<DummyDataType2>
-                  getRowId={params => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData2}
-                  columnDefs={columnDefs2}
-                  defaultColDef={{ sortable: false, resizable: false }}
-                  rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                  selectionColumnDef={{ headerName: '선택' }}
-                  domLayout="autoHeight"
-                />
-              </div>
-              {/* Grid3 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3">
-                <AgGridReact<DummyDataType3>
-                  getRowId={params => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData3}
-                  columnDefs={columnDefs3}
-                  defaultColDef={{ sortable: false, resizable: false }}
-                  rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                  selectionColumnDef={{ headerName: '선택' }}
-                  domLayout="autoHeight"
-                />
-              </div>
-              {/* Grid4 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3">
-                <AgGridReact<DummyDataType4>
-                  getRowId={params => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData4}
-                  columnDefs={columnDefs4}
-                  defaultColDef={{ sortable: false, resizable: false }}
-                  rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                  selectionColumnDef={{ headerName: '선택' }}
-                  domLayout="autoHeight"
-                />
-              </div>
-            </Grow>
-          )}
+              <FormRow>
+                <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
+                    <NativeSelect
+                    aria-label="선택"
+                    width="10rem"
+                    value={form.type07}
+                    required
+                    onChange={(e) => setFormField('type07', e.target.value)}
+                  >
+                    {[
+                      { value: 'selection', id: 'type07-1', label: '선택1' },
+                      { value: 'selection2', id: 'type07-2', label: '선택2' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+            <InfoBox bg subTitle="해당업종의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다." variant="warning"></InfoBox> 
+          </Gcol>
         
         </DialogSection> 
 
