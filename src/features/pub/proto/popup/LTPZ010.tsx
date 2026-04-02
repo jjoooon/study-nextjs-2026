@@ -21,16 +21,12 @@ import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChang
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPZ010PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ010P = ({ open, onOpenChange }: LTPZ010PProps) => {
+export const LTPZ010P = ({ open, onOpenChange }: PopupBaseProps) => {
     
   type DummyDataType = {
     id: number;

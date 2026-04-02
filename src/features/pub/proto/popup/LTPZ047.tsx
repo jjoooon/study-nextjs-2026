@@ -17,15 +17,11 @@ import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { InfoBox } from '@/shared/components/common/InfoBox';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ047Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ047 = ({ open, onOpenChange }: LTPZ047Props) => {
+export const LTPZ047 = ({ open, onOpenChange }: PopupBaseProps) => {
 
     const [form, setFormField] = useFormFields({
       type01: '',

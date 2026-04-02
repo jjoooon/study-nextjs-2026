@@ -16,14 +16,10 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/com
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import { InfoBox } from '@/shared/components/common/InfoBox';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export interface LTPA401PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA401P = ({ open, onOpenChange }: LTPA401PProps) => {
+export const LTPA401P = ({ open, onOpenChange }: PopupBaseProps) => {
 
 
   // const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);

@@ -17,16 +17,12 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import type { PopupBaseProps } from './types';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ002Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ002 = ({ open, onOpenChange }: LTPZ002Props) => {
+export const LTPZ002 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
     id: number;
     field1: string;

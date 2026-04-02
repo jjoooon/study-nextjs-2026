@@ -15,15 +15,11 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ042Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ042 = ({ open, onOpenChange }: LTPZ042Props) => {
+export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
 
    const [form, setFormField] = useFormFields({
     type01: '',

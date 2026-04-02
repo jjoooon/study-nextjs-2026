@@ -15,15 +15,11 @@ import { InfoBox } from '@/shared/components/common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ051Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ051 = ({ open, onOpenChange }: LTPZ051Props) => {
+export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
    
   type LTPZ051Tab = { name: string; value: string; label: string };
   const DATA_TABS: LTPZ051Tab[] = [
