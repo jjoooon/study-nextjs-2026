@@ -82,9 +82,9 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   if (icon === 'star') IconComponent = <StarIcon className="inline-flex -translate-y-[0.15rem] mr-1" size={10} />;
 
   const indentStyle = {
-    info: 'inline-block relative -indent-[2rem] ml-[2rem]',
-    warning: 'inline-block relative -indent-[2rem] ml-[2rem]',
-    detail: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
+    info: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
+    warning: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
+    detail: 'inline-block relative -indent-[1.4rem] ml-[1.4rem] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
     dot: 'inline-block relative -indent-[0.9rem] ml-[0.9rem]',
     dotBig: 'inline-block relative -indent-[1.6rem] ml-[1.6rem]',
     hash: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',

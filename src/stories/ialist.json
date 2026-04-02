@@ -15,7 +15,7 @@
 
 
 
-  { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "공통", "popup": "", "id": "LTPZ009", "dep4": "메모입력", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
+  { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "공통", "popup": "Y", "id": "LTPZ009", "dep4": "메모입력", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "Y", "id": "LTPZ010", "dep4": "동시가입설계상세", "file": "전환_가입설계", "plan": "서영진", "pub":"권오택", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "Y", "id": "LTPZ011", "dep4": "담보내용상세", "file": "전환_가입설계", "plan": "서영진", "pub":"권오택", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "가입설계", "popup": "", "id": "LTPZ012", "dep4": "청약포인트 상세", "file": "인수지침심사", "plan": "안혜은", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
