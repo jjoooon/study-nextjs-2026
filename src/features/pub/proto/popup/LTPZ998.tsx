@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
 
 import { AgGridEmptyComponent } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
@@ -85,9 +85,7 @@ export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection>
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <DialogBottomInfo />
-          </Gcol>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Gcol, Typo, Grow, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Input } from '@uiux/Input';
@@ -371,9 +371,7 @@ export const LTPZ002 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection>
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <DialogBottomInfo />
-          </Gcol>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

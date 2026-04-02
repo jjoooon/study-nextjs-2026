@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Gcol, Typo, Grow, Grid, Divider } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogClose } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { FileExportIcon, ResetIcon } from '@icons'
@@ -618,19 +618,17 @@ export const LTPZ001 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection>
 
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'ec'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>양식미리보기</Button>
-                <Button variant={'contained'} size={'xl'}>발행</Button>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>양식미리보기</Button>
+              <Button variant={'contained'} size={'xl'}>발행</Button>
 
-                <DialogClose asChild>
-                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>닫기</Button>
-                </DialogClose>
-              </Grow>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>닫기</Button>
+              </DialogClose>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

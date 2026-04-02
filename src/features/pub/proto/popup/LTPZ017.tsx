@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
@@ -163,22 +163,20 @@ export const LTPZ017P = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection>  
         
         <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  삭제
-                </Button>
-                <Button variant={'contained'} size={'xl'}>
-                  저장
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
-                  닫기
-                </Button>
-              </Grow>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                삭제
+              </Button>
+              <Button variant={'contained'} size={'xl'}>
+                저장
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
+                닫기
+              </Button>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
     </DialogContent>
   </Dialog>

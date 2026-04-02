@@ -457,8 +457,17 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn('flex justify-between items-center gap-0 pb-0 px-0 overflow-hidden rounded-bl-[.8rem] rounded-br-[.8rem] ', className)}
-      
+      className={cn('flex flex-col gap-0 p-0 overflow-hidden rounded-bl-[.8rem] rounded-br-[.8rem]', className)}
+      {...props}
+    />
+  );
+}
+
+function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="dialog-footer-area"
+      className={cn('flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first:justify-start [&>div]:last:justify-end', className)}
       {...props}
     />
   );
@@ -510,4 +519,5 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
+  DialogFooterArea,
 };
