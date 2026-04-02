@@ -19,15 +19,11 @@ import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/Nativ
 import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPA200PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA200P = ({ open, onOpenChange }: LTPA200PProps) => {
+export const LTPA200P = ({ open, onOpenChange }: PopupBaseProps) => {
 
   // dummy data
   type DummyDataType = {

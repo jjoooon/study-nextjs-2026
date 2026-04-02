@@ -21,15 +21,11 @@ import { SearchIcon, ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { TabPager } from '@/shared/components/common/TabPager';
 import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPZ020PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ020P = ({ open, onOpenChange }: LTPZ020PProps) => {
+export const LTPZ020P = ({ open, onOpenChange }: PopupBaseProps) => {
   type LTPZ020TabType = {
     name: string;
     value: string;

@@ -12,15 +12,11 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@/shared/components/uiux/Input';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ046Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ046 = ({ open, onOpenChange }: LTPZ046Props) => {
+export const LTPZ046 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
       id: number;
       isCheck: boolean;

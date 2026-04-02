@@ -17,15 +17,11 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { tr } from 'date-fns/locale';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPZ017PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ017P = ({ open, onOpenChange }: LTPZ017PProps) => {
+export const LTPZ017P = ({ open, onOpenChange }: PopupBaseProps) => {
  
   // 검색버튼 여부에 따른 셀 렌더러
 	const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {

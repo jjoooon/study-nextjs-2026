@@ -19,15 +19,11 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-export interface LTPA190PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA190P = ({ open, onOpenChange }: LTPA190PProps) => {
+export const LTPA190P = ({ open, onOpenChange }: PopupBaseProps) => {
 
   // dummy data
   type DummyDataType = {

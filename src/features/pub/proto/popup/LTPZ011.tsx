@@ -15,15 +15,11 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export interface LTPZ011PProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ011P = ({ open, onOpenChange }: LTPZ011PProps) => {
+export const LTPZ011P = ({ open, onOpenChange }: PopupBaseProps) => {
   const amountInputRefs2 = useRef<Array<HTMLInputElement | null>>([]);
 
   type DummyDataType2 = {

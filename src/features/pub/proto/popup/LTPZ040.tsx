@@ -13,15 +13,11 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@/shared/components/uiux/Input';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ040Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ040 = ({ open, onOpenChange }: LTPZ040Props) => {
+export const LTPZ040 = ({ open, onOpenChange }: PopupBaseProps) => {
 
    // dummy data
   type DummyDataType = {

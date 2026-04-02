@@ -12,16 +12,11 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { InfoBox } from '@/shared/components/common/InfoBox';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-
-export interface LTPZ041Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ041 = ({ open, onOpenChange }: LTPZ041Props) => {
+export const LTPZ041 = ({ open, onOpenChange }: PopupBaseProps) => {
   
   const [form, setFormField] = useFormFields({
     type01: '',

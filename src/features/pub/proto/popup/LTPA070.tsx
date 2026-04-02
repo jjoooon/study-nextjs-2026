@@ -1,28 +1,24 @@
 'use client';
 // 권오택
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { AgGridEmptyComponent } from '@aggrid';
+
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
-import { Input } from '@/shared/components/uiux/Input';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPA070Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA070 = ({ open, onOpenChange }: LTPA070Props) => {
-
-   // dummy data
+export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
+  // dummy data
   type DummyDataType = {
     id: number;
     field01: string | number;
@@ -33,8 +29,6 @@ export const LTPA070 = ({ open, onOpenChange }: LTPA070Props) => {
     { id: 2, field01: '웰시 코기 펨브로크', field02: 'Welsh Corgi Pembroke' },
     { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
   ];
-
-  // AgGrid Column 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '견종명',
@@ -55,53 +49,49 @@ export const LTPA070 = ({ open, onOpenChange }: LTPA070Props) => {
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [breedSearch, setBreedSearch] = React.useState('');
-  
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl" className="">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>고지유형별 보험료비교</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPA430)</Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          
-          <Gcol className='w-full'>
-            <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'head'}
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <FormTable 
+              variant={'none'}
               lineTop={false}
-              caption="">
-                <FormRow>
-                  <FormCell title={'견종검색(한글명)'}>
-                    <Input aria-label="견종검색" width={'30rem'} value={breedSearch} onChange={(e) => setBreedSearch(e.target.value)} />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-            <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-              <AgGridReact<DummyDataType>
-                getRowId={params => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={{ 
-                  sortable: false,
-                  resizable: false,
-                }}
-                domLayout="autoHeight" 
-              />
-            </div>
-          </Gcol>
-        
+              caption=""
+              cols={['w-[10rem]','w-auto']}
+            >
+              <FormRow>
+                <FormCell title={'견종검색(한글명)'}>
+                  <Input aria-label="견종검색" value={breedSearch} onChange={(e) => setBreedSearch(e.target.value)} />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <div className="ag-theme-alpine">
+            <AgGridReact<DummyDataType>
+              getRowId={params => String(params.data.id)}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              defaultColDef={{ 
+                sortable: false,
+                resizable: false,
+              }}
+              domLayout="autoHeight" 
+            />
+          </div>
         </DialogSection> 
 
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
-            <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-              </Grow>
+            <Grow placement={'ec'} gap={2} className="w-full pb-5 px-6">
               <Grow>
                 <Button variant={'contained'} size={'xl'}>
                   확인
@@ -118,5 +108,3 @@ export const LTPA070 = ({ open, onOpenChange }: LTPA070Props) => {
   </Dialog>    
   );
 };
-
-export default LTPA070;

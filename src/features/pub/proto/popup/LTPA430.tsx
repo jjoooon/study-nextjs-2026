@@ -15,15 +15,11 @@ import { Checkbox } from '@uiux/Checkbox';
 import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@/shared/components/uiux/Input';
 import { InfoBox } from '@/shared/components/common/InfoBox';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPA430Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA430 = ({ open, onOpenChange }: LTPA430Props) => {
+export const LTPA430 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   type DummyDataType = {
     id: number;

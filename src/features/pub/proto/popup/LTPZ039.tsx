@@ -13,15 +13,11 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@/shared/components/uiux/Input';
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface LTPZ039Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPZ039 = ({ open, onOpenChange }: LTPZ039Props) => {
+export const LTPZ039 = ({ open, onOpenChange }: PopupBaseProps) => {
 
    // dummy data
   type DummyDataType = {
