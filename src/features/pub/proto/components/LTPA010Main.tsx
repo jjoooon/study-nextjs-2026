@@ -690,5 +690,3 @@ export const LTPA010Main = () => {
 
   )
 }
-
-export default LTPA010Main;

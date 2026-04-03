@@ -7,16 +7,11 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
 import { Input } from '@/shared/components/uiux/Input';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

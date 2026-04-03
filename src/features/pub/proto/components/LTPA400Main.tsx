@@ -14,7 +14,6 @@ import { Input } from '@uiux/Input';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { QuestionMark } from '@icons';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
@@ -504,5 +503,3 @@ export const LTPA400Main = () => {
 
   )
 }
-
-export default LTPA400Main;
