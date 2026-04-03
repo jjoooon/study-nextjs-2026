@@ -111,7 +111,7 @@ export function PageTitleProduct({ data }: PageTitleProps) {
               <InputCombo
                 aria-label="설계번호 입력"
                 type="text"
-                width="lg"
+                width="14.4rem"
                 options={sampleOptions}
                 value={planNumber[0]}
                 clear={true}
@@ -123,7 +123,7 @@ export function PageTitleProduct({ data }: PageTitleProps) {
                 aria-label="설계번호 입력"
                 type="text"
                 value={planNumber[1]}
-                width="2xs"
+                width="2.6rem"
                 onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
               />
 

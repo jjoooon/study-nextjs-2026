@@ -2,30 +2,41 @@
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { CellClassParams, ColDef, EditableCallbackParams, ICellRendererParams, ITooltipParams, SelectionChangedEvent, ValueFormatterParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import type { CellClassParams, ColDef, EditableCallbackParams, GridApi, ICellRendererParams, ITooltipParams, SelectionChangedEvent, ValueFormatterParams } from 'ag-grid-community';
 
-import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-import { LayoutMainHead, LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
-import { PaperIcon, PlusIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-import { HashList } from '@common/HashList';
-import { TabPager } from '@common/TabPager';
+import { 
+  amountUnitInputCellRenderer, 
+  editableSelectCellRenderer, 
+  numberValueFormatter, 
+  createInsertCopiedRowButtonCellRenderer, 
+  createSelectionChangedHandler, 
+  createTooltipValueGetter,
+  createEditableCallback,
+  createCellErrorClassRules,
+} from '@/shared/components/aggrid/aggridComponents';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { Grow, Gcol, Typo, Grid, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
+import { FormRow, FormTable, FormCell } from '@common/FormTable';
+import { HashList } from '@common/HashList';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+import { TabPager } from '@common/TabPager';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PaperIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
+import { LayoutMainHead, LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Checkbox } from '@uiux/Checkbox';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { FormRow, FormTable, FormCell } from '@common/FormTable';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 // data
-import type { LTPA350Step2DataType } from '../data/LTPA350Step2Data';
-import { LTPA350Step2Data } from '../data/LTPA350Step2Data';
+import type { LTPA350Step2DataType, LTPA350Step2DataType_2 } from '../data/LTPA350Step2Data';
+import { LTPA350Step2Data, LTPA350Step2Data_2 } from '../data/LTPA350Step2Data';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 type tabListDataData = LTPA350Step2DataType['tabList'];
 type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number];
@@ -37,72 +48,40 @@ interface LTPA350Step2Props {
   setIsWidthExpanded?: (value: boolean) => void;
 }
 
-ModuleRegistry.registerModules([AllCommunityModule]);
-
 export function LTPA350Step2({
   onSelectPlan,
   isWidthExpanded = false,
   setIsWidthExpanded,
 }: LTPA350Step2Props) {
-
   // TEST용: TabPager 에러 상태 (보험료계산(지침) 클릭 시 토글)
   const [tabError, setTabError] = useState(false);
 
-  // ---------------------------------------------------------------------------
   // 1) INLINED STATE (default)
-  // ---------------------------------------------------------------------------
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [gridKey, setGridKey] = useState(0);
-
   const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
     setCheckedMap((map) => ({ ...map, [key]: !!checked }));
   };
-
-  // ---------------------------------------------------------------------------
+ 
   // 2) Tabs
-  // ---------------------------------------------------------------------------
   const stringifiedTabs: MainHeadTab[] = LTPA350Step2Data.tabList.map((item) => ({
     ...item,
     value: String(item.value),
   }));
-
   const {
     tabs: LTPA350_tabs,
     active: LTPA350_active,
     setActive: LTPA350_setActive,
   } = useTabs<MainHeadTab>(stringifiedTabs);
 
-  // ---------------------------------------------------------------------------
   // 3) Grid data
-  // ---------------------------------------------------------------------------
-  const rowData = LTPA350Step2Data.agGridTable1;
+  const [rowData, setRowData] = useState<LTPA350GridRow[]>(LTPA350Step2Data.agGridTable1);
 
-  // 중복 셀 렌더러 (중복 여부에 따라 추가 버튼 노출)
-  const duplicateRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
-    const isDuplicate = params.value as boolean;
-    return isDuplicate ? (
-      <Grow className="w-full h-full flex items-center justify-center">
-        <Button
-          aria-label="고객 추가"
-          variant={'outlined'}
-          only={'icon'}
-          size={'sm'}
-          color={'gray-light'}
-          onClick={() => alert('추가')}
-        >
-          <PlusIcon color={'var(--color-gray-30)'} />
-        </Button>
-      </Grow>
-    ) : (
-      ''
-    );
-  }, []);
-
-  // 담보명 헤더 렌더러 (선택/미선택 체크박스 + 검색창 + 담보명 풍선말 토글)
+  // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
+  // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
   const productNameHeader = useCallback(() => {
     const [coverageName, setCoverageName] = useState('');
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
@@ -110,19 +89,16 @@ export function LTPA350Step2({
       if (!checked) setGridKey((key) => key + 1);
     };
     return (
-      <Grow className="w-full" placement={'bwc'}>
+      <Grow className="w-full px-[0.6rem]" placement={'bwc'}>
         <Grow className="gap-1.5" placement={'sc'}>
           <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
             선택 24건
           </Checkbox>
-          <Typo variant={'body-sm'} className="text-(--color-gray-20) text-[1.1rem]">
-            |
-          </Typo>
+          <Divider />
           <Checkbox variant={'text'} checked={checkedMap.unselected} onCheckedChange={handleCheckedChange('unselected')}>
             미선택
           </Checkbox>
         </Grow>
-
         <Grow>
           <Input
             aria-label="담보명"
@@ -137,23 +113,29 @@ export function LTPA350Step2({
           <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
+          <Button aria-label="담보명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+            <ResetIcon color={'var(--color-primary-50)'} />
+          </Button>
         </Grow>
-
         <Grow placement={'sc'}>
-          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
-            담보명 풍선말
+          <Checkbox 
+            size={'md'} 
+            checked={showProductNameTooltip} 
+            onCheckedChange={handleTooltipCheck}
+          >
+            담보명 말풍선
           </Checkbox>
         </Grow>
       </Grow>
     );
   }, [checkedMap, showProductNameTooltip]);
 
-  // 담보명 셀 렌더러
+  // 셀: 순번 · 담보명 텍스트 · 독립/갱신 뱃지
   const titleRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
     return (
       <Grow className="h-full pr-1.5" placement={'bwc'}>
-        <div className="border-r border-(--color-gray-10) h-full flex items-center w-[3rem] justify-center">{params.data?.id}</div>
-        <p className="truncate w-full pl-2 flex-1">{params.data?.productName}</p>
+        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{params.data?.id}</Grow>
+        <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1}</p>
         {params.data?.badge && (
           <Grow className="shrink-0">
             {params.data.badge.includes('독립') && <Badge color={'green'} className="w-[3rem]">독립</Badge>}
@@ -164,37 +146,121 @@ export function LTPA350Step2({
     );
   }, []);
 
-  // 만기/납기 셀 렌더러 (공통 컴포넌트 활용)
-  const expiryCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) => editableSelectCellRenderer<LTPA350GridRow>(params);
-
-  // 가입금액(만원) 셀 렌더러 (공통 컴포넌트 활용)
-  const coverageAmountCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) => amountUnitInputCellRenderer<LTPA350GridRow>({ ...params, amountInputRefs: amountInputRefs.current });
-
-  // 속성 셀 렌더러
+  // ── 속성 열 (field2) ─────────────────────────────────────────────────────────
+  // 셀: 속성 값이 있을 때 돋보기 아이콘 버튼 표시
   const attributeRenderer = (params: ICellRendererParams<LTPA350GridRow>) => {
     if (!params.value) return null;
     return (
       <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
-        <Button only={'icon'} variant={'none'} size={'sm'}>
+        <Button
+          only={'icon'}
+          variant={'none'}
+          size={'sm'}
+          onMouseDown={(event) => event.stopPropagation()}
+          onClick={(event) => event.stopPropagation()}
+        >
           <SearchIcon color={'var(--color-primary-50)'} />
         </Button>
       </div>
     );
   };
 
-  // 선택 행 정보 전달 (공용 핸들러 활용)
+  // ── 가입금액 열 (field3) ──────────────────────────────────────────────────────
+  // 셀: 금액 입력 컴포넌트 (ref 배열로 포커스 제어 지원)
+  const coverageAmountCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) => amountUnitInputCellRenderer<LTPA350GridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+
+  // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
+  // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)
+  const expiryCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) => editableSelectCellRenderer<LTPA350GridRow>(params);
+
+  // 만기/납기 편집 조건 생성기: 'whenSelected' | 'always' 모드를 인자로 받아 editable 콜백 반환
+  const getEditableCallback = useCallback(
+    (mode: 'always' | 'whenSelected') => createEditableCallback<LTPA350GridRow>(mode),
+    []
+  );
+
+  // 만기 편집 가능 셀 스타일: 행 선택 시 editable-cell 클래스 적용 (선택 변경 시 refreshCells로 즉시 반영)
+  // 납기는 항상 editable이므로 cellClass에 editable-cell을 고정으로 포함 → 별도 rules 불필요
+  const editableCellClassRules = useMemo(
+    () => ({
+      'editable-cell': (params: CellClassParams<LTPA350GridRow>) => {
+        const isRowChecked = params.node?.isSelected?.() ?? false;
+        return isRowChecked;
+      },
+    }),
+    []
+  );
+
+  // 가입금액 셀 필수/에러 규칙
+  // - 필수: row.field3Required === true (미지정 시 기본 true)
+  // - 에러: 필수 + 값이 0(또는 빈값)
+  const amountCellClassRules = useMemo(() => {
+    const isAmountRequired = (params: CellClassParams<LTPA350GridRow>) => params.data?.field3Required ?? true;
+    const isAmountInvalid = (params: CellClassParams<LTPA350GridRow>) => params.value === '' || params.value === undefined || Number(params.value) === 0;
+
+    return {
+      required: isAmountRequired,
+      ...createCellErrorClassRules<LTPA350GridRow>((params) => isAmountRequired(params) && isAmountInvalid(params)),
+    };
+  }, []);
+
+  // ── 중복 열 (field9) ──────────────────────────────────────────────────────────
+  // 셀: 행 복사 버튼 — 행이 선택(체크)된 경우에만 노출/동작
+  const duplicateRenderer = useMemo(
+    () =>
+      createInsertCopiedRowButtonCellRenderer<LTPA350GridRow, 'id'>(setRowData, {
+        idKey: 'id',
+        getNextId: (rows) => rows.reduce((maxId, row) => (row.id > maxId ? row.id : maxId), 0) + 1,
+        patchCopiedRow: () => ({
+          field9: false,
+        }),
+        isVisible: (params) => {
+          const isDuplicateEnabled = Boolean(params.value);
+          const isRowChecked = params.node?.isSelected?.() ?? false;
+          return isDuplicateEnabled && isRowChecked;
+        },
+        ariaLabel: '동일 담보 추가',
+      }),
+    []
+  );
+
+  // ── 행 선택 핸들러 ────────────────────────────────────────────────────────────
+  // locked 행은 항상 선택 상태 유지 (체크박스 해제 방지)
+  const ensureLockedRowsSelected = useCallback((api: GridApi<LTPA350GridRow>) => {
+    api.forEachNode((node) => {
+      if (node.data?.locked && !node.isSelected()) {
+        node.setSelected(true);
+      }
+    });
+  }, []);
+
+  // 선택된 행의 id를 부모(onSelectPlan)로 전달
   const handleSelectionChanged = useCallback(
     createSelectionChangedHandler<LTPA350GridRow, number>('id', onSelectPlan),
     [onSelectPlan]
   );
 
+  // 그리드 선택 변경 통합 핸들러: locked 행 유지 → 부모 전달 → 만기/납기 셀 스타일 즉시 갱신
+  const handleGridSelectionChanged = useCallback(
+    (event: SelectionChangedEvent<LTPA350GridRow>) => {
+      ensureLockedRowsSelected(event.api);
+      handleSelectionChanged(event);
+      event.api.refreshCells({
+        force: true,
+        columns: ['field5', 'field6', 'field9'],
+      });
+    },
+    [ensureLockedRowsSelected, handleSelectionChanged]
+  );
+
+  // 인보험
   const columnDefs: ColDef<LTPA350GridRow>[] = useMemo(
     () => [
       {
         headerName: '담보명',
-        field: 'productName',
+        field: 'field1',
         width: isWidthExpanded ? 510 : 426,
-        cellClass: 'text-left p-0!',
+        cellClass: 'text-left p-0!', 
         sortable: false,
         filter: false,
         autoHeight: true,
@@ -202,14 +268,17 @@ export function LTPA350Step2({
         suppressMovable: true, // 이동 방지
         lockPosition: 'left', // 왼쪽 고정 유지
         lockPinned: true, // 고정 열에서 제외 방지
-        tooltipValueGetter: productNameTooltipValueGetter<LTPA350GridRow>,
+        tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
+          label: '담보명',
+          field: 'field1',
+        }),
         headerComponent: productNameHeader,
         cellRenderer: titleRenderer,
       },
       {
         headerName: '속성',
-        field: 'attribute',
-        width: 10,
+        field: 'field2',
+        width: 40,
         cellClass: 'text-center',
         headerClass: 'px-0!',
         sortable: false,
@@ -219,10 +288,11 @@ export function LTPA350Step2({
       },
       {
         headerName: '가입금액(만원)',
-        field: 'coverageAmount',
+        field: 'field3',
         flex: 1.6,
         headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
+        cellClassRules: amountCellClassRules,
         sortable: false,
         filter: false,
         editable: false,
@@ -230,7 +300,7 @@ export function LTPA350Step2({
       },
       {
         headerName: '가능금액(만원)',
-        field: 'availableAmount',
+        field: 'field4',
         flex: 1.6,
         cellClass: 'text-right',
         headerClass: 'px-0!',
@@ -240,13 +310,14 @@ export function LTPA350Step2({
       },
       {
         headerName: '만기',
-        field: 'expiryPeriod',
+        field: 'field5',
         width: 60,
-        cellClass: 'text-center editable-cell px-[0.2rem]!',
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules, 
         sortable: false,
         filter: false,
         resizable: false,
-        editable: (params: EditableCallbackParams<LTPA350GridRow>) => params.data?.canEditExpiry ?? false,
+        editable: getEditableCallback('whenSelected'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
@@ -255,13 +326,14 @@ export function LTPA350Step2({
       },
       {
         headerName: '납기',
-        field: 'paymentPeriod',
+        field: 'field6',
         width: 60,
-        cellClass: 'text-center editable-cell px-[0.2rem]!',
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
         sortable: false,
         filter: false,
         resizable: false,
-        editable: (params: EditableCallbackParams<LTPA350GridRow>) => params.data?.canEditExpiry ?? false,
+        editable: getEditableCallback('whenSelected'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
@@ -270,7 +342,7 @@ export function LTPA350Step2({
       },
       {
         headerName: '보험료(만원)',
-        field: 'premium',
+        field: 'field7',
         flex: 1.4,
         cellClass: 'text-right',
         headerClass: 'px-0!',
@@ -280,7 +352,7 @@ export function LTPA350Step2({
       },
       {
         headerName: '예상UW',
-        field: 'expectedUwResult',
+        field: 'field8',
         headerClass: 'px-0!',
         flex: 1,
         cellClass: 'text-center px-0! tracking-tighter',
@@ -295,7 +367,7 @@ export function LTPA350Step2({
       },
       {
         headerName: '중복',
-        field: 'isDuplicate',
+        field: 'field9',
         width: 30,
         headerClass: 'text-center px-0!',
         cellClass: 'text-center px-0!',
@@ -305,19 +377,161 @@ export function LTPA350Step2({
         resizable: false,
       },
     ],
-    [duplicateRenderer, expiryCellRenderer, isWidthExpanded, productNameHeader, titleRenderer]
+    [amountCellClassRules, duplicateRenderer, expiryCellRenderer, getEditableCallback, editableCellClassRules, isWidthExpanded, productNameHeader, titleRenderer]
+  );
+  // 태아
+  const columnDefs2: ColDef<LTPA350GridRow>[] = useMemo(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field1',
+        width: isWidthExpanded ? 510 : 426,
+        cellClass: 'text-left p-0!', 
+        sortable: false,
+        filter: false,
+        autoHeight: true,
+        pinned: 'left',
+        suppressMovable: true, // 이동 방지
+        lockPosition: 'left', // 왼쪽 고정 유지
+        lockPinned: true, // 고정 열에서 제외 방지
+        tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
+          label: '담보명',
+          field: 'field1',
+        }),
+        headerComponent: productNameHeader,
+        cellRenderer: titleRenderer,
+      },
+      {
+        headerName: '속성',
+        field: 'field2',
+        width: 40,
+        cellClass: 'text-center',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        resizable: false,
+        cellRenderer: attributeRenderer,
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'field3',
+        flex: 1.6,
+        headerClass: 'px-0!',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
+        cellClassRules: amountCellClassRules,
+        sortable: false,
+        filter: false,
+        editable: false,
+        cellRenderer: coverageAmountCellRenderer,
+      },
+      {
+        headerName: '보험료(원)',
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        children: [
+          { 
+            field: 'field4', 
+            headerName: '출생전',
+            flex: 1.6, 
+            valueFormatter: numberValueFormatter<LTPA350GridRow>,
+          }, 
+          { 
+            field: 'field4', 
+            headerName: '출생후',
+            flex: 1.6,
+            valueFormatter: numberValueFormatter<LTPA350GridRow>,
+          }
+        ]
+      },
+      {
+        headerName: '만기',
+        cellClass: 'text-center px-[0.2rem]!',
+        sortable: false,
+        filter: false,
+        resizable: false,
+        children: [
+          { 
+            field: 'field5', 
+            headerName: '출생전',
+            width: 60,
+            cellClass: 'text-center px-[0.2rem]!',
+            cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
+            editable: getEditableCallback('whenSelected'), // 선택 시에만 편집 허용
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+            },
+            cellRenderer: expiryCellRenderer,
+          }, 
+          { 
+            field: 'field5', 
+            headerName: '출생후',
+            width: 60,
+            cellClass: 'text-center px-[0.2rem]!',
+            cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
+            editable: getEditableCallback('whenSelected'), // 선택 시에만 편집 허용
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+            },
+            cellRenderer: expiryCellRenderer,
+          }
+        ]
+      },
+      {
+        headerName: '납기',
+        cellClass: 'text-center px-[0.2rem]!',
+        sortable: false,
+        filter: false,
+        resizable: false,
+        children: [
+          { 
+            field: 'field6', 
+            headerName: '출생전',
+            width: 60,
+            cellClass: 'text-center px-[0.2rem]!',
+            cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
+            editable: getEditableCallback('whenSelected'), // 선택 시에만 편집 허용
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+            },
+            cellRenderer: expiryCellRenderer,
+          }, 
+        ]
+      },
+      {
+        headerName: '예상UW',
+        field: 'field8',
+        headerClass: 'px-0!',
+        flex: 1,
+        cellClass: 'text-center px-0! tracking-tighter',
+        sortable: false,
+        filter: false,
+        cellStyle: (params: CellClassParams<LTPA350GridRow>) => {
+          const value = params.value as string;
+          if (value === '인수') return { color: '#006FF2' };
+          if (value === '거절' || value === '조건부인수') return { color: '#FB3F3F' };
+          return undefined;
+        },
+      },
+      {
+        headerName: '중복',
+        field: 'field9',
+        width: 30,
+        headerClass: 'text-center px-0!',
+        cellClass: 'text-center px-0!',
+        sortable: false,
+        filter: false,
+        cellRenderer: duplicateRenderer,
+        resizable: false,
+      },
+    ],
+    [amountCellClassRules, duplicateRenderer, expiryCellRenderer, getEditableCallback, editableCellClassRules, isWidthExpanded, productNameHeader, titleRenderer]
   );
 
-  // HOOK MODE (grid)
-  // const {
-  //   columnDefs,
-  //   gridKey,
-  //   handleSelectionChanged,
-  //   showProductNameTooltip,
-  // } = useLTPA350Grid({
-  //   isWidthExpanded,
-  //   onSelectPlan,
-  // });
 
   const [amount, setAmount] = useState('0');
   const [refundRate, setRefundRate] = useState('39.4');
@@ -335,9 +549,15 @@ export function LTPA350Step2({
     >
       <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
         <LayoutMainHead>
+          <NativeSelect className='fixed top-1 left-[50%] z-100 w-[auto] opacity-'>
+            <NativeSelectOption value="">인보험</NativeSelectOption>
+            <NativeSelectOption value="">태아</NativeSelectOption>
+            <NativeSelectOption value="">재물</NativeSelectOption>
+            <NativeSelectOption value="">단체</NativeSelectOption>
+            <NativeSelectOption value="">연금/저축</NativeSelectOption>
+          </NativeSelect>
+
           <TabPager 
-            // removable={true}
-            // onRemove={LTPA350_handleRemove}
             data={LTPA350_tabs} 
             active={LTPA350_active}
             setActive={LTPA350_setActive}
@@ -384,9 +604,9 @@ export function LTPA350Step2({
               </Button>
             )}
           >
-            <Gcol variant={'box'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`} >
+            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`} >
               <Grow gap={3}>
-                <Button variant={'contained'} color={'coolgray'} size={'md'}>
+                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
                   <PaperIcon />
                   담보패키지 선택
                 </Button>
@@ -423,9 +643,8 @@ export function LTPA350Step2({
                   <HashList data={['암', '뇌', '심', '수술', '특정', '표적', '치료', '골절', '화상', '치매', '심', '수술', '특정', '표적', '치료']} />
                 </Grow>
                 <Grow placement={'ec'}>
-                  <Button variant={'contained'} color={'coolgray'} size={'lg'}>
-                    <ResetIcon />
-                    초기화
+                  <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
+                    <ResetIcon color="var(--color-gray-500)" />
                   </Button>
                 </Grow>
               </Grow>
@@ -473,38 +692,83 @@ export function LTPA350Step2({
                   columnDefs={columnDefs}
                   getRowId={(params) => String(params.data.id)}
 
+                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+
                   rowSelection={{
                     mode: 'multiRow' as const,
-                    headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
                     checkboxes: true,          // 각 행에 체크박스 표시
-                    enableClickSelection: false, // 행 본문 클릭 시에는 선택 안 됨
-                    isRowSelectable: (params) => !params.data?.locked,
+                    headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
+                    enableClickSelection: 'enableSelection', // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
+                    enableSelectionWithoutKeys: true, // Ctrl 없이 다중 선택 유지
                   }}
                   selectionColumnDef={{
-                    width: 40,
+                    width: 30,
                     pinned: 'left',
                     cellClass: 'text-center p-0!',
                     cellClassRules: {
                       'pointer-events-none': params => !!params.data?.locked,
                     },
                   }}
+                  onSelectionChanged={handleGridSelectionChanged}
 
                   onGridReady={(params) => {
-                    params.api.forEachNode((node) => {
-                      if (node.data?.locked) node.setSelected(true);
-                    });
+                    ensureLockedRowsSelected(params.api);
+                  }}
+                  onRowDataUpdated={(params) => {
+                    ensureLockedRowsSelected(params.api);
+                  }}
+
+                  suppressRowHoverHighlight={false}
+                  getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+
+                  tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                  tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                  tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+
+                />
+              </div>
+              {/* <div className="ag-theme-alpine">
+                <AgGridReact<LTPA350GridRow>
+                  key={gridKey}
+                  rowData={rowData}
+                  columnDefs={columnDefs2}
+                  getRowId={(params) => String(params.data.id)}
+
+                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+
+                  rowSelection={{
+                    mode: 'multiRow' as const,
+                    checkboxes: true,          // 각 행에 체크박스 표시
+                    headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
+                    enableClickSelection: 'enableSelection', // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
+                    enableSelectionWithoutKeys: true, // Ctrl 없이 다중 선택 유지
+                    // isRowSelectable: (params) => !params.data?.locked,
+                  }}
+                  selectionColumnDef={{
+                    width: 30,
+                    pinned: 'left',
+                    cellClass: 'text-center p-0!',
+                    cellClassRules: {
+                      'pointer-events-none': params => !!params.data?.locked,
+                    },
+                  }}
+                  onSelectionChanged={handleGridSelectionChanged}
+
+                  onGridReady={(params) => {
+                    ensureLockedRowsSelected(params.api);
+                  }}
+                  onRowDataUpdated={(params) => {
+                    ensureLockedRowsSelected(params.api);
                   }}
                   // isRowSelectable={(node) => !node.data?.locked}
 
                   suppressRowHoverHighlight={false}
-                  onSelectionChanged={handleSelectionChanged}
-                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
                   tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                   tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                   tooltipMouseTrack={showProductNameTooltip ? true : undefined}
                   getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
                 />
-              </div>
+              </div> */}
             </LayoutScrollItem>
           </LayoutScrollWrap>
         </LayoutMainBody>

@@ -77,6 +77,7 @@ type Variant =
   | 'box-info-line'
   | 'box-warning'
   | 'box-detail'
+  | 'box-round-b'
   | 'box-round';
 
 interface GroupProps {
@@ -143,6 +144,7 @@ const VARIANT_MAP: Record<Variant, string> = {
   'box-warning': 'px-2.5 py-2 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem]',
   'box-detail': 'px-2.5 py-2 bg-[var(--color-warning-5)] gap-1.5 rounded-[0.6rem]',
   'box-round': 'px-2.5 py-2.5 bg-[#F3F4F6] gap-1.5 rounded-[0.6rem]',
+  'box-round-b': 'px-2.5 pt-2 pb-2.5 bg-[#F3F4F6] gap-1.5 rounded-b-[0.6rem]',
 
   'box-info-line': 'px-2.5 py-2.5 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem] border! border-[var(--color-information-15)]',
 };
@@ -160,7 +162,7 @@ export const Gcol = ({
     <div
       data-group="col"
       className={cn(
-        'flex flex-col relative w-full',
+        'flex flex-col relative w-full tracking-[-0.13rem]',
         VARIANT_MAP[variant],
         COL_PLACEMENT_MAP[placement],
         `gap-${gap}`,
@@ -185,7 +187,7 @@ export const Grow = ({
     <div
       data-group="row"
       className={cn(
-        'flex flex-row relative',
+        'flex flex-row relative tracking-[-0.13rem]',
         VARIANT_MAP[variant], 
         ROW_PLACEMENT_MAP[placement], 
         `gap-${gap}`,
@@ -209,7 +211,7 @@ export const Grid = ({
     <div 
       data-group="row" 
       className={cn(
-        'grid relative', 
+        'grid relative tracking-[-0.13rem]', 
         `gap-${gap}`,
         VARIANT_MAP[variant],
         className
