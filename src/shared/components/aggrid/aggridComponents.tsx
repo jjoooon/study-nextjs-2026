@@ -2,9 +2,10 @@
 
 // 외부 라이브러리
 import * as React from 'react';
-import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent, IDatasource, IGetRowsParams } from 'ag-grid-community';
+import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent, IDatasource, IGetRowsParams, EditableCallbackParams, CellClassParams } from 'ag-grid-community';
 import { Typo, Gcol, Grow } from '@atoms';
 import { InfoBoxWarningIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 // 내부 공통 컴포넌트
 import { useCallback, useEffect, useState } from 'react';
@@ -13,10 +14,45 @@ import type { GridReadyEvent } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
 
 import { AmountUnitInput } from '@features/AmountUnitInput';
-import { SelectDropIcon } from '@icons';
+import { SelectDropIcon, PlusIcon } from '@icons';
 
 import { DatePickerInput } from '@common/DatePicker';
 import type { ICellEditorParams } from 'ag-grid-community';
+
+/**
+ * AG Grid 셀 편집 가능 여부 콜백 팩토리 (공용)
+ *
+ * @param mode
+ *   - `'always'`       : 항상 편집 허용
+ *   - `'whenSelected'` : 행이 선택(체크)된 경우에만 편집 허용
+ *   - 커스텀 콜백      : `(params) => boolean` 직접 전달
+ *
+ * @example
+ *   editable: createEditableCallback('whenSelected') // 선택 시에만
+ *   editable: createEditableCallback('always')       // 항상
+ *   editable: createEditableCallback((p) => !!p.data?.locked) // 커스텀
+ */
+export function createEditableCallback<T>(
+  mode: 'always' | 'whenSelected' | ((params: EditableCallbackParams<T>) => boolean)
+): (params: EditableCallbackParams<T>) => boolean {
+  if (mode === 'always') return () => true;
+  if (mode === 'whenSelected') return (params) => params.node?.isSelected?.() ?? false;
+  return mode;
+}
+
+/**
+ * AG Grid 에러 셀 클래스 규칙 생성기 (공용)
+ * - 사용자 정의 조건(predicate)을 받아 `ag-cell-error-border` 클래스를 적용
+ */
+export function createCellErrorClassRules<RowType>(
+  predicate: (params: CellClassParams<RowType>) => boolean
+): {
+  'ag-cell-error-border': (params: CellClassParams<RowType>) => boolean;
+} {
+  return {
+    'ag-cell-error-border': predicate,
+  };
+}
 
 /**
  * 선택 행 정보 전달 핸들러 생성기 (공용)
@@ -77,6 +113,178 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
 }
 
 /**
+ * 행 복제 후 바로 아래 삽입 핸들러 생성기 (공용)
+ * @param setRowData 행 데이터 setState
+ * @param options.idKey 고유 id 필드명
+ * @param options.getNextId 다음 id 생성 함수
+ * @param options.patchCopiedRow 복제 행에 추가로 반영할 값
+ */
+export function createInsertCopiedRowHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: keyof RowType;
+    getNextId: (rows: RowType[]) => IDType;
+    patchCopiedRow?: (sourceRow: RowType, nextId: IDType) => Partial<RowType>;
+  }
+) {
+  const { idKey, getNextId, patchCopiedRow } = options;
+
+  return (sourceRowId: IDType) => {
+    setRowData((prev) => {
+      const sourceIndex = prev.findIndex((row) => row[idKey] === sourceRowId);
+      if (sourceIndex === -1) return prev;
+
+      const sourceRow = prev[sourceIndex];
+      const nextId = getNextId(prev);
+      const copiedRow = {
+        ...sourceRow,
+        [idKey]: nextId,
+        ...(patchCopiedRow ? patchCopiedRow(sourceRow, nextId) : {}),
+      } as RowType;
+
+      const nextRows = [...prev];
+      nextRows.splice(sourceIndex + 1, 0, copiedRow);
+      return nextRows;
+    });
+  };
+}
+
+/**
+ * 중복(복제) 버튼 셀 렌더러 생성기 (공용)
+ * @param options.idKey 행 데이터의 고유 id 필드명
+ * @param options.onDuplicate 복제 실행 핸들러
+ * @param options.isVisible 버튼 노출 여부 (기본: 현재 셀 값 truthy)
+ * @param options.ariaLabel 버튼 접근성 라벨
+ */
+export function createDuplicateButtonCellRenderer<RowType extends Record<string, unknown>, Key extends keyof RowType>(
+  options: {
+    idKey: Key;
+    onDuplicate: (id: Extract<RowType[Key], string | number>) => void;
+    isVisible?: (params: ICellRendererParams<RowType>) => boolean;
+    ariaLabel?: string;
+  }
+) {
+  const {
+    idKey,
+    onDuplicate,
+    isVisible = (params) => Boolean(params.value),
+    ariaLabel = '행 복제',
+  } = options;
+
+  const isStringOrNumber = <T,>(value: T): value is Extract<T, string | number> => {
+    return typeof value === 'string' || typeof value === 'number';
+  };
+
+  return (params: ICellRendererParams<RowType>) => {
+    if (!isVisible(params)) return (
+      <Grow className="w-full h-full flex items-center justify-center">
+        <Button
+          aria-label={ariaLabel}
+          variant={'outlined'}
+          only={'icon'}
+          size={'sm'}
+          color={'gray-light'}
+          disabled
+        >
+          <PlusIcon color={'var(--color-gray-30)'} />
+        </Button>
+      </Grow>
+    );
+
+    const row = params.data;
+    if (!row) return '';
+
+    const rowId = row[idKey];
+    if (!isStringOrNumber(rowId)) return '';
+
+    return (
+      <Grow className="w-full h-full flex items-center justify-center">
+        <Button
+          aria-label={ariaLabel}
+          variant={'outlined'}
+          only={'icon'}
+          size={'sm'}
+          color={'gray-light'}
+          onMouseDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.stopPropagation();
+            onDuplicate(rowId);
+          }}
+        >
+          <PlusIcon color={'var(--color-gray-30)'} />
+        </Button>
+      </Grow>
+    );
+  };
+}
+
+/**
+ * 행 복제 + 버튼 렌더러 통합 생성기 (공용)
+ * @param setRowData 행 데이터 setState
+ * @param options.idKey 고유 id 필드명
+ * @param options.getNextId 다음 id 생성 함수
+ * @param options.patchCopiedRow 복제 행에 추가로 반영할 값
+ * @param options.isVisible 버튼 노출 여부 (기본: 현재 셀 값 truthy)
+ * @param options.ariaLabel 버튼 접근성 라벨
+ */
+export function createInsertCopiedRowButtonCellRenderer<RowType extends Record<string, unknown>, Key extends keyof RowType>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: Key;
+    getNextId: (rows: RowType[]) => Extract<RowType[Key], string | number>;
+    patchCopiedRow?: (sourceRow: RowType, nextId: Extract<RowType[Key], string | number>) => Partial<RowType>;
+    isVisible?: (params: ICellRendererParams<RowType>) => boolean;
+    ariaLabel?: string;
+  }
+) {
+  const { idKey, getNextId, patchCopiedRow, isVisible, ariaLabel } = options;
+
+  const onDuplicate = createInsertCopiedRowHandler<RowType, Extract<RowType[Key], string | number>>(setRowData, {
+    idKey,
+    getNextId,
+    patchCopiedRow,
+  });
+
+  return createDuplicateButtonCellRenderer<RowType, Key>({
+    idKey,
+    onDuplicate,
+    isVisible,
+    ariaLabel,
+  });
+}
+
+/**
+ * 라벨형 툴팁 valueGetter 생성기 (공용)
+ * @param label 라벨 (예: 담보명)
+ * @param field 데이터 필드명
+ * @param valueGetter 데이터에서 값을 꺼내는 커스텀 함수
+ */
+export function createTooltipValueGetter<T extends Record<string, unknown>>(
+  options: {
+    label?: string;
+    field?: keyof T;
+    valueGetter?: (data: T) => unknown;
+  } = {}
+) {
+  const { label, field, valueGetter } = options;
+
+  return (params: { data?: T }) => {
+    if (!params.data) return '';
+
+    const rawValue = valueGetter
+      ? valueGetter(params.data)
+      : field
+        ? params.data[field]
+        : '';
+
+    const value = rawValue === null || rawValue === undefined ? '' : String(rawValue);
+
+    if (!label) return value;
+    return `${label}: ${value}`;
+  };
+}
+
+/**
  * 담보명 툴팁 포매터 (공용)
  */
 export const productNameTooltipValueGetter = <T extends { productName?: string }>(params: { data?: T }) => {
@@ -104,19 +312,24 @@ export function amountUnitInputCellRenderer<RowType>(
   const rowIndex = params.node?.rowIndex ?? 0;
   if (!params.amountInputRefs) return null;
   return (
-    <AmountUnitInput
-      value={params.value}
-      onChange={(newValue) => {
-        if (params.setValue) params.setValue(newValue);
-      }}
-      inputRef={(el) => {
-        params.amountInputRefs[rowIndex] = el;
-      }}
-      onEnter={() => {
-        const nextRef = params.amountInputRefs[rowIndex + 1];
-        if (nextRef) nextRef.focus();
-      }}
-    />
+    <div
+      onMouseDownCapture={(event) => event.stopPropagation()}
+      onClickCapture={(event) => event.stopPropagation()}
+    >
+      <AmountUnitInput
+        value={params.value}
+        onChange={(newValue) => {
+          if (params.setValue) params.setValue(newValue);
+        }}
+        inputRef={(el) => {
+          params.amountInputRefs[rowIndex] = el;
+        }}
+        onEnter={() => {
+          const nextRef = params.amountInputRefs[rowIndex + 1];
+          if (nextRef) nextRef.focus();
+        }}
+      />
+    </div>
   );
 }
 
@@ -124,15 +337,11 @@ export function amountUnitInputCellRenderer<RowType>(
 /**
  * 만기/납기 셀 렌더러 (셀 편집 가능 여부에 따라 화살표 색상 변경)
  */
-export function editableSelectCellRenderer<RowType extends { canEditExpiry?: boolean }>(params: ICellRendererParams<RowType>) {
+export function editableSelectCellRenderer<RowType>(params: ICellRendererParams<RowType>) {
   return (
-    <div className="flex items-center justify-end gap-1 w-full h-full">
+    <div className="flex items-center justify-end gap-1 w-full h-full editor-select">
       <span className="block w-auto text-right">{params.value}</span>
-      {params.data?.canEditExpiry ? (
-        <SelectDropIcon size={14} color={'var(--color-gray-50)'} />
-      ) : (
-        <SelectDropIcon size={14} color={'var(--color-gray-20)'} />
-      )}
+      <SelectDropIcon size={12} color={'var(--color-gray-50)'} />
     </div>
   );
 }

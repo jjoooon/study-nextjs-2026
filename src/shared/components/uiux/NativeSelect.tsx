@@ -102,7 +102,7 @@ function NativeSelect({
 
   return (
     <div className={cn('relative', withStyle(), className)} style={inlineWidthStyle}>
-      <div className="group/native-select relative has-[select:disabled]:opacity-50" data-slot="native-select-wrapper">
+      <div className="group/native-select relative has-[select:disabled]:opacity-50 tracking-[-0.13rem]" data-slot="native-select-wrapper">
         <select
           data-slot="native-select"
           className={cn(variantStyles[variant])}

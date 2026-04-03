@@ -249,13 +249,13 @@ export const LTPA400Main = () => {
               >
                 {active === 'tab1' && (
                   <>
-                    <Grow className='w-full mb-3 mt-1' variant="box-round" placement={'bwe'}>
+                    <Grow className='w-full mb-3' variant="box" placement={'bwe'}>
                       <FormTable  variant={'none'} lineTop={false} 
                         caption="장기보험 설계요청 조회 테이블"
                         cols={[
-                          'flex-auto', 'flex-1',
-                          'flex-auto', 'flex-1',
-                          'flex-auto', 'flex-1',
+                          'w-1', 'w-auto',
+                          'w-1', 'w-auto',
+                          'w-1', 'w-auto',
                         ]}
                       >
                         <FormRow>
