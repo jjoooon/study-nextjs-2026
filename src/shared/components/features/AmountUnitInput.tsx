@@ -210,11 +210,9 @@ export function AmountUnitInput({
                   최대 2억
                 </Button>
               </Grow>
-              <BulletItem type={'ref'}>
-                <Typo className="text-[var(--color-gray-50)]">
-                  가입금액 입력단위:백만원
-                </Typo>
-              </BulletItem>
+              <Typo className="text-[var(--color-gray-50)]" icon={'ref'}>
+                가입금액 입력단위:백만원
+              </Typo>
             </Gcol>
           </Gcol>
         </PopoverContent>

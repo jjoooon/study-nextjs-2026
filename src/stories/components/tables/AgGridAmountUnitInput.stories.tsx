@@ -171,7 +171,7 @@ export const Default: StoryObj = {
 
     return (
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[26rem]!">
+        <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
@@ -180,6 +180,7 @@ export const Default: StoryObj = {
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
             context={gridContext}
+            domLayout='autoHeight'
           />
         </div>
       </>

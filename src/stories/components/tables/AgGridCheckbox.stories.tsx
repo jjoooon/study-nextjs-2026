@@ -265,14 +265,14 @@ export const Default: StoryObj = {
 
     return (
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+        <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
             // 필수
             getRowId={(params) => String(params.data.id)} 
             rowData={rowData} 
             columnDefs={columnDefs} 
             noRowsOverlayComponent={AgGridEmptyComponent} 
-
+             domLayout='autoHeight'
 
             // ag-Grid selection(좌측 체크박스) 옵션
             rowSelection={{

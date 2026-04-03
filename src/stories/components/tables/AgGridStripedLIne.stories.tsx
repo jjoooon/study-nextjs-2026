@@ -178,25 +178,23 @@ export const Default: StoryObj = {
     return (
 
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]! striped-row-gray">
+        <div className="ag-theme-alpine striped-row-gray">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-            animateRows={false}
-            alwaysShowHorizontalScroll={true}
+            domLayout='autoHeight'
 
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
           />
         </div>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[16rem]!">
+        <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={column2Defs}
-            animateRows={false}
-            alwaysShowHorizontalScroll={true}
+            domLayout='autoHeight'  
 
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}

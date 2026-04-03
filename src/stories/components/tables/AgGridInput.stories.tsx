@@ -114,22 +114,24 @@ export const Default: StoryObj = {
 
     return (
       <>
-        <div className="ag-theme-alpine h-[16rem]!">
+        <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
+            domLayout='autoHeight'
           />
         </div>
-        <div className="ag-theme-alpine h-[16rem]!">
+        <div className="ag-theme-alpine">
           <AgGridReact<Dummy2DataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData2}
             columnDefs={columnDefsString}
             singleClickEdit={true}
             onCellEditingStopped={onCellEditingStopped}
+            domLayout='autoHeight'
           />
         </div>
       </>

@@ -42,7 +42,6 @@ const DummyData: DummyDataType[] = [
   { id: 2, desc: 'auw3245445', name: '파일A-1', filePath: ['폴더A', '파일A-1'] },
   { id: 3, desc: 'auw2203445', name: '파일A-2', filePath: ['폴더A', '파일A-2'] },
   { id: 4, desc: 'auw1234', name: '폴더B', filePath: ['폴더B'] },
-  { id: 5, desc: 'auw563356', name: '파일B-1', filePath: ['폴더B', '파일B-1'] },
   { id: 6, desc: 'auw888888', name: '파일A-3', filePath: ['폴더A', '파일A-3'] },
   { id: 7, desc: 'auw777777', name: '파일A-4', filePath: ['폴더A', '파일A-4'] },
   { id: 8, desc: 'auw666666', name: '폴더C', filePath: ['폴더C'] },
@@ -55,7 +54,6 @@ const columnDefs: ColDef<DummyDataType>[] = [
     headerName: '내용',
     field: 'desc',
     flex: 1,
-    cellRenderer: 'agGroupCellRenderer',
   },
 ];
 
@@ -132,7 +130,7 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => (
-    <div style={{ width: '100%', height:'40rem', }}>
+    <div>
 
       <div className="ag-theme-alpine">
         <AgGridReact<DummyDataType>
@@ -143,7 +141,7 @@ export const Default: StoryObj = {
           noRowsOverlayComponent={AgGridEmptyComponent} // 데이터 없을 때 표시할 컴포넌트
 
           // 선택
-          domLayout="normal" // 높이 선택 normal, autoHeight, print
+          domLayout="autoHeight" // 높이 선택 normal, autoHeight, print
 
           treeData={true}
           getDataPath={row => row.filePath}
