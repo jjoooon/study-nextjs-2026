@@ -67,11 +67,12 @@ function Input({
   onChange,
   value,
   formatter,
+  isFocused,
   ...props
 }: UIInputProps) {
-  const [isFocused, setIsFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
   // 외부에서 isFocused prop이 오면 우선 사용
-  const isInputFocused = typeof props.isFocused === 'boolean' ? props.isFocused : isFocused;
+  const isInputFocused = typeof isFocused === 'boolean' ? isFocused : focused;
 
   // 주민등록번호 마스킹: value에는 숫자만 저장, displayValue는 마스킹 적용
   let displayValue = value ?? '';
@@ -138,8 +139,8 @@ function Input({
     onChange?.(e);
   };
 
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
+  const handleFocus = () => setFocused(true);
+  const handleBlur = () => setFocused(false);
   const withStyle = () => {
     const widthMap: Record<UIUXsize, string> = {
       full: 'w-full flex-1',

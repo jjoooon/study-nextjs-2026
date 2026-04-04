@@ -302,12 +302,11 @@ export function LTPA350Step2({
       {
         headerName: '담보명',
         field: 'field1',
-        width: isWidthExpanded ? 510 : 426,
+        flex:1,
         cellClass: 'text-left p-0!', 
         sortable: false,
         filter: false,
         autoHeight: true,
-        pinned: 'left',
         suppressMovable: true, // 이동 방지
         lockPosition: 'left', // 왼쪽 고정 유지
         lockPinned: true, // 고정 열에서 제외 방지
@@ -332,7 +331,7 @@ export function LTPA350Step2({
       {
         headerName: '가입금액(만원)',
         field: 'field3',
-        flex: 1.6,
+        width: 100,
         headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
         cellClassRules: amountCellClassRules,
@@ -344,7 +343,7 @@ export function LTPA350Step2({
       {
         headerName: '가능금액(만원)',
         field: 'field4',
-        flex: 1.6,
+        width: 80,
         cellClass: 'text-right',
         headerClass: 'px-0!',
         sortable: false,
@@ -386,7 +385,7 @@ export function LTPA350Step2({
       {
         headerName: '보험료(만원)',
         field: 'field7',
-        flex: 1.4,
+        width: 80,
         cellClass: 'text-right',
         headerClass: 'px-0!',
         sortable: false,
@@ -397,7 +396,7 @@ export function LTPA350Step2({
         headerName: '예상UW',
         field: 'field8',
         headerClass: 'px-0!',
-        flex: 1,
+        width: 80,
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
@@ -433,7 +432,6 @@ export function LTPA350Step2({
         sortable: false,
         filter: false,
         autoHeight: true,
-        pinned: 'left',
         suppressMovable: true, // 이동 방지
         lockPosition: 'left', // 왼쪽 고정 유지
         lockPinned: true, // 고정 열에서 제외 방지
@@ -477,13 +475,13 @@ export function LTPA350Step2({
           { 
             field: 'field4', 
             headerName: '출생전',
-            flex: 1.6, 
+            width: 60, 
             valueFormatter: numberValueFormatter<LTPA350GridRow>,
           }, 
           { 
             field: 'field4', 
             headerName: '출생후',
-            flex: 1.6,
+            width: 60,
             valueFormatter: numberValueFormatter<LTPA350GridRow>,
           }
         ]
@@ -549,7 +547,7 @@ export function LTPA350Step2({
         headerName: '예상UW',
         field: 'field8',
         headerClass: 'px-0!',
-        flex: 1,
+        width: 100,
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
@@ -739,12 +737,37 @@ export function LTPA350Step2({
 
                   rowSelection={{
                     mode: 'multiRow' as const,
-                    checkboxes: true,          // 각 행에 체크박스 표시
-                    headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
-                    //enableClickSelection: 'enableSelection', // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
-                    enableClickSelection: false, // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
-                    enableSelectionWithoutKeys: true, // Ctrl 없이 다중 선택 유지
+                    checkboxes: true,
+                    headerCheckbox: true,
+                    enableClickSelection: false, 
+                    enableSelectionWithoutKeys: true, 
                   }}
+                  onCellClicked={(params) => {
+                    const { event, node, api } = params;
+                    if (!event || !('target' in event) || !event.target) return;
+                    const target = event.target as HTMLElement;
+                    const isSelected = node.isSelected();
+                    // 1. 현재 선택되지 않은 상태라면 조건 없이 즉시 선택(토글)
+                    if (!isSelected) {
+                      node.setSelected(true);
+                      return;
+                    }
+                    // 2. 이미 선택된 상태라면 아래 조건들을 검사하여 해제 여부 결정
+                    // 에디터가 활성화된 경우 무시
+                    if (api.getEditingCells().length > 0) return;
+                    // 입력 관련 태그나 특정 클래스 클릭 시 무시 (체크 유지)
+                    const tagName = target.tagName;
+                    const isInputComponent = 
+                      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
+                      target.closest('a') ||
+                      target.closest('button') ||
+                      target.closest('[role="button"]') ||
+                      target.closest('.editor-select');
+                    if (isInputComponent) return;
+                    // 3. 위 조건에 걸리지 않는 일반 영역 클릭 시에만 선택 해제(토글)
+                    node.setSelected(false);
+                  }}
+
                   selectionColumnDef={{
                     width: 30,
                     pinned: 'left',
@@ -755,60 +778,24 @@ export function LTPA350Step2({
                   }}
                   onSelectionChanged={handleGridSelectionChanged}
                   
-                  onCellClicked={(params) => {
-                    const { event, node, api } = params;
-                    if (!event || !('target' in event) || !event.target) return;
-
-                    const target = event.target as HTMLElement;
-                    const isSelected = node.isSelected();
-
-                    // 1. 현재 선택되지 않은 상태라면 조건 없이 즉시 선택(토글)
-                    if (!isSelected) {
-                      node.setSelected(true);
-                      return;
-                    }
-
-                    // 2. 이미 선택된 상태라면 아래 조건들을 검사하여 해제 여부 결정
-                    
-                    // 에디터가 활성화된 경우 무시
-                    if (api.getEditingCells().length > 0) return;
-
-                    // 입력 관련 태그나 특정 클래스 클릭 시 무시 (체크 유지)
-                    const tagName = target.tagName;
-                    const isInputComponent = 
-                      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
-                      target.closest('a') ||
-                      target.closest('button') ||
-                      target.closest('[role="button"]') ||
-                      target.closest('.editor-select');
-
-                    if (isInputComponent) return;
-
-                    // 3. 위 조건에 걸리지 않는 일반 영역 클릭 시에만 선택 해제(토글)
-                    node.setSelected(false);
-                  }}
-
                   onGridReady={(params) => {
                     ensureLockedRowsSelected(params.api);
                   }}
                   onRowDataUpdated={(params) => {
                     ensureLockedRowsSelected(params.api);
                   }}
-
                   suppressRowHoverHighlight={false}
                   getRowClass={(params) => {
                     if (params.data?.isDuplicate) return 'is-duplicate';
                     if (params.data?.isHighlighted) return 'ag-row-highlighted';
                     return '';
                   }}
-
                   tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                   tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                   tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-
                 />
               </div>
-              {/* <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine">
                 <AgGridReact<LTPA350GridRow>
                   key={gridKey}
                   rowData={rowData}
@@ -819,12 +806,37 @@ export function LTPA350Step2({
 
                   rowSelection={{
                     mode: 'multiRow' as const,
-                    checkboxes: true,          // 각 행에 체크박스 표시
-                    headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
-                    enableClickSelection: 'enableSelection', // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
-                    enableSelectionWithoutKeys: true, // Ctrl 없이 다중 선택 유지
-                    // isRowSelectable: (params) => !params.data?.locked,
+                    checkboxes: true,
+                    headerCheckbox: true,
+                    enableClickSelection: false, 
+                    enableSelectionWithoutKeys: true, 
                   }}
+                  onCellClicked={(params) => {
+                    const { event, node, api } = params;
+                    if (!event || !('target' in event) || !event.target) return;
+                    const target = event.target as HTMLElement;
+                    const isSelected = node.isSelected();
+                    // 1. 현재 선택되지 않은 상태라면 조건 없이 즉시 선택(토글)
+                    if (!isSelected) {
+                      node.setSelected(true);
+                      return;
+                    }
+                    // 2. 이미 선택된 상태라면 아래 조건들을 검사하여 해제 여부 결정
+                    // 에디터가 활성화된 경우 무시
+                    if (api.getEditingCells().length > 0) return;
+                    // 입력 관련 태그나 특정 클래스 클릭 시 무시 (체크 유지)
+                    const tagName = target.tagName;
+                    const isInputComponent = 
+                      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
+                      target.closest('a') ||
+                      target.closest('button') ||
+                      target.closest('[role="button"]') ||
+                      target.closest('.editor-select');
+                    if (isInputComponent) return;
+                    // 3. 위 조건에 걸리지 않는 일반 영역 클릭 시에만 선택 해제(토글)
+                    node.setSelected(false);
+                  }}
+
                   selectionColumnDef={{
                     width: 30,
                     pinned: 'left',
@@ -834,22 +846,24 @@ export function LTPA350Step2({
                     },
                   }}
                   onSelectionChanged={handleGridSelectionChanged}
-
+                  
                   onGridReady={(params) => {
                     ensureLockedRowsSelected(params.api);
                   }}
                   onRowDataUpdated={(params) => {
                     ensureLockedRowsSelected(params.api);
                   }}
-                  // isRowSelectable={(node) => !node.data?.locked}
-
                   suppressRowHoverHighlight={false}
+                  getRowClass={(params) => {
+                    if (params.data?.isDuplicate) return 'is-duplicate';
+                    if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                    return '';
+                  }}
                   tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                   tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                   tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-                  getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
                 />
-              </div> */}
+              </div>
             </LayoutScrollItem>
           </LayoutScrollWrap>
         </LayoutMainBody>
