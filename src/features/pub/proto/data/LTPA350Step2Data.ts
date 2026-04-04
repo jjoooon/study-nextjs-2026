@@ -26,7 +26,9 @@ export interface LTPA350Step2DataType {
     locked?: boolean; // 잠금 여부 추가
     isHighlighted: boolean;
     selected?: boolean;
-    badge?: string[]; 
+    badge?: string[];
+    isDuplicate?: boolean;
+    displayNo?: number;
   }>;
 }
 export const LTPA350Step2Data: LTPA350Step2DataType = {

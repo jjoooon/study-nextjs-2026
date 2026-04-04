@@ -182,6 +182,7 @@ export function createDuplicateButtonCellRenderer<RowType extends Record<string,
           aria-label={ariaLabel}
           variant={'outlined'}
           only={'icon'}
+          className='uiux-duplicate-btn'
           size={'sm'}
           color={'gray-light'}
           disabled
@@ -203,6 +204,7 @@ export function createDuplicateButtonCellRenderer<RowType extends Record<string,
           aria-label={ariaLabel}
           variant={'outlined'}
           only={'icon'}
+          className='uiux-duplicate-btn'
           size={'sm'}
           color={'gray-light'}
           onMouseDown={(event) => event.stopPropagation()}
@@ -312,10 +314,7 @@ export function amountUnitInputCellRenderer<RowType>(
   const rowIndex = params.node?.rowIndex ?? 0;
   if (!params.amountInputRefs) return null;
   return (
-    <div
-      onMouseDownCapture={(event) => event.stopPropagation()}
-      onClickCapture={(event) => event.stopPropagation()}
-    >
+    <div>
       <AmountUnitInput
         value={params.value}
         onChange={(newValue) => {

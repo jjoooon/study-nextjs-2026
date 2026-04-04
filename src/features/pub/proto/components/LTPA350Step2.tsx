@@ -39,7 +39,10 @@ import { LTPA350Step2Data, LTPA350Step2Data_2 } from '../data/LTPA350Step2Data';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 type tabListDataData = LTPA350Step2DataType['tabList'];
-type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number];
+type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number] & {
+  isDuplicate?: boolean;
+  displayNo?: number;
+};
 type MainHeadTab = tabListDataData[number] & { value: string };
 
 interface LTPA350Step2Props {
@@ -132,18 +135,55 @@ export function LTPA350Step2({
 
   // 셀: 순번 · 담보명 텍스트 · 독립/갱신 뱃지
   const titleRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
-    return (
-      <Grow className="h-full pr-1.5" placement={'bwc'}>
-        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{params.data?.id}</Grow>
-        <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1}</p>
-        {params.data?.badge && (
-          <Grow className="shrink-0">
-            {params.data.badge.includes('독립') && <Badge color={'green'} className="w-[3rem]">독립</Badge>}
-            {params.data.badge.includes('갱신') && <Badge color={'blue'} className="w-[3rem]">갱신</Badge>}
-          </Grow>
-        )}
-      </Grow>
-    );
+    // 전체 rowData에서 원본(복사본 아님)만 필터링
+    const api = params.api;
+    const allRows: LTPA350GridRow[] = [];
+    api.forEachNode((node: any) => {
+      if (node.data) allRows.push(node.data);
+    });
+    const originals = allRows.filter(r => !r.isDuplicate);
+
+    // 원본 행의 id → 순번 매핑
+    const idToOrder = new Map<number, number>();
+    originals.forEach((row, idx) => {
+      idToOrder.set(row.id, idx + 1);
+    });
+
+    if (!params.data || !params.data.isDuplicate) {
+      // 원본 행: 1,2,3...
+      const order = params.data ? idToOrder.get(params.data.id) ?? '' : '';
+      return (
+        <Grow className="h-full pr-1.5" placement={'bwc'}>
+          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
+          <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
+          {params.data?.badge && (
+            <Grow className="shrink-0">
+              {params.data.badge.includes('독립') && <Badge color={'green'} className="w-[3rem]">독립</Badge>}
+              {params.data.badge.includes('갱신') && <Badge color={'blue'} className="w-[3rem]">갱신</Badge>}
+            </Grow>
+          )}
+        </Grow>
+      );
+    } else {
+      // 복사 행: 원본 순번-복사 인덱스
+      const originId = params.data.displayNo;
+      const order = originId !== undefined ? idToOrder.get(originId) ?? '' : '';
+      // 같은 원본에서 복사된 행들 중 현재 행의 인덱스
+      const sameOriginCopies = allRows.filter(r => r.isDuplicate && r.displayNo === originId);
+      const myIdx = sameOriginCopies.findIndex(r => r === params.data) + 1;
+      return (
+        <Grow className="h-full pr-1.5" placement={'bwc'}>
+          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}-{myIdx}</Grow>
+          <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
+          {params.data?.badge && (
+            <Grow className="shrink-0">
+              {params.data.badge.includes('독립') && <Badge color={'green'} className="w-[3rem]">독립</Badge>}
+              {params.data.badge.includes('갱신') && <Badge color={'blue'} className="w-[3rem]">갱신</Badge>}
+            </Grow>
+          )}
+        </Grow>
+      );
+    }
   }, []);
 
   // ── 속성 열 (field2) ─────────────────────────────────────────────────────────
@@ -211,13 +251,16 @@ export function LTPA350Step2({
       createInsertCopiedRowButtonCellRenderer<LTPA350GridRow, 'id'>(setRowData, {
         idKey: 'id',
         getNextId: (rows) => rows.reduce((maxId, row) => (row.id > maxId ? row.id : maxId), 0) + 1,
-        patchCopiedRow: () => ({
-          field9: false,
+        patchCopiedRow: (originalRow, nextId) => ({
+          id: nextId,
+          displayNo: originalRow.id, // 복사 행은 원본 id를 표시용 번호로
+          isDuplicate: true,
         }),
         isVisible: (params) => {
           const isDuplicateEnabled = Boolean(params.value);
           const isRowChecked = params.node?.isSelected?.() ?? false;
-          return isDuplicateEnabled && isRowChecked;
+          const isCopiedRow = params.data?.field9 === false;
+          return isDuplicateEnabled && isRowChecked && !isCopiedRow;
         },
         ariaLabel: '동일 담보 추가',
       }),
@@ -698,7 +741,8 @@ export function LTPA350Step2({
                     mode: 'multiRow' as const,
                     checkboxes: true,          // 각 행에 체크박스 표시
                     headerCheckbox: true,      // 헤더에 전체 선택 체크박스 표시
-                    enableClickSelection: 'enableSelection', // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
+                    //enableClickSelection: 'enableSelection', // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
+                    enableClickSelection: false, // 행 본문 클릭은 선택만 허용(클릭 해제 방지)
                     enableSelectionWithoutKeys: true, // Ctrl 없이 다중 선택 유지
                   }}
                   selectionColumnDef={{
@@ -710,6 +754,39 @@ export function LTPA350Step2({
                     },
                   }}
                   onSelectionChanged={handleGridSelectionChanged}
+                  
+                  onCellClicked={(params) => {
+                    const { event, node, api } = params;
+                    if (!event || !('target' in event) || !event.target) return;
+
+                    const target = event.target as HTMLElement;
+                    const isSelected = node.isSelected();
+
+                    // 1. 현재 선택되지 않은 상태라면 조건 없이 즉시 선택(토글)
+                    if (!isSelected) {
+                      node.setSelected(true);
+                      return;
+                    }
+
+                    // 2. 이미 선택된 상태라면 아래 조건들을 검사하여 해제 여부 결정
+                    
+                    // 에디터가 활성화된 경우 무시
+                    if (api.getEditingCells().length > 0) return;
+
+                    // 입력 관련 태그나 특정 클래스 클릭 시 무시 (체크 유지)
+                    const tagName = target.tagName;
+                    const isInputComponent = 
+                      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
+                      target.closest('a') ||
+                      target.closest('button') ||
+                      target.closest('[role="button"]') ||
+                      target.closest('.editor-select');
+
+                    if (isInputComponent) return;
+
+                    // 3. 위 조건에 걸리지 않는 일반 영역 클릭 시에만 선택 해제(토글)
+                    node.setSelected(false);
+                  }}
 
                   onGridReady={(params) => {
                     ensureLockedRowsSelected(params.api);
@@ -719,7 +796,11 @@ export function LTPA350Step2({
                   }}
 
                   suppressRowHoverHighlight={false}
-                  getRowClass={(params) => (params.data?.isHighlighted ? 'ag-row-highlighted' : '')}
+                  getRowClass={(params) => {
+                    if (params.data?.isDuplicate) return 'is-duplicate';
+                    if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                    return '';
+                  }}
 
                   tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                   tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
