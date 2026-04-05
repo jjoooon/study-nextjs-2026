@@ -14,7 +14,7 @@ import {
   createTooltipValueGetter,
   createEditableCallback,
   createCellErrorClassRules,
-} from '@/shared/components/aggrid/aggridComponents';
+} from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo, Grid, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';

@@ -11,8 +11,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Button } from '@uiux/Button';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { ResetIcon, SearchIcon } from '@icons';
+import { DatePickerInput } from '@common/DatePicker';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);

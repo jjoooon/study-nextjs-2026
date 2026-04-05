@@ -25,7 +25,7 @@ import {
   numberValueFormatter, 
   productNameTooltipValueGetter, 
   createSelectionChangedHandler,  
-} from '@/shared/components/aggrid/aggridComponents';
+} from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';

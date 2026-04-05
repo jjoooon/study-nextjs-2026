@@ -7,7 +7,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { ResetIcon } from '@icons'
+import { ResetIcon } from '@icons';'
 import { numberValueFormatter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';

@@ -265,7 +265,7 @@ export default [
 
 ```typescript
 // ✅ 올바른 import (Shared Layer)
-import { Button } from '@/shared/components/uiux/Button'
+import { Button } from '@uiux/Button'
 
 // ✅ 올바른 import (같은 Feature 내)
 import { ProductFilters } from '@/features/products/components/ProductFilters'

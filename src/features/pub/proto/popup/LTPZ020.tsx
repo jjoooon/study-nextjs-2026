@@ -17,10 +17,10 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { SearchIcon, ResetIcon } from '@icons';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@/shared/components/common/TabPager';
-import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
+import { TabPager } from '@common/TabPager';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 

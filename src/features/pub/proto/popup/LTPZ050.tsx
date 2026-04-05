@@ -10,8 +10,8 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { AgGridEmptyComponent } from '@aggrid';
+import { InfoBox } from '@common/InfoBox';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

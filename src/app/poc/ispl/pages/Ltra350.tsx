@@ -3,7 +3,7 @@ import InsPlanCovBottom from '@/features/poc/ispl/components/InsPlanCovBottom';
 import Ltra350Section from '@/features/poc/ispl/sections/Ltra350Section';
 
 import { LayoutDocument, LayoutMain } from '@/shared/components/layout/Cabinet';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/shared/components/uiux/Resizable';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 export default function Ltra350() {
   return (

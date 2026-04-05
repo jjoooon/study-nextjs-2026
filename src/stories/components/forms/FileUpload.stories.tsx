@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Gcol, Grow } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import { FileUpload } from '@/shared/components/common/FileUpload';
+import { FileUpload } from '@common/FileUpload';
 
 const SAMPLE_FILES = [{ name: '매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용' }];
 
@@ -43,7 +43,7 @@ const meta: Meta<typeof FileUpload> = {
           <Markdown>
             {`
 \`\`\`tsx
-import { FileUpload } from '@/shared/components/common/FileUpload';
+import { FileUpload } from '@common/FileUpload';
 
 <FileUpload
   files={[{ name: '첨부파일.png', key: 'file-1' }]}

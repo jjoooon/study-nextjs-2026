@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { DateRange } from 'react-day-picker';
 import { Gcol, Grow } from '@atoms';
-import { Calendar } from '@/shared/components/uiux/Calendar';
+import { Calendar } from '@uiux/Calendar';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 function ModesPreview() {
@@ -92,7 +92,7 @@ const meta: Meta<typeof Calendar> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { Calendar } from '@/shared/components/uiux/Calendar';
+import { Calendar } from '@uiux/Calendar';
 import { useState } from 'react';
 
 const [date, setDate] = useState<Date | undefined>(new Date());

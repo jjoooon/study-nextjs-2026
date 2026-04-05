@@ -32,7 +32,7 @@ const meta: Meta<typeof InputTag> = {
           <Markdown>
             {`
 \`\`\`tsx
-import { InputTag } from '@/shared/components/common/InputTag';
+import { InputTag } from '@common/InputTag';
 
 <InputTag value={['예시']} onChange={console.log} placeholder="태그 입력" maxTags={3} />
 \`\`\`

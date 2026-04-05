@@ -4,7 +4,7 @@ import { Grow, Gcol } from '@atoms';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Button } from '@uiux/Button';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';

@@ -8,7 +8,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { InfoBox } from '@common/InfoBox';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);

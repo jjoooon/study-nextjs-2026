@@ -8,8 +8,8 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
-import { Input } from '@/shared/components/uiux/Input';
-import { Button } from '@/shared/components/uiux/Button';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);

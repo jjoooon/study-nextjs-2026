@@ -7,16 +7,16 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { ResetIcon } from '@icons';
+import { DatePickerInput } from '@common/DatePicker';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridEmptyComponent, createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);

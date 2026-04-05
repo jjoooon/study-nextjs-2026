@@ -8,11 +8,11 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, CellClassParams, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, DatePickerCellEditor, useAgGridPagination } from '@aggrid';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Input } from '@/shared/components/uiux/Input';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Input } from '@uiux/Input';
+import { DatePickerInput } from '@common/DatePicker';
+import { SearchIcon } from '@icons';
 import { TestData, TestDataType } from '@/stories/components/tables/TestAgGridData';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

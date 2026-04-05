@@ -18,7 +18,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { InfoBox } from '@common/InfoBox';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { useCallback, useRef } from 'react';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

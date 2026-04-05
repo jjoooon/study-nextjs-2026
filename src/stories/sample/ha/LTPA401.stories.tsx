@@ -3,10 +3,10 @@ import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { Input } from '@uiux/Input';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { useFormFields } from '@hooks/useFormFields';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
