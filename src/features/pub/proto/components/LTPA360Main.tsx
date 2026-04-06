@@ -1386,4 +1386,3 @@ export const LTPA360Main = () => {
   )
 }
 
-export default LTPA360Main;
