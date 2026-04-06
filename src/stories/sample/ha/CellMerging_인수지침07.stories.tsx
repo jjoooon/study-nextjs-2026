@@ -11,7 +11,7 @@ import {
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
+
 
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule, ClientSideRowModelModule]);
 
