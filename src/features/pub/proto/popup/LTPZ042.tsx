@@ -10,10 +10,10 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { ResetIcon, SearchIcon } from '@icons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from './types';
 

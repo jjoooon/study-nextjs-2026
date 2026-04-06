@@ -37,7 +37,7 @@ const meta: Meta<SortableButtonStoryProps> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { SortableButton } from '@/shared/components/common/SortableButton';
+import { SortableButton } from '@common/SortableButton';
 
 <SortableButton
   label="보험료"

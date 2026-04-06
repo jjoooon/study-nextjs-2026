@@ -26,8 +26,8 @@ import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';
 import type { Customer } from '@/features/poc/types/customerTypes';
-import { Button } from '@/shared/components/uiux/Button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/components/uiux/Dialog';
+import { Button } from '@uiux/Button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import { isProduction } from '@/shared/config/env';
 import log from '@/shared/utils/logger';
 

@@ -8,10 +8,10 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { InfoBox } from '@/shared/components/common/InfoBox';
-import { TabPager } from '@/shared/components/common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon } from '@icons';
+import { InfoBox } from '@common/InfoBox';
+import { TabPager } from '@common/TabPager';
 import type { PopupBaseProps } from './types';
 
 export const LTPZ021 = ({ open, onOpenChange }: PopupBaseProps) => {

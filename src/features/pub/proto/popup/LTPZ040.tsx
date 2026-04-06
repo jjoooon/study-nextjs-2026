@@ -10,8 +10,8 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-import { Input } from '@/shared/components/uiux/Input';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { Input } from '@uiux/Input';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import type { PopupBaseProps } from './types';
 

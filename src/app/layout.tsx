@@ -47,7 +47,7 @@ import type { Metadata, Viewport } from 'next';
 
 import '@/shared/styles/globals.css';
 import { AuthGuard } from '@/shared/components/AuthGuard';
-import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
+import { SpinnerRoot } from '@common/SpinnerRoot';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import { Providers } from './providers';
 

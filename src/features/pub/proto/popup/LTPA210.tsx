@@ -6,20 +6,20 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
-import { ResetIcon } from '@icons'
+import { ResetIcon } from '@icons';'
 import { Input } from '@uiux/Input';
-import { FileExportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { FileExportIcon, SearchIcon } from '@icons';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { numberValueFormatter } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useState } from 'react';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 

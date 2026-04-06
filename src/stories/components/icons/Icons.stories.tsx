@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import * as Icons from '@/shared/components/icons/CommonIcons';
+import * as Icons from '@icons';
 
 type IconStoryArgs = {
   size: number;

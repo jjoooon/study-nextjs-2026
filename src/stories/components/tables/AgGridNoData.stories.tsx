@@ -87,7 +87,7 @@ export const Default: StoryObj = {
     const { currentPage, totalPages, handleGridReady, handlePageChange } = useAgGridPagination(gridRef, pageSize);
 
     return (
-      <div style={{ width: '100%', height:'20rem', marginBottom: '6rem' }}>
+      <div>
 
         <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
@@ -98,7 +98,7 @@ export const Default: StoryObj = {
             noRowsOverlayComponent={AgGridEmptyComponent} // 데이터 없을 때 표시할 컴포넌트
 
             // 선택
-            domLayout="normal" // 높이 선택 normal, autoHeight, print
+            domLayout="autoHeight" // 높이 선택 normal, autoHeight, print
 
             // pagination 설정 (TablePagination과 연동)
             pagination={true} // ag-Grid의 페이징 기능 활성화

@@ -3,7 +3,7 @@ import { Gcol } from '@atoms';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { InfoBox } from '@common/InfoBox';
 
 
 

@@ -67,11 +67,12 @@ function Input({
   onChange,
   value,
   formatter,
+  isFocused,
   ...props
 }: UIInputProps) {
-  const [isFocused, setIsFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
   // 외부에서 isFocused prop이 오면 우선 사용
-  const isInputFocused = typeof props.isFocused === 'boolean' ? props.isFocused : isFocused;
+  const isInputFocused = typeof isFocused === 'boolean' ? isFocused : focused;
 
   // 주민등록번호 마스킹: value에는 숫자만 저장, displayValue는 마스킹 적용
   let displayValue = value ?? '';
@@ -138,8 +139,8 @@ function Input({
     onChange?.(e);
   };
 
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
+  const handleFocus = () => setFocused(true);
+  const handleBlur = () => setFocused(false);
   const withStyle = () => {
     const widthMap: Record<UIUXsize, string> = {
       full: 'w-full flex-1',
@@ -172,7 +173,7 @@ function Input({
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 text-[1.4rem] border border-[0.1rem] box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
+    'w-full rounded-[0.4rem] px-2 text-[1.4rem] border border-[0.1rem] box-border tracking-[-0.08rem] appearance-none truncate',
     isInvalid || error
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
@@ -180,7 +181,7 @@ function Input({
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
   const ghostStyle = cn(
-    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[--typo-letter-spacing-n3] appearance-none truncate',
+    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.08rem] appearance-none truncate',
     
   );
   const hoverStyle =

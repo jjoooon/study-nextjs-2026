@@ -14,9 +14,9 @@ import { amountUnitInputCellRenderer, AgGridEmptyComponent, numberValueFormatter
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon, SearchIcon } from '@icons';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 

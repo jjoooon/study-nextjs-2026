@@ -187,7 +187,7 @@ export const Default: StoryObj = {
     }, [rowData]);
 
     return (
-      <div style={{ width: '100%', height:'20rem', marginBottom: '6rem' }}>
+      <div>
 
         <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
@@ -195,6 +195,8 @@ export const Default: StoryObj = {
             getRowId={(params) => String(params.data.id)} // 각 row의 고유 id 지정(React key 역할)
             rowData={rowData} // 표시할 데이터 배열
             columnDefs={columnDefs} // 컬럼 정의
+            domLayout='autoHeight'
+
 
             // 합계 행 설정
             pinnedBottomRowData={sumRow}

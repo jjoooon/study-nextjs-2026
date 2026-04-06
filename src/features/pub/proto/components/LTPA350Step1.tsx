@@ -38,7 +38,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 // Data
 
 import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
-import { InputCombo } from '@/shared/components/common/InputCombo';
+import { InputCombo } from '@common/InputCombo';
 
 // Types
 

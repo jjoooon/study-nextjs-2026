@@ -25,7 +25,7 @@ import {
   numberValueFormatter, 
   productNameTooltipValueGetter, 
   createSelectionChangedHandler,  
-} from '@/shared/components/aggrid/aggridComponents';
+} from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Grow } from '@atoms';
@@ -573,14 +573,14 @@ const renderGrid: Story['render'] = (args) => {
   }
 
   return (
-    <div className="p-5 h-[40vh]! ">
+    <div className="p-5">
       <div className="ag-theme-alpine">
           <AgGridReact<GridRow>
             // getRowId 적용: id 필드를 고유 식별자로 사용
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-
+            domLayout='autoHeight'
             // 합계
             pinnedBottomRowData={sumRow}
 

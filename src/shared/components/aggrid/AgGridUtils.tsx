@@ -4,7 +4,7 @@
 import * as React from 'react';
 import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent, IDatasource, IGetRowsParams, EditableCallbackParams, CellClassParams } from 'ag-grid-community';
 import { Typo, Gcol, Grow } from '@atoms';
-import { InfoBoxWarningIcon, SelectDropIcon, PlusIcon } from '@icons';
+import { InfoBoxWarningIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 // 내부 공통 컴포넌트
@@ -14,6 +14,7 @@ import type { GridReadyEvent } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
 
 import { AmountUnitInput } from '@features/AmountUnitInput';
+import { SelectDropIcon, PlusIcon } from '@icons';
 
 import { DatePickerInput } from '@common/DatePicker';
 import type { ICellEditorParams } from 'ag-grid-community';

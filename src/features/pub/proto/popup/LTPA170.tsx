@@ -10,10 +10,10 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { FileExportIcon } from '@/shared/components/icons/CommonIcons';
-import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
-import { numberValueFormatter, useAgGridColumnVisibility } from '@/shared/components/aggrid/aggridComponents';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { FileExportIcon } from '@icons';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { numberValueFormatter, useAgGridColumnVisibility } from '@aggrid';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

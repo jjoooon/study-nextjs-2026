@@ -41,7 +41,7 @@ export const HashList = ({ data }: { data: string[] }) => {
           <BulletList
             position={'row'}
             type={'hash'}
-            className="gap-x-2.5 gap-y-[0.2rem] flex-1 flex-nowrap whitespace-nowrap relative"
+            className="gap-x-2.5 gap-y-[0.2rem] flex-1 flex-nowrap whitespace-nowrap relative font-bold translate-y-[0.1rem] text-[var(--color-blue-gray-60)]"
           >
             {data.map((hash, index) => (
               <BulletListItem

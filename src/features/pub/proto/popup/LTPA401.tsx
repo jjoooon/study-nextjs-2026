@@ -12,10 +12,10 @@ import { Input } from '@uiux/Input';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { InfoBox } from '@common/InfoBox';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 

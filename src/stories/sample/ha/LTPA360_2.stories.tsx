@@ -5,14 +5,14 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Button } from '@uiux/Button';
 import { DatePickerInput } from '@common/DatePicker';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler, DatePickerCellEditor, useAgGridPagination } from '@aggrid';
 import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { Input } from '@/shared/components/uiux/Input';
+import { SearchIcon } from '@icons';
+import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

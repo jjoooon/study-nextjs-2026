@@ -20,8 +20,8 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
-import { Button } from '@/shared/components/uiux/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
+import { Button } from '@uiux/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@uiux/Card';
 
 /**
  * Recharts 예제 페이지

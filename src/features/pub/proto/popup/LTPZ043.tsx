@@ -8,11 +8,11 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { Input } from '@/shared/components/uiux/Input';
+import { Input } from '@uiux/Input';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { Checkbox } from '@uiux/Checkbox';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { InfoBox } from '@common/InfoBox';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

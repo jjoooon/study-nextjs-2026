@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
+import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler, createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -171,7 +171,7 @@ export const Default: StoryObj = {
 
     return (
       <>
-        <div className="ag-theme-alpine aggrid-pagination-ko h-[26rem]!">
+        <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
@@ -180,6 +180,7 @@ export const Default: StoryObj = {
             alwaysShowHorizontalScroll={true}
             singleClickEdit={true}
             context={gridContext}
+            domLayout='autoHeight'
           />
         </div>
       </>

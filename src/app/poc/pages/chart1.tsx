@@ -2,8 +2,8 @@
 
 import EChartsReact from 'echarts-for-react';
 import { useState } from 'react';
-import { Button } from '@/shared/components/uiux/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
+import { Button } from '@uiux/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@uiux/Card';
 
 /**
  * Apache ECharts 예제 페이지

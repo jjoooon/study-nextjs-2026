@@ -1,4 +1,4 @@
-import { ZoomControl } from '@/shared/components/common/ZoomControl';
+import { ZoomControl } from '@common/ZoomControl';
 import UserSearch from '@/shared/components/features/UserSearch';
 import { LayoutBody, LayoutFolder } from '@/shared/components/layout/Cabinet';
 

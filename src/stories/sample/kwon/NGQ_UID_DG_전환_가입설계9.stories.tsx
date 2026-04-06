@@ -7,8 +7,8 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@/shared/components/common/InfoBox';
-import { Input } from '@/shared/components/uiux/Input';
+import { InfoBox } from '@common/InfoBox';
+import { Input } from '@uiux/Input';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);

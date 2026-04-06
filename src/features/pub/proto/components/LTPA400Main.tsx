@@ -1,5 +1,5 @@
 import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@/shared/components/common/TabPager';
+import { TabPager } from '@common/TabPager';
 
 import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
@@ -19,7 +19,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';
 import { LTPA400DummyData, type LTPA400DummyDataRow, LTPA400DummyData2, type LTPA400DummyDataRow2 } from '../data/LTPA400Data';;
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
@@ -248,13 +248,13 @@ export const LTPA400Main = () => {
               >
                 {active === 'tab1' && (
                   <>
-                    <Grow className='w-full mb-3 mt-1' variant="box-round" placement={'bwe'}>
+                    <Grow className='w-full mb-3' variant="box" placement={'bwe'}>
                       <FormTable  variant={'none'} lineTop={false} 
                         caption="장기보험 설계요청 조회 테이블"
                         cols={[
-                          'flex-auto', 'flex-1',
-                          'flex-auto', 'flex-1',
-                          'flex-auto', 'flex-1',
+                          'w-1', 'w-auto',
+                          'w-1', 'w-auto',
+                          'w-1', 'w-auto',
                         ]}
                       >
                         <FormRow>

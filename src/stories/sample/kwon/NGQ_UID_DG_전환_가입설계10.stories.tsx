@@ -6,11 +6,11 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { Input } from '@/shared/components/uiux/Input';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';  
+import { Input } from '@uiux/Input';
+import { ResetIcon, SearchIcon } from '@icons';  
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { Button } from '@/shared/components/uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Button } from '@uiux/Button';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 
