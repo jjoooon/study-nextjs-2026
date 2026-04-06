@@ -7,6 +7,13 @@ import LinkGo, { getStoryIframeUrl } from './Link';
 import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
+type SortOrder = 'default' | 'asc' | 'desc';
+type SortKey = 'dep4' | 'plan' | 'pub' | 'dev';
+
+type SortState = {
+  key: SortKey | null;
+  order: SortOrder;
+};
 
 type IARow = {
   no?: number;
@@ -38,6 +45,7 @@ const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?
 
 export function IAListWithPreview() {
   const [showPhaseOnly, setShowPhaseOnly] = React.useState(true);
+  const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
   const visibleRows = React.useMemo(() => {
@@ -51,6 +59,20 @@ export function IAListWithPreview() {
   const activeRow = React.useMemo(() => {
     return visibleRows.find(row => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
   }, [activeRowKey, visibleRows]);
+
+  const sortedRows = React.useMemo(() => {
+    if (sortState.key === null || sortState.order === 'default') {
+      return visibleRows;
+    }
+
+    const sortKey = sortState.key;
+
+    return [...visibleRows].sort((left, right) => {
+      const compareResult = left[sortKey].localeCompare(right[sortKey], 'ko');
+
+      return sortState.order === 'asc' ? compareResult : -compareResult;
+    });
+  }, [sortState, visibleRows]);
 
   const toPageStep = React.useCallback((subId: string): PageProcessStep | undefined => {
     const match = subId.match(/_(\d)$/);
@@ -86,6 +108,36 @@ export function IAListWithPreview() {
 
     LinkGo(activeRow.id, undefined, activeRow.popup);
   }, [activeRow, activeStep]);
+
+  const handleSort = React.useCallback((key: SortKey) => {
+    setSortState(prev => {
+      if (prev.key !== key || prev.order === 'default') {
+        return { key, order: 'asc' };
+      }
+
+      if (prev.order === 'asc') {
+        return { key, order: 'desc' };
+      }
+
+      return { key: null, order: 'default' };
+    });
+  }, []);
+
+  const getSortIndicator = React.useCallback((key: SortKey) => {
+    if (sortState.key !== key) {
+      return '';
+    }
+
+    if (sortState.order === 'asc') {
+      return ' ↑';
+    }
+
+    if (sortState.order === 'desc') {
+      return ' ↓';
+    }
+
+    return '';
+  }, [sortState]);
 
   const ingList = [
     'LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ031',
@@ -123,7 +175,13 @@ export function IAListWithPreview() {
             <tr>
               <th scope="col">No</th>
               <th scope="col">ID</th>
-              <th scope="col">화면명</th>  
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('dep4')}
+              >
+                화면명{getSortIndicator('dep4')}
+              </th>
               <th scope="col">설계서명</th>  
               <th
                 scope="col"
@@ -135,13 +193,31 @@ export function IAListWithPreview() {
               <th scope="col">완료일</th>  
               <th scope="col">수정일</th>  
               
-              <th scope="col" className="text-center">기획</th>
-              <th scope="col" className="text-center">퍼블</th>
-              <th scope="col" className="text-center">개발</th>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('plan')}
+              >
+                기획{getSortIndicator('plan')}
+              </th>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('pub')}
+              >
+                퍼블{getSortIndicator('pub')}
+              </th>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('dev')}
+              >
+                개발{getSortIndicator('dev')}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {visibleRows.map((row, index) => {
+            {sortedRows.map((row, index) => {
               const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
               const isIng = ingIdSet.has(row.id) || ingIdSet.has(row.subId ?? '');
               const isWork = workIdSet.has(row.id) || workIdSet.has(row.subId ?? '');
