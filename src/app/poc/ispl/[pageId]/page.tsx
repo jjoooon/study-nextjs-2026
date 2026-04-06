@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import dynamic from 'next/dynamic';
-import { getPageFiles } from '@/shared/utils/file/getPageFiles';
+import { getPageFiles } from '@/shared/utils/server/fileUtils';
 import log from '@/shared/utils/logger';
 
 // 🔒 페이지 파일들 동적으로 발견 (현재 파일 기준 ../pages)
