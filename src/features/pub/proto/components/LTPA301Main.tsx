@@ -316,7 +316,7 @@ export const LTPA301Main = () => {
                                 </FormCell>
                               </FormRow>
                               <FormRow>
-                                <FormCell title={'처리내용'}>
+                                <FormCell title={'처리내용'}>  
                                   <Textarea placeholder="" resize={true} />
                                 </FormCell>
                               </FormRow>
