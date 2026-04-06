@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);

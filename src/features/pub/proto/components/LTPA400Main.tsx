@@ -1,5 +1,5 @@
 import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@/shared/components/common/TabPager';
+import { TabPager } from '@common/TabPager';
 
 import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
@@ -20,7 +20,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';
 import { LTPA400DummyData, type LTPA400DummyDataRow, LTPA400DummyData2, type LTPA400DummyDataRow2 } from '../data/LTPA400Data';;
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';

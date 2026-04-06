@@ -18,7 +18,7 @@ import { createCellValueChangedHandler, AgGridEmptyComponent, createFieldRendere
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { InfoBox } from '@common/InfoBox';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';
 import { LTPA010DummyData, type LTPA010DummyDataRow } from '../data/LTPA010Data';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';

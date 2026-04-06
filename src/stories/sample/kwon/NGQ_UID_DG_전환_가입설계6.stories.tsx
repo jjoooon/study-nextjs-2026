@@ -7,7 +7,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Input } from '@/shared/components/uiux/Input';
+import { Input } from '@uiux/Input';
 
 
 

@@ -14,10 +14,10 @@ import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChang
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { ResetIcon, SearchIcon } from '@icons';
+import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);

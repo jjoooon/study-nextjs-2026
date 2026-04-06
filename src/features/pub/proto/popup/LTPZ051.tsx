@@ -10,10 +10,10 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
+import { AgGridEmptyComponent } from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@/shared/components/common/TabPager';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { TabPager } from '@common/TabPager';
+import { Checkbox } from '@uiux/Checkbox';
 import type { PopupBaseProps } from './types';
 import { Bold } from 'lucide-react';
 

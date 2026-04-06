@@ -14,7 +14,7 @@
  *
  * @usage
  * // src/app/layout.tsx
- * import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
+ * import { SpinnerRoot } from '@common/SpinnerRoot';
  *
  * export default function RootLayout({ children }) {
  *   return (

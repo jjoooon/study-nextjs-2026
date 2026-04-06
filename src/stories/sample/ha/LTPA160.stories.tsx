@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Grow, Gcol } from '@atoms';
 import { Title, Primary } from '@storybook/addon-docs/blocks';
 
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, CellSpanModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';

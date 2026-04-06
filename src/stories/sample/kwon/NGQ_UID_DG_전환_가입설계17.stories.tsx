@@ -7,11 +7,11 @@ import type { ColDef, ColGroupDef, GridApi, ICellRendererParams, IHeaderParams, 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
-import { Input } from '@/shared/components/uiux/Input';
-import { Button } from '@/shared/components/uiux/Button';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Input } from '@uiux/Input';
+import { Button } from '@uiux/Button';
+import { SearchIcon } from '@icons';
 import { Checkbox } from '@uiux/Checkbox';
 
 

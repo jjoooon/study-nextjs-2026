@@ -14,7 +14,7 @@ import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 

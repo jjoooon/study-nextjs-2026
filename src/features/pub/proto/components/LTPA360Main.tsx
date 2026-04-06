@@ -1,5 +1,5 @@
 import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@/shared/components/common/TabPager';
+import { TabPager } from '@common/TabPager';
 
 import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
@@ -19,11 +19,11 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';
 import { LTPA360DummyData1, type LTPA360DummyDataRow1, LTPA360DummyData1_1, type LTPA360DummyDataRow1_1, LTPA360DummyData2, type LTPA360DummyDataRow2, LTPA360DummyData3, type LTPA360DummyDataRow3, LTPA360DummyData4, type LTPA360DummyDataRow4 } from '../data/LTPA360Data';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

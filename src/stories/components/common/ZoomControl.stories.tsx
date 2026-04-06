@@ -44,7 +44,7 @@ const meta: Meta<typeof ZoomControl> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { ZoomControl } from '@/shared/components/common/ZoomControl';
+import { ZoomControl } from '@common/ZoomControl';
 
 <ZoomControl />
 \`\`\`

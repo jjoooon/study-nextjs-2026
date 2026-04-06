@@ -10,7 +10,7 @@ import { Input } from '@uiux/Input';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { InfoBox } from '@common/InfoBox';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from './types';
 

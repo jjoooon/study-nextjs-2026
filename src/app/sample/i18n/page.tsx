@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/uiux/Card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/uiux/Select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@uiux/Card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@uiux/Select';
 import { msg, getMessage, getAvailableLocales, setLocale, getCurrentLocale } from '@/shared/utils/messageUtils';
 
 export default function I18nDemoPage() {

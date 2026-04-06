@@ -10,9 +10,9 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@/shared/components/aggrid/aggridComponents';
-import { Input } from '@/shared/components/uiux/Input';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Input } from '@uiux/Input';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

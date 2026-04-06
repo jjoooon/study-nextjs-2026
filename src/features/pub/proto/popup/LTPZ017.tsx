@@ -14,8 +14,8 @@ import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChang
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon } from '@icons';
 import { tr } from 'date-fns/locale';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
