@@ -5,7 +5,7 @@ import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
 import { Input } from '@uiux/Input';

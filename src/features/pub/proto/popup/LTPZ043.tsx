@@ -1,21 +1,27 @@
 'use client';
 // 권오택
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { Input } from '@uiux/Input';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Checkbox } from '@uiux/Checkbox';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { PopupBaseProps } from './types';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ043 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({
@@ -67,7 +73,7 @@ export const LTPZ043 = ({ open, onOpenChange }: PopupBaseProps) => {
                   >
                   </Checkbox>
                   <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type01', e.target.value)} size="lg" value={form.type01} variant="default" width="10rem" commaAmount after={'㎡'} required/>
-                  <div className="separator">↔</div>
+                  ↔
                   <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type02', e.target.value)} size="lg" value={form.type02} variant="default" width="10rem" commaAmount after={'평'} required/>
                 </FormCell>
                 <FormCell title={null}>

@@ -12,7 +12,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Checkbox } from '@uiux/Checkbox';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent } from '@aggrid';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

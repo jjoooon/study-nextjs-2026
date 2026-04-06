@@ -11,7 +11,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
-import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { amountUnitInputCellRenderer, createCellValueChangedHandler, editableSelectCellRenderer, AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';

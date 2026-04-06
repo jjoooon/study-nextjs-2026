@@ -10,7 +10,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResetIcon, SearchIcon } from '@icons';

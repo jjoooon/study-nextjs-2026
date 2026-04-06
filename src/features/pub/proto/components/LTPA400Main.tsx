@@ -17,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';

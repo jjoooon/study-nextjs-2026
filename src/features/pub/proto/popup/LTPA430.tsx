@@ -12,7 +12,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Checkbox } from '@uiux/Checkbox';
-import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Input } from '@uiux/Input';
 import { InfoBox } from '@common/InfoBox';
 import type { PopupBaseProps } from './types';

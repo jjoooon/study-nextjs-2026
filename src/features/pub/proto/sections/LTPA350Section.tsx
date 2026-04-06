@@ -10,7 +10,7 @@ import PageID from '@features/PageID';
 import PageProcess from '@features/PageProcess';
 import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
 import TaskStatusBoard from '@features/TaskStatusBoard';
-import { InfoContract } from '@/shared/components/common/InfoContract';
+import { InfoContract } from '@common/InfoContract';
 import { QuickLinks } from '@features/QuickLinks';
 
 // hooks

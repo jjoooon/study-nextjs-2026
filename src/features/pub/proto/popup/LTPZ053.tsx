@@ -9,7 +9,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, GridApi, IHeaderParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Checkbox } from '@uiux/Checkbox';
 import type { PopupBaseProps } from './types';
 import { Input } from '@uiux/Input';

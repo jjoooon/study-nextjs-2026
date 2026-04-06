@@ -11,7 +11,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, useAgGridPagination } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, useAgGridPagination } from '@aggrid';
 import { useFormFields } from '@hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

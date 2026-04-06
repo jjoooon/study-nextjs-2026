@@ -1,18 +1,26 @@
 'use client';
 // 권오택
 import * as React from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, useAgGridPagination } from '@/shared/components/agGridUtils';
-import type { PopupBaseProps } from './types';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TablePagination } from '@common/TablePagination';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

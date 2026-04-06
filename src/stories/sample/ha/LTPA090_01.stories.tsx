@@ -8,7 +8,7 @@ import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, DatePickerCellEditor, useAgGridPagination } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, DatePickerCellEditor, useAgGridPagination } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Input } from '@uiux/Input';

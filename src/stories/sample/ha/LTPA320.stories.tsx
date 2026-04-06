@@ -12,7 +12,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { useFormFields } from '@hooks/useFormFields';
-import { useAgGridPagination } from '@/shared/components/agGridUtils';
+import { useAgGridPagination } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

@@ -19,10 +19,10 @@ import { InfoBox } from '@common/InfoBox';
 import { useFormFields } from '@hooks/useFormFields';
 import { LTPA301DummyData, type LTPA301DummyDataRow } from '../data/LTPA301Data';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { Textarea } from '@/shared/components/uiux/Textarea';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Textarea } from '@uiux/Textarea';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

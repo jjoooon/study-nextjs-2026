@@ -1,35 +1,42 @@
 'use client';
 // 권오택
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
-import { Input } from '@uiux/Input';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Checkbox } from '@uiux/Checkbox';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ047 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-    const [form, setFormField] = useFormFields({
-      type01: '',
-      type02: '',
-      type03: '',
-      type04: '',
-      type05: '',
-      type06: '',
-      type07: '',
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+    type03: '',
+    type04: '',
+    type05: '',
+    type06: '',
+    type07: '',
   })  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

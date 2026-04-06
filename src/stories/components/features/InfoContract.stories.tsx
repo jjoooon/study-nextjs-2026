@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 import { LTPA350Data } from '@/features/pub/proto/data/LTPA350Data';
-import { InfoContract } from '@/shared/components/common/InfoContract';
+import { InfoContract } from '@common/InfoContract';
 
 const meta: Meta<typeof InfoContract> = {
   title: 'Components/Features/Aside/계약정보(InfoContract)',

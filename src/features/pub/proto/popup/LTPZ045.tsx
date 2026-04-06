@@ -1,34 +1,33 @@
 'use client';
-// 권오택
+
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/aggrid/aggridComponents';
-import { Input } from '@/shared/components/uiux/Input';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { InfoBox } from '@/shared/components/common/InfoBox';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { PopupBaseProps } from './types';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ045 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-    const [form, setFormField] = useFormFields({
-      type01: '',
-      type02: '',
-      type03: '',
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+    type03: '',
   })
   const [cddEtcValue, setCddEtcValue] = React.useState('');
   return (
@@ -140,8 +139,6 @@ export const LTPZ045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </TableFoldBody>  
               </TableFold>
-
-
               {/* //법인등록  */}
 
               {/* 개인등록  */}
@@ -200,7 +197,6 @@ export const LTPZ045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>  
                 </TableFoldBody>
               </TableFold>
-
               {/* //법인등록  */}
 
               {/* 법인등록  */}

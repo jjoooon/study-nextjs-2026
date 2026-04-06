@@ -7,7 +7,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { InfoBox } from '@common/InfoBox';
-import { AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { useTabs } from '@/shared/hooks/useTabs';
 

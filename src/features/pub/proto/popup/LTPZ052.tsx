@@ -18,7 +18,7 @@ import { SearchIcon } from '@icons';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, GridApi, ICellRendererParams, IHeaderParams, SuppressKeyboardEventParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 

@@ -11,7 +11,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { SearchIcon } from '@icons';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';

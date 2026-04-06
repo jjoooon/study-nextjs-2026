@@ -16,7 +16,7 @@ import { DatePickerInput } from '@common/DatePicker';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import type { PopupBaseProps } from './types';
 
 

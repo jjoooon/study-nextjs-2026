@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
-import { InputTag } from "@/shared/components/common/InputTag";
+import { InputTag } from "@common/InputTag";
 
 const meta: Meta<typeof InputTag> = {
   title: "Components/Forms/InputTag",

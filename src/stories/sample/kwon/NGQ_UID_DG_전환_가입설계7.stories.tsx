@@ -5,7 +5,7 @@ import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent } from '@aggrid';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';

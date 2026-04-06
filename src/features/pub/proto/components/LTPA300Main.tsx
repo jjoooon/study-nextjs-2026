@@ -4,7 +4,7 @@ import * as React from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { useAgGridInfiniteAppend } from '@/shared/components/agGridUtils';
+import { useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';

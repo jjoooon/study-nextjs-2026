@@ -23,7 +23,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { DatePickerInput } from '@common/DatePicker';
 import { TabPager } from '@common/TabPager';
 import { KeyValueItem } from '@common/KeyValueList';
-import { TooltipQ } from '@/shared/components/common/TooltipQ';
+import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 // Feature Components

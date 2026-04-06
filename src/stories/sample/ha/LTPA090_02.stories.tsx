@@ -8,7 +8,7 @@ import { Title, Primary } from '@storybook/addon-docs/blocks';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { useAgGridPagination } from '@/shared/components/agGridUtils';
+import { useAgGridPagination } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

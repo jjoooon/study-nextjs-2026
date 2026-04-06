@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { createCellValueChangedHandler, DatePickerCellEditor } from '@/shared/components/agGridUtils';
+import { createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 

@@ -72,11 +72,11 @@ const dialogRegistry: DialogRegistry = {
   // 공통 팝업 (기본 등록)
   // confirm과 alert 모두 ConfirmDialog를 사용
   confirm: () =>
-    import('@/shared/components/common/ConfirmDialog') as unknown as Promise<{
+    import('@common/ConfirmDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
   alert: () =>
-    import('@/shared/components/common/ConfirmDialog') as unknown as Promise<{
+    import('@common/ConfirmDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
 

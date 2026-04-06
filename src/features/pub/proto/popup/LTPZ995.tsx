@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { PopupBaseProps } from './types';
 import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
-import { FileUpload } from '@/shared/components/common/FileUpload';
+import { FileUpload } from '@common/FileUpload';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

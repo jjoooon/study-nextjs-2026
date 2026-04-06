@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 import { Input } from '@uiux/Input';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
+import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';

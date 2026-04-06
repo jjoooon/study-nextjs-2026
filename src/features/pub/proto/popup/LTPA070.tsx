@@ -10,7 +10,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent } from '@aggrid';
 
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import type { PopupBaseProps } from './types';

@@ -17,7 +17,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, DatePickerCellEditor } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';

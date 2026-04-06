@@ -14,7 +14,7 @@ import { useFormFields } from '@hooks/useFormFields';
 import { MemoIcon, ResetIcon, SearchIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';

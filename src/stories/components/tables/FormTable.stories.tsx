@@ -67,7 +67,7 @@ const meta: Meta<FormTableStoryProps> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { FormTable, FormCell, FormRow } from '@/shared/components/common';
+import { FormTable, FormCell, FormRow } from '@common';
 
 <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[15%]', 'w-[35%]', 'w-[15%]', 'w-[35%]']}>
   <FormRow>

@@ -11,7 +11,7 @@ import { FileExportIcon, ResetIcon } from '@icons';
 import { Input } from '@uiux/Input';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';

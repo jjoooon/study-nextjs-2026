@@ -5,7 +5,7 @@ import { Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
 
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
