@@ -12,7 +12,7 @@ export default function AsideFoot() {
     <Gcol className="w-full pb-1.5 relative">
       <Grow
         placement={'bwc'}
-        className="aside-1 rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
+        className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
       >
         <Checkbox variant={'button'}>4세대</Checkbox>
         <Grow className="gap-[0.2rem]">

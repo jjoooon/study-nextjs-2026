@@ -166,7 +166,7 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
     setting:
-      'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none!',
+      'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none! [&_tr]:border-0!',
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
     head:

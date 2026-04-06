@@ -39,7 +39,7 @@ interface PopoverContentProps extends React.ComponentPropsWithoutRef<typeof Popo
 }
 // variant별 스타일 정의 (외부 확장 가능)
 export const defaultPopoverVariantStyles: Record<string, string> = {
-  default: 'bg-popover text-popover-foreground',
+  default: 'bg-[#fff] text-popover-foreground',
   dark: 'bg-gray-900 text-white',
   light: 'bg-white text-gray-900',
 };

@@ -117,7 +117,7 @@ const LTPZ047P   = () => {
           <FormRow>
             <FormCell title={'영업장면적'} titleColSpan={2}  colSpan={4}>
               <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type02', e.target.value)} size="lg" value={form.type02} variant="default" width="10rem" commaAmount after={'㎡'} required/>
-              <div className="separator">↔</div>
+              ↔
               <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type03', e.target.value)} size="lg" value={form.type03} variant="default" width="10rem" commaAmount after={'평'} required/>
             </FormCell>
           </FormRow>

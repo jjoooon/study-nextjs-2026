@@ -237,7 +237,7 @@ export const LTPZ010 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
-                  <div className="separator">-</div>
+                  -
                   <Input aria-label="" width={'3rem'} value={'1'} readOnly />
                   <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>

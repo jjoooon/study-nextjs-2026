@@ -118,7 +118,7 @@ const LTPA065P = () => {
           <FormRow>
             <FormCell title={'설계번호'}>
               <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
-              <div className="separator">-</div>
+              -
               <Input aria-label="" width={'3rem'} value={'1'} readOnly />
               <Typo variant={'body-sm'}>한화 더 건강한 한아름종합보험2601</Typo>
             </FormCell>

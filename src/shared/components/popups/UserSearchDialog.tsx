@@ -255,9 +255,9 @@ export default function UserSearchDialog({ resolve }: UserSearchProps) {
                     <NativeSelectOption value="">전체</NativeSelectOption>
                     <NativeSelectOption value="todo">010</NativeSelectOption>
                   </NativeSelect>
-                  <div className="separator">-</div>
+                  -
                   <Input type="tel" className="w-20" aria-label="휴대번호 앞자리" />
-                  <div className="separator">-</div>
+                  -
                   <Input type="tel" className="w-20" aria-label="휴대번호 뒷자리" />
                 </FormCell>
                 <FormCell title="최근등록고객(3개월)">

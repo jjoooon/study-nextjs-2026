@@ -78,7 +78,7 @@ const LTPZ043P = () => {
             >
             </Checkbox>
             <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type01', e.target.value)} size="lg" value={form.type01} variant="default" width="10rem" commaAmount after={'㎡'}/>
-            <div className="separator">↔</div>
+            ↔
             <Input errorMsg="입력은 필수입니다." errorPs="bl"  onChange={(e) => setFormField('type02', e.target.value)} size="lg" value={form.type02} variant="default" width="10rem" commaAmount after={'평'}/>
           </FormCell>
           <FormCell>

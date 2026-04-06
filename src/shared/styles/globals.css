@@ -1,191 +1,16 @@
 @import 'tailwindcss';
 @import "./agGridRe.css";
+@import "./shardcnRe.css";
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
-
-/* Scrollbar Styles */
-html {
-  font-size: 10px;
-  letter-spacing: -0.13rem;
-}
-
-body {
-  /* min-width: 120.4rem; */
-  overflow-x: auto;
-}
-
-::-webkit-scrollbar {
-  width: .6rem;
-  height: .6rem;
-  padding-left: .4rem;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 0.4rem;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
-  border-radius: 0.4rem;
-  border: .1rem solid transparent;
-  border-left-width: .2rem;
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af;
-}
-
-.a11y-hidden {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 0.1rem;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 0.1rem;
-}
-
-.sr-only-radio {
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border-width: 0;
-  width: 0.1rem;
-  height: 0.1rem;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.separator {
-  transform: translateY(-0.3rem);
-}
-
-input::placeholder {
-  font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-  font-size: 1.3rem;
-  color: #000;
-  opacity: 0.2;
-  letter-spacing: -0.039rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-/* shardcn resize-separator 재정의 */
-.resize-separator::after {
-  content: "";
-  width: .4rem;
-  opacity: 0;
-  height: 100%;
-  display: block;
-  background: radial-gradient(closest-side, var(--color-primary-50), transparent 95%);
-}
-
-.resize-separator:hover::after,
-.resize-separator[data-separator="active"]::after {
-  opacity: 1;
-}
-
-.resize-separator[aria-orientation="horizontal"]::after {
-  width: 100%;
-  height: .4rem;
-}
-
-.resize-separator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: 0;
-  cursor: default;
-}
-
-.resize-separator[aria-orientation="horizontal"] {
-  width: 100%;
-  height: 2rem;
-}
-
-.resize-separator[aria-orientation="vertical"] {
-  height: 100%;
-  width: 2rem;
-}
-
-.resizablePanel-line {
-  border-bottom: 0.1rem solid var(--color-gray-20);
-}
-
-/* shardcn tab 상태 추가 */
-.isRemovable[role="tab"][data-state="active"]+button {
-  display: block;
-}
-
-.isRemovable[role="tab"]+button {
-  display: none;
-}
-
-.isRemovable[role="tab"][data-state="active"] {
-  padding-right: 2.8rem;
-}
-
-/* table col class 추가 */
-.col-auto {
-  width: min-content;
-}
-
-.col-s {
-  width: 10rem;
-}
-
-.col-m {
-  width: 15rem;
-}
-
-.col-l {
-  width: 20rem;
-}
-
-.hide-scrollbar {
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE 10+ */
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, Opera */
-}
-
-.hide-aside .aside-1 {
-  display: none;
-}
-
-.sb-show-main.sb-main-padded {
-  padding: 0 !important;
-}
 
 @keyframes spinner-step-rotate {
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }
-}
-
-.sbdocs.sbdocs-content {
-  max-width: 100% !important;
-}
-
-[data-state="active"] .vertical-icon-hide {
-  display: block;
-}
-
-.vertical-icon-hide {
-  display: none;
 }
 
 /* 1. 설계도: 변수를 Tailwind 유틸리티로 등록 */
@@ -445,8 +270,6 @@ input::placeholder {
   --color-alpha-primary-10: #FF5C2D33;
   --color-alpha-primary-0: #FF5C2E00;
 
-
-
   /* color */
   --color-background-base: var(--color-gray-0);
   --color-surface-base: var(--color-gray-0);
@@ -656,49 +479,56 @@ input::placeholder {
 
 }
 
-/* 3. 실제 값 창고 (다크 모드) - 클래스 기반일 경우 */
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 /* 4. 기본 스타일 (HTML 태그 초기화) */
 @layer base {
   html {
     font-size: 10px;
+    letter-spacing: -0.13rem;
   }
 
   body {
+    overflow-x: auto;
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  }
+
+  .a11y-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 0.1rem;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 0.1rem;
+  }
+
+  ::-webkit-scrollbar {
+    width: .6rem;
+    height: .6rem;
+    padding-left: .4rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 0.4rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 0.4rem;
+    border: .1rem solid transparent;
+    border-left-width: .2rem;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+  }
+  input::placeholder {
+    font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 1.3rem;
+    color: #000;
+    opacity: 0.2;
+    letter-spacing: -0.039rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 
   button {
@@ -710,87 +540,16 @@ input::placeholder {
   *::before {
     box-sizing: border-box;
   }
-
   *:focus-visible {
     box-shadow: none !important;
   }
-  .symbol-attr {
-    text-indent: -1.6rem;
-  }
-  .symbol-attr::before {
-    content: attr(data-before);
-    margin-right: 0.2rem;
-    width: 1.4rem;
-    text-align: right;
-    display: inline-block;
-    transform: translateY(-0.1rem);
-  }
 
-  .bg-popover {
-    background-color: #fff;
-  }
-
-  .custom-dialog-width {
-    max-width: 100rem;
-    width: 100%;
-  }
-
-  [data-variant="setting"] tr {
-    border: 0 !important
-  }
-
+  /* 
   [data-separator][aria-orientation="horizontal"] {
     width: 100% !important;
   }
-
-  /* Radix Tabs - Hide inactive content */
-  [role="tabpanel"][data-state="inactive"] {
-    display: none;
-  }
-/* 
-  .type--design-number {
-    display: grid;
-    grid-template-columns: 1fr 6rem 6rem 6rem;
-    border-right: 0.1rem solid var(--color-gray-10);
-
-    margin-top: -0.1rem;
-    border-bottom:0.1rem solid var(--color-gray-10);
-  }
-
-  .type--design-number>div {
-    padding: 0.4rem 0.4rem;
-    border-left: 0.1rem solid var(--color-gray-10);
-    border-top: 0.1rem solid var(--color-gray-10);
-  }
-
-  .type--design-number>*:nth-child(1) {
-    text-align: left;
-  }
-
-  .type--design-number>*:nth-child(2) {
-    text-align: center;
-  }
-
-  .type--design-number>*:nth-child(3) {
-    text-align: right;
-  }
-
-  .type--design-number>*:nth-child(4) {
-    text-align: center;
-  } */
-
   [data-state="active"] [data-component="error-msg"] {
     display: none !important;
-  }
-/* 
-  [data-tab-error="true"]:not([data-state="active"]) {
-    color: var(--color-text-danger) !important;
-    border-color: var(--color-text-danger) !important;
-    background-color: var(--color-input-surface-error) !important;
-  } */
-
-  /* [data-hide-aside="true"] [role="tabpanel"],
-  [data-hide-aside="true"] [data-layout="aside"] {
-    display: none !important;
-  } */
+  } 
+  */
 }

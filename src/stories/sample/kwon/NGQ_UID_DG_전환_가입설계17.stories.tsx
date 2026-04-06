@@ -236,9 +236,9 @@ const LTPZ052P = () => {
             </FormCell>
             <FormCell title={'취급자 연락처'}>
               <Input aria-label="" width={'6rem'} value={'123'} readOnly/>
-              <div className='separator'>-</div>
+              -
               <Input aria-label="" width={'6rem'} value={'1234'} readOnly/>
-              <div className='separator'>-</div>
+              -
               <Input aria-label="" width={'6rem'} value={'1234'} readOnly/>
             </FormCell>
           </FormRow>

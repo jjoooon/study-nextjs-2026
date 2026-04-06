@@ -130,7 +130,7 @@ const P6 = () => {
           <FormRow>
             <FormCell title={'가입설계번호'}>
               <Input aria-label="" width={'10rem'} value={''} readOnly />
-              <div className="separator">-</div>
+              -
               <Input aria-label="" width={'2rem'} value={''} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />

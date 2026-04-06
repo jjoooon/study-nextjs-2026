@@ -50,7 +50,7 @@ export const LTPZ045 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormRow>
                   <FormCell title={'설계번호'}>
                     <Input aria-label="" width={'15rem'} value={'LA260209313558'} readOnly />
-                  <div className="separator">-</div>
+                  -
                   <Input aria-label="" width={'3rem'} value={'1'} readOnly />
                   </FormCell>
                   <FormCell title={'계약자'}>
@@ -156,7 +156,7 @@ export const LTPZ045 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <RadioGroupItem value="option1" id="r1">
                             예
                           </RadioGroupItem>
-                          <div className='separator px-[1rem]'>/</div>
+                          <div className='px-[1rem]'>/</div>
                           <RadioGroupItem value="option2" id="r2">
                             아니오
                           </RadioGroupItem>

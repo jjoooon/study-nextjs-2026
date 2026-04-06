@@ -164,7 +164,7 @@ const LTPA430P = () => {
           <FormRow>
             <FormCell title={'설계번호'}>
               <Input aria-label="" width={'10rem'} value={'LA26020945959594'} readOnly />
-              <div className="separator">-</div>
+              -
               <Input aria-label="" width={'3rem'} value={'1'} readOnly />
               <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
               <Input aria-label="" width={'10rem'} value={'1형(345간편고지형)'} readOnly />

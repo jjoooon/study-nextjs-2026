@@ -174,7 +174,7 @@ export const LTRZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA260209313558'} readOnly />
-                  <div className="separator">-</div>
+                  -
                   <Input aria-label="" width={'3rem'} value={'1'} readOnly />
                 </FormCell>
                 <FormCell title={'보험시기'}>
