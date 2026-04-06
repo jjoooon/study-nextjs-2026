@@ -256,6 +256,7 @@ export const Separator = ({
 
 
 interface DividerProps {
+  variant?: 'default' | 'dot';
   className?: string;
   dir?: 'col' | 'row';
   color?: 'gray' | 'gray-light' 
@@ -264,6 +265,7 @@ interface DividerProps {
 
 export const Divider = ({
   className,
+  variant = 'default',
   dir = 'col',
   color = 'gray',
 }: DividerProps) => {
@@ -276,8 +278,8 @@ export const Divider = ({
     <hr
       className={cn(
         'shrink-0 border-0 inline-block',
-        `border-[${colorMap[color]}]`,
-        dir === 'col' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t',
+        (variant ===  'default' && (dir === 'col' ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l` : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`)),
+        (variant === 'dot' && `relative :before:block :before:absolute :before:content-['dd'] flex rounded-full bg-[${colorMap[color]}]`), 
         className
       )}
     />
