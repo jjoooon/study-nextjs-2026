@@ -37,7 +37,7 @@ const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?
   
 
 export function IAListWithPreview() {
-  const [showPhaseOnly, setShowPhaseOnly] = React.useState(false);
+  const [showPhaseOnly, setShowPhaseOnly] = React.useState(true);
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
   const visibleRows = React.useMemo(() => {
@@ -97,7 +97,7 @@ export function IAListWithPreview() {
   const workList_h: string[] = [];
   const workList_k: string[] = [];
   const workList_j: string[] = [];
-  
+
   const workList = [...workList_prev, ...workList_h, ...workList_k, ...workList_j];
 
   const ingIdSet = React.useMemo(() => new Set(ingList), [ingList]);
