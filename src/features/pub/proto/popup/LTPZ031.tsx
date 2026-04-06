@@ -9,19 +9,45 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
+import { QuestionMark, SearchIcon } from '@icons';
 import { InfoBox } from '@common/InfoBox';
 import { TabPager } from '@common/TabPager';
 import type { PopupBaseProps } from './types';
+import { Input } from '@/shared/components/uiux/Input';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { DatePickerInput } from '@common/DatePicker';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { TooltipQ } from '@common/TooltipQ';
+import { BulletItem } from '@/shared/components/common/BulletList';
+
 
 export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+  // form event
+  const [form, setFormField] = useFormFields({
+  type01: '',
+  type02: '',
+  type03: '',
+  type04: '',
+  type05: '',
+  type06: '',
+  type07: '',
+  type08: '',
+  type09: '',
+  type10: '',
+  type11: '',
+  type12: '',
+  type13: '',
+});
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>설계비교</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>질병검색 및 입력</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ031)</Typo>
           </DialogTitle>
         </DialogHeader>
@@ -40,73 +66,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </FormRow>
                   </FormTable>
                 </Grow>
-                <TableFold variant="accordion">
-                  <TableFoldHead title="계약정보">
-                    <Grow>
-                      <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
-                      <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
-                      <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
-                    </Grow>   
-                  </TableFoldHead>
-                  <TableFoldBody>
-                    <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
-                      <FormRow>
-                        <FormCell title={'계약자'} colSpan={3}>
-                          김한화
-                        </FormCell>
-                      </FormRow>  
-                      <FormRow>
-                        <FormCell title={'상품명'} colSpan={3}>
-                          한화실손의료보험(갱신형) 무배당2601
-                        </FormCell>  
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'가입플랜'} colSpan={3}>
-                          자유설계
-                        </FormCell>  
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'보험기간'}>
-                          05년 만기
-                        </FormCell>
-                        <FormCell title={'납입기간'}>
-                          월납/전기납
-                        </FormCell>  
-                      </FormRow>
-                    </FormTable>
-                    <FormTable caption="포인트정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                      <FormRow vertical={true}>
-                        <FormCell title={'보장P'} tdClassName="justify-center items-center">
-                          99
-                        </FormCell>
-                        <FormCell title={'적립P'} tdClassName="justify-center items-center">
-                          99
-                        </FormCell>
-                        <FormCell title={'입시납P'} tdClassName="justify-center items-center">
-                          99
-                        </FormCell>
-                        <FormCell title={<span>합계P <br /> (할인전)</span>} tdClassName="justify-center items-center">
-                          99
-                        </FormCell>
-                        <FormCell title={<span>합계P <br /> (할인후)</span>} tdClassName="justify-center items-center">
-                          99
-                        </FormCell>
-                        <FormCell title={<span>만기환급금 <br /> (예상)</span>} tdClassName="justify-center items-center">
-                          99
-                        </FormCell> 
-                        <FormCell title={<span>환급률 <br /> (예상)</span>} tdClassName="justify-center items-center">    
-                          99
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>      
-                    <InfoBox
-                      title="만기환급급은 예상금으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수 있습니다."
-                      variant={'info'}
-                      bg={false}
-                    ></InfoBox>
-                  </TableFoldBody>
-                </TableFold>
-              
+                
                
                 <Grow placement='bwc' className="w-full">
                   <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
@@ -141,64 +101,21 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </FormCell>  
                   </FormRow>
                 </FormTable>
-                <FormTable caption="포인트정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                  <FormRow vertical={true}>
-                    <FormCell title={'보장P'} tdClassName="justify-center items-center">
-                      99
-                    </FormCell>
-                    <FormCell title={'적립P'} tdClassName="justify-center items-center">
-                      99
-                    </FormCell>
-                    <FormCell title={'입시납P'} tdClassName="justify-center items-center">
-                      99
-                    </FormCell>
-                    <FormCell title={<span>합계P <br /> (할인전)</span>} tdClassName="justify-center items-center">
-                      99
-                    </FormCell>
-                    <FormCell title={<span>합계P <br /> (할인후)</span>} tdClassName="justify-center items-center">
-                      99
-                    </FormCell>
-                    <FormCell title={<span>만기환급금 <br /> (예상)</span>} tdClassName="justify-center items-center">
-                      99
-                    </FormCell> 
-                    <FormCell title={<span>환급률 <br /> (예상)</span>} tdClassName="justify-center items-center">    
-                      99
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-                <InfoBox
-                  title="만기환급급은 예상금으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수 있습니다."
-                  variant={'info'}
-                  bg={false}
-                ></InfoBox>
             </Gcol>
-            <Grow className="w-full" placement={'ss'} gap={5}>
-               <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='none'>
-                    <FormRow>
-                      <FormCell title={'설계번호'}>
-                        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                <Grow placement='bwc' className='w-full'>
-                </Grow>  
-            </Grow>  
-
+            
+            {/* Tab */}
             <Grow placement='ss' className='w-full' gap={2}>
               <Grow className="w-full">
                 {/* 인보험/물보험 TabPager 예시 */}
                 <Gcol className="w-full" placement='ss'>
-                  <Typo variant={'heading-sm'} className="mb-1">피보험자정보</Typo>
                   {(() => {
-                    const [tabActive, setTabActive] = React.useState('human');
+                    const [tabActive, setTabActive] = React.useState('TAB1');
                     const tabData = [
-                      { label: '인보험', value: 'human' },
-                      { label: '물보험', value: 'property' },
+                      { label: '척추염좌', value: 'TAB1' },
+                      { label: '자궁근종', value: 'TAB2' },
+                      { label: '대장직장용종', value: 'TAB3' },
+                      { label: '추간판장애', value: 'TAB4' },
+                      { label: '어깨병변', value: 'TAB5' },
                     ];
                     return (
                       <TabPager
@@ -207,224 +124,322 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                         setActive={setTabActive}
                         getValue={tab => tab.value}
                         renderTab={tab => <span>{tab.label}</span>}
-                        visibleCount={2}
+                        visibleCount={10}
                       >
-                        {tabActive === 'human' ? (
-                          <Gcol className="w-full">
-                            <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'피보험자'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'연령'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'직업명'}>
-                                  회사사무직종사자
-                                </FormCell>
-                                <FormCell title={'급수'}>
-                                  1급
-                                </FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'담보명'}>
-                                </FormCell>
-                                <FormCell title={'보험기간'}>
-                                </FormCell>
-                                <FormCell title={'납입기간'}>
-                                </FormCell>
-                                <FormCell title={'가입금액'}>
-                                </FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol> 
-                        ) : (
-                          <Gcol className="w-full">
-                            <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'소유자'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'직업업종'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'급수'}>
-                                  1급
-                                </FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
-                              <FormRow>
-                                <FormCell title={'소재지'}
+                        {tabActive === 'TAB1' ? (
+                          <Gcol placement='ss' className='w-full' gap={3}>
+                            <TableFold>
+                              <TableFoldHead title="기본질문">
+                                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                                  초기화
+                                </Button>
+                              </TableFoldHead>
+                              <TableFoldBody>
+                                <FormTable caption="병명" 
+                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
                                 >
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재기본담보'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'가입금액'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재특약담보'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'보험기간'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'납입기간'}>
-                                  
-                                </FormCell>
-                                <FormCell title={'가입금액'}>
-                                  
-                                </FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol>  
-                        )}
-                      </TabPager>
-                    );
-                  })()}
-                </Gcol>
-              </Grow>
-              <Grow className="w-full">
-                {/* 인보험/물보험 TabPager 예시 */}
-                <Gcol className="w-full" placement='ss'>
-                  <Typo variant={'heading-sm'} className="mb-1">피보험자정보</Typo>
-                  {(() => {
-                    const [tabActive, setTabActive] = React.useState('human');
-                    const tabData = [
-                      { label: '인보험', value: 'human' },
-                      { label: '물보험', value: 'property' },
-                    ];
-                    return (
-                      <TabPager
-                        data={tabData}
-                        active={tabActive}
-                        setActive={setTabActive}
-                        getValue={tab => tab.value}
-                        renderTab={tab => <span>{tab.label}</span>}
-                        visibleCount={2}
-                      >
-                        {tabActive === 'human' ? (
-                          <Gcol className="w-full">
-                            <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'피보험자'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'연령'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'직업명'}>
-                                  회사사무직종사자
-                                </FormCell>
-                                <FormCell title={'급수'}>
-                                  1급
-                                </FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'담보명'}>
-                                </FormCell>
-                                <FormCell title={'보험기간'}>
-                                </FormCell>
-                                <FormCell title={'납입기간'}>
-                                </FormCell>
-                                <FormCell title={'가입금액'}>
-                                </FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol> 
-                        ) : (
-                          <Gcol className="w-full">
-                            <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'소유자'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'직업업종'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'급수'}>
-                                  1급
-                                </FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
-                              <FormRow>
-                                <FormCell title={'소재지'}
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'병명'}>
+                                      <Grow placement='bwe'>
+                                        <Grow>
+                                          척추염좌
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                              align="center"
+                                              side="bottom"
+                                              sideOffset={0}
+                                              variant="default"
+                                              className="w-[16rem]"
+                                            >
+                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강주의 염좌 및 긴장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                            </TooltipContent>
+                                          </Tooltip>
+                                          <TooltipQ>
+                                            {`문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.`}
+                                            </TooltipQ>
+                                        </Grow>
+                                        <Badge
+                                          color="green"
+                                          size="md"
+                                          variant="contained"
+                                          className=""
+                                        >
+                                          자동완성
+                                        </Badge>
+                                      </Grow>
+                                    </FormCell>
+                                    <FormCell title={'의료기관명'}>
+                                      <Input commaAmount={true} value={form.type02} onChange={e => setFormField('type02', e.target.value)} required />
+                                    </FormCell>
+                                  </FormRow>
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'치료기간'}>
+                                      <DatePickerInput
+                                        errorMsg=""
+                                        errorPs="bl"
+                                        mode="range"
+                                        onChange={() => {}}
+                                        rangeValue={{
+                                          from: '2026-03-01',
+                                          to: '2026-03-07'
+                                        }}
+                                        required
+                                        size="lg"
+                                        width="sm"
+                                      />
+                                    </FormCell>
+                                    <FormCell title={'수술여부'}>
+                                      <RadioGroup
+                                        className="gap-2"
+                                        errorMsg="하나를 선택해주세요."
+                                        errorPs="bl"
+                                        onValueChange={() => {}}
+                                        width="full"
+                                      >
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d1"
+                                          size="lg"
+                                          value="option1"
+                                          variant="default"
+                                        >
+                                          예
+                                        </RadioGroupItem>
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d2"
+                                          size="lg"
+                                          value="option2"
+                                          variant="default"
+                                        >
+                                          아니오
+                                        </RadioGroupItem>
+                                      </RadioGroup>
+                                    </FormCell>
+                                  </FormRow>
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'치료일수'} titleRowSpan={2}>
+                                      <Input commaAmount={true} value={form.type03} onChange={e => setFormField('type03', e.target.value)} required />
+                                      입원
+                                      <Input commaAmount={true} value={form.type04} onChange={e => setFormField('type04', e.target.value)} required />   
+                                      일
+                                    </FormCell>
+                                    <FormCell title={'완치여부'}>
+                                      <RadioGroup
+                                        className="gap-2"
+                                        errorMsg="하나를 선택해주세요."
+                                        errorPs="bl"
+                                        onValueChange={() => {}}
+                                        width="full"
+                                      >
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d1"
+                                          size="lg"
+                                          value="option1"
+                                          variant="default"
+                                        >
+                                          예
+                                        </RadioGroupItem>
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d2"
+                                          size="lg"
+                                          value="option2"
+                                          variant="default"
+                                        >
+                                          아니오
+                                        </RadioGroupItem>
+                                      </RadioGroup>
+                                    </FormCell>
+                                  </FormRow>
+                                  <FormRow vertical={false}>
+                                    <FormCell title={null}>
+                                      <Input commaAmount={true} value={form.type05} onChange={e => setFormField('type05', e.target.value)} required />
+                                      통원
+                                      <Input commaAmount={true} value={form.type06} onChange={e => setFormField('type06', e.target.value)} required />   
+                                      회
+                                    </FormCell>
+                                    <FormCell title={'재발유무'}>
+                                      <RadioGroup
+                                        className="gap-2"
+                                        errorMsg="하나를 선택해주세요."
+                                        errorPs="bl"
+                                        onValueChange={() => {}}
+                                        width="full"
+                                      >
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d1"
+                                          size="lg"
+                                          value="option1"
+                                          variant="default"
+                                        >
+                                          없음
+                                        </RadioGroupItem>
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d2"
+                                          size="lg"
+                                          value="option2"
+                                          variant="default"
+                                        >
+                                          있음
+                                        </RadioGroupItem>
+                                      </RadioGroup>
+                                      <Grow>
+                                        <Input commaAmount={true} value={form.type05} onChange={e => setFormField('type05', e.target.value)} width="4rem" />
+                                        회
+                                      </Grow>
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                            </TableFold>
+                            <TableFold>
+                              <TableFoldHead title="(선택)치료내용" >
+                                <Grow>
+                                  <BulletItem
+                                    // before="ⓐ"
+                                    className="text-right w-full break-words whitespace-pre-line"
+                                    color="default"
+                                    onClick={() => {}}
+                                    size="md"
+                                    type="dot"
+                                  >
+                                    치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
+                                  </BulletItem>
+                                </Grow>
+                              </TableFoldHead>
+                              <TableFoldBody>
+                                <FormTable caption="병명" 
+                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
                                 >
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재기본담보'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'가입금액'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재특약담보'}>
-                                  김한화
-                                </FormCell>
-                                <FormCell title={'보험기간'}>
-                                  30
-                                </FormCell>
-                                <FormCell title={'납입기간'}>
-                                  
-                                </FormCell>
-                                <FormCell title={'가입금액'}>
-                                  
-                                </FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol>  
-                        )}
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'병명'}>
+                                      <Grow placement='bwe'>
+                                        <Grow>
+                                          척추염좌
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                              align="center"
+                                              side="bottom"
+                                              sideOffset={0}
+                                              variant="default"
+                                              className="w-[16rem]"
+                                            >
+                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강주의 염좌 및 긴장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                            </TooltipContent>
+                                          </Tooltip>
+                                          <TooltipQ>
+                                            {`문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.`}
+                                            </TooltipQ>
+                                        </Grow>
+                                        <Badge
+                                          color="green"
+                                          size="md"
+                                          variant="contained"
+                                          className=""
+                                        >
+                                          자동완성
+                                        </Badge>
+                                      </Grow>
+                                    </FormCell>
+                                    <FormCell title={'의료기관명'}>
+                                      <Input commaAmount={true} value={form.type02} onChange={e => setFormField('type02', e.target.value)} required />
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                          </TableFold>
+                          </Gcol>
+                        ) : tabActive === 'TAB2' ? (     
+                          <Gcol placement='ss' className='w-full'>
+                            <TableFold>
+                              <TableFoldHead title="기본질문"></TableFoldHead>
+                              <TableFoldBody>
+                                <FormTable caption="병명" 
+                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                                >
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'병명'}>
+                                      자궁근종
+                                    </FormCell>
+                                    <FormCell title={'의료기관명'}>                                   
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                            </TableFold>
+                          </Gcol>
+                        )  : tabActive === 'TAB3' ? ( // Missing Gcol component    
+                          <Gcol placement='ss' className='w-full'>
+                            <TableFold>
+                              <TableFoldHead title="기본질문"></TableFoldHead>
+                              <TableFoldBody>
+                                <FormTable caption="병명" 
+                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                                >
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'병명'}>
+                                      대장직장용종
+                                    </FormCell>
+                                    <FormCell title={'의료기관명'}>                                   
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                            </TableFold>
+                          </Gcol>
+                        ) : tabActive === 'TAB4' ? ( // Missing Gcol component    
+                          <Gcol placement='ss' className='w-full'>
+                            <TableFold>
+                              <TableFoldHead title="기본질문"></TableFoldHead>
+                              <TableFoldBody>
+                                <FormTable caption="병명" 
+                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                                >
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'병명'}>
+                                      추간판장애
+                                    </FormCell>
+                                    <FormCell title={'의료기관명'}>                                   
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                            </TableFold>
+                          </Gcol>
+                        ) : tabActive === 'TAB5' ? ( // Missing Gcol component    
+                          <Gcol placement='ss' className='w-full'>
+                            <TableFold>
+                              <TableFoldHead title="기본질문"></TableFoldHead>
+                              <TableFoldBody>
+                                <FormTable caption="병명" 
+                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                                >
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'병명'}>
+                                      어깨병변
+                                    </FormCell>
+                                    <FormCell title={'의료기관명'}>                                   
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                            </TableFold>
+                          </Gcol>
+                        ) : null}
                       </TabPager>
                     );
                   })()}
