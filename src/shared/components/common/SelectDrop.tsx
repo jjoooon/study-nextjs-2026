@@ -9,7 +9,7 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { cn } from '@/shared/lib/shadcn/utils';
-import type { UIUXsize } from '@/shared/types/uiuxTypes';
+import type { UIUXsize } from '@/shared/types/uiTypes';
 
 const CUSTOM_INPUT_VALUE = '__custom_input__' as const;
 

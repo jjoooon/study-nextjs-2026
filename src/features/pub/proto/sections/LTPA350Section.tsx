@@ -14,7 +14,7 @@ import { InfoContract } from '@features/InfoContract';
 import { QuickLinks } from '@features/QuickLinks';
 
 // hooks
-import { useAsideToggleState } from '@/shared/hooks/useAsideToggleState';
+import { useAsideToggleState } from '@aggrid';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // LTPA350 - components

@@ -9,7 +9,7 @@ import { ErrorMsg } from '@common/ErrorMsg';
 import { InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
-import { UIUXsize } from '@/shared/types/uiuxTypes';
+import { UIUXsize } from '@/shared/types/uiTypes';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 

@@ -64,7 +64,7 @@
 
 import { ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { UIUXposition } from '@/shared/types/uiuxTypes';
+import { UIUXposition } from '@/shared/types/uiTypes';
 import { dir } from 'console';
 
 type LayoutPlacement = Extract<UIUXposition, 'ss' | 'sc' | 'se' | 'cs' | 'cc' | 'ce' | 'es' | 'ec' | 'ee' | 'bws' | 'bwc' | 'bwe' | 'ars' | 'arc' | 'are' | 'evs' | 'evc' | 'eve'>;
