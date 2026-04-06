@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridPagination } from '@/shared/components/agGridUtils';
 import type { PopupBaseProps } from './types';
 import { TablePagination } from '@common/TablePagination';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';

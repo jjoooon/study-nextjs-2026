@@ -7,7 +7,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, CellSpanModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridPagination } from '@/shared/components/agGridUtils';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule]);

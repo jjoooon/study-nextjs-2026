@@ -12,7 +12,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, useAgGridPagination } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer, useAgGridPagination } from '@/shared/components/agGridUtils';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { useFormFields } from '@hooks/useFormFields';
 

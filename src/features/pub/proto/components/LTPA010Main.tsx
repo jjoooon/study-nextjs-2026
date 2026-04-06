@@ -14,7 +14,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
-import { createCellValueChangedHandler, AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
+import { createCellValueChangedHandler, AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { InfoBox } from '@common/InfoBox';
