@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { SelectDropIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { UIUXsize } from '@/shared/types/uiuxTypes';
+import { UIUXsize } from '@/shared/types/uiTypes';
 
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
   variant?: 'default';

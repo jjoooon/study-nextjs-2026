@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import type { CellClassParams, ColDef, EditableCallbackParams, GridApi, ICellRendererParams, ITooltipParams, SelectionChangedEvent, ValueFormatterParams } from 'ag-grid-community';
+import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent, } from 'ag-grid-community';
 
 import { 
   amountUnitInputCellRenderer, 
@@ -33,8 +33,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 // data
-import type { LTPA350Step2DataType, LTPA350Step2DataType_2 } from '../data/LTPA350Step2Data';
-import { LTPA350Step2Data, LTPA350Step2Data_2 } from '../data/LTPA350Step2Data';
+import type { LTPA350Step2DataType } from '../data/LTPA350Step2Data';
+import { LTPA350Step2Data } from '../data/LTPA350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -590,12 +590,12 @@ export function LTPA350Step2({
     >
       <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
         <LayoutMainHead>
-          <NativeSelect className='fixed top-1 left-[50%] z-100 w-[auto] opacity-'>
-            <NativeSelectOption value="">인보험</NativeSelectOption>
-            <NativeSelectOption value="">태아</NativeSelectOption>
-            <NativeSelectOption value="">재물</NativeSelectOption>
-            <NativeSelectOption value="">단체</NativeSelectOption>
-            <NativeSelectOption value="">연금/저축</NativeSelectOption>
+          <NativeSelect className='fixed top-1 left-[50%] z-100 w-[auto] opacity-80'>
+            <NativeSelectOption value="">임시 화면확인용: 인보험</NativeSelectOption>
+            <NativeSelectOption value="">임시 화면확인용: 태아</NativeSelectOption>
+            <NativeSelectOption value="">임시 화면확인용: 재물</NativeSelectOption>
+            <NativeSelectOption value="">임시 화면확인용: 단체</NativeSelectOption>
+            <NativeSelectOption value="">임시 화면확인용: 연금/저축</NativeSelectOption>
           </NativeSelect>
 
           <TabPager 

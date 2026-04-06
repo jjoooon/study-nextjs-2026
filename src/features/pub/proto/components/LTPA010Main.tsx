@@ -1,28 +1,29 @@
+'use client';
 
+// ...existing code...
 import * as React from 'react';
-import { Grow, Gcol, Typo } from '@atoms';
-
-// Layout Components
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-
-
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { SearchIcon, MemoIcon, QuestionMark, ResetIcon } from '@icons';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
-import { createCellValueChangedHandler, AgGridEmptyComponent, createFieldRenderer } from '@/shared/components/agGridUtils';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+
+import { Grow, Gcol, Typo } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { DatePickerInput } from '@common/DatePicker';
 import { useFormFields } from '@hooks/useFormFields';
-import { LTPA010DummyData, type LTPA010DummyDataRow } from '../data/LTPA010Data';
+import { MemoIcon, ResetIcon, SearchIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import Main from '../../poc/sections/Page3Section';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer } from '@/shared/components/agGridUtils';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { LTPA010DummyDataRow } from '../data/LTPA010Data';
+
+import { LTPA010DummyData } from '../data/LTPA010Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

@@ -9,13 +9,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogTrigger, DialogClose } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { CheckIcon } from '@icons';
-import { useToggleTopRows } from '@/shared/hooks/useToggleTopRows';
-import { Textarea } from '@uiux/Textarea';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import type { ToggleTopRow } from '@/shared/hooks/useToggleTopRows';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

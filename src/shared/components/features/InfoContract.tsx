@@ -67,7 +67,7 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
   return (
     <Gcol className="w-full">
       <Grow gap={2} placement={'bwc'}>
-        <Grow gap={1.5} placement={'bwc'}>
+        <Grow gap={1.5} placement={'bwc'} className="overflow-hidden">
           <Typo variant={'heading-md'}>계약정보</Typo>
           <Grow className="gap-[0.2rem]" placement={'cc'}>
             <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">설계중</Typo>

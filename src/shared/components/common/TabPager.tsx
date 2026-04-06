@@ -21,7 +21,7 @@ import {
   Button,
 } from '@uiux/Button';
 
-import { useTabsPagination } from '@/shared/hooks/useTabsPagination';
+import { useTabsPagination } from '@/shared/hooks/useTabs';
 
 interface TabPagerProps<T> {
   data: T[];

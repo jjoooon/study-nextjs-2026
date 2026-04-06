@@ -8,7 +8,7 @@ import { InfoBoxWarningIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 // 내부 공통 컴포넌트
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 import type { GridReadyEvent } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
@@ -18,6 +18,99 @@ import { SelectDropIcon, PlusIcon } from '@icons';
 
 import { DatePickerInput } from '@common/DatePicker';
 import type { ICellEditorParams } from 'ag-grid-community';
+
+export type ToggleTopRow<T> = T & {
+  originalIndex: number;
+  toggleOrder: number | null;
+};
+
+type PrimitiveId = string | number;
+
+type IdKeyOf<T> = {
+  [K in keyof T]-?: T[K] extends PrimitiveId ? K : never;
+}[keyof T];
+
+type BooleanKeyOf<T> = {
+  [K in keyof T]-?: T[K] extends boolean ? K : never;
+}[keyof T];
+
+interface UseToggleTopRowsParams<T extends Record<string, unknown>> {
+  rows: T[];
+  idKey: IdKeyOf<T>;
+  toggleKey: BooleanKeyOf<T>;
+}
+
+function sortToggleRows<T extends Record<string, unknown>>(
+  rows: ToggleTopRow<T>[],
+  toggleKey: BooleanKeyOf<T>
+) {
+  return [...rows].sort((prevRow, nextRow) => {
+    const prevToggled = Boolean(prevRow[toggleKey]);
+    const nextToggled = Boolean(nextRow[toggleKey]);
+
+    if (prevToggled !== nextToggled) {
+      return prevToggled ? -1 : 1;
+    }
+
+    if (prevToggled && nextToggled) {
+      const prevOrder = prevRow.toggleOrder ?? 0;
+      const nextOrder = nextRow.toggleOrder ?? 0;
+
+      if (prevOrder !== nextOrder) {
+        return nextOrder - prevOrder;
+      }
+    }
+
+    return prevRow.originalIndex - nextRow.originalIndex;
+  });
+}
+
+export function useToggleTopRows<T extends Record<string, unknown>>({
+  rows,
+  idKey,
+  toggleKey,
+}: UseToggleTopRowsParams<T>) {
+  const sequenceRef = useRef(1);
+
+  const [rowData, setRowData] = useState<ToggleTopRow<T>[]>(() => {
+    const initialized = rows.map((row, index) => ({
+      ...row,
+      originalIndex: index,
+      toggleOrder: Boolean(row[toggleKey]) ? 0 : null,
+    }));
+
+    return sortToggleRows(initialized, toggleKey);
+  });
+
+  const toggleById = useCallback(
+    (id: T[IdKeyOf<T>]) => {
+      setRowData((prev) => {
+        const nextRows = prev.map((row) => {
+          if (row[idKey] !== id) {
+            return row;
+          }
+
+          const nextToggled = !Boolean(row[toggleKey]);
+
+          return {
+            ...row,
+            [toggleKey]: nextToggled,
+            toggleOrder: nextToggled ? sequenceRef.current++ : null,
+          } as ToggleTopRow<T>;
+        });
+
+        return sortToggleRows(nextRows, toggleKey);
+      });
+    },
+    [idKey, toggleKey]
+  );
+
+  return {
+    rowData,
+    setRowData,
+    toggleById,
+  };
+}
 
 /**
  * AG Grid 셀 편집 가능 여부 콜백 팩토리 (공용)
@@ -595,5 +688,18 @@ export function useAgGridColumnVisibility<TData extends object>({
     onVisibleFieldsChange,
     onGridReady,
     applyColumnVisibility,
+  };
+}
+
+/**
+ * 페이지 셸의 aside 표시/확장 상태를 관리하는 공통 훅.
+ */
+export function useAsideToggleState(initialState = false) {
+  const [isWidthExpanded, setIsWidthExpanded] = useState(initialState);
+
+  return {
+    isWidthExpanded,
+    setIsWidthExpanded,
+    hideAside: isWidthExpanded,
   };
 }
