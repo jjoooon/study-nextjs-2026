@@ -1,5 +1,3 @@
-import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { LTPZ994 } from '@/features/pub/proto/popup/LTPZ994';
 import { LayoutDoc } from '@layout/BaseLayout';

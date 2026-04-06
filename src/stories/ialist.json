@@ -251,8 +251,8 @@
   { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "화면권한보기", "popup": "Y", "id": "LTPZ998", "dep4": "화면권한보기", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "화면담당자", "popup": "Y", "id": "LTPZ997", "dep4": "화면담당자", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "거래이력리스트", "popup": "Y", "id": "LTPZ996", "dep4": "거래이력리스트", "file": "COMMGUIDE", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
-  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "파일 업로드", "popup": "", "id": "LTPZ995", "dep4": "파일 업로드", "file": "", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
-  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "파일 다운로드", "popup": "", "id": "LTPZ994", "dep4": "파일 다운로드", "file": "", "plan": "이채우", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
+  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "파일 업로드", "popup": "Y", "id": "LTPZ995", "dep4": "파일 업로드", "file": "", "plan": "이채우", "pub":"권오택", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
+  { "dep1": "차세대가입설계", "dep2": "공통", "dep3": "파일 다운로드", "popup": "Y", "id": "LTPZ994", "dep4": "파일 다운로드", "file": "", "plan": "이채우", "pub":"권오택", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
 
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "담보설계", "popup": "", "id": "LTPZ070", "dep4": "CSM 시뮬레이션", "file": "", "plan": "안혜은", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
   { "dep1": "차세대가입설계", "dep2": "가입설계", "dep3": "고지콕콕", "popup": "", "id": "LTPZ062", "dep4": "고지콕콕", "file": "", "plan": "안혜은", "pub":"조현민", "dev":"미정", "date":"00.00.00", "modify":"00.00.00", "subId":"", "phase": "Y" },
