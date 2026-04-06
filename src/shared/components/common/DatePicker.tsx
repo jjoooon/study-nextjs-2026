@@ -9,7 +9,7 @@ import { Calendar } from '@uiux/Calendar';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
-import { FormItemSize, FormItemWidth, UIUXsize, UIUXposition } from '@/shared/types/uiuxTypes';
+import { FormItemSize, FormItemWidth, UIUXsize, UIUXposition } from '@/shared/types/uiTypes';
 
 type CalendarSelection = Date | Date[] | DateRange | undefined;
 

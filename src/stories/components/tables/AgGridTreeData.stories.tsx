@@ -32,7 +32,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 

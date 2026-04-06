@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler, createCellValueChangedHandler } from '@aggrid';
+import { amountUnitInputCellRenderer, editableSelectCellRenderer, numberValueFormatter, productNameTooltipValueGetter, createSelectionChangedHandler, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

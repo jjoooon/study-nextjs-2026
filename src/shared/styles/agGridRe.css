@@ -118,6 +118,7 @@
   --color-text-base: #ff5c2e;
 }
 
+/* 분할 정렬 */
 .ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] {
   display: flex !important;
   align-items: center;

@@ -20,7 +20,7 @@ import { Badge } from '@uiux/Badge';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import type { PopupBaseProps } from './types';
