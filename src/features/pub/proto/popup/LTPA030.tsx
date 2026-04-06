@@ -2,24 +2,25 @@
 
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-
-import { Input } from '@uiux/Input';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, numberValueFormatter, DatePickerCellEditor, createCellValueChangedHandler } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import {
+  DatePickerCellEditor,
+  createCellValueChangedHandler,
+} from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-ModuleRegistry.registerModules([AllCommunityModule]);
 
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export interface LTPA030Props {
   open?: boolean;
@@ -27,7 +28,6 @@ export interface LTPA030Props {
 }
 
 export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
-
   // dummy data
   type DummyDataType = {
     id: number;
@@ -277,7 +277,6 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
              <Grow className="w-full">
               <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
                 <AgGridReact<DummyDataType>
-                  // getRowId 적용: id 필드를 고유 식별자로 사용
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
@@ -289,7 +288,6 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
 
-                  // 체크박스 시
                   rowSelection={{
                     mode: 'multiRow',
                     headerCheckbox: false,

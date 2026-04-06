@@ -480,11 +480,18 @@
 }
 
 /* 4. 기본 스타일 (HTML 태그 초기화) */
+@font-face {
+  font-family: 'Malgun Gothic';
+  src: local('Arial');          /* 숫자용 폰트 */
+  unicode-range: U+0030-0039;   /* 0~9 */
+}
+
 @layer base {
   html {
     font-size: 10px;
-    letter-spacing: -0.13rem;
+    /* letter-spacing: -0.13rem; */
   }
+
 
   body {
     overflow-x: auto;
