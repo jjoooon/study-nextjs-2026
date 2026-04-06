@@ -1,21 +1,28 @@
+'use client';
+
 import * as React from 'react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+
+import { useAgGridInfiniteAppend } from '@/shared/components/agGridUtils';
 import { Gcol, Grow, Typo } from '@atoms';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@/shared/components/agGridUtils';
+import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { LayoutMain, LayoutMainBody } from '@layout/BaseLayout';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
+import { useFormFields } from '@hooks/useFormFields';
+import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
+import { LayoutMain, LayoutMainBody } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
-import { useFormFields } from '@hooks/useFormFields';
-import { LTPA300DummyData, type LTPA300DummyDataRow } from '../data/LTPA300Data';
-import { DatePickerInput } from '@common/DatePicker';
-import { TableMore } from '@common/TablePagination';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+
+import type { ColDef } from 'ag-grid-community';
+import type { LTPA300DummyDataRow } from '../data/LTPA300Data';
+
+import { LTPA300DummyData } from '../data/LTPA300Data';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA300Main = () => {
@@ -27,8 +34,6 @@ export const LTPA300Main = () => {
     type05: '',
     type06: '',
   });
-
-  const [rowData] = React.useState<LTPA300DummyDataRow[]>(LTPA300DummyData);
 
   const columnDefs = React.useMemo<ColDef<LTPA300DummyDataRow>[]>(
     () => [
@@ -173,7 +178,6 @@ export const LTPA300Main = () => {
                     <AgGridReact<LTPA300DummyDataRow>
                       // noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
                       columnDefs={columnDefs}
                       defaultColDef={{
                         sortable: false,
