@@ -5,7 +5,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';

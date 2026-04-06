@@ -13,7 +13,7 @@ import type { ColDef } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon } from '@icons';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { numberValueFormatter, useAgGridColumnVisibility } from '@aggrid';
+import { numberValueFormatter, useAgGridColumnVisibility } from '@/shared/components/agGridUtils';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

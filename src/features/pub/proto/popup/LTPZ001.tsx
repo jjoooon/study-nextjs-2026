@@ -6,7 +6,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { FileExportIcon, ResetIcon } from '@icons';'
+import { FileExportIcon, ResetIcon } from '@icons';
 import { Input } from '@uiux/Input';
 import { Button } from '@uiux/Button';
 import { TabPager } from '@common/TabPager';
@@ -20,7 +20,7 @@ import { Badge } from '@uiux/Badge';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import type { PopupBaseProps } from './types';

@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
-import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent } from '@aggrid';
+import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 import { TablePagination } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);

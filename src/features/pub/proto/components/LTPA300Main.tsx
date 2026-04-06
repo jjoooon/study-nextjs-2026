@@ -3,7 +3,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@/shared/components/agGridUtils';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutMain, LayoutMainBody } from '@layout/BaseLayout';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';

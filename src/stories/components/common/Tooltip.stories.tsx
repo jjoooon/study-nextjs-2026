@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Gcol, Grow } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { TooltipQ } from '@common/TooltipQ';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { QuestionMark } from '@icons';
 
@@ -41,17 +42,18 @@ const meta: Meta<typeof TooltipContent> = {
 \`\`\`tsx
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { TooltipQ } from '@common/TooltipQ';
 
 <Tooltip>
   <TooltipTrigger asChild>
     <Button variant="contained" color="primary" size="md">툴팁 보기</Button>
-      <QuestionMark color="#61554F" />
-    </Button>
   </TooltipTrigger>
   <TooltipContent variant="default" side="top" align="center" sideOffset={8}>
     안내 메시지
   </TooltipContent>
 </Tooltip>
+
+<TooltipQ>안내 메시지</TooltipQ>
 \`\`\`
               `}
             </Markdown>
@@ -152,7 +154,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
     side: 'top',
     align: 'center',
     sideOffset: 0,
-    children: '문서서명/IM은 청약서상 고객이 청약서로<br> [전자적 방법의 안내동의여부]에 기재한 내용을<br> 화면에서 선택하시면 됩니다.<br> 전자서명/전자청약은 전자적 안내동의가<br> 필수사항입니다.',
+    children: '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.',
   },
 };
 
@@ -162,14 +164,22 @@ type Story = StoryObj<typeof TooltipContent>;
 export const Default: Story = {
   render: (args) => {
     return (
-      <Tooltip defaultOpen>
-        <TooltipTrigger asChild>
-          <Button variant={'none'} size={'md'} only={'icon'}>
-            <QuestionMark color="#61554F" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent {...args}>{args.children}</TooltipContent>
-      </Tooltip>
+      <Grow gap={6} placement="cc">
+        <Gcol>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={'outlined'} size={'md'} >
+                툴팁
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent {...args}>{args.children}</TooltipContent>
+          </Tooltip>
+        </Gcol>
+       
+        <Gcol>
+          <TooltipQ>{args.children}</TooltipQ>
+        </Gcol>
+      </Grow>
     );
   },
 };

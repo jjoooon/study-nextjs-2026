@@ -6,12 +6,12 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
-import { ResetIcon } from '@icons';'
+import { ResetIcon } from '@icons';
 import { Input } from '@uiux/Input';
 import { FileExportIcon, SearchIcon } from '@icons';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { numberValueFormatter } from '@aggrid';
+import { numberValueFormatter } from '@/shared/components/agGridUtils';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';

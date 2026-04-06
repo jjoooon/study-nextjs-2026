@@ -6,7 +6,7 @@ import { AllCommunityModule, ClientSideRowModelModule, ModuleRegistry } from 'ag
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { editableSelectCellRenderer } from '@aggrid';
+import { editableSelectCellRenderer } from '@/shared/components/agGridUtils';
 import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
 import {
   Dialog,

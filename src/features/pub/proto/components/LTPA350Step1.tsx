@@ -23,14 +23,14 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { DatePickerInput } from '@common/DatePicker';
 import { TabPager } from '@common/TabPager';
 import { KeyValueItem } from '@common/KeyValueList';
-import { TableTooltip } from '@/shared/components/tooltip/TableTooltip';
+import { TooltipQ } from '@/shared/components/common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 // Feature Components
 import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
 
 // Icons
-import { SearchIcon, AddIcon } from '@icons';
+import { SearchIcon, AddIcon, QuestionMark } from '@icons';
 
 // Hooks
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -995,6 +995,10 @@ export function LTPA350Step1({
     setPensionInsuranceStartDate(new Date().toISOString().slice(0, 10));
   }, []);
 
+  const tooltipContent = [
+    '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br/> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.'
+  ]
+
   return (
     // ---------------------------------------------------------------------------
     // 5) Render
@@ -1425,7 +1429,11 @@ export function LTPA350Step1({
                                 <KeyValueItem label="전자적안내동의">
                                   <Grow placement='sc' gap="0">
                                     <Badge color="green" size="md" variant="ghost">{POLICYHOLDER.electronicNoticeAgree}</Badge>
-                                    <TableTooltip />
+
+                                    <TooltipQ>
+                                {tooltipContent[0]}
+                                    </TooltipQ>
+
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
@@ -1902,7 +1910,9 @@ export function LTPA350Step1({
                                 <KeyValueItem label="전자적안내동의">
                                   <Grow placement='sc' gap="0">
                                     <Badge color="green" size="md" variant="ghost">{POLICYHOLDER.electronicNoticeAgree}</Badge>
-                                    <TableTooltip />
+                                    <TooltipQ>
+                                {tooltipContent[0]}
+                                    </TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
@@ -2480,7 +2490,9 @@ export function LTPA350Step1({
                                 <KeyValueItem label="전자적안내동의">
                                   <Grow placement='sc' gap="0">
                                     <Badge color="green" size="md" variant="ghost">{PROPERTY_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}</Badge>
-                                    <TableTooltip />
+                                    <TooltipQ>
+                                {tooltipContent[0]}
+                                    </TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
@@ -2820,7 +2832,9 @@ export function LTPA350Step1({
                                 <KeyValueItem label="전자적안내동의">
                                   <Grow placement='sc' gap="0">
                                     <Badge color="green" size="md" variant="ghost">{GROUP_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}</Badge>
-                                    <TableTooltip />
+                                    <TooltipQ>
+                                {tooltipContent[0]}
+                                    </TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
@@ -3070,7 +3084,9 @@ export function LTPA350Step1({
                           <KeyValueItem label="전자적안내동의">
                             <Grow placement='sc' gap="0">
                               <Badge color="green" size="md" variant="ghost">{PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}</Badge>
-                              <TableTooltip />
+                              <TooltipQ>
+                                {tooltipContent[0]}
+                              </TooltipQ>
                             </Grow>
                           </KeyValueItem>
                         </Grow>

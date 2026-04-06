@@ -1,3 +1,45 @@
+스토리북 구성 참고
+LOTTE UI Library
+https://682592b803743a87b89bf45a-igcppqkrev.chromatic.com/
+
+
+$env:NODE_TLS_REJECT_UNAUTHORIZED="0"
+설치시 먼저 실행 후
+
+elint 에러 체크
+npm run type-check
+
+
+
+PowerShell
+Set-ExecutionPolicy -Scope CurrentUser Unrestricted
+
+환경변수추가
+settings.json{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "eslint.enable": true,
+    "eslint.format.enable": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "github.copilot.nextEditSuggestions.enabled": true
+}
+
+
+getRowId={(params) => String(params.data.id)}
+
+
 # 퍼블리싱 가이드
 
 이 문서는 본 프로젝트의 퍼블리싱(퍼블) 관련 구조, 설계, 컴포넌트, 그리고 Storybook 활용에 대한 가이드입니다.

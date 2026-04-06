@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
 import { Input } from '@uiux/Input';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
