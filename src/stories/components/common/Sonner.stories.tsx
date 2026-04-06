@@ -92,7 +92,7 @@ import { toast } from 'sonner';
   args: {
     theme: 'system',
     toastOptions: {},
-    duration: 995000,
+    duration: 3000,
   },
 };
 
@@ -107,7 +107,7 @@ export const Default: Story = {
         <Toaster {...args} />
         <Button
           variant={'outlined'}
-          onClick={() => toast.info('테스트 알림!', { position: 'top-center', duration: args.duration })}
+          onClick={() => toast.info('테스트 알림! 테스트 알림!', { position: 'top-center', duration: args.duration })}
         >
           Show Toast
         </Button>

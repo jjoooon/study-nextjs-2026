@@ -12,22 +12,22 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="toaster group [&>li]:bg-[var(--color-information-5)]! [&>li]:border! [&>li]:border-[var(--color-information-50)]! [&>li]:shadow-lg! [&>li]:text-[1.4rem]! [&>li]:py-2! [&>li]:px-2.5!" 
+      className="toaster group [&>li]:bg-[var(--color-information-5)]! [&>li]:border! [&>li]:border-[var(--color-information-50)]! [&>li]:shadow-lg! [&>li]:text-[1.4rem]! [&>li]:py-2! [&>li]:px-2.5! [&_[data-sonner-toast]]:relative [&_[data-close-button]]:!absolute [&_[data-close-button]]:!right-[0] [&_[data-close-button]]:!left-auto [&_[data-close-button]]:!top-[1.6rem] [&_[data-close-button]]:bg-transparent! [&_[data-close-button]]:border-0! [&_[data-close-button]]:text-[var(--color-information-50)]!  [&>li]:flex [&>li]:items-start! [&_[data-icon]]:ml-0! [&_[data-icon]]:mt-[0.1rem]! [&>li]:pr-[3rem]!" 
       closeButton={true}
       toastOptions={{
         classNames: {
           toast:
-            'border bg-[var(--color-information-50)] group-[.toaster]:border-[var(--color-information-50)] bg-[var(--color-information-5)] group toast group-[.toaster]:bg-[var(--color-information-5)] group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg',
+            'border bg-[var(--color-information-50)] group-[.toaster]:border-[var(--color-information-50)] bg-[var(--color-information-5)] group toast group-[.toaster]:bg-[var(--color-information-5)] group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg [&[data-visible=true]]:[animation:sonner-toast-in_220ms_ease-out] [&[data-removed=true]]:[animation:sonner-toast-out_180ms_ease-in_forwards]',
           description: 'group-[.toast]:text-muted-foreground',
           actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
           cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
           icon: 'mr-2',
-          closeButton: 'absolute top-2 right-2 border-none bg-transparent shadow-none p-0 m-0 w-auto h-auto flex items-center justify-center text-gray-400 hover:text-gray-700 focus:outline-none',
+          closeButton: 'absolute top-1/2 right-2 -translate-y-1/2 border-none bg-transparent shadow-none p-0 m-0 w-auto h-auto flex items-center justify-center text-gray-400 hover:text-gray-700 focus:outline-none',
         },
       }}
       icons={{
         info: <InfoToastIcon />,
-        close: <CloseIcon className="w-[1.2rem] h-[1.2rem] hover:text-gray-700 transition" />,
+        close: <CloseIcon className="w-[1.2rem] h-[1.2rem] transition" color="var(--color-information-60)" />,
       }}
       {...props}
     />
