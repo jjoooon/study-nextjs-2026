@@ -90,9 +90,14 @@ export function IAListWithPreview() {
   const ingList = [
     'LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ031',
   ]
-  const workList = [
-    'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ039', 'LTPA400', 'LTPA210', 'LTPA200', 'LTPA190', 'LTPZ001', 'LTPZ040', 'LTPZ043', 'LTPZ046', 'LTPZ047', 'LTPA030', 'LTPA360', 'LTPZ049', 'LTPZ050', 'LTPZ051', 'LTPZ002', 'LTPZ052', 'LTPZ053', 'LTPZ057', 'LTPZ009', 'LTPA401', 'LTPA301', 'LTPA303', 'LTPZ048', 'LTPZ045', 'LTRZ085', 'LTPA300', 
+
+  const workList_prev: string[] = [
+    'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ039', 'LTPA400', 'LTPA210', 'LTPA200', 'LTPA190', 'LTPZ001', 'LTPZ040', 'LTPZ043', 'LTPZ046', 'LTPZ047', 'LTPA030', 'LTPA360', 'LTPZ049', 'LTPZ050', 'LTPZ051', 'LTPZ002', 'LTPZ052', 'LTPZ053', 'LTPZ057', 'LTPZ009', 'LTPA401', 'LTPA301', 'LTPA303', 'LTPZ048', 'LTPZ045', 'LTRZ085', 'LTPA300',
   ];
+  const workList_h: string[] = [];
+  const workList_k: string[] = [];
+  const workList_j: string[] = [];
+  const workList = [...workList_prev, ...workList_h, ...workList_k, ...workList_j];
 
   const ingIdSet = React.useMemo(() => new Set(ingList), [ingList]);
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
