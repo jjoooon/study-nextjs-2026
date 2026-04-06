@@ -87,10 +87,14 @@ export function IAListWithPreview() {
     LinkGo(activeRow.id, undefined, activeRow.popup);
   }, [activeRow, activeStep]);
 
+  const ingList = [
+    'LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ031',
+  ]
   const workList = [
-    'LTPA350_1', 'LTPA350_2', 'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ039', 'LTPA400', 'LTPA210', 'LTPA200', 'LTPA190', 'LTPZ001', 'LTPZ040', 'LTPZ043', 'LTPZ046', 'LTPZ047', 'LTPA030', 'LTPA360', 'LTPZ049', 'LTPZ050', 'LTPZ051', 'LTPZ002', 'LTPZ052', 'LTPZ053', 'LTPZ057', 'LTPZ009', 'LTPZ048', 'LTPZ045', 'LTRZ085', 'LTPA300', 'LTPA401' 
+    'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ039', 'LTPA400', 'LTPA210', 'LTPA200', 'LTPA190', 'LTPZ001', 'LTPZ040', 'LTPZ043', 'LTPZ046', 'LTPZ047', 'LTPA030', 'LTPA360', 'LTPZ049', 'LTPZ050', 'LTPZ051', 'LTPZ002', 'LTPZ052', 'LTPZ053', 'LTPZ057', 'LTPZ009', 'LTPA401', 'LTPA301', 'LTPA303', 'LTPZ048', 'LTPZ045', 'LTRZ085', 'LTPA300', 
   ];
 
+  const ingIdSet = React.useMemo(() => new Set(ingList), [ingList]);
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
 
   return (
@@ -133,6 +137,10 @@ export function IAListWithPreview() {
           <tbody>
             {visibleRows.map((row, index) => {
               const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
+              const isIng = ingIdSet.has(row.id) || ingIdSet.has(row.subId ?? '');
+              const isWork = workIdSet.has(row.id) || workIdSet.has(row.subId ?? '');
+              const rowBgClass = isWork ? 'bg-[#dbeafe]!' : isIng ? 'bg-[#fff3cd]!' : '';
+              const rowIdBgClass = isWork ? 'bg-[#bfdbfe]!' : isIng ? 'bg-[#c5bfbf]!' : '';
 
               return (
                 <tr
@@ -141,34 +149,34 @@ export function IAListWithPreview() {
                   className={isActive ? 'selected' : ''}
                   onClick={() => setActiveRowKey(getRowKey(row))}
                 >
-                  <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
+                  <td className={rowBgClass}>
                     <b>{index + 1}</b>
                   </td>
-                  <th scope="row" className={`${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#c5bfbf]!' : ''}`}>
+                  <th scope="row" className={rowIdBgClass}>
                     {row.id}{row.subId ? (<><br /> ({row.subId})</>) : ''}
                   </th>
-                  <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
+                  <td className={rowBgClass}>
                     <b>{row.dep4}</b>
                   </td>
 
-                  <td className={workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}>
+                  <td className={rowBgClass}>
                     {row.file}
                   </td>
 
-                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>
+                  <td className={`text-center ${rowBgClass}`}>
                     <b>{row.phase === 'Y' ? 'Y' : ''}</b>
                   </td>
 
-                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>
+                  <td className={`text-center ${rowBgClass}`}>
                     <b>{row.date}</b>
                   </td>
-                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>
+                  <td className={`text-center ${rowBgClass}`}>
                     <b>{row.modify}</b>
                   </td>
 
-                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>{row.plan}</td>
-                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>{row.pub}</td>
-                  <td className={`text-center ${workIdSet.has(row.id) || workIdSet.has(row.subId ?? '') ? 'bg-[#fff3cd]!' : ''}`}>{row.dev}</td>
+                  <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
+                  <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
+                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
                 </tr>
               );
             })}

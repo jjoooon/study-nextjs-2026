@@ -87,18 +87,19 @@ export type LTPA360DummyDataRow1_1 = {
   field08: string | number;
   field09: string | number;
   field10: string | number;
+  isSelect?: boolean;
 };
 
 export const LTPA360DummyData1_1: LTPA360DummyDataRow1_1[] = [
   { 
     id: 1, 
-    field01: '<b>2025-10-13</b>', 
-    field02: '<b>*</b>', 
-    field03: '<b>25년 10월 개정</b>', 
-    field04: '<b class="text-[var(--color-primary-50))]">지연(37)건</b>', 
-    field05: '<b class="text-[var(--color-primary-50))]">지연(37)건</b>', 
-    field06: '<b class="text-[var(--color-primary-50))]">지연(37)건</b>', 
-    field07: '<b class="text-[var(--color-primary-50))]">지연(37)건</b>', 
+    field01: '2025-10-13', 
+    field02: '*', 
+    field03: '25년 10월 개정', 
+    field04: '지연(37)건', 
+    field05: '지연(37)건', 
+    field06: '지연(37)건', 
+    field07: '지연(37)건', 
     field08: '', 
     field09: '', 
     field10: '', 
