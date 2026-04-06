@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
 import { Gcol } from '@atoms';
-import { AmountUnitInput } from '@features/AmountUnitInput';
+import { AmountUnitInput } from '@common/AmountUnitInput';
 
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
