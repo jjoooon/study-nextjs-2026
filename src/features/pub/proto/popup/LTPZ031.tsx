@@ -21,6 +21,9 @@ import { Badge } from '@/shared/components/uiux/Badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { TooltipQ } from '@common/TooltipQ';
 import { BulletItem } from '@/shared/components/common/BulletList';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Checkbox } from '@uiux/Checkbox';
+
 
 
 export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -54,53 +57,52 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className='grid-rows-[auto_1fr]'>
           <Grow className="w-full" placement='ss' gap={5}>
             <Gcol placement='ss' className='w-full' gap={5}>
-                <Grow className='w-full' variant="box-round">
-                  <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='head'>
-                    <FormRow>
-                      <FormCell title={'설계번호'}>
-                        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                
-               
-                <Grow placement='bwc' className="w-full">
-                  <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
-                  <Grow>
-                    <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
-                    <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
-                    <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
-                  </Grow>
-                </Grow>
-                <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+              <Grow className='w-full' variant="box-round">
+                <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='head'>
                   <FormRow>
-                    <FormCell title={'계약자'} colSpan={3}>
-                      김한화
+                    <FormCell title={'설계번호'}>
+                      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
                     </FormCell>
-                  </FormRow>  
-                  <FormRow>
-                    <FormCell title={'상품명'} colSpan={3}>
-                      한화실손의료보험(갱신형) 무배당2601
-                    </FormCell>  
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'가입플랜'} colSpan={3}>
-                      자유설계
-                    </FormCell>  
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'보험기간'}>
-                      05년 만기
-                    </FormCell>
-                    <FormCell title={'납입기간'}>
-                      월납/전기납
-                    </FormCell>  
                   </FormRow>
                 </FormTable>
+              </Grow>
+                
+              <Grow placement='bwc' className="w-full">
+                <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+                <Grow>
+                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
+                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
+                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
+                </Grow>
+              </Grow>
+              <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                <FormRow>
+                  <FormCell title={'계약자'} colSpan={3}>
+                    김한화
+                  </FormCell>
+                </FormRow>  
+                <FormRow>
+                  <FormCell title={'상품명'} colSpan={3}>
+                    한화실손의료보험(갱신형) 무배당2601
+                  </FormCell>  
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'가입플랜'} colSpan={3}>
+                    자유설계
+                  </FormCell>  
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'보험기간'}>
+                    05년 만기
+                  </FormCell>
+                  <FormCell title={'납입기간'}>
+                    월납/전기납
+                  </FormCell>  
+                </FormRow>
+              </FormTable>
             </Gcol>
             
             {/* Tab */}
@@ -317,51 +319,96 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Grow>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
-                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                                >
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      <Grow placement='bwe'>
-                                        <Grow>
-                                          척추염좌
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                            <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
-                                            </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                              align="center"
-                                              side="bottom"
-                                              sideOffset={0}
-                                              variant="default"
-                                              className="w-[16rem]"
+                                <Table>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          >
+                                          진단/검사/검진
+                                        </Checkbox>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          >
+                                          약처방/투약(주사,연고,안약 등)
+                                        </Checkbox>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Grow placement='bwe'>
+                                          <Checkbox
+                                            color="primary"
+                                            onCheckedChange={() => {}}
+                                            size="lg"
+                                            variant="default"
                                             >
-                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강주의 염좌 및 긴장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
-                                            </TooltipContent>
-                                          </Tooltip>
-                                          <TooltipQ>
-                                            {`문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.`}
-                                            </TooltipQ>
+                                            물리치료
+                                          </Checkbox>
+                                          <Button variant={'outlined'} size={'md'} color={'gray'}>
+                                            기타치료
+                                          </Button>
                                         </Grow>
-                                        <Badge
-                                          color="green"
-                                          size="md"
-                                          variant="contained"
-                                          className=""
-                                        >
-                                          자동완성
-                                        </Badge>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>
-                                      <Input commaAmount={true} value={form.type02} onChange={e => setFormField('type02', e.target.value)} required />
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
+                                      </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                      <TableCell>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          >
+                                          상담/언어치료
+                                        </Checkbox>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          >
+                                          치과치료
+                                        </Checkbox>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          >
+                                          한방치료
+                                        </Checkbox>
+                                      </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                      <TableCell colSpan={3}>
+                                        <Grow gap={1}>
+                                          <Checkbox
+                                            color="primary"
+                                            onCheckedChange={() => {}}
+                                            size="lg"
+                                            variant="default"
+                                            >
+                                            기타
+                                          </Checkbox>
+                                          <Input commaAmount={true} value={form.type06} onChange={e => setFormField('type06', e.target.value)} />
+                                        </Grow>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
                               </TableFoldBody>
-                          </TableFold>
+                            </TableFold>
                           </Gcol>
                         ) : tabActive === 'TAB2' ? (     
                           <Gcol placement='ss' className='w-full'>
