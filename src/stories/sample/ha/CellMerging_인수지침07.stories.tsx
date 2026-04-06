@@ -11,8 +11,6 @@ import {
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
-
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule, ClientSideRowModelModule]);
 
 type CriteriaTone = 'danger' | 'success' | 'info' | 'neutral';
@@ -183,7 +181,7 @@ export const Default: Story = {
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: 'center',
-						backgroundColor: isSelected ? 'var(--color-table-td-surface-selected)' : undefined,
+						...(isSelected ? { backgroundColor: 'var(--color-table-td-surface-selected)' } : {}),
 					};
 				},
 			},
@@ -195,7 +193,7 @@ export const Default: Story = {
 				headerClass: 'ag-header-center',
 				cellClass: 'p-0!',
 				cellStyle: (params) => ({
-					backgroundColor: params.data?.id === selectedId ? 'var(--color-table-td-surface-selected)' : undefined,
+					...(params.data?.id === selectedId ? { backgroundColor: 'var(--color-table-td-surface-selected)' } : {}),
 					borderColor: '#cfbea6',
 					padding: 0,
 				}),
@@ -230,7 +228,6 @@ export const Default: Story = {
 							rowData={rowData}
 							columnDefs={columnDefs}
 							defaultColDef={defaultColDef}
-							localeText={AG_GRID_LOCALE_KO}
 							enableCellSpan={true}
 							suppressCellFocus={true}
 							suppressContextMenu={true}
@@ -240,7 +237,7 @@ export const Default: Story = {
 							headerHeight={args.compactHeader ? 34 : 40}
 							rowHeight={42}
 							getRowHeight={(params) => Math.max(42, (params.data?.details.length ?? 1) * 28 + 14)}
-							onRowClicked={(params) => {
+							onCellClicked={(params) => {
 								const colId = params.column?.getColId();
 								if (colId === 'target' || colId === 'criteria') return;
 								if (params.data?.id !== undefined) setSelectedId(params.data.id);

@@ -173,7 +173,7 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
       <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>신계약기준관리</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>신계약기준관리</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPA030)</Typo>
           </DialogTitle>
         </DialogHeader>

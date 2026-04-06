@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 // 권오택
 import * as React from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
@@ -118,7 +118,6 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
   
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
@@ -256,7 +255,6 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                 key={loadedCount}
                 getRowId={params => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{ 
                   sortable: false,

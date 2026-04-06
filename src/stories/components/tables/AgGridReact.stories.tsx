@@ -18,7 +18,6 @@ import type {
 import { RowGroupingModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
 import { 
   amountUnitInputCellRenderer,
   editableSelectCellRenderer, 

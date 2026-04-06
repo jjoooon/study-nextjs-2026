@@ -175,7 +175,7 @@ export const LTPA190 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'h2'} variant={'heading-lg'}>장기신계약채널별기준관리</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>장기신계약채널별기준관리</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTPA190)</Typo>
           </DialogTitle>
         </DialogHeader>

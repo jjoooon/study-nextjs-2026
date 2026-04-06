@@ -7,7 +7,6 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 
 import { editableSelectCellRenderer } from '@aggrid';
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
 import {
   Dialog,
   DialogClose,
@@ -506,7 +505,6 @@ const renderGrid: Story['render'] = (args) => {
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
             enableCellSpan={true}
-            localeText={AG_GRID_LOCALE_KO}
             groupHeaderHeight={args.compactHeader ? 30 : 36}
             headerHeight={0}
             suppressRowTransform={true}

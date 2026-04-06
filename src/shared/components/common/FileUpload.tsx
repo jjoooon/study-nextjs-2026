@@ -54,7 +54,6 @@ export function FileUpload({
     <Grow placement={'ss'} gap={1.5}>
       {/* ── 파일선택 버튼 ── */}
       <div className="relative w-[7.7rem] h-[2.5rem]">
-       
         <Button
           variant={'outlined'}
           color={'gray'}

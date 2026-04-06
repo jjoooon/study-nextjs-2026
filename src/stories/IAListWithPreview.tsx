@@ -140,7 +140,7 @@ export function IAListWithPreview() {
   }, [sortState]);
 
   const ingList = [
-    'LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ031',
+    'LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ021', 'LTPZ031',
   ]
 
   const workList_prev: string[] = [

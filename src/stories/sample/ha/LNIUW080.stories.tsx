@@ -6,7 +6,6 @@ import { AllCommunityModule, ClientSideRowModelModule, ModuleRegistry } from 'ag
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-import { AG_GRID_LOCALE_KO } from '@/shared/constants/agGrid';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
@@ -574,7 +573,6 @@ const renderGrid: Story['render'] = () => {
           suppressContextMenu={true}
           animateRows={false}
           singleClickEdit={true}
-          localeText={AG_GRID_LOCALE_KO}
           defaultColDef={{
             resizable: false,
             sortable: false,
@@ -717,7 +715,6 @@ return (
         suppressContextMenu={true}
         animateRows={false}
         singleClickEdit={true}
-        localeText={AG_GRID_LOCALE_KO}
         defaultColDef={{ resizable: false, sortable: false, filter: false }}
         getRowId={(params) => String(params.data.id)}
         rowSelection={{
