@@ -6,7 +6,7 @@ import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
-import { ResetIcon } from '@icons';'
+import { ResetIcon } from '@icons';
 import { Input } from '@uiux/Input';
 import { FileExportIcon, SearchIcon } from '@icons';
 
