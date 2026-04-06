@@ -1,404 +1,226 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
-import { Badge } from '@uiux/Badge';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogTrigger, DialogClose } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-
-
-import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { PlusIcon, SearchIcon } from '@icons';
-
-
+import { SearchIcon } from '@icons';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler, editableSelectCellRenderer, numberValueFormatter } from '@aggrid';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
 export const LTPZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
-    
+
   type DummyDataType = {
     id: number;
     isCheck: boolean;
-    isDuplicate: boolean;
+    type: string;
+    designNo: string;
+    policyNo: string;
+    status: string;
+    changeDate: string;
+    paymentStatus: string;
     productName: string;
-    badge?: string[];
-    attribute: boolean;
-    coverageAmount: string;
-    premium: number;
-    expiryPeriod: string;
-    paymentPeriod: string;
-    canEditExpiry: boolean;
+    contractor: string;
+    insured: string;
+    detailCondition: boolean;
+    mandatoryYn: string;
   };
-    
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      isDuplicate: true,
-      productName: '기본형 실손의료비(상해급여)(갱신형)',
-      badge: ['갱신'],
-      attribute: true,
-      coverageAmount: '5천만원(통원20만원)',
-      premium: 1377,
-      expiryPeriod: '01년만기',
-      paymentPeriod: '전기납',
-      canEditExpiry: true,
-    },
-    {
-      id: 2,
-      isCheck: false,
-      isDuplicate: true,
-      productName: '기본형 실손의료비(상해급여)(갱신형)',
-      badge: ['갱신'],
-      attribute: false,
-      coverageAmount: '2천만원(통원20만원)',
-      premium: 9999999,
-      expiryPeriod: '01년만기',
-      paymentPeriod: '전기납',
-      canEditExpiry: false,
-    },
-    {
-      id: 3,
-      isCheck: true,
-      isDuplicate: false,
-      productName: '기본형 실손의료비(상해급여)(갱신형)',
-      badge: ['갱신'],
-      attribute: true,
-      coverageAmount: '3천만원(통원20만원)',
-      premium: 159999,
-      expiryPeriod: '01년만기',
-      paymentPeriod: '전기납',
-      canEditExpiry: false,
-    },
-    {
-      id: 4,
-      isCheck: false,
-      isDuplicate: true,
-      productName: '기본형 실손의료비(상해급여)(갱신형)',
-      badge: ['갱신'],
-      attribute: false,
-      coverageAmount: '4천만원(통원20만원)',
-      premium: 2323230,
-      expiryPeriod: '01년만기',
-      paymentPeriod: '전기납',
-      canEditExpiry: false,
-    },
-  ];
-  const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-	const [relationValue, setRelationValue] = useState('');
-	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-	const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
-  
 
-  //중복버튼 여부에 따른 셀 렌더러
-	const duplicateRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
-    const isDuplicate = Boolean(params.value);
-    return isDuplicate ? (
+  const dummyData: DummyDataType[] = [
+    { id: 1, isCheck: false, type: '계약변경', designNo: 'LA260209313558', policyNo: 'LA260209313558', status: '청약중', changeDate: '2026-03-22', paymentStatus: 'TEXT', productName: '한화실손의료보험(갱신형)2601', contractor: '김한화', insured: '변경조건적용', detailCondition: true, mandatoryYn: 'Y' },
+    { id: 2, isCheck: false, type: '만기예정', designNo: 'LA260209313558', policyNo: 'LA260209313558', status: '정상',   changeDate: '2026-03-22', paymentStatus: 'TEXT', productName: '한화실손의료보험(갱신형)2601', contractor: '김한화', insured: '변경조건적용', detailCondition: true, mandatoryYn: 'N' },
+    { id: 3, isCheck: false, type: '만기예정', designNo: 'LA260209313558', policyNo: 'LA260209313558', status: '청약중', changeDate: '2026-03-22', paymentStatus: '',     productName: '한화실손의료보험(갱신형)2601', contractor: '김한화', insured: '변경조건적용', detailCondition: true, mandatoryYn: 'N' },
+    { id: 4, isCheck: false, type: '선택',    designNo: 'LA260209313558', policyNo: '',               status: '',       changeDate: '',           paymentStatus: '',     productName: '',                              contractor: '',     insured: '',            detailCondition: true, mandatoryYn: 'Y' },
+  ];
+
+  const [relationValue, setRelationValue] = useState('');
+  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
+  const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
+
+  // 설계번호/증권번호 + 검색버튼 렌더러
+  const designNoCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
+    return (
+      <Grow className="h-full w-full">
+        <Grow className='flex-1'>
+          <span>{String(params.value ?? '')}</span>
+        </Grow>
+        <Grow className='border-l border-[#ddddde] h-full aspect-auto w-[3rem] flex items-center justify-center shrink-0'>
+          <Button aria-label="검색" variant={'none'} only="icon" size={'sm'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </Grow>
+      </Grow>
+    );
+  };
+
+  // 상세조건 검색버튼 렌더러
+  const detailConditionRenderer = (params: ICellRendererParams<DummyDataType>) => {
+    return (
       <Grow className="h-full w-full items-center justify-center">
-        <Button aria-label="중복" variant={'outlined'} only={'icon'} size={'sm'} color={'gray-light'} onClick={() => alert('추가')}>
-          <PlusIcon color={'var(--color-gray-30)'} />
+        <Button aria-label="상세조건" variant={'none'} only="icon" size={'sm'}>
+          <SearchIcon color={'var(--color-primary-50)'} />
         </Button>
       </Grow>
-    ) : (
-      ''
     );
-	}, []);
+  };
 
-  // 검색버튼 여부에 따른 셀 렌더러
-	const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
-		if (!params.value) {
-			return null;
-		}
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '구분',
+      field: 'type',
+      width: 100,
+      cellClass: 'text-center editable-cell',
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: {
+        values: ['선택', '계약변경', '만기예정', '해약예정', '삭제예정'],
+      },
+    },
+    {
+      headerName: '설계번호/증권번호',
+      field: 'designNo',
+      flex: 1,
+      minWidth: 160,
+      cellClass: 'text-center p-0!',
+      cellRenderer: designNoCellRenderer,
+    },
+    {
+      headerName: '상태',
+      field: 'status',
+      width: 60,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '변경일자',
+      field: 'changeDate',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '지급여부',
+      field: 'paymentStatus',
+      width: 60,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '상품명',
+      field: 'productName',
+      flex: 1,
+      minWidth: 180,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '계약자',
+      field: 'contractor',
+      width: 60,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '피보험자(명)',
+      field: 'insured',
+      width: 110,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '상세조건',
+      field: 'detailCondition',
+      width: 60,
+      cellClass: 'text-center px-0!',
+      cellRenderer: detailConditionRenderer,
+    },
+    {
+      headerName: '필수이행여부',
+      field: 'mandatoryYn',
+      width: 80,
+      cellClass: 'text-center editable-cell',
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: {
+        values: ['Y', 'N'],
+      },
+    },
+  ];
 
-		return (
-			<div className="flex h-full w-full flex-wrap items-center justify-center gap-1">
-				<Button only={'icon'} variant={'none'} size={'sm'}>
-					<SearchIcon color={'var(--color-primary-50)'} />
-				</Button>
-			</div>
-		);
-	};
-
-  // 담보명 셀 렌더러
-  const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
-    return (
-      <Grow className="h-full pr-1.5" placement={'bwc'}>
-        <p className="w-full flex-1 truncate pl-2">{params.data?.productName}</p>
-        {params.data?.badge && (
-          <Grow className="shrink-0">
-            {params.data.badge.includes('갱신') && <Badge color={'blue'} className="w-[3rem]">갱신</Badge>}
-          </Grow>
-        )}
-      </Grow>
-    );
-  }, []);
-
-  // 가입금액 셀 렌더러
-	const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) => editableSelectCellRenderer<DummyDataType>(params);
-
-  // 보험료 셀 렌더러
-	const premiumAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) =>
-		amountUnitInputCellRenderer<DummyDataType>({ ...params, amountInputRefs: amountInputRefs.current });
-
-	const columnDefs: ColDef<DummyDataType>[] = [
-		{
-			headerName: '중복',
-			field: 'isDuplicate',
-			width: 50,
-			cellClass: 'text-center',
-			cellRenderer: duplicateRenderer,
-		},
-		{
-			headerName: '담보명',
-			field: 'productName',
-			flex: 1,
-      cellRenderer: titleRenderer,
-		},
-		{
-			headerName: '속성',
-			field: 'attribute',
-			width: 50,
-			cellClass: 'text-center',
-			cellRenderer: attributeRenderer,
-		},
-		{
-			headerName: '가입금액(만원)',
-			field: 'coverageAmount',
-			width: 200,
-			cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
-			sortable: false,
-			filter: false,
-			editable: (params: EditableCallbackParams<DummyDataType>) => params.data?.canEditExpiry ?? false,
-			cellEditor: 'agSelectCellEditor',
-			cellEditorParams: {
-				values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
-			},
-			cellRenderer: coverageAmountCellRenderer,
-		},
-		{
-			headerName: '보험료(만원)',
-			field: 'premium',
-			width: 100,
-			cellClass: 'text-right',
-			headerClass: 'px-0!',
-			sortable: false,
-			filter: false,
-      valueFormatter: numberValueFormatter,
-		},
-		{
-			headerName: '만기',
-			field: 'expiryPeriod',
-			width: 80,
-      cellClass: 'text-center px-[0.2rem]!',
-			sortable: false,
-			filter: false,
-		},
-		{
-			headerName: '납기',
-			field: 'paymentPeriod',
-			width: 80,
-			cellClass: 'text-center px-[0.2rem]!',
-			sortable: false,
-			filter: false,
-		},
-	];
-
-	const onCellValueChanged = useMemo(
-		() => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-		[setRowData, setErrorRows],
-	);
-
+  const onCellValueChanged = useMemo(
+    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
+    [setRowData, setErrorRows],
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>동시가입설계상세</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ010)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>변경조건</Typo>
+            <Typo tag={'p'} variant={'body-xl'}>(LTPZ085)</Typo>
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant='head'>
+        <DialogSection className="grid-rows-[auto_1fr_auto]">
+          <Grow className="w-full" variant="box-round" placement={'ss'}>
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'15rem'} value={'LA260209313558'} readOnly />
                   <div className="separator">-</div>
                   <Input aria-label="" width={'3rem'} value={'1'} readOnly />
-                  <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                </FormCell>
+                <FormCell title={'보험시기'}>
+                  2026-03-01
+                </FormCell>
+                <FormCell title={'설계상태'}>
+                  TEXT
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'피보험자'} colSpan={3}>
+                  <NativeSelect aria-label="피보험자 선택" width="10rem" value={relationValue} onChange={(e) => setRelationValue(e.target.value)}>
+                    {[
+                      { value: '', id: 'insured-0', label: '선택' },
+                      { value: 'insured1', id: 'insured-1', label: '선택1' },
+                      { value: 'insured2', id: 'insured-2', label: '선택2' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <Gcol placement={'ss'} className="w-full gap-6">
-            <TableFold variant={'default'}>
-              <TableFoldHead title="계약기본사항">
+          <Gcol placement={'ss'} className="w-full">
+            <TableFold variant="accordion">
+              <TableFoldHead title="변경조건 설계/계약">
+                <Grow>
+                  <Button id="btnCA" variant={'outlined'} size={'xl'} color={'gray'}>행추가</Button>
+                  <Button id="btnDA" variant={'outlined'} size={'xl'} color={'gray'}>행삭제</Button>
+                </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'상품선택'} colSpan={3}>
-                      <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                        <RadioGroupItem color="primary" id="SelectProduct1" size="lg" value="option1" variant="default" checked={true}>
-                          4세대신손
-                        </RadioGroupItem>
-                        <RadioGroupItem color="primary" id="SelectProduct2" size="lg" value="option2" variant="default">
-                          간편실손
-                        </RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'보험시기'}>2026-03-06</FormCell>
-                    <FormCell title={'유효설계'}>2026-03-06까지</FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'보장내용변경주기'}>
-                      <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                        <RadioGroupItem color="primary" id="BenefitPeriod1" size="lg" value="option1" variant="default" checked={true}>
-                          05년만기
-                        </RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                    <FormCell title={'납기'}>
-                      <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                        <RadioGroupItem color="primary" id="FullTerm1" size="lg" value="option1" variant="default" checked={true}>
-                          전기납
-                        </RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'납기주기'}>
-                      <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                        <RadioGroupItem color="primary" id="Monthly1" size="lg" value="option1" variant="default" checked={true}>
-                          월납
-                        </RadioGroupItem>
-                        <RadioGroupItem color="primary" id="Monthly2" size="lg" value="option2" variant="default">
-                          2월납
-                        </RadioGroupItem>
-                        <RadioGroupItem color="primary" id="Monthly3" size="lg" value="option3" variant="default">
-                          3월납
-                        </RadioGroupItem>
-                        <RadioGroupItem color="primary" id="Monthly6" size="lg" value="option4" variant="default">
-                          6월납
-                        </RadioGroupItem>
-                        <RadioGroupItem color="primary" id="Yearly1" size="lg" value="option5" variant="default">
-                          년납
-                        </RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                    <FormCell title={'갱신주기'}>
-                      <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}} width="full">
-                        <RadioGroupItem color="primary" id="1year" size="lg" value="option1" variant="default" checked={true}>
-                          1년
-                        </RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'태아여부'}>
-                      <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">
-                        가입
-                      </Checkbox>
-                    </FormCell>
-                    <FormCell title={'일신부'}>
-                      <Input aria-label="" width={'7rem'} value={''} readOnly />
-                      <Input aria-label="" width={'14rem'} value={''} readOnly />
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
-
-            <TableFold variant={'default'}>
-              <TableFoldHead title="피보험자/계약자">
-              </TableFoldHead>
-              <TableFoldBody>
-                <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'피보험자'}>
-                      <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
-                      <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
-                    </FormCell>
-                    <FormCell title={'알림사항'}>
-                      <Grow placement={'bwc'}>
-                        <Grow>
-                          <Input aria-label="" width={'4rem'} value={'무'} readOnly />
-                          <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                            입력
-                          </Button>
-                        </Grow>
-                        <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}} size="lg" variant="default">
-                          의료급여수급권자할인
-                        </Checkbox>
-                      </Grow>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'계약자'}>
-                      <Input aria-label="" width={'7rem'} value={'김한화'} readOnly />
-                      <Input aria-label="" width={'14rem'} value={'910101-1******'} readOnly />
-                    </FormCell>
-                    <FormCell title={'주피와관계'}>
-                      주피보험자(김한화)는 계약자의
-                      <NativeSelect aria-label="개인정보취득경로 선택" width="10rem" readOnly value={relationValue} onChange={(event) => setRelationValue(event.target.value)}>
-                        {[
-                          { value: 'selection', id: 'personalinfo-1', label: '선택1' },
-                          { value: 'selection2', id: 'personalinfo-2', label: '선택2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>  
-
-            <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
-              <FormRow>
-                <FormCell title={'합계보험료'}>
-                  <Input aria-label="" width={'20rem'} value={'123,456원'} readOnly />
-                  <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                    보험료 계산
-                  </Button>
-                </FormCell>
-              </FormRow>
-            </FormTable>
-
-            <TableFold variant={'default'}>
-              <TableFoldHead title="담보가입사항">
-              </TableFoldHead>
-              <TableFoldBody>
-              <Grow className="w-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
-                    getRowId={params => String(params.data.id)}
+                    getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
                     columnDefs={columnDefs}
-                    defaultColDef={{ 
-                      sortable: false, 
+                    defaultColDef={{
+                      sortable: false,
                       resizable: false,
-                      cellClass: 'p-0', 
+                      cellClass: 'p-0',
                       cellStyle: { padding: 0 },
                     }}
                     singleClickEdit={true}
@@ -410,9 +232,10 @@ export const LTPZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
+                      width: 60,
                       cellClass: 'text-center editable-cell',
                     }}
-                    domLayout="autoHeight" 
+                    domLayout="autoHeight"
                     onGridReady={(params) => {
                       params.api.forEachNode((node) => {
                         if (node.data?.isCheck) {
@@ -422,18 +245,35 @@ export const LTPZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                   />
                 </div>
-              </Grow>
               </TableFoldBody>
             </TableFold>
           </Gcol>
+
+
+          <Gcol placement={'ss'}  variant={'box-info'}  className='w-full'>
+            <Typo variant={'body-md'} icon={'info'}>
+              <b>필수 확인 사항</b>
+            </Typo>
+            <BulletList color={'info'} size="md">
+              <BulletListItem before="1." type="symbols"
+              >변경조건은 등록된 설계/증권번호의 누적을 예외처리하는 기능으로 <em>청약진행 이후 수정/삭제 불가능.</em></BulletListItem>
+              <BulletListItem  before="2."  type="symbols">만기예정/해약예정은 청약완료시 청약상태가 완성되어 있어야 함. (해약, 철회, 취소의 경우 지급환급 포함)</BulletListItem>
+              <BulletListItem before="3." type="symbols">삭제예정은 등록된 설계는 청약완료시 자동으로 삭제.    <Typo tag='em' icon="detail" className='[&_svg_path]:stroke-[var(--color-information-50)] [&_svg_circle]:fill-[var(--color-information-50)]'>GA:타모집인 설계는 취급지에서 삭제 필요.</Typo>
+              </BulletListItem>
+              <BulletListItem before="4." type="symbols">* 표시된 설계번호는 삭제예정으로 서로 연결된 변경조건
+                <BulletList color={'warning'} size="md">
+                  <BulletListItem before="①" type="symbols">삭제예정 설계 중 먼저 청약완료 된 설계 있에는 모든 설계 삭제</BulletListItem>
+                  <BulletListItem before="②" type="symbols">* 표시의 변경조건 수정 필요시 해당 설계군으로 화면이동하여 처리 필요</BulletListItem>
+                  <BulletListItem before="③" type="symbols">* 표시된 경우 누적 예외 미적용 (누적예외가 필요한 경우 행추가 후 직접 등록 필요)</BulletListItem>
+                </BulletList>
+              </BulletListItem>
+            </BulletList>
+          </Gcol>  
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                저장
-              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
@@ -445,5 +285,5 @@ export const LTPZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-	);
+  );
 };
