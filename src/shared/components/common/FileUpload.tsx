@@ -54,28 +54,7 @@ export function FileUpload({
     <Grow placement={'ss'} gap={1.5}>
       {/* ── 파일선택 버튼 ── */}
       <div className="relative w-[7.7rem] h-[2.5rem]">
-        <input
-          type="file" 
-          multiple 
-          className="w-full h-full border opacity-0 cursor-pointer"
-          onChange={e => {
-            const fileList = e.target.files;
-            let filesData = []
-            for (let i = 0; i < (fileList?.length ?? 0); i++) { 
-              filesData.push({ 
-                name: fileList?.[i]?.name ?? `file-${i}`,
-                ext: fileList?.[i]?.name.split('.').slice(-1)[0] ?? '',
-                nameLastWord: (() => {
-                  const fullName = fileList?.[i]?.name ?? '';
-                  const dotIdx = fullName.lastIndexOf('.');
-                  const nameWithoutExt = dotIdx > 0 ? fullName.slice(0, dotIdx) : fullName;
-                  return nameWithoutExt.length > 0 ? nameWithoutExt.slice(-1) : '';
-                })(),
-              });
-            }
-            setFiles(filesData);
-          }}
-        />
+       
         <Button
           variant={'outlined'}
           color={'gray'}
@@ -84,9 +63,8 @@ export function FileUpload({
           aria-describedby={errorMessage ? `${baseId}-error` : undefined}
           aria-invalid={!!errorMessage}
           onClick={onClickButton}
-          className="absolute inset-0 w-full h-full pointer-events-none"
         >
-          <FileUploadIcon />
+          <FileUploadIcon size={12} />
           파일선택
         </Button>
       </div>

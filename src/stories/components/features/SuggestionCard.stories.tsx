@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
 import { Gcol } from '@atoms';
-import { SuggestionCard } from '@features/SuggestionCard';
+import { SuggestionCard } from '@/shared/components/common/SuggestionCard';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { SuggestionCardProps } from '@features/SuggestionCard';
+import type { SuggestionCardProps } from '@/shared/components/common/SuggestionCard';
 
 const meta: Meta<SuggestionCardProps> = {
   title: 'Components/Features/SuggestionCard',

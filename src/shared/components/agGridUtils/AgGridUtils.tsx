@@ -13,7 +13,7 @@ import type { RefObject } from 'react';
 import type { GridReadyEvent } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
 
-import { AmountUnitInput } from '@features/AmountUnitInput';
+import { AmountUnitInput } from '@common/AmountUnitInput';
 import { SelectDropIcon, PlusIcon } from '@icons';
 
 import { DatePickerInput } from '@common/DatePicker';
