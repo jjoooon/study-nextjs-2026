@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/shared/components/uiux';
+import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
 import log from '@/shared/utils/logger';
 
 // Register FilePond plugins
@@ -55,20 +56,20 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
 
   // 허용할 파일 MIME 타입 설정
-  const ACCEPTED_FILE_TYPES = [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-powerpoint',
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    'text/plain',
-    'application/zip',
-    'application/x-zip-compressed',
+  const ACCEPTED_FILE_TYPES: MimeType[] = [
+    IMAGE_TYPES.JPEG,
+    IMAGE_TYPES.PNG,
+    IMAGE_TYPES.GIF,
+    APPLICATION_TYPES.PDF,
+    APPLICATION_TYPES.MSWORD,
+    APPLICATION_TYPES.WORD_XML,
+    APPLICATION_TYPES.EXCEL,
+    APPLICATION_TYPES.EXCEL_XML,
+    APPLICATION_TYPES.POWERPOINT,
+    APPLICATION_TYPES.POWERPOINT_XML,
+    TEXT_TYPES.PLAIN,
+    APPLICATION_TYPES.ZIP,
+    APPLICATION_TYPES.SEVEN_Z,
   ];
 
   const MAX_FILE_SIZE = '1024MB'; // 1GB
