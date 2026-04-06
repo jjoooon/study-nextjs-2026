@@ -11,10 +11,6 @@ import {
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-<<<<<<< HEAD
-=======
-
->>>>>>> bce37e248b1608e191f1e5889a2f55d446882680
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule, ClientSideRowModelModule]);
 
 type CriteriaTone = 'danger' | 'success' | 'info' | 'neutral';
