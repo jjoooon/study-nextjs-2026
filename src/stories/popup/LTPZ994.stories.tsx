@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { LTPZ994 } from '@/features/pub/components/popups/LTPZ994';
+import { Ltpz994 } from '@/features/pub/components/popups/Ltpz994';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/LTPZ994',
-  component: LTPZ994,
+  title: 'popup/Ltpz994',
+  component: Ltpz994,
 };
 
 export const Default = () => {
@@ -13,10 +13,10 @@ export const Default = () => {
   return (
     <LayoutDoc>
       <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
-        <Button variant={'contained'} onClick={() => setOpen(true)}>LTPZ994 열기</Button>
+        <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz994 열기</Button>
       </div>
 
-      <LTPZ994 open={open} onOpenChange={setOpen} />
+      <Ltpz994 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };

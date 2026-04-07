@@ -32,13 +32,13 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 // data
-import type { LTPA350Step2DataType } from '../data/ltpa350Step2Data';
-import { LTPA350Step2Data } from '../data/ltpa350Step2Data';
+import type { Ltpa350Step2DataType } from '../data/ltpa350Step2Data';
+import { Ltpa350Step2Data } from '../data/ltpa350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type TabListDataData = LTPA350Step2DataType['tabList'];
-type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number] & {
+type TabListDataData = Ltpa350Step2DataType['tabList'];
+type LTPA350GridRow = Ltpa350Step2DataType['agGridTable1'][number] & {
   isDuplicate?: boolean;
   displayNo?: number;
 };
@@ -63,18 +63,18 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   };
 
   // 2) Tabs
-  const stringifiedTabs: MainHeadTab[] = LTPA350Step2Data.tabList.map((item) => ({
+  const stringifiedTabs: MainHeadTab[] = Ltpa350Step2Data.tabList.map((item) => ({
     ...item,
     value: String(item.value),
   }));
   const {
     tabs: LTPA350Tabs,
     active: LTPA350Active,
-    setActive: LTPA350SetActive,
+    setActive: Ltpa350SetActive,
   } = useTabs<MainHeadTab>(stringifiedTabs);
 
   // 3) Grid data
-  const [rowData, setRowData] = useState<LTPA350GridRow[]>(LTPA350Step2Data.agGridTable1);
+  const [rowData, setRowData] = useState<LTPA350GridRow[]>(Ltpa350Step2Data.agGridTable1);
 
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
@@ -640,7 +640,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           <TabPager
             data={LTPA350Tabs}
             active={LTPA350Active}
-            setActive={LTPA350SetActive}
+            setActive={Ltpa350SetActive}
             visibleCount={5}
             error={testError}
             errorMsg="입력하세요."

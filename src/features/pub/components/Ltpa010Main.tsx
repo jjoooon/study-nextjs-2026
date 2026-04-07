@@ -19,8 +19,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-import type { LTPA010DummyDataRow } from '../data/ltpa010Data';
-import { LTPA010DummyData } from '../data/ltpa010Data';
+import type { Ltpa010DummyDataRow } from '../data/ltpa010Data';
+import { Ltpa010DummyData } from '../data/ltpa010Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -38,12 +38,12 @@ export const Ltpa010Main = () => {
   });
 
   // AgGrid Column
-  const columnDefs: (ColDef<LTPA010DummyDataRow> | ColGroupDef<LTPA010DummyDataRow>)[] = [
+  const columnDefs: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
     {
       headerName: '설계번호',
       flex: 1,
       cellClass: 'text-center px-0!',
-      cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field01'),
+      cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field01'),
       autoHeight: true,
     },
     {
@@ -56,7 +56,7 @@ export const Ltpa010Main = () => {
           headerName: '고지유형/플랜명',
           cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field02', (data?: LTPA010DummyDataRow) => {
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field02', (data?: Ltpa010DummyDataRow) => {
             const hasTooltip = data?.field04 === 'memoView';
             const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
 
@@ -113,7 +113,7 @@ export const Ltpa010Main = () => {
           width: 80,
           cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field05', 'field06'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field05', 'field06'),
         },
       ],
     },
@@ -129,7 +129,7 @@ export const Ltpa010Main = () => {
           width: 90,
           cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field05', 'field06'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field05', 'field06'),
         },
       ],
     },
@@ -143,7 +143,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           width: 100,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field07', 'field08'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field07', 'field08'),
         },
       ],
     },
@@ -157,7 +157,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           width: 90,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>(
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               2026-01-01
             </Button>,
@@ -177,7 +177,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           width: 90,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field09', 'field10'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field09', 'field10'),
         },
       ],
     },
@@ -190,7 +190,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           width: 100,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>(
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               미출력
             </Button>,
@@ -208,7 +208,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field12', 'field13'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field12', 'field13'),
         },
       ],
     },
@@ -221,7 +221,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field14', (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field14', (data?: Ltpa010DummyDataRow) => (
             <Grow gap={0.5}>
               <span>{data?.field15 ?? ''}</span>
               <Button
@@ -255,7 +255,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           width: 80,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field16', 'field17'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field16', 'field17'),
         },
       ],
     },
@@ -267,7 +267,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field18', (data?: Ltpa010DummyDataRow) => (
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               {data?.field19}
             </Button>
@@ -278,7 +278,7 @@ export const Ltpa010Main = () => {
   ];
 
   // Grid2 Column: 'SM' → '최초설계자' 변경
-  const columnDefs2: (ColDef<LTPA010DummyDataRow> | ColGroupDef<LTPA010DummyDataRow>)[] = [
+  const columnDefs2: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
     ...columnDefs.slice(0, -3),
     {
       headerName: '최초설계자',
@@ -289,7 +289,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field14', (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field14', (data?: Ltpa010DummyDataRow) => (
             <Grow gap={0.5}>
               <span>{data?.field15 ?? ''}</span>
               <Button
@@ -323,7 +323,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           width: 80,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field16', 'field17'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field16', 'field17'),
         },
       ],
     },
@@ -335,7 +335,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field18', (data?: Ltpa010DummyDataRow) => (
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               {data?.field19}
             </Button>
@@ -346,7 +346,7 @@ export const Ltpa010Main = () => {
   ];
 
   // Grid3 Column: '최초설계자', '사용인' 제거 + 취급자→BM, 취급자/유자겨자 추가, 증권번호→증원번호
-  const columnDefs3: (ColDef<LTPA010DummyDataRow> | ColGroupDef<LTPA010DummyDataRow>)[] = [
+  const columnDefs3: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
     ...columnDefs.filter((col) => {
       const name = (col as ColGroupDef).headerName;
       return name !== '최초설계자' && name !== '사용인' && name !== '취급기관/팀' && name !== '설계종료';
@@ -360,7 +360,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field12', 'field13'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field12', 'field13'),
         },
       ],
     },
@@ -373,7 +373,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field12', 'field13'),
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field12', 'field13'),
         },
       ],
     },
@@ -385,7 +385,7 @@ export const Ltpa010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field18', (data?: Ltpa010DummyDataRow) => (
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               {data?.field19}
             </Button>
@@ -396,10 +396,10 @@ export const Ltpa010Main = () => {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<LTPA010DummyDataRow[]>(LTPA010DummyData);
+  const [rowData, setRowData] = React.useState<Ltpa010DummyDataRow[]>(Ltpa010DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
   const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<LTPA010DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
+    () => createCellValueChangedHandler<Ltpa010DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
 
@@ -573,7 +573,7 @@ export const Ltpa010Main = () => {
               </Grow>
               <Gcol className="w-full">
                 <div className="ag-theme-alpine ltpa010-grid">
-                  <AgGridReact<LTPA010DummyDataRow>
+                  <AgGridReact<Ltpa010DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowClassRules={{
@@ -609,7 +609,7 @@ export const Ltpa010Main = () => {
                 </div>
                 {/* Grid2: SM → 최초설계자 */}
                 <div className="ag-theme-alpine ltpa010-grid">
-                  <AgGridReact<LTPA010DummyDataRow>
+                  <AgGridReact<Ltpa010DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowClassRules={{
@@ -640,7 +640,7 @@ export const Ltpa010Main = () => {
 
                 {/* Grid3: 최초설계자/사용인/부실유의 제거 */}
                 <div className="ag-theme-alpine ltpa010-grid">
-                  <AgGridReact<LTPA010DummyDataRow>
+                  <AgGridReact<Ltpa010DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowClassRules={{

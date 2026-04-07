@@ -1,5 +1,5 @@
-// LTPA350Step2Data 타입 정의
-export interface LTPA350Step2DataType {
+// Ltpa350Step2Data 타입 정의
+export interface Ltpa350Step2DataType {
   tabList: Array<{
     name: string;
     age: string | number;
@@ -30,7 +30,7 @@ export interface LTPA350Step2DataType {
     displayNo?: number;
   }>;
 }
-export const LTPA350Step2Data: LTPA350Step2DataType = {
+export const Ltpa350Step2Data: Ltpa350Step2DataType = {
   tabList: [
     {
       name: '홍길동',
@@ -111,7 +111,7 @@ export const LTPA350Step2Data: LTPA350Step2DataType = {
   ],
 };
 
-export interface LTPA350Step2DataType2 {
+export interface Ltpa350Step2DataType2 {
   tabList: Array<{
     name: string;
     age: string | number;
@@ -139,7 +139,7 @@ export interface LTPA350Step2DataType2 {
     badge?: string[];
   }>;
 }
-export const LTPA350Step2Data2: LTPA350Step2DataType2 = {
+export const Ltpa350Step2Data2: Ltpa350Step2DataType2 = {
   tabList: [
     {
       name: '홍길동',

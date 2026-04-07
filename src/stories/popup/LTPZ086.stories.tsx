@@ -1,12 +1,12 @@
 
 import * as React from 'react';
-import { LTPZ086 } from '@/features/pub/components/popups/LTPZ086';
+import { Ltpz086 } from '@/features/pub/components/popups/Ltpz086';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/LTPZ086',
-  component: LTPZ086,
+  title: 'popup/Ltpz086',
+  component: Ltpz086,
 };
 
 export const Default = () => {
@@ -17,7 +17,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <LTPZ086 open={open} onOpenChange={setOpen} />
+      <Ltpz086 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };

@@ -20,10 +20,10 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import {
-  LTPA400DummyData,
-  type LTPA400DummyDataRow,
-  LTPA400DummyData2,
-  type LTPA400DummyDataRow2,
+  Ltpa400DummyData,
+  type Ltpa400DummyDataRow,
+  Ltpa400DummyData2,
+  type Ltpa400DummyDataRow2,
 } from '../data/ltpa400Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -39,7 +39,7 @@ export const Ltpa400Main = () => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // Tab1 AGGrid Column
-  const columnDefs: ColDef<LTPA400DummyDataRow>[] = [
+  const columnDefs: ColDef<Ltpa400DummyDataRow>[] = [
     {
       headerName: '설계접수번호',
       field: 'field01',
@@ -63,7 +63,7 @@ export const Ltpa400Main = () => {
       field: 'field04',
       width: 160,
       cellClass: 'flex! items-center! justify-center!',
-      cellRenderer: (params: ICellRendererParams<LTPA400DummyDataRow>) => (
+      cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <span className="flex items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -125,7 +125,7 @@ export const Ltpa400Main = () => {
       field: 'field12',
       width: 150,
       cellClass: 'flex! items-center! justify-center!',
-      cellRenderer: (params: ICellRendererParams<LTPA400DummyDataRow>) => (
+      cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
           {params.data?.field12 ?? ''}
         </Button>
@@ -134,7 +134,7 @@ export const Ltpa400Main = () => {
   ];
 
   // Tab2 AGGrid Column
-  const columnDefs2: ColDef<LTPA400DummyDataRow2>[] = [
+  const columnDefs2: ColDef<Ltpa400DummyDataRow2>[] = [
     {
       headerName: 'No',
       field: 'id',
@@ -330,10 +330,10 @@ export const Ltpa400Main = () => {
                       </Grow>
                     </Grow>
                     <div className="ag-theme-alpine">
-                      <AgGridReact<LTPA400DummyDataRow>
+                      <AgGridReact<Ltpa400DummyDataRow>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
-                        rowData={LTPA400DummyData}
+                        rowData={Ltpa400DummyData}
                         columnDefs={columnDefs}
                         defaultColDef={{
                           sortable: false,
@@ -483,10 +483,10 @@ export const Ltpa400Main = () => {
                       </Button>
                     </Grow>
                     <div className="ag-theme-alpine">
-                      <AgGridReact<LTPA400DummyDataRow2>
+                      <AgGridReact<Ltpa400DummyDataRow2>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
-                        rowData={LTPA400DummyData2}
+                        rowData={Ltpa400DummyData2}
                         columnDefs={columnDefs2}
                         defaultColDef={{
                           sortable: false,

@@ -1,4 +1,4 @@
-export type LTPA300DummyDataRow = {
+export type Ltpa300DummyDataRow = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -16,7 +16,7 @@ export type LTPA300DummyDataRow = {
   field14: string | number;
 };
 
-export const LTPA300DummyData: LTPA300DummyDataRow[] = [
+export const Ltpa300DummyData: Ltpa300DummyDataRow[] = [
   {
     id: 1,
     field01: '신부산GA지점',

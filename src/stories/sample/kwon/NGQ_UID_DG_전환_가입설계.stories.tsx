@@ -477,7 +477,7 @@ const LTPZ010P = () => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPZ010: Story = {
+export const Ltpz010: Story = {
   render: () => <LTPZ010P />,
 };
 
@@ -607,7 +607,7 @@ const LTPZ011P = () => {
   );
 };
 
-export const LTPZ011: Story = {
+export const Ltpz011: Story = {
   render: () => <LTPZ011P />,
 };
 
@@ -628,7 +628,7 @@ const LTPZ016P = () => {
   )
 }
 
-export const LTPZ016: Story = {
+export const Ltpz016: Story = {
   render: () => <LTPZ016P />,
 };
 
@@ -735,7 +735,7 @@ const LTPZ017P = () => {
 };
 
 
-export const LTPZ017: Story = {
+export const Ltpz017: Story = {
   render: () => <LTPZ017P />,
 }
 
@@ -923,7 +923,7 @@ const LTPZ020_01P = () => {
   );
 };
 
-export const LTPZ020_01: Story = {
+export const Ltpz020_01: Story = {
   render: () => <LTPZ020_01P />,
 }  
 
@@ -1317,7 +1317,7 @@ const LTPZ021P = () => {
     </Gcol>
   )
 }
-export const LTPZ021: Story = {
+export const Ltpz021: Story = {
   render: () => <LTPZ021P />,
 }
 
@@ -1742,7 +1742,7 @@ const LTPZ010_01P = () => {
     </Gcol>
   )
 }
-export const LTPZ010_01: Story = {
+export const Ltpz010_01: Story = {
   render: () => <LTPZ010_01P />,
 }
 
@@ -1814,7 +1814,7 @@ const LTPZ010_03P = () => {
   );
 }
 
-export const LTPZ010_03: Story = { 
+export const Ltpz010_03: Story = { 
   render: () => <LTPZ010_03P />,
 } 
 
@@ -1887,7 +1887,7 @@ const LTPZ010_04P = () => {
   )
 } 
 
-export const LTPZ010_04: Story = {
+export const Ltpz010_04: Story = {
   render: () => <LTPZ010_04P />,
 }
 
@@ -2111,6 +2111,6 @@ const LTPZ110P = () => {
     </Gcol>  
   )
 }
-export const LTPZ110: Story = {
+export const Ltpz110: Story = {
   render: () => <LTPZ110P />,
 }

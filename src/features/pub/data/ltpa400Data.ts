@@ -1,4 +1,4 @@
-export type LTPA400DummyDataRow = {
+export type Ltpa400DummyDataRow = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -14,7 +14,7 @@ export type LTPA400DummyDataRow = {
   field12: string | number;
 };
 
-export const LTPA400DummyData: LTPA400DummyDataRow[] = [
+export const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   {
     id: 1,
     field01: '26020923141',
@@ -47,7 +47,7 @@ export const LTPA400DummyData: LTPA400DummyDataRow[] = [
   },
 ];
 
-export type LTPA400DummyDataRow2 = {
+export type Ltpa400DummyDataRow2 = {
   id: number;
   isCheck: boolean;
   field01_01: string | number;
@@ -64,7 +64,7 @@ export type LTPA400DummyDataRow2 = {
   field12_01: string | number;
 };
 
-export const LTPA400DummyData2: LTPA400DummyDataRow2[] = [
+export const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   {
     id: 1,
     isCheck: false,

@@ -301,10 +301,10 @@ const LTPA200 = ({ isNoData = false }: LTPA200Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA200Story: Story = {
+export const Ltpa200Story: Story = {
   render: () => <LTPA200 />,
 };
 
-export const LTPA200NoData: Story = {
+export const Ltpa200NoData: Story = {
   render: () => <LTPA200 isNoData={true} />,
 };

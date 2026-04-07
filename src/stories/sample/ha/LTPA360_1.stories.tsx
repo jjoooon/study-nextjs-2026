@@ -704,10 +704,10 @@ const LTPA360_01 = ({ isNoData = false }: LTPA360_01Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA360_01Story: Story = {
+export const Ltpa360_01Story: Story = {
   render: () => <LTPA360_01 />,
 };
 
-export const LTPA360_01NoData: Story = {
+export const Ltpa360_01NoData: Story = {
   render: () => <LTPA360_01 isNoData={true} />,
 };

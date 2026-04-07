@@ -204,6 +204,6 @@ const LTPA065P = () => {
     </Gcol>
   );
 }
-export const LTPA065: Story = {
+export const Ltpa065: Story = {
   render: () => <LTPA065P />,
 }

@@ -303,10 +303,10 @@ const LTPA210 = ({ isNoData = false }: LTPA210Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA210Story: Story = {
+export const Ltpa210Story: Story = {
   render: () => <LTPA210 />,
 };
 
-export const LTPA210NoData: Story = {
+export const Ltpa210NoData: Story = {
   render: () => <LTPA210 isNoData={true} />,
 };

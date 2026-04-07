@@ -4,11 +4,11 @@ import * as React from 'react';
 
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { LTPZ031 } from '../../features/pub/components/popups/LTPZ031';
+import { Ltpz031 } from '../../features/pub/components/popups/Ltpz031';
 
-const meta: Meta<typeof LTPZ031> = {
-  title: 'popup/LTPZ031',
-  component: LTPZ031,
+const meta: Meta<typeof Ltpz031> = {
+  title: 'popup/Ltpz031',
+  component: Ltpz031,
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -43,7 +43,7 @@ export const Default: Story = {
           </Button>
         </div>
 
-        <LTPZ031 open={open} onOpenChange={setOpen} />
+        <Ltpz031 open={open} onOpenChange={setOpen} />
       </LayoutDoc>
     );
   },

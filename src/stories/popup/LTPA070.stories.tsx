@@ -1,12 +1,12 @@
 
 import * as React from 'react';
-import { LTPA070 } from '@/features/pub/components/popups/LTPA070';
+import { Ltpa070 } from '@/features/pub/components/popups/Ltpa070';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/LTPA070',
-  component: LTPA070,
+  title: 'popup/Ltpa070',
+  component: Ltpa070,
 };
 
 export const Default = () => {
@@ -17,7 +17,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <LTPA070 open={open} onOpenChange={setOpen} />
+      <Ltpa070 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };

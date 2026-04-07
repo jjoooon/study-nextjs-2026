@@ -19,13 +19,13 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-import { LTPA301DummyData, type LTPA301DummyDataRow } from '../data/ltpa301Data';
+import { Ltpa301DummyData, type Ltpa301DummyDataRow } from '../data/ltpa301Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpa301Main = () => {
   // AgGrid Column
-  const columnDefs: (ColDef<LTPA301DummyDataRow> | ColGroupDef<LTPA301DummyDataRow>)[] = [
+  const columnDefs: (ColDef<Ltpa301DummyDataRow> | ColGroupDef<Ltpa301DummyDataRow>)[] = [
     {
       headerName: '점검결과',
       field: 'field01',
@@ -214,10 +214,10 @@ export const Ltpa301Main = () => {
                     <TableFoldBody>
                       <Gcol gap={4}>
                         <div className="ag-theme-alpine">
-                          <AgGridReact<LTPA301DummyDataRow>
+                          <AgGridReact<Ltpa301DummyDataRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             getRowId={(params) => String(params.data.id)}
-                            rowData={LTPA301DummyData}
+                            rowData={Ltpa301DummyData}
                             columnDefs={columnDefs}
                             defaultColDef={{
                               sortable: false,
