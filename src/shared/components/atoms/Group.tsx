@@ -245,7 +245,7 @@ export const FormItem = ({
     >
       {children}
     </div>
-  );
+  ); 
 };
 export const Separator = ({ 
   children, 
@@ -279,7 +279,8 @@ export const Divider = ({
       className={cn(
         'shrink-0 border-0 inline-block',
         (variant ===  'default' && (dir === 'col' ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l` : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`)),
-        (variant === 'dot' && `relative :before:block :before:absolute :before:content-['dd'] flex rounded-full bg-[${colorMap[color]}]`), 
+        (variant === 'dot' && `relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] 
+        before:rounded-full  before:bg-[#777]`), 
         className
       )}
     />

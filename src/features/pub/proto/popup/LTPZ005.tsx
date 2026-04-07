@@ -5,65 +5,106 @@ import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
+import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from './types';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { CommonIcon, CircleCheckIcon, JobIcon, CumulativeIcon, UwIcon, InfoToastIcon } from '@icons';
 
 type CheckTab = {
-  id: string;
+  name: string;
+  value: string;
   label: string;
-  icon: string;
-  active: boolean;
   state: 'green' | 'yellow' | 'red';
 };
 
 const CHECK_TABS: CheckTab[] = [
-  { id: 'common', label: '공통', icon: '', active: true, state: 'green' },
-  { id: 'accum', label: '누적', icon: '', active: false, state: 'red' },
-  { id: 'job', label: '직업', icon: '', active: false, state: 'yellow' },
-  { id: 'uw', label: 'UW', icon: '', active: false, state: 'yellow' },
+  { name: '공통', value: 'common', label: '공통', state: 'green' },
+  { name: '누적', value: 'accum', label: '누적', state: 'red' },
+  { name: '직업', value: 'job', label: '직업', state: 'yellow' },
+  { name: '예상 UW', value: 'expected-uw', label: '예상 UW', state: 'yellow' },
 ];
 
 export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const { tabs, active, setActive } = useTabs(CHECK_TABS);
 
-  const getStateClass = (state: CheckTab['state']) => {
-    if (state === 'green') return 'bg-[#0F9D58]';
-    if (state === 'red') return 'bg-[#EF4444]';
-    return 'bg-[#F59E0B]';
+  const getTabIcon = (value: CheckTab['value']) => {
+    if (value === 'common') return <CommonIcon />;
+    if (value === 'accum') return <CumulativeIcon />;
+    if (value === 'job') return <JobIcon />;
+    return <UwIcon />;
+  };
+
+  const getStateIcon = (state: CheckTab['state']) => {
+    if (state === 'green') return <CircleCheckIcon size={20} />;
+    if (state === 'red') return <InfoToastIcon size={20} color={'#E43939'} />;
+    return <InfoToastIcon size={20} color={'#FFB800'} />;
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl" >
+      <DialogContent showCloseButton resizable={true} size="2xl" >
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>꼭 확인해야 할 일</Typo>
             <Typo tag={'p'} variant={'body-xl'}>(LTRZ005)</Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
+        <DialogSection className='grid-rows-[auto_1fr]' >
 
           <Gcol className='w-full h-full' gap={4}>
             <Grow variant={'box-info-line'} className="w-full" placement='se'>
-              <Typo variant={'body-lg'}>계약체결 전 꼭 확인해야 할 사항입니다.</Typo>
-              <Divider variant={'dot'} color={'gray-light'} />
-              
+              <Typo tag='strong' variant={'body-lg'}>한화시그니처여성 건강 보험 3.0 무배당</Typo>
+              <Divider variant={'dot'}/>
+              <Typo tag='span' variant={'body-lg'}>납입면제 강화형</Typo>
+              <Divider variant={'dot'}/>
+              <Typo tag='span' variant={'body-lg'}>기본형</Typo>
             </Grow>
-            
 
-            <Gcol className='w-full' gap={2}>
-              <Typo tag={'strong'} variant={'heading-md'}>확인사항</Typo>
-              <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
-                <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
-              </Gcol>
-            </Gcol>
+            {/* 디자인 */}
+            <div className='grid w-full grid-cols-4 gap-2'>
+              {tabs.map((tab) => {
+                const isActive = active === tab.value;
+                return (
+                  <Button
+                    key={tab.value}
+                    variant="outlined"
+                    color="gray-light"
+                    className='w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]!'
+                    onClick={() => setActive(tab.value)}
+                    style={
+                      isActive
+                        ? { border: '2px solid var(--color-border-primary, #FF5C2E)' }
+                        : { boxShadow: '' }
+                    }
+                  >
+                    <Grow placement='bwc' className='w-full'>
+                      <Grow>
+                        {getTabIcon(tab.value)}
+                        <Typo tag="strong" variant={'body-lg'} weight="bold" className='text-gray-500'>
+                          {tab.label}
+                        </Typo>
+                      </Grow>
+                      {getStateIcon(tab.state)}
+                    </Grow>
+                  </Button>
+                );
+              })}
+            </div>
 
-            <Gcol className='w-full' gap={2}>
-              <Typo tag={'strong'} variant={'heading-md'}>필수지침</Typo>
-              <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
-                <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+            <>
+              <Gcol className='w-full' gap={2}>
+                <Typo tag={'strong'} variant={'heading-md'}>확인사항</Typo>
+                <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
+                  <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+                </Gcol>
               </Gcol>
-            </Gcol>
+
+              <Gcol className='w-full' gap={2}>
+                <Typo tag={'strong'} variant={'heading-md'}>필수지침</Typo>
+                <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
+                  <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+                </Gcol>
+              </Gcol>
+            </>
           </Gcol>
         </DialogSection> 
 
