@@ -6,7 +6,7 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 // components - features
 
 // data
-import { Ltpa360Main } from '../components/LTPA360Main';
+import { Ltpa360Main } from '../components/Ltpa360Main';
 
 const data = {
   pageID: {
