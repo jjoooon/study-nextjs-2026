@@ -68,13 +68,14 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
                     key={tab.value}
                     variant="outlined"
                     color="gray-light"
-                    className='w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]!'
-                    onClick={() => setActive(tab.value)}
-                    style={
-                      isActive
-                        ? { border: '2px solid var(--color-border-primary, #FF5C2E)' }
-                        : { boxShadow: '' }
+                    className={
+                      `w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]! ${
+                        isActive
+                          ? 'border-[0.2rem]! border-(--color-border-primary,#FF5C2E)! bg-[#FFEFEA]! shadow-[0_0.2rem_0.4rem_0_rgba(255,92,46,0.20)]!'
+                          : 'shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)]!'
+                      }`
                     }
+                    onClick={() => setActive(tab.value)}
                   >
                     <Grow placement='bwc' className='w-full'>
                       <Grow>
