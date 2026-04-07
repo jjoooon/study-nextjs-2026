@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { QuestionMark, SearchIcon } from '@icons';
-import { InfoBox } from '@common/InfoBox';
 import { TabPager } from '@common/TabPager';
 import type { PopupBaseProps } from './types';
 import { Input } from '@/shared/components/uiux/Input';
@@ -122,10 +121,10 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                   <Grow className="w-full">
                     <Input placeholder="병명 또는 코드 입력" value={form.type01} onChange={e => setFormField('type01', e.target.value)} />
                     <Button aria-label="검색" variant={'outlined'}  size={'lg'} color="gray-light" only="icon">
-                      <SearchIcon color="{'var(--color-primary-50)'}" />
+                      <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                   </Grow>
-                  <Grow>
+                  <Grow placement='ss' className="w-full">
                     <Typo>총 <b className="text-[var(--color-primary-50)]">18건</b></Typo>
                   </Grow>
                   <Table variant="default">
@@ -143,7 +142,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>
                           M48.0
                         </TableCell>
@@ -151,7 +150,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                           <b className="text-[var(--color-primary-50)]">척추</b>관협착증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-[var(--color-gray-5)]">
                         <TableCell>
                           M48.1
                         </TableCell>
@@ -159,7 +158,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                           <b className="text-[var(--color-primary-50)]">척추</b>만곡증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>
                           M48.2
                         </TableCell>
@@ -167,7 +166,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                           <b className="text-[var(--color-primary-50)]">척추</b>분리증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-[var(--color-gray-5)]">
                         <TableCell>
                           M48.3
                         </TableCell>
@@ -175,7 +174,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                           <b className="text-[var(--color-primary-50)]">척추</b>전방전위증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>
                           M48.4
                         </TableCell>
@@ -183,7 +182,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                           <b className="text-[var(--color-primary-50)]">척추</b>증, <b className="text-[var(--color-primary-50)]">척추</b>병증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-[var(--color-gray-5)]">
                         <TableCell>
                           M48.5
                         </TableCell>
@@ -191,7 +190,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                           강직성<b className="text-[var(--color-primary-50)]">척추</b>염
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>
                           M48.6
                         </TableCell>
@@ -413,36 +412,38 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                                       </Grow>
                                     </FormCell>
                                     <FormCell title={'재발유무'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="auto"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option3_1"
-                                          variant="default"
+                                      <Grow gap={3}>
+                                        <RadioGroup
+                                          className="gap-3"
+                                          errorMsg="하나를 선택해주세요."
+                                          errorPs="bl"
+                                          onValueChange={() => {}}
+                                          width="auto"
+                                          required
                                         >
-                                          없음
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option3_2"
-                                          variant="default"
-                                        >
-                                          있음
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                      <Grow>
-                                        <Input commaAmount={true} value={form.type07} onChange={e => setFormField('type07', e.target.value)} width="4rem" />
-                                        회
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d1"
+                                            size="lg"
+                                            value="option3_1"
+                                            variant="default"
+                                          >
+                                            없음
+                                          </RadioGroupItem>
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d2"
+                                            size="lg"
+                                            value="option3_2"
+                                            variant="default"
+                                          >
+                                            있음
+                                          </RadioGroupItem>
+                                        </RadioGroup>
+                                        <Grow>
+                                          <Input commaAmount={true} value={form.type07} onChange={e => setFormField('type07', e.target.value)} width="4rem" />
+                                          회
+                                        </Grow>
                                       </Grow>
                                     </FormCell>
                                   </FormRow>
@@ -562,7 +563,7 @@ const [checked, setChecked] = React.useState<string[]>(['b']);
                                 >
                                   <FormRow vertical={false}>
                                     <FormCell title={'발생부위'}>
-                                      <Grow className='w-full' >
+                                      <Grow className='w-full' gap={3}>
                                         <RadioGroup
                                           className="gap-2"
                                           errorMsg="하나를 선택해주세요."
