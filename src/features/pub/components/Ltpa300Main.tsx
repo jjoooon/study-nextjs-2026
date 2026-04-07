@@ -18,8 +18,8 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
-import type { LTPA300DummyDataRow } from '../data/ltpa300Data';
-import { LTPA300DummyData } from '../data/ltpa300Data';
+import type { Ltpa300DummyDataRow } from '../data/ltpa300Data';
+import { Ltpa300DummyData } from '../data/ltpa300Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -33,7 +33,7 @@ export const Ltpa300Main = () => {
     type06: '',
   });
 
-  const columnDefs = React.useMemo<ColDef<LTPA300DummyDataRow>[]>(
+  const columnDefs = React.useMemo<ColDef<Ltpa300DummyDataRow>[]>(
     () => [
       { headerName: '취급기관', field: 'field01', width: 120, cellClass: 'text-center' },
       { headerName: '모집직원번호', field: 'field02', width: 110, cellClass: 'text-center' },
@@ -55,7 +55,7 @@ export const Ltpa300Main = () => {
 
   const pageSize = 4;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: LTPA300DummyData,
+    allRows: Ltpa300DummyData,
     pageSize,
   });
   return (
@@ -206,7 +206,7 @@ export const Ltpa300Main = () => {
                 </TableFoldHead>
                 <TableFoldBody>
                   <div className="ag-theme-alpine">
-                    <AgGridReact<LTPA300DummyDataRow>
+                    <AgGridReact<Ltpa300DummyDataRow>
                       // noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
                       columnDefs={columnDefs}

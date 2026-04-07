@@ -24,11 +24,11 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { LTPA350Step1DataType } from '../data/ltpa350Step1Data';
+import type { Ltpa350Step1DataType } from '../data/ltpa350Step1Data';
 
 // Props Type
 type Ltpa350Step1Props = {
-  data?: LTPA350Step1DataType;
+  data?: Ltpa350Step1DataType;
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
   className?: string;

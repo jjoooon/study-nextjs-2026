@@ -1,4 +1,4 @@
-export type LTPA301DummyDataRow = {
+export type Ltpa301DummyDataRow = {
   id: number;
   isCheck: boolean;
   field01: string | number;
@@ -17,7 +17,7 @@ export type LTPA301DummyDataRow = {
   field14: string | number;
 };
 
-export const LTPA301DummyData: LTPA301DummyDataRow[] = [
+export const Ltpa301DummyData: Ltpa301DummyDataRow[] = [
   {
     id: 1,
     isCheck: true,

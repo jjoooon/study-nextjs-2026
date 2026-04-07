@@ -343,11 +343,11 @@ const LTPA904_02 = ({ isNoData = false }: LTPA904_02Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA904Story: Story = {
+export const Ltpa904Story: Story = {
   render: () => <LTPA904_02/>,
 };
 
-export const LTPA904_02NoData: Story = {
+export const Ltpa904_02NoData: Story = {
   render: () => <LTPA904_02 isNoData={true} />,
 };
 

@@ -1,4 +1,4 @@
-export type LTPA010DummyDataRow = {
+export type Ltpa010DummyDataRow = {
   id: number;
   isCheck: boolean;
   isState: boolean;
@@ -24,13 +24,13 @@ export type LTPA010DummyDataRow = {
   field20: string | number;
 };
 
-export const LTPA010DummyData: LTPA010DummyDataRow[] = [
+export const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
   {
     id: 1,
     isCheck: true,
     isState: false,
     field01: 'LA2131234123',
-    field02: '한화실손의료보헌갱신형2601',
+    field02: '한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값',
     field04: 'memoCreate',
     field05: '김한화',
@@ -55,7 +55,7 @@ export const LTPA010DummyData: LTPA010DummyDataRow[] = [
     isCheck: false,
     isState: true,
     field01: 'LA2131234123',
-    field02: '한화실손의료보헌갱신형2601',
+    field02: '한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값',
     field04: 'memoView',
     field05: '김한화',

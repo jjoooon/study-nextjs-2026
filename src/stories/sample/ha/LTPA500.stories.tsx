@@ -316,6 +316,6 @@ const LTPA500 = ({ isNoData = false }: LTPA500Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA500Story: Story = {
+export const Ltpa500Story: Story = {
   render: () => <LTPA500 />,
 };

@@ -405,10 +405,10 @@ const LTPA320 = ({ isNoData = false }: LTPA320Props) => {
 
 type Story = StoryObj<typeof meta>;
 
-export const LTPA320Story: Story = {
+export const Ltpa320Story: Story = {
   render: () => <LTPA320 />,
 };
 
-export const LTPA320NoData: Story = {
+export const Ltpa320NoData: Story = {
   render: () => <LTPA320 isNoData={true} />,
 };

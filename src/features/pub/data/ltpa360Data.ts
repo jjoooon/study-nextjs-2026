@@ -1,4 +1,4 @@
-export type LTPA360DummyDataRow1 = {
+export type Ltpa360DummyDataRow1 = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -8,7 +8,7 @@ export type LTPA360DummyDataRow1 = {
   field06: string | number;
 };
 
-export const LTPA360DummyData1: LTPA360DummyDataRow1[] = [
+export const Ltpa360DummyData1: Ltpa360DummyDataRow1[] = [
   {
     id: 1,
     field01: '기초서류',
@@ -74,7 +74,7 @@ export const LTPA360DummyData1: LTPA360DummyDataRow1[] = [
   },
 ];
 
-export type LTPA360DummyDataRow1b = {
+export type Ltpa360DummyDataRow1b = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -89,7 +89,7 @@ export type LTPA360DummyDataRow1b = {
   isSelect?: boolean;
 };
 
-export const LTPA360DummyData1b: LTPA360DummyDataRow1b[] = [
+export const Ltpa360DummyData1b: Ltpa360DummyDataRow1b[] = [
   {
     id: 1,
     field01: '2025-10-13',
@@ -144,7 +144,7 @@ export const LTPA360DummyData1b: LTPA360DummyDataRow1b[] = [
   },
 ];
 
-export type LTPA360DummyDataRow2 = {
+export type Ltpa360DummyDataRow2 = {
   id: number;
   isCheck: boolean;
   field01: string | number;
@@ -170,7 +170,7 @@ export type LTPA360DummyDataRow2 = {
   field21: string | number;
 };
 
-export const LTPA360DummyData2: LTPA360DummyDataRow2[] = [
+export const Ltpa360DummyData2: Ltpa360DummyDataRow2[] = [
   {
     id: 1,
     isCheck: false,
@@ -373,7 +373,7 @@ export const LTPA360DummyData2: LTPA360DummyDataRow2[] = [
   },
 ];
 
-export type LTPA360DummyDataRow3 = {
+export type Ltpa360DummyDataRow3 = {
   id: number;
   isCheck: boolean;
   field01: string | number;
@@ -389,7 +389,7 @@ export type LTPA360DummyDataRow3 = {
   field11: string | number;
 };
 
-export const LTPA360DummyData3: LTPA360DummyDataRow3[] = [
+export const Ltpa360DummyData3: Ltpa360DummyDataRow3[] = [
   {
     id: 1,
     isCheck: false,
@@ -454,7 +454,7 @@ export const LTPA360DummyData3: LTPA360DummyDataRow3[] = [
   },
 ];
 
-export type LTPA360DummyDataRow4 = {
+export type Ltpa360DummyDataRow4 = {
   id: number;
   isCheck: boolean;
   field01: string | number;
@@ -470,7 +470,7 @@ export type LTPA360DummyDataRow4 = {
   field11: string | number;
 };
 
-export const LTPA360DummyData4: LTPA360DummyDataRow4[] = [
+export const Ltpa360DummyData4: Ltpa360DummyDataRow4[] = [
   {
     id: 1,
     isCheck: false,

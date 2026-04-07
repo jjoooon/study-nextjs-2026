@@ -23,16 +23,16 @@ import { Input } from '@uiux/Input';
 
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import {
-  LTPA360DummyData1,
-  type LTPA360DummyDataRow1,
-  LTPA360DummyData1b,
-  type LTPA360DummyDataRow1b,
-  LTPA360DummyData2,
-  type LTPA360DummyDataRow2,
-  LTPA360DummyData3,
-  type LTPA360DummyDataRow3,
-  LTPA360DummyData4,
-  type LTPA360DummyDataRow4,
+  Ltpa360DummyData1,
+  type Ltpa360DummyDataRow1,
+  Ltpa360DummyData1b,
+  type Ltpa360DummyDataRow1b,
+  Ltpa360DummyData2,
+  type Ltpa360DummyDataRow2,
+  Ltpa360DummyData3,
+  type Ltpa360DummyDataRow3,
+  Ltpa360DummyData4,
+  type Ltpa360DummyDataRow4,
 } from '../data/ltpa360Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -68,14 +68,14 @@ export const Ltpa360Main = () => {
     type17: '',
     type18: '',
   });
-  const handlePreviewClick = (row: LTPA360DummyDataRow2) => {
+  const handlePreviewClick = (row: Ltpa360DummyDataRow2) => {
     // TODO: 실제 미리보기 팝업/라우팅 연동
     // eslint-disable-next-line no-console
     console.log('[LTPZ001] 미리보기 클릭', row);
   };
 
   // Tab1 AGGrid Column
-  const columnDefs1: ColDef<LTPA360DummyDataRow1>[] = [
+  const columnDefs1: ColDef<Ltpa360DummyDataRow1>[] = [
     {
       headerName: '단계별 진행현황',
       field: 'field01',
@@ -111,7 +111,7 @@ export const Ltpa360Main = () => {
   ];
 
   // Tab1_1 AGGrid Column
-  const columnDefs1b: ColDef<LTPA360DummyDataRow1b>[] = [
+  const columnDefs1b: ColDef<Ltpa360DummyDataRow1b>[] = [
     {
       headerName: '판매일자',
       field: 'field01',
@@ -210,11 +210,11 @@ export const Ltpa360Main = () => {
   ];
   // 행 isSelect 토글 함수 예시 (UI에서 호출 필요)
   // const handleToggleIsSelect = (rowId: number) => {
-  //   setLTPA360DummyData1b(prev => prev.map(row => row.id === rowId ? { ...row, isSelect: !row.isSelect } : row));
+  //   setLtpa360DummyData1b(prev => prev.map(row => row.id === rowId ? { ...row, isSelect: !row.isSelect } : row));
   // };
 
   // Tab2 AGGrid Column
-  const columnDefs2: (ColDef<LTPA360DummyDataRow2> | ColGroupDef<LTPA360DummyDataRow2>)[] = [
+  const columnDefs2: (ColDef<Ltpa360DummyDataRow2> | ColGroupDef<Ltpa360DummyDataRow2>)[] = [
     {
       headerName: '상품코드',
       field: 'field01',
@@ -438,7 +438,7 @@ export const Ltpa360Main = () => {
           width: 90,
           editable: false,
           cellClass: 'text-center flex! items-center justify-center!',
-          cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+          cellRenderer: (params: ICellRendererParams<Ltpa360DummyDataRow2>) => (
             <Button
               variant={'text'}
               size={'lg'}
@@ -495,7 +495,7 @@ export const Ltpa360Main = () => {
   ];
 
   // Tab3 AGGrid Column
-  const columnDefs3: ColDef<LTPA360DummyDataRow3>[] = [
+  const columnDefs3: ColDef<Ltpa360DummyDataRow3>[] = [
     {
       headerName: '담보코드',
       field: 'field01',
@@ -580,7 +580,7 @@ export const Ltpa360Main = () => {
   ];
 
   // Tab4 AGGrid Column
-  const columnDefs4: ColDef<LTPA360DummyDataRow4>[] = [
+  const columnDefs4: ColDef<Ltpa360DummyDataRow4>[] = [
     {
       headerName: '사고담보코드',
       field: 'field01',
@@ -741,10 +741,10 @@ export const Ltpa360Main = () => {
                         <Gcol placement="ss" className="w-full" gap={5}>
                           <Grow className="w-full">
                             <div className="ag-theme-alpine w-full">
-                              <AgGridReact<LTPA360DummyDataRow1>
+                              <AgGridReact<Ltpa360DummyDataRow1>
                                 noRowsOverlayComponent={AgGridEmptyComponent}
                                 getRowId={(params) => String(params.data.id)}
-                                rowData={LTPA360DummyData1}
+                                rowData={Ltpa360DummyData1}
                                 columnDefs={columnDefs1}
                                 defaultColDef={{
                                   sortable: false,
@@ -767,10 +767,10 @@ export const Ltpa360Main = () => {
                         <Gcol placement="ss" className="w-full" gap={5}>
                           <Grow className="w-full">
                             <div className="ag-theme-alpine w-full">
-                              <AgGridReact<LTPA360DummyDataRow1b>
+                              <AgGridReact<Ltpa360DummyDataRow1b>
                                 noRowsOverlayComponent={AgGridEmptyComponent}
                                 getRowId={(params) => String(params.data.id)}
-                                rowData={LTPA360DummyData1b}
+                                rowData={Ltpa360DummyData1b}
                                 columnDefs={columnDefs1b}
                                 defaultColDef={{
                                   sortable: false,
@@ -924,10 +924,10 @@ export const Ltpa360Main = () => {
                             </Grow>
                           </Grow>
                           <div className="ag-theme-alpine">
-                            <AgGridReact<LTPA360DummyDataRow2>
+                            <AgGridReact<Ltpa360DummyDataRow2>
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               getRowId={(params) => String(params.data.id)}
-                              rowData={LTPA360DummyData2}
+                              rowData={Ltpa360DummyData2}
                               columnDefs={columnDefs2}
                               defaultColDef={{
                                 sortable: false,
@@ -1103,10 +1103,10 @@ export const Ltpa360Main = () => {
                         </Button>
                       </Grow>
                       <div className="ag-theme-alpine">
-                        <AgGridReact<LTPA360DummyDataRow3>
+                        <AgGridReact<Ltpa360DummyDataRow3>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
-                          rowData={LTPA360DummyData3}
+                          rowData={Ltpa360DummyData3}
                           columnDefs={columnDefs3}
                           defaultColDef={{
                             sortable: false,
@@ -1281,10 +1281,10 @@ export const Ltpa360Main = () => {
                       </Grow>
                       <Grow className="w-full">
                         <div className="ag-theme-alpine">
-                          <AgGridReact<LTPA360DummyDataRow4>
+                          <AgGridReact<Ltpa360DummyDataRow4>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             getRowId={(params) => String(params.data.id)}
-                            rowData={LTPA360DummyData4}
+                            rowData={Ltpa360DummyData4}
                             columnDefs={columnDefs4}
                             defaultColDef={{
                               sortable: false,

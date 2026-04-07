@@ -178,7 +178,7 @@ const LTPZ047P   = () => {
     </Gcol>    
   )
 }
-export const LTPZ047: Story = {
+export const Ltpz047: Story = {
   render: () => <LTPZ047P />,
 
 }

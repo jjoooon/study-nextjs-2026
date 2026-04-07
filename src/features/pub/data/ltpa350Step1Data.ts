@@ -1,4 +1,4 @@
-export interface LTPA350Step1DataType {
+export interface Ltpa350Step1DataType {
   ContractorInfo: {
     insStartDate: string;
     insStartPeriod: string;
@@ -44,7 +44,7 @@ export interface LTPA350Step1DataType {
   };
 }
 
-export const LTPA350Step1Data: LTPA350Step1DataType = {
+export const Ltpa350Step1Data: Ltpa350Step1DataType = {
   ContractorInfo: {
     insStartDate: '2026-03-04', // 보험시기
     insStartPeriod: '2026-01-30', // 보험기간 start
