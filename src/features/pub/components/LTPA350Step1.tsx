@@ -13,8 +13,7 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
-import { SearchIcon, AddIcon, QuestionMark } from '@icons';
+import { SearchIcon, AddIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 
 // Atomic Components
