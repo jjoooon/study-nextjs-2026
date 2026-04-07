@@ -6,7 +6,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Badge } from '@/shared/components/uiux/Badge';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
@@ -15,7 +15,6 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,8 +26,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -41,60 +38,160 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const DATA_TABS: LTPZ030TabType[] = [
     {
-      name: '납입예정',
+      name: '간편고지유형 사전체크',
       value: 'tab1',
-      label: '납입예정',
+      label: '간편고지유형 사전체크',
     },
     {
-      name: '담보',
+      name: '일반/건강고지유형 사전체크',
       value: 'tab2',
-      label: '담보',
+      label: '일반/건강고지유형 사전체크',
     },
   ];
 
-  // tab1 dummy data
-  type DummyDataType = {
+  // tab1_1 dummy data
+  type DummyDataType1T1 = {
     id: number;
     field01: string | number;
     field02: string | number;
     field03: string | number;
     field04: string | number;
     field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
-    field20: string | number;
-    field21: string | number;
-    field22: string | number;
-    field23: string | number;
-    field24: string | number;
-    field25: string | number;
-    field26: string | number;
-    field27: string | number;
-    field28: string | number;
-    field29: string | number;
-    field30: string | number;
-    field31: string | number;
-    field32: string | number;
-    field33: string | number;
-    field34: string | number;
-    field35: string | number;
-    field36: string | number;
-    field37: string | number;
-    field38: string | number;
   };
-  const DummyData: DummyDataType[] = [
+  const DummyData1T1: DummyDataType1T1[] = [
+    {
+      id: 1,
+      field01: '더경증',
+      field02: '3105',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737,1',
+    },
+    {
+      id: 2,
+      field01: '더경증',
+      field02: '385',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737,1',
+    },
+    {
+      id: 3,
+      field01: '더경증',
+      field02: '365',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737',
+    },
+    {
+      id: 4,
+      field01: '3N5',
+      field02: '355',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737',
+    },
+    {
+      id: 5,
+      field01: '3N5',
+      field02: '345',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737',
+    },
+    {
+      id: 6,
+      field01: '3N5(2일)',
+      field02: '355(2일)',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737',
+    },
+    {
+      id: 7,
+      field01: '3N5(2일)',
+      field02: '345(2일)',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737',
+    },
+    {
+      id: 8,
+      field01: '3N5(2일)',
+      field02: '335(2일)',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737,1152,1737',
+    },
+    {
+      id: 9,
+      field01: '3N5(2일)',
+      field02: '325(2일)',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737',
+    },
+    {
+      id: 10,
+      field01: '3N5(2일)',
+      field02: '315(2일)',
+      field03: '',
+      field04: '',
+      field05: '경증외, 중대질환 1148,1737',
+    },
+  ];
+  const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
+    () => [
+      {
+        headerName: '분류',
+        field: 'field01',
+        width: 100,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '고지유형',
+        field: 'field02',
+        width: 120,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '가능여부',
+        field: 'field03',
+        width: 150,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '제한담보',
+        field: 'field04',
+        width: 160,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '비고',
+        field: 'field05',
+        flex: 1,
+        autoHeight: true,
+        editable: false,
+        className: 'truncate',
+      },
+    ],
+    []
+  );
+
+  // tab1_2 dummy data
+  type DummyDataType1T2 = {
+    id: number;
+    field01: string | number;
+    field02: string | number;
+    field03: string | number;
+    field04: string | number;
+    field05: string | number;
+  };
+  const DummyData1T2: DummyDataType1T2[] = [
     {
       id: 1,
       field01: '',
@@ -102,39 +199,6 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
       field03: '',
       field04: '',
       field05: '',
-      field06: '',
-      field07: '',
-      field08: '',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-      field16: '',
-      field17: '',
-      field18: '',
-      field19: '',
-      field20: '',
-      field21: '',
-      field22: '',
-      field23: '',
-      field24: '',
-      field25: '',
-      field26: '',
-      field27: '',
-      field28: '',
-      field29: '',
-      field30: '',
-      field31: '',
-      field32: '',
-      field33: '',
-      field34: '',
-      field35: '',
-      field36: '',
-      field37: '',
-      field38: '',
     },
     {
       id: 2,
@@ -143,53 +207,20 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
       field03: '',
       field04: '',
       field05: '',
-      field06: '',
-      field07: '',
-      field08: '',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-      field16: '',
-      field17: '',
-      field18: '',
-      field19: '',
-      field20: '',
-      field21: '',
-      field22: '',
-      field23: '',
-      field24: '',
-      field25: '',
-      field26: '',
-      field27: '',
-      field28: '',
-      field29: '',
-      field30: '',
-      field31: '',
-      field32: '',
-      field33: '',
-      field34: '',
-      field35: '',
-      field36: '',
-      field37: '',
-      field38: '',
     },
   ];
-  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+  const columnDefs1T2 = React.useMemo<ColDef<DummyDataType1T2>[]>(
     () => [
       {
-        headerName: '납입회차',
+        headerName: '분류',
         field: 'field01',
         width: 100,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        // cellClass: 'flex! items-center! justify-center! text-center',
       },
       {
-        headerName: '납입_응당일',
+        headerName: '고지유형',
         field: 'field02',
         width: 120,
         autoHeight: true,
@@ -197,7 +228,7 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
         cellClass: 'flex! items-center! justify-center! text-center',
       },
       {
-        headerName: '계약_영업보험료',
+        headerName: '가능여부',
         field: 'field03',
         width: 150,
         autoHeight: true,
@@ -207,7 +238,7 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
         valueFormatter: numberValueFormatter,
       },
       {
-        headerName: '계약_영업보험료_이전',
+        headerName: '제한담보',
         field: 'field04',
         width: 160,
         autoHeight: true,
@@ -217,7 +248,7 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
         valueFormatter: numberValueFormatter,
       },
       {
-        headerName: '적립보험료',
+        headerName: '비고',
         field: 'field05',
         width: 150,
         autoHeight: true,
@@ -225,325 +256,6 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
         cellClass: 'flex! items-center! justify-center! text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '적립보험료 이전',
-        field: 'field06',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '계약_적용보험료',
-        field: 'field07',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '계약_적용보험료_이전',
-        field: 'field08',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '계약_할인_보험료',
-        field: 'field09',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '계약_할인_보험료_이전',
-        field: 'field10',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '담보_적용보험료_합계',
-        field: 'field11',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '담보_적용보험료_합계_이전',
-        field: 'field12',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '할인_적립_담보_보험료',
-        field: 'field13',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '할인_적립_담보_보험료_이전',
-        field: 'field14',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '적립순보험료',
-        field: 'field15',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '적립순보험료_이전',
-        field: 'field16',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '적립_계수_01',
-        field: 'field17',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '적립_계수_02',
-        field: 'field18',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '적립금',
-        field: 'field19',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '실손의료비예상납입보험료',
-        field: 'field20',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '적립보험료대체납입특약보험료',
-        field: 'field21',
-        width: 200,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '신계약비초년도영업보험료비율[α1]',
-        field: 'field22',
-        width: 220,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '신계약비초년도영업보험료비율[α2]',
-        field: 'field23',
-        width: 220,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '신계약비가입금액비율[αs]',
-        field: 'field24',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '신계약비일정금액[αc]',
-        field: 'field25',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '손해조사비차감유지비율[β(a%)]',
-        field: 'field26',
-        width: 200,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '손해조사비차감유지한도비율[β(b%)]',
-        field: 'field27',
-        width: 230,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '완납전유지비년납한도금액[β(c)]',
-        field: 'field28',
-        width: 200,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '완납전유지비일정금액[βc]',
-        field: 'field29',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '수금비영업보험료비율[β5]',
-        field: 'field30',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '손해조사비율[Ce(a%)]',
-        field: 'field31',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-      },
-      {
-        headerName: '손해조사비고정금액[Ce(c)]',
-        field: 'field32',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '회차_라운드_다운_여부',
-        field: 'field33',
-        width: 180,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '중도인출금액적립액',
-        field: 'field34',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '적립대체보험료',
-        field: 'field35',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '준비금대체보험료',
-        field: 'field36',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '할인율납입',
-        field: 'field37',
-        width: 120,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '할인율만기',
-        field: 'field38',
-        width: 120,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
       },
     ],
     []
@@ -625,40 +337,13 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
   // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
-    type05: '',
-    type06: '',
-    type07: '',
-    type08: '',
-    type09: '',
-    type10: '',
-    type11: '',
-    type12: '',
-    type13: '',
-    type14: '',
-    type15: '',
-    type16: '',
-    type17: '',
-    type18: '',
-    type19: '',
-    type20: '',
-    type21: '',
-    type22: '',
-    type23: '',
-  });
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              납입예정리스트
+              고지유형 추천(LTPZ030)
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ030)
@@ -671,108 +356,53 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
               variant={'none'}
               caption="납입예정 리스트 테이블"
               cols={[
-                'flex-auto',
+                'w-[5rem]',
                 'flex-1',
-                'flex-auto',
+                'w-[5rem]',
                 'flex-1',
-                'flex-auto',
+                'w-[13rem]',
                 'flex-1',
-                'flex-auto',
+                'w-[5rem]',
                 'flex-1',
-                'flex-auto',
+                'w-[5rem]',
+                'flex-1',
+                'w-[10.3rem]',
                 'flex-1',
               ]}
             >
               <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} />
+                <FormCell title={'피보험자'}>
+                  <Typo tag={'strong'} className="body-md font-bold">
+                    김*화
+                  </Typo>
                 </FormCell>
-                <FormCell title={'발행후변경순번'}>
-                  <Input value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} />
+                <FormCell title={'기준일자'}>
+                  <Typo tag={'strong'} className="body-md font-bold">
+                    YYYY-MM-DD
+                  </Typo>
                 </FormCell>
-                <FormCell title={'증권번호'}>
-                  <Input value={form.type03} onChange={(e) => setFormField('type03', e.target.value)} />
+                <FormCell title={'지급정보 조회기간'}>
+                  <Typo tag={'strong'} className="body-md font-bold">
+                    YY년
+                  </Typo>
                 </FormCell>
-                <FormCell title={'시작납입회차'}>
-                  <Input value={form.type04} onChange={(e) => setFormField('type04', e.target.value)} />
+                <FormCell title={'고혈압'}>
+                  <Badge color="blue" size="md" variant="contained">
+                    가능
+                  </Badge>
                 </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'업무구분1'}>
-                  <NativeSelect
-                    aria-label="업무구분1 선택"
-                    value={form.type05}
-                    onChange={(e) => setFormField('type05', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type05-1', label: '(10)가입설계' },
-                      { value: 'selection2', id: 'type05-2', label: '(20)변경설계' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                <FormCell title={'당뇨'}>
+                  <Badge color="blue" size="md" variant="contained">
+                    가능
+                  </Badge>
                 </FormCell>
-                <FormCell title={'업무구분2'}>
-                  <NativeSelect
-                    aria-label="업무구분2 선택"
-                    value={form.type06}
-                    onChange={(e) => setFormField('type06', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type06-1', label: '(11)예상만기' },
-                      { value: 'selection2', id: 'type06-2', label: '(13)최소최대' },
-                      { value: 'selection3', id: 'type06-3', label: '(21)추천' },
-                      { value: 'selection4', id: 'type06-4', label: '(12)인수심사' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </FormCell>
-                <FormCell title={'환급률'}>
-                  <Input value={form.type07} onChange={(e) => setFormField('type07', e.target.value)} />
-                </FormCell>
-                <FormCell title={'환급금'}>
-                  <Input value={form.type08} onChange={(e) => setFormField('type08', e.target.value)} />
-                </FormCell>
-                <FormCell title={'추천구분'}>
-                  <NativeSelect
-                    aria-label="추천구분 선택"
-                    value={form.type09}
-                    onChange={(e) => setFormField('type09', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type09-1', label: '(10)목표환급율' },
-                      { value: 'selection2', id: 'type09-2', label: '(01)목표환급율' },
-                      { value: 'selection3', id: 'type09-3', label: '(02)목표환급금' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                <FormCell title={'고혈압&당뇨'}>
+                  <Badge color="blue" size="md" variant="contained">
+                    가능
+                  </Badge>
                 </FormCell>
               </FormRow>
             </FormTable>
-
-            <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                조회
-              </Button>
-              <Button
-                color={'gray'}
-                only={'icon'}
-                size={'lg'}
-                variant={'outlined'}
-                onClick={() => {}}
-                aria-label="새로고침"
-              >
-                <ResetIcon />
-              </Button>
-            </Grow>
           </Grow>
 
           <TabPager
@@ -794,207 +424,40 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
               <>
                 <Gcol placement="ss" className="w-full pt-2" gap={5}>
                   <TableFold variant={'accordion'}>
-                    <TableFoldHead title="납입예정" />
+                    <TableFoldHead title="" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine w-full">
-                        <AgGridReact<DummyDataType>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData}
-                          columnDefs={columnDefs}
-                          defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                          }}
-                          animateRows={false}
-                          domLayout="autoHeight"
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                  {/* 예상만기환급금 테이블 */}
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="납입예정">
-                      <Grow>
-                        <Button color="success" variant="outlined">
-                          엑셀내보내기
-                          <FileExportIcon />
-                        </Button>
+                      <Grow className="w-full" gap={5}>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<DummyDataType1T1>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={DummyData1T1}
+                            columnDefs={columnDefs1T1}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                            }}
+                            animateRows={false}
+                            domLayout="autoHeight"
+                            className="text-center"
+                            enableCellSpan={true}
+                          />
+                        </div>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<DummyDataType1T2>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={DummyData1T2}
+                            columnDefs={columnDefs1T2}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                            }}
+                            animateRows={false}
+                            domLayout="autoHeight"
+                          />
+                        </div>
                       </Grow>
-                    </TableFoldHead>
-                    <TableFoldBody>
-                      <FormTable
-                        caption="예상만기환급금 테이블"
-                        cols={[
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                        ]}
-                      >
-                        <FormRow>
-                          <FormCell title={'총예상납입보험료'}>
-                            <Input
-                              commaAmount={true}
-                              after="원"
-                              value={form.type10}
-                              onChange={(e) => setFormField('type10', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'중도환급금'}>
-                            <Input
-                              commaAmount={true}
-                              after="원"
-                              value={form.type11}
-                              onChange={(e) => setFormField('type11', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'예상만기환급금'}>
-                            <Input
-                              commaAmount={true}
-                              after="원"
-                              value={form.type12}
-                              onChange={(e) => setFormField('type12', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type13}
-                              onChange={(e) => setFormField('type13', e.target.value)}
-                            />
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                    </TableFoldBody>
-                  </TableFold>
-
-                  {/* 추천보험료 테이블 */}
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="추천보험료"></TableFoldHead>
-                    <TableFoldBody>
-                      <FormTable
-                        caption="추천보험료 테이블"
-                        cols={[
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                        ]}
-                      >
-                        <FormRow>
-                          <FormCell title={'추천보험료'}>
-                            <Input
-                              commaAmount={true}
-                              after="원"
-                              value={form.type14}
-                              onChange={(e) => setFormField('type14', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최소추천(출생후)1'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type15}
-                              onChange={(e) => setFormField('type15', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={null} colSpan={4}></FormCell>
-                        </FormRow>
-
-                        <FormRow>
-                          <FormCell title={'최소추천보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type16}
-                              onChange={(e) => setFormField('type16', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최소예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type17}
-                              onChange={(e) => setFormField('type17', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최다추천보험료'}>
-                            <Input
-                              after="%"
-                              value={form.type18}
-                              onChange={(e) => setFormField('type18', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최대추천보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type19}
-                              onChange={(e) => setFormField('type19', e.target.value)}
-                            />
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                    </TableFoldBody>
-                  </TableFold>
-                  {/* 기타 테이블 */}
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="기타"></TableFoldHead>
-                    <TableFoldBody>
-                      <FormTable
-                        caption="기타 테이블"
-                        cols={[
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                        ]}
-                      >
-                        <FormRow>
-                          <FormCell title={'만기환급담보환급금'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type20}
-                              onChange={(e) => setFormField('type20', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'적립보험료대체납입특약보험료'}>
-                            <Input
-                              commaAmount={true}
-                              variant="default"
-                              value={form.type21}
-                              onChange={(e) => setFormField('type21', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'실손의료비예상납입보험료'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type22}
-                              onChange={(e) => setFormField('type22', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'만기유지보너스'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type23}
-                              onChange={(e) => setFormField('type23', e.target.value)}
-                            />
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
                     </TableFoldBody>
                   </TableFold>
                 </Gcol>
@@ -1020,213 +483,6 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </div>
                   </TableFoldBody>
                 </TableFold>
-
-                {/* 예상만기환급금 */}
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="예상만기환급금">
-                    <Grow>
-                      <Button color="success" variant="outlined">
-                        엑셀내보내기
-                        <FileExportIcon />
-                      </Button>
-                    </Grow>
-                  </TableFoldHead>
-                  <TableFoldBody>
-                    <FormTable
-                      caption="예상만기환급금 테이블"
-                      cols={[
-                        'w-[14rem]',
-                        'flex-1',
-                        'w-[14rem]',
-                        'flex-1',
-                        'w-[14rem]',
-                        'flex-1',
-                        'w-[14rem]',
-                        'flex-1',
-                      ]}
-                    >
-                      <FormRow>
-                        <FormCell title={'총예상납입보험료'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            after="원"
-                            commaAmount={true}
-                            width="full"
-                            value={form.type01}
-                            onChange={(e) => setFormField('type01', e.target.value)}
-                          />
-                        </FormCell>
-                        <FormCell title={'중도환급금'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
-                            after="원"
-                            commaAmount={true}
-                            value={form.type02}
-                            onChange={(e) => setFormField('type02', e.target.value)}
-                          />
-                        </FormCell>
-                        <FormCell title={'예상만기환급금'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
-                            value={form.type03}
-                            onChange={(e) => setFormField('type03', e.target.value)}
-                          />
-                          원
-                        </FormCell>
-                        <FormCell title={'예상만기환급율'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
-                            after="%"
-                            value={form.type04}
-                            onChange={(e) => setFormField('type04', e.target.value)}
-                          />
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                  </TableFoldBody>
-                </TableFold>
-
-                {/* 추천보험료 */}
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="추천보험료"></TableFoldHead>
-                  <TableFoldBody>
-                    <Grow className="w-full">
-                      <FormTable
-                        caption="추천보험료 테이블"
-                        cols={[
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                        ]}
-                      >
-                        <FormRow>
-                          <FormCell title={'추천보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type05}
-                              onChange={(e) => setFormField('type05', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최소추천(출생후)'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type06}
-                              onChange={(e) => setFormField('type06', e.target.value)}
-                            />
-                            <FormCell title={null} colSpan={4}></FormCell>
-                          </FormCell>
-                        </FormRow>
-                        <FormRow>
-                          <FormCell title={'최소추천보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type07}
-                              onChange={(e) => setFormField('type07', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최소예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type08}
-                              onChange={(e) => setFormField('type08', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최대추천보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type09}
-                              onChange={(e) => setFormField('type09', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'최대예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type10}
-                              onChange={(e) => setFormField('type10', e.target.value)}
-                            />
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                    </Grow>
-                  </TableFoldBody>
-                </TableFold>
-
-                {/* 기타 */}
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="기타"></TableFoldHead>
-                  <TableFoldBody>
-                    <Grow className="w-full">
-                      <FormTable
-                        caption="기타 테이블"
-                        cols={[
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                          'w-[14rem]',
-                          'flex-1',
-                        ]}
-                      >
-                        <FormRow>
-                          <FormCell title={'만기환급담보환급금'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type11}
-                              onChange={(e) => setFormField('type11', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'적립보험료대체납입특약보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type12}
-                              onChange={(e) => setFormField('type12', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'실손의료비예상납입보험료'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type13}
-                              onChange={(e) => setFormField('type13', e.target.value)}
-                            />
-                          </FormCell>
-                          <FormCell title={'만기유지보너스'}>
-                            <Input
-                              after="원"
-                              commaAmount={true}
-                              value={form.type14}
-                              onChange={(e) => setFormField('type14', e.target.value)}
-                            />
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                    </Grow>
-                  </TableFoldBody>
-                </TableFold>
               </Gcol>
             )}
           </TabPager>
@@ -1234,9 +490,6 @@ export const LTPZ030 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                확인
-              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
