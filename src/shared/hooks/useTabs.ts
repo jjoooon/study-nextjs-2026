@@ -35,7 +35,7 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
   const handleRemove = (value: string) => {
     if (tabs.length <= 1) return;
     setTabs((prev) => {
-      const next = prev.filter(tab => tab.value !== value);
+      const next = prev.filter((tab) => tab.value !== value);
       // 삭제된 탭이 active였다면, 첫 번째 탭을 active로 설정
       if (active === value) {
         setActive(next[0]?.value || '');

@@ -1,9 +1,9 @@
 'use client';
 
 // components - layout
+import PageID from '@features/PageID';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 // components - features
-import PageID from '@features/PageID';
 
 // data
 import { LTPA400Main } from '../components/LTPA400Main';
@@ -13,7 +13,7 @@ const data = {
     pageName: '장기보험_가입설계요청',
     pageId: 'LTPA400',
   },
-}
+};
 
 export default function LTPA400Section() {
   return (

@@ -1,29 +1,37 @@
 ﻿'use client';
 // 권오택
-import * as React from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
+import { ResetIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
+
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@icons';
-import { DatePickerInput } from '@common/DatePicker';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
-import { TableMore } from '@common/TablePagination';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-   const [form, setFormField] = useFormFields({
+  const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
     type03: '',
@@ -43,21 +51,76 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
     field09: string | number;
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
-    { id: 2, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
-    { id: 3, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
-    { id: 4, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
-    { id: 5, field01: '', field02: '', field03: '', field04: 'LA26234242342', field05: '김한화', field06: '', field07: '', field08: '2026-03-01', field09: '' },
+    {
+      id: 1,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: 'LA26234242342',
+      field05: '김한화',
+      field06: '',
+      field07: '',
+      field08: '2026-03-01',
+      field09: '',
+    },
+    {
+      id: 2,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: 'LA26234242342',
+      field05: '김한화',
+      field06: '',
+      field07: '',
+      field08: '2026-03-01',
+      field09: '',
+    },
+    {
+      id: 3,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: 'LA26234242342',
+      field05: '김한화',
+      field06: '',
+      field07: '',
+      field08: '2026-03-01',
+      field09: '',
+    },
+    {
+      id: 4,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: 'LA26234242342',
+      field05: '김한화',
+      field06: '',
+      field07: '',
+      field08: '2026-03-01',
+      field09: '',
+    },
+    {
+      id: 5,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: 'LA26234242342',
+      field05: '김한화',
+      field06: '',
+      field07: '',
+      field08: '2026-03-01',
+      field09: '',
+    },
   ];
 
-  // AgGrid Column 
+  // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
       width: 80,
       field: 'id',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,   
+      autoHeight: true,
     },
     {
       headerName: '보종군',
@@ -116,7 +179,7 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
     },
   ];
-  
+
   // rowSelection 사용시
 
   const pageSize = 3;
@@ -130,16 +193,17 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="2xl" className="">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>설계검색</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ038)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              설계검색
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ038)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          <Grow className='w-full' variant="box-round" placement={'bwe'}>
-            <FormTable 
-              variant={'head'}
-              lineTop={false}
-              caption="">
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'보종군'}>
                   <NativeSelect
@@ -158,7 +222,9 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection6', id: 'type01-6', label: '퇴직연금' },
                       { value: 'selection7', id: 'type01-7', label: '단체증권' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
@@ -176,14 +242,16 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection4', id: 'type02-4', label: '설계번호' },
                       { value: 'selection5', id: 'type02-5', label: '차량번호' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={'16rem'} value={'123123'} readOnly/>
+                  <Input aria-label="" width={'16rem'} value={'123123'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
-                  </Button>  
-                </FormCell>  
+                  </Button>
+                </FormCell>
                 <FormCell title={'설계상태'}>
                   <NativeSelect
                     aria-label="설계상태 선택"
@@ -196,7 +264,9 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection', id: 'type03-1', label: '전체' },
                       { value: 'selection2', id: 'type03-2', label: '전체2' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
@@ -213,15 +283,17 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection', id: 'type04-1', label: '취급기관' },
                       { value: 'selection2', id: 'type04-2', label: '취급기관2' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={'16rem'} value={'12345678'}/>
+                  <Input aria-label="" width={'16rem'} value={'12345678'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
-                  </Button>  
-                  <Input aria-label="" width={'16rem'} value={'신부산GA지점'} readOnly/>
-                </FormCell>  
+                  </Button>
+                  <Input aria-label="" width={'16rem'} value={'신부산GA지점'} readOnly />
+                </FormCell>
                 <FormCell title={'설계일자'} colSpan={3}>
                   <DatePickerInput
                     errorMsg="입력은 필수입니다."
@@ -230,42 +302,48 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onChange={() => {}}
                     rangeValue={{
                       from: '2026-03-01',
-                      to: '2026-03-07'
+                      to: '2026-03-07',
                     }}
                     required
                     size="lg"
                     width="sm"
                   />
-                </FormCell>    
+                </FormCell>
               </FormRow>
-            </FormTable>  
+            </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>
           </Grow>
 
-          <Gcol className='w-full'>
+          <Gcol className="w-full">
             <div className="ag-theme-alpine">
               <AgGridReact<DummyDataType>
                 key={loadedCount}
-                getRowId={params => String(params.data.id)}
+                getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 columnDefs={columnDefs}
-                defaultColDef={{ 
+                defaultColDef={{
                   sortable: false,
                   resizable: false,
                 }}
                 domLayout="autoHeight"
-
                 rowModelType="infinite"
-                  cacheBlockSize={pageSize}
-                  maxBlocksInCache={2}
-                  datasource={dataSource}
+                cacheBlockSize={pageSize}
+                maxBlocksInCache={2}
+                datasource={dataSource}
               />
             </div>
             <TableMore
@@ -275,10 +353,8 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
               onLoadAll={handleLoadAll}
               onLoadNext={handleLoadNext}
             />
-          </Gcol>  
-        
-        
-        </DialogSection> 
+          </Gcol>
+        </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
@@ -292,7 +368,7 @@ export const LTPZ038 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

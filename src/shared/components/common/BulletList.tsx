@@ -1,7 +1,7 @@
+import { Grow } from '@atoms';
+import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { ReactNode, HTMLAttributes, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
-import { Grow } from '@atoms';
 
 type BulletType = 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
 type BulletSize = 'sm' | 'md' | 'lg' | 'xs';
@@ -40,13 +40,13 @@ const itemSize = {
   md: 'py-[0.1rem] text-[1.3rem] leading-[1.8rem]',
   sm: 'py-[0.1rem] text-[1.2rem] leading-[1.6rem]',
   xs: 'py-[0.1rem] text-[1.1rem] leading-[1.4rem]',
-}
+};
 const itemHeight = {
   lg: 'h-[2.2rem] leading-[2rem]',
   md: 'h-[2rem] leading-[1.8rem]',
   sm: 'h-[1.8rem] leading-[1.6rem]',
   xs: 'h-[1.6rem] leading-[1.4rem]',
-}
+};
 const bulletStyles = {
   dot: `w-[0.6rem]`,
   dotBig: `w-[0.6rem]`,
@@ -61,39 +61,47 @@ const itemColor = {
   info: 'text-[var(--color-information-50)]',
   detail: 'text-[var(--color-primary-50)]',
   warning: 'text-[var(--color-danger-50)]',
-}
-export const BulletList = ({ 
-  children, 
+};
+export const BulletList = ({
+  children,
   type = 'dot',
   size = 'md',
   color,
-  position = 'col', 
-  className 
+  position = 'col',
+  className,
 }: BulletListProps) => {
   return (
     <BulletListContext.Provider value={{ type, size, color }}>
-      <ul className={cn(
-        position === 'row' ? 'flex flex-row flex-wrap items-center' : 'flex flex-col', 
-        color === 'warning' ? '[&>li_em]:text-[var(--color-danger-50)] [&>li_em]:font-bold [&>li_em]:not-italic!' : '',
-        color === 'detail' ? '[&>li_em]:text-[var(--color-primary-50)] [&>li_em]:font-bold [&>li_em]:not-italic!' : '',
-        color === 'info' ? '[&>li_em]:text-[var(--color-information-50)] [&>li_em]:font-bold [&>li_em]:not-italic!' : '',
-        className
-      )}>
+      <ul
+        className={cn(
+          position === 'row' ? 'flex flex-row flex-wrap items-center' : 'flex flex-col',
+          color === 'warning'
+            ? '[&>li_em]:text-[var(--color-danger-50)] [&>li_em]:font-bold [&>li_em]:not-italic!'
+            : '',
+          color === 'detail'
+            ? '[&>li_em]:text-[var(--color-primary-50)] [&>li_em]:font-bold [&>li_em]:not-italic!'
+            : '',
+          color === 'info'
+            ? '[&>li_em]:text-[var(--color-information-50)] [&>li_em]:font-bold [&>li_em]:not-italic!'
+            : '',
+          className
+        )}
+      >
         {children}
       </ul>
     </BulletListContext.Provider>
   );
 };
 
-export const BulletListItem = ({ 
-  children, 
+export const BulletListItem = ({
+  children,
   type,
   size,
   color,
-  className, 
+  className,
   before,
   onClick,
-  ...rest 
+  ...rest
 }: BulletListProps) => {
   const context = useBulletListContext();
   const resolvedType = type ?? context.type ?? 'dot';
@@ -103,71 +111,65 @@ export const BulletListItem = ({
   return (
     <li
       className={cn(
-        `relative flex justify-start items-start gap-[0.2rem] w-full ${onClick ? 'cursor-pointer' : ''}`, 
-        itemColor[resolvedColor], 
-        itemSize[resolvedSize], 
-        className)
-      }
+        `relative flex justify-start items-start gap-[0.2rem] w-full ${onClick ? 'cursor-pointer' : ''}`,
+        itemColor[resolvedColor],
+        itemSize[resolvedSize],
+        className
+      )}
       onClick={onClick}
       {...rest}
     >
-      <div className={cn(
-        'flex items-center justify-center shrink-0', 
-        itemHeight[resolvedSize],
-        bulletStyles[resolvedType]
-      )}>
-        {resolvedType === 'ref' && (<RefIcon size={10}/>)}
-        {resolvedType === 'dot' && (<DotIcon size={3}/>)}
-        {resolvedType === 'dotBig' && (<DotIcon size={8}/>)}
-        {resolvedType === 'dash' && (<DashIcon size={8}/>)}
-        {resolvedType === 'star' && (<StarIcon size={11}/>)}
-        {resolvedType === 'hash' && (<HashIcon size={10}/>)}
+      <div
+        className={cn(
+          'flex items-center justify-center shrink-0',
+          itemHeight[resolvedSize],
+          bulletStyles[resolvedType]
+        )}
+      >
+        {resolvedType === 'ref' && <RefIcon size={10} />}
+        {resolvedType === 'dot' && <DotIcon size={3} />}
+        {resolvedType === 'dotBig' && <DotIcon size={8} />}
+        {resolvedType === 'dash' && <DashIcon size={8} />}
+        {resolvedType === 'star' && <StarIcon size={11} />}
+        {resolvedType === 'hash' && <HashIcon size={10} />}
         {resolvedType === 'symbols' && before}
       </div>
-      <div className='flex-1 tracking-[-0.13rem]'>
-        {children}
-      </div>
+      <div className="flex-1 tracking-[-0.13rem]">{children}</div>
     </li>
   );
 };
 
-export const BulletItem = ({ 
-  children, 
-  type = 'dot', 
-  size = 'md', 
-  color = 'default', 
-  onClick, 
-  className, 
+export const BulletItem = ({
+  children,
+  type = 'dot',
+  size = 'md',
+  color = 'default',
+  onClick,
+  className,
   before,
-  ...rest 
+  ...rest
 }: BulletItemProps) => {
   return (
     <div
       className={cn(
-        `relative flex justify-start items-start gap-[0.2rem] ${onClick ? 'cursor-pointer' : ''}`, 
-        bulletStyles[type], 
-        itemSize[size], 
-        itemColor[color], 
+        `relative flex justify-start items-start gap-[0.2rem] ${onClick ? 'cursor-pointer' : ''}`,
+        bulletStyles[type],
+        itemSize[size],
+        itemColor[color],
         className
       )}
       onClick={onClick}
     >
-      <div className={cn(
-        'flex items-center justify-center shrink-0', 
-        itemHeight[size],
-        bulletStyles[type]
-      )}>
-        {type === 'ref' && (<RefIcon size={10}/>)}
-        {type === 'dot' && (<DotIcon size={3}/>)}
-        {type === 'dotBig' && (<DotIcon size={8}/>)}
-        {type === 'dash' && (<DashIcon size={8}/>)}
-        {type === 'star' && (<StarIcon size={11}/>)}
-        {type === 'hash' && (<HashIcon size={10}/>)}
+      <div className={cn('flex items-center justify-center shrink-0', itemHeight[size], bulletStyles[type])}>
+        {type === 'ref' && <RefIcon size={10} />}
+        {type === 'dot' && <DotIcon size={3} />}
+        {type === 'dotBig' && <DotIcon size={8} />}
+        {type === 'dash' && <DashIcon size={8} />}
+        {type === 'star' && <StarIcon size={11} />}
+        {type === 'hash' && <HashIcon size={10} />}
         {type === 'symbols' && before}
       </div>
-      <div className='flex-1'>
-        {children}
-      </div>
+      <div className="flex-1">{children}</div>
     </div>
   );
 };

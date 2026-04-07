@@ -14,11 +14,11 @@
 // 수정일: 2025-11-18
 // Last synced: 2025-12-17
 
+import { Typo } from '@atoms';
+import { ChevronDownIcon, SelectArrowIcon } from '@icons';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import * as React from 'react';
-import { ChevronDownIcon, SelectArrowIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Typo } from '@atoms';
 
 type VariantType = 'default' | 'box' | 'line' | 'minimal' | 'tableHead';
 
@@ -64,7 +64,12 @@ function AccordionItem({ className, ...props }: React.ComponentProps<typeof Acco
   );
 }
 
-function AccordionTrigger({ className, title, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & { title?: string }) {
+function AccordionTrigger({
+  className,
+  title,
+  children,
+  ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & { title?: string }) {
   const variant = React.useContext(AccordionContext);
 
   const triggerStyles = {
@@ -89,13 +94,9 @@ function AccordionTrigger({ className, title, children, ...props }: React.Compon
             {...props}
           >
             <SelectArrowIcon size={14} color={'var(--color-primary-50)'} className="-rotate-90" />
-            <Typo variant={'heading-md'}>
-              {title}
-            </Typo>
+            <Typo variant={'heading-md'}>{title}</Typo>
           </AccordionPrimitive.Trigger>
-          <div className="flex justify-end items-center">
-            {children} 
-          </div>
+          <div className="flex justify-end items-center">{children}</div>
         </AccordionPrimitive.Header>
       ) : (
         <AccordionPrimitive.Header className="flex relative min-h-[5.75rem]">

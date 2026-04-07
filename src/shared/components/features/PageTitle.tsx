@@ -1,21 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-
 import { Grow, Typo, FormItem } from '@atoms';
-import { FormTable, FormRow, FormCell,} from '@common/FormTable';
-import { ViewMode } from '@common/ViewMode';
+import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
+import { ViewMode } from '@common/ViewMode';
 import { SearchIcon, MemoIcon } from '@icons';
-import { Input } from '@uiux/Input';
 import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useState } from 'react';
 
 type DefaultPageTitle = {
   pageName?: string;
   pageId?: string | number;
   [key: string]: any;
-}
+};
 type PageTitleProps = {
   data: DefaultPageTitle;
 };
@@ -62,23 +61,19 @@ export function PageTitleProduct({ data }: PageTitleProps) {
   ]);
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
-  const sampleOptions = safeData.planNumberList?.map((item: { 
-    label: string; 
-    value: string; 
-    name: string; 
-    amount: string; 
-    state: string 
-  }) => ({
-    value: item.value,
-    label: (
-      <>
-        <td>{item.label}</td>
-        <td>{item.name}</td>
-        <td>{item.amount}</td>
-        <td>{item.state}</td>
-      </>
-    )
-  }));
+  const sampleOptions = safeData.planNumberList?.map(
+    (item: { label: string; value: string; name: string; amount: string; state: string }) => ({
+      value: item.value,
+      label: (
+        <>
+          <td>{item.label}</td>
+          <td>{item.name}</td>
+          <td>{item.amount}</td>
+          <td>{item.state}</td>
+        </>
+      ),
+    })
+  );
 
   return (
     <Grow placement="bwc" className="w-full py-1 gap-3 min-w-[118.4rem]">
@@ -126,7 +121,6 @@ export function PageTitleProduct({ data }: PageTitleProps) {
                 width="2.6rem"
                 onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
               />
-
               <FormItem className="w-[19.8rem] ml-1.5">
                 <Input
                   aria-label="계약자명 입력"

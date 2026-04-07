@@ -1,15 +1,6 @@
 'use client';
 
-import * as React from 'react';
-import { useRef, useState } from 'react';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import {
-  DatePickerCellEditor,
-  createCellValueChangedHandler,
-} from '@aggrid';
+import { DatePickerCellEditor, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,15 +10,18 @@ import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useRef, useState } from 'react';
+import * as React from 'react';
+
+import type { PopupBaseProps } from './types';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export interface LTPA030Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
+export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
   // dummy data
   type DummyDataType = {
     id: number;
@@ -45,40 +39,40 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
     {
       id: 1,
       isCheck: false,
-      field01: '',  
+      field01: '',
       field02: '',
-      field03: '',             
+      field03: '',
       field04: '',
-      field05: '',        
+      field05: '',
       field06: '',
-      field07: '',              
+      field07: '',
     },
     {
       id: 2,
       isCheck: false,
-      field01: '',  
+      field01: '',
       field02: '',
-      field03: '',             
+      field03: '',
       field04: '',
-      field05: '',        
+      field05: '',
       field06: '',
-      field07: '김한화',              
+      field07: '김한화',
     },
     {
       id: 3,
       isCheck: false,
-      field01: '',  
+      field01: '',
       field02: '',
-      field03: '',             
+      field03: '',
       field04: '',
-      field05: '',        
+      field05: '',
       field06: '',
       field07: '',
     },
   ];
 
-  // AgGrid Column 
-  const columnDefs: (ColDef<DummyDataType>)[] = [
+  // AgGrid Column
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
       field: 'field02',
@@ -97,10 +91,10 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
       editable: false,
       cellClass: 'text-center  flex! items-center justify-center!',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
-        <Grow className="w-full px-1" >
+        <Grow className="w-full px-1">
           <Input aria-label="" width={'100%'} value={'1234567'} size="sm" readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon  color={'var(--color-primary-50)'} />
+            <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
           <Input aria-label="" width={'100%'} value={'김한화'} size="sm" readOnly />
         </Grow>
@@ -128,7 +122,7 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
       headerName: '상태',
       field: 'field05',
       flex: 0.7,
-      editable: true, 
+      editable: true,
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
@@ -139,53 +133,55 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
       field: 'field06',
       flex: 1.5,
       editable: true,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!'
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
     },
     {
       headerName: '등록자',
       field: 'field07',
       flex: 0.7,
       editable: true,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
   ];
-  
+
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
   const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter(row => !row.isCheck).map(row => row.id)
+    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
   );
 
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
-  
+
   // form event
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
-    type03: '', 
+    type03: '',
   });
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>신계약기준관리</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPA030)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              신계약기준관리
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPA030)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable variant={'none'} lineTop={false}
+            <FormTable
+              variant={'none'}
+              lineTop={false}
               caption="장기신계약 조회 테이블"
-              cols={[
-                'w-[8rem]', 'flex-1',
-                'w-[8rem]', 'flex-1',
-                'w-[8rem]', 'flex-1',
-              ]}
+              cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
             >
               <FormRow>
                 <FormCell title={'보종군'}>
@@ -196,10 +192,10 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
                     required
                     onChange={(e) => setFormField('type01', e.target.value)}
                   >
-                    {[
-                      { value: 'selection', id: 'type01-1', label: '공통' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                    {[{ value: 'selection', id: 'type01-1', label: '공통' }].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
@@ -215,7 +211,9 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
                       { value: 'selection', id: 'type02-1', label: '선택' },
                       { value: 'selection2', id: 'type02-2', label: '모집자실명제준수 예외' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
@@ -231,32 +229,31 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
                       { value: 'selection', id: 'type03-1', label: '선택' },
                       { value: 'selection2', id: 'type03-2', label: '모집자실명제준수 예외' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input
-                    aria-label=""
-                    width={'10rem'}
-                    value={'1234567'}
-                    readOnly
-                  />
+                  <Input aria-label="" width={'10rem'} value={'1234567'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
-                  </Button> 
-                  <Input
-                    aria-label=""
-                    width={'10rem'}
-                    value={'김한화'}
-                    readOnly
-                  />
+                  </Button>
+                  <Input aria-label="" width={'10rem'} value={'김한화'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>
@@ -274,42 +271,41 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-             <Grow className="w-full">
-              <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{ 
-                    sortable: false,
-                    resizable: false,
-                  }}
-                  enableCellSpan={true}
-                  singleClickEdit={true}
-                  onCellValueChanged={onCellValueChanged}
-
-                  rowSelection={{
-                    mode: 'multiRow',
-                    headerCheckbox: false,
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '√',
-                  }}
-                  onGridReady={params => {
-                    params.api.forEachNode(node => {
-                      if (node.data?.isCheck) {
-                        node.setSelected(true);
-                      }
-                    });
-                  }}
-                />
-              </div>
-            </Grow>
+              <Grow className="w-full">
+                <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{
+                      sortable: false,
+                      resizable: false,
+                    }}
+                    enableCellSpan={true}
+                    singleClickEdit={true}
+                    onCellValueChanged={onCellValueChanged}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: false,
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '√',
+                    }}
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
+                        if (node.data?.isCheck) {
+                          node.setSelected(true);
+                        }
+                      });
+                    }}
+                  />
+                </div>
+              </Grow>
             </TableFoldBody>
-          </TableFold>  
-        </DialogSection>  
+          </TableFold>
+        </DialogSection>
         <DialogFooter>
           <Gcol className="w-full" gap={0}>
             <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
@@ -325,7 +321,7 @@ export const LTPA030 = ({ open, onOpenChange }: LTPA030Props) => {
             <DialogBottomInfo />
           </Gcol>
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

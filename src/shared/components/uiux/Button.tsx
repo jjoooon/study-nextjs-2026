@@ -22,7 +22,8 @@ const buttonVariants = cva(
         focus-visible:underline`,
         none: 'bg-transparent border-none disabled:opacity-20',
         rounded: 'rounded-full!',
-        banner: 'bg-[var(--color-blue-gray-20)] text-[var(--color-gray-100)] border border-[var(--color-blue-gray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
+        banner:
+          'bg-[var(--color-blue-gray-20)] text-[var(--color-gray-100)] border border-[var(--color-blue-gray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
         state:
           'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5! justify-between text-[1.2rem] h-[3.1rem]! underline-offset-4 underline rounded-[0.6rem]!',
       },
@@ -31,21 +32,21 @@ const buttonVariants = cva(
         icon: 'p-0! aspect-square',
       },
       color: {
-        'primary': '',
-        'secondary': '',
-        'gray': '',
+        primary: '',
+        secondary: '',
+        gray: '',
         'gray-light': '',
-        'coolgray': '',
+        coolgray: '',
         'coolgray-light': '',
-        'success': '',
-        'link': 'text-[var(--color-information-50)]',
-        'transparent': `bg-transparent text-[var(--color-text-primary)] border-transparent`,
+        success: '',
+        link: 'text-[var(--color-information-50)]',
+        transparent: `bg-transparent text-[var(--color-text-primary)] border-transparent`,
       },
       size: {
         xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 min-w-[6rem] `,
         lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem]`,
-        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`, 
+        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`,
         xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem]`,
       },
     },
@@ -62,7 +63,7 @@ const buttonVariants = cva(
       },
       {
         only: 'icon',
-        size: 'md',              
+        size: 'md',
         className: 'h-[2.5rem] rounded-[0.4rem] px-0! aspect-square',
       },
       {
@@ -228,7 +229,7 @@ const buttonVariants = cva(
         className: `disabled:text-[var(--color-gray-30)]
         disabled:bg-[var(--color-gray-5)]
         disabled:border-[var(--color-gray-5)]`,
-      },      
+      },
       {
         variant: ['contained', 'rounded'],
         color: 'gray',
@@ -395,7 +396,7 @@ const buttonVariants = cva(
         variant: 'text',
         color: 'link',
         className: `text-[var(--color-information-50)]`,
-      }
+      },
     ],
     defaultVariants: {
       variant: 'contained',
@@ -407,15 +408,24 @@ const buttonVariants = cva(
 );
 
 interface UIButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
-    VariantProps<typeof buttonVariants> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>, VariantProps<typeof buttonVariants> {
   children?: React.ReactNode;
   asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
   (
-    { children, variant = 'contained', color = 'primary', size = 'md', className, asChild = false, only = 'default', type, ...props },
+    {
+      children,
+      variant = 'contained',
+      color = 'primary',
+      size = 'md',
+      className,
+      asChild = false,
+      only = 'default',
+      type,
+      ...props
+    },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button';

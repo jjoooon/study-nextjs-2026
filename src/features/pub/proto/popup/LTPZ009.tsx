@@ -1,23 +1,31 @@
 'use client';
 
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-
+import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogTrigger, DialogClose } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
 import { CheckIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogTrigger,
+  DialogClose,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
 
 export const LTPZ009 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
@@ -66,41 +74,41 @@ export const LTPZ009 = ({ open, onOpenChange }: PopupBaseProps) => {
     toggleKey: 'field6',
   });
 
-	const columnDefs: ColDef<ToggleTopRow<DummyDataType>>[] = [
-		{
-			headerName: '입력일',
-			field: 'field1',
-      width:100,
-		},
+  const columnDefs: ColDef<ToggleTopRow<DummyDataType>>[] = [
     {
-			headerName: '입력자사번',
-			field: 'field2',
-      width:100,
-		},
+      headerName: '입력일',
+      field: 'field1',
+      width: 100,
+    },
     {
-			headerName: '입력자명',
-			field: 'field3',
-      width:100,
-		},
+      headerName: '입력자사번',
+      field: 'field2',
+      width: 100,
+    },
     {
-			headerName: '소속기관',
-			field: 'field4',
-      width:150,
-		},
+      headerName: '입력자명',
+      field: 'field3',
+      width: 100,
+    },
     {
-			headerName: '내용',
-			field: 'field5',
-      flex:1,
-		},
+      headerName: '소속기관',
+      field: 'field4',
+      width: 150,
+    },
     {
-			headerName: '노출여부',
-			field: 'field6',
-      width:100,
+      headerName: '내용',
+      field: 'field5',
+      flex: 1,
+    },
+    {
+      headerName: '노출여부',
+      field: 'field6',
+      width: 100,
       cellRenderer: (params: ICellRendererParams<ToggleTopRow<DummyDataType>>) => {
         return (
           <Button
             variant={'outlined'}
-            className='w-[7rem]'
+            className="w-[7rem]"
             color={params.data?.field6 ? 'primary' : 'gray'}
             onClick={(event) => {
               event.stopPropagation();
@@ -115,22 +123,26 @@ export const LTPZ009 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Button>
         );
       },
-		},
-	];
+    },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>설계 메모</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ009)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              설계 메모
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ009)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant='head'>
+          <Grow className="w-full" variant="box-round" placement={'ss'}>
+            <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
@@ -142,24 +154,26 @@ export const LTPZ009 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Gcol placement={'ss'} className="w-full gap-6">
             <div className="ag-theme-alpine">
               <AgGridReact<ToggleTopRow<DummyDataType>>
-                getRowId={params => String(params.data.id)}
+                getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={rowData}
                 columnDefs={columnDefs}
-                defaultColDef={{ 
-                  sortable: false, 
+                defaultColDef={{
+                  sortable: false,
                   resizable: false,
                   cellClass: 'text-center',
                 }}
-                domLayout='autoHeight'
+                domLayout="autoHeight"
               />
             </div>
 
             <Gcol placement={'ss'} gap={2} className="w-full">
-              <Typo tag={'h3'} variant={'heading-sm'}>메모 입력</Typo>
+              <Typo tag={'h3'} variant={'heading-sm'}>
+                메모 입력
+              </Typo>
               <Textarea placeholder="제목을 입력해주세요." maxLength={4000} resize={false} />
             </Gcol>
-            
+
             <Gcol placement={'ss'} variant={'box-warning'}>
               <Typo variant={'body-sm'} icon={'warning'}>
                 정보보안을 위하여 <em>개인정보를 입력할 수 없음.</em> (예: 주민등록번호, 성별, 주소, 휴대폰)
@@ -191,5 +205,5 @@ export const LTPZ009 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-	);
+  );
 };

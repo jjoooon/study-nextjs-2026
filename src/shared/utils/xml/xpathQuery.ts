@@ -1,6 +1,6 @@
-import log from '@/shared/utils/logger';
 import { getCachedOrCompile, clearXPathCache, getXPathCacheSize } from './xpathExecutor';
 import { parseXPath } from './xpathParser';
+import log from '@/shared/utils/logger';
 
 /**
  * XPath 인젝션 방지를 위한 입력 검증

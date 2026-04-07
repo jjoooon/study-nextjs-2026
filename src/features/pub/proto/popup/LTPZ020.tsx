@@ -1,29 +1,36 @@
 'use client';
 
-import * as React from 'react';
-import { useRef } from 'react';
+import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon, ResetIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon } from '@icons';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@common/TabPager';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { AgGridReact } from 'ag-grid-react';
+import { useRef } from 'react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { useTabs } from '@/shared/hooks/useTabs';
 ModuleRegistry.registerModules([AllCommunityModule]);
-
 
 export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
   type LTPZ020TabType = {
@@ -31,7 +38,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     value: string;
     label: string;
   };
-  
+
   const DATA_TABS: LTPZ020TabType[] = [
     {
       name: '인담보',
@@ -57,7 +64,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
       label: '화재기타',
     },
   ];
-  
+
   type InsuredListRow = {
     id: number;
     name: string;
@@ -65,7 +72,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     gender: string;
     age: number;
   };
-  
+
   //피보험자
   const insuredListData: InsuredListRow[] = [
     { id: 1, name: '김한화', grade: '1', gender: '남자', age: 33 },
@@ -73,14 +80,14 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     { id: 3, name: '', grade: '', gender: '', age: 0 },
     { id: 4, name: '', grade: '', gender: '', age: 0 },
   ];
-  
+
   const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
     { field: 'name', headerName: '성명', width: 120, cellClass: 'text-center' },
-    { field: 'grade', headerName: '급수', flex: 1,  cellClass: 'text-center' },
+    { field: 'grade', headerName: '급수', flex: 1, cellClass: 'text-center' },
     { field: 'gender', headerName: '성별', width: 80, cellClass: 'text-center' },
     { field: 'age', headerName: '연령', width: 80, cellClass: 'text-center' },
   ];
-  
+
   type CoverageListRow = {
     id: number;
     coverageCode: string;
@@ -93,10 +100,42 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   //담보목록
   const coverageListData: CoverageListRow[] = [
-    { id: 1, coverageCode: 'CLA05417', coverageName: '보통약관(화재상해후유장해3)', insurancePeriod: '15년만기', paymentPeriod: '전기납', designCoverageCode: 'CLA05417', designCoverageName: '보통약관(화재상해후유장해)' },
-    { id: 2, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
-    { id: 3, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
-    { id: 4, coverageCode: '', coverageName: '', insurancePeriod: '', paymentPeriod: '', designCoverageCode: '', designCoverageName: '' },
+    {
+      id: 1,
+      coverageCode: 'CLA05417',
+      coverageName: '보통약관(화재상해후유장해3)',
+      insurancePeriod: '15년만기',
+      paymentPeriod: '전기납',
+      designCoverageCode: 'CLA05417',
+      designCoverageName: '보통약관(화재상해후유장해)',
+    },
+    {
+      id: 2,
+      coverageCode: '',
+      coverageName: '',
+      insurancePeriod: '',
+      paymentPeriod: '',
+      designCoverageCode: '',
+      designCoverageName: '',
+    },
+    {
+      id: 3,
+      coverageCode: '',
+      coverageName: '',
+      insurancePeriod: '',
+      paymentPeriod: '',
+      designCoverageCode: '',
+      designCoverageName: '',
+    },
+    {
+      id: 4,
+      coverageCode: '',
+      coverageName: '',
+      insurancePeriod: '',
+      paymentPeriod: '',
+      designCoverageCode: '',
+      designCoverageName: '',
+    },
   ];
   const coverageListColumnDefs: ColDef<CoverageListRow>[] = [
     { headerName: '담보코드', field: 'coverageCode', width: 80, cellClass: 'text-center' },
@@ -106,7 +145,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     { headerName: '설계담보코드', field: 'designCoverageCode', width: 100, cellClass: 'text-center' },
     { headerName: '설계담보명', field: 'designCoverageName', flex: 1 },
   ];
-  
+
   //목적물 소유자 및 소재지
   type PropertyListRow = {
     isCheck: boolean;
@@ -116,13 +155,33 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     location: string;
     businessType: string;
     appliedRate: string;
-    marketCode : string;
-    specialBuilding : string;
+    marketCode: string;
+    specialBuilding: string;
   };
   const propertyListData: PropertyListRow[] = [
-    { isCheck: false, id: 1, owner: '김한화', ownerNo: '901231-1111111', location: '서울시 강남구 역삼동', businessType: '아파트', appliedRate: '아파트', marketCode: '123', specialBuilding: '1231' },
-    { isCheck: false, id: 2, owner: '김한화', ownerNo: '901231-1111111', location: '서울시 강남구 역삼동', businessType: '아파트', appliedRate: '아파트', marketCode: '123', specialBuilding: '1231' },
-  ];  
+    {
+      isCheck: false,
+      id: 1,
+      owner: '김한화',
+      ownerNo: '901231-1111111',
+      location: '서울시 강남구 역삼동',
+      businessType: '아파트',
+      appliedRate: '아파트',
+      marketCode: '123',
+      specialBuilding: '1231',
+    },
+    {
+      isCheck: false,
+      id: 2,
+      owner: '김한화',
+      ownerNo: '901231-1111111',
+      location: '서울시 강남구 역삼동',
+      businessType: '아파트',
+      appliedRate: '아파트',
+      marketCode: '123',
+      specialBuilding: '1231',
+    },
+  ];
 
   const propertyListDataColumnDefs: ColDef<PropertyListRow>[] = [
     {
@@ -143,33 +202,36 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 150,
       cellClass: 'text-center',
     },
-    { 
+    {
       headerName: '소재지',
       field: 'location',
-      flex: 1 
+      flex: 1,
     },
-    { 
-      headerName: '영위업종', 
-      field: 'businessType', 
-      width: 100, 
-      cellClass: 'text-center' },
-    { 
-      headerName: '적용요율', 
-      field: 'appliedRate', 
-      width: 100, 
-      cellClass: 'text-center' },
-    { 
-      headerName: '시장코드', 
-      field: 'marketCode', 
-      width: 100, 
-      cellClass: 'text-center' },
-    { 
-      headerName: '특수건물', 
-      field: 'specialBuilding', 
-      width: 100, 
-      cellClass: 'text-center' },
-  ];  
-
+    {
+      headerName: '영위업종',
+      field: 'businessType',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '적용요율',
+      field: 'appliedRate',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '시장코드',
+      field: 'marketCode',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '특수건물',
+      field: 'specialBuilding',
+      width: 100,
+      cellClass: 'text-center',
+    },
+  ];
 
   //소재지 별 건물(수용장소)의 목록
   type BuildingByLocationRow = {
@@ -194,7 +256,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
       etcStructure: '철골철근콘크리트',
       accommodationPlace: '02',
     },
-     {
+    {
       id: 2,
       columnType: '철골철근콘크리트',
       outerWall: '콘크리트벽',
@@ -204,7 +266,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
       etcStructure: '철골철근콘크리트',
       accommodationPlace: '02',
     },
-     {
+    {
       id: 3,
       columnType: '철골철근콘크리트',
       outerWall: '콘크리트벽',
@@ -214,7 +276,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
       etcStructure: '철골철근콘크리트',
       accommodationPlace: '02',
     },
-     {
+    {
       id: 4,
       columnType: '철골철근콘크리트',
       outerWall: '콘크리트벽',
@@ -227,34 +289,34 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   const buildingByLocationColumnDefs: Array<ColDef<BuildingByLocationRow> | ColGroupDef<BuildingByLocationRow>> = [
-    { 
+    {
       headerName: '기둥',
-      field: 'columnType', 
-      flex: 1, 
-      cellClass: 'text-center',
-    },
-    { 
-      headerName: '외벽', 
-      field: 'outerWall', 
+      field: 'columnType',
       flex: 1,
       cellClass: 'text-center',
     },
-    { 
-      headerName: '건물규모', 
+    {
+      headerName: '외벽',
+      field: 'outerWall',
+      flex: 1,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '건물규모',
       flex: 1,
       cellClass: 'text-center',
       children: [
-        { 
-          headerName: '지상(층)', 
-          field: 'aboveGroundFloors', 
-          width: 100, 
-          cellClass: 'text-center' 
+        {
+          headerName: '지상(층)',
+          field: 'aboveGroundFloors',
+          width: 100,
+          cellClass: 'text-center',
         },
-        { 
-          headerName: '지하(층)', 
-          field: 'belowGroundFloors', 
-          width: 100, 
-          cellClass: 'text-center' 
+        {
+          headerName: '지하(층)',
+          field: 'belowGroundFloors',
+          width: 100,
+          cellClass: 'text-center',
         },
         {
           headerName: '연 면적(㎡)',
@@ -263,18 +325,19 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
           cellClass: 'text-center',
           valueFormatter: (params) => params.value?.toLocaleString() ?? '',
         },
-      ]
+      ],
     },
-    { 
-      headerName: '기타구조', 
+    {
+      headerName: '기타구조',
       field: 'etcStructure',
       cellClass: 'text-center border-l border-[#e5e5e5]',
     },
-    { 
+    {
       headerName: '수용장소',
-      field: 'accommodationPlace', 
+      field: 'accommodationPlace',
       width: 200,
-      cellClass: 'text-center' },
+      cellClass: 'text-center',
+    },
   ];
 
   //보험목적물
@@ -301,22 +364,22 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   const insuranceObjectColumnDefs: ColDef<InsuranceObjectRow>[] = [
-    { 
-      headerName: '구분', 
-      field: 'category', 
-      width: 140 
+    {
+      headerName: '구분',
+      field: 'category',
+      width: 140,
     },
-    { 
+    {
       headerName: '급수',
-      field: 'grade', 
-      width: 100, 
-      cellClass: 'text-center' 
+      field: 'grade',
+      width: 100,
+      cellClass: 'text-center',
     },
-    { 
-      headerName: '보험기간', 
-      field: 'insurancePeriod', 
-      width: 120, 
-      cellClass: 'text-center' 
+    {
+      headerName: '보험기간',
+      field: 'insurancePeriod',
+      width: 120,
+      cellClass: 'text-center',
     },
     {
       headerName: '가입금액(원)',
@@ -325,16 +388,16 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-right',
       valueFormatter: (params) => params.value?.toLocaleString() ?? '',
     },
-    { 
-      headerName: '보험목적물', 
-      field: 'insuranceObject', 
-      flex: 1 
+    {
+      headerName: '보험목적물',
+      field: 'insuranceObject',
+      flex: 1,
     },
-    { 
-      headerName: '수용장소', 
-      field: 'accommodationPlace', 
-      width: 120, 
-      cellClass: 'text-center' 
+    {
+      headerName: '수용장소',
+      field: 'accommodationPlace',
+      width: 120,
+      cellClass: 'text-center',
     },
   ];
 
@@ -419,9 +482,9 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData);
+  const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
-    propertyListData.filter(row => !row.isCheck).map(row => row.id)
+    propertyListData.filter((row) => !row.isCheck).map((row) => row.id)
   );
 
   const onCellValueChanged = React.useMemo(
@@ -430,7 +493,12 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
   );
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  const { tabs: subTabs, active: subActive, setActive: setSubActive, handleRemove: handleSubRemove } = useTabs(DATA_SUB_TABS);
+  const {
+    tabs: subTabs,
+    active: subActive,
+    setActive: setSubActive,
+    handleRemove: handleSubRemove,
+  } = useTabs(DATA_SUB_TABS);
   const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
   const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
@@ -439,18 +507,26 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>설계복사</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ020)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              설계복사
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ020)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          
-          <Grow placement='bwe' className="w-full" variant={'box-round'} gap={5}>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
             <FormTable caption="증권번호" cols={['w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
-                <FormCell title={'증권번호'} className='w-full'>
+                <FormCell title={'증권번호'} className="w-full">
                   <Grow>
-                    <Input aria-label="증권번호 검색" width={'10rem'} value={policySearchPart} onChange={(e) => setPolicySearchPart(e.target.value)} />
+                    <Input
+                      aria-label="증권번호 검색"
+                      width={'10rem'}
+                      value={policySearchPart}
+                      onChange={(e) => setPolicySearchPart(e.target.value)}
+                    />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
@@ -460,7 +536,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
             </Grow>
@@ -490,93 +566,88 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                 variant="default"
                 width="auto"
               >
-                <CheckboxGroupItem value="insured-copy" >
-                  피보험자복사
-                </CheckboxGroupItem>
+                <CheckboxGroupItem value="insured-copy">피보험자복사</CheckboxGroupItem>
                 <CheckboxGroupItem value="coverage-copy" disabled>
                   담보복사
                 </CheckboxGroupItem>
               </CheckboxGroup>
             }
-            getValue={tab => String(tab.value)}
-            renderTab={tab => <span>{tab.label}</span>}
+            getValue={(tab) => String(tab.value)}
+            renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={false}
           >
             {active === 'humanCoverage' ? (
-              <ResizablePanelGroup
-                orientation="horizontal"
-                className="w-full"
-              >
+              <ResizablePanelGroup orientation="horizontal" className="w-full">
                 <ResizablePanel defaultSize={30}>
                   <TableFold variant={'accordion'}>
-                      <TableFoldHead title="피보험자목록"/>
-                      <TableFoldBody>
-                        <div className="ag-theme-alpine">
-                          <AgGridReact<InsuredListRow>
-                            getRowId={params => String(params.data.id)}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            rowData={insuredListData}
-                            columnDefs={insuredListColumnDefs}
-                             defaultColDef={{ 
-                              sortable: false, 
-                              resizable: false,
-                            }}
-                            animateRows={false}
-                            rowClassRules={{}}
-                            rowSelection={{
-                              mode: 'multiRow',
-                              checkboxes: true,
-                              enableClickSelection: false,
-                            }}
-                            selectionColumnDef={{
-                              headerName: '선택',
-                              cellClass: 'text-center editable-cell',
-                            }}
-                            domLayout={'autoHeight'}
-                          />
-                        </div>
-                      </TableFoldBody>
-                    </TableFold>
+                    <TableFoldHead title="피보험자목록" />
+                    <TableFoldBody>
+                      <div className="ag-theme-alpine">
+                        <AgGridReact<InsuredListRow>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={insuredListData}
+                          columnDefs={insuredListColumnDefs}
+                          defaultColDef={{
+                            sortable: false,
+                            resizable: false,
+                          }}
+                          animateRows={false}
+                          rowClassRules={{}}
+                          rowSelection={{
+                            mode: 'multiRow',
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '선택',
+                            cellClass: 'text-center editable-cell',
+                          }}
+                          domLayout={'autoHeight'}
+                        />
+                      </div>
+                    </TableFoldBody>
+                  </TableFold>
                 </ResizablePanel>
                 <ResizableHandle />
                 <ResizablePanel defaultSize={70}>
-                   <TableFold variant={'accordion'}>
-                      <TableFoldHead title="담보목록"/>
-                      <TableFoldBody>
-                        <div className="ag-theme-alpine">
-                          <AgGridReact<CoverageListRow>
-                            getRowId={params => String(params.data.id)}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            rowData={coverageListData}
-                            columnDefs={coverageListColumnDefs}
-                            defaultColDef={{ 
-                              sortable: false, 
-                              resizable: false,
-                            }}
-                            animateRows={false}
-                            rowClassRules={{}}
-                            domLayout={'autoHeight'}
-                          />
-                        </div>
-                      </TableFoldBody>
+                  <TableFold variant={'accordion'}>
+                    <TableFoldHead title="담보목록" />
+                    <TableFoldBody>
+                      <div className="ag-theme-alpine">
+                        <AgGridReact<CoverageListRow>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={coverageListData}
+                          columnDefs={coverageListColumnDefs}
+                          defaultColDef={{
+                            sortable: false,
+                            resizable: false,
+                          }}
+                          animateRows={false}
+                          rowClassRules={{}}
+                          domLayout={'autoHeight'}
+                        />
+                      </div>
+                    </TableFoldBody>
                   </TableFold>
                 </ResizablePanel>
               </ResizablePanelGroup>
             ) : (
               <Grid className="w-full pt-2 grid-rows-[auto_1fr]" gap={5}>
                 <TableFold>
-                  <TableFoldHead title="목적물 소유자 및 소재지"/>
+                  <TableFoldHead title="목적물 소유자 및 소재지" />
                   <TableFoldBody>
                     <div className="ag-theme-alpine">
                       <AgGridReact<PropertyListRow>
-                        getRowId={params => String(params.data.id)}
+                        getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={propertyListDataColumnDefs}
-                        defaultColDef={{ 
-                          sortable: false, 
+                        defaultColDef={{
+                          sortable: false,
                           resizable: false,
-                          cellClass: 'p-0', 
+                          cellClass: 'p-0',
                           cellStyle: { padding: 0 },
                         }}
                         singleClickEdit={true}
@@ -590,7 +661,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                           headerName: '선택',
                           cellClass: 'text-center editable-cell',
                         }}
-                        domLayout="autoHeight" 
+                        domLayout="autoHeight"
                         onGridReady={(params) => {
                           params.api.forEachNode((node) => {
                             if (node.data?.isCheck) {
@@ -615,18 +686,18 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                   hasTableBelow={true}
                   error={false}
                   errorMsg="에러 메시지 예시"
-                  getValue={tab => String(tab.value)}
-                  renderTab={tab => <span>{tab.label}</span>}
+                  getValue={(tab) => String(tab.value)}
+                  renderTab={(tab) => <span>{tab.label}</span>}
                   renderDropdownItem={false}
                 >
                   {subActive === 'fireCoverage' ? (
-                    <Gcol className="pt-2 w-full" placement='ss' gap={2}>
+                    <Gcol className="pt-2 w-full" placement="ss" gap={2}>
                       <TableFold>
                         <TableFoldHead title="소재지별 건물(수용장소)의 목록" />
                         <TableFoldBody>
                           <div className="ag-theme-alpine">
                             <AgGridReact<BuildingByLocationRow>
-                              getRowId={params => String(params.data.id)}
+                              getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={buildingByLocationData}
                               columnDefs={buildingByLocationColumnDefs}
@@ -635,7 +706,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                                 resizable: false,
                               }}
                               animateRows={false}
-                              domLayout='autoHeight'
+                              domLayout="autoHeight"
                             />
                           </div>
                         </TableFoldBody>
@@ -646,7 +717,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                         <TableFoldBody>
                           <div className="ag-theme-alpine">
                             <AgGridReact<InsuranceObjectRow>
-                              getRowId={params => String(params.data.id)}
+                              getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={insuranceObjectData}
                               columnDefs={insuranceObjectColumnDefs}
@@ -655,7 +726,7 @@ const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData
                                 resizable: false,
                               }}
                               animateRows={false}
-                              domLayout='autoHeight'
+                              domLayout="autoHeight"
                             />
                           </div>
                         </TableFoldBody>

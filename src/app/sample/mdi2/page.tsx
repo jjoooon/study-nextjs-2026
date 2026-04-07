@@ -20,10 +20,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+import { MDITabPanel } from './components/MDITabPanel';
 import log from '@/shared/utils/logger';
 import { mdi } from '@/shared/utils/mdiHelper2';
 import type { MDIDocument, MDIMessage } from '@/shared/utils/mdiHelper2';
-import { MDITabPanel } from './components/MDITabPanel';
 
 const logger = log.getLogger('Sample');
 

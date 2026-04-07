@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { ArrowIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { useState } from 'react';
 
 const invoices = [
   {
@@ -56,9 +56,7 @@ export default function InsPlanCovAside() {
         </Grow>
         <Grid className="gap-[1.2rem] grid-cols-[1fr_1fr] w-full" placement="sc">
           <Gcol placement="ss" variant="box" className="p-[1.6rem] gap-[1.2rem] rounded-[1.2rem] bg-[#00C7680F]">
-            <Badge className="mb-2 rounded-full">
-              GO
-            </Badge>
+            <Badge className="mb-2 rounded-full">GO</Badge>
             <Gcol placement="ss">
               <Button variant="text" className="gap-[.2rem] items-center">
                 <Typo variant="button-md" weight="semibold" className="font-[#000] opacity-70">
@@ -72,9 +70,7 @@ export default function InsPlanCovAside() {
             </Gcol>
           </Gcol>
           <Gcol placement="ss" variant="box" className="p-[1.6rem] gap-[1.2rem] rounded-[1.2rem] bg-[#FFB82B1F]">
-            <Badge className="mb-2 rounded-full">
-              WAIT
-            </Badge>
+            <Badge className="mb-2 rounded-full">WAIT</Badge>
             <Gcol placement="ss">
               <Button variant="text" className="gap-[.2rem] items-center">
                 <Typo variant="button-md" weight="semibold" className="font-[#000] opacity-70">
@@ -92,9 +88,7 @@ export default function InsPlanCovAside() {
             variant="box"
             className="p-[1.6rem] gap-[1.2rem] rounded-[1.2rem] bg-[#FFF] border border-[#E5E5E5]"
           >
-            <Badge className="mb-2 rounded-full">
-              STOP
-            </Badge>
+            <Badge className="mb-2 rounded-full">STOP</Badge>
             <Gcol placement="ss">
               <Button variant="text" className="gap-[.2rem] items-center">
                 <Typo variant="button-md" weight="semibold" className="font-[#000] opacity-70">
@@ -108,9 +102,7 @@ export default function InsPlanCovAside() {
             </Gcol>
           </Gcol>
           <Gcol placement="ss" variant="box" className="p-[1.6rem] gap-[1.2rem] rounded-[1.2rem] bg-[#00C7680F]">
-            <Badge className="mb-2 rounded-full">
-              GO
-            </Badge>
+            <Badge className="mb-2 rounded-full">GO</Badge>
             <Gcol placement="ss">
               <Button variant="text" className="gap-[.2rem] items-center">
                 <Typo variant="button-md" weight="semibold" className="font-[#000] opacity-70">

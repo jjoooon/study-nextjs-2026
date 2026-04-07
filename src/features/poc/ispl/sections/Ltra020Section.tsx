@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@uiux/Tabs';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { useState } from 'react';
 import { InsPlanList, InsPlanSet } from '../components/Page1Index';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 const TABS = [
   { value: 'tab1', label: '상품/플랜 설계' },

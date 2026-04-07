@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Grow, Typo } from '@atoms';
 import { ZoomOutIcon, ZoomInIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { selectZoomPercent } from '@/shared/store/uiSelectors';
@@ -34,11 +34,11 @@ export const ZoomControl = () => {
 
   return (
     <Grow className="items-center">
-      <Button variant={'none'} only={'icon'} className='text-[var(--color-primary-50)]' onClick={handleZoomOut}>
+      <Button variant={'none'} only={'icon'} className="text-[var(--color-primary-50)]" onClick={handleZoomOut}>
         <ZoomOutIcon size={20} />
       </Button>
       <Typo variant={'button-sm'}>{zoomPercent}%</Typo>
-      <Button variant={'none'} only={'icon'} className='text-[var(--color-primary-50)]' onClick={handleZoomIn}>
+      <Button variant={'none'} only={'icon'} className="text-[var(--color-primary-50)]" onClick={handleZoomIn}>
         <ZoomInIcon size={20} />
       </Button>
       <Button variant={'outlined'} color={'gray'} size={'sm'} onClick={handleZoomRest}>

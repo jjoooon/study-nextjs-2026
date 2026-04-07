@@ -1,33 +1,36 @@
-
-import * as React from 'react';
+import {
+  createCellValueChangedHandler,
+  AgGridEmptyComponent,
+  createFieldRenderer,
+  numberValueFormatter,
+} from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InfoBox } from '@common/InfoBox';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+import { useFormFields } from '@hooks/useFormFields';
+import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import * as React from 'react';
 
 // Layout Components
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-
 
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { createCellValueChangedHandler, AgGridEmptyComponent, createFieldRenderer, numberValueFormatter } from '@aggrid';
-import { InfoBox } from '@common/InfoBox';
-import { useFormFields } from '@hooks/useFormFields';
 import { LTPA301DummyData, type LTPA301DummyDataRow } from '../data/LTPA301Data';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-import { BulletList, BulletListItem } from '@common/BulletList';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA301Main = () => {
-  // AgGrid Column 
+  // AgGrid Column
   const columnDefs: (ColDef<LTPA301DummyDataRow> | ColGroupDef<LTPA301DummyDataRow>)[] = [
     {
       headerName: '점검결과',
@@ -44,7 +47,7 @@ export const LTPA301Main = () => {
       field: 'field03',
       width: 90,
     },
-    
+
     {
       headerName: '점검방법',
       field: 'field04',
@@ -69,25 +72,29 @@ export const LTPA301Main = () => {
       headerName: '가입한도',
       field: 'field08',
       width: 100,
-      cellClass: 'text-right', valueFormatter: numberValueFormatter,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '초과금액',
       field: 'field09',
       width: 100,
-      cellClass: 'text-right', valueFormatter: numberValueFormatter,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '당사금액',
       field: 'field10',
       width: 100,
-      cellClass: 'text-right', valueFormatter: numberValueFormatter,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '타사금액',
       field: 'field11',
       width: 100,
-      cellClass: 'text-right', valueFormatter: numberValueFormatter,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '처리직원',
@@ -102,7 +109,7 @@ export const LTPA301Main = () => {
     {
       headerName: '처리내용',
       field: 'field14',
-      flex: 1, 
+      flex: 1,
     },
   ];
 
@@ -118,11 +125,9 @@ export const LTPA301Main = () => {
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>
-            <Gcol className="w-full" placement='ss'>
-              <Grow className='w-full' variant="box-round" placement={'bwe'}>
-                <FormTable variant={'none'} lineTop={false} caption="증권번호 조회" cols={[
-                  'w-[10rem]', 'flex-1',
-                ]}>
+            <Gcol className="w-full" placement="ss">
+              <Grow className="w-full" variant="box-round" placement={'bwe'}>
+                <FormTable variant={'none'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                   <FormRow>
                     <FormCell title={'증권번호'}>
                       <Input
@@ -131,19 +136,26 @@ export const LTPA301Main = () => {
                         size={'sm'}
                         value={form.type01 || 'LA20148716422000'}
                         isFocused
-                        onChange={e => setFormField('type01', e.target.value)}
+                        onChange={(e) => setFormField('type01', e.target.value)}
                       />
-                      <Button aria-label="검색" variant={'outlined'}  only="icon" size={'md'} color={'gray-light'}>
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
                   </FormRow>
-                </FormTable>  
+                </FormTable>
                 <Grow>
-                  <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+                  <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                     조회
                   </Button>
-                  <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                  <Button
+                    color={'gray'}
+                    only={'icon'}
+                    size={'lg'}
+                    variant={'outlined'}
+                    onClick={() => {}}
+                    aria-label="새로고침"
+                  >
                     <ResetIcon />
                   </Button>
                 </Grow>
@@ -157,71 +169,39 @@ export const LTPA301Main = () => {
                         <Grow className="w-full" placement={'bwe'}>
                           <FormTable
                             caption="정액담보점검내역 테이블"
-                            cols={[
-                              'w-[10rem]', 'flex-1',
-                              'w-[10rem]', 'flex-1',
-                            ]}
+                            cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
                           >
                             <FormRow>
                               <FormCell title={'증권번호'}>
-                                <Input
-                                  width="16rem"
-                                  size={'sm'}
-                                  value={''}
-                                  readOnly
-                                />
-                                <Button aria-label="검색" variant={'outlined'}  only="icon" size={'md'} color={'gray-light'}>
+                                <Input width="16rem" size={'sm'} value={''} readOnly />
+                                <Button
+                                  aria-label="검색"
+                                  variant={'outlined'}
+                                  only="icon"
+                                  size={'md'}
+                                  color={'gray-light'}
+                                >
                                   <ArrowNext color={'var(--color-primary-50)'} />
                                 </Button>
                               </FormCell>
                               <FormCell title={'계약방법'}>
-                                <Input
-                                  aria-label=""
-                                  width="16rem"
-                                  size={'sm'}
-                                  value={''}
-                                  readOnly
-                                />
+                                <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
                               </FormCell>
                             </FormRow>
                             <FormRow>
                               <FormCell title={'점검일자'}>
-                                <Input
-                                  aria-label=""
-                                  width="16rem"
-                                  size={'sm'}
-                                  value={''}
-                                  readOnly
-                                />
+                                <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
                               </FormCell>
                               <FormCell title={'점검방법'}>
-                                <Input
-                                  aria-label=""
-                                  width="16rem"
-                                  size={'sm'}
-                                  value={''}
-                                  readOnly
-                                />
+                                <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
                               </FormCell>
                             </FormRow>
                             <FormRow>
                               <FormCell title={'점검상태'}>
-                                <Input
-                                  aria-label=""
-                                  width="16rem"
-                                  size={'sm'}
-                                  value={''}
-                                  readOnly
-                                />
+                                <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
                               </FormCell>
                               <FormCell title={'점검이력순번'}>
-                                <Input
-                                  aria-label=""
-                                  width="16rem"
-                                  size={'sm'}
-                                  value={''}
-                                  readOnly
-                                />
+                                <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
                               </FormCell>
                             </FormRow>
                           </FormTable>
@@ -235,20 +215,20 @@ export const LTPA301Main = () => {
                     <TableFoldHead title="정액담보점검결과">
                       <Grow>
                         <Typo variant="body-md">(단위: 원)</Typo>
-                      </Grow>   
+                      </Grow>
                     </TableFoldHead>
                     <TableFoldBody>
                       <Gcol gap={4}>
                         <div className="ag-theme-alpine">
                           <AgGridReact<LTPA301DummyDataRow>
                             noRowsOverlayComponent={AgGridEmptyComponent}
-                            getRowId={params => String(params.data.id)}
+                            getRowId={(params) => String(params.data.id)}
                             rowData={LTPA301DummyData}
                             columnDefs={columnDefs}
                             defaultColDef={{
                               sortable: false,
                               resizable: false,
-                              cellClass:"text-center p-0!",
+                              cellClass: 'text-center p-0!',
                             }}
                             singleClickEdit={true}
                             onCellValueChanged={() => {}}
@@ -262,10 +242,10 @@ export const LTPA301Main = () => {
                               width: 40,
                               cellClass: 'text-center p-0!',
                               cellClassRules: {
-                                'pointer-events-none': params => !!params.data?.locked,
+                                'pointer-events-none': (params) => !!params.data?.locked,
                               },
                             }}
-                            domLayout='autoHeight'
+                            domLayout="autoHeight"
                           />
                         </div>
                       </Gcol>
@@ -275,7 +255,7 @@ export const LTPA301Main = () => {
                 <Grow className="w-full">
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="정액담보점검 관리">
-                      <Grow className="w-full justify-end" placement='ee'>                   
+                      <Grow className="w-full justify-end" placement="ee">
                         <Button color="gray" variant="outlined">
                           실손특약조회
                         </Button>
@@ -285,113 +265,74 @@ export const LTPA301Main = () => {
                         <Button color="primary" variant="contained">
                           저장
                         </Button>
-                      </Grow>  
+                      </Grow>
                     </TableFoldHead>
                     <TableFoldBody>
                       <Gcol gap={4}>
-                          <Grow className="w-full" placement={'bwe'}>
-                            <FormTable
-                              caption="정액담보점검관리 테이블"
-                              cols={[
-                                'w-[10rem]', 'flex-1',
-                              ]}
-                            >
-                              <FormRow>
-                                <FormCell title={'처리구분'}>
-                                  <NativeSelect
-                                    aria-label="처리구분 선택"
-                                    width="13rem"
-                                    value={form.type02}
-                                    onChange={(e) => setFormField('type02', e.target.value)}
-                                  >
-                                    {[
-                                      { value: 'selection', id: 'type02-1', label: '처리구분' },
-                                      { value: 'selection2', id: 'type02-2', label: '처리내용' },
-                                    ].map((option) => (
-                                      <NativeSelectOption key={option.id} value={option.value}>
-                                        {option.label}
-                                      </NativeSelectOption>
-                                    ))}
-                                  </NativeSelect>
-                                </FormCell>
-                              </FormRow>
-                              <FormRow>
-                                <FormCell title={'처리내용'}>  
-                                  <Textarea placeholder="" resize={true} />
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Grow>
-                        </Gcol>
+                        <Grow className="w-full" placement={'bwe'}>
+                          <FormTable caption="정액담보점검관리 테이블" cols={['w-[10rem]', 'flex-1']}>
+                            <FormRow>
+                              <FormCell title={'처리구분'}>
+                                <NativeSelect
+                                  aria-label="처리구분 선택"
+                                  width="13rem"
+                                  value={form.type02}
+                                  onChange={(e) => setFormField('type02', e.target.value)}
+                                >
+                                  {[
+                                    { value: 'selection', id: 'type02-1', label: '처리구분' },
+                                    { value: 'selection2', id: 'type02-2', label: '처리내용' },
+                                  ].map((option) => (
+                                    <NativeSelectOption key={option.id} value={option.value}>
+                                      {option.label}
+                                    </NativeSelectOption>
+                                  ))}
+                                </NativeSelect>
+                              </FormCell>
+                            </FormRow>
+                            <FormRow>
+                              <FormCell title={'처리내용'}>
+                                <Textarea placeholder="" resize={true} />
+                              </FormCell>
+                            </FormRow>
+                          </FormTable>
+                        </Grow>
+                      </Gcol>
                     </TableFoldBody>
                   </TableFold>
                 </Grow>
               </Gcol>
-              <Gcol 
-                className="w-full"
-                gap={2}
-              >
-                <Gcol className="s-full" variant={'box-warning'} placement='ss'>
+              <Gcol className="w-full" gap={2}>
+                <Gcol className="s-full" variant={'box-warning'} placement="ss">
                   <Typo variant={'body-sm'} icon={'warning'}>
                     <b>누적계산기준</b>
                   </Typo>
-                  <BulletList color={'warning'}  size="sm">
-                    <BulletListItem
-                      before="1."
-                      className="whitespace-nowrap"
-                      color="default"
-                      size="md"
-                      type="symbols"
-                    >
+                  <BulletList color={'warning'} size="sm">
+                    <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
                       당사 : 기계약(보험료 미납해지 포함) 및 심사중인 건 포함
                     </BulletListItem>
-                    <BulletListItem
-                      before="2."
-                      className="whitespace-nowrap"
-                      color="default"
-                      size="md"
-                      type="symbols"
-                    >
+                    <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
                       타사 : 한국신용정보원의 집적 기준 및 Data 사용
                     </BulletListItem>
                   </BulletList>
                 </Gcol>
-                <Gcol className="s-full" variant={'box-warning'} placement='ss'>
+                <Gcol className="s-full" variant={'box-warning'} placement="ss">
                   <Typo variant={'body-sm'} icon={'warning'}>
                     <b>주의사항</b>
                   </Typo>
-                  <BulletList color={'warning'}  size="sm">
-                    <BulletListItem
-                      before="1."
-                      className="whitespace-nowrap"
-                      color="default"
-                      size="md"
-                      type="symbols"
-                    >
+                  <BulletList color={'warning'} size="sm">
+                    <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
                       점검 수행 전 신정원 조회 후 정액담보점검 클릭 권장
                     </BulletListItem>
-                    <BulletListItem
-                      before="2."
-                      className="whitespace-nowrap"
-                      color="default"
-                      size="md"
-                      type="symbols"
-                    >
-                      당사금액 문제가 있는 경우 다른 심사요청 건이 있는지 확인 권장 
+                    <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
+                      당사금액 문제가 있는 경우 다른 심사요청 건이 있는지 확인 권장
                     </BulletListItem>
-                    <BulletListItem
-                      before="3."
-                      className="whitespace-nowrap"
-                      color="default"
-                      size="md"
-                      type="symbols"
-                    >
+                    <BulletListItem before="3." className="whitespace-nowrap" color="default" size="md" type="symbols">
                       타사의 누적집적오류는 당사에서 수정요청 불가
                     </BulletListItem>
                   </BulletList>
                 </Gcol>
               </Gcol>
-
             </Gcol>
           </LayoutScrollItem>
         </LayoutScrollWrap>
@@ -400,7 +341,12 @@ export const LTPA301Main = () => {
         <MainBottom>
           <MainBottomItem>
             <Grow gap={1}>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('정액담보업계누적기준')}>
+              <Button
+                variant={'outlined'}
+                color={'gray'}
+                size={'xl'}
+                onClick={() => console.log('정액담보업계누적기준')}
+              >
                 정액담보업계누적기준
               </Button>
             </Grow>
@@ -429,9 +375,8 @@ export const LTPA301Main = () => {
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-    </LayoutMain>  
-
-  )
-}
+    </LayoutMain>
+  );
+};
 
 export default LTPA301Main;

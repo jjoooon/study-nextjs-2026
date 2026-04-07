@@ -1,5 +1,8 @@
 'use client';
 
+import { Gcol, Grow } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import {
   LayoutHead,
   LayoutBody,
@@ -18,9 +21,6 @@ import {
   LayoutAsideBody,
   LayoutAsideFoot,
 } from '@layout/BaseLayout';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-import { Gcol, Grow } from '@atoms';
-import { BottomBar } from '@common/BottomBar';
 
 interface Props {
   pageID?: React.ReactNode;
@@ -53,9 +53,9 @@ export const LayoutTemplateAsideToggle = ({
 
     <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
-      
+
       {mainBody}
-      
+
       <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>
@@ -77,25 +77,17 @@ export const LayoutTemplateAsideToggle = ({
   </>
 );
 
-export const LayoutTemplate = ({
-  pageID,
-  mainBody,
-}: Props) => (
+export const LayoutTemplate = ({ pageID, mainBody }: Props) => (
   <>
-    <LayoutHead>
-      {pageID}
-    </LayoutHead>
+    <LayoutHead>{pageID}</LayoutHead>
 
-    <LayoutBody className="grid grid-cols-[1fr] gap-3 pl-[1rem]">
-      {mainBody}
-    </LayoutBody>
+    <LayoutBody className="grid grid-cols-[1fr] gap-3 pl-[1rem]">{mainBody}</LayoutBody>
 
     <LayoutFoot>
       <BottomBar />
     </LayoutFoot>
   </>
 );
-
 
 export const LayoutTemplateA = ({
   pageID,
@@ -115,9 +107,9 @@ export const LayoutTemplateA = ({
 
     <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
       <LayoutProcess>{pageProcess}</LayoutProcess>
-      
+
       {mainBody}
-      
+
       <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>

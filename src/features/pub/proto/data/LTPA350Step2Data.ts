@@ -1,4 +1,3 @@
-
 // LTPA350Step2Data 타입 정의
 export interface LTPA350Step2DataType {
   tabList: Array<{
@@ -39,13 +38,7 @@ export const LTPA350Step2Data: LTPA350Step2DataType = {
       gender: '여',
       value: 'tab1',
       error: true,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-      ],
+      info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
     },
     {
       name: '반짝빛나리반짝빛나리',
@@ -53,11 +46,7 @@ export const LTPA350Step2Data: LTPA350Step2DataType = {
       gender: '남',
       value: 'tab2',
       error: true,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-      ],
+      info: ['추가정보1', '추가정보2', '추가정보3'],
     },
     {
       name: '반짝빛나리반짝빛나리',
@@ -65,10 +54,7 @@ export const LTPA350Step2Data: LTPA350Step2DataType = {
       gender: '여',
       value: 'tab3',
       error: false,
-      info: [
-        '추가정보1',
-        '추가정보2',
-      ],
+      info: ['추가정보1', '추가정보2'],
     },
   ],
   agGridTable1: [
@@ -123,7 +109,7 @@ export const LTPA350Step2Data: LTPA350Step2DataType = {
       badge: ['독립'],
     },
   ],
-}
+};
 
 export interface LTPA350Step2DataType_2 {
   tabList: Array<{
@@ -150,7 +136,7 @@ export interface LTPA350Step2DataType_2 {
     locked?: boolean; // 잠금 여부 추가
     isHighlighted: boolean;
     selected?: boolean;
-    badge?: string[]; 
+    badge?: string[];
   }>;
 }
 export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
@@ -161,13 +147,7 @@ export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
       gender: '여',
       value: 'tab1',
       error: true,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-        '추가정보4',
-        '추가정보5',
-      ],
+      info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
     },
     {
       name: '반짝빛나리반짝빛나리',
@@ -175,11 +155,7 @@ export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
       gender: '남',
       value: 'tab2',
       error: true,
-      info: [
-        '추가정보1',
-        '추가정보2',
-        '추가정보3',
-      ],
+      info: ['추가정보1', '추가정보2', '추가정보3'],
     },
     {
       name: '반짝빛나리반짝빛나리',
@@ -187,10 +163,7 @@ export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
       gender: '여',
       value: 'tab3',
       error: false,
-      info: [
-        '추가정보1',
-        '추가정보2',
-      ],
+      info: ['추가정보1', '추가정보2'],
     },
   ],
   agGridTable1: [
@@ -207,7 +180,7 @@ export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
       field9: true,
 
       locked: true,
-      
+
       isHighlighted: true,
       badge: ['독립', '갱신'],
     },
@@ -497,4 +470,4 @@ export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
       badge: ['독립', '갱신'],
     },
   ],
-}
+};

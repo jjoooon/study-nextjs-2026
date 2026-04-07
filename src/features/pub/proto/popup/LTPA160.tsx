@@ -1,24 +1,31 @@
 'use client';
 
-import * as React from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-
+import { numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { ResetIcon } from '@icons';
-import { numberValueFormatter } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { FileExportIcon, SearchIcon } from '@icons';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon } from '@icons';
+import { FileExportIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -219,11 +226,7 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           {/* 조회 */}
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable
-              variant={'head'}
-              lineTop={false}
-              caption=""
-            >
+            <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'조회구분'}>
                   <NativeSelect
@@ -274,15 +277,22 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
             </FormTable>
 
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>
           </Grow>
-        
+
           {/* 조회 정보 */}
           <Gcol placement="ss" className="w-full" gap={5}>
             <TableFold>
@@ -298,12 +308,7 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Grow className="w-full">
                   <FormTable
                     caption="피보험자의 위험정보 테이블"
-                    cols={[
-                      'w-[5rem]', 'flex-1', 
-                      'w-[8rem]', 'flex-1', 
-                      'w-[5rem]', 'flex-1', 
-                      'w-[5rem]', 'flex-1'
-                    ]}
+                    cols={['w-[5rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[5rem]', 'flex-1', 'w-[5rem]', 'flex-1']}
                   >
                     <FormRow>
                       <FormCell title={'직업'}>전기공학 개발자 및 연구원</FormCell>
@@ -327,18 +332,19 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
-                      domLayout='autoHeight'
+                      domLayout="autoHeight"
                     />
                   </div>
-                  <Gcol className='w-full'>
-                    <Gcol variant={'box-warning'} placement={'ss'} className='w-full'>
+                  <Gcol className="w-full">
+                    <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
                       <Typo variant={'body-sm'} icon={'warning'}>
                         <b>주의사항 노출 영역</b>
                       </Typo>
                     </Gcol>
-                    <Gcol placement={'ss'} className='w-full'>
+                    <Gcol placement={'ss'} className="w-full">
                       <Typo variant={'body-sm'} icon={'detail'}>
-                        자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별 인수기준]에서 확인해주시면 됩니다.
+                        자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별
+                        인수기준]에서 확인해주시면 됩니다.
                       </Typo>
                     </Gcol>
                   </Gcol>
@@ -356,7 +362,7 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
             <Grow>
-             <DialogClose asChild>
+              <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
                 </Button>

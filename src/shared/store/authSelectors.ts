@@ -1,8 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '@/redux';
-
 import type { AuthState } from './authSlice';
+import type { RootState } from '@/redux';
 
 // ============================================================================
 // AUTH SELECTORS

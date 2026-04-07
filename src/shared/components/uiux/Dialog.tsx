@@ -1,14 +1,14 @@
 'use client';
 
+import { Gcol, Grid } from '@atoms';
+import { CloseIcon } from '@icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
-import { CloseIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Gcol, Grid } from '@atoms';
 
 type DialogSizeValue = number | string;
 
-type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | '2xl' |'full';
+type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 
 type DialogSizeConfig = {
   width?: DialogSizeValue;
@@ -83,11 +83,11 @@ const _overlayListeners = new Set<() => void>();
 
 function _registerDialog(id: string, depth: number) {
   _openDialogs.set(id, depth);
-  _overlayListeners.forEach(fn => fn());
+  _overlayListeners.forEach((fn) => fn());
 }
 function _unregisterDialog(id: string) {
   _openDialogs.delete(id);
-  _overlayListeners.forEach(fn => fn());
+  _overlayListeners.forEach((fn) => fn());
 }
 function _getMaxOpenDepth() {
   return _openDialogs.size > 0 ? Math.max(..._openDialogs.values()) : 0;
@@ -97,7 +97,9 @@ function _getOpenCount() {
 }
 function _subscribeOverlay(fn: () => void) {
   _overlayListeners.add(fn);
-  return () => { _overlayListeners.delete(fn); };
+  return () => {
+    _overlayListeners.delete(fn);
+  };
 }
 
 const DialogDepthContext = React.createContext<number>(0);
@@ -208,10 +210,14 @@ function DialogContent({
   const [maxOpenDepth, setMaxOpenDepth] = React.useState(_getMaxOpenDepth);
   const [openCount, setOpenCount] = React.useState(_getOpenCount);
 
-  React.useEffect(() => _subscribeOverlay(() => {
-    setMaxOpenDepth(_getMaxOpenDepth());
-    setOpenCount(_getOpenCount());
-  }), []);
+  React.useEffect(
+    () =>
+      _subscribeOverlay(() => {
+        setMaxOpenDepth(_getMaxOpenDepth());
+        setOpenCount(_getOpenCount());
+      }),
+    []
+  );
 
   // 단일 팝업 → 항상 암막 표시 / 중첩 → 가장 위(depth === maxOpenDepth)만 표시
   const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || depth >= maxOpenDepth);
@@ -359,7 +365,7 @@ function DialogContent({
         className={cn(
           'fixed left-[50%] top-[50%] grid grid-rows-[auto_1fr_auto] gap-5 transition-none',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
-          'w-full grid grid-rows-[auto_1fr_auto]' ,
+          'w-full grid grid-rows-[auto_1fr_auto]',
           className
         )}
         onMouseDown={handleMouseDown}
@@ -467,7 +473,10 @@ function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) 
   return (
     <div
       data-slot="dialog-footer-area"
-      className={cn('flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first:justify-start [&>div]:last:justify-end', className)}
+      className={cn(
+        'flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first:justify-start [&>div]:last:justify-end',
+        className
+      )}
       {...props}
     />
   );
@@ -477,7 +486,10 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn('flex items-end gap-0.5 leading-none text-[1.6rem] tracking-tighter text-left border-b border-b-[0.1rem] border-[var(--color-gray-20)] pb-3 w-full pr-6', className)}
+      className={cn(
+        'flex items-end gap-0.5 leading-none text-[1.6rem] tracking-tighter text-left border-b border-b-[0.1rem] border-[var(--color-gray-20)] pb-3 w-full pr-6',
+        className
+      )}
       {...props}
     />
   );
@@ -505,7 +517,6 @@ function DialogSection({ children, className, ...props }: React.ComponentProps<t
     </Grid>
   );
 }
-
 
 export {
   DialogSection,
