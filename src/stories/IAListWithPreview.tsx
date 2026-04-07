@@ -1,7 +1,7 @@
 'use client';
 
-import { Grow } from '@atoms';
 import * as React from 'react';
+import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
 import iaListData from './ialist.json';
 
@@ -139,63 +139,64 @@ export function IAListWithPreview() {
     [sortState]
   );
 
-  const ingList = ['LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ021', 'LTPZ031'];
+  const ingList = React.useMemo(() => ['LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ021', 'LTPZ031'], []);
+  const workList = React.useMemo(() => {
+    const workListPrev: string[] = [
+      'LTPZ010',
+      'LTPZ011',
+      'LTPZ017',
+      'LTPZ020',
+      'LTPA160',
+      'LTPA904',
+      'LTPZ999',
+      'LTPZ998',
+      'LTPZ997',
+      'LTPZ996',
+      'LTPA170',
+      'LTPA904',
+      'LTPA390',
+      'LTPA430',
+      'LTPA070',
+      'LTPA010',
+      'LTPZ041',
+      'LTPZ042',
+      'LTPZ038',
+      'LTPZ039',
+      'LTPA400',
+      'LTPA210',
+      'LTPA200',
+      'LTPA190',
+      'LTPZ001',
+      'LTPZ040',
+      'LTPZ043',
+      'LTPZ046',
+      'LTPZ047',
+      'LTPA030',
+      'LTPA360',
+      'LTPZ049',
+      'LTPZ050',
+      'LTPZ051',
+      'LTPZ002',
+      'LTPZ052',
+      'LTPZ053',
+      'LTPZ057',
+      'LTPZ009',
+      'LTPA401',
+      'LTPA301',
+      'LTPA303',
+      'LTPZ048',
+      'LTPZ045',
+      'LTRZ085',
+      'LTPA300',
+      'LTPZ994',
+      'LTPZ995',
+    ];
+    const workListH: string[] = [];
+    const workListK: string[] = ['LTPZ085', 'LTPZ086'];
+    const workListJ: string[] = [];
 
-  const workList_prev: string[] = [
-    'LTPZ010',
-    'LTPZ011',
-    'LTPZ017',
-    'LTPZ020',
-    'LTPA160',
-    'LTPA904',
-    'LTPZ999',
-    'LTPZ998',
-    'LTPZ997',
-    'LTPZ996',
-    'LTPA170',
-    'LTPA904',
-    'LTPA390',
-    'LTPA430',
-    'LTPA070',
-    'LTPA010',
-    'LTPZ041',
-    'LTPZ042',
-    'LTPZ038',
-    'LTPZ039',
-    'LTPA400',
-    'LTPA210',
-    'LTPA200',
-    'LTPA190',
-    'LTPZ001',
-    'LTPZ040',
-    'LTPZ043',
-    'LTPZ046',
-    'LTPZ047',
-    'LTPA030',
-    'LTPA360',
-    'LTPZ049',
-    'LTPZ050',
-    'LTPZ051',
-    'LTPZ002',
-    'LTPZ052',
-    'LTPZ053',
-    'LTPZ057',
-    'LTPZ009',
-    'LTPA401',
-    'LTPA301',
-    'LTPA303',
-    'LTPZ048',
-    'LTPZ045',
-    'LTRZ085',
-    'LTPA300',
-    'LTPZ994',
-    'LTPZ995',
-  ];
-  const workList_h: string[] = [];
-  const workList_k: string[] = ['LTPZ085', 'LTPZ086'];
-  const workList_j: string[] = [];
-
-  const workList = [...workList_prev, ...workList_h, ...workList_k, ...workList_j];
+    return [...workListPrev, ...workListH, ...workListK, ...workListJ];
+  }, []);
 
   const ingIdSet = React.useMemo(() => new Set(ingList), [ingList]);
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
@@ -298,7 +299,18 @@ export function IAListWithPreview() {
 
       <div className="ia-preview-pane">
         {activeRow ? (
-          <div className="ia-preview-label cursor-pointer" onClick={handleMovePage}>
+          <div
+            className="ia-preview-label cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onClick={handleMovePage}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleMovePage();
+              }
+            }}
+          >
             {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
             <b>
               {activeRow.dep4}({activeRow.id})

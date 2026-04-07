@@ -1,14 +1,13 @@
 'use client';
 
+import * as React from 'react';
+import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
 import { Typo, Gcol, Grow } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { PlusIcon, MinusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
-import * as React from 'react';
-
-import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
 
 interface AmountUnitInputProps {
   value: string | number;

@@ -15,14 +15,24 @@ PowerShell
 Set-ExecutionPolicy -Scope CurrentUser Unrestricted
 
 환경변수추가
-settings.json{
+settings.json
+{
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
     },
+    // 전반적인 저장 시 포매팅 활성화
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    // ESLint 관련 설정
     "eslint.enable": true,
-    "eslint.format.enable": true,
+    "eslint.workingDirectories": [
+        {
+        "mode": "auto"
+        }
+    ],
+    // 모든 언어에 대해 ESLint를 기본 포매터로 지정 (혹은 Prettier 사용 시 해당 ID로 변경)
     "[javascript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "[javascriptreact]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
@@ -33,8 +43,14 @@ settings.json{
     "[typescriptreact]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "github.copilot.nextEditSuggestions.enabled": true
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "git.autofetch": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.renderCharacters": false,
+    "chat.viewSessions.orientation": "stacked"
 }
+
+
 
 
 getRowId={(params) => String(params.data.id)}

@@ -1,12 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerA } from '@common/Spinner';
 import { CalendarIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import Link from 'next/link';
 
 const Data = [
   {

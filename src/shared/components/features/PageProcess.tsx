@@ -1,8 +1,8 @@
 'use client';
 
+import { Fragment } from 'react';
 import { Gcol, Typo } from '@atoms';
 import { ProcessDot, CheckBoldIcon, ProcessActiveIcon } from '@icons';
-import { Fragment } from 'react';
 
 export type PageProcessItem = {
   step: number;

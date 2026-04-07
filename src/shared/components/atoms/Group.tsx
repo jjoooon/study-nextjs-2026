@@ -1,68 +1,3 @@
-/**
- * Group Components - Layout Utility Components
- *
- * @description
- * Flexbox 기반의 다목적 레이아웃 컴포넌트 모음
- * 다양한 배치(placement)와 스타일(variant) 옵션을 지원하여
- * 공통적인 레이아웃 패턴을 쉽게 구현할 수 있음
- *
- * @components
- * - **Gcol**: 세로(Column) 방향 Flex 컨테이너
- * - **Grow**: 가로(Row) 방향 Flex 컨테이너
- * - **Grid**: CSS Grid 컨테이너
- * - **FormItem**: 폼 아이템용 Row 컨테이너
- * - **Separator**: 간단한 구분선
- * - **ButtonGroup**: 버튼 그룹용 Row 컨테이너
- *
- * @placement 옵션 (위치 정렬)
- * - `ss/sc/se`: justify-start + (items-start/center/end)
- * - `cs/cc/ce`: justify-center + (items-start/center/end)
- * - `es/ec/ee`: justify-end + (items-start/center/end)
- * - `bws/bwc/bwe`: justify-between + (items-start/center/end) (전체 너비/높이)
- * - `ars/arc/are`: justify-around + (items-start/center/end) (전체 너비/높이)
- * - `evs/evc/eve`: justify-evenly + (items-start/center/end) (전체 너비/높이)
- *
- * @variant 옵션 (시각적 스타일)
- * - `default`: 기본 스타일 없음
- * - `box`: 박스 스타일 (패딩 + 배경)
- * - `box-line`: 보더 박스 스타일 (그림자 포함)
- *
- * @example
- * // 기본 세로 배치 (중앙 정렬)
- * <Gcol placement="cc">
- *   <h1>Title</h1>
- *   <p>Content</p>
- * </Gcol>
- *
- * // 가로 배치 (양쪽 정렬)
- * <Grow placement="bwc">
- *   <span>Left</span>
- *   <span>Right</span>
- * </Grow>
- *
- * // 스타일 적용
- * <Gcol variant="box" placement="cc">
- *   <div>Styled Container</div>
- * </Gcol>
- *
- * // 폼 아이템
- * <FormItem placement="sc">
- *   <label>Label</label>
- *   <input type="text" />
- * </FormItem>
- *
- * // 버튼 그룹
- * <ButtonGroup placement="ec">
- *   <button>Cancel</button>
- *   <button>Submit</button>
- * </ButtonGroup>
- *
- * @rowsion 1.0.0
- * @since 2026-03-05
- * @lastModified 2026-03-05
- */
-
-import { dir } from 'console';
 import { ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiTypes';
@@ -249,7 +184,7 @@ export const FormItem = ({
     >
       {children}
     </div>
-  ); 
+  );
 };
 export const Separator = ({ children, style }: GroupProps) => {
   return (
@@ -266,13 +201,7 @@ interface DividerProps {
   color?: 'gray' | 'gray-light';
 }
 
-
-export const Divider = ({
-  className,
-  variant = 'default',
-  dir = 'col',
-  color = 'gray',
-}: DividerProps) => {
+export const Divider = ({ className, variant = 'default', dir = 'col', color = 'gray' }: DividerProps) => {
   const colorMap: Record<string, string> = {
     gray: 'var(--color-gray-15)',
     'gray-light': 'var(--color-gray-10)',
@@ -282,9 +211,13 @@ export const Divider = ({
     <hr
       className={cn(
         'shrink-0 border-0 inline-block',
-        (variant ===  'default' && (dir === 'col' ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l` : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`)),
-        (variant === 'dot' && `relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] 
-        before:rounded-full  before:bg-[#777]`), 
+        variant === 'default' &&
+          (dir === 'col'
+            ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l`
+            : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`),
+        variant === 'dot' &&
+          `relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] 
+        before:rounded-full  before:bg-[#777]`,
         className
       )}
     />

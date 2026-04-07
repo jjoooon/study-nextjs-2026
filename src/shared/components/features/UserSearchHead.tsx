@@ -1,5 +1,7 @@
 'user client';
 
+import React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { ArrowIcon, FlagCheckIcon, CheckIcon, ZoomInIcon, SearchIcon } from '@icons';
@@ -15,8 +17,6 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tabs, TabsContent, TabsList, TabsPanel, TabsLine, TabsTrigger } from '@uiux/Tabs';
-import React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 interface User {
   id: string;

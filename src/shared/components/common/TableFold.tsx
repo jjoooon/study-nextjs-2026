@@ -1,7 +1,6 @@
-import { Grow, Gcol, Typo, Grid } from '@atoms';
-
 import React, { createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 
 type TableFoldVariant = 'default' | 'accordion';
 type TableFoldProps = {

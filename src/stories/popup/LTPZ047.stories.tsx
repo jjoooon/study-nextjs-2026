@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { LTPZ047 } from '@/features/pub/proto/popup/LTPZ047';
+import { LTPZ047 } from '@/features/pub/popup/LTPZ047';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 

@@ -1,4 +1,4 @@
-import LTPA360 from '@/app/pub/proto/pages/LTPA360';
+import LTPA360 from '@/app/pub/pages/LTPA360';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
