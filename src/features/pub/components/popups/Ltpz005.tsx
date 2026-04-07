@@ -1,17 +1,5 @@
 'use client';
 // 권오택
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { TabPager } from '@/shared/components/common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -37,6 +25,19 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { ColDef, ColGroupDef } from 'ag-grid-community';
+
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { RecommendCard } from '@/shared/components/common/RecommendCard';
+import { TabPager } from '@/shared/components/common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type CheckTab = {
   name: string;
@@ -529,6 +530,16 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
       coverageName: '보험료압입명제대상보장(8대사유)',
       amount: '-',
     },
+    {
+      id: 5,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 6,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
   ];
 
   // 보험료 할증
@@ -547,6 +558,14 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       id: 4,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+    },
+    {
+      id: 5,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+    },
+    {
+      id: 6,
       coverageName: '보험료압입명제대상보장(8대사유)',
     },
   ];
@@ -570,6 +589,16 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       id: 4,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 5,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 6,
       coverageName: '보험료압입명제대상보장(8대사유)',
       amount: '-',
     },
@@ -1220,7 +1249,13 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </TableFoldHead>
                       <TableFoldBody>
                         {/* 제한담보 */}
-                        <div className="ag-theme-alpine">
+                        <div
+                          className="ag-theme-alpine"
+                          style={{
+                            height: expectedUwLimitedCoverageRowData.length >= 4 ? '15rem' : 'auto',
+                            overflow: expectedUwLimitedCoverageRowData.length >= 4 ? 'hidden' : 'visible',
+                          }}
+                        >
                           <AgGridReact<ExpectedUwAmountRow>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1237,7 +1272,7 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                             })}
                             headerHeight={28}
                             rowHeight={30}
-                            domLayout="autoHeight"
+                            domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
@@ -1250,7 +1285,13 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </TableFoldHead>
                       <TableFoldBody>
                         {/* 보험료 할증 */}
-                        <div className="ag-theme-alpine">
+                        <div
+                          className="ag-theme-alpine"
+                          style={{
+                            height: expectedUwPremiumSurchargeRowData.length >= 4 ? '15rem' : 'auto',
+                            overflow: expectedUwPremiumSurchargeRowData.length >= 4 ? 'hidden' : 'visible',
+                          }}
+                        >
                           <AgGridReact<ExpectedUwSingleRow>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1267,7 +1308,7 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                             })}
                             headerHeight={28}
                             rowHeight={30}
-                            domLayout="autoHeight"
+                            domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
@@ -1280,7 +1321,13 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </TableFoldHead>
                       <TableFoldBody>
                         {/* 부 담보(부위/질병) */}
-                        <div className="ag-theme-alpine">
+                        <div
+                          className="ag-theme-alpine"
+                          style={{
+                            height: expectedUwExclusionCoverageRowData.length >= 4 ? '15rem' : 'auto',
+                            overflow: expectedUwExclusionCoverageRowData.length >= 4 ? 'hidden' : 'visible',
+                          }}
+                        >
                           <AgGridReact<ExpectedUwAmountRow>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1297,7 +1344,7 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                             })}
                             headerHeight={28}
                             rowHeight={30}
-                            domLayout="autoHeight"
+                            domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
                           />
                         </div>
                       </TableFoldBody>
@@ -1330,43 +1377,13 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableFoldBody>
                       <Grow className="w-full" gap={5}>
                         {expectedUwRecommendData.map((item) => (
-                          <Gcol
+                          <RecommendCard
                             key={item.id}
-                            className="p-0.25 w-full rounded-[0.8rem] bg-linear-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-100% box-border"
-                          >
-                            <Gcol className="bg-white rounded-[0.8rem] w-full h-full" gap={2}>
-                              <Gcol className="">
-                                <Gcol className="w-full" gap={0.5}>
-                                  <Typo tag={'strong'} variant={'heading-md'}>
-                                    {item.title}
-                                  </Typo>
-                                  <Typo tag={'p'} variant={'body-xs'} className="text-[#414141]">
-                                    {item.plan}
-                                  </Typo>
-                                  <Typo tag={'p'} variant={'body-xs'} className="text-[#414141]">
-                                    {item.term}
-                                  </Typo>
-                                </Gcol>
-                                <Grow
-                                  className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem]"
-                                  placement="sc"
-                                >
-                                  <Typo tag={'p'} variant={'body-xs'}>
-                                    • {item.detail}
-                                  </Typo>
-                                </Grow>
-                              </Gcol>
-                            </Gcol>
-                            <Grow
-                              className="w-full h-[4.2rem] bg-[#817772] rounded-bl-[0.8rem] rounded-br-[0.8rem]"
-                              placement="cc"
-                            >
-                              <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
-                              <Typo tag={'strong'} variant={'body-md'} weight={'bold'} className="text-white">
-                                AI 추천이유
-                              </Typo>
-                            </Grow>
-                          </Gcol>
+                            title={item.title}
+                            plan={item.plan}
+                            term={item.term}
+                            detail={item.detail}
+                          />
                         ))}
                       </Grow>
                     </TableFoldBody>
