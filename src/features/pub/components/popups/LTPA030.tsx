@@ -1,7 +1,7 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
@@ -89,7 +89,7 @@ export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
       editable: false,
       cellClass: 'text-center  flex! items-center justify-center!',
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+      cellRenderer: () => (
         <Grow className="w-full px-1">
           <Input aria-label="" width={'100%'} value={'1234567'} size="sm" readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
@@ -145,9 +145,7 @@ export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
+  const [, setErrorRows] = React.useState<number[]>(DummyData.filter((row) => !row.isCheck).map((row) => row.id));
 
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
