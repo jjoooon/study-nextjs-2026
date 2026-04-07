@@ -17,11 +17,11 @@ import TaskStatusBoard from '@features/TaskStatusBoard';
 import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
 
 // LTPA350 - components
-import { Ltpa350Step1 } from '../components/LTPA350Step1'; // 01. 담보설계
-import { Ltpa350Step2 } from '../components/LTPA350Step2'; // 02. 담보설계
+import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 담보설계
+import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
 
 // types
-type Ltpa350ProcessStep = number;
+type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 type Ltpa350ProcessItem = {
   step: Ltpa350ProcessStep;
   label: string;
@@ -29,12 +29,6 @@ type Ltpa350ProcessItem = {
 type Ltpa350ProcessState = {
   complete: Ltpa350ProcessStep[];
   active: Ltpa350ProcessStep;
-};
-type Ltpa350TaskStateItem = {
-  id: number;
-  status: '정상' | '경고' | '중지';
-  label: string;
-  sum: number;
 };
 interface Ltpa350DataType {
   head: {
@@ -60,22 +54,6 @@ interface Ltpa350DataType {
   process: {
     list: Ltpa350ProcessItem[];
     state: Ltpa350ProcessState;
-  };
-  aside: {
-    taskState: Ltpa350TaskStateItem[];
-    simpleContractInfo: {
-      date: string;
-      polName: string;
-      insName: string;
-      insAge: string;
-      insGender: string;
-      insGrade: string;
-      info: string[];
-      quoteExpiryDate: string;
-      insuranceAgeDate: string;
-      consentEndDate: string;
-      note: string;
-    };
   };
 }
 const data: Ltpa350DataType = {
@@ -110,29 +88,76 @@ const data: Ltpa350DataType = {
     ],
     state: {
       complete: [1],
-      active: 2,
+      active: 1,
     },
   },
-  aside: {
-    taskState: [
-      { id: 1, status: '정상', label: '누적', sum: 24 },
-      { id: 2, status: '경고', label: '중복', sum: 1 },
-      { id: 3, status: '중지', label: '직업', sum: 0 },
-      { id: 4, status: '정상', label: '기타', sum: 99 },
-    ],
-    simpleContractInfo: {
-      date: '2024-05-08',
-      polName: '홍길동',
-      insName: '홍길동',
-      insAge: '32',
-      insGender: '남',
-      insGrade: '1급',
-      info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-      quoteExpiryDate: '2024-06-30',
-      insuranceAgeDate: '2024-05-08',
-      consentEndDate: '2024-06-30',
-      note: '알릴사항 비대상',
-    },
+};
+const asideInfo = {
+  step1: null,
+  step2: {
+    date: '2024-05-08',
+    polName: '홍길동',
+    insName: '홍길동',
+    insAge: '32',
+    insGender: '남',
+    insGrade: '1급',
+    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
+    quoteExpiryDate: '2024-06-30',
+    insuranceAgeDate: '2024-05-08',
+    consentEndDate: '2024-06-30',
+    note: '알릴사항 비대상',
+  },
+  step3: {
+    date: '2024-05-08',
+    polName: '홍길동',
+    insName: '홍길동',
+    insAge: '32',
+    insGender: '남',
+    insGrade: '1급',
+    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
+    quoteExpiryDate: '2024-06-30',
+    insuranceAgeDate: '2024-05-08',
+    consentEndDate: '2024-06-30',
+    note: '알릴사항 비대상',
+  },
+  step4: {
+    date: '2024-05-08',
+    polName: '홍길동',
+    insName: '홍길동',
+    insAge: '32',
+    insGender: '남',
+    insGrade: '1급',
+    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
+    quoteExpiryDate: '2024-06-30',
+    insuranceAgeDate: '2024-05-08',
+    consentEndDate: '2024-06-30',
+    note: '알릴사항 비대상',
+  },
+  step5: {
+    date: '2024-05-08',
+    polName: '홍길동',
+    insName: '홍길동',
+    insAge: '32',
+    insGender: '남',
+    insGrade: '1급',
+    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
+    quoteExpiryDate: '2024-06-30',
+    insuranceAgeDate: '2024-05-08',
+    consentEndDate: '2024-06-30',
+    note: '알릴사항 비대상',
+  },
+  step6: {
+    date: '2024-05-08',
+    polName: '홍길동',
+    insName: '홍길동',
+    insAge: '32',
+    insGender: '남',
+    insGrade: '1급',
+    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
+    quoteExpiryDate: '2024-06-30',
+    insuranceAgeDate: '2024-05-08',
+    consentEndDate: '2024-06-30',
+    note: '알릴사항 비대상',
   },
 };
 
@@ -170,16 +195,29 @@ export default function Ltpa350Section() {
           completeSteps={data.process.state.complete}
           defaultActiveStep={data.process.state.active}
           activeStep={activeStep}
-          onStepChange={setActiveStep}
+          onStepChange={(step) => {
+            if (isPageProcessStep(step)) {
+              setActiveStep(step);
+            }
+          }}
         />
       }
       // LayoutBody: main
       mainBody={stepMainBody[activeStep]}
       // LayoutBody: aside
-      asideHead={<TaskStatusBoard state={data.aside.taskState} />}
+      asideHead={
+        <TaskStatusBoard
+          state={[
+            { id: 1, status: '정상', label: '누적', sum: 24 },
+            { id: 2, status: '경고', label: '중복', sum: 1 },
+            { id: 3, status: '중지', label: '직업', sum: 0 },
+            { id: 4, status: '정상', label: '기타', sum: 99 },
+          ]}
+        />
+      }
       asideBody={
         <>
-          <InfoContract data={data.aside.simpleContractInfo} />
+          <InfoContract data={asideInfo[`step${activeStep}`]} />
           <QuickLinks />
         </>
       }

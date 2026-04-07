@@ -7,39 +7,6 @@ import { CalendarIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 
-// const Data = [
-//   {
-//     state: '공통',
-//     info: [
-//       { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
-//       { 상령일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-//       { 동의종료일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-//       { 알림사항: '입력완료' },
-//     ],
-//   },
-//   {
-//     state: '간편설계',
-//     info: [
-//       { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
-//       { 상령일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-//       { 동의종료일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-//       { 고지유형: '1형(일반고지형)' },
-//     ],
-//   },
-//   {
-//     state: '설계중',
-//     info: [
-//       { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
-//       { 상령일: '2026-04-30' },
-//       { 동의종료일: '동의없음' },
-//       { 알림사항: '입력완료' },
-//       { 고지유형: '2형(3.10.5간편고지형(고혈압추가고지))' },
-//       { 모바일약관전송: 'X' },
-//       { 모바일약관수신: 'X' },
-//     ],
-//   },
-// ];
-
 export type InfoContractBaseData = {
   date: string;
   polName: string;
@@ -55,12 +22,30 @@ export type InfoContractBaseData = {
 };
 
 interface InfoContractProps<TData extends InfoContractBaseData = InfoContractBaseData> {
-  data: TData;
+  data: TData | null;
 }
 
 export function InfoContract<TData extends InfoContractBaseData = InfoContractBaseData>({
   data,
 }: InfoContractProps<TData>) {
+  if (data === null) {
+    return (
+      <Gcol className="w-full">
+        <Grow gap={2} placement={'bwc'}>
+          <Grow gap={1.5} placement={'bwc'} className="overflow-hidden">
+            <Typo variant={'heading-md'}>계약정보</Typo>
+          </Grow>
+        </Grow>
+
+        <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)] gap-2" placement={'ss'}>
+          <Typo variant={'body-sm'} className="text-[var(--color-text-subtle)]">
+            계약정보가 없습니다.
+          </Typo>
+        </Gcol>
+      </Gcol>
+    );
+  }
+
   return (
     <Gcol className="w-full">
       <Grow gap={2} placement={'bwc'}>

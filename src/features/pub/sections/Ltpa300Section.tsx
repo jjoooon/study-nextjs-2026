@@ -2,7 +2,7 @@
 
 import PageID from '@features/PageID';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Ltpa300Main } from '../components/LTPA300Main';
+import { Ltpa300Main } from '../components/Ltpa300Main';
 
 const data = {
   pageID: {
