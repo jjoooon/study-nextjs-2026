@@ -23,8 +23,33 @@ const CHECK_TABS: CheckTab[] = [
   { name: '예상 UW', value: 'expected-uw', label: '예상 UW', state: 'yellow' },
 ];
 
+type TabContent = {
+  notices: string[];
+  guidelines: string[];
+};
+
+const TAB_CONTENTS: Record<CheckTab['value'], TabContent> = {
+  common: {
+    notices: ['공통 확인사항 1', '공통 확인사항 2', '공통 확인사항 3'],
+    guidelines: ['공통 필수지침 1', '공통 필수지침 2', '공통 필수지침 3'],
+  },
+  accum: {
+    notices: ['누적 확인사항 1', '누적 확인사항 2', '누적 확인사항 3'],
+    guidelines: ['누적 필수지침 1', '누적 필수지침 2', '누적 필수지침 3'],
+  },
+  job: {
+    notices: ['직업 확인사항 1', '직업 확인사항 2', '직업 확인사항 3'],
+    guidelines: ['직업 필수지침 1', '직업 필수지침 2', '직업 필수지침 3'],
+  },
+  'expected-uw': {
+    notices: ['예상 UW 확인사항 1', '예상 UW 확인사항 2', '예상 UW 확인사항 3'],
+    guidelines: ['예상 UW 필수지침 1', '예상 UW 필수지침 2', '예상 UW 필수지침 3'],
+  },
+};
+
 export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
+  const activeContent = TAB_CONTENTS[active as CheckTab['value']] || TAB_CONTENTS.common;
 
   const getTabIcon = (value: CheckTab['value']) => {
     if (value === 'common') return <CommonIcon />;
@@ -91,21 +116,29 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
               })}
             </div>
 
-            <>
+            <Gcol className='w-full' gap={4}>
               <Gcol className='w-full' gap={2}>
                 <Typo tag={'strong'} variant={'heading-md'}>확인사항</Typo>
-                <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
-                  <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+                <Gcol className='w-full gap-2'>
+                  {activeContent.notices.map((notice, idx) => (
+                    <Grow key={idx} className='p-3 bg-[#FFF4F0] rounded-[0.6rem] border border-[#FFE0D6]'>
+                      <Typo variant={'body-md'}>{notice}</Typo>
+                    </Grow>
+                  ))}
                 </Gcol>
               </Gcol>
 
               <Gcol className='w-full' gap={2}>
                 <Typo tag={'strong'} variant={'heading-md'}>필수지침</Typo>
-                <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
-                  <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+                <Gcol className='w-full gap-2'>
+                  {activeContent.guidelines.map((guideline, idx) => (
+                    <Grow key={idx} className='p-3 bg-[#FFF9F0] rounded-[0.6rem] border border-[#FFE8D6]'>
+                      <Typo variant={'body-md'}>{guideline}</Typo>
+                    </Grow>
+                  ))}
                 </Gcol>
               </Gcol>
-            </>
+            </Gcol>
           </Gcol>
         </DialogSection> 
 
