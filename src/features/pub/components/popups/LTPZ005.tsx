@@ -1,13 +1,9 @@
 'use client';
 // 권오택
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import {
@@ -32,7 +28,13 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
+import { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type CheckTab = {
   name: string;
@@ -48,6 +50,14 @@ type GroupTabItem = {
   value: string;
 };
 
+type ExpectedUwRecommendItem = {
+  id: number;
+  title: string;
+  plan: string;
+  term: string;
+  detail: string;
+};
+
 const CHECK_TABS: CheckTab[] = [
   { name: '공통', value: 'common', label: '공통', state: 'green' },
   { name: '누적', value: 'accum', label: '누적', state: 'red' },
@@ -55,7 +65,7 @@ const CHECK_TABS: CheckTab[] = [
   { name: '예상 UW', value: 'expected-uw', label: '예상 UW', state: 'yellow' },
 ];
 
-export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
@@ -279,6 +289,29 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   type DummyDataType4 = DummyDataType2;
 
+  // 직업
+  type JobDataType = {
+    id: number;
+    targetStatus: string;
+    policyNumber: string;
+    changedDesignNumber: string;
+    beforeInjuryGrade: string;
+    beforeJobName: string;
+    afterInjuryGrade: string;
+    afterJobName: string;
+  };
+
+  type ExpectedUwAmountRow = {
+    id: number;
+    coverageName: string;
+    amount: string;
+  };
+
+  type ExpectedUwSingleRow = {
+    id: number;
+    coverageName: string;
+  };
+
   // 누적 인수기준
   const DummyData2: DummyDataType2[] = [
     {
@@ -408,6 +441,138 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
+  // 직업
+  const JobDummyData: JobDataType[] = [
+    {
+      id: 1,
+      targetStatus: '변경대상',
+      policyNumber: 'LA12345678',
+      changedDesignNumber: '계약변경설계이동',
+      beforeInjuryGrade: '1급',
+      beforeJobName: '회사 사무직 종사자',
+      afterInjuryGrade: '1급',
+      afterJobName: '-',
+    },
+    {
+      id: 2,
+      targetStatus: '변경대상',
+      policyNumber: 'LA12345678',
+      changedDesignNumber: '계약변경설계이동',
+      beforeInjuryGrade: '2급',
+      beforeJobName: '회사 사무직 종사자',
+      afterInjuryGrade: '2급',
+      afterJobName: '회사 사무직 종사자',
+    },
+    {
+      id: 3,
+      targetStatus: '변경대상',
+      policyNumber: 'LA12345678',
+      changedDesignNumber: '계약변경설계이동',
+      beforeInjuryGrade: '1급',
+      beforeJobName: '회사 사무직 종사자',
+      afterInjuryGrade: '1급',
+      afterJobName: '-',
+    },
+    {
+      id: 4,
+      targetStatus: '변경대상',
+      policyNumber: 'LA12345678',
+      changedDesignNumber: '계약변경설계이동',
+      beforeInjuryGrade: '2급',
+      beforeJobName: '회사 사무직 종사자',
+      afterInjuryGrade: '2급',
+      afterJobName: '-',
+    },
+    {
+      id: 5,
+      targetStatus: '변경대상',
+      policyNumber: 'LA12345678',
+      changedDesignNumber: '계약변경설계이동',
+      beforeInjuryGrade: '1급',
+      beforeJobName: '회사 사무직 종사자',
+      afterInjuryGrade: '1급',
+      afterJobName: '-',
+    },
+    {
+      id: 6,
+      targetStatus: '변경대상',
+      policyNumber: 'LA12345678',
+      changedDesignNumber: '계약변경설계이동',
+      beforeInjuryGrade: '2급',
+      beforeJobName: '회사 사무직 종사자',
+      afterInjuryGrade: '2',
+      afterJobName: '-',
+    },
+  ];
+
+  //제한담보
+  const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
+    {
+      id: 1,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '10,000',
+    },
+    {
+      id: 2,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 3,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 4,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+  ];
+
+  // 보험료 할증
+  const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
+    {
+      id: 1,
+      coverageName: '보험료압입명제대상보장(8대사유)1',
+    },
+    {
+      id: 2,
+      coverageName: '보험료압입명제대상보장(8대사유)1',
+    },
+    {
+      id: 3,
+      coverageName: '보험료압입명제대상보장(8대사유)1',
+    },
+    {
+      id: 4,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+    },
+  ];
+
+  //부 담보(부위/질병)
+  const expectedUwExclusionCoverageData: ExpectedUwAmountRow[] = [
+    {
+      id: 1,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '10,000',
+    },
+    {
+      id: 2,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 3,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+    {
+      id: 4,
+      coverageName: '보험료압입명제대상보장(8대사유)',
+      amount: '-',
+    },
+  ];
+
   // 공통
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -529,8 +694,119 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
+  // 직업
+  const jobColumnDefs: (ColDef<JobDataType> | ColGroupDef<JobDataType>)[] = [
+    {
+      headerName: '대상여부',
+      field: 'targetStatus',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '증권번호',
+      field: 'policyNumber',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '변경설계번호',
+      field: 'changedDesignNumber',
+      width: 140,
+      cellClass: 'text-center',
+      cellRenderer: (params: { value: string | number }) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.value}
+        </Button>
+      ),
+    },
+    {
+      headerName: '변경전 직업정보',
+      headerClass: 'border-r-1 border-[#E5E5E5]',
+      children: [
+        {
+          headerName: '상해급수',
+          field: 'beforeInjuryGrade',
+          minWidth: 100,
+          flex: 1,
+          cellClass: 'text-center',
+        },
+        {
+          headerName: '직업',
+          field: 'beforeJobName',
+          minWidth: 180,
+          flex: 1,
+          cellClass: 'text-center',
+        },
+      ],
+    },
+    {
+      headerName: '변경후 직업정보',
+      headerClass: 'border-r-0!',
+      children: [
+        {
+          headerName: '상해급수',
+          field: 'afterInjuryGrade',
+          minWidth: 100,
+          flex: 1,
+          cellClass: 'text-center',
+        },
+        {
+          headerName: '직업',
+          field: 'afterJobName',
+          minWidth: 180,
+          flex: 1,
+          headerClass: 'border-r-0!',
+          cellStyle: { borderRight: 'none' },
+          cellClass: 'text-center border-r-0!',
+        },
+      ],
+    },
+  ];
+
+  // 제한담보
+  const expectedUwAmountColumnDefs: (ColDef<ExpectedUwAmountRow> | ColGroupDef<ExpectedUwAmountRow>)[] = [
+    {
+      headerName: '제한 담보명',
+      field: 'coverageName',
+      flex: 1,
+      cellClass: 'justify-start!',
+    },
+    {
+      headerName: '가입금액(원)',
+      field: 'amount',
+      width: 100,
+      cellClass: 'justify-end! text-right',
+      cellRenderer: (params: { value: string | number }) => {
+        const value = String(params.value ?? '');
+
+        if (value === '-') {
+          return <div className="w-full text-center">-</div>;
+        }
+
+        return value;
+      },
+    },
+  ];
+
+  // 보험표 할증
+  const expectedUwSingleColumnDefs: (ColDef<ExpectedUwSingleRow> | ColGroupDef<ExpectedUwSingleRow>)[] = [
+    {
+      headerName: '담보명',
+      field: 'coverageName',
+      flex: 1,
+      cellClass: 'justify-start! border-r-0!',
+      headerClass: 'border-r-0!',
+      cellStyle: { borderRight: 'none' },
+    },
+  ];
+
   // 공통
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  // 직업
+  const [jobRowData] = React.useState<JobDataType[]>(JobDummyData);
+  const [expectedUwLimitedCoverageRowData] = React.useState<ExpectedUwAmountRow[]>(expectedUwLimitedCoverageData);
+  const [expectedUwPremiumSurchargeRowData] = React.useState<ExpectedUwSingleRow[]>(expectedUwPremiumSurchargeData);
+  const [expectedUwExclusionCoverageRowData] = React.useState<ExpectedUwAmountRow[]>(expectedUwExclusionCoverageData);
 
   // 누적
   const selectedAccumRowData: DummyDataType2[] =
@@ -561,6 +837,30 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
   // 누적
   const accumRadioItemClassName =
     'h-[3rem]! rounded-full! border-transparent! bg-[#E5E5E5]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[#777777]! data-[state=checked]:border-transparent! data-[state=checked]:bg-[#414141]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!';
+
+  const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
+    {
+      id: 1,
+      title: '한화 시그니처 여성 간편건강보험4.0',
+      plan: '납입면제형 · 기본형 · 3N5간편고지형',
+      term: '20년납/100세만기',
+      detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+    },
+    {
+      id: 2,
+      title: '한화 시그니처 여성 간편건강보험4.0',
+      plan: '납입면제형 · 기본형 · 3N5간편고지형',
+      term: '20년납/100세만기',
+      detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+    },
+    {
+      id: 3,
+      title: '한화 시그니처 여성 간편건강보험4.0',
+      plan: '납입면제형 · 기본형 · 3N5간편고지형',
+      term: '20년납/100세만기',
+      detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+    },
+  ];
 
   function formatAmountWithComma(value: unknown): string {
     const normalized = String(value ?? '')
@@ -756,9 +1056,322 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </div>
               </Gcol>
             ) : active === 'job' ? (
-              <Gcol className="w-full">직업</Gcol>
+              <Gcol className="w-full" gap={5}>
+                <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                  <Typo variant={'body-sm'} icon={'info'}>
+                    고객 직업정보(상해수급)가 <b>불일치 할 경우 체결이 불가능</b> 하며 해당 신계약 청약완료 이전에
+                    <b>가계약의 작업변경을 완료 필요</b>
+                  </Typo>
+                  <Typo variant={'body-sm'} icon={'info'}>
+                    신계약 청약서 발행 이전에 <b>가계약의 직업변경 배서(청약중 이후) 진행 필요</b>
+                  </Typo>
+                </Gcol>
+                <Gcol className="w-full" gap={2}>
+                  <FormTable caption="고객정보 테이블" cols={['w-[12rem]', 'flex-1', 'w-[14.9rem]', 'flex-1']}>
+                    <FormRow>
+                      <FormCell title={'고객명'}>김한화</FormCell>
+                      <FormCell title={'직업정보(현재 설계기준)'}>2급/제품 및 광고영업원</FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<JobDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={jobRowData}
+                      columnDefs={jobColumnDefs}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                        suppressMovable: true,
+                      }}
+                      getRowStyle={(params) => ({
+                        backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
+                      })}
+                      headerHeight={30}
+                      groupHeaderHeight={30}
+                      rowHeight={30}
+                      domLayout="autoHeight"
+                    />
+                  </div>
+
+                  <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
+                    <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                      신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행(변경설계가 청약중 이후이고 변경후
+                      직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
+                    </Typo>
+                    <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                      기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약
+                      설계 진행
+                    </Typo>
+                    <BulletList>
+                      <BulletListItem size={'sm'} type="dash">
+                        직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로
+                        매핑한 결과로 비교함)
+                      </BulletListItem>
+                      <BulletListItem size={'sm'} type="dash">
+                        변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다.(계약변경설계이동 클릭시
+                        변경설계화면으로 이동)
+                      </BulletListItem>
+                      <BulletListItem size={'sm'} type="dash">
+                        상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.{' '}
+                      </BulletListItem>
+                    </BulletList>
+                  </Gcol>
+                </Gcol>
+              </Gcol>
             ) : (
-              <Gcol className="w-full">예상 UW</Gcol>
+              <Gcol className="w-full" gap={5}>
+                <Grow
+                  variant={'box-round'}
+                  className="w-full bg-[#374151] px-[2rem] py-[1.6rem] flex items-center gap-[2.4rem]"
+                >
+                  <div className="w-[18rem] flex flex-col gap-1">
+                    <Typo tag={'p'} variant={'body-lg'} className="text-white">
+                      알릴사항
+                    </Typo>
+                    <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E] text-right">
+                      미입력
+                    </Typo>
+                  </div>
+
+                  <Divider className="h-[4rem] bg-[gray] opacity-20" />
+
+                  <div className="w-[18rem] flex flex-col gap-1">
+                    <Typo tag={'p'} variant={'body-lg'} className="text-white">
+                      고지
+                    </Typo>
+                    <Typo tag={'strong'} variant={'heading-lg'} className="text-white text-right">
+                      고지필요
+                    </Typo>
+                  </div>
+
+                  <Divider className="h-[4rem] bg-[gray] opacity-20" />
+
+                  <Gcol className="flex-1" gap={1}>
+                    <Typo tag={'p'} variant={'body-lg'} className="w-full text-white justify-start">
+                      담보별 상세
+                    </Typo>
+                    <div className="w-full flex items-center justify-end">
+                      <Grow className="flex gap-1 items-center">
+                        <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                          거절 · 감액 · 연기
+                        </Typo>
+                        <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E]">
+                          15개
+                        </Typo>
+                      </Grow>
+
+                      <Divider className="mx-[1.2rem] h-[1.6rem] bg-[gray] opacity-20" />
+
+                      <div className="flex gap-[1.2rem]">
+                        <div className="flex gap-1 items-end">
+                          <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                            서류
+                          </Typo>
+                          <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                            11개
+                          </Typo>
+                        </div>
+                        <div className="flex gap-1 items-end">
+                          <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                            진단/적부
+                          </Typo>
+                          <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                            7개
+                          </Typo>
+                        </div>
+                        <div className="flex gap-1 items-end">
+                          <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                            할증
+                          </Typo>
+                          <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                            10개
+                          </Typo>
+                        </div>
+                        <div className="flex gap-1 items-end">
+                          <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                            부담보
+                          </Typo>
+                          <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                            12개
+                          </Typo>
+                        </div>
+                        <div className="flex gap-1 items-end">
+                          <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                            인수
+                          </Typo>
+                          <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                            5개
+                          </Typo>
+                        </div>
+                      </div>
+                    </div>
+                  </Gcol>
+                </Grow>
+                <Gcol className="w-full" placement="ss">
+                  <Grow className="w-full" gap={5}>
+                    <TableFold>
+                      <TableFoldHead title="제한담보" className="justify-start">
+                        <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
+                          15개
+                        </Typo>
+                      </TableFoldHead>
+                      <TableFoldBody>
+                        {/* 제한담보 */}
+                        <div className="ag-theme-alpine">
+                          <AgGridReact<ExpectedUwAmountRow>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={expectedUwLimitedCoverageRowData}
+                            columnDefs={expectedUwAmountColumnDefs}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                              suppressMovable: true,
+                              cellClass: 'flex! items-center!',
+                            }}
+                            getRowStyle={(params) => ({
+                              backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
+                            })}
+                            headerHeight={28}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                          />
+                        </div>
+                      </TableFoldBody>
+                    </TableFold>
+                    <TableFold>
+                      <TableFoldHead title="보험료 할증" className="justify-start">
+                        <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
+                          15개
+                        </Typo>
+                      </TableFoldHead>
+                      <TableFoldBody>
+                        {/* 보험료 할증 */}
+                        <div className="ag-theme-alpine">
+                          <AgGridReact<ExpectedUwSingleRow>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={expectedUwPremiumSurchargeRowData}
+                            columnDefs={expectedUwSingleColumnDefs}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                              suppressMovable: true,
+                              cellClass: 'flex! items-center!',
+                            }}
+                            getRowStyle={(params) => ({
+                              backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
+                            })}
+                            headerHeight={28}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                          />
+                        </div>
+                      </TableFoldBody>
+                    </TableFold>
+                    <TableFold>
+                      <TableFoldHead title="부 담보(부위/질병)" className="justify-start">
+                        <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
+                          15개
+                        </Typo>
+                      </TableFoldHead>
+                      <TableFoldBody>
+                        {/* 부 담보(부위/질병) */}
+                        <div className="ag-theme-alpine">
+                          <AgGridReact<ExpectedUwAmountRow>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={expectedUwExclusionCoverageRowData}
+                            columnDefs={expectedUwAmountColumnDefs}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                              suppressMovable: true,
+                              cellClass: 'flex! items-center!',
+                            }}
+                            getRowStyle={(params) => ({
+                              backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
+                            })}
+                            headerHeight={28}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                          />
+                        </div>
+                      </TableFoldBody>
+                    </TableFold>
+                  </Grow>
+                  <Grow className="w-full">
+                    <Gcol>
+                      <Gcol className="w-full">
+                        <Grow className="w-full" placement="ec">
+                          <Button color="primary" onClick={() => {}} only="default" size="md" variant="contained">
+                            설계반영
+                          </Button>
+                        </Grow>
+                        <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                          <BulletList>
+                            <BulletListItem size={'sm'}>
+                              설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.
+                            </BulletListItem>
+                            <BulletListItem size={'sm'}>고지필요대상 : 알릴 사항 자동입력</BulletListItem>
+                            <BulletListItem size={'sm'}>제한담보 : 일괄조정 & 연관담보 동시 조정</BulletListItem>
+                          </BulletList>
+                        </Gcol>
+                      </Gcol>
+                    </Gcol>
+                  </Grow>
+                </Gcol>
+                <Gcol>
+                  <TableFold>
+                    <TableFoldHead title="대한설계"></TableFoldHead>
+                    <TableFoldBody>
+                      <Grow className="w-full" gap={5}>
+                        {expectedUwRecommendData.map((item) => (
+                          <Gcol
+                            key={item.id}
+                            className="w-full overflow-hidden rounded-[1rem] [border:1px_solid] [border-image-source:linear-gradient(180deg,#E5E5E5_47.33%,#61554F_100%)] [border-image-slice:1] bg-[#817772]"
+                          >
+                            <Gcol className="p-[1px] rounded-[0.8rem] bg-gradient-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-[100%]">
+                              <div className="bg-white rounded-[0.8rem] w-full h-full"></div>
+                            </Gcol>
+                            <Gcol className="w-full rounded-[1rem] px-[1.6rem] pb-[1.2rem] pt-[2rem] " gap={2}>
+                              {/* <Gcol className="">
+                                <Gcol className="w-full" gap={0.5}>
+                                  <Typo tag={'strong'} variant={'heading-md'}>
+                                    {item.title}
+                                  </Typo>
+                                  <Typo tag={'p'} variant={'body-xs'} className="text-[#414141]">
+                                    {item.plan}
+                                  </Typo>
+                                  <Typo tag={'p'} variant={'body-xs'} className="text-[#414141]">
+                                    {item.term}
+                                  </Typo>
+                                </Gcol>
+                                <Grow
+                                  className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem]"
+                                  placement="sc"
+                                >
+                                  <Typo tag={'p'} variant={'body-xs'}>
+                                    • {item.detail}
+                                  </Typo>
+                                </Grow>
+                              </Gcol> */}
+                            </Gcol>
+
+                            <Grow className="w-full bg-[#817772] py-[1rem]" placement="sc">
+                              <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
+                              <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                                AI 추천이유
+                              </Typo>
+                            </Grow>
+                          </Gcol>
+                        ))}
+                      </Grow>
+                    </TableFoldBody>
+                  </TableFold>
+                </Gcol>
+              </Gcol>
             )}
           </Gcol>
         </DialogSection>
