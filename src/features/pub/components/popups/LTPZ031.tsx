@@ -81,12 +81,28 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="w-full">
-          <Grow className="grid w-full grid-cols-[24.7rem_minmax(0,1fr)] gap-5" placement="ss">
-            <Gcol placement="ss" className="w-[24.7rem] shrink-0 overflow-hidden" gap={5}>
-              <Gcol className="w-full" placement="ss" gap={2}>
+        <DialogSection className="w-full gap-5">
+          <Grow variant={'box-info-line'} placement={'bwc'} className="border-transparent">
+            <Typo variant={'body-lg'}>
+              자동고지(ICIS/심평원) 또는 질병 가져오기를 통해 질병 정보를 간편하게 입력하세요.
+            </Typo>
+            <Grow>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                자동고지(ICIS)
+              </Button>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                자동고지(심평원)
+              </Button>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                질병 가져오기
+              </Button>
+            </Grow>
+          </Grow>
+          <Grow className="grid w-full grid-cols-[24.7rem_minmax(0,1fr)] gap-5" placement={'ss'}>
+            <Gcol placement={'ss'} className="w-[24.7rem] shrink-0 overflow-hidden" gap={5}>
+              <Gcol className="w-full" placement={'ss'} gap={2}>
                 <Typo variant="heading-md">많이 찾는 질병</Typo>
-                <Grow variant="box-round" placement="bwc">
+                <Grow variant="box-round" placement={'bwc'}>
                   <CheckboxGroup
                     className="gap-1"
                     color="primary"
@@ -109,8 +125,8 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </CheckboxGroup>
                 </Grow>
               </Gcol>
-              <Gcol className="w-full" placement="ss" gap={2}>
-                <Grow placement="bwe">
+              <Gcol className="w-full" placement={'ss'} gap={2}>
+                <Grow placement={'bwe'}>
                   <Typo variant="heading-md">질병검색</Typo>
                   <Badge color="blue" size="md" variant="contained" className="">
                     입력된 질병 6건
@@ -127,7 +143,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                   </Grow>
-                  <Grow placement="ss" className="w-full">
+                  <Grow placement={'ss'} className="w-full">
                     <Typo>
                       총 <b className="text-[var(--color-primary-50)]">18건</b>
                     </Typo>
@@ -208,9 +224,9 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Gcol>
             </Gcol>
 
-            <Grow placement="ss" className="w-full min-w-0" gap={2}>
+            <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
               <Grow className="w-full min-w-0">
-                <Gcol className="w-full min-w-0" placement="ss">
+                <Gcol className="w-full min-w-0" placement={'ss'}>
                   {(() => {
                     return (
                       <TabPager
@@ -229,7 +245,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       >
                         {/* Tab1 */}
                         {tabActive === 'TAB1' ? (
-                          <Gcol placement="ss" className="w-full" gap={3}>
+                          <Gcol placement={'ss'} className="w-full" gap={3}>
                             <TableFold>
                               <TableFoldHead title="기본질문">
                                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -240,7 +256,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      <Grow placement="bwe">
+                                      <Grow placement={'bwe'}>
                                         <Grow>
                                           척추염좌
                                           <Tooltip>
@@ -256,7 +272,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                               variant="default"
                                               className="z-[60] w-[22.1rem] block"
                                             >
-                                              <Gcol placement="ss" gap={1.5}>
+                                              <Gcol placement={'ss'} gap={1.5}>
                                                 <Typo className="body-md font-bold">척추염좌</Typo>
                                                 <Grow>
                                                   <Badge color="primary" size="md" variant="contained">
@@ -269,7 +285,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                                     SI경증
                                                   </Badge>
                                                 </Grow>
-                                                <Typo className="text-wrap">
+                                                <Typo tag={'p'} className="text-wrap">
                                                   경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
                                                   간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
                                                 </Typo>
@@ -561,6 +577,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           errorMsg="하나를 선택해주세요."
                                           errorPs="bl"
                                           onValueChange={() => {}}
+                                          required
                                         >
                                           <RadioGroupItem
                                             color="primary"
@@ -613,6 +630,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         errorPs="bl"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
@@ -737,7 +755,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             </TableFold>
                           </Gcol>
                         ) : tabActive === 'TAB2' ? (
-                          <Gcol placement="ss" className="w-full" gap={3}>
+                          <Gcol placement={'ss'} className="w-full" gap={3}>
                             <TableFold>
                               <TableFoldHead title="기본질문">
                                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -748,7 +766,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      <Grow placement="bwe">
+                                      <Grow placement={'bwe'}>
                                         <Grow>
                                           자궁근종
                                           <Tooltip>
@@ -764,7 +782,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                               variant="default"
                                               className="z-[60] w-[22.1rem] block"
                                             >
-                                              <Gcol placement="ss" gap={1.5}>
+                                              <Gcol placement={'ss'} gap={1.5}>
                                                 <Typo className="body-md font-bold">자궁근종</Typo>
                                                 <Grow>
                                                   <Badge color="primary" size="md" variant="contained">
@@ -991,7 +1009,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         </Checkbox>
                                       </TableCell>
                                       <TableCell className="border-x-0">
-                                        <Grow placement="bwc">
+                                        <Grow placement={'bwc'}>
                                           <Checkbox
                                             color="primary"
                                             onCheckedChange={() => {}}
@@ -1069,6 +1087,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           errorMsg="하나를 선택해주세요."
                                           errorPs="bl"
                                           onValueChange={() => {}}
+                                          required
                                         >
                                           <RadioGroupItem
                                             color="primary"
@@ -1121,6 +1140,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         errorPs="bl"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
@@ -1150,7 +1170,6 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               <TableFoldHead title="질병별 사전심사 안내">
                                 <Grow>
                                   <BulletItem
-                                    // before="ⓐ"
                                     className="text-right w-full break-words whitespace-pre-line"
                                     color="default"
                                     onClick={() => {}}
@@ -1163,7 +1182,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Grow>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <Grow gap={3} placement="bws">
+                                <Grow gap={3} placement={'bws'}>
                                   <Table>
                                     <TableHeader>
                                       <TableRow>
@@ -1246,7 +1265,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             </TableFold>
                           </Gcol>
                         ) : tabActive === 'TAB3' ? ( // Missing Gcol component
-                          <Gcol placement="ss" className="w-full" gap={3}>
+                          <Gcol placement={'ss'} className="w-full" gap={3}>
                             <TableFold>
                               <TableFoldHead title="기본질문">
                                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -1257,7 +1276,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      <Grow placement="bwe">
+                                      <Grow placement={'bwe'}>
                                         <Grow>
                                           대장·직장용종
                                           <Tooltip>
@@ -1273,7 +1292,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                               variant="default"
                                               className="z-[60] w-[22.1rem] block"
                                             >
-                                              <Gcol placement="ss" gap={1.5}>
+                                              <Gcol placement={'ss'} gap={1.5}>
                                                 <Typo className="body-md font-bold">대장·직장용종</Typo>
                                                 <Grow>
                                                   <Badge color="primary" size="md" variant="contained">
@@ -1286,7 +1305,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                                     SI경증
                                                   </Badge>
                                                 </Grow>
-                                                <Typo className="text-wrap">
+                                                <Typo tag={'p'} className="text-wrap">
                                                   자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌
                                                   및 난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
                                                 </Typo>
@@ -1500,7 +1519,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         </Checkbox>
                                       </TableCell>
                                       <TableCell className="border-x-0">
-                                        <Grow placement="bwc">
+                                        <Grow placement={'bwc'}>
                                           <Checkbox
                                             color="primary"
                                             onCheckedChange={() => {}}
@@ -1578,6 +1597,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           errorMsg="하나를 선택해주세요."
                                           errorPs="bl"
                                           onValueChange={() => {}}
+                                          required
                                         >
                                           <RadioGroupItem
                                             color="primary"
@@ -1630,6 +1650,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         errorPs="bl"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
@@ -1671,7 +1692,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Grow>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <Grow gap={3} placement="bws">
+                                <Grow gap={3} placement={'bws'}>
                                   <Table>
                                     <TableHeader>
                                       <TableRow>
@@ -1754,7 +1775,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             </TableFold>
                           </Gcol>
                         ) : tabActive === 'TAB4' ? ( // Missing Gcol component
-                          <Gcol placement="ss" className="w-full" gap={3}>
+                          <Gcol placement={'ss'} className="w-full" gap={3}>
                             <TableFold>
                               <TableFoldHead title="기본질문">
                                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -1765,7 +1786,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      <Grow placement="bwe">
+                                      <Grow placement={'bwe'}>
                                         <Grow>
                                           추간판장애
                                           <Tooltip>
@@ -1781,7 +1802,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                               variant="default"
                                               className="z-[60] w-[22.1rem] block"
                                             >
-                                              <Gcol placement="ss" gap={1.5}>
+                                              <Gcol placement={'ss'} gap={1.5}>
                                                 <Typo className="body-md font-bold">추간판장애</Typo>
                                                 <Grow>
                                                   <Badge color="primary" size="md" variant="contained">
@@ -2008,7 +2029,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         </Checkbox>
                                       </TableCell>
                                       <TableCell className="border-x-0">
-                                        <Grow placement="bwc">
+                                        <Grow placement={'bwc'}>
                                           <Checkbox
                                             color="primary"
                                             onCheckedChange={() => {}}
@@ -2086,6 +2107,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           errorMsg="하나를 선택해주세요."
                                           errorPs="bl"
                                           onValueChange={() => {}}
+                                          required
                                         >
                                           <RadioGroupItem
                                             color="primary"
@@ -2138,6 +2160,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         errorPs="bl"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
@@ -2179,7 +2202,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Grow>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <Grow gap={3} placement="bws">
+                                <Grow gap={3} placement={'bws'}>
                                   <Table>
                                     <TableHeader>
                                       <TableRow>
@@ -2262,7 +2285,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             </TableFold>
                           </Gcol>
                         ) : tabActive === 'TAB5' ? ( // Missing Gcol component
-                          <Gcol placement="ss" className="w-full" gap={3}>
+                          <Gcol placement={'ss'} className="w-full" gap={3}>
                             <TableFold>
                               <TableFoldHead title="기본질문">
                                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -2273,7 +2296,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      <Grow placement="bwe">
+                                      <Grow placement={'bwe'}>
                                         <Grow>
                                           어깨병변
                                           <Tooltip>
@@ -2289,7 +2312,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                               variant="default"
                                               className="z-[60] w-[22.1rem] block"
                                             >
-                                              <Gcol placement="ss" gap={1.5}>
+                                              <Gcol placement={'ss'} gap={1.5}>
                                                 <Typo className="body-md font-bold">어깨병변</Typo>
                                                 <Grow>
                                                   <Badge color="primary" size="md" variant="contained">
@@ -2516,7 +2539,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         </Checkbox>
                                       </TableCell>
                                       <TableCell className="border-x-0">
-                                        <Grow placement="bwc">
+                                        <Grow placement={'bwc'}>
                                           <Checkbox
                                             color="primary"
                                             onCheckedChange={() => {}}
@@ -2594,6 +2617,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           errorMsg="하나를 선택해주세요."
                                           errorPs="bl"
                                           onValueChange={() => {}}
+                                          required
                                         >
                                           <RadioGroupItem
                                             color="primary"
@@ -2646,6 +2670,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         errorPs="bl"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
@@ -2675,7 +2700,6 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               <TableFoldHead title="질병별 사전심사 안내">
                                 <Grow>
                                   <BulletItem
-                                    // before="ⓐ"
                                     className="text-right w-full break-words whitespace-pre-line"
                                     color="default"
                                     onClick={() => {}}
@@ -2688,7 +2712,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Grow>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <Grow gap={3} placement="bws">
+                                <Grow gap={3} placement={'bws'}>
                                   <Table>
                                     <TableHeader>
                                       <TableRow>
@@ -2787,15 +2811,6 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
             <Grow>
-              <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                자동고지(ICIS)
-              </Button>
-              <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                자동고지(심평원)
-              </Button>
-              <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                질병 가져오기
-              </Button>
               <Button variant={'contained'} size={'xl'}>
                 알릴사항 저장하기
               </Button>
