@@ -1,5 +1,10 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { DatePickerCellEditor, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -10,13 +15,8 @@ import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import type { PopupBaseProps } from './types';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -89,11 +89,7 @@ export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
       editable: false,
       cellClass: 'text-center  flex! items-center justify-center!',
-<<<<<<< HEAD
       cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-=======
-      cellRenderer: () => (
->>>>>>> 0a2ff1a0cad998cd0602fd071823c65868782b12
         <Grow className="w-full px-1">
           <Input aria-label="" width={'100%'} value={'1234567'} size="sm" readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
