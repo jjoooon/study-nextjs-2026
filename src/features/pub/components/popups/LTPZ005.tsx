@@ -1,5 +1,7 @@
 'use client';
 // 권오택
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CommonIcon, CircleCheckIcon, JobIcon, CumulativeIcon, UwIcon, InfoToastIcon } from '@icons';
@@ -14,9 +16,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import * as React from 'react';
 import type { PopupBaseProps } from './types';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type CheckTab = {
   name: string;
@@ -111,9 +111,16 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
                     key={tab.value}
                     variant="outlined"
                     color="gray-light"
-                    className="w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]!"
+                    className="w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]! shadow-[0_0.2rem_0.4rem_rgba(0,0,0,0.10)]"
                     onClick={() => setActive(tab.value)}
-                    style={isActive ? { border: '2px solid var(--color-border-primary, #FF5C2E)' } : { boxShadow: '' }}
+                    style={
+                      isActive
+                        ? {
+                            border: '2px solid var(--color-border-primary, #FF5C2E)',
+                            boxShadow: '0 0.2rem 2rem rgba(255,92,46,0.20)',
+                          }
+                        : {}
+                    }
                   >
                     <Grow placement="bwc" className="w-full">
                       <Grow>
