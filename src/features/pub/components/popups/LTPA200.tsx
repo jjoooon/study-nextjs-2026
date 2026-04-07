@@ -1,11 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useRef, useState } from 'react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -28,7 +22,13 @@ import {
 import { Input } from '@uiux/Input';
 
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useRef, useState } from 'react';
 import type { PopupBaseProps } from './types';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -205,7 +205,7 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
                   <Input aria-label="" width={'12rem'} value={'김한화'} readOnly />
-                  <Grow className="ml-[8rem]">
+                  <Grow className="ml-32">
                     <NativeSelect
                       aria-label="조직구분 선택"
                       width={'9rem'}

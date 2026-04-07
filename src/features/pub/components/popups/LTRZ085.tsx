@@ -341,7 +341,7 @@ export const LTRZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Typo
                   tag="em"
                   icon="detail"
-                  className="[&_svg_path]:stroke-[var(--color-information-50)] [&_svg_circle]:fill-[var(--color-information-50)]"
+                  className="[&_svg_path]:stroke-(--color-information-50) [&_svg_circle]:fill-(--color-information-50)"
                 >
                   GA:타모집인 설계는 취급지에서 삭제 필요.
                 </Typo>

@@ -1,7 +1,5 @@
 'use client';
 // 권오택
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CommonIcon, CircleCheckIcon, JobIcon, CumulativeIcon, UwIcon, InfoToastIcon } from '@icons';
@@ -16,7 +14,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type CheckTab = {
   name: string;
@@ -129,13 +129,17 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
               })}
             </div>
 
-            <Gcol>
+            <Gcol className="w-full" gap={4}>
               <Gcol className="w-full" gap={2}>
                 <Typo tag={'strong'} variant={'heading-md'}>
                   확인사항
                 </Typo>
-                <Gcol className="w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center">
-                  <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+                <Gcol className="w-full gap-2">
+                  {activeContent.notices.map((notice) => (
+                    <Grow key={notice} className="p-3 bg-[#FFF4F0] rounded-[0.6rem] border border-[#FFE0D6]">
+                      <Typo variant={'body-md'}>{notice}</Typo>
+                    </Grow>
+                  ))}
                 </Gcol>
               </Gcol>
 
@@ -143,8 +147,12 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Typo tag={'strong'} variant={'heading-md'}>
                   필수지침
                 </Typo>
-                <Gcol className="w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center">
-                  <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
+                <Gcol className="w-full gap-2">
+                  {activeContent.guidelines.map((guideline) => (
+                    <Grow key={guideline} className="p-3 bg-[#FFF9F0] rounded-[0.6rem] border border-[#FFE8D6]">
+                      <Typo variant={'body-md'}>{guideline}</Typo>
+                    </Grow>
+                  ))}
                 </Gcol>
               </Gcol>
             </Gcol>

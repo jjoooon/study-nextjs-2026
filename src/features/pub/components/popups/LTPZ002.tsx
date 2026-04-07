@@ -1,28 +1,20 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Gcol, Typo, Grow, Grid } from '@atoms';
+import { Gcol, Typo, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-} from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 
 import type { PopupBaseProps } from './types';
 
@@ -158,8 +150,8 @@ export const LTPZ002 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-  const [rowData2, setRowData2] = useState<DummyDataType2[]>(dummyData2);
+  const [rowData] = useState<DummyDataType[]>(dummyData);
+  const [rowData2] = useState<DummyDataType2[]>(dummyData2);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
