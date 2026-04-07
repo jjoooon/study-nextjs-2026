@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
 import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { Input } from '@/shared/components/uiux/Input';
@@ -12,14 +11,10 @@ import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { QuestionMark, SearchIcon } from '@icons';
-import { InfoBox } from '@common/InfoBox';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { TooltipQ } from '@common/TooltipQ';
+import { QuestionMark, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
@@ -31,6 +26,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type { PopupBaseProps } from './types';
 
 export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -53,7 +50,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   // const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   const [checked, setChecked] = React.useState<string[]>(['b']);
-
+  const [tabActive, setTabActive] = React.useState('TAB1');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
@@ -110,10 +107,10 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       onChange={(e) => setFormField('type01', e.target.value)}
                     />
                     <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
-                      <SearchIcon color="{'var(--color-primary-50)'}" />
+                      <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                   </Grow>
-                  <Grow>
+                  <Grow placement="ss" className="w-full">
                     <Typo>
                       총 <b className="text-[var(--color-primary-50)]">18건</b>
                     </Typo>
@@ -127,44 +124,43 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>M48.0</TableCell>
                         <TableCell>
                           <b className="text-[var(--color-primary-50)]">척추</b>관협착증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-[var(--color-gray-5)]">
                         <TableCell>M48.1</TableCell>
                         <TableCell>
                           <b className="text-[var(--color-primary-50)]">척추</b>만곡증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>M48.2</TableCell>
                         <TableCell>
                           <b className="text-[var(--color-primary-50)]">척추</b>분리증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-[var(--color-gray-5)]">
                         <TableCell>M48.3</TableCell>
                         <TableCell>
                           <b className="text-[var(--color-primary-50)]">척추</b>전방전위증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
-                        <TableCell>M48.4</TableCell>
+                      <TableRow className="text-center bg-white">
                         <TableCell>
                           <b className="text-[var(--color-primary-50)]">척추</b>증,{' '}
                           <b className="text-[var(--color-primary-50)]">척추</b>병증
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-[var(--color-gray-5)]">
                         <TableCell>M48.5</TableCell>
                         <TableCell>
                           강직성<b className="text-[var(--color-primary-50)]">척추</b>염
                         </TableCell>
                       </TableRow>
-                      <TableRow className="text-center">
+                      <TableRow className="text-center bg-white">
                         <TableCell>M48.6</TableCell>
                         <TableCell>
                           염증성<b className="text-[var(--color-primary-50)]">척추</b>병증
@@ -181,17 +177,15 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Grow className="w-full min-w-0">
                 <Gcol className="w-full min-w-0" placement="ss">
                   {(() => {
-                    const [tabActive, setTabActive] = React.useState('TAB1');
-                    const tabData = [
-                      { label: '척추염좌', value: 'TAB1' },
-                      { label: '자궁근종', value: 'TAB2' },
-                      { label: '대장·직장용종', value: 'TAB3' },
-                      { label: '추간판장애', value: 'TAB4' },
-                      { label: '어깨병변', value: 'TAB5' },
-                    ];
                     return (
                       <TabPager
-                        data={tabData}
+                        data={[
+                          { label: '척추염좌', value: 'TAB1' },
+                          { label: '자궁근종', value: 'TAB2' },
+                          { label: '대장·직장용종', value: 'TAB3' },
+                          { label: '추간판장애', value: 'TAB4' },
+                          { label: '어깨병변', value: 'TAB5' },
+                        ]}
                         active={tabActive}
                         setActive={setTabActive}
                         getValue={(tab) => tab.value}
@@ -374,41 +368,43 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                       </Grow>
                                     </FormCell>
                                     <FormCell title={'재발유무'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="auto"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option3_1"
-                                          variant="default"
+                                      <Grow gap={3}>
+                                        <RadioGroup
+                                          className="gap-3"
+                                          errorMsg="하나를 선택해주세요."
+                                          errorPs="bl"
+                                          onValueChange={() => {}}
+                                          width="auto"
+                                          required
                                         >
-                                          없음
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option3_2"
-                                          variant="default"
-                                        >
-                                          있음
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                      <Grow>
-                                        <Input
-                                          commaAmount={true}
-                                          value={form.type07}
-                                          onChange={(e) => setFormField('type07', e.target.value)}
-                                          width="4rem"
-                                        />
-                                        회
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d1"
+                                            size="lg"
+                                            value="option3_1"
+                                            variant="default"
+                                          >
+                                            없음
+                                          </RadioGroupItem>
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d2"
+                                            size="lg"
+                                            value="option3_2"
+                                            variant="default"
+                                          >
+                                            있음
+                                          </RadioGroupItem>
+                                        </RadioGroup>
+                                        <Grow>
+                                          <Input
+                                            commaAmount={true}
+                                            value={form.type07}
+                                            onChange={(e) => setFormField('type07', e.target.value)}
+                                            width="4rem"
+                                          />
+                                          회
+                                        </Grow>
                                       </Grow>
                                     </FormCell>
                                   </FormRow>
@@ -530,7 +526,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <FormTable cols={['w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'발생부위'}>
-                                      <Grow className="w-full">
+                                      <Grow className="w-full" gap={3}>
                                         <RadioGroup
                                           className="gap-2"
                                           errorMsg="하나를 선택해주세요."
