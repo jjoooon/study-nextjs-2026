@@ -85,7 +85,7 @@ export const LayoutFolderFoot = ({ children, className }: LayoutProps) => {
 
 export const LayoutMain = ({ children, className }: LayoutProps) => {
   return (
-    <main data-layout="main" className={cn('relative flex flex-col h-full gap-3', className)}>
+    <main data-layout="main" className={cn('relative', className)}>
       {children}
     </main>
   );

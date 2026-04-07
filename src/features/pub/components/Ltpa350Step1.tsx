@@ -1,7 +1,7 @@
 'use client';
 
 // Layout Components
-import { useReducer, useState, type ReactNode, useCallback } from 'react';
+import { useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -22,183 +22,25 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { Ltpa350Step1DataType } from '../data/ltpa350Step1Data';
 
-// Props Type
-type Ltpa350Step1Props = {
-  data?: Ltpa350Step1DataType;
-  selectedPlanId?: number | null;
-  onSelectPlan?: (planId: number) => void;
-  className?: string;
-  children?: ReactNode;
+const DUMMY_DATA = {
+  view1: [
+    { value: 'user1', name: '김한화' },
+    { value: 'user2', name: '박민서' },
+  ],
 };
 
 // State & Reducer Types
-type ContractFormState = {
-  insuranceStartDate: string;
-  maturityValue: string;
-  paymentPeriodValue: string;
-  paymentCycleValue: string;
-  renewalCycleValue: string;
-  notificationTypeValue: string;
-};
-
-type ContractFormField = keyof ContractFormState;
-type ContractFormAction = {
-  type: 'setField';
-  field: ContractFormField;
-  value: string;
-};
-type InsuredPersonFormItem = {
-  driveType: string;
-  motorcycle: string;
-  isDiscountApplied: boolean;
-  relationWithContractor: string;
-};
-
-type PropertyAddressSelection = {
-  home: boolean;
-  office: boolean;
-};
-
-type GroupInsuredFormItem = {
-  driveType: string;
-};
-
-const VIEW_CONTENT_KEYS = ['view1', 'view2', 'view3', 'view4', 'view5'] as const;
-
-type ViewContentKey = (typeof VIEW_CONTENT_KEYS)[number];
-
-function isViewContentKey(value: string): value is ViewContentKey {
-  return VIEW_CONTENT_KEYS.some((key) => key === value);
-}
-
-const COMMON_RELATION_OPTIONS = [
-  { value: '본인', id: 'relation-self', label: '본인' },
-  { value: '자녀', id: 'relation-child', label: '자녀' },
-  { value: '고용주', id: 'relation-employer', label: '고용주' },
-] as const;
-
-const PROPERTY_RELATION_OPTIONS = [
-  { value: '고용주(사업주)', id: 'property-relation-employer', label: '고용주(사업주)' },
-  { value: '고용인(종업원)', id: 'property-relation-employee', label: '고용인(종업원)' },
-] as const;
-
-const PROPERTY_ACTUAL_LOSS_TYPE_OPTIONS = [
-  { value: '실손전부보상', id: 'property-actual-loss-full', label: '실손전부보상' },
-] as const;
-
-// --- Constants ---
-{
-  /* 인보험 */
-}
-const PERSONAL_INSURANCE_STEP1_DATA = {
-  ContractorInfo: {
-    insStartDate: '2026-03-04', // 보험시기
-    insStartPeriod: '2026-01-30', // 보험기간 start
-    insEndPeriod: '2046-03-04', // 보험기간 end
-    expiryDate: '80', // 만기 (option value 기준)
-    payPeriod: '10', // 납기
-    payCycle: 'month', // 납입주기
-    renewCycle: '3', // 갱신주기
-    noticeType: 'type1', // 고지 유형
-  },
-  InsuredPerson: [
-    {
-      type: 'default',
-      tabName: '김한화Tab',
-      name: '김한화',
-      juminNumber: '900101-1******',
-      age: 36,
-      gender: '남',
-      ageStandardDate: '2026-03-09',
-      ageDDay: 'D-31',
-      designAgreeDate: '2026-03-09',
-      designAgreeDDay: 'D-20',
-      jobCode: '52111',
-      jobName: '소규모 상점 경영 및 일선 관리 종사원',
-      jobGrade: '2급',
-      driveType: 'private',
-      motorcycle: 'nondriver',
-      relationWithContractor: '본인', //주피관계
-      actualLossSimulDesignNo: 'LA260219319244',
-      premium: 33301,
-      isDiscountApplied: 'Y',
-    },
-    {
-      type: 'default',
-      tabName: '이영희Tab',
-      name: '이영희',
-      juminNumber: '880520-2******',
-      age: 38,
-      gender: '여',
-      ageStandardDate: '2026-05-20',
-      ageDDay: 'D-68',
-      designAgreeDate: '2026-03-10',
-      designAgreeDDay: 'D-19',
-      jobCode: '02111',
-      jobName: '일반 사무 행정 전문가',
-      jobGrade: '1급',
-      driveType: 'private',
-      motorcycle: 'nondriver',
-      relationWithContractor: '본인', //주피관계
-      actualLossSimulDesignNo: 'LA260310452133',
-      premium: 28500,
-      isDiscountApplied: 'N',
-    },
-    {
-      type: 'child',
-      tabName: '박지성Tab',
-      name: '박지성',
-      juminNumber: '021115-3******',
-      age: 24,
-      gender: '남',
-      ageStandardDate: '2026-11-15',
-      ageDDay: 'D-247',
-      designAgreeDate: '2026-03-12',
-      designAgreeDDay: 'D-17',
-      jobCode: '74112',
-      jobName: '전기 및 전자 설비 설치원',
-      jobGrade: '3급',
-      driveType: 'nondriver',
-      motorcycle: 'drives',
-      relationWithContractor: '본인', //주피관계
-      actualLossSimulDesignNo: 'LA260312987412',
-      premium: 45200,
-      isDiscountApplied: 'Y',
-    },
-  ],
-  Policyholder: {
-    name: '김한화', // 계약자 이름
-    juminNumber: '900101-1******', // 계약자 주민등록번호
-    infoAcquisitionPath: 'selection', // 개인정보취득경로
-    Relationship: '본인', // 계약자와의 관계
-    addresses: '경기도 부천시 원미구 역곡동', // 주소
-    workAddress: '경상남도 진주시 (하대동)', // 근무지 주소
-    contact: '010-1234-5678', // 연락처
-    isBusinessOwner: 'Y', // 사업자 여부
-    email: 'qwer@hwgi.kr', // 이메일
-    electronicNoticeAgree: 'Y', // 전자적 안내 동의 여부
-    taxFreeType: 'nonemonthly', // 보험차익비과세
-    designAmount: 33301, // 설계금액
-    remainingLimit: 100000000, // 잔여한도
-  },
-};
-
-const tooltipContent = [
-  '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br/> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.',
-];
-
 export const Ltpa350Step1 = () => {
-  const [viewContents, setViewContents] = useState<Record<ViewContentKey, boolean>>({
+  const [viewContents, setViewContents] = useState<Record<string, boolean>>({
     view1: true,
     view2: false,
     view3: false,
     view4: false,
     view5: false,
   });
-  const currentViewKey = VIEW_CONTENT_KEYS.find((key) => viewContents[key]) ?? 'view1';
-  const [activeTab, setActiveTab] = useState('김한화');
+
+  const { tabs, active, setActive, handleRemove } = useTabs(DUMMY_DATA['view1']);
 
   return (
     // ---------------------------------------------------------------------------
@@ -211,13 +53,9 @@ export const Ltpa350Step1 = () => {
             {/* 퍼블 페이지확인용 */}
             <NativeSelect
               className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
-              value={currentViewKey}
+              value={'view1'}
               onChange={(e) => {
                 const selectedKey = e.target.value;
-
-                if (!isViewContentKey(selectedKey)) {
-                  return;
-                }
 
                 setViewContents({
                   view1: selectedKey === 'view1',
@@ -373,76 +211,18 @@ export const Ltpa350Step1 = () => {
                       </FormRow>
                     </FormTable>
                   </Grow>
+
                   <Gcol placement="ss" className={'w-full'}>
                     <TabPager
                       variant={'default'}
-                      data={[
-                        {
-                          type: 'default',
-                          tabName: '김한화Tab',
-                          name: '김한화',
-                          juminNumber: '900101-1******',
-                          age: 36,
-                          gender: '남',
-                          ageStandardDate: '2026-03-09',
-                          ageDDay: 'D-31',
-                          designAgreeDate: '2026-03-09',
-                          designAgreeDDay: 'D-20',
-                          jobCode: '52111',
-                          jobName: '소규모 상점 경영 및 일선 관리 종사원',
-                          jobGrade: '2급',
-                          driveType: 'private',
-                          motorcycle: 'nondriver',
-                          relationWithContractor: '본인', //주피관계
-                          actualLossSimulDesignNo: 'LA260219319244',
-                          premium: 33301,
-                          isDiscountApplied: 'Y',
-                        },
-                        {
-                          type: 'default',
-                          tabName: '이영희Tab',
-                          name: '이영희',
-                          juminNumber: '880520-2******',
-                          age: 38,
-                          gender: '여',
-                          ageStandardDate: '2026-05-20',
-                          ageDDay: 'D-68',
-                          designAgreeDate: '2026-03-10',
-                          designAgreeDDay: 'D-19',
-                          jobCode: '02111',
-                          jobName: '일반 사무 행정 전문가',
-                          jobGrade: '1급',
-                          driveType: 'private',
-                          motorcycle: 'nondriver',
-                          relationWithContractor: '본인', //주피관계
-                          actualLossSimulDesignNo: 'LA260310452133',
-                          premium: 28500,
-                          isDiscountApplied: 'N',
-                        },
-                        {
-                          type: 'child',
-                          tabName: '박지성Tab',
-                          name: '박지성',
-                          juminNumber: '021115-3******',
-                          age: 24,
-                          gender: '남',
-                          ageStandardDate: '2026-11-15',
-                          ageDDay: 'D-247',
-                          designAgreeDate: '2026-03-12',
-                          designAgreeDDay: 'D-17',
-                          jobCode: '74112',
-                          jobName: '전기 및 전자 설비 설치원',
-                          jobGrade: '3급',
-                          driveType: 'nondriver',
-                          motorcycle: 'drives',
-                          relationWithContractor: '본인', //주피관계
-                          actualLossSimulDesignNo: 'LA260312987412',
-                          premium: 45200,
-                          isDiscountApplied: 'Y',
-                        },
-                      ]}
-                      active={activeTab}
-                      setActive={setActiveTab}
+                      data={tabs}
+                      active={active}
+                      setActive={setActive}
+                      removable={true}
+                      onRemove={handleRemove}
+                      visibleCount={5}
+                      getValue={(tab) => String(tab.value)}
+                      renderTab={(tab) => <span>{tab.name}</span>}
                       renderButtons={
                         <Grow gap={2.5}>
                           <Button color={'gray'} size={'md'} variant={'outlined'}>
@@ -451,21 +231,13 @@ export const Ltpa350Step1 = () => {
                           </Button>
                         </Grow>
                       }
-                      removable
-                      visibleCount={5}
-                      getValue={(tab) => String(tab.name)}
                     >
                       <div className="w-full h-full relative">
                         <Gcol placement={'ss'}>
                           <FormTable
                             caption="행/열 병합 케이스"
                             lineTop={false}
-                            cols={[
-                              'w-[14rem] min-w-[14rem]',
-                              'min-w-[32.6rem] flex-1',
-                              'w-[14rem] min-w-[14rem]',
-                              'min-w-[32.6rem] flex-1',
-                            ]}
+                            cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
                           >
                             {/* 상세 화면 전용 */}
                             <FormRow>
@@ -627,11 +399,7 @@ export const Ltpa350Step1 = () => {
                               <FormCell title="주피와 관계">
                                 <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
                                 <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
-                                  {COMMON_RELATION_OPTIONS.map((option) => (
-                                    <NativeSelectOption key={option.id} value={option.value}>
-                                      {option.label}
-                                    </NativeSelectOption>
-                                  ))}
+                                  <NativeSelectOption>주피와</NativeSelectOption>
                                 </NativeSelect>
                               </FormCell>
                               <FormCell title="(실손)동시설계">
@@ -694,11 +462,7 @@ export const Ltpa350Step1 = () => {
                         <FormCell title="계약자와 관계">
                           <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
                           <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
-                            {COMMON_RELATION_OPTIONS.map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
+                            <NativeSelectOption>계약</NativeSelectOption>
                           </NativeSelect>
                         </FormCell>
                         <FormCell title="개인정보취득경로">
@@ -734,7 +498,7 @@ export const Ltpa350Step1 = () => {
                                 <Badge color="green" size="md" variant="ghost">
                                   Y
                                 </Badge>
-                                <TooltipQ>{tooltipContent[0]}</TooltipQ>
+                                <TooltipQ>ddddd</TooltipQ>
                               </Grow>
                             </KeyValueItem>
                           </Grow>
@@ -779,6 +543,7 @@ export const Ltpa350Step1 = () => {
           </LayoutScrollItem>
         </LayoutScrollWrap>
       </LayoutMainBody>
+
       <LayoutMainFoot>
         <MainBottom>
           <MainBottomItem>
