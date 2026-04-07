@@ -81,10 +81,14 @@ export function TabPager<T>({
     <>
       <Tabs {...tabsProps}>
         <TabsLine hasTableBelow={hasTableBelow}>
-          <TabsList activeValue={active ?? ''}>
+          <TabsList>
             {data.slice(visibleStart, end).map((tab) => {
               // error 속성이 없는 타입도 허용
-              const tabHasError = typeof (tab as any).error !== 'undefined' ? Boolean((tab as any).error) : false;
+              const tabHasError =
+                typeof tab === 'object' &&
+                tab !== null &&
+                'error' in tab &&
+                Boolean((tab as { error?: unknown }).error);
               return (
                 <TabsTrigger
                   key={getValue(tab)}

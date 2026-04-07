@@ -224,8 +224,8 @@ const RadioGroupItem = React.forwardRef<
       color = 'primary',
       children,
       error = false,
-      errorMsg = '선택은 필수입니다.',
-      errorPs = 'bl',
+      errorMsg: _errorMsg = '선택은 필수입니다.',
+      errorPs: _errorPs = 'bl',
       ...props
     },
     ref
@@ -234,7 +234,6 @@ const RadioGroupItem = React.forwardRef<
     const isChipBox = variant === 'chipBox';
     const generatedId = React.useId();
     const radioId = props.id || generatedId;
-    const errorId = React.useId();
     const { error: groupError, required: groupRequired, disabled: groupDisabled } = React.useContext(RadioGroupContext);
     const isError = error || groupError;
     const isRequired = Boolean(props.required || groupRequired);

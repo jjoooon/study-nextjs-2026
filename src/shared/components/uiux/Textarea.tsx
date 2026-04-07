@@ -22,7 +22,6 @@ function Textarea({
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
-  showMinLengthCount = true,
   resize = true,
   maxLength = 0,
   value: valueProp,

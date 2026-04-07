@@ -5,8 +5,8 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
-import { Grow, Gcol, Typo } from '@atoms';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
@@ -24,17 +24,18 @@ import {
   type LTPA400DummyDataRow,
   LTPA400DummyData2,
   type LTPA400DummyDataRow2,
-} from '../data/LTPA400Data';
+} from '../data/ltpa400Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA400Main = () => {
-  // Tab 정의
-  type LTPA400TabType = { name: string; value: string; label: string };
-  const DATA_TABS: LTPA400TabType[] = [
-    { name: '설계요청', value: 'tab1', label: '설계요청' },
-    { name: '모집자 설계', value: 'tab2', label: '모집자 설계' },
-  ];
+// Tab 정의
+type Ltpa400TabType = { name: string; value: string; label: string };
+const DATA_TABS: Ltpa400TabType[] = [
+  { name: '설계요청', value: 'tab1', label: '설계요청' },
+  { name: '모집자 설계', value: 'tab2', label: '모집자 설계' },
+];
+
+export const Ltpa400Main = () => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // Tab1 AGGrid Column
@@ -520,14 +521,7 @@ export const LTPA400Main = () => {
         <MainBottom>
           <MainBottomItem>
             <Grow gap={1} placement={'ee'} className="w-full">
-              <Button
-                type="submit"
-                form={'page2-MainForm'}
-                variant={'contained'}
-                color={'primary'}
-                size={'xl'}
-                onClick={() => console.log('상품선택')}
-              >
+              <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                 상품선택
               </Button>
             </Grow>

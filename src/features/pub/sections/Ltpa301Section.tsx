@@ -2,21 +2,21 @@
 
 import PageID from '@features/PageID';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { LTPA010Main } from '../components/LTPA010Main';
+import { Ltpa301Main } from '../components/LTPA301Main';
 
 const data = {
   pageID: {
-    pageName: '통합가입설계조회',
-    pageId: 'LTPA010',
+    pageName: '정액담보점검내역',
+    pageId: 'LTPA301',
   },
 };
-export default function LTPA010Section() {
+export default function Ltpa301Section() {
   return (
     <LayoutTemplate
       // LayoutHead
       pageID={<PageID data={data.pageID} />}
       // LayoutBody: main
-      mainBody={<LTPA010Main />}
+      mainBody={<Ltpa301Main />}
     />
   );
 }

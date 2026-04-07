@@ -55,6 +55,7 @@ export const setLocale = async (locale: string): Promise<void> => {
     localStorage.setItem('language', locale);
     document.cookie = `language=${locale}; path=/; max-age=31536000`;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Failed to set locale:', error);
   }
 };

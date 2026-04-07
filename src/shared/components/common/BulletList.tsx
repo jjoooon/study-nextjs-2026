@@ -1,6 +1,5 @@
 import { ReactNode, HTMLAttributes, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow } from '@atoms';
 import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 type BulletType = 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
@@ -101,6 +100,7 @@ export const BulletListItem = ({
   className,
   before,
   onClick,
+  onKeyDown,
   ...rest
 }: BulletListProps) => {
   const context = useBulletListContext();
@@ -117,6 +117,16 @@ export const BulletListItem = ({
         className
       )}
       onClick={onClick}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (!onClick || event.defaultPrevented) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onClick(event as unknown as React.MouseEvent<HTMLLIElement>);
+        }
+      }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       {...rest}
     >
       <div
@@ -145,6 +155,7 @@ export const BulletItem = ({
   size = 'md',
   color = 'default',
   onClick,
+  onKeyDown,
   className,
   before,
   ...rest
@@ -159,6 +170,17 @@ export const BulletItem = ({
         className
       )}
       onClick={onClick}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (!onClick || event.defaultPrevented) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onClick(event as unknown as React.MouseEvent<HTMLDivElement>);
+        }
+      }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      {...rest}
     >
       <div className={cn('flex items-center justify-center shrink-0', itemHeight[size], bulletStyles[type])}>
         {type === 'ref' && <RefIcon size={10} />}

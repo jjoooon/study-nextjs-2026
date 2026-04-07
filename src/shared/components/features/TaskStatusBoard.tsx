@@ -89,11 +89,18 @@ export default function TaskStatusBoard<
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="h-[80vh] w-[90rem] max-w-[90%] min-w-[80rem] min-h-[60rem]" resizable={true}>
           <DialogHeader>
-            <DialogTitle>꼭 확인해야 할 일! (AAA000)</DialogTitle>
+            <DialogTitle>
+              꼭 확인해야 할 일! {dialogContent?.label ? `(${dialogContent.label})` : '(AAA000)'}
+            </DialogTitle>
           </DialogHeader>
 
           {/* 모달 내용 - FormTable 사용 */}
-          <div className="gap-8 flex-1 grid grid-rows-[auto_1fr] w-full px-[3.2rem]">ㅁㅁㅁㅁㅁ</div>
+          <div className="gap-8 flex-1 grid grid-rows-[auto_1fr] w-full px-[3.2rem]">
+            <Typo variant={'body-lg'}>
+              {dialogContent?.label ?? '선택된 항목이 없습니다.'}
+              {typeof dialogContent?.sum === 'number' ? ` / 건수: ${dialogContent.sum}` : ''}
+            </Typo>
+          </div>
 
           <DialogFooter>
             <Button variant={'outlined'} size={'lg'} color={'gray'} onClick={() => setDialogOpen(false)}>

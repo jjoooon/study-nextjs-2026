@@ -1,15 +1,16 @@
 'use client';
 
 import * as React from 'react';
+
 import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { Input } from '@/shared/components/uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -28,7 +29,6 @@ import {
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { PopupBaseProps } from './types';
 
 export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
   // form event

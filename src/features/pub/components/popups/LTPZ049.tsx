@@ -1,9 +1,10 @@
 'use client';
 // 권오택
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,7 +21,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -33,6 +33,7 @@ export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
     field03: string | number;
     field04: string | number;
     field05: string | number;
+    isSumRow?: boolean;
   };
   const DummyData: DummyDataType[] = [
     {
@@ -98,7 +99,7 @@ export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
       flex: 1,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      colSpan: (params: any) => (params.data?.isSumRow ? 2 : 1),
+      colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 2 : 1),
       autoHeight: true,
     },
     {
@@ -106,7 +107,7 @@ export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 100,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      colSpan: (params: any) => (params.data?.isSumRow ? 0 : 1),
+      colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 0 : 1),
       autoHeight: true,
     },
     {
@@ -132,7 +133,7 @@ export const LTPZ049 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const sumRow = React.useMemo(() => {
     const parse = (v: string | number) => {
       if (typeof v === 'number') return v;

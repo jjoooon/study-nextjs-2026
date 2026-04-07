@@ -1,9 +1,7 @@
 'use client';
 
-// ...existing code...
-
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
@@ -21,13 +19,12 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-import type { LTPA010DummyDataRow } from '../data/LTPA010Data';
-
-import { LTPA010DummyData } from '../data/LTPA010Data';
+import type { LTPA010DummyDataRow } from '../data/ltpa010Data';
+import { LTPA010DummyData } from '../data/ltpa010Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA010Main = () => {
+export const Ltpa010Main = () => {
   // form event
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -59,57 +56,48 @@ export const LTPA010Main = () => {
           headerName: '고지유형/플랜명',
           cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
-            'field02',
-            ({ data }: ICellRendererParams<LTPA010DummyDataRow>) => {
-              const hasTooltip = data?.field04 === 'memoView';
-              const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field02', (data?: LTPA010DummyDataRow) => {
+            const hasTooltip = data?.field04 === 'memoView';
+            const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
 
-              if (!hasMemoButton) {
-                return null;
-              }
-
-              const memoButton = (
-                <Button
-                  color={hasTooltip ? 'primary' : 'gray-light'}
-                  onClick={() => {
-                    alert('3대진단 클릭');
-                  }}
-                  only={'icon'}
-                  size={'sm'}
-                  variant={'outlined'}
-                >
-                  {hasTooltip ? <MemoIcon color={'#FF5C2E'} /> : <MemoIcon />}
-                </Button>
-              );
-
-              return (
-                <Grow placement="cc" className="h-full pr-1">
-                  {data?.field03}
-                  {hasTooltip ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
-                      <TooltipContent
-                        align="center"
-                        side="bottom"
-                        sideOffset={0}
-                        variant="default"
-                        className="w-[16rem]"
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
-                          }}
-                        />
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    memoButton
-                  )}
-                </Grow>
-              );
+            if (!hasMemoButton) {
+              return null;
             }
-          ),
+
+            const memoButton = (
+              <Button
+                color={hasTooltip ? 'primary' : 'gray-light'}
+                onClick={() => {
+                  alert('3대진단 클릭');
+                }}
+                only={'icon'}
+                size={'sm'}
+                variant={'outlined'}
+              >
+                {hasTooltip ? <MemoIcon color={'#FF5C2E'} /> : <MemoIcon />}
+              </Button>
+            );
+
+            return (
+              <Grow placement="cc" className="h-full pr-1">
+                {data?.field03}
+                {hasTooltip ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
+                    <TooltipContent align="center" side="bottom" sideOffset={0} variant="default" className="w-[16rem]">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
+                        }}
+                      />
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  memoButton
+                )}
+              </Grow>
+            );
+          }),
         },
       ],
     },
@@ -409,9 +397,7 @@ export const LTPA010Main = () => {
 
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<LTPA010DummyDataRow[]>(LTPA010DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    LTPA010DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
+  const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<LTPA010DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
@@ -696,40 +682,33 @@ export const LTPA010Main = () => {
         <MainBottom>
           <MainBottomItem>
             <Grow gap={1}>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('출력물')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 출력물
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('완수수납')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 완수수납
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 설계비교
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 알림톡발송
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 셀프고지
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 증권발송
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 계약자발송
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 이미지조회
               </Button>
             </Grow>
             <Grow gap={1}>
-              <Button
-                type="submit"
-                form={'page2-MainForm'}
-                variant={'contained'}
-                color={'primary'}
-                size={'xl'}
-                onClick={() => console.log('저장')}
-              >
+              <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                 저장
               </Button>
             </Grow>

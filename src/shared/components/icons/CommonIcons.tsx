@@ -950,7 +950,7 @@ export const InfoBoxWarningIcon: React.FC<IconProps> = ({ className = '', size =
   </svg>
 );
 
-export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16, color = '#E43939' }) => (
+export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16, color = '#FF5C2E' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}

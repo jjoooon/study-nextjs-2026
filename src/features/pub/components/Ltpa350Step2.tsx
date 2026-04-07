@@ -32,8 +32,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 // data
-import type { LTPA350Step2DataType } from '../data/LTPA350Step2Data';
-import { LTPA350Step2Data } from '../data/LTPA350Step2Data';
+import type { LTPA350Step2DataType } from '../data/ltpa350Step2Data';
+import { LTPA350Step2Data } from '../data/ltpa350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -44,22 +44,20 @@ type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number] & {
 };
 type MainHeadTab = TabListDataData[number] & { value: string };
 
-interface LTPA350Step2Props {
+interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
 }
 
-export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: LTPA350Step2Props) {
-  // TEST용: TabPager 에러 상태 (보험료계산(지침) 클릭 시 토글)
-  const [tabError, setTabError] = useState(false);
-
+export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [gridKey, setGridKey] = useState(0);
+  const handleActionButtonClick = useCallback(() => {}, []);
   const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
     setCheckedMap((map) => ({ ...map, [key]: !!checked }));
   };
@@ -70,9 +68,9 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
     value: String(item.value),
   }));
   const {
-    tabs: LTPA350_tabs,
-    active: LTPA350_active,
-    setActive: LTPA350_setActive,
+    tabs: LTPA350Tabs,
+    active: LTPA350Active,
+    setActive: LTPA350SetActive,
   } = useTabs<MainHeadTab>(stringifiedTabs);
 
   // 3) Grid data
@@ -80,8 +78,8 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
 
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
+  const [coverageName, setCoverageName] = useState('');
   const productNameHeader = useCallback(() => {
-    const [coverageName, setCoverageName] = useState('');
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
       if (!checked) setGridKey((key) => key + 1);
@@ -115,7 +113,14 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
-          <Button aria-label="담보명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+          <Button
+            aria-label="담보명 초기화"
+            variant={'outlined'}
+            color={'gray-light'}
+            only={'icon'}
+            size={'md'}
+            onClick={() => setCoverageName('')}
+          >
             <ResetIcon color={'var(--color-primary-50)'} />
           </Button>
         </Grow>
@@ -126,14 +131,14 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
         </Grow>
       </Grow>
     );
-  }, [checkedMap, showProductNameTooltip]);
+  }, [checkedMap, coverageName, showProductNameTooltip]);
 
   // 셀: 순번 · 담보명 텍스트 · 독립/갱신 뱃지
   const titleRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
     // 전체 rowData에서 원본(복사본 아님)만 필터링
     const api = params.api;
     const allRows: LTPA350GridRow[] = [];
-    api.forEachNode((node: any) => {
+    api.forEachNode((node) => {
       if (node.data) allRows.push(node.data);
     });
     const originals = allRows.filter((r) => !r.isDuplicate);
@@ -225,8 +230,10 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
 
   // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
   // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)
-  const expiryCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) =>
-    editableSelectCellRenderer<LTPA350GridRow>(params);
+  const expiryCellRenderer = useCallback(
+    (params: ICellRendererParams<LTPA350GridRow>) => editableSelectCellRenderer<LTPA350GridRow>(params),
+    []
+  );
 
   // 만기/납기 편집 조건 생성기: 'whenSelected' | 'always' 모드를 인자로 받아 editable 콜백 반환
   const getEditableCallback = useCallback(
@@ -294,8 +301,8 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   }, []);
 
   // 선택된 행의 id를 부모(onSelectPlan)로 전달
-  const handleSelectionChanged = useCallback(
-    createSelectionChangedHandler<LTPA350GridRow, number>('id', onSelectPlan),
+  const handleSelectionChanged = useMemo(
+    () => createSelectionChangedHandler<LTPA350GridRow, number>('id', onSelectPlan),
     [onSelectPlan]
   );
 
@@ -441,7 +448,6 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       expiryCellRenderer,
       getEditableCallback,
       editableCellClassRules,
-      isWidthExpanded,
       productNameHeader,
       titleRenderer,
     ]
@@ -632,9 +638,9 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           </NativeSelect>
 
           <TabPager
-            data={LTPA350_tabs}
-            active={LTPA350_active}
-            setActive={LTPA350_setActive}
+            data={LTPA350Tabs}
+            active={LTPA350Active}
+            setActive={LTPA350SetActive}
             visibleCount={5}
             error={testError}
             errorMsg="입력하세요."
@@ -1005,22 +1011,17 @@ export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
               </FormTable>
             </MainBottomItem>
             <MainBottomItem>
-              <Button
-                variant={'outlined'}
-                color={'gray'}
-                size={'xl'}
-                onClick={() => console.log('고지유형별보험료비교')}
-              >
+              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                 고지유형별보험료비교
               </Button>
               <Grow className="gap-1">
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('조건별비교설계')}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                   조건별비교설계
                 </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('다른상품설계')}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                   다른상품설계
                 </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('동일상품복사')}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                   동일상품복사
                 </Button>
                 <Button

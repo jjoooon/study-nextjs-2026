@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Typo, Grow } from '@atoms';
-import { Table, TableHeader, TableRow, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 const FormCellVariants = cva('', {
@@ -73,7 +73,7 @@ function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
     checkOverflow();
 
     // ResizeObserver로 크기 변화 감지
-    const resizeObserver = new (window as any).ResizeObserver(checkOverflow);
+    const resizeObserver = new ResizeObserver(checkOverflow);
     resizeObserver.observe(el);
 
     // window resize도 감지
@@ -87,8 +87,11 @@ function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
   let text: string | undefined = undefined;
   if (typeof children === 'string') {
     text = children;
-  } else if (React.isValidElement(children) && typeof (children as any).props.children === 'string') {
-    text = (children as any).props.children;
+  } else if (
+    React.isValidElement<{ children?: React.ReactNode }>(children) &&
+    typeof children.props.children === 'string'
+  ) {
+    text = children.props.children;
   }
   const triggerChild =
     typeof children === 'string' ? (
@@ -121,7 +124,7 @@ export const FormCell = ({
   variant,
   className,
   colSpan,
-  lineTop,
+  lineTop: _lineTop,
   rowSpan,
   titleColSpan,
   titleRowSpan,
@@ -223,17 +226,17 @@ export const FormTable = ({
     </Table>
   );
 };
-export const FormHead = ({ children, vertical, cols }: FormTrProps) => {
+export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
       <thead>
-        <tr></tr>
+        <tr>{children}</tr>
       </thead>
     </VerticalContext.Provider>
   );
 };
 
-export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
+export const FormRow = ({ children, vertical, cols: _cols }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
       <tr

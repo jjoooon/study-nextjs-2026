@@ -17,26 +17,26 @@ import TaskStatusBoard from '@features/TaskStatusBoard';
 import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
 
 // LTPA350 - components
-import { LTPA350Step1 } from '../components/LTPA350Step1'; // 01. 담보설계
-import { LTPA350Step2 } from '../components/LTPA350Step2'; // 02. 담보설계
+import { Ltpa350Step1 } from '../components/LTPA350Step1'; // 01. 담보설계
+import { Ltpa350Step2 } from '../components/LTPA350Step2'; // 02. 담보설계
 
 // types
-type LTPA350ProcessStep = number;
-type LTPA350ProcessItem = {
-  step: LTPA350ProcessStep;
+type Ltpa350ProcessStep = number;
+type Ltpa350ProcessItem = {
+  step: Ltpa350ProcessStep;
   label: string;
 };
-type LTPA350ProcessState = {
-  complete: LTPA350ProcessStep[];
-  active: LTPA350ProcessStep;
+type Ltpa350ProcessState = {
+  complete: Ltpa350ProcessStep[];
+  active: Ltpa350ProcessStep;
 };
-type LTPA350TaskStateItem = {
+type Ltpa350TaskStateItem = {
   id: number;
   status: '정상' | '경고' | '중지';
   label: string;
   sum: number;
 };
-interface LTPA350DataType {
+interface Ltpa350DataType {
   head: {
     pageID: {
       pageName: string;
@@ -58,11 +58,11 @@ interface LTPA350DataType {
     };
   };
   process: {
-    list: LTPA350ProcessItem[];
-    state: LTPA350ProcessState;
+    list: Ltpa350ProcessItem[];
+    state: Ltpa350ProcessState;
   };
   aside: {
-    taskState: LTPA350TaskStateItem[];
+    taskState: Ltpa350TaskStateItem[];
     simpleContractInfo: {
       date: string;
       polName: string;
@@ -78,7 +78,7 @@ interface LTPA350DataType {
     };
   };
 }
-const data: LTPA350DataType = {
+const data: Ltpa350DataType = {
   head: {
     pageID: {
       pageName: '가입설계',
@@ -137,25 +137,25 @@ const data: LTPA350DataType = {
 };
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
-const isPageProcessStep = (value: number): value is LTPA350ProcessStep => {
+const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
   if (!Number.isInteger(value)) return false;
   return data.process.list.some((item) => item.step === value);
 };
 
-export default function LTPA350Section() {
+export default function Ltpa350Section() {
   const defaultStep = data.process.state.active;
-  const { activeStep, setActiveStep } = useStepFromQuery<LTPA350ProcessStep>({
+  const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
     isValidStep: isPageProcessStep,
   });
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
   const stepMainBody: Record<number, ReactNode> = {
-    1: <LTPA350Step1 />,
-    2: <LTPA350Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <LTPA350Step1 />,
-    4: <LTPA350Step1 />,
-    5: <LTPA350Step1 />,
-    6: <LTPA350Step1 />,
+    1: <Ltpa350Step1 />,
+    2: <Ltpa350Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
+    3: <Ltpa350Step1 />,
+    4: <Ltpa350Step1 />,
+    5: <Ltpa350Step1 />,
+    6: <Ltpa350Step1 />,
   };
 
   return (

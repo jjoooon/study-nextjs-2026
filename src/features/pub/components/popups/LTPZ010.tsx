@@ -3,9 +3,9 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
-  amountUnitInputCellRenderer,
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   editableSelectCellRenderer,
@@ -26,16 +26,13 @@ import {
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogTrigger,
   DialogClose,
+  DialogFooterArea,
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -108,7 +105,6 @@ export const LTPZ010 = ({ open, onOpenChange }: PopupBaseProps) => {
       canEditExpiry: false,
     },
   ];
-  const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [relationValue, setRelationValue] = useState('');
   const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
   const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
@@ -170,10 +166,6 @@ export const LTPZ010 = ({ open, onOpenChange }: PopupBaseProps) => {
   // 가입금액 셀 렌더러
   const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) =>
     editableSelectCellRenderer<DummyDataType>(params);
-
-  // 보험료 셀 렌더러
-  const premiumAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) =>
-    amountUnitInputCellRenderer<DummyDataType>({ ...params, amountInputRefs: amountInputRefs.current });
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {

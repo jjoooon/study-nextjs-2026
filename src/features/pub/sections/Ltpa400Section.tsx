@@ -6,21 +6,21 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 // components - features
 
 // data
-import { LTPA360Main } from '../components/LTPA360Main';
+import { Ltpa400Main } from '../components/Ltpa400Main';
 
 const data = {
   pageID: {
-    pageName: '상품판매준비프로세스',
-    pageId: 'LTPA360',
+    pageName: '장기보험_가입설계요청',
+    pageId: 'LTPA400',
   },
 };
 
-export default function LTPA360Section() {
+export default function Ltpa400Section() {
   return (
     <LayoutTemplate
       // LayoutHead
       pageID={<PageID data={data.pageID} />}
-      mainBody={<LTPA360Main />}
+      mainBody={<Ltpa400Main />}
     />
   );
 }

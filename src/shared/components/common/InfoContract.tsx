@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerA } from '@common/Spinner';
@@ -8,38 +7,38 @@ import { CalendarIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 
-const Data = [
-  {
-    state: '공통',
-    info: [
-      { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
-      { 상령일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-      { 동의종료일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-      { 알림사항: '입력완료' },
-    ],
-  },
-  {
-    state: '간편설계',
-    info: [
-      { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
-      { 상령일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-      { 동의종료일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
-      { 고지유형: '1형(일반고지형)' },
-    ],
-  },
-  {
-    state: '설계중',
-    info: [
-      { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
-      { 상령일: '2026-04-30' },
-      { 동의종료일: '동의없음' },
-      { 알림사항: '입력완료' },
-      { 고지유형: '2형(3.10.5간편고지형(고혈압추가고지))' },
-      { 모바일약관전송: 'X' },
-      { 모바일약관수신: 'X' },
-    ],
-  },
-];
+// const Data = [
+//   {
+//     state: '공통',
+//     info: [
+//       { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
+//       { 상령일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
+//       { 동의종료일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
+//       { 알림사항: '입력완료' },
+//     ],
+//   },
+//   {
+//     state: '간편설계',
+//     info: [
+//       { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
+//       { 상령일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
+//       { 동의종료일: '2026-04-30(김한화)', link: 'https://www.naver.com' },
+//       { 고지유형: '1형(일반고지형)' },
+//     ],
+//   },
+//   {
+//     state: '설계중',
+//     info: [
+//       { 설계유효기한: '2026-03-30', link: 'https://www.naver.com' },
+//       { 상령일: '2026-04-30' },
+//       { 동의종료일: '동의없음' },
+//       { 알림사항: '입력완료' },
+//       { 고지유형: '2형(3.10.5간편고지형(고혈압추가고지))' },
+//       { 모바일약관전송: 'X' },
+//       { 모바일약관수신: 'X' },
+//     ],
+//   },
+// ];
 
 export type InfoContractBaseData = {
   date: string;

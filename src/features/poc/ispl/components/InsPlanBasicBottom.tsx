@@ -1,10 +1,9 @@
 import { Grow } from '@atoms';
 import { ArrowNext } from '@icons';
-import { LayoutControls } from '@/shared/components/layout/Cabinet';
 
 export default function InsPlanBasicBottom() {
   return (
-    <LayoutControls>
+    <>
       <div className="flex flex-col w-full relative z-10">
         <div className="flex justify-between items-center flex-1 bg-[#F6F0ED] min-h-[7.8rem] px-8">
           <div className="flex-1 text-right justify-end flex items-center gap-4 text-[1.6rem] font-bold text-[#000000B3]">
@@ -27,6 +26,6 @@ export default function InsPlanBasicBottom() {
           </button>
         </div>
       </div>
-    </LayoutControls>
+    </>
   );
 }

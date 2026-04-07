@@ -3,21 +3,13 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-} from '@uiux/Dialog';
+import React from 'react';
 
-import type { PopupBaseProps } from './types';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -29,7 +21,7 @@ export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
     field3: string;
   };
 
-  const dummyData: DummyDataType[] = [
+  const DummyData: DummyDataType[] = [
     { id: 1, field1: '예산-리스크관리', field2: '경영기획 관리자', field3: '조회' },
     { id: 2, field1: '계약관리-신계약', field2: '영업지점 담당자', field3: '조회,등록' },
     { id: 3, field1: '계약관리-보험료', field2: '영업지점 관리자', field3: '조회,수정' },
@@ -41,7 +33,7 @@ export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
     { id: 9, field1: '통계-영업실적', field2: '경영기획 담당자', field3: '조회' },
     { id: 10, field1: '시스템관리-권한설정', field2: '시스템 관리자', field3: '조회,등록,수정,삭제' },
   ];
-  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {

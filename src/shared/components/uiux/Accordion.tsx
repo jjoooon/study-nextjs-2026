@@ -117,17 +117,7 @@ function AccordionTrigger({
   );
 }
 
-function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
-  const variant = React.useContext(AccordionContext);
-
-  const contentStyles = {
-    default: 'pt-0 pb-4',
-    box: 'px-4 pb-4 pt-0 text-gray-600',
-    line: 'pt-0 pb-3 pl-4 text-gray-700',
-    minimal: 'pt-0 pb-2 text-sm text-gray-600',
-    tableHead: 'p-0',
-  };
-
+function AccordionContent({ children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"

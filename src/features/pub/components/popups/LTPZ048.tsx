@@ -4,8 +4,9 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TablePagination } from '@common/TablePagination';
@@ -20,7 +21,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -80,7 +80,7 @@ export const LTPZ048 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 7;

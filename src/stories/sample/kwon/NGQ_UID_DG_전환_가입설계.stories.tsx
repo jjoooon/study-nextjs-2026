@@ -1382,7 +1382,7 @@ const LTPZ010_01P = () => {
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>(
             'field02',
-            ({ data }: ICellRendererParams<DummyDataType>) => {
+            (data?: DummyDataType) => {
               if (data?.field03 === 'memoCreate') {
                 return (
                   <Grow placement='ee' className='h-full pr-1'>

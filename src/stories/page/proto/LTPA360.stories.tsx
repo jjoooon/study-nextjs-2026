@@ -2,7 +2,7 @@ import LTPA360 from '@/app/pub/pages/LTPA360';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'page/proto/LTPA360',
+  title: 'page/LTPA360',
   component: LTPA360,
 };
 

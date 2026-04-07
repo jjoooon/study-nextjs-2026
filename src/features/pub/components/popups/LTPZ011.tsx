@@ -5,26 +5,25 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useRef } from 'react';
 import * as React from 'react';
+
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
-
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -110,7 +109,7 @@ export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const rowData2 = React.useMemo(() => DummyData2, []);
+  const rowData2 = DummyData2;
   const sumRow2 = React.useMemo<DummyDataType2[]>(
     () => [
       {

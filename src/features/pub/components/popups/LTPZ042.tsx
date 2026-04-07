@@ -4,27 +4,28 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { ResetIcon, SearchIcon } from '@icons';
+import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -153,15 +154,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
-
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // Grid2 dummy data (직원번호)
   type DummyDataType2 = {
@@ -182,7 +175,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
     { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   // Grid3 dummy data (직원번호)
   type DummyDataType3 = {
@@ -203,7 +196,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
     { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
-  const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
   // Grid4 dummy data
   type DummyDataType4 = {
@@ -224,7 +217,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
     { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
-  const [rowData4, setRowData4] = React.useState<DummyDataType4[]>(DummyData4);
+  const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
 
   const isEmpNo = form.type01 === 'selection2';
 

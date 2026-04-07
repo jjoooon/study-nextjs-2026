@@ -1,4 +1,3 @@
-import { LayoutControls } from '@layout/Cabinet';
 import { Grow, Gcol } from '@atoms';
 import { KeyValueList } from '@common/KeyValueList';
 import { ArrowNext } from '@icons';
@@ -14,7 +13,7 @@ const KeyValueData = [
 
 export default function InsPlanCovBottom() {
   return (
-    <LayoutControls>
+    <>
       <Gcol className="w-full relative z-10">
         <Grow placement="bwc" className="flex-1 bg-[#F6F0ED] min-h-[7.8rem]">
           <Grow className="flex justify-between items-center flex-1 px-8" placement="bws">
@@ -70,6 +69,6 @@ export default function InsPlanCovBottom() {
           </button>
         </Grow>
       </Gcol>
-    </LayoutControls>
+    </>
   );
 }
