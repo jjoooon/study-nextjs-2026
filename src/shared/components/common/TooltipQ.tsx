@@ -1,10 +1,9 @@
 'use client';
 
-import type { ReactNode } from 'react';
-
 import { QuestionMark } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { ReactNode } from 'react';
 
 type TooltipQProps = {
   defaultOpen?: boolean;
@@ -12,11 +11,7 @@ type TooltipQProps = {
   children?: ReactNode;
 };
 
-export function TooltipQ({
-  defaultOpen = false,
-  sideOffset = 1,
-  children,
-}: TooltipQProps) {
+export function TooltipQ({ defaultOpen = false, sideOffset = 1, children }: TooltipQProps) {
   return (
     <Tooltip defaultOpen={defaultOpen}>
       <TooltipTrigger asChild>

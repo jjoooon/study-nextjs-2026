@@ -1,12 +1,12 @@
 'use client';
 
-import { useId, useState, useEffect } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { FileUploadIcon, InputClearIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import { FileItemIcon } from '@icons';
+import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { useId, useState, useEffect } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -28,13 +28,7 @@ type FileUploadProps = {
 
 // ─── FileUpload ───────────────────────────────────────────────────────────────
 
-export function FileUpload({
-  id,
-  files: filesProp = [],
-  errorMessage,
-  onClickButton,
-  onRemove,
-}: FileUploadProps) {
+export function FileUpload({ id, files: filesProp = [], errorMessage, onClickButton, onRemove }: FileUploadProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
 
@@ -47,7 +41,7 @@ export function FileUpload({
 
   const handleRemove = (file: FileItem, index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index)); // 화면 즉시 반영
-    onRemove?.(file, index);                                // 콜백 호출
+    onRemove?.(file, index); // 콜백 호출
   };
 
   return (
@@ -67,7 +61,6 @@ export function FileUpload({
           파일선택
         </Button>
       </div>
-      
 
       {/* ── 파일 태그 목록 ── */}
       <Gcol className="pt-[0.2rem]" gap={1.5} placement={'ss'}>
@@ -85,11 +78,7 @@ export function FileUpload({
 
       {/* ── 에러 메시지 ── */}
       {errorMessage && (
-        <p
-          id={`${baseId}-error`}
-          role="alert"
-          className="w-full mt-0.5"
-        >
+        <p id={`${baseId}-error`} role="alert" className="w-full mt-0.5">
           <Typo variant="body-sm" tag="span" className="text-[var(--color-text-danger)]">
             {errorMessage}
           </Typo>
@@ -124,28 +113,25 @@ function FileTag({ name, ext, lastname, onRemove, hasError = false }: FileTagPro
     <Grow placement={'sc'}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Grow className="w-full max-w-[12.3rem] gap-[0.2rem] hover:[&>div]:underline hover:[&>div]:text-[#006FF2]" placement={'sc'}>
+          <Grow
+            className="w-full max-w-[12.3rem] gap-[0.2rem] hover:[&>div]:underline hover:[&>div]:text-[#006FF2]"
+            placement={'sc'}
+          >
             <FileItemIcon className="shrink-0" />
-            
+
             <Typo
               variant="body-sm"
-              tag= "div"
+              tag="div"
               className={cn(
                 'transition-colors duration-100 truncate tracking-0 pr-[0.3rem]',
-                hasError
-                  ? 'text-[var(--color-text-danger)] underline'
-                  : 'hover:text-[#006FF2] hover:underline'
+                hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
               )}
             >
               {name}
             </Typo>
 
             {isTruncated && (
-              <Typo
-                variant="body-sm"
-                tag="div"
-                className="tracking-0"
-              >
+              <Typo variant="body-sm" tag="div" className="tracking-0">
                 {ext ? `${lastname}.${ext}` : ''}
               </Typo>
             )}
@@ -161,11 +147,11 @@ function FileTag({ name, ext, lastname, onRemove, hasError = false }: FileTagPro
         aria-label={`${name} 삭제`}
         onClick={onRemove}
         only={'icon'}
-        variant={'none'} 
+        variant={'none'}
         className={cn(
           'shrink-0 inline-flex items-center justify-center',
           'w-[1.6rem] h-[1.6rem] rounded-full',
-          'text-[var(--color-text-subtle)] translate-y-[0.1rem]',
+          'text-[var(--color-text-subtle)] translate-y-[0.1rem]'
         )}
       >
         <InputClearIcon color={'#6B7280'} size={16} />

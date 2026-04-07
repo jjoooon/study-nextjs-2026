@@ -1,8 +1,8 @@
 'use client';
 
-import { cn } from '@/shared/lib/shadcn/utils';
-import { InfoBoxInfoIcon, InfoBoxWarningIcon, RefIcon } from '@icons';
 import { Typo, Grow, Gcol } from '@atoms';
+import { InfoBoxInfoIcon, InfoBoxWarningIcon, RefIcon } from '@icons';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -48,33 +48,17 @@ const VARIANT_CONFIG = {
     titleColor: '',
     highlightTextColor: 'text-[#92400E]',
     highlightDotColor: 'before:bg-[#92400E]',
-    icon: <RefIcon color='#FF5C2E' />,
+    icon: <RefIcon color="#FF5C2E" />,
   },
 } as const;
 
 // ─── InfoBox ──────────────────────────────────────────────────────────────────
 
-export function InfoBox({
-  variant = 'info',
-  bg = true,
-  title,
-  subTitle,
-  items,
-  children,
-  className,
-}: InfoBoxProps) {
+export function InfoBox({ variant = 'info', bg = true, title, subTitle, items, children, className }: InfoBoxProps) {
   const config = VARIANT_CONFIG[variant];
 
   return (
-    <Gcol
-      gap={1.5}
-      placement='ss'
-      className={cn(
-        'rounded-[0.6rem] px-2.5 py-2 w-full',
-        bg && config.wrap,
-        className
-      )}
-    >
+    <Gcol gap={1.5} placement="ss" className={cn('rounded-[0.6rem] px-2.5 py-2 w-full', bg && config.wrap, className)}>
       {/* 타이틀 */}
       <Grow gap={1}>
         {(title || subTitle) && config.icon}
@@ -90,64 +74,50 @@ export function InfoBox({
           </Typo>
         )}
         {subTitle && (
-          <Typo
-            color={'gray'}
-            tag={'strong'}
-            variant={'body-sm'}
-            weight={'normal'}
-          >
+          <Typo color={'gray'} tag={'strong'} variant={'body-sm'} weight={'normal'}>
             {subTitle}
           </Typo>
         )}
       </Grow>
 
       {/* 목록 - children 우선, 없으면 items 기본 렌더링 */}
-      {children ?? (items && (
-        <ul className="flex flex-col gap-[0.2rem]">
-          {items.map((item, index) => (
-            variant === 'detail' ? (
-              <li key={index} className="flex items-center gap-[0.4rem]">
-                <span className="shrink-0 flex items-center leading-[150%]" aria-hidden>
-                  {config.icon}
-                </span>
-                <span className={cn(
-                  'text-[1.3rem] leading-[150%] text-(--color-text-base,#111827)',
-                  item.className
-                )}>
-                  {item.text}
-                </span>
-              </li>
-            ) : (
-              <li
-                key={index}
-                className={cn(
-                  'relative flex items-start gap-[0.4rem] pl-2',
-                  'before:content-[""] before:absolute before:top-1/2 before:-translate-y-1/2',
-                  'before:left-0 before:w-[0.2rem] before:h-[0.2rem] before:rounded-full',
-                  item.highlight
-                    ? config.highlightDotColor
-                    : 'before:bg-[#6B7280]'
-                )}
-              >
-                <Typo
-                  color={'gray'}
-                  tag={'span'}
-                  variant="body-sm"
-                  weight="normal"
+      {children ??
+        (items && (
+          <ul className="flex flex-col gap-[0.2rem]">
+            {items.map((item, index) =>
+              variant === 'detail' ? (
+                <li key={index} className="flex items-center gap-[0.4rem]">
+                  <span className="shrink-0 flex items-center leading-[150%]" aria-hidden>
+                    {config.icon}
+                  </span>
+                  <span className={cn('text-[1.3rem] leading-[150%] text-(--color-text-base,#111827)', item.className)}>
+                    {item.text}
+                  </span>
+                </li>
+              ) : (
+                <li
+                  key={index}
                   className={cn(
-                    item.highlight
-                      ? config.highlightTextColor
-                      : 'text-[#414141]',
-                    item.className
+                    'relative flex items-start gap-[0.4rem] pl-2',
+                    'before:content-[""] before:absolute before:top-1/2 before:-translate-y-1/2',
+                    'before:left-0 before:w-[0.2rem] before:h-[0.2rem] before:rounded-full',
+                    item.highlight ? config.highlightDotColor : 'before:bg-[#6B7280]'
                   )}
                 >
-                  {item.text}
-                </Typo>
-              </li>
-            )
-          ))}
-        </ul>
-      ))}
+                  <Typo
+                    color={'gray'}
+                    tag={'span'}
+                    variant="body-sm"
+                    weight="normal"
+                    className={cn(item.highlight ? config.highlightTextColor : 'text-[#414141]', item.className)}
+                  >
+                    {item.text}
+                  </Typo>
+                </li>
+              )
+            )}
+          </ul>
+        ))}
     </Gcol>
   );
 }

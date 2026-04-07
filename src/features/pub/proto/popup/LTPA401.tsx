@@ -1,27 +1,32 @@
 'use client';
 
-import * as React from 'react';
-import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { Input } from '@uiux/Input';
-
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { InfoBox } from '@common/InfoBox';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { useRef, useState } from 'react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-
   // const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -45,15 +50,9 @@ export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable
-              variant={'head'}
-              lineTop={false}
-              caption=""
-            >
+            <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
-                <FormCell title={'설계접수번호'}>
-                  LA260209313558
-                </FormCell>
+                <FormCell title={'설계접수번호'}>LA260209313558</FormCell>
               </FormRow>
             </FormTable>
           </Grow>
@@ -93,7 +92,9 @@ export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <FormCell title={'상해급수'}>3급</FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'기타요청내용'} colSpan={5}>text</FormCell>
+                      <FormCell title={'기타요청내용'} colSpan={5}>
+                        text
+                      </FormCell>
                     </FormRow>
                   </FormTable>
                 </Grow>
@@ -112,54 +113,36 @@ export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
                             className="gap-2"
                             errorMsg="하나를 선택해주세요."
                             errorPs="bl"
-                            onValueChange={() => { }}
+                            onValueChange={() => {}}
                             width="full"
                           >
-                            <RadioGroupItem
-                              id="result1"
-                              value="option1"
-                              checked={true}
-                            >
+                            <RadioGroupItem id="result1" value="option1" checked={true}>
                               설계완료
                             </RadioGroupItem>
-                            <RadioGroupItem
-                              id="result2"
-                              value="option2"
-                            >
+                            <RadioGroupItem id="result2" value="option2">
                               반려
                             </RadioGroupItem>
                           </RadioGroup>
                         </FormCell>
-                      </FormRow> 
+                      </FormRow>
                       <FormRow>
                         <FormCell title={'설계번호'}>
-                          <Input
-                            placeholder=""
-                            value=""
-                            width="20rem"
-                            readOnly
-                          />
+                          <Input placeholder="" value="" width="20rem" readOnly />
                         </FormCell>
                       </FormRow>
                       <FormRow>
                         <FormCell title={'메모'}>
-                          <Input
-                            placeholder=""
-                            value=""
-                            readOnly
-                          />
+                          <Input placeholder="" value="" readOnly />
                         </FormCell>
                       </FormRow>
                     </FormTable>
                   </Grow>
-                 <InfoBox
+                  <InfoBox
                     title="처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다."
                     variant={'info'}
                     bg={false}
-                  >
-                  </InfoBox>
+                  ></InfoBox>
                 </Gcol>
-                
               </TableFoldBody>
             </TableFold>
           </Gcol>

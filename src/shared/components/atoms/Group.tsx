@@ -1,11 +1,11 @@
 /**
  * Group Components - Layout Utility Components
- * 
+ *
  * @description
  * Flexbox 기반의 다목적 레이아웃 컴포넌트 모음
  * 다양한 배치(placement)와 스타일(variant) 옵션을 지원하여
  * 공통적인 레이아웃 패턴을 쉽게 구현할 수 있음
- * 
+ *
  * @components
  * - **Gcol**: 세로(Column) 방향 Flex 컨테이너
  * - **Grow**: 가로(Row) 방향 Flex 컨테이너
@@ -13,7 +13,7 @@
  * - **FormItem**: 폼 아이템용 Row 컨테이너
  * - **Separator**: 간단한 구분선
  * - **ButtonGroup**: 버튼 그룹용 Row 컨테이너
- * 
+ *
  * @placement 옵션 (위치 정렬)
  * - `ss/sc/se`: justify-start + (items-start/center/end)
  * - `cs/cc/ce`: justify-center + (items-start/center/end)
@@ -21,53 +21,73 @@
  * - `bws/bwc/bwe`: justify-between + (items-start/center/end) (전체 너비/높이)
  * - `ars/arc/are`: justify-around + (items-start/center/end) (전체 너비/높이)
  * - `evs/evc/eve`: justify-evenly + (items-start/center/end) (전체 너비/높이)
- * 
+ *
  * @variant 옵션 (시각적 스타일)
  * - `default`: 기본 스타일 없음
  * - `box`: 박스 스타일 (패딩 + 배경)
  * - `box-line`: 보더 박스 스타일 (그림자 포함)
- * 
+ *
  * @example
  * // 기본 세로 배치 (중앙 정렬)
  * <Gcol placement="cc">
  *   <h1>Title</h1>
  *   <p>Content</p>
  * </Gcol>
- * 
+ *
  * // 가로 배치 (양쪽 정렬)
  * <Grow placement="bwc">
  *   <span>Left</span>
  *   <span>Right</span>
  * </Grow>
- * 
+ *
  * // 스타일 적용
  * <Gcol variant="box" placement="cc">
  *   <div>Styled Container</div>
  * </Gcol>
- * 
+ *
  * // 폼 아이템
  * <FormItem placement="sc">
  *   <label>Label</label>
  *   <input type="text" />
  * </FormItem>
- * 
+ *
  * // 버튼 그룹
  * <ButtonGroup placement="ec">
  *   <button>Cancel</button>
  *   <button>Submit</button>
  * </ButtonGroup>
- * 
+ *
  * @rowsion 1.0.0
  * @since 2026-03-05
  * @lastModified 2026-03-05
  */
 
+import { dir } from 'console';
 import { ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiTypes';
-import { dir } from 'console';
 
-type LayoutPlacement = Extract<UIUXposition, 'ss' | 'sc' | 'se' | 'cs' | 'cc' | 'ce' | 'es' | 'ec' | 'ee' | 'bws' | 'bwc' | 'bwe' | 'ars' | 'arc' | 'are' | 'evs' | 'evc' | 'eve'>;
+type LayoutPlacement = Extract<
+  UIUXposition,
+  | 'ss'
+  | 'sc'
+  | 'se'
+  | 'cs'
+  | 'cc'
+  | 'ce'
+  | 'es'
+  | 'ec'
+  | 'ee'
+  | 'bws'
+  | 'bwc'
+  | 'bwe'
+  | 'ars'
+  | 'arc'
+  | 'are'
+  | 'evs'
+  | 'evc'
+  | 'eve'
+>;
 
 type Variant =
   | 'default'
@@ -137,26 +157,28 @@ const COL_PLACEMENT_MAP: Record<string, string> = {
 
 // 스타일 변이(Variant) 매핑
 const VARIANT_MAP: Record<Variant, string> = {
-  'default': '',
-  'box': 'px-2.5 py-2.5 bg-[var(--color-gray-5)] gap-1.5',
-  'box-line': 'p-2 bg-[#FFF] border border-[var(--color-blue-gray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
+  default: '',
+  box: 'px-2.5 py-2.5 bg-[var(--color-gray-5)] gap-1.5',
+  'box-line':
+    'p-2 bg-[#FFF] border border-[var(--color-blue-gray-20)] rounded-[0.6rem] shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]',
   'box-info': 'px-2.5 py-2 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem]',
   'box-warning': 'px-2.5 py-2 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem]',
   'box-detail': 'px-2.5 py-2 bg-[var(--color-warning-5)] gap-1.5 rounded-[0.6rem]',
   'box-round': 'px-2.5 py-2.5 bg-[#F3F4F6] gap-1.5 rounded-[0.6rem]',
   'box-round-b': 'px-2.5 pt-2 pb-2.5 bg-[#F3F4F6] gap-1.5 rounded-b-[0.6rem]',
 
-  'box-info-line': 'px-2.5 py-2.5 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem] border! border-[var(--color-information-15)]',
+  'box-info-line':
+    'px-2.5 py-2.5 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem] border! border-[var(--color-information-15)]',
 };
 
-export const Gcol = ({ 
-  children, 
-  placement = 'cc', 
-  variant = 'default', 
+export const Gcol = ({
+  children,
+  placement = 'cc',
+  variant = 'default',
   gap = 1,
-  className, 
+  className,
   style,
-  onClick
+  onClick,
 }: GroupProps) => {
   return (
     <div
@@ -175,21 +197,14 @@ export const Gcol = ({
   );
 };
 
-export const Grow = ({ 
-  children, 
-  placement = 'cc', 
-  variant = 'default', 
-  gap = 1,
-  className, 
-  style 
-}: GroupProps) => {
+export const Grow = ({ children, placement = 'cc', variant = 'default', gap = 1, className, style }: GroupProps) => {
   return (
     <div
       data-group="row"
       className={cn(
         'flex flex-row relative tracking-[-0.13rem]',
-        VARIANT_MAP[variant], 
-        ROW_PLACEMENT_MAP[placement], 
+        VARIANT_MAP[variant],
+        ROW_PLACEMENT_MAP[placement],
         `gap-${gap}`,
         className
       )}
@@ -200,22 +215,11 @@ export const Grow = ({
   );
 };
 
-export const Grid = ({ 
-  children, 
-  variant = 'default',
-  gap = 1,
-  className, 
-  style 
-}: GroupProps) => {
+export const Grid = ({ children, variant = 'default', gap = 1, className, style }: GroupProps) => {
   return (
-    <div 
-      data-group="row" 
-      className={cn(
-        'grid relative tracking-[-0.13rem]', 
-        `gap-${gap}`,
-        VARIANT_MAP[variant],
-        className
-      )} 
+    <div
+      data-group="row"
+      className={cn('grid relative tracking-[-0.13rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
       style={style}
     >
       {children}
@@ -223,13 +227,13 @@ export const Grid = ({
   );
 };
 
-export const FormItem = ({ 
-  children, 
-  placement = 'sc', 
+export const FormItem = ({
+  children,
+  placement = 'sc',
   variant = 'default',
   gap = 1,
-  className, 
-  style 
+  className,
+  style,
 }: GroupProps) => {
   return (
     <div
@@ -245,25 +249,27 @@ export const FormItem = ({
     >
       {children}
     </div>
+  ); 
+};
+export const Separator = ({ children, style }: GroupProps) => {
+  return (
+    <div className="translate-y-[-.2rem]" style={style}>
+      {children}
+    </div>
   );
 };
-export const Separator = ({ 
-  children, 
-  style 
-}: GroupProps) => {
-  return <div className="translate-y-[-.2rem]" style={style}>{children}</div>;
-};
-
 
 interface DividerProps {
+  variant?: 'default' | 'dot';
   className?: string;
   dir?: 'col' | 'row';
-  color?: 'gray' | 'gray-light' 
-};
+  color?: 'gray' | 'gray-light';
+}
 
 
 export const Divider = ({
   className,
+  variant = 'default',
   dir = 'col',
   color = 'gray',
 }: DividerProps) => {
@@ -276,9 +282,11 @@ export const Divider = ({
     <hr
       className={cn(
         'shrink-0 border-0 inline-block',
-        `border-[${colorMap[color]}]`,
-        dir === 'col' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t',
+        (variant ===  'default' && (dir === 'col' ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l` : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`)),
+        (variant === 'dot' && `relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] 
+        before:rounded-full  before:bg-[#777]`), 
         className
       )}
     />
-  );}
+  );
+};

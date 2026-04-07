@@ -1,25 +1,24 @@
 'use client';
 
-import type { ReactNode } from 'react';
-
 // components - layout
-import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
 // components - features
+import { useAsideToggleState } from '@aggrid';
+import { InfoContract } from '@common/InfoContract';
 import AsideFoot from '@features/AsideFoot';
 import PageID from '@features/PageID';
 import PageProcess from '@features/PageProcess';
 import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
-import TaskStatusBoard from '@features/TaskStatusBoard';
-import { InfoContract } from '@common/InfoContract';
 import { QuickLinks } from '@features/QuickLinks';
+import TaskStatusBoard from '@features/TaskStatusBoard';
 
 // hooks
-import { useAsideToggleState } from '@aggrid';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
+import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
+import type { ReactNode } from 'react';
 
 // LTPA350 - components
 import { LTPA350Step1 } from '../components/LTPA350Step1'; // 01. 담보설계
 import { LTPA350Step2 } from '../components/LTPA350Step2'; // 02. 담보설계
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // types
 type LTPA350ProcessStep = number;
@@ -78,7 +77,6 @@ interface LTPA350DataType {
       note: string;
     };
   };
-  
 }
 const data: LTPA350DataType = {
   head: {
@@ -136,7 +134,7 @@ const data: LTPA350DataType = {
       note: '알릴사항 비대상',
     },
   },
-}
+};
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
 const isPageProcessStep = (value: number): value is LTPA350ProcessStep => {
@@ -159,13 +157,12 @@ export default function LTPA350Section() {
     5: <LTPA350Step1 />,
     6: <LTPA350Step1 />,
   };
- 
+
   return (
     <LayoutTemplateAsideToggle
       // LayoutHead
       pageID={<PageID data={data.head.pageID} />}
       pageTitle={<PageTitle data={data.head.pageTitle} />}
-
       // LayoutBody: process
       pageProcess={
         <PageProcess
@@ -176,10 +173,8 @@ export default function LTPA350Section() {
           onStepChange={setActiveStep}
         />
       }
-     
       // LayoutBody: main
       mainBody={stepMainBody[activeStep]}
-      
       // LayoutBody: aside
       asideHead={<TaskStatusBoard state={data.aside.taskState} />}
       asideBody={
@@ -189,7 +184,6 @@ export default function LTPA350Section() {
         </>
       }
       asideFoot={<AsideFoot />}
-      
       hideAside={hideAside}
     />
   );

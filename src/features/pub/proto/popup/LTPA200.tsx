@@ -1,30 +1,37 @@
 'use client';
 
-import * as React from 'react';
-import { useRef, useState } from 'react';
+import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
+import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@icons';
-import { DatePickerInput } from '@common/DatePicker';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useRef, useState } from 'react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-
 export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   // dummy data
   type DummyDataType = {
     id: number;
@@ -37,90 +44,89 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
     field06: string | number;
     field07: string | number;
   };
-  
+
   const DummyData: DummyDataType[] = [
     {
       id: 1,
       isCheck: false,
-      field01: '',  
+      field01: '',
       field02: '',
-      field03: '2023-03-01',             
+      field03: '2023-03-01',
       field04: '9999-12-31',
-      field05: '',        
+      field05: '',
       field06: '',
-      field07: '',              
+      field07: '',
     },
     {
       id: 2,
       isCheck: false,
-      field01: '',  
+      field01: '',
       field02: '',
-      field03: '2023-03-01',             
+      field03: '2023-03-01',
       field04: '9999-12-31',
-      field05: '',        
+      field05: '',
       field06: '',
-      field07: '김한화',              
+      field07: '김한화',
     },
     {
       id: 3,
       isCheck: false,
-      field01: '',  
+      field01: '',
       field02: '',
-      field03: '2023-03-01',             
+      field03: '2023-03-01',
       field04: '9999-12-31',
-      field05: '',        
+      field05: '',
       field06: '',
-      field07: '',              
+      field07: '',
     },
   ];
-  
-  // AgGrid Column 
-  const columnDefs: (ColDef<DummyDataType>)[] = [
+
+  // AgGrid Column
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
       field: 'field01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '대상',
       field: 'field02',
       flex: 2,
       cellClass: 'flex! items-center! justify-center!',
-
     },
     {
       headerName: '적용시작일자',
       field: 'field03',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '적용종료일자',
       field: 'field04',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '상태',
       field: 'field05',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '적용사유',
       field: 'field06',
       flex: 2,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '등록자',
       field: 'field07',
       flex: 0.7,
-      cellClass: 'flex! items-center! justify-center!' 
+      cellClass: 'flex! items-center! justify-center!',
     },
   ];
-  
+
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>([]);
 
@@ -128,8 +134,7 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
-  
-  
+
   // form event
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -137,24 +142,25 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
     type03: '',
   });
 
-  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>신계약스캔권한관리</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPA200)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              신계약스캔권한관리
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPA200)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable variant={'none'}
+            <FormTable
+              variant={'none'}
               caption="장기보험 모집자 설계 조회 테이블"
-              cols={[
-                'w-[8rem]', 'flex-1',
-                'w-[8rem]', 'flex-1',
-              ]}
+              cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
             >
               <FormRow>
                 <FormCell title={'등록항목'}>
@@ -169,7 +175,9 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection', id: 'type01-1', label: '장기보험' },
                       { value: 'selection2', id: 'type01-2', label: '장기보험2' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
@@ -187,23 +195,16 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection2', id: 'type02-3', label: '취급직원' },
                       { value: 'selection3', id: 'type02-4', label: '사용인' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input
-                    aria-label=""
-                    width={'11rem'}
-                    value={''}
-                    readOnly
-                  />
+                  <Input aria-label="" width={'11rem'} value={''} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
-                  </Button> 
-                  <Input aria-label="" 
-                    width={'12rem'} 
-                    value={'김한화'}
-                    readOnly
-                  />
+                  </Button>
+                  <Input aria-label="" width={'12rem'} value={'김한화'} readOnly />
                   <Grow className="ml-[8rem]">
                     <NativeSelect
                       aria-label="조직구분 선택"
@@ -215,7 +216,9 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                         { value: 'selection', id: 'type03-1', label: '선택' },
                         { value: 'selection2', id: 'type03-2', label: '기준일자' },
                       ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
                       ))}
                     </NativeSelect>
                     <DatePickerInput
@@ -232,10 +235,17 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>
@@ -252,14 +262,13 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                     rowData={rowData}
                     columnDefs={columnDefs}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{ 
-                      sortable: false, 
+                    defaultColDef={{
+                      sortable: false,
                       resizable: false,
                     }}
                     alwaysShowHorizontalScroll={true}
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}
-        
                     // 체크박스 시
                     rowSelection={{
                       mode: 'multiRow',
@@ -270,8 +279,8 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                     selectionColumnDef={{
                       headerName: '√',
                     }}
-                    onGridReady={params => {
-                      params.api.forEachNode(node => {
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
                         if (node.data?.isCheck) {
                           node.setSelected(true);
                         }
@@ -281,8 +290,8 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </div>
               </Grow>
             </TableFoldBody>
-          </TableFold>  
-        </DialogSection>  
+          </TableFold>
+        </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
@@ -298,7 +307,7 @@ export const LTPA200 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -69,9 +69,7 @@ function TooltipContent({
         {...props}
       >
         <div className={cn('px-[1rem] py-[0.8rem] relative z-51 whitespace-normal', contentStyles[variant])}>
-          {typeof children === 'string'
-            ? <span dangerouslySetInnerHTML={{ __html: children }} />
-            : children}
+          {typeof children === 'string' ? <span dangerouslySetInnerHTML={{ __html: children }} /> : children}
         </div>
         {variant === 'default' || variant === 'light' ? (
           <TooltipPrimitive.Arrow asChild>

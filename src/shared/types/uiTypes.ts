@@ -24,7 +24,6 @@ export interface UIState {
   // sidebarCollapsed: boolean;
 }
 
-
 /**
  * UI/UX Form Item Size Types
  *
@@ -64,38 +63,27 @@ export type FormItemWidth =
   | `${number}rem` // 예: "32rem"
   | `${number}px`; // 예: "90px"
 
-
-
-export type UIUXvariant =
-  | 'contained'
-  | 'soft'
-  | 'outlined'
-  | 'ghost'
-  | 'none'; 
+export type UIUXvariant = 'contained' | 'soft' | 'outlined' | 'ghost' | 'none';
 
 export type UIUXcolor =
   | 'primary'
   | 'secondary'
-
   | 'success'
   | 'danger'
   | 'warning'
   | 'info'
   | 'link'
-
   | 'gray'
   | 'gray-light'
   | 'coolgray'
   | 'coolgray-light'
-
   | 'blue'
   | 'red'
   | 'green'
   | 'yellow'
   | 'purple'
   | 'black'
-
-  | 'none'; 
+  | 'none';
 
 export type UIUXsize =
   | 'full'
@@ -118,11 +106,9 @@ export type UIUXposition =
   | 't'
   | 'm'
   | 'b'
-
   | 's'
   | 'c'
   | 'e'
-
   | 'ss'
   | 'sc'
   | 'se'
@@ -132,7 +118,6 @@ export type UIUXposition =
   | 'es'
   | 'ec'
   | 'ee'
-
   | 'ts'
   | 'tc'
   | 'te'
@@ -142,7 +127,6 @@ export type UIUXposition =
   | 'bs'
   | 'bc'
   | 'be'
-
   | 'st'
   | 'sm'
   | 'se'
@@ -152,7 +136,6 @@ export type UIUXposition =
   | 'et'
   | 'em'
   | 'eb'
-
   | 'bws' //justify-between items-start
   | 'bwc' //justify-between items-center
   | 'bwe' //justify-between items-end
@@ -162,5 +145,3 @@ export type UIUXposition =
   | 'evs' //justify-evenly items-start
   | 'evc' //justify-evenly items-center
   | 'eve'; //justify-evenly items-end
-
-

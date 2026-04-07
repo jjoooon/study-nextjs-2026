@@ -1,30 +1,28 @@
 'use client';
 
-import { useReducer, useState, type ReactNode, useCallback } from 'react';
-
 // Layout Components
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { Grow, Gcol, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InputCombo } from '@common/InputCombo';
+import { KeyValueItem } from '@common/KeyValueList';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+import { TabPager } from '@common/TabPager';
+import { TooltipQ } from '@common/TooltipQ';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 
 // Atomic Components
-import { Grow, Gcol, Typo } from '@atoms';
 
 // UIUX Components
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Badge } from '@uiux/Badge';
-
 
 // Common Components
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { DatePickerInput } from '@common/DatePicker';
-import { TabPager } from '@common/TabPager';
-import { KeyValueItem } from '@common/KeyValueList';
-import { TooltipQ } from '@common/TooltipQ';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 // Feature Components
 import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
@@ -33,12 +31,11 @@ import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
 import { SearchIcon, AddIcon, QuestionMark } from '@icons';
 
 // Hooks
+import { useReducer, useState, type ReactNode, useCallback } from 'react';
+import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 // Data
-
-import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
-import { InputCombo } from '@common/InputCombo';
 
 // Types
 
@@ -98,19 +95,20 @@ const PROPERTY_ACTUAL_LOSS_TYPE_OPTIONS = [
   { value: '실손전부보상', id: 'property-actual-loss-full', label: '실손전부보상' },
 ] as const;
 
-
 // --- Constants ---
-{/* 인보험 */ }
+{
+  /* 인보험 */
+}
 const PERSONAL_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
-    insStartDate: '2026-03-04',   // 보험시기
+    insStartDate: '2026-03-04', // 보험시기
     insStartPeriod: '2026-01-30', // 보험기간 start
-    insEndPeriod: '2046-03-04',   // 보험기간 end
-    expiryDate: '80',             // 만기 (option value 기준)
-    payPeriod: '10',              // 납기
-    payCycle: 'month',            // 납입주기
-    renewCycle: '3',              // 갱신주기
-    noticeType: 'type1',          // 고지 유형
+    insEndPeriod: '2046-03-04', // 보험기간 end
+    expiryDate: '80', // 만기 (option value 기준)
+    payPeriod: '10', // 납기
+    payCycle: 'month', // 납입주기
+    renewCycle: '3', // 갱신주기
+    noticeType: 'type1', // 고지 유형
   },
   InsuredPerson: [
     {
@@ -178,65 +176,67 @@ const PERSONAL_INSURANCE_STEP1_DATA = {
     },
   ],
   Policyholder: {
-    name: '김한화',                         // 계약자 이름
-    juminNumber: '900101-1******',         // 계약자 주민등록번호
-    infoAcquisitionPath: 'selection',      // 개인정보취득경로
-    Relationship: '본인',                  // 계약자와의 관계
-    addresses: '경기도 부천시 원미구 역곡동',  // 주소
-    workAddress: '경상남도 진주시 (하대동)',  // 근무지 주소
-    contact: '010-1234-5678',               // 연락처
-    isBusinessOwner: 'Y',                   // 사업자 여부
-    email: 'qwer@hwgi.kr',                  // 이메일
-    electronicNoticeAgree: 'Y',             // 전자적 안내 동의 여부
-    taxFreeType: 'nonemonthly',             // 보험차익비과세
-    designAmount: 33301,                    // 설계금액
-    remainingLimit: 100000000,              // 잔여한도
+    name: '김한화', // 계약자 이름
+    juminNumber: '900101-1******', // 계약자 주민등록번호
+    infoAcquisitionPath: 'selection', // 개인정보취득경로
+    Relationship: '본인', // 계약자와의 관계
+    addresses: '경기도 부천시 원미구 역곡동', // 주소
+    workAddress: '경상남도 진주시 (하대동)', // 근무지 주소
+    contact: '010-1234-5678', // 연락처
+    isBusinessOwner: 'Y', // 사업자 여부
+    email: 'qwer@hwgi.kr', // 이메일
+    electronicNoticeAgree: 'Y', // 전자적 안내 동의 여부
+    taxFreeType: 'nonemonthly', // 보험차익비과세
+    designAmount: 33301, // 설계금액
+    remainingLimit: 100000000, // 잔여한도
   },
 };
 
-{/* 태아보험 */ }
+{
+  /* 태아보험 */
+}
 const CHILD_FETUS_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
-    insStartDate: '2026-01-30',   // 보험시기
+    insStartDate: '2026-01-30', // 보험시기
     insStartPeriod: '2026-01-30', // 보험기간 start
-    insEndPeriod: '2126-01-30',   // 보험기간 end
-    expiryDate: '100',            // 만기 (option value 기준)
-    payPeriod: '10',              // 납기
-    payCycle: 'month',            // 납입주기
-    renewCycle: '20',             // 갱신주기
-    baby: 'Y',                    // 태아 가입 여부
-    multiFetus: 'N',              // 다태아 여부
-    advanceCommission: 'N',       // 수수료선지급 여부
-    contract: 'Y',                // 계약전환
+    insEndPeriod: '2126-01-30', // 보험기간 end
+    expiryDate: '100', // 만기 (option value 기준)
+    payPeriod: '10', // 납기
+    payCycle: 'month', // 납입주기
+    renewCycle: '20', // 갱신주기
+    baby: 'Y', // 태아 가입 여부
+    multiFetus: 'N', // 다태아 여부
+    advanceCommission: 'N', // 수수료선지급 여부
+    contract: 'Y', // 계약전환
   },
   InsuredPerson: [
     {
       type: 'child',
-      tabName: '최한화Tab',                         // tab 이름
-      name: '태아',                               // 피보험자 이름
-      juminNumber: '220101-3******',             // 주민등록번호
-      age: 0,                                    // 나이
-      gender: '남',                               // 성별
-      ageStandardDate: '2026-03-09',             // 상령일
-      ageDDay: 'D-31',                           // 상령일 D-Day
-      jobCode: 'B6100',                          // 직업코드
-      jobName: '미취학아동',                      // 직업명
-      jobGrade: '1급',                            // 직업급수
-      driveType: 'nondriver',                    // 운전형태
-      motorcycle: 'nondriver',                   // 이륜차
-      relationWithContractor: '자녀',           // 주피와 관계
-      actualLossSimulDesignNo: '',               // (실손)동시설계 번호
-      premium: 0,                               // 보험료
-      isDiscountApplied: 'Y',                    // 할인적용 여부
-      weeksOfPregnancy: 20,                      // 임신 주수 (태아 전용)
-      dueDate: '2026-08-20',                     // 출산예정일 (태아 전용)
+      tabName: '최한화Tab', // tab 이름
+      name: '태아', // 피보험자 이름
+      juminNumber: '220101-3******', // 주민등록번호
+      age: 0, // 나이
+      gender: '남', // 성별
+      ageStandardDate: '2026-03-09', // 상령일
+      ageDDay: 'D-31', // 상령일 D-Day
+      jobCode: 'B6100', // 직업코드
+      jobName: '미취학아동', // 직업명
+      jobGrade: '1급', // 직업급수
+      driveType: 'nondriver', // 운전형태
+      motorcycle: 'nondriver', // 이륜차
+      relationWithContractor: '자녀', // 주피와 관계
+      actualLossSimulDesignNo: '', // (실손)동시설계 번호
+      premium: 0, // 보험료
+      isDiscountApplied: 'Y', // 할인적용 여부
+      weeksOfPregnancy: 20, // 임신 주수 (태아 전용)
+      dueDate: '2026-08-20', // 출산예정일 (태아 전용)
     },
   ],
   Policyholder: {
     name: '이한화',
     juminNumber: '910101-2******',
-    Relationship: '본인',                  // 계약자와의 관계
-    infoAcquisitionPath: '자녀',           // 개인정보취득경로
+    Relationship: '본인', // 계약자와의 관계
+    infoAcquisitionPath: '자녀', // 개인정보취득경로
     addresses: '경남 진주시 하대동',
     workAddress: '경남 진주시 시청역',
     contact: '010-9876-5432',
@@ -249,7 +249,9 @@ const CHILD_FETUS_INSURANCE_STEP1_DATA = {
   },
 };
 
-{/* 재물보험 */ }
+{
+  /* 재물보험 */
+}
 const PROPERTY_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
     insStartDate: '2026-01-31',
@@ -283,9 +285,9 @@ const PROPERTY_INSURANCE_STEP1_DATA = {
     {
       type: 'property', // 목적물
       tabName: '목적물Tab', //텝이름
-      name: '최한화',       // 이름
+      name: '최한화', // 이름
       juminNumber: '880520-2******', // 주민번호
-      age: 35,  // 나이
+      age: 35, // 나이
       gender: '남', // 성별
       isContractor: 'Y', //계약자와 동일
       isHome: 'Y', // 자택
@@ -300,7 +302,7 @@ const PROPERTY_INSURANCE_STEP1_DATA = {
       appliedBuildingGrade: '3', // 적용건물급수
       aboveGroundFloors: 3, // 건물상세 지상
       belowGroundFloors: 1, // 건물상세 지하
-      buildingWidth: 1.00, // 건물 폭
+      buildingWidth: 1.0, // 건물 폭
       actualLossType: '실손전부보상', // 실손보상구분
       hasFireExtinguisher: 'Y', // 소화기 보유 여부
       isSpecialBuilding: 'N', // 특수건물 여부
@@ -311,7 +313,7 @@ const PROPERTY_INSURANCE_STEP1_DATA = {
     name: '김한화',
     juminNumber: '920101-1******',
     infoAcquisitionPath: 'selection',
-    Relationship: '본인',                  // 계약자와의 관계
+    Relationship: '본인', // 계약자와의 관계
     addresses: '경기도 부천시 원미구 역곡동1',
     workAddress: '경상남도 진주시 (하대동) 1',
     contact: '011-1234-5678',
@@ -324,102 +326,106 @@ const PROPERTY_INSURANCE_STEP1_DATA = {
   },
 };
 
-{/* 단체보험 */ }
+{
+  /* 단체보험 */
+}
 const GROUP_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
-    insStartDate: '2026-03-04',           // 보험시기
-    insStartPeriod: '2026-01-30',         // 보험기간 start
-    insEndPeriod: '2046-03-04',           // 보험기간 end
-    expiryDate: '07',                     // 만기 (option value 기준)
-    payPeriod: '05',                      // 납기
-    payCycle: 'month',                    // 납입주기
+    insStartDate: '2026-03-04', // 보험시기
+    insStartPeriod: '2026-01-30', // 보험기간 start
+    insEndPeriod: '2046-03-04', // 보험기간 end
+    expiryDate: '07', // 만기 (option value 기준)
+    payPeriod: '05', // 납기
+    payCycle: 'month', // 납입주기
     groupCategory: '피보험자단계(개별요율)', // 단체구분
-    groupType: 'type2',                   // 단체유형
-    totalCount: 100,                      // 총인원
-    enrolledCount: 80,                    // 가입인원
-    enrolledPercent: 20,                  // 가입비율
+    groupType: 'type2', // 단체유형
+    totalCount: 100, // 총인원
+    enrolledCount: 80, // 가입인원
+    enrolledPercent: 20, // 가입비율
   },
   GroupInfo: [
     {
-      groupName: '그룹명0',                // 그룹명
-      age: 10,                           // 보험나이
-      gender: '남',                      // 성별  
-      member: 100,                       // 인원
-      jobCode: '74112',                  // 직업코드
-      jobName: '전기 및 전자 설비 설치원',  // 직업명
-      jobGrade: '3급',                   // 직업등급
-      driveType: 'nondriver',            // 운전형태
-      insuredShip: '고용인(종업원)',       // 고용인
+      groupName: '그룹명0', // 그룹명
+      age: 10, // 보험나이
+      gender: '남', // 성별
+      member: 100, // 인원
+      jobCode: '74112', // 직업코드
+      jobName: '전기 및 전자 설비 설치원', // 직업명
+      jobGrade: '3급', // 직업등급
+      driveType: 'nondriver', // 운전형태
+      insuredShip: '고용인(종업원)', // 고용인
     },
     {
-      groupName: '그룹명1',                // 그룹명
-      age: 10,                           // 보험나이
-      gender: '남',                      // 성별  
-      member: 100,                       // 인원
-      jobCode: '74112',                  // 직업코드
-      jobName: '전기 및 전자 설비 설치원',  // 직업명
-      jobGrade: '3급',                   // 직업등급
-      driveType: 'nondriver',            // 운전형태
-      insuredShip: '고용인(종업원)',       // 고용인
+      groupName: '그룹명1', // 그룹명
+      age: 10, // 보험나이
+      gender: '남', // 성별
+      member: 100, // 인원
+      jobCode: '74112', // 직업코드
+      jobName: '전기 및 전자 설비 설치원', // 직업명
+      jobGrade: '3급', // 직업등급
+      driveType: 'nondriver', // 운전형태
+      insuredShip: '고용인(종업원)', // 고용인
     },
     {
-      groupName: '그룹명2',                // 그룹명
-      age: 10,                           // 보험나이
-      gender: '남',                      // 성별  
-      member: 100,                       // 인원
-      jobCode: '74112',                  // 직업코드
-      jobName: '전기 및 전자 설비 설치원',  // 직업명
-      jobGrade: '3급',                   // 직업등급
-      driveType: 'nondriver',            // 운전형태
-      insuredShip: '고용인(종업원)',       // 고용인
-    }
+      groupName: '그룹명2', // 그룹명
+      age: 10, // 보험나이
+      gender: '남', // 성별
+      member: 100, // 인원
+      jobCode: '74112', // 직업코드
+      jobName: '전기 및 전자 설비 설치원', // 직업명
+      jobGrade: '3급', // 직업등급
+      driveType: 'nondriver', // 운전형태
+      insuredShip: '고용인(종업원)', // 고용인
+    },
   ],
   Policyholder: {
-    name: '김한화',                         // 계약자 이름
-    juminNumber: '900101-1******',         // 계약자 주민등록번호
-    infoAcquisitionPath: '단체계약',      // 개인정보취득경로
-    Relationship: '본인',                  // 계약자와의 관계
-    addresses: '경기도 부천시 원미구 역곡동',  // 주소
-    workAddress: '경상남도 진주시 (하대동)',  // 근무지 주소
-    contact: '010-1234-5678',               // 연락처
-    isBusinessOwner: 'Y',                   // 사업자 여부
-    email: 'qwer@hwgi.kr',                  // 이메일
-    electronicNoticeAgree: 'Y',             // 전자적 안내 동의 여부
-    taxFreeType: 'nonemonthly',             // 보험차익비과세
-    designAmount: 33301,                    // 설계금액
-    remainingLimit: 100000000,              // 잔여한도
+    name: '김한화', // 계약자 이름
+    juminNumber: '900101-1******', // 계약자 주민등록번호
+    infoAcquisitionPath: '단체계약', // 개인정보취득경로
+    Relationship: '본인', // 계약자와의 관계
+    addresses: '경기도 부천시 원미구 역곡동', // 주소
+    workAddress: '경상남도 진주시 (하대동)', // 근무지 주소
+    contact: '010-1234-5678', // 연락처
+    isBusinessOwner: 'Y', // 사업자 여부
+    email: 'qwer@hwgi.kr', // 이메일
+    electronicNoticeAgree: 'Y', // 전자적 안내 동의 여부
+    taxFreeType: 'nonemonthly', // 보험차익비과세
+    designAmount: 33301, // 설계금액
+    remainingLimit: 100000000, // 잔여한도
   },
-}
+};
 
-{/* 연금저축보험 */ }
+{
+  /* 연금저축보험 */
+}
 const PENSION_SAVINGS_INSURANCE_STEP1_DATA = {
   ContractorInfo: {
-    insStartDate: '2026-03-04',   // 보험시기
+    insStartDate: '2026-03-04', // 보험시기
     insStartPeriod: '2026-01-30', // 보험기간 start
-    insEndPeriod: '2046-03-04',   // 보험기간 end
-    pensionAge: 55,             // 개시연령
-    payoutTerm: 10,             // 지급기간
-    receiveMode: 'monthly',     // 수령방법
-    payoutType: '정액형',        // 연금지급형
-    payPeriod: 10,              // 납기
-    payCycle: 'month',          // 납입주기
+    insEndPeriod: '2046-03-04', // 보험기간 end
+    pensionAge: 55, // 개시연령
+    payoutTerm: 10, // 지급기간
+    receiveMode: 'monthly', // 수령방법
+    payoutType: '정액형', // 연금지급형
+    payPeriod: 10, // 납기
+    payCycle: 'month', // 납입주기
   },
   Policyholder: {
-    name: '김한화',                         // 계약자 이름
-    juminNumber: '900101-1******',         // 계약자 주민등록번호
-    infoAcquisitionPath: '단체계약',      // 개인정보취득경로
-    Relationship: '본인',                  // 계약자와의 관계
-    addresses: '경기도 부천시 원미구 역곡동',  // 주소
-    workAddress: '경상남도 진주시 (하대동)',  // 근무지 주소
-    contact: '010-1234-5678',               // 연락처
-    isBusinessOwner: 'Y',                   // 사업자 여부
-    email: 'qwer@hwgi.kr',                  // 이메일
-    electronicNoticeAgree: 'Y',             // 전자적 안내 동의 여부
-    taxFreeType: 'nonemonthly',             // 보험차익비과세
-    designAmount: 33301,                    // 설계금액
-    remainingLimit: 100000000,              // 잔여한도
+    name: '김한화', // 계약자 이름
+    juminNumber: '900101-1******', // 계약자 주민등록번호
+    infoAcquisitionPath: '단체계약', // 개인정보취득경로
+    Relationship: '본인', // 계약자와의 관계
+    addresses: '경기도 부천시 원미구 역곡동', // 주소
+    workAddress: '경상남도 진주시 (하대동)', // 근무지 주소
+    contact: '010-1234-5678', // 연락처
+    isBusinessOwner: 'Y', // 사업자 여부
+    email: 'qwer@hwgi.kr', // 이메일
+    electronicNoticeAgree: 'Y', // 전자적 안내 동의 여부
+    taxFreeType: 'nonemonthly', // 보험차익비과세
+    designAmount: 33301, // 설계금액
+    remainingLimit: 100000000, // 잔여한도
   },
-}
+};
 
 const INSURANCE_STEP1_DATA_BY_PRODUCT = {
   personal: PERSONAL_INSURANCE_STEP1_DATA,
@@ -625,10 +631,7 @@ export function LTPA350Step1({
           driveType: person.driveType ?? '',
           motorcycle: person.motorcycle ?? '',
           isDiscountApplied: false,
-          relationWithContractor:
-            'relationWithContractor' in person
-              ? (person.relationWithContractor ?? '')
-              : '',
+          relationWithContractor: 'relationWithContractor' in person ? (person.relationWithContractor ?? '') : '',
         },
       ])
     )
@@ -673,19 +676,21 @@ export function LTPA350Step1({
       ])
     )
   );
-  const [propertyAddressSelectionByTab, setPropertyAddressSelectionByTab] = useState<Record<string, PropertyAddressSelection>>(
+  const [propertyAddressSelectionByTab, setPropertyAddressSelectionByTab] = useState<
+    Record<string, PropertyAddressSelection>
+  >(
     Object.fromEntries(
       PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson.map((person, i) => [
         `tab${i + 1}`,
         person.type === 'property'
           ? {
-            home: person.isHome === 'Y',
-            office: person.isOffice === 'Y',
-          }
+              home: person.isHome === 'Y',
+              office: person.isOffice === 'Y',
+            }
           : {
-            home: false,
-            office: false,
-          },
+              home: false,
+              office: false,
+            },
       ])
     )
   );
@@ -705,7 +710,9 @@ export function LTPA350Step1({
       ])
     )
   );
-  const [propertyIsMultipleComplexBuildingByTab, setPropertyIsMultipleComplexBuildingByTab] = useState<Record<string, boolean>>(
+  const [propertyIsMultipleComplexBuildingByTab, setPropertyIsMultipleComplexBuildingByTab] = useState<
+    Record<string, boolean>
+  >(
     Object.fromEntries(
       PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson.map((person, i) => [
         `tab${i + 1}`,
@@ -725,10 +732,7 @@ export function LTPA350Step1({
   });
   const [groupInsuredForm, setGroupInsuredForm] = useState<Record<string, GroupInsuredFormItem>>(
     Object.fromEntries(
-      GROUP_INSURANCE_STEP1_DATA.GroupInfo.map((item, i) => [
-        `tab${i + 1}`,
-        { driveType: item.driveType ?? '' },
-      ])
+      GROUP_INSURANCE_STEP1_DATA.GroupInfo.map((item, i) => [`tab${i + 1}`, { driveType: item.driveType ?? '' }])
     )
   );
   const [groupPolicyholderIsBusinessOwner, setGroupPolicyholderIsBusinessOwner] = useState(
@@ -817,8 +821,11 @@ export function LTPA350Step1({
     }))
   );
 
-  const childCurrentPersonIndex = CHILD_FETUS_INSURANCE_STEP1_DATA.InsuredPerson.findIndex((_, i) => `tab${i + 1}` === childTabValue);
-  const childCurrentPerson = CHILD_FETUS_INSURANCE_STEP1_DATA.InsuredPerson[childCurrentPersonIndex >= 0 ? childCurrentPersonIndex : 0]!;
+  const childCurrentPersonIndex = CHILD_FETUS_INSURANCE_STEP1_DATA.InsuredPerson.findIndex(
+    (_, i) => `tab${i + 1}` === childTabValue
+  );
+  const childCurrentPerson =
+    CHILD_FETUS_INSURANCE_STEP1_DATA.InsuredPerson[childCurrentPersonIndex >= 0 ? childCurrentPersonIndex : 0]!;
 
   // 재물보험 탭
   const {
@@ -834,9 +841,14 @@ export function LTPA350Step1({
     }))
   );
 
-  const propertyCurrentPersonIndex = PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson.findIndex((_, i) => `tab${i + 1}` === propertyTabValue);
-  const propertyCurrentPerson = PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson[propertyCurrentPersonIndex >= 0 ? propertyCurrentPersonIndex : 0]!;
-  const propertyCurrentDefaultPerson = isPropertyInsuredDefaultPerson(propertyCurrentPerson) ? propertyCurrentPerson : null;
+  const propertyCurrentPersonIndex = PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson.findIndex(
+    (_, i) => `tab${i + 1}` === propertyTabValue
+  );
+  const propertyCurrentPerson =
+    PROPERTY_INSURANCE_STEP1_DATA.InsuredPerson[propertyCurrentPersonIndex >= 0 ? propertyCurrentPersonIndex : 0]!;
+  const propertyCurrentDefaultPerson = isPropertyInsuredDefaultPerson(propertyCurrentPerson)
+    ? propertyCurrentPerson
+    : null;
   const propertyCurrentOwnerPerson = isPropertyOwnerPerson(propertyCurrentPerson) ? propertyCurrentPerson : null;
   const isPropertyInsuredTab = propertyCurrentDefaultPerson !== null;
   const isPropertyOwnerTab = propertyCurrentOwnerPerson !== null;
@@ -855,8 +867,11 @@ export function LTPA350Step1({
     }))
   );
 
-  const groupCurrentItemIndex = GROUP_INSURANCE_STEP1_DATA.GroupInfo.findIndex((_, i) => `tab${i + 1}` === groupTabValue);
-  const groupCurrentItem = GROUP_INSURANCE_STEP1_DATA.GroupInfo[groupCurrentItemIndex >= 0 ? groupCurrentItemIndex : 0]!;
+  const groupCurrentItemIndex = GROUP_INSURANCE_STEP1_DATA.GroupInfo.findIndex(
+    (_, i) => `tab${i + 1}` === groupTabValue
+  );
+  const groupCurrentItem =
+    GROUP_INSURANCE_STEP1_DATA.GroupInfo[groupCurrentItemIndex >= 0 ? groupCurrentItemIndex : 0]!;
 
   // ---------------------------------------------------------------------------
   // 4) Handlers
@@ -886,9 +901,12 @@ export function LTPA350Step1({
     handleChildContractFieldChange('insuranceStartDate', new Date().toISOString().slice(0, 10));
   }, [handleChildContractFieldChange]);
 
-  const updateChildInsuredField = useCallback((tab: string, field: keyof InsuredPersonFormItem, value: string | boolean) => {
-    setChildInsuredForm((prev) => ({ ...prev, [tab]: { ...prev[tab]!, [field]: value } }));
-  }, []);
+  const updateChildInsuredField = useCallback(
+    (tab: string, field: keyof InsuredPersonFormItem, value: string | boolean) => {
+      setChildInsuredForm((prev) => ({ ...prev, [tab]: { ...prev[tab]!, [field]: value } }));
+    },
+    []
+  );
 
   const handleSimpleChildInsuredBirthDateChange = useCallback((_: unknown, formattedValue?: string) => {
     setSimpleChildInsuredBirthDate(formattedValue ?? '');
@@ -903,9 +921,12 @@ export function LTPA350Step1({
     handlePropertyContractFieldChange('insuranceStartDate', new Date().toISOString().slice(0, 10));
   }, [handlePropertyContractFieldChange]);
 
-  const updatePropertyInsuredField = useCallback((tab: string, field: keyof InsuredPersonFormItem, value: string | boolean) => {
-    setPropertyInsuredForm((prev) => ({ ...prev, [tab]: { ...prev[tab]!, [field]: value } }));
-  }, []);
+  const updatePropertyInsuredField = useCallback(
+    (tab: string, field: keyof InsuredPersonFormItem, value: string | boolean) => {
+      setPropertyInsuredForm((prev) => ({ ...prev, [tab]: { ...prev[tab]!, [field]: value } }));
+    },
+    []
+  );
 
   const handleSimplePropertyInsuredBirthDateChange = useCallback((_: unknown, formattedValue?: string) => {
     setSimplePropertyInsuredBirthDate(formattedValue ?? '');
@@ -947,31 +968,37 @@ export function LTPA350Step1({
     }
   }, []);
 
-  const handlePropertyOwnerAddressSelectionChange = useCallback((tab: string, source: 'home' | 'office', checked: boolean) => {
-    setPropertyAddressSelectionByTab((prev) => ({
-      ...prev,
-      [tab]: {
-        home: source === 'home' ? checked : (prev[tab]?.home ?? false),
-        office: source === 'office' ? checked : (prev[tab]?.office ?? false),
-      },
-    }));
-  }, []);
+  const handlePropertyOwnerAddressSelectionChange = useCallback(
+    (tab: string, source: 'home' | 'office', checked: boolean) => {
+      setPropertyAddressSelectionByTab((prev) => ({
+        ...prev,
+        [tab]: {
+          home: source === 'home' ? checked : (prev[tab]?.home ?? false),
+          office: source === 'office' ? checked : (prev[tab]?.office ?? false),
+        },
+      }));
+    },
+    []
+  );
 
-  const handlePropertyOwnerAddressImport = useCallback((tab: string) => {
-    const selection = propertyAddressSelectionByTab[tab] ?? { home: false, office: false };
+  const handlePropertyOwnerAddressImport = useCallback(
+    (tab: string) => {
+      const selection = propertyAddressSelectionByTab[tab] ?? { home: false, office: false };
 
-    let nextLocation = '';
-    if (selection.home) {
-      nextLocation = PROPERTY_INSURANCE_STEP1_DATA.Policyholder.addresses;
-    } else if (selection.office) {
-      nextLocation = PROPERTY_INSURANCE_STEP1_DATA.Policyholder.workAddress;
-    }
+      let nextLocation = '';
+      if (selection.home) {
+        nextLocation = PROPERTY_INSURANCE_STEP1_DATA.Policyholder.addresses;
+      } else if (selection.office) {
+        nextLocation = PROPERTY_INSURANCE_STEP1_DATA.Policyholder.workAddress;
+      }
 
-    setPropertyLocationByTab((prev) => ({
-      ...prev,
-      [tab]: nextLocation,
-    }));
-  }, [propertyAddressSelectionByTab]);
+      setPropertyLocationByTab((prev) => ({
+        ...prev,
+        [tab]: nextLocation,
+      }));
+    },
+    [propertyAddressSelectionByTab]
+  );
 
   // 단체보험 핸들러
   const handleGroupContractFieldChange = useCallback((field: ContractFormField, value: string) => {
@@ -996,8 +1023,8 @@ export function LTPA350Step1({
   }, []);
 
   const tooltipContent = [
-    '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br/> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.'
-  ]
+    '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br/> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.',
+  ];
 
   return (
     // ---------------------------------------------------------------------------
@@ -1008,18 +1035,27 @@ export function LTPA350Step1({
         <LayoutScrollWrap>
           <LayoutScrollItem>
             <Gcol placement={'ss'} className="w-full gap-[1.2rem]">
-
               {/* 인보험 */}
               <Typo variant={'heading-md'}>인보험(확인용 타이틀 추후 삭제)</Typo>
               <Grow placement={'ss'} className="w-full">
-                <FormTable caption="보험정보"cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                <FormTable
+                  caption="보험정보"
+                  cols={[
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                  ]}
+                >
                   <FormRow>
                     <FormCell title={'보험시기'}>
                       <DatePickerInput
                         value={contractForm.insuranceStartDate}
                         mode={'single'}
                         width={'9rem'}
-                        onChange={(_, formattedValue) => handleContractFieldChange('insuranceStartDate', formattedValue ?? '')}
+                        onChange={(_, formattedValue) =>
+                          handleContractFieldChange('insuranceStartDate', formattedValue ?? '')
+                        }
                       />
                       <Button
                         color={'secondary'}
@@ -1127,11 +1163,36 @@ export function LTPA350Step1({
                       >
                         {[
                           { value: 'type1', id: 'notification-type-1', label: '1형(일반고지형)', justifyStart: true },
-                          { value: 'type2', id: 'notification-type-2', label: '2형(건강고지형II(6년))', justifyStart: true },
-                          { value: 'type3', id: 'notification-type-3', label: '3형(건강고지형II(7년))', justifyStart: true },
-                          { value: 'type4', id: 'notification-type-4', label: '4형(건강고지형II(8년))', justifyStart: true },
-                          { value: 'type5', id: 'notification-type-5', label: '5형(건강고지형II(9년))', justifyStart: true },
-                          { value: 'type6', id: 'notification-type-6', label: '6형(건강고지형II(10년))', justifyStart: true },
+                          {
+                            value: 'type2',
+                            id: 'notification-type-2',
+                            label: '2형(건강고지형II(6년))',
+                            justifyStart: true,
+                          },
+                          {
+                            value: 'type3',
+                            id: 'notification-type-3',
+                            label: '3형(건강고지형II(7년))',
+                            justifyStart: true,
+                          },
+                          {
+                            value: 'type4',
+                            id: 'notification-type-4',
+                            label: '4형(건강고지형II(8년))',
+                            justifyStart: true,
+                          },
+                          {
+                            value: 'type5',
+                            id: 'notification-type-5',
+                            label: '5형(건강고지형II(9년))',
+                            justifyStart: true,
+                          },
+                          {
+                            value: 'type6',
+                            id: 'notification-type-6',
+                            label: '6형(건강고지형II(10년))',
+                            justifyStart: true,
+                          },
                         ].map((option) => (
                           <RadioGroupItem
                             key={option.id}
@@ -1169,38 +1230,68 @@ export function LTPA350Step1({
                 >
                   <div className="w-full h-full relative">
                     <Gcol placement={'ss'}>
-                      <FormTable caption="행/열 병합 케이스" lineTop={false} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="행/열 병합 케이스"
+                        lineTop={false}
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         {/* 상세 화면 전용 */}
                         <FormRow>
                           <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
                             <Grow className="flex-nowrap w-full" placement={'bwc'}>
                               <Grow>
                                 <Input aria-label="피보험자명" width={'7.6rem'} value={currentPerson.name} readOnly />
-                                <Input aria-label="주민등록번호 마스킹" width={'12rem'} value={currentPerson.juminNumber} readOnly />
-                                <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                                <Input
+                                  aria-label="주민등록번호 마스킹"
+                                  width={'12rem'}
+                                  value={currentPerson.juminNumber}
+                                  readOnly
+                                />
+                                <Button
+                                  aria-label="피보험자 검색"
+                                  variant={'outlined'}
+                                  only="icon"
+                                  size={'lg'}
+                                  color={'gray-light'}
+                                >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="피보험자 나이" width={'4.8rem'} value={`${currentPerson.age}세`} readOnly />
-                                <Input aria-label="피보험자 성별" width={'3.2rem'} value={currentPerson.gender} readOnly />
+                                <Input
+                                  aria-label="피보험자 나이"
+                                  width={'4.8rem'}
+                                  value={`${currentPerson.age}세`}
+                                  readOnly
+                                />
+                                <Input
+                                  aria-label="피보험자 성별"
+                                  width={'3.2rem'}
+                                  value={currentPerson.gender}
+                                  readOnly
+                                />
                               </Grow>
                               <Grow gap={2}>
                                 <KeyValueItem label={'상령일'}>
                                   <Grow gap={1}>
-                                    <Typo weight={'bold'}>
-                                      {currentPerson.ageStandardDate}
-                                    </Typo>
-                                    <Badge color={'blue'} size={'md'} variant={'contained'}>{currentPerson.ageDDay}</Badge>
+                                    <Typo weight={'bold'}>{currentPerson.ageStandardDate}</Typo>
+                                    <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                      {currentPerson.ageDDay}
+                                    </Badge>
                                   </Grow>
                                 </KeyValueItem>
                                 <KeyValueItem label={'설계동의'}>
                                   <Grow gap={1}>
-                                    <Typo weight={'bold'}>
-                                      {currentPerson.designAgreeDate}
-                                    </Typo>
-                                    <Badge color={'red'} size={'md'} variant={'contained'}>{currentPerson.designAgreeDDay}</Badge>
+                                    <Typo weight={'bold'}>{currentPerson.designAgreeDate}</Typo>
+                                    <Badge color={'red'} size={'md'} variant={'contained'}>
+                                      {currentPerson.designAgreeDDay}
+                                    </Badge>
                                   </Grow>
                                 </KeyValueItem>
-                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => { }}>
+                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                   알림톡발송
                                 </Button>
                               </Grow>
@@ -1213,32 +1304,32 @@ export function LTPA350Step1({
                           <FormCell title="피보험자" titleVariant="section">
                             <InputCombo
                               clear
-                              onChange={() => { }}
+                              onChange={() => {}}
                               options={[
                                 {
                                   label: <div>박은빈</div>,
-                                  value: ''
+                                  value: '',
                                 },
                                 {
                                   label: <div>김민지</div>,
-                                  value: 'LA24094848896'
+                                  value: 'LA24094848896',
                                 },
                                 {
                                   label: <div>이도현</div>,
-                                  value: 'LA25094848897'
+                                  value: 'LA25094848897',
                                 },
                                 {
                                   label: <div>최수영</div>,
-                                  value: 'LA25094848898'
+                                  value: 'LA25094848898',
                                 },
                                 {
                                   label: <div>박보검</div>,
-                                  value: 'LA25094848899'
+                                  value: 'LA25094848899',
                                 },
                                 {
                                   label: <div>한지민</div>,
-                                  value: 'LA25094848900'
-                                }
+                                  value: 'LA25094848900',
+                                },
                               ]}
                               placeholder=""
                               popoverPlacement="bottom"
@@ -1248,12 +1339,22 @@ export function LTPA350Step1({
                               variant="default"
                               width={'7.6rem'}
                             />
-                            <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <Button
+                              aria-label="피보험자 검색"
+                              variant={'outlined'}
+                              only="icon"
+                              size={'lg'}
+                              color={'gray-light'}
+                            >
                               <SearchIcon color={'var(--color-primary-50)'} />
                             </Button>
-                            <RadioGroup className='flex-row gap-3'>
-                              <RadioGroupItem value="man" id="man" checked>남</RadioGroupItem>
-                              <RadioGroupItem value="woman" id="woman">여</RadioGroupItem>
+                            <RadioGroup className="flex-row gap-3">
+                              <RadioGroupItem value="man" id="man" checked>
+                                남
+                              </RadioGroupItem>
+                              <RadioGroupItem value="woman" id="woman">
+                                여
+                              </RadioGroupItem>
                             </RadioGroup>
                           </FormCell>
                           <FormCell title="연령">
@@ -1277,7 +1378,13 @@ export function LTPA350Step1({
                             <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
                               <Input aria-label="직업코드" width={'7.6rem'} value={currentPerson.jobCode} readOnly />
                               <Input aria-label="직업분류" width={'27.4rem'} value={currentPerson.jobName} readOnly />
-                              <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
                               <Input aria-label="피보험자 나이" width={'2xs'} value={currentPerson.jobGrade} readOnly />
@@ -1289,7 +1396,7 @@ export function LTPA350Step1({
                             <RadioGroup
                               value={insuredForm[tabValue]?.driveType ?? ''}
                               onValueChange={(v) => updateInsuredField(tabValue, 'driveType', v)}
-                              className='flex-row gap-3'
+                              className="flex-row gap-3"
                             >
                               {[
                                 { value: 'private', id: 'driving-type-private', label: '자가용' },
@@ -1306,11 +1413,11 @@ export function LTPA350Step1({
                             <RadioGroup
                               value={insuredForm[tabValue]?.motorcycle ?? ''}
                               onValueChange={(v) => updateInsuredField(tabValue, 'motorcycle', v)}
-                              className='flex-row gap-3'
+                              className="flex-row gap-3"
                             >
                               {[
                                 { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
-                                { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' }
+                                { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
                               ].map((option) => (
                                 <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                                   {option.label}
@@ -1321,7 +1428,8 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="주피와 관계">
-                            <Input aria-label="피보험자명" width={'7.6rem'} value={currentPerson.name} readOnly />는 계약자의
+                            <Input aria-label="피보험자명" width={'7.6rem'} value={currentPerson.name} readOnly />는
+                            계약자의
                             <NativeSelect
                               aria-label="계약자와의 관계 선택"
                               width={'15.8rem'}
@@ -1330,13 +1438,26 @@ export function LTPA350Step1({
                               onChange={(e) => updateInsuredField(tabValue, 'relationWithContractor', e.target.value)}
                             >
                               {COMMON_RELATION_OPTIONS.map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
                           <FormCell title="(실손)동시설계">
-                            <Input aria-label="코드" width={'13rem'} value={currentPerson.actualLossSimulDesignNo} readOnly />
-                            <Input aria-label="코드" width={'13rem'} value={String(currentPerson.premium)} commaAmount readOnly />
+                            <Input
+                              aria-label="코드"
+                              width={'13rem'}
+                              value={currentPerson.actualLossSimulDesignNo}
+                              readOnly
+                            />
+                            <Input
+                              aria-label="코드"
+                              width={'13rem'}
+                              value={String(currentPerson.premium)}
+                              commaAmount
+                              readOnly
+                            />
                           </FormCell>
                         </FormRow>
                         <FormRow>
@@ -1350,7 +1471,13 @@ export function LTPA350Step1({
                             >
                               가족연계할인
                             </Checkbox>
-                            <Button aria-label="피보험자 검색" variant="outlined" only="icon" size="lg" color="gray-light">
+                            <Button
+                              aria-label="피보험자 검색"
+                              variant="outlined"
+                              only="icon"
+                              size="lg"
+                              color="gray-light"
+                            >
                               <SearchIcon color="var(--color-primary-50)" />
                             </Button>
                           </FormCell>
@@ -1358,13 +1485,32 @@ export function LTPA350Step1({
                       </FormTable>
 
                       {/* 간편 화면 미노출 */}
-                      <FormTable caption="계약자 정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="계약자 정보"
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         <FormRow>
                           <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
                             <Grow>
                               <Input aria-label="계약자명" width="7.6rem" value={POLICYHOLDER.name} readOnly />
-                              <Input aria-label="주민등록번호 마스킹" width="12rem" value={POLICYHOLDER.juminNumber} readOnly />
-                              <Button aria-label="피보험자 검색" variant="outlined" only="icon" color="gray-light" size="lg">
+                              <Input
+                                aria-label="주민등록번호 마스킹"
+                                width="12rem"
+                                value={POLICYHOLDER.juminNumber}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant="outlined"
+                                only="icon"
+                                color="gray-light"
+                                size="lg"
+                              >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                               <Checkbox
@@ -1381,7 +1527,8 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="계약자와 관계">
-                            <Input aria-label="피보험자명" width={'7.6rem'} value={currentPerson.name} readOnly />는 계약자의
+                            <Input aria-label="피보험자명" width={'7.6rem'} value={currentPerson.name} readOnly />는
+                            계약자의
                             <NativeSelect
                               aria-label="계약자와의 관계 선택"
                               width={'15.8rem'}
@@ -1390,7 +1537,9 @@ export function LTPA350Step1({
                               onChange={(e) => setContractorRelationshipValue(e.target.value)}
                             >
                               {COMMON_RELATION_OPTIONS.map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -1406,7 +1555,9 @@ export function LTPA350Step1({
                                 { value: 'selection', id: 'personalinfo-1', label: '고객직접선택' },
                                 { value: 'selection2', id: 'personalinfo-2', label: '선택' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -1423,25 +1574,22 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="연락처">
-                            <Grow placement='bwc'>
+                            <Grow placement="bwc">
                               <Grow>{POLICYHOLDER.contact}</Grow>
                               <Grow>
                                 <KeyValueItem label="전자적안내동의">
-                                  <Grow placement='sc' gap="0">
-                                    <Badge color="green" size="md" variant="ghost">{POLICYHOLDER.electronicNoticeAgree}</Badge>
+                                  <Grow placement="sc" gap="0">
+                                    <Badge color="green" size="md" variant="ghost">
+                                      {POLICYHOLDER.electronicNoticeAgree}
+                                    </Badge>
 
-                                    <TooltipQ>
-                                {tooltipContent[0]}
-                                    </TooltipQ>
-
+                                    <TooltipQ>{tooltipContent[0]}</TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
                             </Grow>
                           </FormCell>
-                          <FormCell title="이메일">
-                            {POLICYHOLDER.email}
-                          </FormCell>
+                          <FormCell title="이메일">{POLICYHOLDER.email}</FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title="보험차익비과세">
@@ -1464,15 +1612,29 @@ export function LTPA350Step1({
                                 { value: 'monthly', id: 'monthly-payment-monthly', label: '월납식비과세' },
                                 { value: 'nonemonthly', id: 'monthly-payment-nonemonthly', label: '비월납식비과세' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
                           <FormCell title="설계금액/잔여한도">
-                            <Input aria-label="설계금액" width="7.1rem" value={String(POLICYHOLDER.designAmount)} commaAmount readOnly />
+                            <Input
+                              aria-label="설계금액"
+                              width="7.1rem"
+                              value={String(POLICYHOLDER.designAmount)}
+                              commaAmount
+                              readOnly
+                            />
                             /
-                            <Input aria-label="잔여한도" width="7.1rem" value={String(POLICYHOLDER.remainingLimit)} commaAmount readOnly />
-                            <Button color="secondary" size='lg' variant="outlined" onClick={() => { }}>
+                            <Input
+                              aria-label="잔여한도"
+                              width="7.1rem"
+                              value={String(POLICYHOLDER.remainingLimit)}
+                              commaAmount
+                              readOnly
+                            />
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               조회
                             </Button>
                           </FormCell>
@@ -1488,16 +1650,32 @@ export function LTPA350Step1({
               {/* 어린이(태아) */}
               <Typo variant={'heading-md'}>어린이(태아)(확인용 타이틀 추후 삭제)</Typo>
               <Grow placement={'ss'} className={'w-full'}>
-                <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                <FormTable
+                  caption="보험정보"
+                  cols={[
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                  ]}
+                >
                   <FormRow>
                     <FormCell title={'보험시기'}>
                       <DatePickerInput
                         value={childContractForm.insuranceStartDate}
                         mode={'single'}
                         width={'9rem'}
-                        onChange={(_, formattedValue) => handleChildContractFieldChange('insuranceStartDate', formattedValue ?? '')}
+                        onChange={(_, formattedValue) =>
+                          handleChildContractFieldChange('insuranceStartDate', formattedValue ?? '')
+                        }
                       />
-                      <Button color={'secondary'} onClick={handleChildTodayClick} only={'default'} size={'lg'} variant={'outlined'}>
+                      <Button
+                        color={'secondary'}
+                        onClick={handleChildTodayClick}
+                        only={'default'}
+                        size={'lg'}
+                        variant={'outlined'}
+                      >
                         오늘
                       </Button>
                     </FormCell>
@@ -1510,7 +1688,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={childContractForm.maturityValue}
                         onValueChange={(value) => handleChildContractFieldChange('maturityValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '100', id: 'child-insurance-period-100', label: '100세만기' },
@@ -1532,7 +1710,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={childContractForm.paymentPeriodValue}
                         onValueChange={(value) => handleChildContractFieldChange('paymentPeriodValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '10', id: 'child-payment-period-10', label: '10년납' },
@@ -1553,11 +1731,9 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={childContractForm.paymentCycleValue}
                         onValueChange={(value) => handleChildContractFieldChange('paymentCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
-                        {[
-                          { value: 'month', id: 'child-payment-cycle-monthly', label: '월납' },
-                        ].map((option) => (
+                        {[{ value: 'month', id: 'child-payment-cycle-monthly', label: '월납' }].map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -1568,7 +1744,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={childContractForm.renewalCycleValue}
                         onValueChange={(value) => handleChildContractFieldChange('renewalCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '20', id: 'child-renewal-period-20', label: '20년' },
@@ -1583,8 +1759,8 @@ export function LTPA350Step1({
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'태아여부'} >
-                      <Grow className='flex gap-3'>
+                    <FormCell title={'태아여부'}>
+                      <Grow className="flex gap-3">
                         <Checkbox
                           color="primary"
                           checked={childBabyChecked}
@@ -1650,27 +1826,64 @@ export function LTPA350Step1({
                 >
                   <div className="w-full h-full relative">
                     <Gcol placement={'ss'}>
-                      <FormTable caption="피보험자 정보" lineTop={false} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="피보험자 정보"
+                        lineTop={false}
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         <FormRow>
                           <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
                             <Grow className="flex-nowrap w-full" placement={'bwc'}>
                               <Grow>
-                                <Input aria-label="피보험자명" width={'7.6rem'} value={childCurrentPerson?.name ?? ''} readOnly />
-                                <Input aria-label="주민등록번호 마스킹" width={'12rem'} value={childCurrentPerson?.juminNumber ?? ''} readOnly />
-                                <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                                <Input
+                                  aria-label="피보험자명"
+                                  width={'7.6rem'}
+                                  value={childCurrentPerson?.name ?? ''}
+                                  readOnly
+                                />
+                                <Input
+                                  aria-label="주민등록번호 마스킹"
+                                  width={'12rem'}
+                                  value={childCurrentPerson?.juminNumber ?? ''}
+                                  readOnly
+                                />
+                                <Button
+                                  aria-label="피보험자 검색"
+                                  variant={'outlined'}
+                                  only="icon"
+                                  size={'lg'}
+                                  color={'gray-light'}
+                                >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="피보험자 나이" width={'4.6rem'} value={`${childCurrentPerson?.age ?? 0}세`} readOnly />
-                                <Input aria-label="피보험자 성별" width={'3.2rem'} value={childCurrentPerson?.gender ?? ''} readOnly />
+                                <Input
+                                  aria-label="피보험자 나이"
+                                  width={'4.6rem'}
+                                  value={`${childCurrentPerson?.age ?? 0}세`}
+                                  readOnly
+                                />
+                                <Input
+                                  aria-label="피보험자 성별"
+                                  width={'3.2rem'}
+                                  value={childCurrentPerson?.gender ?? ''}
+                                  readOnly
+                                />
                               </Grow>
                               <Grow gap={2}>
                                 <KeyValueItem label={'상령일'}>
                                   <Grow gap={1}>
                                     <Typo weight={'bold'}>{childCurrentPerson?.ageStandardDate ?? ''}</Typo>
-                                    <Badge color={'blue'} size={'md'} variant={'contained'}>{childCurrentPerson?.ageDDay ?? ''}</Badge>
+                                    <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                      {childCurrentPerson?.ageDDay ?? ''}
+                                    </Badge>
                                   </Grow>
                                 </KeyValueItem>
-                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => { }}>
+                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                   알림톡발송
                                 </Button>
                               </Grow>
@@ -1682,32 +1895,32 @@ export function LTPA350Step1({
                           <FormCell title="피보험자" titleVariant="section">
                             <InputCombo
                               clear
-                              onChange={() => { }}
+                              onChange={() => {}}
                               options={[
                                 {
                                   label: <div>박은빈</div>,
-                                  value: ''
+                                  value: '',
                                 },
                                 {
                                   label: <div>김민지</div>,
-                                  value: 'LA24094848896'
+                                  value: 'LA24094848896',
                                 },
                                 {
                                   label: <div>이도현</div>,
-                                  value: 'LA25094848897'
+                                  value: 'LA25094848897',
                                 },
                                 {
                                   label: <div>최수영</div>,
-                                  value: 'LA25094848898'
+                                  value: 'LA25094848898',
                                 },
                                 {
                                   label: <div>박보검</div>,
-                                  value: 'LA25094848899'
+                                  value: 'LA25094848899',
                                 },
                                 {
                                   label: <div>한지민</div>,
-                                  value: 'LA25094848900'
-                                }
+                                  value: 'LA25094848900',
+                                },
                               ]}
                               placeholder=""
                               popoverPlacement="bottom"
@@ -1717,12 +1930,22 @@ export function LTPA350Step1({
                               variant="default"
                               width={'7.6rem'}
                             />
-                            <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <Button
+                              aria-label="피보험자 검색"
+                              variant={'outlined'}
+                              only="icon"
+                              size={'lg'}
+                              color={'gray-light'}
+                            >
                               <SearchIcon color={'var(--color-primary-50)'} />
                             </Button>
-                            <RadioGroup className='flex-row gap-3'>
-                              <RadioGroupItem value="man" id="man" checked>남</RadioGroupItem>
-                              <RadioGroupItem value="woman" id="woman">여</RadioGroupItem>
+                            <RadioGroup className="flex-row gap-3">
+                              <RadioGroupItem value="man" id="man" checked>
+                                남
+                              </RadioGroupItem>
+                              <RadioGroupItem value="woman" id="woman">
+                                여
+                              </RadioGroupItem>
                             </RadioGroup>
                           </FormCell>
                           <FormCell title="연령">
@@ -1744,12 +1967,33 @@ export function LTPA350Step1({
                         <FormRow>
                           <FormCell title="직업" colSpan={3}>
                             <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
-                              <Input aria-label="직업코드" width={'7.6rem'} value={childCurrentPerson?.jobCode ?? ''} readOnly />
-                              <Input aria-label="직업분류" width={'27.4rem'} value={childCurrentPerson?.jobName ?? ''} readOnly />
-                              <Button aria-label="직업 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Input
+                                aria-label="직업코드"
+                                width={'7.6rem'}
+                                value={childCurrentPerson?.jobCode ?? ''}
+                                readOnly
+                              />
+                              <Input
+                                aria-label="직업분류"
+                                width={'27.4rem'}
+                                value={childCurrentPerson?.jobName ?? ''}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="직업 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                              <Input aria-label="직업급수" width={'2xs'} value={childCurrentPerson?.jobGrade ?? ''} readOnly />
+                              <Input
+                                aria-label="직업급수"
+                                width={'2xs'}
+                                value={childCurrentPerson?.jobGrade ?? ''}
+                                readOnly
+                              />
                             </Grow>
                           </FormCell>
                         </FormRow>
@@ -1758,7 +2002,7 @@ export function LTPA350Step1({
                             <RadioGroup
                               value={childInsuredForm[childTabValue]?.driveType ?? ''}
                               onValueChange={(v) => updateChildInsuredField(childTabValue, 'driveType', v)}
-                              className='flex-row gap-3'
+                              className="flex-row gap-3"
                             >
                               {[
                                 { value: 'private', id: 'child-driving-type-private', label: '자가용' },
@@ -1775,7 +2019,7 @@ export function LTPA350Step1({
                             <RadioGroup
                               value={childInsuredForm[childTabValue]?.motorcycle ?? ''}
                               onValueChange={(v) => updateChildInsuredField(childTabValue, 'motorcycle', v)}
-                              className='flex-row gap-3'
+                              className="flex-row gap-3"
                             >
                               {[
                                 { value: 'drives', id: 'child-motorcycle-drives', label: '운전함' },
@@ -1790,22 +2034,43 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="주피와 관계">
-                            <Input aria-label="피보험자명" width={'7.6rem'} value={childCurrentPerson?.name ?? ''} readOnly />는 계약자의
+                            <Input
+                              aria-label="피보험자명"
+                              width={'7.6rem'}
+                              value={childCurrentPerson?.name ?? ''}
+                              readOnly
+                            />
+                            는 계약자의
                             <NativeSelect
                               aria-label="계약자와의 관계 선택"
                               width={'15.8rem'}
                               required
                               value={childInsuredForm[childTabValue]?.relationWithContractor ?? ''}
-                              onChange={(e) => updateChildInsuredField(childTabValue, 'relationWithContractor', e.target.value)}
+                              onChange={(e) =>
+                                updateChildInsuredField(childTabValue, 'relationWithContractor', e.target.value)
+                              }
                             >
                               {COMMON_RELATION_OPTIONS.map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
                           <FormCell title="(실손)동시설계">
-                            <Input aria-label="설계번호" width={'13rem'} value={childCurrentPerson?.actualLossSimulDesignNo ?? ''} readOnly />
-                            <Input aria-label="보험료" width={'13rem'} value={String(childCurrentPerson?.premium ?? 0)} commaAmount readOnly />
+                            <Input
+                              aria-label="설계번호"
+                              width={'13rem'}
+                              value={childCurrentPerson?.actualLossSimulDesignNo ?? ''}
+                              readOnly
+                            />
+                            <Input
+                              aria-label="보험료"
+                              width={'13rem'}
+                              value={String(childCurrentPerson?.premium ?? 0)}
+                              commaAmount
+                              readOnly
+                            />
                           </FormCell>
                         </FormRow>
                         <FormRow>
@@ -1813,7 +2078,9 @@ export function LTPA350Step1({
                             <Checkbox
                               color="primary"
                               checked={childInsuredForm[childTabValue]?.isDiscountApplied ?? false}
-                              onCheckedChange={(c) => updateChildInsuredField(childTabValue, 'isDiscountApplied', c === true)}
+                              onCheckedChange={(c) =>
+                                updateChildInsuredField(childTabValue, 'isDiscountApplied', c === true)
+                              }
                               size="md"
                               variant="default"
                             >
@@ -1824,28 +2091,59 @@ export function LTPA350Step1({
                             </Button>
                           </FormCell>
                           <FormCell title="임신주수">
-                            <Input aria-label="임신주수" width={'5rem'} value={String(childCurrentPerson?.weeksOfPregnancy ?? '')} required />
+                            <Input
+                              aria-label="임신주수"
+                              width={'5rem'}
+                              value={String(childCurrentPerson?.weeksOfPregnancy ?? '')}
+                              required
+                            />
                             주 (출산예정일)
-
                             <DatePickerInput
                               value={childCurrentPerson.dueDate}
                               mode={'single'}
                               width={'9rem'}
-                              onChange={(_, formattedValue) => handleChildContractFieldChange('insuranceStartDate', formattedValue ?? '')}
+                              onChange={(_, formattedValue) =>
+                                handleChildContractFieldChange('insuranceStartDate', formattedValue ?? '')
+                              }
                               required
-                            />)
+                            />
+                            )
                           </FormCell>
                         </FormRow>
                       </FormTable>
 
                       {/* 간편 화면 미노출 */}
-                      <FormTable caption="계약자 정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="계약자 정보"
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         <FormRow>
                           <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
                             <Grow>
-                              <Input aria-label="계약자명" width="7.6rem" value={CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.name} readOnly />
-                              <Input aria-label="주민등록번호 마스킹" width="12rem" value={CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.juminNumber} readOnly />
-                              <Button aria-label="계약자 검색" variant="outlined" only="icon" color="gray-light" size="lg">
+                              <Input
+                                aria-label="계약자명"
+                                width="7.6rem"
+                                value={CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.name}
+                                readOnly
+                              />
+                              <Input
+                                aria-label="주민등록번호 마스킹"
+                                width="12rem"
+                                value={CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.juminNumber}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="계약자 검색"
+                                variant="outlined"
+                                only="icon"
+                                color="gray-light"
+                                size="lg"
+                              >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                               <Checkbox
@@ -1862,7 +2160,13 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="계약자와 관계">
-                            <Input aria-label="피보험자명" width={'7.6rem'} value={childCurrentPerson?.name ?? ''} readOnly />는 계약자의
+                            <Input
+                              aria-label="피보험자명"
+                              width={'7.6rem'}
+                              value={childCurrentPerson?.name ?? ''}
+                              readOnly
+                            />
+                            는 계약자의
                             <NativeSelect
                               aria-label="계약자와의 관계 선택"
                               width={'15.8rem'}
@@ -1871,7 +2175,9 @@ export function LTPA350Step1({
                               onChange={(e) => setChildContractorRelationshipValue(e.target.value)}
                             >
                               {COMMON_RELATION_OPTIONS.map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -1887,7 +2193,9 @@ export function LTPA350Step1({
                                 { value: 'selection', id: 'child-personalinfo-1', label: '고객직접선택' },
                                 { value: 'selection2', id: 'child-personalinfo-2', label: '선택' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -1904,23 +2212,21 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="연락처">
-                            <Grow placement='bwc'>
+                            <Grow placement="bwc">
                               <Grow>{CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.contact}</Grow>
                               <Grow>
                                 <KeyValueItem label="전자적안내동의">
-                                  <Grow placement='sc' gap="0">
-                                    <Badge color="green" size="md" variant="ghost">{POLICYHOLDER.electronicNoticeAgree}</Badge>
-                                    <TooltipQ>
-                                {tooltipContent[0]}
-                                    </TooltipQ>
+                                  <Grow placement="sc" gap="0">
+                                    <Badge color="green" size="md" variant="ghost">
+                                      {POLICYHOLDER.electronicNoticeAgree}
+                                    </Badge>
+                                    <TooltipQ>{tooltipContent[0]}</TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
                             </Grow>
                           </FormCell>
-                          <FormCell title="이메일">
-                            {CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.email}
-                          </FormCell>
+                          <FormCell title="이메일">{CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.email}</FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title="보험차익비과세">
@@ -1941,17 +2247,35 @@ export function LTPA350Step1({
                             >
                               {[
                                 { value: 'monthly', id: 'child-monthly-payment-monthly', label: '월납식비과세' },
-                                { value: 'nonemonthly', id: 'child-monthly-payment-nonemonthly', label: '비월납식비과세' },
+                                {
+                                  value: 'nonemonthly',
+                                  id: 'child-monthly-payment-nonemonthly',
+                                  label: '비월납식비과세',
+                                },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
                           <FormCell title="설계금액/잔여한도">
-                            <Input aria-label="설계금액" width="7.1rem" value={String(CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.designAmount)} commaAmount readOnly />
+                            <Input
+                              aria-label="설계금액"
+                              width="7.1rem"
+                              value={String(CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.designAmount)}
+                              commaAmount
+                              readOnly
+                            />
                             /
-                            <Input aria-label="잔여한도" width="7.1rem" value={String(CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)} commaAmount readOnly />
-                            <Button color="secondary" size='lg' variant="outlined" onClick={() => { }}>
+                            <Input
+                              aria-label="잔여한도"
+                              width="7.1rem"
+                              value={String(CHILD_FETUS_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)}
+                              commaAmount
+                              readOnly
+                            />
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               조회
                             </Button>
                           </FormCell>
@@ -1967,16 +2291,32 @@ export function LTPA350Step1({
               {/* 재물보험 */}
               <Typo variant={'heading-md'}>재물보험(확인용 타이틀 추후 삭제)</Typo>
               <Grow placement={'ss'} className={'w-full'}>
-                <FormTable caption="재물보험 정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                <FormTable
+                  caption="재물보험 정보"
+                  cols={[
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                  ]}
+                >
                   <FormRow>
                     <FormCell title={'보험시기'}>
                       <DatePickerInput
                         value={propertyContractForm.insuranceStartDate}
                         mode={'single'}
                         width={'9rem'}
-                        onChange={(_, formattedValue) => handlePropertyContractFieldChange('insuranceStartDate', formattedValue ?? '')}
+                        onChange={(_, formattedValue) =>
+                          handlePropertyContractFieldChange('insuranceStartDate', formattedValue ?? '')
+                        }
                       />
-                      <Button color={'secondary'} onClick={handlePropertyTodayClick} only={'default'} size={'lg'} variant={'outlined'}>
+                      <Button
+                        color={'secondary'}
+                        onClick={handlePropertyTodayClick}
+                        only={'default'}
+                        size={'lg'}
+                        variant={'outlined'}
+                      >
                         오늘
                       </Button>
                     </FormCell>
@@ -1989,7 +2329,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={propertyContractForm.maturityValue}
                         onValueChange={(value) => handlePropertyContractFieldChange('maturityValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '03', id: 'child-insurance-period-03', label: '03세 만기' },
@@ -2010,11 +2350,9 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={propertyContractForm.paymentPeriodValue}
                         onValueChange={(value) => handlePropertyContractFieldChange('paymentPeriodValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
-                        {[
-                          { value: 'Y', id: 'property-payment-period-full', label: '전기납' },
-                        ].map((option) => (
+                        {[{ value: 'Y', id: 'property-payment-period-full', label: '전기납' }].map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -2036,7 +2374,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={propertyContractForm.paymentCycleValue}
                         onValueChange={(value) => handlePropertyContractFieldChange('paymentCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: 'month', id: 'property-payment-cycle-monthly', label: '월납' },
@@ -2052,7 +2390,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={propertyContractForm.renewalCycleValue}
                         onValueChange={(value) => handlePropertyContractFieldChange('renewalCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '3', id: 'property-renewal-cycle-3', label: '3년' },
@@ -2065,7 +2403,6 @@ export function LTPA350Step1({
                       </RadioGroup>
                     </FormCell>
                   </FormRow>
-
                 </FormTable>
               </Grow>
               <Grow placement={'ss'} className={'w-full'}>
@@ -2095,37 +2432,72 @@ export function LTPA350Step1({
                   <div className="w-full h-full relative">
                     <Gcol placement={'ss'}>
                       {isPropertyInsuredTab && propertyCurrentDefaultPerson && (
-                        <FormTable caption="피보험자 정보" lineTop={false} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                        <FormTable
+                          caption="피보험자 정보"
+                          lineTop={false}
+                          cols={[
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                          ]}
+                        >
                           <FormRow>
                             <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
                               <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                 <Grow>
-                                  <Input aria-label="피보험자명" width={'7.6rem'} value={propertyCurrentDefaultPerson.name} readOnly />
-                                  <Input aria-label="주민등록번호 마스킹" width={'12rem'} value={propertyCurrentDefaultPerson.juminNumber} readOnly />
-                                  <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                                  <Input
+                                    aria-label="피보험자명"
+                                    width={'7.6rem'}
+                                    value={propertyCurrentDefaultPerson.name}
+                                    readOnly
+                                  />
+                                  <Input
+                                    aria-label="주민등록번호 마스킹"
+                                    width={'12rem'}
+                                    value={propertyCurrentDefaultPerson.juminNumber}
+                                    readOnly
+                                  />
+                                  <Button
+                                    aria-label="피보험자 검색"
+                                    variant={'outlined'}
+                                    only="icon"
+                                    size={'lg'}
+                                    color={'gray-light'}
+                                  >
                                     <SearchIcon color={'var(--color-primary-50)'} />
                                   </Button>
-                                  <Input aria-label="피보험자 나이" width={'4.6rem'} value={`${propertyCurrentDefaultPerson.age}세`} readOnly />
-                                  <Input aria-label="피보험자 성별" width={'3.2rem'} value={propertyCurrentDefaultPerson.gender} readOnly />
+                                  <Input
+                                    aria-label="피보험자 나이"
+                                    width={'4.6rem'}
+                                    value={`${propertyCurrentDefaultPerson.age}세`}
+                                    readOnly
+                                  />
+                                  <Input
+                                    aria-label="피보험자 성별"
+                                    width={'3.2rem'}
+                                    value={propertyCurrentDefaultPerson.gender}
+                                    readOnly
+                                  />
                                 </Grow>
                                 <Grow gap={2}>
                                   <KeyValueItem label={'상령일'}>
                                     <Grow gap={1}>
-                                      <Typo weight={'bold'}>
-                                        {propertyCurrentDefaultPerson.ageStandardDate}
-                                      </Typo>
-                                      <Badge color={'blue'} size={'md'} variant={'contained'}>{propertyCurrentDefaultPerson.ageDDay}</Badge>
+                                      <Typo weight={'bold'}>{propertyCurrentDefaultPerson.ageStandardDate}</Typo>
+                                      <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                        {propertyCurrentDefaultPerson.ageDDay}
+                                      </Badge>
                                     </Grow>
                                   </KeyValueItem>
                                   <KeyValueItem label={'설계동의'}>
                                     <Grow gap={1}>
-                                      <Typo weight={'bold'}>
-                                        {propertyCurrentDefaultPerson.designAgreeDate}
-                                      </Typo>
-                                      <Badge color={'red'} size={'md'} variant={'contained'}>{propertyCurrentDefaultPerson.designAgreeDDay}</Badge>
+                                      <Typo weight={'bold'}>{propertyCurrentDefaultPerson.designAgreeDate}</Typo>
+                                      <Badge color={'red'} size={'md'} variant={'contained'}>
+                                        {propertyCurrentDefaultPerson.designAgreeDDay}
+                                      </Badge>
                                     </Grow>
                                   </KeyValueItem>
-                                  <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => { }}>
+                                  <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                     알림톡발송
                                   </Button>
                                 </Grow>
@@ -2137,32 +2509,32 @@ export function LTPA350Step1({
                             <FormCell title="피보험자" titleVariant="section">
                               <InputCombo
                                 clear
-                                onChange={() => { }}
+                                onChange={() => {}}
                                 options={[
                                   {
                                     label: <div>박은빈</div>,
-                                    value: ''
+                                    value: '',
                                   },
                                   {
                                     label: <div>김민지</div>,
-                                    value: 'LA24094848896'
+                                    value: 'LA24094848896',
                                   },
                                   {
                                     label: <div>이도현</div>,
-                                    value: 'LA25094848897'
+                                    value: 'LA25094848897',
                                   },
                                   {
                                     label: <div>최수영</div>,
-                                    value: 'LA25094848898'
+                                    value: 'LA25094848898',
                                   },
                                   {
                                     label: <div>박보검</div>,
-                                    value: 'LA25094848899'
+                                    value: 'LA25094848899',
                                   },
                                   {
                                     label: <div>한지민</div>,
-                                    value: 'LA25094848900'
-                                  }
+                                    value: 'LA25094848900',
+                                  },
                                 ]}
                                 placeholder=""
                                 popoverPlacement="bottom"
@@ -2172,12 +2544,22 @@ export function LTPA350Step1({
                                 variant="default"
                                 width={'7.6rem'}
                               />
-                              <Button aria-label="피보험자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                              <RadioGroup className='flex-row gap-3'>
-                                <RadioGroupItem value="man" id="man" checked>남</RadioGroupItem>
-                                <RadioGroupItem value="woman" id="woman">여</RadioGroupItem>
+                              <RadioGroup className="flex-row gap-3">
+                                <RadioGroupItem value="man" id="man" checked>
+                                  남
+                                </RadioGroupItem>
+                                <RadioGroupItem value="woman" id="woman">
+                                  여
+                                </RadioGroupItem>
                               </RadioGroup>
                             </FormCell>
                             <FormCell title="연령">
@@ -2199,12 +2581,33 @@ export function LTPA350Step1({
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
                               <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
-                                <Input aria-label="직업코드" width={'7.6rem'} value={propertyCurrentDefaultPerson.jobCode} readOnly />
-                                <Input aria-label="직업분류" width={'27.4rem'} value={propertyCurrentDefaultPerson.jobName} readOnly />
-                                <Button aria-label="직업 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                                <Input
+                                  aria-label="직업코드"
+                                  width={'7.6rem'}
+                                  value={propertyCurrentDefaultPerson.jobCode}
+                                  readOnly
+                                />
+                                <Input
+                                  aria-label="직업분류"
+                                  width={'27.4rem'}
+                                  value={propertyCurrentDefaultPerson.jobName}
+                                  readOnly
+                                />
+                                <Button
+                                  aria-label="직업 검색"
+                                  variant={'outlined'}
+                                  only="icon"
+                                  size={'lg'}
+                                  color={'gray-light'}
+                                >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="직업급수" width={'2xs'} value={propertyCurrentDefaultPerson.jobGrade} readOnly />
+                                <Input
+                                  aria-label="직업급수"
+                                  width={'2xs'}
+                                  value={propertyCurrentDefaultPerson.jobGrade}
+                                  readOnly
+                                />
                               </Grow>
                             </FormCell>
                           </FormRow>
@@ -2213,7 +2616,7 @@ export function LTPA350Step1({
                               <RadioGroup
                                 value={propertyInsuredForm[propertyTabValue]?.driveType ?? ''}
                                 onValueChange={(v) => updatePropertyInsuredField(propertyTabValue, 'driveType', v)}
-                                className='flex-row gap-3'
+                                className="flex-row gap-3"
                               >
                                 {[
                                   { value: 'private', id: 'property-driving-type-private', label: '자가용' },
@@ -2230,7 +2633,7 @@ export function LTPA350Step1({
                               <RadioGroup
                                 value={propertyInsuredForm[propertyTabValue]?.motorcycle ?? ''}
                                 onValueChange={(v) => updatePropertyInsuredField(propertyTabValue, 'motorcycle', v)}
-                                className='flex-row gap-3'
+                                className="flex-row gap-3"
                               >
                                 {[
                                   { value: 'drives', id: 'property-motorcycle-drives', label: '운전함' },
@@ -2245,19 +2648,37 @@ export function LTPA350Step1({
                           </FormRow>
                           <FormRow>
                             <FormCell title="주피와 관계" colSpan={3}>
-                              <Input aria-label="피보험자명" width={'7.6rem'} value={propertyCurrentDefaultPerson.name} readOnly />는 계약자의
+                              <Input
+                                aria-label="피보험자명"
+                                width={'7.6rem'}
+                                value={propertyCurrentDefaultPerson.name}
+                                readOnly
+                              />
+                              는 계약자의
                               <NativeSelect
                                 aria-label="계약자와의 관계 선택"
                                 width={'15.8rem'}
                                 required
                                 value={propertyInsuredForm[propertyTabValue]?.relationWithContractor ?? ''}
-                                onChange={(e) => updatePropertyInsuredField(propertyTabValue, 'relationWithContractor', e.target.value)}
+                                onChange={(e) =>
+                                  updatePropertyInsuredField(propertyTabValue, 'relationWithContractor', e.target.value)
+                                }
                               >
                                 {[
-                                  { value: '고용주(사업주)', id: 'property-contractor-info-employer', label: '고용주(사업주)' },
-                                  { value: '고용인(종업원)', id: 'property-contractor-info-employee', label: '고용인(종업원)' },
+                                  {
+                                    value: '고용주(사업주)',
+                                    id: 'property-contractor-info-employer',
+                                    label: '고용주(사업주)',
+                                  },
+                                  {
+                                    value: '고용인(종업원)',
+                                    id: 'property-contractor-info-employee',
+                                    label: '고용인(종업원)',
+                                  },
                                 ].map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                             </FormCell>
@@ -2266,24 +2687,61 @@ export function LTPA350Step1({
                       )}
 
                       {isPropertyOwnerTab && propertyCurrentOwnerPerson && (
-                        <FormTable caption="목적물 소유자 정보" lineTop={false} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                        <FormTable
+                          caption="목적물 소유자 정보"
+                          lineTop={false}
+                          cols={[
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                          ]}
+                        >
                           <FormRow>
                             <FormCell colSpan={3} title={'소유자'} titleVariant="section">
                               <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                 <Grow>
-                                  <Input aria-label="소유자명" width={'7.6rem'} value={propertyCurrentOwnerPerson.name} readOnly />
-                                  <Input aria-label="주민등록번호 마스킹" width={'12rem'} value={propertyCurrentOwnerPerson.juminNumber} readOnly />
-                                  <Button aria-label="소유자 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                                  <Input
+                                    aria-label="소유자명"
+                                    width={'7.6rem'}
+                                    value={propertyCurrentOwnerPerson.name}
+                                    readOnly
+                                  />
+                                  <Input
+                                    aria-label="주민등록번호 마스킹"
+                                    width={'12rem'}
+                                    value={propertyCurrentOwnerPerson.juminNumber}
+                                    readOnly
+                                  />
+                                  <Button
+                                    aria-label="소유자 검색"
+                                    variant={'outlined'}
+                                    only="icon"
+                                    size={'lg'}
+                                    color={'gray-light'}
+                                  >
                                     <SearchIcon color={'var(--color-primary-50)'} />
                                   </Button>
-                                  <Input aria-label="소유자 나이" width={'4.6rem'} value={`${propertyCurrentOwnerPerson.age}세`} readOnly />
-                                  <Input aria-label="소유자 성별" width={'3.2rem'} value={propertyCurrentOwnerPerson.gender} readOnly />
+                                  <Input
+                                    aria-label="소유자 나이"
+                                    width={'4.6rem'}
+                                    value={`${propertyCurrentOwnerPerson.age}세`}
+                                    readOnly
+                                  />
+                                  <Input
+                                    aria-label="소유자 성별"
+                                    width={'3.2rem'}
+                                    value={propertyCurrentOwnerPerson.gender}
+                                    readOnly
+                                  />
                                 </Grow>
                                 <Grow gap={2}>
                                   <Checkbox
                                     color="primary"
                                     checked={propertyOwnerSameAsContractor[propertyTabValue] ?? false}
-                                    onCheckedChange={(c) => handlePropertyOwnerSameAsContractorChange(propertyTabValue, c === true)}
+                                    onCheckedChange={(c) =>
+                                      handlePropertyOwnerSameAsContractorChange(propertyTabValue, c === true)
+                                    }
                                     size="md"
                                     variant="default"
                                   >
@@ -2294,7 +2752,9 @@ export function LTPA350Step1({
                                     <Checkbox
                                       color="primary"
                                       checked={propertyAddressSelectionByTab[propertyTabValue]?.home ?? false}
-                                      onCheckedChange={(c) => handlePropertyOwnerAddressSelectionChange(propertyTabValue, 'home', c === true)}
+                                      onCheckedChange={(c) =>
+                                        handlePropertyOwnerAddressSelectionChange(propertyTabValue, 'home', c === true)
+                                      }
                                       size="md"
                                       variant="default"
                                       disabled={!(propertyOwnerSameAsContractor[propertyTabValue] ?? false)}
@@ -2304,7 +2764,13 @@ export function LTPA350Step1({
                                     <Checkbox
                                       color="primary"
                                       checked={propertyAddressSelectionByTab[propertyTabValue]?.office ?? false}
-                                      onCheckedChange={(c) => handlePropertyOwnerAddressSelectionChange(propertyTabValue, 'office', c === true)}
+                                      onCheckedChange={(c) =>
+                                        handlePropertyOwnerAddressSelectionChange(
+                                          propertyTabValue,
+                                          'office',
+                                          c === true
+                                        )
+                                      }
                                       size="md"
                                       variant="default"
                                       disabled={!(propertyOwnerSameAsContractor[propertyTabValue] ?? false)}
@@ -2315,9 +2781,7 @@ export function LTPA350Step1({
                                       color={'secondary'}
                                       size={'lg'}
                                       variant={'contained'}
-                                      disabled={
-                                        !(propertyOwnerSameAsContractor[propertyTabValue] ?? false)
-                                      }
+                                      disabled={!(propertyOwnerSameAsContractor[propertyTabValue] ?? false)}
                                       onClick={() => handlePropertyOwnerAddressImport(propertyTabValue)}
                                     >
                                       가져오기
@@ -2330,24 +2794,67 @@ export function LTPA350Step1({
                           </FormRow>
                           <FormRow>
                             <FormCell title="소재지" colSpan={3}>
-                              <Input aria-label="목적물명" width={'7.6rem'} value={propertyCurrentOwnerPerson.propertyName} readOnly />
-                              <Button aria-label="목적물 주소찾기" variant={'outlined'} size={'lg'} color={'gray-light'}>
+                              <Input
+                                aria-label="목적물명"
+                                width={'7.6rem'}
+                                value={propertyCurrentOwnerPerson.propertyName}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="목적물 주소찾기"
+                                variant={'outlined'}
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 주소찾기
                               </Button>
-                              <Input aria-label="목적물 소재지" width={'26rem'} value={propertyLocationByTab[propertyTabValue] ?? ''} readOnly />
+                              <Input
+                                aria-label="목적물 소재지"
+                                width={'26rem'}
+                                value={propertyLocationByTab[propertyTabValue] ?? ''}
+                                readOnly
+                              />
                             </FormCell>
                           </FormRow>
                           <FormRow>
                             <FormCell title="가입업종">
-                              <Input aria-label="가입업종코드" width={'7.6rem'} value={propertyCurrentOwnerPerson.businessType} readOnly />
-                              <Button aria-label="가입업종 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Input
+                                aria-label="가입업종코드"
+                                width={'7.6rem'}
+                                value={propertyCurrentOwnerPerson.businessType}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="가입업종 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                              <Input aria-label="가입업종명" width={'26rem'} value={propertyCurrentOwnerPerson.businessName} readOnly />
+                              <Input
+                                aria-label="가입업종명"
+                                width={'26rem'}
+                                value={propertyCurrentOwnerPerson.businessName}
+                                readOnly
+                              />
                             </FormCell>
                             <FormCell title="건물급수">
-                              <Input aria-label="건물급수" width={'5rem'} value={propertyCurrentOwnerPerson.buildingGrade} readOnly /> 급 (적용급수
-                              <Input aria-label="적용급수" width={'5rem'} value={propertyCurrentOwnerPerson.appliedBuildingGrade} readOnly /> 급)
+                              <Input
+                                aria-label="건물급수"
+                                width={'5rem'}
+                                value={propertyCurrentOwnerPerson.buildingGrade}
+                                readOnly
+                              />{' '}
+                              급 (적용급수
+                              <Input
+                                aria-label="적용급수"
+                                width={'5rem'}
+                                value={propertyCurrentOwnerPerson.appliedBuildingGrade}
+                                readOnly
+                              />{' '}
+                              급)
                               <Button aria-label="건물구조입력" variant={'outlined'} size={'lg'} color={'gray-light'}>
                                 건물구조입력
                               </Button>
@@ -2355,13 +2862,42 @@ export function LTPA350Step1({
                           </FormRow>
                           <FormRow>
                             <FormCell title="요율적용업종">
-                              <Input aria-label="요율적용업종코드" width={'7.6rem'} value={propertyCurrentOwnerPerson.ratingBusinessType} readOnly />
-                              <Input aria-label="요율적용업종명" width={'27.4rem'} value={propertyCurrentOwnerPerson.ratingBusinessName} readOnly />
+                              <Input
+                                aria-label="요율적용업종코드"
+                                width={'7.6rem'}
+                                value={propertyCurrentOwnerPerson.ratingBusinessType}
+                                readOnly
+                              />
+                              <Input
+                                aria-label="요율적용업종명"
+                                width={'27.4rem'}
+                                value={propertyCurrentOwnerPerson.ratingBusinessName}
+                                readOnly
+                              />
                             </FormCell>
                             <FormCell title="건물상세">
-                              지상 <Input aria-label="건물 지상층" width={'5rem'} value={String(propertyCurrentOwnerPerson.aboveGroundFloors)} readOnly /> 층 / 지하
-                              <Input aria-label="건물 지하층" width={'5rem'} value={String(propertyCurrentOwnerPerson.belowGroundFloors)} readOnly /> 층 /
-                              <Input aria-label="건물 폭" width={'5rem'} value={String(propertyCurrentOwnerPerson.buildingWidth)} readOnly /> ㎡
+                              지상{' '}
+                              <Input
+                                aria-label="건물 지상층"
+                                width={'5rem'}
+                                value={String(propertyCurrentOwnerPerson.aboveGroundFloors)}
+                                readOnly
+                              />{' '}
+                              층 / 지하
+                              <Input
+                                aria-label="건물 지하층"
+                                width={'5rem'}
+                                value={String(propertyCurrentOwnerPerson.belowGroundFloors)}
+                                readOnly
+                              />{' '}
+                              층 /
+                              <Input
+                                aria-label="건물 폭"
+                                width={'5rem'}
+                                value={String(propertyCurrentOwnerPerson.buildingWidth)}
+                                readOnly
+                              />{' '}
+                              ㎡
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -2374,7 +2910,9 @@ export function LTPA350Step1({
                                 onChange={(e) => handlePropertyActualLossTypeChange(propertyTabValue, e.target.value)}
                               >
                                 {PROPERTY_ACTUAL_LOSS_TYPE_OPTIONS.map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                               <Button aria-label="알림톡발송" variant={'outlined'} size={'lg'} color={'gray-light'}>
@@ -2383,7 +2921,9 @@ export function LTPA350Step1({
                               <Checkbox
                                 color="primary"
                                 checked={propertyHasFireExtinguisherByTab[propertyTabValue] ?? false}
-                                onCheckedChange={(c) => handlePropertyHasFireExtinguisherChange(propertyTabValue, c === true)}
+                                onCheckedChange={(c) =>
+                                  handlePropertyHasFireExtinguisherChange(propertyTabValue, c === true)
+                                }
                                 size="md"
                                 variant="default"
                               >
@@ -2395,20 +2935,28 @@ export function LTPA350Step1({
                                 <Checkbox
                                   color="primary"
                                   checked={propertyIsSpecialBuildingByTab[propertyTabValue] ?? false}
-                                  onCheckedChange={(c) => handlePropertyIsSpecialBuildingChange(propertyTabValue, c === true)}
+                                  onCheckedChange={(c) =>
+                                    handlePropertyIsSpecialBuildingChange(propertyTabValue, c === true)
+                                  }
                                   size="md"
                                   variant="default"
                                 >
-                                  <Button aria-label="특수건물" variant={'outlined'} size={'lg'} color={'gray-light'}>특수건물</Button>
+                                  <Button aria-label="특수건물" variant={'outlined'} size={'lg'} color={'gray-light'}>
+                                    특수건물
+                                  </Button>
                                 </Checkbox>
                                 <Checkbox
                                   color="primary"
                                   checked={propertyIsMultipleComplexBuildingByTab[propertyTabValue] ?? false}
-                                  onCheckedChange={(c) => handlePropertyIsMultipleComplexBuildingChange(propertyTabValue, c === true)}
+                                  onCheckedChange={(c) =>
+                                    handlePropertyIsMultipleComplexBuildingChange(propertyTabValue, c === true)
+                                  }
                                   size="md"
                                   variant="default"
                                 >
-                                  <Button aria-label="복합건물" variant={'outlined'} size={'lg'} color={'gray-light'}>복합건물</Button>
+                                  <Button aria-label="복합건물" variant={'outlined'} size={'lg'} color={'gray-light'}>
+                                    복합건물
+                                  </Button>
                                 </Checkbox>
                               </Grow>
                             </FormCell>
@@ -2417,13 +2965,37 @@ export function LTPA350Step1({
                       )}
 
                       {/* 간편 화면 미노출 */}
-                      <FormTable caption="계약자 정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="계약자 정보"
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         <FormRow>
                           <FormCell title={'계약자'} titleVariant="section">
                             <Grow>
-                              <Input aria-label="계약자명" width="7.6rem" value={PROPERTY_INSURANCE_STEP1_DATA.Policyholder.name} readOnly />
-                              <Input aria-label="주민등록번호 마스킹" width="12rem" value={PROPERTY_INSURANCE_STEP1_DATA.Policyholder.juminNumber} readOnly />
-                              <Button aria-label="계약자 검색" variant="outlined" only="icon" color="gray-light" size="lg">
+                              <Input
+                                aria-label="계약자명"
+                                width="7.6rem"
+                                value={PROPERTY_INSURANCE_STEP1_DATA.Policyholder.name}
+                                readOnly
+                              />
+                              <Input
+                                aria-label="주민등록번호 마스킹"
+                                width="12rem"
+                                value={PROPERTY_INSURANCE_STEP1_DATA.Policyholder.juminNumber}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="계약자 검색"
+                                variant="outlined"
+                                only="icon"
+                                color="gray-light"
+                                size="lg"
+                              >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                               <Checkbox
@@ -2449,7 +3021,9 @@ export function LTPA350Step1({
                                 { value: 'selection', id: 'property-personalinfo-1', label: '고객직접선택' },
                                 { value: 'selection2', id: 'property-personalinfo-2', label: '선택' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -2457,7 +3031,13 @@ export function LTPA350Step1({
                         <FormRow>
                           {isPropertyInsuredTab && propertyCurrentDefaultPerson ? (
                             <FormCell title="계약자와 관계" colSpan={3}>
-                              <Input aria-label="피보험자명" width={'7.6rem'} value={propertyCurrentDefaultPerson.name} readOnly />는 계약자의
+                              <Input
+                                aria-label="피보험자명"
+                                width={'7.6rem'}
+                                value={propertyCurrentDefaultPerson.name}
+                                readOnly
+                              />
+                              는 계약자의
                               <NativeSelect
                                 aria-label="계약자와의 관계 선택"
                                 width={'15.8rem'}
@@ -2466,7 +3046,9 @@ export function LTPA350Step1({
                                 onChange={(e) => setPropertyContractorRelationshipValue(e.target.value)}
                               >
                                 {PROPERTY_RELATION_OPTIONS.map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                             </FormCell>
@@ -2484,23 +3066,21 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="연락처">
-                            <Grow placement='bwc'>
+                            <Grow placement="bwc">
                               <Grow>{PROPERTY_INSURANCE_STEP1_DATA.Policyholder.contact}</Grow>
                               <Grow>
                                 <KeyValueItem label="전자적안내동의">
-                                  <Grow placement='sc' gap="0">
-                                    <Badge color="green" size="md" variant="ghost">{PROPERTY_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}</Badge>
-                                    <TooltipQ>
-                                {tooltipContent[0]}
-                                    </TooltipQ>
+                                  <Grow placement="sc" gap="0">
+                                    <Badge color="green" size="md" variant="ghost">
+                                      {PROPERTY_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}
+                                    </Badge>
+                                    <TooltipQ>{tooltipContent[0]}</TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
                             </Grow>
                           </FormCell>
-                          <FormCell title="이메일">
-                            {PROPERTY_INSURANCE_STEP1_DATA.Policyholder.email}
-                          </FormCell>
+                          <FormCell title="이메일">{PROPERTY_INSURANCE_STEP1_DATA.Policyholder.email}</FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title="보험차익비과세">
@@ -2513,15 +3093,27 @@ export function LTPA350Step1({
                             >
                               가입
                             </Checkbox>
-                            <Button color="secondary" size="lg" variant="outlined" onClick={() => { }}>
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               알림톡발송
                             </Button>
                           </FormCell>
                           <FormCell title="설계금액/잔여한도">
-                            <Input aria-label="설계금액" width="7.1rem" value={String(PROPERTY_INSURANCE_STEP1_DATA.Policyholder.designAmount)} commaAmount readOnly />
+                            <Input
+                              aria-label="설계금액"
+                              width="7.1rem"
+                              value={String(PROPERTY_INSURANCE_STEP1_DATA.Policyholder.designAmount)}
+                              commaAmount
+                              readOnly
+                            />
                             /
-                            <Input aria-label="잔여한도" width="7.1rem" value={String(PROPERTY_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)} commaAmount readOnly />
-                            <Button color="secondary" size='lg' variant="outlined" onClick={() => { }}>
+                            <Input
+                              aria-label="잔여한도"
+                              width="7.1rem"
+                              value={String(PROPERTY_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)}
+                              commaAmount
+                              readOnly
+                            />
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               조회
                             </Button>
                           </FormCell>
@@ -2537,16 +3129,32 @@ export function LTPA350Step1({
               {/* 단체보험 */}
               <Typo variant={'heading-md'}>단체보험(확인용 타이틀 추후 삭제)</Typo>
               <Grow placement={'ss'} className={'w-full'}>
-                <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                <FormTable
+                  caption="보험정보"
+                  cols={[
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                  ]}
+                >
                   <FormRow>
                     <FormCell title={'보험시기'}>
                       <DatePickerInput
                         value={groupContractForm.insuranceStartDate}
                         mode={'single'}
                         width={'9rem'}
-                        onChange={(_, formattedValue) => handleGroupContractFieldChange('insuranceStartDate', formattedValue ?? '')}
+                        onChange={(_, formattedValue) =>
+                          handleGroupContractFieldChange('insuranceStartDate', formattedValue ?? '')
+                        }
                       />
-                      <Button color={'secondary'} onClick={handleGroupTodayClick} only={'default'} size={'lg'} variant={'outlined'}>
+                      <Button
+                        color={'secondary'}
+                        onClick={handleGroupTodayClick}
+                        only={'default'}
+                        size={'lg'}
+                        variant={'outlined'}
+                      >
                         오늘
                       </Button>
                     </FormCell>
@@ -2559,7 +3167,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={groupContractForm.maturityValue}
                         onValueChange={(value) => handleGroupContractFieldChange('maturityValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '03', id: 'group-insurance-period-03', label: '03년' },
@@ -2580,7 +3188,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={groupContractForm.paymentPeriodValue}
                         onValueChange={(value) => handleGroupContractFieldChange('paymentPeriodValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: '03', id: 'group-payment-period-03', label: '03년납' },
@@ -2601,7 +3209,7 @@ export function LTPA350Step1({
                       <RadioGroup
                         value={groupContractForm.paymentCycleValue}
                         onValueChange={(value) => handleGroupContractFieldChange('paymentCycleValue', value)}
-                        className='flex-row gap-3'
+                        className="flex-row gap-3"
                       >
                         {[
                           { value: 'month', id: 'group-payment-cycle-monthly', label: '월납' },
@@ -2615,13 +3223,14 @@ export function LTPA350Step1({
                         ))}
                       </RadioGroup>
                     </FormCell>
-
                   </FormRow>
                   <FormRow>
                     <FormCell title={'단체구분'}>
                       <RadioGroup
                         value={GROUP_INSURANCE_STEP1_DATA.ContractorInfo.groupCategory}
-                        onValueChange={() => { }} className='flex-row gap-3'>
+                        onValueChange={() => {}}
+                        className="flex-row gap-3"
+                      >
                         {[
                           { value: '피보험자단계(개별요율)', id: 'group-category-1', label: '피보험자단계(개별요율)' },
                         ].map((option) => (
@@ -2632,11 +3241,11 @@ export function LTPA350Step1({
                       </RadioGroup>
                     </FormCell>
                     <FormCell title={'단체유형'}>
-                      <Grow placement='bwc' gap={3}>
+                      <Grow placement="bwc" gap={3}>
                         <RadioGroup
                           value={GROUP_INSURANCE_STEP1_DATA.ContractorInfo.groupType}
-                          onValueChange={() => { }}
-                          className='flex-row gap-3'
+                          onValueChange={() => {}}
+                          className="flex-row gap-3"
                         >
                           {[
                             { value: 'type1', id: 'group-type-1', label: '1종(급여단체)' },
@@ -2653,12 +3262,29 @@ export function LTPA350Step1({
                   </FormRow>
                   <FormRow>
                     <FormCell title={'총인원수'}>
-                      <Input aria-label="총인원" width={'6rem'} value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.totalCount)} />명(전체 근로자 수)
+                      <Input
+                        aria-label="총인원"
+                        width={'6rem'}
+                        value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.totalCount)}
+                      />
+                      명(전체 근로자 수)
                     </FormCell>
                     <FormCell title={'인원현황'}>
-                      <Grow className='flex-nowrap'>
-                        <Input aria-label="가입인원" width={'6rem'} value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledCount)} readOnly /> 명 / 가입비율
-                        <Input aria-label="가입비율" width={'6rem'} value={`${GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledPercent}`} readOnly />%
+                      <Grow className="flex-nowrap">
+                        <Input
+                          aria-label="가입인원"
+                          width={'6rem'}
+                          value={String(GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledCount)}
+                          readOnly
+                        />{' '}
+                        명 / 가입비율
+                        <Input
+                          aria-label="가입비율"
+                          width={'6rem'}
+                          value={`${GROUP_INSURANCE_STEP1_DATA.ContractorInfo.enrolledPercent}`}
+                          readOnly
+                        />
+                        %
                       </Grow>
                     </FormCell>
                   </FormRow>
@@ -2694,12 +3320,20 @@ export function LTPA350Step1({
                 >
                   <div className="w-full h-full relative">
                     <Gcol placement={'ss'}>
-                      <FormTable caption="그룹 정보" lineTop={false} cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]','min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="그룹 정보"
+                        lineTop={false}
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         <FormRow>
                           <FormCell title={'그룹명'} titleVariant="section">
                             <Input aria-label="그룹명" width={'12rem'} value={groupCurrentItem.groupName} />
-                            <Grow className="flex-nowrap w-full" placement={'bwc'}>
-                            </Grow>
+                            <Grow className="flex-nowrap w-full" placement={'bwc'}></Grow>
                           </FormCell>
                           <FormCell title="보험나이">
                             <Input aria-label="보험나이" width={'5rem'} value={`${groupCurrentItem.age}`} />세
@@ -2709,8 +3343,8 @@ export function LTPA350Step1({
                           <FormCell title="성별">
                             <RadioGroup
                               value={groupCurrentItem.gender}
-                              onValueChange={() => { }}
-                              className='flex-row gap-3'
+                              onValueChange={() => {}}
+                              className="flex-row gap-3"
                             >
                               {[
                                 { value: '남', id: 'group-gender-male', label: '남' },
@@ -2730,8 +3364,19 @@ export function LTPA350Step1({
                           <FormCell title="직업" colSpan={3}>
                             <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
                               <Input aria-label="직업코드" width={'7.6rem'} value={groupCurrentItem.jobCode} readOnly />
-                              <Input aria-label="직업분류" width={'27.4rem'} value={groupCurrentItem.jobName} readOnly />
-                              <Button aria-label="직업 검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Input
+                                aria-label="직업분류"
+                                width={'27.4rem'}
+                                value={groupCurrentItem.jobName}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="직업 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
                               <Input aria-label="직업등급" width={'2xs'} value={groupCurrentItem.jobGrade} readOnly />
@@ -2743,7 +3388,7 @@ export function LTPA350Step1({
                             <RadioGroup
                               value={groupInsuredForm[groupTabValue]?.driveType ?? ''}
                               onValueChange={(v) => updateGroupInsuredField(groupTabValue, 'driveType', v)}
-                              className='flex-row gap-3'
+                              className="flex-row gap-3"
                             >
                               {[
                                 { value: 'private', id: 'group-driving-type-private', label: '자가용' },
@@ -2756,17 +3401,40 @@ export function LTPA350Step1({
                               ))}
                             </RadioGroup>
                           </FormCell>
-
                         </FormRow>
                       </FormTable>
 
-                      <FormTable caption="계약자 정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                      <FormTable
+                        caption="계약자 정보"
+                        cols={[
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                          'w-[14rem] min-w-[14rem]',
+                          'min-w-[32.6rem] flex-1',
+                        ]}
+                      >
                         <FormRow>
                           <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
                             <Grow>
-                              <Input aria-label="계약자명" width="7.6rem" value={GROUP_INSURANCE_STEP1_DATA.Policyholder.name} readOnly />
-                              <Input aria-label="주민등록번호 마스킹" width="12rem" value={GROUP_INSURANCE_STEP1_DATA.Policyholder.juminNumber} readOnly />
-                              <Button aria-label="계약자 검색" variant="outlined" only="icon" color="gray-light" size="lg">
+                              <Input
+                                aria-label="계약자명"
+                                width="7.6rem"
+                                value={GROUP_INSURANCE_STEP1_DATA.Policyholder.name}
+                                readOnly
+                              />
+                              <Input
+                                aria-label="주민등록번호 마스킹"
+                                width="12rem"
+                                value={GROUP_INSURANCE_STEP1_DATA.Policyholder.juminNumber}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="계약자 검색"
+                                variant="outlined"
+                                only="icon"
+                                color="gray-light"
+                                size="lg"
+                              >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                               <Checkbox
@@ -2783,7 +3451,8 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="계약자와 관계">
-                            <Input aria-label="계약자" width={'14rem'} value={groupCurrentItem.groupName} readOnly />는 계약자의
+                            <Input aria-label="계약자" width={'14rem'} value={groupCurrentItem.groupName} readOnly />는
+                            계약자의
                             <NativeSelect
                               aria-label="계약자와 관계 선택"
                               width={'14rem'}
@@ -2792,7 +3461,9 @@ export function LTPA350Step1({
                               onChange={(e) => setGroupContractorRelationshipValue(e.target.value)}
                             >
                               {PROPERTY_RELATION_OPTIONS.map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -2809,7 +3480,9 @@ export function LTPA350Step1({
                                 { value: 'selection', id: 'group-personalinfo-2', label: '고객직접선택' },
                                 { value: 'selection2', id: 'group-personalinfo-3', label: '선택' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -2826,23 +3499,21 @@ export function LTPA350Step1({
                         </FormRow>
                         <FormRow>
                           <FormCell title="연락처">
-                            <Grow placement='bwc'>
+                            <Grow placement="bwc">
                               <Grow>{GROUP_INSURANCE_STEP1_DATA.Policyholder.contact}</Grow>
                               <Grow>
                                 <KeyValueItem label="전자적안내동의">
-                                  <Grow placement='sc' gap="0">
-                                    <Badge color="green" size="md" variant="ghost">{GROUP_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}</Badge>
-                                    <TooltipQ>
-                                {tooltipContent[0]}
-                                    </TooltipQ>
+                                  <Grow placement="sc" gap="0">
+                                    <Badge color="green" size="md" variant="ghost">
+                                      {GROUP_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}
+                                    </Badge>
+                                    <TooltipQ>{tooltipContent[0]}</TooltipQ>
                                   </Grow>
                                 </KeyValueItem>
                               </Grow>
                             </Grow>
                           </FormCell>
-                          <FormCell title="이메일">
-                            {GROUP_INSURANCE_STEP1_DATA.Policyholder.email}
-                          </FormCell>
+                          <FormCell title="이메일">{GROUP_INSURANCE_STEP1_DATA.Policyholder.email}</FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title="보험차익비과세">
@@ -2855,15 +3526,27 @@ export function LTPA350Step1({
                             >
                               가입
                             </Checkbox>
-                            <Button color="secondary" size="lg" variant="outlined" onClick={() => { }}>
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               알림톡발송
                             </Button>
                           </FormCell>
                           <FormCell title="설계금액/잔여한도">
-                            <Input aria-label="설계금액" width="7.1rem" value={String(GROUP_INSURANCE_STEP1_DATA.Policyholder.designAmount)} commaAmount readOnly />
+                            <Input
+                              aria-label="설계금액"
+                              width="7.1rem"
+                              value={String(GROUP_INSURANCE_STEP1_DATA.Policyholder.designAmount)}
+                              commaAmount
+                              readOnly
+                            />
                             /
-                            <Input aria-label="잔여한도" width="7.1rem" value={String(GROUP_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)} commaAmount readOnly />
-                            <Button color="secondary" size='lg' variant="outlined" onClick={() => { }}>
+                            <Input
+                              aria-label="잔여한도"
+                              width="7.1rem"
+                              value={String(GROUP_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)}
+                              commaAmount
+                              readOnly
+                            />
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               조회
                             </Button>
                           </FormCell>
@@ -2877,8 +3560,16 @@ export function LTPA350Step1({
 
               {/* 연금/저축보험 */}
               <Typo variant={'heading-md'}>연금/저축보험(확인용 타이틀 추후 삭제)</Typo>
-              <Grow placement={'ss'} className={"w-full"}>
-                <FormTable caption="보험정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+              <Grow placement={'ss'} className={'w-full'}>
+                <FormTable
+                  caption="보험정보"
+                  cols={[
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                  ]}
+                >
                   <FormRow>
                     <FormCell title={'보험시기'}>
                       <DatePickerInput
@@ -2887,7 +3578,13 @@ export function LTPA350Step1({
                         width={'9rem'}
                         onChange={(_, formattedValue) => handlePensionInsuranceStartDateChange(formattedValue ?? '')}
                       />
-                      <Button color={'secondary'} onClick={handlePensionTodayClick} only={'default'} size={'lg'} variant={'outlined'}>
+                      <Button
+                        color={'secondary'}
+                        onClick={handlePensionTodayClick}
+                        only={'default'}
+                        size={'lg'}
+                        variant={'outlined'}
+                      >
                         오늘
                       </Button>
                     </FormCell>
@@ -2909,7 +3606,9 @@ export function LTPA350Step1({
                           { value: '60', id: 'pension-age-60', label: '60세' },
                           { value: '65', id: 'pension-age-65', label: '65세' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -2926,7 +3625,9 @@ export function LTPA350Step1({
                           { value: '15', id: 'pension-payout-15', label: '15년' },
                           { value: '20', id: 'pension-payout-20', label: '20년' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -2956,9 +3657,7 @@ export function LTPA350Step1({
                         onValueChange={(value) => setPensionPayoutTypeValue(value)}
                         className="flex-row gap-3"
                       >
-                        {[
-                          { value: '정액형', id: 'payout-type-fixed', label: '정액형' },
-                        ].map((option) => (
+                        {[{ value: '정액형', id: 'payout-type-fixed', label: '정액형' }].map((option) => (
                           <RadioGroupItem key={option.id} value={option.value} id={option.id}>
                             {option.label}
                           </RadioGroupItem>
@@ -3012,12 +3711,30 @@ export function LTPA350Step1({
                 </FormTable>
               </Grow>
               <Grow placement={'ss'} className={'w-full'}>
-                <FormTable caption="계약자 정보" cols={['w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1', 'w-[14rem] min-w-[14rem]', 'min-w-[32.6rem] flex-1']}>
+                <FormTable
+                  caption="계약자 정보"
+                  cols={[
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                    'w-[14rem] min-w-[14rem]',
+                    'min-w-[32.6rem] flex-1',
+                  ]}
+                >
                   <FormRow>
                     <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
                       <Grow>
-                        <Input aria-label="계약자명" width="7.6rem" value={PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.name} readOnly />
-                        <Input aria-label="주민등록번호 마스킹" width="12rem" value={PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.juminNumber} readOnly />
+                        <Input
+                          aria-label="계약자명"
+                          width="7.6rem"
+                          value={PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.name}
+                          readOnly
+                        />
+                        <Input
+                          aria-label="주민등록번호 마스킹"
+                          width="12rem"
+                          value={PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.juminNumber}
+                          readOnly
+                        />
                         <Button aria-label="계약자 검색" variant="outlined" only="icon" color="gray-light" size="lg">
                           <SearchIcon color="var(--color-primary-50)" />
                         </Button>
@@ -3032,7 +3749,6 @@ export function LTPA350Step1({
                         </Checkbox>
                       </Grow>
                     </FormCell>
-
                   </FormRow>
                   <FormRow>
                     <FormCell title="주피와 관계">
@@ -3045,7 +3761,9 @@ export function LTPA350Step1({
                         onChange={(e) => setPensionContractorRelationshipValue(e.target.value)}
                       >
                         {COMMON_RELATION_OPTIONS.map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -3061,7 +3779,9 @@ export function LTPA350Step1({
                           { value: 'selection2', id: 'pension-personalinfo-3', label: '선택' },
                           { value: 'selection', id: 'pension-personalinfo-2', label: '고객직접선택' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -3078,23 +3798,21 @@ export function LTPA350Step1({
                   </FormRow>
                   <FormRow>
                     <FormCell title="연락처">
-                      <Grow placement='bwc'>
+                      <Grow placement="bwc">
                         <Grow>{PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.contact}</Grow>
                         <Grow>
                           <KeyValueItem label="전자적안내동의">
-                            <Grow placement='sc' gap="0">
-                              <Badge color="green" size="md" variant="ghost">{PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}</Badge>
-                              <TooltipQ>
-                                {tooltipContent[0]}
-                              </TooltipQ>
+                            <Grow placement="sc" gap="0">
+                              <Badge color="green" size="md" variant="ghost">
+                                {PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.electronicNoticeAgree}
+                              </Badge>
+                              <TooltipQ>{tooltipContent[0]}</TooltipQ>
                             </Grow>
                           </KeyValueItem>
                         </Grow>
                       </Grow>
                     </FormCell>
-                    <FormCell title="이메일">
-                      {PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.email}
-                    </FormCell>
+                    <FormCell title="이메일">{PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.email}</FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title="보험차익비과세">
@@ -3117,18 +3835,32 @@ export function LTPA350Step1({
                           { value: 'monthly', id: 'pension-monthly-payment-monthly', label: '연금저축' },
                           { value: 'nonemonthly', id: 'pension-monthly-payment-nonemonthly', label: '비월납식비과세' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Button color="secondary" size="lg" variant="outlined" onClick={() => { }}>
+                      <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                         알림톡발송
                       </Button>
                     </FormCell>
                     <FormCell title="설계금액/잔여한도">
-                      <Input aria-label="설계금액" width="7.1rem" value={String(PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.designAmount)} commaAmount readOnly />
+                      <Input
+                        aria-label="설계금액"
+                        width="7.1rem"
+                        value={String(PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.designAmount)}
+                        commaAmount
+                        readOnly
+                      />
                       /
-                      <Input aria-label="잔여한도" width="7.1rem" value={String(PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)} commaAmount readOnly />
-                      <Button color="secondary" size='lg' variant="outlined" onClick={() => { }}>
+                      <Input
+                        aria-label="잔여한도"
+                        width="7.1rem"
+                        value={String(PENSION_SAVINGS_INSURANCE_STEP1_DATA.Policyholder.remainingLimit)}
+                        commaAmount
+                        readOnly
+                      />
+                      <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                         조회
                       </Button>
                     </FormCell>

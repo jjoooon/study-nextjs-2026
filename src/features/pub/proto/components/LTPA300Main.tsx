@@ -1,9 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-
 import { useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -17,8 +13,11 @@ import { LayoutMain, LayoutMainBody } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { LTPA300DummyDataRow } from '../data/LTPA300Data';
 
 import { LTPA300DummyData } from '../data/LTPA300Data';
@@ -52,7 +51,7 @@ export const LTPA300Main = () => {
       { headerName: '점검방법', field: 'field13', width: 90, cellClass: 'text-center' },
       { headerName: '한도초과건수', field: 'field14', width: 100, cellClass: 'text-center' },
     ],
-    [],
+    []
   );
 
   const pageSize = 4;
@@ -66,23 +65,31 @@ export const LTPA300Main = () => {
         <LayoutScrollWrap>
           <LayoutScrollItem>
             <Gcol className="w-full" placement={'ss'} gap={4}>
-
               <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                <FormTable variant={'none'} lineTop={false} caption="정액담보점검목록 조회" cols={[
-                    'flex-auto', 'flex-1', 
-                    'flex-auto', 'flex-1', 
-                    'flex-auto', 'flex-1'
-                  ]}
+                <FormTable
+                  variant={'none'}
+                  lineTop={false}
+                  caption="정액담보점검목록 조회"
+                  cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
                 >
                   <FormRow>
                     <FormCell title={'점검일자'}>
-                      <DatePickerInput errorMsg="입력은 필수입니다." errorPs="bl" mode="range" onChange={() => {}} rangeValue={{ from: '2026-03-01', to: '2026-03-07'}} size="lg" width="sm" required/>  
+                      <DatePickerInput
+                        errorMsg="입력은 필수입니다."
+                        errorPs="bl"
+                        mode="range"
+                        onChange={() => {}}
+                        rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
+                        size="lg"
+                        width="sm"
+                        required
+                      />
                     </FormCell>
                     <FormCell title={'조직구분'}>
                       <NativeSelect
                         aria-label="설계조직 선택"
                         value={form.type01}
-                        width='10rem'
+                        width="10rem"
                         required
                         onChange={(e) => setFormField('type01', e.target.value)}
                       >
@@ -90,34 +97,49 @@ export const LTPA300Main = () => {
                           { value: 'selection', id: 'type01-1', label: '선택1' },
                           { value: 'selection2', id: 'type01-2', label: '선택2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Input aria-label="" width={'10rem'}value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} required/>
+                      <Input
+                        aria-label=""
+                        width={'10rem'}
+                        value={form.type02}
+                        onChange={(e) => setFormField('type02', e.target.value)}
+                        required
+                      />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
-                      <Input aria-label="" width={'14rem'} value={'신부산GA지점'} readOnly/>
+                      <Input aria-label="" width={'14rem'} value={'신부산GA지점'} readOnly />
                     </FormCell>
                     <FormCell title={'점검방법'}>
-                       <NativeSelect
+                      <NativeSelect
                         aria-label="점검방법 선택"
                         value={form.type03}
-                        width='14rem'
+                        width="14rem"
                         onChange={(e) => setFormField('type03', e.target.value)}
                       >
                         {[
                           { value: 'selection', id: 'type03-1', label: '전체' },
                           { value: 'selection2', id: 'type03-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'점검방법'}>
-                      <Input aria-label="" width={'14rem'} value={form.type04} onChange={(e) => setFormField('type04', e.target.value)}/>
+                      <Input
+                        aria-label=""
+                        width={'14rem'}
+                        value={form.type04}
+                        onChange={(e) => setFormField('type04', e.target.value)}
+                      />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
@@ -126,14 +148,16 @@ export const LTPA300Main = () => {
                       <NativeSelect
                         aria-label="점검방법 선택"
                         value={form.type05}
-                        width='14rem'
+                        width="14rem"
                         onChange={(e) => setFormField('type05', e.target.value)}
                       >
                         {[
                           { value: 'selection', id: 'type05-1', label: '전체' },
                           { value: 'selection2', id: 'type05-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -141,26 +165,34 @@ export const LTPA300Main = () => {
                       <NativeSelect
                         aria-label="점검구분 선택"
                         value={form.type06}
-                        width='14rem'
+                        width="14rem"
                         onChange={(e) => setFormField('type06', e.target.value)}
                       >
                         {[
                           { value: 'selection', id: 'type06-1', label: '전체' },
                           { value: 'selection2', id: 'type06-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                    </FormCell>  
+                    </FormCell>
                   </FormRow>
-                
                 </FormTable>
 
                 <Grow>
                   <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                     조회
                   </Button>
-                  <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                  <Button
+                    color={'gray'}
+                    only={'icon'}
+                    size={'lg'}
+                    variant={'outlined'}
+                    onClick={() => {}}
+                    aria-label="새로고침"
+                  >
                     <ResetIcon />
                   </Button>
                 </Grow>
@@ -185,7 +217,6 @@ export const LTPA300Main = () => {
                         editable: false,
                       }}
                       domLayout="autoHeight"
-                      
                       key={loadedCount}
                       rowModelType="infinite"
                       cacheBlockSize={pageSize}

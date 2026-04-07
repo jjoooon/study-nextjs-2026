@@ -1,15 +1,23 @@
 'use client';
 
-import { useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
 import { AgGridEmptyComponent } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+} from '@uiux/Dialog';
 
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -20,7 +28,7 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
     field1: string;
     field2: string;
   };
-    
+
   const dummyData: DummyDataType[] = [
     {
       id: 1,
@@ -123,29 +131,33 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
       field2: '상해통원비(외래/처방조제) 특약',
     },
   ];
-	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
+  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
 
-	const columnDefs: ColDef<DummyDataType>[] = [
-		{
-			headerName: '담보코드',
-			field: 'field1',
-			width: 100,
-			cellClass: 'text-center',
-		},
-		{
-			headerName: '메시지',
-			field: 'field2',
-			flex: 1,
-		},
-	];
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '담보코드',
+      field: 'field1',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '메시지',
+      field: 'field2',
+      flex: 1,
+    },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>메시지내용</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ999)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              메시지내용
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ999)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 
@@ -156,11 +168,11 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
               rowData={rowData}
               columnDefs={columnDefs}
               noRowsOverlayComponent={AgGridEmptyComponent}
-              defaultColDef={{ 
-                sortable: true, 
+              defaultColDef={{
+                sortable: true,
                 resizable: true,
               }}
-              domLayout='autoHeight'
+              domLayout="autoHeight"
             />
           </div>
         </DialogSection>
@@ -171,7 +183,12 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button variant={'contained'} size={'xl'}>
                 엑셀저장
               </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onOpenChange ? () => onOpenChange(false) : undefined}>
+              <Button
+                variant={'outlined'}
+                size={'xl'}
+                color={'gray-light'}
+                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
+              >
                 닫기
               </Button>
             </Grow>
@@ -180,5 +197,5 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-	);
+  );
 };

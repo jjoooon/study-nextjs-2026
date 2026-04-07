@@ -1,17 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import { Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { HashIcon, PlusIcon } from '@icons';
-import { 
-  Button, 
-} from '@uiux/Button';
-import { 
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from '@uiux/DropdownMenu';
+import { Button } from '@uiux/Button';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from '@uiux/DropdownMenu';
+import { useState, useRef, useEffect } from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
@@ -36,7 +30,15 @@ export const HashList = ({ data }: { data: string[] }) => {
 
   return (
     <Grow className="gap-2 w-full" placement={'sc'}>
-      <div data-hashlist="wrap" ref={wrapRef} className={cn('relative max-w-[calc(100vw-70rem)] min-w-[52rem] overflow-hidden', showMore && 'after:absolute after:block after:bg-gradient-to-r after:from-transparent after:to-[var(--color-gray-5)] after:right-[0] after:top-[0] after:w-[2rem] after:h-full')}>
+      <div
+        data-hashlist="wrap"
+        ref={wrapRef}
+        className={cn(
+          'relative max-w-[calc(100vw-70rem)] min-w-[52rem] overflow-hidden',
+          showMore &&
+            'after:absolute after:block after:bg-gradient-to-r after:from-transparent after:to-[var(--color-gray-5)] after:right-[0] after:top-[0] after:w-[2rem] after:h-full'
+        )}
+      >
         <div data-hashlist="item" ref={itemRef} style={{ width: 'fit-content' }}>
           <BulletList
             position={'row'}
@@ -96,4 +98,4 @@ export const HashList = ({ data }: { data: string[] }) => {
       </Grow>
     </Grow>
   );
-}
+};

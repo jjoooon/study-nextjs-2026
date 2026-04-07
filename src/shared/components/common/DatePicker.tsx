@@ -1,13 +1,12 @@
 'use client';
 
-import * as React from 'react';
-import { type DateRange } from 'react-day-picker';
-
 import { ErrorMsg } from '@common/ErrorMsg';
 import { CalendarIcon } from '@icons';
-import { Calendar } from '@uiux/Calendar';
 import { Button } from '@uiux/Button';
+import { Calendar } from '@uiux/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import * as React from 'react';
+import { type DateRange } from 'react-day-picker';
 
 import { FormItemSize, FormItemWidth, UIUXsize, UIUXposition } from '@/shared/types/uiTypes';
 
@@ -395,17 +394,19 @@ export function DatePickerInput({
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   }`;
-  const hoverStyle = error || invalidDate
-    ? 'hover:border-[var(--color-input-border-error)]'
-    : required
-      ? 'hover:border-[var(--color-input-border-highlight-bold)]'
-      : 'hover:border-[var(--color-input-border-hover)]';
-  const focusClass = `${ error || invalidDate 
-    ? 'focus:border-[var(--color-input-border-error)]' 
-    : required
-      ? 'focus:border-[var(--color-input-border-highlight-bold)]'
-      : 'focus:border-[var(--color-input-border-hover)]'
-    } focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.7rem]`;
+  const hoverStyle =
+    error || invalidDate
+      ? 'hover:border-[var(--color-input-border-error)]'
+      : required
+        ? 'hover:border-[var(--color-input-border-highlight-bold)]'
+        : 'hover:border-[var(--color-input-border-hover)]';
+  const focusClass = `${
+    error || invalidDate
+      ? 'focus:border-[var(--color-input-border-error)]'
+      : required
+        ? 'focus:border-[var(--color-input-border-highlight-bold)]'
+        : 'focus:border-[var(--color-input-border-hover)]'
+  } focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.7rem]`;
   const disabledClass = disabled
     ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
     : '';
@@ -504,7 +505,7 @@ export function DatePickerInput({
           <Button
             id={`${finalId}-button`}
             variant={'outlined'}
-            only={'icon'} 
+            only={'icon'}
             size={'lg'}
             color={'gray-light'}
             aria-label="Select date"
@@ -529,7 +530,6 @@ export function DatePickerInput({
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
-
               monthOnly={true}
               onMonthSelect={onMonthSelect}
               onChange={(val) => {

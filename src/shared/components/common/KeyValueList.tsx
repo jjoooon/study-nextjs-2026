@@ -1,4 +1,4 @@
-import { Grow, Typo } from "@atoms";
+import { Grow, Typo } from '@atoms';
 
 interface KeyValueItem {
   key: React.ReactNode;
@@ -32,15 +32,11 @@ interface KeyValueItemProps {
   className?: string;
 }
 
-export const KeyValueItem = ({ 
-  label, 
-  children, 
-  className 
-}: KeyValueItemProps) => {
+export const KeyValueItem = ({ label, children, className }: KeyValueItemProps) => {
   return (
     <Grow gap="1" className={className}>
       <Typo tag="div">{label}</Typo>
       <div>{children}</div>
     </Grow>
   );
-}
+};

@@ -1,4 +1,3 @@
-
 // TestData 타입 정의
 export interface TestDataType {
   data: Array<{
@@ -17,7 +16,7 @@ export interface TestDataType {
     isHighlighted: boolean;
     canEditExpiry: boolean;
     selected?: boolean;
-    badge?: string[]; 
+    badge?: string[];
     filePath: string[]; // 트리 경로를 포함한 배열
   }>;
 }
@@ -37,9 +36,9 @@ export const TestData: TestDataType = {
       paymentPeriod: '20년',
       expectedUwResult: '인수',
       isHighlighted: true,
-      canEditExpiry: true, 
+      canEditExpiry: true,
       badge: ['독립', '갱신'],
-      filePath: ['A001'], 
+      filePath: ['A001'],
     },
     {
       id: 2,
@@ -56,7 +55,7 @@ export const TestData: TestDataType = {
       expectedUwResult: '조건부인수',
       isHighlighted: false,
       canEditExpiry: false,
-      filePath: ['A001', '1'], 
+      filePath: ['A001', '1'],
     },
     {
       id: 3,
@@ -74,7 +73,7 @@ export const TestData: TestDataType = {
       isHighlighted: false,
       canEditExpiry: true,
       badge: ['독립'],
-      filePath: ['A001', '2'], 
+      filePath: ['A001', '2'],
     },
     {
       id: 4,
@@ -92,7 +91,7 @@ export const TestData: TestDataType = {
       isHighlighted: false,
       canEditExpiry: false,
       badge: ['갱신'],
-      filePath: ['A002'], 
+      filePath: ['A002'],
     },
     {
       id: 5,
@@ -109,7 +108,7 @@ export const TestData: TestDataType = {
       expectedUwResult: '조건부인수',
       isHighlighted: false,
       canEditExpiry: true,
-      filePath: ['A002', '1'], 
+      filePath: ['A002', '1'],
     },
     {
       id: 6,
@@ -126,9 +125,7 @@ export const TestData: TestDataType = {
       expectedUwResult: '인수',
       isHighlighted: false,
       canEditExpiry: false,
-      filePath: ['A002', '2'], 
+      filePath: ['A002', '2'],
     },
   ],
-}
-
-
+};

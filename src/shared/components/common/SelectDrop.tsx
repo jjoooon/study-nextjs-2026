@@ -1,13 +1,13 @@
 'use client';
 
-import * as PopoverPrimitive from '@radix-ui/react-popover';
-import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { SelectDropIcon } from '@icons';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import type { UIUXsize } from '@/shared/types/uiTypes';
 
@@ -139,28 +139,21 @@ function SelectDrop<TValue extends string = string>({
   });
 
   const isControlled = value !== undefined;
-  const selectedValues = React.useMemo(
-    () => {
-      const nextValues = isControlled ? [...value] : internalValues;
+  const selectedValues = React.useMemo(() => {
+    const nextValues = isControlled ? [...value] : internalValues;
 
-      if (selectionMode === 'radio') {
-        const firstValue = nextValues[0];
-        return firstValue ? [firstValue] : [];
-      }
+    if (selectionMode === 'radio') {
+      const firstValue = nextValues[0];
+      return firstValue ? [firstValue] : [];
+    }
 
-      return nextValues;
-    },
-    [internalValues, isControlled, selectionMode, value]
-  );
+    return nextValues;
+  }, [internalValues, isControlled, selectionMode, value]);
 
   const setSelectedValues = React.useCallback(
     (nextValues: TValue[]) => {
       const normalizedValues =
-        selectionMode === 'radio'
-          ? nextValues.length > 0
-            ? [nextValues[0] as TValue]
-            : []
-          : nextValues;
+        selectionMode === 'radio' ? (nextValues.length > 0 ? [nextValues[0] as TValue] : []) : nextValues;
 
       if (!isControlled) {
         setInternalValues(normalizedValues);
@@ -178,10 +171,7 @@ function SelectDrop<TValue extends string = string>({
   );
 
   const isCustomInputSelected = React.useMemo(
-    () =>
-      selectionMode === 'radio' &&
-      allowCustomInput &&
-      selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue),
+    () => selectionMode === 'radio' && allowCustomInput && selectedValues[0] === (CUSTOM_INPUT_VALUE as TValue),
     [allowCustomInput, selectedValues, selectionMode]
   );
 
@@ -247,7 +237,8 @@ function SelectDrop<TValue extends string = string>({
   // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상)
   // minCount는 1 이상으로 보정
   const safeMinCount = Math.max(1, minCount ?? 1);
-  const radioHasValue = selectionMode === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
+  const radioHasValue =
+    selectionMode === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
   const checkboxValid = selectionMode === 'checkbox' && selectedValues.length >= safeMinCount;
   const showError = error && !(radioHasValue || checkboxValid);
 
@@ -269,7 +260,7 @@ function SelectDrop<TValue extends string = string>({
     'disabled:cursor-not-allowed disabled:bg-(--color-blue-gray-10) disabled:text-gray-50',
     TRIGGER_VARIANT_MAP[variant],
     widthClass,
-    triggerClassName,
+    triggerClassName
   );
 
   const arrowStateColor = showError
@@ -295,14 +286,13 @@ function SelectDrop<TValue extends string = string>({
             aria-invalid={showError || undefined}
             aria-describedby={showError ? errorId : undefined}
             aria-readonly={readOnly || undefined}
-            className={cn(triggerStyle, 'aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]')}
+            className={cn(
+              triggerStyle,
+              'aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]'
+            )}
           >
             <span className="truncate text-left">{displayText}</span>
-            <SelectDropIcon
-              size={size === 'lg' ? 16 : 12}
-              color={arrowStateColor}
-              className={cn('shrink-0')}
-            />
+            <SelectDropIcon size={size === 'lg' ? 16 : 12} color={arrowStateColor} className={cn('shrink-0')} />
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -311,7 +301,7 @@ function SelectDrop<TValue extends string = string>({
             style={inlineWidthStyle}
             className={cn(
               'z-50 min-w-48 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
-              widthClass,
+              widthClass
             )}
             {...contentProps}
           >
@@ -340,12 +330,12 @@ function SelectDrop<TValue extends string = string>({
                 >
                   {options.map((option) => {
                     return (
-                      <Grow key={option.value} placement={'sc'} className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}>
-                        <RadioGroupItem
-                          value={option.value}
-                          disabled={option.disabled || readOnly}
-                          size="md"
-                        >
+                      <Grow
+                        key={option.value}
+                        placement={'sc'}
+                        className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                      >
+                        <RadioGroupItem value={option.value} disabled={option.disabled || readOnly} size="md">
                           {option.label}
                         </RadioGroupItem>
                       </Grow>
@@ -354,7 +344,10 @@ function SelectDrop<TValue extends string = string>({
 
                   {allowCustomInput && (
                     <>
-                      <Grow placement={'sc'} className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}>
+                      <Grow
+                        placement={'sc'}
+                        className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                      >
                         <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
                           {customInputLabel}
                         </RadioGroupItem>
@@ -378,7 +371,11 @@ function SelectDrop<TValue extends string = string>({
               ) : (
                 options.map((option) => {
                   return (
-                    <Grow key={option.value} placement={'ss'} className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}>
+                    <Grow
+                      key={option.value}
+                      placement={'ss'}
+                      className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                    >
                       <Checkbox
                         checked={selectedSet.has(option.value)}
                         onCheckedChange={(checked) => {

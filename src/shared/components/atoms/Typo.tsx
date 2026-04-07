@@ -1,7 +1,7 @@
+import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode, createElement } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 const typoVariants = cva('', {
   variants: {
@@ -22,8 +22,10 @@ const typoVariants = cva('', {
       'button-sm': 'text-[1.2rem] leading-[100%] tracking-[-0.13rem]',
       'button-xs': 'text-[1.1rem] leading-[100%] tracking-[-0.13rem]',
 
-      'amount-md': 'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
-      'amount-xs': 'block text-[1.1rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+      'amount-md':
+        'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+      'amount-xs':
+        'block text-[1.1rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
     },
     icon: {
       info: 'InfoBoxInfoIcon',
@@ -70,21 +72,41 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
 export const Typo = ({ tag = 'span', variant, weight, color, children, className, icon, style }: TypoProps) => {
   let IconComponent: ReactNode = null;
 
-  if (icon === 'info') IconComponent = <InfoBoxInfoIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-information-50)" size={16}  />;
-  if (icon === 'warning') IconComponent = <InfoBoxWarningIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-danger-50)" size={16} />;
-  if (icon === 'detail') IconComponent = <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />;
+  if (icon === 'info')
+    IconComponent = (
+      <InfoBoxInfoIcon
+        className="inline-flex -translate-y-[0.1rem] mr-1"
+        color="var(--color-information-50)"
+        size={16}
+      />
+    );
+  if (icon === 'warning')
+    IconComponent = (
+      <InfoBoxWarningIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-danger-50)" size={16} />
+    );
+  if (icon === 'detail')
+    IconComponent = (
+      <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />
+    );
 
-  if (icon === 'ref') IconComponent = <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />;
+  if (icon === 'ref')
+    IconComponent = (
+      <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />
+    );
   if (icon === 'dot') IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-1" />;
-  if (icon === 'dotBig') IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
+  if (icon === 'dotBig')
+    IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
   if (icon === 'hash') IconComponent = <HashIcon className="inline-flex -translate-y-[0.1rem] mr-1" size={10} />;
-  if (icon === 'dash') IconComponent = <DashIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
+  if (icon === 'dash')
+    IconComponent = <DashIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
   if (icon === 'star') IconComponent = <StarIcon className="inline-flex -translate-y-[0.15rem] mr-1" size={10} />;
 
   const indentStyle = {
     info: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
-    warning: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
-    detail: 'inline-block relative -indent-[1.4rem] ml-[1.4rem] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
+    warning:
+      'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
+    detail:
+      'inline-block relative -indent-[1.4rem] ml-[1.4rem] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
     dot: 'inline-block relative -indent-[0.9rem] ml-[0.9rem]',
     dotBig: 'inline-block relative -indent-[1.6rem] ml-[1.6rem]',
     hash: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
@@ -96,16 +118,12 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   return createElement(
     tag,
     {
-      className: cn(
-        typoVariants({ variant, weight, color }),
-        icon ? indentStyle[icon] : '',
-        className
-      ),
-      style
+      className: cn(typoVariants({ variant, weight, color }), icon ? indentStyle[icon] : '', className),
+      style,
     },
     <>
       {IconComponent}
       {children}
     </>
   );
-}
+};

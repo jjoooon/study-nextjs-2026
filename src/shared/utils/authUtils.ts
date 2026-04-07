@@ -1,6 +1,6 @@
+import { getStore } from './globalRegistry';
 import { RootState } from '@/redux';
 import log from '@/shared/utils/logger';
-import { getStore } from './globalRegistry';
 
 const logger = log.getLogger('AuthUtils');
 

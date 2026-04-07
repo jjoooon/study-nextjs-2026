@@ -1,19 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+} from '@uiux/Dialog';
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import type { PopupBaseProps } from './types';
 
-
 ModuleRegistry.registerModules([AllCommunityModule]);
-
 
 export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
@@ -22,7 +28,7 @@ export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
     field2: string;
     field3: string;
   };
-    
+
   const dummyData: DummyDataType[] = [
     { id: 1, field1: '예산-리스크관리', field2: '경영기획 관리자', field3: '조회' },
     { id: 2, field1: '계약관리-신계약', field2: '영업지점 담당자', field3: '조회,등록' },
@@ -35,51 +41,55 @@ export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
     { id: 9, field1: '통계-영업실적', field2: '경영기획 담당자', field3: '조회' },
     { id: 10, field1: '시스템관리-권한설정', field2: '시스템 관리자', field3: '조회,등록,수정,삭제' },
   ];
-	const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
+  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
 
-	const columnDefs: ColDef<DummyDataType>[] = [
-		{
-			headerName: '메뉴명',
-			field: 'field1',
-			flex: 1,
-			cellClass: 'text-center',
-		},
-		{
-			headerName: '역할명',
-			field: 'field2',
-			flex: 1,
-      cellClass: 'text-center',
-		},
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
-			headerName: '역할권한',
-			field: 'field3',
-			flex: 1,
+      headerName: '메뉴명',
+      field: 'field1',
+      flex: 1,
       cellClass: 'text-center',
-		},
-	];
+    },
+    {
+      headerName: '역할명',
+      field: 'field2',
+      flex: 1,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '역할권한',
+      field: 'field3',
+      flex: 1,
+      cellClass: 'text-center',
+    },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>화면권한보기</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ998)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              화면권한보기
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ998)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine" >
+          <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}
-              defaultColDef={{ 
-                sortable: true, 
+              defaultColDef={{
+                sortable: true,
                 resizable: true,
               }}
-              domLayout='autoHeight'
+              domLayout="autoHeight"
             />
           </div>
         </DialogSection>
@@ -89,5 +99,5 @@ export const LTPZ998 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-	);
+  );
 };

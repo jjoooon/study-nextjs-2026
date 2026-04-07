@@ -117,8 +117,6 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'check-file/filename-naming-convention': [
       'error',
       {
-        // Storybook stories 파일은 예외 처리
-        '**/*.stories.@(js|jsx|ts|tsx|mdx)': null,
         // React 컴포넌트: PascalCase
         '**/components/!(index).*': 'PASCAL_CASE',
         '**/components/*/!(index).*': 'PASCAL_CASE',
@@ -201,6 +199,13 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     '.prettierrc.cjs',
     'public',
     'public/**',
+    // Storybook stories 파일 예외 처리
+    '**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '**/*.stories.ts',
+    '**/*.stories.tsx',
+    '**/*.stories.js',
+    '**/*.stories.jsx',
+    '**/*.stories.mdx',
   ]
 }, ...storybook.configs["flat/recommended"], {
   rules: {

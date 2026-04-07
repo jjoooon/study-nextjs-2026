@@ -1,7 +1,7 @@
 'use client';
 
-import { LayoutTemplate } from '@layout/LayoutTemplate';
 import PageID from '@features/PageID';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { LTPA010Main } from '../components/LTPA010Main';
 
 const data = {
@@ -9,7 +9,7 @@ const data = {
     pageName: '통합가입설계조회',
     pageId: 'LTPA010',
   },
-}
+};
 export default function LTPA010Section() {
   return (
     <LayoutTemplate

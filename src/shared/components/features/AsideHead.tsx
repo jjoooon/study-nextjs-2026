@@ -1,9 +1,9 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { ZoomInIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { ZoomInIcon } from '@icons';
 
 export default function AsideFoot() {
   return (
@@ -45,7 +45,7 @@ export default function AsideFoot() {
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
         <Button variant={'outlined'} color={'secondary'} size={'lg'} className="justify-between!">
           제안서
-           <ZoomInIcon color={'var(--color-secondary-50)'} />
+          <ZoomInIcon color={'var(--color-secondary-50)'} />
         </Button>
         <Button variant={'outlined'} color={'secondary'} size={'lg'} className="justify-between!">
           출력

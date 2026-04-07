@@ -1,11 +1,11 @@
 'use client';
 
+import { Grid, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
-import { Grid, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -36,7 +36,10 @@ const InsPlanNameRenderer = (props: ICellRendererParams<InsPlanDep2Data>) => {
 
   return (
     <Grid className="h-full grid-cols-[auto_1fr_auto] grid-rows-[1fr] items-center pr-2">
-      <Typo variant="body-md" className="border-r-[.1rem] border-[#E1E1E1] px-2 h-full flex items-center justify-center">
+      <Typo
+        variant="body-md"
+        className="border-r-[.1rem] border-[#E1E1E1] px-2 h-full flex items-center justify-center"
+      >
         {data.type}
       </Typo>
       <Typo variant="body-md" className="flex items-center justify-start truncate px-2">
