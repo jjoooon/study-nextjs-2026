@@ -230,7 +230,7 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'조회구분'}>
                   <NativeSelect
                     aria-label="항목 선택"
-                    className="w-[10rem]"
+                    className="w-40"
                     value={form.type01}
                     required
                     onChange={(e) => setFormField('type01', e.target.value)}
@@ -245,7 +245,7 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
                     ))}
                   </NativeSelect>
                   <Input
-                    className="w-[10rem]"
+                    className="w-40"
                     value={form.type02 || 'LA260204310632'}
                     onChange={(e) => setFormField('type02', e.target.value)}
                   />

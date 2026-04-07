@@ -81,7 +81,7 @@ export function TabPager<T>({
     <>
       <Tabs {...tabsProps}>
         <TabsLine hasTableBelow={hasTableBelow}>
-          <TabsList activeValue={active ?? ''}>
+          <TabsList>
             {data.slice(visibleStart, end).map((tab) => {
               // error 속성이 없는 타입도 허용
               const tabHasError =

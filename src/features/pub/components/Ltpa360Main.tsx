@@ -37,17 +37,37 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA360Main = () => {
-  // Tab 정의
-  type LTPA360TabType = { name: string; value: string; label: string };
-  const DATA_TABS: LTPA360TabType[] = [
-    { name: '총괄장표', value: 'tab1', label: '총괄장표' },
-    { name: '입력장표', value: 'tab2', label: '입력장표' },
-    { name: '담보코드요청', value: 'tab3', label: '담보코드요청' },
-    { name: '사고담보코드요청', value: 'tab4', label: '사고담보코드요청' },
-  ];
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+// Tab 정의
+type Ltpa360TabType = { name: string; value: string; label: string };
+const DATA_TABS: Ltpa360TabType[] = [
+  { name: '총괄장표', value: 'tab1', label: '총괄장표' },
+  { name: '입력장표', value: 'tab2', label: '입력장표' },
+  { name: '담보코드요청', value: 'tab3', label: '담보코드요청' },
+  { name: '사고담보코드요청', value: 'tab4', label: '사고담보코드요청' },
+];
 
+export const Ltpa360Main = () => {
+  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+    type03: '',
+    type04: '',
+    type05: '',
+    type06: '',
+    type07: '',
+    type08: '',
+    type09: '',
+    type10: '',
+    type11: '',
+    type12: '',
+    type13: '',
+    type14: '',
+    type15: '',
+    type16: '',
+    type17: '',
+    type18: '',
+  });
   const handlePreviewClick = (row: LTPA360DummyDataRow2) => {
     // TODO: 실제 미리보기 팝업/라우팅 연동
     // eslint-disable-next-line no-console
@@ -647,28 +667,6 @@ export const LTPA360Main = () => {
       cellEditorParams: { values: ['2025-10-13', ''] },
     },
   ];
-
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
-    type05: '',
-    type06: '',
-    type07: '',
-    type08: '',
-    type09: '',
-    type10: '',
-    type11: '',
-    type12: '',
-    type13: '',
-    type14: '',
-    type15: '',
-    type16: '',
-    type17: '',
-    type18: '',
-  });
 
   return (
     <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem]">

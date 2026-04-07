@@ -667,7 +667,7 @@ export const SpeechBubbleIcon: React.FC<IconProps> = ({
   </svg>
 );
 
-export const AiIcon: React.FC<IconProps> = ({ className = '' }) => (
+export const AiIcon: React.FC<IconProps> = ({ className = '', color = '#F0E6FF', color2 = '#A683FF' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(11)}
@@ -710,7 +710,7 @@ export const AiIcon: React.FC<IconProps> = ({ className = '' }) => (
         gradientUnits="userSpaceOnUse"
       >
         <stop stopColor="white" />
-        <stop offset="1" stopColor="#F0E6FF" />
+        <stop offset="1" stopColor={color} />
       </linearGradient>
       <linearGradient
         id="paint1_linear_1370_15120"
@@ -720,8 +720,8 @@ export const AiIcon: React.FC<IconProps> = ({ className = '' }) => (
         y2="5.88313"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#006FF2" />
-        <stop offset="0.975962" stopColor="#A683FF" />
+        <stop stopColor={color} />
+        <stop offset="0.975962" stopColor={color2} />
       </linearGradient>
       <linearGradient
         id="paint2_linear_1370_15120"
@@ -732,7 +732,7 @@ export const AiIcon: React.FC<IconProps> = ({ className = '' }) => (
         gradientUnits="userSpaceOnUse"
       >
         <stop stopColor="white" />
-        <stop offset="1" stopColor="#F0E6FF" />
+        <stop offset="1" stopColor={color} />
       </linearGradient>
       <linearGradient
         id="paint3_linear_1370_15120"
@@ -742,8 +742,8 @@ export const AiIcon: React.FC<IconProps> = ({ className = '' }) => (
         y2="5.88313"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#006FF2" />
-        <stop offset="0.975962" stopColor="#A683FF" />
+        <stop stopColor={color} />
+        <stop offset="0.975962" stopColor={color2} />
       </linearGradient>
     </defs>
   </svg>
@@ -1373,5 +1373,45 @@ export const UwIcon: React.FC<IconProps> = ({ className = '', size = 32 }) => (
         <rect width="18" height="18" fill="white" transform="translate(7 7)" />
       </clipPath>
     </defs>
+  </svg>
+);
+
+export const NotificationIcon: React.FC<IconProps> = ({
+  className = '',
+  size = 14,
+  color = '#FEF4D4',
+  color2 = '#FFB800',
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 14 14"
+    fill="none"
+    className={className}
+  >
+    <circle cx="5.7998" cy="3" r="1.5" fill={color} />
+    <path
+      d="M8.91822 13.4182C10.1893 13.0776 10.9436 11.7711 10.6031 10.5L6 11.7334C6.34059 13.0045 7.64712 13.7588 8.91822 13.4182Z"
+      fill={color}
+    />
+    <path
+      d="M10.2028 5.50989C9.99457 4.73281 9.4387 4.083 8.65745 3.70341C7.87621 3.32381 6.93359 3.24553 6.03696 3.48578C5.14033 3.72603 4.36314 4.26514 3.87636 4.9845C3.38958 5.70386 3.23309 6.54455 3.44131 7.32162C3.78581 8.60732 3.71891 9.63304 3.50136 10.4125C3.2534 11.3008 3.12942 11.745 3.16292 11.8341C3.20124 11.9362 3.22896 11.9642 3.33059 12.0036C3.41943 12.038 3.79263 11.938 4.53903 11.738L7.99967 10.8107L11.4603 9.88344C12.2067 9.68345 12.5799 9.58345 12.6396 9.50922C12.708 9.4243 12.718 9.38618 12.7001 9.27866C12.6846 9.18467 12.3551 8.862 11.6962 8.21666C11.1181 7.65044 10.5473 6.79559 10.2028 5.50989Z"
+      fill={color2}
+    />
+    <path
+      d="M1.19974 6.77457C0.972533 5.95897 1.20881 5.07718 1.81338 4.48445M11.8527 3.92014C11.6416 3.1002 10.9961 2.45469 10.1762 2.24365M10.2028 5.50989C9.99457 4.73281 9.4387 4.083 8.65745 3.70341C7.87621 3.32381 6.93359 3.24553 6.03696 3.48578C5.14033 3.72603 4.36314 4.26514 3.87636 4.9845C3.38958 5.70386 3.23309 6.54455 3.44131 7.32162C3.78581 8.60732 3.71891 9.63304 3.50136 10.4125C3.2534 11.3008 3.12942 11.745 3.16292 11.8341C3.20124 11.9362 3.22896 11.9642 3.33059 12.0036C3.41943 12.038 3.79263 11.938 4.53903 11.738L7.99967 10.8107L11.4603 9.88344C12.2067 9.68345 12.5799 9.58345 12.6396 9.50922C12.708 9.4243 12.718 9.38618 12.7001 9.27866C12.6846 9.18467 12.3551 8.862 11.6962 8.21666C11.1181 7.65044 10.5473 6.79559 10.2028 5.50989Z"
+      stroke={color2}
+      strokeWidth="1.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M1.19974 6.77457C0.972533 5.95897 1.20881 5.07718 1.81338 4.48445M11.8527 3.92014C11.6416 3.1002 10.9961 2.45469 10.1762 2.24365"
+      stroke={color2}
+      strokeWidth="1.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );

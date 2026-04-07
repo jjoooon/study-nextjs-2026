@@ -1,5 +1,5 @@
-import LTPA300Section from '@/features/pub/sections/LTPA300Section';
+import Ltpa300Section from '@/features/pub/sections/Ltpa300Section';
 
 export default function Page() {
-  return <LTPA300Section />;
+  return <Ltpa300Section />;
 }

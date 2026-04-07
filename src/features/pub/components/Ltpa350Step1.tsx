@@ -27,7 +27,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { LTPA350Step1DataType } from '../data/ltpa350Step1Data';
 
 // Props Type
-type LTPA350Step1Props = {
+type Ltpa350Step1Props = {
   data?: LTPA350Step1DataType;
   selectedPlanId?: number | null;
   onSelectPlan?: (planId: number) => void;
@@ -508,11 +508,11 @@ function contractFormReducer(state: ContractFormState, action: ContractFormActio
   }
 }
 
-export function LTPA350Step1({
+export function Ltpa350Step1({
   data: _data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan: _onSelectPlan,
-}: LTPA350Step1Props) {
+}: Ltpa350Step1Props) {
   // ---------------------------------------------------------------------------
   // 1) Data source
   // ---------------------------------------------------------------------------

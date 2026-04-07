@@ -1,7 +1,7 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -89,7 +89,7 @@ export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
       editable: false,
       cellClass: 'text-center  flex! items-center justify-center!',
-      cellRenderer: () => (
+      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
         <Grow className="w-full px-1">
           <Input aria-label="" width={'100%'} value={'1234567'} size="sm" readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>

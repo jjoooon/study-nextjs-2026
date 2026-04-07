@@ -24,7 +24,7 @@ import { LTPA010DummyData } from '../data/ltpa010Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA010Main = () => {
+export const Ltpa010Main = () => {
   // form event
   const [form, setFormField] = useFormFields({
     type01: '',

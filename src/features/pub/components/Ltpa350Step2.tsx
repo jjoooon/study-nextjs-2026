@@ -44,13 +44,13 @@ type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number] & {
 };
 type MainHeadTab = TabListDataData[number] & { value: string };
 
-interface LTPA350Step2Props {
+interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
 }
 
-export function LTPA350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: LTPA350Step2Props) {
+export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);

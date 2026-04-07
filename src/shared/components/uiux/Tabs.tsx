@@ -84,7 +84,7 @@ export interface TabsTriggerProps
     VariantProps<typeof tabsTriggerVariants>,
     InternalTriggerProps {}
 
-const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?: string }>(
+const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
   ({ className, variant: _variant, children, ...props }, ref) => {
     const { variant, removable, onRemove }: TabsContextProps = useTabsContext();
     const totalTabs = React.Children.count(children);
