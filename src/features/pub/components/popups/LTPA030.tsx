@@ -4,8 +4,10 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { DatePickerCellEditor, createCellValueChangedHandler } from '@aggrid';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { DatePickerCellEditor } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -15,8 +17,6 @@ import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -143,14 +143,7 @@ export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-
-  const [, setErrorRows] = React.useState<number[]>(DummyData.filter((row) => !row.isCheck).map((row) => row.id));
-
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // form event
   const [form, setFormField] = useFormFields({
@@ -280,7 +273,6 @@ export const LTPA030 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     enableCellSpan={true}
                     singleClickEdit={true}
-                    onCellValueChanged={onCellValueChanged}
                     rowSelection={{
                       mode: 'multiRow',
                       headerCheckbox: false,

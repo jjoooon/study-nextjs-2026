@@ -4,27 +4,26 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -57,7 +56,7 @@ export const LTPA430 = ({ open, onOpenChange }: PopupBaseProps) => {
       flex: 1,
       cellClass: 'text-center px-0! flex bg-[#f4f4f4]! [&>div>span]:h-auto! ',
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
         <Grow className="w-full px-1 py-1">
           <Typo className="w-[6.5rem] whitespace-pre-wrap" color="gray" tag="span" variant="body-md" weight="bold">
             보장보험료 합계(원)
@@ -144,7 +143,7 @@ export const LTPA430 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

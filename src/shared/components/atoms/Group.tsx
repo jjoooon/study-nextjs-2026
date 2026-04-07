@@ -126,13 +126,14 @@ export const Gcol = ({
         className
       )}
       style={style}
+      onClick={onClick}
     >
       {children}
     </div>
   );
 };
 
-export const Grow = ({ children, placement = 'cc', variant = 'default', gap = 1, className, style }: GroupProps) => {
+export const Grow = ({ children, placement = 'cc', variant = 'default', gap = 1, className, style, onClick }: GroupProps) => {
   return (
     <div
       data-group="row"
@@ -144,18 +145,20 @@ export const Grow = ({ children, placement = 'cc', variant = 'default', gap = 1,
         className
       )}
       style={style}
+      onClick={onClick}
     >
       {children}
     </div>
   );
 };
 
-export const Grid = ({ children, variant = 'default', gap = 1, className, style }: GroupProps) => {
+export const Grid = ({ children, variant = 'default', gap = 1, className, style, onClick }: GroupProps) => {
   return (
     <div
       data-group="row"
       className={cn('grid relative tracking-[-0.13rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
       style={style}
+      onClick={onClick}
     >
       {children}
     </div>
@@ -169,6 +172,7 @@ export const FormItem = ({
   gap = 1,
   className,
   style,
+  onClick,
 }: GroupProps) => {
   return (
     <div
@@ -181,14 +185,15 @@ export const FormItem = ({
         className
       )}
       style={style}
+      onClick={onClick}
     >
       {children}
     </div>
   );
 };
-export const Separator = ({ children, style }: GroupProps) => {
+export const Separator = ({ children, style, onClick }: GroupProps) => {
   return (
-    <div className="translate-y-[-.2rem]" style={style}>
+    <div className="translate-y-[-.2rem]" style={style} onClick={onClick}>
       {children}
     </div>
   );

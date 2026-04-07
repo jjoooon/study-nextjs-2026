@@ -3,33 +3,30 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 import * as React from 'react';
+
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ResetIcon } from '@icons';
-import { FileExportIcon, SearchIcon } from '@icons';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
-
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { PopupBaseProps } from './types';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA210 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -129,7 +126,6 @@ export const LTPA210 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const [, setErrorRows] = useState<number[]>(DummyData.filter((row) => !row.isCheck).map((row) => row.id));
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',

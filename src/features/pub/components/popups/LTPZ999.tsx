@@ -3,9 +3,11 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import React from 'react';
+
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -18,8 +20,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 
-import type { PopupBaseProps } from './types';
-
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -29,7 +29,7 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
     field2: string;
   };
 
-  const dummyData: DummyDataType[] = [
+  const DummyData: DummyDataType[] = [
     {
       id: 1,
       field1: 'CLA 150303',
@@ -131,7 +131,7 @@ export const LTPZ999 = ({ open, onOpenChange }: PopupBaseProps) => {
       field2: '상해통원비(외래/처방조제) 특약',
     },
   ];
-  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {

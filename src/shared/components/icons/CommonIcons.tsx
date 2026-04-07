@@ -950,7 +950,7 @@ export const InfoBoxWarningIcon: React.FC<IconProps> = ({ className = '', size =
   </svg>
 );
 
-export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16, color = '#E43939' }) => (
+export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16, color = '#FF5C2E' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -961,7 +961,7 @@ export const TextBabbleIcon: React.FC<IconProps> = ({ className = '', size = 16,
   >
     <path
       d="M15 7.07C15 3.72 11.87 1 8 1C4.13 1 1 3.72 1 7.07C1 10.11 3.59 12.63 6.96 13.06L10.0472 14.7518C10.2074 14.8396 10.3917 14.6844 10.3325 14.5116L9.79 12.93C12.79 12.24 15 9.88 15 7.07Z"
-      fill="#FF5C2E"
+      fill={color}
     />
     <path d="M5.5 7.5L7.5 9L10.5 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>

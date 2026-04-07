@@ -1,19 +1,11 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-} from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { PopupBaseProps } from './types';
 
 export const LTPZ997 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {

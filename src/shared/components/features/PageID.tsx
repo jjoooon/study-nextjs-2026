@@ -1,6 +1,5 @@
 'use client';
 
-import { size } from 'zod';
 import { getHeader } from '@/shared/utils/authUtils';
 import { Grow, Typo } from '@atoms';
 import { ZoomControl } from '@common/ZoomControl';
@@ -10,7 +9,7 @@ import { Button } from '@uiux/Button';
 type DefaultPageID = {
   pageName?: string;
   pageId?: string | number;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 type PageIDProps = {
   data: DefaultPageID;

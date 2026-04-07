@@ -1,35 +1,34 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useRef } from 'react';
 import * as React from 'react';
+
 import { useTabs } from '@/shared/hooks/useTabs';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon } from '@icons';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
-import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -401,89 +400,8 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  //담보 상세 정보
-  type CoverageDetailRow = {
-    id: number;
-    coverageCode: string;
-    coverageName: string;
-    insuranceStartDate: string;
-    insuranceEndDate: string;
-    insurancePeriod: string;
-    paymentPeriod: string;
-    subscriptionAmount: number;
-    designCoverageCode: string;
-    designCoverageName: string;
-  };
-
-  const coverageDetailData: CoverageDetailRow[] = [
-    {
-      id: 1,
-      coverageCode: 'CLA05417',
-      coverageName: '보통약관(화재상해후유장해3)',
-      insuranceStartDate: '2026-01-01',
-      insuranceEndDate: '2041-01-01',
-      insurancePeriod: '15년만기',
-      paymentPeriod: '전기납',
-      subscriptionAmount: 1000000,
-      designCoverageCode: 'CLA05417',
-      designCoverageName: '보통약관(화재상해후유장해)',
-    },
-  ];
-
-  const coverageDetailColumnDefs: ColDef<CoverageDetailRow>[] = [
-    {
-      headerName: '담보명(담보코드)',
-      flex: 1,
-      cellClass: 'text-left',
-      valueGetter: (params) => `${params.data?.coverageName} (${params.data?.coverageCode})`,
-    },
-    {
-      headerName: '보험시기',
-      field: 'insuranceStartDate',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험종기',
-      field: 'insuranceEndDate',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험기간',
-      field: 'insurancePeriod',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '납입기간',
-      field: 'paymentPeriod',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'subscriptionAmount',
-      width: 120,
-      cellClass: 'text-center',
-      valueFormatter: (params) => params.value?.toLocaleString() ?? '',
-    },
-    {
-      headerName: '설계담보코드',
-      field: 'designCoverageCode',
-      width: 120,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '설계담보명',
-      field: 'designCoverageName',
-      flex: 1,
-      cellClass: 'text-left',
-    },
-  ];
-
   const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
+  const [, setErrorRows] = React.useState<number[]>(
     propertyListData.filter((row) => !row.isCheck).map((row) => row.id)
   );
 
@@ -501,7 +419,7 @@ export const LTPZ020 = ({ open, onOpenChange }: PopupBaseProps) => {
   } = useTabs(DATA_SUB_TABS);
   const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
-  const [expectedDelivery, setExpectedDelivery] = React.useState('2026-03');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="xl">

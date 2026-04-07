@@ -1,22 +1,23 @@
 'use client';
 // 권오택
 import * as React from 'react';
+
 import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { CommonIcon, CircleCheckIcon, JobIcon, CumulativeIcon, UwIcon, InfoToastIcon } from '@icons';
+import { CircleCheckIcon, CommonIcon, CumulativeIcon, InfoToastIcon, JobIcon, UwIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from './types';
 
 type CheckTab = {
   name: string;

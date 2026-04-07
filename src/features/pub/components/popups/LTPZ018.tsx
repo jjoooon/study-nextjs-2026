@@ -1,35 +1,84 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
+
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Gcol, Grow, Grid, Typo } from '@atoms';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogTrigger,
-  DialogClose,
 } from '@uiux/Dialog';
-
-import type { PopupBaseProps } from './types';
 
 type MenuItem = {
   code: string;
   name: string;
   link: string;
 };
+
+const MENU_LIST: MenuItem[] = [
+  { code: 'm01', name: '설계완료알림', link: '/' },
+  { code: 'm02', name: '다른상품설계', link: '/' },
+  { code: 'm03', name: '수수료조회', link: '/' },
+  { code: 'm04', name: '실손정액조회', link: '/' },
+
+  { code: 'm05', name: '동일상품복사', link: '/' },
+  { code: 'm06', name: '物비용처리', link: '/' },
+  { code: 'm07', name: '설계비교', link: '/' },
+  { code: 'm08', name: '계약복사', link: '/' },
+
+  { code: 'm09', name: 'QA심사이력', link: '/' },
+  { code: 'm10', name: '동의현황', link: '/' },
+  { code: 'm11', name: '부실유의', link: '/' },
+  { code: 'm12', name: '통판스크립트', link: '/' },
+
+  { code: 'm13', name: '이미지조회', link: '/' },
+  { code: 'm14', name: '인수기준', link: '/' },
+  { code: 'm15', name: '공통스크립트', link: '/' },
+  { code: 'm16', name: '이미지스캔', link: '/' },
+
+  { code: 'm17', name: '인수스코어', link: '/' },
+  { code: 'm18', name: 'TM마케팅동의', link: '/' },
+  { code: 'm19', name: '질병가이드', link: '/' },
+  { code: 'm20', name: '건출물대장', link: '/' },
+
+  { code: 'm21', name: '전자문서지갑', link: '/' },
+  { code: 'm23', name: '업종선택', link: '/' },
+  { code: 'm24', name: '한눈에(통합)', link: '/' },
+  { code: 'm25', name: '건물구조입력', link: '/' },
+
+  { code: 'm26', name: '질문하기', link: '/' },
+  { code: 'm27', name: '설계 매뉴얼', link: '/' },
+  { code: 'm28', name: '실손정액조회', link: '/' },
+  { code: 'm29', name: '전체누적', link: '/' },
+
+  { code: 'm30', name: '약관조회', link: '/' },
+  { code: 'm31', name: '부실유의', link: '/' },
+  { code: 'm32', name: '설계동의', link: '/' },
+  { code: 'm33', name: '수수료조회', link: '/' },
+
+  { code: 'm34', name: '원클릭스캔', link: '/' },
+  { code: 'm22', name: '청약완료불가사전안내', link: '/' },
+];
+
+const MY_MENU_LIST: MenuItem[] = [
+  { code: 'm01', name: '설계완료알림', link: '/' },
+  { code: 'm02', name: '다른상품설계', link: '/' },
+  { code: 'm03', name: '수수료조회', link: '/' },
+  { code: 'm04', name: '실손정액조회', link: '/' },
+];
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -38,69 +87,18 @@ export const LTPZ018 = ({ open, onOpenChange }: PopupBaseProps) => {
     { label: '전체메뉴', value: 'tab1' },
     { label: '편집모드', value: 'tab2' },
   ];
-  const menuList: MenuItem[] = [
-    { code: 'm01', name: '설계완료알림', link: '/' },
-    { code: 'm02', name: '다른상품설계', link: '/' },
-    { code: 'm03', name: '수수료조회', link: '/' },
-    { code: 'm04', name: '실손정액조회', link: '/' },
-
-    { code: 'm05', name: '동일상품복사', link: '/' },
-    { code: 'm06', name: '物비용처리', link: '/' },
-    { code: 'm07', name: '설계비교', link: '/' },
-    { code: 'm08', name: '계약복사', link: '/' },
-
-    { code: 'm09', name: 'QA심사이력', link: '/' },
-    { code: 'm10', name: '동의현황', link: '/' },
-    { code: 'm11', name: '부실유의', link: '/' },
-    { code: 'm12', name: '통판스크립트', link: '/' },
-
-    { code: 'm13', name: '이미지조회', link: '/' },
-    { code: 'm14', name: '인수기준', link: '/' },
-    { code: 'm15', name: '공통스크립트', link: '/' },
-    { code: 'm16', name: '이미지스캔', link: '/' },
-
-    { code: 'm17', name: '인수스코어', link: '/' },
-    { code: 'm18', name: 'TM마케팅동의', link: '/' },
-    { code: 'm19', name: '질병가이드', link: '/' },
-    { code: 'm20', name: '건출물대장', link: '/' },
-
-    { code: 'm21', name: '전자문서지갑', link: '/' },
-    { code: 'm23', name: '업종선택', link: '/' },
-    { code: 'm24', name: '한눈에(통합)', link: '/' },
-    { code: 'm25', name: '건물구조입력', link: '/' },
-
-    { code: 'm26', name: '질문하기', link: '/' },
-    { code: 'm27', name: '설계 매뉴얼', link: '/' },
-    { code: 'm28', name: '실손정액조회', link: '/' },
-    { code: 'm29', name: '전체누적', link: '/' },
-
-    { code: 'm30', name: '약관조회', link: '/' },
-    { code: 'm31', name: '부실유의', link: '/' },
-    { code: 'm32', name: '설계동의', link: '/' },
-    { code: 'm33', name: '수수료조회', link: '/' },
-
-    { code: 'm34', name: '원클릭스캔', link: '/' },
-    { code: 'm22', name: '청약완료불가사전안내', link: '/' },
-  ];
-  const myMenuList: MenuItem[] = [
-    { code: 'm01', name: '설계완료알림', link: '/' },
-    { code: 'm02', name: '다른상품설계', link: '/' },
-    { code: 'm03', name: '수수료조회', link: '/' },
-    { code: 'm04', name: '실손정액조회', link: '/' },
-  ];
-
   const uniqueMenuList = useMemo(
-    () => menuList.filter((menu, index, list) => list.findIndex((item) => item.code === menu.code) === index),
-    [menuList]
+    () => MENU_LIST.filter((menu, index, list) => list.findIndex((item) => item.code === menu.code) === index),
+    []
   );
 
   const initialSelectedMenuNames = useMemo(() => {
-    const initialNameSet = new Set(myMenuList.map((menu) => menu.code));
+    const initialNameSet = new Set(MY_MENU_LIST.map((menu) => menu.code));
     return uniqueMenuList
       .filter((menu) => initialNameSet.has(menu.code))
       .map((menu) => menu.code)
       .slice(0, 7);
-  }, [myMenuList, uniqueMenuList]);
+  }, [uniqueMenuList]);
 
   const [selectedMenuNames, setSelectedMenuNames] = useState<string[]>(initialSelectedMenuNames);
 
@@ -115,7 +113,7 @@ export const LTPZ018 = ({ open, onOpenChange }: PopupBaseProps) => {
     }
   };
 
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const { tabs, active, setActive } = useTabs(DATA_TABS);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -142,7 +140,7 @@ export const LTPZ018 = ({ open, onOpenChange }: PopupBaseProps) => {
             >
               <Grow variant="box-round-b" className="w-full flex-wrap" placement="ss">
                 {active === 'tab1' &&
-                  menuList.map((menu, idx) => (
+                  MENU_LIST.map((menu, idx) => (
                     <Button
                       key={`menu-${idx}`}
                       variant={'outlined'}

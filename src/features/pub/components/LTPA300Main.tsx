@@ -5,7 +5,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useAgGridInfiniteAppend } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
@@ -18,9 +18,8 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
-import type { LTPA300DummyDataRow } from '../data/LTPA300Data';
-
-import { LTPA300DummyData } from '../data/LTPA300Data';
+import type { LTPA300DummyDataRow } from '../data/ltpa300Data';
+import { LTPA300DummyData } from '../data/ltpa300Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

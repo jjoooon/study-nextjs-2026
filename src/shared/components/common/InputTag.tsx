@@ -1,6 +1,5 @@
 'use client';
 
-import { X } from 'lucide-react';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
@@ -37,10 +36,11 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
     ref
   ) => {
     const [inputValue, setInputValue] = React.useState('');
-    const [isFocused, setIsFocused] = React.useState(false);
     const errorId = React.useId();
     // 내부 input 요소에 대한 ref
     const inputRef = React.useRef<HTMLInputElement>(null);
+
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement, []);
 
     // Enter, 쉼표(,) 입력 시 태그 추가 로직
     const addTag = (tagContent: string) => {
@@ -123,8 +123,6 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           placeholder={placeholder} // 태그가 하나라도 있으면 placeholder 숨김
           // Input 스타일 리셋
           className="flex-1 min-w-[120px] bg-transparent outline-none text-sm disabled:cursor-not-allowed disabled:opacity-50"

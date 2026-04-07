@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
 import * as React from 'react';
+
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -21,9 +22,15 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from './types';
 
 export const LTPZ021 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const insuranceTabs = [
+    { label: '인보험', value: 'human' },
+    { label: '물보험', value: 'property' },
+  ];
+  const [leftTabActive, setLeftTabActive] = React.useState('human');
+  const [rightTabActive, setRightTabActive] = React.useState('human');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
@@ -292,102 +299,89 @@ export const LTPZ021 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Typo variant={'heading-sm'} className="mb-1">
                     피보험자정보
                   </Typo>
-                  {(() => {
-                    const [tabActive, setTabActive] = React.useState('human');
-                    const tabData = [
-                      { label: '인보험', value: 'human' },
-                      { label: '물보험', value: 'property' },
-                    ];
-                    return (
-                      <TabPager
-                        data={tabData}
-                        active={tabActive}
-                        setActive={setTabActive}
-                        getValue={(tab) => tab.value}
-                        renderTab={(tab) => <span>{tab.label}</span>}
-                        visibleCount={2}
-                      >
-                        {tabActive === 'human' ? (
-                          <Gcol className="w-full">
-                            <FormTable
-                              caption="포인트정보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'피보험자'}>김한화</FormCell>
-                                <FormCell title={'연령'}>30</FormCell>
-                                <FormCell title={'직업명'}>회사사무직종사자</FormCell>
-                                <FormCell title={'급수'}>1급</FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable
-                              caption="담보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'담보명'}></FormCell>
-                                <FormCell title={'보험기간'}></FormCell>
-                                <FormCell title={'납입기간'}></FormCell>
-                                <FormCell title={'가입금액'}></FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center"></FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol>
-                        ) : (
-                          <Gcol className="w-full">
-                            <FormTable
-                              caption="포인트정보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'소유자'}>김한화</FormCell>
-                                <FormCell title={'직업업종'}>30</FormCell>
-                                <FormCell title={'급수'}>1급</FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
-                              <FormRow>
-                                <FormCell title={'소재지'}></FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재기본담보'}>김한화</FormCell>
-                                <FormCell title={'가입금액'}>30</FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable
-                              caption="담보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재특약담보'}>김한화</FormCell>
-                                <FormCell title={'보험기간'}>30</FormCell>
-                                <FormCell title={'납입기간'}></FormCell>
-                                <FormCell title={'가입금액'}></FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol>
-                        )}
-                      </TabPager>
-                    );
-                  })()}
+                  <TabPager
+                    data={insuranceTabs}
+                    active={leftTabActive}
+                    setActive={setLeftTabActive}
+                    getValue={(tab) => tab.value}
+                    renderTab={(tab) => <span>{tab.label}</span>}
+                    visibleCount={2}
+                  >
+                    {leftTabActive === 'human' ? (
+                      <Gcol className="w-full">
+                        <FormTable
+                          caption="포인트정보"
+                          lineTop={false}
+                          cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
+                        >
+                          <FormRow vertical={true}>
+                            <FormCell title={'피보험자'}>김한화</FormCell>
+                            <FormCell title={'연령'}>30</FormCell>
+                            <FormCell title={'직업명'}>회사사무직종사자</FormCell>
+                            <FormCell title={'급수'}>1급</FormCell>
+                            <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable
+                          caption="담보"
+                          lineTop={false}
+                          cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
+                        >
+                          <FormRow vertical={true}>
+                            <FormCell title={'담보명'}></FormCell>
+                            <FormCell title={'보험기간'}></FormCell>
+                            <FormCell title={'납입기간'}></FormCell>
+                            <FormCell title={'가입금액'}></FormCell>
+                            <FormCell title={'보장P'} tdClassName="justify-end items-center"></FormCell>
+                          </FormRow>
+                        </FormTable>
+                      </Gcol>
+                    ) : (
+                      <Gcol className="w-full">
+                        <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                          <FormRow vertical={true}>
+                            <FormCell title={'소유자'}>김한화</FormCell>
+                            <FormCell title={'직업업종'}>30</FormCell>
+                            <FormCell title={'급수'}>1급</FormCell>
+                            <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
+                          <FormRow>
+                            <FormCell title={'소재지'}></FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
+                          <FormRow vertical={true}>
+                            <FormCell title={'화재기본담보'}>김한화</FormCell>
+                            <FormCell title={'가입금액'}>30</FormCell>
+                            <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable
+                          caption="담보"
+                          lineTop={false}
+                          cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
+                        >
+                          <FormRow vertical={true}>
+                            <FormCell title={'화재특약담보'}>김한화</FormCell>
+                            <FormCell title={'보험기간'}>30</FormCell>
+                            <FormCell title={'납입기간'}></FormCell>
+                            <FormCell title={'가입금액'}></FormCell>
+                            <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                      </Gcol>
+                    )}
+                  </TabPager>
                 </Gcol>
               </Grow>
               <Grow className="w-full">
@@ -396,102 +390,89 @@ export const LTPZ021 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Typo variant={'heading-sm'} className="mb-1">
                     피보험자정보
                   </Typo>
-                  {(() => {
-                    const [tabActive, setTabActive] = React.useState('human');
-                    const tabData = [
-                      { label: '인보험', value: 'human' },
-                      { label: '물보험', value: 'property' },
-                    ];
-                    return (
-                      <TabPager
-                        data={tabData}
-                        active={tabActive}
-                        setActive={setTabActive}
-                        getValue={(tab) => tab.value}
-                        renderTab={(tab) => <span>{tab.label}</span>}
-                        visibleCount={2}
-                      >
-                        {tabActive === 'human' ? (
-                          <Gcol className="w-full">
-                            <FormTable
-                              caption="포인트정보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'피보험자'}>김한화</FormCell>
-                                <FormCell title={'연령'}>30</FormCell>
-                                <FormCell title={'직업명'}>회사사무직종사자</FormCell>
-                                <FormCell title={'급수'}>1급</FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable
-                              caption="담보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'담보명'}></FormCell>
-                                <FormCell title={'보험기간'}></FormCell>
-                                <FormCell title={'납입기간'}></FormCell>
-                                <FormCell title={'가입금액'}></FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center"></FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol>
-                        ) : (
-                          <Gcol className="w-full">
-                            <FormTable
-                              caption="포인트정보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'소유자'}>김한화</FormCell>
-                                <FormCell title={'직업업종'}>30</FormCell>
-                                <FormCell title={'급수'}>1급</FormCell>
-                                <FormCell title={'보장P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
-                              <FormRow>
-                                <FormCell title={'소재지'}></FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재기본담보'}>김한화</FormCell>
-                                <FormCell title={'가입금액'}>30</FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                            <FormTable
-                              caption="담보"
-                              lineTop={false}
-                              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-                            >
-                              <FormRow vertical={true}>
-                                <FormCell title={'화재특약담보'}>김한화</FormCell>
-                                <FormCell title={'보험기간'}>30</FormCell>
-                                <FormCell title={'납입기간'}></FormCell>
-                                <FormCell title={'가입금액'}></FormCell>
-                                <FormCell title={'담보P'} tdClassName="justify-end items-center">
-                                  0
-                                </FormCell>
-                              </FormRow>
-                            </FormTable>
-                          </Gcol>
-                        )}
-                      </TabPager>
-                    );
-                  })()}
+                  <TabPager
+                    data={insuranceTabs}
+                    active={rightTabActive}
+                    setActive={setRightTabActive}
+                    getValue={(tab) => tab.value}
+                    renderTab={(tab) => <span>{tab.label}</span>}
+                    visibleCount={2}
+                  >
+                    {rightTabActive === 'human' ? (
+                      <Gcol className="w-full">
+                        <FormTable
+                          caption="포인트정보"
+                          lineTop={false}
+                          cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
+                        >
+                          <FormRow vertical={true}>
+                            <FormCell title={'피보험자'}>김한화</FormCell>
+                            <FormCell title={'연령'}>30</FormCell>
+                            <FormCell title={'직업명'}>회사사무직종사자</FormCell>
+                            <FormCell title={'급수'}>1급</FormCell>
+                            <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable
+                          caption="담보"
+                          lineTop={false}
+                          cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
+                        >
+                          <FormRow vertical={true}>
+                            <FormCell title={'담보명'}></FormCell>
+                            <FormCell title={'보험기간'}></FormCell>
+                            <FormCell title={'납입기간'}></FormCell>
+                            <FormCell title={'가입금액'}></FormCell>
+                            <FormCell title={'보장P'} tdClassName="justify-end items-center"></FormCell>
+                          </FormRow>
+                        </FormTable>
+                      </Gcol>
+                    ) : (
+                      <Gcol className="w-full">
+                        <FormTable caption="포인트정보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']}>
+                          <FormRow vertical={true}>
+                            <FormCell title={'소유자'}>김한화</FormCell>
+                            <FormCell title={'직업업종'}>30</FormCell>
+                            <FormCell title={'급수'}>1급</FormCell>
+                            <FormCell title={'보장P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable caption="소재지" cols={['w-[14rem]', 'w-auto']}>
+                          <FormRow>
+                            <FormCell title={'소재지'}></FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable caption="담보" lineTop={false} cols={['w-auto', 'w-auto', 'w-auto']}>
+                          <FormRow vertical={true}>
+                            <FormCell title={'화재기본담보'}>김한화</FormCell>
+                            <FormCell title={'가입금액'}>30</FormCell>
+                            <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <FormTable
+                          caption="담보"
+                          lineTop={false}
+                          cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
+                        >
+                          <FormRow vertical={true}>
+                            <FormCell title={'화재특약담보'}>김한화</FormCell>
+                            <FormCell title={'보험기간'}>30</FormCell>
+                            <FormCell title={'납입기간'}></FormCell>
+                            <FormCell title={'가입금액'}></FormCell>
+                            <FormCell title={'담보P'} tdClassName="justify-end items-center">
+                              0
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                      </Gcol>
+                    )}
+                  </TabPager>
                 </Gcol>
               </Grow>
             </Grow>

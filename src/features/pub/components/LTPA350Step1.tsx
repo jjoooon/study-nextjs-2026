@@ -2,7 +2,6 @@
 
 // Layout Components
 import { useReducer, useState, type ReactNode, useCallback } from 'react';
-import type { LTPA350Step1DataType } from '@/features/pub/data/LTPA350Step1Data';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -25,18 +24,7 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
-// Common Components
-
-// Feature Components
-
-// Icons
-
-// Hooks
-
-// Data
-
-// Types
+import type { LTPA350Step1DataType } from '../data/ltpa350Step1Data';
 
 // Props Type
 type LTPA350Step1Props = {
@@ -524,7 +512,6 @@ export function LTPA350Step1({
   data: _data,
   selectedPlanId: _selectedPlanId,
   onSelectPlan: _onSelectPlan,
-  className,
 }: LTPA350Step1Props) {
   // ---------------------------------------------------------------------------
   // 1) Data source
@@ -642,9 +629,6 @@ export function LTPA350Step1({
     PROPERTY_INSURANCE_STEP1_DATA.Policyholder.isBusinessOwner === 'Y'
   );
   const [propertyTaxFreeChecked, setPropertyTaxFreeChecked] = useState(false);
-  const [propertyTaxFreeTypeValue, setPropertyTaxFreeTypeValue] = useState(
-    PROPERTY_INSURANCE_STEP1_DATA.Policyholder.taxFreeType ?? ''
-  );
   const [propertyInfoAcquisitionValue, setPropertyInfoAcquisitionValue] = useState(
     PROPERTY_INSURANCE_STEP1_DATA.Policyholder.infoAcquisitionPath ?? ''
   );
@@ -738,9 +722,6 @@ export function LTPA350Step1({
     GROUP_INSURANCE_STEP1_DATA.Policyholder.isBusinessOwner === 'Y'
   );
   const [groupTaxFreeChecked, setGroupTaxFreeChecked] = useState(false);
-  const [groupTaxFreeTypeValue, setGroupTaxFreeTypeValue] = useState(
-    GROUP_INSURANCE_STEP1_DATA.Policyholder.taxFreeType ?? ''
-  );
   const [groupInfoAcquisitionValue, setGroupInfoAcquisitionValue] = useState(
     GROUP_INSURANCE_STEP1_DATA.Policyholder.infoAcquisitionPath ?? ''
   );
@@ -3875,18 +3856,11 @@ export function LTPA350Step1({
       <LayoutMainFoot>
         <MainBottom>
           <MainBottomItem>
-            <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('동영상매뉴얼')}>
+            <Button variant={'outlined'} color={'gray'} size={'xl'}>
               동영상매뉴얼
             </Button>
             <Grow gap={1}>
-              <Button
-                type="submit"
-                form={'page2-MainForm'}
-                variant={'contained'}
-                color={'primary'}
-                size={'xl'}
-                onClick={() => console.log('저장')}
-              >
+              <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                 저장
               </Button>
             </Grow>

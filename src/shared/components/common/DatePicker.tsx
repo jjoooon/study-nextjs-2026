@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { type DateRange } from 'react-day-picker';
-import { FormItemSize, FormItemWidth, UIUXsize, UIUXposition } from '@/shared/types/uiTypes';
+import { FormItemSize, FormItemWidth } from '@/shared/types/uiTypes';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { CalendarIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -351,20 +351,6 @@ export function DatePickerInput({
     if (numericValue.length <= 6) return `${numericValue.slice(0, 4)}-${numericValue.slice(4)}`;
     return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)}`;
   })();
-
-  const widthMap: Partial<Record<FormItemWidth, string>> = {
-    full: 'w-full',
-    max: 'w-max',
-    '2xs': 'w-[4rem]',
-    xs: 'w-[8rem]',
-    sm: 'w-[10rem]',
-    md: 'w-[12rem]',
-    lg: 'w-[14rem]',
-    xl: 'w-[16rem]',
-    '2xl': 'w-[18rem]',
-  };
-
-  const widthClass = (width && widthMap[width]) || '';
 
   const inlineWidthStyle = (() => {
     if (typeof width === 'string') {

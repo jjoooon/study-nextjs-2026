@@ -10,18 +10,11 @@ import { Input } from '@uiux/Input';
 export function DesignStart() {
   return (
     <Grow placement={'ec'} className="w-full px-2.5 pt-2 pb-2.5 min-w-[93.2rem]">
-      <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('초기화')}>
+      <Button variant={'outlined'} color={'gray'} size={'xl'}>
         <ResetIcon />
         초기화
       </Button>
-      <Button
-        type="submit"
-        form={'page2-MainForm'}
-        variant={'contained'}
-        color={'primary'}
-        size={'xl'}
-        onClick={() => console.log('저장')}
-      >
+      <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
         설계시작
         <ArrowNext />
       </Button>
@@ -31,22 +24,15 @@ export function DesignStart() {
 export function DesignGeneration() {
   return (
     <Grow placement={'bwc'} className="w-full px-2.5 pt-2 pb-2.5 min-w-[93.2rem]">
-      <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('추천내용 비교')}>
+      <Button variant={'outlined'} color={'gray'} size={'xl'}>
         추천내용 비교
       </Button>
       <Grow>
-        <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('초기화')}>
+        <Button variant={'outlined'} color={'gray'} size={'xl'}>
           <ResetIcon />
           초기화
         </Button>
-        <Button
-          type="submit"
-          form={'page2-MainForm'}
-          variant={'contained'}
-          color={'primary'}
-          size={'xl'}
-          onClick={() => console.log('설계생성')}
-        >
+        <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
           설계생성
           <ArrowNext />
         </Button>
@@ -147,17 +133,17 @@ export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: 
           </FormTable>
         </Grid>
         <Grow placement={'bwc'} className="px-3 pt-2 pb-2.5 bg-[var(--color-gray-5)]">
-          <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('고지유형별보험료비교')}>
+          <Button variant={'outlined'} color={'gray'} size={'xl'}>
             고지유형별보험료비교
           </Button>
           <Grow className="gap-1">
-            <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('조건별비교설계')}>
+            <Button variant={'outlined'} color={'gray'} size={'xl'}>
               조건별비교설계
             </Button>
-            <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('다른상품설계')}>
+            <Button variant={'outlined'} color={'gray'} size={'xl'}>
               다른상품설계
             </Button>
-            <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('동일상품복사')}>
+            <Button variant={'outlined'} color={'gray'} size={'xl'}>
               동일상품복사
             </Button>
             <Button
@@ -181,18 +167,11 @@ export function LTPA350Step1() {
   return (
     <Gcol className="w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] min-w-[93.2rem]">
       <Grow placement={'bwc'} className="px-3 pt-2 pb-2.5 bg-[var(--color-gray-5)]">
-        <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('동영상매뉴얼')}>
+        <Button variant={'outlined'} color={'gray'} size={'xl'}>
           동영상매뉴얼
         </Button>
         <Grow gap={1}>
-          <Button
-            type="submit"
-            form={'page2-MainForm'}
-            variant={'contained'}
-            color={'primary'}
-            size={'xl'}
-            onClick={() => console.log('저장')}
-          >
+          <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
             저장
           </Button>
         </Grow>

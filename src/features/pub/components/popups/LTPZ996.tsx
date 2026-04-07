@@ -3,45 +3,40 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-} from '@uiux/Dialog';
+import * as React from 'react';
 
-import type { PopupBaseProps } from './types';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+};
+
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: 'sMenuInfo',
+    field2: 'transComG100',
+    field3: 'RB',
+    field4: 'COM10107',
+    field5: '자료가 조회되었습니다.',
+  },
+];
+
 export const LTPZ996 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-  };
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field1: 'sMenuInfo',
-      field2: 'transComG100',
-      field3: 'RB',
-      field4: 'COM10107',
-      field5: '자료가 조회되었습니다.',
-    },
-  ];
-  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-  const columnDefs: ColDef<DummyDataType>[] = useMemo(
+  const rowData = DummyData;
+
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
         headerName: '통신레코드',
@@ -67,15 +62,12 @@ export const LTPZ996 = ({ open, onOpenChange }: PopupBaseProps) => {
         flex: 1,
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-          if (!params.value) {
-            return null;
-          }
-
+          if (!params.value) return null;
           return (
             <button
               type="button"
               className="cursor-pointer text-[#006FF2] underline underline-offset-4"
-              onClick={(event) => {
+              onClick={() => {
                 console.log('메세지코드 클릭:', params.value);
               }}
             >

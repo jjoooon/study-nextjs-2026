@@ -1,7 +1,5 @@
 'use client';
 
-// ...existing code...
-
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
@@ -21,9 +19,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-import type { LTPA010DummyDataRow } from '../data/LTPA010Data';
-
-import { LTPA010DummyData } from '../data/LTPA010Data';
+import type { LTPA010DummyDataRow } from '../data/ltpa010Data';
+import { LTPA010DummyData } from '../data/ltpa010Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -409,9 +406,7 @@ export const LTPA010Main = () => {
 
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<LTPA010DummyDataRow[]>(LTPA010DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    LTPA010DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
+  const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<LTPA010DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
@@ -696,40 +691,33 @@ export const LTPA010Main = () => {
         <MainBottom>
           <MainBottomItem>
             <Grow gap={1}>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('출력물')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 출력물
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('완수수납')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 완수수납
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 설계비교
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 알림톡발송
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 셀프고지
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 증권발송
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 계약자발송
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => console.log('설계비교')}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 이미지조회
               </Button>
             </Grow>
             <Grow gap={1}>
-              <Button
-                type="submit"
-                form={'page2-MainForm'}
-                variant={'contained'}
-                color={'primary'}
-                size={'xl'}
-                onClick={() => console.log('저장')}
-              >
+              <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                 저장
               </Button>
             </Grow>

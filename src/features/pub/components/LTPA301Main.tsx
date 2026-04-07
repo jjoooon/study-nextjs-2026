@@ -2,17 +2,12 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import {
-  createCellValueChangedHandler,
-  AgGridEmptyComponent,
-  createFieldRenderer,
-  numberValueFormatter,
-} from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { useFormFields } from '@hooks/useFormFields';
@@ -20,12 +15,11 @@ import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 
 // Layout Components
-
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-import { LTPA301DummyData, type LTPA301DummyDataRow } from '../data/LTPA301Data';
+import { LTPA301DummyData, type LTPA301DummyDataRow } from '../data/ltpa301Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -341,34 +335,15 @@ export const LTPA301Main = () => {
         <MainBottom>
           <MainBottomItem>
             <Grow gap={1}>
-              <Button
-                variant={'outlined'}
-                color={'gray'}
-                size={'xl'}
-                onClick={() => console.log('정액담보업계누적기준')}
-              >
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 정액담보업계누적기준
               </Button>
             </Grow>
             <Grow gap={1}>
-              <Button
-                type="submit"
-                form={'page2-MainForm'}
-                variant={'outlined'}
-                color={'gray'}
-                size={'xl'}
-                onClick={() => console.log('신정원조회')}
-              >
+              <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                 신정원조회
               </Button>
-              <Button
-                type="submit"
-                form={'page2-MainForm'}
-                variant={'contained'}
-                color={'primary'}
-                size={'xl'}
-                onClick={() => console.log('정액담보점검')}
-              >
+              <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                 정액담보점검
               </Button>
             </Grow>

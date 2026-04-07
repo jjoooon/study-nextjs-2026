@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
 import { Typo, Gcol, Grow } from '@atoms';
-import { BulletItem } from '@common/BulletList';
 import { PlusIcon, MinusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -57,9 +56,6 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleOpen = (e: React.MouseEvent<HTMLInputElement>) => {
     const width = (e.target as HTMLInputElement).offsetWidth;
     setMeasuredWidth(width);
@@ -108,7 +104,6 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
 
   // PopoverContent의 side를 감지하는 핸들러
   const handlePopoverOpenAutoSide = (side: 'top' | 'bottom' | 'left' | 'right') => {
-    console.log('Popover opened on side:', side);
     setPopoverSide(side);
   };
 

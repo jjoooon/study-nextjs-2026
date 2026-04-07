@@ -111,7 +111,7 @@ export const LTPA350Step2Data: LTPA350Step2DataType = {
   ],
 };
 
-export interface LTPA350Step2DataType_2 {
+export interface LTPA350Step2DataType2 {
   tabList: Array<{
     name: string;
     age: string | number;
@@ -139,7 +139,7 @@ export interface LTPA350Step2DataType_2 {
     badge?: string[];
   }>;
 }
-export const LTPA350Step2Data_2: LTPA350Step2DataType_2 = {
+export const LTPA350Step2Data2: LTPA350Step2DataType2 = {
   tabList: [
     {
       name: '홍길동',

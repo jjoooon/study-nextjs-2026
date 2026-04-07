@@ -17,9 +17,6 @@ export const HashList = ({ data }: { data: string[] }) => {
     const checkWidths = () => {
       const wrapWidth = wrapRef.current?.offsetWidth || 0;
       const itemWidth = itemRef.current?.scrollWidth || 0;
-
-      console.log('wrapWidth:', wrapWidth, 'itemWidth:', itemWidth); // 디버깅 로그
-
       setShowMore(itemWidth > wrapWidth);
     };
     checkWidths();

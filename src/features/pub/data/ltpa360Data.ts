@@ -74,7 +74,7 @@ export const LTPA360DummyData1: LTPA360DummyDataRow1[] = [
   },
 ];
 
-export type LTPA360DummyDataRow1_1 = {
+export type LTPA360DummyDataRow1b = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -89,7 +89,7 @@ export type LTPA360DummyDataRow1_1 = {
   isSelect?: boolean;
 };
 
-export const LTPA360DummyData1_1: LTPA360DummyDataRow1_1[] = [
+export const LTPA360DummyData1b: LTPA360DummyDataRow1b[] = [
   {
     id: 1,
     field01: '2025-10-13',
