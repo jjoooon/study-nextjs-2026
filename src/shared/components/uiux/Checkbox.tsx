@@ -219,7 +219,7 @@ function Checkbox({
           isFavorite && favoriteSizeStyles[size],
 
           isButton &&
-            'px-1.5 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[0.4rem] border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap',
+            'px-1.5 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[0.4rem] border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap disabled:data-[state=checked]:text-[var(--color-primary-50)] disabled:text-[var(--color-gray-50)]',
 
           isButton && buttonSizeStyles[size],
           isButton && buttonColorStyles[color],

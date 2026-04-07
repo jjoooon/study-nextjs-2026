@@ -139,7 +139,7 @@ export function IAListWithPreview() {
     [sortState]
   );
 
-  const ingList = React.useMemo(() => ['LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ021', 'LTPZ031'], []);
+  const ingList = React.useMemo(() => ['LTPA350_1', 'LTPA350_2', 'LTPZ021', 'LTPZ031'], []);
   const workList = React.useMemo(() => {
     const workListPrev: string[] = [
       'LTPZ010',
@@ -193,7 +193,7 @@ export function IAListWithPreview() {
     ];
     const workListH: string[] = [];
     const workListK: string[] = ['LTPZ085', 'LTPZ086'];
-    const workListJ: string[] = [];
+    const workListJ: string[] = ['ltpz018'];
 
     return [...workListPrev, ...workListH, ...workListK, ...workListJ];
   }, []);
