@@ -2,7 +2,7 @@
 
 // Layout Components
 import { useReducer, useState, type ReactNode, useCallback } from 'react';
-import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
+import type { LTPA350Step1DataType } from '@/features/pub/data/LTPA350Step1Data';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';

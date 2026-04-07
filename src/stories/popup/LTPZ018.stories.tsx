@@ -1,7 +1,7 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { LTPZ018 } from '@/features/pub/proto/popup/LTPZ018';
+import { LTPZ018 } from '@/features/pub/popup/LTPZ018';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 

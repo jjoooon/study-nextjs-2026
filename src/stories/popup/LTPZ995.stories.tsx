@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LTPZ995 } from '@/features/pub/proto/popup/LTPZ995';
+import { LTPZ995 } from '@/features/pub/popup/LTPZ995';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
