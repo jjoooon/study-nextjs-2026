@@ -15,7 +15,7 @@ import {
   createEditableCallback,
   createCellErrorClassRules,
 } from '@aggrid';
-import { Grow, Gcol, Typo, Grid, Divider } from '@atoms';
+import { Grow, Gcol, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { HashList } from '@common/HashList';
@@ -37,12 +37,12 @@ import { LTPA350Step2Data } from '../data/LTPA350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type tabListDataData = LTPA350Step2DataType['tabList'];
+type TabListDataData = LTPA350Step2DataType['tabList'];
 type LTPA350GridRow = LTPA350Step2DataType['agGridTable1'][number] & {
   isDuplicate?: boolean;
   displayNo?: number;
 };
-type MainHeadTab = tabListDataData[number] & { value: string };
+type MainHeadTab = TabListDataData[number] & { value: string };
 
 interface LTPA350Step2Props {
   onSelectPlan?: (planId: number) => void;

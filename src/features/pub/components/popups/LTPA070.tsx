@@ -33,11 +33,14 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
     field01: string | number;
     field02: string | number;
   };
-  const DummyData: DummyDataType[] = [
-    { id: 1, field01: '웰시 코기 카디건', field02: 'Welsh Corgi Cardigan' },
-    { id: 2, field01: '웰시 코기 펨브로크', field02: 'Welsh Corgi Pembroke' },
-    { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
-  ];
+  const DummyData = React.useMemo<DummyDataType[]>(
+    () => [
+      { id: 1, field01: '웰시 코기 카디건', field02: 'Welsh Corgi Cardigan' },
+      { id: 2, field01: '웰시 코기 펨브로크', field02: 'Welsh Corgi Pembroke' },
+      { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
+    ],
+    []
+  );
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '견종명',
@@ -56,8 +59,12 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [breedSearch, setBreedSearch] = React.useState('');
+
+  const rowData = React.useMemo(() => {
+    if (!breedSearch) return DummyData;
+    return DummyData.filter((item) => String(item.field01).includes(breedSearch));
+  }, [breedSearch, DummyData]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

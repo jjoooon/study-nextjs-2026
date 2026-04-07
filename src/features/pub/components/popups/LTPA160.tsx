@@ -5,18 +5,17 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ResetIcon } from '@icons';
-import { FileExportIcon, SearchIcon } from '@icons';
+import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -202,7 +201,6 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -328,7 +326,7 @@ export const LTPA160 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
+                      rowData={DummyData}
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
