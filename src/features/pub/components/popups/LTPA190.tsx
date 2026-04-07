@@ -3,11 +3,10 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useRef, useState } from 'react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
