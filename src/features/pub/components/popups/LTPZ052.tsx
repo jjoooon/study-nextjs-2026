@@ -2,18 +2,16 @@
 
 // React
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type {
-  ColDef,
-  ColGroupDef,
-  GridApi,
-  ICellRendererParams,
-  IHeaderParams,
-  SuppressKeyboardEventParams,
-} from 'ag-grid-community';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams, SuppressKeyboardEventParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import {
+  AgGridEmptyComponent,
+  GridHeaderCheckbox,
+  createHeaderCheckboxParams,
+  createHeaderCheckboxOnCellValueChanged,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -22,7 +20,6 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -35,17 +32,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
-import type { PopupBaseProps } from './types';
-
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [policySearchPart, setPolicySearchPart] = React.useState('');
-
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-  });
 
   type DummyDataType = {
     id: number;
@@ -90,33 +80,10 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
-  type HeaderCheckboxParams = IHeaderParams<DummyDataType> & {
-    getAllChecked: () => boolean;
-    toggleAll: (next: boolean) => void;
-  };
-
-  const HeaderCheckbox = (props: HeaderCheckboxParams) => {
-    const checked = props.getAllChecked();
-    const display = props.displayName ?? props.column.getColDef().headerName;
-
-    return (
-      <Grow className="ag-header-cell-label">
-        <div onClick={(event) => event.stopPropagation()}>
-          <Checkbox
-            color="primary"
-            variant="noneText"
-            checked={checked}
-            size={'md'}
-            onCheckedChange={(value) => {
-              props.toggleAll(value === true);
-              gridApiRef.current?.refreshHeader();
-            }}
-          />
-        </div>
-        <span className="ag-header-cell-text">{display}</span>
-      </Grow>
-    );
-  };
+  const onCellValueChanged = React.useMemo(
+    () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['isAuthcheck1', 'isAuthcheck2']),
+    []
+  );
 
   const suppressGridKeyboardOnInput = (params: SuppressKeyboardEventParams<DummyDataType>) =>
     params.event?.target instanceof HTMLInputElement;
@@ -132,7 +99,6 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '인증방법',
-
       children: [
         {
           headerName: '동의서',
@@ -143,11 +109,8 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
-          headerComponent: HeaderCheckbox,
-          headerComponentParams: {
-            getAllChecked: () => rowData.length > 0 && rowData.every((row) => Boolean(row.isAuthcheck1)),
-            toggleAll: (next: boolean) => setRowData((prev) => prev.map((row) => ({ ...row, isAuthcheck1: next }))),
-          },
+          headerComponent: GridHeaderCheckbox,
+          headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'isAuthcheck1'),
         },
         {
           headerName: '모바일',
@@ -159,11 +122,8 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
-          headerComponent: HeaderCheckbox,
-          headerComponentParams: {
-            getAllChecked: () => rowData.length > 0 && rowData.every((row) => Boolean(row.isAuthcheck2)),
-            toggleAll: (next: boolean) => setRowData((prev) => prev.map((row) => ({ ...row, isAuthcheck2: next }))),
-          },
+          headerComponent: GridHeaderCheckbox,
+          headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'isAuthcheck2'),
         },
       ],
     },
@@ -240,14 +200,7 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -313,16 +266,14 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    animateRows={false}
-                    alwaysShowHorizontalScroll={true}
-                    rowClassRules={{}}
                     domLayout="autoHeight"
+                    onCellValueChanged={onCellValueChanged}
                     // 체크박스 시
                     rowSelection={{
                       mode: 'multiRow',
                       headerCheckbox: true,
                       checkboxes: true,
-                      enableClickSelection: true,
+                      enableClickSelection: false,
                     }}
                     onGridReady={(params) => {
                       gridApiRef.current = params.api;
@@ -364,7 +315,7 @@ export const LTPZ052 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </BulletListItem>
                 <BulletListItem>
                   <b>엑셀 업로드를</b> 통해서 <b>한꺼번에 여러 고객의 정보를 화면에 적용</b>가능합니다.{' '}
-                  <em>(인증방법은 한가지에만 '1'로 표시하셔야 업로드 시 오류가 나지 않습니다.)</em>
+                  <em>(인증방법은 한가지에만 &apos;1&apos;로 표시하셔야 업로드 시 오류가 나지 않습니다.)</em>
                 </BulletListItem>
               </BulletList>
             </Gcol>

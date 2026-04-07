@@ -4,7 +4,9 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,7 +24,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -182,15 +183,7 @@ export const LTPZ040 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
-
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="full">

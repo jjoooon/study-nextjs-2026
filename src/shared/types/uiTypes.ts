@@ -145,3 +145,8 @@ export type UIUXposition =
   | 'evs' //justify-evenly items-start
   | 'evc' //justify-evenly items-center
   | 'eve'; //justify-evenly items-end
+
+export interface PopupBaseProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}

@@ -48,7 +48,6 @@ function Input({
   size = 'lg',
   variant = 'default',
   width = 'full',
-  className,
   type,
   required = false,
   readOnly = false,

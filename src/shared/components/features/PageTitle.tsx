@@ -11,9 +11,13 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 type DefaultPageTitle = {
+  title?: string;
   pageName?: string;
   pageId?: string | number;
-  [key: string]: any;
+  contractHolder?: string;
+  simpleMode?: boolean;
+  planNumber?: [string?, string?] | string[];
+  planNumberList?: Array<{ label: string; value: string; name: string; amount: string; state: string }>;
 };
 type PageTitleProps = {
   data: DefaultPageTitle;
@@ -61,19 +65,17 @@ export function PageTitleProduct({ data }: PageTitleProps) {
   ]);
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
-  const sampleOptions = safeData.planNumberList?.map(
-    (item: { label: string; value: string; name: string; amount: string; state: string }) => ({
-      value: item.value,
-      label: (
-        <>
-          <td>{item.label}</td>
-          <td>{item.name}</td>
-          <td>{item.amount}</td>
-          <td>{item.state}</td>
-        </>
-      ),
-    })
-  );
+  const sampleOptions = (safeData.planNumberList ?? []).map((item) => ({
+    value: item.value,
+    label: (
+      <>
+        <td>{item.label}</td>
+        <td>{item.name}</td>
+        <td>{item.amount}</td>
+        <td>{item.state}</td>
+      </>
+    ),
+  }));
 
   return (
     <Grow placement="bwc" className="w-full py-1 gap-3 min-w-[118.4rem]">

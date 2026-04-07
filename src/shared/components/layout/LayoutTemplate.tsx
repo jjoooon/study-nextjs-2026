@@ -1,6 +1,6 @@
 'use client';
 
-import { Gcol, Grow } from '@atoms';
+import { Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import {
@@ -9,9 +9,6 @@ import {
   LayoutFoot,
   LayoutProcess,
   LayoutFolder,
-  LayoutFolderHead,
-  LayoutFolderBody,
-  LayoutFolderFoot,
   LayoutMain,
   LayoutMainHead,
   LayoutMainBody,

@@ -73,7 +73,7 @@ export type SelectDropProps<TValue extends string = string> = Omit<
   error?: boolean;
   errorMsg?: React.ReactNode;
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-  sideOffset?: 0;
+  _sideOffset?: 0;
   /** 체크박스 최소 선택 갯수 (기본값 1) */
   minCount?: number;
 };
@@ -106,7 +106,7 @@ function SelectDrop<TValue extends string = string>({
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
-  sideOffset = 0,
+  _sideOffset = 0,
   minCount = 1,
   ...contentProps
 }: SelectDropProps<TValue>) {

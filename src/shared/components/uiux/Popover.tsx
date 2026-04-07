@@ -9,7 +9,7 @@ interface PopoverProps extends React.ComponentPropsWithoutRef<typeof PopoverPrim
   className?: string;
 }
 
-const Popover: React.FC<PopoverProps> = ({ className, children, ...props }) => (
+const Popover: React.FC<PopoverProps> = ({ children, ...props }) => (
   <PopoverPrimitive.Root {...props}>{children}</PopoverPrimitive.Root>
 );
 

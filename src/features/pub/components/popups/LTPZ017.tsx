@@ -3,10 +3,10 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { tr } from 'date-fns/locale';
-import { useRef } from 'react';
 import * as React from 'react';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -15,18 +15,16 @@ import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
 
-import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
@@ -114,14 +112,13 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
+  const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">

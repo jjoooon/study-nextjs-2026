@@ -4,6 +4,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -14,17 +15,16 @@ import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -129,7 +129,7 @@ export const LTRZ085 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   // 상세조건 검색버튼 렌더러
-  const detailConditionRenderer = (params: ICellRendererParams<DummyDataType>) => {
+  const detailConditionRenderer = () => {
     return (
       <Grow className="h-full w-full items-center justify-center">
         <Button aria-label="상세조건" variant={'none'} only="icon" size={'sm'}>

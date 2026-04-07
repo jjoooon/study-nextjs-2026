@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 
 type TableFoldVariant = 'default' | 'accordion';
 type TableFoldProps = {
@@ -43,7 +43,17 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
   };
   return (
     <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
-      <div onClick={handleClick} style={v === 'accordion' ? { cursor: 'pointer' } : {}}>
+      <div
+        role={v === 'accordion' ? 'button' : undefined}
+        tabIndex={v === 'accordion' ? 0 : -1}
+        onClick={handleClick}
+        onKeyDown={(e) => {
+          if (v === 'accordion' && (e.key === 'Enter' || e.key === ' ')) {
+            handleClick();
+          }
+        }}
+        style={v === 'accordion' ? { cursor: 'pointer' } : {}}
+      >
         <Typo tag={'h3'} variant={'heading-md'}>
           {title}
         </Typo>

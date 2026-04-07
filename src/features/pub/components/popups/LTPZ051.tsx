@@ -1,15 +1,14 @@
 'use client';
 // 권오택
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { Bold } from 'lucide-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { Button } from '@uiux/Button';
@@ -24,7 +23,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -101,7 +99,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '상해급수',
           flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: any) => (
+          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field04 ?? '')}</Typo>
           ),
         },
@@ -109,7 +107,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '직업',
           flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: any) => (
+          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field05 ?? '')}</Typo>
           ),
         },
@@ -122,7 +120,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '상해급수',
           flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: any) => (
+          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field06 ?? '')}</Typo>
           ),
         },
@@ -130,7 +128,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '직업',
           flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: any) => (
+          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field07 ?? '')}</Typo>
           ),
         },
@@ -138,7 +136,7 @@ export const LTPZ051 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

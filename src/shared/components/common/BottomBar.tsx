@@ -1,6 +1,6 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogListIcon, DialogResetIcon } from '@icons';
 import { TextBabbleIcon } from '@icons';
 import { Button } from '@uiux/Button';

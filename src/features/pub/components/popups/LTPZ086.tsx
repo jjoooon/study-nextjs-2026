@@ -4,7 +4,8 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -21,8 +22,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -172,7 +171,7 @@ export const LTPZ086 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const sumRow = React.useMemo<DummyDataType[]>(() => {
     const parse = (value: string | number) => {
       if (typeof value === 'number') return value;

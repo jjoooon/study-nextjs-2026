@@ -5,7 +5,7 @@ import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
-import { Grow, Gcol, Typo } from '@atoms';
+import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
@@ -25,15 +25,15 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import {
   LTPA360DummyData1,
   type LTPA360DummyDataRow1,
-  LTPA360DummyData1_1,
-  type LTPA360DummyDataRow1_1,
+  LTPA360DummyData1b,
+  type LTPA360DummyDataRow1b,
   LTPA360DummyData2,
   type LTPA360DummyDataRow2,
   LTPA360DummyData3,
   type LTPA360DummyDataRow3,
   LTPA360DummyData4,
   type LTPA360DummyDataRow4,
-} from '../data/LTPA360Data';
+} from '../data/ltpa360Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -91,7 +91,7 @@ export const LTPA360Main = () => {
   ];
 
   // Tab1_1 AGGrid Column
-  const columnDefs1_1: ColDef<LTPA360DummyDataRow1_1>[] = [
+  const columnDefs1b: ColDef<LTPA360DummyDataRow1b>[] = [
     {
       headerName: '판매일자',
       field: 'field01',
@@ -190,7 +190,7 @@ export const LTPA360Main = () => {
   ];
   // 행 isSelect 토글 함수 예시 (UI에서 호출 필요)
   // const handleToggleIsSelect = (rowId: number) => {
-  //   setLTPA360DummyData1_1(prev => prev.map(row => row.id === rowId ? { ...row, isSelect: !row.isSelect } : row));
+  //   setLTPA360DummyData1b(prev => prev.map(row => row.id === rowId ? { ...row, isSelect: !row.isSelect } : row));
   // };
 
   // Tab2 AGGrid Column
@@ -241,7 +241,7 @@ export const LTPA360Main = () => {
           field: 'field05',
           width: 120,
           editable: true,
-          cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+          cellRenderer: () => (
             <Grow className="w-full px-1">
               <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
@@ -255,7 +255,7 @@ export const LTPA360Main = () => {
           field: 'field06',
           width: 120,
           editable: true,
-          cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+          cellRenderer: () => (
             <Grow className="w-full px-1">
               <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
@@ -269,7 +269,7 @@ export const LTPA360Main = () => {
           field: 'field07',
           width: 120,
           editable: true,
-          cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+          cellRenderer: () => (
             <Grow className="w-full px-1">
               <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
@@ -283,7 +283,7 @@ export const LTPA360Main = () => {
           field: 'field08',
           width: 120,
           editable: true,
-          cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+          cellRenderer: () => (
             <Grow className="w-full px-1">
               <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
@@ -308,7 +308,7 @@ export const LTPA360Main = () => {
           field: 'field10',
           width: 60,
           editable: false,
-          cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+          cellRenderer: () => (
             <Grow className="w-full px-1">
               <Button aria-label="숫자" variant={'none'} size={'md'} color={'gray-light'}>
                 0
@@ -326,10 +326,10 @@ export const LTPA360Main = () => {
       cellRenderer: 'agCheckboxCellRenderer',
       cellEditor: 'agCheckboxCellEditor',
       editable: (params) => !params.node.isSelected(),
-      cellRendererParams: (params: { data: LTPA360DummyDataRow2 }) => ({
+      cellRendererParams: () => ({
         disabled: false,
       }),
-      cellEditorParams: (params: { data: LTPA360DummyDataRow2 }) => ({
+      cellEditorParams: () => ({
         disabled: false,
       }),
       cellClassRules: {},
@@ -540,7 +540,7 @@ export const LTPA360Main = () => {
       field: 'field10',
       width: 120,
       editable: false,
-      cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
+      cellRenderer: () => (
         <Grow className="w-full px-1">
           <Input aria-label="" value={'박한화'} readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
@@ -629,7 +629,7 @@ export const LTPA360Main = () => {
       field: 'field10',
       width: 120,
       editable: false,
-      cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow4>) => (
+      cellRenderer: () => (
         <Grow className="w-full px-1">
           <Input aria-label="" width={'100%'} value={'박한화'} readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
@@ -769,11 +769,11 @@ export const LTPA360Main = () => {
                         <Gcol placement="ss" className="w-full" gap={5}>
                           <Grow className="w-full">
                             <div className="ag-theme-alpine w-full">
-                              <AgGridReact<LTPA360DummyDataRow1_1>
+                              <AgGridReact<LTPA360DummyDataRow1b>
                                 noRowsOverlayComponent={AgGridEmptyComponent}
                                 getRowId={(params) => String(params.data.id)}
-                                rowData={LTPA360DummyData1_1}
-                                columnDefs={columnDefs1_1}
+                                rowData={LTPA360DummyData1b}
+                                columnDefs={columnDefs1b}
                                 defaultColDef={{
                                   sortable: false,
                                   resizable: false,
@@ -1327,44 +1327,16 @@ export const LTPA360Main = () => {
           {active === 'tab1' && (
             <MainBottomItem>
               <Grow gap={1} placement={'ee'} className="w-full">
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray'}
-                  size={'xl'}
-                  onClick={() => console.log('초기화')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                   초기화
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray'}
-                  size={'xl'}
-                  onClick={() => console.log('삭제')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                   삭제
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'contained'}
-                  color={'primary'}
-                  size={'xl'}
-                  onClick={() => console.log('저장')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray-light'}
-                  size={'xl'}
-                  onClick={() => console.log('닫기')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray-light'} size={'xl'}>
                   닫기
                 </Button>
               </Grow>
@@ -1373,44 +1345,16 @@ export const LTPA360Main = () => {
           {active === 'tab2' && (
             <MainBottomItem>
               <Grow gap={1} placement={'ee'} className="w-full">
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray'}
-                  size={'xl'}
-                  onClick={() => console.log('초기화')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                   초기화
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray'}
-                  size={'xl'}
-                  onClick={() => console.log('삭제')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                   삭제
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'contained'}
-                  color={'primary'}
-                  size={'xl'}
-                  onClick={() => console.log('저장')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray-light'}
-                  size={'xl'}
-                  onClick={() => console.log('닫기')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray-light'} size={'xl'}>
                   닫기
                 </Button>
               </Grow>
@@ -1419,24 +1363,10 @@ export const LTPA360Main = () => {
           {active === 'tab3' && (
             <MainBottomItem>
               <Grow gap={1} placement={'ee'} className="w-full">
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'contained'}
-                  color={'primary'}
-                  size={'xl'}
-                  onClick={() => console.log('저장')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray-light'}
-                  size={'xl'}
-                  onClick={() => console.log('닫기')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray-light'} size={'xl'}>
                   닫기
                 </Button>
               </Grow>
@@ -1445,24 +1375,10 @@ export const LTPA360Main = () => {
           {active === 'tab4' && (
             <MainBottomItem>
               <Grow gap={1} placement={'ee'} className="w-full">
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'contained'}
-                  color={'primary'}
-                  size={'xl'}
-                  onClick={() => console.log('저장')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'outlined'}
-                  color={'gray-light'}
-                  size={'xl'}
-                  onClick={() => console.log('닫기')}
-                >
+                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray-light'} size={'xl'}>
                   닫기
                 </Button>
               </Grow>

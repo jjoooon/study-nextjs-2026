@@ -85,7 +85,7 @@ export interface TabsTriggerProps
     InternalTriggerProps {}
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?: string }>(
-  ({ className, variant: _variant, children, activeValue, ...props }, ref) => {
+  ({ className, variant: _variant, children, ...props }, ref) => {
     const { variant, removable, onRemove }: TabsContextProps = useTabsContext();
     const totalTabs = React.Children.count(children);
     return (
@@ -95,8 +95,8 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?
         {...props}
       >
         {React.Children.map(children, (child: React.ReactNode) => {
-          if (React.isValidElement(child)) {
-            const value = (child.props as any).value;
+          if (React.isValidElement<{ value: string }>(child)) {
+            const value = child.props.value;
             return React.cloneElement(child as React.ReactElement<TabsTriggerProps>, {
               totalTabs,
               removable,
@@ -229,7 +229,7 @@ const TabsLine = React.forwardRef<
     borderColor?: string;
     hasTableBelow?: boolean;
   }
->(({ className, borderColor = 'border-[#FF5C2E]', children, hasTableBelow = false, ...props }, ref) => {
+>(({ className, children, hasTableBelow = false, ...props }, ref) => {
   const { variant } = useTabsContext();
   const style = variant === 'box' ? 'after:opacity-0 rounded-[0.8rem]' : '';
   const lineHeightClass =

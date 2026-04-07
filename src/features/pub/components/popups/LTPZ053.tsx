@@ -1,18 +1,18 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, GridApi, IHeaderParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -25,7 +25,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -46,34 +45,6 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
     { id: 3, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
   ];
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-
-  type HeaderCheckboxParams = IHeaderParams<DummyDataType> & {
-    getAllChecked: () => boolean;
-    toggleAll: (next: boolean) => void;
-  };
-
-  const HeaderCheckbox = (props: HeaderCheckboxParams) => {
-    const checked = props.getAllChecked();
-    const display = props.displayName ?? props.column.getColDef().headerName;
-
-    return (
-      <Grow className="ag-header-cell-label">
-        <div onClick={(event) => event.stopPropagation()}>
-          <Checkbox
-            color="primary"
-            variant="noneText"
-            checked={checked}
-            size={'md'}
-            onCheckedChange={(value) => {
-              props.toggleAll(value === true);
-              gridApiRef.current?.refreshHeader();
-            }}
-          />
-        </div>
-        <span className="ag-header-cell-text">{display}</span>
-      </Grow>
-    );
-  };
 
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -100,14 +71,7 @@ export const LTPZ053 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

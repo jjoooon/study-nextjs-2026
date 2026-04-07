@@ -11,6 +11,9 @@ import type {
   IGetRowsParams,
   EditableCallbackParams,
   CellClassParams,
+  IHeaderParams,
+  GridApi,
+  CellValueChangedEvent,
 } from 'ag-grid-community';
 import type { ICellEditorParams } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
@@ -23,6 +26,7 @@ import { DatePickerInput } from '@common/DatePicker';
 import { InfoBoxWarningIcon } from '@icons';
 import { SelectDropIcon, PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 
 export type ToggleTopRow<T> = T & {
   originalIndex: number;
@@ -45,6 +49,9 @@ interface UseToggleTopRowsParams<T extends Record<string, unknown>> {
   toggleKey: BooleanKeyOf<T>;
 }
 
+/**
+ * 토글된 행을 상단으로 올리되, 원본 순서를 안정적으로 유지하는 정렬 유틸.
+ */
 function sortToggleRows<T extends Record<string, unknown>>(rows: ToggleTopRow<T>[], toggleKey: BooleanKeyOf<T>) {
   return [...rows].sort((prevRow, nextRow) => {
     const prevToggled = Boolean(prevRow[toggleKey]);
@@ -140,7 +147,7 @@ export function createEditableCallback<T>(
  * - 사용자 정의 조건(predicate)을 받아 `ag-cell-error-border` 클래스를 적용
  */
 export function createCellErrorClassRules<RowType>(predicate: (params: CellClassParams<RowType>) => boolean): {
-  'ag-cell-error-border': (params: CellClassParams<RowType>) => boolean;
+  [className: string]: (params: CellClassParams<RowType>) => boolean;
 } {
   return {
     'ag-cell-error-border': predicate,
@@ -262,7 +269,7 @@ export function createDuplicateButtonCellRenderer<
     return typeof value === 'string' || typeof value === 'number';
   };
 
-  return (params: ICellRendererParams<RowType>) => {
+  const renderer = (params: ICellRendererParams<RowType>) => {
     if (!isVisible(params))
       return (
         <Grow className="w-full h-full flex items-center justify-center">
@@ -306,6 +313,8 @@ export function createDuplicateButtonCellRenderer<
       </Grow>
     );
   };
+
+  return Object.assign(renderer, { displayName: 'AgGridDuplicateButtonCellRenderer' });
 }
 
 /**
@@ -433,6 +442,15 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   const [value, setValue] = React.useState<string>(props.value ?? '');
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  type CellEditorImperativeRef = {
+    getValue: () => string;
+    isCancelAfterEnd: () => boolean;
+  };
+  type CellEditorPropsWithForwardedRef<T> = ICellEditorParams<T> & {
+    forwardedRef?: React.Ref<CellEditorImperativeRef>;
+  };
+  const propsWithForwardedRef = props as unknown as CellEditorPropsWithForwardedRef<RowType>;
+
   React.useEffect(() => {
     setTimeout(() => {
       inputRef.current?.focus();
@@ -445,7 +463,7 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
 
   // ag-Grid는 커스텀 에디터에 forwardedRef를 넘김
   React.useImperativeHandle(
-    (props as any).forwardedRef,
+    propsWithForwardedRef.forwardedRef,
     () => ({
       getValue: () => value,
       isCancelAfterEnd: () => false,
@@ -456,29 +474,37 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   return <DatePickerInput value={value} onChange={handleChange} size="md" width="full" />;
 }
 
-export const createFieldRenderer = <T extends Record<string, any>>(
-  field1: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>,
-  field2?: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>
+type FieldRendererComponentProps<T> = { data?: T };
+type FieldRendererResolver<T> = (data?: T) => React.ReactNode;
+type FieldRendererComponent<T> = React.ComponentType<FieldRendererComponentProps<T>>;
+type FieldRendererSource<T> = keyof T | React.ReactNode | FieldRendererResolver<T> | FieldRendererComponent<T>;
+
+/**
+ * 2단 셀 렌더러 팩토리.
+ * - `field` 키, 렌더 함수, 컴포넌트, ReactNode를 모두 입력으로 지원
+ * - 각 행의 상/하단 라인을 공통 레이아웃으로 렌더
+ */
+export const createFieldRenderer = <T extends Record<string, unknown>>(
+  field1: FieldRendererSource<T>,
+  field2?: FieldRendererSource<T>
 ) => {
-  return (params: ICellRendererParams<T>) => {
+  const renderer = (params: ICellRendererParams<T>) => {
     const data = params.data as T | undefined;
 
     // field1, field2 공통 resolver
-    const resolveNode = (
-      field: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any> | undefined
-    ): React.ReactNode => {
+    const resolveNode = (field: FieldRendererSource<T> | undefined): React.ReactNode => {
       if (field === undefined || field === null) return '';
 
       if (typeof field === 'function') {
         try {
-          const result = (field as any)(data);
+          const result = (field as FieldRendererResolver<T>)(data);
           if (React.isValidElement(result) || typeof result === 'string' || typeof result === 'number') {
             return result;
           }
-          return React.createElement(field as React.ComponentType<any>, { data });
+          return React.createElement(field as FieldRendererComponent<T>, { data });
         } catch {
           try {
-            return React.createElement(field as React.ComponentType<any>, { data });
+            return React.createElement(field as FieldRendererComponent<T>, { data });
           } catch {
             return '';
           }
@@ -507,6 +533,8 @@ export const createFieldRenderer = <T extends Record<string, any>>(
       </Gcol>
     );
   };
+
+  return Object.assign(renderer, { displayName: 'AgGridFieldRenderer' });
 };
 
 /**
@@ -514,33 +542,26 @@ export const createFieldRenderer = <T extends Record<string, any>>(
  * @param gridRef ag-Grid API ref (React.useRef)
  * @param pageSize 페이지당 행 수
  */
-export function useAgGridPagination(gridRef: React.RefObject<any>, pageSize: number) {
+export function useAgGridPagination<TData>(gridRef: React.RefObject<AgGridReact<TData> | null>, _pageSize: number) {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
 
   // ag-Grid onGridReady 핸들러
-  const handleGridReady = React.useCallback(
-    (params: any) => {
-      gridRef.current = params.api;
+  const handleGridReady = (params: GridReadyEvent<TData>) => {
+    setTotalPages(params.api.paginationGetTotalPages());
+    setCurrentPage(params.api.paginationGetCurrentPage() + 1);
+    params.api.addEventListener('paginationChanged', () => {
       setTotalPages(params.api.paginationGetTotalPages());
       setCurrentPage(params.api.paginationGetCurrentPage() + 1);
-      params.api.addEventListener('paginationChanged', () => {
-        setTotalPages(params.api.paginationGetTotalPages());
-        setCurrentPage(params.api.paginationGetCurrentPage() + 1);
-      });
-    },
-    [gridRef]
-  );
+    });
+  };
 
   // TablePagination에서 페이지 변경 시 ag-Grid 페이지 이동
-  const handlePageChange = React.useCallback(
-    (page: number) => {
-      if (gridRef.current) {
-        gridRef.current.paginationGoToPage(page - 1);
-      }
-    },
-    [gridRef]
-  );
+  const handlePageChange = (page: number) => {
+    if (gridRef.current?.api) {
+      gridRef.current.api.paginationGoToPage(page - 1);
+    }
+  };
 
   return {
     currentPage,
@@ -608,7 +629,112 @@ export function useAgGridInfiniteAppend<TData>({
   };
 }
 
-export function AgGridEmptyComponent({ className, ...props }: React.ComponentProps<'div'>) {
+/**
+ * 헤더 체크박스 컴포넌트 추가 파라미터 타입
+ */
+export type GridHeaderCheckboxExtraParams = {
+  getAllChecked: (api?: GridApi) => boolean;
+  toggleAll: (next: boolean) => void;
+};
+
+/**
+ * 헤더 체크박스 컴포넌트 Props 타입 (ag-grid IHeaderParams 확장)
+ */
+export type GridHeaderCheckboxParams = IHeaderParams & GridHeaderCheckboxExtraParams;
+
+/**
+ * 헤더 체크박스 공통 컴포넌트
+ * - 열 전체 선택/해제
+ * - getAllChecked: grid API로 현재 체크 상태 조회 (stale state 없음)
+ * - toggleAll: grid API로 전체 행 값 변경 + 헤더 자동 갱신
+ *
+ * @example
+ * headerComponent: GridHeaderCheckbox,
+ * headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'isCheck'),
+ */
+export const GridHeaderCheckbox = (props: GridHeaderCheckboxParams) => {
+  const checked = props.getAllChecked(props.api);
+  const display = props.displayName ?? props.column.getColDef().headerName;
+
+  return (
+    <Grow className="ag-header-cell-label">
+      <Checkbox
+        color="primary"
+        variant="noneText"
+        checked={checked}
+        size={'md'}
+        onClick={(e) => e.stopPropagation()}
+        onCheckedChange={(value) => {
+          props.toggleAll(value === true);
+          props.api.refreshHeader();
+        }}
+      />
+      <span className="ag-header-cell-text">{display}</span>
+    </Grow>
+  );
+};
+
+/**
+ * 헤더 체크박스 headerComponentParams 생성기 (공용)
+ * - getAllChecked: grid API에서 직접 읽어 stale React state 문제 해결
+ * - toggleAll: grid API를 통해 전체 행 값 일괄 변경 후 헤더 갱신
+ *
+ * @param gridApiRef grid API ref (React.useRef<GridApi<T> | null>)
+ * @param field 체크박스 필드명 (keyof T)
+ *
+ * @example
+ * headerComponent: GridHeaderCheckbox,
+ * headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'isCheck'),
+ */
+export function createHeaderCheckboxParams<T extends Record<string, unknown>>(
+  gridApiRef: React.RefObject<GridApi<T> | null>,
+  field: keyof T & string
+): GridHeaderCheckboxExtraParams {
+  return {
+    getAllChecked: (api?: GridApi<T>) => {
+      const resolvedApi = api ?? gridApiRef.current;
+      if (!resolvedApi) return false;
+      const rows: T[] = [];
+      resolvedApi.forEachNode((node) => {
+        if (node.data) rows.push(node.data);
+      });
+      return rows.length > 0 && rows.every((row) => Boolean(row[field]));
+    },
+    toggleAll: (next: boolean) => {
+      const api = gridApiRef.current;
+      if (!api) return;
+      api.forEachNode((node) => {
+        if (node.data) node.setDataValue(field, next);
+      });
+      api.refreshHeader();
+    },
+  };
+}
+
+/**
+ * 헤더 체크박스 동기화 onCellValueChanged 핸들러 생성기 (공용)
+ * - 체크박스 셀 값 변경 시 헤더를 자동 갱신 (전체체크 상태 즉시 반영)
+ * - createHeaderCheckboxParams와 함께 사용
+ *
+ * @param fields 헤더 체크박스와 연결된 필드명 (단일 또는 배열)
+ *
+ * @example
+ * // AgGridReact에 적용
+ * onCellValueChanged={createHeaderCheckboxOnCellValueChanged(['isCheck1', 'isCheck2'])}
+ */
+export function createHeaderCheckboxOnCellValueChanged<T>(fields: (keyof T & string) | (keyof T & string)[]) {
+  const fieldSet = new Set(Array.isArray(fields) ? fields : [fields]);
+  return (params: CellValueChangedEvent<T>) => {
+    if (fieldSet.has(params.column.getColId() as keyof T & string)) {
+      params.api.refreshHeader();
+    }
+  };
+}
+
+/**
+ * ag-Grid 기본 empty overlay 컴포넌트.
+ */
+export function AgGridEmptyComponent({ className: _className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       className="bg-[var(--color-gray-0)] w-full h-full flex items-center justify-center gap-1 text-[var(--color-gray-70)]"

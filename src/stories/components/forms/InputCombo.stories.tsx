@@ -90,7 +90,6 @@ function Example() {
     value: { table: { disable: true } },
     onChange: { table: { disable: true } },
     inputId: { table: { disable: true } },
-    popoverPlacement:{ table: { disable: true } },
     clear: { table: { disable: true } },
     placeholder: {
       control: 'text',
@@ -131,7 +130,6 @@ function Example() {
     ulClassName: { table: { disable: true } },
   },
   args: {
-    popoverPlacement: 'bottom',
     clear: true,
     placeholder: '증권번호를 입력하세요',
     variant: 'default',

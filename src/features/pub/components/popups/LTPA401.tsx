@@ -1,39 +1,31 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { useRef, useState } from 'react';
 import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { PopupBaseProps } from './types';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-  });
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">

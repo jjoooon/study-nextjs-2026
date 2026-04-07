@@ -2,7 +2,7 @@ import LTPA301 from '@/app/pub/pages/LTPA301';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'page/proto/LTPA301',
+  title: 'page/LTPA301',
   component: LTPA301,
 };
 

@@ -19,7 +19,6 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
   options: ComboOption[];
   value: string;
   onChange: (value: string) => void;
-  popoverPlacement?: 'bottom' | 'top';
   clear?: boolean;
   size?: 'md' | 'lg';
   inputId?: string; // 고유 id를 외부에서 지정 가능
@@ -31,7 +30,6 @@ export function InputCombo({
   options,
   value,
   onChange,
-  popoverPlacement = 'bottom',
   inputId,
   col = 1,
   clear,
