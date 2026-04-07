@@ -64,13 +64,7 @@ export const LTPZ996 = ({ open, onOpenChange }: PopupBaseProps) => {
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           if (!params.value) return null;
           return (
-            <button
-              type="button"
-              className="cursor-pointer text-[#006FF2] underline underline-offset-4"
-              onClick={() => {
-                console.log('메세지코드 클릭:', params.value);
-              }}
-            >
+            <button type="button" className="cursor-pointer text-[#006FF2] underline underline-offset-4">
               {String(params.value)}
             </button>
           );

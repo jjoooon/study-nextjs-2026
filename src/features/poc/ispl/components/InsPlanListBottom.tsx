@@ -1,9 +1,8 @@
 import { ArrowNext } from '@/shared/components/icons';
-import { LayoutControls } from '@/shared/components/layout/Cabinet';
 
 export default function InsPlanListBottom() {
   return (
-    <LayoutControls>
+    <>
       <div className="flex flex-col w-full relative z-10">
         <div className="flex justify-end min-h-[5.8rem] bg-[#312B27] items-stretch">
           <div className="flex justify-between items-center flex-1 px-8"></div>
@@ -16,6 +15,6 @@ export default function InsPlanListBottom() {
           </button>
         </div>
       </div>
-    </LayoutControls>
+    </>
   );
 }

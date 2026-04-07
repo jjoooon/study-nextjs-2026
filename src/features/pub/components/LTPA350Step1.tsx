@@ -1312,7 +1312,6 @@ export function LTPA350Step1({
                                 },
                               ]}
                               placeholder=""
-                              popoverPlacement="bottom"
                               required
                               size="lg"
                               value=""
@@ -1903,7 +1902,6 @@ export function LTPA350Step1({
                                 },
                               ]}
                               placeholder=""
-                              popoverPlacement="bottom"
                               required
                               size="lg"
                               value=""
@@ -2517,7 +2515,6 @@ export function LTPA350Step1({
                                   },
                                 ]}
                                 placeholder=""
-                                popoverPlacement="bottom"
                                 required
                                 size="lg"
                                 value=""

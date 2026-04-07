@@ -95,8 +95,8 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps & { activeValue?
         {...props}
       >
         {React.Children.map(children, (child: React.ReactNode) => {
-          if (React.isValidElement(child)) {
-            const value = (child.props as any).value;
+          if (React.isValidElement<{ value: string }>(child)) {
+            const value = child.props.value;
             return React.cloneElement(child as React.ReactElement<TabsTriggerProps>, {
               totalTabs,
               removable,

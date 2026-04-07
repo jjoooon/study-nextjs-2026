@@ -83,7 +83,6 @@ export const Default: Story = {
     data: {
       simpleMode: true,
       title: '한화 시그니처 여성 건강보험 3.0 2504',
-      options: ['납입면제 강화형', '기본형'],
       planNumber: ['LA20234472050000', '2'],
       contractHolder: '6012345 박하늘별님달',
       planNumberList: [

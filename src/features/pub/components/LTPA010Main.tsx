@@ -1,7 +1,7 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
@@ -56,57 +56,48 @@ export const LTPA010Main = () => {
           headerName: '고지유형/플랜명',
           cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
-            'field02',
-            ({ data }: ICellRendererParams<LTPA010DummyDataRow>) => {
-              const hasTooltip = data?.field04 === 'memoView';
-              const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field02', (data?: LTPA010DummyDataRow) => {
+            const hasTooltip = data?.field04 === 'memoView';
+            const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
 
-              if (!hasMemoButton) {
-                return null;
-              }
-
-              const memoButton = (
-                <Button
-                  color={hasTooltip ? 'primary' : 'gray-light'}
-                  onClick={() => {
-                    alert('3대진단 클릭');
-                  }}
-                  only={'icon'}
-                  size={'sm'}
-                  variant={'outlined'}
-                >
-                  {hasTooltip ? <MemoIcon color={'#FF5C2E'} /> : <MemoIcon />}
-                </Button>
-              );
-
-              return (
-                <Grow placement="cc" className="h-full pr-1">
-                  {data?.field03}
-                  {hasTooltip ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
-                      <TooltipContent
-                        align="center"
-                        side="bottom"
-                        sideOffset={0}
-                        variant="default"
-                        className="w-[16rem]"
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
-                          }}
-                        />
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    memoButton
-                  )}
-                </Grow>
-              );
+            if (!hasMemoButton) {
+              return null;
             }
-          ),
+
+            const memoButton = (
+              <Button
+                color={hasTooltip ? 'primary' : 'gray-light'}
+                onClick={() => {
+                  alert('3대진단 클릭');
+                }}
+                only={'icon'}
+                size={'sm'}
+                variant={'outlined'}
+              >
+                {hasTooltip ? <MemoIcon color={'#FF5C2E'} /> : <MemoIcon />}
+              </Button>
+            );
+
+            return (
+              <Grow placement="cc" className="h-full pr-1">
+                {data?.field03}
+                {hasTooltip ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
+                    <TooltipContent align="center" side="bottom" sideOffset={0} variant="default" className="w-[16rem]">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
+                        }}
+                      />
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  memoButton
+                )}
+              </Grow>
+            );
+          }),
         },
       ],
     },
