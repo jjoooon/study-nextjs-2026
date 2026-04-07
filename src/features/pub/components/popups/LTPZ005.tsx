@@ -1326,19 +1326,16 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Gcol>
                 <Gcol>
                   <TableFold>
-                    <TableFoldHead title="대한설계"></TableFoldHead>
+                    <TableFoldHead title="대안설계"></TableFoldHead>
                     <TableFoldBody>
                       <Grow className="w-full" gap={5}>
                         {expectedUwRecommendData.map((item) => (
                           <Gcol
                             key={item.id}
-                            className="w-full overflow-hidden rounded-[1rem] [border:1px_solid] [border-image-source:linear-gradient(180deg,#E5E5E5_47.33%,#61554F_100%)] [border-image-slice:1] bg-[#817772]"
+                            className="p-0.25 w-full rounded-[0.8rem] bg-linear-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-100% box-border"
                           >
-                            <Gcol className="p-[1px] rounded-[0.8rem] bg-gradient-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-[100%]">
-                              <div className="bg-white rounded-[0.8rem] w-full h-full"></div>
-                            </Gcol>
-                            <Gcol className="w-full rounded-[1rem] px-[1.6rem] pb-[1.2rem] pt-[2rem] " gap={2}>
-                              {/* <Gcol className="">
+                            <Gcol className="bg-white rounded-[0.8rem] w-full h-full" gap={2}>
+                              <Gcol className="">
                                 <Gcol className="w-full" gap={0.5}>
                                   <Typo tag={'strong'} variant={'heading-md'}>
                                     {item.title}
@@ -1358,12 +1355,14 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
                                     • {item.detail}
                                   </Typo>
                                 </Grow>
-                              </Gcol> */}
+                              </Gcol>
                             </Gcol>
-
-                            <Grow className="w-full bg-[#817772] py-[1rem]" placement="sc">
+                            <Grow
+                              className="w-full h-[4.2rem] bg-[#817772] rounded-bl-[0.8rem] rounded-br-[0.8rem]"
+                              placement="cc"
+                            >
                               <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
-                              <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                              <Typo tag={'strong'} variant={'body-md'} weight={'bold'} className="text-white">
                                 AI 추천이유
                               </Typo>
                             </Grow>
