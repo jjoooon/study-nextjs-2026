@@ -1,9 +1,8 @@
 'use client';
 
-import Image from 'next/image';
-
 import { Gcol, Grow, Typo } from '@atoms';
 import { AiIcon } from '@icons';
+import Image from 'next/image';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 export interface SuggestionCardProps {
@@ -44,13 +43,7 @@ export function SuggestionCard({ type = 'type1', showAiIcon = false, className }
     >
       <Grow className={cn('w-full h-[4rem] items-center justify-between px-[0.9rem]', bgColor)}>
         <Grow className="items-center gap-[0.4rem] text-[var(--color-gray-0)]">
-          <Image
-            src={icon}
-            alt="icon"
-            width={24}
-            height={24}
-            className="inline-flex items-center"
-          />
+          <Image src={icon} alt="icon" width={24} height={24} className="inline-flex items-center" />
           <Typo tag="strong" variant="body-xl" className="font-bold text-[var(--color-gray-0)]">
             {title}
           </Typo>

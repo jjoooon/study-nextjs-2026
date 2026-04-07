@@ -1,14 +1,10 @@
 'use client';
 // 권오택
-import * as React from 'react';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TablePagination } from '@common/TablePagination';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TablePagination } from '@common/TablePagination';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,6 +16,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -33,28 +33,28 @@ export const LTPZ048 = ({ open, onOpenChange }: PopupBaseProps) => {
     field03: string | number;
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, field01: '심사요청', field02: '승인', field03: '김한화',},
-    { id: 2, field01: '심사중', field02: '', field03: '김한화',},
-    { id: 3, field01: '심사처리', field02: '', field03: '김한화',},
-    { id: 4, field01: '심사요청', field02: '승인', field03: '김한화',},
-    { id: 5, field01: '심사중', field02: '', field03: '김한화',},
-    { id: 6, field01: '심사처리', field02: '', field03: '김한화',},
-    { id: 7, field01: '심사요청', field02: '승인', field03: '김한화',},
-    { id: 8, field01: '심사중', field02: '', field03: '김한화',},
-    { id: 9, field01: '심사처리', field02: '', field03: '김한화',},
-    { id: 10, field01: '심사요청', field02: '승인', field03: '김한화',},
-    { id: 11, field01: '심사중', field02: '', field03: '김한화',},
-    { id: 12, field01: '심사처리', field02: '', field03: '김한화',},
+    { id: 1, field01: '심사요청', field02: '승인', field03: '김한화' },
+    { id: 2, field01: '심사중', field02: '', field03: '김한화' },
+    { id: 3, field01: '심사처리', field02: '', field03: '김한화' },
+    { id: 4, field01: '심사요청', field02: '승인', field03: '김한화' },
+    { id: 5, field01: '심사중', field02: '', field03: '김한화' },
+    { id: 6, field01: '심사처리', field02: '', field03: '김한화' },
+    { id: 7, field01: '심사요청', field02: '승인', field03: '김한화' },
+    { id: 8, field01: '심사중', field02: '', field03: '김한화' },
+    { id: 9, field01: '심사처리', field02: '', field03: '김한화' },
+    { id: 10, field01: '심사요청', field02: '승인', field03: '김한화' },
+    { id: 11, field01: '심사중', field02: '', field03: '김한화' },
+    { id: 12, field01: '심사처리', field02: '', field03: '김한화' },
   ];
 
-  // AgGrid Column 
+  // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '',
       width: 40,
       field: 'id',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,   
+      autoHeight: true,
     },
     {
       headerName: '구분',
@@ -78,51 +78,49 @@ export const LTPZ048 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
     },
   ];
-  
+
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
-    const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-    const pageSize = 7;
-    const { currentPage, totalPages, handleGridReady, handlePageChange } = useAgGridPagination(gridRef, pageSize);
-
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
+  const pageSize = 7;
+  const { currentPage, totalPages, handleGridReady, handlePageChange } = useAgGridPagination(gridRef, pageSize);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg" className="">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>QA 심사이력</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ048)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              QA 심사이력
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ048)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          <Gcol className='w-full'>
-            
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Gcol className="w-full">
             <TableFold>
-              <TableFoldHead title="QA 심사이력">
-                
-              </TableFoldHead>
+              <TableFoldHead title="QA 심사이력"></TableFoldHead>
               <TableFoldBody>
-                <Grow className='w-full'>
+                <Grow className="w-full">
                   <Gcol>
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
-                        getRowId={params => String(params.data.id)}
+                        getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={columnDefs}
-                        defaultColDef={{ 
+                        defaultColDef={{
                           sortable: false,
                           resizable: false,
                         }}
                         domLayout="autoHeight"
-
-                        pagination={true} 
-                        paginationPageSize={pageSize} 
-                        suppressPaginationPanel={true} 
-
-                        ref={gridRef} 
+                        pagination={true}
+                        paginationPageSize={pageSize}
+                        suppressPaginationPanel={true}
+                        ref={gridRef}
                         onGridReady={handleGridReady}
                       />
                     </div>
@@ -133,19 +131,16 @@ export const LTPZ048 = ({ open, onOpenChange }: PopupBaseProps) => {
                       itemsPerPage={pageSize}
                     />
                   </Gcol>
-                  <Gcol variant="box-round" placement='ss' className='w-full h-[27.6rem]'>
-                       [보안]<br></br>
-                       1.[15:43]월 보험료 27,130원으로 오안내<br></br>
-                       2.건강고지 전산방영되었으나 녹취 미확인 
+                  <Gcol variant="box-round" placement="ss" className="w-full h-[27.6rem]">
+                    [보안]<br></br>
+                    1.[15:43]월 보험료 27,130원으로 오안내<br></br>
+                    2.건강고지 전산방영되었으나 녹취 미확인
                   </Gcol>
                 </Grow>
               </TableFoldBody>
             </TableFold>
-
-          </Gcol>  
-        
-        
-        </DialogSection> 
+          </Gcol>
+        </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
@@ -159,7 +154,7 @@ export const LTPZ048 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

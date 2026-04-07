@@ -12,8 +12,8 @@
 
 import { useState } from 'react';
 
-import type { MDIDocument } from '@/shared/utils/mdiHelper2';
 import { MDIPageRenderer } from './MDIPageRenderer';
+import type { MDIDocument } from '@/shared/utils/mdiHelper2';
 
 interface MDITabPanelProps {
   documents: MDIDocument[];

@@ -1,16 +1,15 @@
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
 import { Gcol, Grow, Typo } from '@atoms';
 import { AddIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { findChosungMatchIndices, getHighlightRanges, isChosungQuery } from '@/shared/utils/searchUtils';
 
@@ -333,8 +332,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
                     </Button>
                   </Grow>
                   <Grow className="gap-3">
-                    <Typo variant="heading-md">분류별 선택</Typo>
-                    |
+                    <Typo variant="heading-md">분류별 선택</Typo>|
                     <Grow className="gap-x-4 gap-y-1 flex-wrap" placement="ss">
                       {CategoriesCheckbox.map((category) => (
                         <Checkbox key={category.value} className="whitespace-nowrap">

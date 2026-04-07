@@ -1,18 +1,27 @@
 'use client';
 // 권오택
-import * as React from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
+
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -35,7 +44,7 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
       flex: 1,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,   
+      autoHeight: true,
     },
     {
       headerName: '견종명(영문)',
@@ -45,7 +54,7 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
     },
   ];
-  
+
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [breedSearch, setBreedSearch] = React.useState('');
@@ -55,18 +64,17 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>고지유형별 보험료비교</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPA430)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              고지유형별 보험료비교
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPA430)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable 
-              variant={'none'}
-              lineTop={false}
-              caption=""
-              cols={['w-[10rem]','w-auto']}
-            >
+            <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[10rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'견종검색(한글명)'}>
                   <Input aria-label="견종검색" value={breedSearch} onChange={(e) => setBreedSearch(e.target.value)} />
@@ -76,18 +84,18 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
           <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType>
-              getRowId={params => String(params.data.id)}
+              getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowData={rowData}
               columnDefs={columnDefs}
-              defaultColDef={{ 
+              defaultColDef={{
                 sortable: false,
                 resizable: false,
               }}
-              domLayout="autoHeight" 
+              domLayout="autoHeight"
             />
           </div>
-        </DialogSection> 
+        </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
@@ -104,7 +112,7 @@ export const LTPA070 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

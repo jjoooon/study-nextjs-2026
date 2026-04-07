@@ -1,16 +1,15 @@
 'use client';
 
-import * as React from 'react';
-
 import { Typo, Gcol, Grow } from '@atoms';
+import { BulletItem } from '@common/BulletList';
+import { PlusIcon, MinusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
-import { BulletItem } from '@common/BulletList';
-import { PlusIcon, MinusIcon } from '@icons';
+import * as React from 'react';
 
 import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
- 
+
 interface AmountUnitInputProps {
   value: string | number;
   onChange: (value: string | number) => void;
@@ -18,12 +17,7 @@ interface AmountUnitInputProps {
   inputRef?: (el: HTMLInputElement | null) => void;
 }
 
-export function AmountUnitInput({
-  value,
-  onChange,
-  onEnter,
-  inputRef,
-}: AmountUnitInputProps) {
+export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUnitInputProps) {
   const [inputValue, setInputValue] = React.useState(value ?? '');
   const [open, setOpen] = React.useState(false);
   const [measuredWidth, setMeasuredWidth] = React.useState<number | undefined>(undefined);
@@ -104,7 +98,6 @@ export function AmountUnitInput({
     onChange(min); // 숫자만 전달
   };
 
-
   // 엔터키 입력 시 onEnter 호출
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onEnter) {
@@ -133,7 +126,7 @@ export function AmountUnitInput({
       <Grow className="relative h-full">
         <PopoverTrigger asChild>
           <input
-            ref={el => {
+            ref={(el) => {
               triggerInputRef.current = el;
               if (inputRef) inputRef(el);
             }}
@@ -144,7 +137,7 @@ export function AmountUnitInput({
             }
             onChange={handleInputChange}
             onClick={handleOpen}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             className="text-right cursor-pointer w-full h-full px-[0.8rem]"
             onKeyDown={handleKeyDown}
           />
@@ -155,8 +148,12 @@ export function AmountUnitInput({
           className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 "
           align="end"
           motion="none"
-          portalContainer={typeof window !== 'undefined' ? document.querySelector('.ag-body-viewport') as HTMLElement | null : undefined}
-          ref={el => {
+          portalContainer={
+            typeof window !== 'undefined'
+              ? (document.querySelector('.ag-body-viewport') as HTMLElement | null)
+              : undefined
+          }
+          ref={(el) => {
             if (el) {
               const side = el.getAttribute('data-side');
               if (side === 'top' || side === 'bottom' || side === 'left' || side === 'right') {
@@ -179,7 +176,7 @@ export function AmountUnitInput({
                 className="text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 commaAmount={true}
                 autoFocus
-                width={measuredWidth ? `${(measuredWidth) / 10}rem` : undefined}
+                width={measuredWidth ? `${measuredWidth / 10}rem` : undefined}
                 onKeyDown={handleKeyDown}
               />
             </Grow>
@@ -198,7 +195,12 @@ export function AmountUnitInput({
                   after={'만원'}
                   width={'min'}
                 />
-                <Button variant={'outlined'} color={'gray-light'} only={'icon'} onClick={() => handleAmountChange(-100)}>
+                <Button
+                  variant={'outlined'}
+                  color={'gray-light'}
+                  only={'icon'}
+                  onClick={() => handleAmountChange(-100)}
+                >
                   <MinusIcon color="var(--color-primary-50)" />
                 </Button>
               </Grow>

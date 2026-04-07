@@ -1,8 +1,8 @@
 'use client';
 
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import Image from 'next/image';
 import * as React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 
 const CHATBOT_DIALOG_WIDTH = 420;
 const CHATBOT_DIALOG_HEIGHT = 560;
@@ -12,14 +12,8 @@ function getInitialDialogPosition(anchorRect: DOMRect): { x: number; y: number }
   const maxLeft = window.innerWidth - CHATBOT_DIALOG_WIDTH - VIEWPORT_MARGIN;
   const maxTop = window.innerHeight - CHATBOT_DIALOG_HEIGHT - VIEWPORT_MARGIN;
 
-  const left = Math.min(
-    Math.max(anchorRect.right - CHATBOT_DIALOG_WIDTH, VIEWPORT_MARGIN),
-    maxLeft
-  );
-  const top = Math.min(
-    Math.max(anchorRect.top - CHATBOT_DIALOG_HEIGHT - 8, VIEWPORT_MARGIN),
-    maxTop
-  );
+  const left = Math.min(Math.max(anchorRect.right - CHATBOT_DIALOG_WIDTH, VIEWPORT_MARGIN), maxLeft);
+  const top = Math.min(Math.max(anchorRect.top - CHATBOT_DIALOG_HEIGHT - 8, VIEWPORT_MARGIN), maxTop);
 
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
@@ -51,7 +45,13 @@ export default function AIChatBot() {
         className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
         onClick={handleOpen}
       >
-        <Image src="/images/chatbot.png" alt="챗봇" width={32} height={32} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[4rem] h-[4rem]" />
+        <Image
+          src="/images/chatbot.png"
+          alt="챗봇"
+          width={32}
+          height={32}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[4rem] h-[4rem]"
+        />
       </button>
 
       <DialogContent

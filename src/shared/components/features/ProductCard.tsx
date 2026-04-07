@@ -15,13 +15,12 @@
 
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
+import { CircleCheckIcon, FlagCheckDoutoneIcon, SpeechBubbleIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { CircleCheckIcon, FlagCheckDoutoneIcon, SpeechBubbleIcon } from '@icons';
 
 import { cn } from '@/shared/lib/shadcn/utils';
-
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -85,51 +84,43 @@ export function ProductCard({
   return (
     <Gcol
       placement={'ss'}
-      className={cn('relative w-full rounded-[1rem] border-[0.2rem] border-transparent p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]',
-      bgColor, className)}
+      className={cn(
+        'relative w-full rounded-[1rem] border-[0.2rem] border-transparent p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]',
+        bgColor,
+        className
+      )}
     >
       {/* ── 오른쪽 상단 FlagCheckDuotone 순위 배지 ── */}
       {rank !== undefined && (
         <div className="absolute top-[-0.6rem] right-4 flex items-start justify-end">
-            <FlagCheckDoutoneIcon color={flagColor} color2={flagShadowColor} />
-            <span className="absolute top-[0.6rem] left-1/2 -translate-x-1/2 text-[var(--color-gray-0)] text-[1rem] font-bold leading-none">
-              {String(rank).padStart(2, '0')}
-            </span>
+          <FlagCheckDoutoneIcon color={flagColor} color2={flagShadowColor} />
+          <span className="absolute top-[0.6rem] left-1/2 -translate-x-1/2 text-[var(--color-gray-0)] text-[1rem] font-bold leading-none">
+            {String(rank).padStart(2, '0')}
+          </span>
         </div>
       )}
 
       {/* ── 카드 본문 ── */}
       <Gcol placement={'ss'} className="gap-1.5 w-full">
-
         {/* 상단 행: 체크박스 + 인수상태 배지 */}
-        <Grow className='flex items-center gap-[0.8rem]'>
-          <Checkbox
-            checked={checked}
-            onCheckedChange={(val) => onCheckedChange?.(val === true)}
-          />
+        <Grow className="flex items-center gap-[0.8rem]">
+          <Checkbox checked={checked} onCheckedChange={(val) => onCheckedChange?.(val === true)} />
           {isAccept ? (
             <Badge variant="contained" color="green" size="md" className="gap-[0.6rem]">
               <CircleCheckIcon size={11} color="var(--color-success-50)" />
               인수가능
             </Badge>
           ) : (
-            ""
+            ''
           )}
         </Grow>
 
-        <Grow className='w-full flex flex-col items-start'>
-          <Grow className='flex flex-col items-start'>
-            <Typo
-              tag="strong"
-              variant="body-xl"
-            >
+        <Grow className="w-full flex flex-col items-start">
+          <Grow className="flex flex-col items-start">
+            <Typo tag="strong" variant="body-xl">
               {title}
             </Typo>
-            <Typo
-              tag="p"
-              variant="body-xs"
-              className="text-[var(--color-gray-70)]"
-            >
+            <Typo tag="p" variant="body-xs" className="text-[var(--color-gray-70)]">
               {subtitle}
             </Typo>
           </Grow>
@@ -140,7 +131,7 @@ export function ProductCard({
             <BulletList className="pt-[0.2rem] gap-[0.2rem]">
               {features.map((feature, idx) => (
                 <BulletListItem key={idx} type="dot" size="sm">
-                  <Typo variant="body-xs" className='text-[var(--color-gray-70)]'>
+                  <Typo variant="body-xs" className="text-[var(--color-gray-70)]">
                     {feature}
                   </Typo>
                 </BulletListItem>
@@ -148,7 +139,6 @@ export function ProductCard({
             </BulletList>
           </Grow>
         </Grow>
-
 
         {/* 하단 행: 추천화법 버튼 */}
         <Button

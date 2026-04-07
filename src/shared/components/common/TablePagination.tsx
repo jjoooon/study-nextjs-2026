@@ -1,8 +1,8 @@
 'use client';
 
 import { Grow } from '@atoms';
-import { Button } from '@uiux/Button';
 import { PageArrowIcon, PageArrowDoubleIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 interface TablePaginationProps {
   currentPage: number;
@@ -34,7 +34,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
 
   return (
     <Grow placement={'bwc'} className="w-full py-1 px-4">
-      <Grow className='w-auto h-5!'>
+      <Grow className="w-auto h-5!">
         <Grow gap={0}>
           <Button
             variant={'none'}
@@ -86,9 +86,9 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
                 onPageChange(currentPage + 1);
               }
             }}
-             className={currentPage === totalPages ? 'hidden!' : ''}
+            className={currentPage === totalPages ? 'hidden!' : ''}
           >
-            <PageArrowIcon className='rotate-180' />
+            <PageArrowIcon className="rotate-180" />
           </Button>
           <Button
             variant={'none'}
@@ -99,12 +99,12 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
             }}
             className={currentPage === totalPages ? 'hidden!' : ''}
           >
-            <PageArrowDoubleIcon className='rotate-180' />
+            <PageArrowDoubleIcon className="rotate-180" />
           </Button>
         </Grow>
       </Grow>
 
-      <Grow className='text-[1.3rem]'>
+      <Grow className="text-[1.3rem]">
         View 1-{totalPages} of {currentPage}
       </Grow>
     </Grow>
@@ -124,18 +124,11 @@ export function TableMore({
   onLoadNext,
 }: TableMoreProps) {
   const hasCountMode =
-    typeof loadedCount === 'number' &&
-    typeof totalCount === 'number' &&
-    typeof pageSize === 'number' &&
-    pageSize > 0;
+    typeof loadedCount === 'number' && typeof totalCount === 'number' && typeof pageSize === 'number' && pageSize > 0;
 
-  const resolvedCurrentPage = hasCountMode
-    ? Math.max(1, Math.ceil(loadedCount / pageSize))
-    : (currentPage ?? 1);
+  const resolvedCurrentPage = hasCountMode ? Math.max(1, Math.ceil(loadedCount / pageSize)) : (currentPage ?? 1);
 
-  const resolvedTotalPages = hasCountMode
-    ? Math.max(1, Math.ceil(totalCount / pageSize))
-    : (totalPages ?? 1);
+  const resolvedTotalPages = hasCountMode ? Math.max(1, Math.ceil(totalCount / pageSize)) : (totalPages ?? 1);
 
   const resolvedItemsPerPage = itemsPerPage ?? (hasCountMode ? pageSize : null);
 
@@ -181,7 +174,7 @@ export function TableMore({
 
   return (
     <Grow placement={'bwc'} className="w-full py-1 px-4">
-      <Grow className='text-[1.3rem]' placement='sc'>
+      <Grow className="text-[1.3rem]" placement="sc">
         <b>{loadedCount}</b> / 전체 {totalCount}
       </Grow>
 

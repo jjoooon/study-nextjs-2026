@@ -1,8 +1,7 @@
 'use client';
 
-
-import * as React from 'react';
 import { Grow } from '@atoms';
+import * as React from 'react';
 import LinkGo, { getStoryIframeUrl } from './Link';
 import iaListData from './ialist.json';
 
@@ -37,11 +36,9 @@ type IARow = {
   popup?: string;
 };
 
-
 const ROWS: IARow[] = iaListData as IARow[];
 
 const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
-  
 
 export function IAListWithPreview() {
   const [showPhaseOnly, setShowPhaseOnly] = React.useState(true);
@@ -53,11 +50,11 @@ export function IAListWithPreview() {
       return ROWS;
     }
 
-    return ROWS.filter(row => row.phase === 'Y');
+    return ROWS.filter((row) => row.phase === 'Y');
   }, [showPhaseOnly]);
 
   const activeRow = React.useMemo(() => {
-    return visibleRows.find(row => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
+    return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
   }, [activeRowKey, visibleRows]);
 
   const sortedRows = React.useMemo(() => {
@@ -110,7 +107,7 @@ export function IAListWithPreview() {
   }, [activeRow, activeStep]);
 
   const handleSort = React.useCallback((key: SortKey) => {
-    setSortState(prev => {
+    setSortState((prev) => {
       if (prev.key !== key || prev.order === 'default') {
         return { key, order: 'asc' };
       }
@@ -123,31 +120,79 @@ export function IAListWithPreview() {
     });
   }, []);
 
-  const getSortIndicator = React.useCallback((key: SortKey) => {
-    if (sortState.key !== key) {
+  const getSortIndicator = React.useCallback(
+    (key: SortKey) => {
+      if (sortState.key !== key) {
+        return '';
+      }
+
+      if (sortState.order === 'asc') {
+        return ' ↑';
+      }
+
+      if (sortState.order === 'desc') {
+        return ' ↓';
+      }
+
       return '';
-    }
+    },
+    [sortState]
+  );
 
-    if (sortState.order === 'asc') {
-      return ' ↑';
-    }
-
-    if (sortState.order === 'desc') {
-      return ' ↓';
-    }
-
-    return '';
-  }, [sortState]);
-
-  const ingList = [
-    'LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ021', 'LTPZ031',
-  ]
+  const ingList = ['LTPA350_1', 'LTPA350_2', 'LTPZ018', 'LTPZ021', 'LTPZ031'];
 
   const workList_prev: string[] = [
-    'LTPZ010', 'LTPZ011', 'LTPZ017', 'LTPZ020', 'LTPA160', 'LTPA904', 'LTPZ999', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPA170', 'LTPA904', 'LTPA390', 'LTPA430', 'LTPA070', 'LTPA010', 'LTPZ041', 'LTPZ042', 'LTPZ038', 'LTPZ039', 'LTPA400', 'LTPA210', 'LTPA200', 'LTPA190', 'LTPZ001', 'LTPZ040', 'LTPZ043', 'LTPZ046', 'LTPZ047', 'LTPA030', 'LTPA360', 'LTPZ049', 'LTPZ050', 'LTPZ051', 'LTPZ002', 'LTPZ052', 'LTPZ053', 'LTPZ057', 'LTPZ009', 'LTPA401', 'LTPA301', 'LTPA303', 'LTPZ048', 'LTPZ045', 'LTRZ085', 'LTPA300', 'LTPZ994', 'LTPZ995'
+    'LTPZ010',
+    'LTPZ011',
+    'LTPZ017',
+    'LTPZ020',
+    'LTPA160',
+    'LTPA904',
+    'LTPZ999',
+    'LTPZ998',
+    'LTPZ997',
+    'LTPZ996',
+    'LTPA170',
+    'LTPA904',
+    'LTPA390',
+    'LTPA430',
+    'LTPA070',
+    'LTPA010',
+    'LTPZ041',
+    'LTPZ042',
+    'LTPZ038',
+    'LTPZ039',
+    'LTPA400',
+    'LTPA210',
+    'LTPA200',
+    'LTPA190',
+    'LTPZ001',
+    'LTPZ040',
+    'LTPZ043',
+    'LTPZ046',
+    'LTPZ047',
+    'LTPA030',
+    'LTPA360',
+    'LTPZ049',
+    'LTPZ050',
+    'LTPZ051',
+    'LTPZ002',
+    'LTPZ052',
+    'LTPZ053',
+    'LTPZ057',
+    'LTPZ009',
+    'LTPA401',
+    'LTPA301',
+    'LTPA303',
+    'LTPZ048',
+    'LTPZ045',
+    'LTRZ085',
+    'LTPA300',
+    'LTPZ994',
+    'LTPZ995',
   ];
   const workList_h: string[] = [];
-  const workList_k: string[] = ['LTPZ085','LTPZ086'];
+  const workList_k: string[] = ['LTPZ085', 'LTPZ086'];
   const workList_j: string[] = [];
 
   const workList = [...workList_prev, ...workList_h, ...workList_k, ...workList_j];
@@ -175,43 +220,23 @@ export function IAListWithPreview() {
             <tr>
               <th scope="col">No</th>
               <th scope="col">ID</th>
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('dep4')}
-              >
+              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('dep4')}>
                 화면명{getSortIndicator('dep4')}
               </th>
-              <th scope="col">설계서명</th>  
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => setShowPhaseOnly(prev => !prev)}
-              >
+              <th scope="col">설계서명</th>
+              <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
                 1차{showPhaseOnly ? ' ✓' : ''}
               </th>
-              <th scope="col">완료일</th>  
-              <th scope="col">수정일</th>  
-              
-              <th
-                scope="col"
-                className="text-center cursor-pointer select-none"
-                onClick={() => handleSort('plan')}
-              >
+              <th scope="col">완료일</th>
+              <th scope="col">수정일</th>
+
+              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
               </th>
-              <th
-                scope="col"
-                className="text-center cursor-pointer select-none"
-                onClick={() => handleSort('pub')}
-              >
+              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('pub')}>
                 퍼블{getSortIndicator('pub')}
               </th>
-              <th
-                scope="col"
-                className="text-center cursor-pointer select-none"
-                onClick={() => handleSort('dev')}
-              >
+              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('dev')}>
                 개발{getSortIndicator('dev')}
               </th>
             </tr>
@@ -235,15 +260,20 @@ export function IAListWithPreview() {
                     <b>{index + 1}</b>
                   </td>
                   <th scope="row" className={rowIdBgClass}>
-                    {row.id}{row.subId ? (<><br /> ({row.subId})</>) : ''}
+                    {row.id}
+                    {row.subId ? (
+                      <>
+                        <br /> ({row.subId})
+                      </>
+                    ) : (
+                      ''
+                    )}
                   </th>
                   <td className={rowBgClass}>
                     <b>{row.dep4}</b>
                   </td>
 
-                  <td className={rowBgClass}>
-                    {row.file}
-                  </td>
+                  <td className={rowBgClass}>{row.file}</td>
 
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{row.phase === 'Y' ? 'Y' : ''}</b>
@@ -269,18 +299,16 @@ export function IAListWithPreview() {
       <div className="ia-preview-pane">
         {activeRow ? (
           <div className="ia-preview-label cursor-pointer" onClick={handleMovePage}>
-            {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt; <b>{activeRow.dep4}({activeRow.id})</b>
+            {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
+            <b>
+              {activeRow.dep4}({activeRow.id})
+            </b>
           </div>
         ) : (
           <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>
         )}
         {previewUrl ? (
-          <iframe
-            key={previewUrl}
-            src={previewUrl}
-            title="화면 미리보기"
-            className="ia-preview-iframe"
-          />
+          <iframe key={previewUrl} src={previewUrl} title="화면 미리보기" className="ia-preview-iframe" />
         ) : (
           <div className="ia-preview-iframe flex items-center justify-center text-[1.3rem] text-[#666]">
             미리보기 가능한 STEP 정보가 없습니다.

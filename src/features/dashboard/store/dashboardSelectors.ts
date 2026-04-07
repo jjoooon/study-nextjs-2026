@@ -1,8 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '@/redux';
-
 import type { Widget } from '../types/uiTypes';
+import type { RootState } from '@/redux';
 
 // ============================================================================
 // DASHBOARD SELECTORS

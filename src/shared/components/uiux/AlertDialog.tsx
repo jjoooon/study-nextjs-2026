@@ -1,9 +1,9 @@
 'use client';
 
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { buttonVariants } from '@uiux/Button';
 import * as React from 'react';
 
-import { buttonVariants } from '@uiux/Button';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 function AlertDialog({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
@@ -80,7 +80,7 @@ function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof A
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
       className={cn('text-[1.6rem] font-bold', className)}
-      {...props}    
+      {...props}
     />
   );
 }

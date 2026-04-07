@@ -1,27 +1,35 @@
 'use client';
 // 권오택
-import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { ResetIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
+
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ResetIcon, SearchIcon } from '@icons';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-   const [form, setFormField] = useFormFields({
+  const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
   });
@@ -37,22 +45,76 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
     field06: string | number;
   };
   const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: true, field01: '123456', field02: '한화생명1', field03: '123', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 2, isCheck: false, field01: '123456', field02: '한화생명1', field03: '124', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 3, isCheck: false, field01: '123456', field02: '한화생명1', field03: '125', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 4, isCheck: false, field01: '123456', field02: '한화생명1', field03: '126', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 5, isCheck: false, field01: '123456', field02: '한화생명1', field03: '127', field04: '서울', field05: '123', field06: '김한화' },
-    { id: 6, isCheck: false, field01: '123456', field02: '한화생명1', field03: '128', field04: '서울', field05: '123', field06: '김한화' },
+    {
+      id: 1,
+      isCheck: true,
+      field01: '123456',
+      field02: '한화생명1',
+      field03: '123',
+      field04: '서울',
+      field05: '123',
+      field06: '김한화',
+    },
+    {
+      id: 2,
+      isCheck: false,
+      field01: '123456',
+      field02: '한화생명1',
+      field03: '124',
+      field04: '서울',
+      field05: '123',
+      field06: '김한화',
+    },
+    {
+      id: 3,
+      isCheck: false,
+      field01: '123456',
+      field02: '한화생명1',
+      field03: '125',
+      field04: '서울',
+      field05: '123',
+      field06: '김한화',
+    },
+    {
+      id: 4,
+      isCheck: false,
+      field01: '123456',
+      field02: '한화생명1',
+      field03: '126',
+      field04: '서울',
+      field05: '123',
+      field06: '김한화',
+    },
+    {
+      id: 5,
+      isCheck: false,
+      field01: '123456',
+      field02: '한화생명1',
+      field03: '127',
+      field04: '서울',
+      field05: '123',
+      field06: '김한화',
+    },
+    {
+      id: 6,
+      isCheck: false,
+      field01: '123456',
+      field02: '한화생명1',
+      field03: '128',
+      field04: '서울',
+      field05: '123',
+      field06: '김한화',
+    },
   ];
 
-  // AgGrid Column 
+  // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '직원번호',
       flex: 1,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,   
+      autoHeight: true,
     },
     {
       headerName: '직원명',
@@ -88,14 +150,14 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field06',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
-    }
+    },
   ];
-  
+
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter(row => !row.isCheck).map(row => row.id)
+    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
   );
-  
+
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
@@ -118,7 +180,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명',   flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
@@ -139,7 +201,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
   const columnDefs3: ColDef<DummyDataType3>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명',   flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
   const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
@@ -160,7 +222,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
   const columnDefs4: ColDef<DummyDataType4>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명',   flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
   const [rowData4, setRowData4] = React.useState<DummyDataType4[]>(DummyData4);
 
@@ -171,16 +233,17 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="2xl" className="">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>은행유자격자조회</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ043)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              은행유자격자조회
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ043)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          <Grow className='w-full' variant="box-round" placement={'bwe'}>
-            <FormTable 
-              variant={'head'}
-              lineTop={false}
-              caption="">
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'조회구분'}>
                   <NativeSelect
@@ -193,23 +256,36 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
                       { value: 'selection', id: 'type01-1', label: '유자격자' },
                       { value: 'selection2', id: 'type01-2', label: '직원번호' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
                 {!isEmpNo && (
                   <FormCell title={'유자격자명'}>
-                    <Input aria-label="유자격자명 입력" width={'16rem'} value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} />
+                    <Input
+                      aria-label="유자격자명 입력"
+                      width={'16rem'}
+                      value={form.type02}
+                      onChange={(e) => setFormField('type02', e.target.value)}
+                    />
                   </FormCell>
                 )}
               </FormRow>
-              
-            </FormTable>  
+            </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>
@@ -219,7 +295,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
           {!isEmpNo && (
             <div className="ag-theme-alpine ltpa010-grid w-full">
               <AgGridReact<DummyDataType>
-                getRowId={params => String(params.data.id)}
+                getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={rowData}
                 columnDefs={columnDefs}
@@ -232,11 +308,11 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
           )}
           {/* 직원번호: Grid2~4 1/3씩 */}
           {isEmpNo && (
-            <Grow className='w-full' gap={1} placement='ss'>
+            <Grow className="w-full" gap={1} placement="ss">
               {/* Grid2 */}
               <div className="ag-theme-alpine ltpa010-grid w-1/3">
                 <AgGridReact<DummyDataType2>
-                  getRowId={params => String(params.data.id)}
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
@@ -249,7 +325,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
               {/* Grid3 */}
               <div className="ag-theme-alpine ltpa010-grid w-1/3">
                 <AgGridReact<DummyDataType3>
-                  getRowId={params => String(params.data.id)}
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData3}
                   columnDefs={columnDefs3}
@@ -262,7 +338,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
               {/* Grid4 */}
               <div className="ag-theme-alpine ltpa010-grid w-1/3">
                 <AgGridReact<DummyDataType4>
-                  getRowId={params => String(params.data.id)}
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData4}
                   columnDefs={columnDefs4}
@@ -274,8 +350,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
               </div>
             </Grow>
           )}
-        
-        </DialogSection> 
+        </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
@@ -292,7 +367,7 @@ export const LTPZ042 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

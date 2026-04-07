@@ -1,12 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import { Gcol, Grow, Grid } from '@atoms';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
+import { ArrowNext, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { ArrowNext, ResetIcon } from '@icons';
-
+import { useState } from 'react';
 
 export function DesignStart() {
   return (
@@ -40,7 +39,7 @@ export function DesignGeneration() {
           <ResetIcon />
           초기화
         </Button>
-         <Button
+        <Button
           type="submit"
           form={'page2-MainForm'}
           variant={'contained'}
@@ -52,7 +51,6 @@ export function DesignGeneration() {
           <ArrowNext />
         </Button>
       </Grow>
-     
     </Grow>
   );
 }
@@ -74,7 +72,12 @@ export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: 
         noValidate
       >
         <Grid className="grid-cols-[1fr_auto] gap-3 px-3 pb-2 pt-2.5 w-full">
-          <FormTable lineTop={false} variant={'none'} cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']} className="w-auto" >
+          <FormTable
+            lineTop={false}
+            variant={'none'}
+            cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}
+            className="w-auto"
+          >
             <FormRow>
               <FormCell title="만기금(환급률)">
                 <Button variant={'outlined'} color={'gray'} size={'sm'}>
@@ -127,7 +130,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: 
                   commaAmount={true}
                   value={amount}
                   clear={true}
-                  width={'lg'} 
+                  width={'lg'}
                   onChange={(e) => {
                     setAmount(e.target.value);
                     setTestError(!e.target.value);
@@ -200,7 +203,10 @@ export function LTPA350Step1() {
 
 export function MainBottom({ children }: { children: React.ReactNode }) {
   return (
-    <Gcol gap={0} className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] min-w-[93.2rem]">
+    <Gcol
+      gap={0}
+      className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] min-w-[93.2rem]"
+    >
       {children}
     </Gcol>
   );

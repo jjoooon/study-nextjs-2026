@@ -1,29 +1,39 @@
-import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
+import { Grow, Gcol, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { TabPager } from '@common/TabPager';
 
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { useFormFields } from '@hooks/useFormFields';
+import { SearchIcon, ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import * as React from 'react';
-import { Grow, Gcol, Typo } from '@atoms';
 
 // Layout Components
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-
 
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { SearchIcon, ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@common/DatePicker';
-import { useFormFields } from '@hooks/useFormFields';
-import { LTPA360DummyData1, type LTPA360DummyDataRow1, LTPA360DummyData1_1, type LTPA360DummyDataRow1_1, LTPA360DummyData2, type LTPA360DummyDataRow2, LTPA360DummyData3, type LTPA360DummyDataRow3, LTPA360DummyData4, type LTPA360DummyDataRow4 } from '../data/LTPA360Data';
+import {
+  LTPA360DummyData1,
+  type LTPA360DummyDataRow1,
+  LTPA360DummyData1_1,
+  type LTPA360DummyDataRow1_1,
+  LTPA360DummyData2,
+  type LTPA360DummyDataRow2,
+  LTPA360DummyData3,
+  type LTPA360DummyDataRow3,
+  LTPA360DummyData4,
+  type LTPA360DummyDataRow4,
+} from '../data/LTPA360Data';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -37,154 +47,144 @@ export const LTPA360Main = () => {
     { name: '사고담보코드요청', value: 'tab4', label: '사고담보코드요청' },
   ];
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  
+
   const handlePreviewClick = (row: LTPA360DummyDataRow2) => {
     // TODO: 실제 미리보기 팝업/라우팅 연동
     // eslint-disable-next-line no-console
-  console.log('[LTPZ001] 미리보기 클릭', row);
+    console.log('[LTPZ001] 미리보기 클릭', row);
   };
 
   // Tab1 AGGrid Column
-  const columnDefs1: (ColDef<LTPA360DummyDataRow1>)[] = [
-    { 
-      headerName: '단계별 진행현황', 
-      field: 'field01', 
-      width: 180, 
-      cellEditorParams: { values: ['선택', ''] } 
+  const columnDefs1: ColDef<LTPA360DummyDataRow1>[] = [
+    {
+      headerName: '단계별 진행현황',
+      field: 'field01',
+      width: 180,
+      cellEditorParams: { values: ['선택', ''] },
     },
-    { 
-      headerName: '세부내용', 
-      field: 'field02', 
-      width: 400, 
+    {
+      headerName: '세부내용',
+      field: 'field02',
+      width: 400,
     },
-    { 
-      headerName: '계획일정', 
-      field: 'field03', 
-      width: 90, 
+    {
+      headerName: '계획일정',
+      field: 'field03',
+      width: 90,
     },
-    { 
-      headerName: '완료일자', 
-      field: 'field04', 
-      width: 90, 
+    {
+      headerName: '완료일자',
+      field: 'field04',
+      width: 90,
     },
-    { 
-      headerName: '완료/대상', 
-      field: 'field05', 
-      width: 80, 
+    {
+      headerName: '완료/대상',
+      field: 'field05',
+      width: 80,
     },
-    { 
-      headerName: '진행율', 
-      field: 'field06', 
-      flex: 1, 
-      editable: true, 
+    {
+      headerName: '진행율',
+      field: 'field06',
+      flex: 1,
+      editable: true,
     },
   ];
 
   // Tab1_1 AGGrid Column
-  const columnDefs1_1: (ColDef<LTPA360DummyDataRow1_1>)[] = [
-    { 
-      headerName: '판매일자', 
-      field: 'field01', 
-      width: 120, 
+  const columnDefs1_1: ColDef<LTPA360DummyDataRow1_1>[] = [
+    {
+      headerName: '판매일자',
+      field: 'field01',
+      width: 120,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '보종코드', 
-      field: 'field02', 
-      width: 100, 
+    {
+      headerName: '보종코드',
+      field: 'field02',
+      width: 100,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '보종명', 
-      field: 'field03', 
+    {
+      headerName: '보종명',
+      field: 'field03',
       flex: 1,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '기초서류', 
-      field: 'field04', 
-      width: 100, 
+    {
+      headerName: '기초서류',
+      field: 'field04',
+      width: 100,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '상품정보', 
-      field: 'field05', 
-      width: 100, 
+    {
+      headerName: '상품정보',
+      field: 'field05',
+      width: 100,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: 'PV', 
-      field: 'field06', 
-      width: 100, 
-      editable: false, 
+    {
+      headerName: 'PV',
+      field: 'field06',
+      width: 100,
+      editable: false,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '만납기룰', 
-      field: 'field07', 
-      width: 100, 
-      editable: false, 
+    {
+      headerName: '만납기룰',
+      field: 'field07',
+      width: 100,
+      editable: false,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '설계테스트', 
-      field: 'field08', 
-      width: 100, 
-      editable: false, 
+    {
+      headerName: '설계테스트',
+      field: 'field08',
+      width: 100,
+      editable: false,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '츨력물검수', 
-      field: 'field09', 
-      width: 100, 
-      editable: false, 
+    {
+      headerName: '츨력물검수',
+      field: 'field09',
+      width: 100,
+      editable: false,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
-    { 
-      headerName: '판매준비', 
-      field: 'field10', 
-      width: 100, 
-      editable: false, 
+    {
+      headerName: '판매준비',
+      field: 'field10',
+      width: 100,
+      editable: false,
       cellClassRules: {
-        'font-bold': params => Object.values(params.data ?? {}).some(
-          v => typeof v === 'string' && v.includes('지연')
-        ),
+        'font-bold': (params) =>
+          Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),
       },
     },
   ];
@@ -192,7 +192,7 @@ export const LTPA360Main = () => {
   // const handleToggleIsSelect = (rowId: number) => {
   //   setLTPA360DummyData1_1(prev => prev.map(row => row.id === rowId ? { ...row, isSelect: !row.isSelect } : row));
   // };
-  
+
   // Tab2 AGGrid Column
   const columnDefs2: (ColDef<LTPA360DummyDataRow2> | ColGroupDef<LTPA360DummyDataRow2>)[] = [
     {
@@ -209,7 +209,7 @@ export const LTPA360Main = () => {
       width: 230,
       editable: true,
       pinned: 'left',
-      cellClass: 'truncate'
+      cellClass: 'truncate',
     },
     {
       headerName: '판매일자',
@@ -225,7 +225,9 @@ export const LTPA360Main = () => {
       editable: true,
       headerComponent: () => (
         <div className="w-full h-full flex items-center justify-center text-center whitespace-normal leading-5">
-          계획/<br />실적 구분
+          계획/
+          <br />
+          실적 구분
         </div>
       ),
       cellEditor: 'agSelectCellEditor',
@@ -240,10 +242,10 @@ export const LTPA360Main = () => {
           width: 120,
           editable: true,
           cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
-            <Grow className="w-full px-1" >
+            <Grow className="w-full px-1">
               <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-                <SearchIcon  color={'var(--color-primary-50)'} />
+                <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
             </Grow>
           ),
@@ -254,10 +256,10 @@ export const LTPA360Main = () => {
           width: 120,
           editable: true,
           cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
-            <Grow className="w-full px-1" >
+            <Grow className="w-full px-1">
               <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-                <SearchIcon  color={'var(--color-primary-50)'} />
+                <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
             </Grow>
           ),
@@ -268,12 +270,12 @@ export const LTPA360Main = () => {
           width: 120,
           editable: true,
           cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
-          <Grow className="w-full px-1" >
-            <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon  color={'var(--color-primary-50)'} />
-            </Button>
-          </Grow>
+            <Grow className="w-full px-1">
+              <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grow>
           ),
         },
         {
@@ -282,12 +284,12 @@ export const LTPA360Main = () => {
           width: 120,
           editable: true,
           cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
-          <Grow className="w-full px-1" >
-            <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon  color={'var(--color-primary-50)'} />
-            </Button>
-          </Grow>
+            <Grow className="w-full px-1">
+              <Input aria-label="" width={'100%'} size="sm" value={'박한화'} readOnly />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grow>
           ),
         },
       ],
@@ -307,11 +309,11 @@ export const LTPA360Main = () => {
           width: 60,
           editable: false,
           cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
-          <Grow className="w-full px-1" >
-            <Button aria-label="숫자" variant={'none'} size={'md'} color={'gray-light'}>
-              0
-            </Button>
-          </Grow>
+            <Grow className="w-full px-1">
+              <Button aria-label="숫자" variant={'none'} size={'md'} color={'gray-light'}>
+                0
+              </Button>
+            </Grow>
           ),
         },
       ],
@@ -323,7 +325,7 @@ export const LTPA360Main = () => {
       cellClass: 'text-center flex! items-center justify-center!',
       cellRenderer: 'agCheckboxCellRenderer',
       cellEditor: 'agCheckboxCellEditor',
-      editable: params => !params.node.isSelected(),
+      editable: (params) => !params.node.isSelected(),
       cellRendererParams: (params: { data: LTPA360DummyDataRow2 }) => ({
         disabled: false,
       }),
@@ -334,7 +336,9 @@ export const LTPA360Main = () => {
       wrapText: true,
       headerComponent: () => (
         <div className="w-full h-full flex items-center justify-center text-center whitespace-normal leading-5">
-          체크/<br />리스트
+          체크/
+          <br />
+          리스트
         </div>
       ),
     },
@@ -394,7 +398,19 @@ export const LTPA360Main = () => {
           editable: true,
           cellClass: 'text-center flex! items-center justify-center!',
           cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['선택', '정상', '수납완료', '청약중', '설계중', '보험료계산오류', '환급금오류', '출력물오류', '기타오류'] },
+          cellEditorParams: {
+            values: [
+              '선택',
+              '정상',
+              '수납완료',
+              '청약중',
+              '설계중',
+              '보험료계산오류',
+              '환급금오류',
+              '출력물오류',
+              '기타오류',
+            ],
+          },
         },
         {
           headerName: '청약서류 검수',
@@ -407,7 +423,7 @@ export const LTPA360Main = () => {
               variant={'text'}
               size={'lg'}
               color={'link'}
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 if (params.data) {
                   handlePreviewClick(params.data);
@@ -418,7 +434,7 @@ export const LTPA360Main = () => {
             </Button>
           ),
         },
-      ]
+      ],
     },
     {
       headerName: '판매준비 완료여부',
@@ -428,7 +444,9 @@ export const LTPA360Main = () => {
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full flex items-center justify-center text-center whitespace-normal leading-5">
-          판매준비/<br />완료여부
+          판매준비/
+          <br />
+          완료여부
         </div>
       ),
     },
@@ -441,7 +459,9 @@ export const LTPA360Main = () => {
       cellEditor: 'agInputCellEditor',
       headerComponent: () => (
         <div className="w-full flex items-center justify-center text-center whitespace-normal leading-5">
-          개정 전/<br />상품코드
+          개정 전/
+          <br />
+          상품코드
         </div>
       ),
     },
@@ -451,11 +471,11 @@ export const LTPA360Main = () => {
       width: 180,
       editable: true,
       cellEditor: 'agInputCellEditor',
-    }
+    },
   ];
 
   // Tab3 AGGrid Column
-  const columnDefs3: (ColDef<LTPA360DummyDataRow3>)[] = [
+  const columnDefs3: ColDef<LTPA360DummyDataRow3>[] = [
     {
       headerName: '담보코드',
       field: 'field01',
@@ -468,7 +488,7 @@ export const LTPA360Main = () => {
       field: 'field02',
       width: 170,
       editable: true,
-      cellClass: 'truncate justify-start!'
+      cellClass: 'truncate justify-start!',
     },
     {
       headerName: '면책(일수)',
@@ -507,7 +527,7 @@ export const LTPA360Main = () => {
       field: 'field08',
       width: 140,
       editable: true,
-      cellClass: 'truncate' ,
+      cellClass: 'truncate',
     },
     {
       headerName: '요청일자',
@@ -521,7 +541,7 @@ export const LTPA360Main = () => {
       width: 120,
       editable: false,
       cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow2>) => (
-        <Grow className="w-full px-1" >
+        <Grow className="w-full px-1">
           <Input aria-label="" value={'박한화'} readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
             <SearchIcon />
@@ -537,10 +557,10 @@ export const LTPA360Main = () => {
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '2025-10-13', '2025-10-14'] },
     },
-  ]
+  ];
 
   // Tab4 AGGrid Column
-  const columnDefs4: (ColDef<LTPA360DummyDataRow4>)[] = [
+  const columnDefs4: ColDef<LTPA360DummyDataRow4>[] = [
     {
       headerName: '사고담보코드',
       field: 'field01',
@@ -553,7 +573,7 @@ export const LTPA360Main = () => {
       field: 'field02',
       flex: 1,
       editable: false,
-      cellClass: 'truncate'
+      cellClass: 'truncate',
     },
     {
       headerName: '대유형구분',
@@ -594,7 +614,7 @@ export const LTPA360Main = () => {
       field: 'field08',
       width: 110,
       editable: true,
-      cellClass: 'truncate' ,
+      cellClass: 'truncate',
     },
     {
       headerName: '요청일자',
@@ -610,7 +630,7 @@ export const LTPA360Main = () => {
       width: 120,
       editable: false,
       cellRenderer: (params: ICellRendererParams<LTPA360DummyDataRow4>) => (
-        <Grow className="w-full px-1" >
+        <Grow className="w-full px-1">
           <Input aria-label="" width={'100%'} value={'박한화'} readOnly />
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
             <SearchIcon />
@@ -626,7 +646,7 @@ export const LTPA360Main = () => {
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['2025-10-13', ''] },
     },
-  ]
+  ];
 
   // form event
   const [form, setFormField] = useFormFields({
@@ -646,7 +666,7 @@ export const LTPA360Main = () => {
     type14: '',
     type15: '',
     type16: '',
-    type17: '', 
+    type17: '',
     type18: '',
   });
 
@@ -655,7 +675,7 @@ export const LTPA360Main = () => {
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>
-            <Gcol className="w-full" placement='ss'>
+            <Gcol className="w-full" placement="ss">
               <TabPager
                 data={tabs}
                 active={active}
@@ -667,16 +687,16 @@ export const LTPA360Main = () => {
                 hasTableBelow={true}
                 error={false}
                 errorMsg="에러 메시지 예시"
-                getValue={tab => String(tab.value)}
-                renderTab={tab => <span>{tab.label}</span>}
+                getValue={(tab) => String(tab.value)}
+                renderTab={(tab) => <span>{tab.label}</span>}
                 renderDropdownItem={false}
               >
                 {/* TAB1 */}
                 {active === 'tab1' && (
                   <Gcol placement="ss" className="ag-theme-alpine w-full" gap={5}>
                     <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                      <FormTable 
-                        variant={'none'} 
+                      <FormTable
+                        variant={'none'}
                         lineTop={false}
                         caption="총괄장표 조회 테이블"
                         cols={['w-[10rem]', 'flex-1']}
@@ -693,40 +713,49 @@ export const LTPA360Main = () => {
                                 { value: 'selection', id: 'type01-1', label: '2025-10-13' },
                                 { value: 'selection2', id: 'type01-2', label: '2025-10-13' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
                         </FormRow>
                       </FormTable>
                       <Grow>
-                        <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
-                            조회
+                        <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                          조회
                         </Button>
-                        <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                        <Button
+                          color={'gray'}
+                          only={'icon'}
+                          size={'lg'}
+                          variant={'outlined'}
+                          onClick={() => {}}
+                          aria-label="새로고침"
+                        >
                           <ResetIcon />
                         </Button>
                       </Grow>
                     </Grow>
                     <TableFold variant={'accordion'}>
-                      <TableFoldHead title="전체현황"/>
+                      <TableFoldHead title="전체현황" />
                       <TableFoldBody>
                         <Gcol placement="ss" className="w-full" gap={5}>
                           <Grow className="w-full">
                             <div className="ag-theme-alpine w-full">
                               <AgGridReact<LTPA360DummyDataRow1>
                                 noRowsOverlayComponent={AgGridEmptyComponent}
-                                getRowId={params => String(params.data.id)}
+                                getRowId={(params) => String(params.data.id)}
                                 rowData={LTPA360DummyData1}
                                 columnDefs={columnDefs1}
-                                defaultColDef={{ 
+                                defaultColDef={{
                                   sortable: false,
                                   resizable: false,
                                   cellClass: 'text-center p-0! flex',
                                 }}
                                 singleClickEdit={true}
                                 onCellValueChanged={() => {}}
-                                domLayout='autoHeight'
+                                domLayout="autoHeight"
                               />
                             </div>
                           </Grow>
@@ -735,24 +764,24 @@ export const LTPA360Main = () => {
                     </TableFold>
                     {/* TAB1_1 */}
                     <TableFold variant={'accordion'}>
-                      <TableFoldHead title="세부현황"/>
+                      <TableFoldHead title="세부현황" />
                       <TableFoldBody>
                         <Gcol placement="ss" className="w-full" gap={5}>
                           <Grow className="w-full">
                             <div className="ag-theme-alpine w-full">
                               <AgGridReact<LTPA360DummyDataRow1_1>
                                 noRowsOverlayComponent={AgGridEmptyComponent}
-                                getRowId={params => String(params.data.id)}
+                                getRowId={(params) => String(params.data.id)}
                                 rowData={LTPA360DummyData1_1}
                                 columnDefs={columnDefs1_1}
-                                defaultColDef={{ 
+                                defaultColDef={{
                                   sortable: false,
                                   resizable: false,
-                                  cellClass:"text-center"
+                                  cellClass: 'text-center',
                                 }}
                                 singleClickEdit={true}
                                 onCellValueChanged={() => {}}
-                                domLayout='autoHeight'
+                                domLayout="autoHeight"
                                 selectionColumnDef={{
                                   cellClass: 'text-center p-0!',
                                 }}
@@ -769,7 +798,7 @@ export const LTPA360Main = () => {
                   <Gcol placement="ss" className="ag-theme-alpine w-full" gap={4}>
                     <TableFold variant={'accordion'}>
                       <TableFoldHead title="입력장표">
-                        <Grow className="justify-end" placement='ee'>
+                        <Grow className="justify-end" placement="ee">
                           <Button variant={'outlined'} color={'success'}>
                             엑셀가져오기
                             <FileImportIcon />
@@ -795,12 +824,10 @@ export const LTPA360Main = () => {
                       <TableFoldBody>
                         <Gcol gap={4}>
                           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                            <FormTable variant={'none'}
+                            <FormTable
+                              variant={'none'}
                               caption="입력장표 조회 테이블"
-                              cols={[
-                                'w-[10rem]', 'flex-1',
-                                'w-[10rem]', 'flex-1',
-                              ]}
+                              cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
                             >
                               <FormRow>
                                 <FormCell title={'상품판매일자'}>
@@ -814,7 +841,9 @@ export const LTPA360Main = () => {
                                       { value: 'selection', id: 'type02-1', label: '2025-10-13' },
                                       { value: 'selection2', id: 'type02-2', label: '2025-10-14' },
                                     ].map((option) => (
-                                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                      <NativeSelectOption key={option.id} value={option.value}>
+                                        {option.label}
+                                      </NativeSelectOption>
                                     ))}
                                   </NativeSelect>
                                 </FormCell>
@@ -829,7 +858,9 @@ export const LTPA360Main = () => {
                                       { value: 'selection', id: 'type03-1', label: '상품명' },
                                       { value: 'selection2', id: 'type03-2', label: '상품코드' },
                                     ].map((option) => (
-                                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                      <NativeSelectOption key={option.id} value={option.value}>
+                                        {option.label}
+                                      </NativeSelectOption>
                                     ))}
                                   </NativeSelect>
                                   <Input
@@ -838,7 +869,7 @@ export const LTPA360Main = () => {
                                     size={'sm'}
                                     value={form.type04 || '12345678'}
                                     isFocused
-                                    onChange={e => setFormField('type04', e.target.value)}
+                                    onChange={(e) => setFormField('type04', e.target.value)}
                                   />
                                   <NativeSelect
                                     aria-label="조회구분 선택"
@@ -852,7 +883,9 @@ export const LTPA360Main = () => {
                                       { value: 'selection2', id: 'type05-2', label: '담당자' },
                                       { value: 'selection3', id: 'type04-3', label: '담당부서' },
                                     ].map((option) => (
-                                      <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                      <NativeSelectOption key={option.id} value={option.value}>
+                                        {option.label}
+                                      </NativeSelectOption>
                                     ))}
                                   </NativeSelect>
                                   <Input
@@ -861,26 +894,33 @@ export const LTPA360Main = () => {
                                     size={'sm'}
                                     value={form.type06 || '12345678'}
                                     isFocused
-                                    onChange={e => setFormField('type06', e.target.value)}
+                                    onChange={(e) => setFormField('type06', e.target.value)}
                                   />
-                                  <Button aria-label="검색" variant={'outlined'}  only="icon" size={'md'} color={'gray-light'}>
+                                  <Button
+                                    aria-label="검색"
+                                    variant={'outlined'}
+                                    only="icon"
+                                    size={'md'}
+                                    color={'gray-light'}
+                                  >
                                     <SearchIcon color={'var(--color-primary-50)'} />
                                   </Button>
-                                  <Input
-                                    aria-label=""
-                                    width={'15rem'}
-                                    size={'sm'}
-                                    value={'신부산GA지점'}
-                                    readOnly
-                                  />
+                                  <Input aria-label="" width={'15rem'} size={'sm'} value={'신부산GA지점'} readOnly />
                                 </FormCell>
                               </FormRow>
                             </FormTable>
                             <Grow>
-                              <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
-                                  조회
+                              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                                조회
                               </Button>
-                              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                              <Button
+                                color={'gray'}
+                                only={'icon'}
+                                size={'lg'}
+                                variant={'outlined'}
+                                onClick={() => {}}
+                                aria-label="새로고침"
+                              >
                                 <ResetIcon />
                               </Button>
                             </Grow>
@@ -888,13 +928,13 @@ export const LTPA360Main = () => {
                           <div className="ag-theme-alpine">
                             <AgGridReact<LTPA360DummyDataRow2>
                               noRowsOverlayComponent={AgGridEmptyComponent}
-                              getRowId={params => String(params.data.id)}
+                              getRowId={(params) => String(params.data.id)}
                               rowData={LTPA360DummyData2}
                               columnDefs={columnDefs2}
                               defaultColDef={{
                                 sortable: false,
                                 resizable: false,
-                                cellClass:"text-center p-0!",
+                                cellClass: 'text-center p-0!',
                               }}
                               singleClickEdit={true}
                               onCellValueChanged={() => {}}
@@ -908,10 +948,10 @@ export const LTPA360Main = () => {
                                 pinned: 'left',
                                 cellClass: 'text-center p-0!',
                                 cellClassRules: {
-                                  'pointer-events-none': params => !!params.data?.locked,
+                                  'pointer-events-none': (params) => !!params.data?.locked,
                                 },
                               }}
-                              domLayout='autoHeight'
+                              domLayout="autoHeight"
                             />
                           </div>
                         </Gcol>
@@ -923,13 +963,10 @@ export const LTPA360Main = () => {
                 {active === 'tab3' && (
                   <Gcol placement="ss" className="ag-theme-alpine w-full" gap={4}>
                     <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                      <FormTable variant={'none'}
+                      <FormTable
+                        variant={'none'}
                         caption="사고담보코드 조회 테이블"
-                        cols={[
-                          'w-[10rem]', 'flex-1',
-                          'w-[10rem]', 'flex-1',
-                          'w-[10rem]', 'flex-1',
-                        ]}
+                        cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
                       >
                         <FormRow>
                           <FormCell title={'상품판매일자'}>
@@ -943,7 +980,9 @@ export const LTPA360Main = () => {
                                 { value: 'selection', id: 'type07-1', label: '2025-10-13' },
                                 { value: 'selection2', id: 'type07-2', label: '2025-10-13' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -963,7 +1002,9 @@ export const LTPA360Main = () => {
                                 { value: 'selection6', id: 'type08-6', label: '독립특약' },
                                 { value: 'selection7', id: 'type08-7', label: '판매취소' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
@@ -978,14 +1019,16 @@ export const LTPA360Main = () => {
                                 { value: 'selection', id: 'type09-1', label: '담보코드' },
                                 { value: 'selection2', id: 'type09-2', label: '담보명' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                             <Input
                               aria-label=""
                               width={'15rem'}
                               value={form.type10 || 'CLA23429'}
-                              onChange={e => setFormField('type10', e.target.value)}
+                              onChange={(e) => setFormField('type10', e.target.value)}
                             />
                           </FormCell>
                         </FormRow>
@@ -995,20 +1038,22 @@ export const LTPA360Main = () => {
                               aria-label=""
                               width={'10rem'}
                               value={form.type11 || '12345678'}
-                              onChange={e => setFormField('type11', e.target.value)}
+                              onChange={(e) => setFormField('type11', e.target.value)}
                             />
                             <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                               <SearchIcon color={'var(--color-primary-50)'} />
                             </Button>
-                            <Input
-                              aria-label=""
-                              width={'15rem'}
-                              value={'신부산GA지점'}
-                              readOnly
-                            />
+                            <Input aria-label="" width={'15rem'} value={'신부산GA지점'} readOnly />
                           </FormCell>
                           <FormCell title={'요청일자'} colSpan={3}>
-                            <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm" readOnly />
+                            <DatePickerInput
+                              mode="range"
+                              onChange={() => {}}
+                              rangeValue={{ from: '2026-02', to: '2026-03' }}
+                              size="lg"
+                              width="sm"
+                              readOnly
+                            />
                             <NativeSelect
                               aria-label="요청일자 선택"
                               width="10rem"
@@ -1019,17 +1064,26 @@ export const LTPA360Main = () => {
                                 { value: 'selection', id: 'type12-1', label: '전체' },
                                 { value: 'selection2', id: 'type12-2', label: '' },
                               ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
                               ))}
                             </NativeSelect>
                           </FormCell>
                         </FormRow>
                       </FormTable>
                       <Grow>
-                        <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
-                            조회
+                        <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                          조회
                         </Button>
-                        <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                        <Button
+                          color={'gray'}
+                          only={'icon'}
+                          size={'lg'}
+                          variant={'outlined'}
+                          onClick={() => {}}
+                          aria-label="새로고침"
+                        >
                           <ResetIcon />
                         </Button>
                       </Grow>
@@ -1053,7 +1107,7 @@ export const LTPA360Main = () => {
                       <div className="ag-theme-alpine">
                         <AgGridReact<LTPA360DummyDataRow3>
                           noRowsOverlayComponent={AgGridEmptyComponent}
-                          getRowId={params => String(params.data.id)}
+                          getRowId={(params) => String(params.data.id)}
                           rowData={LTPA360DummyData3}
                           columnDefs={columnDefs3}
                           defaultColDef={{
@@ -1069,14 +1123,14 @@ export const LTPA360Main = () => {
                             enableClickSelection: false,
                           }}
                           selectionColumnDef={{ headerName: '선택' }}
-                          onGridReady={params => {
-                            params.api.forEachNode(node => {
+                          onGridReady={(params) => {
+                            params.api.forEachNode((node) => {
                               if (node.data?.isCheck) {
                                 node.setSelected(true);
                               }
                             });
                           }}
-                          domLayout='autoHeight'
+                          domLayout="autoHeight"
                         />
                       </div>
                     </Gcol>
@@ -1087,13 +1141,10 @@ export const LTPA360Main = () => {
                   <Gcol placement="ss" className="ag-theme-alpine w-full" gap={4}>
                     <Gcol className="w-full gap-[1.2rem]">
                       <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                        <FormTable variant={'none'}
+                        <FormTable
+                          variant={'none'}
                           caption="사고담보코드 조회 테이블"
-                          cols={[
-                            'w-[10rem]', 'flex-1',
-                            'w-[10rem]', 'flex-1',
-                            'w-[10rem]', 'flex-1',
-                          ]}
+                          cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
                         >
                           <FormRow>
                             <FormCell title={'상품판매일자'}>
@@ -1107,7 +1158,9 @@ export const LTPA360Main = () => {
                                   { value: 'selection', id: 'type01-1', label: '2025-10-13' },
                                   { value: 'selection2', id: 'type01-2', label: '2025-10-13' },
                                 ].map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                             </FormCell>
@@ -1123,7 +1176,9 @@ export const LTPA360Main = () => {
                                   { value: 'selection2', id: 'type02-2', label: '신규' },
                                   { value: 'selection3', id: 'type02-3', label: '판매취소' },
                                 ].map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                             </FormCell>
@@ -1138,14 +1193,16 @@ export const LTPA360Main = () => {
                                   { value: 'selection', id: 'type03-1', label: '사고담보명' },
                                   { value: 'selection2', id: 'type03-2', label: '사고담보코드' },
                                 ].map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                               <Input
                                 aria-label=""
                                 width={'15rem'}
                                 value={form.type04 || 'CLA23429'}
-                                onChange={e => setFormField('type04', e.target.value)}
+                                onChange={(e) => setFormField('type04', e.target.value)}
                               />
                             </FormCell>
                           </FormRow>
@@ -1155,20 +1212,28 @@ export const LTPA360Main = () => {
                                 aria-label=""
                                 width={'10rem'}
                                 value={form.type05 || '12345678'}
-                                onChange={e => setFormField('type05', e.target.value)}
+                                onChange={(e) => setFormField('type05', e.target.value)}
                               />
-                              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Button
+                                aria-label="검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                              <Input
-                                aria-label=""
-                                width={'15rem'}
-                                value={'신부산GA지점'}
-                                readOnly
-                              />
+                              <Input aria-label="" width={'15rem'} value={'신부산GA지점'} readOnly />
                             </FormCell>
                             <FormCell title={'요청일자'} colSpan={3}>
-                              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} size="lg" width="sm"  readOnly />
+                              <DatePickerInput
+                                mode="range"
+                                onChange={() => {}}
+                                rangeValue={{ from: '2026-02', to: '2026-03' }}
+                                size="lg"
+                                width="sm"
+                                readOnly
+                              />
                               <NativeSelect
                                 aria-label="요청일자 선택"
                                 width="10rem"
@@ -1179,17 +1244,26 @@ export const LTPA360Main = () => {
                                   { value: 'selection', id: 'type02-1', label: '전체' },
                                   { value: 'selection2', id: 'type02-2', label: '' },
                                 ].map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
                                 ))}
                               </NativeSelect>
                             </FormCell>
                           </FormRow>
                         </FormTable>
                         <Grow>
-                          <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
-                              조회
+                          <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                            조회
                           </Button>
-                          <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                          <Button
+                            color={'gray'}
+                            only={'icon'}
+                            size={'lg'}
+                            variant={'outlined'}
+                            onClick={() => {}}
+                            aria-label="새로고침"
+                          >
                             <ResetIcon />
                           </Button>
                         </Grow>
@@ -1211,7 +1285,7 @@ export const LTPA360Main = () => {
                         <div className="ag-theme-alpine">
                           <AgGridReact<LTPA360DummyDataRow4>
                             noRowsOverlayComponent={AgGridEmptyComponent}
-                            getRowId={params => String(params.data.id)}
+                            getRowId={(params) => String(params.data.id)}
                             rowData={LTPA360DummyData4}
                             columnDefs={columnDefs4}
                             defaultColDef={{
@@ -1221,7 +1295,6 @@ export const LTPA360Main = () => {
                             }}
                             alwaysShowHorizontalScroll={true}
                             singleClickEdit={true}
-
                             // 체크박스 시
                             rowSelection={{
                               mode: 'multiRow',
@@ -1230,14 +1303,14 @@ export const LTPA360Main = () => {
                               enableClickSelection: false,
                             }}
                             selectionColumnDef={{ headerName: '' }}
-                            onGridReady={params => {
-                              params.api.forEachNode(node => {
+                            onGridReady={(params) => {
+                              params.api.forEachNode((node) => {
                                 if (node.data?.isCheck) {
                                   node.setSelected(true);
                                 }
                               });
                             }}
-                            domLayout='autoHeight'
+                            domLayout="autoHeight"
                           />
                         </div>
                       </Grow>
@@ -1251,7 +1324,7 @@ export const LTPA360Main = () => {
       </LayoutMainBody>
       <LayoutMainFoot>
         <MainBottom>
-          {active === 'tab1' && (  
+          {active === 'tab1' && (
             <MainBottomItem>
               <Grow gap={1} placement={'ee'} className="w-full">
                 <Button
@@ -1395,11 +1468,8 @@ export const LTPA360Main = () => {
               </Grow>
             </MainBottomItem>
           )}
-          
         </MainBottom>
       </LayoutMainFoot>
-    </LayoutMain>  
-
-  )
-}
-
+    </LayoutMain>
+  );
+};

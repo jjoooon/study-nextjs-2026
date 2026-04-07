@@ -1,9 +1,7 @@
-
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 
 import React, { createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-
 
 type TableFoldVariant = 'default' | 'accordion';
 type TableFoldProps = {
@@ -20,14 +18,12 @@ interface TableFoldContextValue {
 const TableFoldContext = createContext<TableFoldContextValue | undefined>(undefined);
 const useTableFoldContext = () => useContext(TableFoldContext);
 
-
 interface TableFoldHeadProps {
   title?: string;
   className?: string;
   children?: React.ReactNode;
   variant?: TableFoldVariant;
 }
-
 
 export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
   const [open, setOpen] = React.useState(true);
@@ -39,7 +35,6 @@ export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) =
     </TableFoldContext.Provider>
   );
 };
-
 
 export const TableFoldHead = ({ children, title, className, variant }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
@@ -54,17 +49,18 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
           {title}
         </Typo>
       </div>
-      <Grow>
-        {children}
-      </Grow>
+      <Grow>{children}</Grow>
     </Grow>
   );
 };
-
 
 export const TableFoldBody = ({ children, variant, className }: TableFoldHeadProps) => {
   const context = useTableFoldContext();
   const v = variant ?? context?.variant ?? 'accordion';
   const isHidden = v === 'accordion' && !context?.open;
-  return <div className={cn('grid w-full', className)} style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}>{children}</div>;
+  return (
+    <div className={cn('grid w-full', className)} style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}>
+      {children}
+    </div>
+  );
 };

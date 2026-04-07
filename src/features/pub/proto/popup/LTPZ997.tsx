@@ -2,7 +2,15 @@
 
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+} from '@uiux/Dialog';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import type { PopupBaseProps } from './types';
@@ -24,8 +32,12 @@ export const LTPZ997 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>화면권한보기</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ997)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              화면권한보기
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ997)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 
@@ -64,5 +76,5 @@ export const LTPZ997 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-	);
+  );
 };

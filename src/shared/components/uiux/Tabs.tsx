@@ -1,9 +1,9 @@
 'use client';
 
+import { CloseIcon, SelectArrowIcon } from '@icons';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { CloseIcon, SelectArrowIcon } from '@icons';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
@@ -121,9 +121,8 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
     const triggerProps = { ...rest };
     // delete triggerProps.totalTabs; // totalTabs prop을 제거
     // vertical일 때만 적용할 스타일
-    const verticalTabWrapClass = variant === 'vertical'
-      ? 'w-[100%] h-[100%] p-0 flex items-center justify-end'
-      : 'relative';
+    const verticalTabWrapClass =
+      variant === 'vertical' ? 'w-[100%] h-[100%] p-0 flex items-center justify-end' : 'relative';
     return (
       <div data-tabs="tab-trigger-wrap" className={verticalTabWrapClass}>
         <TabsPrimitive.Trigger
@@ -137,7 +136,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
             '[&[data-tab-error=true]:not([data-state=active])]:z-1!',
             '[&[data-tab-error=true]:not([data-state=active])]:bg-[var(--color-danger-5)]!',
             className,
-            'items-center shadow-[0_0.1rem_0_#ffff]!',
+            'items-center shadow-[0_0.1rem_0_#ffff]!'
           )}
           onClick={(e) => {
             e.currentTarget.scrollIntoView({
@@ -164,7 +163,11 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           >
             <CloseIcon
               size={14}
-              color={variant === 'sub' || variant === 'box' || variant === 'default' ? 'var(--color-secondary-50)' : 'var(--color-gray-0)'}
+              color={
+                variant === 'sub' || variant === 'box' || variant === 'default'
+                  ? 'var(--color-secondary-50)'
+                  : 'var(--color-gray-0)'
+              }
             />
           </button>
         )}
@@ -229,11 +232,8 @@ const TabsLine = React.forwardRef<
 >(({ className, borderColor = 'border-[#FF5C2E]', children, hasTableBelow = false, ...props }, ref) => {
   const { variant } = useTabsContext();
   const style = variant === 'box' ? 'after:opacity-0 rounded-[0.8rem]' : '';
-  const lineHeightClass = variant === 'default' || !variant
-    ? hasTableBelow
-      ? 'after:h-[0.2rem]'
-      : 'after:h-[0.1rem]'
-    : 'after:h-[0.2rem]';
+  const lineHeightClass =
+    variant === 'default' || !variant ? (hasTableBelow ? 'after:h-[0.2rem]' : 'after:h-[0.1rem]') : 'after:h-[0.2rem]';
   return (
     <div
       data-tabs="tablist-wrap"

@@ -1,9 +1,8 @@
-
-import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
-import { Table, TableHeader, TableRow, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
 import { Typo, Grow } from '@atoms';
+import { Table, TableHeader, TableRow, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
+import { cva, type VariantProps } from 'class-variance-authority';
+import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 const FormCellVariants = cva('', {
@@ -92,18 +91,24 @@ function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
     text = (children as any).props.children;
   }
   const triggerChild =
-    typeof children === 'string'
-      ? <span tabIndex={0} role="presentation">{children}</span>
-      : children;
+    typeof children === 'string' ? (
+      <span tabIndex={0} role="presentation">
+        {children}
+      </span>
+    ) : (
+      children
+    );
   return (
     <div ref={ref} className="w-full">
       {isOverflow && text ? (
         <Tooltip>
-          <TooltipTrigger asChild className='flex w-full'>{triggerChild}</TooltipTrigger>
+          <TooltipTrigger asChild className="flex w-full">
+            {triggerChild}
+          </TooltipTrigger>
           <TooltipContent>{text}</TooltipContent>
         </Tooltip>
       ) : (
-        <div className='w-full text-center'>{children}</div>
+        <div className="w-full text-center">{children}</div>
       )}
     </div>
   );
@@ -126,13 +131,18 @@ export const FormCell = ({
   const contextVariant = useContext(VariantContext);
   const usedVariant = variant ?? contextVariant ?? 'default';
   const titleTypoVariant = titleVariant === 'section' ? 'body-xl' : 'body-md';
-  const titleTypoColor = titleVariant === 'section' ? 'primary' : contextVariant === 'none' || contextVariant === 'head' ? 'blueGray' : 'default';
+  const titleTypoColor =
+    titleVariant === 'section'
+      ? 'primary'
+      : contextVariant === 'none' || contextVariant === 'head'
+        ? 'blueGray'
+        : 'default';
 
   return (
     <>
       {title !== null && (
         <TableHead
-          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className) }
+          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
@@ -150,9 +160,7 @@ export const FormCell = ({
           {contextVertical ? (
             <TooltipIfOverflow>{children}</TooltipIfOverflow>
           ) : (
-            <Grow className={cn(tdClassName)}>
-              {children}
-            </Grow>
+            <Grow className={cn(tdClassName)}>{children}</Grow>
           )}
         </TableCell>
       )}
@@ -160,7 +168,14 @@ export const FormCell = ({
   );
 };
 
-export const FormTable = ({ cols, caption, children, className, variant = 'default', lineTop = true }: FormTableProps) => {
+export const FormTable = ({
+  cols,
+  caption,
+  children,
+  className,
+  variant = 'default',
+  lineTop = true,
+}: FormTableProps) => {
   const variantStyles = {
     default: '',
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
@@ -169,26 +184,29 @@ export const FormTable = ({ cols, caption, children, className, variant = 'defau
       'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none! [&_tr]:border-0!',
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
-    head:
-      `w-full border-none flex flex-col bg-[transparent] 
+    head: `w-full border-none flex flex-col bg-[transparent] 
       [&_colgroup]:hidden 
       [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none! [&_tr]:w-full [&_tr~tr>*]:pt-[0.6rem]! 
       [&_th]:flex [&_th]:items-center [&_th]:justify-start [&_th]:gap-2 [&_th]:border-none! [&_th]:w-max
       [&_th]:h-auto! [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_th]:text-[1.4rem]
       [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_td]:h-[auto] [&_td]:font-bold [&_td]:text-[1.4rem] 
       [&_td+th]:pl-[1.6rem]!`,
-    none: 
-      `border-0! bg-transparent 
+    none: `border-0! bg-transparent 
       [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_th]:h-auto! [&_th]:break-keep!   
       [&_td]:border-0! [&_td]:p-0! [&_td]:h-auto!   
-      [&_tr]:border-0! [&_td+th]:pl-[2.4rem]! [&_tr~tr>*]:pt-[0.6rem]!`
+      [&_tr]:border-0! [&_td+th]:pl-[2.4rem]! [&_tr~tr>*]:pt-[0.6rem]!`,
   };
 
   // variant가 'none'이면 lineTop을 무시
   const showLineTop = lineTop && variant !== 'none';
   return (
     <Table
-      className={cn('overflow-visible', variantStyles[variant as keyof typeof variantStyles], showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0', className)}
+      className={cn(
+        'overflow-visible',
+        variantStyles[variant as keyof typeof variantStyles],
+        showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0',
+        className
+      )}
       data-variant={variant}
     >
       {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
@@ -209,9 +227,7 @@ export const FormHead = ({ children, vertical, cols }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
       <thead>
-        <tr>
-          
-        </tr>
+        <tr></tr>
       </thead>
     </VerticalContext.Provider>
   );
@@ -220,13 +236,17 @@ export const FormHead = ({ children, vertical, cols }: FormTrProps) => {
 export const FormRow = ({ children, vertical, cols }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
-      <tr className={vertical ? 
-      `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
+      <tr
+        className={
+          vertical
+            ? `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
       [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
       [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
       [&>td]:min-h-[3rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
-      [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! ` 
-        : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'}>
+      [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! `
+            : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'
+        }
+      >
         {children}
       </tr>
     </VerticalContext.Provider>

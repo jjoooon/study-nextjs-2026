@@ -1,16 +1,15 @@
 'use client';
 
+import { ArrowIcon } from '@icons';
+import { Button, buttonVariants } from '@uiux/Button';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ChevronDownIcon } from 'lucide-react';
 import * as React from 'react';
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 
-
-import { ArrowIcon } from '@icons';
-import { Button, buttonVariants } from '@uiux/Button';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { cn } from '@/shared/lib/shadcn/utils';
 type CalendarProps = React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  buttonVariant?: React.ComponentProps<typeof Button>['variant'];
   monthOnly?: boolean;
   onMonthSelect?: (month: number) => void;
   /**
@@ -28,8 +27,8 @@ function Calendar({
   className,
   classNames,
   showOutsideDays = true,
-  captionLayout = "label",
-  buttonVariant = "none",
+  captionLayout = 'label',
+  buttonVariant = 'none',
   formatters,
   components,
   monthOnly = false,
@@ -97,14 +96,8 @@ function Calendar({
           >
             <ArrowIcon color={'var(--color-primary-50)'} />
           </Button>
-          <div className='w-[7.2rem] shrink-0'>
-            <NativeSelect
-              aria-label="연도 선택"
-              value={currentYear}
-              onChange={handleYearChange}
-              width="full"
-              size="md"
-            >
+          <div className="w-[7.2rem] shrink-0">
+            <NativeSelect aria-label="연도 선택" value={currentYear} onChange={handleYearChange} width="full" size="md">
               {yearOptions.map((year) => (
                 <NativeSelectOption key={year} value={year}>
                   {year}
@@ -132,14 +125,12 @@ function Calendar({
                 key={month}
                 type="button"
                 data-month={`${currentYear}-${String(month).padStart(2, '0')}`}
-                data-today={
-                  today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined
-                }
+                data-today={today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined}
                 data-selected-month={isSelected ? 'true' : undefined}
                 aria-label={`${currentYear}년 ${month}월`}
                 className={cn(
-                  "w-[2.6rem] h-[2.6rem] flex items-center rounded-full justify-center text-[1.4rem] hover:bg-[var(--color-gray-10)] transition-all relative",
-                  isSelected && "bg-[var(--color-primary-50)] text-[#fff]"
+                  'w-[2.6rem] h-[2.6rem] flex items-center rounded-full justify-center text-[1.4rem] hover:bg-[var(--color-gray-10)] transition-all relative',
+                  isSelected && 'bg-[var(--color-primary-50)] text-[#fff]'
                 )}
                 onClick={() => {
                   monthMemoryRef.current[currentYear] = month;
@@ -168,7 +159,7 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        "bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        'bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
         String.raw`rtl:**:[.rdp-button_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button_previous>svg]:rotate-180`,
         className
@@ -178,69 +169,69 @@ function Calendar({
         formatMonthDropdown: (date) => String(date.getMonth() + 1).padStart(2, '0'),
         // 필요시 캡션도 01, 02로: formatMonthCaption: (date) => String(date.getMonth() + 1).padStart(2, '0'),
         formatWeekdayName: (date) => {
-          const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+          const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
           return weekdays[date.getDay()];
         },
         ...formatters,
       }}
       classNames={{
-        root: cn("w-auto p-4", defaultClassNames.root),
-        months: cn("relative flex flex-col gap-4 md:flex-row", defaultClassNames.months),
-        month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
+        root: cn('w-auto p-4', defaultClassNames.root),
+        months: cn('relative flex flex-col gap-4 md:flex-row', defaultClassNames.months),
+        month: cn('flex w-full flex-col gap-4', defaultClassNames.month),
         nav: cn(
-          "absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 pointer-events-none",
+          'absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 pointer-events-none',
           defaultClassNames.nav
         ),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
-          "h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!",
+          'h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!',
           defaultClassNames.button_previous
         ),
         button_next: cn(
           buttonVariants({ variant: buttonVariant }),
-          "h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!",
+          'h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!',
           defaultClassNames.button_next
         ),
         month_caption: cn(
-          "flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]",
+          'flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]',
           defaultClassNames.month_caption
         ),
         dropdowns: cn(
-          "flex h-[--cell-size] w-full items-center justify-center gap-1.5 font-medium flex-row-reverse",
+          'flex h-[--cell-size] w-full items-center justify-center gap-1.5 font-medium flex-row-reverse',
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          "has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)]",
+          'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)]',
           defaultClassNames.dropdown_root
         ),
-        dropdown: cn("bg-[#fff] absolute inset-0 opacity-0", defaultClassNames.dropdown),
+        dropdown: cn('bg-[#fff] absolute inset-0 opacity-0', defaultClassNames.dropdown),
         caption_label: cn(
-          "select-none font-medium",
-          captionLayout === "label"
-            ? "text-sm"
-            : "[&>svg]:text-muted-foreground flex h-full items-center gap-1 rounded-md pl-2 pr-1 text-[1.3rem] [&>svg]:size-3.5",
+          'select-none font-medium',
+          captionLayout === 'label'
+            ? 'text-sm'
+            : '[&>svg]:text-muted-foreground flex h-full items-center gap-1 rounded-md pl-2 pr-1 text-[1.3rem] [&>svg]:size-3.5',
           defaultClassNames.caption_label
         ),
-        table: "w-full border-collapse",
-        weekdays: cn("grid grid-cols-7 place-items-center w-full", defaultClassNames.weekdays),
+        table: 'w-full border-collapse',
+        weekdays: cn('grid grid-cols-7 place-items-center w-full', defaultClassNames.weekdays),
         weekday: cn(
-          "text-muted-foreground flex-1 select-none rounded-md text-[1.4rem] font-normal px-1",
+          'text-muted-foreground flex-1 select-none rounded-md text-[1.4rem] font-normal px-1',
           defaultClassNames.weekday
         ),
-        week: cn("grid grid-cols-7 place-items-center w-full h-[3.2rem]", defaultClassNames.week),
-        week_number_header: cn("w-[--cell-size] select-none", defaultClassNames.week_number_header),
-        week_number: cn("text-muted-foreground select-none text-[0.8rem]", defaultClassNames.week_number),
+        week: cn('grid grid-cols-7 place-items-center w-full h-[3.2rem]', defaultClassNames.week),
+        week_number_header: cn('w-[--cell-size] select-none', defaultClassNames.week_number_header),
+        week_number: cn('text-muted-foreground select-none text-[0.8rem]', defaultClassNames.week_number),
         day: cn(
-          "group/day relative h-full w-full select-none px-1 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md grid place-items-center",
+          'group/day relative h-full w-full select-none px-1 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md grid place-items-center',
           defaultClassNames.day
         ),
-        range_start: cn("bg-accent rounded-l-md", defaultClassNames.range_start),
-        range_middle: cn("rounded-none", defaultClassNames.range_middle),
-        range_end: cn("bg-accent rounded-r-md", defaultClassNames.range_end),
-        today: cn("relative", defaultClassNames.today),
-        outside: cn("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
-        disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
-        hidden: cn("invisible", defaultClassNames.hidden),
+        range_start: cn('bg-accent rounded-l-md', defaultClassNames.range_start),
+        range_middle: cn('rounded-none', defaultClassNames.range_middle),
+        range_end: cn('bg-accent rounded-r-md', defaultClassNames.range_end),
+        today: cn('relative', defaultClassNames.today),
+        outside: cn('text-muted-foreground aria-selected:text-muted-foreground', defaultClassNames.outside),
+        disabled: cn('text-muted-foreground opacity-50', defaultClassNames.disabled),
+        hidden: cn('invisible', defaultClassNames.hidden),
         ...classNames,
       }}
       components={{
@@ -248,13 +239,13 @@ function Calendar({
           return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
         },
         Chevron: ({ className, orientation, ...props }) => {
-          if (orientation === "left") {
-            return <ArrowIcon color={'var(--color-primary-50)'} className={cn("", className)} {...props} />;
+          if (orientation === 'left') {
+            return <ArrowIcon color={'var(--color-primary-50)'} className={cn('', className)} {...props} />;
           }
-          if (orientation === "right") {
-            return <ArrowIcon color={'var(--color-primary-50)'} className={cn("rotate-180", className)} {...props} />;
+          if (orientation === 'right') {
+            return <ArrowIcon color={'var(--color-primary-50)'} className={cn('rotate-180', className)} {...props} />;
           }
-          return <ChevronDownIcon className={cn("size-4", className)} {...props} />;
+          return <ChevronDownIcon className={cn('size-4', className)} {...props} />;
         },
         MonthCaption: ({ ...captionProps }) => {
           const { onMonthChange } = props as React.ComponentProps<typeof DayPicker> & {
@@ -303,7 +294,7 @@ function Calendar({
     />
   );
 }
- 
+
 function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
 
@@ -318,7 +309,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
   const isSunday = day.date.getDay() === 0;
   const isDisabled = modifiers.disabled;
   const isOutside = modifiers.outside;
-  
+
   return (
     <button
       ref={ref}

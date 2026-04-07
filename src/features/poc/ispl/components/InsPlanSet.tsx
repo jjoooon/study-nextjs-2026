@@ -1,8 +1,8 @@
 'use client';
 
 import { FormCell, FormTable } from '@common/FormTable';
-import { TableRow } from '@uiux/Table';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { TableRow } from '@uiux/Table';
 
 interface InsPlanSetProps {
   selectedCategory: string;

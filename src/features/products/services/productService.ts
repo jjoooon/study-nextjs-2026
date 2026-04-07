@@ -12,8 +12,6 @@
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
-
 import type {
   CreateProductInput,
   Product,
@@ -21,6 +19,7 @@ import type {
   ProductsListResponse,
   UpdateProductInput,
 } from '../types/apiTypes';
+import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
 
 // ============================================================================
 // PRODUCT SERVICE

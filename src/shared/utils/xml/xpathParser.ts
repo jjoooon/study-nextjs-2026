@@ -1,5 +1,5 @@
-import log from '@/shared/utils/logger';
 import type { XPathNode, XPathFilter } from './xmlTypes';
+import log from '@/shared/utils/logger';
 
 /**
  * XPath 토크나이저

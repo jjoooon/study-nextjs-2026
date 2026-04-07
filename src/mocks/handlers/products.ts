@@ -6,9 +6,8 @@
 
 import { http, HttpResponse, delay } from 'msw';
 
-import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/apiTypes';
-
 import { mockProducts } from '../data/products';
+import type { CreateProductInput, UpdateProductInput } from '@/features/products/types/apiTypes';
 
 export const productsHandlers = [
   /**

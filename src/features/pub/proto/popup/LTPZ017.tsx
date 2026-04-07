@@ -1,42 +1,49 @@
 'use client';
 
-import * as React from 'react';
-import { useRef } from 'react';
+import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
+import { AgGridReact } from 'ag-grid-react';
 import { tr } from 'date-fns/locale';
+import { useRef } from 'react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-
 export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
- 
   // 검색버튼 여부에 따른 셀 렌더러
-	const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
-		if (!params.value) {
-			return null;
-		}
+  const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
+    if (!params.value) {
+      return null;
+    }
 
-		return (
-			<div className="flex h-full w-full flex-wrap items-center justify-center gap-1">
-				<Button only={'icon'} variant={'none'} size={'sm'}>
-					<SearchIcon color={'var(--color-primary-50)'} />
-				</Button>
-			</div>
-		);
-	};
+    return (
+      <div className="flex h-full w-full flex-wrap items-center justify-center gap-1">
+        <Button only={'icon'} variant={'none'} size={'sm'}>
+          <SearchIcon color={'var(--color-primary-50)'} />
+        </Button>
+      </div>
+    );
+  };
 
   type DummyDataType = {
     id: number;
@@ -48,9 +55,30 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: false, planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8', myPlanName: '3대진단형', registrationDate: '2026-03-22', target: true },
-    { id: 2, isCheck: false, planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8', myPlanName: '3대진단형', registrationDate: '2026-03-22', target: true },
-    { id: 3, isCheck: true, planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8', myPlanName: '3대진단형', registrationDate: '2026-03-22', target: true },
+    {
+      id: 1,
+      isCheck: false,
+      planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+      myPlanName: '3대진단형',
+      registrationDate: '2026-03-22',
+      target: true,
+    },
+    {
+      id: 2,
+      isCheck: false,
+      planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+      myPlanName: '3대진단형',
+      registrationDate: '2026-03-22',
+      target: true,
+    },
+    {
+      id: 3,
+      isCheck: true,
+      planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+      myPlanName: '3대진단형',
+      registrationDate: '2026-03-22',
+      target: true,
+    },
   ];
 
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -83,14 +111,11 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center',
       cellRenderer: attributeRenderer,
     },
-
   ];
-
-  
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
-    DummyData.filter(row => !row.isCheck).map(row => row.id)
+    DummyData.filter((row) => !row.isCheck).map((row) => row.id)
   );
 
   const onCellValueChanged = React.useMemo(
@@ -102,17 +127,23 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>나만의설계</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ017)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              나만의설계
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ017)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow placement='bwc' className="w-full" variant={'box-round'}>
-            <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={[
-              'w-[1rem]', 'w-[10rem]', 
-              'w-[1rem]', 'w-auto'
-              ]}>
+          <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <FormTable
+              variant={'none'}
+              lineTop={false}
+              caption="보험정보"
+              cols={['w-[1rem]', 'w-[10rem]', 'w-[1rem]', 'w-auto']}
+            >
               <FormRow>
                 <FormCell title={'설계사'}>
                   <Input value={'김한화'} readOnly />
@@ -127,20 +158,21 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold variant={'accordion'}>
             <TableFoldHead title="플랜등록사항" />
             <Gcol className="w-full" placement="ss" variant="box-detail">
-              <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 전체 노출)</Typo>
+              <Typo icon="detail" variant="body-sm">
+                적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 전체 노출)
+              </Typo>
               {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
             </Gcol>
             <TableFoldBody>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
-                  getRowId={params => String(params.data.id)}
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
                   columnDefs={columnDefs}
                   defaultColDef={{ sortable: false }}
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
-
                   rowSelection={{
                     mode: 'multiRow',
                     headerCheckbox: true,
@@ -148,20 +180,20 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
                     enableClickSelection: false,
                   }}
                   rowClassRules={{}}
-                  onGridReady={params => {
-                    params.api.forEachNode(node => {
+                  onGridReady={(params) => {
+                    params.api.forEachNode((node) => {
                       if (node.data?.isCheck) {
                         node.setSelected(true);
                       }
                     });
                   }}
-                  domLayout='autoHeight'
+                  domLayout="autoHeight"
                 />
               </div>
             </TableFoldBody>
-          </TableFold>  
-        </DialogSection>  
-        
+          </TableFold>
+        </DialogSection>
+
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
@@ -180,7 +212,7 @@ export const LTPZ017 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -1,27 +1,27 @@
 /**
  * Badge Component
- * 
+ *
  * @description
  * 상태, 카테고리, 중요 정보를 시각적으로 표시하는 작은 라벨 컴포넌트
- * 
+ *
  * @features
  * - 4가지 스타일 변형: contained, soft, outlined, ghost
  * - 3가지 색상 옵션: blue, red, green
  * - 3가지 크기 옵션: sm, md, lg
  * - asChild prop을 통한 다형성 지원 (Radix UI Slot 활용)
- * 
+ *
  * @example
  * // 기본 사용
  * <Badge variant="contained" color="red" size="md">D-31</Badge>
- * 
+ *
  * // Soft 스타일 (배경 + 테두리)
  * <Badge variant="soft" color="blue">진행중</Badge>
- * 
+ *
  * // Link로 사용
  * <Badge asChild>
  *   <Link href="/status">상태 확인</Link>
  * </Badge>
- * 
+ *
  * @version 1.0.0
  * @since 2026-03-05
  * @lastModified 2026-03-05
@@ -40,7 +40,8 @@ const badgeVariants = cva(
         contained: '',
         soft: 'border',
         outlined: 'border bg-transparent',
-        rounded: 'rounded-full bg-[var(--color-blue-gray-15)] text-[#000] h-[1.5rem] text-[1.1rem] font-bold px-[0.4rem]',
+        rounded:
+          'rounded-full bg-[var(--color-blue-gray-15)] text-[#000] h-[1.5rem] text-[1.1rem] font-bold px-[0.4rem]',
         ghost: '',
       },
       size: {
@@ -60,7 +61,11 @@ const badgeVariants = cva(
     },
     compoundVariants: [
       // Contained + Colors
-      { variant: 'contained', color: 'blue', class: 'bg-[var(--color-information-10)] text-[var(--color-information-50)]' },
+      {
+        variant: 'contained',
+        color: 'blue',
+        class: 'bg-[var(--color-information-10)] text-[var(--color-information-50)]',
+      },
       { variant: 'contained', color: 'red', class: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]' },
       { variant: 'contained', color: 'green', class: 'bg-[var(--color-success-10)] text-[var(--color-success-50)]' },
       { variant: 'contained', color: 'primary', class: 'bg-[var(--color-primary-10)] text-[var(--color-primary-50)]' },
@@ -71,21 +76,66 @@ const badgeVariants = cva(
       { variant: 'rounded', size: 'sm', class: 'pl-[0.4rem] pr-[0.6rem]' },
 
       // Soft + Colors
-      { variant: 'soft', color: 'blue', class: 'bg-[var(--color-information-10)] border-[var(--color-information-50)] text-[var(--color-information-50)]' },
-      { variant: 'soft', color: 'red', class: 'bg-[var(--color-danger-10)] border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
-      { variant: 'soft', color: 'green', class: 'bg-[var(--color-success-10)] border-[var(--color-success-50)] text-[var(--color-success-50)]' },
-      { variant: 'soft', color: 'primary', class: 'bg-[var(--color-primary-10)] border-[var(--color-primary-50)] text-[var(--color-primary-50)]' },
-      { variant: 'soft', color: 'gray', class: 'bg-[var(--color-blue-gray-15)] border-[var(--color-gray-70)] text-[var(--color-gray-70)]' },
-      { variant: 'soft', color: 'bluegray', class: 'bg-[var(--color-gray-0)] border-[var(--color-blue-gray-50)] text-[var(--color-blue-gray-50)]' },
-      { variant: 'soft', color: 'secondary', class: 'bg-[var(--color-gray-0)] border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]' },
+      {
+        variant: 'soft',
+        color: 'blue',
+        class:
+          'bg-[var(--color-information-10)] border-[var(--color-information-50)] text-[var(--color-information-50)]',
+      },
+      {
+        variant: 'soft',
+        color: 'red',
+        class: 'bg-[var(--color-danger-10)] border-[var(--color-danger-50)] text-[var(--color-danger-50)]',
+      },
+      {
+        variant: 'soft',
+        color: 'green',
+        class: 'bg-[var(--color-success-10)] border-[var(--color-success-50)] text-[var(--color-success-50)]',
+      },
+      {
+        variant: 'soft',
+        color: 'primary',
+        class: 'bg-[var(--color-primary-10)] border-[var(--color-primary-50)] text-[var(--color-primary-50)]',
+      },
+      {
+        variant: 'soft',
+        color: 'gray',
+        class: 'bg-[var(--color-blue-gray-15)] border-[var(--color-gray-70)] text-[var(--color-gray-70)]',
+      },
+      {
+        variant: 'soft',
+        color: 'bluegray',
+        class: 'bg-[var(--color-gray-0)] border-[var(--color-blue-gray-50)] text-[var(--color-blue-gray-50)]',
+      },
+      {
+        variant: 'soft',
+        color: 'secondary',
+        class: 'bg-[var(--color-gray-0)] border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]',
+      },
       // Outlined + Colors
-      { variant: 'outlined', color: 'blue', class: 'border-[var(--color-information-50)] text-[var(--color-information-50)]' },
+      {
+        variant: 'outlined',
+        color: 'blue',
+        class: 'border-[var(--color-information-50)] text-[var(--color-information-50)]',
+      },
       { variant: 'outlined', color: 'red', class: 'border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
       { variant: 'outlined', color: 'green', class: 'border-[var(--color-success-50)] text-[var(--color-success-50)]' },
-      { variant: 'outlined', color: 'primary', class: 'border-[var(--color-primary-50)] text-[var(--color-primary-50)]' },
+      {
+        variant: 'outlined',
+        color: 'primary',
+        class: 'border-[var(--color-primary-50)] text-[var(--color-primary-50)]',
+      },
       { variant: 'outlined', color: 'gray', class: 'border-[var(--color-gray-70)] text-[var(--color-gray-70)]' },
-      { variant: 'outlined', color: 'bluegray', class: 'border-[var(--color-blue-gray-50)] text-[var(--color-blue-gray-50)]' },
-      { variant: 'outlined', color: 'secondary', class: 'border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]' },
+      {
+        variant: 'outlined',
+        color: 'bluegray',
+        class: 'border-[var(--color-blue-gray-50)] text-[var(--color-blue-gray-50)]',
+      },
+      {
+        variant: 'outlined',
+        color: 'secondary',
+        class: 'border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]',
+      },
       // Ghost + Colors
       { variant: 'ghost', color: 'blue', class: 'text-[var(--color-information-50)]' },
       { variant: 'ghost', color: 'red', class: 'text-[var(--color-danger-50)]' },
@@ -116,13 +166,7 @@ function Badge({
   }) {
   const Comp = asChild ? Slot : 'span';
 
-  return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant, size, color }), className)}
-      {...props}
-    />
-  );
+  return <Comp data-slot="badge" className={cn(badgeVariants({ variant, size, color }), className)} {...props} />;
 }
 
 export { Badge, badgeVariants };

@@ -1,17 +1,17 @@
 'use client';
 
 import { Gcol, Typo, FormItem, Grow } from '@atoms';
-import { FormCell, FormTable } from '@common/FormTable';
 import { DatePickerInput } from '@common/DatePicker';
-import { SearchIcon } from '@/shared/components/icons';
-import { Tabs, TabsLine, TabsContent, TabsList, TabsTrigger } from '@uiux/Tabs';
-import { TableRow } from '@uiux/Table';
-import { Input } from '@uiux/Input';
+import { FormCell, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { TableRow } from '@uiux/Table';
+import { Tabs, TabsLine, TabsContent, TabsList, TabsTrigger } from '@uiux/Tabs';
 
 import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData, InsuredData } from '../types/insPlanBasic';
+import { SearchIcon } from '@/shared/components/icons';
 
 interface InsPlanBasicStep2Props {
   active: string;

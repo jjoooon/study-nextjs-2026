@@ -1,26 +1,26 @@
 'use client';
 
 // ...existing code...
-import * as React from 'react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 
-import { Grow, Gcol, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { DatePickerInput } from '@common/DatePicker';
-import { useFormFields } from '@hooks/useFormFields';
-import { MemoIcon, ResetIcon, SearchIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer } from '@aggrid';
+import { Grow, Gcol, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InfoBox } from '@common/InfoBox';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { useFormFields } from '@hooks/useFormFields';
+import { MemoIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import type { LTPA010DummyDataRow } from '../data/LTPA010Data';
 
 import { LTPA010DummyData } from '../data/LTPA010Data';
@@ -40,7 +40,7 @@ export const LTPA010Main = () => {
     type09: '',
   });
 
-  // AgGrid Column 
+  // AgGrid Column
   const columnDefs: (ColDef<LTPA010DummyDataRow> | ColGroupDef<LTPA010DummyDataRow>)[] = [
     {
       headerName: '설계번호',
@@ -52,7 +52,7 @@ export const LTPA010Main = () => {
     {
       headerName: '상품명/구분',
       headerClass: 'ag-header-right-divider',
-      
+
       children: [
         {
           flex: 2,
@@ -70,19 +70,25 @@ export const LTPA010Main = () => {
               }
 
               const memoButton = (
-                <Button color={hasTooltip ? 'primary' : 'gray-light'} onClick={() => {alert('3대진단 클릭')}} only={'icon'} size={'sm'} variant={'outlined'}>
+                <Button
+                  color={hasTooltip ? 'primary' : 'gray-light'}
+                  onClick={() => {
+                    alert('3대진단 클릭');
+                  }}
+                  only={'icon'}
+                  size={'sm'}
+                  variant={'outlined'}
+                >
                   {hasTooltip ? <MemoIcon color={'#FF5C2E'} /> : <MemoIcon />}
                 </Button>
               );
 
               return (
-                <Grow placement='cc' className='h-full pr-1'>
+                <Grow placement="cc" className="h-full pr-1">
                   {data?.field03}
                   {hasTooltip ? (
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        {memoButton}
-                      </TooltipTrigger>
+                      <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
                       <TooltipContent
                         align="center"
                         side="bottom"
@@ -90,10 +96,16 @@ export const LTPA010Main = () => {
                         variant="default"
                         className="w-[16rem]"
                       >
-                        <div dangerouslySetInnerHTML={{ __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.` }} />
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
+                          }}
+                        />
                       </TooltipContent>
                     </Tooltip>
-                  ) : memoButton}
+                  ) : (
+                    memoButton
+                  )}
                 </Grow>
               );
             }
@@ -114,10 +126,10 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field05', 'field06'),
-        }
-      ]
+        },
+      ],
     },
-    
+
     {
       headerName: '피보험자',
       cellClass: 'text-center px-0!',
@@ -130,8 +142,8 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field05', 'field06'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '보험료(원)',
@@ -144,8 +156,8 @@ export const LTPA010Main = () => {
           width: 100,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field07', 'field08'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '설계일자',
@@ -158,14 +170,15 @@ export const LTPA010Main = () => {
           width: 90,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            2026-01-01
-          </Button>, 
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            2026-01-01
-          </Button>)
-        }
-      ]
+            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+              2026-01-01
+            </Button>,
+            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+              2026-01-01
+            </Button>
+          ),
+        },
+      ],
     },
     {
       headerName: '설계상태',
@@ -177,8 +190,8 @@ export const LTPA010Main = () => {
           width: 90,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field09', 'field10'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '청약서출력',
@@ -189,11 +202,14 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           width: 100,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>( <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            미출력
-          </Button>, 'field11'),
-        }
-      ]
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
+            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+              미출력
+            </Button>,
+            'field11'
+          ),
+        },
+      ],
     },
     {
       headerName: '취급기관/팀',
@@ -205,8 +221,8 @@ export const LTPA010Main = () => {
           flex: 1,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field12', 'field13'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '최초설계자',
@@ -217,22 +233,30 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
-            'field14',
-            (data?: LTPA010DummyDataRow) => (
-              <Grow gap={0.5}>
-                <span>{data?.field15 ?? ''}</span>
-                <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined" className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0">
-                  <Typo color="primary" tag="span" variant="body-xs" weight="bold">I</Typo>
-                </Button>
-                <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined">
-                  <Typo color="primary" tag="span" variant="body-xs" weight="bold">D</Typo>
-                </Button>
-              </Grow>
-            )
-          ),
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field14', (data?: LTPA010DummyDataRow) => (
+            <Grow gap={0.5}>
+              <span>{data?.field15 ?? ''}</span>
+              <Button
+                color="gray-light"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0"
+              >
+                <Typo color="primary" tag="span" variant="body-xs" weight="bold">
+                  I
+                </Typo>
+              </Button>
+              <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined">
+                <Typo color="primary" tag="span" variant="body-xs" weight="bold">
+                  D
+                </Typo>
+              </Button>
+            </Grow>
+          )),
         },
-      ]
+      ],
     },
     {
       headerName: '사용인',
@@ -244,8 +268,8 @@ export const LTPA010Main = () => {
           width: 80,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field16', 'field17'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '설계종료',
@@ -255,17 +279,16 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', 
-          (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', (data?: LTPA010DummyDataRow) => (
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-              {data?.field19} 
+              {data?.field19}
             </Button>
           )),
-        }
-      ]
-    }
+        },
+      ],
+    },
   ];
-  
+
   // Grid2 Column: 'SM' → '최초설계자' 변경
   const columnDefs2: (ColDef<LTPA010DummyDataRow> | ColGroupDef<LTPA010DummyDataRow>)[] = [
     ...columnDefs.slice(0, -3),
@@ -278,22 +301,30 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>(
-            'field14',
-            (data?: LTPA010DummyDataRow) => (
-              <Grow gap={0.5}>
-                <span>{data?.field15 ?? ''}</span>
-                <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined" className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0">
-                  <Typo color="primary" tag="span" variant="body-xs" weight="bold">I</Typo>
-                </Button>
-                <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined">
-                  <Typo color="primary" tag="span" variant="body-xs" weight="bold">D</Typo>
-                </Button>
-              </Grow>
-            )
-          ),
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field14', (data?: LTPA010DummyDataRow) => (
+            <Grow gap={0.5}>
+              <span>{data?.field15 ?? ''}</span>
+              <Button
+                color="gray-light"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0"
+              >
+                <Typo color="primary" tag="span" variant="body-xs" weight="bold">
+                  I
+                </Typo>
+              </Button>
+              <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined">
+                <Typo color="primary" tag="span" variant="body-xs" weight="bold">
+                  D
+                </Typo>
+              </Button>
+            </Grow>
+          )),
         },
-      ]
+      ],
     },
     {
       headerName: '사용인',
@@ -305,8 +336,8 @@ export const LTPA010Main = () => {
           width: 80,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field16', 'field17'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '설계종료',
@@ -316,24 +347,22 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18',
-          (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', (data?: LTPA010DummyDataRow) => (
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               {data?.field19}
             </Button>
           )),
-        }
-      ]
-    }
+        },
+      ],
+    },
   ];
 
   // Grid3 Column: '최초설계자', '사용인' 제거 + 취급자→BM, 취급자/유자겨자 추가, 증권번호→증원번호
   const columnDefs3: (ColDef<LTPA010DummyDataRow> | ColGroupDef<LTPA010DummyDataRow>)[] = [
-    ...columnDefs
-      .filter(col => {
-        const name = (col as ColGroupDef).headerName;
-        return name !== '최초설계자' && name !== '사용인' && name !== '취급기관/팀' && name !== '설계종료';
-      }),
+    ...columnDefs.filter((col) => {
+      const name = (col as ColGroupDef).headerName;
+      return name !== '최초설계자' && name !== '사용인' && name !== '취급기관/팀' && name !== '설계종료';
+    }),
     {
       headerName: '취급기관/팀',
       headerClass: 'ag-header-right-divider',
@@ -344,8 +373,8 @@ export const LTPA010Main = () => {
           flex: 1,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field12', 'field13'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '취급자',
@@ -357,8 +386,8 @@ export const LTPA010Main = () => {
           flex: 1,
           autoHeight: true,
           cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field12', 'field13'),
-        }
-      ]
+        },
+      ],
     },
     {
       headerName: '설계종료',
@@ -368,21 +397,20 @@ export const LTPA010Main = () => {
           cellClass: 'text-center px-0!',
           flex: 1,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18',
-          (data?: LTPA010DummyDataRow) => (
+          cellRenderer: createFieldRenderer<LTPA010DummyDataRow>('field18', (data?: LTPA010DummyDataRow) => (
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
               {data?.field19}
             </Button>
           )),
-        }
-      ]
+        },
+      ],
     },
   ];
 
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<LTPA010DummyDataRow[]>(LTPA010DummyData);
   const [errorRows, setErrorRows] = React.useState<number[]>(
-    LTPA010DummyData.filter(row => !row.isCheck).map(row => row.id)
+    LTPA010DummyData.filter((row) => !row.isCheck).map((row) => row.id)
   );
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<LTPA010DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
@@ -394,14 +422,14 @@ export const LTPA010Main = () => {
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>
-            <Gcol className="w-full" placement='ss'>
-              <Grow className='w-full' variant="box-round" placement={'bwe'}>
-                <FormTable variant={'none'} lineTop={false} caption="설계번호" cols={[
-                  'flex-auto', 'flex-1',
-                  'flex-auto', 'flex-1',
-                  'flex-auto', 'flex-1',
-                  'flex-auto', 'flex-1',
-                ]}>
+            <Gcol className="w-full" placement="ss">
+              <Grow className="w-full" variant="box-round" placement={'bwe'}>
+                <FormTable
+                  variant={'none'}
+                  lineTop={false}
+                  caption="설계번호"
+                  cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
+                >
                   <FormRow>
                     <FormCell title={'조회구분'}>
                       <NativeSelect
@@ -414,7 +442,9 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'type01-1', label: '전체' },
                           { value: 'selection2', id: 'type01-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -428,10 +458,12 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'type03-1', label: '전체' },
                           { value: 'selection2', id: 'type03-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                    </FormCell>  
+                    </FormCell>
                     <FormCell title={'설계상태'}>
                       <NativeSelect
                         aria-label="설계상태 선택"
@@ -442,10 +474,12 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'personalinfo-1', label: '전체' },
                           { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                    </FormCell>  
+                    </FormCell>
                     <FormCell title={'설계경로'}>
                       <NativeSelect
                         aria-label="설계경로 선택"
@@ -457,7 +491,9 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'personalinfo-1', label: '전체' },
                           { value: 'selection2', id: 'personalinfo-2', label: '전체2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -475,15 +511,17 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'type06-1', label: '선택1' },
                           { value: 'selection2', id: 'type06-2', label: '선택2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Input aria-label="" width={'5.9rem'} value={'1301097'} required/>
+                      <Input aria-label="" width={'5.9rem'} value={'1301097'} required />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
-                      <Input aria-label="" width={'9.1rem'} value={'신부산GA지점'} readOnly/>
-                    </FormCell>  
+                      <Input aria-label="" width={'9.1rem'} value={'신부산GA지점'} readOnly />
+                    </FormCell>
                     <FormCell title={'영업가족'}>
                       <NativeSelect
                         aria-label="영업가족 선택"
@@ -494,7 +532,9 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'type08-1', label: '선택1' },
                           { value: 'selection2', id: 'type08-2', label: '선택2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
                     </FormCell>
@@ -506,7 +546,7 @@ export const LTPA010Main = () => {
                         onChange={() => {}}
                         rangeValue={{
                           from: '2026-03-01',
-                          to: '2026-03-07'
+                          to: '2026-03-07',
                         }}
                         size="lg"
                         width="sm"
@@ -521,17 +561,26 @@ export const LTPA010Main = () => {
                           { value: 'selection', id: 'type09-1', label: '선택1' },
                           { value: 'selection2', id: 'type09-2', label: '선택2' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>{option.label}</NativeSelectOption>
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                    </FormCell>    
+                    </FormCell>
                   </FormRow>
-                </FormTable>  
+                </FormTable>
                 <Grow>
-                  <Button color="coolgray" onClick={() => { }} only="default" size="lg" variant="contained">
+                  <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                     조회
                   </Button>
-                  <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+                  <Button
+                    color={'gray'}
+                    only={'icon'}
+                    size={'lg'}
+                    variant={'outlined'}
+                    onClick={() => {}}
+                    aria-label="새로고침"
+                  >
                     <ResetIcon />
                   </Button>
                 </Grow>
@@ -540,21 +589,19 @@ export const LTPA010Main = () => {
                 <div className="ag-theme-alpine ltpa010-grid">
                   <AgGridReact<LTPA010DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={params => String(params.data.id)}
+                    getRowId={(params) => String(params.data.id)}
                     rowClassRules={{
                       'ag-row-state-true': (params) => params.data?.isState === true,
                     }}
                     rowData={rowData}
                     columnDefs={columnDefs}
-                    defaultColDef={{ 
+                    defaultColDef={{
                       sortable: false,
                       resizable: false,
                     }}
-
                     // 에디터 시
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}
-                    
                     // 체크박스 시
                     rowSelection={{
                       mode: 'singleRow',
@@ -564,21 +611,21 @@ export const LTPA010Main = () => {
                     selectionColumnDef={{
                       headerName: '선택',
                     }}
-                    onGridReady={params => {
-                      params.api.forEachNode(node => {
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
                         if (node.data?.isCheck) {
                           node.setSelected(true);
                         }
                       });
                     }}
-                    domLayout='autoHeight'
+                    domLayout="autoHeight"
                   />
                 </div>
                 {/* Grid2: SM → 최초설계자 */}
                 <div className="ag-theme-alpine ltpa010-grid">
                   <AgGridReact<LTPA010DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={params => String(params.data.id)}
+                    getRowId={(params) => String(params.data.id)}
                     rowClassRules={{
                       'ag-row-state-true': (params) => params.data?.isState === true,
                     }}
@@ -596,12 +643,12 @@ export const LTPA010Main = () => {
                       enableClickSelection: false,
                     }}
                     selectionColumnDef={{ headerName: '선택' }}
-                    onGridReady={params => {
-                      params.api.forEachNode(node => {
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
                         if (node.data?.isCheck) node.setSelected(true);
                       });
                     }}
-                    domLayout='autoHeight'
+                    domLayout="autoHeight"
                   />
                 </div>
 
@@ -609,7 +656,7 @@ export const LTPA010Main = () => {
                 <div className="ag-theme-alpine ltpa010-grid">
                   <AgGridReact<LTPA010DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={params => String(params.data.id)}
+                    getRowId={(params) => String(params.data.id)}
                     rowClassRules={{
                       'ag-row-state-true': (params) => params.data?.isState === true,
                     }}
@@ -627,18 +674,20 @@ export const LTPA010Main = () => {
                       enableClickSelection: false,
                     }}
                     selectionColumnDef={{ headerName: '선택' }}
-                    onGridReady={params => {
-                      params.api.forEachNode(node => {
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
                         if (node.data?.isCheck) node.setSelected(true);
                       });
                     }}
-                    domLayout='autoHeight'
+                    domLayout="autoHeight"
                   />
                 </div>
-                <InfoBox title="설계조회 가능기간 " variant="info" subTitle='취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일)' />
+                <InfoBox
+                  title="설계조회 가능기간 "
+                  variant="info"
+                  subTitle="취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일)"
+                />
               </Gcol>
-
-
             </Gcol>
           </LayoutScrollItem>
         </LayoutScrollWrap>
@@ -687,7 +736,6 @@ export const LTPA010Main = () => {
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-    </LayoutMain>  
-
-  )
-}
+    </LayoutMain>
+  );
+};

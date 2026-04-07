@@ -1,17 +1,14 @@
 // design 반영
 'use client';
 
-import * as React from 'react';
-
-import { useState } from 'react';
-
 import { ErrorMsg } from '@common/ErrorMsg';
 import { InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
-
-import { UIUXsize } from '@/shared/types/uiTypes';
+import { useState } from 'react';
+import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
+import { UIUXsize } from '@/shared/types/uiTypes';
 
 type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -76,17 +73,15 @@ function Input({
 
   // 주민등록번호 마스킹: value에는 숫자만 저장, displayValue는 마스킹 적용
   let displayValue = value ?? '';
-  
+
   if (formatter === 'jumin' && typeof value === 'string') {
     displayValue = formatJumin(value);
   } else if (commaAmount && typeof value === 'string') {
-    displayValue = (isFocused || forceFocused)
-      ? value
-      : formatAmount(value);
+    displayValue = isFocused || forceFocused ? value : formatAmount(value);
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
+    const val = e.target.value;
     // 주민등록번호: 숫자만 추출해서 부모에 전달
     // if (formatter === 'jumin') {
     //   const onlyNum = val.replace(/[^0-9]/g, '').slice(0, 13);
@@ -117,7 +112,7 @@ function Input({
     //     return;
     //   }
     // }
-    
+
     // commaAmount가 있으면 기존 로직 적용
     if (commaAmount) {
       const onlyNum = val.replace(/[^0-9]/g, '');
@@ -181,8 +176,7 @@ function Input({
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
   const ghostStyle = cn(
-    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.08rem] appearance-none truncate',
-    
+    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.08rem] appearance-none truncate'
   );
   const hoverStyle =
     isInvalid || error
@@ -217,12 +211,12 @@ function Input({
   //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
   // }
   return (
-    <div className={cn('relative', withStyle(), )} style={inlineWidthStyle}>
+    <div className={cn('relative', withStyle())} style={inlineWidthStyle}>
       {before || after ? (
         <div
           className={cn(
             variantStyles[variant],
-            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]',
+            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]'
           )}
           style={inlineWidthStyle}
         >
@@ -231,7 +225,10 @@ function Input({
             <input
               type={type}
               data-slot="input"
-              className={cn('bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none', commaAmount && 'text-right')}
+              className={cn(
+                'bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none',
+                commaAmount && 'text-right'
+              )}
               required={required}
               readOnly={readOnly}
               aria-invalid={error || undefined}
@@ -240,7 +237,7 @@ function Input({
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined }
+              style={clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined}
               placeholder={resolvedPlaceholder}
               {...props}
             />
@@ -248,7 +245,8 @@ function Input({
               <Button
                 variant="none"
                 color="gray"
-                only="icon" size="xs"
+                only="icon"
+                size="xs"
                 className="absolute! right-0 top-1/2 -translate-y-1/2"
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
@@ -290,14 +288,15 @@ function Input({
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            style={clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined }
+            style={clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined}
             placeholder={resolvedPlaceholder}
             {...props}
           />
           {clear && isInputFocused && displayValue !== '' && (
             <Button
               variant="none"
-              only="icon" size="xs"
+              only="icon"
+              size="xs"
               className="absolute! right-2 top-1/2 -translate-y-1/2"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
@@ -317,7 +316,7 @@ function Input({
           )}
         </div>
       )}
-      
+
       {error && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {errorMsg}

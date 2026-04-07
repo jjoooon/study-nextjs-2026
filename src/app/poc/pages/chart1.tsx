@@ -1,9 +1,9 @@
 'use client';
 
-import EChartsReact from 'echarts-for-react';
-import { useState } from 'react';
 import { Button } from '@uiux/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@uiux/Card';
+import EChartsReact from 'echarts-for-react';
+import { useState } from 'react';
 
 /**
  * Apache ECharts 예제 페이지

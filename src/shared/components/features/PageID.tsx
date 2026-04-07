@@ -5,14 +5,14 @@ import { ZoomControl } from '@common/ZoomControl';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
-import { getHeader } from '@/shared/utils/authUtils';
 import { size } from 'zod';
+import { getHeader } from '@/shared/utils/authUtils';
 
 type DefaultPageID = {
   pageName?: string;
   pageId?: string | number;
   [key: string]: any;
-}
+};
 type PageIDProps = {
   data: DefaultPageID;
 };

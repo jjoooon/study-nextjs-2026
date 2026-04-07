@@ -1,15 +1,14 @@
 'use client';
 
-import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
-import type { TabData } from '../types/insPlanBasic';
-
 import { Gcol, Typo, FormItem, Grow } from '@atoms';
 import { FormCell, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
-import { TableRow } from '@uiux/Table';
-import { Input } from '@uiux/Input';
 import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { TableRow } from '@uiux/Table';
+import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
+import type { TabData } from '../types/insPlanBasic';
 
 interface InsPlanBasicStep1Props {
   currentData: TabData;

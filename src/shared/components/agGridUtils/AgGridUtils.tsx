@@ -1,23 +1,29 @@
-
-
 // 외부 라이브러리
-import * as React from 'react';
-import type { ValueFormatterParams, ICellRendererParams, SelectionChangedEvent, IDatasource, IGetRowsParams, EditableCallbackParams, CellClassParams } from 'ag-grid-community';
 import { Typo, Gcol, Grow } from '@atoms';
-import { InfoBoxWarningIcon } from '@icons';
-import { Button } from '@uiux/Button';
 
 // 내부 공통 컴포넌트
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { RefObject } from 'react';
-import type { GridReadyEvent } from 'ag-grid-community';
-import type { AgGridReact } from 'ag-grid-react';
 
 import { AmountUnitInput } from '@common/AmountUnitInput';
+import { DatePickerInput } from '@common/DatePicker';
 import { SelectDropIcon, PlusIcon } from '@icons';
 
-import { DatePickerInput } from '@common/DatePicker';
+import { InfoBoxWarningIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import type { GridReadyEvent } from 'ag-grid-community';
+import type {
+  ValueFormatterParams,
+  ICellRendererParams,
+  SelectionChangedEvent,
+  IDatasource,
+  IGetRowsParams,
+  EditableCallbackParams,
+  CellClassParams,
+} from 'ag-grid-community';
 import type { ICellEditorParams } from 'ag-grid-community';
+import type { AgGridReact } from 'ag-grid-react';
+import type { RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 
 export type ToggleTopRow<T> = T & {
   originalIndex: number;
@@ -40,10 +46,7 @@ interface UseToggleTopRowsParams<T extends Record<string, unknown>> {
   toggleKey: BooleanKeyOf<T>;
 }
 
-function sortToggleRows<T extends Record<string, unknown>>(
-  rows: ToggleTopRow<T>[],
-  toggleKey: BooleanKeyOf<T>
-) {
+function sortToggleRows<T extends Record<string, unknown>>(rows: ToggleTopRow<T>[], toggleKey: BooleanKeyOf<T>) {
   return [...rows].sort((prevRow, nextRow) => {
     const prevToggled = Boolean(prevRow[toggleKey]);
     const nextToggled = Boolean(nextRow[toggleKey]);
@@ -76,7 +79,7 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
     const initialized = rows.map((row, index) => ({
       ...row,
       originalIndex: index,
-      toggleOrder: Boolean(row[toggleKey]) ? 0 : null,
+      toggleOrder: row[toggleKey] ? 0 : null,
     }));
 
     return sortToggleRows(initialized, toggleKey);
@@ -90,7 +93,7 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
             return row;
           }
 
-          const nextToggled = !Boolean(row[toggleKey]);
+          const nextToggled = !row[toggleKey];
 
           return {
             ...row,
@@ -137,9 +140,7 @@ export function createEditableCallback<T>(
  * AG Grid 에러 셀 클래스 규칙 생성기 (공용)
  * - 사용자 정의 조건(predicate)을 받아 `ag-cell-error-border` 클래스를 적용
  */
-export function createCellErrorClassRules<RowType>(
-  predicate: (params: CellClassParams<RowType>) => boolean
-): {
+export function createCellErrorClassRules<RowType>(predicate: (params: CellClassParams<RowType>) => boolean): {
   'ag-cell-error-border': (params: CellClassParams<RowType>) => boolean;
 } {
   return {
@@ -186,9 +187,7 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
     if (params.colDef.field && fieldArr.includes(params.colDef.field as keyof RowType)) {
       setRowData((prev) =>
         prev.map((row) =>
-          row[idKey] === params.data[idKey]
-            ? { ...row, [params.colDef.field as keyof RowType]: params.newValue }
-            : row
+          row[idKey] === params.data[idKey] ? { ...row, [params.colDef.field as keyof RowType]: params.newValue } : row
         )
       );
       setErrorRows((prev) => {
@@ -249,41 +248,38 @@ export function createInsertCopiedRowHandler<RowType extends Record<string, unkn
  * @param options.isVisible 버튼 노출 여부 (기본: 현재 셀 값 truthy)
  * @param options.ariaLabel 버튼 접근성 라벨
  */
-export function createDuplicateButtonCellRenderer<RowType extends Record<string, unknown>, Key extends keyof RowType>(
-  options: {
-    idKey: Key;
-    onDuplicate: (id: Extract<RowType[Key], string | number>) => void;
-    isVisible?: (params: ICellRendererParams<RowType>) => boolean;
-    ariaLabel?: string;
-  }
-) {
-  const {
-    idKey,
-    onDuplicate,
-    isVisible = (params) => Boolean(params.value),
-    ariaLabel = '행 복제',
-  } = options;
+export function createDuplicateButtonCellRenderer<
+  RowType extends Record<string, unknown>,
+  Key extends keyof RowType,
+>(options: {
+  idKey: Key;
+  onDuplicate: (id: Extract<RowType[Key], string | number>) => void;
+  isVisible?: (params: ICellRendererParams<RowType>) => boolean;
+  ariaLabel?: string;
+}) {
+  const { idKey, onDuplicate, isVisible = (params) => Boolean(params.value), ariaLabel = '행 복제' } = options;
 
   const isStringOrNumber = <T,>(value: T): value is Extract<T, string | number> => {
     return typeof value === 'string' || typeof value === 'number';
   };
 
   return (params: ICellRendererParams<RowType>) => {
-    if (!isVisible(params)) return (
-      <Grow className="w-full h-full flex items-center justify-center">
-        <Button
-          aria-label={ariaLabel}
-          variant={'outlined'}
-          only={'icon'}
-          className='uiux-duplicate-btn'
-          size={'sm'}
-          color={'gray-light'}
-          disabled
-        >
-          <PlusIcon color={'var(--color-gray-30)'} />
-        </Button>
-      </Grow>
-    );
+    if (!isVisible(params))
+      return (
+        <Grow className="w-full h-full flex items-center justify-center">
+          <Button
+            aria-label={ariaLabel}
+            variant={'outlined'}
+            only={'icon'}
+            className="uiux-duplicate-btn"
+            size={'sm'}
+            color={'gray-light'}
+            disabled
+          >
+            <PlusIcon color={'var(--color-gray-30)'} />
+          </Button>
+        </Grow>
+      );
 
     const row = params.data;
     if (!row) return '';
@@ -297,7 +293,7 @@ export function createDuplicateButtonCellRenderer<RowType extends Record<string,
           aria-label={ariaLabel}
           variant={'outlined'}
           only={'icon'}
-          className='uiux-duplicate-btn'
+          className="uiux-duplicate-btn"
           size={'sm'}
           color={'gray-light'}
           onMouseDown={(event) => event.stopPropagation()}
@@ -322,7 +318,10 @@ export function createDuplicateButtonCellRenderer<RowType extends Record<string,
  * @param options.isVisible 버튼 노출 여부 (기본: 현재 셀 값 truthy)
  * @param options.ariaLabel 버튼 접근성 라벨
  */
-export function createInsertCopiedRowButtonCellRenderer<RowType extends Record<string, unknown>, Key extends keyof RowType>(
+export function createInsertCopiedRowButtonCellRenderer<
+  RowType extends Record<string, unknown>,
+  Key extends keyof RowType,
+>(
   setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
   options: {
     idKey: Key;
@@ -366,11 +365,7 @@ export function createTooltipValueGetter<T extends Record<string, unknown>>(
   return (params: { data?: T }) => {
     if (!params.data) return '';
 
-    const rawValue = valueGetter
-      ? valueGetter(params.data)
-      : field
-        ? params.data[field]
-        : '';
+    const rawValue = valueGetter ? valueGetter(params.data) : field ? params.data[field] : '';
 
     const value = rawValue === null || rawValue === undefined ? '' : String(rawValue);
 
@@ -387,7 +382,6 @@ export const productNameTooltipValueGetter = <T extends { productName?: string }
   return `담보명: ${params.data.productName ?? ''}`;
 };
 
-
 /**
  * 숫자 콤마 포매터 (공용)
  */
@@ -396,7 +390,6 @@ export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   // 0도 정상 노출
   return Number(params.value).toLocaleString();
 };
-
 
 /**
  * 가입금액(만원) 셀 렌더러 (AmountUnitInput 사용, 행별 ref 지원)
@@ -424,7 +417,6 @@ export function amountUnitInputCellRenderer<RowType>(
     </div>
   );
 }
-
 
 /**
  * 만기/납기 셀 렌더러 (셀 편집 가능 여부에 따라 화살표 색상 변경)
@@ -462,19 +454,12 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
     [value]
   );
 
-  return (
-    <DatePickerInput
-      value={value}
-      onChange={handleChange}
-      size="md"
-      width="full"
-    />
-  );
+  return <DatePickerInput value={value} onChange={handleChange} size="md" width="full" />;
 }
 
 export const createFieldRenderer = <T extends Record<string, any>>(
   field1: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>,
-  field2?: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>,
+  field2?: keyof T | React.ReactNode | ((data?: T) => React.ReactNode) | React.ComponentType<any>
 ) => {
   return (params: ICellRendererParams<T>) => {
     const data = params.data as T | undefined;
@@ -517,44 +502,46 @@ export const createFieldRenderer = <T extends Record<string, any>>(
     };
 
     return (
-      <Gcol className="w-full h-[5.6rem] justify-start divide-y divide-gray-200" gap={0} >
-        <div className='h-[2.8rem] w-full leading-[2.8rem]'>
-          {renderCell(aNode)}
-        </div>
-        <div className="h-[2.8rem] w-full leading-[2.8rem]">
-          {renderCell(bNode)}
-        </div>
+      <Gcol className="w-full h-[5.6rem] justify-start divide-y divide-gray-200" gap={0}>
+        <div className="h-[2.8rem] w-full leading-[2.8rem]">{renderCell(aNode)}</div>
+        <div className="h-[2.8rem] w-full leading-[2.8rem]">{renderCell(bNode)}</div>
       </Gcol>
     );
   };
 };
 
 /**
-* ag-Grid + TablePagination 연동 공통 훅
-* @param gridRef ag-Grid API ref (React.useRef)
-* @param pageSize 페이지당 행 수
-*/
+ * ag-Grid + TablePagination 연동 공통 훅
+ * @param gridRef ag-Grid API ref (React.useRef)
+ * @param pageSize 페이지당 행 수
+ */
 export function useAgGridPagination(gridRef: React.RefObject<any>, pageSize: number) {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
 
   // ag-Grid onGridReady 핸들러
-  const handleGridReady = React.useCallback((params: any) => {
-    gridRef.current = params.api;
-    setTotalPages(params.api.paginationGetTotalPages());
-    setCurrentPage(params.api.paginationGetCurrentPage() + 1);
-    params.api.addEventListener('paginationChanged', () => {
+  const handleGridReady = React.useCallback(
+    (params: any) => {
+      gridRef.current = params.api;
       setTotalPages(params.api.paginationGetTotalPages());
       setCurrentPage(params.api.paginationGetCurrentPage() + 1);
-    });
-  }, [gridRef]);
+      params.api.addEventListener('paginationChanged', () => {
+        setTotalPages(params.api.paginationGetTotalPages());
+        setCurrentPage(params.api.paginationGetCurrentPage() + 1);
+      });
+    },
+    [gridRef]
+  );
 
   // TablePagination에서 페이지 변경 시 ag-Grid 페이지 이동
-  const handlePageChange = React.useCallback((page: number) => {
-    if (gridRef.current) {
-      gridRef.current.paginationGoToPage(page - 1);
-    }
-  }, [gridRef]);
+  const handlePageChange = React.useCallback(
+    (page: number) => {
+      if (gridRef.current) {
+        gridRef.current.paginationGoToPage(page - 1);
+      }
+    },
+    [gridRef]
+  );
 
   return {
     currentPage,
@@ -624,13 +611,15 @@ export function useAgGridInfiniteAppend<TData>({
 
 export function AgGridEmptyComponent({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div className="bg-[var(--color-gray-0)] w-full h-full flex items-center justify-center gap-1 text-[var(--color-gray-70)]" {...props}>
+    <div
+      className="bg-[var(--color-gray-0)] w-full h-full flex items-center justify-center gap-1 text-[var(--color-gray-70)]"
+      {...props}
+    >
       <InfoBoxWarningIcon color="var(--color-gray-50)" />
       조회 결과가 없습니다.
     </div>
   );
 }
-
 
 type FieldKey<TData> = Extract<keyof TData, string>;
 
@@ -675,12 +664,13 @@ export function useAgGridColumnVisibility<TData extends object>({
     [applyColumnVisibility, visibleFields]
   );
 
-  const onVisibleFieldsChange = useCallback((fields: string[]) => {
-    const next = fields.filter((field): field is FieldKey<TData> =>
-      toggleFields.includes(field as FieldKey<TData>)
-    );
-    setVisibleFields(next);
-  }, [toggleFields]);
+  const onVisibleFieldsChange = useCallback(
+    (fields: string[]) => {
+      const next = fields.filter((field): field is FieldKey<TData> => toggleFields.includes(field as FieldKey<TData>));
+      setVisibleFields(next);
+    },
+    [toggleFields]
+  );
 
   return {
     visibleFields,

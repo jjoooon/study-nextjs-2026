@@ -1,67 +1,86 @@
 'use client';
 
-import * as React from 'react';
-import { useRef } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
+import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { QuestionMark, SearchIcon } from '@icons';
 import { InfoBox } from '@common/InfoBox';
 import { TabPager } from '@common/TabPager';
-import type { PopupBaseProps } from './types';
-import { Input } from '@/shared/components/uiux/Input';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { DatePickerInput } from '@common/DatePicker';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TooltipQ } from '@common/TooltipQ';
+import { QuestionMark, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import * as React from 'react';
+import { useRef } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
+
+import type { PopupBaseProps } from './types';
 import { BulletItem } from '@/shared/components/common/BulletList';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Input } from '@/shared/components/uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Checkbox } from '@uiux/Checkbox';
 
-
-
 export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   // form event
   const [form, setFormField] = useFormFields({
-  type01: '',
-  type02: '',
-  type03: '',
-  type04: '',
-  type05: '',
-  type06: '',
-  type07: '',
-  type08: '',
-  type09: '',
-  type10: '',
-  type11: '',
-  type12: '',
-  type13: '',
-});
+    type01: '',
+    type02: '',
+    type03: '',
+    type04: '',
+    type05: '',
+    type06: '',
+    type07: '',
+    type08: '',
+    type09: '',
+    type10: '',
+    type11: '',
+    type12: '',
+    type13: '',
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>질병검색 및 입력</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ031)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              질병검색 및 입력
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ031)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          <Grow className="w-full" placement='ss' gap={5}>
-            <Gcol placement='ss' className='w-full' gap={5}>
-              <Grow className='w-full' variant="box-round">
-                <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='head'>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow className="w-full" placement="ss" gap={5}>
+            <Gcol placement="ss" className="w-full" gap={5}>
+              <Grow className="w-full" variant="box-round">
+                <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant="head">
                   <FormRow>
                     <FormCell title={'설계번호'}>
-                      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
+                      <Button
+                        color="link"
+                        onClick={() => {}}
+                        only="default"
+                        size="lg"
+                        variant="text"
+                        value={'LA123123123'}
+                      >
+                        LA123123123
+                      </Button>
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
@@ -69,13 +88,21 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
               </Grow>
-                
-              <Grow placement='bwc' className="w-full">
-                <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
+
+              <Grow placement="bwc" className="w-full">
+                <Typo variant={'heading-sm'} className="mb-1">
+                  계약정보
+                </Typo>
                 <Grow>
-                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
-                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
-                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
+                  <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                    출생후보험료
+                  </Button>
+                  <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                    예상환급금조회
+                  </Button>
+                  <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                    영업수수료
+                  </Button>
                 </Grow>
               </Grow>
               <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
@@ -83,33 +110,29 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'계약자'} colSpan={3}>
                     김한화
                   </FormCell>
-                </FormRow>  
+                </FormRow>
                 <FormRow>
                   <FormCell title={'상품명'} colSpan={3}>
                     한화실손의료보험(갱신형) 무배당2601
-                  </FormCell>  
+                  </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'가입플랜'} colSpan={3}>
                     자유설계
-                  </FormCell>  
+                  </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'보험기간'}>
-                    05년 만기
-                  </FormCell>
-                  <FormCell title={'납입기간'}>
-                    월납/전기납
-                  </FormCell>  
+                  <FormCell title={'보험기간'}>05년 만기</FormCell>
+                  <FormCell title={'납입기간'}>월납/전기납</FormCell>
                 </FormRow>
               </FormTable>
             </Gcol>
-            
+
             {/* Tab */}
-            <Grow placement='ss' className='w-full' gap={2}>
+            <Grow placement="ss" className="w-full" gap={2}>
               <Grow className="w-full">
                 {/* 인보험/물보험 TabPager 예시 */}
-                <Gcol className="w-full" placement='ss'>
+                <Gcol className="w-full" placement="ss">
                   {(() => {
                     const [tabActive, setTabActive] = React.useState('TAB1');
                     const tabData = [
@@ -124,12 +147,12 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                         data={tabData}
                         active={tabActive}
                         setActive={setTabActive}
-                        getValue={tab => tab.value}
-                        renderTab={tab => <span>{tab.label}</span>}
+                        getValue={(tab) => tab.value}
+                        renderTab={(tab) => <span>{tab.label}</span>}
                         visibleCount={10}
                       >
                         {tabActive === 'TAB1' ? (
-                          <Gcol placement='ss' className='w-full' gap={3}>
+                          <Gcol placement="ss" className="w-full" gap={3}>
                             <TableFold>
                               <TableFoldHead title="기본질문">
                                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -137,19 +160,17 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Button>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
-                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                                >
+                                <FormTable caption="병명" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      <Grow placement='bwe'>
+                                      <Grow placement="bwe">
                                         <Grow>
                                           척추염좌
                                           <Tooltip>
                                             <TooltipTrigger asChild>
-                                            <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
-                                            </Button>
+                                              <Button only="icon" size={'md'} variant="none">
+                                                <QuestionMark color="var(--color-gray-500)" />
+                                              </Button>
                                             </TooltipTrigger>
                                             <TooltipContent
                                               align="center"
@@ -158,25 +179,26 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                               variant="default"
                                               className="w-[16rem]"
                                             >
-                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강주의 염좌 및 긴장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강주의 염좌 및
+                                              긴장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
                                             </TooltipContent>
                                           </Tooltip>
                                           <TooltipQ>
                                             {`문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.`}
-                                            </TooltipQ>
+                                          </TooltipQ>
                                         </Grow>
-                                        <Badge
-                                          color="green"
-                                          size="md"
-                                          variant="contained"
-                                          className=""
-                                        >
+                                        <Badge color="green" size="md" variant="contained" className="">
                                           자동완성
                                         </Badge>
                                       </Grow>
                                     </FormCell>
                                     <FormCell title={'의료기관명'}>
-                                      <Input commaAmount={true} value={form.type02} onChange={e => setFormField('type02', e.target.value)} required />
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type02}
+                                        onChange={(e) => setFormField('type02', e.target.value)}
+                                        required
+                                      />
                                     </FormCell>
                                   </FormRow>
                                   <FormRow vertical={false}>
@@ -188,7 +210,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         onChange={() => {}}
                                         rangeValue={{
                                           from: '2026-03-01',
-                                          to: '2026-03-07'
+                                          to: '2026-03-07',
                                         }}
                                         required
                                         size="lg"
@@ -226,9 +248,19 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                   </FormRow>
                                   <FormRow vertical={false}>
                                     <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Input commaAmount={true} value={form.type03} onChange={e => setFormField('type03', e.target.value)} required />
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type03}
+                                        onChange={(e) => setFormField('type03', e.target.value)}
+                                        required
+                                      />
                                       입원
-                                      <Input commaAmount={true} value={form.type04} onChange={e => setFormField('type04', e.target.value)} required />   
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type04}
+                                        onChange={(e) => setFormField('type04', e.target.value)}
+                                        required
+                                      />
                                       일
                                     </FormCell>
                                     <FormCell title={'완치여부'}>
@@ -262,9 +294,19 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                   </FormRow>
                                   <FormRow vertical={false}>
                                     <FormCell title={null}>
-                                      <Input commaAmount={true} value={form.type05} onChange={e => setFormField('type05', e.target.value)} required />
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type05}
+                                        onChange={(e) => setFormField('type05', e.target.value)}
+                                        required
+                                      />
                                       통원
-                                      <Input commaAmount={true} value={form.type06} onChange={e => setFormField('type06', e.target.value)} required />   
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type06}
+                                        onChange={(e) => setFormField('type06', e.target.value)}
+                                        required
+                                      />
                                       회
                                     </FormCell>
                                     <FormCell title={'재발유무'}>
@@ -295,7 +337,12 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                         </RadioGroupItem>
                                       </RadioGroup>
                                       <Grow>
-                                        <Input commaAmount={true} value={form.type05} onChange={e => setFormField('type05', e.target.value)} width="4rem" />
+                                        <Input
+                                          commaAmount={true}
+                                          value={form.type05}
+                                          onChange={(e) => setFormField('type05', e.target.value)}
+                                          width="4rem"
+                                        />
                                         회
                                       </Grow>
                                     </FormCell>
@@ -304,7 +351,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               </TableFoldBody>
                             </TableFold>
                             <TableFold>
-                              <TableFoldHead title="(선택)치료내용" >
+                              <TableFoldHead title="(선택)치료내용">
                                 <Grow>
                                   <BulletItem
                                     // before="ⓐ"
@@ -328,7 +375,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           onCheckedChange={() => {}}
                                           size="lg"
                                           variant="default"
-                                          >
+                                        >
                                           진단/검사/검진
                                         </Checkbox>
                                       </TableCell>
@@ -338,18 +385,18 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           onCheckedChange={() => {}}
                                           size="lg"
                                           variant="default"
-                                          >
+                                        >
                                           약처방/투약(주사,연고,안약 등)
                                         </Checkbox>
                                       </TableCell>
                                       <TableCell>
-                                        <Grow placement='bwe'>
+                                        <Grow placement="bwe">
                                           <Checkbox
                                             color="primary"
                                             onCheckedChange={() => {}}
                                             size="lg"
                                             variant="default"
-                                            >
+                                          >
                                             물리치료
                                           </Checkbox>
                                           <Button variant={'outlined'} size={'md'} color={'gray'}>
@@ -365,7 +412,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           onCheckedChange={() => {}}
                                           size="lg"
                                           variant="default"
-                                          >
+                                        >
                                           상담/언어치료
                                         </Checkbox>
                                       </TableCell>
@@ -375,7 +422,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           onCheckedChange={() => {}}
                                           size="lg"
                                           variant="default"
-                                          >
+                                        >
                                           치과치료
                                         </Checkbox>
                                       </TableCell>
@@ -385,7 +432,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           onCheckedChange={() => {}}
                                           size="lg"
                                           variant="default"
-                                          >
+                                        >
                                           한방치료
                                         </Checkbox>
                                       </TableCell>
@@ -398,10 +445,14 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                             onCheckedChange={() => {}}
                                             size="lg"
                                             variant="default"
-                                            >
+                                          >
                                             기타
                                           </Checkbox>
-                                          <Input commaAmount={true} value={form.type06} onChange={e => setFormField('type06', e.target.value)} />
+                                          <Input
+                                            commaAmount={true}
+                                            value={form.type06}
+                                            onChange={(e) => setFormField('type06', e.target.value)}
+                                          />
                                         </Grow>
                                       </TableCell>
                                     </TableRow>
@@ -410,77 +461,57 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               </TableFoldBody>
                             </TableFold>
                           </Gcol>
-                        ) : tabActive === 'TAB2' ? (     
-                          <Gcol placement='ss' className='w-full'>
+                        ) : tabActive === 'TAB2' ? (
+                          <Gcol placement="ss" className="w-full">
                             <TableFold>
                               <TableFoldHead title="기본질문"></TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
-                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                                >
+                                <FormTable caption="병명" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      자궁근종
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>                                   
-                                    </FormCell>
+                                    <FormCell title={'병명'}>자궁근종</FormCell>
+                                    <FormCell title={'의료기관명'}></FormCell>
                                   </FormRow>
                                 </FormTable>
                               </TableFoldBody>
                             </TableFold>
                           </Gcol>
-                        )  : tabActive === 'TAB3' ? ( // Missing Gcol component    
-                          <Gcol placement='ss' className='w-full'>
+                        ) : tabActive === 'TAB3' ? ( // Missing Gcol component
+                          <Gcol placement="ss" className="w-full">
                             <TableFold>
                               <TableFoldHead title="기본질문"></TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
-                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                                >
+                                <FormTable caption="병명" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      대장직장용종
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>                                   
-                                    </FormCell>
+                                    <FormCell title={'병명'}>대장직장용종</FormCell>
+                                    <FormCell title={'의료기관명'}></FormCell>
                                   </FormRow>
                                 </FormTable>
                               </TableFoldBody>
                             </TableFold>
                           </Gcol>
-                        ) : tabActive === 'TAB4' ? ( // Missing Gcol component    
-                          <Gcol placement='ss' className='w-full'>
+                        ) : tabActive === 'TAB4' ? ( // Missing Gcol component
+                          <Gcol placement="ss" className="w-full">
                             <TableFold>
                               <TableFoldHead title="기본질문"></TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
-                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                                >
+                                <FormTable caption="병명" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      추간판장애
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>                                   
-                                    </FormCell>
+                                    <FormCell title={'병명'}>추간판장애</FormCell>
+                                    <FormCell title={'의료기관명'}></FormCell>
                                   </FormRow>
                                 </FormTable>
                               </TableFoldBody>
                             </TableFold>
                           </Gcol>
-                        ) : tabActive === 'TAB5' ? ( // Missing Gcol component    
-                          <Gcol placement='ss' className='w-full'>
+                        ) : tabActive === 'TAB5' ? ( // Missing Gcol component
+                          <Gcol placement="ss" className="w-full">
                             <TableFold>
                               <TableFoldHead title="기본질문"></TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
-                                  cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                                >
+                                <FormTable caption="병명" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      어깨병변
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>                                   
-                                    </FormCell>
+                                    <FormCell title={'병명'}>어깨병변</FormCell>
+                                    <FormCell title={'의료기관명'}></FormCell>
                                   </FormRow>
                                 </FormTable>
                               </TableFoldBody>
@@ -492,15 +523,15 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                   })()}
                 </Gcol>
               </Grow>
-            </Grow>    
+            </Grow>
           </Grow>
-        </DialogSection>  
+        </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-                <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                  버튼
-                </Button>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                버튼
+              </Button>
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>
@@ -513,7 +544,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -1,20 +1,29 @@
 'use client';
 
-import * as React from 'react';
-import { useRef } from 'react';
+import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
 
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridReact } from 'ag-grid-react';
+import { useRef } from 'react';
+import * as React from 'react';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -48,40 +57,41 @@ export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '담보상태',
       field: 'field1',
       width: 80,
-      cellClass: (params) => params.data?.isSumRow ? 'text-center font-bold' : 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? <b>합계</b> : params.value,
-      colSpan: (params) => params.data?.isSumRow ? 5 : 1,
+      cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-center'),
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
+        params.data?.isSumRow ? <b>합계</b> : params.value,
+      colSpan: (params) => (params.data?.isSumRow ? 5 : 1),
     },
     {
       headerName: '담보코드',
       field: 'field2',
       width: 80,
       cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
-      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
+      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
     },
     {
       headerName: '담보보험시기',
       field: 'field3',
       width: 110,
       cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
-      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
+      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
     },
     {
       headerName: '담보보험종기',
       field: 'field4',
       width: 110,
       cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
-      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
+      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
     },
     {
       headerName: '세부담보명',
       field: 'field5',
       flex: 1,
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => params.data?.isSumRow ? null : params.value,
-      colSpan: (params) => params.data?.isSumRow ? 0 : 1,
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
+      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
     },
     {
       headerName: '보험료(원)',
@@ -102,32 +112,38 @@ export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const rowData2 = React.useMemo(() => DummyData2, []);
   const sumRow2 = React.useMemo<DummyDataType2[]>(
-    () => [{
-      id: -1,
-      field1: '합계',
-      field2: '',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: rowData2.reduce((sum, row) => sum + row.field6, 0),
-      isSumRow: true,
-    }],
+    () => [
+      {
+        id: -1,
+        field1: '합계',
+        field2: '',
+        field3: '',
+        field4: '',
+        field5: '',
+        field6: rowData2.reduce((sum, row) => sum + row.field6, 0),
+        isSumRow: true,
+      },
+    ],
     [rowData2]
   );
 
-  return (  
+  return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>담보내용상세</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTPZ011)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              담보내용상세
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ011)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className='w-full' variant="box-round" placement={'ss'}>
-            <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant='head'>
+          <Grow className="w-full" variant="box-round" placement={'ss'}>
+            <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'대표담보명'}>
                   <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
@@ -139,18 +155,18 @@ export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFoldHead title="">
               <Grow>
                 <Typo variant="body-md">(단위: 원)</Typo>
-              </Grow>   
+              </Grow>
             </TableFoldHead>
             <TableFoldBody>
               <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType2>
-                  getRowId={params => String(params.data.id)}
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
                   pinnedBottomRowData={sumRow2}
-                  defaultColDef={{ 
-                    sortable: false, 
+                  defaultColDef={{
+                    sortable: false,
                     resizable: false,
                   }}
                   singleClickEdit={true}
@@ -159,7 +175,7 @@ export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
               </div>
             </TableFoldBody>
           </TableFold>
-        </DialogSection>  
+        </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
@@ -176,7 +192,7 @@ export const LTPZ011 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>
+      </DialogContent>
+    </Dialog>
   );
 };
