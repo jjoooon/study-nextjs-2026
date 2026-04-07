@@ -23,7 +23,7 @@ import { LTPA301DummyData, type LTPA301DummyDataRow } from '../data/ltpa301Data'
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA301Main = () => {
+export const Ltpa301Main = () => {
   // AgGrid Column
   const columnDefs: (ColDef<LTPA301DummyDataRow> | ColGroupDef<LTPA301DummyDataRow>)[] = [
     {
@@ -353,5 +353,3 @@ export const LTPA301Main = () => {
     </LayoutMain>
   );
 };
-
-export default LTPA301Main;

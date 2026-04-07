@@ -23,7 +23,7 @@ import { LTPA300DummyData } from '../data/ltpa300Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA300Main = () => {
+export const Ltpa300Main = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',

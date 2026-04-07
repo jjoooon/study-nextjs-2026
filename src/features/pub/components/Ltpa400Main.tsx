@@ -28,13 +28,14 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const LTPA400Main = () => {
-  // Tab 정의
-  type LTPA400TabType = { name: string; value: string; label: string };
-  const DATA_TABS: LTPA400TabType[] = [
-    { name: '설계요청', value: 'tab1', label: '설계요청' },
-    { name: '모집자 설계', value: 'tab2', label: '모집자 설계' },
-  ];
+// Tab 정의
+type Ltpa400TabType = { name: string; value: string; label: string };
+const DATA_TABS: Ltpa400TabType[] = [
+  { name: '설계요청', value: 'tab1', label: '설계요청' },
+  { name: '모집자 설계', value: 'tab2', label: '모집자 설계' },
+];
+
+export const Ltpa400Main = () => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // Tab1 AGGrid Column

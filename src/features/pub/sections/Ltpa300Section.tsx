@@ -2,7 +2,7 @@
 
 import PageID from '@features/PageID';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { LTPA300Main } from '../components/LTPA300Main';
+import { Ltpa300Main } from '../components/LTPA300Main';
 
 const data = {
   pageID: {
@@ -10,13 +10,13 @@ const data = {
     pageId: 'LTPA300',
   },
 };
-export default function LTPA300Section() {
+export default function Ltpa300Section() {
   return (
     <LayoutTemplate
       // LayoutHead
       pageID={<PageID data={data.pageID} />}
       // LayoutBody: main
-      mainBody={<LTPA300Main />}
+      mainBody={<Ltpa300Main />}
     />
   );
 }
