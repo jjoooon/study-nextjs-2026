@@ -1,5 +1,9 @@
 'use client';
 
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,12 +22,8 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@uiux/Dialog';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
 
 import type { PopupBaseProps } from './types';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type MenuItem = {
   code: string;

@@ -2,6 +2,8 @@
 
 // components - layout
 // components - features
+import type { ReactNode } from 'react';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { InfoContract } from '@common/InfoContract';
 import AsideFoot from '@features/AsideFoot';
@@ -13,12 +15,10 @@ import TaskStatusBoard from '@features/TaskStatusBoard';
 
 // hooks
 import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
-import type { ReactNode } from 'react';
 
 // LTPA350 - components
 import { LTPA350Step1 } from '../components/LTPA350Step1'; // 01. 담보설계
 import { LTPA350Step2 } from '../components/LTPA350Step2'; // 02. 담보설계
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // types
 type LTPA350ProcessStep = number;

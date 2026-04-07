@@ -1,12 +1,11 @@
 'use client';
 
+import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import * as React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { CheckIcon, Favorite } from '@icons';
-import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import * as React from 'react';
-
-import { cn } from '@/shared/lib/shadcn/utils';
 
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;

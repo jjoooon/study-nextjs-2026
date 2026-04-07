@@ -14,14 +14,14 @@ import { combineReducers, Reducer } from '@reduxjs/toolkit';
 import type { UnknownAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 
-import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';
-import { persistConfig } from './config';
-import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './registry/reducer';
 import authReducer from '@/shared/store/authSlice';
 import popupReducer from '@/shared/store/popupSlice';
 import spinnerReducer from '@/shared/store/spinnerSlice';
 import uiReducer from '@/shared/store/uiSlice';
 import log from '@/shared/utils/logger';
+import { getAllApiMiddleware, registerAllApiReducers } from './api/registry';
+import { persistConfig } from './config';
+import { EJECT_REDUCER, INJECT_REDUCER, reducerRegistry } from './registry/reducer';
 
 // ============================================================================
 // INITIAL REDUCER REGISTRATION

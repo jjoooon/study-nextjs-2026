@@ -1,5 +1,6 @@
 'use client';
 // 권오택
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FileItemIcon, InputClearIcon } from '@icons';
@@ -15,7 +16,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { PopupBaseProps } from './types';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

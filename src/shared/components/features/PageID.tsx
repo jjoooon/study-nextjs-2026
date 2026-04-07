@@ -1,12 +1,11 @@
 'use client';
 
+import { size } from 'zod';
+import { getHeader } from '@/shared/utils/authUtils';
 import { Grow, Typo } from '@atoms';
 import { ZoomControl } from '@common/ZoomControl';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
-
-import { size } from 'zod';
-import { getHeader } from '@/shared/utils/authUtils';
 
 type DefaultPageID = {
   pageName?: string;

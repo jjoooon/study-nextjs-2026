@@ -1,6 +1,9 @@
 'use client';
 
 // Layout Components
+import { useReducer, useState, type ReactNode, useCallback } from 'react';
+import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -10,6 +13,8 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
+import { SearchIcon, AddIcon, QuestionMark } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 
 // Atomic Components
@@ -25,15 +30,10 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 // Common Components
 
 // Feature Components
-import { LTPA350Step1 as MainFoot } from '@features/MainFoot';
 
 // Icons
-import { SearchIcon, AddIcon, QuestionMark } from '@icons';
 
 // Hooks
-import { useReducer, useState, type ReactNode, useCallback } from 'react';
-import type { LTPA350Step1DataType } from '@/features/pub/proto/data/LTPA350Step1Data';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 // Data
 

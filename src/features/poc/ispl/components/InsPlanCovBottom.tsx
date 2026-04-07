@@ -1,7 +1,7 @@
+import { LayoutControls } from '@layout/Cabinet';
 import { Grow, Gcol } from '@atoms';
 import { KeyValueList } from '@common/KeyValueList';
 import { ArrowNext } from '@icons';
-import { LayoutControls } from '@layout/Cabinet';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 

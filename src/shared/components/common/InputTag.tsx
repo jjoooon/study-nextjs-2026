@@ -1,14 +1,13 @@
 'use client';
 
+import { X } from 'lucide-react';
+import * as React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { InputClearIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { X } from 'lucide-react';
-import * as React from 'react';
-
-import { cn } from '@/shared/lib/shadcn/utils';
 
 export interface InputTagProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
   value?: string[];

@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef } from 'react';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -19,8 +21,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { useRef } from 'react';
-import * as React from 'react';
 import type { PopupBaseProps } from './types';
 
 export const LTPZ021 = ({ open, onOpenChange }: PopupBaseProps) => {

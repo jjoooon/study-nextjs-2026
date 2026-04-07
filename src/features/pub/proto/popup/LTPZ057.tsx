@@ -1,6 +1,7 @@
 'use client';
 
 // React
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,7 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import type { PopupBaseProps } from './types';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 export const LTPZ057 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({

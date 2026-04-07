@@ -1,13 +1,22 @@
 'use client';
 // 권오택
 import * as React from 'react';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from './types';
+import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CommonIcon, CircleCheckIcon, JobIcon, CumulativeIcon, UwIcon, InfoToastIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
+import type { PopupBaseProps } from './types';
 
 type CheckTab = {
   name: string;
@@ -41,26 +50,35 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl" >
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>꼭 확인해야 할 일</Typo>
-            <Typo tag={'p'} variant={'body-xl'}>(LTRZ005)</Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              꼭 확인해야 할 일
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTRZ005)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]' >
-
-          <Gcol className='w-full h-full' gap={4}>
-            <Grow variant={'box-info-line'} className="w-full" placement='se'>
-              <Typo tag='strong' variant={'body-lg'}>한화시그니처여성 건강 보험 3.0 무배당</Typo>
-              <Divider variant={'dot'}/>
-              <Typo tag='span' variant={'body-lg'}>납입면제 강화형</Typo>
-              <Divider variant={'dot'}/>
-              <Typo tag='span' variant={'body-lg'}>기본형</Typo>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Gcol className="w-full h-full" gap={4}>
+            <Grow variant={'box-info-line'} className="w-full" placement="se">
+              <Typo tag="strong" variant={'body-lg'}>
+                한화시그니처여성 건강 보험 3.0 무배당
+              </Typo>
+              <Divider variant={'dot'} />
+              <Typo tag="span" variant={'body-lg'}>
+                납입면제 강화형
+              </Typo>
+              <Divider variant={'dot'} />
+              <Typo tag="span" variant={'body-lg'}>
+                기본형
+              </Typo>
             </Grow>
 
             {/* 디자인 */}
-            <div className='grid w-full grid-cols-4 gap-2'>
+            <div className="grid w-full grid-cols-4 gap-2">
               {tabs.map((tab) => {
                 const isActive = active === tab.value;
                 return (
@@ -68,18 +86,14 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
                     key={tab.value}
                     variant="outlined"
                     color="gray-light"
-                    className='w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]!'
+                    className="w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]!"
                     onClick={() => setActive(tab.value)}
-                    style={
-                      isActive
-                        ? { border: '2px solid var(--color-border-primary, #FF5C2E)' }
-                        : { boxShadow: '' }
-                    }
+                    style={isActive ? { border: '2px solid var(--color-border-primary, #FF5C2E)' } : { boxShadow: '' }}
                   >
-                    <Grow placement='bwc' className='w-full'>
+                    <Grow placement="bwc" className="w-full">
                       <Grow>
                         {getTabIcon(tab.value)}
-                        <Typo tag="strong" variant={'body-lg'} weight="bold" className='text-gray-500'>
+                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
                           {tab.label}
                         </Typo>
                       </Grow>
@@ -91,22 +105,26 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
             </div>
 
             <>
-              <Gcol className='w-full' gap={2}>
-                <Typo tag={'strong'} variant={'heading-md'}>확인사항</Typo>
-                <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
+              <Gcol className="w-full" gap={2}>
+                <Typo tag={'strong'} variant={'heading-md'}>
+                  확인사항
+                </Typo>
+                <Gcol className="w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center">
                   <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
                 </Gcol>
               </Gcol>
 
-              <Gcol className='w-full' gap={2}>
-                <Typo tag={'strong'} variant={'heading-md'}>필수지침</Typo>
-                <Gcol className='w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center'>
+              <Gcol className="w-full" gap={2}>
+                <Typo tag={'strong'} variant={'heading-md'}>
+                  필수지침
+                </Typo>
+                <Gcol className="w-full h-88 bg-[#FFE0E0] rounded-[0.8rem] justify-center items-center">
                   <Typo variant={'body-xl'}>기존 스타일 동일</Typo>
                 </Gcol>
               </Gcol>
             </>
           </Gcol>
-        </DialogSection> 
+        </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
@@ -126,7 +144,7 @@ export const LTPZ005 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
-    </DialogContent>
-  </Dialog>    
+      </DialogContent>
+    </Dialog>
   );
 };

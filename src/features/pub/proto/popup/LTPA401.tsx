@@ -1,5 +1,9 @@
 'use client';
 
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { useRef, useState } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -19,11 +23,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { useRef, useState } from 'react';
-import * as React from 'react';
 import type { PopupBaseProps } from './types';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const LTPA401 = ({ open, onOpenChange }: PopupBaseProps) => {
