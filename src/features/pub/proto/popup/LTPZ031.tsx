@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,9 +20,9 @@ import { DatePickerInput } from '@common/DatePicker';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { TooltipQ } from '@common/TooltipQ';
-import { BulletItem } from '@/shared/components/common/BulletList';
+import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { Checkbox } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 
 
@@ -45,6 +45,10 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
   type13: '',
 });
 
+// const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
+const [checked, setChecked] = React.useState<string[]>(['b']);
+
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="full">
@@ -54,68 +58,163 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
             <Typo tag={'p'} variant={'body-xl'}>(LTPZ031)</Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          <Grow className="w-full" placement='ss' gap={5}>
-            <Gcol placement='ss' className='w-full' gap={5}>
-              <Grow className='w-full' variant="box-round">
-                <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto']} variant='head'>
-                  <FormRow>
-                    <FormCell title={'설계번호'}>
-                      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text" value={'LA123123123'}>LA123123123</Button>
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </Grow>
-                
-              <Grow placement='bwc' className="w-full">
-                <Typo variant={'heading-sm'} className="mb-1">계약정보</Typo>
-                <Grow>
-                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">출생후보험료</Button>
-                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">예상환급금조회</Button>
-                  <Button color="secondary" onClick={() => { }} only="default" size="lg" variant="outlined">영업수수료</Button>
+        <DialogSection className='w-full'>
+          <Grow className="grid w-full grid-cols-[24.7rem_minmax(0,1fr)] gap-5" placement='ss'>
+            <Gcol placement='ss' className='w-[24.7rem] shrink-0 overflow-hidden' gap={5}>
+              <Gcol className='w-full' placement='ss' gap={2}>
+                <Typo variant="heading-md">많이 찾는 질병</Typo>
+                <Grow variant='box-round' placement='bwc'>
+                  <CheckboxGroup
+                    className="gap-1"
+                    color="primary"
+                    minSelected={2}
+                    value={checked}
+                    onValueChange={setChecked}
+                    size="lg"
+                    variant="button"
+                  >
+                    <CheckboxGroupItem value="chk01_01">
+                      대장·직장용종
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_02">
+                      척주염좌
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_03">
+                      등통증
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_04">
+                      후천성 백내장
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_05">
+                      열상·표재성손상
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_06">
+                      추간판장애
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_07">
+                      금성 비인두염
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_08">
+                      교통사고
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_09">
+                      치액/치질
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="chk01_10">
+                      자궁근종
+                    </CheckboxGroupItem>
+                  </CheckboxGroup>
                 </Grow>
-              </Grow>
-              <FormTable caption="계약정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
-                <FormRow>
-                  <FormCell title={'계약자'} colSpan={3}>
-                    김한화
-                  </FormCell>
-                </FormRow>  
-                <FormRow>
-                  <FormCell title={'상품명'} colSpan={3}>
-                    한화실손의료보험(갱신형) 무배당2601
-                  </FormCell>  
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'가입플랜'} colSpan={3}>
-                    자유설계
-                  </FormCell>  
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'보험기간'}>
-                    05년 만기
-                  </FormCell>
-                  <FormCell title={'납입기간'}>
-                    월납/전기납
-                  </FormCell>  
-                </FormRow>
-              </FormTable>
+              </Gcol>
+              <Gcol className='w-full' placement='ss' gap={2}>
+                <Grow placement='bwe'>
+                  <Typo variant="heading-md">질병검색</Typo>
+                  <Badge
+                    color="blue"
+                    size="md"
+                    variant="contained"
+                    className=""
+                  >
+                    입력된 질병 6건
+                  </Badge>
+                </Grow>
+                <Gcol variant='box-round' className='bg-[var(--color-blue-gray-15)]'>
+                  <Grow className="w-full">
+                    <Input placeholder="병명 또는 코드 입력" value={form.type01} onChange={e => setFormField('type01', e.target.value)} />
+                    <Button aria-label="검색" variant={'outlined'}  size={'lg'} color="gray-light" only="icon">
+                      <SearchIcon color="{'var(--color-primary-50)'}" />
+                    </Button>
+                  </Grow>
+                  <Grow>
+                    <Typo>총 <b className="text-[var(--color-primary-50)]">18건</b></Typo>
+                  </Grow>
+                  <Table variant="default">
+                    <caption className="a11y-hidden">
+                      테이블 소개글
+                    </caption>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>
+                          KCD코드
+                        </TableHead>
+                        <TableHead>
+                          질병명
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.0
+                        </TableCell>
+                        <TableCell>
+                          <b className="text-[var(--color-primary-50)]">척추</b>관협착증
+                        </TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.1
+                        </TableCell>
+                        <TableCell>
+                          <b className="text-[var(--color-primary-50)]">척추</b>만곡증
+                        </TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.2
+                        </TableCell>
+                        <TableCell>
+                          <b className="text-[var(--color-primary-50)]">척추</b>분리증
+                        </TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.3
+                        </TableCell>
+                        <TableCell>
+                          <b className="text-[var(--color-primary-50)]">척추</b>전방전위증
+                        </TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.4
+                        </TableCell>
+                        <TableCell>
+                          <b className="text-[var(--color-primary-50)]">척추</b>증, <b className="text-[var(--color-primary-50)]">척추</b>병증
+                        </TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.5
+                        </TableCell>
+                        <TableCell>
+                          강직성<b className="text-[var(--color-primary-50)]">척추</b>염
+                        </TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableCell>
+                          M48.6
+                        </TableCell>
+                        <TableCell>
+                          염증성<b className="text-[var(--color-primary-50)]">척추</b>병증
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Gcol>
+              </Gcol>            
             </Gcol>
             
             {/* Tab */}
-            <Grow placement='ss' className='w-full' gap={2}>
-              <Grow className="w-full">
-                {/* 인보험/물보험 TabPager 예시 */}
-                <Gcol className="w-full" placement='ss'>
+            <Grow placement='ss' className='w-full min-w-0' gap={2}>
+              <Grow className="w-full min-w-0">
+                <Gcol className="w-full min-w-0" placement='ss'>
                   {(() => {
                     const [tabActive, setTabActive] = React.useState('TAB1');
                     const tabData = [
                       { label: '척추염좌', value: 'TAB1' },
                       { label: '자궁근종', value: 'TAB2' },
-                      { label: '대장직장용종', value: 'TAB3' },
+                      { label: '대장·직장용종', value: 'TAB3' },
                       { label: '추간판장애', value: 'TAB4' },
                       { label: '어깨병변', value: 'TAB5' },
                     ];
@@ -137,7 +236,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Button>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <FormTable caption="병명" 
+                                <FormTable caption="기본질문 항목" 
                                   cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
                                 >
                                   <FormRow vertical={false}>
@@ -152,18 +251,44 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                             </Button>
                                             </TooltipTrigger>
                                             <TooltipContent
-                                              align="center"
+                                              align="start"
                                               side="bottom"
                                               sideOffset={0}
                                               variant="default"
-                                              className="w-[16rem]"
+                                              className="z-[60] w-[22.1rem] block"
                                             >
-                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강주의 염좌 및 긴장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                              <Gcol placement='ss' gap={1.5}>
+                                                <Typo className="body-md font-bold">척추염좌</Typo>
+                                                <Grow>
+                                                  <Badge
+                                                    color="primary"
+                                                    size="md"
+                                                    variant="contained"
+                                                  >
+                                                    할증
+                                                  </Badge>
+                                                  <Badge
+                                                    color="green"
+                                                    size="md"
+                                                    variant="contained"
+                                                  >
+                                                    부담보
+                                                  </Badge>
+                                                  <Badge
+                                                    color="blue"
+                                                    size="md"
+                                                    variant="contained"
+                                                  >
+                                                    SI경증
+                                                  </Badge>
+                                                </Grow>
+                                                <Typo className="text-wrap">경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장</Typo>
+                                              </Gcol>
                                             </TooltipContent>
                                           </Tooltip>
-                                          <TooltipQ>
+                                            {/* <TooltipQ className="z-[60]">
                                             {`문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.`}
-                                            </TooltipQ>
+                                          </TooltipQ> */}
                                         </Grow>
                                         <Badge
                                           color="green"
@@ -176,7 +301,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                       </Grow>
                                     </FormCell>
                                     <FormCell title={'의료기관명'}>
-                                      <Input commaAmount={true} value={form.type02} onChange={e => setFormField('type02', e.target.value)} required />
+                                      <Input value={form.type02} onChange={e => setFormField('type02', e.target.value)} required />
                                     </FormCell>
                                   </FormRow>
                                   <FormRow vertical={false}>
@@ -197,17 +322,16 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                     </FormCell>
                                     <FormCell title={'수술여부'}>
                                       <RadioGroup
-                                        className="gap-2"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
+                                        className="gap-3"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
                                           id="d1"
                                           size="lg"
-                                          value="option1"
+                                          value="option1_1"
                                           variant="default"
                                         >
                                           예
@@ -216,7 +340,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           color="primary"
                                           id="d2"
                                           size="lg"
-                                          value="option2"
+                                          value="option1_2"
                                           variant="default"
                                         >
                                           아니오
@@ -226,24 +350,34 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                   </FormRow>
                                   <FormRow vertical={false}>
                                     <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Input commaAmount={true} value={form.type03} onChange={e => setFormField('type03', e.target.value)} required />
-                                      입원
-                                      <Input commaAmount={true} value={form.type04} onChange={e => setFormField('type04', e.target.value)} required />   
-                                      일
+                                      <Grow gap={3}>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          required
+                                          >
+                                          입원
+                                        </Checkbox>
+                                        <Grow>
+                                          <Input commaAmount={true} value={form.type04} onChange={e => setFormField('type04', e.target.value)} width="3rem" required />   
+                                          일
+                                        </Grow>
+                                      </Grow>
                                     </FormCell>
                                     <FormCell title={'완치여부'}>
                                       <RadioGroup
-                                        className="gap-2"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
+                                        className="gap-3"
                                         onValueChange={() => {}}
                                         width="full"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
                                           id="d1"
                                           size="lg"
-                                          value="option1"
+                                          value="option2_1"
                                           variant="default"
                                         >
                                           예
@@ -252,7 +386,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           color="primary"
                                           id="d2"
                                           size="lg"
-                                          value="option2"
+                                          value="option2_2"
                                           variant="default"
                                         >
                                           아니오
@@ -262,24 +396,36 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                   </FormRow>
                                   <FormRow vertical={false}>
                                     <FormCell title={null}>
-                                      <Input commaAmount={true} value={form.type05} onChange={e => setFormField('type05', e.target.value)} required />
-                                      통원
-                                      <Input commaAmount={true} value={form.type06} onChange={e => setFormField('type06', e.target.value)} required />   
-                                      회
+                                      <Grow gap={3}>
+                                        <Checkbox
+                                          color="primary"
+                                          onCheckedChange={() => {}}
+                                          size="lg"
+                                          variant="default"
+                                          required
+                                          >
+                                          통원
+                                        </Checkbox>
+                                        <Grow>
+                                          <Input commaAmount={true} value={form.type06} onChange={e => setFormField('type06', e.target.value)} required width="3rem" />   
+                                          회
+                                        </Grow>
+                                      </Grow>
                                     </FormCell>
                                     <FormCell title={'재발유무'}>
                                       <RadioGroup
-                                        className="gap-2"
+                                        className="gap-3"
                                         errorMsg="하나를 선택해주세요."
                                         errorPs="bl"
                                         onValueChange={() => {}}
-                                        width="full"
+                                        width="auto"
+                                        required
                                       >
                                         <RadioGroupItem
                                           color="primary"
                                           id="d1"
                                           size="lg"
-                                          value="option1"
+                                          value="option3_1"
                                           variant="default"
                                         >
                                           없음
@@ -288,14 +434,14 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           color="primary"
                                           id="d2"
                                           size="lg"
-                                          value="option2"
+                                          value="option3_2"
                                           variant="default"
                                         >
                                           있음
                                         </RadioGroupItem>
                                       </RadioGroup>
                                       <Grow>
-                                        <Input commaAmount={true} value={form.type05} onChange={e => setFormField('type05', e.target.value)} width="4rem" />
+                                        <Input commaAmount={true} value={form.type07} onChange={e => setFormField('type07', e.target.value)} width="4rem" />
                                         회
                                       </Grow>
                                     </FormCell>
@@ -307,7 +453,6 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               <TableFoldHead title="(선택)치료내용" >
                                 <Grow>
                                   <BulletItem
-                                    // before="ⓐ"
                                     className="text-right w-full break-words whitespace-pre-line"
                                     color="default"
                                     onClick={() => {}}
@@ -322,7 +467,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <Table>
                                   <TableBody>
                                     <TableRow>
-                                      <TableCell>
+                                      <TableCell className='border-x-0'>
                                         <Checkbox
                                           color="primary"
                                           onCheckedChange={() => {}}
@@ -332,7 +477,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           진단/검사/검진
                                         </Checkbox>
                                       </TableCell>
-                                      <TableCell>
+                                      <TableCell className='border-x-0'>
                                         <Checkbox
                                           color="primary"
                                           onCheckedChange={() => {}}
@@ -342,7 +487,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           약처방/투약(주사,연고,안약 등)
                                         </Checkbox>
                                       </TableCell>
-                                      <TableCell>
+                                      <TableCell  className='border-x-0'>
                                         <Grow placement='bwe'>
                                           <Checkbox
                                             color="primary"
@@ -359,7 +504,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                       </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                      <TableCell>
+                                      <TableCell className='border-x-0'>
                                         <Checkbox
                                           color="primary"
                                           onCheckedChange={() => {}}
@@ -369,7 +514,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           상담/언어치료
                                         </Checkbox>
                                       </TableCell>
-                                      <TableCell>
+                                      <TableCell  className='border-x-0'>
                                         <Checkbox
                                           color="primary"
                                           onCheckedChange={() => {}}
@@ -379,7 +524,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                           치과치료
                                         </Checkbox>
                                       </TableCell>
-                                      <TableCell>
+                                      <TableCell  className='border-x-0'>
                                         <Checkbox
                                           color="primary"
                                           onCheckedChange={() => {}}
@@ -409,6 +554,195 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 </Table>
                               </TableFoldBody>
                             </TableFold>
+                            <TableFold>
+                              <TableFoldHead title="추가질문" />
+                              <TableFoldBody>
+                                <FormTable
+                                  cols={['w-[8rem]', 'w-auto']}
+                                >
+                                  <FormRow vertical={false}>
+                                    <FormCell title={'발생부위'}>
+                                      <Grow className='w-full' >
+                                        <RadioGroup
+                                          className="gap-2"
+                                          errorMsg="하나를 선택해주세요."
+                                          errorPs="bl"
+                                          onValueChange={() => {}}
+                                        >
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d1"
+                                            size="lg"
+                                            value="option1"
+                                            variant="default"
+                                          >
+                                            경추
+                                          </RadioGroupItem>
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d2"
+                                            size="lg"
+                                            value="option2"
+                                            variant="default"
+                                          >
+                                            흉추
+                                          </RadioGroupItem>
+                                          <RadioGroupItem
+                                            color="primary"
+                                            id="d3"
+                                            size="lg"
+                                            value="option3"
+                                            variant="default"
+                                          >
+                                            요추
+                                          </RadioGroupItem>
+                                          <Grow gap={1}>
+                                            <RadioGroupItem
+                                              color="primary"
+                                              id="d3"
+                                              size="lg"
+                                              value="option3"
+                                              variant="default"
+                                            >
+                                              그외 부위 또는 여러부위
+                                            </RadioGroupItem>
+                                            <Input value={form.type08} placeholder="직접 입력" onChange={e => setFormField('type08', e.target.value)} className="w-full border-2" readOnly />
+                                          </Grow>
+                                        </RadioGroup>
+                                      </Grow>
+                                    </FormCell>
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormCell title={'발생원인'}>
+                                      <RadioGroup
+                                        className="gap-2"
+                                        errorMsg="하나를 선택해주세요."
+                                        errorPs="bl"
+                                        onValueChange={() => {}}
+                                        width="full"
+                                      >
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d1"
+                                          size="lg"
+                                          value="option1"
+                                          variant="default"
+                                        >
+                                          교통사고 外원인
+                                        </RadioGroupItem>
+                                        <RadioGroupItem
+                                          color="primary"
+                                          id="d2"
+                                          size="lg"
+                                          value="option2"
+                                          variant="default"
+                                        >
+                                          교통사고 원인
+                                        </RadioGroupItem>
+                                      </RadioGroup>
+                                    </FormCell>
+                                  </FormRow>
+                                </FormTable>
+                              </TableFoldBody>
+                            </TableFold>
+                            <TableFold>
+                              <TableFoldHead title="질병별 사전심사 안내">
+                                <Grow>
+                                  <BulletItem
+                                    // before="ⓐ"
+                                    className="text-right w-full break-words whitespace-pre-line"
+                                    color="default"
+                                    onClick={() => {}}
+                                    size="md"
+                                    type="dot"
+                                  >
+                                    공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수 있습니다.
+                                  </BulletItem>
+                                </Grow>
+                              </TableFoldHead>
+                              <TableFoldBody>
+                                <Grow gap={3} placement='bws'>
+                                  <Table>
+                                    <TableHeader>
+                                      <TableRow>
+                                        <TableHead>
+                                          척추 염좌 심사기준
+                                        </TableHead>
+                                      </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                      <TableRow>
+                                        <TableCell>
+                                          <Typo>[일반고지형 심사가이드라인]</Typo><br/>
+                                          <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo><br/>
+                                          <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo><br/>
+                                          <Typo>교통사고 원인</Typo><br/>
+                                          <BulletList position="col">
+                                            <BulletListItem
+                                              before="▶"
+                                              className="whitespace-nowrap"
+                                              color="default"
+                                              size="md"
+                                              type="dash"
+                                            >
+                                              31일미만 입통원: 경과1개월이상 인수(실손3개월후)
+                                            </BulletListItem>
+                                          </BulletList>
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
+                                  <Table>
+                                    <TableHeader>
+                                      <TableRow>
+                                        <TableHead>
+                                          척추 염좌 필요서류
+                                        </TableHead>
+                                      </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                      <TableRow>
+                                        <TableCell>
+                                          <Typo>[일반고지형 심사가이드라인]</Typo>
+                                          <BulletList position="col">
+                                            <BulletListItem
+                                              before="①"
+                                              className="whitespace-nowrap"
+                                              color="default"
+                                              size="md"
+                                              type="symbols"
+                                            >
+                                              소견서(진단명, 치료기간, 치료내용, 현재상태 등)
+                                            </BulletListItem>
+                                            <BulletListItem
+                                              before="②"
+                                              className="whitespace-nowrap"
+                                              color="default"
+                                              onClick={() => {}}
+                                              size="md"
+                                              type="symbols"
+                                            >
+                                              필요시 의사경과기록지
+                                            </BulletListItem>
+                                            <BulletListItem
+                                              before="③"
+                                              className="whitespace-nowrap"
+                                              color="default"
+                                              onClick={() => {}}
+                                              size="md"
+                                              type="symbols"
+                                            >
+                                              수술치료를 받은 경우에는 수술기록지
+                                            </BulletListItem>
+                                          </BulletList>
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
+
+                                </Grow>
+                              </TableFoldBody>
+                            </TableFold>                            
                           </Gcol>
                         ) : tabActive === 'TAB2' ? (     
                           <Gcol placement='ss' className='w-full'>
@@ -439,7 +773,7 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 >
                                   <FormRow vertical={false}>
                                     <FormCell title={'병명'}>
-                                      대장직장용종
+                                      대장·직장용종
                                     </FormCell>
                                     <FormCell title={'의료기관명'}>                                   
                                     </FormCell>
@@ -498,11 +832,20 @@ export const LTPZ031 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-                <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                  버튼
-                </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>알릴사항FAQ</Button>
+            </Grow>
+            <Grow>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                자동고지(ICIS)
+              </Button>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                자동고지(심평원)
+              </Button>
+              <Button color={'gray'} size={'xl'} variant={'outlined'}>
+                질병 가져오기
+              </Button>
               <Button variant={'contained'} size={'xl'}>
-                저장
+                알릴사항 저장하기
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
