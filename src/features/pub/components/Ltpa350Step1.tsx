@@ -245,30 +245,11 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   clear
                                   onChange={() => {}}
                                   options={[
-                                    {
-                                      label: <div>박은빈</div>,
-                                      value: '',
-                                    },
-                                    {
-                                      label: <div>김민지</div>,
-                                      value: 'LA24094848896',
-                                    },
-                                    {
-                                      label: <div>이도현</div>,
-                                      value: 'LA25094848897',
-                                    },
-                                    {
-                                      label: <div>최수영</div>,
-                                      value: 'LA25094848898',
-                                    },
-                                    {
-                                      label: <div>박보검</div>,
-                                      value: 'LA25094848899',
-                                    },
-                                    {
-                                      label: <div>한지민</div>,
-                                      value: 'LA25094848900',
-                                    },
+                                    { label: <div>박은빈</div>, value: 'LA24094848895' },
+                                    { label: <div>김은빈</div>, value: 'LA24094848895' },
+                                    { label: <div>최은빈</div>, value: 'LA24094848895' },
+                                    { label: <div>안은빈</div>, value: 'LA24094848895' },
+                                    { label: <div>조은빈</div>, value: 'LA24094848895' },
                                   ]}
                                   placeholder=""
                                   required
