@@ -183,21 +183,25 @@ export const FormTable = ({
     default: '',
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
+
     setting:
       'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none! [&_tr]:border-0!',
+
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
+
     head: `w-full border-none flex flex-col bg-[transparent] 
-      [&_colgroup]:hidden 
-      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none! [&_tr]:w-full [&_tr~tr>*]:pt-[0.6rem]! 
-      [&_th]:flex [&_th]:items-center [&_th]:justify-start [&_th]:gap-2 [&_th]:border-none! [&_th]:w-max
-      [&_th]:h-auto! [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_th]:text-[1.4rem]
-      [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_td]:h-[auto] [&_td]:font-bold [&_td]:text-[1.4rem] 
-      [&_td+th]:pl-[1.6rem]!`,
+    [&>colgroup]:hidden 
+    [&>table>tbody>tr]:flex [&>table>tbody>tr]:items-center [&>table>tbody>tr]:justify-start [&>table>tbody>tr]:gap-2 [&>table>tbody>tr]:border-none! [&>table>tbody>tr]:w-full [&>table>tbody>tr~tr>*]:pt-[0.6rem]! 
+    [&>table>tbody>tr>th]:flex [&>table>tbody>tr>th]:items-center [&>table>tbody>tr>th]:justify-start [&>table>tbody>tr>th]:gap-2 [&>table>tbody>tr>th]:border-none! [&>table>tbody>tr>th]:w-max
+    [&>table>tbody>tr>th]:h-auto! [&>table>tbody>tr>th]:bg-[transparent] [&>table>tbody>tr>th]:text-[#333] [&>table>tbody>tr>th]:font-bold [&>table>tbody>tr>th]:px-0 [&>table>tbody>tr>th]:py-0! [&>table>tbody>tr>th]:border-none! [&>table>tbody>tr>th]:text-[1.4rem]
+    [&>table>tbody>tr>td]:border-none! [&>table>tbody>tr>td]:p-0! [&>table>tbody>tr>td]:flex [&>table>tbody>tr>td]:items-center [&>table>tbody>tr>td]:justify-start [&>table>tbody>tr>td]:gap-4 [&>table>tbody>tr>td]:h-[auto] [&>table>tbody>tr>td]:font-bold [&>table>tbody>tr>td]:text-[1.4rem] 
+    [&>table>tbody>tr>td+th]:pl-[1.6rem]!`,
+
     none: `border-0! bg-transparent 
-      [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_th]:h-auto! [&_th]:break-keep!   
-      [&_td]:border-0! [&_td]:p-0! [&_td]:h-auto!   
-      [&_tr]:border-0! [&_td+th]:pl-[2.4rem]! [&_tr~tr>*]:pt-[0.6rem]!`,
+    [&>table>tbody>tr>th]:bg-transparent [&>table>tbody>tr>th]:border-0! [&>table>tbody>tr>th]:py-0! [&>table>tbody>tr>th]:pl-0! [&>table>tbody>tr>th]:pr-[0.8rem] [&>table>tbody>tr>th]:h-auto! [&>table>tbody>tr>th]:break-keep!   
+    [&>table>tbody>tr>td]:border-0! [&>table>tbody>tr>td]:p-0! [&>table>tbody>tr>td]:h-auto!   
+    [&>table>tbody>tr]:border-0! [&>table>tbody>tr>td+th]:pl-[2.4rem]! [&>table>tbody>tr~tr>*]:pt-[0.6rem]!`,
   };
 
   // variant가 'none'이면 lineTop을 무시

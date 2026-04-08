@@ -45,13 +45,41 @@ export function IAListWithPreview() {
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
+  const workListH = React.useMemo(() => [] as string[], []);
+  const workListK = React.useMemo(() => ['LTPZ085', 'LTPZ086'], []);
+  const workListJ = React.useMemo(
+    () => ['LTPZ999', 'LTPZ001', 'LTPZ009', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPZ018'],
+    []
+  );
+
+  const rowsWithPubOwner = React.useMemo(() => {
+    const pubOwnerById = new Map<string, string>();
+
+    workListH.forEach((id) => pubOwnerById.set(id, '허승하'));
+    workListK.forEach((id) => pubOwnerById.set(id, '권오택'));
+    workListJ.forEach((id) => pubOwnerById.set(id, '조현민'));
+
+    return ROWS.map((row) => {
+      const matchedPubOwner = pubOwnerById.get(row.subId ?? '') ?? pubOwnerById.get(row.id);
+
+      if (!matchedPubOwner) {
+        return row;
+      }
+
+      return {
+        ...row,
+        pub: matchedPubOwner,
+      };
+    });
+  }, [workListH, workListJ, workListK]);
+
   const visibleRows = React.useMemo(() => {
     if (!showPhaseOnly) {
-      return ROWS;
+      return rowsWithPubOwner;
     }
 
-    return ROWS.filter((row) => row.phase === 'Y');
-  }, [showPhaseOnly]);
+    return rowsWithPubOwner.filter((row) => row.phase === 'Y');
+  }, [rowsWithPubOwner, showPhaseOnly]);
 
   const activeRow = React.useMemo(() => {
     return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
@@ -148,10 +176,7 @@ export function IAListWithPreview() {
       'LTPZ020',
       'LTPA160',
       'LTPA904',
-      'LTPZ999',
-      'LTPZ998',
-      'LTPZ997',
-      'LTPZ996',
+
       'LTPA170',
       'LTPA904',
       'LTPA390',
@@ -166,7 +191,7 @@ export function IAListWithPreview() {
       'LTPA210',
       'LTPA200',
       'LTPA190',
-      'LTPZ001',
+
       'LTPZ040',
       'LTPZ043',
       'LTPZ046',
@@ -180,7 +205,7 @@ export function IAListWithPreview() {
       'LTPZ052',
       'LTPZ053',
       'LTPZ057',
-      'LTPZ009',
+
       'LTPA401',
       'LTPA301',
       'LTPA303',
@@ -193,13 +218,11 @@ export function IAListWithPreview() {
       'LTPZ030',
       'LTPZ031',
       'LTPZ005',
+      'LTPZ062',
     ];
-    const workListH: string[] = [];
-    const workListK: string[] = ['LTPZ085', 'LTPZ086'];
-    const workListJ: string[] = ['ltpz018'];
 
     return [...workListPrev, ...workListH, ...workListK, ...workListJ];
-  }, []);
+  }, [workListH, workListJ, workListK]);
 
   const ingIdSet = React.useMemo(() => new Set(ingList), [ingList]);
   const workIdSet = React.useMemo(() => new Set(workList), [workList]);
