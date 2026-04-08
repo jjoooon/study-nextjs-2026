@@ -192,6 +192,7 @@ export function IAListWithPreview() {
       'LTPZ995',
       'LTPZ030',
       'LTPZ031',
+      'LTPZ005',
     ];
     const workListH: string[] = [];
     const workListK: string[] = ['LTPZ085', 'LTPZ086'];
