@@ -3,6 +3,18 @@
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { AiIcon } from '@icons';
+import { Button } from '../uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogTrigger,
+} from '../uiux/Dialog';
+import { DialogBottomInfo } from './DialogBottomInfo';
 
 export interface RecommendCardProps {
   /** 카드 제목 (상품명 등) */
@@ -44,10 +56,53 @@ export function RecommendCard({ title, plan, term, detail }: RecommendCardProps)
           </Grow>
         </Gcol>
         <Grow className="w-full h-[3.7rem]" placement="cc">
-          <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
-          <Typo tag={'strong'} variant={'body-md'} weight={'bold'} className="text-white">
-            AI 추천이유
-          </Typo>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                color="primary"
+                className="text-white font-bold"
+                onClick={() => {}}
+                only="default"
+                size="lg"
+                variant="none"
+              >
+                <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
+                AI 추천이유
+              </Button>
+            </DialogTrigger>
+            <DialogContent showCloseButton resizable={false} size="md">
+              <DialogHeader>
+                <DialogTitle>제목</DialogTitle>
+              </DialogHeader>
+
+              <DialogSection className="p-0 flex items-center justify-center">
+                <div className="relative w-[50rem] h-[19rem] bg-[url('/images/Ltpa005/ai_box_img.jpg')] bg-cover bg-center bg-no-repeat bg-[length:50.6rem_18.8rem]!">
+                  <Typo tag={'p'} variant={'body-lg'} className="w-[33rem] absolute right-[1rem] top-[1rem]">
+                    고객님의 보장 내용을 분석해보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로
+                    확인됩니다.
+                    <br />
+                    <br /> 목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.
+                    <br />
+                    <br /> 현재 조건에서 보장과 보험료 균형을 고려한 추천설계입니다.
+                  </Typo>
+                </div>
+              </DialogSection>
+              <DialogFooter>
+                <Gcol className="w-full" gap={0}>
+                  <Grow placement={'ec'} gap={2} className="w-full pb-5 px-6">
+                    <Grow>
+                      <DialogClose asChild>
+                        <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                          닫기
+                        </Button>
+                      </DialogClose>
+                    </Grow>
+                  </Grow>
+                  <DialogBottomInfo />
+                </Gcol>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </Grow>
       </Grid>
     </Gcol>

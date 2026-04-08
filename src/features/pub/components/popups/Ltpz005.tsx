@@ -1,8 +1,31 @@
 'use client';
 // 권오택
+import { ColDef, ColGroupDef } from 'ag-grid-community';
+
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@/shared/components/uiux/Dialog';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { RecommendCard } from '@common/RecommendCard';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import {
   AiIcon,
   CircleCheckIcon,
@@ -14,30 +37,7 @@ import {
   UwIcon,
 } from '@icons';
 import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogFooterArea,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-} from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { RecommendCard } from '@/shared/components/common/RecommendCard';
-import { TabPager } from '@/shared/components/common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type CheckTab = {
   name: string;
