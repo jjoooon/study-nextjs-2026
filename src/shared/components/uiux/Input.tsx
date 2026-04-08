@@ -156,10 +156,10 @@ function Input({
 
   const inlineWidthStyle = (() => {
     if (typeof width === 'number') return { width: `${width}rem` };
-    if (typeof width === 'string') {
-      if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
-      if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
-    }
+    // if (typeof width === 'string') {
+    //   if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
+    //   if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
+    // }
     return undefined;
   })();
 
@@ -220,14 +220,10 @@ function Input({
           style={inlineWidthStyle}
         >
           {before && <div>{before}</div>}
-          <div className="relative w-full">
+          <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[0] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
             <input
               type={type}
               data-slot="input"
-              className={cn(
-                'bg-transparent w-full h-full border-0 p-0 m-0 focus:ring-0 focus:outline-none',
-                commaAmount && 'text-right'
-              )}
               required={required}
               readOnly={readOnly}
               aria-invalid={error || undefined}
@@ -274,11 +270,15 @@ function Input({
           {after && <div>{after}</div>}
         </div>
       ) : (
-        <div className="relative w-full">
+        <div className="relative w-full ">
           <input
             type={type}
             data-slot="input"
-            className={cn(variantStyles[variant], commaAmount && 'w-full text-right', '[:focus]:px-[0.7rem]')}
+            className={cn(
+              variantStyles[variant],
+              commaAmount && 'w-[100%]! text-right',
+              '[:focus]:px-[0.7rem] w-[100%]!'
+            )}
             required={required}
             readOnly={readOnly}
             aria-invalid={error || undefined}

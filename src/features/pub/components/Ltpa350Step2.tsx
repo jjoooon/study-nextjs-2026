@@ -11,9 +11,11 @@ import {
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
   createSelectionChangedHandler,
+  createCellClickSelectionToggleHandler,
   createTooltipValueGetter,
   createEditableCallback,
   createCellErrorClassRules,
+  useDynamicPx,
 } from '@aggrid';
 import { Grow, Gcol, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -24,6 +26,7 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PaperIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainHead, LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
+import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -36,6 +39,8 @@ import type { Ltpa350Step2DataType } from '../data/ltpa350Step2Data';
 import { Ltpa350Step2Data } from '../data/ltpa350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
 type TabListDataData = Ltpa350Step2DataType['tabList'];
 type LTPA350GridRow = Ltpa350Step2DataType['agGridTable1'][number] & {
@@ -61,6 +66,17 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
     setCheckedMap((map) => ({ ...map, [key]: !!checked }));
   };
+
+  // Dynamic widths based on zoom scale
+  const colWidth0 = useDynamicPx(40);
+  const colWidth1 = useDynamicPx(60);
+  const colWidth2 = useDynamicPx(100);
+  const colWidth3 = useDynamicPx(120);
+  const colWidth4 = useDynamicPx(140);
+  const attributeColumnWidth = useMemo(
+    () => [colWidth0, colWidth1, colWidth2, colWidth3, colWidth4],
+    [colWidth0, colWidth1, colWidth2, colWidth3, colWidth4]
+  );
 
   // 2) Tabs
   const stringifiedTabs: MainHeadTab[] = Ltpa350Step2Data.tabList.map((item) => ({
@@ -318,6 +334,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
     },
     [ensureLockedRowsSelected, handleSelectionChanged]
   );
+  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<LTPA350GridRow>(), []);
 
   // 인보험
   const columnDefs: ColDef<LTPA350GridRow>[] = useMemo(
@@ -343,7 +360,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '속성',
         field: 'field2',
-        width: 40,
+        width: attributeColumnWidth[0],
         cellClass: 'text-center',
         headerClass: 'px-0!',
         sortable: false,
@@ -354,7 +371,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '가입금액(만원)',
         field: 'field3',
-        width: 100,
+        width: attributeColumnWidth[2],
         headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
         cellClassRules: amountCellClassRules,
@@ -366,7 +383,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '가능금액(만원)',
         field: 'field4',
-        width: 80,
+        width: attributeColumnWidth[2],
         cellClass: 'text-right',
         headerClass: 'px-0!',
         sortable: false,
@@ -376,7 +393,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '만기',
         field: 'field5',
-        width: 60,
+        width: attributeColumnWidth[1],
         cellClass: 'text-center px-[0.2rem]!',
         cellClassRules: editableCellClassRules,
         sortable: false,
@@ -392,7 +409,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '납기',
         field: 'field6',
-        width: 60,
+        width: attributeColumnWidth[1],
         cellClass: 'text-center px-[0.2rem]!',
         cellClassRules: editableCellClassRules,
         sortable: false,
@@ -408,7 +425,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '보험료(만원)',
         field: 'field7',
-        width: 80,
+        width: attributeColumnWidth[1],
         cellClass: 'text-right',
         headerClass: 'px-0!',
         sortable: false,
@@ -419,7 +436,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
         headerName: '예상UW',
         field: 'field8',
         headerClass: 'px-0!',
-        width: 80,
+        width: attributeColumnWidth[1],
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
@@ -433,7 +450,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '중복',
         field: 'field9',
-        width: 30,
+        width: attributeColumnWidth[0],
         headerClass: 'text-center px-0!',
         cellClass: 'text-center px-0!',
         sortable: false,
@@ -444,6 +461,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
     ],
     [
       amountCellClassRules,
+      attributeColumnWidth,
       duplicateRenderer,
       expiryCellRenderer,
       getEditableCallback,
@@ -458,7 +476,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '담보명',
         field: 'field1',
-        width: isWidthExpanded ? 510 : 426,
+        flex: 1,
         cellClass: 'text-left p-0!',
         sortable: false,
         filter: false,
@@ -476,7 +494,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '속성',
         field: 'field2',
-        width: 40,
+        width: attributeColumnWidth[0],
         cellClass: 'text-center',
         headerClass: 'px-0!',
         sortable: false,
@@ -487,7 +505,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '가입금액(만원)',
         field: 'field3',
-        flex: 1.6,
+        width: attributeColumnWidth[2],
         headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
         cellClassRules: amountCellClassRules,
@@ -506,13 +524,13 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           {
             field: 'field4',
             headerName: '출생전',
-            width: 60,
+            width: attributeColumnWidth[1],
             valueFormatter: numberValueFormatter<LTPA350GridRow>,
           },
           {
             field: 'field4',
             headerName: '출생후',
-            width: 60,
+            width: attributeColumnWidth[1],
             valueFormatter: numberValueFormatter<LTPA350GridRow>,
           },
         ],
@@ -527,7 +545,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           {
             field: 'field5',
             headerName: '출생전',
-            width: 60,
+            width: attributeColumnWidth[1],
             cellClass: 'text-center px-[0.2rem]!',
             cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
             editable: getEditableCallback('whenSelected'), // 선택 시에만 편집 허용
@@ -540,7 +558,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           {
             field: 'field5',
             headerName: '출생후',
-            width: 60,
+            width: attributeColumnWidth[1],
             cellClass: 'text-center px-[0.2rem]!',
             cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
             editable: getEditableCallback('whenSelected'), // 선택 시에만 편집 허용
@@ -562,7 +580,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           {
             field: 'field6',
             headerName: '출생전',
-            width: 60,
+            width: attributeColumnWidth[0],
             cellClass: 'text-center px-[0.2rem]!',
             cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
             editable: getEditableCallback('whenSelected'), // 선택 시에만 편집 허용
@@ -578,7 +596,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
         headerName: '예상UW',
         field: 'field8',
         headerClass: 'px-0!',
-        width: 100,
+        width: attributeColumnWidth[2],
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
@@ -592,7 +610,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
       {
         headerName: '중복',
         field: 'field9',
-        width: 30,
+        width: attributeColumnWidth[0],
         headerClass: 'text-center px-0!',
         cellClass: 'text-center px-0!',
         sortable: false,
@@ -603,11 +621,11 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
     ],
     [
       amountCellClassRules,
+      attributeColumnWidth,
       duplicateRenderer,
       expiryCellRenderer,
       getEditableCallback,
       editableCellClassRules,
-      isWidthExpanded,
       productNameHeader,
       titleRenderer,
     ]
@@ -617,428 +635,417 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
 
+  const [viewContents, setViewContents] = useState<Record<string, boolean>>({
+    view1: true,
+    view2: false,
+    view3: false,
+    view4: false,
+    view5: false,
+  });
+
+  const currentViewKey = (Object.keys(viewContents).find((key) => viewContents[key]) ?? 'view1') as ViewKey;
+
   return (
-    <form
-      id="page2-MainForm"
-      className="w-full"
-      onSubmit={(event) => {
-        event.preventDefault();
-        setTestError(!testError);
-      }}
-      noValidate
-    >
-      <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
-        <LayoutMainHead>
-          <NativeSelect className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80">
-            <NativeSelectOption value="">임시 화면확인용: 인보험</NativeSelectOption>
-            <NativeSelectOption value="">임시 화면확인용: 태아</NativeSelectOption>
-            <NativeSelectOption value="">임시 화면확인용: 재물</NativeSelectOption>
-            <NativeSelectOption value="">임시 화면확인용: 단체</NativeSelectOption>
-            <NativeSelectOption value="">임시 화면확인용: 연금/저축</NativeSelectOption>
-          </NativeSelect>
+    <LayoutTemplateLTPA350MainBody
+      mainBody={
+        <form
+          id="page2-MainForm"
+          className="w-full h-full"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setTestError(!testError);
+          }}
+          noValidate
+        >
+          <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
+            <NativeSelect
+              className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
+              value={currentViewKey}
+              onChange={(e) => {
+                const selectedKey = e.target.value as ViewKey;
 
-          <TabPager
-            data={LTPA350Tabs}
-            active={LTPA350Active}
-            setActive={Ltpa350SetActive}
-            visibleCount={5}
-            error={testError}
-            errorMsg="입력하세요."
-            getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => (
-              <HoverCard>
-                <HoverCardTrigger asChild>
-                  <span className="flex items-center">
-                    <span className="max-w-20 truncate block">{tab.name}</span>
-                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                  </span>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                  <BulletList>
-                    {tab.info.map((info: string, index: number) => (
-                      <BulletListItem key={index} type="dot">
-                        {info}
-                      </BulletListItem>
-                    ))}
-                  </BulletList>
-                </HoverCardContent>
-              </HoverCard>
-            )}
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-              <Button
-                variant={'text'}
-                key={String(tab.value)}
-                onClick={() => {
-                  setActive(String(tab.value));
-                  const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-                  if (idx !== -1) {
-                    const page = Math.floor(idx / visibleCount);
-                    setVisibleStart(page * visibleCount);
-                  }
-                }}
-              >
-                <span className="flex items-center gap-2">
-                  <span className="block">{tab.name}</span>
-                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                </span>
-              </Button>
-            )}
-          >
-            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-              <Grow gap={3}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
-                  <PaperIcon />
-                  담보패키지 선택
-                </Button>
-                <Grow className="flex-wrap" placement={'ss'}>
-                  {[
-                    { label: '사망후유', value: '0' },
-                    { label: '3대진단', value: '1' },
-                    { label: '입원일당', value: '2' },
-                    { label: '수술비', value: '3' },
-                    { label: '골절/화상', value: '4' },
-                    { label: '운전비용', value: '5' },
-                    { label: '치료비', value: '6' },
-                    { label: '기타', value: '7' },
-                  ].map((category) => (
-                    <Checkbox key={category.value} variant={'button'}>
-                      {category.label}
-                    </Checkbox>
-                  ))}
-                </Grow>
-              </Grow>
+                setViewContents({
+                  view1: selectedKey === 'view1',
+                  view2: selectedKey === 'view2',
+                  view3: selectedKey === 'view3',
+                  view4: selectedKey === 'view4',
+                  view5: selectedKey === 'view5',
+                });
+              }}
+            >
+              <NativeSelectOption value="view1">임시 화면확인용: 인보험</NativeSelectOption>
+              <NativeSelectOption value="view2">임시 화면확인용: 태아</NativeSelectOption>
+              <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
+              <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
+              <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
+            </NativeSelect>
 
-              <Grow gap={3} className="w-full" placement={'bwc'}>
-                <Grow gap={3} className="w-full" placement={'ss'}>
-                  <Grow className="flex-wrap shrink-0" placement={'ss'}>
-                    {[
-                      { label: '갱신', value: '1' },
-                      { label: '비갱신', value: '2' },
-                    ].map((category) => (
-                      <Checkbox key={category.value} variant={'button'}>
-                        {category.label}
-                      </Checkbox>
-                    ))}
-                  </Grow>
-                  <HashList
-                    data={[
-                      '암',
-                      '뇌',
-                      '심',
-                      '수술',
-                      '특정',
-                      '표적',
-                      '치료',
-                      '골절',
-                      '화상',
-                      '치매',
-                      '심',
-                      '수술',
-                      '특정',
-                      '표적',
-                      '치료',
-                    ]}
-                  />
-                </Grow>
-                <Grow placement={'ec'}>
-                  <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
-                    <ResetIcon color="var(--color-gray-500)" />
+            <LayoutMainHead>
+              <TabPager
+                data={LTPA350Tabs}
+                active={LTPA350Active}
+                setActive={Ltpa350SetActive}
+                visibleCount={5}
+                error={testError}
+                errorMsg="입력하세요."
+                getValue={(tab) => String(tab.value)}
+                renderTab={(tab) => (
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <span className="flex items-center">
+                        <span className="max-w-20 truncate block">{tab.name}</span>
+                        <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                      </span>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      <BulletList>
+                        {tab.info.map((info: string, index: number) => (
+                          <BulletListItem key={index} type="dot">
+                            {info}
+                          </BulletListItem>
+                        ))}
+                      </BulletList>
+                    </HoverCardContent>
+                  </HoverCard>
+                )}
+                renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
+                  <Button
+                    variant={'text'}
+                    key={String(tab.value)}
+                    onClick={() => {
+                      setActive(String(tab.value));
+                      const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                      if (idx !== -1) {
+                        const page = Math.floor(idx / visibleCount);
+                        setVisibleStart(page * visibleCount);
+                      }
+                    }}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="block">{tab.name}</span>
+                      <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                    </span>
                   </Button>
-                </Grow>
-              </Grow>
-            </Gcol>
-          </TabPager>
-        </LayoutMainHead>
-
-        <LayoutMainBody>
-          <LayoutScrollWrap className="grid-rows-[auto_1fr]">
-            <LayoutScrollItem className="w-full">
-              <Grow placement={'bwc'} className="gap-1 w-full pb-1">
-                <Grow className="gap-1.5">
-                  <Typo variant="heading-sm">100세만기 · 20년납입 · 월납 · 20년 갱신 · 1형</Typo>
-                  <Button variant={'outlined'} color={'gray'} size={'md'}>
-                    변경
-                  </Button>
-                </Grow>
-                <Grow className="gap-2.5">
-                  <Checkbox>담보초기화</Checkbox>
-                  <Checkbox>플랜기본값</Checkbox>
-                  <Grow className="gap-1">
-                    <NativeSelect aria-label="플랜 선택" width={'sm'} size={'sm'} readOnly={false} required={false}>
-                      <NativeSelectOption value="">플랜 선택</NativeSelectOption>
-                      <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
-                    </NativeSelect>
-                    <NativeSelect
-                      aria-label="나만의 설계선택"
-                      width={'lg'}
-                      size={'sm'}
-                      readOnly={false}
-                      required={false}
-                    >
-                      <NativeSelectOption value="">나만의 설계선택</NativeSelectOption>
-                      <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
-                    </NativeSelect>
-                    <Button
-                      variant={'outlined'}
-                      color={'gray'}
-                      size={'md'}
-                      onClick={() => setIsHeightExpanded(!isHeightExpanded)}
-                    >
-                      <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
-                    </Button>
-                    <Button
-                      variant={'outlined'}
-                      color={'gray'}
-                      size={'md'}
-                      onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
-                    >
-                      <SizeIcon color="var(--color-secondary-50)" />
-                    </Button>
-                  </Grow>
-                </Grow>
-              </Grow>
-            </LayoutScrollItem>
-            <LayoutScrollItem className="w-full">
-              <div className="ag-theme-alpine">
-                <AgGridReact<LTPA350GridRow>
-                  key={gridKey}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  getRowId={(params) => String(params.data.id)}
-                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
-                  rowSelection={{
-                    mode: 'multiRow' as const,
-                    checkboxes: true,
-                    headerCheckbox: true,
-                    enableClickSelection: false,
-                    enableSelectionWithoutKeys: true,
-                  }}
-                  onCellClicked={(params) => {
-                    const { event, node, api } = params;
-                    if (!event || !('target' in event) || !event.target) return;
-                    const target = event.target as HTMLElement;
-                    const isSelected = node.isSelected();
-                    // 1. 현재 선택되지 않은 상태라면 조건 없이 즉시 선택(토글)
-                    if (!isSelected) {
-                      node.setSelected(true);
-                      return;
-                    }
-                    // 2. 이미 선택된 상태라면 아래 조건들을 검사하여 해제 여부 결정
-                    // 에디터가 활성화된 경우 무시
-                    if (api.getEditingCells().length > 0) return;
-                    // 입력 관련 태그나 특정 클래스 클릭 시 무시 (체크 유지)
-                    const tagName = target.tagName;
-                    const isInputComponent =
-                      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
-                      target.closest('a') ||
-                      target.closest('button') ||
-                      target.closest('[role="button"]') ||
-                      target.closest('.editor-select');
-                    if (isInputComponent) return;
-                    // 3. 위 조건에 걸리지 않는 일반 영역 클릭 시에만 선택 해제(토글)
-                    node.setSelected(false);
-                  }}
-                  selectionColumnDef={{
-                    width: 30,
-                    pinned: 'left',
-                    cellClass: 'text-center p-0!',
-                    cellClassRules: {
-                      'pointer-events-none': (params) => !!params.data?.locked,
-                    },
-                  }}
-                  onSelectionChanged={handleGridSelectionChanged}
-                  onGridReady={(params) => {
-                    ensureLockedRowsSelected(params.api);
-                  }}
-                  onRowDataUpdated={(params) => {
-                    ensureLockedRowsSelected(params.api);
-                  }}
-                  suppressRowHoverHighlight={false}
-                  getRowClass={(params) => {
-                    if (params.data?.isDuplicate) return 'is-duplicate';
-                    if (params.data?.isHighlighted) return 'ag-row-highlighted';
-                    return '';
-                  }}
-                  tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                  tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                  tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-                />
-              </div>
-              <div className="ag-theme-alpine">
-                <AgGridReact<LTPA350GridRow>
-                  key={gridKey}
-                  rowData={rowData}
-                  columnDefs={columnDefs2}
-                  getRowId={(params) => String(params.data.id)}
-                  singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
-                  rowSelection={{
-                    mode: 'multiRow' as const,
-                    checkboxes: true,
-                    headerCheckbox: true,
-                    enableClickSelection: false,
-                    enableSelectionWithoutKeys: true,
-                  }}
-                  onCellClicked={(params) => {
-                    const { event, node, api } = params;
-                    if (!event || !('target' in event) || !event.target) return;
-                    const target = event.target as HTMLElement;
-                    const isSelected = node.isSelected();
-                    // 1. 현재 선택되지 않은 상태라면 조건 없이 즉시 선택(토글)
-                    if (!isSelected) {
-                      node.setSelected(true);
-                      return;
-                    }
-                    // 2. 이미 선택된 상태라면 아래 조건들을 검사하여 해제 여부 결정
-                    // 에디터가 활성화된 경우 무시
-                    if (api.getEditingCells().length > 0) return;
-                    // 입력 관련 태그나 특정 클래스 클릭 시 무시 (체크 유지)
-                    const tagName = target.tagName;
-                    const isInputComponent =
-                      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
-                      target.closest('a') ||
-                      target.closest('button') ||
-                      target.closest('[role="button"]') ||
-                      target.closest('.editor-select');
-                    if (isInputComponent) return;
-                    // 3. 위 조건에 걸리지 않는 일반 영역 클릭 시에만 선택 해제(토글)
-                    node.setSelected(false);
-                  }}
-                  selectionColumnDef={{
-                    width: 30,
-                    pinned: 'left',
-                    cellClass: 'text-center p-0!',
-                    cellClassRules: {
-                      'pointer-events-none': (params) => !!params.data?.locked,
-                    },
-                  }}
-                  onSelectionChanged={handleGridSelectionChanged}
-                  onGridReady={(params) => {
-                    ensureLockedRowsSelected(params.api);
-                  }}
-                  onRowDataUpdated={(params) => {
-                    ensureLockedRowsSelected(params.api);
-                  }}
-                  suppressRowHoverHighlight={false}
-                  getRowClass={(params) => {
-                    if (params.data?.isDuplicate) return 'is-duplicate';
-                    if (params.data?.isHighlighted) return 'ag-row-highlighted';
-                    return '';
-                  }}
-                  tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                  tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                  tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-                />
-              </div>
-            </LayoutScrollItem>
-          </LayoutScrollWrap>
-        </LayoutMainBody>
-
-        <LayoutMainFoot>
-          <MainBottom>
-            <MainBottomItem>
-              <FormTable
-                className="max-w-[90rem]"
-                lineTop={false}
-                variant={'none'}
-                cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}
+                )}
               >
-                <FormRow>
-                  <FormCell title="만기금(환급률)">
-                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                      예상
-                    </Button>
-                    <Input
-                      type="tel"
-                      commaAmount={true}
-                      value="100,000"
-                      readOnly={true}
-                      className="text-right"
-                      after={<span>원</span>}
-                    />
-                    <Input
-                      type="text"
-                      value={refundRate}
-                      onChange={(e) => setRefundRate(e.target.value)}
-                      width="6rem"
-                      className="text-right"
-                      after={<span>%</span>}
-                    />
-                  </FormCell>
-                  <FormCell title="보장보험료">
-                    <Input
-                      type="tel"
-                      commaAmount={true}
-                      value="100,000"
-                      readOnly={true}
-                      className="text-right"
-                      after={<span>원</span>}
-                    />
-                  </FormCell>
-                  <FormCell title="적립보험료">
-                    <Input
-                      type="tel"
-                      commaAmount={true}
-                      value="100,000"
-                      readOnly={true}
-                      className="text-right"
-                      after={<span>원</span>}
-                    />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-              <FormTable className="w-[28rem]" lineTop={false} variant={'none'} cols={['w-[7rem]', '']}>
-                <FormRow>
-                  <FormCell title="합계보험료">
-                    <Input
-                      type="tel"
-                      commaAmount={true}
-                      value={amount}
-                      clear={true}
-                      width={'full'}
-                      onChange={(e) => {
-                        setAmount(e.target.value);
-                        setTestError(!e.target.value);
-                      }}
-                      required={true}
-                      error={testError}
-                      errorMsg={'계약자 입력은 필수입니다.'}
-                      errorPs={'tr'}
-                      className="text-right font-bold"
-                      after={<span className="font-bold">원</span>}
-                    />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </MainBottomItem>
-            <MainBottomItem>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                고지유형별보험료비교
-              </Button>
-              <Grow className="gap-1">
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                  조건별비교설계
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                  다른상품설계
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                  동일상품복사
-                </Button>
-                <Button
-                  type="submit"
-                  form={'page2-MainForm'}
-                  variant={'contained'}
-                  color={'primary'}
-                  size={'xl'}
-                  // onClick={onCalcGuidelineClick}
+                <Gcol
+                  variant={'box-round-b'}
+                  placement={'ss'}
+                  className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}
                 >
-                  보험료계산(지침)
-                </Button>
-              </Grow>
-            </MainBottomItem>
-          </MainBottom>
-        </LayoutMainFoot>
-      </LayoutMain>
-    </form>
+                  <Grow gap={3}>
+                    <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                      <PaperIcon />
+                      담보패키지 선택
+                    </Button>
+                    <Grow className="flex-wrap" placement={'ss'}>
+                      {[
+                        { label: '사망후유', value: '0' },
+                        { label: '3대진단', value: '1' },
+                        { label: '입원일당', value: '2' },
+                        { label: '수술비', value: '3' },
+                        { label: '골절/화상', value: '4' },
+                        { label: '운전비용', value: '5' },
+                        { label: '치료비', value: '6' },
+                        { label: '기타', value: '7' },
+                      ].map((category) => (
+                        <Checkbox key={category.value} variant={'button'}>
+                          {category.label}
+                        </Checkbox>
+                      ))}
+                    </Grow>
+                  </Grow>
+
+                  <Grow gap={3} className="w-full" placement={'bwc'}>
+                    <Grow gap={3} className="w-full" placement={'ss'}>
+                      <Grow className="flex-wrap shrink-0" placement={'ss'}>
+                        {[
+                          { label: '갱신', value: '1' },
+                          { label: '비갱신', value: '2' },
+                        ].map((category) => (
+                          <Checkbox key={category.value} variant={'button'}>
+                            {category.label}
+                          </Checkbox>
+                        ))}
+                      </Grow>
+                      <HashList
+                        data={[
+                          '암',
+                          '뇌',
+                          '심',
+                          '수술',
+                          '특정',
+                          '표적',
+                          '치료',
+                          '골절',
+                          '화상',
+                          '치매',
+                          '심',
+                          '수술',
+                          '특정',
+                          '표적',
+                          '치료',
+                        ]}
+                      />
+                    </Grow>
+                    <Grow placement={'ec'}>
+                      <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
+                        <ResetIcon color="var(--color-gray-500)" />
+                      </Button>
+                    </Grow>
+                  </Grow>
+                </Gcol>
+              </TabPager>
+            </LayoutMainHead>
+
+            <LayoutMainBody>
+              <LayoutScrollWrap className="grid-rows-[auto_1fr]">
+                <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                  <Grow className="gap-1.5">
+                    <Typo variant="heading-sm">100세만기 · 20년납입 · 월납 · 20년 갱신 · 1형</Typo>
+                    <Button variant={'outlined'} color={'gray'} size={'md'}>
+                      변경
+                    </Button>
+                  </Grow>
+                  <Grow className="gap-2.5">
+                    <Checkbox>담보초기화</Checkbox>
+                    <Checkbox>플랜기본값</Checkbox>
+                    <Grow className="gap-1">
+                      <NativeSelect aria-label="플랜 선택" width={'sm'} size={'sm'} readOnly={false} required={false}>
+                        <NativeSelectOption value="">플랜 선택</NativeSelectOption>
+                        <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
+                      </NativeSelect>
+                      <NativeSelect
+                        aria-label="나만의 설계선택"
+                        width={'lg'}
+                        size={'sm'}
+                        readOnly={false}
+                        required={false}
+                      >
+                        <NativeSelectOption value="">나만의 설계선택</NativeSelectOption>
+                        <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
+                      </NativeSelect>
+                      <Button
+                        variant={'outlined'}
+                        color={'gray'}
+                        size={'md'}
+                        onClick={() => setIsHeightExpanded(!isHeightExpanded)}
+                      >
+                        <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
+                      </Button>
+                      <Button
+                        variant={'outlined'}
+                        color={'gray'}
+                        size={'md'}
+                        onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
+                      >
+                        <SizeIcon color="var(--color-secondary-50)" />
+                      </Button>
+                    </Grow>
+                  </Grow>
+                </Grow>
+                <LayoutScrollItem className="w-full">
+                  {/* 인보험 */}
+                  {viewContents.view1 && (
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<LTPA350GridRow>
+                        key={gridKey}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        getRowId={(params) => String(params.data.id)}
+                        singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                        rowSelection={{
+                          mode: 'multiRow' as const,
+                          checkboxes: true,
+                          headerCheckbox: true,
+                          enableClickSelection: false,
+                          enableSelectionWithoutKeys: true,
+                        }}
+                        onCellClicked={handleGridCellClickToggle}
+                        selectionColumnDef={{
+                          width: 30,
+                          // pinned: 'left',
+                          cellClass: 'text-center p-0!',
+                          cellClassRules: {
+                            'pointer-events-none': (params) => !!params.data?.locked,
+                          },
+                        }}
+                        onSelectionChanged={handleGridSelectionChanged}
+                        onGridReady={(params) => {
+                          ensureLockedRowsSelected(params.api);
+                        }}
+                        onRowDataUpdated={(params) => {
+                          ensureLockedRowsSelected(params.api);
+                        }}
+                        suppressRowHoverHighlight={false}
+                        getRowClass={(params) => {
+                          if (params.data?.isDuplicate) return 'is-duplicate';
+                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                          return '';
+                        }}
+                        tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                        tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                        tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      />
+                    </div>
+                  )}
+
+                  {/* 태아 */}
+                  {viewContents.view2 && (
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<LTPA350GridRow>
+                        key={gridKey}
+                        rowData={rowData}
+                        columnDefs={columnDefs2}
+                        getRowId={(params) => String(params.data.id)}
+                        singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                        rowSelection={{
+                          mode: 'multiRow' as const,
+                          checkboxes: true,
+                          headerCheckbox: true,
+                          enableClickSelection: false,
+                          enableSelectionWithoutKeys: true,
+                        }}
+                        onCellClicked={handleGridCellClickToggle}
+                        selectionColumnDef={{
+                          width: 30,
+                          // pinned: 'left',
+                          cellClass: 'text-center p-0!',
+                          cellClassRules: {
+                            'pointer-events-none': (params) => !!params.data?.locked,
+                          },
+                        }}
+                        onSelectionChanged={handleGridSelectionChanged}
+                        onGridReady={(params) => {
+                          ensureLockedRowsSelected(params.api);
+                        }}
+                        onRowDataUpdated={(params) => {
+                          ensureLockedRowsSelected(params.api);
+                        }}
+                        suppressRowHoverHighlight={false}
+                        getRowClass={(params) => {
+                          if (params.data?.isDuplicate) return 'is-duplicate';
+                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                          return '';
+                        }}
+                        tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                        tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                        tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      />
+                    </div>
+                  )}
+                </LayoutScrollItem>
+              </LayoutScrollWrap>
+            </LayoutMainBody>
+
+            <LayoutMainFoot>
+              <MainBottom>
+                <MainBottomItem>
+                  <FormTable
+                    className="max-w-[90rem]"
+                    lineTop={false}
+                    variant={'none'}
+                    cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}
+                  >
+                    <FormRow>
+                      <FormCell title="만기금(환급률)">
+                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                          예상
+                        </Button>
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value="100,000"
+                          readOnly={true}
+                          className="text-right"
+                          after={<span>원</span>}
+                        />
+                        <Input
+                          type="text"
+                          value={refundRate}
+                          onChange={(e) => setRefundRate(e.target.value)}
+                          width="6rem"
+                          className="text-right"
+                          after={<span>%</span>}
+                        />
+                      </FormCell>
+                      <FormCell title="보장보험료">
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value="100,000"
+                          readOnly={true}
+                          className="text-right"
+                          after={<span>원</span>}
+                        />
+                      </FormCell>
+                      <FormCell title="적립보험료">
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value="100,000"
+                          readOnly={true}
+                          className="text-right"
+                          after={<span>원</span>}
+                        />
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <FormTable className="w-[28rem]" lineTop={false} variant={'none'} cols={['w-[7rem]', '']}>
+                    <FormRow>
+                      <FormCell title="합계보험료">
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value={amount}
+                          clear={true}
+                          width={'full'}
+                          onChange={(e) => {
+                            setAmount(e.target.value);
+                            setTestError(!e.target.value);
+                          }}
+                          required={true}
+                          error={testError}
+                          errorMsg={'계약자 입력은 필수입니다.'}
+                          errorPs={'tr'}
+                          className="text-right font-bold"
+                          after={<span className="font-bold">원</span>}
+                        />
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </MainBottomItem>
+                <MainBottomItem>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                    고지유형별보험료비교
+                  </Button>
+                  <Grow className="gap-1">
+                    <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                      조건별비교설계
+                    </Button>
+                    <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                      다른상품설계
+                    </Button>
+                    <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                      동일상품복사
+                    </Button>
+                    <Button
+                      type="submit"
+                      form={'page2-MainForm'}
+                      variant={'contained'}
+                      color={'primary'}
+                      size={'xl'}
+                      // onClick={onCalcGuidelineClick}
+                    >
+                      보험료계산(지침)
+                    </Button>
+                  </Grow>
+                </MainBottomItem>
+              </MainBottom>
+            </LayoutMainFoot>
+          </LayoutMain>
+        </form>
+      }
+    />
   );
 }

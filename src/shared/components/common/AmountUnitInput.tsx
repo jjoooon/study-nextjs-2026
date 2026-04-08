@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { agGridAutoScroll } from '@/shared/utils/agGridAutoScroll';
 import { Typo, Gcol, Grow } from '@atoms';
 import { PlusIcon, MinusIcon } from '@icons';
@@ -58,6 +59,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
 
   const handleOpen = (e: React.MouseEvent<HTMLInputElement>) => {
     const width = (e.target as HTMLInputElement).offsetWidth;
+
     setMeasuredWidth(width);
     setOpen(true);
     agGridAutoScroll();
@@ -132,14 +134,14 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
             onChange={handleInputChange}
             onClick={handleOpen}
             onMouseDown={(e) => e.preventDefault()}
-            className="text-right cursor-pointer w-full h-full px-[0.8rem]"
+            className="text-right cursor-pointer w-full h-full px-[0.8rem] text-[1.3rem]"
             onKeyDown={handleKeyDown}
           />
         </PopoverTrigger>
       </Grow>
       {open && (
         <PopoverContent
-          className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 "
+          className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 w-[19.4rem]"
           align="end"
           motion="none"
           portalContainer={
@@ -157,7 +159,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
           }}
         >
           <Gcol className="w-full gap-3" placement={'ss'}>
-            <Grow className={growClass}>
+            <Grow className={cn('[&>div]:px-[0.6rem] [&>div]:py-[0.2rem]', growClass)}>
               <Input
                 variant={'default'}
                 type="number"
@@ -166,11 +168,12 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                 min={min}
                 max={max}
                 onChange={handleInputChange}
-                size={'sm'}
-                className="text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className={cn(
+                  'w-full border tracking-[-0.03rem] border-[0.2rem] rounded-[0.4rem] h-[2.5rem] bg-[#fff] text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-[1.3rem]',
+                  measuredWidth ? `w-[${measuredWidth / 10}rem]` : ''
+                )}
                 commaAmount={true}
                 autoFocus
-                width={measuredWidth ? `${measuredWidth / 10}rem` : undefined}
                 onKeyDown={handleKeyDown}
               />
             </Grow>
@@ -183,7 +186,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                   variant={'default'}
                   value={inputValue}
                   size={'sm'}
-                  className="text-right flex-1"
+                  className="text-right flex-1 w-[100%]"
                   commaAmount={true}
                   readOnly
                   after={'만원'}

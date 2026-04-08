@@ -87,7 +87,7 @@ export function TaskStatusBoard<
 
       {/* Dialog Component */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="h-[80vh] w-[90rem] max-w-[90%] min-w-[80rem] min-h-[60rem]" resizable={true}>
+        <DialogContent className="h-[80vh] w-[90rem] max-w-[90%] min-h-[60rem]" resizable={true}>
           <DialogHeader>
             <DialogTitle>
               꼭 확인해야 할 일! {dialogContent?.label ? `(${dialogContent.label})` : '(AAA000)'}

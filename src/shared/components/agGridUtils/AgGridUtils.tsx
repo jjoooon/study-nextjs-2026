@@ -4,6 +4,7 @@
 
 import type { GridReadyEvent } from 'ag-grid-community';
 import type {
+  CellClickedEvent,
   ValueFormatterParams,
   ICellRendererParams,
   SelectionChangedEvent,
@@ -20,6 +21,7 @@ import type { AgGridReact } from 'ag-grid-react';
 import type { RefObject } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Gcol, Grow } from '@atoms';
 import { AmountUnitInput } from '@common/AmountUnitInput';
 import { DatePickerInput } from '@common/DatePicker';
@@ -172,6 +174,39 @@ export function createSelectionChangedHandler<RowType, IDType = unknown>(
         callback(id);
       }
     }
+  };
+}
+
+/**
+ * 셀 클릭 시 행 선택 토글 핸들러 생성기 (공용)
+ * - 미선택 행 클릭: 즉시 선택
+ * - 선택 행 클릭: 입력/버튼/에디터 영역 클릭은 유지, 일반 영역 클릭만 해제
+ */
+export function createCellClickSelectionToggleHandler<RowType>() {
+  return (params: CellClickedEvent<RowType>) => {
+    const { event, node, api } = params;
+    if (!event || !('target' in event) || !event.target) return;
+
+    const target = event.target as HTMLElement;
+    const isSelected = node.isSelected();
+
+    if (!isSelected) {
+      node.setSelected(true);
+      return;
+    }
+
+    if (api.getEditingCells().length > 0) return;
+
+    const tagName = target.tagName;
+    const isInputComponent =
+      ['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(tagName) ||
+      target.closest('a') ||
+      target.closest('button') ||
+      target.closest('[role="button"]') ||
+      target.closest('.editor-select');
+    if (isInputComponent) return;
+
+    node.setSelected(false);
   };
 }
 
@@ -817,4 +852,54 @@ export function useAsideToggleState(initialState = false) {
     setIsWidthExpanded,
     hideAside: isWidthExpanded,
   };
+}
+
+export const getCurrentRootFontSize = (fallbackFontSize = 10): number => {
+  if (typeof window === 'undefined') return fallbackFontSize;
+
+  const computedFontSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+
+  if (Number.isNaN(computedFontSize)) {
+    return fallbackFontSize;
+  }
+
+  return computedFontSize;
+};
+
+/**
+ * 기본 폰트 크기 변화에 대응하여 상대적인 px 값을 반환하는 함수
+ * @param targetPx - 변환하고자 하는 기준 px 값 (예: 100)
+ * @param standardFontSize - 기준이 되는 기본 폰트 크기 (기본값: 12)
+ * @returns 현재 폰트 크기 비율이 적용된 px 값
+ */
+export const getDynamicPx = (targetPx: number, standardFontSize: number = 12): number => {
+  const currentRootFontSize = getCurrentRootFontSize(standardFontSize);
+
+  // 2. 기준 크기 대비 현재 크기의 비율 계산 후 적용
+  // 공식: (현재 폰트 / 기준 폰트) * 목표 수치
+  return (currentRootFontSize / standardFontSize) * targetPx;
+};
+
+export function useDynamicPx(targetPx: number, standardFontSize: number = 12): number {
+  const [dynamicPx, setDynamicPx] = useState<number>(() => getDynamicPx(targetPx, standardFontSize));
+
+  useEffect(() => {
+    const updateDynamicPx = () => {
+      setDynamicPx(getDynamicPx(targetPx, standardFontSize));
+    };
+
+    updateDynamicPx();
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener(SCALE_CHANGE_EVENT, updateDynamicPx);
+
+    return () => {
+      window.removeEventListener(SCALE_CHANGE_EVENT, updateDynamicPx);
+    };
+  }, [standardFontSize, targetPx]);
+
+  return dynamicPx;
 }

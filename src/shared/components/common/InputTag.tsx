@@ -125,7 +125,7 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
           onKeyDown={handleKeyDown}
           placeholder={placeholder} // 태그가 하나라도 있으면 placeholder 숨김
           // Input 스타일 리셋
-          className="flex-1 min-w-[120px] bg-transparent outline-none text-sm disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 min-w-[12rem] bg-transparent outline-none text-sm disabled:cursor-not-allowed disabled:opacity-50"
           // 태그 최대 개수 도달 시 입력 막기
           disabled={maxTags ? value.length >= maxTags : false}
         />
