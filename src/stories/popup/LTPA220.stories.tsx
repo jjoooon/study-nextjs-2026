@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz220 } from '@/features/pub/components/popups/Ltpz220';
+import { Ltpa220 } from '@/features/pub/components/popups/Ltpa220';
 
 export default {
-  title: 'popup/Ltpz220',
-  component: Ltpz220,
+  title: 'popup/Ltpa220',
+  component: Ltpa220,
 };
 
 export const Default = () => {
@@ -18,7 +18,7 @@ export const Default = () => {
         </Button>
       </div>
 
-      <Ltpz220 open={open} onOpenChange={setOpen} />
+      <Ltpa220 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };
