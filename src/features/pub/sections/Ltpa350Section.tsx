@@ -1,23 +1,21 @@
 'use client';
 
-// components - layout
-// components - features
 import type { ReactNode } from 'react';
+
 import { LayoutHead, LayoutFoot } from '@/shared/components/layout/BaseLayout';
+
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
 import { InfoContract } from '@common/InfoContract';
-import AsideFoot from '@features/AsideFoot';
-import PageID from '@features/PageID';
-import PageProcess from '@features/PageProcess';
-import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
+import { AsideFoot } from '@features/AsideFoot';
+import { PageID } from '@features/PageID';
+import { PageProcess } from '@features/PageProcess';
+import { PageTitleProduct as PageTitle } from '@features/PageTitle';
 import { QuickLinks } from '@features/QuickLinks';
-import TaskStatusBoard from '@features/TaskStatusBoard';
-// hooks
+import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
 
-// LTPA350 - components
 import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 담보설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
 

@@ -7,7 +7,7 @@ import { Checkbox } from '@uiux/Checkbox';
 
 import AIChatBot from './AIChatBot';
 
-export default function AsideFoot() {
+export function AsideFoot() {
   return (
     <Gcol className="w-full pb-1.5 relative">
       <Grow

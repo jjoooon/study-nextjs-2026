@@ -1,12 +1,10 @@
 'use client';
 
-// components - layout
-// Layout Components
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Gcol } from '@atoms';
@@ -14,24 +12,26 @@ import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
-import PageID from '@features/PageID';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+
 import {
   Ltpa400DummyData,
-  type Ltpa400DummyDataRow,
   Ltpa400DummyData2,
+  type Ltpa400DummyDataRow,
   type Ltpa400DummyDataRow2,
 } from '../data/ltpa400Data';
-ModuleRegistry.registerModules([AllCommunityModule]);
 
+// Side Effects
+ModuleRegistry.registerModules([AllCommunityModule]);
 // Tab 정의
 type Ltpa400TabType = { name: string; value: string; label: string };
 const DATA_TABS: Ltpa400TabType[] = [
