@@ -15,9 +15,9 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { CircleCheckIcon, ConditionalIcon, RefuseIcon } from '@icons';
+import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
 import { Button } from '@uiux/Button';
+
 import {
   Dialog,
   DialogClose,
@@ -182,7 +182,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       {
         headerName: '분류',
         field: 'field01',
-        width: 90,
+        width: 70,
         autoHeight: true,
         editable: false,
         spanRows: true,
@@ -190,14 +190,14 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       {
         headerName: '고지유형',
         field: 'field02',
-        width: 100,
+        width: 70,
         autoHeight: true,
         editable: false,
       },
       {
         headerName: '가능여부',
         field: 'field03',
-        width: 120,
+        width: 100,
         autoHeight: true,
         editable: false,
         cellRenderer: ({ value }: { value: string | number | null | undefined }) => {
@@ -220,7 +220,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       {
         headerName: '제한담보',
         field: 'field04',
-        width: 140,
+        width: 100,
         autoHeight: true,
         editable: false,
       },
@@ -230,7 +230,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
         flex: 1,
         autoHeight: true,
         editable: false,
-        className: 'truncate',
+        className: 'truncate text-left',
       },
     ],
     []
@@ -243,7 +243,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -276,20 +276,20 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
                     <FormTable
                       variant={'none'}
-                      caption="납입예정 리스트 테이블"
+                      caption="피보험자 정보 테이블"
                       cols={[
                         'w-[5rem]',
-                        'flex-1',
                         'w-[5rem]',
-                        'flex-1',
+                        'w-[5rem]',
+                        'w-[9rem]',
                         'w-[13rem]',
-                        'flex-1',
                         'w-[5rem]',
-                        'flex-1',
-                        'w-[5rem]',
-                        'flex-1',
-                        'w-[10.3rem]',
-                        'flex-1',
+                        'w-[4rem]',
+                        'w-[4rem]',
+                        'w-[4rem]',
+                        'w-[4rem]',
+                        'w-[12rem]',
+                        'w-auto',
                       ]}
                     >
                       <FormRow>
@@ -464,14 +464,31 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                           </TableRow>
                         </TableBody>
                       </Table>
-                      <Grow placement={'ss'} className="w-full">
-                        <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
-                          중대질환(6대) : 암,협심증,심금경색,뇌졸중증(뇌출혈,뇌경색) 간경화증,심장판막증 단, 투석중인
-                          만성신장질환은 제외됩니다.
-                        </Typo>
+                      <Grow placement={'ss'} className="w-full min-w-0">
+                        <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
+                          <RefIcon className="mt-[0.3rem] shrink-0" color="var(--color-secondary-50)" size={10} />
+                          <span className="min-w-0 break-words">
+                            {'중대질환(6대) : 암,협심증,심금경색,뇌졸중증(뇌출혈,뇌경색) 간경화증,심장판막증 단, ' +
+                              '투석중인 만성신장질환은 제외됩니다.'}
+                          </span>
+                        </div>
                       </Grow>
                     </Gcol>
                   </Grow>
+                  <Gcol variant={'box-info'} placement={'ss'}>
+                    <BulletList>
+                      <BulletListItem color="info" size="sm">
+                        지급정보 중 우선순위 조건에 따라 안내하며 실제 심사결과와 다를 수 있으니, 참고 보완 자료로 활용
+                        바랍니다.
+                      </BulletListItem>
+                      <BulletListItem size="sm">
+                        해당서비스는 고지유형을 선택하는 보조수단으로만 활용바랍니다.
+                      </BulletListItem>
+                      <BulletListItem size="sm">
+                        보험금미청구 or 청구진행중 or 부진단코드 등 조회불가하오니 고객님께 확인하시기 바랍니다.
+                      </BulletListItem>
+                    </BulletList>
+                  </Gcol>
                 </Gcol>
               </>
             ) : (
@@ -480,20 +497,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormTable
                     variant={'none'}
                     caption="피보험자 정보 테이블"
-                    cols={[
-                      'w-[5rem]',
-                      'flex-1',
-                      'w-[5rem]',
-                      'flex-1',
-                      'w-[13rem]',
-                      'flex-1',
-                      'w-[5rem]',
-                      'flex-1',
-                      'w-[5rem]',
-                      'flex-1',
-                      'w-[10.3rem]',
-                      'flex-1',
-                    ]}
+                    cols={['w-[5rem]', 'w-[5rem]', 'w-[5rem]', 'w-[11rem]', 'w-[13rem]', 'w-auto']}
                   >
                     <FormRow>
                       <FormCell title={'피보험자'}>
@@ -511,125 +515,111 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                           YY년
                         </Typo>
                       </FormCell>
-                      <FormCell title={'고혈압'}>
-                        <Badge color="blue" size="md" variant="contained">
-                          가능
-                        </Badge>
-                      </FormCell>
-                      <FormCell title={'당뇨'}>
-                        <Badge color="blue" size="md" variant="contained">
-                          가능
-                        </Badge>
-                      </FormCell>
-                      <FormCell title={'고혈압&당뇨'}>
-                        <Badge color="blue" size="md" variant="contained">
-                          가능
-                        </Badge>
-                      </FormCell>
                     </FormRow>
                   </FormTable>
                 </Grow>
-                <TableFold>
-                  <TableFoldHead title="" />
-                  <TableFoldBody>
-                    <Gcol className="h-full">
-                      <Table variant="default">
-                        <colgroup>
-                          <col style={{ width: '12.5%' }} />
-                        </colgroup>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>고지유형</TableHead>
-                            <TableHead>
-                              경증 외<br /> 입원수술
-                            </TableHead>
-                            <TableHead>수술</TableHead>
-                            <TableHead>입원</TableHead>
-                            <TableHead>10대 중대질환</TableHead>
-                            <TableHead>추천유형</TableHead>
-                            <TableHead>비고(사유)</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow className="text-center">
-                            <TableHead>6형(건강고지10년)</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>일반고지형</TableCell>
-                            <TableCell>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>5형(건강고지10년)</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>일반고지형</TableCell>
-                            <TableCell>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>4형(건강고지10년)</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>일반고지형</TableCell>
-                            <TableCell>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>3형(건강고지10년)</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>일반고지형</TableCell>
-                            <TableCell>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>2형(건강고지10년)</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>일반고지형</TableCell>
-                            <TableCell>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>일반고지형(5년)</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>일반고지형</TableCell>
-                            <TableCell>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                      <Grow placement={'ss'} className="w-full">
-                        <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
-                          10대 중대질환 : 암, 백혈병, 협심증, 심근경색, 심장판막증, 간경화증, 죄졸중증(뇌출혈, 뇌경색),
-                          당뇨병, 에이즈(AIDS) 및 HIV보균
-                        </Typo>
-                      </Grow>
-                    </Gcol>
-                  </TableFoldBody>
-                </TableFold>
+                <Gcol className="h-full">
+                  <Table variant="default">
+                    <caption className="a11y-hidden">일반/건강고지유형 피보험자 정보 테이블</caption>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>고지유형</TableHead>
+                        <TableHead>
+                          경증 외<br /> 입원수술
+                        </TableHead>
+                        <TableHead>수술</TableHead>
+                        <TableHead>입원</TableHead>
+                        <TableHead>10대 중대질환</TableHead>
+                        <TableHead>추천유형</TableHead>
+                        <TableHead>비고(사유)</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow className="text-center">
+                        <TableHead>6형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell rowSpan={6}>
+                          <Gcol gap={1}>
+                            <Badge color="blue" size="md" variant="contained">
+                              일반고지형
+                            </Badge>
+                            <Badge color="blue" size="md" variant="contained">
+                              건강고지형
+                            </Badge>
+                            <Badge color="green" size="md" variant="contained">
+                              간편고지형
+                            </Badge>
+                          </Gcol>
+                        </TableCell>
+                        <TableCell rowSpan={6}>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>5형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>4형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>3형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>2형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>일반고지형(5년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                  <Grow placement={'ss'} className="w-full min-w-0">
+                    <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
+                      <RefIcon className="mt-[0.3rem] shrink-0" color="var(--color-secondary-50)" size={10} />
+                      <span className="min-w-0 break-words">
+                        {
+                          '10대 중대질환 : 암, 백혈병, 협심증, 심근경색, 심장판막증, 간경화증, 죄졸중증(뇌출혈, 뇌경색), 당뇨병, 에이즈(AIDS) 및 HIV보균'
+                        }
+                      </span>
+                    </div>
+                  </Grow>
+                </Gcol>
+                <Gcol variant={'box-info'} placement={'ss'}>
+                  <BulletList>
+                    <BulletListItem color="info" size="sm">
+                      지급정보 중 우선순위 조건에 따라 안내하며 실제 심사결과와 다를 수 있으니, 참고 보완 자료로 활용
+                      바랍니다.
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      해당서비스는 고지유형을 선택하는 보조수단으로만 활용바랍니다.
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      보험금미청구 or 청구진행중 or 부진단코드 등 조회불가하오니 고객님께 확인하시기 바랍니다.
+                    </BulletListItem>
+                  </BulletList>
+                </Gcol>
               </Gcol>
             )}
-            <Gcol variant={'box-warning'} placement={'ss'}>
-              <BulletList>
-                <BulletListItem color="info" size="sm">
-                  지급정보 중 우선순위 조건에 따라 안내하며 실제 심사결과와 다를 수 있으니, 참고 보완 자료로 활용
-                  바랍니다.
-                </BulletListItem>
-                <BulletListItem size="sm">해당서비스는 고지유형을 선택하는 보조수단으로만 활용바랍니다.</BulletListItem>
-                <BulletListItem size="sm">
-                  보험금미청구 or 청구진행중 or 부진단코드 등 조회불가하오니 고객님께 확인하시기 바랍니다.
-                </BulletListItem>
-              </BulletList>
-            </Gcol>
           </TabPager>
         </DialogSection>
         <DialogFooter>
