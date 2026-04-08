@@ -5,7 +5,6 @@ import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
