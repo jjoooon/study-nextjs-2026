@@ -9,13 +9,15 @@ import * as React from 'react';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
 import { Button } from '@uiux/Button';
+
 import {
   Dialog,
   DialogClose,
@@ -26,8 +28,43 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+export const underwritingDecisionMap = {
+  refuse: {
+    label: '거절',
+    Icon: RefuseIcon,
+  },
+  conditional: {
+    label: '조건부 인수',
+    Icon: ConditionalIcon,
+  },
+  accept: {
+    label: '인수',
+    Icon: CircleCheckIcon,
+  },
+} as const;
+
+export type UnderwritingDecisionStatus = keyof typeof underwritingDecisionMap;
+
+const underwritingDecisionStatusByLabel: Record<string, UnderwritingDecisionStatus> = {
+  거절: 'refuse',
+  조건부인수: 'conditional',
+  '조건부 인수': 'conditional',
+  인수: 'accept',
+};
+
+const getUnderwritingDecision = (value: string | number) => {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const status = underwritingDecisionStatusByLabel[value.trim()];
+
+  return status ? underwritingDecisionMap[status] : null;
+};
 
 export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
   type LTPZ030TabType = {
@@ -63,7 +100,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 1,
       field01: '더경증',
       field02: '3105',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737,1',
     },
@@ -71,7 +108,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 2,
       field01: '더경증',
       field02: '385',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737,1',
     },
@@ -79,7 +116,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 3,
       field01: '더경증',
       field02: '365',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737',
     },
@@ -87,7 +124,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 4,
       field01: '3N5',
       field02: '355',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737',
     },
@@ -95,7 +132,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 5,
       field01: '3N5',
       field02: '345',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737',
     },
@@ -103,7 +140,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 6,
       field01: '3N5(2일)',
       field02: '355(2일)',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737',
     },
@@ -111,7 +148,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 7,
       field01: '3N5(2일)',
       field02: '345(2일)',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737',
     },
@@ -119,7 +156,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 8,
       field01: '3N5(2일)',
       field02: '335(2일)',
-      field03: '',
+      field03: '거절',
       field04: '',
       field05: '경증외, 중대질환 1148,1737,1152,1737',
     },
@@ -127,7 +164,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 9,
       field01: '3N5(2일)',
       field02: '325(2일)',
-      field03: '',
+      field03: '조건부인수',
       field04: '',
       field05: '경증외, 중대질환 1148,1737',
     },
@@ -135,7 +172,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       id: 10,
       field01: '3N5(2일)',
       field02: '315(2일)',
-      field03: '',
+      field03: '인수',
       field04: '',
       field05: '경증외, 중대질환 1148,1737',
     },
@@ -145,28 +182,45 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
       {
         headerName: '분류',
         field: 'field01',
-        width: 100,
+        width: 70,
         autoHeight: true,
         editable: false,
+        spanRows: true,
       },
       {
         headerName: '고지유형',
         field: 'field02',
-        width: 120,
+        width: 70,
         autoHeight: true,
         editable: false,
       },
       {
         headerName: '가능여부',
         field: 'field03',
-        width: 150,
+        width: 100,
         autoHeight: true,
         editable: false,
+        cellRenderer: ({ value }: { value: string | number | null | undefined }) => {
+          const decision = getUnderwritingDecision(value ?? '');
+
+          if (!decision) {
+            return value;
+          }
+
+          const { label, Icon } = decision;
+
+          return (
+            <span className="inline-flex items-center gap-0.5">
+              <Icon aria-hidden="true" />
+              {label}
+            </span>
+          );
+        },
       },
       {
         headerName: '제한담보',
         field: 'field04',
-        width: 160,
+        width: 100,
         autoHeight: true,
         editable: false,
       },
@@ -176,157 +230,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
         flex: 1,
         autoHeight: true,
         editable: false,
-        className: 'truncate',
-      },
-    ],
-    []
-  );
-
-  // tab1_2 dummy data
-  type DummyDataType1T2 = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-  };
-  const DummyData1T2: DummyDataType1T2[] = [
-    {
-      id: 1,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '',
-      field05: '',
-    },
-    {
-      id: 2,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '',
-      field05: '',
-    },
-  ];
-  const columnDefs1T2 = React.useMemo<ColDef<DummyDataType1T2>[]>(
-    () => [
-      {
-        headerName: '분류',
-        field: 'field01',
-        width: 100,
-        autoHeight: true,
-        editable: false,
-        // cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '고지유형',
-        field: 'field02',
-        width: 120,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '가능여부',
-        field: 'field03',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '제한담보',
-        field: 'field04',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '비고',
-        field: 'field05',
-        width: 150,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
-      },
-    ],
-    []
-  );
-
-  // tab2 dummy data
-  type DummyDataType2 = {
-    id: number;
-    field2_01: string | number;
-    field2_02: string | number;
-    field2_03: string | number;
-    field2_04: string | number;
-  };
-  const DummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-    {
-      id: 2,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-    {
-      id: 3,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-  ];
-  // tab2 AgGrid Column
-  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
-    () => [
-      {
-        headerName: '납입회차',
-        field: 'field2_01',
-        width: 300,
-        editable: false,
-        autoHeight: true,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '납입_응당일',
-        field: 'field2_02',
-        flex: 1,
-        editable: false,
-        autoHeight: true,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '담보코드',
-        field: 'field2_03',
-        flex: 1,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-      },
-      {
-        headerName: '담보보험료',
-        field: 'field2_04',
-        flex: 1,
-        autoHeight: true,
-        editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
+        className: 'truncate text-left',
       },
     ],
     []
@@ -339,7 +243,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -351,60 +255,6 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
-            <FormTable
-              variant={'none'}
-              caption="납입예정 리스트 테이블"
-              cols={[
-                'w-[5rem]',
-                'flex-1',
-                'w-[5rem]',
-                'flex-1',
-                'w-[13rem]',
-                'flex-1',
-                'w-[5rem]',
-                'flex-1',
-                'w-[5rem]',
-                'flex-1',
-                'w-[10.3rem]',
-                'flex-1',
-              ]}
-            >
-              <FormRow>
-                <FormCell title={'피보험자'}>
-                  <Typo tag={'strong'} className="body-md font-bold">
-                    김*화
-                  </Typo>
-                </FormCell>
-                <FormCell title={'기준일자'}>
-                  <Typo tag={'strong'} className="body-md font-bold">
-                    YYYY-MM-DD
-                  </Typo>
-                </FormCell>
-                <FormCell title={'지급정보 조회기간'}>
-                  <Typo tag={'strong'} className="body-md font-bold">
-                    YY년
-                  </Typo>
-                </FormCell>
-                <FormCell title={'고혈압'}>
-                  <Badge color="blue" size="md" variant="contained">
-                    가능
-                  </Badge>
-                </FormCell>
-                <FormCell title={'당뇨'}>
-                  <Badge color="blue" size="md" variant="contained">
-                    가능
-                  </Badge>
-                </FormCell>
-                <FormCell title={'고혈압&당뇨'}>
-                  <Badge color="blue" size="md" variant="contained">
-                    가능
-                  </Badge>
-                </FormCell>
-              </FormRow>
-            </FormTable>
-          </Grow>
-
           <TabPager
             data={tabs}
             active={active}
@@ -423,66 +273,351 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
             {active === 'tab1' ? (
               <>
                 <Gcol placement="ss" className="w-full pt-2" gap={5}>
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="" />
-                    <TableFoldBody>
-                      <Grow className="w-full" gap={5}>
-                        <div className="ag-theme-alpine w-full">
-                          <AgGridReact<DummyDataType1T1>
-                            getRowId={(params) => String(params.data.id)}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            rowData={DummyData1T1}
-                            columnDefs={columnDefs1T1}
-                            defaultColDef={{
-                              sortable: false,
-                              resizable: false,
-                            }}
-                            animateRows={false}
-                            domLayout="autoHeight"
-                            className="text-center"
-                            enableCellSpan={true}
-                          />
-                        </div>
-                        <div className="ag-theme-alpine w-full">
-                          <AgGridReact<DummyDataType1T2>
-                            getRowId={(params) => String(params.data.id)}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            rowData={DummyData1T2}
-                            columnDefs={columnDefs1T2}
-                            defaultColDef={{
-                              sortable: false,
-                              resizable: false,
-                            }}
-                            animateRows={false}
-                            domLayout="autoHeight"
-                          />
+                  <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
+                    <FormTable
+                      variant={'none'}
+                      caption="피보험자 정보 테이블"
+                      cols={[
+                        'w-[5rem]',
+                        'w-[5rem]',
+                        'w-[5rem]',
+                        'w-[9rem]',
+                        'w-[13rem]',
+                        'w-[5rem]',
+                        'w-[4rem]',
+                        'w-[4rem]',
+                        'w-[4rem]',
+                        'w-[4rem]',
+                        'w-[12rem]',
+                        'w-auto',
+                      ]}
+                    >
+                      <FormRow>
+                        <FormCell title={'피보험자'}>
+                          <Typo tag={'strong'} className="body-md font-bold">
+                            김*화
+                          </Typo>
+                        </FormCell>
+                        <FormCell title={'기준일자'}>
+                          <Typo tag={'strong'} className="body-md font-bold">
+                            YYYY-MM-DD
+                          </Typo>
+                        </FormCell>
+                        <FormCell title={'지급정보 조회기간'}>
+                          <Typo tag={'strong'} className="body-md font-bold">
+                            YY년
+                          </Typo>
+                        </FormCell>
+                        <FormCell title={'고혈압'}>
+                          <Badge color="blue" size="md" variant="contained">
+                            가능
+                          </Badge>
+                        </FormCell>
+                        <FormCell title={'당뇨'}>
+                          <Badge color="blue" size="md" variant="contained">
+                            가능
+                          </Badge>
+                        </FormCell>
+                        <FormCell title={'고혈압&당뇨'}>
+                          <Badge color="blue" size="md" variant="contained">
+                            가능
+                          </Badge>
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                  </Grow>
+                  <Grow placement={'bws'} className="w-full" gap={5}>
+                    <div className="ag-theme-alpine w-full">
+                      <AgGridReact<DummyDataType1T1>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={DummyData1T1}
+                        columnDefs={columnDefs1T1}
+                        defaultColDef={{
+                          sortable: false,
+                          resizable: false,
+                        }}
+                        animateRows={false}
+                        domLayout="autoHeight"
+                        className="text-center"
+                        enableCellSpan={true}
+                      />
+                    </div>
+                    <Gcol className="h-full">
+                      <Table variant="default">
+                        <colgroup>
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                          <col style={{ width: '12.5%' }} />
+                        </colgroup>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>대상기간</TableHead>
+                            <TableHead>
+                              경증 외<br /> 입원수술
+                            </TableHead>
+                            <TableHead>
+                              경증 외<br /> 입원(2일)수술
+                            </TableHead>
+                            <TableHead>수술</TableHead>
+                            <TableHead>입원</TableHead>
+                            <TableHead>6대 중대질환</TableHead>
+                            <TableHead>고혈압</TableHead>
+                            <TableHead>당뇨</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow className="text-center">
+                            <TableHead>10년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>-</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>8년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>-</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>6년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>-</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>5년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>4년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>3년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>2년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>1년대</TableHead>
+                            <TableCell>Y</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>Y</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                          </TableRow>
+                          <TableRow className="text-center">
+                            <TableHead>3개월내</TableHead>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                            <TableCell>N</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                      <Grow placement={'ss'} className="w-full min-w-0">
+                        <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
+                          <RefIcon className="mt-[0.3rem] shrink-0" color="var(--color-secondary-50)" size={10} />
+                          <span className="min-w-0 break-words">
+                            {'중대질환(6대) : 암,협심증,심금경색,뇌졸중증(뇌출혈,뇌경색) 간경화증,심장판막증 단, ' +
+                              '투석중인 만성신장질환은 제외됩니다.'}
+                          </span>
                         </div>
                       </Grow>
-                    </TableFoldBody>
-                  </TableFold>
+                    </Gcol>
+                  </Grow>
+                  <Gcol variant={'box-info'} placement={'ss'}>
+                    <BulletList>
+                      <BulletListItem color="info" size="sm">
+                        지급정보 중 우선순위 조건에 따라 안내하며 실제 심사결과와 다를 수 있으니, 참고 보완 자료로 활용
+                        바랍니다.
+                      </BulletListItem>
+                      <BulletListItem size="sm">
+                        해당서비스는 고지유형을 선택하는 보조수단으로만 활용바랍니다.
+                      </BulletListItem>
+                      <BulletListItem size="sm">
+                        보험금미청구 or 청구진행중 or 부진단코드 등 조회불가하오니 고객님께 확인하시기 바랍니다.
+                      </BulletListItem>
+                    </BulletList>
+                  </Gcol>
                 </Gcol>
               </>
             ) : (
               <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
-                <TableFold>
-                  <TableFoldHead title="담보" />
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine w-full h-[200rem]">
-                      <AgGridReact<DummyDataType2>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData2}
-                        columnDefs={columnDefs2}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          cellClass: 'p-0',
-                          cellStyle: { padding: 0 },
-                        }}
-                      />
+                <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
+                  <FormTable
+                    variant={'none'}
+                    caption="피보험자 정보 테이블"
+                    cols={['w-[5rem]', 'w-[5rem]', 'w-[5rem]', 'w-[11rem]', 'w-[13rem]', 'w-auto']}
+                  >
+                    <FormRow>
+                      <FormCell title={'피보험자'}>
+                        <Typo tag={'strong'} className="body-md font-bold">
+                          김*화
+                        </Typo>
+                      </FormCell>
+                      <FormCell title={'기준일자'}>
+                        <Typo tag={'strong'} className="body-md font-bold">
+                          YYYY-MM-DD
+                        </Typo>
+                      </FormCell>
+                      <FormCell title={'지급정보 조회기간'}>
+                        <Typo tag={'strong'} className="body-md font-bold">
+                          YY년
+                        </Typo>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Grow>
+                <Gcol className="h-full">
+                  <Table variant="default">
+                    <caption className="a11y-hidden">일반/건강고지유형 피보험자 정보 테이블</caption>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>고지유형</TableHead>
+                        <TableHead>
+                          경증 외<br /> 입원수술
+                        </TableHead>
+                        <TableHead>수술</TableHead>
+                        <TableHead>입원</TableHead>
+                        <TableHead>10대 중대질환</TableHead>
+                        <TableHead>추천유형</TableHead>
+                        <TableHead>비고(사유)</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow className="text-center">
+                        <TableHead>6형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell rowSpan={6}>
+                          <Gcol gap={1}>
+                            <Badge color="blue" size="md" variant="contained">
+                              일반고지형
+                            </Badge>
+                            <Badge color="blue" size="md" variant="contained">
+                              건강고지형
+                            </Badge>
+                            <Badge color="green" size="md" variant="contained">
+                              간편고지형
+                            </Badge>
+                          </Gcol>
+                        </TableCell>
+                        <TableCell rowSpan={6}>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>5형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>4형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>3형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>2형(건강고지10년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                      <TableRow className="text-center">
+                        <TableHead>일반고지형(5년)</TableHead>
+                        <TableCell>Y</TableCell>
+                        <TableCell>N</TableCell>
+                        <TableCell>Y</TableCell>
+                        <TableCell>Y</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                  <Grow placement={'ss'} className="w-full min-w-0">
+                    <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
+                      <RefIcon className="mt-[0.3rem] shrink-0" color="var(--color-secondary-50)" size={10} />
+                      <span className="min-w-0 break-words">
+                        {
+                          '10대 중대질환 : 암, 백혈병, 협심증, 심근경색, 심장판막증, 간경화증, 죄졸중증(뇌출혈, 뇌경색), 당뇨병, 에이즈(AIDS) 및 HIV보균'
+                        }
+                      </span>
                     </div>
-                  </TableFoldBody>
-                </TableFold>
+                  </Grow>
+                </Gcol>
+                <Gcol variant={'box-info'} placement={'ss'}>
+                  <BulletList>
+                    <BulletListItem color="info" size="sm">
+                      지급정보 중 우선순위 조건에 따라 안내하며 실제 심사결과와 다를 수 있으니, 참고 보완 자료로 활용
+                      바랍니다.
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      해당서비스는 고지유형을 선택하는 보조수단으로만 활용바랍니다.
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      보험금미청구 or 청구진행중 or 부진단코드 등 조회불가하오니 고객님께 확인하시기 바랍니다.
+                    </BulletListItem>
+                  </BulletList>
+                </Gcol>
               </Gcol>
             )}
           </TabPager>
