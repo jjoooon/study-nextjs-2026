@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
@@ -42,9 +42,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
       label: '설계번호별',
     },
     {
-      name: '질병별',
+      name: '질병코드별',
       value: 'tab2',
-      label: '질병별',
+      label: '질병코드별',
     },
   ];
 
@@ -145,7 +145,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
             aria-label={`설계번호 ${rowId} 선택`}
             checked={selectedRowId11 === rowId}
             className="h-[1.6rem] w-[1.6rem] cursor-pointer accent-[var(--color-primary-50)]"
-            name="ltpz032-selection"
+            name="ltpz032-selection-11"
             onChange={() => setSelectedRowId11(rowId)}
             type="radio"
           />
@@ -155,12 +155,12 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     [selectedRowId11, setSelectedRowId11]
   );
 
-  const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(
-    () => [
+  const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(() => {
+    return [
       {
         headerName: '선택',
         field: 'field01',
-        width: 80,
+        width: 70,
         autoHeight: true,
         editable: false,
         cellRenderer: selectionRenderer11,
@@ -168,7 +168,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
       {
         headerName: '입력일자',
         field: 'field02',
-        width: 110,
+        width: 100,
         autoHeight: true,
         editable: false,
       },
@@ -419,9 +419,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         autoHeight: true,
         editable: false,
       },
-    ],
-    [selectionRenderer11]
-  );
+    ];
+  }, [selectionRenderer11]);
 
   // Tab1-2
   type DummyDataType12 = {
@@ -521,7 +520,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
             aria-label={`설계번호 ${rowId} 선택`}
             checked={selectedRowId12 === rowId}
             className="h-[1.6rem] w-[1.6rem] cursor-pointer accent-[var(--color-primary-50)]"
-            name="ltpz032-selection"
+            name="ltpz032-selection-12"
             onChange={() => setSelectedRowId12(rowId)}
             type="radio"
           />
@@ -531,344 +530,664 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     [selectedRowId12, setSelectedRowId12]
   );
 
-  const columnDefs12 = React.useMemo<ColDef<DummyDataType12>[]>(
-    () => [
-      {
-        headerName: '선택',
-        field: 'field01',
-        width: 80,
-        autoHeight: true,
-        editable: false,
-        cellRenderer: selectionRenderer12,
-      },
-      {
-        headerName: '입력일자',
-        field: 'field02',
-        width: 110,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '설계번호',
-        field: 'field03',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '상품명',
-        field: 'field04',
-        width: 200,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '고지유형',
-        field: 'field05',
-        width: 140,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병미리보기',
-        field: 'field06',
-        width: 120,
-        autoHeight: true,
-        editable: false,
-        // cellRenderer: attributeRenderer,
-        cellRenderer: (_params: ICellRendererParams<DummyDataType12>) => (
-          <Grow className="w-full px-1">
-            보기
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
-          </Grow>
-        ),
-      },
-      {
-        headerName: '질병명1',
-        field: 'field07',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명2',
-        field: 'field08',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명3',
-        field: 'field09',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명4',
-        field: 'field10',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명5',
-        field: 'field11',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명6',
-        field: 'field12',
-        width: 160,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명7',
-        field: 'field13',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명8',
-        field: 'field14',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명9',
-        field: 'field15',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명10',
-        field: 'field16',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명11',
-        field: 'field17',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명12',
-        field: 'field18',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명13',
-        field: 'field19',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명14',
-        field: 'field20',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명15',
-        field: 'field21',
-        width: 200,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명16',
-        field: 'field22',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명17',
-        field: 'field23',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명18',
-        field: 'field24',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명19',
-        field: 'field25',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명20',
-        field: 'field26',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명21',
-        field: 'field27',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명22',
-        field: 'field28',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명23',
-        field: 'field29',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명24',
-        field: 'field30',
-        width: 220,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명25',
-        field: 'field31',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명26',
-        field: 'field32',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명27',
-        field: 'field33',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명28',
-        field: 'field34',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명29',
-        field: 'field35',
-        width: 220,
-        autoHeight: true,
-        editable: false,
-      },
-      {
-        headerName: '질병명30',
-        field: 'field36',
-        width: 130,
-        autoHeight: true,
-        editable: false,
-      },
-    ],
-    [selectionRenderer12]
-  );
-  // tab2 dummy data
-  type DummyDataType2 = {
+  const columnDefs12: ColDef<DummyDataType12>[] = [
+    {
+      headerName: '선택',
+      field: 'field01',
+      width: 70,
+      autoHeight: true,
+      editable: false,
+      cellRenderer: selectionRenderer12,
+    },
+    {
+      headerName: '입력일자',
+      field: 'field02',
+      width: 100,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '설계번호',
+      field: 'field03',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '상품명',
+      field: 'field04',
+      width: 200,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '고지유형',
+      field: 'field05',
+      width: 140,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병미리보기',
+      field: 'field06',
+      width: 120,
+      autoHeight: true,
+      editable: false,
+      cellRenderer: (_params: ICellRendererParams<DummyDataType12>) => (
+        <Grow className="w-full px-1">
+          보기
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </Grow>
+      ),
+    },
+    {
+      headerName: '질병명1',
+      field: 'field07',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명2',
+      field: 'field08',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명3',
+      field: 'field09',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명4',
+      field: 'field10',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명5',
+      field: 'field11',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명6',
+      field: 'field12',
+      width: 160,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명7',
+      field: 'field13',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명8',
+      field: 'field14',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명9',
+      field: 'field15',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명10',
+      field: 'field16',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명11',
+      field: 'field17',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명12',
+      field: 'field18',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명13',
+      field: 'field19',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명14',
+      field: 'field20',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명15',
+      field: 'field21',
+      width: 200,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명16',
+      field: 'field22',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명17',
+      field: 'field23',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명18',
+      field: 'field24',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명19',
+      field: 'field25',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명20',
+      field: 'field26',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명21',
+      field: 'field27',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명22',
+      field: 'field28',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명23',
+      field: 'field29',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명24',
+      field: 'field30',
+      width: 220,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명25',
+      field: 'field31',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명26',
+      field: 'field32',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명27',
+      field: 'field33',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명28',
+      field: 'field34',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명29',
+      field: 'field35',
+      width: 220,
+      autoHeight: true,
+      editable: false,
+    },
+    {
+      headerName: '질병명30',
+      field: 'field36',
+      width: 130,
+      autoHeight: true,
+      editable: false,
+    },
+  ];
+
+  // tab2-1 dummy data
+  type DummyDataType21 = {
     id: number;
     field2_01: string | number;
     field2_02: string | number;
     field2_03: string | number;
     field2_04: string | number;
+    field2_05: string | number;
+    field2_06: string | number;
+    field2_07: string | number;
+    field2_08: string | number;
+    field2_09: string | number;
+    field2_10: string | number;
+    field2_11: string | number;
+    field2_12: string | number;
+    field2_13: string | number;
   };
-  const DummyData2: DummyDataType2[] = [
+  const DummyData21: DummyDataType21[] = [
     {
       id: 1,
       field2_01: '',
       field2_02: '',
       field2_03: '',
       field2_04: '',
-    },
-    {
-      id: 2,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-    {
-      id: 3,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
+      field2_05: '',
+      field2_06: '',
+      field2_07: '',
+      field2_08: '',
+      field2_09: '',
+      field2_10: '',
+      field2_11: '',
+      field2_12: '',
+      field2_13: '',
     },
   ];
 
-  // tab2 AgGrid Column
-  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+  // tab2-1 AgGrid Column
+  const columnDefs21 = React.useMemo<ColDef<DummyDataType21>[]>(
     () => [
       {
-        headerName: '납입회차',
+        headerName: '선택',
         field: 'field2_01',
-        width: 300,
+        width: 70,
         editable: false,
         autoHeight: true,
-        cellClass: 'flex! items-center! justify-center! text-center',
       },
       {
-        headerName: '납입_응당일',
+        headerName: '질병코드',
         field: 'field2_02',
-        flex: 1,
+        width: 90,
         editable: false,
         autoHeight: true,
-        cellClass: 'flex! items-center! justify-center! text-center',
       },
       {
-        headerName: '담보코드',
+        headerName: '질병명',
         field: 'field2_03',
-        flex: 1,
+        width: 120,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
       },
       {
-        headerName: '담보보험료',
+        headerName: '입원',
         field: 'field2_04',
-        flex: 1,
+        width: 70,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '통원',
+        field: 'field2_05',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '수술',
+        field: 'field2_06',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '완치',
+        field: 'field2_07',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '재발',
+        field: 'field2_08',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '의료기관',
+        field: 'field2_09',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '상품명',
+        field: 'field2_10',
+        width: 130,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '고지유형',
+        field: 'field2_11',
+        width: 100,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '설계번호',
+        field: 'field2_12',
+        width: 130,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '입력일자',
+        field: 'field2_13',
+        width: 120,
+        autoHeight: true,
+        editable: false,
       },
     ],
     []
   );
+
+  // tab2-2 AgGrid Column
+  const columnDefs22 = React.useMemo<ColDef<DummyDataType22>[]>(
+    () => [
+      {
+        headerName: '선택',
+        field: 'field2_01',
+        width: 70,
+        editable: false,
+        autoHeight: true,
+      },
+      {
+        headerName: '질병코드',
+        field: 'field2_02',
+        width: 90,
+        editable: false,
+        autoHeight: true,
+      },
+      {
+        headerName: '질병명',
+        field: 'field2_03',
+        width: 120,
+        editable: false,
+      },
+      {
+        headerName: '입원',
+        field: 'field2_04',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '통원',
+        field: 'field2_05',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '수술',
+        field: 'field2_06',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '완치',
+        field: 'field2_07',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '재발',
+        field: 'field2_08',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '의료기관',
+        field: 'field2_09',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '상품명',
+        field: 'field2_10',
+        width: 130,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '고지유형',
+        field: 'field2_11',
+        width: 100,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '설계번호',
+        field: 'field2_12',
+        width: 130,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '입력일자',
+        field: 'field2_13',
+        width: 120,
+        autoHeight: true,
+        editable: false,
+      },
+    ],
+    []
+  );
+  type DummyDataType22 = {
+    id: number;
+    field2_01: string | number;
+    field2_02: string | number;
+    field2_03: string | number;
+    field2_04: string | number;
+    field2_05: string | number;
+    field2_06: string | number;
+    field2_07: string | number;
+    field2_08: string | number;
+    field2_09: string | number;
+    field2_10: string | number;
+    field2_11: string | number;
+    field2_12: string | number;
+    field2_13: string | number;
+  };
+  const DummyData22: DummyDataType22[] = [
+    {
+      id: 1,
+      field2_01: '',
+      field2_02: '',
+      field2_03: '',
+      field2_04: '',
+      field2_05: '',
+      field2_06: '',
+      field2_07: '',
+      field2_08: '',
+      field2_09: '',
+      field2_10: '',
+      field2_11: '',
+      field2_12: '',
+      field2_13: '',
+    },
+  ];
+
+  // tab2-3 AgGrid Column
+  const columnDefs23 = React.useMemo<ColDef<DummyDataType23>[]>(
+    () => [
+      {
+        headerName: '선택',
+        field: 'field2_01',
+        width: 70,
+        editable: false,
+        autoHeight: true,
+      },
+      {
+        headerName: '질병코드',
+        field: 'field2_02',
+        width: 90,
+        editable: false,
+        autoHeight: true,
+      },
+      {
+        headerName: '질병명',
+        field: 'field2_03',
+        width: 120,
+        editable: false,
+      },
+      {
+        headerName: '입원',
+        field: 'field2_04',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '통원',
+        field: 'field2_05',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '수술',
+        field: 'field2_06',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '완치',
+        field: 'field2_07',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '재발',
+        field: 'field2_08',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '의료기관',
+        field: 'field2_09',
+        width: 70,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '상품명',
+        field: 'field2_10',
+        width: 130,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '고지유형',
+        field: 'field2_11',
+        width: 100,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '설계번호',
+        field: 'field2_12',
+        width: 130,
+        autoHeight: true,
+        editable: false,
+      },
+      {
+        headerName: '입력일자',
+        field: 'field2_13',
+        width: 120,
+        autoHeight: true,
+        editable: false,
+      },
+    ],
+    []
+  );
+  type DummyDataType23 = {
+    id: number;
+    field2_01: string | number;
+    field2_02: string | number;
+    field2_03: string | number;
+    field2_04: string | number;
+    field2_05: string | number;
+    field2_06: string | number;
+    field2_07: string | number;
+    field2_08: string | number;
+    field2_09: string | number;
+    field2_10: string | number;
+    field2_11: string | number;
+    field2_12: string | number;
+    field2_13: string | number;
+  };
+  const DummyData23: DummyDataType23[] = [
+    {
+      id: 1,
+      field2_01: '',
+      field2_02: '',
+      field2_03: '',
+      field2_04: '',
+      field2_05: '',
+      field2_06: '',
+      field2_07: '',
+      field2_08: '',
+      field2_09: '',
+      field2_10: '',
+      field2_11: '',
+      field2_12: '',
+      field2_13: '',
+    },
+  ];
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -907,7 +1226,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
             {active === 'tab1' ? (
               <>
                 <Gcol placement="ss" className="w-full pt-2" gap={5}>
-                  <TableFold variant={'accordion'}>
+                  <TableFold>
                     <TableFoldHead title="일반/건강고지" />
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full">
@@ -947,67 +1266,105 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </div>
                     </TableFoldBody>
                   </TableFold>
+                  <Gcol className="w-full" placement="ss" variant="box-warning">
+                    <Typo icon="warning" variant="body-sm">
+                      최근 1개월이내 설계번호(유형별 최대 5개) 표시
+                    </Typo>
+                    <Typo icon="warning" variant="body-sm">
+                      질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
+                    </Typo>
+                    <Typo icon="warning" variant="body-sm">
+                      실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
+                      피보험자에게 최종확인하셔야 합니다.
+                    </Typo>
+                  </Gcol>
                 </Gcol>
               </>
             ) : (
               <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
-                <TableFold>
+                {/* Tab2-1 일반고지 */}
+                <TableFold variant={'accordion'}>
                   <TableFoldHead title="일반고지" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine w-full h-[200rem]">
-                      <AgGridReact<DummyDataType2>
+                    <div className="ag-theme-alpine w-full">
+                      <AgGridReact<DummyDataType21>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData2}
-                        columnDefs={columnDefs2}
+                        rowData={DummyData21}
+                        columnDefs={columnDefs21}
                         defaultColDef={{
                           sortable: false,
                           resizable: false,
                           cellClass: 'p-0',
                           cellStyle: { padding: 0 },
                         }}
+                        animateRows={false}
+                        domLayout="autoHeight"
+                        className="text-center"
                       />
                     </div>
                   </TableFoldBody>
                 </TableFold>
-                <TableFold>
+
+                {/* Tab2-2 건강고지 */}
+                <TableFold variant={'accordion'}>
                   <TableFoldHead title="건강고지" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine w-full h-[200rem]">
-                      <AgGridReact<DummyDataType2>
+                    <div className="ag-theme-alpine w-full">
+                      <AgGridReact<DummyDataType22>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData2}
-                        columnDefs={columnDefs2}
+                        rowData={DummyData22}
+                        columnDefs={columnDefs22}
                         defaultColDef={{
                           sortable: false,
                           resizable: false,
                           cellClass: 'p-0',
                           cellStyle: { padding: 0 },
                         }}
+                        animateRows={false}
+                        domLayout="autoHeight"
+                        className="text-center"
                       />
                     </div>
                   </TableFoldBody>
                 </TableFold>
-                <TableFold>
+
+                {/* Tab2-3 간편고지 */}
+                <TableFold variant={'accordion'}>
                   <TableFoldHead title="간편고지" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine w-full h-[200rem]">
-                      <AgGridReact<DummyDataType2>
+                    <div className="ag-theme-alpine w-full">
+                      <AgGridReact<DummyDataType23>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData2}
-                        columnDefs={columnDefs2}
+                        rowData={DummyData23}
+                        columnDefs={columnDefs23}
                         defaultColDef={{
                           sortable: false,
                           resizable: false,
                           cellClass: 'p-0',
                           cellStyle: { padding: 0 },
                         }}
+                        animateRows={false}
+                        domLayout="autoHeight"
+                        className="text-center"
                       />
                     </div>
                   </TableFoldBody>
                 </TableFold>
+                <Gcol className="w-full" placement="ss" variant="box-warning">
+                  <Typo icon="warning" variant="body-sm">
+                    최근 1개월이내 설계번호(유형별 최대 5개) 표시
+                  </Typo>
+                  <Typo icon="warning" variant="body-sm">
+                    질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
+                  </Typo>
+                  <Typo icon="warning" variant="body-sm">
+                    실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
+                    피보험자에게 최종확인하셔야 합니다.
+                  </Typo>
+                </Gcol>
               </Gcol>
             )}
           </TabPager>
