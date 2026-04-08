@@ -26,6 +26,10 @@ const DUMMY_DATA = {
     { value: 'user1', name: '김한화' },
     { value: 'user2', name: '박민서' },
   ],
+  view2: [
+    { value: 'user1', name: '김한화' },
+    { value: 'user2', name: '박민서' },
+  ],
 };
 
 type Ltpa350Step1Props = {
@@ -72,7 +76,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
 
       <LayoutTemplateLTPA350MainBody
         mainBody={
-          <Gcol placement={'ss'} className="w-full" gap={3}>
+          <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
             {viewContents.view1 && (
               <>
                 <Grow placement={'ss'} className="w-full">
@@ -210,7 +214,8 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                   </FormTable>
                 </Grow>
 
-                <Gcol placement="ss" className={'w-full'}>
+                <Gcol placement="ss" className={'w-full'} gap={2}>
+                  {/* 피보험자 */}
                   <TabPager
                     variant={'default'}
                     data={tabs}
@@ -230,184 +235,181 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                       </Grow>
                     }
                   >
-                    <div className="w-full h-full relative">
-                      <Gcol placement={'ss'}>
-                        <FormTable
-                          caption="행/열 병합 케이스"
-                          lineTop={false}
-                          cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
-                        >
-                          {/* 상세 화면 전용 */}
-                          {_simpleMode ? (
-                            <FormRow>
-                              <FormCell title="피보험자" titleVariant="section">
-                                <InputCombo
-                                  clear
-                                  onChange={() => {}}
-                                  options={[
-                                    { label: <div>박은빈</div>, value: 'LA24094848895' },
-                                    { label: <div>김은빈</div>, value: 'LA24094848895' },
-                                    { label: <div>최은빈</div>, value: 'LA24094848895' },
-                                    { label: <div>안은빈</div>, value: 'LA24094848895' },
-                                    { label: <div>조은빈</div>, value: 'LA24094848895' },
-                                  ]}
-                                  placeholder=""
-                                  required
-                                  size="lg"
-                                  value=""
-                                  variant="default"
-                                  width={'7.6rem'}
-                                />
-                                <Button
-                                  aria-label="피보험자 검색"
-                                  variant={'outlined'}
-                                  only="icon"
-                                  size={'lg'}
-                                  color={'gray-light'}
-                                >
-                                  <SearchIcon color={'var(--color-primary-50)'} />
-                                </Button>
-                                <RadioGroup className="flex-row gap-3">
-                                  <RadioGroupItem value="man" id="man" checked>
-                                    남
-                                  </RadioGroupItem>
-                                  <RadioGroupItem value="woman" id="woman">
-                                    여
-                                  </RadioGroupItem>
-                                </RadioGroup>
-                              </FormCell>
-                              <FormCell title="연령">
-                                <Grow gap={3}>
-                                  <Grow>
-                                    <Input aria-label="피보험자 나이" width={'4.6rem'} value={''} required />세
-                                  </Grow>
-                                  <DatePickerInput mode={'single'} width={'9rem'} required />
-                                </Grow>
-                              </FormCell>
-                            </FormRow>
-                          ) : (
-                            <FormRow>
-                              <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
-                                <Grow className="flex-nowrap w-full" placement={'bwc'}>
-                                  <Grow>
-                                    <Input aria-label="피보험자명" width={'7.6rem'} readOnly />
-                                    <Input aria-label="주민등록번호 마스킹" width={'12rem'} readOnly />
-                                    <Button
-                                      aria-label="피보험자 검색"
-                                      variant={'outlined'}
-                                      only="icon"
-                                      size={'lg'}
-                                      color={'gray-light'}
-                                    >
-                                      <SearchIcon color={'var(--color-primary-50)'} />
-                                    </Button>
-                                    <Input aria-label="피보험자 나이" width={'4.8rem'} readOnly />
-                                    <Input aria-label="피보험자 성별" width={'3.2rem'} readOnly />
-                                  </Grow>
-                                  <Grow gap={2}>
-                                    <KeyValueItem label={'상령일'}>
-                                      <Grow gap={1}>
-                                        <Typo weight={'bold'}>2023-01-12</Typo>
-                                        <Badge color={'blue'} size={'md'} variant={'contained'}>
-                                          D-31
-                                        </Badge>
-                                      </Grow>
-                                    </KeyValueItem>
-                                    <KeyValueItem label={'설계동의'}>
-                                      <Grow gap={1}>
-                                        <Typo weight={'bold'}>2023-01-12</Typo>
-                                        <Badge color={'red'} size={'md'} variant={'contained'}>
-                                          D-31
-                                        </Badge>
-                                      </Grow>
-                                    </KeyValueItem>
-                                    <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                      알림톡발송
-                                    </Button>
-                                  </Grow>
-                                </Grow>
-                              </FormCell>
-                            </FormRow>
-                          )}
-
+                    <Gcol placement={'ss'}>
+                      <FormTable
+                        caption="행/열 병합 케이스"
+                        lineTop={false}
+                        cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
+                      >
+                        {/* 상세 화면 전용 */}
+                        {_simpleMode ? (
                           <FormRow>
-                            <FormCell title="직업" colSpan={3}>
-                              <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
-                                <Input aria-label="직업코드" width={'7.6rem'} readOnly />
-                                <Input aria-label="직업분류" width={'27.4rem'} readOnly />
-                                <Button
-                                  aria-label="피보험자 검색"
-                                  variant={'outlined'}
-                                  only="icon"
-                                  size={'lg'}
-                                  color={'gray-light'}
-                                >
-                                  <SearchIcon color={'var(--color-primary-50)'} />
-                                </Button>
-                                <Input aria-label="피보험자 나이" width={'2xs'} readOnly />
+                            <FormCell title="피보험자" titleVariant="section">
+                              <InputCombo
+                                clear
+                                onChange={() => {}}
+                                options={[
+                                  { label: <td>박은빈</td>, value: '박은빈' },
+                                  { label: <td>김은빈</td>, value: '김은빈' },
+                                  { label: <td>최은빈</td>, value: '최은빈' },
+                                  { label: <td>안은빈</td>, value: '안은빈' },
+                                  { label: <td>조은빈</td>, value: '조은빈' },
+                                ]}
+                                col={2}
+                                required
+                                value=""
+                                width={'7.6rem'}
+                              />
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <RadioGroup className="flex-row gap-3">
+                                <RadioGroupItem value="man" id="man" checked>
+                                  남
+                                </RadioGroupItem>
+                                <RadioGroupItem value="woman" id="woman">
+                                  여
+                                </RadioGroupItem>
+                              </RadioGroup>
+                            </FormCell>
+                            <FormCell title="연령">
+                              <Grow gap={3}>
+                                <Grow>
+                                  <Input aria-label="피보험자 나이" width={'4.6rem'} value={''} required />세
+                                </Grow>
+                                <DatePickerInput mode={'single'} width={'9rem'} required />
                               </Grow>
                             </FormCell>
                           </FormRow>
+                        ) : (
                           <FormRow>
-                            <FormCell title="운전형태">
-                              <RadioGroup className="flex-row gap-3">
-                                {[
-                                  { value: 'private', id: 'driving-type-private', label: '자가용' },
-                                  { value: 'commercial', id: 'driving-type-commercial', label: '영업용' },
-                                  { value: 'nondriver', id: 'driving-type-nondriver', label: '비운전자' },
-                                ].map((option) => (
-                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                    {option.label}
-                                  </RadioGroupItem>
-                                ))}
-                              </RadioGroup>
-                            </FormCell>
-                            <FormCell title="이륜차">
-                              <RadioGroup className="flex-row gap-3">
-                                {[
-                                  { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
-                                  { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
-                                ].map((option) => (
-                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                    {option.label}
-                                  </RadioGroupItem>
-                                ))}
-                              </RadioGroup>
+                            <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
+                              <Grow className="flex-nowrap w-full" placement={'bwc'}>
+                                <Grow>
+                                  <Input aria-label="피보험자명" width={'7.6rem'} readOnly />
+                                  <Input aria-label="주민등록번호 마스킹" width={'12rem'} readOnly />
+                                  <Button
+                                    aria-label="피보험자 검색"
+                                    variant={'outlined'}
+                                    only="icon"
+                                    size={'lg'}
+                                    color={'gray-light'}
+                                  >
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                  <Input aria-label="피보험자 나이" width={'4.8rem'} readOnly />
+                                  <Input aria-label="피보험자 성별" width={'3.2rem'} readOnly />
+                                </Grow>
+                                <Grow gap={2}>
+                                  <KeyValueItem label={'상령일'}>
+                                    <Grow gap={1}>
+                                      <Typo weight={'bold'}>2023-01-12</Typo>
+                                      <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                        D-31
+                                      </Badge>
+                                    </Grow>
+                                  </KeyValueItem>
+                                  <KeyValueItem label={'설계동의'}>
+                                    <Grow gap={1}>
+                                      <Typo weight={'bold'}>2023-01-12</Typo>
+                                      <Badge color={'red'} size={'md'} variant={'contained'}>
+                                        D-31
+                                      </Badge>
+                                    </Grow>
+                                  </KeyValueItem>
+                                  <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                    알림톡발송
+                                  </Button>
+                                </Grow>
+                              </Grow>
                             </FormCell>
                           </FormRow>
-                          <FormRow>
-                            <FormCell title="주피와 관계">
-                              <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
-                              <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
-                                <NativeSelectOption>주피와</NativeSelectOption>
-                              </NativeSelect>
-                            </FormCell>
-                            <FormCell title="(실손)동시설계">
-                              <Input aria-label="코드" width={'13rem'} readOnly />
-                              <Input aria-label="코드" width={'13rem'} commaAmount readOnly />
-                            </FormCell>
-                          </FormRow>
-                          <FormRow>
-                            <FormCell title={'할인적용'} colSpan={3}>
-                              <Checkbox color="primary" size="md" variant="default">
-                                가족연계할인
-                              </Checkbox>
+                        )}
+
+                        <FormRow>
+                          <FormCell title="직업" colSpan={3}>
+                            <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
+                              <Input aria-label="직업코드" width={'7.6rem'} readOnly />
+                              <Input aria-label="직업분류" width={'27.4rem'} readOnly />
                               <Button
                                 aria-label="피보험자 검색"
-                                variant="outlined"
+                                variant={'outlined'}
                                 only="icon"
-                                size="lg"
-                                color="gray-light"
+                                size={'lg'}
+                                color={'gray-light'}
                               >
-                                <SearchIcon color="var(--color-primary-50)" />
+                                <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                            </FormCell>
-                          </FormRow>
-                        </FormTable>
-                      </Gcol>
-                    </div>
+                              <Input aria-label="피보험자 나이" width={'2xs'} readOnly />
+                            </Grow>
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title="운전형태">
+                            <RadioGroup className="flex-row gap-3">
+                              {[
+                                { value: 'private', id: 'driving-type-private', label: '자가용' },
+                                { value: 'commercial', id: 'driving-type-commercial', label: '영업용' },
+                                { value: 'nondriver', id: 'driving-type-nondriver', label: '비운전자' },
+                              ].map((option) => (
+                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                  {option.label}
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          </FormCell>
+                          <FormCell title="이륜차">
+                            <RadioGroup className="flex-row gap-3">
+                              {[
+                                { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
+                                { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
+                              ].map((option) => (
+                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                  {option.label}
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title="주피와 관계">
+                            <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
+                            <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
+                              <NativeSelectOption>주피와</NativeSelectOption>
+                            </NativeSelect>
+                          </FormCell>
+                          <FormCell title="(실손)동시설계">
+                            <Input aria-label="코드" width={'13rem'} readOnly />
+                            <Input aria-label="코드" width={'13rem'} commaAmount readOnly />
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title={'할인적용'} colSpan={3}>
+                            <Checkbox color="primary" size="md" variant="default">
+                              가족연계할인
+                            </Checkbox>
+                            <Button
+                              aria-label="피보험자 검색"
+                              variant="outlined"
+                              only="icon"
+                              size="lg"
+                              color="gray-light"
+                            >
+                              <SearchIcon color="var(--color-primary-50)" />
+                            </Button>
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Gcol>
                   </TabPager>
 
+                  {/* 계약자 - 상세 */}
                   {!_simpleMode && (
                     <FormTable
                       caption="계약자 정보"
@@ -517,6 +519,437 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                     </FormTable>
                   )}
                 </Gcol>
+              </>
+            )}
+
+            {viewContents.view2 && (
+              <>
+                <Grow placement={'ss'} className={'w-full'}>
+                  <FormTable
+                    caption="보험정보"
+                    cols={[
+                      'w-[14rem] min-w-[14rem]',
+                      'min-w-[32.6rem] flex-1',
+                      'w-[14rem] min-w-[14rem]',
+                      'min-w-[32.6rem] flex-1',
+                    ]}
+                  >
+                    <FormRow>
+                      <FormCell title={'보험시기'}>
+                        <DatePickerInput mode={'single'} width={'9rem'} />
+                        <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
+                          오늘
+                        </Button>
+                      </FormCell>
+                      <FormCell title={'보험기간'}>
+                        <DatePickerInput readOnly mode={'range'} width={'9rem'} />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'만기'} colSpan={3}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: '100', id: 'child-insurance-period-100', label: '100세만기' },
+                            { value: '90', id: 'child-insurance-period-90', label: '90세만기' },
+                            { value: '80', id: 'child-insurance-period-80', label: '80세만기' },
+                            { value: '55', id: 'child-insurance-period-55', label: '55세만기' },
+                            { value: '30', id: 'child-insurance-period-30', label: '30세만기' },
+                            { value: '20', id: 'child-insurance-period-20', label: '20세만기' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'납기'} colSpan={3}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: '10', id: 'child-payment-period-10', label: '10년납' },
+                            { value: '15', id: 'child-payment-period-15', label: '15년납' },
+                            { value: '20', id: 'child-payment-period-20', label: '20년납' },
+                            { value: '25', id: 'child-payment-period-25', label: '25년납' },
+                            { value: '30', id: 'child-payment-period-30', label: '30년납' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'납입주기'}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[{ value: 'month', id: 'child-payment-cycle-monthly', label: '월납' }].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                      <FormCell title={'갱신주기'}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: '20', id: 'child-renewal-period-20', label: '20년' },
+                            { value: '10', id: 'child-renewal-period-10', label: '10년' },
+                            { value: '3', id: 'child-renewal-period-3', label: '3년' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'태아여부'}>
+                        <Grow className="flex gap-3">
+                          <Checkbox color="primary" size="md" variant="default">
+                            가입
+                          </Checkbox>
+                          <Checkbox color="primary" size="md" variant="default">
+                            다태아
+                          </Checkbox>
+                          <Checkbox color="primary" size="md" variant="default">
+                            수수료선지급
+                          </Checkbox>
+                        </Grow>
+                      </FormCell>
+                      <FormCell title={'계약전환'}>
+                        <Checkbox color="primary" size="md" variant="default">
+                          신청
+                        </Checkbox>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Grow>
+                <Grow placement="ss" className={'w-full'}>
+                  <TabPager
+                    variant={'default'}
+                    data={tabs}
+                    active={active}
+                    setActive={setActive}
+                    removable={true}
+                    onRemove={handleRemove}
+                    visibleCount={5}
+                    getValue={(tab) => String(tab.value)}
+                    renderTab={(tab) => <span>{tab.name}</span>}
+                    renderButtons={
+                      <Grow gap={2.5}>
+                        <Button color={'gray'} size={'md'} variant={'outlined'}>
+                          피보험자
+                          <AddIcon color={'#61554F'} />
+                        </Button>
+                      </Grow>
+                    }
+                  >
+                    <div className="w-full h-full relative">
+                      <Gcol placement={'ss'}>
+                        <FormTable
+                          caption="피보험자 정보"
+                          lineTop={false}
+                          cols={[
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                          ]}
+                        >
+                          <FormRow>
+                            <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
+                              <Grow className="flex-nowrap w-full" placement={'bwc'}>
+                                <Grow>
+                                  <Input aria-label="피보험자명" width={'7.6rem'} readOnly />
+                                  <Input aria-label="주민등록번호 마스킹" width={'12rem'} readOnly />
+                                  <Button
+                                    aria-label="피보험자 검색"
+                                    variant={'outlined'}
+                                    only="icon"
+                                    size={'lg'}
+                                    color={'gray-light'}
+                                  >
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                  <Input aria-label="피보험자 나이" width={'4.6rem'} readOnly />
+                                  <Input aria-label="피보험자 성별" width={'3.2rem'} readOnly />
+                                </Grow>
+                                <Grow gap={2}>
+                                  <KeyValueItem label={'상령일'}>
+                                    <Grow gap={1}>
+                                      <Typo weight={'bold'}>2035.01.31</Typo>
+                                      <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                        D-21
+                                      </Badge>
+                                    </Grow>
+                                  </KeyValueItem>
+                                  <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                    알림톡발송
+                                  </Button>
+                                </Grow>
+                              </Grow>
+                            </FormCell>
+                          </FormRow>
+                          {/* 간편 화면 전용 */}
+                          <FormRow>
+                            <FormCell title="피보험자" titleVariant="section">
+                              <InputCombo
+                                clear
+                                onChange={() => {}}
+                                options={[
+                                  {
+                                    label: <td>박은빈</td>,
+                                    value: '박은빈',
+                                  },
+                                  {
+                                    label: <td>김민지</td>,
+                                    value: '김민지',
+                                  },
+                                ]}
+                                placeholder=""
+                                required
+                                size="lg"
+                                value=""
+                                variant="default"
+                                width={'7.6rem'}
+                              />
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <RadioGroup className="flex-row gap-3">
+                                <RadioGroupItem value="man" id="man" checked>
+                                  남
+                                </RadioGroupItem>
+                                <RadioGroupItem value="woman" id="woman">
+                                  여
+                                </RadioGroupItem>
+                              </RadioGroup>
+                            </FormCell>
+                            <FormCell title="연령">
+                              <Grow gap={3}>
+                                <Grow>
+                                  <Input aria-label="피보험자 나이" width={'4.6rem'} value={''} required />세
+                                </Grow>
+                                <DatePickerInput mode={'single'} width={'9rem'} required />
+                              </Grow>
+                            </FormCell>
+                          </FormRow>
+                          {/* //간편 화면 전용 */}
+                          <FormRow>
+                            <FormCell title="직업" colSpan={3}>
+                              <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
+                                <Input aria-label="직업코드" width={'7.6rem'} readOnly />
+                                <Input aria-label="직업분류" width={'27.4rem'} readOnly />
+                                <Button
+                                  aria-label="직업 검색"
+                                  variant={'outlined'}
+                                  only="icon"
+                                  size={'lg'}
+                                  color={'gray-light'}
+                                >
+                                  <SearchIcon color={'var(--color-primary-50)'} />
+                                </Button>
+                                <Input aria-label="직업급수" width={'2xs'} readOnly />
+                              </Grow>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="운전형태">
+                              <RadioGroup className="flex-row gap-3">
+                                {[
+                                  { value: 'private', id: 'child-driving-type-private', label: '자가용' },
+                                  { value: 'commercial', id: 'child-driving-type-commercial', label: '영업용' },
+                                  { value: 'nondriver', id: 'child-driving-type-nondriver', label: '비운전자' },
+                                ].map((option) => (
+                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                    {option.label}
+                                  </RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </FormCell>
+                            <FormCell title="이륜차">
+                              <RadioGroup className="flex-row gap-3">
+                                {[
+                                  { value: 'drives', id: 'child-motorcycle-drives', label: '운전함' },
+                                  { value: 'nondriver', id: 'child-motorcycle-nondriver', label: '운전안함' },
+                                ].map((option) => (
+                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                    {option.label}
+                                  </RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="주피와 관계">
+                              <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
+                              <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
+                                {[
+                                  { value: 'spouse', id: 'child-relationship-spouse', label: '배우자' },
+                                  { value: 'child', id: 'child-relationship-child', label: '자녀' },
+                                  { value: 'sibling', id: 'child-relationship-sibling', label: '형제자매' },
+                                  { value: 'parent', id: 'child-relationship-parent', label: '부모' },
+                                  { value: 'etc', id: 'child-relationship-etc', label: '기타' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                            </FormCell>
+                            <FormCell title="(실손)동시설계">
+                              <Input aria-label="설계번호" width={'13rem'} readOnly />
+                              <Input aria-label="보험료" width={'13rem'} commaAmount readOnly />
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="할인적용">
+                              <Checkbox size="md" variant="default">
+                                가족연계할인
+                              </Checkbox>
+                              <Button aria-label="검색" variant="outlined" only="icon" size="lg" color="gray-light">
+                                <SearchIcon color="var(--color-primary-50)" />
+                              </Button>
+                            </FormCell>
+                            <FormCell title="임신주수">
+                              <Input aria-label="임신주수" width={'5rem'} required />
+                              주 (출산예정일)
+                              <DatePickerInput mode={'single'} width={'9rem'} required />)
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+
+                        {/* 간편 화면 미노출 */}
+                        <FormTable
+                          caption="계약자 정보"
+                          cols={[
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                            'w-[14rem] min-w-[14rem]',
+                            'min-w-[32.6rem] flex-1',
+                          ]}
+                        >
+                          <FormRow>
+                            <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
+                              <Grow>
+                                <Input aria-label="계약자명" width="7.6rem" readOnly />
+                                <Input aria-label="주민등록번호 마스킹" width="12rem" readOnly />
+                                <Button
+                                  aria-label="계약자 검색"
+                                  variant="outlined"
+                                  only="icon"
+                                  color="gray-light"
+                                  size="lg"
+                                >
+                                  <SearchIcon color="var(--color-primary-50)" />
+                                </Button>
+                                <Checkbox color="primary" size="md" variant="default">
+                                  개인사업자
+                                </Checkbox>
+                              </Grow>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="계약자와 관계">
+                              <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
+                              <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
+                                {[
+                                  { value: 'spouse', id: 'relationship-spouse', label: '배우자' },
+                                  { value: 'child', id: 'relationship-child', label: '자녀' },
+                                  { value: 'sibling', id: 'relationship-sibling', label: '형제자매' },
+                                  { value: 'parent', id: 'relationship-parent', label: '부모' },
+                                  { value: 'etc', id: 'relationship-etc', label: '기타' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                            </FormCell>
+                            <FormCell title="개인정보취득경로">
+                              <NativeSelect aria-label="개인정보취득경로 선택" width="20rem" required>
+                                {[
+                                  { value: 'selection', id: 'child-personalinfo-1', label: '고객직접선택' },
+                                  { value: 'selection2', id: 'child-personalinfo-2', label: '선택' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="자택(소재지)" colSpan={3}>
+                              ddddd
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="직장(본사)" colSpan={3}>
+                              ddddd{' '}
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="연락처">
+                              <Grow placement="bwc">
+                                <Grow>010 2222 2222</Grow>
+                                <Grow>
+                                  <KeyValueItem label="전자적안내동의">
+                                    <Grow placement="sc" gap="0">
+                                      <Badge color="green" size="md" variant="ghost">
+                                        ddaffd
+                                      </Badge>
+                                      <TooltipQ>ddddddd</TooltipQ>
+                                    </Grow>
+                                  </KeyValueItem>
+                                </Grow>
+                              </Grow>
+                            </FormCell>
+                            <FormCell title="이메일">dddddd</FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="보험차익비과세">
+                              <Checkbox color="primary" size="md" variant="default">
+                                가입
+                              </Checkbox>
+                              <NativeSelect aria-label="비과세 유형 선택" width="17rem">
+                                {[
+                                  { value: 'monthly', id: 'child-monthly-payment-monthly', label: '월납식비과세' },
+                                  {
+                                    value: 'nonemonthly',
+                                    id: 'child-monthly-payment-nonemonthly',
+                                    label: '비월납식비과세',
+                                  },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                            </FormCell>
+                            <FormCell title="설계금액/잔여한도">
+                              <Input aria-label="설계금액" width="7.1rem" commaAmount readOnly />
+                              /
+                              <Input aria-label="잔여한도" width="7.1rem" commaAmount readOnly />
+                              <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
+                                조회
+                              </Button>
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        {/*// 간편 화면 미노출 */}
+                      </Gcol>
+                    </div>
+                  </TabPager>
+                </Grow>
               </>
             )}
           </Gcol>

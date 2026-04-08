@@ -183,21 +183,25 @@ export const FormTable = ({
     default: '',
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
+
     setting:
       'w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-[2rem] [&_td]:py-[0.6rem] [&_th]:border-none! [&_td]:border-none! [&_tr]:border-0!',
+
     boxIn:
       'w-full border-none [&_th]:h-auto! bg-[transparent] [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_td]:border-none! [&_tr]:border-none! [&_td]:p-0!',
+
     head: `w-full border-none flex flex-col bg-[transparent] 
-      [&_colgroup]:hidden 
-      [&_tr]:flex [&_tr]:items-center [&_tr]:justify-start [&_tr]:gap-2 [&_tr]:border-none! [&_tr]:w-full [&_tr~tr>*]:pt-[0.6rem]! 
-      [&_th]:flex [&_th]:items-center [&_th]:justify-start [&_th]:gap-2 [&_th]:border-none! [&_th]:w-max
-      [&_th]:h-auto! [&_th]:bg-[transparent] [&_th]:text-[#333] [&_th]:font-bold [&_th]:px-0 [&_th]:py-0! [&_th]:border-none! [&_th]:text-[1.4rem]
-      [&_td]:border-none! [&_td]:p-0! [&_td]:flex [&_td]:items-center [&_td]:justify-start [&_td]:gap-4 [&_td]:h-[auto] [&_td]:font-bold [&_td]:text-[1.4rem] 
-      [&_td+th]:pl-[1.6rem]!`,
+    [&>colgroup]:hidden 
+    [&>tbody>tr]:flex [&>tbody>tr]:items-center [&>tbody>tr]:justify-start [&>tbody>tr]:gap-2 [&>tbody>tr]:border-none! [&>tbody>tr]:w-full [&>tbody>tr~tr>*]:pt-[0.6rem]! 
+    [&>tbody>tr>th]:flex [&>tbody>tr>th]:items-center [&>tbody>tr>th]:justify-start [&>tbody>tr>th]:gap-2 [&>tbody>tr>th]:border-none! [&>tbody>tr>th]:w-max
+    [&>tbody>tr>th]:h-auto! [&>tbody>tr>th]:bg-[transparent] [&>tbody>tr>th]:text-[#333] [&>tbody>tr>th]:font-bold [&>tbody>tr>th]:px-0 [&>tbody>tr>th]:py-0! [&>tbody>tr>th]:border-none! [&>tbody>tr>th]:text-[1.4rem]
+    [&>tbody>tr>td]:border-none! [&>tbody>tr>td]:p-0! [&>tbody>tr>td]:flex [&>tbody>tr>td]:items-center [&>tbody>tr>td]:justify-start [&>tbody>tr>td]:gap-4 [&>tbody>tr>td]:h-[auto] [&>tbody>tr>td]:font-bold [&>tbody>tr>td]:text-[1.4rem] 
+    [&>tbody>tr>td+th]:pl-[1.6rem]!`,
+
     none: `border-0! bg-transparent 
-      [&_th]:bg-transparent [&_th]:border-0! [&_th]:py-0! [&_th]:pl-0! [&_th]:pr-[0.8rem] [&_th]:h-auto! [&_th]:break-keep!   
-      [&_td]:border-0! [&_td]:p-0! [&_td]:h-auto!   
-      [&_tr]:border-0! [&_td+th]:pl-[2.4rem]! [&_tr~tr>*]:pt-[0.6rem]!`,
+    [&>tbody>tr>th]:bg-transparent [&>tbody>tr>th]:border-0! [&>tbody>tr>th]:py-0! [&>tbody>tr>th]:pl-0! [&>tbody>tr>th]:pr-[0.8rem] [&>tbody>tr>th]:h-auto! [&>tbody>tr>th]:break-keep!   
+    [&>tbody>tr>td]:border-0! [&>tbody>tr>td]:p-0! [&>tbody>tr>td]:h-auto!   
+    [&>tbody>tr]:border-0! [&>tbody>tr>td+th]:pl-[2.4rem]! [&>tbody>tr~tr>*]:pt-[0.6rem]!`,
   };
 
   // variant가 'none'이면 lineTop을 무시
