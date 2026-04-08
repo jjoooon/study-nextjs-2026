@@ -21,6 +21,8 @@ type DefaultPageTitle = {
 };
 type PageTitleProps = {
   data: DefaultPageTitle;
+  simpleMode?: boolean;
+  onSimpleModeChange?: (value: boolean) => void;
 };
 
 export function PageTitle({ data }: PageTitleProps) {
@@ -53,10 +55,17 @@ export function PageTitle({ data }: PageTitleProps) {
   );
 }
 
-export function PageTitleProduct({ data }: PageTitleProps) {
+export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageTitleProps) {
   // data가 undefined일 경우를 대비한 기본값 처리
   const safeData = data ?? {};
-  const [simpleMode, setSimpleMode] = useState<boolean>(safeData.simpleMode ?? false);
+  const [internalSimpleMode, setInternalSimpleMode] = useState<boolean>(safeData.simpleMode ?? false);
+  const resolvedSimpleMode = simpleMode ?? internalSimpleMode;
+  const handleSimpleModeChange = (value: boolean) => {
+    if (simpleMode === undefined) {
+      setInternalSimpleMode(value);
+    }
+    onSimpleModeChange?.(value);
+  };
 
   // 설계번호와 계약자명 상태 추가
   const [planNumber, setPlanNumber] = useState<string[]>([
@@ -80,7 +89,7 @@ export function PageTitleProduct({ data }: PageTitleProps) {
   return (
     <Grow placement="bwc" className="w-full py-1 gap-3 min-w-[118.4rem]">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
-        <ViewMode state={simpleMode} onChange={setSimpleMode as (value: boolean) => void} />
+        <ViewMode state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
         <Typo tag="h2" variant="heading-lg">
           {safeData.title}
         </Typo>

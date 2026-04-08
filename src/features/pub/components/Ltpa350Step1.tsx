@@ -1,6 +1,5 @@
 'use client';
 
-// Layout Components
 import { useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
@@ -8,14 +7,13 @@ import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { KeyValueItem } from '@common/KeyValueList';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { SearchIcon, AddIcon } from '@icons';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { LayoutMain, LayoutMainFoot } from '@layout/BaseLayout';
+import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 
-// UIUX Components
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -30,8 +28,12 @@ const DUMMY_DATA = {
   ],
 };
 
+type Ltpa350Step1Props = {
+  simpleMode: boolean;
+};
+
 // State & Reducer Types
-export const Ltpa350Step1 = () => {
+export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => {
   const [viewContents, setViewContents] = useState<Record<string, boolean>>({
     view1: true,
     view2: false,
@@ -43,247 +45,200 @@ export const Ltpa350Step1 = () => {
   const { tabs, active, setActive, handleRemove } = useTabs(DUMMY_DATA['view1']);
 
   return (
-    // ---------------------------------------------------------------------------
-    // 5) Render
-    // ---------------------------------------------------------------------------
     <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem]">
-      <LayoutMainBody>
-        <LayoutScrollWrap>
-          <LayoutScrollItem>
-            {/* 퍼블 페이지확인용 */}
-            <NativeSelect
-              className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
-              value={'view1'}
-              onChange={(e) => {
-                const selectedKey = e.target.value;
+      {/* 퍼블 페이지확인용 */}
+      <NativeSelect
+        className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
+        value={'view1'}
+        onChange={(e) => {
+          const selectedKey = e.target.value;
 
-                setViewContents({
-                  view1: selectedKey === 'view1',
-                  view2: selectedKey === 'view2',
-                  view3: selectedKey === 'view3',
-                  view4: selectedKey === 'view4',
-                  view5: selectedKey === 'view5',
-                });
-              }}
-            >
-              <NativeSelectOption value="view1">임시 화면확인용: 인보험</NativeSelectOption>
-              <NativeSelectOption value="view2">임시 화면확인용: 태아</NativeSelectOption>
-              <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
-              <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
-              <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
-            </NativeSelect>
-            {/* 퍼블 페이지확인용 */}
+          setViewContents({
+            view1: selectedKey === 'view1',
+            view2: selectedKey === 'view2',
+            view3: selectedKey === 'view3',
+            view4: selectedKey === 'view4',
+            view5: selectedKey === 'view5',
+          });
+        }}
+      >
+        <NativeSelectOption value="view1">임시 화면확인용: 인보험</NativeSelectOption>
+        <NativeSelectOption value="view2">임시 화면확인용: 태아</NativeSelectOption>
+        <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
+        <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
+        <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
+      </NativeSelect>
+      {/* 퍼블 페이지확인용 */}
 
-            <Gcol placement={'ss'} className="w-full" gap={3}>
-              {viewContents.view1 && (
-                <>
-                  <Grow placement={'ss'} className="w-full">
-                    <FormTable cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
-                      <FormRow>
-                        <FormCell title={'보험시기'}>
-                          <DatePickerInput mode={'single'} width={'9rem'} />
-                          <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
-                            오늘
-                          </Button>
-                        </FormCell>
-                        <FormCell title={'보험기간'}>
-                          <DatePickerInput readOnly mode={'range'} width={'9rem'} />
-                        </FormCell>
-                      </FormRow>
+      <LayoutTemplateLTPA350MainBody
+        mainBody={
+          <Gcol placement={'ss'} className="w-full" gap={3}>
+            {viewContents.view1 && (
+              <>
+                <Grow placement={'ss'} className="w-full">
+                  <FormTable cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
+                    <FormRow>
+                      <FormCell title={'보험시기'}>
+                        <DatePickerInput mode={'single'} width={'9rem'} />
+                        <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
+                          오늘
+                        </Button>
+                      </FormCell>
+                      <FormCell title={'보험기간'}>
+                        <DatePickerInput readOnly mode={'range'} width={'9rem'} />
+                      </FormCell>
+                    </FormRow>
 
-                      <FormRow>
-                        <FormCell title={'만기'} colSpan={3}>
-                          <RadioGroup className="flex-row gap-3">
-                            {[
-                              { value: '80', id: 'insurance-period-80', label: '80세' },
-                              { value: '90', id: 'insurance-period-90', label: '90세' },
-                              { value: '100', id: 'insurance-period-100-a', label: '100세' },
-                              { value: '110', id: 'insurance-period-100-b', label: '110세' },
-                            ].map((option) => (
-                              <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                        </FormCell>
-                      </FormRow>
+                    <FormRow>
+                      <FormCell title={'만기'} colSpan={3}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: '80', id: 'insurance-period-80', label: '80세' },
+                            { value: '90', id: 'insurance-period-90', label: '90세' },
+                            { value: '100', id: 'insurance-period-100-a', label: '100세' },
+                            { value: '110', id: 'insurance-period-100-b', label: '110세' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
 
-                      <FormRow>
-                        <FormCell title={'납기'} colSpan={3}>
-                          <RadioGroup className="flex-row gap-3">
-                            {[
-                              { value: '10', id: 'payment-period-10', label: '10년납' },
-                              { value: '15', id: 'payment-period-15', label: '15년납' },
-                              { value: '20', id: 'payment-period-20', label: '20년납' },
-                              { value: '25', id: 'payment-period-25', label: '25년납' },
-                              { value: '30', id: 'payment-period-30', label: '30년납' },
-                              { value: 'life', id: 'payment-period-lifetime', label: '전기납' },
-                            ].map((option) => (
-                              <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'납입주기'}>
-                          <RadioGroup className="flex-row gap-3">
-                            {[
-                              { value: 'month', id: 'payment-cycle-monthly', label: '월납' },
-                              { value: 'quarter', id: 'payment-cycle-quarterly', label: '3개월' },
-                              { value: 'semiannual', id: 'payment-cycle-semiannual', label: '6개월' },
-                              { value: 'year', id: 'payment-cycle-annual', label: '연납' },
-                            ].map((option) => (
-                              <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                        </FormCell>
-                        <FormCell title={'갱신주기'}>
-                          <RadioGroup className="flex-row gap-3">
-                            {[
-                              { value: '3', id: 'renewal-period-3', label: '3년' },
-                              { value: '10', id: 'renewal-period-10', label: '10년' },
-                              { value: '20', id: 'renewal-period-20', label: '20년' },
-                            ].map((option) => (
-                              <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                        </FormCell>
-                      </FormRow>
+                    <FormRow>
+                      <FormCell title={'납기'} colSpan={3}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: '10', id: 'payment-period-10', label: '10년납' },
+                            { value: '15', id: 'payment-period-15', label: '15년납' },
+                            { value: '20', id: 'payment-period-20', label: '20년납' },
+                            { value: '25', id: 'payment-period-25', label: '25년납' },
+                            { value: '30', id: 'payment-period-30', label: '30년납' },
+                            { value: 'life', id: 'payment-period-lifetime', label: '전기납' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'납입주기'}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: 'month', id: 'payment-cycle-monthly', label: '월납' },
+                            { value: 'quarter', id: 'payment-cycle-quarterly', label: '3개월' },
+                            { value: 'semiannual', id: 'payment-cycle-semiannual', label: '6개월' },
+                            { value: 'year', id: 'payment-cycle-annual', label: '연납' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                      <FormCell title={'갱신주기'}>
+                        <RadioGroup className="flex-row gap-3">
+                          {[
+                            { value: '3', id: 'renewal-period-3', label: '3년' },
+                            { value: '10', id: 'renewal-period-10', label: '10년' },
+                            { value: '20', id: 'renewal-period-20', label: '20년' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
 
-                      <FormRow>
-                        <FormCell title={'고지유형'} colSpan={3}>
-                          <RadioGroup width={'full'} className="grid grid-cols-3 gap-x-6 gap-y-2 w-full">
-                            {[
-                              {
-                                value: 'type1',
-                                id: 'notification-type-1',
-                                label: '1형(일반고지형)',
-                                justifyStart: true,
-                              },
-                              {
-                                value: 'type2',
-                                id: 'notification-type-2',
-                                label: '2형(건강고지형II(6년))',
-                                justifyStart: true,
-                              },
-                              {
-                                value: 'type3',
-                                id: 'notification-type-3',
-                                label: '3형(건강고지형II(7년))',
-                                justifyStart: true,
-                              },
-                              {
-                                value: 'type4',
-                                id: 'notification-type-4',
-                                label: '4형(건강고지형II(8년))',
-                                justifyStart: true,
-                              },
-                              {
-                                value: 'type5',
-                                id: 'notification-type-5',
-                                label: '5형(건강고지형II(9년))',
-                                justifyStart: true,
-                              },
-                              {
-                                value: 'type6',
-                                id: 'notification-type-6',
-                                label: '6형(건강고지형II(10년))',
-                                justifyStart: true,
-                              },
-                            ].map((option) => (
-                              <RadioGroupItem
-                                key={option.id}
-                                className={option.justifyStart ? 'justify-start' : undefined}
-                                value={option.value}
-                                id={option.id}
-                              >
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                  </Grow>
+                    <FormRow>
+                      <FormCell title={'고지유형'} colSpan={3}>
+                        <RadioGroup width={'full'} className="grid grid-cols-3 gap-x-6 gap-y-2 w-full">
+                          {[
+                            {
+                              value: 'type1',
+                              id: 'notification-type-1',
+                              label: '1형(일반고지형)',
+                              justifyStart: true,
+                            },
+                            {
+                              value: 'type2',
+                              id: 'notification-type-2',
+                              label: '2형(건강고지형II(6년))',
+                              justifyStart: true,
+                            },
+                            {
+                              value: 'type3',
+                              id: 'notification-type-3',
+                              label: '3형(건강고지형II(7년))',
+                              justifyStart: true,
+                            },
+                            {
+                              value: 'type4',
+                              id: 'notification-type-4',
+                              label: '4형(건강고지형II(8년))',
+                              justifyStart: true,
+                            },
+                            {
+                              value: 'type5',
+                              id: 'notification-type-5',
+                              label: '5형(건강고지형II(9년))',
+                              justifyStart: true,
+                            },
+                            {
+                              value: 'type6',
+                              id: 'notification-type-6',
+                              label: '6형(건강고지형II(10년))',
+                              justifyStart: true,
+                            },
+                          ].map((option) => (
+                            <RadioGroupItem
+                              key={option.id}
+                              className={option.justifyStart ? 'justify-start' : undefined}
+                              value={option.value}
+                              id={option.id}
+                            >
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Grow>
 
-                  <Gcol placement="ss" className={'w-full'}>
-                    <TabPager
-                      variant={'default'}
-                      data={tabs}
-                      active={active}
-                      setActive={setActive}
-                      removable={true}
-                      onRemove={handleRemove}
-                      visibleCount={5}
-                      getValue={(tab) => String(tab.value)}
-                      renderTab={(tab) => <span>{tab.name}</span>}
-                      renderButtons={
-                        <Grow gap={2.5}>
-                          <Button color={'gray'} size={'md'} variant={'outlined'}>
-                            피보험자
-                            <AddIcon color={'#61554F'} />
-                          </Button>
-                        </Grow>
-                      }
-                    >
-                      <div className="w-full h-full relative">
-                        <Gcol placement={'ss'}>
-                          <FormTable
-                            caption="행/열 병합 케이스"
-                            lineTop={false}
-                            cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
-                          >
-                            {/* 상세 화면 전용 */}
-                            <FormRow>
-                              <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
-                                <Grow className="flex-nowrap w-full" placement={'bwc'}>
-                                  <Grow>
-                                    <Input aria-label="피보험자명" width={'7.6rem'} readOnly />
-                                    <Input aria-label="주민등록번호 마스킹" width={'12rem'} readOnly />
-                                    <Button
-                                      aria-label="피보험자 검색"
-                                      variant={'outlined'}
-                                      only="icon"
-                                      size={'lg'}
-                                      color={'gray-light'}
-                                    >
-                                      <SearchIcon color={'var(--color-primary-50)'} />
-                                    </Button>
-                                    <Input aria-label="피보험자 나이" width={'4.8rem'} readOnly />
-                                    <Input aria-label="피보험자 성별" width={'3.2rem'} readOnly />
-                                  </Grow>
-                                  <Grow gap={2}>
-                                    <KeyValueItem label={'상령일'}>
-                                      <Grow gap={1}>
-                                        <Typo weight={'bold'}>2023-01-12</Typo>
-                                        <Badge color={'blue'} size={'md'} variant={'contained'}>
-                                          D-31
-                                        </Badge>
-                                      </Grow>
-                                    </KeyValueItem>
-                                    <KeyValueItem label={'설계동의'}>
-                                      <Grow gap={1}>
-                                        <Typo weight={'bold'}>2023-01-12</Typo>
-                                        <Badge color={'red'} size={'md'} variant={'contained'}>
-                                          D-31
-                                        </Badge>
-                                      </Grow>
-                                    </KeyValueItem>
-                                    <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                      알림톡발송
-                                    </Button>
-                                  </Grow>
-                                </Grow>
-                              </FormCell>
-                            </FormRow>
-                            {/* //상세 화면 전용 */}
-                            {/* 간편 화면 전용 */}
+                <Gcol placement="ss" className={'w-full'}>
+                  <TabPager
+                    variant={'default'}
+                    data={tabs}
+                    active={active}
+                    setActive={setActive}
+                    removable={true}
+                    onRemove={handleRemove}
+                    visibleCount={5}
+                    getValue={(tab) => String(tab.value)}
+                    renderTab={(tab) => <span>{tab.name}</span>}
+                    renderButtons={
+                      <Grow gap={2.5}>
+                        <Button color={'gray'} size={'md'} variant={'outlined'}>
+                          피보험자
+                          <AddIcon color={'#61554F'} />
+                        </Button>
+                      </Grow>
+                    }
+                  >
+                    <div className="w-full h-full relative">
+                      <Gcol placement={'ss'}>
+                        <FormTable
+                          caption="행/열 병합 케이스"
+                          lineTop={false}
+                          cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
+                        >
+                          {/* 상세 화면 전용 */}
+                          {_simpleMode ? (
                             <FormRow>
                               <FormCell title="피보험자" titleVariant="section">
                                 <InputCombo
@@ -349,86 +304,130 @@ export const Ltpa350Step1 = () => {
                                 </Grow>
                               </FormCell>
                             </FormRow>
-                            {/* //간편 화면 전용 */}
+                          ) : (
                             <FormRow>
-                              <FormCell title="직업" colSpan={3}>
-                                <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
-                                  <Input aria-label="직업코드" width={'7.6rem'} readOnly />
-                                  <Input aria-label="직업분류" width={'27.4rem'} readOnly />
-                                  <Button
-                                    aria-label="피보험자 검색"
-                                    variant={'outlined'}
-                                    only="icon"
-                                    size={'lg'}
-                                    color={'gray-light'}
-                                  >
-                                    <SearchIcon color={'var(--color-primary-50)'} />
-                                  </Button>
-                                  <Input aria-label="피보험자 나이" width={'2xs'} readOnly />
+                              <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
+                                <Grow className="flex-nowrap w-full" placement={'bwc'}>
+                                  <Grow>
+                                    <Input aria-label="피보험자명" width={'7.6rem'} readOnly />
+                                    <Input aria-label="주민등록번호 마스킹" width={'12rem'} readOnly />
+                                    <Button
+                                      aria-label="피보험자 검색"
+                                      variant={'outlined'}
+                                      only="icon"
+                                      size={'lg'}
+                                      color={'gray-light'}
+                                    >
+                                      <SearchIcon color={'var(--color-primary-50)'} />
+                                    </Button>
+                                    <Input aria-label="피보험자 나이" width={'4.8rem'} readOnly />
+                                    <Input aria-label="피보험자 성별" width={'3.2rem'} readOnly />
+                                  </Grow>
+                                  <Grow gap={2}>
+                                    <KeyValueItem label={'상령일'}>
+                                      <Grow gap={1}>
+                                        <Typo weight={'bold'}>2023-01-12</Typo>
+                                        <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                          D-31
+                                        </Badge>
+                                      </Grow>
+                                    </KeyValueItem>
+                                    <KeyValueItem label={'설계동의'}>
+                                      <Grow gap={1}>
+                                        <Typo weight={'bold'}>2023-01-12</Typo>
+                                        <Badge color={'red'} size={'md'} variant={'contained'}>
+                                          D-31
+                                        </Badge>
+                                      </Grow>
+                                    </KeyValueItem>
+                                    <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                      알림톡발송
+                                    </Button>
+                                  </Grow>
                                 </Grow>
                               </FormCell>
                             </FormRow>
-                            <FormRow>
-                              <FormCell title="운전형태">
-                                <RadioGroup className="flex-row gap-3">
-                                  {[
-                                    { value: 'private', id: 'driving-type-private', label: '자가용' },
-                                    { value: 'commercial', id: 'driving-type-commercial', label: '영업용' },
-                                    { value: 'nondriver', id: 'driving-type-nondriver', label: '비운전자' },
-                                  ].map((option) => (
-                                    <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                      {option.label}
-                                    </RadioGroupItem>
-                                  ))}
-                                </RadioGroup>
-                              </FormCell>
-                              <FormCell title="이륜차">
-                                <RadioGroup className="flex-row gap-3">
-                                  {[
-                                    { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
-                                    { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
-                                  ].map((option) => (
-                                    <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                      {option.label}
-                                    </RadioGroupItem>
-                                  ))}
-                                </RadioGroup>
-                              </FormCell>
-                            </FormRow>
-                            <FormRow>
-                              <FormCell title="주피와 관계">
-                                <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
-                                <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
-                                  <NativeSelectOption>주피와</NativeSelectOption>
-                                </NativeSelect>
-                              </FormCell>
-                              <FormCell title="(실손)동시설계">
-                                <Input aria-label="코드" width={'13rem'} readOnly />
-                                <Input aria-label="코드" width={'13rem'} commaAmount readOnly />
-                              </FormCell>
-                            </FormRow>
-                            <FormRow>
-                              <FormCell title={'할인적용'} colSpan={3}>
-                                <Checkbox color="primary" size="md" variant="default">
-                                  가족연계할인
-                                </Checkbox>
+                          )}
+
+                          <FormRow>
+                            <FormCell title="직업" colSpan={3}>
+                              <Grow className="gap-1 flex-nowrap w-full" placement={'ss'}>
+                                <Input aria-label="직업코드" width={'7.6rem'} readOnly />
+                                <Input aria-label="직업분류" width={'27.4rem'} readOnly />
                                 <Button
                                   aria-label="피보험자 검색"
-                                  variant="outlined"
+                                  variant={'outlined'}
                                   only="icon"
-                                  size="lg"
-                                  color="gray-light"
+                                  size={'lg'}
+                                  color={'gray-light'}
                                 >
-                                  <SearchIcon color="var(--color-primary-50)" />
+                                  <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                              </FormCell>
-                            </FormRow>
-                          </FormTable>
-                        </Gcol>
-                      </div>
-                    </TabPager>
+                                <Input aria-label="피보험자 나이" width={'2xs'} readOnly />
+                              </Grow>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="운전형태">
+                              <RadioGroup className="flex-row gap-3">
+                                {[
+                                  { value: 'private', id: 'driving-type-private', label: '자가용' },
+                                  { value: 'commercial', id: 'driving-type-commercial', label: '영업용' },
+                                  { value: 'nondriver', id: 'driving-type-nondriver', label: '비운전자' },
+                                ].map((option) => (
+                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                    {option.label}
+                                  </RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </FormCell>
+                            <FormCell title="이륜차">
+                              <RadioGroup className="flex-row gap-3">
+                                {[
+                                  { value: 'drives', id: 'motorcycle-drives', label: '운전함' },
+                                  { value: 'nondriver', id: 'motorcycle-nondriver', label: '운전안함' },
+                                ].map((option) => (
+                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                    {option.label}
+                                  </RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title="주피와 관계">
+                              <Input aria-label="피보험자명" width={'7.6rem'} readOnly />는 계약자의
+                              <NativeSelect aria-label="계약자와의 관계 선택" width={'15.8rem'} required>
+                                <NativeSelectOption>주피와</NativeSelectOption>
+                              </NativeSelect>
+                            </FormCell>
+                            <FormCell title="(실손)동시설계">
+                              <Input aria-label="코드" width={'13rem'} readOnly />
+                              <Input aria-label="코드" width={'13rem'} commaAmount readOnly />
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title={'할인적용'} colSpan={3}>
+                              <Checkbox color="primary" size="md" variant="default">
+                                가족연계할인
+                              </Checkbox>
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant="outlined"
+                                only="icon"
+                                size="lg"
+                                color="gray-light"
+                              >
+                                <SearchIcon color="var(--color-primary-50)" />
+                              </Button>
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                      </Gcol>
+                    </div>
+                  </TabPager>
 
-                    {/* 간편 화면 미노출 */}
+                  {!_simpleMode && (
                     <FormTable
                       caption="계약자 정보"
                       cols={[
@@ -535,14 +534,13 @@ export const Ltpa350Step1 = () => {
                         </FormCell>
                       </FormRow>
                     </FormTable>
-                    {/* //간편 화면 미노출 */}
-                  </Gcol>
-                </>
-              )}
-            </Gcol>
-          </LayoutScrollItem>
-        </LayoutScrollWrap>
-      </LayoutMainBody>
+                  )}
+                </Gcol>
+              </>
+            )}
+          </Gcol>
+        }
+      />
 
       <LayoutMainFoot>
         <MainBottom>

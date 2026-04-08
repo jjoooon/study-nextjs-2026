@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 
 import { LayoutHead, LayoutFoot } from '@/shared/components/layout/BaseLayout';
 
@@ -14,9 +15,9 @@ import { PageProcess } from '@features/PageProcess';
 import { PageTitleProduct as PageTitle } from '@features/PageTitle';
 import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
-import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
+import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 
-import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 담보설계
+import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
 
 // types
@@ -167,6 +168,7 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 };
 
 export default function Ltpa350Section() {
+  const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
   const defaultStep = data.process.state.active;
   const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
@@ -174,12 +176,12 @@ export default function Ltpa350Section() {
   });
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
   const stepMainBody: Record<number, ReactNode> = {
-    1: <Ltpa350Step1 />,
+    1: <Ltpa350Step1 simpleMode={simpleMode} />,
     2: <Ltpa350Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <Ltpa350Step1 />,
-    4: <Ltpa350Step1 />,
-    5: <Ltpa350Step1 />,
-    6: <Ltpa350Step1 />,
+    3: <Ltpa350Step1 simpleMode={simpleMode} />,
+    4: <Ltpa350Step1 simpleMode={simpleMode} />,
+    5: <Ltpa350Step1 simpleMode={simpleMode} />,
+    6: <Ltpa350Step1 simpleMode={simpleMode} />,
   };
 
   return (
@@ -192,8 +194,9 @@ export default function Ltpa350Section() {
           }}
         />
       </LayoutHead>
-      <LayoutTemplateAsideToggle
-        pageTitle={<PageTitle data={data.head.pageTitle} />}
+
+      <LayoutTemplateLTPA350
+        pageTitle={<PageTitle data={data.head.pageTitle} simpleMode={simpleMode} onSimpleModeChange={setSimpleMode} />}
         // LayoutBody: process
         pageProcess={
           <PageProcess
@@ -230,6 +233,7 @@ export default function Ltpa350Section() {
         asideFoot={<AsideFoot />}
         hideAside={hideAside}
       />
+
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>
