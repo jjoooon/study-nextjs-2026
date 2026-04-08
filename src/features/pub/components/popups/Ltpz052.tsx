@@ -349,5 +349,3 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-
-export default LTPZ052;
