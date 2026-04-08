@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 
 type QuickLinkItem = {
   name: string;
@@ -28,17 +29,18 @@ const DEFAULT_MENUS: QuickLinkItem[] = [
 
 export function QuickLinks({ menus, onMoreClick }: QuickLinksProps) {
   const quickMenus = (menus && menus.length > 0 ? menus : DEFAULT_MENUS).slice(0, 7);
+  const quickMenusMore = (menus && menus.length > 0 ? menus : DEFAULT_MENUS).slice(7);
+  const isMoreDisabled = quickMenusMore.length === 0;
 
   return (
     <Gcol className="w-full gap-1">
       <Grow className="gap-2" placement="bwc">
         <Typo variant="heading-md">바로가기</Typo>
-        {/* <Button variant="none" only="icon" size="sm">
-          <SettingIcon color="var(--color-secondary-50)" />
-        </Button> */}
+        <Button variant="outlined" color="gray" size="sm" onClick={onMoreClick}>
+          편집
+        </Button>
       </Grow>
       <Grid variant="box-line" className="grid-cols-[1fr_1fr] w-full gap-[0.6rem]" placement="ss">
-        {/* <div className="grid grid-cols-[1fr_1fr] bg-[var(--color-gray-0)] rounded-[0.8rem] border border-[var(--color-gray-5)] w-full gap-[0.6rem] p-2.5 gap-1 shadow-[0_0.4rem_0.8rem_0_rgba(0,0,0,0.04)]"> */}
         {quickMenus.map((menu, index) => (
           <Button
             asChild
@@ -53,10 +55,32 @@ export function QuickLinks({ menus, onMoreClick }: QuickLinksProps) {
             </Link>
           </Button>
         ))}
-        <Button variant="outlined" color={'gray-light'} size={'sm'} className="w-full" onClick={onMoreClick}>
-          더보기
-          <PlusIcon color="var(--color-gray-50)" />
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outlined" color={'gray-light'} size={'sm'} className="w-full" disabled={isMoreDisabled}>
+              더보기
+              <PlusIcon color="var(--color-gray-50)" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent motion="fade" closeButton align="end">
+            <Gcol gap={1}>
+              {quickMenusMore.map((menu, index) => (
+                <Button
+                  asChild
+                  key={`${menu.name}-${index}`}
+                  variant="outlined"
+                  color={index === 0 ? 'primary' : 'gray-light'}
+                  size={'sm'}
+                  className="w-full"
+                >
+                  <Link href={menu.link} className="truncate w-full block! text-center" title={menu.name}>
+                    {menu.name}
+                  </Link>
+                </Button>
+              ))}
+            </Gcol>
+          </PopoverContent>
+        </Popover>
       </Grid>
     </Gcol>
   );
