@@ -205,7 +205,7 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
               실손의료비 전환 계약 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ040)
+              (LTPZ023)
             </Typo>
           </DialogTitle>
         </DialogHeader>
