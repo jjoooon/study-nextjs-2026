@@ -173,20 +173,10 @@ interface BaseQueryError {
 }
 
 /**
- * 쿠키 기반 BaseQuery
- *
- * @description
- * 쿠키 인증과 통합된 RTK Query BaseQuery
- * - 401 에러 시 자동 로그아웃
- * - **짧은 요청은 spinner 미표시** (기본 100ms 지연 후 표시)
- * - 기본 메시지: "Loading..."
- * - RTK Query의 body를 Axios의 data로 자동 매핑
+ * RTK Query용 BaseQuery
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-const axiosBaseQueryWithReauth: BaseQueryFn<string | BaseQueryArgs, unknown, BaseQueryError, {}> = async (
-  args,
-  api
-) => {
+const axiosBaseQuery: BaseQueryFn<string | BaseQueryArgs, unknown, BaseQueryError, {}> = async (args, api) => {
   // Axios 인스턴스 가져오기
   const instance = getAxiosInstance(api.getState);
 
@@ -329,7 +319,7 @@ const axiosBaseQueryWithReauth: BaseQueryFn<string | BaseQueryArgs, unknown, Bas
  * - spinnerSlice: @/shared/store/spinnerSlice - Spinner 상태 관리
  * - RTK Query BaseQuery: https://redux-toolkit.js.org/rtk-query/api/createApi#basequery
  */
-export const baseQuery = axiosBaseQueryWithReauth;
+export const baseQuery = axiosBaseQuery;
 
 /**
  * Default Export
