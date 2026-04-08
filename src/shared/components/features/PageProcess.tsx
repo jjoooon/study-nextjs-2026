@@ -17,13 +17,7 @@ type PageProcessProps = {
   onStepChange?: (step: number) => void;
 };
 
-export default function PageProcess({
-  items,
-  completeSteps,
-  activeStep,
-  defaultActiveStep,
-  onStepChange,
-}: PageProcessProps) {
+export function PageProcess({ items, completeSteps, activeStep, defaultActiveStep, onStepChange }: PageProcessProps) {
   const resolvedActiveStep = activeStep ?? defaultActiveStep ?? items[0]?.step ?? 1;
   const completeStepSet = new Set(completeSteps ?? []);
 

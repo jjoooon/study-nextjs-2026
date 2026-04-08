@@ -19,7 +19,7 @@ type TaskStatusBoardProps<
   state: T[];
 };
 
-export default function TaskStatusBoard<
+export function TaskStatusBoard<
   T extends {
     id: number;
     status: '정상' | '경고' | '중지';

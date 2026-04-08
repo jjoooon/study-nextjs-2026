@@ -1,22 +1,21 @@
 'use client';
 
-// 외부 라이브러리
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-// 내부 유틸/공통
-import { AgGridEmptyComponent, createCellValueChangedHandler, createFieldRenderer } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
+import { createCellValueChangedHandler, createFieldRenderer } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import PageID from '@features/PageID';
+import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
-import { MemoIcon, ResetIcon, SearchIcon } from '@icons';
+import { SearchIcon, ResetIcon, MemoIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -24,11 +23,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-// 타입
-import type { Ltpa010DummyDataRow } from '../data/ltpa010Data';
-
-// 상대 경로
 import { Ltpa010DummyData } from '../data/ltpa010Data';
+import type { Ltpa010DummyDataRow } from '../data/ltpa010Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

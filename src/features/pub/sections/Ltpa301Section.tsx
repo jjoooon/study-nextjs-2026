@@ -1,12 +1,10 @@
 'use client';
 
-// 외부 라이브러리
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-// 내부 유틸/공통
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
@@ -14,7 +12,7 @@ import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import PageID from '@features/PageID';
+import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -23,11 +21,9 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-// 타입
-import type { Ltpa301DummyDataRow } from '../data/ltpa301Data';
 
-// 상대 경로
 import { Ltpa301DummyData } from '../data/ltpa301Data';
+import type { Ltpa301DummyDataRow } from '../data/ltpa301Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

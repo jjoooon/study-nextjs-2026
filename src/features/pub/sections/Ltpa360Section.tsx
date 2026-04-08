@@ -1,11 +1,10 @@
 'use client';
 
-// components - layout
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
 import { Grow, Gcol } from '@atoms';
@@ -14,31 +13,30 @@ import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import PageID from '@features/PageID';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-
-// Layout Components
-
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+
 import {
   Ltpa360DummyData1,
-  type Ltpa360DummyDataRow1,
   Ltpa360DummyData1b,
-  type Ltpa360DummyDataRow1b,
   Ltpa360DummyData2,
-  type Ltpa360DummyDataRow2,
   Ltpa360DummyData3,
-  type Ltpa360DummyDataRow3,
   Ltpa360DummyData4,
+  type Ltpa360DummyDataRow1,
+  type Ltpa360DummyDataRow1b,
+  type Ltpa360DummyDataRow2,
+  type Ltpa360DummyDataRow3,
   type Ltpa360DummyDataRow4,
 } from '../data/ltpa360Data';
 
+// Side Effect (모듈 등록 등)
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Tab 정의
