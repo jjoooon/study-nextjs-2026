@@ -25,6 +25,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Ltpz03201 } from './Ltpz03201';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -130,6 +131,11 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
   const [selectedRowId11, setSelectedRowId11] = React.useState<string>(String(DummyData11[0]?.id ?? ''));
+  const [isDetailPopupOpen, setIsDetailPopupOpen] = React.useState(false);
+
+  const handleOpenDetailPopup = React.useCallback(() => {
+    setIsDetailPopupOpen(true);
+  }, []);
 
   const selectionRenderer11 = React.useCallback(
     (params: ICellRendererParams<DummyDataType11>) => {
@@ -203,7 +209,14 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         cellRenderer: (_params: ICellRendererParams<DummyDataType11>) => (
           <Grow className="w-full px-1">
             보기
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <Button
+              aria-label="질병 상세내용 보기"
+              variant={'outlined'}
+              only="icon"
+              size={'md'}
+              color={'gray-light'}
+              onClick={handleOpenDetailPopup}
+            >
               <SearchIcon color={'var(--color-primary-50)'} />
             </Button>
           </Grow>
@@ -420,7 +433,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         editable: false,
       },
     ];
-  }, [selectionRenderer11]);
+  }, [handleOpenDetailPopup, selectionRenderer11]);
 
   // Tab1-2
   type DummyDataType12 = {
@@ -576,7 +589,14 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: (_params: ICellRendererParams<DummyDataType12>) => (
         <Grow className="w-full px-1">
           보기
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+          <Button
+            aria-label="질병 상세내용 보기"
+            variant={'outlined'}
+            only="icon"
+            size={'md'}
+            color={'gray-light'}
+            onClick={handleOpenDetailPopup}
+          >
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
         </Grow>
@@ -1195,49 +1215,109 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
   // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              질병입력 가져오기
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz032)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <TabPager
-            data={tabs}
-            active={active}
-            setActive={setActive}
-            removable={false}
-            onRemove={handleRemove}
-            visibleCount={4}
-            variant="default"
-            hasTableBelow={true}
-            error={false}
-            errorMsg="에러 메시지 예시"
-            getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => <span>{tab.label}</span>}
-            renderDropdownItem={false}
-          >
-            {active === 'tab1' ? (
-              <>
-                <Gcol placement="ss" className="w-full pt-2" gap={5}>
-                  <TableFold>
-                    <TableFoldHead title="일반/건강고지" />
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent showCloseButton resizable={true} size="2xl">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                질병입력 가져오기
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (Ltpz032)
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+          <DialogSection className="grid-rows-[auto_1fr]">
+            <TabPager
+              data={tabs}
+              active={active}
+              setActive={setActive}
+              removable={false}
+              onRemove={handleRemove}
+              visibleCount={4}
+              variant="default"
+              hasTableBelow={true}
+              error={false}
+              errorMsg="에러 메시지 예시"
+              getValue={(tab) => String(tab.value)}
+              renderTab={(tab) => <span>{tab.label}</span>}
+              renderDropdownItem={false}
+            >
+              {active === 'tab1' ? (
+                <>
+                  <Gcol placement="ss" className="w-full pt-2" gap={5}>
+                    <TableFold>
+                      <TableFoldHead title="일반/건강고지" />
+                      <TableFoldBody>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<DummyDataType11>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={DummyData11}
+                            columnDefs={columnDefs11}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                            }}
+                            animateRows={false}
+                            domLayout="autoHeight"
+                            className="text-center"
+                          />
+                        </div>
+                      </TableFoldBody>
+                    </TableFold>
+                    <TableFold variant={'accordion'}>
+                      <TableFoldHead title="간편고지" />
+                      <TableFoldBody>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<DummyDataType12>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={DummyData12}
+                            columnDefs={columnDefs12}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                            }}
+                            animateRows={false}
+                            domLayout="autoHeight"
+                            className="text-center"
+                          />
+                        </div>
+                      </TableFoldBody>
+                    </TableFold>
+                    <Gcol className="w-full" placement="ss" variant="box-warning">
+                      <Typo icon="warning" variant="body-sm">
+                        최근 1개월이내 설계번호(유형별 최대 5개) 표시
+                      </Typo>
+                      <Typo icon="warning" variant="body-sm">
+                        질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
+                      </Typo>
+                      <Typo icon="warning" variant="body-sm">
+                        실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
+                        피보험자에게 최종확인하셔야 합니다.
+                      </Typo>
+                    </Gcol>
+                  </Gcol>
+                </>
+              ) : (
+                <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
+                  {/* Tab2-1 일반고지 */}
+                  <TableFold variant={'accordion'}>
+                    <TableFoldHead title="일반고지" />
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full">
-                        <AgGridReact<DummyDataType11>
+                        <AgGridReact<DummyDataType21>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData11}
-                          columnDefs={columnDefs11}
+                          rowData={DummyData21}
+                          columnDefs={columnDefs21}
                           defaultColDef={{
                             sortable: false,
                             resizable: false,
+                            cellClass: 'p-0',
+                            cellStyle: { padding: 0 },
                           }}
                           animateRows={false}
                           domLayout="autoHeight"
@@ -1246,18 +1326,46 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </div>
                     </TableFoldBody>
                   </TableFold>
+
+                  {/* Tab2-2 건강고지 */}
+                  <TableFold variant={'accordion'}>
+                    <TableFoldHead title="건강고지" />
+                    <TableFoldBody>
+                      <div className="ag-theme-alpine w-full">
+                        <AgGridReact<DummyDataType22>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={DummyData22}
+                          columnDefs={columnDefs22}
+                          defaultColDef={{
+                            sortable: false,
+                            resizable: false,
+                            cellClass: 'p-0',
+                            cellStyle: { padding: 0 },
+                          }}
+                          animateRows={false}
+                          domLayout="autoHeight"
+                          className="text-center"
+                        />
+                      </div>
+                    </TableFoldBody>
+                  </TableFold>
+
+                  {/* Tab2-3 간편고지 */}
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="간편고지" />
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full">
-                        <AgGridReact<DummyDataType12>
+                        <AgGridReact<DummyDataType23>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData12}
-                          columnDefs={columnDefs12}
+                          rowData={DummyData23}
+                          columnDefs={columnDefs23}
                           defaultColDef={{
                             sortable: false,
                             resizable: false,
+                            cellClass: 'p-0',
+                            cellStyle: { padding: 0 },
                           }}
                           animateRows={false}
                           domLayout="autoHeight"
@@ -1279,112 +1387,27 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Typo>
                   </Gcol>
                 </Gcol>
-              </>
-            ) : (
-              <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
-                {/* Tab2-1 일반고지 */}
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="일반고지" />
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine w-full">
-                      <AgGridReact<DummyDataType21>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData21}
-                        columnDefs={columnDefs21}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          cellClass: 'p-0',
-                          cellStyle: { padding: 0 },
-                        }}
-                        animateRows={false}
-                        domLayout="autoHeight"
-                        className="text-center"
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-
-                {/* Tab2-2 건강고지 */}
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="건강고지" />
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine w-full">
-                      <AgGridReact<DummyDataType22>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData22}
-                        columnDefs={columnDefs22}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          cellClass: 'p-0',
-                          cellStyle: { padding: 0 },
-                        }}
-                        animateRows={false}
-                        domLayout="autoHeight"
-                        className="text-center"
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-
-                {/* Tab2-3 간편고지 */}
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="간편고지" />
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine w-full">
-                      <AgGridReact<DummyDataType23>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData23}
-                        columnDefs={columnDefs23}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          cellClass: 'p-0',
-                          cellStyle: { padding: 0 },
-                        }}
-                        animateRows={false}
-                        domLayout="autoHeight"
-                        className="text-center"
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-                <Gcol className="w-full" placement="ss" variant="box-warning">
-                  <Typo icon="warning" variant="body-sm">
-                    최근 1개월이내 설계번호(유형별 최대 5개) 표시
-                  </Typo>
-                  <Typo icon="warning" variant="body-sm">
-                    질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
-                  </Typo>
-                  <Typo icon="warning" variant="body-sm">
-                    실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
-                    피보험자에게 최종확인하셔야 합니다.
-                  </Typo>
-                </Gcol>
-              </Gcol>
-            )}
-          </TabPager>
-        </DialogSection>
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                질병 가져오기
-              </Button>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
+              )}
+            </TabPager>
+          </DialogSection>
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button variant={'contained'} size={'xl'}>
+                  질병 가져오기
                 </Button>
-              </DialogClose>
-            </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+            <DialogBottomInfo />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Ltpz03201 open={isDetailPopupOpen} onOpenChange={setIsDetailPopupOpen} />
+    </>
   );
 };
