@@ -238,6 +238,14 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
+  const renderStatusCell = (value: 'Y' | 'N' | '-', highlight = false) => {
+    const isDangerY = highlight && value === 'Y';
+
+    return (
+      <TableCell className={isDangerY ? 'font-bold text-[var(--color-text-danger)]' : undefined}>{value}</TableCell>
+    );
+  };
+
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
   // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
@@ -374,93 +382,93 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <TableBody>
                           <TableRow className="text-center">
                             <TableHead>10년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>-</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y')}
+                            {renderStatusCell('Y')}
+                            {renderStatusCell('-')}
+                            {renderStatusCell('-', true)}
+                            {renderStatusCell('-', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>8년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>-</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y')}
+                            {renderStatusCell('Y')}
+                            {renderStatusCell('-')}
+                            {renderStatusCell('-', true)}
+                            {renderStatusCell('-', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>6년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>-</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y')}
+                            {renderStatusCell('Y')}
+                            {renderStatusCell('-')}
+                            {renderStatusCell('-', true)}
+                            {renderStatusCell('-', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>5년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>4년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>3년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>2년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>1년대</TableHead>
-                            <TableCell>Y</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>Y</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('Y', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
                           </TableRow>
                           <TableRow className="text-center">
                             <TableHead>3개월내</TableHead>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
-                            <TableCell>N</TableCell>
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N')}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
+                            {renderStatusCell('N', true)}
                           </TableRow>
                         </TableBody>
                       </Table>
@@ -537,10 +545,10 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableBody>
                       <TableRow className="text-center">
                         <TableHead>6형(건강고지10년)</TableHead>
-                        <TableCell>Y</TableCell>
-                        <TableCell>N</TableCell>
-                        <TableCell>Y</TableCell>
-                        <TableCell>Y</TableCell>
+                        {renderStatusCell('Y', true)}
+                        {renderStatusCell('N')}
+                        {renderStatusCell('Y')}
+                        {renderStatusCell('Y', true)}
                         <TableCell rowSpan={6}>
                           <Gcol gap={1}>
                             <Badge color="blue" size="md" variant="contained">
@@ -558,38 +566,38 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </TableRow>
                       <TableRow className="text-center">
                         <TableHead>5형(건강고지10년)</TableHead>
-                        <TableCell>Y</TableCell>
-                        <TableCell>N</TableCell>
-                        <TableCell>Y</TableCell>
-                        <TableCell>Y</TableCell>
+                        {renderStatusCell('Y', true)}
+                        {renderStatusCell('N')}
+                        {renderStatusCell('Y')}
+                        {renderStatusCell('Y', true)}
                       </TableRow>
                       <TableRow className="text-center">
                         <TableHead>4형(건강고지10년)</TableHead>
-                        <TableCell>Y</TableCell>
-                        <TableCell>N</TableCell>
-                        <TableCell>Y</TableCell>
-                        <TableCell>Y</TableCell>
+                        {renderStatusCell('Y', true)}
+                        {renderStatusCell('N')}
+                        {renderStatusCell('Y')}
+                        {renderStatusCell('Y', true)}
                       </TableRow>
                       <TableRow className="text-center">
                         <TableHead>3형(건강고지10년)</TableHead>
-                        <TableCell>Y</TableCell>
-                        <TableCell>N</TableCell>
-                        <TableCell>Y</TableCell>
-                        <TableCell>Y</TableCell>
+                        {renderStatusCell('Y', true)}
+                        {renderStatusCell('N')}
+                        {renderStatusCell('Y')}
+                        {renderStatusCell('Y', true)}
                       </TableRow>
                       <TableRow className="text-center">
                         <TableHead>2형(건강고지10년)</TableHead>
-                        <TableCell>Y</TableCell>
-                        <TableCell>N</TableCell>
-                        <TableCell>Y</TableCell>
-                        <TableCell>Y</TableCell>
+                        {renderStatusCell('Y', true)}
+                        {renderStatusCell('N')}
+                        {renderStatusCell('Y')}
+                        {renderStatusCell('Y', true)}
                       </TableRow>
                       <TableRow className="text-center">
                         <TableHead>일반고지형(5년)</TableHead>
-                        <TableCell>Y</TableCell>
-                        <TableCell>N</TableCell>
-                        <TableCell>Y</TableCell>
-                        <TableCell>Y</TableCell>
+                        {renderStatusCell('Y', true)}
+                        {renderStatusCell('N')}
+                        {renderStatusCell('Y')}
+                        {renderStatusCell('Y', true)}
                       </TableRow>
                     </TableBody>
                   </Table>
