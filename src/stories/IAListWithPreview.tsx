@@ -225,7 +225,8 @@ export function IAListWithPreview() {
       'LTPZ027',
       'LTPZ028',
       'LTPZ023',
-      // 'LTPZ024',
+      'LTPZ024',
+      // 'LTPZ012',
     ];
 
     return [...workListPrev, ...workListH, ...workListK, ...workListJ];
