@@ -35,27 +35,33 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 // data
-import type { Ltpa350Step2DataType } from '../data/ltpa350Step2Data';
-import { Ltpa350Step2Data } from '../data/ltpa350Step2Data';
+import type { Ltpa350Step2DataType, Ltpa350Step2DataType2 } from '../data/ltpa350Step2Data';
+import { Ltpa350Step2Data, Ltpa350Step2Data2 } from '../data/ltpa350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
-type TabListDataData = Ltpa350Step2DataType['tabList'];
-type LTPA350GridRow = Ltpa350Step2DataType['agGridTable1'][number] & {
-  isDuplicate?: boolean;
-  displayNo?: number;
+type LTPA350GridRow =
+  | (Ltpa350Step2DataType['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
+  | (Ltpa350Step2DataType2['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number });
+type MainHeadTab = (Ltpa350Step2DataType['tabList'][number] | Ltpa350Step2DataType2['tabList'][number]) & {
+  value: string;
 };
-type MainHeadTab = TabListDataData[number] & { value: string };
 
 interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
+  viewKey: ViewKey;
 }
 
-export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
+export function Ltpa350Step2({
+  onSelectPlan,
+  isWidthExpanded = false,
+  setIsWidthExpanded,
+  viewKey,
+}: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -78,8 +84,10 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
     [colWidth0, colWidth1, colWidth2, colWidth3, colWidth4]
   );
 
-  // 2) Tabs
-  const stringifiedTabs: MainHeadTab[] = Ltpa350Step2Data.tabList.map((item) => ({
+  // 2) Tabs/rowData 분기
+  const isFetus = viewKey === 'view2';
+  const tabListData = isFetus ? Ltpa350Step2Data2.tabList : Ltpa350Step2Data.tabList;
+  const stringifiedTabs: MainHeadTab[] = tabListData.map((item) => ({
     ...item,
     value: String(item.value),
   }));
@@ -90,7 +98,9 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   } = useTabs<MainHeadTab>(stringifiedTabs);
 
   // 3) Grid data
-  const [rowData, setRowData] = useState<LTPA350GridRow[]>(Ltpa350Step2Data.agGridTable1);
+  const [rowData, setRowData] = useState<LTPA350GridRow[]>(
+    isFetus ? Ltpa350Step2Data2.agGridTable1 : Ltpa350Step2Data.agGridTable1
+  );
 
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
@@ -273,7 +283,13 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   // - 필수: row.field3Required === true (미지정 시 기본 true)
   // - 에러: 필수 + 값이 0(또는 빈값)
   const amountCellClassRules = useMemo(() => {
-    const isAmountRequired = (params: CellClassParams<LTPA350GridRow>) => params.data?.field3Required ?? true;
+    const isAmountRequired = (params: CellClassParams<LTPA350GridRow>) => {
+      // field3Required가 존재하는 경우만 사용, 없으면 true로 처리
+      if (typeof params.data !== 'undefined' && 'field3Required' in params.data) {
+        return (params.data as { field3Required?: boolean }).field3Required ?? true;
+      }
+      return true;
+    };
     const isAmountInvalid = (params: CellClassParams<LTPA350GridRow>) =>
       params.value === '' || params.value === undefined || Number(params.value) === 0;
 
@@ -635,16 +651,6 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
 
-  const [viewContents, setViewContents] = useState<Record<string, boolean>>({
-    view1: true,
-    view2: false,
-    view3: false,
-    view4: false,
-    view5: false,
-  });
-
-  const currentViewKey = (Object.keys(viewContents).find((key) => viewContents[key]) ?? 'view1') as ViewKey;
-
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
@@ -658,28 +664,6 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
           noValidate
         >
           <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
-            <NativeSelect
-              className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
-              value={currentViewKey}
-              onChange={(e) => {
-                const selectedKey = e.target.value as ViewKey;
-
-                setViewContents({
-                  view1: selectedKey === 'view1',
-                  view2: selectedKey === 'view2',
-                  view3: selectedKey === 'view3',
-                  view4: selectedKey === 'view4',
-                  view5: selectedKey === 'view5',
-                });
-              }}
-            >
-              <NativeSelectOption value="view1">임시 화면확인용: 인보험</NativeSelectOption>
-              <NativeSelectOption value="view2">임시 화면확인용: 태아</NativeSelectOption>
-              <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
-              <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
-              <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
-            </NativeSelect>
-
             <LayoutMainHead>
               <TabPager
                 data={LTPA350Tabs}
@@ -812,8 +796,15 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
                     <Checkbox>플랜기본값</Checkbox>
                     <Grow className="gap-1">
                       <NativeSelect aria-label="플랜 선택" width={'sm'} size={'sm'} readOnly={false} required={false}>
-                        <NativeSelectOption value="">플랜 선택</NativeSelectOption>
-                        <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
+                        {[
+                          { label: '플랜 선택', value: 'planA' },
+                          { label: '올인원플랜(15~89세)', value: 'planB' },
+                          { label: '플1형(355간편고지형)(프리미엄올인원플랜)(1.7189형)(15~80세)', value: 'planC' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
                       </NativeSelect>
                       <NativeSelect
                         aria-label="나만의 설계선택"
@@ -846,7 +837,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
                 </Grow>
                 <LayoutScrollItem className="w-full">
                   {/* 인보험 */}
-                  {viewContents.view1 && (
+                  {viewKey === 'view1' && (
                     <div className="ag-theme-alpine">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
@@ -891,7 +882,7 @@ export function Ltpa350Step2({ onSelectPlan, isWidthExpanded = false, setIsWidth
                   )}
 
                   {/* 태아 */}
-                  {viewContents.view2 && (
+                  {viewKey === 'view2' && (
                     <div className="ag-theme-alpine">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}

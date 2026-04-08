@@ -16,9 +16,12 @@ import { PageTitleProduct as PageTitle } from '@features/PageTitle';
 import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
+// 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
+type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 import { Ltpz018, type Ltpz018MenuItem } from '../components/popups/Ltpz018';
 
 // types
@@ -217,17 +220,43 @@ export default function Ltpa350Section() {
     isValidStep: isPageProcessStep,
   });
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
+
+  // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
+  const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
+
   const stepMainBody: Record<number, ReactNode> = {
-    1: <Ltpa350Step1 simpleMode={simpleMode} />,
-    2: <Ltpa350Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <Ltpa350Step1 simpleMode={simpleMode} />,
-    4: <Ltpa350Step1 simpleMode={simpleMode} />,
-    5: <Ltpa350Step1 simpleMode={simpleMode} />,
-    6: <Ltpa350Step1 simpleMode={simpleMode} />,
+    1: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
+    2: (
+      <Ltpa350Step2
+        isWidthExpanded={isWidthExpanded}
+        setIsWidthExpanded={setIsWidthExpanded}
+        viewKey={currentViewKey}
+      />
+    ), // prop 추가
+    3: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    5: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    6: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
   };
 
   return (
     <>
+      {/* 퍼블 페이지확인용 (섹션에서 통합 관리) */}
+      <NativeSelect
+        className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
+        value={currentViewKey}
+        onChange={(e) => {
+          setCurrentViewKey(e.target.value as ViewKey);
+        }}
+      >
+        <NativeSelectOption value="view1">임시 화면확인용: 인보험</NativeSelectOption>
+        <NativeSelectOption value="view2">임시 화면확인용: 태아</NativeSelectOption>
+        <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
+        <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
+        <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
+      </NativeSelect>
+      {/* 퍼블 페이지확인용 */}
+
       <LayoutHead>
         <PageID
           data={{
@@ -282,7 +311,7 @@ export default function Ltpa350Section() {
             )}
           </>
         }
-        asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} />}
+        asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
         hideAside={hideAside}
       />
 
