@@ -226,6 +226,7 @@ export function IAListWithPreview() {
       'LTPZ028',
       'LTPZ023',
       'LTPZ024',
+      'LTPA220',
       // 'LTPZ012',
     ];
 
