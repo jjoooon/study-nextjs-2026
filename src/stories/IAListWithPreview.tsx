@@ -148,7 +148,7 @@ export function IAListWithPreview() {
       'LTPZ020',
       'LTPA160',
       'LTPA904',
-      'LTPZ999',
+
       'LTPZ998',
       'LTPZ997',
       'LTPZ996',
@@ -196,7 +196,7 @@ export function IAListWithPreview() {
     ];
     const workListH: string[] = [];
     const workListK: string[] = ['LTPZ085', 'LTPZ086'];
-    const workListJ: string[] = ['ltpz018'];
+    const workListJ: string[] = ['LTPZ999', 'LTPZ018'];
 
     return [...workListPrev, ...workListH, ...workListK, ...workListJ];
   }, []);

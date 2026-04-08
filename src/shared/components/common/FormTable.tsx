@@ -192,16 +192,16 @@ export const FormTable = ({
 
     head: `w-full border-none flex flex-col bg-[transparent] 
     [&>colgroup]:hidden 
-    [&>tbody>tr]:flex [&>tbody>tr]:items-center [&>tbody>tr]:justify-start [&>tbody>tr]:gap-2 [&>tbody>tr]:border-none! [&>tbody>tr]:w-full [&>tbody>tr~tr>*]:pt-[0.6rem]! 
-    [&>tbody>tr>th]:flex [&>tbody>tr>th]:items-center [&>tbody>tr>th]:justify-start [&>tbody>tr>th]:gap-2 [&>tbody>tr>th]:border-none! [&>tbody>tr>th]:w-max
-    [&>tbody>tr>th]:h-auto! [&>tbody>tr>th]:bg-[transparent] [&>tbody>tr>th]:text-[#333] [&>tbody>tr>th]:font-bold [&>tbody>tr>th]:px-0 [&>tbody>tr>th]:py-0! [&>tbody>tr>th]:border-none! [&>tbody>tr>th]:text-[1.4rem]
-    [&>tbody>tr>td]:border-none! [&>tbody>tr>td]:p-0! [&>tbody>tr>td]:flex [&>tbody>tr>td]:items-center [&>tbody>tr>td]:justify-start [&>tbody>tr>td]:gap-4 [&>tbody>tr>td]:h-[auto] [&>tbody>tr>td]:font-bold [&>tbody>tr>td]:text-[1.4rem] 
-    [&>tbody>tr>td+th]:pl-[1.6rem]!`,
+    [&>table>tbody>tr]:flex [&>table>tbody>tr]:items-center [&>table>tbody>tr]:justify-start [&>table>tbody>tr]:gap-2 [&>table>tbody>tr]:border-none! [&>table>tbody>tr]:w-full [&>table>tbody>tr~tr>*]:pt-[0.6rem]! 
+    [&>table>tbody>tr>th]:flex [&>table>tbody>tr>th]:items-center [&>table>tbody>tr>th]:justify-start [&>table>tbody>tr>th]:gap-2 [&>table>tbody>tr>th]:border-none! [&>table>tbody>tr>th]:w-max
+    [&>table>tbody>tr>th]:h-auto! [&>table>tbody>tr>th]:bg-[transparent] [&>table>tbody>tr>th]:text-[#333] [&>table>tbody>tr>th]:font-bold [&>table>tbody>tr>th]:px-0 [&>table>tbody>tr>th]:py-0! [&>table>tbody>tr>th]:border-none! [&>table>tbody>tr>th]:text-[1.4rem]
+    [&>table>tbody>tr>td]:border-none! [&>table>tbody>tr>td]:p-0! [&>table>tbody>tr>td]:flex [&>table>tbody>tr>td]:items-center [&>table>tbody>tr>td]:justify-start [&>table>tbody>tr>td]:gap-4 [&>table>tbody>tr>td]:h-[auto] [&>table>tbody>tr>td]:font-bold [&>table>tbody>tr>td]:text-[1.4rem] 
+    [&>table>tbody>tr>td+th]:pl-[1.6rem]!`,
 
     none: `border-0! bg-transparent 
-    [&>tbody>tr>th]:bg-transparent [&>tbody>tr>th]:border-0! [&>tbody>tr>th]:py-0! [&>tbody>tr>th]:pl-0! [&>tbody>tr>th]:pr-[0.8rem] [&>tbody>tr>th]:h-auto! [&>tbody>tr>th]:break-keep!   
-    [&>tbody>tr>td]:border-0! [&>tbody>tr>td]:p-0! [&>tbody>tr>td]:h-auto!   
-    [&>tbody>tr]:border-0! [&>tbody>tr>td+th]:pl-[2.4rem]! [&>tbody>tr~tr>*]:pt-[0.6rem]!`,
+    [&>table>tbody>tr>th]:bg-transparent [&>table>tbody>tr>th]:border-0! [&>table>tbody>tr>th]:py-0! [&>table>tbody>tr>th]:pl-0! [&>table>tbody>tr>th]:pr-[0.8rem] [&>table>tbody>tr>th]:h-auto! [&>table>tbody>tr>th]:break-keep!   
+    [&>table>tbody>tr>td]:border-0! [&>table>tbody>tr>td]:p-0! [&>table>tbody>tr>td]:h-auto!   
+    [&>table>tbody>tr]:border-0! [&>table>tbody>tr>td+th]:pl-[2.4rem]! [&>table>tbody>tr~tr>*]:pt-[0.6rem]!`,
   };
 
   // variant가 'none'이면 lineTop을 무시
