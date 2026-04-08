@@ -31,7 +31,7 @@ export function PageTitle({ data }: PageTitleProps) {
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
   return (
-    <Grow placement={'bwc'} gap={3} className="w-full py-1 min-w-[118.4rem]">
+    <Grow placement={'bwc'} gap={3} className="w-full py-1">
       <Grow className="gap-[.8rem] flex-1" placement={'sc'}>
         <Typo tag={'h2'} variant={'heading-lg'}>
           {safeData.title}
@@ -87,7 +87,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
   }));
 
   return (
-    <Grow placement="bwc" className="w-full py-1 gap-3 min-w-[118.4rem]">
+    <Grow placement="bwc" className="w-full py-1 gap-3">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
         <ViewMode state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
         <Typo tag="h2" variant="heading-lg">

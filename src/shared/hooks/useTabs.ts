@@ -70,7 +70,19 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
     });
   };
 
-  return { tabs, active, setActive, hiddenTabs, handleRemove, visibleTabs, addTab, removeTab };
+  const replaceTabs = (nextTabs: T[]) => {
+    setTabs(nextTabs);
+    setHiddenTabs(new Set());
+    setActive((prev) => {
+      if (nextTabs.some((tab) => tab.value === prev)) {
+        return prev;
+      }
+
+      return nextTabs[0]?.value ?? '';
+    });
+  };
+
+  return { tabs, active, setActive, hiddenTabs, handleRemove, visibleTabs, addTab, removeTab, replaceTabs };
 }
 
 /**

@@ -29,6 +29,13 @@ type MenuItem = {
   fix?: boolean;
 };
 
+export type Ltpz018MenuItem = {
+  code: string;
+  name: string;
+  link: string;
+  fix?: boolean;
+};
+
 const MENU_LIST: MenuItem[] = [
   { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
   { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
@@ -81,9 +88,14 @@ const MY_MENU_LIST: MenuItem[] = [
   { code: 'm04', fix: true, name: '실손정액조회', link: '/' },
 ];
 
+type Ltpz018Props = PopupBaseProps & {
+  myMenuList?: Ltpz018MenuItem[];
+  onSaveMyMenuList?: (nextMenus: Ltpz018MenuItem[]) => void;
+};
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz018 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Ltpz018Props) => {
   const DATA_TABS = [
     { label: '전체메뉴', value: 'tab1' },
     { label: '편집모드', value: 'tab2' },
@@ -94,12 +106,13 @@ export const Ltpz018 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   const initialSelectedMenuNames = useMemo(() => {
-    const initialNameSet = new Set(MY_MENU_LIST.map((menu) => menu.code));
+    const sourceMenuList = myMenuList ?? MY_MENU_LIST;
+    const initialNameSet = new Set(sourceMenuList.map((menu) => menu.code));
     return uniqueMenuList
       .filter((menu) => initialNameSet.has(menu.code))
       .map((menu) => menu.code)
       .slice(0, 7);
-  }, [uniqueMenuList]);
+  }, [myMenuList, uniqueMenuList]);
 
   const [selectedMenuNames, setSelectedMenuNames] = useState<string[]>(initialSelectedMenuNames);
 
@@ -144,6 +157,11 @@ export const Ltpz018 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   const { tabs, active, setActive } = useTabs(DATA_TABS);
+
+  const handleSave = () => {
+    onSaveMyMenuList?.(myMenu);
+    onOpenChange?.(false);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -319,7 +337,7 @@ export const Ltpz018 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Button variant={'outlined'} size={'xl'} color={'gray'}>
                     기본설정 적용
                   </Button>
-                  <Button variant={'contained'} size={'xl'}>
+                  <Button variant={'contained'} size={'xl'} onClick={handleSave}>
                     저장
                   </Button>
                 </>

@@ -300,7 +300,7 @@ function SelectDrop<TValue extends string = string>({
           <PopoverPrimitive.Content
             style={inlineWidthStyle}
             className={cn(
-              'z-50 min-w-48 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
+              'z-50 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
               widthClass
             )}
             {...contentProps}

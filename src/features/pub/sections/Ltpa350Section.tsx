@@ -19,6 +19,7 @@ import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 
 import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
+import { Ltpz018, type Ltpz018MenuItem } from '../components/popups/Ltpz018';
 
 // types
 type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
@@ -160,6 +161,45 @@ const asideInfo = {
     note: '알릴사항 비대상',
   },
 };
+const asideFoot = {
+  step1: {
+    insGen: false,
+    paymentAmount: 3450,
+    point: 640,
+  },
+  step2: {
+    insGen: 3456,
+    paymentAmount: 3450,
+    point: 640,
+  },
+  step3: {
+    insGen: 3456,
+    paymentAmount: 3450,
+    point: 640,
+  },
+  step4: {
+    insGen: 3456,
+    paymentAmount: 3450,
+    point: 640,
+  },
+  step5: {
+    insGen: 3456,
+    paymentAmount: 3450,
+    point: 640,
+  },
+  step6: {
+    insGen: 3456,
+    paymentAmount: 3450,
+    point: 640,
+  },
+};
+
+const DEFAULT_MY_MENU_LIST: Ltpz018MenuItem[] = [
+  { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
+  { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
+  { code: 'm03', fix: false, name: '수수료조회', link: '/' },
+  { code: 'm04', fix: true, name: '실손정액조회', link: '/' },
+];
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
 const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
@@ -169,6 +209,8 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 
 export default function Ltpa350Section() {
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
+  const [isQuickLinksPopupOpen, setIsQuickLinksPopupOpen] = useState<boolean>(false);
+  const [myMenuList, setMyMenuList] = useState<Ltpz018MenuItem[]>(DEFAULT_MY_MENU_LIST);
   const defaultStep = data.process.state.active;
   const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
@@ -213,7 +255,7 @@ export default function Ltpa350Section() {
         }
         // LayoutBody: main
         mainBody={stepMainBody[activeStep]}
-        // LayoutBody: aside
+        // 신호등
         asideHead={
           <TaskStatusBoard
             state={[
@@ -224,13 +266,23 @@ export default function Ltpa350Section() {
             ]}
           />
         }
-        asideBody={
+        // 계약정보
+        asideInfo={<InfoContract data={asideInfo[`step${activeStep}`]} />}
+        // 바로가기
+        asideLinks={
           <>
-            <InfoContract data={asideInfo[`step${activeStep}`]} />
-            <QuickLinks />
+            <QuickLinks menus={myMenuList} onMoreClick={() => setIsQuickLinksPopupOpen(true)} />
+            {isQuickLinksPopupOpen && (
+              <Ltpz018
+                open={isQuickLinksPopupOpen}
+                onOpenChange={setIsQuickLinksPopupOpen}
+                myMenuList={myMenuList}
+                onSaveMyMenuList={setMyMenuList}
+              />
+            )}
           </>
         }
-        asideFoot={<AsideFoot />}
+        asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} />}
         hideAside={hideAside}
       />
 

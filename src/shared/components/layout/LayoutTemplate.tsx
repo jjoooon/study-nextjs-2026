@@ -21,7 +21,8 @@ interface Props {
   mainBody?: React.ReactNode;
   mainFoot?: React.ReactNode;
   asideHead?: React.ReactNode;
-  asideBody?: React.ReactNode;
+  asideLinks?: React.ReactNode;
+  asideInfo?: React.ReactNode;
   asideFoot?: React.ReactNode;
   hideAside?: boolean;
   pageProcess?: React.ReactNode;
@@ -38,7 +39,8 @@ export const LayoutTemplateLTPA350 = ({
   pageTitle,
   asideHead,
   mainBody,
-  asideBody,
+  asideInfo,
+  asideLinks,
   asideFoot,
   pageProcess,
   hideAside = false,
@@ -54,7 +56,8 @@ export const LayoutTemplateLTPA350 = ({
           <LayoutScrollWrap>
             <LayoutScrollItem>
               <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
-                {asideBody}
+                {asideInfo}
+                {asideLinks}
               </Gcol>
             </LayoutScrollItem>
           </LayoutScrollWrap>
