@@ -43,6 +43,13 @@ const DUMMY_DATA = {
     { value: 'user2', name: '연금계약자2' },
   ],
 };
+const tooltipContents = [
+  <>
+    문서서명/TM은 청양서상 고객이 청약서로 [전자적 방밥의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.
+    <br />
+    전자서명/전자청약은 전자적 안내동의가 필수사항입니다.
+  </>,
+];
 
 type ViewKey = keyof typeof DUMMY_DATA;
 type Ltpa350Step1Props = {
@@ -486,7 +493,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                 <Badge color="green" size="md" variant="ghost">
                                   Y
                                 </Badge>
-                                <TooltipQ>ddddd</TooltipQ>
+                                <TooltipQ>{tooltipContents[0]}</TooltipQ>
                               </Grow>
                             </KeyValueItem>
                           </Grow>
@@ -892,7 +899,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   <Badge color="green" size="md" variant="ghost">
                                     ddaffd
                                   </Badge>
-                                  <TooltipQ>ddddddd</TooltipQ>
+                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>
@@ -1400,7 +1407,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   <Badge color="green" size="md" variant="ghost">
                                     Y
                                   </Badge>
-                                  <TooltipQ>asffasd asf sdfa</TooltipQ>
+                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>
@@ -1707,7 +1714,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   <Badge color="green" size="md" variant="ghost">
                                     Y
                                   </Badge>
-                                  <TooltipQ>dfas afda sdfsdfa fafa fa sdf</TooltipQ>
+                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>
@@ -1981,7 +1988,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                 <Badge color="green" size="md" variant="ghost">
                                   Y
                                 </Badge>
-                                <TooltipQ>sdf asf asdfasdf</TooltipQ>
+                                <TooltipQ>{tooltipContents[0]}</TooltipQ>
                               </Grow>
                             </KeyValueItem>
                           </Grow>
