@@ -26,7 +26,7 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz220 = ({ open, onOpenChange }: PopupBaseProps) => {
   // dummy data
   type DummyDataType = {
     id: number;
@@ -202,7 +202,7 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              지침확인 결과
+              실손의료비 전환 계약 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ023)
