@@ -201,9 +201,6 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant="contained" size="xl" id="btnRP">
-                엑셀저장
-              </Button>
               <Button variant="outlined" size="xl" color="gray-light" id="btnRB" onClick={() => onOpenChange?.(false)}>
                 닫기
               </Button>
