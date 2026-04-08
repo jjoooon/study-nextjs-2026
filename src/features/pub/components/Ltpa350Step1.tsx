@@ -45,7 +45,6 @@ const DUMMY_DATA = {
 };
 
 type ViewKey = keyof typeof DUMMY_DATA;
-
 type Ltpa350Step1Props = {
   simpleMode: boolean;
 };
@@ -59,7 +58,6 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
     view4: false,
     view5: false,
   });
-
   const currentViewKey = (Object.keys(viewContents).find((key) => viewContents[key]) ?? 'view1') as ViewKey;
 
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA.view1);

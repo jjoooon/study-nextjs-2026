@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
 import { InputClearIcon, PlusIcon, ArrowIcon } from '@icons';
@@ -108,10 +108,7 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
   const initialSelectedMenuNames = useMemo(() => {
     const sourceMenuList = myMenuList ?? MY_MENU_LIST;
     const initialNameSet = new Set(sourceMenuList.map((menu) => menu.code));
-    return uniqueMenuList
-      .filter((menu) => initialNameSet.has(menu.code))
-      .map((menu) => menu.code)
-      .slice(0, 7);
+    return uniqueMenuList.filter((menu) => initialNameSet.has(menu.code)).map((menu) => menu.code);
   }, [myMenuList, uniqueMenuList]);
 
   const [selectedMenuNames, setSelectedMenuNames] = useState<string[]>(initialSelectedMenuNames);
@@ -122,9 +119,7 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
   }, [selectedMenuNames, uniqueMenuList]);
 
   const handleMenuSelectionChange = (nextValues: string[]) => {
-    if (nextValues.length <= 7) {
-      setSelectedMenuNames(nextValues);
-    }
+    setSelectedMenuNames(nextValues);
   };
 
   const handleRemoveMenu = (code: string) => {
@@ -159,7 +154,12 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
   const { tabs, active, setActive } = useTabs(DATA_TABS);
 
   const handleSave = () => {
-    onSaveMyMenuList?.(myMenu);
+    const menuMap = new Map(uniqueMenuList.map((menu) => [menu.code, menu]));
+    const nextMenus = selectedMenuNames
+      .map((code) => menuMap.get(code))
+      .filter((menu): menu is Ltpz018MenuItem => menu !== undefined);
+
+    onSaveMyMenuList?.(nextMenus);
     onOpenChange?.(false);
   };
 
@@ -212,7 +212,7 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
                         value={menu.code}
                         size="lg"
                         className="w-full"
-                        disabled={menu.fix || (selectedMenuNames.length >= 7 && !selectedMenuNames.includes(menu.code))}
+                        disabled={menu.fix}
                       >
                         {menu.name}
                       </CheckboxGroupItem>
@@ -257,65 +257,72 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
                 )}
               </Grow>
 
-              <Grow variant="box-line" className="w-full flex-wrap content-start" placement="ss" gap={1}>
-                {active === 'tab2' ? (
-                  <>
-                    {myMenu.map((menu) => (
-                      <div
-                        key={`mymenu-${menu.code}`}
-                        tabIndex={0}
-                        role="button"
-                        onClick={() => setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code))}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ')
-                            setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code));
-                        }}
-                        className={`flex w-full items-center justify-between gap-2 px-2 rounded-[0.3rem] text-[#fff] h-[2.2rem] text-[1.2rem] font-bold cursor-pointer outline-none ${
-                          selectedMenuCode === menu.code
-                            ? 'bg-[var(--color-primary-50)] ring-2 ring-[var(--color-primary-30)]'
-                            : 'bg-[var(--color-gray-50)]'
-                        }`}
-                      >
-                        <div className="truncate w-[10rem]">{menu.name}</div>
-                        <Button
-                          variant={'none'}
-                          only={'icon'}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRemoveMenu(menu.code);
+              <Grow
+                variant="box-line"
+                className="w-full flex-wrap content-start overflow-y-auto relative overflow-x-hidden"
+                placement="ss"
+                gap={1}
+              >
+                <Gcol className="absolute top-0 w-full left-0 p-2.5">
+                  {active === 'tab2' ? (
+                    <>
+                      {myMenu.map((menu) => (
+                        <div
+                          key={`mymenu-${menu.code}`}
+                          tabIndex={0}
+                          role="button"
+                          onClick={() => setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code))}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ')
+                              setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code));
                           }}
-                          className="w-[1.2rem] h-[1.2rem]"
-                          disabled={menu.fix ? true : false}
+                          className={`flex w-full items-center justify-between gap-2 px-2 rounded-[0.3rem] text-[#fff] h-[2.2rem] text-[1.2rem] font-bold cursor-pointer outline-none ${
+                            selectedMenuCode === menu.code
+                              ? 'bg-[var(--color-primary-50)] ring-2 ring-[var(--color-primary-30)]'
+                              : 'bg-[var(--color-gray-50)]'
+                          }`}
                         >
-                          <InputClearIcon size={12} />
+                          <div className="truncate w-[10rem]">{menu.name}</div>
+                          <Button
+                            variant={'none'}
+                            only={'icon'}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveMenu(menu.code);
+                            }}
+                            className="w-[1.2rem] h-[1.2rem]"
+                            disabled={menu.fix ? true : false}
+                          >
+                            <InputClearIcon size={12} />
+                          </Button>
+                        </div>
+                      ))}
+                      {Array.from({ length: Math.max(0, 7 - myMenu.length) }).map((_, i) => (
+                        <div
+                          key={`mymenu-empty-${i}`}
+                          className="flex w-full items-center justify-between px-2 bg-[var(--color-gray-5)] rounded-[0.3rem] text-[var(--color-gray-30)] h-[2.2rem] text-[1.2rem] border border-dashed border-[var(--color-gray-15)] justify-center"
+                        >
+                          <PlusIcon size={12} />
+                          추가
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {myMenu.map((menu) => (
+                        <Button
+                          key={`mymenu-${menu.code}`}
+                          variant={'contained'}
+                          size={'sm'}
+                          color={'gray'}
+                          className="w-full"
+                        >
+                          {menu.name}
                         </Button>
-                      </div>
-                    ))}
-                    {Array.from({ length: Math.max(0, 7 - myMenu.length) }).map((_, i) => (
-                      <div
-                        key={`mymenu-empty-${i}`}
-                        className="flex w-full items-center justify-between px-2 bg-[var(--color-gray-5)] rounded-[0.3rem] text-[var(--color-gray-30)] h-[2.2rem] text-[1.2rem] border border-dashed border-[var(--color-gray-15)] justify-center"
-                      >
-                        <PlusIcon size={12} />
-                        추가
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    {myMenu.map((menu) => (
-                      <Button
-                        key={`mymenu-${menu.code}`}
-                        variant={'contained'}
-                        size={'sm'}
-                        color={'gray'}
-                        className="w-full"
-                      >
-                        {menu.name}
-                      </Button>
-                    ))}
-                  </>
-                )}
+                      ))}
+                    </>
+                  )}
+                </Gcol>
               </Grow>
             </Grid>
           </Grid>
