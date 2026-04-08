@@ -15,7 +15,7 @@ type PageIDProps = {
   data: DefaultPageID;
 };
 
-export default function PageID({ data }: PageIDProps) {
+export function PageID({ data }: PageIDProps) {
   const safeData = data ?? {};
 
   // 로그인 사용자 사번

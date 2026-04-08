@@ -1,23 +1,23 @@
 'use client';
 
-// components - layout
-// components - features
 import type { ReactNode } from 'react';
+import { useState } from 'react';
+
+import { LayoutHead, LayoutFoot } from '@/shared/components/layout/BaseLayout';
+
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
+import { BottomBar } from '@common/BottomBar';
 import { InfoContract } from '@common/InfoContract';
-import AsideFoot from '@features/AsideFoot';
-import PageID from '@features/PageID';
-import PageProcess from '@features/PageProcess';
-import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
+import { AsideFoot } from '@features/AsideFoot';
+import { PageID } from '@features/PageID';
+import { PageProcess } from '@features/PageProcess';
+import { PageTitleProduct as PageTitle } from '@features/PageTitle';
 import { QuickLinks } from '@features/QuickLinks';
-import TaskStatusBoard from '@features/TaskStatusBoard';
+import { TaskStatusBoard } from '@features/TaskStatusBoard';
+import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 
-// hooks
-import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
-
-// LTPA350 - components
-import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 담보설계
+import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
 
 // types
@@ -168,6 +168,7 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 };
 
 export default function Ltpa350Section() {
+  const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
   const defaultStep = data.process.state.active;
   const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
@@ -175,54 +176,67 @@ export default function Ltpa350Section() {
   });
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
   const stepMainBody: Record<number, ReactNode> = {
-    1: <Ltpa350Step1 />,
+    1: <Ltpa350Step1 simpleMode={simpleMode} />,
     2: <Ltpa350Step2 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />,
-    3: <Ltpa350Step1 />,
-    4: <Ltpa350Step1 />,
-    5: <Ltpa350Step1 />,
-    6: <Ltpa350Step1 />,
+    3: <Ltpa350Step1 simpleMode={simpleMode} />,
+    4: <Ltpa350Step1 simpleMode={simpleMode} />,
+    5: <Ltpa350Step1 simpleMode={simpleMode} />,
+    6: <Ltpa350Step1 simpleMode={simpleMode} />,
   };
 
   return (
-    <LayoutTemplateAsideToggle
-      // LayoutHead
-      pageID={<PageID data={data.head.pageID} />}
-      pageTitle={<PageTitle data={data.head.pageTitle} />}
-      // LayoutBody: process
-      pageProcess={
-        <PageProcess
-          items={data.process.list}
-          completeSteps={data.process.state.complete}
-          defaultActiveStep={data.process.state.active}
-          activeStep={activeStep}
-          onStepChange={(step) => {
-            if (isPageProcessStep(step)) {
-              setActiveStep(step);
-            }
+    <>
+      <LayoutHead>
+        <PageID
+          data={{
+            pageName: '가입설계',
+            pageId: 'LTPA350',
           }}
         />
-      }
-      // LayoutBody: main
-      mainBody={stepMainBody[activeStep]}
-      // LayoutBody: aside
-      asideHead={
-        <TaskStatusBoard
-          state={[
-            { id: 1, status: '정상', label: '누적', sum: 24 },
-            { id: 2, status: '경고', label: '중복', sum: 1 },
-            { id: 3, status: '중지', label: '직업', sum: 0 },
-            { id: 4, status: '정상', label: '기타', sum: 99 },
-          ]}
-        />
-      }
-      asideBody={
-        <>
-          <InfoContract data={asideInfo[`step${activeStep}`]} />
-          <QuickLinks />
-        </>
-      }
-      asideFoot={<AsideFoot />}
-      hideAside={hideAside}
-    />
+      </LayoutHead>
+
+      <LayoutTemplateLTPA350
+        pageTitle={<PageTitle data={data.head.pageTitle} simpleMode={simpleMode} onSimpleModeChange={setSimpleMode} />}
+        // LayoutBody: process
+        pageProcess={
+          <PageProcess
+            items={data.process.list}
+            completeSteps={data.process.state.complete}
+            defaultActiveStep={data.process.state.active}
+            activeStep={activeStep}
+            onStepChange={(step) => {
+              if (isPageProcessStep(step)) {
+                setActiveStep(step);
+              }
+            }}
+          />
+        }
+        // LayoutBody: main
+        mainBody={stepMainBody[activeStep]}
+        // LayoutBody: aside
+        asideHead={
+          <TaskStatusBoard
+            state={[
+              { id: 1, status: '정상', label: '누적', sum: 24 },
+              { id: 2, status: '경고', label: '중복', sum: 1 },
+              { id: 3, status: '중지', label: '직업', sum: 0 },
+              { id: 4, status: '정상', label: '기타', sum: 99 },
+            ]}
+          />
+        }
+        asideBody={
+          <>
+            <InfoContract data={asideInfo[`step${activeStep}`]} />
+            <QuickLinks />
+          </>
+        }
+        asideFoot={<AsideFoot />}
+        hideAside={hideAside}
+      />
+
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
+    </>
   );
 }

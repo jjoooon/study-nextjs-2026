@@ -1,16 +1,11 @@
 'use client';
 
 import { Gcol } from '@atoms';
-import { BottomBar } from '@common/BottomBar';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import {
-  LayoutHead,
   LayoutBody,
-  LayoutFoot,
   LayoutProcess,
-  LayoutFolder,
   LayoutMain,
-  LayoutMainHead,
   LayoutMainBody,
   LayoutMainFoot,
   LayoutAside,
@@ -31,9 +26,15 @@ interface Props {
   hideAside?: boolean;
   pageProcess?: React.ReactNode;
 }
+export const LayoutTemplateLTPA350MainBody = ({ mainBody }: Props) => (
+  <LayoutMainBody>
+    <LayoutScrollWrap>
+      <LayoutScrollItem>{mainBody}</LayoutScrollItem>
+    </LayoutScrollWrap>
+  </LayoutMainBody>
+);
 
-export const LayoutTemplateAsideToggle = ({
-  pageID,
+export const LayoutTemplateLTPA350 = ({
   pageTitle,
   asideHead,
   mainBody,
@@ -43,70 +44,10 @@ export const LayoutTemplateAsideToggle = ({
   hideAside = false,
 }: Props) => (
   <>
-    <LayoutHead>
-      {pageID}
-      {pageTitle}
-    </LayoutHead>
-
-    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
+    <LayoutBody className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr] gap-x-3 gap-y-1">
+      <div className="col-span-3 pl-2.5">{pageTitle}</div>
       <LayoutProcess>{pageProcess}</LayoutProcess>
-
       {mainBody}
-
-      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
-        <LayoutAsideHead>{asideHead}</LayoutAsideHead>
-        <LayoutAsideBody>
-          <LayoutScrollWrap>
-            <LayoutScrollItem>
-              <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
-                {asideBody}
-              </Gcol>
-            </LayoutScrollItem>
-          </LayoutScrollWrap>
-        </LayoutAsideBody>
-        <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
-      </LayoutAside>
-    </LayoutBody>
-
-    <LayoutFoot>
-      <BottomBar />
-    </LayoutFoot>
-  </>
-);
-
-export const LayoutTemplate = ({ pageID, mainBody }: Props) => (
-  <>
-    <LayoutHead>{pageID}</LayoutHead>
-
-    <LayoutBody className="grid grid-cols-[1fr] gap-3 pl-[1rem]">{mainBody}</LayoutBody>
-
-    <LayoutFoot>
-      <BottomBar />
-    </LayoutFoot>
-  </>
-);
-
-export const LayoutTemplateA = ({
-  pageID,
-  pageTitle,
-  asideHead,
-  mainBody,
-  asideBody,
-  asideFoot,
-  pageProcess,
-  hideAside = false,
-}: Props) => (
-  <>
-    <LayoutHead>
-      {pageID}
-      {pageTitle}
-    </LayoutHead>
-
-    <LayoutBody className="grid grid-cols-[auto_1fr_auto] gap-3">
-      <LayoutProcess>{pageProcess}</LayoutProcess>
-
-      {mainBody}
-
       <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>
@@ -123,36 +64,16 @@ export const LayoutTemplateA = ({
     </LayoutBody>
   </>
 );
-export const LayoutTemplateB = ({
-  pageID,
-  pageTitle,
-  mainHead,
-  asideHead,
-  mainBody,
-  asideBody,
-  mainFoot,
-  asideFoot,
-  pageProcess,
-}: Props) => (
+
+export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
   <>
-    <LayoutHead>
-      {pageID}
-      {pageTitle}
-    </LayoutHead>
-    <LayoutBody>
-      <LayoutProcess>{pageProcess}</LayoutProcess>
-      <LayoutFolder className="grid-rows-[1fr] grid-cols-[1fr_auto] gap-3">
-        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
-          <LayoutMainHead>{mainHead}</LayoutMainHead>
-          <LayoutMainBody>{mainBody}</LayoutMainBody>
-          <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
-        </LayoutMain>
-        <LayoutAside className="grid grid-rows-[auto_1fr_auto] gap-[1rem]">
-          <LayoutAsideHead>{asideHead}</LayoutAsideHead>
-          <LayoutAsideBody>{asideBody}</LayoutAsideBody>
-          <LayoutAsideFoot>{asideFoot}</LayoutAsideFoot>
-        </LayoutAside>
-      </LayoutFolder>
-    </LayoutBody>
+    <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] px-[1rem]">
+      <LayoutMainBody>
+        <LayoutScrollWrap>
+          <LayoutScrollItem>{mainBody}</LayoutScrollItem>
+        </LayoutScrollWrap>
+      </LayoutMainBody>
+      {mainFoot && <LayoutMainFoot>{mainFoot}</LayoutMainFoot>}
+    </LayoutMain>
   </>
 );
