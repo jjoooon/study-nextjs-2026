@@ -3,8 +3,10 @@
 // components - layout
 // components - features
 import type { ReactNode } from 'react';
+import { LayoutHead, LayoutFoot } from '@/shared/components/layout/BaseLayout';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
+import { BottomBar } from '@common/BottomBar';
 import { InfoContract } from '@common/InfoContract';
 import AsideFoot from '@features/AsideFoot';
 import PageID from '@features/PageID';
@@ -12,7 +14,6 @@ import PageProcess from '@features/PageProcess';
 import { PageTitleProduct as PageTitle } from '@features/PageTitle'; // PageTitle, PageTitleProduct
 import { QuickLinks } from '@features/QuickLinks';
 import TaskStatusBoard from '@features/TaskStatusBoard';
-
 // hooks
 import { LayoutTemplateAsideToggle } from '@layout/LayoutTemplate';
 
@@ -184,45 +185,56 @@ export default function Ltpa350Section() {
   };
 
   return (
-    <LayoutTemplateAsideToggle
-      // LayoutHead
-      pageID={<PageID data={data.head.pageID} />}
-      pageTitle={<PageTitle data={data.head.pageTitle} />}
-      // LayoutBody: process
-      pageProcess={
-        <PageProcess
-          items={data.process.list}
-          completeSteps={data.process.state.complete}
-          defaultActiveStep={data.process.state.active}
-          activeStep={activeStep}
-          onStepChange={(step) => {
-            if (isPageProcessStep(step)) {
-              setActiveStep(step);
-            }
+    <>
+      <LayoutHead>
+        <PageID
+          data={{
+            pageName: '가입설계',
+            pageId: 'LTPA350',
           }}
         />
-      }
-      // LayoutBody: main
-      mainBody={stepMainBody[activeStep]}
-      // LayoutBody: aside
-      asideHead={
-        <TaskStatusBoard
-          state={[
-            { id: 1, status: '정상', label: '누적', sum: 24 },
-            { id: 2, status: '경고', label: '중복', sum: 1 },
-            { id: 3, status: '중지', label: '직업', sum: 0 },
-            { id: 4, status: '정상', label: '기타', sum: 99 },
-          ]}
-        />
-      }
-      asideBody={
-        <>
-          <InfoContract data={asideInfo[`step${activeStep}`]} />
-          <QuickLinks />
-        </>
-      }
-      asideFoot={<AsideFoot />}
-      hideAside={hideAside}
-    />
+      </LayoutHead>
+      <LayoutTemplateAsideToggle
+        pageTitle={<PageTitle data={data.head.pageTitle} />}
+        // LayoutBody: process
+        pageProcess={
+          <PageProcess
+            items={data.process.list}
+            completeSteps={data.process.state.complete}
+            defaultActiveStep={data.process.state.active}
+            activeStep={activeStep}
+            onStepChange={(step) => {
+              if (isPageProcessStep(step)) {
+                setActiveStep(step);
+              }
+            }}
+          />
+        }
+        // LayoutBody: main
+        mainBody={stepMainBody[activeStep]}
+        // LayoutBody: aside
+        asideHead={
+          <TaskStatusBoard
+            state={[
+              { id: 1, status: '정상', label: '누적', sum: 24 },
+              { id: 2, status: '경고', label: '중복', sum: 1 },
+              { id: 3, status: '중지', label: '직업', sum: 0 },
+              { id: 4, status: '정상', label: '기타', sum: 99 },
+            ]}
+          />
+        }
+        asideBody={
+          <>
+            <InfoContract data={asideInfo[`step${activeStep}`]} />
+            <QuickLinks />
+          </>
+        }
+        asideFoot={<AsideFoot />}
+        hideAside={hideAside}
+      />
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
+    </>
   );
 }
