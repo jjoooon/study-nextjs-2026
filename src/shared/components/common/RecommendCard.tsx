@@ -14,7 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../uiux/Dialog';
-import { DialogBottomInfo } from './DialogBottomInfo';
 
 export interface RecommendCardProps {
   /** 카드 제목 (상품명 등) */
@@ -98,7 +97,6 @@ export function RecommendCard({ title, plan, term, detail }: RecommendCardProps)
                       </DialogClose>
                     </Grow>
                   </Grow>
-                  <DialogBottomInfo />
                 </Gcol>
               </DialogFooter>
             </DialogContent>
