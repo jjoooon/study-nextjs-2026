@@ -4,6 +4,7 @@ import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -38,13 +39,21 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
     field9: string;
   };
 
-  const DummyData: DummyDataType[] = [
+  type DummyDataType2 = {
+    id: number;
+    isChecked: boolean;
+    field1: string;
+    field2: string;
+    field3: string;
+  };
+
+  const dummyData: DummyDataType[] = [
     {
       id: 1,
       isChecked: false,
-      field1: 'S92',
-      field2: '발등 골절',
-      field3: '2020',
+      field1: '',
+      field2: '',
+      field3: '',
       field4: '',
       field5: '',
       field6: '',
@@ -65,21 +74,28 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
       field8: '',
       field9: '',
     },
+  ];
+
+  const dummyData2: DummyDataType2[] = [
     {
-      id: 3,
+      id: 1,
       isChecked: false,
-      field1: '',
-      field2: '',
+      field1: '최근5년이내치료여부',
+      field2: '예',
+      field3: '입원, 계속하여 7일이상 치료',
+    },
+    {
+      id: 2,
+      isChecked: false,
+      field1: '최근3개월내약물복용',
+      field2: '예',
       field3: '',
-      field4: '',
-      field5: '',
-      field6: '',
-      field7: '',
-      field8: '',
-      field9: '',
     },
   ];
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+
+  const [rowData] = React.useState<DummyDataType[]>(dummyData);
+
+  const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -136,12 +152,33 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 60,
       cellClass: 'text-center',
       cellRenderer: (params: { data: DummyDataType }) => (
-        <Gcol>
-          <Typo tag={'span'} variant={'body-xs'}>
+        <Gcol placement="cc" className="h-full">
+          <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
             {params.data.field9}
           </Typo>
         </Gcol>
       ),
+    },
+  ];
+
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '대표질병코드',
+      field: 'field1',
+      flex: 1,
+      cellClass: 'text-left',
+    },
+    {
+      headerName: '질문답변',
+      field: 'field2',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '답변세부사항',
+      field: 'field3',
+      flex: 1,
+      cellClass: 'text-left',
     },
   ];
 
@@ -154,7 +191,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
               고지콕콕 입력 서비스 안내
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ014)
+              (LTPZ062)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -178,8 +215,8 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     defaultColDef={{
-                      sortable: true,
-                      resizable: true,
+                      sortable: false,
+                      resizable: false,
                     }}
                     domLayout="autoHeight"
                     rowSelection={{
@@ -194,9 +231,42 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="질문항목(질병)"></TableFoldHead>
               <TableFoldBody>
-                <div>table 영역</div>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData2}
+                    columnDefs={columnDefs2}
+                    selectionColumnDef={{
+                      width: 30,
+                    }}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    defaultColDef={{
+                      sortable: false,
+                      resizable: false,
+                    }}
+                    domLayout="autoHeight"
+                    rowSelection={{
+                      mode: 'singleRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                  />
+                </div>
+                <Gcol variant={'box-warning'} placement={'ss'} className="w-full mt-[0.8rem]">
+                  <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
+                    보험금 지급이력은 정보의 불안정성으로 부정확할 수 있습니다.(정보 누락, 시간차 존재, 오기재 등)
+                  </Typo>
+                  <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
+                    해당 서비스는 고객의 고지의무를 대체할 수 없으며, 반드시 참고 보완자료로만 활용하시기 바랍니다.
+                  </Typo>
+                </Gcol>
               </TableFoldBody>
             </TableFold>
+            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+              <Typo variant={'body-sm'} className="text-[#E43939]">
+                <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
+              </Typo>
+            </Gcol>
           </Gcol>
         </DialogSection>
 
