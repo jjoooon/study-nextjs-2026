@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+// (불필요한 상태 제거로 useState import 삭제)
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -43,57 +43,32 @@ const DUMMY_DATA = {
     { value: 'user2', name: '연금계약자2' },
   ],
 };
+const tooltipContents = [
+  <>
+    문서서명/TM은 청양서상 고객이 청약서로 [전자적 방밥의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.
+    <br />
+    전자서명/전자청약은 전자적 안내동의가 필수사항입니다.
+  </>,
+];
 
 type ViewKey = keyof typeof DUMMY_DATA;
 type Ltpa350Step1Props = {
   simpleMode: boolean;
+  viewKey: ViewKey;
 };
 
 // State & Reducer Types
-export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => {
-  const [viewContents, setViewContents] = useState<Record<string, boolean>>({
-    view1: true,
-    view2: false,
-    view3: false,
-    view4: false,
-    view5: false,
-  });
-  const currentViewKey = (Object.keys(viewContents).find((key) => viewContents[key]) ?? 'view1') as ViewKey;
-
-  const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA.view1);
+export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1Props) => {
+  // viewKey만 사용, 상태 제거
+  const { tabs, active, setActive, handleRemove } = useTabs(DUMMY_DATA[viewKey]);
 
   return (
     <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem]">
-      {/* 퍼블 페이지확인용 */}
-      <NativeSelect
-        className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
-        value={currentViewKey}
-        onChange={(e) => {
-          const selectedKey = e.target.value as ViewKey;
-
-          setViewContents({
-            view1: selectedKey === 'view1',
-            view2: selectedKey === 'view2',
-            view3: selectedKey === 'view3',
-            view4: selectedKey === 'view4',
-            view5: selectedKey === 'view5',
-          });
-          replaceTabs(DUMMY_DATA[selectedKey]);
-        }}
-      >
-        <NativeSelectOption value="view1">임시 화면확인용: 인보험</NativeSelectOption>
-        <NativeSelectOption value="view2">임시 화면확인용: 태아</NativeSelectOption>
-        <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
-        <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
-        <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
-      </NativeSelect>
-      {/* 퍼블 페이지확인용 */}
-
       <LayoutTemplateLTPA350MainBody
         mainBody={
           <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
             {/* 인보험 */}
-            {viewContents.view1 && (
+            {viewKey === 'view1' && (
               <>
                 <Grow placement={'ss'} className="w-full">
                   <FormTable cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
@@ -108,7 +83,6 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                         <DatePickerInput readOnly mode={'range'} width={'9rem'} />
                       </FormCell>
                     </FormRow>
-
                     <FormRow>
                       <FormCell title={'만기'} colSpan={3}>
                         <RadioGroup className="flex-row gap-3">
@@ -486,7 +460,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                 <Badge color="green" size="md" variant="ghost">
                                   Y
                                 </Badge>
-                                <TooltipQ>ddddd</TooltipQ>
+                                <TooltipQ>{tooltipContents[0]}</TooltipQ>
                               </Grow>
                             </KeyValueItem>
                           </Grow>
@@ -528,7 +502,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
               </>
             )}
             {/* 태아 */}
-            {viewContents.view2 && (
+            {viewKey === 'view2' && (
               <>
                 <Grow placement={'ss'} className={'w-full'}>
                   <FormTable caption="보험정보" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
@@ -892,7 +866,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   <Badge color="green" size="md" variant="ghost">
                                     ddaffd
                                   </Badge>
-                                  <TooltipQ>ddddddd</TooltipQ>
+                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>
@@ -935,7 +909,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
               </>
             )}
             {/* 재물 */}
-            {viewContents.view3 && (
+            {viewKey === 'view3' && (
               <>
                 <Grow placement={'ss'} className={'w-full'}>
                   <FormTable caption="재물보험 정보" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
@@ -1400,7 +1374,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   <Badge color="green" size="md" variant="ghost">
                                     Y
                                   </Badge>
-                                  <TooltipQ>asffasd asf sdfa</TooltipQ>
+                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>
@@ -1432,7 +1406,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
               </>
             )}
             {/* 단체 */}
-            {viewContents.view4 && (
+            {viewKey === 'view4' && (
               <>
                 <Grow placement={'ss'} className={'w-full'}>
                   <FormTable caption="보험정보" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
@@ -1707,7 +1681,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                   <Badge color="green" size="md" variant="ghost">
                                     Y
                                   </Badge>
-                                  <TooltipQ>dfas afda sdfsdfa fafa fa sdf</TooltipQ>
+                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>
@@ -1739,7 +1713,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
               </>
             )}
             {/* 연금/저축 */}
-            {viewContents.view5 && (
+            {viewKey === 'view5' && (
               <>
                 <Grow placement={'ss'} className={'w-full'}>
                   <FormTable caption="보험정보" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
@@ -1981,7 +1955,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode }: Ltpa350Step1Props) => 
                                 <Badge color="green" size="md" variant="ghost">
                                   Y
                                 </Badge>
-                                <TooltipQ>sdf asf asdfasdf</TooltipQ>
+                                <TooltipQ>{tooltipContents[0]}</TooltipQ>
                               </Grow>
                             </KeyValueItem>
                           </Grow>

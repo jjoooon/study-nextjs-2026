@@ -53,9 +53,13 @@ export type SelectDropProps<TValue extends string = string> = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
   'children'
 > & {
-  typeMode?: 'checkbox' | 'radio';
+  /**
+   * typeMode: 'checkbox' | 'radio' | 'custom'
+   * 'custom'은 직접 구현한 옵션 UI를 사용할 때 지정
+   */
+  typeMode?: 'checkbox' | 'radio' | 'custom';
   variant?: keyof typeof TRIGGER_VARIANT_MAP;
-  options: ReadonlyArray<SelectDropOption<TValue>>;
+  options?: ReadonlyArray<SelectDropOption<TValue>>;
   value?: ReadonlyArray<TValue>;
   defaultValue?: ReadonlyArray<TValue>;
   onValueChange?: (values: TValue[]) => void;
@@ -76,6 +80,7 @@ export type SelectDropProps<TValue extends string = string> = Omit<
   _sideOffset?: 0;
   /** 체크박스 최소 선택 갯수 (기본값 1) */
   minCount?: number;
+  children?: React.ReactNode;
 };
 
 /**
@@ -88,7 +93,7 @@ export type SelectDropProps<TValue extends string = string> = Omit<
 function SelectDrop<TValue extends string = string>({
   typeMode,
   variant = 'default',
-  options,
+  options = [],
   value,
   defaultValue,
   onValueChange,
@@ -108,6 +113,7 @@ function SelectDrop<TValue extends string = string>({
   errorPs = 'bl',
   _sideOffset = 0,
   minCount = 1,
+  children,
   ...contentProps
 }: SelectDropProps<TValue>) {
   const selectionMode = typeMode ?? 'checkbox';
@@ -234,13 +240,13 @@ function SelectDrop<TValue extends string = string>({
     },
     [customInputValue, onCustomInputValueChange]
   );
-  // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상)
-  // minCount는 1 이상으로 보정
+  // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상), 커스텀은 외부에서 제어
   const safeMinCount = Math.max(1, minCount ?? 1);
   const radioHasValue =
     selectionMode === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
   const checkboxValid = selectionMode === 'checkbox' && selectedValues.length >= safeMinCount;
-  const showError = error && !(radioHasValue || checkboxValid);
+  // custom 모드는 showError를 외부에서 제어(내부에서는 항상 false)
+  const showError = selectionMode === 'custom' ? false : error && !(radioHasValue || checkboxValid);
 
   const triggerStyle = cn(
     'flex items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem]',
@@ -305,93 +311,97 @@ function SelectDrop<TValue extends string = string>({
             )}
             {...contentProps}
           >
-            <Gcol className={cn('p-[0.2rem]')} placement={'ss'} gap={0}>
-              <button
-                type="button"
-                value={placeholder}
-                className={`w-full px-2 hover:bg-[var(--color-warning-10)] flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
-                onClick={() => {
-                  setSelectedValues([]);
-                  if (allowCustomInput && customInputValue === undefined) {
-                    setInternalCustomInputValue('');
-                  }
-                  setOpen(false);
-                }}
-              >
-                선택
-              </button>
-              {selectionMode === 'radio' ? (
-                <RadioGroup
-                  value={selectedValues[0] ?? ''}
-                  onValueChange={handleRadioValueChange}
-                  className="flex-col items-start"
-                  width="full"
-                  disabled={isDisabled}
+            {selectionMode === 'custom' ? (
+              (children ?? null)
+            ) : (
+              <Gcol className={cn('p-[0.2rem]')} placement={'ss'} gap={0}>
+                <button
+                  type="button"
+                  value={placeholder}
+                  className={`w-full px-2 hover:bg-[var(--color-warning-10)] flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                  onClick={() => {
+                    setSelectedValues([]);
+                    if (allowCustomInput && customInputValue === undefined) {
+                      setInternalCustomInputValue('');
+                    }
+                    setOpen(false);
+                  }}
                 >
-                  {options.map((option) => {
+                  선택
+                </button>
+                {selectionMode === 'radio' ? (
+                  <RadioGroup
+                    value={selectedValues[0] ?? ''}
+                    onValueChange={handleRadioValueChange}
+                    className="flex-col items-start"
+                    width="full"
+                    disabled={isDisabled}
+                  >
+                    {options.map((option) => {
+                      return (
+                        <Grow
+                          key={option.value}
+                          placement={'sc'}
+                          className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                        >
+                          <RadioGroupItem value={option.value} disabled={option.disabled || readOnly} size="md">
+                            {option.label}
+                          </RadioGroupItem>
+                        </Grow>
+                      );
+                    })}
+
+                    {allowCustomInput && (
+                      <>
+                        <Grow
+                          placement={'sc'}
+                          className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                        >
+                          <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
+                            {customInputLabel}
+                          </RadioGroupItem>
+                        </Grow>
+                        {isCustomInputSelected && (
+                          <Grow className={`w-[calc(100% + 0.6rem)] w-full px-2`}>
+                            <Input
+                              value={resolvedCustomInputValue}
+                              onChange={handleCustomInputChange}
+                              commaAmount={true}
+                              size="sm"
+                              width="full"
+                              readOnly={readOnly}
+                              after={<span className="text-[1.3rem]">원</span>}
+                            />
+                          </Grow>
+                        )}
+                      </>
+                    )}
+                  </RadioGroup>
+                ) : selectionMode === 'checkbox' ? (
+                  options.map((option) => {
                     return (
                       <Grow
                         key={option.value}
-                        placement={'sc'}
+                        placement={'ss'}
                         className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                       >
-                        <RadioGroupItem value={option.value} disabled={option.disabled || readOnly} size="md">
+                        <Checkbox
+                          checked={selectedSet.has(option.value)}
+                          onCheckedChange={(checked) => {
+                            handleCheckedChange(option.value, checked);
+                          }}
+                          disabled={option.disabled || readOnly}
+                          size="md"
+                          className="-translate-y-[0.1rem]"
+                        >
                           {option.label}
-                        </RadioGroupItem>
+                        </Checkbox>
                       </Grow>
                     );
-                  })}
-
-                  {allowCustomInput && (
-                    <>
-                      <Grow
-                        placement={'sc'}
-                        className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
-                      >
-                        <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
-                          {customInputLabel}
-                        </RadioGroupItem>
-                      </Grow>
-                      {isCustomInputSelected && (
-                        <Grow className={`w-[calc(100% + 0.6rem)] w-full px-2`}>
-                          <Input
-                            value={resolvedCustomInputValue}
-                            onChange={handleCustomInputChange}
-                            commaAmount={true}
-                            size="sm"
-                            width="full"
-                            readOnly={readOnly}
-                            after={<span className="text-[1.3rem]">원</span>}
-                          />
-                        </Grow>
-                      )}
-                    </>
-                  )}
-                </RadioGroup>
-              ) : (
-                options.map((option) => {
-                  return (
-                    <Grow
-                      key={option.value}
-                      placement={'ss'}
-                      className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
-                    >
-                      <Checkbox
-                        checked={selectedSet.has(option.value)}
-                        onCheckedChange={(checked) => {
-                          handleCheckedChange(option.value, checked);
-                        }}
-                        disabled={option.disabled || readOnly}
-                        size="md"
-                        className="-translate-y-[0.1rem]"
-                      >
-                        {option.label}
-                      </Checkbox>
-                    </Grow>
-                  );
-                })
-              )}
-            </Gcol>
+                  })
+                ) : null}
+              </Gcol>
+            )}
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>

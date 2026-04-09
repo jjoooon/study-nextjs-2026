@@ -19,7 +19,7 @@ export function TooltipQ({ defaultOpen = false, sideOffset = 1, children }: Tool
           <QuestionMark color="#61554F" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent side="top" sideOffset={sideOffset} variant="default">
+      <TooltipContent side="top" sideOffset={sideOffset} variant="default" className="[&>span]:whitespace-auto!">
         {children}
       </TooltipContent>
     </Tooltip>

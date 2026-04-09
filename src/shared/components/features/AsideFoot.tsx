@@ -15,6 +15,7 @@ type AsideFootDataTotal = {
 
 type AsideFootProps = {
   dataTotal?: AsideFootDataTotal;
+  viewKey?: string;
 };
 
 const DEFAULT_DATA_TOTAL: AsideFootDataTotal = {
@@ -23,7 +24,7 @@ const DEFAULT_DATA_TOTAL: AsideFootDataTotal = {
   point: 0,
 };
 
-export function AsideFoot({ dataTotal }: AsideFootProps) {
+export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
   const resolvedDataTotal = dataTotal ?? DEFAULT_DATA_TOTAL;
   const paymentAmountText = resolvedDataTotal.paymentAmount.toLocaleString('ko-KR');
   const pointText = resolvedDataTotal.point.toLocaleString('ko-KR', {
@@ -33,7 +34,7 @@ export function AsideFoot({ dataTotal }: AsideFootProps) {
 
   return (
     <Gcol className="w-full pb-1.5 relative">
-      {resolvedDataTotal.insGen !== false && (
+      {viewKey !== 'view3' && (
         <Grow
           placement={'bwc'}
           className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"

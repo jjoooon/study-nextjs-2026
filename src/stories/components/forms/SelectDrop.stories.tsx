@@ -6,6 +6,7 @@ import { Gcol, Grow } from '@atoms';
 import SelectDrop from '@common/SelectDrop';
 
 import type { SelectDropProps } from '@common/SelectDrop';
+import { Button } from '@uiux/Button';
 
 type DemoValue =
   | '사망장해'
@@ -77,10 +78,10 @@ const meta: Meta<SelectDropStoryProps> = {
               <li>체크박스 기반 다중 선택</li>
               <li>라디오 기반 단일 선택</li>
               <li>직접입력 포함 단일 선택</li>
+              <li>커스텀 옵션 UI (typeMode="custom")</li>
               <li>필수/읽기 전용/비활성화 상태 표시</li>
               <li>에러 메시지와 메시지 위치 제어</li>
             </ul>
-            <Markdown>
               {`
 \`\`\`tsx
 import SelectDrop from '@common/SelectDrop';
@@ -104,7 +105,6 @@ import SelectDrop from '@common/SelectDrop';
 />
 \`\`\`
               `}
-            </Markdown>
 
             <h2>API Reference</h2>
             <p>SelectDrop 컴포넌트에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
@@ -119,8 +119,8 @@ import SelectDrop from '@common/SelectDrop';
               <tbody>
                 <tr>
                   <td>typeMode</td>
-                  <td>'checkbox' | 'radio'</td>
-                  <td>선택 방식</td>
+                  <td>'checkbox' | 'radio' | 'custom'</td>
+                  <td>선택 방식<br />'custom'은 옵션 UI를 직접 구현할 때 사용</td>
                 </tr>
                 <tr>
                   <td>variant</td>
@@ -176,7 +176,7 @@ import SelectDrop from '@common/SelectDrop';
             </table>
 
             <h2>Selection Mode</h2>
-            <p>checkbox, radio 두 가지 선택 모드를 제공합니다.</p>
+            <p>checkbox, radio, custom 세 가지 선택 모드를 제공합니다.<br />custom 모드는 옵션 UI를 직접 구현할 때 사용합니다.</p>
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
@@ -194,6 +194,17 @@ import SelectDrop from '@common/SelectDrop';
                     allowCustomInput={true}
                     customInputLabel="직접입력"
                   />
+                  {/* custom 모드 예시 */}
+                  <SelectDrop
+                    typeMode="custom"
+                    width="md"
+                    placeholder="커스텀 모드 (옵션 UI 직접 구현)"
+                    // options, value 등은 무시됨
+                  />
+                  <div style={{ border: '1px dashed #aaa', padding: 8, marginTop: 4, borderRadius: 4, color: '#888', fontSize: 14 }}>
+                    <b>custom 모드:</b> 옵션 UI는 직접 구현해야 하며, SelectDrop 내부 옵션 UI는 렌더링되지 않습니다.<br />
+                    실제 사용 시 별도의 커스텀 UI를 이 영역에 구현하세요.
+                  </div>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -268,7 +279,7 @@ import SelectDrop from '@common/SelectDrop';
   argTypes: {
     typeMode: {
       control: { type: 'inline-radio' },
-      options: ['checkbox', 'radio'],
+      options: ['checkbox', 'radio', 'custom'],
       table: { category: '스타일 props' },
     },
     variant: {
@@ -382,24 +393,62 @@ type Story = StoryObj<SelectDropStoryProps>;
 
 export const Default: Story = {
   render: (args) => {
-    const isRadioMode = args.typeMode === 'radio';
-
-    const mappedArgs: SelectDropStoryProps = isRadioMode
-      ? {
-          ...args,
-          typeMode: 'radio',
-          options: priceOptions,
-          allowCustomInput: true,
-          customInputLabel: '직접입력',
-          defaultValue: undefined,
-        }
-      : {
-          ...args,
-          typeMode: 'checkbox',
-          options: demoOptions,
-          defaultValue: undefined,
-        };
-
+    let mappedArgs: SelectDropStoryProps;
+    if (args.typeMode === 'radio') {
+      mappedArgs = {
+        ...args,
+        typeMode: 'radio',
+        options: priceOptions,
+        allowCustomInput: true,
+        customInputLabel: '직접입력',
+        defaultValue: undefined,
+      };
+    } else if (args.typeMode === 'checkbox') {
+      mappedArgs = {
+        ...args,
+        typeMode: 'checkbox',
+        options: demoOptions,
+        defaultValue: undefined,
+      };
+    } else {
+      mappedArgs = {
+        ...args,
+        typeMode: 'custom',
+        options: undefined,
+        defaultValue: undefined,
+      };
+    }
+    if (args.typeMode === 'custom') {
+      return (
+        <SelectDrop {...mappedArgs}>
+          <Gcol className='w-full p-[0.2rem]'>
+            <Button variant="outlined" size="md" className='w-full'>나만의설계저장</Button>
+          </Gcol>
+        </SelectDrop>
+      );
+    }
     return <SelectDrop {...mappedArgs} />;
   },
+};
+
+export const CustomModeSample: Story = {
+  name: 'Custom 모드 샘플',
+  render: () => (
+    <div>
+      <SelectDrop
+        typeMode="custom"
+        width="md"
+        placeholder="커스텀 모드 (옵션 UI 직접 구현)"
+      />
+      <div style={{ border: '1px dashed #aaa', padding: 12, marginTop: 8, borderRadius: 6, color: '#888', fontSize: 15 }}>
+        <b>Custom 모드 샘플:</b> <br />
+        이 영역에 원하는 커스텀 옵션 UI를 직접 구현할 수 있습니다.<br />
+        <ul style={{ margin: '8px 0 0 16px', padding: 0 }}>
+          <li>트리거(버튼)는 SelectDrop이 제공</li>
+          <li>옵션 레이어 내부 UI는 직접 구현</li>
+          <li>options/value 등은 무시됨</li>
+        </ul>
+      </div>
+    </div>
+  ),
 };
