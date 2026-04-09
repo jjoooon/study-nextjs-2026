@@ -38,7 +38,7 @@ export function TaskStatusBoard<
       <Grow className="gap-[0.2rem]">
         <BadgeCheckIcon />
         <Typo tag={'h4'} variant={'heading-sm'}>
-          꼭 확인해야 할 일!
+          꼭 해야할 일!
         </Typo>
       </Grow>
 

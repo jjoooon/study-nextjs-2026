@@ -2,8 +2,8 @@
 
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { SpinnerA } from '@common/Spinner';
 import { CalendarIcon } from '@icons';
+import { SpinnerBIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 
@@ -38,7 +38,7 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
               <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
                 설계중
               </Typo>
-              <SpinnerA className="text-[var(--color-primary-50)]" />
+              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
             </Grow>
           </Grow>
         </Grow>
@@ -61,7 +61,7 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
             <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
               설계중
             </Typo>
-            <SpinnerA className="text-[var(--color-primary-50)]" />
+            <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
           </Grow>
         </Grow>
       </Grow>
