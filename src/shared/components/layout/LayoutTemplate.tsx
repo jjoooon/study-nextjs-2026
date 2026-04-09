@@ -27,13 +27,7 @@ interface Props {
   hideAside?: boolean;
   pageProcess?: React.ReactNode;
 }
-export const LayoutTemplateLTPA350MainBody = ({ mainBody }: Props) => (
-  <LayoutMainBody>
-    <LayoutScrollWrap>
-      <LayoutScrollItem>{mainBody}</LayoutScrollItem>
-    </LayoutScrollWrap>
-  </LayoutMainBody>
-);
+export const LayoutTemplateLTPA350MainBody = ({ mainBody }: Props) => <LayoutMainBody>{mainBody}</LayoutMainBody>;
 
 export const LayoutTemplateLTPA350 = ({
   pageTitle,
