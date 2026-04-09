@@ -46,7 +46,18 @@ export function IAListWithPreview() {
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
   const workListH = React.useMemo(
-    () => ['LTPZ022', 'LTPZ024', 'LTPZ027', 'LTPZ032', 'LTPZ033', 'LTPA160', 'LTPA170', 'LTPA130'] as string[],
+    () =>
+      [
+        'LTPZ022',
+        'LTPZ024',
+        'LTPZ027',
+        'LTPZ032',
+        'LTPZ033',
+        'LTPA160',
+        'LTPA170',
+        'LTPA130',
+        'LTPA350(LTPA350_5)',
+      ] as string[],
     []
   );
   const workListK = React.useMemo(
@@ -236,6 +247,7 @@ export function IAListWithPreview() {
       'LTPZ014',
       'LTPZ022',
       'LTPA130',
+      'LTPA350(LTPA350_5)',
       // 'LTPZ012',
     ];
 
