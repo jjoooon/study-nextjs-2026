@@ -14,7 +14,6 @@ type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'ghost' | 'default';
   size?: UIUXsize;
-  width?: UIUXsize;
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
@@ -28,6 +27,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   forceFocused?: boolean;
   formatter?: FormatterType;
   isFocused?: boolean;
+  width?: 'auto' | 'full' | string | number;
   // debug?: boolean;
 }
 // 주민등록번호 입력 포맷터: 6자리-7자리, 빈자리는 언더바
@@ -47,7 +47,7 @@ function formatAmount(value: string) {
 function Input({
   size = 'lg',
   variant = 'default',
-  width = 'full',
+  width,
   type,
   required = false,
   readOnly = false,
@@ -64,13 +64,14 @@ function Input({
   value,
   formatter,
   isFocused,
+  className,
   ...props
 }: UIInputProps) {
   const [focused, setFocused] = useState(false);
-  // 외부에서 isFocused prop이 오면 우선 사용
   const isInputFocused = typeof isFocused === 'boolean' ? isFocused : focused;
+  const isControlled = value !== undefined;
+  const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
 
-  // 주민등록번호 마스킹: value에는 숫자만 저장, displayValue는 마스킹 적용
   let displayValue = value ?? '';
 
   if (formatter === 'jumin' && typeof value === 'string') {
@@ -79,39 +80,12 @@ function Input({
     displayValue = isFocused || forceFocused ? value : formatAmount(value);
   }
 
+  const resolvedWidth =
+    typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
+  const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    // 주민등록번호: 숫자만 추출해서 부모에 전달
-    // if (formatter === 'jumin') {
-    //   const onlyNum = val.replace(/[^0-9]/g, '').slice(0, 13);
-    //   if (onChange) {
-    //     const syntheticEvent = {
-    //       ...e,
-    //       target: {
-    //         ...e.target,
-    //         value: onlyNum,
-    //       },
-    //     } as React.ChangeEvent<HTMLInputElement>;
-    //     onChange(syntheticEvent);
-    //     return;
-    //   }
-    // }
-    // 커스텀 포맷터 함수
-    // if (formatter && typeof formatter === 'function') {
-    //   val = formatter(val);
-    //   if (onChange) {
-    //     const syntheticEvent = {
-    //       ...e,
-    //       target: {
-    //         ...e.target,
-    //         value: val,
-    //       },
-    //     } as React.ChangeEvent<HTMLInputElement>;
-    //     onChange(syntheticEvent);
-    //     return;
-    //   }
-    // }
-
     // commaAmount가 있으면 기존 로직 적용
     if (commaAmount) {
       const onlyNum = val.replace(/[^0-9]/g, '');
@@ -133,36 +107,14 @@ function Input({
     onChange?.(e);
   };
 
-  const handleFocus = () => setFocused(true);
-  const handleBlur = () => setFocused(false);
-  const withStyle = () => {
-    const widthMap: Record<UIUXsize, string> = {
-      full: 'w-full flex-1',
-      auto: 'w-auto',
-      max: 'w-max',
-      min: 'w-min flex-1',
-      '2xs': 'w-[4rem]',
-      xs: 'w-[8rem]',
-      sm: 'w-[10rem]',
-      md: 'w-[12rem]',
-      lg: 'w-[14rem]',
-      xl: 'w-[16rem]',
-      '2xl': 'w-[18rem]',
-    };
-
-    if (width && widthMap[width]) return widthMap[width];
-    return '';
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocused(true);
+    onFocusProp?.(e);
   };
-
-  const inlineWidthStyle = (() => {
-    if (typeof width === 'number') return { width: `${width}rem` };
-    // if (typeof width === 'string') {
-    //   if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
-    //   if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
-    // }
-    return undefined;
-  })();
-
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocused(false);
+    onBlurProp?.(e);
+  };
   const errorId = React.useId();
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
@@ -204,37 +156,39 @@ function Input({
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter === 'jumin' && !props.placeholder ? '______-_______' : props.placeholder;
+  const clearPaddingStyle = clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined;
+  const mergedInputStyle = clearPaddingStyle ? { ...styleProp, ...clearPaddingStyle } : styleProp;
 
   // if (props.debug) {
   //   // eslint-disable-next-line no-console
   //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
   // }
   return (
-    <div className={cn('relative', withStyle())} style={inlineWidthStyle}>
+    <div className={cn('relative', className)} style={widthStyle}>
       {before || after ? (
         <div
           className={cn(
             variantStyles[variant],
-            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:border-[.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]'
+            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:outline-[.2rem] has-[:focus]:-outline-offset-[0.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]'
           )}
-          style={inlineWidthStyle}
         >
           {before && <div>{before}</div>}
           <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[0] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
             <input
               type={type}
               data-slot="input"
+              className={cn(after && 'text-right')}
               required={required}
               readOnly={readOnly}
               aria-invalid={error || undefined}
               aria-describedby={error ? errorId : undefined}
-              value={displayValue}
+              value={isControlled ? displayValue : undefined}
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              style={clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined}
+              style={mergedInputStyle}
               placeholder={resolvedPlaceholder}
-              {...props}
+              {...inputProps}
             />
             {clear && isInputFocused && displayValue !== '' && (
               <Button
@@ -270,7 +224,7 @@ function Input({
           {after && <div>{after}</div>}
         </div>
       ) : (
-        <div className="relative w-full ">
+        <>
           <input
             type={type}
             data-slot="input"
@@ -283,13 +237,13 @@ function Input({
             readOnly={readOnly}
             aria-invalid={error || undefined}
             aria-describedby={error ? errorId : undefined}
-            value={displayValue}
+            value={isControlled ? displayValue : undefined}
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            style={clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined}
+            style={mergedInputStyle}
             placeholder={resolvedPlaceholder}
-            {...props}
+            {...inputProps}
           />
           {clear && isInputFocused && displayValue !== '' && (
             <Button
@@ -313,7 +267,7 @@ function Input({
               <InputClearIcon size={size === 'lg' ? 16 : 12} color="var(--color-gray-30)" />
             </Button>
           )}
-        </div>
+        </>
       )}
 
       {error && (

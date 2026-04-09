@@ -74,13 +74,13 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                   <FormTable cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
                     <FormRow>
                       <FormCell title={'보험시기'}>
-                        <DatePickerInput mode={'single'} width={'9rem'} />
+                        <DatePickerInput mode={'single'} />
                         <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
                           오늘
                         </Button>
                       </FormCell>
                       <FormCell title={'보험기간'}>
-                        <DatePickerInput readOnly mode={'range'} width={'9rem'} />
+                        <DatePickerInput readOnly mode={'range'} />
                       </FormCell>
                     </FormRow>
                     <FormRow>
@@ -225,19 +225,15 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                       </Grow>
                     }
                   >
-                    <FormTable
-                      caption="행/열 병합 케이스"
-                      lineTop={false}
-                      cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
-                    >
+                    <FormTable lineTop={false} cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
                       {/* 상세 화면 전용 */}
                       {!_simpleMode ? (
                         <FormRow>
                           <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
-                            <Grow className="flex-nowrap w-full" placement={'bwc'}>
-                              <Grow>
-                                <Input aria-label="피보험자명" width={'7.6rem'} readOnly />
-                                <Input aria-label="주민등록번호 마스킹" width={'12rem'} readOnly />
+                            <Grow className="w-full flex-wrap" placement={'bwc'}>
+                              <Grow placement="sc">
+                                <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
+                                <Input aria-label="주민등록번호 마스킹" width={110} value={'900101-1******'} readOnly />
                                 <Button
                                   aria-label="피보험자 검색"
                                   variant={'outlined'}
@@ -247,25 +243,21 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="피보험자 나이" width={'4.8rem'} readOnly />
-                                <Input aria-label="피보험자 성별" width={'3.2rem'} readOnly />
+                                <Input aria-label="피보험자 나이" width={60} value={'134'} after="세" readOnly />
+                                <Input aria-label="피보험자 성별" width={32} value={'남'} readOnly />
                               </Grow>
                               <Grow gap={2}>
                                 <KeyValueItem label={'상령일'}>
-                                  <Grow gap={1}>
-                                    <Typo weight={'bold'}>2023-01-12</Typo>
-                                    <Badge color={'blue'} size={'md'} variant={'contained'}>
-                                      D-31
-                                    </Badge>
-                                  </Grow>
+                                  <Typo weight={'bold'}>2023-01-12</Typo>
+                                  <Badge color={'blue'} size={'md'} variant={'contained'}>
+                                    D-31
+                                  </Badge>
                                 </KeyValueItem>
                                 <KeyValueItem label={'설계동의'}>
-                                  <Grow gap={1}>
-                                    <Typo weight={'bold'}>2023-01-12</Typo>
-                                    <Badge color={'red'} size={'md'} variant={'contained'}>
-                                      D-31
-                                    </Badge>
-                                  </Grow>
+                                  <Typo weight={'bold'}>2023-01-12</Typo>
+                                  <Badge color={'red'} size={'md'} variant={'contained'}>
+                                    D-31
+                                  </Badge>
                                 </KeyValueItem>
                                 <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                   알림톡발송
@@ -278,7 +270,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                         <FormRow>
                           <FormCell title="피보험자" titleVariant="section">
                             <InputCombo
-                              clear
+                              clear={true}
                               onChange={() => {}}
                               options={[
                                 { label: <td>박은빈</td>, value: '박은빈' },
@@ -290,7 +282,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                               col={2}
                               required
                               value=""
-                              width={'7.6rem'}
+                              width={75}
                             />
                             <Button
                               aria-label="피보험자 검색"
@@ -301,11 +293,11 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             >
                               <SearchIcon color={'var(--color-primary-50)'} />
                             </Button>
-                            <RadioGroup className="flex-row gap-3">
-                              <RadioGroupItem value="man" id="man" checked>
+                            <RadioGroup defaultValue="man" className="flex-row gap-3">
+                              <RadioGroupItem value="man" id="r1">
                                 남
                               </RadioGroupItem>
-                              <RadioGroupItem value="woman" id="woman">
+                              <RadioGroupItem value="woman" id="r2">
                                 여
                               </RadioGroupItem>
                             </RadioGroup>
@@ -313,9 +305,9 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormCell title="연령">
                             <Grow gap={3}>
                               <Grow>
-                                <Input aria-label="피보험자 나이" width={'4.6rem'} value={''} required />세
+                                <Input aria-label="피보험자 나이" width={46} required />세
                               </Grow>
-                              <DatePickerInput mode={'single'} width={'9rem'} required />
+                              <DatePickerInput mode={'single'} required />
                             </Grow>
                           </FormCell>
                         </FormRow>

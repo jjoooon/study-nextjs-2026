@@ -149,7 +149,7 @@ const RadioGroup = React.forwardRef<
       className,
       error,
       errorMsg,
-      width = 'full',
+      width = 'auto',
       errorPs = 'bl',
       value,
       defaultValue,

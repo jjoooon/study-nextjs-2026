@@ -180,7 +180,7 @@ export const FormTable = ({
   lineTop = true,
 }: FormTableProps) => {
   const variantStyles = {
-    default: '',
+    default: 'table-fixed w-full border-collapse',
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
 
