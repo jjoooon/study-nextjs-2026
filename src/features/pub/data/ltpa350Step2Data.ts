@@ -1,6 +1,7 @@
 // Ltpa350Step2Data 타입 정의
 export interface Ltpa350Step2DataType {
   tabList: Array<{
+    id: string | number;
     name: string;
     age: string | number;
     gender: string;
@@ -33,6 +34,7 @@ export interface Ltpa350Step2DataType {
 export const Ltpa350Step2Data: Ltpa350Step2DataType = {
   tabList: [
     {
+      id: 1,
       name: '홍길동',
       age: '1',
       gender: '여',
@@ -41,6 +43,7 @@ export const Ltpa350Step2Data: Ltpa350Step2DataType = {
       info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
     },
     {
+      id: 2,
       name: '반짝빛나리반짝빛나리',
       age: '2',
       gender: '남',
@@ -49,6 +52,169 @@ export const Ltpa350Step2Data: Ltpa350Step2DataType = {
       info: ['추가정보1', '추가정보2', '추가정보3'],
     },
     {
+      id: 3,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 4,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 5,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 6,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 7,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 8,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 9,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 10,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 11,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 12,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 13,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 14,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 15,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 16,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 17,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 18,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 19,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+    {
+      id: 20,
+      name: '반짝빛나리반짝빛나리',
+      age: '2',
+      gender: '남',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 21,
       name: '반짝빛나리반짝빛나리',
       age: '3',
       gender: '여',
@@ -113,6 +279,7 @@ export const Ltpa350Step2Data: Ltpa350Step2DataType = {
 
 export interface Ltpa350Step2DataType2 {
   tabList: Array<{
+    id: string | number;
     name: string;
     age: string | number;
     gender: string;
@@ -142,6 +309,7 @@ export interface Ltpa350Step2DataType2 {
 export const Ltpa350Step2Data2: Ltpa350Step2DataType2 = {
   tabList: [
     {
+      id: 1,
       name: '홍길동',
       age: '1',
       gender: '여',
@@ -150,6 +318,7 @@ export const Ltpa350Step2Data2: Ltpa350Step2DataType2 = {
       info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
     },
     {
+      id: 2,
       name: '반짝빛나리반짝빛나리',
       age: '2',
       gender: '남',
@@ -158,6 +327,7 @@ export const Ltpa350Step2Data2: Ltpa350Step2DataType2 = {
       info: ['추가정보1', '추가정보2', '추가정보3'],
     },
     {
+      id: 3,
       name: '반짝빛나리반짝빛나리',
       age: '3',
       gender: '여',

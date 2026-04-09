@@ -6,7 +6,7 @@ import { Grow, Typo } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { ArrowIcon, ListIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from '@uiux/DropdownMenu';
+import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { Tabs, TabsList, TabsContent, TabsTrigger, TabsLine } from '@uiux/Tabs';
 
 interface TabPagerProps<T> {
@@ -142,16 +142,16 @@ export function TabPager<T>({
                   <ArrowIcon className="rotate-180" />
                 </Button>
                 {renderDropdownItem && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                  <Popover>
+                    <PopoverTrigger asChild>
                       <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
                         <ListIcon />
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align={'end'}>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align={'end'}>
                       {data.map((tab) => renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                    </PopoverContent>
+                  </Popover>
                 )}
               </Grow>
             )}
