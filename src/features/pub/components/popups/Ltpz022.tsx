@@ -1,7 +1,7 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { CellClickedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
+import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -11,6 +11,7 @@ import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -33,6 +34,8 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
     criteria: string;
     details: string;
   };
+
+  type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'target' | 'criteria'>;
 
   const applyDetailsColor = (html: string): string => {
     return html
@@ -115,22 +118,51 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  // spanRows 병합 셀은 setState 리렌더로는 병합된 셀 클래스가 갱신되지 않습니다.
-  // ref로 선택값을 유지하고, 클릭 시 refreshCells({ force: true })로 전체 셀을 강제 재평가합니다.
-  const selectedCriteriaRef = React.useRef<string | null>(null);
+  const selectedCellRef = React.useRef<SelectedViolationCell | null>(null);
   const gridApiRef = React.useRef<GridApi<UnderwritingViolationRow> | null>(null);
 
-  const isRowSelected = (criteria: string) => criteria === selectedCriteriaRef.current;
+  const isTargetSelected = (target: string) => target !== '' && selectedCellRef.current?.target === target;
+  const isCriteriaSelected = (criteria: string) => criteria !== '' && selectedCellRef.current?.criteria === criteria;
+  const isDetailsSelected = (id: number) => selectedCellRef.current?.id === id;
 
   const handleCellClicked = (e: CellClickedEvent<UnderwritingViolationRow>) => {
-    const clicked = e.data?.criteria ?? null;
-    if (selectedCriteriaRef.current === clicked) return;
-    selectedCriteriaRef.current = clicked;
+    if (e.colDef.field !== 'details' || !e.data) return;
+
+    if (selectedCellRef.current?.id === e.data.id) return;
+
+    selectedCellRef.current = {
+      id: e.data.id,
+      target: e.data.target,
+      criteria: e.data.criteria,
+    };
+
     gridApiRef.current?.refreshCells({ force: true });
   };
 
-  const sharedCellClassRules: ColDef['cellClassRules'] = {
-    'ag-row-selected': (params) => isRowSelected(params.data?.criteria ?? ''),
+  const getSelectedCellStyle = (isSelected: boolean): CellStyle => {
+    if (!isSelected) {
+      return {};
+    }
+
+    return {
+      backgroundColor: '#FEF4D4',
+    };
+  };
+
+  const getAlternatingCellStyle = (rowIndex: number | null | undefined): CellStyle => {
+    const isOddCell = ((rowIndex ?? 0) + 1) % 2 !== 0;
+
+    return {
+      backgroundColor: isOddCell ? '#FFFFFF' : '#F4F4F4',
+    };
+  };
+
+  const getCriteriaCellStyle = (criteria: string): CellStyle => {
+    if (criteria.startsWith('청약완료불가\n(정액)') || criteria === '참고사항') {
+      return { backgroundColor: '#F4F4F4' };
+    }
+
+    return { backgroundColor: '#FFFFFF' };
   };
 
   const spanDefaultColDef: ColDef<UnderwritingViolationRow> = {
@@ -148,7 +180,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 110,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center! text-center',
-      cellClassRules: sharedCellClassRules,
+      cellStyle: (params) => getSelectedCellStyle(isTargetSelected(params.data?.target ?? '')),
     },
     {
       headerName: '인수제한',
@@ -156,10 +188,14 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 140,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center! whitespace-pre-line text-center',
-      cellClassRules: sharedCellClassRules,
+      cellStyle: (params) => ({
+        ...getCriteriaCellStyle(params.data?.criteria ?? ''),
+        ...getSelectedCellStyle(isCriteriaSelected(params.data?.criteria ?? '')),
+      }),
       cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => {
         const criteria = params.data?.criteria ?? '';
         const color = criteriaColorMap[criteria];
+
         return (
           <div
             className="w-full leading-[1.3]"
@@ -175,14 +211,12 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
       wrapText: true,
       autoHeight: true,
       flex: 1,
-      cellStyle: { whiteSpace: 'normal', wordWrap: 'break-word' },
-      cellClassRules: {
-        ...sharedCellClassRules,
-        'ag-row-odd': (params) => {
-          const rowIndex = params.node.rowIndex ?? -1;
-          return rowIndex % 2 !== 0 && !isRowSelected(params.data?.criteria ?? '');
-        },
-      },
+      cellStyle: (params) => ({
+        whiteSpace: 'normal',
+        wordWrap: 'break-word',
+        ...getAlternatingCellStyle(params.node.rowIndex),
+        ...getSelectedCellStyle(isDetailsSelected(params.data?.id ?? -1)),
+      }),
       cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => (
         <div
           className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
@@ -208,16 +242,12 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable
-              caption="설계정보 테이블"
-              cols={['w-[10rem]', 'w-[30rem]', 'w-[10rem]', 'w-auto']}
-              variant="head"
-            >
+            <FormTable caption="설계정보 테이블" variant={'none'} cols={['w-[6rem]', 'flex-1']}>
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'13rem'} value={'LA260305361023'} readOnly />
-                  <Input aria-label="" width={'23rem'} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
-                  <Input aria-label="" width={'11rem'} value={''} readOnly />
+                  <Input aria-label="" width={'auto'} value={'LA260305361023'} readOnly />
+                  <Input aria-label="" width={'full'} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
+                  <Input aria-label="" width={'auto'} value={''} readOnly />
                 </FormCell>
               </FormRow>
               <FormRow>
@@ -267,6 +297,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Grow>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
+                <AiIcon color={'#fff'} color2={'#fff'} />
                 AI자동해소
               </Button>
               <Button variant={'contained'} size={'xl'}>
