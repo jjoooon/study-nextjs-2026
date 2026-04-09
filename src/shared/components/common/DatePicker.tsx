@@ -372,7 +372,7 @@ export function DatePickerInput({
   // range 모드일 때 더 큰 너비
   // const rangeModeWidth = mode === 'range' ? 'w-[28rem]' : '';
 
-  const baseStyle = `px-[0.8rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border ${
+  const baseStyle = `px-[0.8rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border tracking-[-0.03rem] ${
     error || invalidDate
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)]'
       : required
@@ -401,7 +401,7 @@ export function DatePickerInput({
   const multiSelected = Array.isArray(selected) ? selected : undefined;
 
   return (
-    <div className="relative flex gap-1 items-center">
+    <div className="relative flex gap-1 items-center ">
       {mode === 'range' ? (
         <>
           <input
@@ -424,7 +424,7 @@ export function DatePickerInput({
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none w-[9.1rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
             data-width={width}
@@ -450,7 +450,7 @@ export function DatePickerInput({
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none w-[9.1rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
             data-width={width}
@@ -479,7 +479,7 @@ export function DatePickerInput({
               setOpen(false);
             }
           }}
-          className={`transition-[color,box-shadow] outline-none w-[9.1rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+          className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
           style={inputStyle}
           data-size={size}
           data-width={width}

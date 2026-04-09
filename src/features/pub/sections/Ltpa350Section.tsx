@@ -67,7 +67,7 @@ const data: Ltpa350DataType = {
       pageId: 'LTPA350',
     },
     pageTitle: {
-      simpleMode: true,
+      simpleMode: false,
       title: '한화 시그니처 여성 건강보험 3.0 2504',
       options: ['납입면제 강화형', '기본형'],
       planNumber: ['LA20234472050000', '2'],

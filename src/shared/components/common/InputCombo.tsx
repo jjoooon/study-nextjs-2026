@@ -24,11 +24,13 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
   inputId?: string; // 고유 id를 외부에서 지정 가능
   ulClassName?: string;
   col?: number; // 옵션 리스트의 컬럼 수 (기본 1)
+  width?: number | string; // popover의 고정 너비 (기본은 Input과 동일)
 }
 
 export function InputCombo({
   options,
   value,
+  width,
   onChange,
   inputId,
   col = 1,
@@ -155,7 +157,7 @@ export function InputCombo({
     : undefined;
 
   return (
-    <div className={'relative ' + (restProps.className ?? '')}>
+    <>
       <Input
         size={size}
         value={inputValue}
@@ -167,6 +169,7 @@ export function InputCombo({
         data-comboid={testId}
         clear={clear}
         isFocused={open || isFocused}
+        width={width}
         {...restProps}
       />
       {open && filtered.length > 0 && popoverPos && typeof window !== 'undefined'
@@ -212,6 +215,6 @@ export function InputCombo({
             )
           : null
         : null}
-    </div>
+    </>
   );
 }
