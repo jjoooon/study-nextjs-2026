@@ -296,23 +296,33 @@ import { ProductCard } from '@/features/dashboard/components/DashboardCard'
                     ↓
 ┌─────────────────────────────────────────────────┐
 │  Business Logic Layer (비즈니스 로직 계층)       │
-│  - Custom Hooks                                 │
+│  - Custom Hooks (useState, useReducer 사용)     │
 │  - Services (API calls)                         │
 │  - Utilities                                    │
 └─────────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────────┐
 │  State Management Layer (상태 관리 계층)         │
-│  - Redux Store                                  │
-│  - Redux Slices                                 │
-│  - Selectors                                    │
+│                                                  │
+│  ┌───────────────────────────────────────────┐  │
+│  │  Local State (컴포넌트/Hook 내부)         │  │
+│  │  - useState, useReducer                   │  │
+│  │  - 폼 입력, 모달 상태, UI 상태            │  │
+│  └───────────────────────────────────────────┘  │
+│                                                  │
+│  ┌───────────────────────────────────────────┐  │
+│  │  Global State (앱 전체)                   │  │
+│  │  - Redux Store                            │  │
+│  │  - Redux Slices, Selectors                │  │
+│  │  - RTK Query (서버 데이터 캐싱)           │  │
+│  └───────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────────┐
 │  Data Layer (데이터 계층)                        │
 │  - Axios (HTTP client)                          │
 │  - MSW (API mocking)                            │
-│  - RTK Query (optional)                         │
+│  - API Adapters                                 │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -543,6 +553,47 @@ export const useProduct = (product: Product) => {
   }
 }
 
+// ✅ 문제 1 해결: React 상태와 선언적 렌더링 (React 방식)
+export const useProductPrice = (initialPrice: number) => {
+  const [price, setPrice] = useState(initialPrice)
+
+  // 비즈니스 로직: 색상 결정 (순수 함수)
+  const priceColor = useMemo(() => {
+    return price > 1000 ? 'red' : 'black'
+  }, [price])
+
+  // 비즈니스 로직: 포맷팅 (순수 함수)
+  const formattedPrice = useMemo(() => {
+    return `${price}원`
+  }, [price])
+
+  return {
+    price,
+    setPrice,
+    priceColor,
+    formattedPrice,
+  }
+}
+
+// 사용 예시:
+// function ProductPriceDisplay({ initialPrice }) {
+//   const { price, setPrice, priceColor, formattedPrice } = useProductPrice(initialPrice)
+//
+//   return (
+//     <div>
+//       {/* React가 상태에 따라 자동으로 DOM을 업데이트 */}
+//       <span style={{ color: priceColor }}>
+//         {formattedPrice}
+//       </span>
+//       <input
+//         type="number"
+//         value={price}
+//         onChange={(e) => setPrice(Number(e.target.value))}
+//       />
+//     </div>
+//   )
+// }
+
 // ✅ 문제 2 해결: React ref를 사용한 스크롤 (React 방식)
 export const useScrollToElement = (elementId: string) => {
   const elementRef = useRef<HTMLElement>(null)
@@ -609,29 +660,114 @@ export const useResponsiveWidth = () => {
 
 #### 3. State Management Layer (상태 관리 계층)
 
-**역할:** 전역 상태 관리 및 상태 업데이트
+**역할:** 로컬 상태 및 전역 상태 관리
 
 **구성요소:**
+
+**3.1 Local State (컴포넌트/Hook 내부 상태)**
+- `useState`, `useReducer`
+- 폼 입력, 모달 상태, UI 상태
+- 일시적 데이터, 단일 컴포넌트 범위
+
+**3.2 Global State (앱 전체 상태)**
 - Redux Store
-- Redux Slices
-- Selectors
-- Middleware
+- Redux Slices, Selectors, Middleware
+- RTK Query (서버 데이터 캐싱)
 - Actions
 
 **핵심 책임:**
-- 상태 저장: 애플리케이션의 전역 상태 관리
-- 상태 업데이트: 예측 가능한 상태 변경
-- 상태 조회: 효율적인 상태 접근 제공
-- 상태 동기화: 여러 컴포넌트 간 상태 공유
+- **로컬 상태 저장**: 컴포넌트/Hook 내부의 일시적 상태 관리
+- **전역 상태 저장**: 애플리케이션의 전역 상태 관리
+- **상태 업데이트**: 예측 가능한 상태 변경
+- **상태 조회**: 효율적인 상태 접근 제공
+- **상태 동기화**: 여러 컴포넌트 간 상태 공유
 
 **원칙:**
+- 로컬 상태 우선: 가능한 로컬 상태 사용, 필요 시 전역 상태
 - 상태 변경 예측 가능
 - 상태 불변성 유지
-- 순수 리듀서 사용
-- 단일 데이터 소스 원칙
+- 순수 리듀서 사용 (Global State)
+- 단일 데이터 소스 원칙 (Global State)
 
 ```typescript
-// ✅ 좋은 예: 잘 구조화된 Redux Slice
+// ✅ 좋은 예: Local State (useState) - 단일 컴포넌트 상태
+export const ProductForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    price: 0,
+    category: ''
+  })
+
+  const handleSubmit = () => {
+    // 폼 제출 로직
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        value={formData.name}
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+      />
+    </form>
+  )
+}
+
+// ✅ 좋은 예: Local State (useReducer) - 복잡한 로컬 상태
+type FormState = {
+  values: ProductFormData
+  errors: Record<string, string>
+  touched: Record<string, boolean>
+  isSubmitting: boolean
+}
+
+type FormAction =
+  | { type: 'SET_FIELD'; field: string; value: string }
+  | { type: 'SET_ERROR'; field: string; error: string }
+  | { type: 'SET_SUBMITTING'; isSubmitting: boolean }
+  | { type: 'RESET' }
+
+const formReducer = (state: FormState, action: FormAction): FormState => {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return {
+        ...state,
+        values: { ...state.values, [action.field]: action.value }
+      }
+    case 'SET_ERROR':
+      return {
+        ...state,
+        errors: { ...state.errors, [action.field]: action.error }
+      }
+    case 'SET_SUBMITTING':
+      return {
+        ...state,
+        isSubmitting: action.isSubmitting
+      }
+    case 'RESET':
+      return initialState
+    default:
+      return state
+  }
+}
+
+export const useProductForm = () => {
+  const [state, dispatch] = useReducer(formReducer, initialState)
+
+  const setField = (field: string, value: string) => {
+    dispatch({ type: 'SET_FIELD', field, value })
+  }
+
+  const setError = (field: string, error: string) => {
+    dispatch({ type: 'SET_ERROR', field, error })
+  }
+
+  return {
+    state,
+    actions: { setField, setError }
+  }
+}
+
+// ✅ 좋은 예: 잘 구조화된 Redux Slice (Global State)
 interface ProductsState {
   items: Product[]
   selectedIds: string[]
