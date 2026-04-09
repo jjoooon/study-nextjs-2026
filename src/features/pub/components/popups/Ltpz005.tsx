@@ -46,7 +46,14 @@ type CheckTab = {
   state: 'green' | 'yellow' | 'red';
 };
 
+export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
+
+type Ltpz005Props = PopupBaseProps & {
+  initialActiveTab?: Ltpz005TabValue;
+};
+
 type GroupTabItem = {
+  id: number;
   age: string;
   gender: string;
   name: string;
@@ -68,10 +75,15 @@ const CHECK_TABS: CheckTab[] = [
   { name: '예상 UW', value: 'expected-uw', label: '예상 UW', state: 'yellow' },
 ];
 
-export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltpz005Props) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
+
+  React.useEffect(() => {
+    if (!open) return;
+    setActive(initialActiveTab);
+  }, [initialActiveTab, open, setActive]);
 
   const getTabIcon = (value: CheckTab['value']) => {
     if (value === 'common') return <CommonIcon />;
@@ -846,18 +858,21 @@ export const Ltpz005 = ({ open, onOpenChange }: PopupBaseProps) => {
   // 누적
   const groupTabs: GroupTabItem[] = [
     {
+      id: 1,
       age: '32',
       gender: '여',
       name: '홍길준',
       value: 'tab1',
     },
     {
+      id: 2,
       age: '27',
       gender: '남',
       name: '홍길동',
       value: 'tab2',
     },
     {
+      id: 3,
       age: '3',
       gender: '여',
       name: '빛나리',
