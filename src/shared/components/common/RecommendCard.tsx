@@ -1,108 +1,121 @@
 'use client';
 
-import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { AiIcon } from '@icons';
+import { AiIcon, CheckBoldIcon, ListIcon } from '@icons';
 import { Button } from '../uiux/Button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogTrigger,
-} from '../uiux/Dialog';
 
-export interface RecommendCardProps {
-  /** 카드 제목 (상품명 등) */
+export interface RecommendCardLegacyProps {
   title: string;
-  /** 플랜 정보 */
   plan: string;
-  /** 기간 정보 */
   term: string;
-  /** 상세 내용 (BulletListItem에 표시) */
   detail: string;
+  mode?: 'ai-reason';
+  actionLabel?: string;
+  onActionClick?: () => void;
 }
 
-export function RecommendCard({ title, plan, term, detail }: RecommendCardProps) {
+export interface RecommendCardCoverageProps {
+  title: string;
+  plan: string;
+  term: string;
+  detail: string;
+  mode: 'coverage-check';
+  premium?: string;
+  checked?: boolean;
+  actionLabel?: string;
+  onActionClick?: () => void;
+  onCheckedChange?: (checked: boolean) => void;
+}
+
+export type RecommendCardProps = RecommendCardLegacyProps | RecommendCardCoverageProps;
+
+const DEFAULT_TITLE = '한화 시그니처 여성 간편건강보험4.0';
+const DEFAULT_PLAN = '납입면제형 · 기본형 · 3N5간편고지형';
+const DEFAULT_TERM = '20년납/100세만기';
+const DEFAULT_PREMIUM = '120,000원';
+const DEFAULT_DETAIL = '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)';
+const DEFAULT_AI_ACTION_LABEL = 'AI 추천이유';
+const DEFAULT_COVERAGE_ACTION_LABEL = '보장내용 확인';
+
+const isCoverageProps = (props: RecommendCardProps): props is RecommendCardCoverageProps => {
+  return props.mode === 'coverage-check';
+};
+
+export function RecommendCard(props: RecommendCardProps) {
+  const { title, plan, term, detail, actionLabel, onActionClick } = props;
+  const isCoverageMode = isCoverageProps(props);
+  const premium = isCoverageMode ? props.premium : undefined;
+  const checked = isCoverageMode ? (props.checked ?? false) : false;
+  const onCheckedChange = isCoverageMode ? props.onCheckedChange : undefined;
+
+  const displayTitle = title || DEFAULT_TITLE;
+  const displayPlan = plan || DEFAULT_PLAN;
+  const displayTerm = term || DEFAULT_TERM;
+  const displayPremium = premium || DEFAULT_PREMIUM;
+  const displayDetail = detail || DEFAULT_DETAIL;
+  const displayActionLabel = actionLabel || (isCoverageMode ? DEFAULT_COVERAGE_ACTION_LABEL : DEFAULT_AI_ACTION_LABEL);
+
   return (
-    <Gcol className="relative p-px w-full rounded-[0.8rem] bg-linear-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-100%">
-      <Grid className="bg-[#817772] rounded-[0.8rem] grid-rows-[1fr_auto] w-full">
-        <Gcol
-          className="bg-white rounded-[0.8rem] w-full h-[16.3rem] py-[2rem] px-[1.6rem] shadow-[-3px_4px_6px_0_rgba(0,0,0,0.20)]"
-          placement="ss"
-          gap={2}
-        >
-          <Gcol className="w-full" gap={0.5} placement={'ss'}>
-            <Typo tag={'strong'} variant={'body-xl'}>
-              {title}
+    <Gcol
+      className={`w-full max-w-[28.2rem] overflow-hidden rounded-[1rem] border border-[#E5E5E5] pb-[0.5rem] shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.10)] ${isCoverageMode ? 'bg-[#817772]' : 'bg-[#61554F]'}`}
+    >
+      <Gcol
+        className="relative mb-[-0.5rem] w-full gap-[1rem] rounded-[1rem] border border-[#F4F4F4] bg-white px-[1.6rem] pb-[1.2rem] pt-[2rem] shadow-[0_0.2rem_0.6rem_0_rgba(0,0,0,0.20)]"
+        placement="ss"
+      >
+        {isCoverageMode ? (
+          <button
+            aria-label="카드 선택"
+            className="absolute right-[0.9rem] top-[0.7rem] flex size-[2.4rem] items-center justify-center rounded-[0.48rem] border-2 border-[#D8D8D8] bg-white"
+            onClick={() => onCheckedChange?.(!checked)}
+            type="button"
+          >
+            {checked ? <CheckBoldIcon color="#FF5C2E" size={12} /> : null}
+          </button>
+        ) : null}
+
+        <Gcol className="w-full" gap={1} placement={'ss'}>
+          <Typo className="w-full truncate" tag={'strong'} variant={'body-xl'}>
+            {displayTitle}
+          </Typo>
+          <Typo className="truncate text-[#414141]" tag={'p'} variant={'body-xs'}>
+            {displayPlan}
+          </Typo>
+          <Grow className="w-full" placement="ec">
+            <Typo className="truncate text-[#414141]" tag={'p'} variant={'body-xs'}>
+              {displayTerm}
             </Typo>
-            <Typo tag={'p'} variant={'body-xs'} className="text-[#414141]">
-              {plan}
-            </Typo>
-            <Typo tag={'p'} variant={'body-xs'} className="text-[#414141]">
-              {term}
-            </Typo>
-          </Gcol>
-          <Grow className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem]" placement="sc">
-            <BulletList>
-              <BulletListItem size={'sm'} type="dotBig">
-                {detail}
-              </BulletListItem>
-            </BulletList>
+            {isCoverageMode ? (
+              <Grow className="shrink-0" gap={1} placement="ec">
+                <span className="inline-flex size-[1.4rem] items-center justify-center rounded-[0.3rem] border border-[#FFB9A6] bg-[#FFF3EE] text-[0.9rem] text-[#FF5C2E]">
+                  ₩
+                </span>
+                <Typo className="text-[#FF5C2E]" tag={'strong'} variant={'body-xl'}>
+                  {displayPremium}
+                </Typo>
+              </Grow>
+            ) : null}
           </Grow>
         </Gcol>
-        <Grow className="w-full h-[3.7rem]" placement="cc">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                color="primary"
-                className="text-white font-bold"
-                onClick={() => {}}
-                only="default"
-                size="lg"
-                variant="none"
-              >
-                <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
-                AI 추천이유
-              </Button>
-            </DialogTrigger>
-            <DialogContent showCloseButton resizable={false} size="md">
-              <DialogHeader>
-                <DialogTitle>제목</DialogTitle>
-              </DialogHeader>
 
-              <DialogSection className="p-0 flex items-center justify-center">
-                <div className="relative w-[50rem] h-[19rem] bg-[url('/images/Ltpa005/ai_box_img.jpg')] bg-cover bg-center bg-no-repeat bg-[length:50.6rem_18.8rem]!">
-                  <Typo tag={'p'} variant={'body-lg'} className="w-[33rem] absolute right-[1rem] top-[1rem]">
-                    고객님의 보장 내용을 분석해보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로
-                    확인됩니다.
-                    <br />
-                    <br /> 목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.
-                    <br />
-                    <br /> 현재 조건에서 보장과 보험료 균형을 고려한 추천설계입니다.
-                  </Typo>
-                </div>
-              </DialogSection>
-              <DialogFooter>
-                <Gcol className="w-full" gap={0}>
-                  <Grow placement={'ec'} gap={2} className="w-full pb-5 px-6">
-                    <Grow>
-                      <DialogClose asChild>
-                        <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                          닫기
-                        </Button>
-                      </DialogClose>
-                    </Grow>
-                  </Grow>
-                </Gcol>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+        <Grow className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem]" placement="sc">
+          <div className="w-full overflow-hidden">
+            <BulletList>
+              <BulletListItem size={'sm'} type="dotBig">
+                {displayDetail}
+              </BulletListItem>
+            </BulletList>
+          </div>
         </Grow>
-      </Grid>
+      </Gcol>
+
+      <Grow className="h-[4.2rem] w-full" placement="cc">
+        <Button className="text-white" color="primary" onClick={onActionClick} only="default" size="lg" variant="none">
+          {isCoverageMode ? <ListIcon color="#FFFFFF" size={15} /> : <AiIcon color="#FFFFFF" color2="#FFFFFF" />}
+          {displayActionLabel}
+        </Button>
+      </Grow>
     </Gcol>
   );
 }

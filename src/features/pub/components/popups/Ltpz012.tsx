@@ -1,323 +1,338 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
+import * as React from 'react';
 
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { Input } from '@/shared/components/uiux/Input';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    isChecked: boolean;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-    field8: string;
-    field9: string;
-  };
-
   type DummyDataType2 = {
     id: number;
-    isChecked: boolean;
     field1: string;
     field2: string;
     field3: string;
     field4: string;
     field5: string;
     field6: string;
-    field7: string;
-    field8: string;
-    field9: string;
+    isSumRow?: boolean;
   };
 
-  const dummyData: DummyDataType[] = [
+  type FinalSummaryData = {
+    id: number;
+    label: string;
+    formula: string;
+    point: string;
+  };
+
+  // 가점계산 데이터
+  const section2Data: DummyDataType2[] = [
     {
       id: 1,
-      isChecked: false,
-      field1: 'S92',
-      field2: '발등 골절',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '3',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
+      field1: '(H1)사망후유',
+      field2: '일반상해사망',
+      field3: '(65세이하)1000만원당',
+      field4: '+1.0',
+      field5: '17,000',
+      field6: '17.00',
     },
     {
       id: 2,
-      isChecked: false,
-      field1: 'M51',
-      field2: '추간판장애',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
+      field1: '(H1)사망후유',
+      field2: '일반상해사망',
+      field3: '1000만원당',
+      field4: '+0.1',
+      field5: '2,000',
+      field6: '0.20',
     },
     {
       id: 3,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
+      field1: '(H1)입원/일당',
+      field2: '상해출환치성입원비',
+      field3: '10만원당',
+      field4: '+4.0',
+      field5: '50',
+      field6: '20.00',
     },
     {
       id: 4,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
-    },
-    {
-      id: 5,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '고지',
-      field9: '',
+      field1: '(H1)사망후유',
+      field2: '질병사망',
+      field3: '1000만원당',
+      field4: '+1.0',
+      field5: '17,000',
+      field6: '42.00',
     },
   ];
 
-  const dummyData2: DummyDataType2[] = [
+  const section2SumData: DummyDataType2[] = [
+    {
+      id: -1,
+      field1: '가점 합계',
+      field2: '가산담보합계(H그룹)',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: '137.00',
+      isSumRow: true,
+    },
+  ];
+
+  const isMergedSumRow = (data?: DummyDataType2) => {
+    return (
+      data?.isSumRow === true &&
+      (data.field1 === '가점 합계' || data.field1 === '감점 소계' || data.field1 === '감점 합계')
+    );
+  };
+
+  // 감점계산 데이터
+  const section3Data: DummyDataType2[] = [
     {
       id: 1,
-      isChecked: false,
-      field1: 'S92',
-      field2: '발등 골절',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
+      field1: '(S1)진단비',
+      field2: '유사암진단비(기타피부양)',
+      field3: '100만원당',
+      field4: '-0.125',
+      field5: '50',
+      field6: '-0.06',
     },
     {
       id: 2,
-      isChecked: false,
-      field1: 'M51',
-      field2: '추간판장애',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
+      field1: '(S1)진단비',
+      field2: '유사암진단(갑상선암)',
+      field3: '100만원당',
+      field4: '-0.125',
+      field5: '50',
+      field6: '-0.06',
     },
     {
       id: 3,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
+      field1: '(S1)진단비',
+      field2: '유사암진단비(제자리암)',
+      field3: '100만원당',
+      field4: '-0.125',
+      field5: '50',
+      field6: '-0.06',
     },
     {
       id: 4,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
-    },
-    {
-      id: 5,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '고지',
-      field9: '',
+      field1: '(S1)진단비',
+      field2: '유사암진단비(경계성종양)',
+      field3: '100만원당',
+      field4: '-0.125',
+      field5: '50',
+      field6: '-0.06',
     },
   ];
 
-  const [rowData] = React.useState<DummyDataType[]>(dummyData);
-
-  const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
-
-  const columnDefs: ColDef<DummyDataType>[] = [
+  const section3SumData: DummyDataType2[] = [
     {
-      headerName: '대표질병코드',
-      field: 'field1',
-      width: 80,
-      cellClass: 'text-center',
+      id: -1,
+      field1: '감점 소계',
+      field2: 'MAX[(MIN(G그룹간) + S그룹), NL(감점한도)]',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: '-0.85',
+      isSumRow: true,
     },
     {
-      headerName: '질병명',
-      field: 'field2',
-      width: 100,
-      cellClass: 'text-center',
+      id: -2,
+      field1: '(X1)최소필요',
+      field2: '일상생활중배상책임',
+      field3: '가입시',
+      field4: '-12.0',
+      field5: '10,000',
+      field6: '-10.00',
     },
     {
-      headerName: '원사고발생일',
-      field: 'field3',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '최종사고발생일',
-      field: 'field4',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '입원',
-      field: 'field5',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '통원',
-      field: 'field6',
-      width: 40,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '수술',
-      field: 'field7',
-      width: 40,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '고지여부',
-      field: 'field8',
-      width: 60,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '체크',
-      field: 'field9',
-      width: 60,
-      cellClass: 'text-center',
-      cellRenderer: (params: { data: DummyDataType }) => (
-        <Gcol placement="cc" className="h-full">
-          <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
-            {params.data.field9}
-          </Typo>
-        </Gcol>
-      ),
+      id: -3,
+      field1: '감점 합계',
+      field2: 'MIN(감점 소계, X(필요기준))',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: '-0.85',
+      isSumRow: true,
     },
   ];
 
-  const columnDefs2: ColDef<DummyDataType2>[] = [
+  const policyData: DummyDataType2[] = [
     {
-      headerName: '대표질병코드',
+      id: 1,
+      field1: '(PL)정책요소',
+      field2: '일상생활중배상책임 보장 충족 여부',
+      field3: '보장',
+      field4: '+5',
+      field5: '0',
+      field6: '1.00',
+    },
+  ];
+
+  const finalSummaryData: FinalSummaryData[] = [
+    {
+      id: 1,
+      label: '최종',
+      formula: '가점 합계 - 감점 합계 + 정책 요소',
+      point: '136.15',
+    },
+  ];
+
+  const columnDefs: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '구분',
       field: 'field1',
-      width: 80,
-      cellClass: 'text-center',
+      width: 110,
+      cellClass: (params) => {
+        if (isMergedSumRow(params.data)) {
+          return 'text-center font-bold';
+        }
+        return params.data?.isSumRow ? 'text-center font-bold' : 'text-center';
+      },
+      cellStyle: (params) => (isMergedSumRow(params.data) ? { borderRight: '1px solid #E5E7EB' } : undefined),
+      colSpan: (params) => {
+        if (isMergedSumRow(params.data)) {
+          return 1;
+        }
+        return params.data?.isSumRow ? 2 : 1;
+      },
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
+        params.data?.isSumRow ? <b>{params.value}</b> : params.value,
     },
     {
-      headerName: '질병명',
+      headerName: '누적위험명',
       field: 'field2',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '원사고발생일',
-      field: 'field3',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '최종사고발생일',
-      field: 'field4',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '입원',
-      field: 'field5',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: (params) => {
+        if (isMergedSumRow(params.data)) {
+          return 'text-right pr-2 font-bold';
+        }
+        return 'text-center';
+      },
+      cellStyle: (params) => (isMergedSumRow(params.data) ? { borderRight: '1px solid #E5E7EB' } : undefined),
+      colSpan: (params) => {
+        if (isMergedSumRow(params.data)) {
+          return 3;
+        }
+        return params.data?.isSumRow ? 0 : 1;
+      },
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (isMergedSumRow(params.data)) {
+          return <b>{params.value}</b>;
+        }
+        return params.data?.isSumRow ? null : params.value;
+      },
     },
     {
-      headerName: '통원',
+      headerName: '환산포인트',
+      field: 'field3',
+      width: 220,
+      cellClass: 'text-center',
+      colSpan: (params) => {
+        if (isMergedSumRow(params.data)) {
+          return 0;
+        }
+        return params.data?.isSumRow ? 2 : 1;
+      },
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (isMergedSumRow(params.data)) {
+          return null;
+        }
+        if (params.data?.isSumRow) {
+          return params.value;
+        }
+        return (
+          <div className="grid h-full w-full grid-cols-[7fr_3fr] items-stretch">
+            <span className="truncate pr-2">{params.value}</span>
+            <span className="flex h-full items-center justify-end border-l border-gray-200 pl-2">
+              {params.data?.field4}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      headerName: '가입금액(만원)',
+      field: 'field5',
+      width: 110,
+      cellClass: 'text-right',
+      colSpan: (params) => {
+        if (isMergedSumRow(params.data)) {
+          return 0;
+        }
+        return params.data?.isSumRow ? 0 : 1;
+      },
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (isMergedSumRow(params.data)) {
+          return null;
+        }
+        return params.data?.isSumRow ? null : params.value;
+      },
+    },
+    {
+      headerName: '청약포인트',
       field: 'field6',
-      width: 40,
+      width: 100,
+      cellClass: 'text-right',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (params.data?.isSumRow) {
+          return (
+            <div className="flex h-full w-full items-center justify-end pl-2">
+              <b>{params.value}</b>
+            </div>
+          );
+        }
+        return params.value;
+      },
+    },
+  ];
+
+  const finalColumnDefs: ColDef<FinalSummaryData>[] = [
+    {
+      headerName: '최종',
+      field: 'label',
+      width: 110,
       cellClass: 'text-center',
+      cellStyle: { borderRight: '1px solid #E5E7EB' },
+      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <b>{params.data?.label}</b>,
     },
     {
-      headerName: '수술',
-      field: 'field7',
-      width: 40,
-      cellClass: 'text-center',
+      headerName: '내용',
+      field: 'formula',
+      flex: 1,
+      cellClass: 'text-right pr-2',
+      cellStyle: { borderRight: '1px solid #E5E7EB' },
+      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <b>{params.data?.formula}</b>,
     },
     {
-      headerName: '고지여부',
-      field: 'field8',
-      width: 60,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '체크',
-      field: 'field9',
-      width: 60,
-      cellClass: 'text-center',
-      cellRenderer: (params: { data: DummyDataType }) => (
-        <Gcol placement="cc" className="h-full">
-          <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
-            {params.data.field9}
-          </Typo>
-        </Gcol>
+      headerName: '청약포인트',
+      field: 'point',
+      width: 100,
+      cellClass: 'text-right',
+      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => (
+        <div className="flex h-full w-full items-center justify-end pl-2">
+          <b>{params.value}</b>
+        </div>
       ),
     },
   ];
@@ -331,80 +346,109 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
               청약포인트 상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz012)
+              (LTPZ012)
             </Typo>
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
-          <Gcol className="w-full" gap={5} placement="ss">
-            <Grow className="w-full" variant="box-round">
-              <FormTable variant={'head'} lineTop={false} caption="">
-                <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={'13rem'} value={'LA260305361023'} readOnly />
-                    <Input aria-label="" width={'23rem'} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
-                  </FormCell>
-                  <FormCell title={'전문호출기간'}>
-                    <Input aria-label="" width={'8rem'} value={'홍길순'} readOnly />
-                    <Input aria-label="" width={'12rem'} value={'940302-2******'} readOnly />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-
+        <DialogSection className="grid h-full grid-rows-[auto_minmax(0,1fr)]">
+          <Grow className="w-full" variant="box-round" placement={'ss'}>
+            <FormTable caption="기본정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
+              <FormRow>
+                <FormCell title={'설계번호'}>
+                  <Input aria-label="설계번호" width={'14rem'} value={'LA260305361023'} readOnly />
+                  <Input aria-label="상품명" width={'22rem'} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
+                </FormCell>
+                <FormCell title={'피보험자'}>
+                  <Input aria-label="피보험자명" width={'8rem'} value={'홍길순'} readOnly />
+                  <Input aria-label="생년월일" width={'14rem'} value={'940302-2*****'} readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <Gcol placement="ss" className="min-h-0 w-full overflow-y-auto" gap={4}>
+            {/* 가점계산 */}
             <TableFold>
-              <TableFoldHead title="가점계산"></TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    selectionColumnDef={{
-                      width: 30,
-                    }}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                    }}
-                    domLayout="autoHeight"
-                    // rowSelection={{
-                    //   mode: 'multiRow',
-                    //   isRowSelectable: (node) => node.data?.field8 !== '고지',
-                    //   checkboxes: true,
-                    //   hideDisabledCheckboxes: false,
-                    //   enableClickSelection: false,
-                    // }}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-            <TableFold>
-              <TableFoldHead title="고지확인대상"></TableFoldHead>
+              <TableFoldHead title="가점계산">
+                <Button variant={'outlined'} size={'lg'} color={'secondary'} onClick={() => {}}>
+                  청약가점담보목록
+                </Button>
+              </TableFoldHead>
               <TableFoldBody>
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
-                    rowData={rowData2}
-                    columnDefs={columnDefs2}
-                    selectionColumnDef={{
-                      width: 30,
-                    }}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                    }}
-                    domLayout="autoHeight"
-                    // // rowSelection={{
-                    //   mode: 'multiRow',
-                    //   isRowSelectable: (node) => node.data?.field8 !== '고지',
-                    //   checkboxes: true,
-                    //   hideDisabledCheckboxes: false,
-                    //   enableClickSelection: false,
-                    // }}
+                    rowData={section2Data}
+                    columnDefs={columnDefs}
+                    pinnedBottomRowData={section2SumData}
+                    defaultColDef={{ sortable: false, resizable: false }}
+                    rowClassRules={{}}
+                    domLayout={'autoHeight'}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+
+            {/* 감점계산 */}
+            <TableFold>
+              <TableFoldHead title="감점계산" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={section3Data}
+                    columnDefs={columnDefs}
+                    pinnedBottomRowData={section3SumData}
+                    getRowStyle={(params) =>
+                      params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
+                    }
+                    defaultColDef={{ sortable: false, resizable: false }}
+                    rowClassRules={{}}
+                    domLayout={'autoHeight'}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+
+            {/* 정책요소 */}
+            <TableFold>
+              <TableFoldHead title="정책요소" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={policyData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ sortable: false, resizable: false }}
+                    rowClassRules={{}}
+                    domLayout={'autoHeight'}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+
+            {/* 최종 */}
+            <TableFold>
+              <TableFoldHead title="최종" />
+              <TableFoldBody>
+                <div
+                  className="ag-theme-alpine no-header ltpz012-final-grid"
+                  style={{ borderTop: '1px solid #ff5c2e' }}
+                >
+                  <AgGridReact<FinalSummaryData>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={finalSummaryData}
+                    columnDefs={finalColumnDefs}
+                    headerHeight={0}
+                    groupHeaderHeight={0}
+                    getRowStyle={() => ({ backgroundColor: '#FFEFEA' })}
+                    defaultColDef={{ sortable: false, resizable: false }}
+                    rowClassRules={{}}
+                    domLayout={'autoHeight'}
                   />
                 </div>
               </TableFoldBody>
@@ -415,17 +459,11 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              {/* <Button variant={'contained'} size={'xl'}>
-                알릴사항 반영하기
-              </Button> */}
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

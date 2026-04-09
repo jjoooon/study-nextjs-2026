@@ -296,29 +296,39 @@ import { ProductCard } from '@/features/dashboard/components/DashboardCard'
                     ↓
 ┌─────────────────────────────────────────────────┐
 │  Business Logic Layer (비즈니스 로직 계층)       │
-│  - Custom Hooks                                 │
+│  - Custom Hooks (useState, useReducer 사용)     │
 │  - Services (API calls)                         │
 │  - Utilities                                    │
 └─────────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────────┐
 │  State Management Layer (상태 관리 계층)         │
-│  - Redux Store                                  │
-│  - Redux Slices                                 │
-│  - Selectors                                    │
+│                                                  │
+│  ┌───────────────────────────────────────────┐  │
+│  │  Local State (컴포넌트/Hook 내부)         │  │
+│  │  - useState, useReducer                   │  │
+│  │  - 폼 입력, 모달 상태, UI 상태            │  │
+│  └───────────────────────────────────────────┘  │
+│                                                  │
+│  ┌───────────────────────────────────────────┐  │
+│  │  Global State (앱 전체)                   │  │
+│  │  - Redux Store                            │  │
+│  │  - Redux Slices, Selectors                │  │
+│  │  - RTK Query (서버 데이터 캐싱)           │  │
+│  └───────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────────┐
 │  Data Layer (데이터 계층)                        │
 │  - Axios (HTTP client)                          │
 │  - MSW (API mocking)                            │
-│  - RTK Query (optional)                         │
+│  - API Adapters                                 │
 └─────────────────────────────────────────────────┘
 ```
 
 ### 레이어별 책임
 
-#### 1. Presentation Layer
+#### 1. Presentation Layer (표현 계층)
 
 **역할:** 사용자 인터페이스 렌더링 및 사용자 인터랙션 처리
 
@@ -327,14 +337,32 @@ import { ProductCard } from '@/features/dashboard/components/DashboardCard'
 - Feature Components
 - Shared UI Components
 
+**핵심 책임:**
+- UI 렌더링: 사용자에게 보여지는 화면 구성
+- 사용자 입력 처리: 클릭, 입력, 스크롤 등의 이벤트 수신
+- 이벤트 위임: 비즈니스 로직 계층으로 이벤트 전달
+- 상태 표시: 로딩, 에러, 성공 등의 UI 상태 관리
+
 **원칙:**
 - 비즈니스 로직을 포함하지 않음
 - Props로 데이터를 받음
 - 이벤트를 상위 계층으로 전달
+- 테스트 가능성을 고려한 설계
 
 ```typescript
-// 예시: Presentation Component
-export const ProductList = ({ products, onEdit, onDelete }) => {
+// ✅ 좋은 예: 책임 분리가 명확한 Presentation Component
+interface ProductListProps {
+  products: Product[]
+  onEdit: (id: string) => void
+  onDelete: (id: string) => void
+  isLoading?: boolean
+}
+
+export const ProductList = ({ products, onEdit, onDelete, isLoading }: ProductListProps) => {
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
   return (
     <div>
       {products.map((product) => (
@@ -348,9 +376,38 @@ export const ProductList = ({ products, onEdit, onDelete }) => {
     </div>
   )
 }
+
+// ❌ 나쁜 예: 비즈니스 로직이 포함된 컴포넌트
+export const ProductListBad = () => {
+  const [products, setProducts] = useState([]) // 비즈니스 로직
+
+  useEffect(() => {
+    fetch('/api/products') // 데이터 계층 직접 호출
+      .then(res => res.json())
+      .then(data => setProducts(data))
+  }, [])
+
+  // 데이터 변환 로직 (비즈니스 로직)
+  const sortedProducts = products.sort((a, b) => a.price - b.price)
+
+  return (
+    <div>
+      {sortedProducts.map(product => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  )
+}
 ```
 
-#### 2. Business Logic Layer
+**교육용 체크리스트:**
+- [ ] 컴포넌트가 Props로만 데이터를 받는가?
+- [ ] API 호출을 직접 수행하지 않는가?
+- [ ] 데이터 변환 로직이 포함되어 있지 않은가?
+- [ ] 이벤트 핸들러가 상위 계층으로 전달되는가?
+- [ ] 테스트가 용이한 구조인가?
+
+#### 2. Business Logic Layer (비즈니스 로직 계층)
 
 **역할:** 비즈니스 규칙 구현 및 데이터 처리
 
@@ -358,47 +415,473 @@ export const ProductList = ({ products, onEdit, onDelete }) => {
 - Custom Hooks
 - Services
 - Utilities
+- Validators
+- Transformers
+
+**핵심 책임:**
+- 비즈니스 규칙 구현: 도메인별 로직과 규칙 처리
+- 데이터 처리: 데이터 변환, 검증, 계산
+- 상태 관리: 애플리케이션 상태 조작
+- 에러 처리: 비즈니스 예외 사항 처리
 
 **원칙:**
 - UI 프레임워크 독립적
 - 재사용 가능해야 함
 - 순수 함수 선호
+- 테스트 가능성 최우선
 
 ```typescript
-// 예시: Business Logic Hook
+// ✅ 좋은 예: 책임이 명확한 Custom Hook
 export const useProducts = () => {
   const dispatch = useDispatch()
   const products = useAppSelector(selectAllProducts)
+  const { isLoading, isError, error } = useAppSelector(selectProductStatus)
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (filters?: ProductFilters) => {
     try {
-      const data = await productService.getProducts()
+      dispatch(setProductLoading(true))
+      const data = await productService.getProducts(filters)
       dispatch(setProducts(data))
+      dispatch(setProductLoading(false))
     } catch (error) {
-      // 에러 처리
+      dispatch(setProductError(error as Error))
+      dispatch(setProductLoading(false))
     }
   }, [dispatch])
 
-  return { products, fetchProducts }
+  const createProduct = useCallback(async (productData: CreateProductDTO) => {
+    try {
+      const newProduct = await productService.createProduct(productData)
+      dispatch(addProduct(newProduct))
+      return newProduct
+    } catch (error) {
+      dispatch(setProductError(error as Error))
+      throw error
+    }
+  }, [dispatch])
+
+  return {
+    products,
+    isLoading,
+    isError,
+    error,
+    fetchProducts,
+    createProduct
+  }
+}
+
+// ✅ 좋은 예: 순수 함수 유틸리티
+export const calculateProductPrice = (
+  basePrice: number,
+  tax: number,
+  discount?: number
+): number => {
+  const priceWithTax = basePrice * (1 + tax / 100)
+  return discount
+    ? priceWithTax * (1 - discount / 100)
+    : priceWithTax
+}
+
+// ✅ 좋은 예: 서비스 레이어 분리
+export const productService = {
+  async getProducts(filters?: ProductFilters): Promise<Product[]> {
+    const response = await api.get('/products', { params: filters })
+    return response.data
+  },
+
+  async createProduct(data: CreateProductDTO): Promise<Product> {
+    const response = await api.post('/products', data)
+    return response.data
+  }
+}
+
+// ❌ 나쁜 예: Custom Hook 내에서 DOM 직접 조작
+export const useProductBad = (product: Product) => {
+  const [state, setState] = useState(product.price)
+
+  // 문제 1: DOM 직접 조작 (React 선언적 방식 위반)
+  useEffect(() => {
+    const element = document.getElementById('product-price')
+    if (element) {
+      element.textContent = `${state}원` // 직접 텍스트 수정
+      element.style.color = state > 1000 ? 'red' : 'black' // 직접 스타일 수정
+    }
+  }, [state])
+
+  // 문제 2: 브라우저 API에 강하게 결합됨
+  const scrollToProduct = () => {
+    const element = document.getElementById(`product-${product.id}`)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' }) // DOM 직접 조작
+    }
+  }
+
+  // 문제 3: 전역 이벤트 리스너 직접 등록
+  useEffect(() => {
+    const handleResize = () => {
+      const container = document.querySelector('.product-container')
+      if (container) {
+        container.style.width = `${window.innerWidth / 2}px`
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  return {
+    state,
+    setState,
+    scrollToProduct,
+  }
+}
+
+// ✅ 개선: 비즈니스 로직을 순수 함수로 분리
+export const calculateProductDiscount = (price: number): number => {
+  return price > 1000 ? price * 0.9 : price
+}
+
+// ✅ 개선: Custom Hook은 상태 관리와 순수 함수 조합만 담당
+export const useProduct = (product: Product) => {
+  const [price, setPrice] = useState(product.price)
+  const discountedPrice = calculateProductDiscount(price)
+
+  return {
+    price,
+    setPrice,
+    discountedPrice,
+  }
+}
+
+// ✅ 문제 1 해결: React 상태와 선언적 렌더링 (React 방식)
+export const useProductPrice = (initialPrice: number) => {
+  const [price, setPrice] = useState(initialPrice)
+
+  // 비즈니스 로직: 색상 결정 (순수 함수)
+  const priceColor = useMemo(() => {
+    return price > 1000 ? 'red' : 'black'
+  }, [price])
+
+  // 비즈니스 로직: 포맷팅 (순수 함수)
+  const formattedPrice = useMemo(() => {
+    return `${price}원`
+  }, [price])
+
+  return {
+    price,
+    setPrice,
+    priceColor,
+    formattedPrice,
+  }
+}
+
+// 사용 예시:
+// function ProductPriceDisplay({ initialPrice }) {
+//   const { price, setPrice, priceColor, formattedPrice } = useProductPrice(initialPrice)
+//
+//   return (
+//     <div>
+//       {/* React가 상태에 따라 자동으로 DOM을 업데이트 */}
+//       <span style={{ color: priceColor }}>
+//         {formattedPrice}
+//       </span>
+//       <input
+//         type="number"
+//         value={price}
+//         onChange={(e) => setPrice(Number(e.target.value))}
+//       />
+//     </div>
+//   )
+// }
+
+// ✅ 문제 2 해결: React ref를 사용한 스크롤 (React 방식)
+export const useScrollToElement = (elementId: string) => {
+  const elementRef = useRef<HTMLElement>(null)
+
+  const scrollToElement = useCallback(() => {
+    // ref를 통해 DOM에 접근 (React의 방식)
+    elementRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [])
+
+  return { elementRef, scrollToElement }
+}
+
+// 사용 예시:
+// function ProductComponent({ product }) {
+//   const { elementRef, scrollToElement } = useScrollToElement(`product-${product.id}`)
+//
+//   return (
+//     <div ref={elementRef}>
+//       <button onClick={scrollToElement}>상품 보기</button>
+//     </div>
+//   )
+// }
+
+// ✅ 문제 3 해결: React 상태를 사용한 반응형 스타일 (React 방식)
+export const useResponsiveWidth = () => {
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
+
+  useEffect(() => {
+    // 이벤트 리스너 등록은 useEffect 내부에서 (React의 방식)
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth) // 상태 업데이트로 React에 알림
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize) // 클린업
+  }, [])
+
+  // 비즈니스 로직: 너비 계산 (순수 함수)
+  const containerWidth = useMemo(() => {
+    return windowWidth / 2
+  }, [windowWidth])
+
+  return { containerWidth }
+}
+
+// 사용 예시:
+// function ProductContainer() {
+//   const { containerWidth } = useResponsiveWidth()
+//
+//   return (
+//     <div className="product-container" style={{ width: containerWidth }}>
+//       상품 내용
+//     </div>
+//   )
+// }
+```
+
+**교육용 체크리스트:**
+- [ ] UI 프레임워크에 의존하지 않는가?
+- [ ] 순수 함수로 작성 가능한가?
+- [ ] 단위 테스트가 용이한가?
+- [ ] 재사용 가능한가?
+- [ ] 책임이 명확하게 분리되어 있는가?
+
+#### 3. State Management Layer (상태 관리 계층)
+
+**역할:** 로컬 상태 및 전역 상태 관리
+
+**구성요소:**
+
+**3.1 Local State (컴포넌트/Hook 내부 상태)**
+- `useState`, `useReducer`
+- 폼 입력, 모달 상태, UI 상태
+- 일시적 데이터, 단일 컴포넌트 범위
+
+**3.2 Global State (앱 전체 상태)**
+- Redux Store
+- Redux Slices, Selectors, Middleware
+- RTK Query (서버 데이터 캐싱)
+- Actions
+
+**핵심 책임:**
+- **로컬 상태 저장**: 컴포넌트/Hook 내부의 일시적 상태 관리
+- **전역 상태 저장**: 애플리케이션의 전역 상태 관리
+- **상태 업데이트**: 예측 가능한 상태 변경
+- **상태 조회**: 효율적인 상태 접근 제공
+- **상태 동기화**: 여러 컴포넌트 간 상태 공유
+
+**원칙:**
+- 로컬 상태 우선: 가능한 로컬 상태 사용, 필요 시 전역 상태
+- 상태 변경 예측 가능
+- 상태 불변성 유지
+- 순수 리듀서 사용 (Global State)
+- 단일 데이터 소스 원칙 (Global State)
+
+```typescript
+// ✅ 좋은 예: Local State (useState) - 단일 컴포넌트 상태
+export const ProductForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    price: 0,
+    category: ''
+  })
+
+  const handleSubmit = () => {
+    // 폼 제출 로직
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        value={formData.name}
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+      />
+    </form>
+  )
+}
+
+// ✅ 좋은 예: Local State (useReducer) - 복잡한 로컬 상태
+type FormState = {
+  values: ProductFormData
+  errors: Record<string, string>
+  touched: Record<string, boolean>
+  isSubmitting: boolean
+}
+
+type FormAction =
+  | { type: 'SET_FIELD'; field: string; value: string }
+  | { type: 'SET_ERROR'; field: string; error: string }
+  | { type: 'SET_SUBMITTING'; isSubmitting: boolean }
+  | { type: 'RESET' }
+
+const formReducer = (state: FormState, action: FormAction): FormState => {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return {
+        ...state,
+        values: { ...state.values, [action.field]: action.value }
+      }
+    case 'SET_ERROR':
+      return {
+        ...state,
+        errors: { ...state.errors, [action.field]: action.error }
+      }
+    case 'SET_SUBMITTING':
+      return {
+        ...state,
+        isSubmitting: action.isSubmitting
+      }
+    case 'RESET':
+      return initialState
+    default:
+      return state
+  }
+}
+
+export const useProductForm = () => {
+  const [state, dispatch] = useReducer(formReducer, initialState)
+
+  const setField = (field: string, value: string) => {
+    dispatch({ type: 'SET_FIELD', field, value })
+  }
+
+  const setError = (field: string, error: string) => {
+    dispatch({ type: 'SET_ERROR', field, error })
+  }
+
+  return {
+    state,
+    actions: { setField, setError }
+  }
+}
+
+// ✅ 좋은 예: 잘 구조화된 Redux Slice (Global State)
+interface ProductsState {
+  items: Product[]
+  selectedIds: string[]
+  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  error: string | null
+}
+
+const initialState: ProductsState = {
+  items: [],
+  selectedIds: [],
+  status: 'idle',
+  error: null
+}
+
+export const productsSlice = createSlice({
+  name: 'products',
+  initialState,
+  reducers: {
+    // 순수 리듀서: 상태 변경 예측 가능
+    setProducts: (state, action: PayloadAction<Product[]>) => {
+      state.items = action.payload
+      state.status = 'succeeded'
+    },
+    addProduct: (state, action: PayloadAction<Product>) => {
+      state.items.push(action.payload)
+    },
+    updateProduct: (state, action: PayloadAction<Product>) => {
+      const index = state.items.findIndex(p => p.id === action.payload.id)
+      if (index !== -1) {
+        state.items[index] = action.payload
+      }
+    },
+    deleteProduct: (state, action: PayloadAction<string>) => {
+      state.items = state.items.filter(p => p.id !== action.payload)
+    },
+    toggleSelection: (state, action: PayloadAction<string>) => {
+      const index = state.selectedIds.indexOf(action.payload)
+      if (index === -1) {
+        state.selectedIds.push(action.payload)
+      } else {
+        state.selectedIds.splice(index, 1)
+      }
+    },
+    clearSelection: (state) => {
+      state.selectedIds = []
+    }
+  },
+  extraReducers: (builder) => {
+    // 비동기 액션 처리
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.items = action.payload
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Failed to fetch products'
+      })
+  }
+})
+
+// ✅ 좋은 예: 메모이제이드 Selector
+export const selectProductsState = (state: RootState) => state.products
+
+export const selectAllProducts = createSelector(
+  [selectProductsState],
+  (productsState) => productsState.items
+)
+
+export const selectSelectedProducts = createSelector(
+  [selectAllProducts, selectProductsState],
+  (products, productsState) =>
+    products.filter(p => productsState.selectedIds.includes(p.id))
+)
+
+export const selectProductsByCategory = createSelector(
+  [selectAllProducts, (_state: RootState, category: string) => category],
+  (products, category) =>
+    products.filter(p => p.category === category)
+)
+
+// ❌ 나쁜 예: 상태 변경 예측 불가능
+const badReducer = (state = initialState, action: AnyAction) => {
+  switch (action.type) {
+    case 'UPDATE_PRODUCT':
+      // 직접 상태 변경 (불변성 위반)
+      state.items[0].name = action.payload.name
+      return state
+
+    case 'ADD_PRODUCT':
+      // 예측 불가능한 부수 효과
+      api.post('/products', action.payload)
+      return {
+        ...state,
+        items: [...state.items, action.payload]
+      }
+
+    default:
+      return state
+  }
 }
 ```
 
-#### 3. State Management Layer
+**교육용 체크리스트:**
+- [ ] 상태 변경이 예측 가능한가?
+- [ ] 불변성이 유지되는가?
+- [ ] 리듀서가 순수 함수인가?
+- [ ] Selector가 메모이제이션되어 있는가?
+- [ ] 부수 효과가 없는가?
 
-**역할:** 전역 상태 관리 및 상태 업데이트
-
-**구성요소:**
-- Redux Store
-- Redux Slices
-- Selectors
-- Middleware
-
-**원칙:**
-- 상태 변경 예측 가능
-- 상태 불변성 유지
-- 순수 리듀서 사용
-
-#### 4. Data Layer
+#### 4. Data Layer (데이터 계층)
 
 **역할:** 외부 시스템과의 데이터 통신
 
@@ -406,11 +889,497 @@ export const useProducts = () => {
 - Axios (HTTP client)
 - MSW (Development mocking)
 - RTK Query (Caching, optional)
+- API Clients
+- Adapters
+
+**핵심 책임:**
+- 데이터 통신: 외부 API와의 HTTP 통신
+- 데이터 캐싱: 반복 요청 최적화
+- 에러 처리: 네트워크 에러 및 예외 처리
+- 데이터 변환: API 응답을 애플리케이션 모델로 변환
 
 **원칙:**
 - 통신 로직 캡슐화
 - 에러 처리 표준화
 - 개발/프로덕션 환경 분리
+- 타입 안전성 보장
+
+```typescript
+// ✅ 좋은 예: 잘 구조화된 API Client
+class ApiClient {
+  private client: AxiosInstance
+
+  constructor(baseURL: string) {
+    this.client = axios.create({
+      baseURL,
+      timeout: 10000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    this.setupInterceptors()
+  }
+
+  private setupInterceptors() {
+    // 요청 인터셉터: 인증 토큰 추가
+    this.client.interceptors.request.use(
+      (config) => {
+        const token = getToken()
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+      },
+      (error) => Promise.reject(error)
+    )
+
+    // 응답 인터셉터: 에러 처리 표준화
+    this.client.interceptors.response.use(
+      (response) => response.data,
+      (error) => {
+        if (error.response?.status === 401) {
+          // 인증 에러 처리
+          redirectToLogin()
+        }
+        return Promise.reject(this.handleError(error))
+      }
+    )
+  }
+
+  private handleError(error: AxiosError): ApiError {
+    if (error.response) {
+      // 서버 응답이 있는 에러
+      return {
+        message: error.response.data?.message || 'Server error',
+        status: error.response.status,
+        code: error.response.data?.code
+      }
+    } else if (error.request) {
+      // 요청은 보냈지만 응답이 없는 에러
+      return {
+        message: 'Network error - no response received',
+        status: 0,
+        code: 'NETWORK_ERROR'
+      }
+    } else {
+      // 요청 설정 중 에러
+      return {
+        message: error.message,
+        status: 0,
+        code: 'REQUEST_SETUP_ERROR'
+      }
+    }
+  }
+
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.client.get<T>(url, config)
+  }
+
+  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    return this.client.post<T>(url, data, config)
+  }
+}
+
+// ✅ 좋은 예: 타입 안전한 API 서비스
+interface ProductDTO {
+  id: string
+  name: string
+  price: number
+  category: string
+}
+
+export const productsApi = {
+  getAll: (filters?: ProductFilters): Promise<ProductDTO[]> =>
+    apiClient.get('/products', { params: filters }),
+
+  getById: (id: string): Promise<ProductDTO> =>
+    apiClient.get(`/products/${id}`),
+
+  create: (data: CreateProductDTO): Promise<ProductDTO> =>
+    apiClient.post('/products', data),
+
+  update: (id: string, data: UpdateProductDTO): Promise<ProductDTO> =>
+    apiClient.put(`/products/${id}`, data),
+
+  delete: (id: string): Promise<void> =>
+    apiClient.delete(`/products/${id}`)
+}
+
+// ✅ 좋은 예: MSW Mock 핸들러
+export const productsHandlers = [
+  rest.get('/api/products', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json(mockProducts)
+    )
+  }),
+
+  rest.post('/api/products', async (req, res, ctx) => {
+    const newProduct = await req.json()
+    return res(
+      ctx.status(201),
+      ctx.json({ ...newProduct, id: Date.now().toString() })
+    )
+  })
+]
+
+// ❌ 나쁜 예: 통신 로직이 컴포넌트에 섞여 있음
+export const ProductComponentBad = () => {
+  useEffect(() => {
+    // 컴포넌트에서 직접 API 호출
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(data => {
+        // 데이터 변환 로직이 UI에 있음
+        const transformed = data.map(p => ({
+          ...p,
+          displayName: `${p.name} - ${p.category}`
+        }))
+        setProducts(transformed)
+      })
+      .catch(err => {
+        // 에러 처리가 UI에 있음
+        console.error('Error:', err)
+        alert('Failed to load products')
+      })
+  }, [])
+
+  return <div>...</div>
+}
+```
+
+**교육용 체크리스트:**
+- [ ] HTTP 통신이 캡슐화되어 있는가?
+- [ ] 에러 처리가 표준화되어 있는가?
+- [ ] 타입 안전성이 보장되는가?
+- [ ] 개발/프로덕션 환경이 분리되어 있는가?
+- [ ] 데이터 변환이 계층 내에서 이루어지는가?
+
+---
+
+### 레이어 간 통신 방법
+
+#### 통신 흐름
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Presentation Layer                                         │
+│  - UI 렌더링 및 사용자 입력 처리                             │
+│  - Business Logic Layer로 이벤트 위임                       │
+└─────────────────────────────────────────────────────────────┘
+                         ↓ 사용자 액션
+┌─────────────────────────────────────────────────────────────┐
+│  Business Logic Layer                                       │
+│  - 비즈니스 로직 실행                                        │
+│  - Data Layer로 데이터 요청                                 │
+│  - State Management Layer로 상태 업데이트 요청             │
+└─────────────────────────────────────────────────────────────┘
+                         ↓ API 호출
+┌─────────────────────────────────────────────────────────────┐
+│  Data Layer                                                  │
+│  - 외부 API와 통신                                          │
+│  - 데이터 반환                                               │
+└─────────────────────────────────────────────────────────────┘
+                         ↓ 데이터 수신
+┌─────────────────────────────────────────────────────────────┐
+│  State Management Layer                                     │
+│  - 상태 업데이트                                            │
+│  - 변경 알림                                                │
+└─────────────────────────────────────────────────────────────┘
+                         ↓ 상태 변경
+┌─────────────────────────────────────────────────────────────┐
+│  Presentation Layer                                         │
+│  - 변경된 상태를 기반으로 UI 재렌더링                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### 실무 예시: 제품 생성 흐름
+
+```typescript
+// 1️⃣ Presentation Layer: 사용자 인터페이스
+export const ProductForm = () => {
+  const { createProduct, isLoading, error } = useProducts()
+  const { register, handleSubmit, formState: { errors } } = useForm()
+
+  const onSubmit = async (data: CreateProductDTO) => {
+    try {
+      await createProduct(data) // Business Logic Layer 호출
+      toast.success('Product created successfully')
+    } catch (err) {
+      toast.error('Failed to create product')
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('name', { required: 'Name is required' })} />
+      {errors.name && <span>{errors.name.message}</span>}
+
+      <input {...register('price', { required: 'Price is required' })} />
+      {errors.price && <span>{errors.price.message}</span>}
+
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Creating...' : 'Create Product'}
+      </button>
+
+      {error && <div className="error">{error.message}</div>}
+    </form>
+  )
+}
+
+// 2️⃣ Business Logic Layer: 비즈니스 로직
+export const useProducts = () => {
+  const dispatch = useDispatch()
+
+  const createProduct = useCallback(async (data: CreateProductDTO) => {
+    // 유효성 검사
+    if (!data.name || data.price <= 0) {
+      throw new Error('Invalid product data')
+    }
+
+    // 데이터 변환
+    const transformedData: ProductCreateRequest = {
+      ...data,
+      createdAt: new Date().toISOString(),
+      price: Math.round(data.price * 100) // 센트로 변환
+    }
+
+    // Data Layer 호출
+    const newProduct = await productsApi.create(transformedData)
+
+    // State Management Layer 업데이트
+    dispatch(addProduct(newProduct))
+
+    return newProduct
+  }, [dispatch])
+
+  return { createProduct, isLoading, error }
+}
+
+// 3️⃣ Data Layer: API 통신
+export const productsApi = {
+  create: async (data: ProductCreateRequest): Promise<ProductDTO> => {
+    try {
+      const response = await apiClient.post<ProductDTO>('/products', data)
+      return response.data
+    } catch (error) {
+      // 에러 변환 및 재발생
+      throw handleApiError(error)
+    }
+  }
+}
+
+// 4️⃣ State Management Layer: 상태 관리
+export const productsSlice = createSlice({
+  name: 'products',
+  initialState,
+  reducers: {
+    addProduct: (state, action: PayloadAction<Product>) => {
+      state.items.push(action.payload)
+      state.status = 'succeeded'
+    }
+  }
+})
+```
+
+### 실무 적용 가이드
+
+#### 1. 레이어 경계 식별하기
+
+**✅ 올바른 레이어 분리:**
+```typescript
+// Presentation Layer (app/sample/products/pages/New.tsx)
+export default function NewProductPage() {
+  return <ProductFormSection />
+}
+
+// Business Logic Layer (features/products/hooks/useProductForm.ts)
+export const useProductForm = () => {
+  const { createProduct } = useProducts()
+  // ...폼 로직
+}
+
+// Data Layer (features/products/services/productApi.ts)
+export const productsApi = {
+  create: async (data: CreateProductDTO) => {
+    // ...API 호출
+  }
+}
+```
+
+**❌ 잘못된 레이어 혼합:**
+```typescript
+// 모든 로직이 컴포넌트에 있음
+export default function NewProductPageBad() {
+  const [products, setProducts] = useState([]) // State Management
+  const [form, setForm] = useState({}) // Business Logic
+
+  useEffect(() => {
+    fetch('/api/products') // Data Layer
+      .then(res => res.json())
+      .then(data => setProducts(data))
+  }, [])
+
+  const handleSubmit = async () => {
+    const response = await fetch('/api/products', { // Data Layer
+      method: 'POST',
+      body: JSON.stringify(form)
+    })
+    const newProduct = await response.json()
+    setProducts([...products, newProduct]) // State Management
+  }
+
+  return (
+    <form onSubmit={handleSubmit}> {/* Presentation */}
+      {/* ... */}
+    </form>
+  )
+}
+```
+
+#### 2. 의존성 방향 준수하기
+
+```typescript
+// ✅ 올바른 의존성 방향
+Presentation → Business Logic → State Management → Data
+
+// ❌ 잘못된 의존성
+Data → Presentation (Data Layer가 UI를 알 필요 없음)
+State Management → Presentation (State가 UI를 알 필요 없음)
+```
+
+#### 3. 데이터 흐름 단방향 유지하기
+
+```typescript
+// ✅ 올바른 단방향 흐름
+UI → Action → Reducer → State → UI
+
+// ❌ 잘못된 양방향 흐름
+UI ⇄ State (직접 상태 수정)
+```
+
+### 학습 로드맵
+
+#### 1단계: 기본 개념 이해 (1주)
+- 각 레이어의 역할과 책임 학습
+- 간단한 예제로 레이어 분리 연습
+- 단방향 데이터 흐름 이해
+
+#### 2단계: 실무 적용 (2주)
+- 기존 코드 리팩토링
+- 레이어 간 통신 패턴 학습
+- 에러 처리 및 로딩 상태 관리
+
+#### 3단계: 고급 패턴 (3주)
+- 비동기 데이터 처리
+- 캐싱 전략
+- 타입 안전성 강화
+- 테스트 작성
+
+### 흔한 실수와 해결책
+
+#### 실수 1: 비즈니스 로직이 컴포넌트에 포함됨
+```typescript
+// ❌ 문제
+export const ProductList = () => {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(data => {
+        // 비즈니스 로직이 컴포넌트에
+        const filtered = data.filter(p => p.price > 100)
+        const sorted = filtered.sort((a, b) => a.price - b.price)
+        setProducts(sorted)
+      })
+  }, [])
+
+  return <div>...</div>
+}
+
+// ✅ 해결
+export const ProductList = () => {
+  const { products, isLoading } = useProducts() // Custom Hook 사용
+  return <div>...</div>
+}
+
+// features/products/hooks/useProducts.ts
+export const useProducts = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchProducts()) // Business Logic이 Hook에
+  }, [dispatch])
+
+  const products = useAppSelector(selectFilteredAndSortedProducts)
+  return { products, isLoading }
+}
+```
+
+#### 실수 2: State가 UI에 직접 의존함
+```typescript
+// ❌ 문제
+const productsSlice = createSlice({
+  name: 'products',
+  initialState,
+  reducers: {
+    setProducts: (state, action) => {
+      state.items = action.payload
+      state.ui = { // UI 상태가 Data State에
+        showModal: true,
+        message: 'Products loaded'
+      }
+    }
+  }
+})
+
+// ✅ 해결
+// UI 상태는 별도 Slice 또는 로컬 상태로
+const productsSlice = createSlice({
+  name: 'products',
+  initialState,
+  reducers: {
+    setProducts: (state, action) => {
+      state.items = action.payload // Data State만
+    }
+  }
+})
+
+// 로컬 상태로 UI 관리
+const [showModal, setShowModal] = useState(true)
+```
+
+#### 실수 3: API 호출이 여러 곳에서 중복됨
+```typescript
+// ❌ 문제: 중복 코드
+export const useProducts = () => {
+  useEffect(() => {
+    fetch('/api/products').then(res => res.json())
+  }, [])
+}
+
+export const useProductDetail = (id: string) => {
+  useEffect(() => {
+    fetch(`/api/products/${id}`).then(res => res.json())
+  }, [id])
+}
+
+// ✅ 해결: API Service로 중복 제거
+// services/productsApi.ts
+export const productsApi = {
+  getAll: () => apiClient.get('/products'),
+  getById: (id: string) => apiClient.get(`/products/${id}`)
+}
+
+// hooks/useProducts.ts
+export const useProducts = () => {
+  useEffect(() => {
+    productsApi.getAll()
+  }, [])
+}
+```
 
 ---
 
