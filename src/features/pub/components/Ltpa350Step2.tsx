@@ -22,14 +22,15 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { HashList } from '@common/HashList';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PaperIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
+import { Accordion } from '@uiux/Accordion';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -892,16 +893,24 @@ export function Ltpa350Step2({
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <NativeSelect
-                          aria-label="나만의 설계선택"
-                          width={140}
-                          size={'sm'}
-                          readOnly={false}
-                          required={false}
-                        >
-                          <NativeSelectOption value="">나만의 설계선택</NativeSelectOption>
-                          <NativeSelectOption value="option1">옵션 1</NativeSelectOption>
-                        </NativeSelect>
+                        <SelectDrop typeMode="custom" size="md" width={140} placeholder="나만의 설계선택">
+                          <Gcol className="w-full p-[0.2rem]">
+                            <Button variant="outlined" size="md" className="w-full">
+                              나만의설계저장
+                            </Button>
+                            <Accordion>
+                              <Accordion.Item value="item-1">
+                                <Accordion.Trigger>Section 1</Accordion.Trigger>
+                                <Accordion.Content>Section 1 Content</Accordion.Content>
+                              </Accordion.Item>
+                              <Accordion.Item value="item-2">
+                                <Accordion.Trigger>Section 2</Accordion.Trigger>
+                                <Accordion.Content>Section 2 Content</Accordion.Content>
+                              </Accordion.Item>
+                            </Accordion>
+                          </Gcol>
+                        </SelectDrop>
+
                         <Button
                           variant={'outlined'}
                           color={'gray'}
