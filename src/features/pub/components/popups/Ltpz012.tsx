@@ -1,0 +1,436 @@
+'use client';
+
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+
+import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { Input } from '@/shared/components/uiux/Input';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+} from '@uiux/Dialog';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
+
+export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
+  type DummyDataType = {
+    id: number;
+    isChecked: boolean;
+    field1: string;
+    field2: string;
+    field3: string;
+    field4: string;
+    field5: string;
+    field6: string;
+    field7: string;
+    field8: string;
+    field9: string;
+  };
+
+  type DummyDataType2 = {
+    id: number;
+    isChecked: boolean;
+    field1: string;
+    field2: string;
+    field3: string;
+    field4: string;
+    field5: string;
+    field6: string;
+    field7: string;
+    field8: string;
+    field9: string;
+  };
+
+  const dummyData: DummyDataType[] = [
+    {
+      id: 1,
+      isChecked: false,
+      field1: 'S92',
+      field2: '발등 골절',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '3',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '고지필요',
+    },
+    {
+      id: 2,
+      isChecked: false,
+      field1: 'M51',
+      field2: '추간판장애',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '고지필요',
+    },
+    {
+      id: 3,
+      isChecked: false,
+      field1: 'M54',
+      field2: '요통',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '',
+    },
+    {
+      id: 4,
+      isChecked: false,
+      field1: 'M54',
+      field2: '요통',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '',
+    },
+    {
+      id: 5,
+      isChecked: false,
+      field1: 'M54',
+      field2: '요통',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '고지',
+      field9: '',
+    },
+  ];
+
+  const dummyData2: DummyDataType2[] = [
+    {
+      id: 1,
+      isChecked: false,
+      field1: 'S92',
+      field2: '발등 골절',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '고지필요',
+    },
+    {
+      id: 2,
+      isChecked: false,
+      field1: 'M51',
+      field2: '추간판장애',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '고지필요',
+    },
+    {
+      id: 3,
+      isChecked: false,
+      field1: 'M54',
+      field2: '요통',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '',
+    },
+    {
+      id: 4,
+      isChecked: false,
+      field1: 'M54',
+      field2: '요통',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '미고지',
+      field9: '',
+    },
+    {
+      id: 5,
+      isChecked: false,
+      field1: 'M54',
+      field2: '요통',
+      field3: '2025-12-01',
+      field4: '2021-03-02',
+      field5: '22(2025-12-01~2027-12-01)',
+      field6: '',
+      field7: 'Y',
+      field8: '고지',
+      field9: '',
+    },
+  ];
+
+  const [rowData] = React.useState<DummyDataType[]>(dummyData);
+
+  const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
+
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '대표질병코드',
+      field: 'field1',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '질병명',
+      field: 'field2',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '원사고발생일',
+      field: 'field3',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '최종사고발생일',
+      field: 'field4',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '입원',
+      field: 'field5',
+      flex: 1,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '통원',
+      field: 'field6',
+      width: 40,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '수술',
+      field: 'field7',
+      width: 40,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '고지여부',
+      field: 'field8',
+      width: 60,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '체크',
+      field: 'field9',
+      width: 60,
+      cellClass: 'text-center',
+      cellRenderer: (params: { data: DummyDataType }) => (
+        <Gcol placement="cc" className="h-full">
+          <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
+            {params.data.field9}
+          </Typo>
+        </Gcol>
+      ),
+    },
+  ];
+
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '대표질병코드',
+      field: 'field1',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '질병명',
+      field: 'field2',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '원사고발생일',
+      field: 'field3',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '최종사고발생일',
+      field: 'field4',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '입원',
+      field: 'field5',
+      flex: 1,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '통원',
+      field: 'field6',
+      width: 40,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '수술',
+      field: 'field7',
+      width: 40,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '고지여부',
+      field: 'field8',
+      width: 60,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '체크',
+      field: 'field9',
+      width: 60,
+      cellClass: 'text-center',
+      cellRenderer: (params: { data: DummyDataType }) => (
+        <Gcol placement="cc" className="h-full">
+          <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
+            {params.data.field9}
+          </Typo>
+        </Gcol>
+      ),
+    },
+  ];
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent showCloseButton resizable={true} size="xl">
+        <DialogHeader>
+          <DialogTitle>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              청약포인트 상세
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (Ltpz012)
+            </Typo>
+          </DialogTitle>
+        </DialogHeader>
+
+        <DialogSection className="grid-rows-[1fr]">
+          <Gcol className="w-full" gap={5} placement="ss">
+            <Grow className="w-full" variant="box-round">
+              <FormTable variant={'head'} lineTop={false} caption="">
+                <FormRow>
+                  <FormCell title={'설계번호'}>
+                    <Input aria-label="" width={'13rem'} value={'LA260305361023'} readOnly />
+                    <Input aria-label="" width={'23rem'} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
+                  </FormCell>
+                  <FormCell title={'전문호출기간'}>
+                    <Input aria-label="" width={'8rem'} value={'홍길순'} readOnly />
+                    <Input aria-label="" width={'12rem'} value={'940302-2******'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+
+            <TableFold>
+              <TableFoldHead title="가점계산"></TableFoldHead>
+              <TableFoldBody>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    selectionColumnDef={{
+                      width: 30,
+                    }}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    defaultColDef={{
+                      sortable: false,
+                      resizable: false,
+                    }}
+                    domLayout="autoHeight"
+                    // rowSelection={{
+                    //   mode: 'multiRow',
+                    //   isRowSelectable: (node) => node.data?.field8 !== '고지',
+                    //   checkboxes: true,
+                    //   hideDisabledCheckboxes: false,
+                    //   enableClickSelection: false,
+                    // }}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold>
+              <TableFoldHead title="고지확인대상"></TableFoldHead>
+              <TableFoldBody>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData2}
+                    columnDefs={columnDefs2}
+                    selectionColumnDef={{
+                      width: 30,
+                    }}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    defaultColDef={{
+                      sortable: false,
+                      resizable: false,
+                    }}
+                    domLayout="autoHeight"
+                    // // rowSelection={{
+                    //   mode: 'multiRow',
+                    //   isRowSelectable: (node) => node.data?.field8 !== '고지',
+                    //   checkboxes: true,
+                    //   hideDisabledCheckboxes: false,
+                    //   enableClickSelection: false,
+                    // }}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+          </Gcol>
+        </DialogSection>
+
+        <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              {/* <Button variant={'contained'} size={'xl'}>
+                알릴사항 반영하기
+              </Button> */}
+              <Button
+                variant={'outlined'}
+                size={'xl'}
+                color={'gray-light'}
+                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
+              >
+                닫기
+              </Button>
+            </Grow>
+          </DialogFooterArea>
+          <DialogBottomInfo />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};

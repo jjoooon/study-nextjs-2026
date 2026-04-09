@@ -45,7 +45,10 @@ export function IAListWithPreview() {
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
-  const workListH = React.useMemo(() => [] as string[], []);
+  const workListH = React.useMemo(
+    () => ['LTPZ022', 'LTPZ024', 'LTPZ027', 'LTPZ032', 'LTPZ033', 'LTPA160', 'LTPA170'] as string[],
+    []
+  );
   const workListK = React.useMemo(() => ['LTPZ085', 'LTPZ086', 'LTPZ028', 'LTPA220', 'LTPZ014'], []);
   const workListJ = React.useMemo(
     () => ['LTPZ999', 'LTPZ001', 'LTPZ009', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPZ018'],
@@ -228,6 +231,7 @@ export function IAListWithPreview() {
       'LTPZ024',
       'LTPA220',
       'LTPZ014',
+      'LTPZ022',
       // 'LTPZ012',
     ];
 
