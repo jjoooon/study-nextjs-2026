@@ -72,12 +72,13 @@ function Input({
   const isControlled = value !== undefined;
   const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
 
-  let displayValue = value ?? '';
+  const rawValue = value === undefined || value === null ? '' : String(value);
+  let displayValue = rawValue;
 
-  if (formatter === 'jumin' && typeof value === 'string') {
-    displayValue = formatJumin(value);
-  } else if (commaAmount && typeof value === 'string') {
-    displayValue = isFocused || forceFocused ? value : formatAmount(value);
+  if (formatter === 'jumin') {
+    displayValue = formatJumin(rawValue);
+  } else if (commaAmount) {
+    displayValue = isFocused || forceFocused ? rawValue : formatAmount(rawValue);
   }
 
   const resolvedWidth =
@@ -86,7 +87,6 @@ function Input({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    // commaAmount가 있으면 기존 로직 적용
     if (commaAmount) {
       const onlyNum = val.replace(/[^0-9]/g, '');
       if (onChange) {

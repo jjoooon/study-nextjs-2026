@@ -166,7 +166,7 @@ const asideInfo = {
 };
 const asideFoot = {
   step1: {
-    insGen: false,
+    insGen: 0,
     paymentAmount: 3450,
     point: 640,
   },

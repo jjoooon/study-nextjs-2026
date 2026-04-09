@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { PlusIcon } from '@icons';
+import { AddIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 
@@ -59,7 +59,7 @@ export function QuickLinks({ menus, onMoreClick }: QuickLinksProps) {
           <PopoverTrigger asChild>
             <Button variant="outlined" color={'gray-light'} size={'sm'} className="w-full" disabled={isMoreDisabled}>
               더보기
-              <PlusIcon color="var(--color-gray-50)" />
+              <AddIcon color="var(--color-gray-50)" size={12} />
             </Button>
           </PopoverTrigger>
           <PopoverContent motion="fade" closeButton align="end">

@@ -34,12 +34,18 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
         <Grow gap={2} placement={'bwc'}>
           <Grow gap={1.5} placement={'bwc'} className="overflow-hidden">
             <Typo variant={'heading-md'}>계약정보</Typo>
+            <Grow className="gap-[0.2rem]" placement={'cc'}>
+              <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+                설계중
+              </Typo>
+              <SpinnerA className="text-[var(--color-primary-50)]" />
+            </Grow>
           </Grow>
         </Grow>
 
         <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)] gap-2" placement={'ss'}>
           <Typo variant={'body-sm'} className="text-[var(--color-text-subtle)]">
-            계약정보가 없습니다.
+            등록된 계약정보가 없습니다.
           </Typo>
         </Gcol>
       </Gcol>
