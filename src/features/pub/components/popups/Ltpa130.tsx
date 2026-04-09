@@ -195,16 +195,20 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '취급직원',
-      width: 90,
+      width: 150,
       field: 'field01',
       autoHeight: true,
       spanRows: true,
-    },
-    {
-      headerName: '취급직원',
-      width: 70,
-      field: 'field02',
-      autoHeight: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        return (
+          <div className="absolute inset-0 grid w-full grid-cols-[1fr_70px] items-stretch">
+            <span className="flex min-w-0 items-center justify-center truncate px-1">{params.value}</span>
+            <span className="flex h-full items-center justify-center border-l border-gray-200">
+              {params.data?.field02}
+            </span>
+          </div>
+        );
+      },
     },
     {
       headerName: '생년월일',
@@ -328,7 +332,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '철회사유',
-      width: 90,
+      flex: 1,
       field: 'field15',
       autoHeight: true,
     },
@@ -502,8 +506,8 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     rowData={rowData}
                     columnDefs={columnDefs}
                     defaultColDef={{
-                      sortable: true,
-                      resizable: true,
+                      sortable: false,
+                      resizable: false,
                       cellClass: 'text-center p-0!',
                     }}
                     domLayout="autoHeight"
