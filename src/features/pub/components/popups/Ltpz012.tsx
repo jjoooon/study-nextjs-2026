@@ -38,7 +38,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
     isSumRow?: boolean;
   };
 
-  // 가정계산 데이터
+  // 가점계산 데이터
   const section2Data: DummyDataType2[] = [
     {
       id: 1,
@@ -81,7 +81,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
   const section2SumData: DummyDataType2[] = [
     {
       id: -1,
-      field1: '가정 합계',
+      field1: '가점 합계',
       field2: '',
       field3: '가산담보 합계(H그룹)',
       field4: '',
@@ -184,17 +184,20 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '환산포인트',
       field: 'field3',
-      width: 150,
+      width: 220,
       cellClass: 'text-center',
-      colSpan: (params) => (params.data?.isSumRow ? 3 : 1),
-    },
-    {
-      headerName: '',
-      field: 'field4',
-      width: 70,
-      cellClass: 'text-center',
-      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
+      colSpan: (params) => (params.data?.isSumRow ? 2 : 1),
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (params.data?.isSumRow) {
+          return params.value;
+        }
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <span>{params.value}</span>
+            <span>{params.data?.field4}</span>
+          </div>
+        );
+      },
     },
     {
       headerName: '가입금액(만원)',
@@ -245,9 +248,9 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           <Gcol placement="ss" className="w-full" gap={4}>
-            {/* 가정계산 */}
+            {/* 가점계산 */}
             <TableFold>
-              <TableFoldHead title="가정계산">
+              <TableFoldHead title="가점계산">
                 <Button variant={'outlined'} size={'lg'} color={'secondary'} onClick={() => {}}>
                   청약가점담보목록
                 </Button>
