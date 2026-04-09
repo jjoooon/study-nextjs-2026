@@ -56,7 +56,7 @@ export function IAListWithPreview() {
         'LTPA160',
         'LTPA170',
         'LTPA130',
-        'LTPA350(LTPA350_4)',
+        'LTPA350(LTPA350_5)',
       ] as string[],
     []
   );
@@ -247,7 +247,7 @@ export function IAListWithPreview() {
       'LTPZ014',
       'LTPZ022',
       'LTPA130',
-      'LTPA350(LTPA350_4)',
+      'LTPA350(LTPA350_5)',
       // 'LTPZ012',
     ];
 
