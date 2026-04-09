@@ -128,7 +128,7 @@ export const FormCell = ({
   rowSpan,
   titleColSpan,
   titleRowSpan,
-  tdClassName = 'justify-start items-center',
+  tdClassName,
 }: FormCellProps) => {
   const contextVertical = useContext(VerticalContext);
   const contextVariant = useContext(VariantContext);
@@ -154,19 +154,19 @@ export const FormCell = ({
           </Typo>
         </TableHead>
       )}
-      {children !== null && (
-        <TableCell
-          className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] "
-          {...(colSpan && { colSpan })}
-          {...(rowSpan && { rowSpan })}
-        >
-          {contextVertical ? (
-            <TooltipIfOverflow>{children}</TooltipIfOverflow>
-          ) : (
-            <Grow className={cn(tdClassName)}>{children}</Grow>
-          )}
-        </TableCell>
-      )}
+      {/* {children !== null && ( */}
+      <TableCell
+        className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] "
+        {...(colSpan && { colSpan })}
+        {...(rowSpan && { rowSpan })}
+      >
+        {contextVertical ? (
+          <TooltipIfOverflow>{children}</TooltipIfOverflow>
+        ) : (
+          <Grow className={cn('justify-start items-center', tdClassName)}>{children}</Grow>
+        )}
+      </TableCell>
+      {/* )} */}
     </>
   );
 };

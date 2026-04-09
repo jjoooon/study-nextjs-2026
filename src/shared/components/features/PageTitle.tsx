@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Grow, Typo, FormItem } from '@atoms';
+import { Grow, Typo, FormItem, Grid } from '@atoms';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { ViewMode } from '@common/ViewMode';
@@ -94,7 +94,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
           {safeData.title}
         </Typo>
         <div className="w-[0.4rem] h-[0.4rem] rounded-full bg-[var(--color-gray-30)]"></div>
-        <NativeSelect aria-label="플랜 선택" width="2xl" readOnly={false} required={false}>
+        <NativeSelect aria-label="플랜 선택" width={'auto'} readOnly={false} required={false}>
           <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>
           <NativeSelectOption value="2">옵션 2</NativeSelectOption>
         </NativeSelect>
@@ -107,17 +107,10 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
         <FormTable caption="계약자 관련 정보 입력하세요." cols={['', '']} variant="none" lineTop={false}>
           <FormRow>
             <FormCell title="설계번호" className="pr-[0.4rem]!">
-              {/* <Input
-                aria-label="설계번호 입력"
-                type="text"
-                value={planNumber[0]}
-                width="lg"
-                onChange={(e) => setPlanNumber([e.target.value, planNumber[1]])}
-              /> */}
               <InputCombo
                 aria-label="설계번호 입력"
                 type="text"
-                width="14.4rem"
+                width={144}
                 options={sampleOptions}
                 value={planNumber[0]}
                 clear={true}
@@ -129,21 +122,21 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
                 aria-label="설계번호 입력"
                 type="text"
                 value={planNumber[1]}
-                width="2.6rem"
+                width={26}
                 onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
               />
-              <FormItem className="w-[19.8rem] ml-1.5">
+              <Grid className="w-[19.8rem] ml-1.5 grid-cols-[1fr_2.5rem]">
                 <Input
                   aria-label="계약자명 입력"
                   type="text"
                   value={contractHolder}
-                  width="full"
+                  width={'full'}
                   onChange={(e) => setContractHolder(e.target.value)}
                 />
                 <Button variant="outlined" color="gray-light" aria-label="계약자 추가" only="icon" size="lg">
                   <SearchIcon color="var(--color-primary-50)" />
                 </Button>
-              </FormItem>
+              </Grid>
             </FormCell>
           </FormRow>
         </FormTable>

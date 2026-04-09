@@ -243,7 +243,8 @@ export default function Ltpa350Section() {
     <>
       {/* 퍼블 페이지확인용 (섹션에서 통합 관리) */}
       <NativeSelect
-        className="fixed top-1 left-[50%] z-100 w-[auto] opacity-80"
+        width={'auto'}
+        className="fixed top-1 left-[50%] z-100 opacity-80"
         value={currentViewKey}
         onChange={(e) => {
           setCurrentViewKey(e.target.value as ViewKey);

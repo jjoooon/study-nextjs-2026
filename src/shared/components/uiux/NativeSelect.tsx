@@ -7,7 +7,7 @@ import { SelectDropIcon } from '@icons';
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
   variant?: 'default';
   size?: UIUXsize;
-  width?: UIUXsize;
+  width?: number | string; // 숫자면 rem으로 변환, 'full'이면 100%, 'auto'면 auto
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
@@ -27,33 +27,9 @@ function NativeSelect({
   errorPs = 'bl',
   ...props
 }: UINativeSelectProps) {
-  const withStyle = () => {
-    const widthMap: Record<UIUXsize, string> = {
-      full: 'w-full flex-1',
-      auto: 'w-auto',
-      max: 'w-max',
-      min: 'w-min',
-      '2xs': 'w-[4rem]',
-      xs: 'w-[8rem]',
-      sm: 'w-[10rem]',
-      md: 'w-[12rem]',
-      lg: 'w-[14rem]',
-      xl: 'w-[16rem]',
-      '2xl': 'w-[18rem]',
-    };
-
-    if (width && widthMap[width]) return widthMap[width];
-    return '';
-  };
-
-  const inlineWidthStyle = (() => {
-    if (typeof width === 'number') return { width: `${width}rem` };
-    if (typeof width === 'string') {
-      if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
-      if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
-    }
-    return undefined;
-  })();
+  const resolvedWidth =
+    typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
+  const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
   const errorId = React.useId();
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
@@ -100,7 +76,7 @@ function NativeSelect({
           : 'var(--color-icon-secondary)';
 
   return (
-    <div className={cn('relative', withStyle(), className)} style={inlineWidthStyle}>
+    <div className={cn('relative', className)} style={widthStyle}>
       <div
         className="group/native-select relative has-[select:disabled]:opacity-50 tracking-[-0.13rem]"
         data-slot="native-select-wrapper"
