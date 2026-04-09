@@ -479,3 +479,23 @@
 .is-duplicate .uiux-duplicate-btn {
   display: none;
 }
+
+/* noheader */
+.no-header .ag-header,
+.no-header .ag-pinned-left-header,
+.no-header .ag-pinned-right-header {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+}
+
+.no-header .ag-root-wrapper-body {
+  border-top: 0 !important;
+}
+
+.no-header .ag-root-wrapper,
+.no-header .ag-root {
+  border: 0 !important;
+  box-shadow: none !important;
+}
