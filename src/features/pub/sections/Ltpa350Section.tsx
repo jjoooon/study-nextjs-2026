@@ -22,6 +22,7 @@ import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
+import { Ltpz005, type Ltpz005TabValue } from '../components/popups/Ltpz005';
 import { Ltpz018, type Ltpz018MenuItem } from '../components/popups/Ltpz018';
 
 // types
@@ -71,7 +72,7 @@ const data: Ltpa350DataType = {
       title: '한화 시그니처 여성 건강보험 3.0 2504',
       options: ['납입면제 강화형', '기본형'],
       planNumber: ['LA20234472050000', '2'],
-      contractHolder: '6012345 박하늘별님달',
+      contractHolder: '6012345 박하늘별님달박하늘별님달',
       planNumberList: [
         { label: 'LA20234472050000', value: 'LA20234472050000', name: '김은빈', amount: '23,000', state: '설계중' },
         { label: 'LA23234472050001', value: 'LA23234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
@@ -212,6 +213,8 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 
 export default function Ltpa350Section() {
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
+  const [isTaskStatusPopupOpen, setIsTaskStatusPopupOpen] = useState<boolean>(false);
+  const [taskStatusActiveTab, setTaskStatusActiveTab] = useState<Ltpz005TabValue>('common');
   const [isQuickLinksPopupOpen, setIsQuickLinksPopupOpen] = useState<boolean>(false);
   const [myMenuList, setMyMenuList] = useState<Ltpz018MenuItem[]>(DEFAULT_MY_MENU_LIST);
   const defaultStep = data.process.state.active;
@@ -289,11 +292,24 @@ export default function Ltpa350Section() {
         asideHead={
           <TaskStatusBoard
             state={[
-              { id: 1, status: '정상', label: '누적', sum: 24 },
-              { id: 2, status: '경고', label: '중복', sum: 1 },
+              { id: 1, status: '정상', label: '공통', sum: 24 },
+              { id: 2, status: '경고', label: '누적', sum: 1 },
               { id: 3, status: '중지', label: '직업', sum: 0 },
-              { id: 4, status: '정상', label: '기타', sum: 99 },
+              { id: 4, status: '정상', label: 'UW', sum: 99 },
             ]}
+            onItemClick={(item) => {
+              const nextActiveTab: Ltpz005TabValue =
+                item.label === '공통'
+                  ? 'common'
+                  : item.label === '누적'
+                    ? 'accum'
+                    : item.label === '직업'
+                      ? 'job'
+                      : 'expected-uw';
+
+              setTaskStatusActiveTab(nextActiveTab);
+              setIsTaskStatusPopupOpen(true);
+            }}
           />
         }
         // 계약정보
@@ -319,6 +335,14 @@ export default function Ltpa350Section() {
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>
+
+      {isTaskStatusPopupOpen && (
+        <Ltpz005
+          open={isTaskStatusPopupOpen}
+          onOpenChange={setIsTaskStatusPopupOpen}
+          initialActiveTab={taskStatusActiveTab}
+        />
+      )}
     </>
   );
 }

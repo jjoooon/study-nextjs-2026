@@ -7,7 +7,6 @@ import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@uiux/Dialog';
 
 type TaskStatusBoardProps<
   T extends {
@@ -17,6 +16,7 @@ type TaskStatusBoardProps<
   },
 > = {
   state: T[];
+  onItemClick?: (item: T) => void;
 };
 
 export function TaskStatusBoard<
@@ -25,10 +25,7 @@ export function TaskStatusBoard<
     status: '정상' | '경고' | '중지';
     label: string;
   },
->({ state }: TaskStatusBoardProps<T>) {
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [dialogContent, setDialogContent] = React.useState<{ label: string; sum?: number } | null>(null);
-
+>({ state, onItemClick }: TaskStatusBoardProps<T>) {
   return (
     <Gcol
       variant={'box'}
@@ -57,11 +54,7 @@ export function TaskStatusBoard<
                 'bg-[var(--color-gray-0)] text-[var(--color-gray-100)] border-[var(--color-gray-0)] px-1.5 justify-between text-[1.2rem] h-[3.1rem] rounded-[0.6rem]'
               )}
               onClick={() => {
-                setDialogContent({
-                  label: item.label,
-                  sum: 'sum' in item && typeof item.sum === 'number' ? item.sum : undefined,
-                });
-                setDialogOpen(true);
+                onItemClick?.(item);
               }}
             >
               <span className="flex items-center gap-1">
@@ -84,31 +77,6 @@ export function TaskStatusBoard<
           );
         })}
       </Grid>
-
-      {/* Dialog Component */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="h-[80vh] w-[90rem] max-w-[90%] min-h-[60rem]" resizable={true}>
-          <DialogHeader>
-            <DialogTitle>
-              꼭 확인해야 할 일! {dialogContent?.label ? `(${dialogContent.label})` : '(AAA000)'}
-            </DialogTitle>
-          </DialogHeader>
-
-          {/* 모달 내용 - FormTable 사용 */}
-          <div className="gap-8 flex-1 grid grid-rows-[auto_1fr] w-full px-[3.2rem]">
-            <Typo variant={'body-lg'}>
-              {dialogContent?.label ?? '선택된 항목이 없습니다.'}
-              {typeof dialogContent?.sum === 'number' ? ` / 건수: ${dialogContent.sum}` : ''}
-            </Typo>
-          </div>
-
-          <DialogFooter>
-            <Button variant={'outlined'} size={'lg'} color={'gray'} onClick={() => setDialogOpen(false)}>
-              닫기
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </Gcol>
   );
 }

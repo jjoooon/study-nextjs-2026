@@ -59,7 +59,6 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
 
   const handleOpen = (e: React.MouseEvent<HTMLInputElement>) => {
     const width = (e.target as HTMLInputElement).offsetWidth;
-
     setMeasuredWidth(width);
     setOpen(true);
     agGridAutoScroll();
@@ -110,16 +109,16 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
   };
 
   // side에 따라 Grow 위치 클래스 동적 결정
-  let growClass = 'absolute -right-[1.3rem]';
+  let growClass = 'absolute -right-[1.2rem]';
   if (popoverSide === 'bottom') {
-    growClass += ' -top-[4.4rem]';
+    growClass += ' -top-[4.3rem]';
   } else if (popoverSide === 'top') {
-    growClass += ' -bottom-[4.4rem]';
+    growClass += ' -bottom-[4.3rem]';
   }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <Grow className="relative h-full">
+      <Grow className="relative h-full" data-pop="111">
         <PopoverTrigger asChild>
           <input
             ref={(el) => {
@@ -159,7 +158,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
           }}
         >
           <Gcol className="w-full gap-3" placement={'ss'}>
-            <Grow className={cn('[&>div]:px-[0.6rem] [&>div]:py-[0.2rem]', growClass)}>
+            <Grow className={cn('[&>div]:border-0!', growClass)}>
               <Input
                 variant={'default'}
                 type="number"
@@ -169,10 +168,9 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                 max={max}
                 onChange={handleInputChange}
                 className={cn(
-                  'w-full border tracking-[-0.03rem] border-[0.2rem] rounded-[0.4rem] h-[2.5rem] bg-[#fff] text-right px-[0.6rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-[1.3rem]',
+                  'w-full border [&_input]:outline-[0.2rem] [&_input]:-outline-offset-[0.2rem] [&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:[appearance:textfield] [&_input]:[&::-webkit-outer-spin-button]:appearance-none [&_input]:[&::-webkit-inner-spin-button]:appearance-none',
                   measuredWidth ? `w-[${measuredWidth / 10}rem]` : ''
                 )}
-                commaAmount={true}
                 autoFocus
                 onKeyDown={handleKeyDown}
               />

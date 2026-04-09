@@ -9,6 +9,7 @@ import { SearchIcon, MemoIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type DefaultPageTitle = {
   title?: string;
@@ -39,13 +40,20 @@ export function PageTitle({ data }: PageTitleProps) {
       </Grow>
       <Grow className="gap-2.5 shrink-0" placement={'ec'}>
         <FormItem className="w-[19.8rem] ml-1.5">
-          <Input
-            aria-label="계약자명 입력"
-            type="text"
-            value={contractHolder}
-            width={'full'}
-            onChange={(e) => setContractHolder(e.target.value)}
-          />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Input
+                aria-label="계약자명 입력"
+                type="text"
+                value={contractHolder}
+                width={'full'}
+                onChange={(e) => setContractHolder(e.target.value)}
+              />
+            </TooltipTrigger>
+            <TooltipContent side="top" sideOffset={8}>
+              계약자명을 입력하세요.
+            </TooltipContent>
+          </Tooltip>
           <Button variant={'outlined'} color={'gray-light'} aria-label="계약자 추가" only={'icon'} size={'lg'}>
             <SearchIcon color="var(--color-primary-50)" />
           </Button>
@@ -90,11 +98,23 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
     <Grow placement="bwc" className="w-full py-1 gap-3">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
         <ViewMode state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
-        <Typo tag="h2" variant="heading-lg">
-          {safeData.title}
-        </Typo>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="none" color="gray">
+              <Typo tag="h2" variant="heading-lg">
+                {safeData.title}
+              </Typo>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" sideOffset={8}>
+            {safeData.title}
+          </TooltipContent>
+        </Tooltip>
+
         <div className="w-[0.4rem] h-[0.4rem] rounded-full bg-[var(--color-gray-30)]"></div>
-        <NativeSelect aria-label="플랜 선택" width={'auto'} readOnly={false} required={false}>
+
+        <NativeSelect aria-label="플랜 선택" width={200} readOnly={false} required={false}>
           <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>
           <NativeSelectOption value="2">옵션 2</NativeSelectOption>
         </NativeSelect>
@@ -126,13 +146,20 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
                 onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
               />
               <Grid className="w-[19.8rem] ml-1.5 grid-cols-[1fr_2.5rem]">
-                <Input
-                  aria-label="계약자명 입력"
-                  type="text"
-                  value={contractHolder}
-                  width={'full'}
-                  onChange={(e) => setContractHolder(e.target.value)}
-                />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Input
+                      aria-label="계약자명 입력"
+                      type="text"
+                      value={contractHolder}
+                      width={'full'}
+                      onChange={(e) => setContractHolder(e.target.value)}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" sideOffset={8}>
+                    {contractHolder}
+                  </TooltipContent>
+                </Tooltip>
                 <Button variant="outlined" color="gray-light" aria-label="계약자 추가" only="icon" size="lg">
                   <SearchIcon color="var(--color-primary-50)" />
                 </Button>

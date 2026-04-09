@@ -1080,15 +1080,15 @@ const LTPZ021P = () => {
             {(() => {
               const [tabActive, setTabActive] = React.useState('human');
               const tabData = [
-                { label: '인보험', value: 'human' },
-                { label: '물보험', value: 'property' },
+                { label: '인보험', value: 'human', id: 1 },
+                { label: '물보험', value: 'property', id: 2 },
               ];
               return (
                 <TabPager
                   data={tabData}
                   active={tabActive}
                   setActive={setTabActive}
-                  getValue={tab => tab.value}
+                  getValue={tab => String(tab.value)}
                   renderTab={tab => <span>{tab.label}</span>}
                   visibleCount={2}
                 >
@@ -1200,15 +1200,15 @@ const LTPZ021P = () => {
             {(() => {
               const [tabActive, setTabActive] = React.useState('human');
               const tabData = [
-                { label: '인보험', value: 'human' },
-                { label: '물보험', value: 'property' },
+                { label: '인보험', value: 'human', id: 1 },
+                { label: '물보험', value: 'property', id: 2 },
               ];
               return (
                 <TabPager
                   data={tabData}
                   active={tabActive}
                   setActive={setTabActive}
-                  getValue={tab => tab.value}
+                  getValue={tab => String(tab.value)}
                   renderTab={tab => <span>{tab.label}</span>}
                   visibleCount={2}
                 >

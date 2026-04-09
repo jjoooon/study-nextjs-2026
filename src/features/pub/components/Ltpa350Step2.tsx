@@ -30,9 +30,10 @@ import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
+
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 // data
 import type { Ltpa350Step2DataType, Ltpa350Step2DataType2 } from '../data/ltpa350Step2Data';
@@ -89,7 +90,7 @@ export function Ltpa350Step2({
   const tabListData = isFetus ? Ltpa350Step2Data2.tabList : Ltpa350Step2Data.tabList;
   const stringifiedTabs: MainHeadTab[] = tabListData.map((item) => ({
     ...item,
-    value: String(item.value),
+    value: String(item.id),
   }));
   const {
     tabs: LTPA350Tabs,
@@ -111,8 +112,8 @@ export function Ltpa350Step2({
       if (!checked) setGridKey((key) => key + 1);
     };
     return (
-      <Grow className="w-full px-[0.6rem]" placement={'bwc'}>
-        <Grow className="gap-1.5" placement={'sc'}>
+      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
+        <Grow gap={1.5} placement={'sc'}>
           <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
             선택 24건
           </Checkbox>
@@ -130,7 +131,7 @@ export function Ltpa350Step2({
             aria-label="담보명"
             placeholder="담보명 입력"
             type="text"
-            width={'md'}
+            width={'full'}
             size={'sm'}
             clear={true}
             value={coverageName}
@@ -595,7 +596,7 @@ export function Ltpa350Step2({
         children: [
           {
             field: 'field6',
-            headerName: '출생전',
+            headerName: '출생후',
             width: attributeColumnWidth[0],
             cellClass: 'text-center px-[0.2rem]!',
             cellClassRules: editableCellClassRules, // 선택 시에만 editable-cell 클래스 적용
@@ -613,6 +614,140 @@ export function Ltpa350Step2({
         field: 'field8',
         headerClass: 'px-0!',
         width: attributeColumnWidth[2],
+        cellClass: 'text-center px-0! tracking-tighter',
+        sortable: false,
+        filter: false,
+        cellStyle: (params: CellClassParams<LTPA350GridRow>) => {
+          const value = params.value as string;
+          if (value === '인수') return { color: '#006FF2' };
+          if (value === '거절' || value === '조건부인수') return { color: '#FB3F3F' };
+          return undefined;
+        },
+      },
+      {
+        headerName: '중복',
+        field: 'field9',
+        width: attributeColumnWidth[0],
+        headerClass: 'text-center px-0!',
+        cellClass: 'text-center px-0!',
+        sortable: false,
+        filter: false,
+        cellRenderer: duplicateRenderer,
+        resizable: false,
+      },
+    ],
+    [
+      amountCellClassRules,
+      attributeColumnWidth,
+      duplicateRenderer,
+      expiryCellRenderer,
+      getEditableCallback,
+      editableCellClassRules,
+      productNameHeader,
+      titleRenderer,
+    ]
+  );
+  // 재물
+  const columnDefs3: ColDef<LTPA350GridRow>[] = useMemo(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field1',
+        flex: 1,
+        cellClass: 'text-left p-0!',
+        sortable: false,
+        filter: false,
+        autoHeight: true,
+        suppressMovable: true, // 이동 방지
+        lockPosition: 'left', // 왼쪽 고정 유지
+        lockPinned: true, // 고정 열에서 제외 방지
+        tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
+          label: '담보명',
+          field: 'field1',
+        }),
+        headerComponent: productNameHeader,
+        cellRenderer: titleRenderer,
+      },
+      {
+        headerName: '속성',
+        field: 'field2',
+        width: attributeColumnWidth[0],
+        cellClass: 'text-center',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        resizable: false,
+        cellRenderer: attributeRenderer,
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'field3',
+        width: attributeColumnWidth[2],
+        headerClass: 'px-0!',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
+        cellClassRules: amountCellClassRules,
+        sortable: false,
+        filter: false,
+        editable: false,
+        cellRenderer: coverageAmountCellRenderer,
+      },
+      {
+        headerName: '가능금액(만원)',
+        field: 'field4',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+      },
+      {
+        headerName: '만기',
+        field: 'field5',
+        width: attributeColumnWidth[1],
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        editable: getEditableCallback('whenSelected'),
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '납기',
+        field: 'field6',
+        width: attributeColumnWidth[1],
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        editable: getEditableCallback('whenSelected'),
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '보험료(만원)',
+        field: 'field7',
+        width: attributeColumnWidth[1],
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+      },
+      {
+        headerName: '예상UW',
+        field: 'field8',
+        headerClass: 'px-0!',
+        width: attributeColumnWidth[1],
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
@@ -664,123 +799,117 @@ export function Ltpa350Step2({
           noValidate
         >
           <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
-            <LayoutMainHead>
-              <TabPager
-                data={LTPA350Tabs}
-                active={LTPA350Active}
-                setActive={Ltpa350SetActive}
-                visibleCount={5}
-                error={testError}
-                errorMsg="입력하세요."
-                getValue={(tab) => String(tab.value)}
-                renderTab={(tab) => (
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <span className="flex items-center">
-                        <span className="max-w-20 truncate block">{tab.name}</span>
-                        <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                      </span>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      <BulletList>
-                        {tab.info.map((info: string, index: number) => (
-                          <BulletListItem key={index} type="dot">
-                            {info}
-                          </BulletListItem>
-                        ))}
-                      </BulletList>
-                    </HoverCardContent>
-                  </HoverCard>
-                )}
-                renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-                  <Button
-                    variant={'text'}
-                    key={String(tab.value)}
-                    onClick={() => {
-                      setActive(String(tab.value));
-                      const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-                      if (idx !== -1) {
-                        const page = Math.floor(idx / visibleCount);
-                        setVisibleStart(page * visibleCount);
-                      }
-                    }}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="block">{tab.name}</span>
+            <TabPager
+              data={LTPA350Tabs}
+              active={LTPA350Active}
+              setActive={Ltpa350SetActive}
+              visibleCount={5}
+              error={testError}
+              errorMsg="입력하세요."
+              getValue={(tab) => String(tab.id)}
+              renderTab={(tab) => (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center">
+                      <span className="max-w-20 truncate block">{tab.name}</span>
                       <span className="block">{`${tab.age}세(${tab.gender})`}</span>
                     </span>
-                  </Button>
-                )}
-              >
-                <Gcol
-                  variant={'box-round-b'}
-                  placement={'ss'}
-                  className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}
+                  </TooltipTrigger>
+                  <TooltipContent side="top" sideOffset={8}>
+                    <BulletList>
+                      {tab.info.map((info: string, index: number) => (
+                        <BulletListItem key={index} type="dot">
+                          {info}
+                        </BulletListItem>
+                      ))}
+                    </BulletList>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
+                <Button
+                  variant={'none'}
+                  key={String(tab.id)}
+                  onClick={() => {
+                    setActive(String(tab.id));
+                    const idx = data.findIndex((t) => String(t.id) === String(tab.id));
+                    if (idx !== -1) {
+                      const page = Math.floor(idx / visibleCount);
+                      setVisibleStart(page * visibleCount);
+                    }
+                  }}
                 >
-                  <Grow gap={3}>
-                    <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
-                      <PaperIcon />
-                      담보패키지 선택
-                    </Button>
-                    <Grow className="flex-wrap" placement={'ss'}>
+                  <span className="flex items-start gap-2 w-full">
+                    <span className="block">{tab.name}</span>
+                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                  </span>
+                </Button>
+              )}
+            >
+              <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
+                <Grow gap={3}>
+                  <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                    <PaperIcon />
+                    담보패키지 선택
+                  </Button>
+                  <Grow className="flex-wrap" placement={'ss'}>
+                    {[
+                      { label: '사망후유', value: '0' },
+                      { label: '3대진단', value: '1' },
+                      { label: '입원일당', value: '2' },
+                      { label: '수술비', value: '3' },
+                      { label: '골절/화상', value: '4' },
+                      { label: '운전비용', value: '5' },
+                      { label: '치료비', value: '6' },
+                      { label: '기타', value: '7' },
+                    ].map((category) => (
+                      <Checkbox key={category.value} variant={'button'}>
+                        {category.label}
+                      </Checkbox>
+                    ))}
+                  </Grow>
+                </Grow>
+
+                <Grow gap={3} className="w-full" placement={'bwc'}>
+                  <Grow gap={3} className="w-full" placement={'ss'}>
+                    <Grow className="flex-wrap shrink-0" placement={'ss'}>
                       {[
-                        { label: '사망후유', value: '0' },
-                        { label: '3대진단', value: '1' },
-                        { label: '입원일당', value: '2' },
-                        { label: '수술비', value: '3' },
-                        { label: '골절/화상', value: '4' },
-                        { label: '운전비용', value: '5' },
-                        { label: '치료비', value: '6' },
-                        { label: '기타', value: '7' },
+                        { label: '갱신', value: '1' },
+                        { label: '비갱신', value: '2' },
                       ].map((category) => (
                         <Checkbox key={category.value} variant={'button'}>
                           {category.label}
                         </Checkbox>
                       ))}
                     </Grow>
+                    <HashList
+                      data={[
+                        '암',
+                        '뇌',
+                        '심',
+                        '수술',
+                        '특정',
+                        '표적',
+                        '치료',
+                        '골절',
+                        '화상',
+                        '치매',
+                        '심',
+                        '수술',
+                        '특정',
+                        '표적',
+                        '치료',
+                      ]}
+                    />
                   </Grow>
-
-                  <Grow gap={3} className="w-full" placement={'bwc'}>
-                    <Grow gap={3} className="w-full" placement={'ss'}>
-                      <Grow className="flex-wrap shrink-0" placement={'ss'}>
-                        {[
-                          { label: '갱신', value: '1' },
-                          { label: '비갱신', value: '2' },
-                        ].map((category) => (
-                          <Checkbox key={category.value} variant={'button'}>
-                            {category.label}
-                          </Checkbox>
-                        ))}
-                      </Grow>
-                      <HashList
-                        data={[
-                          '암',
-                          '뇌',
-                          '심',
-                          '수술',
-                          '특정',
-                          '표적',
-                          '치료',
-                          '골절',
-                          '화상',
-                          '치매',
-                          '심',
-                          '수술',
-                          '특정',
-                          '표적',
-                          '치료',
-                        ]}
-                      />
-                    </Grow>
-                    <Grow placement={'ec'}>
-                      <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
-                        <ResetIcon color="var(--color-gray-500)" />
-                      </Button>
-                    </Grow>
+                  <Grow placement={'ec'}>
+                    <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
+                      <ResetIcon color="var(--color-gray-500)" />
+                    </Button>
                   </Grow>
-                </Gcol>
-              </TabPager>
-            </LayoutMainHead>
+                </Grow>
+              </Gcol>
+            </TabPager>
 
             <LayoutMainBody>
               <LayoutScrollWrap className="grid-rows-[auto_1fr]">
@@ -795,7 +924,7 @@ export function Ltpa350Step2({
                     <Checkbox>담보초기화</Checkbox>
                     <Checkbox>플랜기본값</Checkbox>
                     <Grow className="gap-1">
-                      <NativeSelect aria-label="플랜 선택" width={'sm'} size={'sm'} readOnly={false} required={false}>
+                      <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
                         {[
                           { label: '플랜 선택', value: 'planA' },
                           { label: '올인원플랜(15~89세)', value: 'planB' },
@@ -808,7 +937,7 @@ export function Ltpa350Step2({
                       </NativeSelect>
                       <NativeSelect
                         aria-label="나만의 설계선택"
-                        width={'lg'}
+                        width={140}
                         size={'sm'}
                         readOnly={false}
                         required={false}
@@ -933,10 +1062,10 @@ export function Ltpa350Step2({
               <MainBottom>
                 <MainBottomItem>
                   <FormTable
-                    className="max-w-[90rem]"
+                    className="w-[auto]"
                     lineTop={false}
-                    variant={'none'}
-                    cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}
+                    variant={'bottom'}
+                    cols={['w-[9rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
                   >
                     <FormRow>
                       <FormCell title="만기금(환급률)">
@@ -946,43 +1075,44 @@ export function Ltpa350Step2({
                         <Input
                           type="tel"
                           commaAmount={true}
-                          value="100,000"
+                          value={100000}
+                          width={100}
                           readOnly={true}
-                          className="text-right"
-                          after={<span>원</span>}
+                          className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                         />
                         <Input
                           type="text"
+                          commaAmount={true}
                           value={refundRate}
                           onChange={(e) => setRefundRate(e.target.value)}
-                          width="6rem"
-                          className="text-right"
-                          after={<span>%</span>}
+                          width={60}
+                          className="[&_input]:text-right"
                         />
+                        %
                       </FormCell>
                       <FormCell title="보장보험료">
                         <Input
                           type="tel"
                           commaAmount={true}
-                          value="100,000"
+                          value={100000}
+                          width={100}
                           readOnly={true}
-                          className="text-right"
-                          after={<span>원</span>}
+                          className="[&_input]:text-right"
                         />
                       </FormCell>
                       <FormCell title="적립보험료">
                         <Input
                           type="tel"
                           commaAmount={true}
-                          value="100,000"
+                          value={100000}
+                          width={100}
                           readOnly={true}
                           className="text-right"
-                          after={<span>원</span>}
                         />
                       </FormCell>
                     </FormRow>
                   </FormTable>
-                  <FormTable className="w-[28rem]" lineTop={false} variant={'none'} cols={['w-[7rem]', '']}>
+                  <FormTable className="w-[auto]" lineTop={false} variant={'bottom'} cols={['w-[7rem]', '']}>
                     <FormRow>
                       <FormCell title="합계보험료">
                         <Input
@@ -990,7 +1120,7 @@ export function Ltpa350Step2({
                           commaAmount={true}
                           value={amount}
                           clear={true}
-                          width={'full'}
+                          width={130}
                           onChange={(e) => {
                             setAmount(e.target.value);
                             setTestError(!e.target.value);
@@ -1000,7 +1130,6 @@ export function Ltpa350Step2({
                           errorMsg={'계약자 입력은 필수입니다.'}
                           errorPs={'tr'}
                           className="text-right font-bold"
-                          after={<span className="font-bold">원</span>}
                         />
                       </FormCell>
                     </FormRow>
