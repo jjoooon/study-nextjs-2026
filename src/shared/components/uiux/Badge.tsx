@@ -57,6 +57,7 @@ const badgeVariants = cva(
         gray: '',
         bluegray: '',
         secondary: '',
+        purple: '',
       },
     },
     compoundVariants: [
@@ -72,6 +73,7 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'gray', class: 'bg-[var(--color-blue-gray-15)] text-[var(--color-gray-70)]' },
       { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
+      { variant: 'contained', color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
 
       { variant: 'rounded', size: 'sm', class: 'pl-[0.4rem] pr-[0.6rem]' },
 
@@ -112,6 +114,11 @@ const badgeVariants = cva(
         color: 'secondary',
         class: 'bg-[var(--color-gray-0)] border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]',
       },
+      {
+        variant: 'soft',
+        color: 'purple',
+        class: 'bg-[#F0E6FF] border-[#853EE2] text-[#853EE2]',
+      },
       // Outlined + Colors
       {
         variant: 'outlined',
@@ -133,6 +140,11 @@ const badgeVariants = cva(
       },
       {
         variant: 'outlined',
+        color: 'purple',
+        class: 'border-[#853EE2] text-[#853EE2]',
+      },
+      {
+        variant: 'outlined',
         color: 'secondary',
         class: 'border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]',
       },
@@ -142,7 +154,7 @@ const badgeVariants = cva(
       { variant: 'ghost', color: 'green', class: 'text-[var(--color-success-50)]' },
       { variant: 'ghost', color: 'primary', class: 'text-[var(--color-primary-50)]' },
       { variant: 'ghost', color: 'gray', class: 'text-[var(--color-gray-70)]' },
-      { variant: 'ghost', color: 'bluegray', class: 'text-[var(--color-blue-gray-50)]' },
+      { variant: 'ghost', color: 'purple', class: 'text-[#853EE2]' },
       { variant: 'ghost', color: 'secondary', class: 'text-[var(--color-secondary-50)]' },
     ],
     defaultVariants: {

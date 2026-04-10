@@ -5,7 +5,7 @@ import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
 import { AdderIcon2, AiIcon, CalendarIcon, ChevronDownIcon, FileItemIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import * as React from 'react';
@@ -14,6 +14,12 @@ import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { useCallback, useState } from 'react';
+import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridReact } from 'ag-grid-react';
+import { Badge } from '@/shared/components/uiux/Badge';
 
 const productCategoryOptions = [
   { value: 'all', label: '전체' },
@@ -181,6 +187,436 @@ export default function Ltpa020Section() {
     },
   ];
 
+
+
+
+  // 상품선택
+  const [checkedMap, setCheckedMap] = React.useState({ selected: true, unselected: false });
+  const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+  const [gridKey, setGridKey] = useState(0);
+  const [coverageName, setCoverageName] = useState('');
+  const handleActionButtonClick = useCallback(() => {}, []);
+  const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
+    setCheckedMap((map) => ({ ...map, [key]: !!checked }));
+  };
+
+
+  const importanceCellRenderer =  (params: ICellRendererParams<DummyDataType>) => {
+    return <Grow className='w-full' placement='bwc'>
+      <Grow>
+        <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="favorite">중요</Checkbox>{params.data?.field2 ?? ''}
+      </Grow>
+      <Grow>
+        {params.data?.badge && (
+            <Grow className="shrink-0">
+              {params.data.badge.includes('무해지') && (
+                <Badge color={'green'} className="w-[3rem]">
+                  무해지
+                </Badge>
+              )}
+              {params.data.badge.includes('간편') && (
+                <Badge color={'blue'} className="w-[3rem]">
+                  간편
+                </Badge>
+              )}
+              {params.data.badge.includes('할증') && (
+                <Badge color={'red'} className="w-[3rem]">
+                  할증
+                </Badge>
+              )}
+              {params.data.badge.includes('여성') && (
+                <Badge color={'purple'} className="w-[3rem]">
+                  여성
+                </Badge>
+              )}
+            </Grow>
+          )}
+      </Grow>
+    </Grow>;
+  };
+  
+
+  type DummyDataType = {
+    id: number;
+    field1: string | number;
+    field2: string | number;
+    importance: boolean;
+    badge?: string[];
+    field3: string | number;
+  };
+
+  const dummyData: DummyDataType[] = [
+    {
+      id: 1,
+      field1: '종합건강22',
+      field2: '한화 더 경증 간편건강보험간연만기 갱신형)2601',
+      importance: true,
+      badge: ['무해지', '할증'],
+      field3: '15~90세',
+    },
+    {
+      id: 2,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },  
+    {
+      id: 3,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      badge: ['간편'],
+      field3: '15~90세',
+    },
+    {
+      id: 4,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      badge: ['할증'],
+      field3: '15~90세',
+    },
+    {
+      id: 5,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 6,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      badge: ['여성','무해지', '할증'],
+      field3: '15~90세',
+    },
+    {
+      id: 7,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 8,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 9,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 10,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 11,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 12,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 13,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 14,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 15,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 16,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 17,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 18,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },{
+      id: 19,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+    {
+      id: 20,
+      field1: '종합건강',
+      field2: '한화 311 간편건강보험(연만기 경신형)',
+      importance: false,
+      field3: '15~90세',
+    },
+  ];
+
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '상품분류', 
+      field: 'field1',
+      cellClass: 'text-center',
+      width: 100,
+    },
+    {
+      headerName: '상품명',
+      flex: 1,
+      field: 'field2',
+      cellClass: 'text-left',
+      cellRenderer: importanceCellRenderer,
+    },
+    {
+      headerName: '상품분류', 
+      field: 'field3',
+      cellClass: 'text-center',
+      width: 100,
+    },
+  ];
+
+  const designCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
+    return (
+      <Grow className="h-full w-full">
+        <Grow className="border-r border-[#ddddde] h-full aspect-auto w-[4rem] flex items-center justify-center shrink-0 pr-[1rem] pl-[0.4rem]">
+          {params.data?.field1}
+        </Grow>
+        <Grow className="flex-1 justify-start">
+          {params.data?.field2}
+        </Grow>
+        <Grow>
+          {params.data?.btn && (
+            <Button
+              color="gray"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="contained"
+            >
+              납면
+            </Button>
+            )}
+        </Grow>
+      </Grow>
+    );
+  };
+  const moreCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
+    return (
+      <Grow className="h-full w-full">
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          보기
+        </Button>
+      </Grow>
+    )
+  };  
+
+  type DummyDataType2 = {
+    id: number;
+    field1: string | number;
+    field2: string | number;
+    btn?: boolean;
+  };
+
+  const dummyData2: DummyDataType2[] = [
+    {
+      id: 1,
+      field1: '1종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+      btn: true
+    },
+    {
+      id: 2,
+      field1: '2종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 3,
+      field1: '3종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 4,
+      field1: '4종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 5,
+      field1: '4종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 6,
+      field1: '4종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 7,
+      field1: '4종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 8,
+      field1: '4종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+    {
+      id: 9,
+      field1: '4종',
+      field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    },
+  ];
+
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '종구분', 
+      field: 'field1',
+      flex: 1,
+      cellClass: 'text-center',
+      cellRenderer: designCellRenderer,
+    },
+     {
+      headerName: '알릴사항', 
+      cellClass: 'text-center',
+      width: 60,
+      cellRenderer: moreCellRenderer,
+    },
+  ];
+  
+
+
+  type DummyDataType3 = {
+    id: number;
+    field1: string | number;
+  };
+
+  const dummyData3: DummyDataType3[] = [
+    {
+      id: 1,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)',
+    },
+    {
+      id: 2,
+      field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)',
+    },
+    {
+      id: 3,
+      field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)',
+    },
+    {
+      id: 4,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
+    },
+    {
+      id: 5,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세))', 
+    },
+    {
+      id: 6,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(11형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)5~40세)',
+    },
+    {
+      id: 7,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)15~40세)',
+    },
+    {
+      id: 8,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
+    },
+    {
+      id: 9,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
+    },
+    {
+      id: 10,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
+    },
+    {
+      id: 11,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
+    },
+    {
+      id: 12,
+      field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
+    },
+  ];
+
+  const columnDefs3: ColDef<DummyDataType3>[] = [
+    {
+      headerName: '플랜명', 
+      field: 'field1',
+      flex: 1,
+    },
+    {
+      headerName: '담보보기', 
+      width: 60,
+      cellRenderer: moreCellRenderer,
+    },
+  ];
+
+  type Ltpz032TabType = {
+    name: string;
+    value: string;
+    label: string;
+  };
+
+  const DATA_TABS: Ltpz032TabType[] = [
+    {
+      name: '회사플랜',
+      value: 'tab1',
+      label: '회사플랜(6)',
+    },
+    {
+      name: '기관플랜',
+      value: 'tab2',
+      label: '기관플랜(6)',
+    },
+    {
+      name: '나만의플랜',
+      value: 'tab3',
+      label: '나만의플랜(6)',
+    },
+  ];
+
+  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+
   return (
     <>
       <LayoutHead>
@@ -188,7 +624,7 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol gap={0}>
+          <Gcol className='w-full' gap={0}>
             <Gcol
               className="w-full"
               gap={4}
@@ -230,35 +666,89 @@ export default function Ltpa020Section() {
                 variant="box"
                 visibleCount={4}
               >
-                <Grow className="flex w-full">
-                  <div className={activeTab === 'product' ? 'block' : 'hidden'}>
-                    <Grow className='w-full'>
-                      <Gcol className='w-full'>
+                <Grow className="flex w-full" placement='ss'>
+                  <div className={`w-full ${activeTab === 'product' ? 'block' : 'hidden'}`}>
+                    <Grow className='w-full' placement='ss' gap={5}>
+                      <TableFold>
+                        <TableFoldHead title="상품정보"></TableFoldHead>
+                        <TableFoldBody className="w-full">
+                          <div className="ag-theme-alpine w-full h-[50rem]!">
+                            <AgGridReact<DummyDataType>
+                              getRowId={(params) => String(params.data.id)}
+                              noRowsOverlayComponent={AgGridEmptyComponent}
+                              rowData={dummyData}
+                              columnDefs={columnDefs}
+                              defaultColDef={{
+                                sortable: false,
+                                resizable: false,
+                              }}
+                              headerHeight={30}
+                              rowHeight={30}
+                              domLayout="normal"
+                            />
+                          </div>
+                        </TableFoldBody>
+                      </TableFold>
+                      <Gcol className='max-w-[42.5rem]'>
                         <TableFold>
-                          <TableFoldHead title="상품정보">
-                          </TableFoldHead>
+                          <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"></TableFoldHead>
                           <TableFoldBody>
-                            <div>table 영역</div>
+                            <Gcol className='w-full' gap={5}>
+                              <Gcol className='w-full'>
+                                  <div className="ag-theme-alpine w-full h-60!">
+                                  <AgGridReact<DummyDataType2>
+                                    getRowId={(params) => String(params.data.id)}
+                                    noRowsOverlayComponent={AgGridEmptyComponent}
+                                    rowData={dummyData2}
+                                    columnDefs={columnDefs2}
+                                    defaultColDef={{
+                                      sortable: false,
+                                      resizable: false,
+                                    }}
+                                    headerHeight={30}
+                                    rowHeight={30}
+                                    domLayout="normal"
+                                  />
+                                </div>
+                              </Gcol>
+                              <Gcol className='w-full'>
+                                <TabPager
+                                    data={tabs}
+                                    active={active}
+                                    setActive={setActive}
+                                    removable={false}
+                                    onRemove={handleRemove}
+                                    visibleCount={4}
+                                    variant="default"
+                                    hasTableBelow={true}
+                                    error={false}
+                                    errorMsg="에러 메시지 예시"
+                                    getValue={(tab) => String(tab.value)}
+                                    renderTab={(tab) => <span>{tab.label}</span>}
+                                    renderDropdownItem={false}
+                                  >
+                                  <div className="ag-theme-alpine w-full h-[30rem]! ag-border-t">
+                                    <AgGridReact<DummyDataType3>
+                                      getRowId={(params) => String(params.data.id)}
+                                      noRowsOverlayComponent={AgGridEmptyComponent}
+                                      rowData={dummyData3}
+                                      columnDefs={columnDefs3}
+                                      defaultColDef={{
+                                        sortable: false,
+                                        resizable: false,
+                                      }}
+                                      headerHeight={30}
+                                      rowHeight={30}
+                                      domLayout="normal"
+                                    />
+                                  </div>
+                                </TabPager>
+                              </Gcol>
+                            </Gcol>  
                           </TableFoldBody>
                         </TableFold>
                       </Gcol>
-                      <Gcol>
-                        <Gcol>
-                          <TableFold>
-                            <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보">
-                            </TableFoldHead>
-                            <TableFoldBody>
-                              <div>table 영역</div>
-                            </TableFoldBody>
-                          </TableFold>
-                        </Gcol>
-                      </Gcol>
                     </Grow>
-                  </div>
-                  <div className={activeTab === 'recommend' ? 'block' : 'hidden'}>
-                    <Typo tag="p" variant="body-md" weight="bold" className="text-[#453C38]">
-                      추천설계
-                    </Typo>
                   </div>
                 </Grow>
               </TabPager>
