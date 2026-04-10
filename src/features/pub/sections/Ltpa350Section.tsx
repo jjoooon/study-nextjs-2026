@@ -93,8 +93,8 @@ const data: Ltpa350DataType = {
       { step: 6, label: '수납' },
     ],
     state: {
-      complete: [1], //완료단계
-      active: 2, //현재단계
+      complete: [4], //완료단계
+      active: 5, //현재단계
     },
   },
 };

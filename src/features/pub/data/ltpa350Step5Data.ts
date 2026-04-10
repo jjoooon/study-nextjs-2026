@@ -1,20 +1,20 @@
-export interface Ltpa350Step1DataType {
+export interface Ltpa350Step5DataType {
   // 만기수익자
   ContractorInfo: {
-    insStartDate: string;
-    insStartPeriod: string;
-    insEndPeriod: string;
-    expiryDate: string;
-    payPeriod: string;
-    payCycle: string;
-    renewCycle: string;
-    noticeType: string;
-    noticeType1: string;
-    noticeType2: string;
-    noticeType3: string;
-    noticeType4: string;
-    noticeType5: string;
-    noticeType6: string;
+    matBnf: string;
+    postAddr: string;
+    replCont: string;
+    sign: string;
+    deliveryMethod: string;
+    replacementCont: string;
+    benChange: string;
+    taxTarget: string;
+    bOCheck: string;
+    receiptDate: string;
+    autoDebitCancel: string;
+    retentionMobPay: string;
+    disabilityConv: string;
+    adultGuardian: string;
   };
   InsuredPerson: Array<{
     name: string;
@@ -49,24 +49,23 @@ export interface Ltpa350Step1DataType {
     designAmount: number;
     remainingLimit: number;
   };
-
-
+}
 export const Ltpa350Step5Data: Ltpa350Step5DataType = {
   ContractorInfo: {
-    insStartDate: '2026-03-04', // 만기수익자
-    insStartPeriod: '2026-01-30', // 우편물수령처
-    insEndPeriod: '2046-03-04', // 전자적 안내동의
-    expiryDate: '80', // 서명방법
-    payPeriod: '10', // 증권전달방법
-    payCycle: '월납', // 승환계약여부
-    renewCycle: '3', // 수익자 지정변경
-    noticeType: '1형', // 조세규정확인대상
-    noticeType1: '1형', // 실소유자 확인
-    noticeType2: '1형', // 영수일자
-    noticeType3: '1형', // 당월해지 자동이체 신청
-    noticeType4: '1형', // 해지 방지 휴대폰 결제
-    noticeType5: '1형', // 장애인보험 전환
-    noticeType6: '1형', // 성년후견인지정여부
+    matBnf: '2026-03-04', // 만기수익자
+    postAddr: '2026-01-30', // 우편물수령처
+    replCont: '2046-03-04', // 전자적 안내동의
+    sign: '80', // 서명방법
+    deliveryMethod: '10', // 증권전달방법
+    replacementCont: '월납', // 승환계약여부
+    benChange: '3', // 수익자 지정변경
+    taxTarget: '1형', // 조세규정확인대상
+    bOCheck: '1형', // 실소유자 확인
+    receiptDate: '1형', // 영수일자
+    autoDebitCancel: '1형', // 당월해지 자동이체 신청
+    retentionMobPay: '1형', // 해지 방지 휴대폰 결제
+    disabilityConv: '1형', // 장애인보험 전환
+    adultGuardian: '1형', // 성년후견인지정여부
   },
 
   InsuredPerson: [
@@ -84,7 +83,7 @@ export const Ltpa350Step5Data: Ltpa350Step5DataType = {
       jobGrade: '2급', // 직업급수
       driveType: '자가용', // 운전형태 (예시: 자가용, 영업용, 미운전)
       motorcycle: '운전안함', // 이륜차 (예시: 사용, 미사용)
-      relationWithContractor: '본인', // 계약자와의 관계
+      relationWithReplacementContractor: '본인', // 계약자와의 관계
       actualLossSimulDesignNo: 'LA260219319244', // (실손)동시설계 번호
       premium: 33301, // 보험료
       isDiscountApplied: 'Y', // 할인적용 여부
