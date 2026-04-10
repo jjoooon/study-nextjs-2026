@@ -288,18 +288,18 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                       </Grow>
                     </FormCell>
                     <FormCell title={'해지 방지 휴대폰 결제'}>
-                      <Grow placement="ss">
-                        <RadioGroup defaultValue="동의함" className="w-[10rem]" required>
-                          {[
-                            { value: '동의함', id: 'agree', label: '동의함' },
-                            { value: '동의안함', id: 'disagree', label: '동의안함' },
-                          ].map((option) => (
-                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                              {option.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
-                        <Grow placement="ss">
+                      <Grow placement="bws">
+                        <Grow placement='ss'>
+                          <RadioGroup defaultValue="동의함" className="w-[10rem]" required>
+                            {[
+                              { value: '동의함', id: 'agree', label: '동의함' },
+                              { value: '동의안함', id: 'disagree', label: '동의안함' },
+                            ].map((option) => (
+                              <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                {option.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
                           <NativeSelect aria-label="통신사" width={100}>
                             {[
                               { value: '통신사', id: 'carrier-1', label: '통신사' },
@@ -310,6 +310,8 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                               </NativeSelectOption>
                             ))}
                           </NativeSelect>
+                        </Grow>
+                        <Grow>
                           <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                             알림톡발송
                           </Button>
