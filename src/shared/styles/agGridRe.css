@@ -503,3 +503,8 @@
   border: 0 !important;
   box-shadow: none !important;
 }
+
+/* notopborder */
+.ag-border-t .ag-root-wrapper {
+  border-top: 0 !important;
+}
