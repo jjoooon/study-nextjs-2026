@@ -3,11 +3,20 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Gcol, Typo } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooter,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -19,6 +28,9 @@ export const Ltpz014 = ({ open, onOpenChange }: PopupBaseProps) => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               동영상 매뉴얼 바로가기
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ014)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -50,14 +62,26 @@ export const Ltpz014 = ({ open, onOpenChange }: PopupBaseProps) => {
                 휴대폰 전자서명 및 바이오인증 매뉴얼
               </Button>
             </Gcol>
-            <BulletList position="col">
-              <BulletListItem className="whitespace-nowrap" color="default" size="md" type="star">
-                LIFEPRO 앱에서도 확인하실 수 있습니다.<br></br>
-                클래스&gt;전산기초&gt;전산및모바일길라잡이&gt;기초매뉴얼
-              </BulletListItem>
-            </BulletList>
+            <Typo color="default" icon="info" tag="div" variant="body-md" weight="normal">
+              LIFEPRO 앱에서도 확인하실 수 있습니다.
+              <br />
+              클래스&gt;전산기초&gt;전산및모바일길라잡이&gt;기초매뉴얼
+            </Typo>
           </Gcol>
         </DialogSection>
+
+        <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
+          <DialogBottomInfo />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

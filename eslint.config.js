@@ -143,19 +143,19 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         alphabetize: { order: 'asc' }
       }
     ],
-    'boundaries/element-types': [
+    'boundaries/dependencies': [
       'error',
       {
         default: 'disallow',
         rules: [
           {
-            from: 'shared',
-            allow: ['shared'],
+            from: { type: 'shared' },
+            allow: [{ to: { type: 'shared' } }],
             message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
           },
           {
-            from: 'features',
-            allow: ['shared'],
+            from: { type: 'features' },
+            allow: [{ to: { type: 'shared' } }],
             message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
           },
         ],

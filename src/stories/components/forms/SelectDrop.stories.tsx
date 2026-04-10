@@ -3,7 +3,7 @@ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-d
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Gcol, Grow } from '@atoms';
-import SelectDrop from '@common/SelectDrop';
+import { SelectDrop } from '@common/SelectDrop';
 
 import type { SelectDropProps } from '@common/SelectDrop';
 import { Button } from '@uiux/Button';
@@ -84,7 +84,7 @@ const meta: Meta<SelectDropStoryProps> = {
             </ul>
               {`
 \`\`\`tsx
-import SelectDrop from '@common/SelectDrop';
+import { SelectDrop } from '@common/SelectDrop';
 
 <SelectDrop
   typeMode={'checkbox' | 'radio'}

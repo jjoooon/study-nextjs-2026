@@ -294,7 +294,7 @@ function SelectDrop<TValue extends string = string>({
             aria-readonly={readOnly || undefined}
             className={cn(
               triggerStyle,
-              'aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]'
+              'w-full aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]'
             )}
           >
             <span className="truncate text-left">{displayText}</span>
@@ -414,4 +414,4 @@ function SelectDrop<TValue extends string = string>({
   );
 }
 
-export default SelectDrop;
+export { SelectDrop };

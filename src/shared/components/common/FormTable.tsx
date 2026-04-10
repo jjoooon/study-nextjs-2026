@@ -14,6 +14,7 @@ const FormCellVariants = cva('', {
       light: 'bg-gray-50',
       none: 'bg-transparent border-0! p-0 [&+td]:border-0!',
       head: 'bg-transparent border-0! p-0 [&+td]:border-0!',
+      bottom: 'bg-transparent border-0! p-0 [&+td]:border-0!',
       vertical: false,
     },
   },
@@ -139,7 +140,9 @@ export const FormCell = ({
       ? 'primary'
       : contextVariant === 'none' || contextVariant === 'head'
         ? 'blueGray'
-        : 'default';
+        : contextVariant === 'bottom'
+          ? 'default'
+          : 'default';
 
   return (
     <>
@@ -180,7 +183,7 @@ export const FormTable = ({
   lineTop = true,
 }: FormTableProps) => {
   const variantStyles = {
-    default: 'table-fixed w-full border-collapse',
+    default: `table-fixed w-full border-collapse ` + className,
     primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
 
@@ -199,6 +202,11 @@ export const FormTable = ({
     [&>table>tbody>tr>td+th]:pl-[1.6rem]!`,
 
     none: `border-0! bg-transparent 
+    [&>table>tbody>tr>th]:bg-transparent [&>table>tbody>tr>th]:border-0! [&>table>tbody>tr>th]:py-0! [&>table>tbody>tr>th]:pl-0! [&>table>tbody>tr>th]:pr-[0.8rem] [&>table>tbody>tr>th]:h-auto! [&>table>tbody>tr>th]:break-keep!   
+    [&>table>tbody>tr>td]:border-0! [&>table>tbody>tr>td]:p-0! [&>table>tbody>tr>td]:h-auto!   
+    [&>table>tbody>tr]:border-0! [&>table>tbody>tr>td+th]:pl-[2.4rem]! [&>table>tbody>tr~tr>*]:pt-[0.6rem]!`,
+
+    bottom: `border-0! bg-transparent 
     [&>table>tbody>tr>th]:bg-transparent [&>table>tbody>tr>th]:border-0! [&>table>tbody>tr>th]:py-0! [&>table>tbody>tr>th]:pl-0! [&>table>tbody>tr>th]:pr-[0.8rem] [&>table>tbody>tr>th]:h-auto! [&>table>tbody>tr>th]:break-keep!   
     [&>table>tbody>tr>td]:border-0! [&>table>tbody>tr>td]:p-0! [&>table>tbody>tr>td]:h-auto!   
     [&>table>tbody>tr]:border-0! [&>table>tbody>tr>td+th]:pl-[2.4rem]! [&>table>tbody>tr~tr>*]:pt-[0.6rem]!`,

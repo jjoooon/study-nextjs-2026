@@ -1,7 +1,7 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
-import { ZoomInIcon } from '@icons';
+import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
@@ -34,16 +34,14 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
 
   return (
     <Gcol className="w-full pb-1.5 relative">
-      {viewKey !== 'view3' && (
+      {viewKey !== 'view3' && viewKey !== 'view4' && viewKey !== 'view5' && (
         <Grow
           placement={'bwc'}
           className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
         >
           <Checkbox variant={'button'}>4세대</Checkbox>
           <Grow className="gap-[0.2rem]">
-            <Typo variant={'amount-md'} color={'primary'}>
-              {resolvedDataTotal.insGen}
-            </Typo>
+            <Typo variant={'amount-md'}>{resolvedDataTotal.insGen}</Typo>
             <Typo variant={'heading-md'}>원</Typo>
           </Grow>
         </Grow>
@@ -51,7 +49,9 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
 
       <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] bg-[var(--color-gray-0)]">
         <Grow placement={'bwc'}>
-          <Typo variant={'heading-md'}>납입보험료</Typo>
+          <Typo variant={'body-sm'} weight={'bold'}>
+            납입보험료
+          </Typo>
           <Grow className="gap-[0.2rem]">
             <Typo variant={'amount-md'} color={'primary'}>
               {paymentAmountText}
@@ -74,11 +74,11 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
         <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
           제안서
-          <ZoomInIcon color={'var(--color-secondary-50)'} />
+          <PlusIcon color={'var(--color-secondary-50)'} />
         </Button>
         <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
           출력
-          <ZoomInIcon color={'var(--color-secondary-50)'} />
+          <PlusIcon color={'var(--color-secondary-50)'} />
         </Button>
         <AIChatBot />
       </Grow>

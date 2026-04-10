@@ -39,9 +39,33 @@ function formatJumin(input: string): string {
 }
 
 function formatAmount(value: string) {
-  const num = value.replace(/[^0-9]/g, '');
-  if (!num) return '';
-  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const sanitized = sanitizeAmountInput(value);
+  if (!sanitized) return '';
+
+  const hasDot = sanitized.includes('.');
+  const [intPartRaw = '', decimalPartRaw = ''] = sanitized.split('.');
+  const intPart = intPartRaw.replace(/^0+(?=\d)/, '');
+  const formattedInt = (intPart || '0').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  if (!hasDot) {
+    return formattedInt;
+  }
+
+  return `${formattedInt}.${decimalPartRaw}`;
+}
+
+function sanitizeAmountInput(value: string): string {
+  const sanitized = value.replace(/[^0-9.]/g, '');
+  const dotIndex = sanitized.indexOf('.');
+
+  if (dotIndex === -1) {
+    return sanitized;
+  }
+
+  const intPart = sanitized.slice(0, dotIndex).replace(/\./g, '');
+  const decimalPart = sanitized.slice(dotIndex + 1).replace(/\./g, '');
+
+  return `${intPart}.${decimalPart}`;
 }
 
 function Input({
@@ -72,12 +96,13 @@ function Input({
   const isControlled = value !== undefined;
   const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
 
-  let displayValue = value ?? '';
+  const rawValue = value === undefined || value === null ? '' : String(value);
+  let displayValue = rawValue;
 
-  if (formatter === 'jumin' && typeof value === 'string') {
-    displayValue = formatJumin(value);
-  } else if (commaAmount && typeof value === 'string') {
-    displayValue = isFocused || forceFocused ? value : formatAmount(value);
+  if (formatter === 'jumin') {
+    displayValue = formatJumin(rawValue);
+  } else if (commaAmount) {
+    displayValue = isFocused || forceFocused ? rawValue : formatAmount(rawValue);
   }
 
   const resolvedWidth =
@@ -86,16 +111,15 @@ function Input({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    // commaAmount가 있으면 기존 로직 적용
     if (commaAmount) {
-      const onlyNum = val.replace(/[^0-9]/g, '');
+      const normalizedValue = sanitizeAmountInput(val);
       if (onChange) {
         const syntheticEvent = {
           ...e,
           target: {
             ...e.target,
-            value: onlyNum,
-            formattedValue: formatAmount(onlyNum),
+            value: normalizedValue,
+            formattedValue: formatAmount(normalizedValue),
           },
         } as React.ChangeEvent<HTMLInputElement> & {
           target: HTMLInputElement & { formattedValue: string };
@@ -230,7 +254,7 @@ function Input({
             data-slot="input"
             className={cn(
               variantStyles[variant],
-              commaAmount && 'w-[100%]! text-right',
+              commaAmount && 'w-[100%]! text-right tracking-[0]',
               '[:focus]:px-[0.7rem] w-[100%]!'
             )}
             required={required}

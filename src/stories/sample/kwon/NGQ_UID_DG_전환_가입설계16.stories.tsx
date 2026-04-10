@@ -148,7 +148,7 @@ const LTPZ051P = () => {
         data={tabs}
         active={active}
         setActive={setActive}
-        getValue={(t) => t.value}
+        getValue={(t) => String(t.value)}
         renderTab={(t) => t.label ?? t.value}
         visibleCount={4}
         removable={false}
