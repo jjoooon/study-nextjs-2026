@@ -3,11 +3,10 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useRef } from 'react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { amountUnitInputCellRenderer, AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -28,98 +27,70 @@ import { Input } from '@uiux/Input';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const amountInputRefs2 = useRef<Array<HTMLInputElement | null>>([]);
-
-  type DummyDataType2 = {
+  type ComparisonRow = {
     id: number;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: number;
+    coverage: string;
+    amount: number;
+    premium: number;
     isSumRow?: boolean;
   };
 
-  const DummyData2: DummyDataType2[] = [
-    { id: 1, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 1377 },
-    { id: 2, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 9999999 },
-    { id: 3, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 159999 },
-    { id: 4, field1: '', field2: '', field3: '', field4: '', field5: '', field6: 2323230 },
+  const comparisonRows: ComparisonRow[] = [
+    { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: 3000, premium: 3000 },
+    { id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: 10, premium: 10 },
+    { id: 3, coverage: '상해사망(간편)', amount: 15000, premium: 15000 },
+    { id: 4, coverage: '상해후유장해(3-100%)', amount: 10000, premium: 10000 },
+    { id: 5, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+    { id: 6, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+    { id: 7, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+    { id: 8, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+    { id: 9, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+    { id: 10, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
   ];
 
-  const premiumAmountCellRenderer2 = (params: ICellRendererParams<DummyDataType2>) =>
-    amountUnitInputCellRenderer<DummyDataType2>({ ...params, amountInputRefs: amountInputRefs2.current });
-
-  const columnDefs2: ColDef<DummyDataType2>[] = [
+  const columnDefs2: ColDef<ComparisonRow>[] = [
     {
-      headerName: '담보상태',
-      field: 'field1',
-      width: 80,
-      cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-center'),
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
-        params.data?.isSumRow ? <b>합계</b> : params.value,
-      colSpan: (params) => (params.data?.isSumRow ? 5 : 1),
-    },
-    {
-      headerName: '담보코드',
-      field: 'field2',
-      width: 80,
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
-      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
-    },
-    {
-      headerName: '담보보험시기',
-      field: 'field3',
-      width: 110,
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
-      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
-    },
-    {
-      headerName: '담보보험종기',
-      field: 'field4',
-      width: 110,
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
-      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
-    },
-    {
-      headerName: '세부담보명',
-      field: 'field5',
+      headerName: '담보명',
+      field: 'coverage',
       flex: 1,
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => (params.data?.isSumRow ? null : params.value),
-      colSpan: (params) => (params.data?.isSumRow ? 0 : 1),
+      cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-center'),
+      cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
+        params.data?.isSumRow ? <b>합계</b> : params.value,
+    },
+    {
+      headerName: '가입금액(원)',
+      field: 'amount',
+      width: 120,
+      cellClass: 'text-right',
+      cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
+        params.data?.isSumRow ? (
+          <b>{Number(params.value ?? 0).toLocaleString()}</b>
+        ) : (
+          Number(params.value ?? 0).toLocaleString()
+        ),
     },
     {
       headerName: '보험료(원)',
-      field: 'field6',
+      field: 'premium',
       width: 120,
       cellClass: 'text-right',
-      headerClass: 'px-0!',
-      sortable: false,
-      filter: false,
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
-        if (params.data?.isSumRow) {
-          return <b>{Number(params.value ?? 0).toLocaleString()}</b>;
-        }
-        return premiumAmountCellRenderer2(params);
-      },
+      cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
+        params.data?.isSumRow ? (
+          <b>{Number(params.value ?? 0).toLocaleString()}</b>
+        ) : (
+          Number(params.value ?? 0).toLocaleString()
+        ),
     },
   ];
 
-  const rowData2 = DummyData2;
-  const sumRow2 = React.useMemo<DummyDataType2[]>(
+  const rowData2 = comparisonRows;
+  const sumRow2 = React.useMemo<ComparisonRow[]>(
     () => [
       {
         id: -1,
-        field1: '합계',
-        field2: '',
-        field3: '',
-        field4: '',
-        field5: '',
-        field6: rowData2.reduce((sum, row) => sum + row.field6, 0),
+        coverage: '합계',
+        amount: rowData2.reduce((sum, row) => sum + row.amount, 0),
+        premium: rowData2.reduce((sum, row) => sum + row.premium, 0),
         isSumRow: true,
       },
     ],
@@ -158,7 +129,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
             </TableFoldHead>
             <TableFoldBody>
               <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType2>
+                <AgGridReact<ComparisonRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
