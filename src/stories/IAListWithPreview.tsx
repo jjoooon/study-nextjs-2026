@@ -61,7 +61,7 @@ export function IAListWithPreview() {
     []
   );
   const workListK = React.useMemo(
-    () => ['LTPA350_1', 'LTPZ085', 'LTPZ086', 'LTPZ028', 'LTPA220', 'LTPZ014', 'LTPZ012'],
+    () => ['LTPA350_1', 'LTPZ085', 'LTPZ086', 'LTPZ028', 'LTPA220', 'LTPZ014', 'LTPZ012', 'LTPZ013'] as string[],
     []
   );
   const workListJ = React.useMemo(
