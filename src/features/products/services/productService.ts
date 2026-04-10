@@ -8,12 +8,14 @@
  * - 제품 목록 조회, 상세 조회
  * - 제품 생성, 수정, 삭제
  * - 자동 캐싱 및 재검증 전략
+ *
+ * @architecture
+ * - 빈 API 슬라이스에 injectEndpoints로 동적 추가
+ * - 코드 분할로 초기 번들 크기 최적화
+ * - 타입 안전성 완전 유지
  */
 
-import { createApi } from '@reduxjs/toolkit/query/react';
-
-import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
-
+import { emptyApi } from '@/redux/api/emptyApi';
 import type {
   CreateProductInput,
   Product,
@@ -23,20 +25,19 @@ import type {
 } from '../types/apiTypes';
 
 // ============================================================================
-// PRODUCT SERVICE
+// PRODUCT SERVICE (injectEndpoints)
 // ============================================================================
 
 /**
  * Products 도메인 전용 API Service
  *
- * RTK Query를 사용하여 제품 관련 API 엔드포인트를 정의하고
- * 자동으로 Redux hooks를 생성합니다.
+ * @description
+ * 빈 API 슬라이스에 injectEndpoints로 제품 관련 endpoint 추가
+ * - 필요할 때만 로드되어 초기 번들 최적화
+ * - 타입 안전한 React 훅 자동 생성
  */
-export const productService = createApi({
-  ...createApiConfig({
-    reducerPath: 'productsService',
-    tagTypes: ['Products-LIST', 'Products-ITEM'],
-  }),
+export const productService = emptyApi.injectEndpoints({
+  // overrideExisting: false, // 기존 엔드포인트 덮어쓰기 방지
 
   endpoints: (builder) => ({
     /**

@@ -34,6 +34,7 @@ import type { UIState } from '@/shared/types/uiTypes';
 import { globalRegistry, REGISTRY_KEYS } from '@/shared/utils/globalRegistry';
 import log from '@/shared/utils/logger';
 
+import { emptyApi } from './api/emptyApi';
 import { configureMiddleware, devToolsConfig } from './config';
 
 // 타입 임포트
@@ -161,6 +162,10 @@ if (process.env.NODE_ENV === 'development') {
  * RootState는 PersistPartial 타입 문제를 피해 수동으로 타이핑
  * 새로운 reducer 추가 시 여기에 타입을 추가해야 함
  *
+ * @changes
+ * - ✅ 빈 API 슬라이스로 통합: api 타입 추가
+ * - ❌ 개별 API 슬라이스 제거: authService, productsService 등
+ *
  * @example
  * // 새 feature 추가 시:
  * // 1. 파일 상단에 타입 임포트 추가:
@@ -173,10 +178,16 @@ if (process.env.NODE_ENV === 'development') {
  * };
  */
 export type RootState = {
+  // ✅ 통합 API 상태 (빈 슬라이스 + injectEndpoints)
+  api: ReturnType<typeof emptyApi.reducer>;
+
+  // Core UI States
   auth: AuthState;
   popup: PopupState;
   spinner: SpinnerState;
   ui: UIState;
+
+  // Feature UI States
   dashboard: DashboardState;
   products: ProductsUIState;
 };

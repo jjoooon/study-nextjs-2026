@@ -11,37 +11,28 @@
  * - 자동 캐싱 및 재검증 전략
  *
  * @architecture
- * - axiosBaseQuery: Axios의 강력한 기능 활용
- * - RTK Query: 자동 캐싱, 리패칭, 태그 무효화
- *
- * @benefits
- * ✅ Axios 인터셉터로 자동 토큰 주입
- * ✅ 통일된 에러 처리
- * ✅ 타임아웃 및 재시도 설정
- * ✅ RTK Query의 자동화 기능 유지
+ * - 빈 API 슬라이스에 injectEndpoints로 동적 추가
+ * - 코드 분할로 초기 번들 크기 최적화
+ * - RTK Query 자동화 기능 유지
  */
-
-import { createApi } from '@reduxjs/toolkit/query/react';
-
-import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
 
 import type { ActivityItem, DashboardData, DashboardStats } from '../types/apiTypes';
 
+import { emptyApi } from '@/redux/api/emptyApi';
+
 // ============================================================================
-// DASHBOARD SERVICE
+// DASHBOARD SERVICE (injectEndpoints)
 // ============================================================================
 
 /**
  * Dashboard 도메인 전용 API Service
  *
- * RTK Query를 사용하여 대시보드 관련 API 엔드포인트를 정의하고
- * 자동으로 Redux hooks를 생성합니다.
+ * @description
+ * 빈 API 슬라이스에 injectEndpoints로 대시보드 관련 endpoint 추가
+ * - 필요할 때만 로드되어 초기 번들 최적화
  */
-export const dashboardService = createApi({
-  ...createApiConfig({
-    reducerPath: 'dashboardService',
-    tagTypes: ['Dashboard'],
-  }),
+export const dashboardService = emptyApi.injectEndpoints({
+  // overrideExisting: false,
 
   endpoints: (builder) => ({
     /**

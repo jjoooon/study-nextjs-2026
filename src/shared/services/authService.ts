@@ -11,34 +11,30 @@
  * - 실제 백엔드 연동 시 코드 변경 불필요
  *
  * @architecture
- * - RTK Query for data fetching
+ * - 빈 API 슬라이스에 injectEndpoints로 동적 추가
+ * - 코드 분할로 초기 번들 크기 최적화
  * - Automatic caching & revalidation
  * - Type-safe API responses
  */
 
-import { createApi } from '@reduxjs/toolkit/query/react';
-
-import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
+import { emptyApi } from '@/redux/api/emptyApi';
 
 // ============================================================================
-// AUTH SERVICE
+// AUTH SERVICE (injectEndpoints)
 // ============================================================================
 
 /**
  * Auth 도메인 전용 API Service
  *
- * RTK Query를 사용하여 인증 관련 API 엔드포인트를 정의하고
- * 자동으로 Redux hooks를 생성합니다.
+ * @description
+ * 빈 API 슬라이스에 injectEndpoints로 인증 관련 endpoint 추가
+ * - 필요할 때만 로드되어 초기 번들 최적화
  *
  * @baseQueryStrategy
  * - 모든 엔드포인트: baseQuery (자동 토큰 갱신)
- * - refreshToken만: skipReauth 옵션으로 갱신 방지
  */
-export const authService = createApi({
-  ...createApiConfig({
-    reducerPath: 'authService',
-    tagTypes: ['Auth'],
-  }),
+export const authService = emptyApi.injectEndpoints({
+  // overrideExisting: false,
 
   endpoints: (builder) => ({
     /**

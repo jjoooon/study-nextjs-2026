@@ -7,29 +7,29 @@
  * POC 도메인의 고객 관련 API 호출을 담당하는 서비스 계층
  * - 고객 목록 조회
  * - 자동 캐싱 및 재검증 전략
+ *
+ * @architecture
+ * - 빈 API 슬라이스에 injectEndpoints로 동적 추가
+ * - 코드 분할로 초기 번들 크기 최적화
  */
-
-import { createApi } from '@reduxjs/toolkit/query/react';
-
-import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
 
 import type { GetCustomersParams } from '../types/customerTypes';
 
+import { emptyApi } from '@/redux/api/emptyApi';
+
 // ============================================================================
-// CUSTOMER SERVICE
+// CUSTOMER SERVICE (injectEndpoints)
 // ============================================================================
 
 /**
  * POC 도메인 전용 API Service
  *
- * RTK Query를 사용하여 고객 관련 API 엔드포인트를 정의하고
- * 자동으로 Redux hooks를 생성합니다.
+ * @description
+ * 빈 API 슬라이스에 injectEndpoints로 고객 관련 endpoint 추가
+ * - 필요할 때만 로드되어 초기 번들 최적화
  */
-export const customerService = createApi({
-  ...createApiConfig({
-    reducerPath: 'pocCustomerService',
-    tagTypes: ['Customers-LIST'],
-  }),
+export const customerService = emptyApi.injectEndpoints({
+  // overrideExisting: false,
 
   endpoints: (builder) => ({
     /**

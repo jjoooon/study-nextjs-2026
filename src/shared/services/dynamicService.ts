@@ -9,6 +9,10 @@
  * - 커스텀 URL, 파라미터 처리
  * - 모든 service에서 재사용 가능
  *
+ * @architecture
+ * - 빈 API 슬라이스에 injectEndpoints로 동적 추가
+ * - 코드 분할로 초기 번들 크기 최적화
+ *
  * @warning
  * 이 service는 "escape hatch"로 설계되었습니다.
  *
@@ -21,31 +25,9 @@
  * - 프로토타이핑, 빠른 테스트
  * - 드물게 사용되는 일회성 endpoint
  * - 동적으로 결정되는 경로 (`/api/files/${dynamicPath}`)
- *
- * @example
- * ```tsx
- * // GET 요청
- * const { data } = useDynamicQuery({ url: '/custom/endpoint' });
- *
- * // POST 요청 - 명시적 타입 단언 사용
- * const [mutation] = useDynamicMutation();
- *
- * const handleSubmit = async () => {
- *   // 타입 단언: API 응답 구조를 명확히 알 때만 사용
- *   const result = await mutation({
- *     url: '/custom/action',
- *     method: 'POST',
- *     body: { data: 'value' }
- *   }).unwrap() as { user: User };
- *
- *   result.user; // User
- * };
- * ```
  */
 
-import { createApi } from '@reduxjs/toolkit/query/react';
-
-import { createApiConfig } from '@/shared/lib/rtkQuery/createApiConfig';
+import { emptyApi } from '@/redux/api/emptyApi';
 
 // ============================================================================
 // TYPES
@@ -80,19 +62,18 @@ export interface DynamicMutationConfig {
 }
 
 // ============================================================================
-// DYNAMIC SERVICE
+// DYNAMIC SERVICE (injectEndpoints)
 // ============================================================================
 
 /**
  * 동적 API Service
  *
- * 미리 정의되지 않은 endpoint를 런타임에 호출할 수 있는 공통 서비스
+ * @description
+ * 빈 API 슬라이스에 injectEndpoints로 동적 endpoint 추가
+ * - 미리 정의되지 않은 endpoint를 런타임에 호출
  */
-export const dynamicService = createApi({
-  ...createApiConfig({
-    reducerPath: 'dynamicService',
-    tagTypes: ['Dynamic'] as const,
-  }),
+export const dynamicService = emptyApi.injectEndpoints({
+  // overrideExisting: false,
 
   endpoints: (builder) => ({
     /**
