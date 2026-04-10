@@ -13,7 +13,7 @@
     "lint:fix": "eslint src --fix",
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "analyze": "ANALYZE=true next build",
+    "analyze": "next experimental-analyze",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
