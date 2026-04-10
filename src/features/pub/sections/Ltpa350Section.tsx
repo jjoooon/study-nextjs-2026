@@ -20,6 +20,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
 import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
+import { Ltpa350Step5 } from '../components/Ltpa350Step5';
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 import { Ltpz005, type Ltpz005TabValue } from '../components/popups/Ltpz005';
@@ -237,7 +238,7 @@ export default function Ltpa350Section() {
     ), // prop 추가
     3: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
     4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
-    5: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    5: <Ltpa350Step5 simpleMode={simpleMode} viewKey={currentViewKey} />,
     6: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
   };
 
