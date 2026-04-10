@@ -129,4 +129,18 @@ function AccordionContent({ children, ...props }: React.ComponentProps<typeof Ac
   );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+// Static property 할당으로 Accordion.Item 등으로 사용 가능하게 만듦
+
+// 타입 시스템 한계로 인한 static property 확장 허용 (storybook/JSX에서 Accordion.Item 등 사용 목적)
+type AccordionComponentType = typeof Accordion & {
+  Item: typeof AccordionItem;
+  Trigger: typeof AccordionTrigger;
+  Content: typeof AccordionContent;
+};
+
+const AccordionWithStatics = Accordion as unknown as AccordionComponentType;
+AccordionWithStatics.Item = AccordionItem;
+AccordionWithStatics.Trigger = AccordionTrigger;
+AccordionWithStatics.Content = AccordionContent;
+
+export { AccordionWithStatics as Accordion };

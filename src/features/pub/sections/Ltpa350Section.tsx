@@ -92,8 +92,8 @@ const data: Ltpa350DataType = {
       { step: 6, label: '수납' },
     ],
     state: {
-      complete: [1],
-      active: 1,
+      complete: [1], //완료단계
+      active: 2, //현재단계
     },
   },
 };
@@ -197,7 +197,6 @@ const asideFoot = {
     point: 640,
   },
 };
-
 const DEFAULT_MY_MENU_LIST: Ltpz018MenuItem[] = [
   { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
   { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
@@ -309,6 +308,7 @@ export default function Ltpa350Section() {
 
               setTaskStatusActiveTab(nextActiveTab);
               setIsTaskStatusPopupOpen(true);
+              setActiveStep(2);
             }}
           />
         }
