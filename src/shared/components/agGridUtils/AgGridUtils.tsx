@@ -486,6 +486,11 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   };
   const propsWithForwardedRef = props as unknown as CellEditorPropsWithForwardedRef<RowType>;
 
+  // 셀 진입 시마다 최신 value로 동기화
+  React.useEffect(() => {
+    setValue(props.value ?? '');
+  }, [props.value]);
+
   React.useEffect(() => {
     setTimeout(() => {
       inputRef.current?.focus();
@@ -494,6 +499,14 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
 
   const handleChange = (_: Date | undefined, formatted: string) => {
     setValue(formatted);
+    // 셀의 값을 즉시 반영
+    if (props.node && props.column) {
+      props.node.setDataValue(props.column.getColId(), formatted);
+    }
+    // 날짜 선택 시 편집 종료(값 반영)
+    if (props.stopEditing) {
+      setTimeout(() => props.stopEditing(), 0);
+    }
   };
 
   // ag-Grid는 커스텀 에디터에 forwardedRef를 넘김

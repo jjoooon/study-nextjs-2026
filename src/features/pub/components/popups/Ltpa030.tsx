@@ -107,6 +107,8 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellEditor: DatePickerCellEditor,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
+        params.data?.field03 && String(params.data.field03).trim() !== '' ? String(params.data.field03) : '',
     },
     {
       headerName: '적용종료일자',
@@ -116,6 +118,8 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellEditor: DatePickerCellEditor,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
+        params.data?.field04 && String(params.data.field04).trim() !== '' ? String(params.data.field04) : '',
     },
     {
       headerName: '상태',
@@ -143,7 +147,7 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
   // form event
   const [form, setFormField] = useFormFields({
@@ -288,6 +292,13 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
                           node.setSelected(true);
                         }
                       });
+                    }}
+                    onCellValueChanged={(params) => {
+                      const field = params.colDef.field;
+                      if (!field) return;
+                      setRowData((prev) =>
+                        prev.map((row) => (row.id === params.data.id ? { ...row, [field]: params.newValue } : row))
+                      );
                     }}
                   />
                 </div>
