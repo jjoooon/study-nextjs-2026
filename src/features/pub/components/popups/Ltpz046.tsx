@@ -24,73 +24,73 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 2,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 3,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 4,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 5,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 6,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-  ];
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '9,999,999,999',
+    field05: '9,999,999,999',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '9,999,999,999',
+    field05: '9,999,999,999',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '9,999,999,999',
+    field05: '9,999,999,999',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '9,999,999,999',
+    field05: '9,999,999,999',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '9,999,999,999',
+    field05: '9,999,999,999',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '9,999,999,999',
+    field05: '9,999,999,999',
+  },
+];
 
+export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -132,7 +132,6 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
-
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
@@ -204,10 +203,11 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable caption="담보" cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'담보명'}>
-                    <Input size="lg" value="" variant="default" width="18rem" readOnly />
+                    <Input value="" width={180} readOnly />
                   </FormCell>
                   <FormCell title={' 가입금액'}>
-                    <Input size="lg" value="0" variant="default" width="18rem" after="만원" commaAmount readOnly />
+                    <Input value="0" width={180} commaAmount readOnly />
+                    만원
                   </FormCell>
                 </FormRow>
               </FormTable>

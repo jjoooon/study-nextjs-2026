@@ -25,125 +25,125 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '1년',
-      field02: '755,000',
-      field03: '0',
-      field04: '0',
-      field05: '0',
-      field06: '1.2',
-      field07: '0',
-      field08: '0',
-      field09: '0',
-      field10: '1.2',
-      field11: '0',
-      field12: '0',
-      field13: '0',
-      field14: '1.2',
-      field15: '0',
-      field16: '0',
-    },
-    {
-      id: 2,
-      field01: '2년',
-      field02: '755,000',
-      field03: '0',
-      field04: '0',
-      field05: '0',
-      field06: '1.2',
-      field07: '0',
-      field08: '0',
-      field09: '0',
-      field10: '1.2',
-      field11: '0',
-      field12: '0',
-      field13: '0',
-      field14: '1.2',
-      field15: '0',
-      field16: '0',
-    },
-    {
-      id: 3,
-      field01: '3년',
-      field02: '755,000',
-      field03: '0',
-      field04: '0',
-      field05: '0',
-      field06: '1.2',
-      field07: '0',
-      field08: '0',
-      field09: '0',
-      field10: '1.2',
-      field11: '0',
-      field12: '0',
-      field13: '0',
-      field14: '1.2',
-      field15: '0',
-      field16: '0',
-    },
-    {
-      id: 4,
-      field01: '4년',
-      field02: '755,000',
-      field03: '0',
-      field04: '0',
-      field05: '0',
-      field06: '1.2',
-      field07: '0',
-      field08: '0',
-      field09: '0',
-      field10: '1.2',
-      field11: '0',
-      field12: '0',
-      field13: '0',
-      field14: '1.2',
-      field15: '0',
-      field16: '0',
-    },
-    {
-      id: 5,
-      field01: '5년',
-      field02: '755,000',
-      field03: '0',
-      field04: '0',
-      field05: '0',
-      field06: '1.2',
-      field07: '0',
-      field08: '0',
-      field09: '0',
-      field10: '1.2',
-      field11: '0',
-      field12: '0',
-      field13: '0',
-      field14: '1.2',
-      field15: '0',
-      field16: '0',
-    },
-  ];
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '1년',
+    field02: '755,000',
+    field03: '0',
+    field04: '0',
+    field05: '0',
+    field06: '1.2',
+    field07: '0',
+    field08: '0',
+    field09: '0',
+    field10: '1.2',
+    field11: '0',
+    field12: '0',
+    field13: '0',
+    field14: '1.2',
+    field15: '0',
+    field16: '0',
+  },
+  {
+    id: 2,
+    field01: '2년',
+    field02: '755,000',
+    field03: '0',
+    field04: '0',
+    field05: '0',
+    field06: '1.2',
+    field07: '0',
+    field08: '0',
+    field09: '0',
+    field10: '1.2',
+    field11: '0',
+    field12: '0',
+    field13: '0',
+    field14: '1.2',
+    field15: '0',
+    field16: '0',
+  },
+  {
+    id: 3,
+    field01: '3년',
+    field02: '755,000',
+    field03: '0',
+    field04: '0',
+    field05: '0',
+    field06: '1.2',
+    field07: '0',
+    field08: '0',
+    field09: '0',
+    field10: '1.2',
+    field11: '0',
+    field12: '0',
+    field13: '0',
+    field14: '1.2',
+    field15: '0',
+    field16: '0',
+  },
+  {
+    id: 4,
+    field01: '4년',
+    field02: '755,000',
+    field03: '0',
+    field04: '0',
+    field05: '0',
+    field06: '1.2',
+    field07: '0',
+    field08: '0',
+    field09: '0',
+    field10: '1.2',
+    field11: '0',
+    field12: '0',
+    field13: '0',
+    field14: '1.2',
+    field15: '0',
+    field16: '0',
+  },
+  {
+    id: 5,
+    field01: '5년',
+    field02: '755,000',
+    field03: '0',
+    field04: '0',
+    field05: '0',
+    field06: '1.2',
+    field07: '0',
+    field08: '0',
+    field09: '0',
+    field10: '1.2',
+    field11: '0',
+    field12: '0',
+    field13: '0',
+    field14: '1.2',
+    field15: '0',
+    field16: '0',
+  },
+];
 
+export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {

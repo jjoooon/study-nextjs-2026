@@ -5,11 +5,10 @@ import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,112 +23,108 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    isSumRow?: boolean;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '9,999,999,999',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 2,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '9,999,999,999',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 3,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '9,999,999,999',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 4,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '9,999,999,999',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 5,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '9,999,999,999',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-    {
-      id: 6,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '9,999,999,999',
-      field04: '9,999,999,999',
-      field05: '9,999,999,999',
-    },
-  ];
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  isSumRow?: boolean;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '13950600',
+    field04: '13950600',
+    field05: '13950600',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '13950600',
+    field04: '13950600',
+    field05: '13950600',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '13950600',
+    field04: '13950600',
+    field05: '13950600',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '13950600',
+    field04: '13950600',
+    field05: '13950600',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '13950600',
+    field04: '13950600',
+    field05: '13950600',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '13950600',
+    field04: '13950600',
+    field05: '13950600',
+  },
+];
 
+export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
       flex: 1,
       field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 2 : 1),
-      autoHeight: true,
     },
     {
       headerName: '보험기간',
       width: 100,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 0 : 1),
-      autoHeight: true,
     },
     {
       headerName: '표준체보험료(원)',
       width: 170,
       field: 'field03',
-      cellClass: 'text-right flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '할증보험료(원)',
       width: 170,
       field: 'field04',
-      cellClass: 'text-right flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '적용보험료(원)',
       width: 170,
       field: 'field05',
-      cellClass: 'text-right flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
   ];
 
@@ -150,9 +145,9 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
         isSumRow: true,
         field01: '할증적용담보 합계금액',
         field02: '',
-        field03: total03.toLocaleString(),
-        field04: total04.toLocaleString(),
-        field05: total05.toLocaleString(),
+        field03: total03,
+        field04: total04,
+        field05: total05,
       },
     ];
   }, [rowData]);
@@ -171,7 +166,7 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
+          <Gcol className="w-full" gap={5} placement="ss">
             <Grow className="w-full" variant="box-round">
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormRow>
@@ -188,31 +183,24 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </FormRow>
               </FormTable>
             </Grow>
-            <Grow className="w-full">
-              <div className="ag-theme-alpine aggrid-pagination-ko w-full">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  pinnedBottomRowData={sumRow}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                    autoHeight: true,
-                  }}
-                  animateRows={false}
-                  alwaysShowHorizontalScroll={true}
-                  singleClickEdit={true}
-                  domLayout="autoHeight"
-                />
-              </div>
-            </Grow>
-            <InfoBox
-              subTitle="할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다."
-              variant="info"
-              bg={false}
-            ></InfoBox>
+            <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                pinnedBottomRowData={sumRow}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                defaultColDef={{
+                  sortable: false,
+                  resizable: false,
+                  autoHeight: true,
+                }}
+                domLayout="autoHeight"
+              />
+            </div>
+            <Typo icon="info">
+              할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
+            </Typo>
           </Gcol>
         </DialogSection>
 

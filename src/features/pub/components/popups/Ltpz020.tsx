@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -31,110 +31,223 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resi
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type LTPZ020TabType = {
+  name: string;
+  value: string;
+  label: string;
+};
+
+const DATA_TABS: LTPZ020TabType[] = [
+  {
+    name: '인담보',
+    value: 'humanCoverage',
+    label: '인담보',
+  },
+  {
+    name: '재물담보',
+    value: 'propertyCoverage',
+    label: '재물담보',
+  },
+];
+
+const DATA_SUB_TABS: LTPZ020TabType[] = [
+  {
+    name: '화재담보',
+    value: 'fireCoverage',
+    label: '화재담보',
+  },
+  {
+    name: '화재기타',
+    value: 'fireEtcCoverage',
+    label: '화재기타',
+  },
+];
+
+type InsuredListRow = {
+  id: number;
+  name: string;
+  grade: string;
+  gender: string;
+  age: number;
+};
+
+//피보험자
+const insuredListData: InsuredListRow[] = [
+  { id: 1, name: '김한화', grade: '1', gender: '남자', age: 33 },
+  { id: 2, name: '', grade: '', gender: '', age: 0 },
+  { id: 3, name: '', grade: '', gender: '', age: 0 },
+  { id: 4, name: '', grade: '', gender: '', age: 0 },
+];
+
+type CoverageListRow = {
+  id: number;
+  coverageCode: string;
+  coverageName: string;
+  insurancePeriod: string;
+  paymentPeriod: string;
+  designCoverageCode: string;
+  designCoverageName: string;
+};
+//담보목록
+const coverageListData: CoverageListRow[] = [
+  {
+    id: 1,
+    coverageCode: 'CLA05417',
+    coverageName: '보통약관(화재상해후유장해3)',
+    insurancePeriod: '15년만기',
+    paymentPeriod: '전기납',
+    designCoverageCode: 'CLA05417',
+    designCoverageName: '보통약관(화재상해후유장해)',
+  },
+  {
+    id: 2,
+    coverageCode: '',
+    coverageName: '',
+    insurancePeriod: '',
+    paymentPeriod: '',
+    designCoverageCode: '',
+    designCoverageName: '',
+  },
+  {
+    id: 3,
+    coverageCode: '',
+    coverageName: '',
+    insurancePeriod: '',
+    paymentPeriod: '',
+    designCoverageCode: '',
+    designCoverageName: '',
+  },
+  {
+    id: 4,
+    coverageCode: '',
+    coverageName: '',
+    insurancePeriod: '',
+    paymentPeriod: '',
+    designCoverageCode: '',
+    designCoverageName: '',
+  },
+];
+//보험목적물
+type InsuranceObjectRow = {
+  id: number;
+  category: string;
+  grade: string;
+  insurancePeriod: string;
+  subscriptionAmount: number;
+  insuranceObject: string;
+  accommodationPlace: string;
+};
+
+const insuranceObjectData: InsuranceObjectRow[] = [
+  {
+    id: 1,
+    category: '건물(특수)',
+    grade: '1급',
+    insurancePeriod: '15년만기',
+    subscriptionAmount: 999999,
+    insuranceObject: '1층 독수리약국 면적 6021㎡',
+    accommodationPlace: '02',
+  },
+];
+
+//목적물 소유자 및 소재지
+type PropertyListRow = {
+  isCheck: boolean;
+  id: number;
+  owner: string;
+  ownerNo: string;
+  location: string;
+  businessType: string;
+  appliedRate: string;
+  marketCode: string;
+  specialBuilding: string;
+};
+const propertyListData: PropertyListRow[] = [
+  {
+    isCheck: false,
+    id: 1,
+    owner: '김한화',
+    ownerNo: '901231-1111111',
+    location: '서울시 강남구 역삼동',
+    businessType: '아파트',
+    appliedRate: '아파트',
+    marketCode: '123',
+    specialBuilding: '1231',
+  },
+  {
+    isCheck: false,
+    id: 2,
+    owner: '김한화',
+    ownerNo: '901231-1111111',
+    location: '서울시 강남구 역삼동',
+    businessType: '아파트',
+    appliedRate: '아파트',
+    marketCode: '123',
+    specialBuilding: '1231',
+  },
+];
+
+//소재지 별 건물(수용장소)의 목록
+type BuildingByLocationRow = {
+  id: number;
+  columnType: string;
+  outerWall: string;
+  aboveGroundFloors: number;
+  belowGroundFloors: number;
+  grossFloorArea: number;
+  etcStructure: string;
+  accommodationPlace: string;
+};
+
+const buildingByLocationData: BuildingByLocationRow[] = [
+  {
+    id: 1,
+    columnType: '철골철근콘크리트',
+    outerWall: '콘크리트벽',
+    aboveGroundFloors: 18,
+    belowGroundFloors: 3,
+    grossFloorArea: 322,
+    etcStructure: '철골철근콘크리트',
+    accommodationPlace: '02',
+  },
+  {
+    id: 2,
+    columnType: '철골철근콘크리트',
+    outerWall: '콘크리트벽',
+    aboveGroundFloors: 18,
+    belowGroundFloors: 3,
+    grossFloorArea: 322,
+    etcStructure: '철골철근콘크리트',
+    accommodationPlace: '02',
+  },
+  {
+    id: 3,
+    columnType: '철골철근콘크리트',
+    outerWall: '콘크리트벽',
+    aboveGroundFloors: 18,
+    belowGroundFloors: 3,
+    grossFloorArea: 322,
+    etcStructure: '철골철근콘크리트',
+    accommodationPlace: '02',
+  },
+  {
+    id: 4,
+    columnType: '철골철근콘크리트',
+    outerWall: '콘크리트벽',
+    aboveGroundFloors: 18,
+    belowGroundFloors: 3,
+    grossFloorArea: 322,
+    etcStructure: '철골철근콘크리트',
+    accommodationPlace: '02',
+  },
+];
+
 export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type LTPZ020TabType = {
-    name: string;
-    value: string;
-    label: string;
-  };
-
-  const DATA_TABS: LTPZ020TabType[] = [
-    {
-      name: '인담보',
-      value: 'humanCoverage',
-      label: '인담보',
-    },
-    {
-      name: '재물담보',
-      value: 'propertyCoverage',
-      label: '재물담보',
-    },
-  ];
-
-  const DATA_SUB_TABS: LTPZ020TabType[] = [
-    {
-      name: '화재담보',
-      value: 'fireCoverage',
-      label: '화재담보',
-    },
-    {
-      name: '화재기타',
-      value: 'fireEtcCoverage',
-      label: '화재기타',
-    },
-  ];
-
-  type InsuredListRow = {
-    id: number;
-    name: string;
-    grade: string;
-    gender: string;
-    age: number;
-  };
-
-  //피보험자
-  const insuredListData: InsuredListRow[] = [
-    { id: 1, name: '김한화', grade: '1', gender: '남자', age: 33 },
-    { id: 2, name: '', grade: '', gender: '', age: 0 },
-    { id: 3, name: '', grade: '', gender: '', age: 0 },
-    { id: 4, name: '', grade: '', gender: '', age: 0 },
-  ];
-
   const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
-    { field: 'name', headerName: '성명', width: 120, cellClass: 'text-center' },
-    { field: 'grade', headerName: '급수', flex: 1, cellClass: 'text-center' },
-    { field: 'gender', headerName: '성별', width: 80, cellClass: 'text-center' },
-    { field: 'age', headerName: '연령', width: 80, cellClass: 'text-center' },
-  ];
-
-  type CoverageListRow = {
-    id: number;
-    coverageCode: string;
-    coverageName: string;
-    insurancePeriod: string;
-    paymentPeriod: string;
-    designCoverageCode: string;
-    designCoverageName: string;
-  };
-
-  //담보목록
-  const coverageListData: CoverageListRow[] = [
-    {
-      id: 1,
-      coverageCode: 'CLA05417',
-      coverageName: '보통약관(화재상해후유장해3)',
-      insurancePeriod: '15년만기',
-      paymentPeriod: '전기납',
-      designCoverageCode: 'CLA05417',
-      designCoverageName: '보통약관(화재상해후유장해)',
-    },
-    {
-      id: 2,
-      coverageCode: '',
-      coverageName: '',
-      insurancePeriod: '',
-      paymentPeriod: '',
-      designCoverageCode: '',
-      designCoverageName: '',
-    },
-    {
-      id: 3,
-      coverageCode: '',
-      coverageName: '',
-      insurancePeriod: '',
-      paymentPeriod: '',
-      designCoverageCode: '',
-      designCoverageName: '',
-    },
-    {
-      id: 4,
-      coverageCode: '',
-      coverageName: '',
-      insurancePeriod: '',
-      paymentPeriod: '',
-      designCoverageCode: '',
-      designCoverageName: '',
-    },
+    { field: 'name', headerName: '성명', flex: 1, cellClass: 'text-center' },
+    { field: 'grade', headerName: '급수', width: 40, cellClass: 'text-center' },
+    { field: 'gender', headerName: '성별', width: 40, cellClass: 'text-center' },
+    { field: 'age', headerName: '연령', width: 60, cellClass: 'text-center' },
   ];
   const coverageListColumnDefs: ColDef<CoverageListRow>[] = [
     { headerName: '담보코드', field: 'coverageCode', width: 80, cellClass: 'text-center' },
@@ -143,43 +256,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
     { headerName: '납입기간', field: 'paymentPeriod', width: 80, cellClass: 'text-center' },
     { headerName: '설계담보코드', field: 'designCoverageCode', width: 100, cellClass: 'text-center' },
     { headerName: '설계담보명', field: 'designCoverageName', flex: 1 },
-  ];
-
-  //목적물 소유자 및 소재지
-  type PropertyListRow = {
-    isCheck: boolean;
-    id: number;
-    owner: string;
-    ownerNo: string;
-    location: string;
-    businessType: string;
-    appliedRate: string;
-    marketCode: string;
-    specialBuilding: string;
-  };
-  const propertyListData: PropertyListRow[] = [
-    {
-      isCheck: false,
-      id: 1,
-      owner: '김한화',
-      ownerNo: '901231-1111111',
-      location: '서울시 강남구 역삼동',
-      businessType: '아파트',
-      appliedRate: '아파트',
-      marketCode: '123',
-      specialBuilding: '1231',
-    },
-    {
-      isCheck: false,
-      id: 2,
-      owner: '김한화',
-      ownerNo: '901231-1111111',
-      location: '서울시 강남구 역삼동',
-      businessType: '아파트',
-      appliedRate: '아파트',
-      marketCode: '123',
-      specialBuilding: '1231',
-    },
   ];
 
   const propertyListDataColumnDefs: ColDef<PropertyListRow>[] = [
@@ -232,61 +308,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  //소재지 별 건물(수용장소)의 목록
-  type BuildingByLocationRow = {
-    id: number;
-    columnType: string;
-    outerWall: string;
-    aboveGroundFloors: number;
-    belowGroundFloors: number;
-    grossFloorArea: number;
-    etcStructure: string;
-    accommodationPlace: string;
-  };
-
-  const buildingByLocationData: BuildingByLocationRow[] = [
-    {
-      id: 1,
-      columnType: '철골철근콘크리트',
-      outerWall: '콘크리트벽',
-      aboveGroundFloors: 18,
-      belowGroundFloors: 3,
-      grossFloorArea: 322,
-      etcStructure: '철골철근콘크리트',
-      accommodationPlace: '02',
-    },
-    {
-      id: 2,
-      columnType: '철골철근콘크리트',
-      outerWall: '콘크리트벽',
-      aboveGroundFloors: 18,
-      belowGroundFloors: 3,
-      grossFloorArea: 322,
-      etcStructure: '철골철근콘크리트',
-      accommodationPlace: '02',
-    },
-    {
-      id: 3,
-      columnType: '철골철근콘크리트',
-      outerWall: '콘크리트벽',
-      aboveGroundFloors: 18,
-      belowGroundFloors: 3,
-      grossFloorArea: 322,
-      etcStructure: '철골철근콘크리트',
-      accommodationPlace: '02',
-    },
-    {
-      id: 4,
-      columnType: '철골철근콘크리트',
-      outerWall: '콘크리트벽',
-      aboveGroundFloors: 18,
-      belowGroundFloors: 3,
-      grossFloorArea: 322,
-      etcStructure: '철골철근콘크리트',
-      accommodationPlace: '02',
-    },
-  ];
-
   const buildingByLocationColumnDefs: Array<ColDef<BuildingByLocationRow> | ColGroupDef<BuildingByLocationRow>> = [
     {
       headerName: '기둥',
@@ -308,19 +329,19 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
         {
           headerName: '지상(층)',
           field: 'aboveGroundFloors',
-          width: 100,
+          width: 60,
           cellClass: 'text-center',
         },
         {
           headerName: '지하(층)',
           field: 'belowGroundFloors',
-          width: 100,
+          width: 60,
           cellClass: 'text-center',
         },
         {
           headerName: '연 면적(㎡)',
           field: 'grossFloorArea',
-          width: 120,
+          width: 70,
           cellClass: 'text-center',
           valueFormatter: (params) => params.value?.toLocaleString() ?? '',
         },
@@ -336,29 +357,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'accommodationPlace',
       width: 200,
       cellClass: 'text-center',
-    },
-  ];
-
-  //보험목적물
-  type InsuranceObjectRow = {
-    id: number;
-    category: string;
-    grade: string;
-    insurancePeriod: string;
-    subscriptionAmount: number;
-    insuranceObject: string;
-    accommodationPlace: string;
-  };
-
-  const insuranceObjectData: InsuranceObjectRow[] = [
-    {
-      id: 1,
-      category: '건물(특수)',
-      grade: '1급',
-      insurancePeriod: '15년만기',
-      subscriptionAmount: 999999,
-      insuranceObject: '1층 독수리약국 면적 6021㎡',
-      accommodationPlace: '02',
     },
   ];
 
@@ -385,7 +383,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'subscriptionAmount',
       width: 140,
       cellClass: 'text-right',
-      valueFormatter: (params) => params.value?.toLocaleString() ?? '',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '보험목적물',
@@ -417,7 +415,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
     setActive: setSubActive,
     handleRemove: handleSubRemove,
   } = useTabs(DATA_SUB_TABS);
-  const [copyValues, setCopyValues] = React.useState<string[]>(['coverage-copy']);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
 
   return (
@@ -441,14 +438,14 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Grow>
                     <Input
                       aria-label="증권번호 검색"
-                      width={'10rem'}
+                      width={100}
                       value={policySearchPart}
                       onChange={(e) => setPolicySearchPart(e.target.value)}
                     />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
+                    <Input aria-label="" width={300} value={'한화 더 건강한 1040종합'} readOnly />
                   </Grow>
                 </FormCell>
               </FormRow>
@@ -472,22 +469,15 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
             error={false}
             errorMsg="에러 메시지 예시"
             renderButtons={
-              <CheckboxGroup
-                className="gap-3"
-                color="primary"
-                errorMsg="2개 이상 선택해 주세요."
-                errorPs="bl"
-                minSelected={0}
-                onValueChange={setCopyValues}
-                size="lg"
-                value={copyValues}
-                variant="default"
-                width="auto"
-              >
-                <CheckboxGroupItem value="insured-copy">피보험자복사</CheckboxGroupItem>
-                <CheckboxGroupItem value="coverage-copy" disabled>
-                  담보복사
-                </CheckboxGroupItem>
+              <CheckboxGroup className="gap-3" minSelected={0} defaultValue={['담보복사']}>
+                {[
+                  { value: '피보험자복사', label: '피보험자복사', disabled: false },
+                  { value: '담보복사', label: '담보복사', disabled: true },
+                ].map((option) => (
+                  <CheckboxGroupItem key={option.value} value={option.value} disabled={option.disabled}>
+                    {option.label}
+                  </CheckboxGroupItem>
+                ))}
               </CheckboxGroup>
             }
             getValue={(tab) => String(tab.value)}
@@ -495,7 +485,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
             renderDropdownItem={false}
           >
             {active === 'humanCoverage' ? (
-              <ResizablePanelGroup orientation="horizontal" className="w-full">
+              <ResizablePanelGroup orientation="horizontal" className="w-full pt-2">
                 <ResizablePanel defaultSize={30}>
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="피보험자목록" />
@@ -510,8 +500,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                             sortable: false,
                             resizable: false,
                           }}
-                          animateRows={false}
-                          rowClassRules={{}}
                           rowSelection={{
                             mode: 'multiRow',
                             checkboxes: true,
@@ -519,6 +507,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
+                            width: 30,
                             cellClass: 'text-center editable-cell',
                           }}
                           domLayout={'autoHeight'}
@@ -577,6 +566,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                         }}
                         selectionColumnDef={{
                           headerName: '선택',
+                          width: 30,
                           cellClass: 'text-center editable-cell',
                         }}
                         domLayout="autoHeight"

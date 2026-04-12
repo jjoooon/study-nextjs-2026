@@ -26,49 +26,48 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type LTPZ051Tab = { name: string; value: string; label: string };
+const DATA_TABS: LTPZ051Tab[] = [
+  { name: '직업정보(상해급수)변경대상(d건)', value: 'basic', label: '직업정보(상해급수)변경대상(d건)' },
+  { name: '이륜차부담보 변경대상(d건)', value: 'detail', label: '이륜차부담보 변경대상(d건)' },
+];
+
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '-',
+    field02: '-',
+    field03: 'LA20234472050000',
+    field04: '1급',
+    field05: '회사원',
+    field06: '1급',
+    field07: '회사원',
+  },
+  {
+    id: 2,
+    field01: '-',
+    field02: '-',
+    field03: 'LA20234472050001',
+    field04: '1급',
+    field05: '회사원',
+    field06: '1급',
+    field07: '회사원',
+  },
+];
+
 export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type LTPZ051Tab = { name: string; value: string; label: string };
-  const DATA_TABS: LTPZ051Tab[] = [
-    { name: '직업정보(상해급수)변경대상(d건)', value: 'basic', label: '직업정보(상해급수)변경대상(d건)' },
-    { name: '이륜차부담보 변경대상(d건)', value: 'detail', label: '이륜차부담보 변경대상(d건)' },
-  ];
-
-  const { tabs, active, setActive } = useTabs(DATA_TABS);
-
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '-',
-      field02: '-',
-      field03: 'LA20234472050000',
-      field04: '1급',
-      field05: '회사원',
-      field06: '1급',
-      field07: '회사원',
-    },
-    {
-      id: 2,
-      field01: '-',
-      field02: '-',
-      field03: 'LA20234472050001',
-      field04: '1급',
-      field05: '회사원',
-      field06: '1급',
-      field07: '회사원',
-    },
-  ];
-
   // AgGrid Column
+  const { tabs, active, setActive } = useTabs(DATA_TABS);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '대상여부',
@@ -178,14 +177,7 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Gcol>
             <Gcol className="w-full" placement="ss" variant="box-warning">
               <Typo variant="body-sm">
-                <Checkbox
-                  color="primary"
-                  errorMsg="선택은 필수입니다."
-                  errorPs="bl"
-                  onCheckedChange={() => {}}
-                  size="lg"
-                  variant="default"
-                >
+                <Checkbox>
                   계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시{' '}
                   <Typo weight="bold" color="primary">
                     신계약 청약완료불가

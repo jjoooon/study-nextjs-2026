@@ -29,107 +29,294 @@ import { Ltpz03201 } from './Ltpz03201';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type Ltpz032TabType = {
+  name: string;
+  value: string;
+  label: string;
+};
+
+const DATA_TABS: Ltpz032TabType[] = [
+  {
+    name: '설계번호별',
+    value: 'tab1',
+    label: '설계번호별',
+  },
+  {
+    name: '질병코드별',
+    value: 'tab2',
+    label: '질병코드별',
+  },
+];
+
+// tab1-1 dummy data
+type DummyDataType11 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+  field23: string | number;
+  field24: string | number;
+  field25: string | number;
+  field26: string | number;
+  field27: string | number;
+  field28: string | number;
+  field29: string | number;
+  field30: string | number;
+  field31: string | number;
+  field32: string | number;
+  field33: string | number;
+  field34: string | number;
+  field35: string | number;
+  field36: string | number;
+};
+const DummyData11: DummyDataType11[] = [
+  {
+    id: 1,
+    field01: '',
+    field02: '2026-01-01',
+    field03: 'LA260204310842',
+    field04: '한화 더건강한 한아름종합보험2601',
+    field05: '납입면제형, 기본형',
+    field06: '보기',
+    field07: '척추염좌',
+    field08: '자궁근종',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+    field22: '',
+    field23: '',
+    field24: '',
+    field25: '',
+    field26: '',
+    field27: '',
+    field28: '',
+    field29: '',
+    field30: '',
+    field31: '',
+    field32: '',
+    field33: '',
+    field34: '',
+    field35: '',
+    field36: '',
+  },
+];
+// Tab1-2
+type DummyDataType12 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+  field23: string | number;
+  field24: string | number;
+  field25: string | number;
+  field26: string | number;
+  field27: string | number;
+  field28: string | number;
+  field29: string | number;
+  field30: string | number;
+  field31: string | number;
+  field32: string | number;
+  field33: string | number;
+  field34: string | number;
+  field35: string | number;
+  field36: string | number;
+};
+
+const DummyData12: DummyDataType12[] = [
+  {
+    id: 1,
+    field01: '',
+    field02: '2026-01-01',
+    field03: 'LA260204310842',
+    field04: '한화 더건강한 한아름종합보험2601',
+    field05: '납입면제형, 기본형',
+    field06: '보기',
+    field07: '척추염좌',
+    field08: '자궁근종',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+    field22: '',
+    field23: '',
+    field24: '',
+    field25: '',
+    field26: '',
+    field27: '',
+    field28: '',
+    field29: '',
+    field30: '',
+    field31: '',
+    field32: '',
+    field33: '',
+    field34: '',
+    field35: '',
+    field36: '',
+  },
+];
+
+// tab2-1 dummy data
+type DummyDataType21 = {
+  id: number;
+  field2_01: string | number;
+  field2_02: string | number;
+  field2_03: string | number;
+  field2_04: string | number;
+  field2_05: string | number;
+  field2_06: string | number;
+  field2_07: string | number;
+  field2_08: string | number;
+  field2_09: string | number;
+  field2_10: string | number;
+  field2_11: string | number;
+  field2_12: string | number;
+  field2_13: string | number;
+};
+const DummyData21: DummyDataType21[] = [
+  {
+    id: 1,
+    field2_01: '',
+    field2_02: '',
+    field2_03: '',
+    field2_04: '',
+    field2_05: '',
+    field2_06: '',
+    field2_07: '',
+    field2_08: '',
+    field2_09: '',
+    field2_10: '',
+    field2_11: '',
+    field2_12: '',
+    field2_13: '',
+  },
+];
+type DummyDataType22 = {
+  id: number;
+  field2_01: string | number;
+  field2_02: string | number;
+  field2_03: string | number;
+  field2_04: string | number;
+  field2_05: string | number;
+  field2_06: string | number;
+  field2_07: string | number;
+  field2_08: string | number;
+  field2_09: string | number;
+  field2_10: string | number;
+  field2_11: string | number;
+  field2_12: string | number;
+  field2_13: string | number;
+};
+const DummyData22: DummyDataType22[] = [
+  {
+    id: 1,
+    field2_01: '',
+    field2_02: '',
+    field2_03: '',
+    field2_04: '',
+    field2_05: '',
+    field2_06: '',
+    field2_07: '',
+    field2_08: '',
+    field2_09: '',
+    field2_10: '',
+    field2_11: '',
+    field2_12: '',
+    field2_13: '',
+  },
+];
+type DummyDataType23 = {
+  id: number;
+  field2_01: string | number;
+  field2_02: string | number;
+  field2_03: string | number;
+  field2_04: string | number;
+  field2_05: string | number;
+  field2_06: string | number;
+  field2_07: string | number;
+  field2_08: string | number;
+  field2_09: string | number;
+  field2_10: string | number;
+  field2_11: string | number;
+  field2_12: string | number;
+  field2_13: string | number;
+};
+const DummyData23: DummyDataType23[] = [
+  {
+    id: 1,
+    field2_01: '',
+    field2_02: '',
+    field2_03: '',
+    field2_04: '',
+    field2_05: '',
+    field2_06: '',
+    field2_07: '',
+    field2_08: '',
+    field2_09: '',
+    field2_10: '',
+    field2_11: '',
+    field2_12: '',
+    field2_13: '',
+  },
+];
+
 export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type Ltpz032TabType = {
-    name: string;
-    value: string;
-    label: string;
-  };
-
-  const DATA_TABS: Ltpz032TabType[] = [
-    {
-      name: '설계번호별',
-      value: 'tab1',
-      label: '설계번호별',
-    },
-    {
-      name: '질병코드별',
-      value: 'tab2',
-      label: '질병코드별',
-    },
-  ];
-
-  // tab1-1 dummy data
-  type DummyDataType11 = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
-    field20: string | number;
-    field21: string | number;
-    field22: string | number;
-    field23: string | number;
-    field24: string | number;
-    field25: string | number;
-    field26: string | number;
-    field27: string | number;
-    field28: string | number;
-    field29: string | number;
-    field30: string | number;
-    field31: string | number;
-    field32: string | number;
-    field33: string | number;
-    field34: string | number;
-    field35: string | number;
-    field36: string | number;
-  };
-  const DummyData11: DummyDataType11[] = [
-    {
-      id: 1,
-      field01: '',
-      field02: '2026-01-01',
-      field03: 'LA260204310842',
-      field04: '한화 더건강한 한아름종합보험2601',
-      field05: '납입면제형, 기본형',
-      field06: '보기',
-      field07: '척추염좌',
-      field08: '자궁근종',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-      field16: '',
-      field17: '',
-      field18: '',
-      field19: '',
-      field20: '',
-      field21: '',
-      field22: '',
-      field23: '',
-      field24: '',
-      field25: '',
-      field26: '',
-      field27: '',
-      field28: '',
-      field29: '',
-      field30: '',
-      field31: '',
-      field32: '',
-      field33: '',
-      field34: '',
-      field35: '',
-      field36: '',
-    },
-  ];
   const [selectedRowId11, setSelectedRowId11] = React.useState<string>(String(DummyData11[0]?.id ?? ''));
   const [isDetailPopupOpen, setIsDetailPopupOpen] = React.useState(false);
 
@@ -435,88 +622,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     ];
   }, [handleOpenDetailPopup, selectionRenderer11]);
 
-  // Tab1-2
-  type DummyDataType12 = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
-    field20: string | number;
-    field21: string | number;
-    field22: string | number;
-    field23: string | number;
-    field24: string | number;
-    field25: string | number;
-    field26: string | number;
-    field27: string | number;
-    field28: string | number;
-    field29: string | number;
-    field30: string | number;
-    field31: string | number;
-    field32: string | number;
-    field33: string | number;
-    field34: string | number;
-    field35: string | number;
-    field36: string | number;
-  };
-
-  const DummyData12: DummyDataType12[] = [
-    {
-      id: 1,
-      field01: '',
-      field02: '2026-01-01',
-      field03: 'LA260204310842',
-      field04: '한화 더건강한 한아름종합보험2601',
-      field05: '납입면제형, 기본형',
-      field06: '보기',
-      field07: '척추염좌',
-      field08: '자궁근종',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-      field16: '',
-      field17: '',
-      field18: '',
-      field19: '',
-      field20: '',
-      field21: '',
-      field22: '',
-      field23: '',
-      field24: '',
-      field25: '',
-      field26: '',
-      field27: '',
-      field28: '',
-      field29: '',
-      field30: '',
-      field31: '',
-      field32: '',
-      field33: '',
-      field34: '',
-      field35: '',
-      field36: '',
-    },
-  ];
   const [selectedRowId12, setSelectedRowId12] = React.useState<string>(String(DummyData12[0]?.id ?? ''));
 
   const selectionRenderer12 = React.useCallback(
@@ -814,42 +919,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  // tab2-1 dummy data
-  type DummyDataType21 = {
-    id: number;
-    field2_01: string | number;
-    field2_02: string | number;
-    field2_03: string | number;
-    field2_04: string | number;
-    field2_05: string | number;
-    field2_06: string | number;
-    field2_07: string | number;
-    field2_08: string | number;
-    field2_09: string | number;
-    field2_10: string | number;
-    field2_11: string | number;
-    field2_12: string | number;
-    field2_13: string | number;
-  };
-  const DummyData21: DummyDataType21[] = [
-    {
-      id: 1,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-      field2_05: '',
-      field2_06: '',
-      field2_07: '',
-      field2_08: '',
-      field2_09: '',
-      field2_10: '',
-      field2_11: '',
-      field2_12: '',
-      field2_13: '',
-    },
-  ];
-
   // tab2-1 AgGrid Column
   const columnDefs21 = React.useMemo<ColDef<DummyDataType21>[]>(
     () => [
@@ -1043,40 +1112,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     ],
     []
   );
-  type DummyDataType22 = {
-    id: number;
-    field2_01: string | number;
-    field2_02: string | number;
-    field2_03: string | number;
-    field2_04: string | number;
-    field2_05: string | number;
-    field2_06: string | number;
-    field2_07: string | number;
-    field2_08: string | number;
-    field2_09: string | number;
-    field2_10: string | number;
-    field2_11: string | number;
-    field2_12: string | number;
-    field2_13: string | number;
-  };
-  const DummyData22: DummyDataType22[] = [
-    {
-      id: 1,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-      field2_05: '',
-      field2_06: '',
-      field2_07: '',
-      field2_08: '',
-      field2_09: '',
-      field2_10: '',
-      field2_11: '',
-      field2_12: '',
-      field2_13: '',
-    },
-  ];
 
   // tab2-3 AgGrid Column
   const columnDefs23 = React.useMemo<ColDef<DummyDataType23>[]>(
@@ -1174,40 +1209,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     ],
     []
   );
-  type DummyDataType23 = {
-    id: number;
-    field2_01: string | number;
-    field2_02: string | number;
-    field2_03: string | number;
-    field2_04: string | number;
-    field2_05: string | number;
-    field2_06: string | number;
-    field2_07: string | number;
-    field2_08: string | number;
-    field2_09: string | number;
-    field2_10: string | number;
-    field2_11: string | number;
-    field2_12: string | number;
-    field2_13: string | number;
-  };
-  const DummyData23: DummyDataType23[] = [
-    {
-      id: 1,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-      field2_05: '',
-      field2_06: '',
-      field2_07: '',
-      field2_08: '',
-      field2_09: '',
-      field2_10: '',
-      field2_11: '',
-      field2_12: '',
-      field2_13: '',
-    },
-  ];
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -1224,7 +1225,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                 질병입력 가져오기
               </Typo>
               <Typo tag={'p'} variant={'body-xl'}>
-                (Ltpz032)
+                (LTPZ032)
               </Typo>
             </DialogTitle>
           </DialogHeader>
@@ -1259,10 +1260,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             defaultColDef={{
                               sortable: false,
                               resizable: false,
+                              cellClass: 'text-center',
                             }}
-                            animateRows={false}
                             domLayout="autoHeight"
-                            className="text-center"
                           />
                         </div>
                       </TableFoldBody>
@@ -1279,10 +1279,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             defaultColDef={{
                               sortable: false,
                               resizable: false,
+                              cellClass: 'text-center',
                             }}
-                            animateRows={false}
                             domLayout="autoHeight"
-                            className="text-center"
                           />
                         </div>
                       </TableFoldBody>
@@ -1316,12 +1315,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           defaultColDef={{
                             sortable: false,
                             resizable: false,
-                            cellClass: 'p-0',
-                            cellStyle: { padding: 0 },
+                            cellClass: 'text-center',
                           }}
-                          animateRows={false}
                           domLayout="autoHeight"
-                          className="text-center"
                         />
                       </div>
                     </TableFoldBody>
@@ -1340,12 +1336,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           defaultColDef={{
                             sortable: false,
                             resizable: false,
-                            cellClass: 'p-0',
-                            cellStyle: { padding: 0 },
+                            cellClass: 'text-center',
                           }}
-                          animateRows={false}
                           domLayout="autoHeight"
-                          className="text-center"
                         />
                       </div>
                     </TableFoldBody>
@@ -1364,12 +1357,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           defaultColDef={{
                             sortable: false,
                             resizable: false,
-                            cellClass: 'p-0',
-                            cellStyle: { padding: 0 },
+                            cellClass: 'text-center',
                           }}
-                          animateRows={false}
                           domLayout="autoHeight"
-                          className="text-center"
                         />
                       </div>
                     </TableFoldBody>
@@ -1411,3 +1401,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     </>
   );
 };
+/**
+ * 확인요청
+ * 선택 라디오에서 기본 셀렉트 사용 ?
+ */

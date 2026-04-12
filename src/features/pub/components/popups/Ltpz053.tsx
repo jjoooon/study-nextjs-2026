@@ -28,49 +28,47 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+};
+const DummyData: DummyDataType[] = [
+  { id: 1, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
+  { id: 2, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
+  { id: 3, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
+];
+
 export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({
     type01: '',
   });
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    { id: 1, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
-    { id: 2, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
-    { id: 3, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
-  ];
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-
-  // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '고객명',
       width: 100,
       field: 'field01',
-      cellClass: 'text-left flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '실명증표진위여부 확인서',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '타인사망피보험자 동의확인서',
       flex: 1,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
-
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
@@ -94,7 +92,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Grow>
                     <Input
                       aria-label="설계번호 검색"
-                      width={'10rem'}
+                      width={100}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                     />
@@ -121,9 +119,6 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
                 sortable: false,
                 resizable: false,
               }}
-              animateRows={false}
-              alwaysShowHorizontalScroll={true}
-              rowClassRules={{}}
               domLayout="autoHeight"
               // 체크박스 시
               rowSelection={{
@@ -154,37 +149,29 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
               >
                 <FormRow>
                   <FormCell title={'구분'} colSpan={5}>
-                    <RadioGroup
-                      className="gap-2"
-                      errorMsg="하나를 선택해주세요."
-                      errorPs="bl"
-                      onValueChange={() => {}}
-                      width="full"
-                    >
-                      <RadioGroupItem color="primary" id="d1" size="lg" value="option1" variant="default">
-                        주민등록증
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="d2" size="lg" value="option2" variant="default">
-                        운전면허증
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="d3" size="lg" value="option3" variant="default">
-                        외국인등록증
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="d4" size="lg" value="option4" variant="default">
-                        사업자등록번호
-                      </RadioGroupItem>
+                    <RadioGroup>
+                      {[
+                        { id: 'd1', value: 'option1', label: '주민등록증' },
+                        { id: 'd2', value: 'option2', label: '운전면허증' },
+                        { id: 'd3', value: 'option3', label: '외국인등록증' },
+                        { id: 'd4', value: 'option4', label: '사업자등록번호' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.id} value={option.value}>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
                     </RadioGroup>
                   </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'취급자 연락처'}>
-                    <Input aria-label="" width={'16rem'} value={'12345678'} required readOnly />
+                    <Input aria-label="" width={160} value={'12345678'} required readOnly />
                   </FormCell>
                   <FormCell title={'주민등록번호'}>
-                    <Input aria-label="" width={'16rem'} value={'12345678'} required readOnly />
+                    <Input aria-label="" width={160} value={'12345678'} required readOnly />
                   </FormCell>
                   <FormCell title={'발급일자'}>
-                    <Input aria-label="" width={'16rem'} value={'12345678'} required readOnly />
+                    <Input aria-label="" width={160} value={'12345678'} required readOnly />
                     <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                       신원확인
                     </Button>
@@ -199,10 +186,10 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable caption="월클릭스켄" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'진위여부'}>
-                    <Input aria-label="" width={'16rem'} value={'12345678'} readOnly />
+                    <Input aria-label="" width={160} value={'12345678'} readOnly />
                   </FormCell>
                   <FormCell title={'사유'}>
-                    <Input aria-label="" width={'30rem'} value={'12345678'} readOnly />
+                    <Input aria-label="" width={300} value={'12345678'} readOnly />
                     <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                       확인서발행
                     </Button>

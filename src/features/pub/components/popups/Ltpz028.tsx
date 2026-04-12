@@ -125,7 +125,7 @@ const DUMMY_DATA: DummyDataType[] = [
   { id: 11, field01: 10, field02: '체격', field03: '', field04: '키(cm단위): 175, 몸무게(kg단위): 70' },
 ];
 
-const COLUMN_DEFS: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
   {
     headerName: '질문정보',
     field: 'field02',
@@ -165,19 +165,19 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[1fr]">
           <Grow placement="bwe" className="w-full" variant="box-round" gap={5}>
             <FormTable
-              variant="none"
+              variant="head"
               caption="답변자 정보 테이블"
               cols={['w-[5rem]', 'w-auto', 'w-[5rem]', 'w-auto', 'w-[5rem]', 'w-auto']}
             >
               <FormRow>
                 <FormCell title="답변자">
-                  <Input placeholder="김한화" width="10rem" readOnly />
+                  <Input placeholder="김한화" width={100} readOnly />
                 </FormCell>
                 <FormCell title="답변일시">
-                  <Input placeholder="2026-02-24" width="10rem" readOnly />
+                  <Input placeholder="2026-02-24" width={100} readOnly />
                 </FormCell>
                 <FormCell title="설계번호">
-                  <Input placeholder="LA12312312" width="15rem" readOnly />
+                  <Input placeholder="LA12312312" width={150} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -186,14 +186,13 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
-              columnDefs={COLUMN_DEFS}
+              columnDefs={columnDefs}
               noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{
                 sortable: false,
                 resizable: false,
               }}
               domLayout="autoHeight"
-              headerHeight={32}
             />
           </div>
         </DialogSection>

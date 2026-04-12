@@ -506,7 +506,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogHeader>
 
           <DialogSection>
-            <div className="h-full overflow-x-auto overflow-y-hidden">
+            <div className="h-full overflow-x-auto overflow-y-hidden pb-2">
               <Grow className="relative h-full min-w-max items-start" gap={6} placement="ss">
                 <CompareDesignCard mode="base" total={cardTotals.base} />
                 <CompareDesignCard

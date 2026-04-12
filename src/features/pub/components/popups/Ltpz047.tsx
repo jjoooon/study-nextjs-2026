@@ -123,40 +123,34 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
                       onChange={(e) => setFormField('type02', e.target.value)}
-                      size="lg"
                       value={form.type02}
-                      variant="default"
-                      width="10rem"
+                      width={100}
                       commaAmount
-                      after={'㎡'}
                       required
                     />
-                    ↔
+                    <div>㎡</div>
+                    <div>↔</div>
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
                       onChange={(e) => setFormField('type03', e.target.value)}
-                      size="lg"
                       value={form.type03}
-                      variant="default"
-                      width="10rem"
+                      width={100}
                       commaAmount
-                      after={'평'}
                       required
                     />
+                    평
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'보상한도'} titleRowSpan={2}></FormCell>
+                  <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
                   <FormCell title={'대인(1인당)'} colSpan={2}>
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
                       onChange={(e) => setFormField('type04', e.target.value)}
-                      size="lg"
                       value={form.type04}
-                      variant="default"
-                      width="22rem"
+                      width={220}
                       readOnly
                       required
                     />
@@ -166,7 +160,7 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'대인(1사고당)'} colSpan={4}>
                     <NativeSelect
                       aria-label="선택"
-                      width="10rem"
+                      width={100}
                       value={form.type05}
                       required
                       onChange={(e) => setFormField('type05', e.target.value)}
@@ -186,7 +180,7 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'종업원담보여부'} titleColSpan={2} colSpan={4}>
                     <NativeSelect
                       aria-label="선택"
-                      width="10rem"
+                      width={100}
                       value={form.type06}
                       required
                       onChange={(e) => setFormField('type06', e.target.value)}
@@ -209,10 +203,8 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'할인율'} titleColSpan={2} colSpan={4}>
                     <Input
                       onChange={(e) => setFormField('type07', e.target.value)}
-                      size="lg"
                       value={form.type07}
-                      variant="default"
-                      width="20rem"
+                      width={220}
                       readOnly
                     />
                   </FormCell>

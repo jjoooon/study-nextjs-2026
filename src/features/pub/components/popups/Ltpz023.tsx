@@ -26,140 +26,140 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: 'LA26020945959594',
+    field02: '홍길순',
+    field03: '인수기준',
+    field04: '난임치료비 가입 시',
+    field05: '누적한도초과',
+  },
+  {
+    id: 2,
+    field01: 'LA26020945959595',
+    field02: '김철수',
+    field03: '인수기준',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 ',
+    field05: '누적한도초과',
+  },
+  {
+    id: 3,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 4,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 5,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 6,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 7,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 8,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 9,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 10,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 11,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 12,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 13,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+
+  {
+    id: 14,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+  {
+    id: 15,
+    field01: 'LA26020945959596',
+    field02: '이영희',
+    field03: '인수금지',
+    field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field05: '누적한도초과',
+  },
+];
+
 export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: 'LA26020945959594',
-      field02: '홍길순',
-      field03: '인수기준',
-      field04: '난임치료비 가입 시',
-      field05: '누적한도초과',
-    },
-    {
-      id: 2,
-      field01: 'LA26020945959595',
-      field02: '김철수',
-      field03: '인수기준',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 ',
-      field05: '누적한도초과',
-    },
-    {
-      id: 3,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 4,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 5,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 6,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 7,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 8,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 9,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 10,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 11,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 12,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 13,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-
-    {
-      id: 14,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-    {
-      id: 15,
-      field01: 'LA26020945959596',
-      field02: '이영희',
-      field03: '인수금지',
-      field04: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field05: '누적한도초과',
-    },
-  ];
-
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -215,14 +215,14 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
-                    <Input aria-label="" width={'24rem'} value={'한화 더 경증 간편건강보험2(세만기형)2'} readOnly />
-                    <Input aria-label="" width={'10rem'} value={''} readOnly />
+                    <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                    <Input aria-label="" width={240} value={'한화 더 경증 간편건강보험2(세만기형)2'} readOnly />
+                    <Input aria-label="" width={100} value={''} readOnly />
                   </FormCell>
                   <FormCell title={'플랜명'}>
                     <Input
                       aria-label=""
-                      width={'36rem'}
+                      width={360}
                       value={'한화 더 경증 간편건강보험2(세만기형)2올인원플랜(1~4형)'}
                       readOnly
                     />
@@ -238,10 +238,6 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
                     columnDefs={columnDefs}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                    }}
                     domLayout="autoHeight"
                   />
                 </div>

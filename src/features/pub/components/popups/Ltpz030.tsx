@@ -32,7 +32,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const underwritingDecisionMap = {
+const underwritingDecisionMap = {
   refuse: {
     label: '거절',
     Icon: RefuseIcon,
@@ -47,15 +47,123 @@ export const underwritingDecisionMap = {
   },
 } as const;
 
-export type UnderwritingDecisionStatus = keyof typeof underwritingDecisionMap;
+type UnderwritingDecisionStatus = keyof typeof underwritingDecisionMap;
+type LTPZ030TabType = {
+  name: string;
+  value: string;
+  label: string;
+};
 
+const DATA_TABS: LTPZ030TabType[] = [
+  {
+    name: '간편고지유형 사전체크',
+    value: 'tab1',
+    label: '간편고지유형 사전체크',
+  },
+  {
+    name: '일반/건강고지유형 사전체크',
+    value: 'tab2',
+    label: '일반/건강고지유형 사전체크',
+  },
+];
+
+// tab1_1 dummy data
+type DummyDataType1T1 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+};
 const underwritingDecisionStatusByLabel: Record<string, UnderwritingDecisionStatus> = {
   거절: 'refuse',
   조건부인수: 'conditional',
   '조건부 인수': 'conditional',
   인수: 'accept',
 };
-
+const DummyData1T1: DummyDataType1T1[] = [
+  {
+    id: 1,
+    field01: '더경증',
+    field02: '3105',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737,1',
+  },
+  {
+    id: 2,
+    field01: '더경증',
+    field02: '385',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737,1',
+  },
+  {
+    id: 3,
+    field01: '더경증',
+    field02: '365',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737',
+  },
+  {
+    id: 4,
+    field01: '3N5',
+    field02: '355',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737',
+  },
+  {
+    id: 5,
+    field01: '3N5',
+    field02: '345',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737',
+  },
+  {
+    id: 6,
+    field01: '3N5(2일)',
+    field02: '355(2일)',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737',
+  },
+  {
+    id: 7,
+    field01: '3N5(2일)',
+    field02: '345(2일)',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737',
+  },
+  {
+    id: 8,
+    field01: '3N5(2일)',
+    field02: '335(2일)',
+    field03: '거절',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737,1152,1737',
+  },
+  {
+    id: 9,
+    field01: '3N5(2일)',
+    field02: '325(2일)',
+    field03: '조건부인수',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737',
+  },
+  {
+    id: 10,
+    field01: '3N5(2일)',
+    field02: '315(2일)',
+    field03: '인수',
+    field04: '',
+    field05: '경증외, 중대질환 1148,1737',
+  },
+];
 const getUnderwritingDecision = (value: string | number) => {
   if (typeof value !== 'string') {
     return null;
@@ -67,116 +175,6 @@ const getUnderwritingDecision = (value: string | number) => {
 };
 
 export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type LTPZ030TabType = {
-    name: string;
-    value: string;
-    label: string;
-  };
-
-  const DATA_TABS: LTPZ030TabType[] = [
-    {
-      name: '간편고지유형 사전체크',
-      value: 'tab1',
-      label: '간편고지유형 사전체크',
-    },
-    {
-      name: '일반/건강고지유형 사전체크',
-      value: 'tab2',
-      label: '일반/건강고지유형 사전체크',
-    },
-  ];
-
-  // tab1_1 dummy data
-  type DummyDataType1T1 = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-  };
-  const DummyData1T1: DummyDataType1T1[] = [
-    {
-      id: 1,
-      field01: '더경증',
-      field02: '3105',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737,1',
-    },
-    {
-      id: 2,
-      field01: '더경증',
-      field02: '385',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737,1',
-    },
-    {
-      id: 3,
-      field01: '더경증',
-      field02: '365',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737',
-    },
-    {
-      id: 4,
-      field01: '3N5',
-      field02: '355',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737',
-    },
-    {
-      id: 5,
-      field01: '3N5',
-      field02: '345',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737',
-    },
-    {
-      id: 6,
-      field01: '3N5(2일)',
-      field02: '355(2일)',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737',
-    },
-    {
-      id: 7,
-      field01: '3N5(2일)',
-      field02: '345(2일)',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737',
-    },
-    {
-      id: 8,
-      field01: '3N5(2일)',
-      field02: '335(2일)',
-      field03: '거절',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737,1152,1737',
-    },
-    {
-      id: 9,
-      field01: '3N5(2일)',
-      field02: '325(2일)',
-      field03: '조건부인수',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737',
-    },
-    {
-      id: 10,
-      field01: '3N5(2일)',
-      field02: '315(2일)',
-      field03: '인수',
-      field04: '',
-      field05: '경증외, 중대질환 1148,1737',
-    },
-  ];
   const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
     () => [
       {
@@ -235,9 +233,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
     ],
     []
   );
-
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-
   const renderStatusCell = (value: 'Y' | 'N' | '-', highlight = false) => {
     const isDangerY = highlight && value === 'Y';
 
@@ -283,19 +279,18 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Gcol placement="ss" className="w-full pt-2" gap={5}>
                   <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
                     <FormTable
-                      variant={'none'}
-                      caption="피보험자 정보 테이블"
+                      variant={'head'}
                       cols={[
-                        'w-[5rem]',
-                        'w-[5rem]',
-                        'w-[5rem]',
-                        'w-[9rem]',
+                        'w-[6rem]',
+                        'w-auto',
+                        'w-[6rem]',
+                        'w-auto',
                         'w-[13rem]',
-                        'w-[5rem]',
+                        'w-auto',
                         'w-[4rem]',
+                        'w-auto',
                         'w-[4rem]',
-                        'w-[4rem]',
-                        'w-[4rem]',
+                        'w-auto',
                         'w-[12rem]',
                         'w-auto',
                       ]}

@@ -41,15 +41,15 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr_auto]">
           <Gcol gap={5}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
-              <FormTable caption="보험정보" cols={['w-[6rem]', 'w-flex']} variant={'none'}>
+              <FormTable caption="보험정보" cols={['w-[6rem]', 'w-flex']} variant={'head'}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input width={'12rem'} value={'LA260209313558'} readOnly />
+                    <Input width={130} value={'LA260209313558'} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input width={'7rem'} value={'김한화'} readOnly />
-                    <Input width={'12rem'} value={'010-1234-1234'} readOnly />
+                    <Input width={70} value={'김한화'} readOnly />
+                    <Input width={120} value={'010-1234-1234'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -107,8 +107,8 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormTable caption="고객정보 수정 테이블" cols={['w-[10rem] flex-1']}>
                     <FormRow>
                       <FormCell title={'고객명'}>
-                        <Input placeholder="" value="김한화" width="7rem" readOnly />
-                        <Input placeholder="" value="900101-1******" width="12rem" readOnly />
+                        <Input placeholder="" value="김한화" width={70} readOnly />
+                        <Input placeholder="" value="900101-1******" width={120} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -116,7 +116,7 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'휴대폰번호'}>
-                        <Input placeholder="" value="000-8234-8234" width="11rem" readOnly />
+                        <Input placeholder="" value="000-8234-8234" width={110} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>
