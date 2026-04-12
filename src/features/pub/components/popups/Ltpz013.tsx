@@ -25,6 +25,46 @@ import {
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+// ag-theme-alpine div의 스크롤 동기화를 위한 Context
+type TableScrollSyncContextType = {
+  register: (ref: React.RefObject<HTMLDivElement | null>) => void;
+  unregister: (ref: React.RefObject<HTMLDivElement | null>) => void;
+  syncScroll: (source: HTMLDivElement, scrollTop: number) => void;
+};
+
+const TableScrollSyncContext = React.createContext<TableScrollSyncContextType | null>(null);
+
+function TableScrollSyncProvider({ children }: { children: React.ReactNode }) {
+  const refs = React.useRef<React.RefObject<HTMLDivElement | null>[]>([]);
+  const isSyncing = React.useRef(false);
+
+  const register = React.useCallback((ref: React.RefObject<HTMLDivElement | null>) => {
+    if (!refs.current.includes(ref)) {
+      refs.current.push(ref);
+    }
+  }, []);
+  const unregister = React.useCallback((ref: React.RefObject<HTMLDivElement | null>) => {
+    refs.current = refs.current.filter((r) => r !== ref);
+  }, []);
+  const syncScroll = React.useCallback((source: HTMLDivElement, scrollTop: number) => {
+    if (isSyncing.current) return;
+    isSyncing.current = true;
+    refs.current.forEach((ref) => {
+      const div = ref.current;
+      if (div && div !== source) {
+        div.scrollTop = scrollTop;
+      }
+    });
+    setTimeout(() => {
+      isSyncing.current = false;
+    }, 0);
+  }, []);
+  return (
+    <TableScrollSyncContext.Provider value={{ register, unregister, syncScroll }}>
+      {children}
+    </TableScrollSyncContext.Provider>
+  );
+}
 
 type ComparisonRow = {
   id: number;
@@ -117,6 +157,30 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
   },
 ];
 
+function getComparisonHeaderCellStyle(column: ColDef<ComparisonRow>): React.CSSProperties {
+  if (typeof column.width === 'number') {
+    const width = `${column.width}px`;
+
+    return {
+      flex: '0 0 auto',
+      minWidth: width,
+      width,
+    };
+  }
+
+  if (typeof column.flex === 'number') {
+    return {
+      flex: `${column.flex} ${column.flex} 0%`,
+      minWidth: 0,
+    };
+  }
+
+  return {
+    flex: '1 1 0%',
+    minWidth: 0,
+  };
+}
+
 const planTypeOptions: SelectOption[] = [
   { id: 'planType-1', value: 'planType-1', label: '납입면제 강화형, 납입후 50% 해약환급 금지급형' },
 ];
@@ -126,9 +190,7 @@ const underwritingPlanOptions: SelectOption[] = [
 ];
 
 const paymentTermOptions: SelectOption[] = [{ id: 'paymentTerm-1', value: 'paymentTerm-1', label: '20년납' }];
-
 const maturityTermOptions: SelectOption[] = [{ id: 'maturityTerm-1', value: 'maturityTerm-1', label: '100세만기' }];
-
 const renewalTermOptions: SelectOption[] = [{ id: 'renewalTerm-1', value: 'renewalTerm-1', label: '갱신 20년' }];
 
 const noticeTypeOptions: SelectOption[] = [{ id: 'noticeType-1', value: 'noticeType-1', label: '1형(일반고지형)' }];
@@ -147,6 +209,26 @@ function CompareDesignCard({ mode, compareLabel, statusText = '인수가능', to
   const setCompareField = React.useCallback((field: keyof CompareSelectForm, value: string) => {
     setCompareForm((prev) => ({ ...prev, [field]: value }));
   }, []);
+
+  // ag-theme-alpine div ref 및 스크롤 동기화
+  const scrollDivRef = React.useRef<HTMLDivElement>(null);
+  const scrollSync = React.useContext(TableScrollSyncContext);
+  React.useEffect(() => {
+    if (!scrollSync) return;
+    scrollSync.register(scrollDivRef);
+    return () => scrollSync.unregister(scrollDivRef);
+  }, [scrollSync]);
+  React.useEffect(() => {
+    if (!scrollSync) return;
+    const div = scrollDivRef.current;
+    if (!div) return;
+    const handleScroll = () => {
+      if (!scrollSync) return;
+      scrollSync.syncScroll(div, div.scrollTop);
+    };
+    div.addEventListener('scroll', handleScroll);
+    return () => div.removeEventListener('scroll', handleScroll);
+  }, [scrollSync]);
   const compareFooter = (
     <Grow className="w-full px-[1.6rem] py-[1rem]" placement="bwc" gap={0}>
       <Typo tag={'p'} variant={'body-md'} weight={'bold'} className="text-white">
@@ -365,19 +447,40 @@ function CompareDesignCard({ mode, compareLabel, statusText = '인수가능', to
           </Gcol>
         )}
 
-        <div className="ag-theme-alpine w-full min-h-132 mt-[1.2rem]">
+        <div
+          ref={scrollDivRef}
+          className="ag-theme-alpine no-header w-full min-h-132 mt-[1.2rem] max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+        >
+          <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
+            {comparisonColumnDefs.map((column, index) => {
+              const key = column.field ?? column.headerName ?? `column-${index}`;
+
+              return (
+                <div
+                  key={key}
+                  className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
+                  style={getComparisonHeaderCellStyle(column)}
+                >
+                  <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                    {column.headerName}
+                  </Typo>
+                </div>
+              );
+            })}
+          </div>
           <AgGridReact<ComparisonRow>
             getRowId={(params) => String(params.data.id)}
             noRowsOverlayComponent={AgGridEmptyComponent}
             rowData={comparisonRows}
             columnDefs={comparisonColumnDefs}
+            headerHeight={0}
+            groupHeaderHeight={0}
             defaultColDef={{
+              suppressMovable: true,
               sortable: false,
               resizable: false,
             }}
-            headerHeight={30}
-            rowHeight={30}
-            domLayout="normal"
+            domLayout="autoHeight"
           />
         </div>
       </RecommendCard>
@@ -388,61 +491,63 @@ function CompareDesignCard({ mode, compareLabel, statusText = '인수가능', to
 
 export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              상품비교설계
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ013)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
+    <TableScrollSyncProvider>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent showCloseButton resizable={true} size="2xl">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                상품비교설계
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ013)
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
 
-        <DialogSection>
-          <div className="h-full overflow-x-auto overflow-y-hidden">
-            <Grow className="relative h-full min-w-max items-start" gap={6} placement="ss">
-              <CompareDesignCard mode="base" total={cardTotals.base} />
-              <CompareDesignCard
-                mode="compare"
-                compareLabel="비교설계1"
-                statusText="인수가능"
-                total={cardTotals.compare1}
-              />
-              <CompareDesignCard
-                mode="compare"
-                compareLabel="비교설계2"
-                statusText="인수가능"
-                total={cardTotals.compare2}
-              />
-              <CompareDesignCard
-                mode="compare"
-                compareLabel="비교설계3"
-                statusText="조건인수가능"
-                total={cardTotals.compare3}
-              />
-            </Grow>
-          </div>
-        </DialogSection>
+          <DialogSection>
+            <div className="h-full overflow-x-auto overflow-y-hidden pb-2">
+              <Grow className="relative h-full min-w-max items-start" gap={6} placement="ss">
+                <CompareDesignCard mode="base" total={cardTotals.base} />
+                <CompareDesignCard
+                  mode="compare"
+                  compareLabel="비교설계1"
+                  statusText="인수가능"
+                  total={cardTotals.compare1}
+                />
+                <CompareDesignCard
+                  mode="compare"
+                  compareLabel="비교설계2"
+                  statusText="인수가능"
+                  total={cardTotals.compare2}
+                />
+                <CompareDesignCard
+                  mode="compare"
+                  compareLabel="비교설계3"
+                  statusText="조건인수가능"
+                  total={cardTotals.compare3}
+                />
+              </Grow>
+            </div>
+          </DialogSection>
 
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                설계생성
-              </Button>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button variant={'contained'} size={'xl'}>
+                  설계생성
                 </Button>
-              </DialogClose>
-            </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+            <DialogBottomInfo />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </TableScrollSyncProvider>
   );
 };

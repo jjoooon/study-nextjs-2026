@@ -26,15 +26,76 @@ import {
 import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
+type UnderwritingViolationRow = {
+  id: number;
+  target: string;
+  criteria: string;
+  details: string;
+};
+const violationRowData: UnderwritingViolationRow[] = [
+  {
+    id: 1,
+    target: '홍길순',
+    criteria: '인수기준',
+    details:
+      '시그니처여성 올인원플랜은 [상해사망 1.5억] 또는 [상해사망 5천만 + 상해/질병중환자실입원비 각 20만] 가입이 필수입니다.',
+  },
+  {
+    id: 2,
+    target: '홍길순',
+    criteria: '인수기준',
+    details:
+      '[암(유사암제외)진단비(암진단비 I)표준권누적 한도초과]<br />[인수한도: 10000 만원] [초과금액: 20,000 만원]',
+  },
+  {
+    id: 3,
+    target: '홍길순',
+    criteria: '인수기준',
+    details:
+      '[암진단비 I + II + III(암)(재진단비포함)표준권누적 한도초과]<br/>[인수한도: 10000 만원] [초과금액: 20,000 만원]',
+  },
+  {
+    id: 4,
+    target: '홍길순',
+    criteria: '인수기준',
+    details:
+      '[유사암진단비/기타피부암][전체누적 한도초과] [가입금액 2.5배 적용]<br/>[인수한도: 3000 만원] [초과금액: 1,300 만원]',
+  },
+  {
+    id: 5,
+    target: '홍길순',
+    criteria: '청약완료불가\n(정액)',
+    details:
+      '[뇌졸중외부기공통기준암(유사암제외)진단비(암진단비 I)][전체누적 한도초과]<br/>[인수한도: 20000 만원] [초과금액: 13,100 만원]',
+  },
+  {
+    id: 6,
+    target: '홍길순',
+    criteria: '청약완료불가\n(정액)',
+    details: '[암(유사암제외)진단비(암진단비 I)] 전체누적 한도초과<br/>[인수한도: 10000 만원] [초과금액: 23,100 만원]',
+  },
+  {
+    id: 7,
+    target: '홍길순',
+    criteria: '청약완료불가\n(정액)',
+    details:
+      '[암진단비 I + II + III(합)(재진단미포함)][전체누적 한도초과]<br/>[인수한도: 10000 만원] [초과금액: 25,100 만원]',
+  },
+  {
+    id: 8,
+    target: '홍길순',
+    criteria: '청약완료불가\n(업계누적)',
+    details:
+      '[업계가입금액 초과 수납불가 당사+타사 암진단비 3억원 초과시(업계 정액보상담보 포함) 가입이 불가합니다.<br>[당사: 33,100만원 / 타사: 1,600만원]',
+  },
+  {
+    id: 9,
+    target: '홍길순',
+    criteria: '참고사항',
+    details: '[한화NEWRICH간병입원플랜]',
+  },
+];
 export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type UnderwritingViolationRow = {
-    id: number;
-    target: string;
-    criteria: string;
-    details: string;
-  };
-
   type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'target' | 'criteria'>;
 
   const applyDetailsColor = (html: string): string => {
@@ -52,71 +113,6 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
     '청약완료불가\n(정액)': 'var(--color-success-50)',
     '청약완료불가\n(업계누적)': 'var(--color-information-50)',
   };
-
-  const violationRowData: UnderwritingViolationRow[] = [
-    {
-      id: 1,
-      target: '홍길순',
-      criteria: '인수기준',
-      details:
-        '시그니처여성 올인원플랜은 [상해사망 1.5억] 또는 [상해사망 5천만 + 상해/질병중환자실입원비 각 20만] 가입이 필수입니다.',
-    },
-    {
-      id: 2,
-      target: '홍길순',
-      criteria: '인수기준',
-      details:
-        '[암(유사암제외)진단비(암진단비 I)표준권누적 한도초과]<br />[인수한도: 10000 만원] [초과금액: 20,000 만원]',
-    },
-    {
-      id: 3,
-      target: '홍길순',
-      criteria: '인수기준',
-      details:
-        '[암진단비 I + II + III(암)(재진단비포함)표준권누적 한도초과]<br/>[인수한도: 10000 만원] [초과금액: 20,000 만원]',
-    },
-    {
-      id: 4,
-      target: '홍길순',
-      criteria: '인수기준',
-      details:
-        '[유사암진단비/기타피부암][전체누적 한도초과] [가입금액 2.5배 적용]<br/>[인수한도: 3000 만원] [초과금액: 1,300 만원]',
-    },
-    {
-      id: 5,
-      target: '홍길순',
-      criteria: '청약완료불가\n(정액)',
-      details:
-        '[뇌졸중외부기공통기준암(유사암제외)진단비(암진단비 I)][전체누적 한도초과]<br/>[인수한도: 20000 만원] [초과금액: 13,100 만원]',
-    },
-    {
-      id: 6,
-      target: '홍길순',
-      criteria: '청약완료불가\n(정액)',
-      details:
-        '[암(유사암제외)진단비(암진단비 I)] 전체누적 한도초과<br/>[인수한도: 10000 만원] [초과금액: 23,100 만원]',
-    },
-    {
-      id: 7,
-      target: '홍길순',
-      criteria: '청약완료불가\n(정액)',
-      details:
-        '[암진단비 I + II + III(합)(재진단미포함)][전체누적 한도초과]<br/>[인수한도: 10000 만원] [초과금액: 25,100 만원]',
-    },
-    {
-      id: 8,
-      target: '홍길순',
-      criteria: '청약완료불가\n(업계누적)',
-      details:
-        '[업계가입금액 초과 수납불가 당사+타사 암진단비 3억원 초과시(업계 정액보상담보 포함) 가입이 불가합니다.<br>[당사: 33,100만원 / 타사: 1,600만원]',
-    },
-    {
-      id: 9,
-      target: '홍길순',
-      criteria: '참고사항',
-      details: '[한화NEWRICH간병입원플랜]',
-    },
-  ];
 
   const selectedCellRef = React.useRef<SelectedViolationCell | null>(null);
   const gridApiRef = React.useRef<GridApi<UnderwritingViolationRow> | null>(null);
@@ -260,24 +256,21 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold variant={'default'}>
             <TableFoldHead title=""></TableFoldHead>
             <TableFoldBody>
-              <Grow className="w-full" placement={'ss'}>
-                <div className="ag-theme-alpine w-full">
-                  <AgGridReact<UnderwritingViolationRow>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={violationRowData}
-                    columnDefs={spanColumnDefs}
-                    defaultColDef={spanDefaultColDef}
-                    domLayout="autoHeight"
-                    enableCellSpan={true}
-                    suppressRowClickSelection={true}
-                    onGridReady={(params) => {
-                      gridApiRef.current = params.api;
-                    }}
-                    onCellClicked={handleCellClicked}
-                  />
-                </div>
-              </Grow>
+              <div className="ag-theme-alpine">
+                <AgGridReact<UnderwritingViolationRow>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={violationRowData}
+                  columnDefs={spanColumnDefs}
+                  defaultColDef={spanDefaultColDef}
+                  domLayout="autoHeight"
+                  enableCellSpan={true}
+                  onGridReady={(params) => {
+                    gridApiRef.current = params.api;
+                  }}
+                  onCellClicked={handleCellClicked}
+                />
+              </div>
             </TableFoldBody>
           </TableFold>
         </DialogSection>

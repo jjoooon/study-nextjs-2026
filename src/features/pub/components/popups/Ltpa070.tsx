@@ -25,34 +25,32 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+};
+const DummyData: DummyDataType[] = [
+  { id: 1, field01: '웰시 코기 카디건', field02: 'Welsh Corgi Cardigan' },
+  { id: 2, field01: '웰시 코기 펨브로크', field02: 'Welsh Corgi Pembroke' },
+  { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
+];
+
 export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-  };
-  const DummyData = React.useMemo<DummyDataType[]>(
-    () => [
-      { id: 1, field01: '웰시 코기 카디건', field02: 'Welsh Corgi Cardigan' },
-      { id: 2, field01: '웰시 코기 펨브로크', field02: 'Welsh Corgi Pembroke' },
-      { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
-    ],
-    []
-  );
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '견종명',
       flex: 1,
       field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '견종명(영문)',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
@@ -63,7 +61,7 @@ export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
   const rowData = React.useMemo(() => {
     if (!breedSearch) return DummyData;
     return DummyData.filter((item) => String(item.field01).includes(breedSearch));
-  }, [breedSearch, DummyData]);
+  }, [breedSearch]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -94,10 +92,6 @@ export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowData={rowData}
               columnDefs={columnDefs}
-              defaultColDef={{
-                sortable: false,
-                resizable: false,
-              }}
               domLayout="autoHeight"
             />
           </div>

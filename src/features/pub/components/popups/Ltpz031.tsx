@@ -65,8 +65,6 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     type05_04: '',
   });
 
-  // const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
-  const [checked, setChecked] = React.useState<string[]>(['b']);
   const [tabActive, setTabActive] = React.useState('TAB1');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -103,25 +101,23 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Gcol className="w-full" placement={'ss'} gap={2}>
                 <Typo variant="heading-md">많이 찾는 질병</Typo>
                 <Grow variant="box-round" placement={'bwc'}>
-                  <CheckboxGroup
-                    className="gap-1"
-                    color="primary"
-                    minSelected={2}
-                    value={checked}
-                    onValueChange={setChecked}
-                    size="lg"
-                    variant="button"
-                  >
-                    <CheckboxGroupItem value="대장·직장용종">대장·직장용종</CheckboxGroupItem>
-                    <CheckboxGroupItem value="척주염좌">척주염좌</CheckboxGroupItem>
-                    <CheckboxGroupItem value="등통증">등통증</CheckboxGroupItem>
-                    <CheckboxGroupItem value="후천성 백내장">후천성 백내장</CheckboxGroupItem>
-                    <CheckboxGroupItem value="열상·표재성손상">열상·표재성손상</CheckboxGroupItem>
-                    <CheckboxGroupItem value="추간판장애">추간판장애</CheckboxGroupItem>
-                    <CheckboxGroupItem value="금성 비인두염">금성 비인두염</CheckboxGroupItem>
-                    <CheckboxGroupItem value="교통사고">교통사고</CheckboxGroupItem>
-                    <CheckboxGroupItem value="치액/치질">치액/치질</CheckboxGroupItem>
-                    <CheckboxGroupItem value="자궁근종">자궁근종</CheckboxGroupItem>
+                  <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
+                    {[
+                      { value: '대장·직장용종', label: '대장·직장용종' },
+                      { value: '척주염좌', label: '척주염좌' },
+                      { value: '등통증', label: '등통증' },
+                      { value: '후천성 백내장', label: '후천성 백내장' },
+                      { value: '열상·표재성손상', label: '열상·표재성손상' },
+                      { value: '추간판장애', label: '추간판장애' },
+                      { value: '금성 비인두염', label: '금성 비인두염' },
+                      { value: '교통사고', label: '교통사고' },
+                      { value: '치액/치질', label: '치액/치질' },
+                      { value: '자궁근종', label: '자궁근종' },
+                    ].map((item) => (
+                      <CheckboxGroupItem key={item.value} value={item.value}>
+                        {item.label}
+                      </CheckboxGroupItem>
+                    ))}
                   </CheckboxGroup>
                 </Grow>
               </Gcol>
@@ -137,6 +133,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Input
                       placeholder="병명 또는 코드 입력"
                       value={form.type01_01}
+                      className="flex-1"
                       onChange={(e) => setFormField('type01_01', e.target.value)}
                     />
                     <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
@@ -227,2577 +224,555 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
             <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
               <Grow className="w-full min-w-0">
                 <Gcol className="w-full min-w-0" placement={'ss'}>
-                  {(() => {
-                    return (
-                      <TabPager
-                        data={[
-                          { label: '척추염좌', value: 'TAB1' },
-                          { label: '자궁근종', value: 'TAB2' },
-                          { label: '대장·직장용종', value: 'TAB3' },
-                          { label: '추간판장애', value: 'TAB4' },
-                          { label: '어깨병변', value: 'TAB5' },
-                        ]}
-                        active={tabActive}
-                        setActive={setTabActive}
-                        getValue={(tab) => tab.value}
-                        renderTab={(tab) => <span>{tab.label}</span>}
-                        visibleCount={4}
-                      >
-                        {/* Tab1 */}
-                        {tabActive === 'TAB1' ? (
-                          <Gcol placement={'ss'} className="w-full" gap={3}>
-                            <TableFold>
-                              <TableFoldHead title="기본질문">
-                                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                                  초기화
-                                </Button>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      <Grow placement={'bwe'}>
-                                        <Grow>
-                                          척추염좌
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Button only="icon" size={'md'} variant="none">
-                                                <QuestionMark color="var(--color-gray-500)" />
-                                              </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                              align="start"
-                                              side="bottom"
-                                              sideOffset={0}
-                                              variant="default"
-                                              className="z-[60] w-[22.1rem] block"
-                                            >
-                                              <Gcol placement={'ss'} gap={1.5}>
-                                                <Typo className="body-md font-bold">척추염좌</Typo>
-                                                <Grow>
-                                                  <Badge color="primary" size="md" variant="contained">
-                                                    할증
-                                                  </Badge>
-                                                  <Badge color="green" size="md" variant="contained">
-                                                    부담보
-                                                  </Badge>
-                                                  <Badge color="blue" size="md" variant="contained">
-                                                    SI경증
-                                                  </Badge>
-                                                </Grow>
-                                                <Typo tag={'p'} className="text-wrap">
-                                                  경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
-                                                  간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
-                                                </Typo>
-                                              </Gcol>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </Grow>
-                                        <Badge color="green" size="md" variant="contained" className="">
-                                          자동완성
-                                        </Badge>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>
-                                      <Input
-                                        value={form.type01_02}
-                                        onChange={(e) => setFormField('type01_02', e.target.value)}
-                                        required
-                                      />
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료기간'}>
-                                      <DatePickerInput
-                                        errorMsg=""
-                                        errorPs="bl"
-                                        mode="range"
-                                        onChange={() => {}}
-                                        rangeValue={{
-                                          from: '2026-03-01',
-                                          to: '2026-03-07',
-                                        }}
-                                        required
-                                        size="lg"
-                                        width="sm"
-                                      />
-                                    </FormCell>
-                                    <FormCell title={'수술여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option1_1"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option1_2"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          입원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type01_03}
-                                            onChange={(e) => setFormField('type01_03', e.target.value)}
-                                            width="4rem"
-                                            required
-                                          />
-                                          일
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'완치여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option1_3"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option1_4"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={null}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          통원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type01_04}
-                                            onChange={(e) => setFormField('type01_04', e.target.value)}
-                                            required
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'재발유무'}>
-                                      <Grow gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          width="auto"
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option1_5"
-                                            variant="default"
-                                          >
-                                            없음
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option1_6"
-                                            variant="default"
-                                          >
-                                            있음
-                                          </RadioGroupItem>
-                                        </RadioGroup>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type01_05}
-                                            onChange={(e) => setFormField('type01_05', e.target.value)}
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="(선택)치료내용">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Table>
-                                  <TableBody>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          진단/검사/검진
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          약처방/투약(주사,연고,안약 등)
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Grow placement="bwc">
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            물리치료
-                                          </Checkbox>
-                                          <Button variant={'outlined'} size={'md'} color={'gray'}>
-                                            기타치료
+                  <TabPager
+                    data={[
+                      { label: '척추염좌', value: 'TAB1' },
+                      { label: '자궁근종', value: 'TAB2' },
+                      { label: '대장·직장용종', value: 'TAB3' },
+                      { label: '추간판장애', value: 'TAB4' },
+                      { label: '어깨병변', value: 'TAB5' },
+                    ]}
+                    active={tabActive}
+                    setActive={setTabActive}
+                    getValue={(tab) => tab.value}
+                    renderTab={(tab) => <span>{tab.label}</span>}
+                    visibleCount={4}
+                  >
+                    {/* Tab1 */}
+                    <Gcol placement={'ss'} className="w-full mt-2" gap={3}>
+                      <TableFold>
+                        <TableFoldHead title="기본질문">
+                          <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                            초기화
+                          </Button>
+                        </TableFoldHead>
+                        <TableFoldBody>
+                          <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                            <FormRow vertical={false}>
+                              <FormCell title={'병명'}>
+                                <Grow placement={'bwe'}>
+                                  {tabActive === 'TAB1' ? (
+                                    <Grow>
+                                      척추염좌
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button only="icon" size={'md'} variant="none">
+                                            <QuestionMark color="var(--color-gray-500)" />
                                           </Button>
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          align="start"
+                                          side="bottom"
+                                          sideOffset={0}
                                           variant="default"
+                                          className="z-[60] w-[22.1rem] block"
                                         >
-                                          상담/언어치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          치과치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          한방치료
-                                        </Checkbox>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell colSpan={3}>
-                                        <Grow gap={1}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            기타
-                                          </Checkbox>
-                                          <Input aria-label="" value={''} readOnly />
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="추가질문" />
-                              <TableFoldBody>
-                                <FormTable cols={['w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'발생부위'}>
-                                      <Grow className="w-full" gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option1_7"
-                                            variant="default"
-                                          >
-                                            경추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option1_8"
-                                            variant="default"
-                                          >
-                                            흉추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d3"
-                                            size="lg"
-                                            value="option1_9"
-                                            variant="default"
-                                          >
-                                            요추
-                                          </RadioGroupItem>
-                                          <Grow gap={1}>
-                                            <RadioGroupItem
-                                              color="primary"
-                                              id="d3"
-                                              size="lg"
-                                              value="option1_10"
-                                              variant="default"
-                                            >
-                                              그외 부위 또는 여러부위
-                                            </RadioGroupItem>
-                                            <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
-                                          </Grow>
-                                        </RadioGroup>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow>
-                                    <FormCell title={'발생원인'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="full"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option1_11"
-                                          variant="default"
-                                        >
-                                          교통사고 外원인
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option1_12"
-                                          variant="default"
-                                        >
-                                          교통사고 원인
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="질병별 사전심사 안내">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수
-                                    있습니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Grow gap={3} placement="bws">
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 심사기준</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <br />
-                                          <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo>
-                                          <br />
-                                          <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo>
-                                          <br />
-                                          <Typo>교통사고 원인</Typo>
-                                          <br />
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="▶"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="dash"
-                                            >
-                                              31일미만 입통원: 경과1개월이상 인수(실손3개월후)
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 필요서류</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="①"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              소견서(진단명, 치료기간, 치료내용, 현재상태 등)
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="②"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              필요시 의사경과기록지
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="③"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              수술치료를 받은 경우에는 수술기록지
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </Grow>
-                              </TableFoldBody>
-                            </TableFold>
-                          </Gcol>
-                        ) : tabActive === 'TAB2' ? (
-                          <Gcol placement={'ss'} className="w-full" gap={3}>
-                            <TableFold>
-                              <TableFoldHead title="기본질문">
-                                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                                  초기화
-                                </Button>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      <Grow placement={'bwe'}>
-                                        <Grow>
-                                          자궁근종
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Button only="icon" size={'md'} variant="none">
-                                                <QuestionMark color="var(--color-gray-500)" />
-                                              </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                              align="start"
-                                              side="bottom"
-                                              sideOffset={0}
-                                              variant="default"
-                                              className="z-[60] w-[22.1rem] block"
-                                            >
-                                              <Gcol placement={'ss'} gap={1.5}>
-                                                <Typo className="body-md font-bold">자궁근종</Typo>
-                                                <Grow>
-                                                  <Badge color="primary" size="md" variant="contained">
-                                                    할증
-                                                  </Badge>
-                                                  <Badge color="green" size="md" variant="contained">
-                                                    부담보
-                                                  </Badge>
-                                                  <Badge color="blue" size="md" variant="contained">
-                                                    SI경증
-                                                  </Badge>
-                                                </Grow>
-                                                <Typo className="text-wrap">
-                                                  자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌
-                                                  및 난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
-                                                </Typo>
-                                              </Gcol>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </Grow>
-                                        <Badge color="green" size="md" variant="contained" className="">
-                                          자동완성
-                                        </Badge>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>
-                                      <Input
-                                        value={form.type02_01}
-                                        onChange={(e) => setFormField('type02_01', e.target.value)}
-                                        required
-                                      />
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료기간'}>
-                                      <DatePickerInput
-                                        errorMsg=""
-                                        errorPs="bl"
-                                        mode="range"
-                                        onChange={() => {}}
-                                        rangeValue={{
-                                          from: '2026-03-01',
-                                          to: '2026-03-07',
-                                        }}
-                                        required
-                                        size="lg"
-                                        width="sm"
-                                      />
-                                    </FormCell>
-                                    <FormCell title={'수술여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option2_1"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option2_2"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          입원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type02_02}
-                                            onChange={(e) => setFormField('type02_02', e.target.value)}
-                                            width="4rem"
-                                            required
-                                          />
-                                          일
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'완치여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option2_3"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option2_4"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={null}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          통원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type02_03}
-                                            onChange={(e) => setFormField('type02_03', e.target.value)}
-                                            required
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'재발유무'}>
-                                      <Grow gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          width="auto"
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option2_5"
-                                            variant="default"
-                                          >
-                                            없음
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option2_6"
-                                            variant="default"
-                                          >
-                                            있음
-                                          </RadioGroupItem>
-                                        </RadioGroup>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type02_04}
-                                            onChange={(e) => setFormField('type02_04', e.target.value)}
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="(선택)치료내용">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Table>
-                                  <TableBody>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          진단/검사/검진
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          약처방/투약(주사,연고,안약 등)
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Grow placement={'bwc'}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            물리치료
-                                          </Checkbox>
-                                          <Button variant={'outlined'} size={'md'} color={'gray'}>
-                                            기타치료
+                                          <Gcol placement={'ss'} gap={1.5}>
+                                            <Typo className="body-md font-bold">척추염좌</Typo>
+                                            <Grow>
+                                              <Badge color="primary" size="md" variant="contained">
+                                                할증
+                                              </Badge>
+                                              <Badge color="green" size="md" variant="contained">
+                                                부담보
+                                              </Badge>
+                                              <Badge color="blue" size="md" variant="contained">
+                                                SI경증
+                                              </Badge>
+                                            </Grow>
+                                            <Typo tag={'p'} className="text-wrap">
+                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
+                                              간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                            </Typo>
+                                          </Gcol>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </Grow>
+                                  ) : tabActive === 'TAB2' ? (
+                                    <Grow>
+                                      자궁근종
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button only="icon" size={'md'} variant="none">
+                                            <QuestionMark color="var(--color-gray-500)" />
                                           </Button>
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          align="start"
+                                          side="bottom"
+                                          sideOffset={0}
                                           variant="default"
+                                          className="z-[60] w-[22.1rem] block"
                                         >
-                                          상담/언어치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          치과치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          한방치료
-                                        </Checkbox>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell colSpan={3}>
-                                        <Grow gap={1}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            기타
-                                          </Checkbox>
-                                          <Input aria-label="" value={''} readOnly />
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="추가질문" />
-                              <TableFoldBody>
-                                <FormTable cols={['w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'발생부위'}>
-                                      <Grow className="w-full" gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option2_7"
-                                            variant="default"
-                                          >
-                                            경추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option2_8"
-                                            variant="default"
-                                          >
-                                            흉추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d3"
-                                            size="lg"
-                                            value="option2_9"
-                                            variant="default"
-                                          >
-                                            요추
-                                          </RadioGroupItem>
-                                          <Grow gap={1}>
-                                            <RadioGroupItem
-                                              color="primary"
-                                              id="d3"
-                                              size="lg"
-                                              value="option2_10"
-                                              variant="default"
-                                            >
-                                              그외 부위 또는 여러부위
-                                            </RadioGroupItem>
-                                            <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
-                                          </Grow>
-                                        </RadioGroup>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow>
-                                    <FormCell title={'발생원인'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="full"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option2_11"
-                                          variant="default"
-                                        >
-                                          교통사고 外원인
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option2_12"
-                                          variant="default"
-                                        >
-                                          교통사고 원인
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="질병별 사전심사 안내">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수
-                                    있습니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Grow gap={3} placement={'bws'}>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 심사기준</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <br />
-                                          <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo>
-                                          <br />
-                                          <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo>
-                                          <br />
-                                          <Typo>교통사고 원인</Typo>
-                                          <br />
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="▶"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="dash"
-                                            >
-                                              31일미만 입통원: 경과1개월이상 인수(실손3개월후)
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 필요서류</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="①"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              소견서(진단명, 치료기간, 치료내용, 현재상태 등)
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="②"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              필요시 의사경과기록지
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="③"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              수술치료를 받은 경우에는 수술기록지
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </Grow>
-                              </TableFoldBody>
-                            </TableFold>
-                          </Gcol>
-                        ) : tabActive === 'TAB3' ? ( // Missing Gcol component
-                          <Gcol placement={'ss'} className="w-full" gap={3}>
-                            <TableFold>
-                              <TableFoldHead title="기본질문">
-                                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                                  초기화
-                                </Button>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      <Grow placement={'bwe'}>
-                                        <Grow>
-                                          대장·직장용종
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Button only="icon" size={'md'} variant="none">
-                                                <QuestionMark color="var(--color-gray-500)" />
-                                              </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                              align="start"
-                                              side="bottom"
-                                              sideOffset={0}
-                                              variant="default"
-                                              className="z-[60] w-[22.1rem] block"
-                                            >
-                                              <Gcol placement={'ss'} gap={1.5}>
-                                                <Typo className="body-md font-bold">대장·직장용종</Typo>
-                                                <Grow>
-                                                  <Badge color="primary" size="md" variant="contained">
-                                                    할증
-                                                  </Badge>
-                                                  <Badge color="green" size="md" variant="contained">
-                                                    부담보
-                                                  </Badge>
-                                                  <Badge color="blue" size="md" variant="contained">
-                                                    SI경증
-                                                  </Badge>
-                                                </Grow>
-                                                <Typo tag={'p'} className="text-wrap">
-                                                  자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌
-                                                  및 난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
-                                                </Typo>
-                                              </Gcol>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </Grow>
-                                        <Badge color="green" size="md" variant="contained" className="">
-                                          자동완성
-                                        </Badge>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>
-                                      <Input
-                                        value={form.type03_01}
-                                        onChange={(e) => setFormField('type03_01', e.target.value)}
-                                        required
-                                      />
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료기간'}>
-                                      <DatePickerInput
-                                        errorMsg=""
-                                        errorPs="bl"
-                                        mode="range"
-                                        onChange={() => {}}
-                                        rangeValue={{
-                                          from: '2026-03-01',
-                                          to: '2026-03-07',
-                                        }}
-                                        required
-                                        size="lg"
-                                        width="sm"
-                                      />
-                                    </FormCell>
-                                    <FormCell title={'수술여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option3_1"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option3_2"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          입원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type03_02}
-                                            onChange={(e) => setFormField('type03_02', e.target.value)}
-                                            width="4rem"
-                                            required
-                                          />
-                                          일
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'완치여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option3_3"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option3_4"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={null}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          통원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type03_03}
-                                            onChange={(e) => setFormField('type03_03', e.target.value)}
-                                            required
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'재발유무'}>
-                                      <Grow gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          width="auto"
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option3_5"
-                                            variant="default"
-                                          >
-                                            없음
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option3_6"
-                                            variant="default"
-                                          >
-                                            있음
-                                          </RadioGroupItem>
-                                        </RadioGroup>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type03_04}
-                                            onChange={(e) => setFormField('type03_04', e.target.value)}
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="(선택)치료내용">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Table>
-                                  <TableBody>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          진단/검사/검진
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          약처방/투약(주사,연고,안약 등)
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Grow placement={'bwc'}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            물리치료
-                                          </Checkbox>
-                                          <Button variant={'outlined'} size={'md'} color={'gray'}>
-                                            기타치료
+                                          <Gcol placement={'ss'} gap={1.5}>
+                                            <Typo className="body-md font-bold">자궁근종</Typo>
+                                            <Grow>
+                                              <Badge color="primary" size="md" variant="contained">
+                                                할증
+                                              </Badge>
+                                              <Badge color="green" size="md" variant="contained">
+                                                부담보
+                                              </Badge>
+                                              <Badge color="blue" size="md" variant="contained">
+                                                SI경증
+                                              </Badge>
+                                            </Grow>
+                                            <Typo className="text-wrap">
+                                              자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌 및
+                                              난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
+                                            </Typo>
+                                          </Gcol>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </Grow>
+                                  ) : tabActive === 'TAB3' ? (
+                                    <Grow>
+                                      대장·직장용종
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button only="icon" size={'md'} variant="none">
+                                            <QuestionMark color="var(--color-gray-500)" />
                                           </Button>
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          align="start"
+                                          side="bottom"
+                                          sideOffset={0}
                                           variant="default"
+                                          className="z-[60] w-[22.1rem] block"
                                         >
-                                          상담/언어치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          치과치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          한방치료
-                                        </Checkbox>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell colSpan={3}>
-                                        <Grow gap={1}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            기타
-                                          </Checkbox>
-                                          <Input aria-label="" value={''} readOnly />
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="추가질문" />
-                              <TableFoldBody>
-                                <FormTable cols={['w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'발생부위'}>
-                                      <Grow className="w-full" gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option3_7"
-                                            variant="default"
-                                          >
-                                            경추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option3_8"
-                                            variant="default"
-                                          >
-                                            흉추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d3"
-                                            size="lg"
-                                            value="option3_9"
-                                            variant="default"
-                                          >
-                                            요추
-                                          </RadioGroupItem>
-                                          <Grow gap={1}>
-                                            <RadioGroupItem
-                                              color="primary"
-                                              id="d3"
-                                              size="lg"
-                                              value="option3_10"
-                                              variant="default"
-                                            >
-                                              그외 부위 또는 여러부위
-                                            </RadioGroupItem>
-                                            <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
-                                          </Grow>
-                                        </RadioGroup>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow>
-                                    <FormCell title={'발생원인'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="full"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option3_11"
-                                          variant="default"
-                                        >
-                                          교통사고 外원인
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option3_12"
-                                          variant="default"
-                                        >
-                                          교통사고 원인
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="질병별 사전심사 안내">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수
-                                    있습니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Grow gap={3} placement={'bws'}>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 심사기준</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <br />
-                                          <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo>
-                                          <br />
-                                          <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo>
-                                          <br />
-                                          <Typo>교통사고 원인</Typo>
-                                          <br />
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="▶"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="dash"
-                                            >
-                                              31일미만 입통원: 경과1개월이상 인수(실손3개월후)
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 필요서류</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="①"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              소견서(진단명, 치료기간, 치료내용, 현재상태 등)
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="②"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              필요시 의사경과기록지
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="③"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              수술치료를 받은 경우에는 수술기록지
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </Grow>
-                              </TableFoldBody>
-                            </TableFold>
-                          </Gcol>
-                        ) : tabActive === 'TAB4' ? ( // Missing Gcol component
-                          <Gcol placement={'ss'} className="w-full" gap={3}>
-                            <TableFold>
-                              <TableFoldHead title="기본질문">
-                                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                                  초기화
-                                </Button>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      <Grow placement={'bwe'}>
-                                        <Grow>
-                                          추간판장애
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Button only="icon" size={'md'} variant="none">
-                                                <QuestionMark color="var(--color-gray-500)" />
-                                              </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                              align="start"
-                                              side="bottom"
-                                              sideOffset={0}
-                                              variant="default"
-                                              className="z-[60] w-[22.1rem] block"
-                                            >
-                                              <Gcol placement={'ss'} gap={1.5}>
-                                                <Typo className="body-md font-bold">추간판장애</Typo>
-                                                <Grow>
-                                                  <Badge color="primary" size="md" variant="contained">
-                                                    할증
-                                                  </Badge>
-                                                  <Badge color="green" size="md" variant="contained">
-                                                    부담보
-                                                  </Badge>
-                                                  <Badge color="blue" size="md" variant="contained">
-                                                    SI경증
-                                                  </Badge>
-                                                </Grow>
-                                                <Typo className="text-wrap">
-                                                  경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
-                                                  간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
-                                                </Typo>
-                                              </Gcol>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </Grow>
-                                        <Badge color="green" size="md" variant="contained" className="">
-                                          자동완성
-                                        </Badge>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>
-                                      <Input
-                                        value={form.type04_01}
-                                        onChange={(e) => setFormField('type04_01', e.target.value)}
-                                        required
-                                      />
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료기간'}>
-                                      <DatePickerInput
-                                        errorMsg=""
-                                        errorPs="bl"
-                                        mode="range"
-                                        onChange={() => {}}
-                                        rangeValue={{
-                                          from: '2026-03-01',
-                                          to: '2026-03-07',
-                                        }}
-                                        required
-                                        size="lg"
-                                        width="sm"
-                                      />
-                                    </FormCell>
-                                    <FormCell title={'수술여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option4_1"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option4_2"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          입원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type04_02}
-                                            onChange={(e) => setFormField('type04_02', e.target.value)}
-                                            width="4rem"
-                                            required
-                                          />
-                                          일
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'완치여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option4_3"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option4_4"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={null}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          통원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type04_03}
-                                            onChange={(e) => setFormField('type04_03', e.target.value)}
-                                            required
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'재발유무'}>
-                                      <Grow gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          width="auto"
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option4_5"
-                                            variant="default"
-                                          >
-                                            없음
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option4_6"
-                                            variant="default"
-                                          >
-                                            있음
-                                          </RadioGroupItem>
-                                        </RadioGroup>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type04_04}
-                                            onChange={(e) => setFormField('type04_04', e.target.value)}
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="(선택)치료내용">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Table>
-                                  <TableBody>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          진단/검사/검진
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          약처방/투약(주사,연고,안약 등)
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Grow placement={'bwc'}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            물리치료
-                                          </Checkbox>
-                                          <Button variant={'outlined'} size={'md'} color={'gray'}>
-                                            기타치료
+                                          <Gcol placement={'ss'} gap={1.5}>
+                                            <Typo className="body-md font-bold">대장·직장용종</Typo>
+                                            <Grow>
+                                              <Badge color="primary" size="md" variant="contained">
+                                                할증
+                                              </Badge>
+                                              <Badge color="green" size="md" variant="contained">
+                                                부담보
+                                              </Badge>
+                                              <Badge color="blue" size="md" variant="contained">
+                                                SI경증
+                                              </Badge>
+                                            </Grow>
+                                            <Typo tag={'p'} className="text-wrap">
+                                              자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌 및
+                                              난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
+                                            </Typo>
+                                          </Gcol>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </Grow>
+                                  ) : tabActive === 'TAB4' ? (
+                                    <Grow>
+                                      추간판장애
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button only="icon" size={'md'} variant="none">
+                                            <QuestionMark color="var(--color-gray-500)" />
                                           </Button>
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          align="start"
+                                          side="bottom"
+                                          sideOffset={0}
                                           variant="default"
+                                          className="z-[60] w-[22.1rem] block"
                                         >
-                                          상담/언어치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          치과치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          한방치료
-                                        </Checkbox>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell colSpan={3}>
-                                        <Grow gap={1}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            기타
-                                          </Checkbox>
-                                          <Input aria-label="" value={''} readOnly />
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="추가질문" />
-                              <TableFoldBody>
-                                <FormTable cols={['w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'발생부위'}>
-                                      <Grow className="w-full" gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option4_7"
-                                            variant="default"
-                                          >
-                                            경추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option4_8"
-                                            variant="default"
-                                          >
-                                            흉추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d3"
-                                            size="lg"
-                                            value="option4_9"
-                                            variant="default"
-                                          >
-                                            요추
-                                          </RadioGroupItem>
-                                          <Grow gap={1}>
-                                            <RadioGroupItem
-                                              color="primary"
-                                              id="d3"
-                                              size="lg"
-                                              value="option4_10"
-                                              variant="default"
-                                            >
-                                              그외 부위 또는 여러부위
-                                            </RadioGroupItem>
-                                            <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
-                                          </Grow>
-                                        </RadioGroup>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow>
-                                    <FormCell title={'발생원인'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="full"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option4_11"
-                                          variant="default"
-                                        >
-                                          교통사고 外원인
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option4_12"
-                                          variant="default"
-                                        >
-                                          교통사고 원인
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="질병별 사전심사 안내">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수
-                                    있습니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Grow gap={3} placement={'bws'}>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 심사기준</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <br />
-                                          <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo>
-                                          <br />
-                                          <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo>
-                                          <br />
-                                          <Typo>교통사고 원인</Typo>
-                                          <br />
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="▶"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="dash"
-                                            >
-                                              31일미만 입통원: 경과1개월이상 인수(실손3개월후)
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 필요서류</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="①"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              소견서(진단명, 치료기간, 치료내용, 현재상태 등)
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="②"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              필요시 의사경과기록지
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="③"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              수술치료를 받은 경우에는 수술기록지
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </Grow>
-                              </TableFoldBody>
-                            </TableFold>
-                          </Gcol>
-                        ) : tabActive === 'TAB5' ? ( // Missing Gcol component
-                          <Gcol placement={'ss'} className="w-full" gap={3}>
-                            <TableFold>
-                              <TableFoldHead title="기본질문">
-                                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                                  초기화
-                                </Button>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'병명'}>
-                                      <Grow placement={'bwe'}>
-                                        <Grow>
-                                          어깨병변
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Button only="icon" size={'md'} variant="none">
-                                                <QuestionMark color="var(--color-gray-500)" />
-                                              </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                              align="start"
-                                              side="bottom"
-                                              sideOffset={0}
-                                              variant="default"
-                                              className="z-[60] w-[22.1rem] block"
-                                            >
-                                              <Gcol placement={'ss'} gap={1.5}>
-                                                <Typo className="body-md font-bold">어깨병변</Typo>
-                                                <Grow>
-                                                  <Badge color="primary" size="md" variant="contained">
-                                                    할증
-                                                  </Badge>
-                                                  <Badge color="green" size="md" variant="contained">
-                                                    부담보
-                                                  </Badge>
-                                                  <Badge color="blue" size="md" variant="contained">
-                                                    SI경증
-                                                  </Badge>
-                                                </Grow>
-                                                <Typo className="text-wrap">
-                                                  어깨병변, 회전근개 손상, 견봉하 점액낭염, 어깨 탈구, 어깨 관절염, 어깨
-                                                  근육 손상
-                                                </Typo>
-                                              </Gcol>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </Grow>
-                                        <Badge color="green" size="md" variant="contained" className="">
-                                          자동완성
-                                        </Badge>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'의료기관명'}>
-                                      <Input
-                                        value={form.type05_01}
-                                        onChange={(e) => setFormField('type05_01', e.target.value)}
-                                        required
-                                      />
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료기간'}>
-                                      <DatePickerInput
-                                        errorMsg=""
-                                        errorPs="bl"
-                                        mode="range"
-                                        onChange={() => {}}
-                                        rangeValue={{
-                                          from: '2026-03-01',
-                                          to: '2026-03-07',
-                                        }}
-                                        required
-                                        size="lg"
-                                        width="sm"
-                                      />
-                                    </FormCell>
-                                    <FormCell title={'수술여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option5_1"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option5_2"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'치료일수'} titleRowSpan={2}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          입원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type05_02}
-                                            onChange={(e) => setFormField('type05_02', e.target.value)}
-                                            width="4rem"
-                                            required
-                                          />
-                                          일
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'완치여부'}>
-                                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option5_3"
-                                          variant="default"
-                                        >
-                                          예
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option5_4"
-                                          variant="default"
-                                        >
-                                          아니오
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={null}>
-                                      <Grow gap={3}>
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                          required
-                                        >
-                                          통원
-                                        </Checkbox>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type05_03}
-                                            onChange={(e) => setFormField('type05_03', e.target.value)}
-                                            required
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                    <FormCell title={'재발유무'}>
-                                      <Grow gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          width="auto"
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option5_4"
-                                            variant="default"
-                                          >
-                                            없음
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option5_5"
-                                            variant="default"
-                                          >
-                                            있음
-                                          </RadioGroupItem>
-                                        </RadioGroup>
-                                        <Grow>
-                                          <Input
-                                            commaAmount={true}
-                                            value={form.type05_04}
-                                            onChange={(e) => setFormField('type05_04', e.target.value)}
-                                            width="4rem"
-                                          />
-                                          회
-                                        </Grow>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="(선택)치료내용">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
-                                  >
-                                    치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
-                                  </BulletItem>
-                                </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Table>
-                                  <TableBody>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          진단/검사/검진
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          약처방/투약(주사,연고,안약 등)
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Grow placement={'bwc'}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            물리치료
-                                          </Checkbox>
-                                          <Button variant={'outlined'} size={'md'} color={'gray'}>
-                                            기타치료
+                                          <Gcol placement={'ss'} gap={1.5}>
+                                            <Typo className="body-md font-bold">추간판장애</Typo>
+                                            <Grow>
+                                              <Badge color="primary" size="md" variant="contained">
+                                                할증
+                                              </Badge>
+                                              <Badge color="green" size="md" variant="contained">
+                                                부담보
+                                              </Badge>
+                                              <Badge color="blue" size="md" variant="contained">
+                                                SI경증
+                                              </Badge>
+                                            </Grow>
+                                            <Typo className="text-wrap">
+                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
+                                              간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                            </Typo>
+                                          </Gcol>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </Grow>
+                                  ) : tabActive === 'TAB5' ? (
+                                    <Grow>
+                                      어깨병변
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button only="icon" size={'md'} variant="none">
+                                            <QuestionMark color="var(--color-gray-500)" />
                                           </Button>
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          align="start"
+                                          side="bottom"
+                                          sideOffset={0}
                                           variant="default"
+                                          className="z-[60] w-[22.1rem] block"
                                         >
-                                          상담/언어치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          치과치료
-                                        </Checkbox>
-                                      </TableCell>
-                                      <TableCell className="border-x-0">
-                                        <Checkbox
-                                          color="primary"
-                                          onCheckedChange={() => {}}
-                                          size="lg"
-                                          variant="default"
-                                        >
-                                          한방치료
-                                        </Checkbox>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell colSpan={3}>
-                                        <Grow gap={1}>
-                                          <Checkbox
-                                            color="primary"
-                                            onCheckedChange={() => {}}
-                                            size="lg"
-                                            variant="default"
-                                          >
-                                            기타
-                                          </Checkbox>
-                                          <Input aria-label="" value={''} readOnly />
-                                        </Grow>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="추가질문" />
-                              <TableFoldBody>
-                                <FormTable cols={['w-[8rem]', 'w-auto']}>
-                                  <FormRow vertical={false}>
-                                    <FormCell title={'발생부위'}>
-                                      <Grow className="w-full" gap={3}>
-                                        <RadioGroup
-                                          className="gap-3"
-                                          errorMsg="하나를 선택해주세요."
-                                          errorPs="bl"
-                                          onValueChange={() => {}}
-                                          required
-                                        >
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d1"
-                                            size="lg"
-                                            value="option5_7"
-                                            variant="default"
-                                          >
-                                            경추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d2"
-                                            size="lg"
-                                            value="option5_8"
-                                            variant="default"
-                                          >
-                                            흉추
-                                          </RadioGroupItem>
-                                          <RadioGroupItem
-                                            color="primary"
-                                            id="d3"
-                                            size="lg"
-                                            value="option5_9"
-                                            variant="default"
-                                          >
-                                            요추
-                                          </RadioGroupItem>
-                                          <Grow gap={1}>
-                                            <RadioGroupItem
-                                              color="primary"
-                                              id="d3"
-                                              size="lg"
-                                              value="option5_10"
-                                              variant="default"
-                                            >
-                                              그외 부위 또는 여러부위
-                                            </RadioGroupItem>
-                                            <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
-                                          </Grow>
-                                        </RadioGroup>
-                                      </Grow>
-                                    </FormCell>
-                                  </FormRow>
-                                  <FormRow>
-                                    <FormCell title={'발생원인'}>
-                                      <RadioGroup
-                                        className="gap-3"
-                                        errorMsg="하나를 선택해주세요."
-                                        errorPs="bl"
-                                        onValueChange={() => {}}
-                                        width="full"
-                                        required
-                                      >
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d1"
-                                          size="lg"
-                                          value="option5_11"
-                                          variant="default"
-                                        >
-                                          교통사고 外원인
-                                        </RadioGroupItem>
-                                        <RadioGroupItem
-                                          color="primary"
-                                          id="d2"
-                                          size="lg"
-                                          value="option5_12"
-                                          variant="default"
-                                        >
-                                          교통사고 원인
-                                        </RadioGroupItem>
-                                      </RadioGroup>
-                                    </FormCell>
-                                  </FormRow>
-                                </FormTable>
-                              </TableFoldBody>
-                            </TableFold>
-                            <TableFold>
-                              <TableFoldHead title="질병별 사전심사 안내">
-                                <Grow>
-                                  <BulletItem
-                                    className="text-right w-full break-words whitespace-pre-line"
-                                    color="default"
-                                    onClick={() => {}}
-                                    size="md"
-                                    type="dot"
+                                          <Gcol placement={'ss'} gap={1.5}>
+                                            <Typo className="body-md font-bold">어깨병변</Typo>
+                                            <Grow>
+                                              <Badge color="primary" size="md" variant="contained">
+                                                할증
+                                              </Badge>
+                                              <Badge color="green" size="md" variant="contained">
+                                                부담보
+                                              </Badge>
+                                              <Badge color="blue" size="md" variant="contained">
+                                                SI경증
+                                              </Badge>
+                                            </Grow>
+                                            <Typo className="text-wrap">
+                                              어깨병변, 회전근개 손상, 견봉하 점액낭염, 어깨 탈구, 어깨 관절염, 어깨
+                                              근육 손상
+                                            </Typo>
+                                          </Gcol>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </Grow>
+                                  ) : null}
+
+                                  <Badge color="green" size="md" variant="contained" className="">
+                                    자동완성
+                                  </Badge>
+                                </Grow>
+                              </FormCell>
+                              <FormCell title={'의료기관명'}>
+                                <Input
+                                  value={form.type01_02}
+                                  onChange={(e) => setFormField('type01_02', e.target.value)}
+                                  required
+                                />
+                              </FormCell>
+                            </FormRow>
+                            <FormRow vertical={false}>
+                              <FormCell title={'치료기간'}>
+                                <DatePickerInput
+                                  errorMsg=""
+                                  errorPs="bl"
+                                  mode="range"
+                                  onChange={() => {}}
+                                  rangeValue={{
+                                    from: '2026-03-01',
+                                    to: '2026-03-07',
+                                  }}
+                                  required
+                                  size="lg"
+                                />
+                              </FormCell>
+                              <FormCell title={'수술여부'}>
+                                <RadioGroup
+                                  className="gap-3"
+                                  onValueChange={() => {}}
+                                  width="full"
+                                  required
+                                  defaultValue={'예'}
+                                >
+                                  {[
+                                    { value: '예', label: '예' },
+                                    { value: '아니오', label: '아니오' },
+                                  ].map((item) => (
+                                    <RadioGroupItem key={item.value} value={item.value}>
+                                      {item.label}
+                                    </RadioGroupItem>
+                                  ))}
+                                </RadioGroup>
+                              </FormCell>
+                            </FormRow>
+                            <FormRow vertical={false}>
+                              <FormCell title={'치료일수'} titleRowSpan={2}>
+                                <Grow gap={3}>
+                                  <Checkbox onCheckedChange={() => {}} required>
+                                    입원
+                                  </Checkbox>
+                                  <Grow>
+                                    <Input
+                                      commaAmount={true}
+                                      value={form.type01_03}
+                                      onChange={(e) => setFormField('type01_03', e.target.value)}
+                                      width={40}
+                                      required
+                                    />
+                                    일
+                                  </Grow>
+                                </Grow>
+                              </FormCell>
+                              <FormCell title={'완치여부'}>
+                                <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
+                                  {[
+                                    { value: '예', label: '예' },
+                                    { value: '아니오', label: '아니오' },
+                                  ].map((item) => (
+                                    <RadioGroupItem key={item.value} value={item.value}>
+                                      {item.label}
+                                    </RadioGroupItem>
+                                  ))}
+                                </RadioGroup>
+                              </FormCell>
+                            </FormRow>
+                            <FormRow vertical={false}>
+                              <FormCell title={null}>
+                                <Grow gap={3}>
+                                  <Checkbox onCheckedChange={() => {}} required>
+                                    통원
+                                  </Checkbox>
+                                  <Grow>
+                                    <Input
+                                      commaAmount={true}
+                                      value={form.type01_04}
+                                      onChange={(e) => setFormField('type01_04', e.target.value)}
+                                      required
+                                      width={40}
+                                    />
+                                    회
+                                  </Grow>
+                                </Grow>
+                              </FormCell>
+                              <FormCell title={'재발유무'}>
+                                <Grow gap={3}>
+                                  <RadioGroup
+                                    className="gap-3"
+                                    errorMsg="하나를 선택해주세요."
+                                    errorPs="bl"
+                                    onValueChange={() => {}}
+                                    required
                                   >
-                                    공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수
-                                    있습니다.
-                                  </BulletItem>
+                                    {[
+                                      { value: '없음', label: '없음' },
+                                      { value: '있음', label: '있음' },
+                                    ].map((item) => (
+                                      <RadioGroupItem key={item.value} value={item.value}>
+                                        {item.label}
+                                      </RadioGroupItem>
+                                    ))}
+                                  </RadioGroup>
+                                  <Grow>
+                                    <Input
+                                      commaAmount={true}
+                                      value={form.type01_05}
+                                      onChange={(e) => setFormField('type01_05', e.target.value)}
+                                      width={40}
+                                    />
+                                    회
+                                  </Grow>
                                 </Grow>
-                              </TableFoldHead>
-                              <TableFoldBody>
-                                <Grow gap={3} placement={'bws'}>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 심사기준</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <br />
-                                          <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo>
-                                          <br />
-                                          <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo>
-                                          <br />
-                                          <Typo>교통사고 원인</Typo>
-                                          <br />
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="▶"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="dash"
-                                            >
-                                              31일미만 입통원: 경과1개월이상 인수(실손3개월후)
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead>척추 염좌 필요서류</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell>
-                                          <Typo>[일반고지형 심사가이드라인]</Typo>
-                                          <BulletList position="col">
-                                            <BulletListItem
-                                              before="①"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              소견서(진단명, 치료기간, 치료내용, 현재상태 등)
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="②"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              필요시 의사경과기록지
-                                            </BulletListItem>
-                                            <BulletListItem
-                                              before="③"
-                                              className="whitespace-nowrap"
-                                              color="default"
-                                              onClick={() => {}}
-                                              size="md"
-                                              type="symbols"
-                                            >
-                                              수술치료를 받은 경우에는 수술기록지
-                                            </BulletListItem>
-                                          </BulletList>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
+                              </FormCell>
+                            </FormRow>
+                          </FormTable>
+                        </TableFoldBody>
+                      </TableFold>
+                      <TableFold>
+                        <TableFoldHead title="(선택)치료내용">
+                          <Grow>
+                            <BulletItem
+                              className="text-right w-full break-words whitespace-pre-line"
+                              color="default"
+                              onClick={() => {}}
+                              size="md"
+                              type="dot"
+                            >
+                              치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
+                            </BulletItem>
+                          </Grow>
+                        </TableFoldHead>
+                        <TableFoldBody>
+                          <Table>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell className="border-x-0">
+                                  <Checkbox>진단/검사/검진</Checkbox>
+                                </TableCell>
+                                <TableCell className="border-x-0">
+                                  <Checkbox>약처방/투약(주사,연고,안약 등)</Checkbox>
+                                </TableCell>
+                                <TableCell className="border-x-0">
+                                  <Grow placement="bwc">
+                                    <Checkbox>물리치료</Checkbox>
+                                    <Button variant={'outlined'} size={'md'} color={'gray'}>
+                                      기타치료
+                                    </Button>
+                                  </Grow>
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell className="border-x-0">
+                                  <Checkbox>상담/언어치료</Checkbox>
+                                </TableCell>
+                                <TableCell className="border-x-0">
+                                  <Checkbox>치과치료</Checkbox>
+                                </TableCell>
+                                <TableCell className="border-x-0">
+                                  <Checkbox>한방치료</Checkbox>
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell colSpan={3}>
+                                  <Grow gap={1} className="w-full" placement="sc">
+                                    <Checkbox>기타</Checkbox>
+                                    <Input aria-label="" value={''} readOnly />
+                                  </Grow>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </TableFoldBody>
+                      </TableFold>
+                      <TableFold>
+                        <TableFoldHead title="추가질문" />
+                        <TableFoldBody>
+                          <FormTable cols={['w-[8rem]', 'w-auto']}>
+                            <FormRow vertical={false}>
+                              <FormCell title={'발생부위'}>
+                                <Grow className="w-full" gap={3} placement="sc">
+                                  <RadioGroup
+                                    className="gap-3"
+                                    errorMsg="하나를 선택해주세요."
+                                    errorPs="bl"
+                                    onValueChange={() => {}}
+                                    required
+                                  >
+                                    {[
+                                      { value: '경추', label: '경추' },
+                                      { value: '흉추', label: '흉추' },
+                                      { value: '요추', label: '요추' },
+                                      { value: '그외 부위 또는 여러부위', label: '그외 부위 또는 여러부위' },
+                                    ].map((item) => (
+                                      <RadioGroupItem key={item.value} value={item.value}>
+                                        {item.label}
+                                      </RadioGroupItem>
+                                    ))}
+                                    <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
+                                  </RadioGroup>
                                 </Grow>
-                              </TableFoldBody>
-                            </TableFold>
-                          </Gcol>
-                        ) : null}
-                      </TabPager>
-                    );
-                  })()}
+                              </FormCell>
+                            </FormRow>
+                            <FormRow>
+                              <FormCell title={'발생원인'}>
+                                <RadioGroup
+                                  className="gap-3"
+                                  errorMsg="하나를 선택해주세요."
+                                  errorPs="bl"
+                                  onValueChange={() => {}}
+                                  required
+                                >
+                                  {[
+                                    { value: '교통사고 外원인', label: '교통사고 外원인' },
+                                    { value: '교통사고 원인', label: '교통사고 원인' },
+                                  ].map((item) => (
+                                    <RadioGroupItem key={item.value} value={item.value}>
+                                      {item.label}
+                                    </RadioGroupItem>
+                                  ))}
+                                </RadioGroup>
+                              </FormCell>
+                            </FormRow>
+                          </FormTable>
+                        </TableFoldBody>
+                      </TableFold>
+                      <TableFold>
+                        <TableFoldHead title="질병별 사전심사 안내">
+                          <Grow>
+                            <BulletItem
+                              className="text-right w-full break-words whitespace-pre-line"
+                              color="default"
+                              onClick={() => {}}
+                              size="md"
+                              type="dot"
+                            >
+                              공통심사기준으로 실제 심사결과는 상품/치료 내용/동반질환 등에 따라 달라질 수 있습니다.
+                            </BulletItem>
+                          </Grow>
+                        </TableFoldHead>
+                        <TableFoldBody>
+                          <Grow gap={3} placement="bws">
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>척추 염좌 심사기준</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typo>[일반고지형 심사가이드라인]</Typo>
+                                    <br />
+                                    <Typo>▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)</Typo>
+                                    <br />
+                                    <Typo>▶ 질병: 수술없는 경우 치료내용별 심사(수술력 원인질환 확인)</Typo>
+                                    <br />
+                                    <Typo>교통사고 원인</Typo>
+                                    <br />
+                                    <BulletList position="col">
+                                      <BulletListItem
+                                        before="▶"
+                                        className="whitespace-nowrap"
+                                        color="default"
+                                        size="md"
+                                        type="dash"
+                                      >
+                                        31일미만 입통원: 경과1개월이상 인수(실손3개월후)
+                                      </BulletListItem>
+                                    </BulletList>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>척추 염좌 필요서류</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typo>[일반고지형 심사가이드라인]</Typo>
+                                    <BulletList position="col">
+                                      <BulletListItem
+                                        before="①"
+                                        className="whitespace-nowrap"
+                                        color="default"
+                                        size="md"
+                                        type="symbols"
+                                      >
+                                        소견서(진단명, 치료기간, 치료내용, 현재상태 등)
+                                      </BulletListItem>
+                                      <BulletListItem
+                                        before="②"
+                                        className="whitespace-nowrap"
+                                        color="default"
+                                        onClick={() => {}}
+                                        size="md"
+                                        type="symbols"
+                                      >
+                                        필요시 의사경과기록지
+                                      </BulletListItem>
+                                      <BulletListItem
+                                        before="③"
+                                        className="whitespace-nowrap"
+                                        color="default"
+                                        onClick={() => {}}
+                                        size="md"
+                                        type="symbols"
+                                      >
+                                        수술치료를 받은 경우에는 수술기록지
+                                      </BulletListItem>
+                                    </BulletList>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Grow>
+                        </TableFoldBody>
+                      </TableFold>
+                    </Gcol>
+                  </TabPager>
                 </Gcol>
               </Grow>
             </Grow>

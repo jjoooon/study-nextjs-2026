@@ -16,6 +16,7 @@ import {
   DialogTrigger,
   DialogClose,
   DialogSection,
+  DialogFooterArea,
 } from '@uiux/Dialog';
 
 type DialogContentProps = React.ComponentProps<typeof DialogContent>;
@@ -81,6 +82,7 @@ import {
   DialogTrigger,
   DialogClose,
   DialogSection,
+  DialogFooterArea,
 } from '@uiux/Dialog';
 import { Button } from '@uiux/Button';
 
@@ -104,20 +106,22 @@ import { Button } from '@uiux/Button';
     </DialogSection>
     
     <DialogFooter>
-      <Gcol className="w-full" gap={0}>
-        <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
-          <Grow>
+      <DialogFooterArea>
+        <Grow>
+            <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
             <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
           </Grow>
           <Grow>
+            <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
             <Button variant={'contained'} size={'xl'} onClick={() => setOpen(false)}>확인</Button>
             <DialogClose asChild>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>닫기</Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                닫기
+              </Button>
             </DialogClose>
           </Grow>
-        </Grow>
+        </DialogFooterArea>
         <DialogBottomInfo />
-      </Gcol>
     </DialogFooter>
   </DialogContent>
 </Dialog>
@@ -209,23 +213,22 @@ export const Default: Story = {
           </DialogSection>
           
           <DialogFooter>
-            <Gcol className="w-full" gap={0}>
-              <Grow placement={'bwc'} gap={2} className="w-full pb-5 px-6">
-                <Grow>
+            <DialogFooterArea>
+              <Grow>
                   <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
                   <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
                 </Grow>
                 <Grow>
                   <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
                   <Button variant={'contained'} size={'xl'} onClick={() => setOpen(false)}>확인</Button>
-
                   <DialogClose asChild>
-                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>닫기</Button>
+                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                      닫기
+                    </Button>
                   </DialogClose>
                 </Grow>
-              </Grow>
+              </DialogFooterArea>
               <DialogBottomInfo />
-            </Gcol>
           </DialogFooter>
         </DialogContent>
       </Dialog>

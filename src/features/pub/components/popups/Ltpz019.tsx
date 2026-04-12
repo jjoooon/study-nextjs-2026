@@ -3,11 +3,19 @@
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, createTooltipValueGetter, useToggleTopRows } from '@/shared/components/agGridUtils';
+import { useCallback, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon, SearchIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -18,34 +26,218 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Badge } from '@uiux/Badge';
+import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { useCallback, useState } from 'react';
-import { ResetIcon, SearchIcon } from '@/shared/components/icons';
-import { Input } from '@/shared/components/uiux/Input';
-import { TabPager } from '@/shared/components/common/TabPager';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
+type DummyDataType = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+};
+type DummyDataType2 = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+};
+type Ltpz032TabType = {
+  name: string;
+  value: string;
+  label: string;
+};
 
-  const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
+type DummyDataType3 = {
+  id: number;
+  field1: string | number;
+};
+
+const dummyData3: DummyDataType3[] = [
+  {
+    id: 1,
+    field1: '올인원플랜(15~40세)',
+  },
+  {
+    id: 2,
+    field1: '비대면진단심사플랜(15~40세)',
+  },
+  {
+    id: 3,
+    field1: '비대면진단심사플랜(15~40세)',
+  },
+  {
+    id: 4,
+    field1: '올인원플랜(15~40세)',
+  },
+  {
+    id: 5,
+    field1: '올인원플랜(15~40세)',
+  },
+  {
+    id: 6,
+    field1: '올인원플랜(15~40세)',
+  },
+  {
+    id: 7,
+    field1: '올인원플랜(15~40세)',
+  },
+  {
+    id: 8,
+    field1: '올인원플랜(15~40세)',
+  },
+];
+
+const dummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    field1: '1종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 2,
+    field1: '2종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 3,
+    field1: '3종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 4,
+    field1: '4종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 5,
+    field1: '4종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 6,
+    field1: '4종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 7,
+    field1: '4종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 8,
+    field1: '4종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+  {
+    id: 9,
+    field1: '4종',
+    field2: '납입면제 강화형, 기본형(할증운영상품)',
+  },
+];
+
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: '종합건강22',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 2,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 3,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 4,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 5,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 6,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 7,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 8,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 9,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 10,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 11,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 12,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 13,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 14,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+  {
+    id: 20,
+    field1: '종합건강',
+    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  },
+];
+
+const DATA_TABS: Ltpz032TabType[] = [
+  {
+    name: '회사플랜',
+    value: 'tab1',
+    label: '회사플랜(6)',
+  },
+  {
+    name: '기관플랜',
+    value: 'tab2',
+    label: '기관플랜(6)',
+  },
+  {
+    name: '나만의플랜',
+    value: 'tab3',
+    label: '나만의플랜(6)',
+  },
+];
+
+export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [gridKey, setGridKey] = useState(0);
   const [coverageName, setCoverageName] = useState('');
-  const handleActionButtonClick = useCallback(() => {}, []);
-  const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
-    setCheckedMap((map) => ({ ...map, [key]: !!checked }));
-  };
 
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
-      if (!checked) setGridKey((key) => key + 1);
     };
     return (
       <Grow className="w-full px-[0.6rem]" placement={'sc'} gap={4}>
@@ -81,100 +273,15 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
         </Grow>
       </Grow>
     );
-  }, [checkedMap, coverageName, showProductNameTooltip]);
+  }, [coverageName, showProductNameTooltip]);
 
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return <p className="truncate w-full pl-1.5">{params.data?.field2 ?? ''}</p>;
   }, []);
 
-
-  type DummyDataType = {
-    id: number;
-    field1: string | number;
-    field2: string | number;
-  };
-
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field1: '종합건강22',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 2,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 3,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 4,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 5,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 6,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 7,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 8,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 9,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 10,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 11,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 12,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 13,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 14,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-    {
-      id: 20,
-      field1: '종합건강',
-      field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-    },
-  ];
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '상품분류', 
+      headerName: '상품분류',
       field: 'field1',
       cellClass: 'text-center',
       width: 100,
@@ -195,7 +302,6 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerComponent: productNameHeader,
       cellRenderer: titleRenderer,
     },
-    
   ];
 
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
@@ -204,145 +310,25 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
         <Grow className="border-r border-[#ddddde] h-full aspect-auto w-[3rem] flex items-center justify-center shrink-0">
           {params.data?.field1}
         </Grow>
-        <Grow className="flex-1 justify-start">
-          {params.data?.field2}
-        </Grow>
+        <Grow className="flex-1 justify-start">{params.data?.field2}</Grow>
       </Grow>
     );
   };
 
-  type DummyDataType2 = {
-    id: number;
-    field1: string | number;
-    field2: string | number;
-  };
-
-  const dummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      field1: '1종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 2,
-      field1: '2종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 3,
-      field1: '3종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 4,
-      field1: '4종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 5,
-      field1: '4종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 6,
-      field1: '4종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 7,
-      field1: '4종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 8,
-      field1: '4종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-    {
-      id: 9,
-      field1: '4종',
-      field2: '납입면제 강화형, 기본형(할증운영상품)',
-    },
-  ];
-
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      headerName: '종구분', 
+      headerName: '종구분',
       field: 'field1',
       flex: 1,
-      cellRenderer: designCellRenderer,  
-    },
-  ];
-
-  type DummyDataType3 = {
-    id: number;
-    field1: string | number;
-  };
-
-  const dummyData3: DummyDataType3[] = [
-    {
-      id: 1,
-      field1: '올인원플랜(15~40세)',
-    },
-    {
-      id: 2,
-      field1: '비대면진단심사플랜(15~40세)',
-    },
-    {
-      id: 3,
-      field1: '비대면진단심사플랜(15~40세)',
-    },
-    {
-      id: 4,
-      field1: '올인원플랜(15~40세)',
-    },
-    {
-      id: 5,
-      field1: '올인원플랜(15~40세)',
-    },
-    {
-      id: 6,
-      field1: '올인원플랜(15~40세)',
-    },
-    {
-      id: 7,
-      field1: '올인원플랜(15~40세)',
-    },
-    {
-      id: 8,
-      field1: '올인원플랜(15~40세)',
+      cellRenderer: designCellRenderer,
     },
   ];
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
-      headerName: '플랜면', 
+      headerName: '플랜면',
       field: 'field1',
       flex: 1,
-    },
-  ];
-
-  type Ltpz032TabType = {
-    name: string;
-    value: string;
-    label: string;
-  };
-
-  const DATA_TABS: Ltpz032TabType[] = [
-    {
-      name: '회사플랜',
-      value: 'tab1',
-      label: '회사플랜(6)',
-    },
-    {
-      name: '기관플랜',
-      value: 'tab2',
-      label: '기관플랜(6)',
-    },
-    {
-      name: '나만의플랜',
-      value: 'tab3',
-      label: '나만의플랜(6)',
     },
   ];
 
@@ -354,7 +340,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-             다른상품설계
+              다른상품설계
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ019)
@@ -364,26 +350,32 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="현재 상품" cols={['w-1', 'w-auto','w-1', 'w-auto']} variant="head">
+            <FormTable caption="현재 상품" cols={['w-1', 'w-auto', 'w-1', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'현재 상품'}>
-                  <Typo variant={'body-lg'} weight={'bold'}>(LTPZ019)한화 시그니처 여성 건강보험40 2504</Typo>
+                  <Typo variant={'body-lg'} weight={'bold'}>
+                    (LTPZ019)한화 시그니처 여성 건강보험40 2504
+                  </Typo>
                 </FormCell>
                 <FormCell title={'현재 고객'}>
-                  <Typo variant={'body-lg'} weight={'bold'}>홍길순 외 0명</Typo>
+                  <Typo variant={'body-lg'} weight={'bold'}>
+                    홍길순 외 0명
+                  </Typo>
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
           <Gcol placement={'ss'} className="w-full" gap={5}>
-             <Gcol placement={'ss'} className="w-full">
-              <Typo variant={'body-lg'} weight={'bold'} className='flex items-center'>
-                간편설계를 생성할 상품을 선택해주세요. 
-              </Typo>
-            </Gcol> 
             <Gcol placement={'ss'} className="w-full">
-              <Typo variant={'body-lg'} weight={'bold'} className='flex items-center gap-[0.6rem]'>
-                <Badge color="secondary" size="md" variant="contained" className='w-[1.8rem] h-[1.8rem]'>1</Badge>
+              <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
+                간편설계를 생성할 상품을 선택해주세요.
+              </Typo>
+            </Gcol>
+            <Gcol placement={'ss'} className="w-full">
+              <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+                <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
+                  1
+                </Badge>
                 현재 고객을 대상으로 다른 상품을 설계하시겠어요?
               </Typo>
               <RadioGroup
@@ -393,36 +385,25 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                 onValueChange={() => {}}
                 width="full"
               >
-                <RadioGroupItem
-                  color="primary"
-                  id="d1"
-                  size="lg"
-                  value="option1"
-                  variant="default"
-                >
+                <RadioGroupItem color="primary" id="d1" size="lg" value="option1" variant="default">
                   네, 현재 고객으로 상세설계할게요.
                 </RadioGroupItem>
-                <RadioGroupItem
-                  color="primary"
-                  id="d2"
-                  size="lg"
-                  value="option2"
-                  variant="default"
-                >
+                <RadioGroupItem color="primary" id="d2" size="lg" value="option2" variant="default">
                   아니오, 신규 고객으로 간편설계할게요.
                 </RadioGroupItem>
               </RadioGroup>
             </Gcol>
 
             <Gcol placement={'ss'} className="w-full">
-              <Typo variant={'body-lg'} weight={'bold'} className='flex items-center gap-[0.6rem]'>
-                <Badge color="secondary" size="md" variant="contained" className='w-[1.8rem] h-[1.8rem]'>2</Badge>
+              <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+                <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
+                  2
+                </Badge>
                 상품을 선택해주세요.
               </Typo>
 
-
               <Grow placement={'ss'} className="w-full gap-6">
-                <Grow className='w-full' placement='ss' gap={5}>
+                <Grow className="w-full" placement="ss" gap={5}>
                   <TableFold>
                     <TableFoldHead title="상품정보"></TableFoldHead>
                     <TableFoldBody className="w-full">
@@ -446,9 +427,9 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold>
                     <TableFoldHead title="(LA0203413)한화 시그니처 여성 건강"></TableFoldHead>
                     <TableFoldBody>
-                      <Gcol className='w-full' gap={5}>
-                        <Gcol className='w-full'>
-                            <div className="ag-theme-alpine w-full h-70!">
+                      <Gcol className="w-full" gap={5}>
+                        <Gcol className="w-full">
+                          <div className="ag-theme-alpine w-full h-70!">
                             <AgGridReact<DummyDataType2>
                               getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -464,22 +445,22 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                             />
                           </div>
                         </Gcol>
-                        <Gcol className='w-full'>
-                           <TabPager
-                              data={tabs}
-                              active={active}
-                              setActive={setActive}
-                              removable={false}
-                              onRemove={handleRemove}
-                              visibleCount={4}
-                              variant="default"
-                              hasTableBelow={true}
-                              error={false}
-                              errorMsg="에러 메시지 예시"
-                              getValue={(tab) => String(tab.value)}
-                              renderTab={(tab) => <span>{tab.label}</span>}
-                              renderDropdownItem={false}
-                            >
+                        <Gcol className="w-full">
+                          <TabPager
+                            data={tabs}
+                            active={active}
+                            setActive={setActive}
+                            removable={false}
+                            onRemove={handleRemove}
+                            visibleCount={4}
+                            variant="default"
+                            hasTableBelow={true}
+                            error={false}
+                            errorMsg="에러 메시지 예시"
+                            getValue={(tab) => String(tab.value)}
+                            renderTab={(tab) => <span>{tab.label}</span>}
+                            renderDropdownItem={false}
+                          >
                             <div className="ag-theme-alpine w-full h-70! ag-border-t">
                               <AgGridReact<DummyDataType3>
                                 getRowId={(params) => String(params.data.id)}
@@ -497,21 +478,20 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                             </div>
                           </TabPager>
                         </Gcol>
-                      </Gcol>  
+                      </Gcol>
                     </TableFoldBody>
                   </TableFold>
                 </Grow>
               </Grow>
             </Gcol>
-
-          </Gcol> 
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                 선택
+                선택
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -526,4 +506,3 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-

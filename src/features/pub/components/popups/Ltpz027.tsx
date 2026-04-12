@@ -26,40 +26,41 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table'
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// Grid2 dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '김한화',
+    field02: '1',
+    field03: '2026-02-11 11:22:55',
+    field04: '2026-02-11 12:42:55',
+    field05: '취소',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 2,
+    field01: '김한화',
+    field02: '2',
+    field03: '2026-02-12 12:22:55',
+    field04: '',
+    field05: '진행중',
+    field06: '',
+    field07: '',
+  },
+];
+
 export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // Grid2 dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '김한화',
-      field02: '1',
-      field03: '2026-02-11 11:22:55',
-      field04: '2026-02-11 12:42:55',
-      field05: '취소',
-      field06: '',
-      field07: '',
-    },
-    {
-      id: 2,
-      field01: '김한화',
-      field02: '2',
-      field03: '2026-02-12 12:22:55',
-      field04: '',
-      field05: '진행중',
-      field06: '',
-      field07: '',
-    },
-  ];
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대상',
@@ -207,3 +208,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+/**
+ * 확인요청
+ * 이륜차부담보 가입 사이 계약 테이블 ag grid 확인
+ */

@@ -34,57 +34,55 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  isAuthcheck1: boolean;
+  isAuthcheck2: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: true,
+    isAuthcheck1: true,
+    isAuthcheck2: true,
+    field01: '12312312',
+    field02: '911212-1111111',
+    field03: '010-1234-5678',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    isAuthcheck1: true,
+    isAuthcheck2: true,
+    field01: '12312312',
+    field02: '911212-1111111',
+    field03: '010-1234-5678',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+];
+
 export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [policySearchPart, setPolicySearchPart] = React.useState('');
-
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    isAuthcheck1: boolean;
-    isAuthcheck2: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: true,
-      isAuthcheck1: true,
-      isAuthcheck2: true,
-      field01: '12312312',
-      field02: '911212-1111111',
-      field03: '010-1234-5678',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-    },
-    {
-      id: 2,
-      isCheck: true,
-      isAuthcheck1: true,
-      isAuthcheck2: true,
-      field01: '12312312',
-      field02: '911212-1111111',
-      field03: '010-1234-5678',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-    },
-  ];
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-
   const onCellValueChanged = React.useMemo(
     () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['isAuthcheck1', 'isAuthcheck2']),
     []
   );
-
   const suppressGridKeyboardOnInput = (params: SuppressKeyboardEventParams<DummyDataType>) =>
     params.event?.target instanceof HTMLInputElement;
 
@@ -94,7 +92,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '순번',
       width: 80,
       field: 'id',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center px-0!',
       autoHeight: true,
     },
     {

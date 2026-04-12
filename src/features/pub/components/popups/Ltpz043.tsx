@@ -67,165 +67,91 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'옥내주차장'} titleColSpan={2}>
-                  <Checkbox
-                    color="primary"
-                    errorMsg="선택은 필수입니다."
-                    errorPs="bl"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="noneText"
-                  ></Checkbox>
+                  <Checkbox variant="noneText" aria-label="옥내주차장"></Checkbox>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
                     onChange={(e) => setFormField('type01', e.target.value)}
-                    size="lg"
                     value={form.type01}
-                    variant="default"
-                    width="10rem"
+                    width={100}
                     commaAmount
-                    after={'㎡'}
                     required
                   />
-                  ↔
+                  <div>㎡</div>
+                  <div>↔</div>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
                     onChange={(e) => setFormField('type02', e.target.value)}
-                    size="lg"
                     value={form.type02}
-                    variant="default"
-                    width="10rem"
+                    width={100}
                     commaAmount
-                    after={'평'}
                     required
                   />
+                  평
                 </FormCell>
                 <FormCell title={null}>
-                  <Input
-                    onChange={() => {}}
-                    size="lg"
-                    value={'10,000,000'}
-                    variant="default"
-                    width="12rem"
-                    commaAmount
-                    after="원"
-                    readOnly
-                  />
+                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'2단주차기'} titleColSpan={2}>
-                  <Checkbox
-                    color="primary"
-                    errorMsg="선택은 필수입니다."
-                    errorPs="bl"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="noneText"
-                  ></Checkbox>
+                  <Checkbox variant="noneText" aria-label="2단주차기"></Checkbox>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
                     onChange={(e) => setFormField('type03', e.target.value)}
-                    size="lg"
                     value={form.type03}
-                    variant="default"
-                    width="10rem"
+                    width={100}
                     commaAmount
-                    after={'대'}
                   />
+                  대
                 </FormCell>
                 <FormCell title={null}>
-                  <Input
-                    onChange={() => {}}
-                    size="lg"
-                    value={'10,000,000'}
-                    variant="default"
-                    width="12rem"
-                    commaAmount
-                    after="원"
-                    readOnly
-                  />
+                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'기계식주차기'} titleColSpan={2}>
-                  <Checkbox
-                    color="primary"
-                    errorMsg="선택은 필수입니다."
-                    errorPs="bl"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="noneText"
-                  ></Checkbox>
+                  <Checkbox variant="noneText" aria-label="기계식주차기"></Checkbox>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
                     onChange={(e) => setFormField('type04', e.target.value)}
-                    size="lg"
                     value={form.type04}
-                    variant="default"
-                    width="10rem"
+                    width={100}
                     commaAmount
-                    after={'대'}
                   />
+                  대
                 </FormCell>
                 <FormCell title={null}>
-                  <Input
-                    onChange={() => {}}
-                    size="lg"
-                    value={'10,000,000'}
-                    variant="default"
-                    width="12rem"
-                    commaAmount
-                    after="원"
-                    readOnly
-                  />
+                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'카리프트'} titleColSpan={2}>
-                  <Checkbox
-                    color="primary"
-                    errorMsg="선택은 필수입니다."
-                    errorPs="bl"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="noneText"
-                  ></Checkbox>
+                  <Checkbox variant="noneText" aria-label="카리프트"></Checkbox>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
                     onChange={(e) => setFormField('type05', e.target.value)}
-                    size="lg"
                     value={form.type05}
-                    variant="default"
-                    width="10rem"
+                    width={100}
                     commaAmount
-                    after={'대'}
                   />
+                  대
                 </FormCell>
                 <FormCell title={null}>
-                  <Input
-                    onChange={() => {}}
-                    size="lg"
-                    value={'10,000,000'}
-                    variant="default"
-                    width="12rem"
-                    commaAmount
-                    after="원"
-                    readOnly
-                  />
+                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={'보상한도'} titleRowSpan={2}></FormCell>
-                <FormCell title={'대인보상'} colSpan={2}>
+                <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
+                <FormCell title={'대인보상'}>
                   (1사고당)
                   <NativeSelect
                     aria-label="선택"
-                    width="10rem"
+                    width={100}
                     value={form.type06}
                     onChange={(e) => setFormField('type06', e.target.value)}
                   >
@@ -239,7 +165,7 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                     ))}
                   </NativeSelect>
                   (1인장)
-                  <Input onChange={() => {}} size="lg" value={''} variant="default" width="10rem" readOnly />
+                  <Input onChange={() => {}} size="lg" value={''} variant="default" width={100} readOnly />
                 </FormCell>
               </FormRow>
               <FormRow>
@@ -247,7 +173,7 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                   (1사고당)
                   <NativeSelect
                     aria-label="선택"
-                    width="10rem"
+                    width={100}
                     value={form.type06}
                     onChange={(e) => setFormField('type06', e.target.value)}
                   >
@@ -266,7 +192,7 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
                   <NativeSelect
                     aria-label="선택"
-                    width="10rem"
+                    width={100}
                     value={form.type07}
                     required
                     onChange={(e) => setFormField('type07', e.target.value)}

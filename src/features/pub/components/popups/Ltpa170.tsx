@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { numberValueFormatter, useAgGridColumnVisibility } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useAgGridColumnVisibility } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -27,193 +27,149 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+};
+
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: 'LA20165772444000',
+    field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
+    field03: '2026-03-22',
+    field04: '2027-03-22',
+    field05: '2026-02',
+    field06: '보통약관(일반상해사망)',
+    field07: '9999999',
+    field08: '일반상해사망',
+    field09: '1.0',
+    field10: '9999999',
+    field11: '정상',
+  },
+  {
+    id: 2,
+    field01: 'LA20165772444000',
+    field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
+    field03: '2026-03-22',
+    field04: '2027-03-22',
+    field05: '2026-02',
+    field06: '보통약관(일반상해사망)',
+    field07: '9999999',
+    field08: '일반상해사망',
+    field09: '1.0',
+    field10: '9999999',
+    field11: '심사완료',
+  },
+  {
+    id: 3,
+    field01: 'LA20165772444000',
+    field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
+    field03: '2026-03-22',
+    field04: '2027-03-22',
+    field05: '2026-02',
+    field06: '보통약관(일반상해사망)',
+    field07: '9999999',
+    field08: '일반상해사망',
+    field09: '1.0',
+    field10: '9999999',
+    field11: '정상',
+  },
+  {
+    id: 4,
+    field01: 'LA20165772444000',
+    field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
+    field03: '2026-03-22',
+    field04: '2027-03-22',
+    field05: '2026-02',
+    field06: '보통약관(일반상해사망)',
+    field07: '9999999',
+    field08: '일반상해사망',
+    field09: '1.0',
+    field10: '9999999',
+    field11: '심사완료',
+  },
+];
+
 export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-  };
-
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: 'LA20165772444000',
-      field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
-      field03: '2026-03-22',
-      field04: '2027-03-22',
-      field05: '2026-02',
-      field06: '보통약관(일반상해사망)',
-      field07: '9999999',
-      field08: '일반상해사망',
-      field09: '1.0',
-      field10: '9999999',
-      field11: '정상',
-    },
-    {
-      id: 2,
-      field01: 'LA20165772444000',
-      field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
-      field03: '2026-03-22',
-      field04: '2027-03-22',
-      field05: '2026-02',
-      field06: '보통약관(일반상해사망)',
-      field07: '9999999',
-      field08: '일반상해사망',
-      field09: '1.0',
-      field10: '9999999',
-      field11: '심사완료',
-    },
-    {
-      id: 3,
-      field01: 'LA20165772444000',
-      field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
-      field03: '2026-03-22',
-      field04: '2027-03-22',
-      field05: '2026-02',
-      field06: '보통약관(일반상해사망)',
-      field07: '9999999',
-      field08: '일반상해사망',
-      field09: '1.0',
-      field10: '9999999',
-      field11: '정상',
-    },
-    {
-      id: 4,
-      field01: 'LA20165772444000',
-      field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
-      field03: '2026-03-22',
-      field04: '2027-03-22',
-      field05: '2026-02',
-      field06: '보통약관(일반상해사망)',
-      field07: '9999999',
-      field08: '일반상해사망',
-      field09: '1.0',
-      field10: '9999999',
-      field11: '심사완료',
-    },
-  ];
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '증권(설계번호)',
       field: 'field01',
-      width: 170,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      width: 130,
+      cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'field02',
       width: 270,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-left flex items-center justify-start',
+      cellClass: 'text-left',
     },
     {
       headerName: '보험시기',
       field: 'field03',
-      width: 110,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      width: 90,
+      cellClass: 'text-center',
     },
     {
       headerName: '보험종기',
       field: 'field04',
-      width: 110,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      width: 90,
+      cellClass: 'text-center',
     },
     {
       headerName: '최종월드',
       field: 'field05',
-      width: 110,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'truncate text-center flex items-center justify-left',
+      width: 90,
+      cellClass: 'truncate text-center',
     },
     {
       headerName: '담보명',
       field: 'field06',
       width: 200,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      cellClass: 'text-center',
     },
     {
       headerName: '가입금액',
       field: 'field07',
       width: 110,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-right flex items-center justify-end ',
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '누적위험명',
       field: 'field08',
       width: 130,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      cellClass: 'text-center',
     },
     {
       headerName: '누적배수',
       field: 'field09',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      width: 70,
+      cellClass: 'text-center',
     },
     {
       headerName: '누적반영금액',
       field: 'field10',
       width: 110,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-right flex items-center justify-end',
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '계약(설계상태)',
       field: 'field11',
       width: 110,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: false,
-      cellClass: 'text-center flex items-center justify-center',
+      cellClass: 'text-center',
     },
   ];
 
@@ -291,12 +247,12 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Gcol className="w-full" gap={5}>
+                <Gcol gap={5}>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
                       ref={gridRef}
                       onGridReady={onGridReady}
-                      // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
@@ -305,13 +261,13 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
                       domLayout="autoHeight"
                     />
                   </div>
-                  <Gcol className="w-full">
-                    <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                  <Gcol>
+                    <Gcol variant={'box-warning'} placement={'ss'}>
                       <Typo variant={'body-sm'} icon={'warning'}>
                         <b>안내사항 노출 영역</b>
                       </Typo>
                     </Gcol>
-                    <Gcol placement={'ss'} className="w-full">
+                    <Gcol placement={'ss'}>
                       <Typo variant={'body-sm'} icon={'detail'}>
                         누적위험 초과인수기준 클릭시에도 조회가 안되는 경우 해당 설계로 인한 누적위험 초과입니다.
                       </Typo>

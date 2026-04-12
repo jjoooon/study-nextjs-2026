@@ -29,84 +29,131 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// dummy data
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: true,
+    field01: '123456',
+    field02: '한화생명1',
+    field03: '123',
+    field04: '서울',
+    field05: '123',
+    field06: '김한화',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '123456',
+    field02: '한화생명1',
+    field03: '124',
+    field04: '서울',
+    field05: '123',
+    field06: '김한화',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: '123456',
+    field02: '한화생명1',
+    field03: '125',
+    field04: '서울',
+    field05: '123',
+    field06: '김한화',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: '123456',
+    field02: '한화생명1',
+    field03: '126',
+    field04: '서울',
+    field05: '123',
+    field06: '김한화',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: '123456',
+    field02: '한화생명1',
+    field03: '127',
+    field04: '서울',
+    field05: '123',
+    field06: '김한화',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: '123456',
+    field02: '한화생명1',
+    field03: '128',
+    field04: '서울',
+    field05: '123',
+    field06: '김한화',
+  },
+];
+// Grid2 dummy data (직원번호)
+type DummyDataType2 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number; // 직원번호
+  field02: string | number; // 직원명
+};
+const DummyData2: DummyDataType2[] = [
+  { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
+  { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
+];
+// Grid3 dummy data (직원번호)
+type DummyDataType3 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number; // 직원번호
+  field02: string | number; // 직원명
+};
+const DummyData3: DummyDataType3[] = [
+  { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
+  { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
+];
+
+// Grid4 dummy data
+type DummyDataType4 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number; // 직원번호
+  field02: string | number; // 직원명
+};
+const DummyData4: DummyDataType4[] = [
+  { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
+  { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
+];
+
 export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
   });
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: true,
-      field01: '123456',
-      field02: '한화생명1',
-      field03: '123',
-      field04: '서울',
-      field05: '123',
-      field06: '김한화',
-    },
-    {
-      id: 2,
-      isCheck: false,
-      field01: '123456',
-      field02: '한화생명1',
-      field03: '124',
-      field04: '서울',
-      field05: '123',
-      field06: '김한화',
-    },
-    {
-      id: 3,
-      isCheck: false,
-      field01: '123456',
-      field02: '한화생명1',
-      field03: '125',
-      field04: '서울',
-      field05: '123',
-      field06: '김한화',
-    },
-    {
-      id: 4,
-      isCheck: false,
-      field01: '123456',
-      field02: '한화생명1',
-      field03: '126',
-      field04: '서울',
-      field05: '123',
-      field06: '김한화',
-    },
-    {
-      id: 5,
-      isCheck: false,
-      field01: '123456',
-      field02: '한화생명1',
-      field03: '127',
-      field04: '서울',
-      field05: '123',
-      field06: '김한화',
-    },
-    {
-      id: 6,
-      isCheck: false,
-      field01: '123456',
-      field02: '한화생명1',
-      field03: '128',
-      field04: '서울',
-      field05: '123',
-      field06: '김한화',
-    },
-  ];
 
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -153,66 +200,20 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
     },
   ];
-
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
-  // Grid2 dummy data (직원번호)
-  type DummyDataType2 = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number; // 직원번호
-    field02: string | number; // 직원명
-  };
-  const DummyData2: DummyDataType2[] = [
-    { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
-    { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
-  ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
     { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
-  // Grid3 dummy data (직원번호)
-  type DummyDataType3 = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number; // 직원번호
-    field02: string | number; // 직원명
-  };
-  const DummyData3: DummyDataType3[] = [
-    { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
-    { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
-  ];
   const columnDefs3: ColDef<DummyDataType3>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
     { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
   ];
   const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
-  // Grid4 dummy data
-  type DummyDataType4 = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number; // 직원번호
-    field02: string | number; // 직원명
-  };
-  const DummyData4: DummyDataType4[] = [
-    { id: 1, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 2, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 3, isCheck: false, field01: '300003', field02: '임한화' },
-    { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
-    { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
-    { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
-  ];
   const columnDefs4: ColDef<DummyDataType4>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
     { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
@@ -220,6 +221,11 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
 
   const isEmpNo = form.type01 === 'selection2';
+  const rowSelection = React.useMemo(
+    () => ({ mode: 'singleRow' as const, checkboxes: true, enableClickSelection: false }),
+    []
+  );
+  const selectionColumnDef = React.useMemo(() => ({ headerName: '선택' }), []);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -288,13 +294,14 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
           {!isEmpNo && (
             <div className="ag-theme-alpine ltpa010-grid w-full">
               <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
+                key="ltpz042-grid-qualified"
+                getRowId={(params) => `qualified-${params.data.id}`}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{ sortable: false, resizable: false }}
-                rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                selectionColumnDef={{ headerName: '선택' }}
+                rowSelection={rowSelection}
+                selectionColumnDef={selectionColumnDef}
                 domLayout="autoHeight"
               />
             </div>
@@ -305,39 +312,42 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
               {/* Grid2 */}
               <div className="ag-theme-alpine ltpa010-grid w-1/3">
                 <AgGridReact<DummyDataType2>
-                  getRowId={(params) => String(params.data.id)}
+                  key="ltpz042-grid-empno-1"
+                  getRowId={(params) => `empno-1-${params.data.id}`}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
                   defaultColDef={{ sortable: false, resizable: false }}
-                  rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                  selectionColumnDef={{ headerName: '선택' }}
+                  rowSelection={rowSelection}
+                  selectionColumnDef={selectionColumnDef}
                   domLayout="autoHeight"
                 />
               </div>
               {/* Grid3 */}
               <div className="ag-theme-alpine ltpa010-grid w-1/3">
                 <AgGridReact<DummyDataType3>
-                  getRowId={(params) => String(params.data.id)}
+                  key="ltpz042-grid-empno-2"
+                  getRowId={(params) => `empno-2-${params.data.id}`}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData3}
                   columnDefs={columnDefs3}
                   defaultColDef={{ sortable: false, resizable: false }}
-                  rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                  selectionColumnDef={{ headerName: '선택' }}
+                  rowSelection={rowSelection}
+                  selectionColumnDef={selectionColumnDef}
                   domLayout="autoHeight"
                 />
               </div>
               {/* Grid4 */}
               <div className="ag-theme-alpine ltpa010-grid w-1/3">
                 <AgGridReact<DummyDataType4>
-                  getRowId={(params) => String(params.data.id)}
+                  key="ltpz042-grid-empno-3"
+                  getRowId={(params) => `empno-3-${params.data.id}`}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData4}
                   columnDefs={columnDefs4}
                   defaultColDef={{ sortable: false, resizable: false }}
-                  rowSelection={{ mode: 'singleRow', checkboxes: true, enableClickSelection: false }}
-                  selectionColumnDef={{ headerName: '선택' }}
+                  rowSelection={rowSelection}
+                  selectionColumnDef={selectionColumnDef}
                   domLayout="autoHeight"
                 />
               </div>

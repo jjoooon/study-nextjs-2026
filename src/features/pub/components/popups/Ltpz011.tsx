@@ -26,28 +26,28 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type ComparisonRow = {
+  id: number;
+  coverage: string;
+  amount: number;
+  premium: number;
+  isSumRow?: boolean;
+};
+
+const comparisonRows: ComparisonRow[] = [
+  { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: 3000, premium: 3000 },
+  { id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: 10, premium: 10 },
+  { id: 3, coverage: '상해사망(간편)', amount: 15000, premium: 15000 },
+  { id: 4, coverage: '상해후유장해(3-100%)', amount: 10000, premium: 10000 },
+  { id: 5, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+  { id: 6, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+  { id: 7, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+  { id: 8, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+  { id: 9, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+  { id: 10, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+];
+
 export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type ComparisonRow = {
-    id: number;
-    coverage: string;
-    amount: number;
-    premium: number;
-    isSumRow?: boolean;
-  };
-
-  const comparisonRows: ComparisonRow[] = [
-    { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: 3000, premium: 3000 },
-    { id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: 10, premium: 10 },
-    { id: 3, coverage: '상해사망(간편)', amount: 15000, premium: 15000 },
-    { id: 4, coverage: '상해후유장해(3-100%)', amount: 10000, premium: 10000 },
-    { id: 5, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-    { id: 6, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-    { id: 7, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-    { id: 8, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-    { id: 9, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-    { id: 10, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-  ];
-
   const columnDefs2: ColDef<ComparisonRow>[] = [
     {
       headerName: '담보명',
@@ -116,7 +116,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'대표담보명'}>
-                  <Input aria-label="" width={'20rem'} value={'대표담보명.text'} readOnly />
+                  <Input aria-label="" width={200} value={'대표담보명.text'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -128,7 +128,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+              <div className="ag-theme-alpine">
                 <AgGridReact<ComparisonRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -141,6 +141,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
+                  domLayout="autoHeight"
                 />
               </div>
             </TableFoldBody>

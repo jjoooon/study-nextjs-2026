@@ -34,138 +34,138 @@ import { Textarea } from '@uiux/Textarea';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
-export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    filePath: string[];
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-    field8: string;
-    isCheck: boolean;
-    checked?: boolean;
-    disabled?: boolean;
-    allDisabled?: boolean;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      filePath: ['folderA'],
-      field1: '가입제안서',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: true,
-      checked: false,
-      disabled: false,
-      allDisabled: false,
-    },
-    {
-      id: 2,
-      filePath: ['folderA', 'folderA-1'],
-      field1: '가입제안서 adddfa',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: false,
-      checked: false,
-      disabled: false,
-      allDisabled: false,
-    },
-    {
-      id: 3,
-      filePath: ['folderB'],
-      field1: '장기보험 가입설계서',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: false,
-      checked: false,
-      disabled: false,
-      allDisabled: false,
-    },
-    {
-      id: 4,
-      filePath: ['folderB', 'folderB-1'],
-      field1: '장기보험 가입설계서 - 234234',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: false,
-      checked: false,
-      disabled: false, // 선택 불가 예시
-      allDisabled: false,
-    },
-    {
-      id: 5,
-      filePath: ['folderC'],
-      field1: '장기보험 가입설계서 - 234234',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: false,
-      checked: false,
-      disabled: false,
-      allDisabled: false, // 선택 불가 예시
-    },
-    {
-      id: 6,
-      filePath: ['folderD'],
-      field1: '장기보험 가입설계서 - 234234',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: false,
-      checked: false,
-      disabled: false,
-      allDisabled: false,
-    },
-    {
-      id: 7,
-      filePath: ['folderD', 'folderD-1'],
-      field1: '장기보험 가입설계서 - 234234',
-      field2: '미리보기',
-      field3: '고객용',
-      field4: '미출력',
-      field5: '비대상',
-      field6: 'Y',
-      field7: 'Y',
-      field8: 'Y',
-      isCheck: false,
-      checked: false,
-      disabled: false,
-      allDisabled: false,
-    },
-  ];
+type DummyDataType = {
+  id: number;
+  filePath: string[];
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+  field6: string;
+  field7: string;
+  field8: string;
+  isCheck: boolean;
+  checked?: boolean;
+  disabled?: boolean;
+  allDisabled?: boolean;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    filePath: ['folderA'],
+    field1: '가입제안서',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: true,
+    checked: false,
+    disabled: false,
+    allDisabled: false,
+  },
+  {
+    id: 2,
+    filePath: ['folderA', 'folderA-1'],
+    field1: '가입제안서 adddfa',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: false,
+    checked: false,
+    disabled: false,
+    allDisabled: false,
+  },
+  {
+    id: 3,
+    filePath: ['folderB'],
+    field1: '장기보험 가입설계서',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: false,
+    checked: false,
+    disabled: false,
+    allDisabled: false,
+  },
+  {
+    id: 4,
+    filePath: ['folderB', 'folderB-1'],
+    field1: '장기보험 가입설계서 - 234234',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: false,
+    checked: false,
+    disabled: false, // 선택 불가 예시
+    allDisabled: false,
+  },
+  {
+    id: 5,
+    filePath: ['folderC'],
+    field1: '장기보험 가입설계서 - 234234',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: false,
+    checked: false,
+    disabled: false,
+    allDisabled: false, // 선택 불가 예시
+  },
+  {
+    id: 6,
+    filePath: ['folderD'],
+    field1: '장기보험 가입설계서 - 234234',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: false,
+    checked: false,
+    disabled: false,
+    allDisabled: false,
+  },
+  {
+    id: 7,
+    filePath: ['folderD', 'folderD-1'],
+    field1: '장기보험 가입설계서 - 234234',
+    field2: '미리보기',
+    field3: '고객용',
+    field4: '미출력',
+    field5: '비대상',
+    field6: 'Y',
+    field7: 'Y',
+    field8: 'Y',
+    isCheck: false,
+    checked: false,
+    disabled: false,
+    allDisabled: false,
+  },
+];
 
+export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
   const handlePreviewClick = (row: DummyDataType) => {
     // TODO: 실제 미리보기 팝업/라우팅 연동
     // eslint-disable-next-line no-console
@@ -286,8 +286,6 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   rowData={rowData}
                   columnDefs={columnDefs}
                   defaultColDef={{
-                    sortable: true,
-                    resizable: true,
                     cellClass: 'text-center',
                   }}
                   domLayout="autoHeight"
@@ -354,8 +352,6 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   rowData={rowData}
                   columnDefs={columnDefs}
                   defaultColDef={{
-                    sortable: true,
-                    resizable: true,
                     cellClass: 'text-center',
                   }}
                   domLayout="autoHeight"
@@ -417,9 +413,15 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         인쇄타입
                       </Typo>
-                      <RadioGroup className="gap-[1.2rem]">
-                        <RadioGroupItem value="단면">단면</RadioGroupItem>
-                        <RadioGroupItem value="양면">양면</RadioGroupItem>
+                      <RadioGroup defaultValue="단면">
+                        {[
+                          { value: '단면', label: '단면' },
+                          { value: '양면', label: '양면' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
                       </RadioGroup>
                     </Gcol>
 
@@ -427,9 +429,15 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         일괄출력
                       </Typo>
-                      <CheckboxGroup className="gap-3">
-                        <CheckboxGroupItem value="고객용">고객용</CheckboxGroupItem>
-                        <CheckboxGroupItem value="회사용">회사용</CheckboxGroupItem>
+                      <CheckboxGroup className="gap-3" defaultValue={['고객용']}>
+                        {[
+                          { value: '고객용', label: '고객용' },
+                          { value: '회사용', label: '회사용' },
+                        ].map((option) => (
+                          <CheckboxGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </CheckboxGroupItem>
+                        ))}
                       </CheckboxGroup>
                     </Gcol>
 
@@ -437,9 +445,15 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         계약체결동의서 유형
                       </Typo>
-                      <CheckboxGroup className="gap-3">
-                        <CheckboxGroupItem value="요약">요약</CheckboxGroupItem>
-                        <CheckboxGroupItem value="상세">상세</CheckboxGroupItem>
+                      <CheckboxGroup className="gap-3" defaultValue={['요약']}>
+                        {[
+                          { value: '요약', label: '요약' },
+                          { value: '상세', label: '상세' },
+                        ].map((option) => (
+                          <CheckboxGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </CheckboxGroupItem>
+                        ))}
                       </CheckboxGroup>
                     </Gcol>
 
@@ -447,9 +461,15 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         마케팅 동의서 유형
                       </Typo>
-                      <RadioGroup className="gap-[1.2rem]">
-                        <RadioGroupItem value="요약">요약</RadioGroupItem>
-                        <RadioGroupItem value="상세">상세</RadioGroupItem>
+                      <RadioGroup defaultValue="요약">
+                        {[
+                          { value: '요약', label: '요약' },
+                          { value: '상세', label: '상세' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
                       </RadioGroup>
                     </Gcol>
 
@@ -578,13 +598,17 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         전송대상
                       </Typo>
-                      <RadioGroup className="gap-[0.6rem] flex flex-col items-start">
-                        <RadioGroupItem value="고객(계약자)전송">고객(계약자)전송</RadioGroupItem>
-                        <RadioGroupItem value="고객(피보험자)전송">고객(피보험자)전송</RadioGroupItem>
-                        <RadioGroupItem value="모집자 전송">모집자 전송</RadioGroupItem>
-                        <RadioGroupItem value="접속자(현재 로그인 기준)전송">
-                          접속자(현재 로그인 기준)전송
-                        </RadioGroupItem>
+                      <RadioGroup className="gap-[0.6rem] flex flex-col items-start" defaultValue="고객(계약자)전송">
+                        {[
+                          { value: '고객(계약자)전송', label: '고객(계약자)전송' },
+                          { value: '고객(피보험자)전송', label: '고객(피보험자)전송' },
+                          { value: '모집자 전송', label: '모집자 전송' },
+                          { value: '접속자(현재 로그인 기준)전송', label: '접속자(현재 로그인 기준)전송' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
                       </RadioGroup>
                     </Gcol>
 
@@ -592,9 +616,15 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         전송대상
                       </Typo>
-                      <RadioGroup className="gap-[0.6rem] flex flex-col items-start">
-                        <RadioGroupItem value="알림톡(실패시 LMS)">알림톡(실패시 LMS)</RadioGroupItem>
-                        <RadioGroupItem value="한손愛">한손愛</RadioGroupItem>
+                      <RadioGroup className="gap-[0.6rem] flex flex-col items-start" defaultValue="한손愛">
+                        {[
+                          { value: '알림톡(실패시 LMS)', label: '알림톡(실패시 LMS)' },
+                          { value: '한손愛', label: '한손愛' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
                       </RadioGroup>
                     </Gcol>
 

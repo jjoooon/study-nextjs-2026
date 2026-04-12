@@ -26,177 +26,176 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType2 = {
+  id: number;
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+  field6: string;
+  isSumRow?: boolean;
+};
+
+type FinalSummaryData = {
+  id: number;
+  label: string;
+  formula: string;
+  point: string;
+};
+
+// 가점계산 데이터
+const section2Data: DummyDataType2[] = [
+  {
+    id: 1,
+    field1: '(H1)사망후유',
+    field2: '일반상해사망',
+    field3: '(65세이하)1000만원당',
+    field4: '+1.0',
+    field5: '17,000',
+    field6: '17.00',
+  },
+  {
+    id: 2,
+    field1: '(H1)사망후유',
+    field2: '일반상해사망',
+    field3: '1000만원당',
+    field4: '+0.1',
+    field5: '2,000',
+    field6: '0.20',
+  },
+  {
+    id: 3,
+    field1: '(H1)입원/일당',
+    field2: '상해출환치성입원비',
+    field3: '10만원당',
+    field4: '+4.0',
+    field5: '50',
+    field6: '20.00',
+  },
+  {
+    id: 4,
+    field1: '(H1)사망후유',
+    field2: '질병사망',
+    field3: '1000만원당',
+    field4: '+1.0',
+    field5: '17,000',
+    field6: '42.00',
+  },
+];
+
+const section2SumData: DummyDataType2[] = [
+  {
+    id: -1,
+    field1: '가점 합계',
+    field2: '가산담보합계(H그룹)',
+    field3: '',
+    field4: '',
+    field5: '',
+    field6: '137.00',
+    isSumRow: true,
+  },
+];
+// 감점계산 데이터
+const section3Data: DummyDataType2[] = [
+  {
+    id: 1,
+    field1: '(S1)진단비',
+    field2: '유사암진단비(기타피부양)',
+    field3: '100만원당',
+    field4: '-0.125',
+    field5: '50',
+    field6: '-0.06',
+  },
+  {
+    id: 2,
+    field1: '(S1)진단비',
+    field2: '유사암진단(갑상선암)',
+    field3: '100만원당',
+    field4: '-0.125',
+    field5: '50',
+    field6: '-0.06',
+  },
+  {
+    id: 3,
+    field1: '(S1)진단비',
+    field2: '유사암진단비(제자리암)',
+    field3: '100만원당',
+    field4: '-0.125',
+    field5: '50',
+    field6: '-0.06',
+  },
+  {
+    id: 4,
+    field1: '(S1)진단비',
+    field2: '유사암진단비(경계성종양)',
+    field3: '100만원당',
+    field4: '-0.125',
+    field5: '50',
+    field6: '-0.06',
+  },
+];
+
+const section3SumData: DummyDataType2[] = [
+  {
+    id: -1,
+    field1: '감점 소계',
+    field2: 'MAX[(MIN(G그룹간) + S그룹), NL(감점한도)]',
+    field3: '',
+    field4: '',
+    field5: '',
+    field6: '-0.85',
+    isSumRow: true,
+  },
+  {
+    id: -2,
+    field1: '(X1)최소필요',
+    field2: '일상생활중배상책임',
+    field3: '가입시',
+    field4: '-12.0',
+    field5: '10,000',
+    field6: '-10.00',
+  },
+  {
+    id: -3,
+    field1: '감점 합계',
+    field2: 'MIN(감점 소계, X(필요기준))',
+    field3: '',
+    field4: '',
+    field5: '',
+    field6: '-0.85',
+    isSumRow: true,
+  },
+];
+
+const policyData: DummyDataType2[] = [
+  {
+    id: 1,
+    field1: '(PL)정책요소',
+    field2: '일상생활중배상책임 보장 충족 여부',
+    field3: '보장',
+    field4: '+5',
+    field5: '0',
+    field6: '1.00',
+  },
+];
+
+const finalSummaryData: FinalSummaryData[] = [
+  {
+    id: 1,
+    label: '최종',
+    formula: '가점 합계 - 감점 합계 + 정책 요소',
+    point: '136.15',
+  },
+];
+
 export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType2 = {
-    id: number;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    isSumRow?: boolean;
-  };
-
-  type FinalSummaryData = {
-    id: number;
-    label: string;
-    formula: string;
-    point: string;
-  };
-
-  // 가점계산 데이터
-  const section2Data: DummyDataType2[] = [
-    {
-      id: 1,
-      field1: '(H1)사망후유',
-      field2: '일반상해사망',
-      field3: '(65세이하)1000만원당',
-      field4: '+1.0',
-      field5: '17,000',
-      field6: '17.00',
-    },
-    {
-      id: 2,
-      field1: '(H1)사망후유',
-      field2: '일반상해사망',
-      field3: '1000만원당',
-      field4: '+0.1',
-      field5: '2,000',
-      field6: '0.20',
-    },
-    {
-      id: 3,
-      field1: '(H1)입원/일당',
-      field2: '상해출환치성입원비',
-      field3: '10만원당',
-      field4: '+4.0',
-      field5: '50',
-      field6: '20.00',
-    },
-    {
-      id: 4,
-      field1: '(H1)사망후유',
-      field2: '질병사망',
-      field3: '1000만원당',
-      field4: '+1.0',
-      field5: '17,000',
-      field6: '42.00',
-    },
-  ];
-
-  const section2SumData: DummyDataType2[] = [
-    {
-      id: -1,
-      field1: '가점 합계',
-      field2: '가산담보합계(H그룹)',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: '137.00',
-      isSumRow: true,
-    },
-  ];
-
   const isMergedSumRow = (data?: DummyDataType2) => {
     return (
       data?.isSumRow === true &&
       (data.field1 === '가점 합계' || data.field1 === '감점 소계' || data.field1 === '감점 합계')
     );
   };
-
-  // 감점계산 데이터
-  const section3Data: DummyDataType2[] = [
-    {
-      id: 1,
-      field1: '(S1)진단비',
-      field2: '유사암진단비(기타피부양)',
-      field3: '100만원당',
-      field4: '-0.125',
-      field5: '50',
-      field6: '-0.06',
-    },
-    {
-      id: 2,
-      field1: '(S1)진단비',
-      field2: '유사암진단(갑상선암)',
-      field3: '100만원당',
-      field4: '-0.125',
-      field5: '50',
-      field6: '-0.06',
-    },
-    {
-      id: 3,
-      field1: '(S1)진단비',
-      field2: '유사암진단비(제자리암)',
-      field3: '100만원당',
-      field4: '-0.125',
-      field5: '50',
-      field6: '-0.06',
-    },
-    {
-      id: 4,
-      field1: '(S1)진단비',
-      field2: '유사암진단비(경계성종양)',
-      field3: '100만원당',
-      field4: '-0.125',
-      field5: '50',
-      field6: '-0.06',
-    },
-  ];
-
-  const section3SumData: DummyDataType2[] = [
-    {
-      id: -1,
-      field1: '감점 소계',
-      field2: 'MAX[(MIN(G그룹간) + S그룹), NL(감점한도)]',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: '-0.85',
-      isSumRow: true,
-    },
-    {
-      id: -2,
-      field1: '(X1)최소필요',
-      field2: '일상생활중배상책임',
-      field3: '가입시',
-      field4: '-12.0',
-      field5: '10,000',
-      field6: '-10.00',
-    },
-    {
-      id: -3,
-      field1: '감점 합계',
-      field2: 'MIN(감점 소계, X(필요기준))',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: '-0.85',
-      isSumRow: true,
-    },
-  ];
-
-  const policyData: DummyDataType2[] = [
-    {
-      id: 1,
-      field1: '(PL)정책요소',
-      field2: '일상생활중배상책임 보장 충족 여부',
-      field3: '보장',
-      field4: '+5',
-      field5: '0',
-      field6: '1.00',
-    },
-  ];
-
-  const finalSummaryData: FinalSummaryData[] = [
-    {
-      id: 1,
-      label: '최종',
-      formula: '가점 합계 - 감점 합계 + 정책 요소',
-      point: '136.15',
-    },
-  ];
 
   const columnDefs: ColDef<DummyDataType2>[] = [
     {
@@ -356,12 +355,12 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable caption="기본정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="설계번호" width={'14rem'} value={'LA260305361023'} readOnly />
-                  <Input aria-label="상품명" width={'22rem'} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
+                  <Input aria-label="설계번호" width={140} value={'LA260305361023'} readOnly />
+                  <Input aria-label="상품명" width={220} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
                 </FormCell>
                 <FormCell title={'피보험자'}>
-                  <Input aria-label="피보험자명" width={'8rem'} value={'홍길순'} readOnly />
-                  <Input aria-label="생년월일" width={'14rem'} value={'940302-2*****'} readOnly />
+                  <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly />
+                  <Input aria-label="생년월일" width={140} value={'940302-2*****'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -383,7 +382,6 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section2SumData}
                     defaultColDef={{ sortable: false, resizable: false }}
-                    rowClassRules={{}}
                     domLayout={'autoHeight'}
                   />
                 </div>
@@ -405,7 +403,6 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
                     defaultColDef={{ sortable: false, resizable: false }}
-                    rowClassRules={{}}
                     domLayout={'autoHeight'}
                   />
                 </div>
@@ -423,7 +420,6 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     rowData={policyData}
                     columnDefs={columnDefs}
                     defaultColDef={{ sortable: false, resizable: false }}
-                    rowClassRules={{}}
                     domLayout={'autoHeight'}
                   />
                 </div>

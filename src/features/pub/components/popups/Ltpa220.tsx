@@ -8,7 +8,7 @@ import * as React from 'react';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,169 +23,173 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 2,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 3,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 4,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 5,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 6,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 7,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 8,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 9,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 10,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 11,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 12,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 13,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 14,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+  {
+    id: 15,
+    field01: '홍길동',
+    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field03: '2016-01-01',
+    field04: '1000000',
+    field05: '1',
+    field06: '20000000',
+  },
+];
+
 export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
   // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-  };
 
   const toNumericValue = (value: string | number): number => {
     if (typeof value === 'number') {
       return value;
     }
-
-    const parsedValue = Number(String(value).replaceAll(',', ''));
-    return Number.isNaN(parsedValue) ? 0 : parsedValue;
+    if (typeof value === 'string') {
+      if (value.trim() === '') return 0;
+      const cleaned = value.replace(/[^\d.-]/g, '');
+      if (cleaned === '' || cleaned === '-' || cleaned === '.') return 0;
+      const parsedValue = Number(cleaned);
+      return Number.isNaN(parsedValue) ? 0 : parsedValue;
+    }
+    return 0;
   };
-
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 2,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 3,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 4,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 5,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 6,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 7,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 8,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 9,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 10,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 11,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 12,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 13,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 14,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-    {
-      id: 15,
-      field01: '홍길동',
-      field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
-      field03: '2016-01-01',
-      field04: '1000000',
-      field05: '1',
-      field06: '20000000',
-    },
-  ];
 
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -211,7 +215,6 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
         if (params.node?.rowPinned === 'bottom') {
           return 3;
         }
-
         return 1;
       },
     },
@@ -232,6 +235,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field04',
       width: 100,
       cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: 'CSM배수',
@@ -244,6 +248,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field06',
       width: 100,
       cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
   ];
 
@@ -255,8 +260,11 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const pinnedBottomRowData = React.useMemo<DummyDataType[]>(() => {
-    const totalPremium = rowData.reduce((sum, row) => sum + toNumericValue(row.field04), 0);
-    const totalCsm = rowData.reduce((sum, row) => sum + toNumericValue(row.field06), 0);
+    // 모든 row의 field04, field06을 콤마 제거 후 숫자로 변환하여 합산
+    let totalPremium = rowData.reduce((sum, row) => sum + toNumericValue(row.field04), 0);
+    let totalCsm = rowData.reduce((sum, row) => sum + toNumericValue(row.field06), 0);
+    if (Number.isNaN(totalPremium)) totalPremium = 0;
+    if (Number.isNaN(totalCsm)) totalCsm = 0;
 
     return [
       {
@@ -264,9 +272,9 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
         field01: '합계',
         field02: '',
         field03: '',
-        field04: totalPremium.toLocaleString('ko-KR'),
+        field04: totalPremium,
         field05: '',
-        field06: totalCsm.toLocaleString('ko-KR'),
+        field06: totalCsm,
       },
     ];
   }, [rowData]);
@@ -292,7 +300,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'설계번호'}>
                     <Input
                       aria-label=""
-                      width={'15rem'}
+                      width={150}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       required
@@ -301,7 +309,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'CSM배수'}>
                     <Input
                       aria-label=""
-                      width={'15rem'}
+                      width={150}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     />
@@ -330,8 +338,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
                         pinnedBottomRowData={pinnedBottomRowData}
                         columnDefs={columnDefs}
                         defaultColDef={{
-                          sortable: false,
-                          resizable: false,
+                          suppressMovable: true,
                         }}
                         domLayout="autoHeight"
                       />

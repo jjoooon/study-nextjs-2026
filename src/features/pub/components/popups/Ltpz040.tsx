@@ -26,76 +26,75 @@ import {
 import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+// dummy data
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: '정상',
+    field02: 'LA231231231',
+    field03: '한화 세이프단체보',
+    field04: '일상해의료비(가입자)',
+    field05: '999,999,999',
+    field06: '999,999,999',
+    field07: 'CLA00172',
+    field08: '2026-01-01',
+    field09: '2026-01-01',
+    field10: '정상',
+    field11: '김한화',
+    field12: '천안지점',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '정상',
+    field02: 'LA231231231',
+    field03: '한화 세이프단체보',
+    field04: '일상해의료비(가입자)',
+    field05: '999,999,999',
+    field06: '999,999,999',
+    field07: 'CLA00172',
+    field08: '2026-01-01',
+    field09: '2026-01-01',
+    field10: '정상',
+    field11: '김한화',
+    field12: '천안지점',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: '정상',
+    field02: 'LA231231232342',
+    field03: '한화 시스템',
+    field04: '일상해의료비(가입자)',
+    field05: '999,999,999',
+    field06: '999,999,999',
+    field07: 'CLA00172',
+    field08: '2026-01-01',
+    field09: '2026-01-01',
+    field10: '정상',
+    field11: '김한화1',
+    field12: '천안지점1',
+  },
+];
 
 export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      field01: '정상',
-      field02: 'LA231231231',
-      field03: '한화 세이프단체보',
-      field04: '일상해의료비(가입자)',
-      field05: '999,999,999',
-      field06: '999,999,999',
-      field07: 'CLA00172',
-      field08: '2026-01-01',
-      field09: '2026-01-01',
-      field10: '정상',
-      field11: '김한화',
-      field12: '천안지점',
-    },
-    {
-      id: 2,
-      isCheck: false,
-      field01: '정상',
-      field02: 'LA231231231',
-      field03: '한화 세이프단체보',
-      field04: '일상해의료비(가입자)',
-      field05: '999,999,999',
-      field06: '999,999,999',
-      field07: 'CLA00172',
-      field08: '2026-01-01',
-      field09: '2026-01-01',
-      field10: '정상',
-      field11: '김한화',
-      field12: '천안지점',
-    },
-    {
-      id: 3,
-      isCheck: false,
-      field01: '정상',
-      field02: 'LA231231232342',
-      field03: '한화 시스템',
-      field04: '일상해의료비(가입자)',
-      field05: '999,999,999',
-      field06: '999,999,999',
-      field07: 'CLA00172',
-      field08: '2026-01-01',
-      field09: '2026-01-01',
-      field10: '정상',
-      field11: '김한화1',
-      field12: '천안지점1',
-    },
-  ];
-
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -186,7 +185,7 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

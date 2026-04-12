@@ -27,6 +27,42 @@ import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  planName: string;
+  myPlanName: string;
+  target: boolean | string;
+  registrationDate: string;
+};
+
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+    myPlanName: '3대진단형',
+    registrationDate: '2026-03-22',
+    target: true,
+  },
+  {
+    id: 2,
+    isCheck: false,
+    planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+    myPlanName: '3대진단형',
+    registrationDate: '2026-03-22',
+    target: true,
+  },
+  {
+    id: 3,
+    isCheck: true,
+    planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+    myPlanName: '3대진단형',
+    registrationDate: '2026-03-22',
+    target: true,
+  },
+];
+
 export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
   // 검색버튼 여부에 따른 셀 렌더러
   const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
@@ -42,42 +78,6 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
       </div>
     );
   };
-
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    planName: string;
-    myPlanName: string;
-    target: boolean | string;
-    registrationDate: string;
-  };
-
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
-      myPlanName: '3대진단형',
-      registrationDate: '2026-03-22',
-      target: true,
-    },
-    {
-      id: 2,
-      isCheck: false,
-      planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
-      myPlanName: '3대진단형',
-      registrationDate: '2026-03-22',
-      target: true,
-    },
-    {
-      id: 3,
-      isCheck: true,
-      planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
-      myPlanName: '3대진단형',
-      registrationDate: '2026-03-22',
-      target: true,
-    },
-  ];
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -174,7 +174,9 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                     mode: 'multiRow',
                     headerCheckbox: true,
                     checkboxes: true,
-                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    width: 30,
                   }}
                   rowClassRules={{}}
                   onGridReady={(params) => {

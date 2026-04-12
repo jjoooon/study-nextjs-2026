@@ -24,7 +24,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -39,7 +39,7 @@ export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Gcol className="w-full" gap={5}>
             <FormTable
               caption="부실유의계약 선별인수 확인서"
-              cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
+              cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}
               lineTop
               variant="default"
             >

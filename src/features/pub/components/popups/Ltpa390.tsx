@@ -26,19 +26,19 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  field1: string;
+  field2: string;
+  field3: string;
+};
+
+const DummyData: DummyDataType[] = [
+  { id: 1, field1: '', field2: '', field3: '' },
+  { id: 2, field1: '', field2: '', field3: '' },
+];
+
 export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field1: string;
-    field2: string;
-    field3: string;
-  };
-
-  const DummyData: DummyDataType[] = [
-    { id: 1, field1: '', field2: '', field3: '' },
-    { id: 2, field1: '', field2: '', field3: '' },
-  ];
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'No',
@@ -49,7 +49,7 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '피보험자',
       field: 'field2',
-      flex: 1,
+      width: 100,
       cellClass: 'text-center',
     },
     {
@@ -64,7 +64,7 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl" className="">
+      <DialogContent showCloseButton resizable={true} size="md" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -97,12 +97,6 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
                   columnDefs={columnDefs}
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                  }}
-                  singleClickEdit={true}
-                  rowClassRules={{}}
                   domLayout="autoHeight"
                 />
               </div>

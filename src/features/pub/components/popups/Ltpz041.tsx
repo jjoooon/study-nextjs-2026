@@ -46,32 +46,18 @@ export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <TableFold>
-            <TableFoldHead title="개인사업자정보"></TableFoldHead>
+            <TableFoldHead title="개인사업자정보" />
             <TableFoldBody>
               <Gcol>
                 <FormTable caption="사업자" cols={['w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'사업자명'}>
-                      <Input
-                        size="lg"
-                        value={form.type01}
-                        variant="default"
-                        width="md"
-                        onChange={(e) => setFormField('type01', e.target.value)}
-                        required
-                      />
+                      <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} required />
                     </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'사업자번호'}>
-                      <Input
-                        size="lg"
-                        value={form.type02}
-                        variant="default"
-                        width="md"
-                        onChange={(e) => setFormField('type02', e.target.value)}
-                        required
-                      />
+                      <Input value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} required />
                     </FormCell>
                   </FormRow>
                 </FormTable>

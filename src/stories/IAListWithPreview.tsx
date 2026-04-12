@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
+import meta from './ialist-meta.json';
 import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
@@ -45,30 +46,9 @@ export function IAListWithPreview() {
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
-  const workListH = React.useMemo(
-    () =>
-      [
-        'LTPZ022',
-        'LTPZ024',
-        'LTPZ027',
-        'LTPZ032',
-        'LTPZ033',
-        'LTPA160',
-        'LTPA170',
-        'LTPA130',
-        'LTPA350_5',
-        // 'LTPA350_6',
-      ] as string[],
-    []
-  );
-  const workListK = React.useMemo(
-    () => ['LTPA350_1', 'LTPZ085', 'LTPZ086', 'LTPZ028', 'LTPA220', 'LTPZ014', 'LTPZ012', 'LTPZ013', 'LTPZ019' , 'LTPZ004'] as string[],
-    []
-  );
-  const workListJ = React.useMemo(
-    () => ['LTPZ999', 'LTPZ001', 'LTPZ009', 'LTPZ998', 'LTPZ997', 'LTPZ996', 'LTPZ018'],
-    []
-  );
+  const workListH = React.useMemo(() => meta.workListH as string[], []);
+  const workListK = React.useMemo(() => meta.workListK as string[], []);
+  const workListJ = React.useMemo(() => meta.workListJ as string[], []);
 
   const rowsWithPubOwner = React.useMemo(() => {
     const pubOwnerById = new Map<string, string>();
@@ -185,74 +165,10 @@ export function IAListWithPreview() {
     [sortState]
   );
 
-  const ingList = React.useMemo(() => ['LTPA350_2', 'LTPZ021'], []);
+  const inspectionList = React.useMemo(() => meta.inspectionList as string[], []);
+  const ingList = React.useMemo(() => meta.ingList as string[], []);
   const workList = React.useMemo(() => {
-    const workListPrev: string[] = [
-      'LTPZ010',
-      'LTPZ011',
-      'LTPZ017',
-      'LTPZ020',
-      'LTPA160',
-      'LTPA904',
-
-      'LTPA170',
-      'LTPA904',
-      'LTPA390',
-      'LTPA430',
-      'LTPA070',
-      'LTPA010',
-      'LTPZ041',
-      'LTPZ042',
-      'LTPZ038',
-      'LTPZ039',
-      'LTPA400',
-      'LTPA210',
-      'LTPA200',
-      'LTPA190',
-
-      'LTPZ040',
-      'LTPZ043',
-      'LTPZ046',
-      'LTPZ047',
-      'LTPA030',
-      'LTPA360',
-      'LTPZ049',
-      'LTPZ050',
-      'LTPZ051',
-      'LTPZ002',
-      'LTPZ052',
-      'LTPZ053',
-      'LTPZ057',
-
-      'LTPA401',
-      'LTPA301',
-      'LTPA303',
-      'LTPZ048',
-      'LTPZ045',
-      'LTRZ085',
-      'LTPA300',
-      'LTPZ994',
-      'LTPZ995',
-      'LTPZ030',
-      'LTPZ031',
-      'LTPZ032',
-      'LTPZ033',
-      'LTPZ005',
-      'LTPZ062',
-      'LTPA060',
-      'LTPZ027',
-      'LTPZ028',
-      'LTPZ023',
-      'LTPZ024',
-      'LTPA220',
-      'LTPZ014',
-      'LTPZ022',
-      'LTPA130',
-      'LTPA350_5',
-      // 'LTPA350_6',
-      // 'LTPZ012',
-    ];
-
+    const workListPrev: string[] = meta.workListPrev as string[];
     return [...workListPrev, ...workListH, ...workListK, ...workListJ];
   }, [workListH, workListJ, workListK]);
 
@@ -283,6 +199,7 @@ export function IAListWithPreview() {
                 화면명{getSortIndicator('dep4')}
               </th>
               <th scope="col">설계서명</th>
+              <th scope="col">검수</th>
               <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
                 1차{showPhaseOnly ? ' ✓' : ''}
               </th>
@@ -307,6 +224,9 @@ export function IAListWithPreview() {
               const isWork = workIdSet.has(row.id) || workIdSet.has(row.subId ?? '');
               const rowBgClass = isWork ? 'bg-[#dbeafe]!' : isIng ? 'bg-[#fff3cd]!' : '';
               const rowIdBgClass = isWork ? 'bg-[#bfdbfe]!' : isIng ? 'bg-[#c5bfbf]!' : '';
+              const isInspected = [row.id, row.subId]
+                .filter(Boolean)
+                .some((id) => inspectionList.some((insp) => insp.toLowerCase() === String(id).toLowerCase()));
 
               return (
                 <tr
@@ -333,6 +253,9 @@ export function IAListWithPreview() {
                   </td>
 
                   <td className={rowBgClass}>{row.file}</td>
+
+                  {/* Inspection status column */}
+                  <td className={`text-center ${rowBgClass}`}>{isInspected ? '✔️' : ''}</td>
 
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{row.phase === 'Y' ? 'Y' : ''}</b>

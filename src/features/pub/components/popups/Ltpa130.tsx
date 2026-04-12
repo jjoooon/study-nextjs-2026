@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -15,7 +15,6 @@ import { TablePagination } from '@common/TablePagination';
 import { QuestionMark, ResetIcon, SearchIcon, FileExportIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-
 import {
   Dialog,
   DialogClose,
@@ -33,137 +32,155 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // Grid dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '안형민',
-      field02: '1234567',
-      field03: '900101',
-      field04: '김한화',
-      field05: '106289225',
-      field06: '스캔(개인)',
-      field07: '정상',
-      field08: '보기',
-      field09: '동의(전체)',
-      field10: '동의(전체)',
-      field11: '수동',
-      field12: '2026-01-01',
-      field13: '2026-01-01 00:00:00',
-      field14: '',
-      field15: '',
-    },
-    {
-      id: 2,
-      field01: '에이플러스',
-      field02: '3484604',
-      field03: '900101',
-      field04: '김한화',
-      field05: '106289225',
-      field06: '',
-      field07: '',
-      field08: '보기',
-      field09: '미동의',
-      field10: '미동의',
-      field11: '수동',
-      field12: '2026-01-01',
-      field13: '2026-01-01 00:00:00',
-      field14: '',
-      field15: '',
-    },
-    {
-      id: 3,
-      field01: '안형민',
-      field02: '1234567',
-      field03: '900101',
-      field04: '',
-      field05: '고객찾기',
-      field06: '넷팩스(개인)',
-      field07: '',
-      field08: '보기',
-      field09: '동의(전체)',
-      field10: '동의(전체)',
-      field11: '수동',
-      field12: '2026-01-01',
-      field13: '2026-01-01 00:00:00',
-      field14: '',
-      field15: '',
-    },
-    {
-      id: 4,
-      field01: '안형민',
-      field02: '1234567',
-      field03: '900101',
-      field04: '',
-      field05: '고객찾기',
-      field06: '휴대폰(LMS)',
-      field07: '',
-      field08: '보기',
-      field09: '동의(전체)',
-      field10: '동의(전체)',
-      field11: '자동',
-      field12: '2026-01-01',
-      field13: '2026-01-01 00:00:00',
-      field14: '',
-      field15: '',
-    },
-    {
-      id: 5,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-      field08: '',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-    },
-    {
-      id: 6,
-      field01: '안형민',
-      field02: '1234567',
-      field03: '900101',
-      field04: '김한화',
-      field05: '123456789',
-      field06: '카카오인증',
-      field07: '정상',
-      field08: '보기',
-      field09: '동의(전체)',
-      field10: '동의(전체)',
-      field11: '',
-      field12: '2026-01-01',
-      field13: '2026-01-01 00:00:00',
-      field14: '2026-01-01 00:00:00',
-      field15: '',
-    },
-  ];
+// Grid dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '안형민',
+    field02: '1234567',
+    field03: '900101',
+    field04: '김한화',
+    field05: '106289225',
+    field06: '스캔(개인)',
+    field07: '정상',
+    field08: '보기',
+    field09: '동의(전체)',
+    field10: '동의(전체)',
+    field11: '수동',
+    field12: '2026-01-01',
+    field13: '2026-01-01 00:00:00',
+    field14: '',
+    field15: '',
+  },
+  {
+    id: 2,
+    field01: '에이플러스',
+    field02: '3484604',
+    field03: '900101',
+    field04: '김한화',
+    field05: '106289225',
+    field06: '',
+    field07: '',
+    field08: '보기',
+    field09: '미동의',
+    field10: '미동의',
+    field11: '수동',
+    field12: '2026-01-01',
+    field13: '2026-01-01 00:00:00',
+    field14: '',
+    field15: '',
+  },
+  {
+    id: 3,
+    field01: '안형민',
+    field02: '1234567',
+    field03: '900101',
+    field04: '',
+    field05: '고객찾기',
+    field06: '넷팩스(개인)',
+    field07: '',
+    field08: '보기',
+    field09: '동의(전체)',
+    field10: '동의(전체)',
+    field11: '수동',
+    field12: '2026-01-01',
+    field13: '2026-01-01 00:00:00',
+    field14: '',
+    field15: '',
+  },
+  {
+    id: 4,
+    field01: '안형민',
+    field02: '1234567',
+    field03: '900101',
+    field04: '',
+    field05: '고객찾기',
+    field06: '휴대폰(LMS)',
+    field07: '',
+    field08: '보기',
+    field09: '동의(전체)',
+    field10: '동의(전체)',
+    field11: '자동',
+    field12: '2026-01-01',
+    field13: '2026-01-01 00:00:00',
+    field14: '',
+    field15: '',
+  },
+  {
+    id: 5,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+  },
+  {
+    id: 6,
+    field01: '안형민',
+    field02: '1234567',
+    field03: '900101',
+    field04: '김한화',
+    field05: '123456789',
+    field06: '카카오인증',
+    field07: '정상',
+    field08: '보기',
+    field09: '동의(전체)',
+    field10: '동의(전체)',
+    field11: '',
+    field12: '2026-01-01',
+    field13: '2026-01-01 00:00:00',
+    field14: '2026-01-01 00:00:00',
+    field15: '',
+  },
+  {
+    id: 7,
+    field01: '안형민',
+    field02: '1234567',
+    field03: '900101',
+    field04: '김한화',
+    field05: '123456789',
+    field06: '카카오인증',
+    field07: '정상',
+    field08: '보기',
+    field09: '동의(전체)',
+    field10: '동의(전체)',
+    field11: '',
+    field12: '2026-01-01',
+    field13: '2026-01-01 00:00:00',
+    field14: '2026-01-01 00:00:00',
+    field15: '',
+  },
+];
 
+export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
   const renderConsentCell = (params: ICellRendererParams<DummyDataType>) => {
     const value = String(params.value ?? '');
 
@@ -182,7 +199,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       colId: 'radio-select',
       headerName: '선택',
-      width: 50,
+      width: 30,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
         <input
@@ -199,16 +216,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field01',
       autoHeight: true,
       spanRows: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        return (
-          <div className="absolute inset-0 grid w-full grid-cols-[1fr_70px] items-stretch">
-            <span className="flex min-w-0 items-center justify-center truncate px-1">{params.value}</span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {params.data?.field02}
-            </span>
-          </div>
-        );
-      },
+      cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02', 'row'),
     },
     {
       headerName: '생년월일',
@@ -376,21 +384,27 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
               가입설계동의 현황조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPa130)
+              (LTPA130)
             </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable variant={'none'} cols={['w-1', 'w-[65rem]', 'w-[10rem]', 'w-auto', 'w-1', 'w-[40rem]']}>
+              <FormTable variant={'none'} cols={['w-[6rem]', 'w-[20rem]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'조직구분'}>
                     <NativeSelect width={'auto'}>
-                      <NativeSelectOption value="">선택</NativeSelectOption>
-                      <NativeSelectOption value="">취급기관</NativeSelectOption>
-                      <NativeSelectOption value="">취급직원</NativeSelectOption>
-                      <NativeSelectOption value="">사용인</NativeSelectOption>
+                      {[
+                        { value: '전체', label: '전체' },
+                        { value: '취급기관', label: '취급기관' },
+                        { value: '취급직원', label: '취급직원' },
+                        { value: '사용인', label: '사용인' },
+                      ].map((option, index) => (
+                        <NativeSelectOption key={index} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
                     </NativeSelect>
                     <Input value={'1301097'} width={80} />
                     <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
@@ -398,7 +412,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                     <Input value={'신부산GA지점'} readOnly />
                   </FormCell>
-                  <FormCell title={'조회일자'}>
+                  <FormCell title={'조회일자'} colSpan={3}>
                     <DatePickerInput mode={'range'} />
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -428,48 +442,53 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input value={''} width={80} readOnly />
-                    <Checkbox
-                      color="primary"
-                      errorMsg="선택은 필수입니다."
-                      errorPs="bl"
-                      onCheckedChange={() => {}}
-                      size="lg"
-                      variant="default"
-                    >
+                    <Checkbox color="primary" size="lg" variant="default">
                       <span className="whitespace-nowrap">교차제외</span>
                     </Checkbox>
                   </FormCell>
                   <FormCell title={'동의구분'}>
                     <NativeSelect width={'auto'}>
-                      <NativeSelectOption value="">전체</NativeSelectOption>
-                      <NativeSelectOption value="">스캔(개인)</NativeSelectOption>
-                      <NativeSelectOption value="">스캔(변경,단체)</NativeSelectOption>
-                      <NativeSelectOption value="">넷팩스(개인)</NativeSelectOption>
-                      <NativeSelectOption value="">넷팩스(변경,단체)</NativeSelectOption>
-                      <NativeSelectOption value="">휴대폰(LMS)</NativeSelectOption>
-                      <NativeSelectOption value="">휴대폰(홈페이지)</NativeSelectOption>
-                      <NativeSelectOption value="">공인인증서</NativeSelectOption>
-                      <NativeSelectOption value="">음성녹음</NativeSelectOption>
-                      <NativeSelectOption value="">방카</NativeSelectOption>
-                      <NativeSelectOption value="">카드인증</NativeSelectOption>
-                      <NativeSelectOption value="">카카오인증</NativeSelectOption>
-                      <NativeSelectOption value="">네이버인증</NativeSelectOption>
-                      <NativeSelectOption value="">전자서명</NativeSelectOption>
-                      <NativeSelectOption value="">사진인식</NativeSelectOption>
-                      <NativeSelectOption value="">토스인증</NativeSelectOption>
-                      <NativeSelectOption value="">PASS인증</NativeSelectOption>
-                      <NativeSelectOption value="">PIN인증</NativeSelectOption>
-                      <NativeSelectOption value="">지문/Face ID인증</NativeSelectOption>
-                      <NativeSelectOption value="">금융인증서</NativeSelectOption>
-                      <NativeSelectOption value="">ARS</NativeSelectOption>
+                      {[
+                        { value: '전체', label: '전체' },
+                        { value: '스캔(개인)', label: '스캔(개인)' },
+                        { value: '스캔(변경,단체)', label: '스캔(변경,단체)' },
+                        { value: '넷팩스(개인)', label: '넷팩스(개인)' },
+                        { value: '넷팩스(변경,단체)', label: '넷팩스(변경,단체)' },
+                        { value: '휴대폰(LMS)', label: '휴대폰(LMS)' },
+                        { value: '휴대폰(홈페이지)', label: '휴대폰(홈페이지)' },
+                        { value: '공인인증서', label: '공인인증서' },
+                        { value: '음성녹음', label: '음성녹음' },
+                        { value: '방카', label: '방카' },
+                        { value: '카드인증', label: '카드인증' },
+                        { value: '카카오인증', label: '카카오인증' },
+                        { value: '네이버인증', label: '네이버인증' },
+                        { value: '전자서명', label: '전자서명' },
+                        { value: '사진인식', label: '사진인식' },
+                        { value: '토스인증', label: '토스인증' },
+                        { value: 'PASS인증', label: 'PASS인증' },
+                        { value: 'PIN인증', label: 'PIN인증' },
+                        { value: '지문/Face ID인증', label: '지문/Face ID인증' },
+                        { value: '금융인증서', label: '금융인증서' },
+                        { value: 'ARS', label: 'ARS' },
+                      ].map((option, index) => (
+                        <NativeSelectOption key={index} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'등록상태'}>
                     <NativeSelect width={'auto'}>
-                      <NativeSelectOption value="">전체</NativeSelectOption>
-                      <NativeSelectOption value="">정상</NativeSelectOption>
-                      <NativeSelectOption value="">확인대상</NativeSelectOption>
-                      <NativeSelectOption value="">보완(재스캔)</NativeSelectOption>
+                      {[
+                        { value: '전체', label: '전체' },
+                        { value: '정상', label: '정상' },
+                        { value: '확인대상', label: '확인대상' },
+                        { value: '보완(재스캔)', label: '보완(재스캔)' },
+                      ].map((option, index) => (
+                        <NativeSelectOption key={index} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
                     </NativeSelect>
                   </FormCell>
                 </FormRow>
@@ -499,7 +518,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FileExportIcon />
                   </Button>
                 </Grow>
-                <div className="ag-theme-alpine h-auto!">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -528,18 +547,16 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onPaginationChanged={handlePaginationChanged}
                   />
                 </div>
-              </Gcol>
-              {/*  페이징네이션 */}
-              <Grow className="mt-2 border-t border-gray-200 pt-1" placement={'bwe'}>
                 <TablePagination
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
                   itemsPerPage={pageSize}
                 />
-              </Grow>
+              </Gcol>
+
               <Grow className="w-full">
-                <Table variant="default">
+                <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>공인인증서</TableHead>
@@ -596,3 +613,8 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+/**
+ * 확인요청
+ * colId: 'radio-select',를 사용해야하는지? 기본 체크박스 singleRow selection으로도 구현 가능해보이는 부분
+ * renderDivCol 추가
+ */
