@@ -27,58 +27,58 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// dummy data
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '2023-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '2023-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '김한화',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '2023-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+];
+
 export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-  };
-
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '2023-03-01',
-      field04: '9999-12-31',
-      field05: '',
-      field06: '',
-      field07: '',
-    },
-    {
-      id: 2,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '2023-03-01',
-      field04: '9999-12-31',
-      field05: '',
-      field06: '',
-      field07: '김한화',
-    },
-    {
-      id: 3,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      field03: '2023-03-01',
-      field04: '9999-12-31',
-      field05: '',
-      field06: '',
-      field07: '',
-    },
-  ];
-
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -96,13 +96,13 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '적용시작일자',
       field: 'field03',
-      flex: 1,
+      width: 110,
       cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '적용종료일자',
       field: 'field04',
-      flex: 1,
+      width: 110,
       cellClass: 'flex! items-center! justify-center!',
     },
     {
@@ -156,7 +156,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
-              variant={'none'}
+              variant={'head'}
               caption="장기보험 모집자 설계 조회 테이블"
               cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
             >
@@ -164,7 +164,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'등록항목'}>
                   <NativeSelect
                     aria-label="항목 선택"
-                    width={'9rem'}
+                    width={90}
                     value={form.type01}
                     onChange={(e) => setFormField('type01', e.target.value)}
                     required
@@ -182,7 +182,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'조직구분'}>
                   <NativeSelect
                     aria-label="조직구분 선택"
-                    width={'9rem'}
+                    width={90}
                     value={form.type02}
                     onChange={(e) => setFormField('type02', e.target.value)}
                     required
@@ -198,15 +198,15 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={'11rem'} value={''} readOnly />
+                  <Input aria-label="" width={110} value={''} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" width={'12rem'} value={'김한화'} readOnly />
+                  <Input aria-label="" width={120} value={'김한화'} readOnly />
                   <Grow className="ml-32">
                     <NativeSelect
                       aria-label="조직구분 선택"
-                      width={'9rem'}
+                      width={90}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
@@ -219,15 +219,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <DatePickerInput
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      mode="single"
-                      onChange={() => {}}
-                      size="lg"
-                      value=""
-                      width="sm"
-                    />
+                    <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" />
                   </Grow>
                 </FormCell>
               </FormRow>
@@ -253,20 +245,16 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFoldHead title="등록사항" />
             <TableFoldBody>
               <Grow className="w-full">
-                <div className="ag-theme-alpine aggrid-pagination-ko w-full h-104!">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     // getRowId 적용: id 필드를 고유 식별자로 사용
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData}
                     columnDefs={columnDefs}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                    }}
-                    alwaysShowHorizontalScroll={true}
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}
+                    domLayout="autoHeight"
                     // 체크박스 시
                     rowSelection={{
                       mode: 'multiRow',
@@ -276,6 +264,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     selectionColumnDef={{
                       headerName: '√',
+                      width: 30,
                     }}
                     onGridReady={(params) => {
                       params.api.forEachNode((node) => {
@@ -309,3 +298,8 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+/**
+ * 확인요청
+ * 전체체크의 사용여부
+ * <Grow className="ml-32"> 간격체크
+ */

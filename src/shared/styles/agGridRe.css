@@ -19,10 +19,12 @@
   border-right: 0;
   border-top: .2rem solid #000;
 }
-
-.ag-row-odd {
+.ag-center-cols-container > [role="row"]:nth-child(2n) {
   background-color: transparent;
 }
+/* .ag-row-odd {
+  background-color: transparent;
+} */
 
 /* header */
 .ag-header {
@@ -507,4 +509,10 @@
 /* notopborder */
 .ag-border-t .ag-root-wrapper {
   border-top: 0 !important;
+}
+
+.ag-header-cell-text{
+  width: 100%;
+  display: block;
+  text-align: center;
 }

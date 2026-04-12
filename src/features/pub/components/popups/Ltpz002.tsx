@@ -20,49 +20,50 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+  field6: string;
+  field7: string;
+};
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: '구분정보',
+    field2: '보험종목명 ',
+    field3: '설계번호',
+    field4: '계약자',
+    field5: '290000',
+    field6: '2023-01-01',
+    field7: '상태',
+  },
+  {
+    id: 2,
+    field1: '구분정보',
+    field2: '보험종목명 ',
+    field3: '설계번호',
+    field4: '계약자',
+    field5: '290000',
+    field6: '2023-01-01',
+    field7: '상태',
+  },
+  {
+    id: 3,
+    field1: '구분정보',
+    field2: '보험종목명 ',
+    field3: '설계번호',
+    field4: '계약자',
+    field5: '290000',
+    field6: '2023-01-01',
+    field7: '상태',
+  },
+];
+
 export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-  };
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field1: '구분정보',
-      field2: '보험종목명 ',
-      field3: '설계번호',
-      field4: '계약자',
-      field5: '290000',
-      field6: '2023-01-01',
-      field7: '상태',
-    },
-    {
-      id: 2,
-      field1: '구분정보',
-      field2: '보험종목명 ',
-      field3: '설계번호',
-      field4: '계약자',
-      field5: '290000',
-      field6: '2023-01-01',
-      field7: '상태',
-    },
-    {
-      id: 3,
-      field1: '구분정보',
-      field2: '보험종목명 ',
-      field3: '설계번호',
-      field4: '계약자',
-      field5: '290000',
-      field6: '2023-01-01',
-      field7: '상태',
-    },
-  ];
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -257,15 +258,13 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
 
-                <div className="ag-theme-alpine h-auto!">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData}
                     columnDefs={columnDefs}
                     defaultColDef={{
-                      sortable: true,
-                      resizable: true,
                       cellClass: 'text-center',
                     }}
                     domLayout="autoHeight"
@@ -277,7 +276,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
-                      width: 36,
+                      width: 30,
                       cellClass: 'text-center editable-cell',
                     }}
                   />
@@ -312,8 +311,6 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           rowData={rowData2}
                           columnDefs={columnDefs2}
                           defaultColDef={{
-                            sortable: true,
-                            resizable: true,
                             cellClass: 'text-center',
                           }}
                           domLayout="autoHeight"
@@ -349,8 +346,6 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           rowData={rowData2}
                           columnDefs={columnDefs2}
                           defaultColDef={{
-                            sortable: true,
-                            resizable: true,
                             cellClass: 'text-center',
                           }}
                           domLayout="autoHeight"

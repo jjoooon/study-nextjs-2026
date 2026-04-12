@@ -2,15 +2,16 @@
 // 권오택
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, renderTbodyTh, numberValueFormatter } from '@aggrid';
+
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,58 +23,63 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '9,999',
-      field02: '999,999,999',
-      field03: '999,999,999',
-      field04: '999,999,999',
-      field05: '999,999,999',
-      field06: '999,999,999',
-    },
-  ];
+type DummyDataType = {
+  id: number;
+  field01: [number, boolean];
+  field02: [number, boolean];
+  field03: [number, boolean];
+  field04: [number, boolean];
+  field05: [number, boolean];
+  field06: [number, boolean];
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: [3950, true],
+    field02: [394350, false],
+    field03: [39350, false],
+    field04: [393650, false],
+    field05: [2453950, false],
+    field06: [35950, false],
+  },
+];
 
+// 간결한 number 포매터 래퍼 (numberValueFormatter는 ag-grid에서만 사용, 여기선 직접 포맷)
+const simpleNumberFormatter = (value?: number) => {
+  if (typeof value === 'number') {
+    return value.toLocaleString();
+  }
+  return '';
+};
+
+export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '구분',
-      flex: 1,
-      cellClass: 'text-center px-0! flex bg-[#f4f4f4]! [&>div>span]:h-auto! ',
+      width: 80,
+      cellClass: 'text-center px-0! bg-[#f4f4f4]!',
       autoHeight: true,
-      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-        <Grow className="w-full px-1 py-1">
-          <Typo className="w-[6.5rem] whitespace-pre-wrap" color="gray" tag="span" variant="body-md" weight="bold">
-            보장보험료 합계(원)
-          </Typo>
-        </Grow>
-      ),
+      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => renderTbodyTh('보장보험료 합계(원)'),
     },
     {
       headerName: '1형(355간편고지형)',
       flex: 1,
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
+      valueGetter: (params) => params.data?.field01?.[0],
+      valueFormatter: numberValueFormatter,
       cellRenderer: createFieldRenderer<DummyDataType>(
-        'field01',
-        <Button color="secondary" disabled onClick={() => {}} only="default" size="sm" variant="contained">
-          설계생성
-        </Button>
+        (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field01?.[0])}</span>,
+        (data?: DummyDataType) => (
+          <Button color="secondary" onClick={() => {}} size="sm" variant="outlined" disabled={data?.field01[1]}>
+            설계생성
+          </Button>
+        )
       ),
     },
     {
@@ -82,10 +88,19 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
-        'field02',
-        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
-          설계생성
-        </Button>
+        (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field02?.[0])}</span>,
+        (data?: DummyDataType) => (
+          <Button
+            color="secondary"
+            onClick={() => {}}
+            only="default"
+            size="sm"
+            variant="outlined"
+            disabled={data?.field02[1]}
+          >
+            설계생성
+          </Button>
+        )
       ),
     },
     {
@@ -95,10 +110,19 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
-        'field03',
-        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
-          설계생성
-        </Button>
+        (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field03?.[0])}</span>,
+        (data?: DummyDataType) => (
+          <Button
+            color="secondary"
+            onClick={() => {}}
+            only="default"
+            size="sm"
+            variant="outlined"
+            disabled={data?.field03[1]}
+          >
+            설계생성
+          </Button>
+        )
       ),
     },
     {
@@ -108,10 +132,19 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
-        'field04',
-        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
-          설계생성
-        </Button>
+        (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field04?.[0])}</span>,
+        (data?: DummyDataType) => (
+          <Button
+            color="secondary"
+            onClick={() => {}}
+            only="default"
+            size="sm"
+            variant="outlined"
+            disabled={data?.field04[1]}
+          >
+            설계생성
+          </Button>
+        )
       ),
     },
     {
@@ -121,10 +154,19 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
-        'field05',
-        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
-          설계생성
-        </Button>
+        (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field05?.[0])}</span>,
+        (data?: DummyDataType) => (
+          <Button
+            color="secondary"
+            onClick={() => {}}
+            only="default"
+            size="sm"
+            variant="outlined"
+            disabled={data?.field05[1]}
+          >
+            설계생성
+          </Button>
+        )
       ),
     },
     {
@@ -134,10 +176,19 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
-        'field06',
-        <Button color="secondary" onClick={() => {}} only="default" size="sm" variant="outlined">
-          설계생성
-        </Button>
+        (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field06?.[0])}</span>,
+        (data?: DummyDataType) => (
+          <Button
+            color="secondary"
+            onClick={() => {}}
+            only="default"
+            size="sm"
+            variant="outlined"
+            disabled={data?.field06[1]}
+          >
+            설계생성
+          </Button>
+        )
       ),
     },
   ];
@@ -164,25 +215,24 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable variant={'head'} lineTop={false} caption="설계번호">
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
+                    <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
                     -
-                    <Input aria-label="" width={'3rem'} value={'1'} readOnly />
-                    <Input aria-label="" width={'30rem'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
-                    <Input aria-label="" width={'10rem'} value={'1형(345간편고지형)'} readOnly />
+                    <Input aria-label="" width={30} value={'1'} readOnly />
+                    <Input aria-label="" width={300} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                    <Input aria-label="" width={200} value={'1형(345간편고지형)'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
-            <InfoBox
-              title="간편고지 유혈별 보험료 예시"
-              variant="info"
-              bg={true}
-              items={[
-                {
-                  text: "이 상품은 일반심사보험대비 보험료가 할증되어 있으며, '간편고지' 유형에 따라 할증수준이 다릅니다. 보험료수준은 할증폭이 가장 큰 305간편고지에서 355간편고지순으로 저렴해집니다",
-                },
-              ]}
-            />
+            <Gcol variant="box-info" placement="ss">
+              <Typo variant="body-sm" weight={'bold'} icon="info">
+                간편고지 유혈별 보험료 예시
+              </Typo>
+              <Typo variant="body-sm" icon="dot">
+                이 상품은 일반심사보험대비 보험료가 할증되어 있으며, &apos;간편고지&apos; 유형에 따라 할증수준이
+                다릅니다. 보험료수준은 할증폭이 가장 큰 305간편고지에서 355간편고지순으로 저렴해집니다
+              </Typo>
+            </Gcol>
           </Gcol>
           <div className="ag-theme-alpine ">
             <AgGridReact<DummyDataType>
@@ -197,11 +247,9 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
               domLayout="autoHeight"
             />
           </div>
-          <InfoBox
-            title="현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)"
-            variant="detail"
-            bg={false}
-          />
+          <Typo icon="ref">
+            현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)
+          </Typo>
         </DialogSection>
 
         <DialogFooter>

@@ -24,11 +24,86 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: 'LA26234242342',
+    field05: '김한화',
+    field06: '',
+    field07: '',
+    field08: '2026-03-01',
+    field09: '',
+  },
+  {
+    id: 2,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: 'LA26234242342',
+    field05: '김한화',
+    field06: '',
+    field07: '',
+    field08: '2026-03-01',
+    field09: '',
+  },
+  {
+    id: 3,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: 'LA26234242342',
+    field05: '김한화',
+    field06: '',
+    field07: '',
+    field08: '2026-03-01',
+    field09: '',
+  },
+  {
+    id: 4,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: 'LA26234242342',
+    field05: '김한화',
+    field06: '',
+    field07: '',
+    field08: '2026-03-01',
+    field09: '',
+  },
+  {
+    id: 5,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: 'LA26234242342',
+    field05: '김한화',
+    field06: '',
+    field07: '',
+    field08: '2026-03-01',
+    field09: '',
+  },
+];
 
 export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({
@@ -37,151 +112,75 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
     type03: '',
     type04: '',
   });
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: 'LA26234242342',
-      field05: '김한화',
-      field06: '',
-      field07: '',
-      field08: '2026-03-01',
-      field09: '',
-    },
-    {
-      id: 2,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: 'LA26234242342',
-      field05: '김한화',
-      field06: '',
-      field07: '',
-      field08: '2026-03-01',
-      field09: '',
-    },
-    {
-      id: 3,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: 'LA26234242342',
-      field05: '김한화',
-      field06: '',
-      field07: '',
-      field08: '2026-03-01',
-      field09: '',
-    },
-    {
-      id: 4,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: 'LA26234242342',
-      field05: '김한화',
-      field06: '',
-      field07: '',
-      field08: '2026-03-01',
-      field09: '',
-    },
-    {
-      id: 5,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: 'LA26234242342',
-      field05: '김한화',
-      field06: '',
-      field07: '',
-      field08: '2026-03-01',
-      field09: '',
-    },
-  ];
 
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
-      width: 80,
+      width: 60,
       field: 'id',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '보종군',
       width: 80,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '보험종목명',
       flex: 1,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계번호',
-      flex: 1,
+      width: 110,
       field: 'field04',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '계약자',
-      flex: 1,
+      width: 80,
       field: 'field05',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '목적물',
       flex: 1,
       field: 'field06',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '보험료',
       flex: 1,
       field: 'field07',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계일자',
-      flex: 1,
+      width: 100,
       field: 'field08',
-      cellClass: 'text-left px-1 flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '상태',
       flex: 1,
       field: 'field09',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
 
-  // rowSelection 사용시
-
+  // pagination
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -208,7 +207,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'보종군'}>
                   <NativeSelect
                     aria-label="보종군 선택"
-                    width="10rem"
+                    width={100}
                     value={form.type01}
                     required
                     onChange={(e) => setFormField('type01', e.target.value)}
@@ -231,7 +230,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'조회구분'}>
                   <NativeSelect
                     aria-label="조회구분 선택"
-                    width="10rem"
+                    width={100}
                     value={form.type02}
                     onChange={(e) => setFormField('type02', e.target.value)}
                   >
@@ -247,7 +246,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={'16rem'} value={'123123'} readOnly />
+                  <Input aria-label="" width={160} value={'123123'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
@@ -255,7 +254,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'설계상태'}>
                   <NativeSelect
                     aria-label="설계상태 선택"
-                    width="10rem"
+                    width={100}
                     value={form.type03}
                     required
                     onChange={(e) => setFormField('type03', e.target.value)}
@@ -275,7 +274,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'설계조직'} colSpan={3}>
                   <NativeSelect
                     aria-label="설계조직 선택"
-                    width="10rem"
+                    width={100}
                     value={form.type04}
                     onChange={(e) => setFormField('type04', e.target.value)}
                   >
@@ -288,11 +287,11 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={'16rem'} value={'12345678'} />
+                  <Input aria-label="" width={160} value={'12345678'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" width={'16rem'} value={'신부산GA지점'} readOnly />
+                  <Input aria-label="" width={163} value={'신부산GA지점'} readOnly />
                 </FormCell>
                 <FormCell title={'설계일자'} colSpan={3}>
                   <DatePickerInput
@@ -335,10 +334,6 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 columnDefs={columnDefs}
-                defaultColDef={{
-                  sortable: false,
-                  resizable: false,
-                }}
                 domLayout="autoHeight"
                 rowModelType="infinite"
                 cacheBlockSize={pageSize}

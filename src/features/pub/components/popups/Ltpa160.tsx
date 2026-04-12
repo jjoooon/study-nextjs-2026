@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -29,86 +29,87 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  accName: string;
+  accRisk: string;
+  accDesignAmt: string;
+  accTotalAmt: string;
+  upperAccName: string;
+  upperAccRisk: string;
+  upperDesignAmt: string;
+  upperTotalAmt: string;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    accName: '상해사망후유',
+    accRisk: '일반상해사망',
+    accDesignAmt: '1000000',
+    accTotalAmt: '1000000',
+    upperAccName: '상해사망후유',
+    upperAccRisk: '일반상해사망',
+    upperDesignAmt: '1000000',
+    upperTotalAmt: '1000000',
+  },
+  {
+    id: 2,
+    accName: '상해사망후유',
+    accRisk: '일반상해사망후유장애',
+    accDesignAmt: '1000000',
+    accTotalAmt: '1000000',
+    upperAccName: '상해사망후유',
+    upperAccRisk: '일반상해사망후유장애',
+    upperDesignAmt: '1000000',
+    upperTotalAmt: '1000000',
+  },
+  {
+    id: 3,
+    accName: '상해사망후유',
+    accRisk: '교통상해사망',
+    accDesignAmt: '1000000',
+    accTotalAmt: '1000000',
+    upperAccName: '상해사망후유',
+    upperAccRisk: '교통상해사망',
+    upperDesignAmt: '1000000',
+    upperTotalAmt: '1000000',
+  },
+  {
+    id: 4,
+    accName: '특정상해',
+    accRisk: '통합상해진단비(경증)(연1회한)',
+    accDesignAmt: '1000000',
+    accTotalAmt: '1000000',
+    upperAccName: '특정상해',
+    upperAccRisk: '통합상해진단비(경증)(연1회한)',
+    upperDesignAmt: '1000000',
+    upperTotalAmt: '1000000',
+  },
+  {
+    id: 5,
+    accName: '특정상해',
+    accRisk: '통합상해진단비(중증)(연1회한)',
+    accDesignAmt: '1000000',
+    accTotalAmt: '1000000',
+    upperAccName: '특정상해',
+    upperAccRisk: '통합상해진단비(중증)(연1회한)',
+    upperDesignAmt: '1000000',
+    upperTotalAmt: '1000000',
+  },
+  {
+    id: 6,
+    accName: '특정상해',
+    accRisk: '골절진단+통합상해진단(중등증)(합)',
+    accDesignAmt: '1000000',
+    accTotalAmt: '1000000',
+    upperAccName: '특정상해',
+    upperAccRisk: '골절진단+통합상해진단(중등증)(합)',
+    upperDesignAmt: '1000000',
+    upperTotalAmt: '1000000',
+  },
+];
+
 export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    accName: string;
-    accRisk: string;
-    accDesignAmt: string;
-    accTotalAmt: string;
-    upperAccName: string;
-    upperAccRisk: string;
-    upperDesignAmt: string;
-    upperTotalAmt: string;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      accName: '상해사망후유',
-      accRisk: '일반상해사망',
-      accDesignAmt: '1000000',
-      accTotalAmt: '1000000',
-      upperAccName: '상해사망후유',
-      upperAccRisk: '일반상해사망',
-      upperDesignAmt: '1000000',
-      upperTotalAmt: '1000000',
-    },
-    {
-      id: 2,
-      accName: '상해사망후유',
-      accRisk: '일반상해사망후유장애',
-      accDesignAmt: '1000000',
-      accTotalAmt: '1000000',
-      upperAccName: '상해사망후유',
-      upperAccRisk: '일반상해사망후유장애',
-      upperDesignAmt: '1000000',
-      upperTotalAmt: '1000000',
-    },
-    {
-      id: 3,
-      accName: '상해사망후유',
-      accRisk: '교통상해사망',
-      accDesignAmt: '1000000',
-      accTotalAmt: '1000000',
-      upperAccName: '상해사망후유',
-      upperAccRisk: '교통상해사망',
-      upperDesignAmt: '1000000',
-      upperTotalAmt: '1000000',
-    },
-    {
-      id: 4,
-      accName: '특정상해',
-      accRisk: '통합상해진단비(경증)(연1회한)',
-      accDesignAmt: '1000000',
-      accTotalAmt: '1000000',
-      upperAccName: '특정상해',
-      upperAccRisk: '통합상해진단비(경증)(연1회한)',
-      upperDesignAmt: '1000000',
-      upperTotalAmt: '1000000',
-    },
-    {
-      id: 5,
-      accName: '특정상해',
-      accRisk: '통합상해진단비(중증)(연1회한)',
-      accDesignAmt: '1000000',
-      accTotalAmt: '1000000',
-      upperAccName: '특정상해',
-      upperAccRisk: '통합상해진단비(중증)(연1회한)',
-      upperDesignAmt: '1000000',
-      upperTotalAmt: '1000000',
-    },
-    {
-      id: 6,
-      accName: '특정상해',
-      accRisk: '골절진단+통합상해진단(중등증)(합)',
-      accDesignAmt: '1000000',
-      accTotalAmt: '1000000',
-      upperAccName: '특정상해',
-      upperAccRisk: '골절진단+통합상해진단(중등증)(합)',
-      upperDesignAmt: '1000000',
-      upperTotalAmt: '1000000',
-    },
-  ];
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -230,7 +231,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'조회구분'}>
                   <NativeSelect
                     aria-label="항목 선택"
-                    className="w-40"
+                    width={160}
                     value={form.type01}
                     required
                     onChange={(e) => setFormField('type01', e.target.value)}
@@ -245,14 +246,14 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                     ))}
                   </NativeSelect>
                   <Input
-                    className="w-40"
+                    width={130}
                     value={form.type02 || 'LA260204310632'}
                     onChange={(e) => setFormField('type02', e.target.value)}
                   />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input value={'한화 더 건강한 1040종합..'} readOnly />
+                  <Input width={230} value={'한화 더 건강한 1040종합..'} readOnly />
                 </FormCell>
                 <FormCell title={'피보험자정보'}>
                   <Grow>
@@ -327,6 +328,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={DummyData}
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}

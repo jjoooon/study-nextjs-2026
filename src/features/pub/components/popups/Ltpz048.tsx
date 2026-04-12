@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TablePagination } from '@common/TablePagination';
@@ -24,57 +24,57 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    { id: 1, field01: '심사요청', field02: '승인', field03: '김한화' },
-    { id: 2, field01: '심사중', field02: '', field03: '김한화' },
-    { id: 3, field01: '심사처리', field02: '', field03: '김한화' },
-    { id: 4, field01: '심사요청', field02: '승인', field03: '김한화' },
-    { id: 5, field01: '심사중', field02: '', field03: '김한화' },
-    { id: 6, field01: '심사처리', field02: '', field03: '김한화' },
-    { id: 7, field01: '심사요청', field02: '승인', field03: '김한화' },
-    { id: 8, field01: '심사중', field02: '', field03: '김한화' },
-    { id: 9, field01: '심사처리', field02: '', field03: '김한화' },
-    { id: 10, field01: '심사요청', field02: '승인', field03: '김한화' },
-    { id: 11, field01: '심사중', field02: '', field03: '김한화' },
-    { id: 12, field01: '심사처리', field02: '', field03: '김한화' },
-  ];
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+};
+const DummyData: DummyDataType[] = [
+  { id: 1, field01: '심사요청', field02: '승인', field03: '김한화' },
+  { id: 2, field01: '심사중', field02: '', field03: '김한화' },
+  { id: 3, field01: '심사처리', field02: '', field03: '김한화' },
+  { id: 4, field01: '심사요청', field02: '승인', field03: '김한화' },
+  { id: 5, field01: '심사중', field02: '', field03: '김한화' },
+  { id: 6, field01: '심사처리', field02: '', field03: '김한화' },
+  { id: 7, field01: '심사요청', field02: '승인', field03: '김한화' },
+  { id: 8, field01: '심사중', field02: '', field03: '김한화' },
+  { id: 9, field01: '심사처리', field02: '', field03: '김한화' },
+  { id: 10, field01: '심사요청', field02: '승인', field03: '김한화' },
+  { id: 11, field01: '심사중', field02: '', field03: '김한화' },
+  { id: 12, field01: '심사처리', field02: '', field03: '김한화' },
+];
 
+export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '',
       width: 40,
       field: 'id',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '구분',
-      width: 80,
+      flex: 1,
       field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '결과',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '처리자',
-      flex: 1,
+      width: 60,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
@@ -104,18 +104,14 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="QA 심사이력"></TableFoldHead>
               <TableFoldBody>
-                <Grow className="w-full">
-                  <Gcol>
+                <Grow className="w-full" placement="ss" gap={3}>
+                  <Grid className="w-[30rem] shrink-0 h-full grid-rows-[1fr_auto]">
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                        }}
                         domLayout="autoHeight"
                         pagination={true}
                         paginationPageSize={pageSize}
@@ -130,10 +126,12 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
                       onPageChange={handlePageChange}
                       itemsPerPage={pageSize}
                     />
-                  </Gcol>
-                  <Gcol variant="box-round" placement="ss" className="w-full h-[27.6rem]">
-                    [보안]<br></br>
-                    1.[15:43]월 보험료 27,130원으로 오안내<br></br>
+                  </Grid>
+                  <Gcol variant="box-round" placement="ss" className="flex-1 h-[27.6rem]">
+                    [보안]
+                    <br />
+                    1.[15:43]월 보험료 27,130원으로 오안내
+                    <br />
                     2.건강고지 전산방영되었으나 녹취 미확인
                   </Gcol>
                 </Grow>

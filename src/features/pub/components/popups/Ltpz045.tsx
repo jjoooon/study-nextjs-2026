@@ -49,9 +49,9 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={'15rem'} value={'LA260209313558'} readOnly />
+                    <Input aria-label="" width={150} value={'LA260209313558'} readOnly />
                     -
-                    <Input aria-label="" width={'3rem'} value={'1'} readOnly />
+                    <Input aria-label="" width={30} value={'1'} readOnly />
                   </FormCell>
                   <FormCell title={'계약자'}>김한화(901212-1234567)</FormCell>
                 </FormRow>
@@ -108,7 +108,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <Input
                           aria-label="증권번호 검색"
                           size="md"
-                          width={'10rem'}
+                          width={100}
                           value={''}
                           onChange={(e) => e.target.value}
                           readOnly
@@ -175,7 +175,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormTable caption="고객정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'실소유자구분'} colSpan={3}>
-                        <RadioGroup className="gap-1">
+                        <RadioGroup className="gap-1 flex-col items-start">
                           <RadioGroupItem value="optionA" id="a">
                             1단계: 25% 이상 지분증권 소유한 사람
                           </RadioGroupItem>
@@ -217,7 +217,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <Input
                           aria-label="증권번호 검색"
                           size="md"
-                          width={'10rem'}
+                          width={100}
                           value={''}
                           onChange={(e) => e.target.value}
                           readOnly
@@ -232,7 +232,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <FormCell title={'계약자와 관계'} colSpan={3}>
                         <NativeSelect
                           aria-label="선택"
-                          width="10rem"
+                          width={100}
                           value={form.type02}
                           onChange={(e) => setFormField('type02', e.target.value)}
                         >
@@ -263,7 +263,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                         박환화(900101-1234567)와의 관계
                         <NativeSelect
                           aria-label="선택"
-                          width="10rem"
+                          width={100}
                           value={form.type01}
                           readOnly
                           onChange={(e) => setFormField('type01', e.target.value)}
@@ -292,7 +292,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormRow>
                       <FormCell title={'실명확인증표'}>
                         <RadioGroup
-                          className="gap-1"
+                          className="gap-3"
                           value={form.type03}
                           onValueChange={(v) => setFormField('type03', v)}
                         >
@@ -305,7 +305,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <Input
                             aria-label=""
                             size="md"
-                            width={'10rem'}
+                            width={100}
                             value={cddEtcValue}
                             onChange={(e) => setCddEtcValue(e.target.value)}
                             readOnly={form.type03 !== 'option2'}

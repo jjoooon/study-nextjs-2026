@@ -25,47 +25,47 @@ import { Textarea } from '@uiux/Textarea';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+  field3: string | number;
+  field4: string | number;
+  field5: string | number;
+  field6: boolean;
+};
+
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: '2026-02-24',
+    field2: 80939583,
+    field3: '홍길순1',
+    field4: '여의도 GA 지점',
+    field5: '메모 테스트 글입니다.',
+    field6: false,
+  },
+  {
+    id: 2,
+    field1: '2026-02-24',
+    field2: 80939583,
+    field3: '홍길순2',
+    field4: '여의도 GA 지점',
+    field5: '메모 테스트 글입니다.',
+    field6: false,
+  },
+  {
+    id: 3,
+    field1: '2026-02-24',
+    field2: 80939583,
+    field3: '홍길순3',
+    field4: '여의도 GA 지점',
+    field5: '메모 테스트 글입니다.',
+    field6: false,
+  },
+];
+
 export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field1: string | number;
-    field2: string | number;
-    field3: string | number;
-    field4: string | number;
-    field5: string | number;
-    field6: boolean;
-  };
-
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field1: '2026-02-24',
-      field2: 80939583,
-      field3: '홍길순1',
-      field4: '여의도 GA 지점',
-      field5: '메모 테스트 글입니다.',
-      field6: false,
-    },
-    {
-      id: 2,
-      field1: '2026-02-24',
-      field2: 80939583,
-      field3: '홍길순2',
-      field4: '여의도 GA 지점',
-      field5: '메모 테스트 글입니다.',
-      field6: false,
-    },
-    {
-      id: 3,
-      field1: '2026-02-24',
-      field2: 80939583,
-      field3: '홍길순3',
-      field4: '여의도 GA 지점',
-      field5: '메모 테스트 글입니다.',
-      field6: false,
-    },
-  ];
-
   const { rowData, toggleById } = useToggleTopRows({
     rows: dummyData,
     idKey: 'id',
@@ -157,8 +157,6 @@ export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{
-                  sortable: false,
-                  resizable: false,
                   cellClass: 'text-center',
                 }}
                 domLayout="autoHeight"

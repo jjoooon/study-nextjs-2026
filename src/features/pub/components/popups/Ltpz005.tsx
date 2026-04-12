@@ -68,6 +68,546 @@ type ExpectedUwRecommendItem = {
   term: string;
   detail: string;
 };
+// 공통
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+};
+// 공통
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '설계',
+    field02: '인수제한',
+    field03: '[CHL적립보험료기준011] 보장성기준(환급률 100%이하)을 준수해야 합니다.',
+  },
+  {
+    id: 2,
+    field01: '설계',
+    field02: '인수금지',
+    field03:
+      '[손실유의계약04] [심사요청불가][부실유의] 적립보험료(29052333원) 가 영업보험료(30000000원) 의 50%(15000000원)를 초과할 경우 부실유의계약 대상입니다.',
+  },
+  {
+    id: 3,
+    field01: '설계',
+    field02: '인수기준',
+    field03:
+      '[손실유의계약03] [손실유의계약분류][5년초과만기/세만기] 적립보험료(29052333원) 가 영업보험료(30000000원)의 50%(15000000원) 이상일 경우 손실계약으로 분류될 수 있습니다.',
+  },
+  {
+    id: 4,
+    field01: '설계',
+    field02: '참고사항',
+    field03: '[유사암진단비가입조건99] 4대유사암진단비 간의 가입금액은 같아야 합니다.',
+  },
+
+  // [홍길순] 파트
+  {
+    id: 5,
+    field01: '홍길순',
+    field02: '인수기준',
+    field03:
+      '[8738720][상아내_6] [간병인사용질병입원비(요양병원)(180일한도)(면체누적)] 4만원 이상 가입 시, [간병인사용질병입원비(요양병원제외)(180일한도)(전체누적)] 4만원 가입필요',
+  },
+  {
+    id: 6,
+    field01: '홍길순',
+    field02: '인수기준',
+    field03: '[청약포인트001] 청약포인트 : -347.63',
+  },
+  {
+    id: 7,
+    field01: '홍길순',
+    field02: '인수기준',
+    field03:
+      '[남성통합암관계001] 통합암 가입관계는 [(소화기관) >= (입술/구강/인두=호흡기=요로암=눈/뇌=남성생식기관) >= (뼈/관절/피부=혈액/림프및조혈)] 이어야 합니다.',
+  },
+  {
+    id: 8,
+    field01: '홍길순',
+    field02: '청약완료불가',
+    field03:
+      '[SILSON035] [가족일상생활중배상책임III(대물20만원(누수50만원)공제)(갱신형)] 실손 보험계약 정보조회결과 일상생활배상책임이 중복됩니다. 일상생활배상책임은 청약완료 처리시에도 중복되는 경우 청약완료가 불가합니다.',
+  },
+  {
+    id: 9,
+    field01: '홍길순',
+    field02: '청약완료불가',
+    field03:
+      '[보장자산수입요구00] [보장자산가이드라인] 상해급여/질병급여/상해비급여/질병비급여 1천만원 초과 가입 시 최종적으로 보장자산가이드라인(사망1억 수납완료, 운전자보험 제외) 충족 시 청약 가능합니다.',
+  },
+  {
+    id: 10,
+    field01: '홍길순',
+    field02: '청약완료불가',
+    field03:
+      '[SILSON002] [특약형 실손의료비(질병비급여)(갱신형)] 실손 보험계약 정보조회결과 질병입원의료비(4세대 급여,비급여포함)가 중복됩니다. 질병입원의료비는 청약완료 처리시에도 중복되는 경우 청약완료가 불가합니다.(단, 실손전환/재개전환은 제외)',
+  },
+  {
+    id: 11,
+    field01: '홍길순',
+    field02: '진단대상',
+    field03:
+      '[CJ진단비기준006] [진단C][담당:장기U/W파트] 진단상품 40세 이하 진단대상 진단기준누적금액 전체누적 인수한도 1억1천만원을 49000만원 초과하여 진단심사대상 입니다.',
+  },
+  {
+    id: 12,
+    field01: '홍길순',
+    field02: '진단대상',
+    field03:
+      '[질병20진단심사001] [진단B][담당:장기U/W파트] 20세이상 피보험자가 실손의료비(질병급여/비급여), 노후실손의료비(질병형) 담보 가입시에는 진단심사 대상입니다.',
+  },
+  {
+    id: 13,
+    field01: '홍길순',
+    field02: '자동심사',
+    field03:
+      '[SILSON002] [기본형 실손의료비(상해급여)(갱신형)] 실손보험계약 정보조회결과(단체)상해입원의료비(4세대 급여,비급여포함)가 중복됩니다. 실손보험계약중복가입에 대한 청약서 자필서명 수령(중복가입확인서) 또는 녹취(TM 계피동일)를 반드시 하셔야 합니다.',
+  },
+  {
+    id: 14,
+    field01: '홍길순',
+    field02: '참고사항',
+    field03: '[모집자등급표시003] 모집자인수그룹 : 화이트그룹',
+  },
+  {
+    id: 15,
+    field01: '홍길순',
+    field02: '참고사항',
+    field03:
+      '[실손진단심사필수01] [진단심사 필수] 20세 이상 피보험자는 진단심사 진행이 필수입니다. (참고) 보장자산가이드라인 충족 시 최대 5천만원, 미충족 시 1천만원까지 가입 가능',
+  },
+
+  // [이혜인] 파트
+  {
+    id: 16,
+    field01: '이혜인',
+    field02: '인수기준',
+    field03:
+      '[남성통합암관계001] 통합암 가입관계는 [(소화기관) >= (입술/구강/인두=호흡기=요로암=눈/뇌=남성생식기관) >= (뼈/관절/피부=혈액/림프및조혈)] 이어야 합니다.',
+  },
+  {
+    id: 17,
+    field01: '이혜인',
+    field02: '청약완료불가',
+    field03:
+      '[SILSON035] [가족일상생활중배상책임III(대물20만원(누수50만원)공제)(갱신형)] 실손 보험계약 정보조회결과 일상생활배상책임이 중복됩니다. 일상생활배상책임은 청약완료 처리시에도 중복되는 경우 청약완료가 불가합니다.',
+  },
+  {
+    id: 18,
+    field01: '이혜인',
+    field02: '자동심사',
+    field03:
+      '[SILSON002] [기본형 실손의료비(상해급여)(갱신형)] 실손보험계약 정보조회결과(단체)상해입원의료비(4세대 급여,비급여포함)가 중복됩니다. 실손보험계약중복가입에 대한 청약서 자필서명 수령(중복가입확인서) 또는 녹취(TM 계피동일)를 반드시 하셔야 합니다.',
+  },
+  {
+    id: 19,
+    field01: '이혜인',
+    field02: '참고사항',
+    field03: '[모집자등급표시003] 모집자인수그룹 : 화이트그룹',
+  },
+
+  // [목적물1] 파트
+  {
+    id: 20,
+    field01: '목적물1',
+    field02: '인수기준',
+    field03: '[재물담보별인수한도030_21 풍수재(비특수 건물)] 담보는 10억까지만 가입 검토 가능합니다.',
+  },
+  {
+    id: 21,
+    field01: '목적물1',
+    field02: '일반심사',
+    field03:
+      '[CJF계약자주택01] 계약자별 주택물건 화재손해 가입금액 합계 20억초과(소재지 무관, 모든 목적물 합산) 본사 일반심사 대상입니다.',
+  },
+  {
+    id: 22,
+    field01: '목적물1',
+    field02: '참고사항',
+    field03:
+      '[특별관리보험금004] 최근 5년이내 보험금지급액(추산 포함) 100만원 미만 : 재물보험금지급건수 1건, 재물보험금지급금액 45557원',
+  },
+
+  // [목적물2] 파트
+  {
+    id: 23,
+    field01: '목적물2',
+    field02: '특인대상',
+    field03:
+      '[심사전결주택증권002] 주택업종 1급 위험함 가입금액기준 30억원초과일 경우 본사 특인대상입니다. [위험체크리스트]를 첨부하여 특인요청 바랍니다.',
+  },
+  {
+    id: 24,
+    field01: '목적물2',
+    field02: '일반심사',
+    field03:
+      '[CJF계약자주택01] 계약자별 주택물건 화재손해 가입금액 합계 20억초과(소재지 무관, 모든 목적물 합산) 본사 일반심사 대상입니다.',
+  },
+  {
+    id: 25,
+    field01: '목적물2',
+    field02: '참고사항',
+    field03: '[목적물담보코드001] 목적물담보코드001',
+  },
+];
+
+// 누적
+type DummyDataType2 = {
+  id: number;
+  accumName: string | number;
+  accumType: string | number;
+  pseudoAccumAmount: string | number;
+  totalAmount: string | number;
+  limitAmount: string | number;
+  guaranteeName: string | number;
+  designAmount: string | number;
+  multiplier: string | number;
+  appliedAmount: string | number;
+  excessAmount: string | number;
+};
+
+type DummyDataType3 = DummyDataType2;
+
+type DummyDataType4 = DummyDataType2;
+
+// 직업
+type JobDataType = {
+  id: number;
+  targetStatus: string;
+  policyNumber: string;
+  changedDesignNumber: string;
+  beforeInjuryGrade: string;
+  beforeJobName: string;
+  afterInjuryGrade: string;
+  afterJobName: string;
+};
+
+type ExpectedUwAmountRow = {
+  id: number;
+  coverageName: string;
+  amount: string;
+};
+
+type ExpectedUwSingleRow = {
+  id: number;
+  coverageName: string;
+};
+
+// 누적 인수기준
+const DummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    accumName: '암(유사암제외)진단비(암진단비)',
+    accumType: '증권',
+    pseudoAccumAmount: '-',
+    totalAmount: '30,000',
+    limitAmount: '10,000',
+    guaranteeName: '암(유사암제외)진단비(암진단비)',
+    designAmount: '10,000',
+    multiplier: '1.0',
+    appliedAmount: '10,000',
+    excessAmount: '20,000',
+  },
+  {
+    id: 2,
+    accumName: '암(유사암제외)진단비(암진단비)',
+    accumType: '증권',
+    pseudoAccumAmount: '-',
+    totalAmount: '30,000',
+    limitAmount: '10,000',
+    guaranteeName: '암(유사암제외)진단비(암진단비)(갱신형)',
+    designAmount: '10,000',
+    multiplier: '1.0',
+    appliedAmount: '10,000',
+    excessAmount: '20,000',
+  },
+  {
+    id: 3,
+    accumName: '암(유사암제외)진단비(암진단비)',
+    accumType: '증권',
+    pseudoAccumAmount: '-',
+    totalAmount: '30,000',
+    limitAmount: '10,000',
+    guaranteeName: '-여성통합암(4대유사암제외)진단비II(특정소화기관암)',
+    designAmount: '10,000',
+    multiplier: '1.0',
+    appliedAmount: '10,000',
+    excessAmount: '20,000',
+  },
+  {
+    id: 4,
+    accumName: '유사암진단비(기타피부암)',
+    accumType: '전체',
+    pseudoAccumAmount: '12,300',
+    totalAmount: '14,300',
+    limitAmount: '13,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '1,300',
+  },
+  {
+    id: 5,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+];
+
+// 누적 청약완료불가(당수누적)
+const DummyData3: DummyDataType3[] = [
+  {
+    id: 101,
+    accumName: '상해입원일당(당수누적)',
+    accumType: '당수',
+    pseudoAccumAmount: '7,500',
+    totalAmount: '9,000',
+    limitAmount: '8,000',
+    guaranteeName: '상해입원일당(1일이상,180일한도)',
+    designAmount: '1,000',
+    multiplier: '1.0',
+    appliedAmount: '1,000',
+    excessAmount: '1,000',
+  },
+  {
+    id: 102,
+    accumName: '질병입원일당(당수누적)',
+    accumType: '당수',
+    pseudoAccumAmount: '5,200',
+    totalAmount: '6,000',
+    limitAmount: '6,000',
+    guaranteeName: '질병입원일당(1일이상,180일한도)',
+    designAmount: '800',
+    multiplier: '1.0',
+    appliedAmount: '800',
+    excessAmount: '0',
+  },
+];
+
+// 누적 청약완료불가(업계누적)
+const DummyData4: DummyDataType4[] = [
+  {
+    id: 201,
+    accumName: '암진단비(업계누적)',
+    accumType: '업계',
+    pseudoAccumAmount: '15,000',
+    totalAmount: '20,000',
+    limitAmount: '18,000',
+    guaranteeName: '암진단비(유사암제외)',
+    designAmount: '3,000',
+    multiplier: '1.0',
+    appliedAmount: '3,000',
+    excessAmount: '2,000',
+  },
+  {
+    id: 202,
+    accumName: '유사암진단비(업계누적)',
+    accumType: '업계',
+    pseudoAccumAmount: '2,000',
+    totalAmount: '3,000',
+    limitAmount: '3,000',
+    guaranteeName: '유사암진단비(기타피부암)',
+    designAmount: '1,000',
+    multiplier: '1.0',
+    appliedAmount: '1,000',
+    excessAmount: '0',
+  },
+];
+
+// 직업
+const JobDummyData: JobDataType[] = [
+  {
+    id: 1,
+    targetStatus: '변경대상',
+    policyNumber: 'LA12345678',
+    changedDesignNumber: '계약변경설계이동',
+    beforeInjuryGrade: '1급',
+    beforeJobName: '회사 사무직 종사자',
+    afterInjuryGrade: '1급',
+    afterJobName: '-',
+  },
+  {
+    id: 2,
+    targetStatus: '변경대상',
+    policyNumber: 'LA12345678',
+    changedDesignNumber: '계약변경설계이동',
+    beforeInjuryGrade: '2급',
+    beforeJobName: '회사 사무직 종사자',
+    afterInjuryGrade: '2급',
+    afterJobName: '회사 사무직 종사자',
+  },
+  {
+    id: 3,
+    targetStatus: '변경대상',
+    policyNumber: 'LA12345678',
+    changedDesignNumber: '계약변경설계이동',
+    beforeInjuryGrade: '1급',
+    beforeJobName: '회사 사무직 종사자',
+    afterInjuryGrade: '1급',
+    afterJobName: '-',
+  },
+  {
+    id: 4,
+    targetStatus: '변경대상',
+    policyNumber: 'LA12345678',
+    changedDesignNumber: '계약변경설계이동',
+    beforeInjuryGrade: '2급',
+    beforeJobName: '회사 사무직 종사자',
+    afterInjuryGrade: '2급',
+    afterJobName: '-',
+  },
+  {
+    id: 5,
+    targetStatus: '변경대상',
+    policyNumber: 'LA12345678',
+    changedDesignNumber: '계약변경설계이동',
+    beforeInjuryGrade: '1급',
+    beforeJobName: '회사 사무직 종사자',
+    afterInjuryGrade: '1급',
+    afterJobName: '-',
+  },
+  {
+    id: 6,
+    targetStatus: '변경대상',
+    policyNumber: 'LA12345678',
+    changedDesignNumber: '계약변경설계이동',
+    beforeInjuryGrade: '2급',
+    beforeJobName: '회사 사무직 종사자',
+    afterInjuryGrade: '2',
+    afterJobName: '-',
+  },
+];
+
+//제한담보
+const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
+  {
+    id: 1,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '10,000',
+  },
+  {
+    id: 2,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 3,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 4,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 5,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 6,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+];
+
+// 보험료 할증
+const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
+  {
+    id: 1,
+    coverageName: '보험료압입명제대상보장(8대사유)1',
+  },
+  {
+    id: 2,
+    coverageName: '보험료압입명제대상보장(8대사유)1',
+  },
+  {
+    id: 3,
+    coverageName: '보험료압입명제대상보장(8대사유)1',
+  },
+  {
+    id: 4,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+  },
+  {
+    id: 5,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+  },
+  {
+    id: 6,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+  },
+];
+
+//부 담보(부위/질병)
+const expectedUwExclusionCoverageData: ExpectedUwAmountRow[] = [
+  {
+    id: 1,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '10,000',
+  },
+  {
+    id: 2,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 3,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 4,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 5,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 6,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+];
+const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
+  {
+    id: 1,
+    title: '한화 시그니처 여성 간편건강보험4.0',
+    plan: '납입면제형 · 기본형 · 3N5간편고지형',
+    term: '20년납/100세만기',
+    detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+  },
+  {
+    id: 2,
+    title: '한화 시그니처 여성 간편건강보험4.0',
+    plan: '납입면제형 · 기본형 · 3N5간편고지형',
+    term: '20년납/100세만기',
+    detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+  },
+  {
+    id: 3,
+    title: '한화 시그니처 여성 간편건강보험4.0',
+    plan: '납입면제형 · 기본형 · 3N5간편고지형',
+    term: '20년납/100세만기',
+    detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+  },
+];
 
 const CHECK_TABS: CheckTab[] = [
   { name: '공통', value: 'common', label: '공통', state: 'green' },
@@ -75,6 +615,32 @@ const CHECK_TABS: CheckTab[] = [
   { name: '직업', value: 'job', label: '직업', state: 'yellow' },
   { name: '예상 UW', value: 'expected-uw', label: '예상 UW', state: 'yellow' },
 ];
+
+function formatAmountWithComma(value: unknown): string {
+  const normalized = String(value ?? '')
+    .replace(/,/g, '')
+    .trim();
+
+  if (normalized === '') {
+    return '';
+  }
+
+  const digitsOnly = normalized.replace(/[^0-9]/g, '');
+
+  if (digitsOnly === '') {
+    return '';
+  }
+
+  return Number(digitsOnly).toLocaleString('ko-KR');
+}
+
+function designAmountValueFormatter(params: ValueFormatterParams): string {
+  return formatAmountWithComma(params.value);
+}
+
+function designAmountValueParser(params: ValueParserParams): string {
+  return formatAmountWithComma(params.newValue);
+}
 
 export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltpz005Props) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
@@ -99,524 +665,6 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
     if (state === 'red') return <InfoToastIcon size={20} color={'#E43939'} />;
     return <InfoToastIcon size={20} color={'#FFB800'} />;
   };
-
-  // 공통
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-  };
-  // 공통
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '설계',
-      field02: '인수제한',
-      field03: '[CHL적립보험료기준011] 보장성기준(환급률 100%이하)을 준수해야 합니다.',
-    },
-    {
-      id: 2,
-      field01: '설계',
-      field02: '인수금지',
-      field03:
-        '[손실유의계약04] [심사요청불가][부실유의] 적립보험료(29052333원) 가 영업보험료(30000000원) 의 50%(15000000원)를 초과할 경우 부실유의계약 대상입니다.',
-    },
-    {
-      id: 3,
-      field01: '설계',
-      field02: '인수기준',
-      field03:
-        '[손실유의계약03] [손실유의계약분류][5년초과만기/세만기] 적립보험료(29052333원) 가 영업보험료(30000000원)의 50%(15000000원) 이상일 경우 손실계약으로 분류될 수 있습니다.',
-    },
-    {
-      id: 4,
-      field01: '설계',
-      field02: '참고사항',
-      field03: '[유사암진단비가입조건99] 4대유사암진단비 간의 가입금액은 같아야 합니다.',
-    },
-
-    // [홍길순] 파트
-    {
-      id: 5,
-      field01: '홍길순',
-      field02: '인수기준',
-      field03:
-        '[8738720][상아내_6] [간병인사용질병입원비(요양병원)(180일한도)(면체누적)] 4만원 이상 가입 시, [간병인사용질병입원비(요양병원제외)(180일한도)(전체누적)] 4만원 가입필요',
-    },
-    {
-      id: 6,
-      field01: '홍길순',
-      field02: '인수기준',
-      field03: '[청약포인트001] 청약포인트 : -347.63',
-    },
-    {
-      id: 7,
-      field01: '홍길순',
-      field02: '인수기준',
-      field03:
-        '[남성통합암관계001] 통합암 가입관계는 [(소화기관) >= (입술/구강/인두=호흡기=요로암=눈/뇌=남성생식기관) >= (뼈/관절/피부=혈액/림프및조혈)] 이어야 합니다.',
-    },
-    {
-      id: 8,
-      field01: '홍길순',
-      field02: '청약완료불가',
-      field03:
-        '[SILSON035] [가족일상생활중배상책임III(대물20만원(누수50만원)공제)(갱신형)] 실손 보험계약 정보조회결과 일상생활배상책임이 중복됩니다. 일상생활배상책임은 청약완료 처리시에도 중복되는 경우 청약완료가 불가합니다.',
-    },
-    {
-      id: 9,
-      field01: '홍길순',
-      field02: '청약완료불가',
-      field03:
-        '[보장자산수입요구00] [보장자산가이드라인] 상해급여/질병급여/상해비급여/질병비급여 1천만원 초과 가입 시 최종적으로 보장자산가이드라인(사망1억 수납완료, 운전자보험 제외) 충족 시 청약 가능합니다.',
-    },
-    {
-      id: 10,
-      field01: '홍길순',
-      field02: '청약완료불가',
-      field03:
-        '[SILSON002] [특약형 실손의료비(질병비급여)(갱신형)] 실손 보험계약 정보조회결과 질병입원의료비(4세대 급여,비급여포함)가 중복됩니다. 질병입원의료비는 청약완료 처리시에도 중복되는 경우 청약완료가 불가합니다.(단, 실손전환/재개전환은 제외)',
-    },
-    {
-      id: 11,
-      field01: '홍길순',
-      field02: '진단대상',
-      field03:
-        '[CJ진단비기준006] [진단C][담당:장기U/W파트] 진단상품 40세 이하 진단대상 진단기준누적금액 전체누적 인수한도 1억1천만원을 49000만원 초과하여 진단심사대상 입니다.',
-    },
-    {
-      id: 12,
-      field01: '홍길순',
-      field02: '진단대상',
-      field03:
-        '[질병20진단심사001] [진단B][담당:장기U/W파트] 20세이상 피보험자가 실손의료비(질병급여/비급여), 노후실손의료비(질병형) 담보 가입시에는 진단심사 대상입니다.',
-    },
-    {
-      id: 13,
-      field01: '홍길순',
-      field02: '자동심사',
-      field03:
-        '[SILSON002] [기본형 실손의료비(상해급여)(갱신형)] 실손보험계약 정보조회결과(단체)상해입원의료비(4세대 급여,비급여포함)가 중복됩니다. 실손보험계약중복가입에 대한 청약서 자필서명 수령(중복가입확인서) 또는 녹취(TM 계피동일)를 반드시 하셔야 합니다.',
-    },
-    {
-      id: 14,
-      field01: '홍길순',
-      field02: '참고사항',
-      field03: '[모집자등급표시003] 모집자인수그룹 : 화이트그룹',
-    },
-    {
-      id: 15,
-      field01: '홍길순',
-      field02: '참고사항',
-      field03:
-        '[실손진단심사필수01] [진단심사 필수] 20세 이상 피보험자는 진단심사 진행이 필수입니다. (참고) 보장자산가이드라인 충족 시 최대 5천만원, 미충족 시 1천만원까지 가입 가능',
-    },
-
-    // [이혜인] 파트
-    {
-      id: 16,
-      field01: '이혜인',
-      field02: '인수기준',
-      field03:
-        '[남성통합암관계001] 통합암 가입관계는 [(소화기관) >= (입술/구강/인두=호흡기=요로암=눈/뇌=남성생식기관) >= (뼈/관절/피부=혈액/림프및조혈)] 이어야 합니다.',
-    },
-    {
-      id: 17,
-      field01: '이혜인',
-      field02: '청약완료불가',
-      field03:
-        '[SILSON035] [가족일상생활중배상책임III(대물20만원(누수50만원)공제)(갱신형)] 실손 보험계약 정보조회결과 일상생활배상책임이 중복됩니다. 일상생활배상책임은 청약완료 처리시에도 중복되는 경우 청약완료가 불가합니다.',
-    },
-    {
-      id: 18,
-      field01: '이혜인',
-      field02: '자동심사',
-      field03:
-        '[SILSON002] [기본형 실손의료비(상해급여)(갱신형)] 실손보험계약 정보조회결과(단체)상해입원의료비(4세대 급여,비급여포함)가 중복됩니다. 실손보험계약중복가입에 대한 청약서 자필서명 수령(중복가입확인서) 또는 녹취(TM 계피동일)를 반드시 하셔야 합니다.',
-    },
-    {
-      id: 19,
-      field01: '이혜인',
-      field02: '참고사항',
-      field03: '[모집자등급표시003] 모집자인수그룹 : 화이트그룹',
-    },
-
-    // [목적물1] 파트
-    {
-      id: 20,
-      field01: '목적물1',
-      field02: '인수기준',
-      field03: '[재물담보별인수한도030_21 풍수재(비특수 건물)] 담보는 10억까지만 가입 검토 가능합니다.',
-    },
-    {
-      id: 21,
-      field01: '목적물1',
-      field02: '일반심사',
-      field03:
-        '[CJF계약자주택01] 계약자별 주택물건 화재손해 가입금액 합계 20억초과(소재지 무관, 모든 목적물 합산) 본사 일반심사 대상입니다.',
-    },
-    {
-      id: 22,
-      field01: '목적물1',
-      field02: '참고사항',
-      field03:
-        '[특별관리보험금004] 최근 5년이내 보험금지급액(추산 포함) 100만원 미만 : 재물보험금지급건수 1건, 재물보험금지급금액 45557원',
-    },
-
-    // [목적물2] 파트
-    {
-      id: 23,
-      field01: '목적물2',
-      field02: '특인대상',
-      field03:
-        '[심사전결주택증권002] 주택업종 1급 위험함 가입금액기준 30억원초과일 경우 본사 특인대상입니다. [위험체크리스트]를 첨부하여 특인요청 바랍니다.',
-    },
-    {
-      id: 24,
-      field01: '목적물2',
-      field02: '일반심사',
-      field03:
-        '[CJF계약자주택01] 계약자별 주택물건 화재손해 가입금액 합계 20억초과(소재지 무관, 모든 목적물 합산) 본사 일반심사 대상입니다.',
-    },
-    {
-      id: 25,
-      field01: '목적물2',
-      field02: '참고사항',
-      field03: '[목적물담보코드001] 목적물담보코드001',
-    },
-  ];
-
-  // 누적
-  type DummyDataType2 = {
-    id: number;
-    accumName: string | number;
-    accumType: string | number;
-    pseudoAccumAmount: string | number;
-    totalAmount: string | number;
-    limitAmount: string | number;
-    guaranteeName: string | number;
-    designAmount: string | number;
-    multiplier: string | number;
-    appliedAmount: string | number;
-    excessAmount: string | number;
-  };
-
-  type DummyDataType3 = DummyDataType2;
-
-  type DummyDataType4 = DummyDataType2;
-
-  // 직업
-  type JobDataType = {
-    id: number;
-    targetStatus: string;
-    policyNumber: string;
-    changedDesignNumber: string;
-    beforeInjuryGrade: string;
-    beforeJobName: string;
-    afterInjuryGrade: string;
-    afterJobName: string;
-  };
-
-  type ExpectedUwAmountRow = {
-    id: number;
-    coverageName: string;
-    amount: string;
-  };
-
-  type ExpectedUwSingleRow = {
-    id: number;
-    coverageName: string;
-  };
-
-  // 누적 인수기준
-  const DummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      accumName: '암(유사암제외)진단비(암진단비)',
-      accumType: '증권',
-      pseudoAccumAmount: '-',
-      totalAmount: '30,000',
-      limitAmount: '10,000',
-      guaranteeName: '암(유사암제외)진단비(암진단비)',
-      designAmount: '10,000',
-      multiplier: '1.0',
-      appliedAmount: '10,000',
-      excessAmount: '20,000',
-    },
-    {
-      id: 2,
-      accumName: '암(유사암제외)진단비(암진단비)',
-      accumType: '증권',
-      pseudoAccumAmount: '-',
-      totalAmount: '30,000',
-      limitAmount: '10,000',
-      guaranteeName: '암(유사암제외)진단비(암진단비)(갱신형)',
-      designAmount: '10,000',
-      multiplier: '1.0',
-      appliedAmount: '10,000',
-      excessAmount: '20,000',
-    },
-    {
-      id: 3,
-      accumName: '암(유사암제외)진단비(암진단비)',
-      accumType: '증권',
-      pseudoAccumAmount: '-',
-      totalAmount: '30,000',
-      limitAmount: '10,000',
-      guaranteeName: '-여성통합암(4대유사암제외)진단비II(특정소화기관암)',
-      designAmount: '10,000',
-      multiplier: '1.0',
-      appliedAmount: '10,000',
-      excessAmount: '20,000',
-    },
-    {
-      id: 4,
-      accumName: '유사암진단비(기타피부암)',
-      accumType: '전체',
-      pseudoAccumAmount: '12,300',
-      totalAmount: '14,300',
-      limitAmount: '13,000',
-      guaranteeName: '-4대유사암(기타피부암)',
-      designAmount: '800',
-      multiplier: '2.5',
-      appliedAmount: '2,000',
-      excessAmount: '1,300',
-    },
-    {
-      id: 5,
-      accumName: '유사암진단비',
-      accumType: '전체',
-      pseudoAccumAmount: '2,300',
-      totalAmount: '4,300',
-      limitAmount: '3,000',
-      guaranteeName: '-4대유사암(기타피부암)',
-      designAmount: '800',
-      multiplier: '2.5',
-      appliedAmount: '2,000',
-      excessAmount: '0',
-    },
-  ];
-
-  // 누적 청약완료불가(당수누적)
-  const DummyData3: DummyDataType3[] = [
-    {
-      id: 101,
-      accumName: '상해입원일당(당수누적)',
-      accumType: '당수',
-      pseudoAccumAmount: '7,500',
-      totalAmount: '9,000',
-      limitAmount: '8,000',
-      guaranteeName: '상해입원일당(1일이상,180일한도)',
-      designAmount: '1,000',
-      multiplier: '1.0',
-      appliedAmount: '1,000',
-      excessAmount: '1,000',
-    },
-    {
-      id: 102,
-      accumName: '질병입원일당(당수누적)',
-      accumType: '당수',
-      pseudoAccumAmount: '5,200',
-      totalAmount: '6,000',
-      limitAmount: '6,000',
-      guaranteeName: '질병입원일당(1일이상,180일한도)',
-      designAmount: '800',
-      multiplier: '1.0',
-      appliedAmount: '800',
-      excessAmount: '0',
-    },
-  ];
-
-  // 누적 청약완료불가(업계누적)
-  const DummyData4: DummyDataType4[] = [
-    {
-      id: 201,
-      accumName: '암진단비(업계누적)',
-      accumType: '업계',
-      pseudoAccumAmount: '15,000',
-      totalAmount: '20,000',
-      limitAmount: '18,000',
-      guaranteeName: '암진단비(유사암제외)',
-      designAmount: '3,000',
-      multiplier: '1.0',
-      appliedAmount: '3,000',
-      excessAmount: '2,000',
-    },
-    {
-      id: 202,
-      accumName: '유사암진단비(업계누적)',
-      accumType: '업계',
-      pseudoAccumAmount: '2,000',
-      totalAmount: '3,000',
-      limitAmount: '3,000',
-      guaranteeName: '유사암진단비(기타피부암)',
-      designAmount: '1,000',
-      multiplier: '1.0',
-      appliedAmount: '1,000',
-      excessAmount: '0',
-    },
-  ];
-
-  // 직업
-  const JobDummyData: JobDataType[] = [
-    {
-      id: 1,
-      targetStatus: '변경대상',
-      policyNumber: 'LA12345678',
-      changedDesignNumber: '계약변경설계이동',
-      beforeInjuryGrade: '1급',
-      beforeJobName: '회사 사무직 종사자',
-      afterInjuryGrade: '1급',
-      afterJobName: '-',
-    },
-    {
-      id: 2,
-      targetStatus: '변경대상',
-      policyNumber: 'LA12345678',
-      changedDesignNumber: '계약변경설계이동',
-      beforeInjuryGrade: '2급',
-      beforeJobName: '회사 사무직 종사자',
-      afterInjuryGrade: '2급',
-      afterJobName: '회사 사무직 종사자',
-    },
-    {
-      id: 3,
-      targetStatus: '변경대상',
-      policyNumber: 'LA12345678',
-      changedDesignNumber: '계약변경설계이동',
-      beforeInjuryGrade: '1급',
-      beforeJobName: '회사 사무직 종사자',
-      afterInjuryGrade: '1급',
-      afterJobName: '-',
-    },
-    {
-      id: 4,
-      targetStatus: '변경대상',
-      policyNumber: 'LA12345678',
-      changedDesignNumber: '계약변경설계이동',
-      beforeInjuryGrade: '2급',
-      beforeJobName: '회사 사무직 종사자',
-      afterInjuryGrade: '2급',
-      afterJobName: '-',
-    },
-    {
-      id: 5,
-      targetStatus: '변경대상',
-      policyNumber: 'LA12345678',
-      changedDesignNumber: '계약변경설계이동',
-      beforeInjuryGrade: '1급',
-      beforeJobName: '회사 사무직 종사자',
-      afterInjuryGrade: '1급',
-      afterJobName: '-',
-    },
-    {
-      id: 6,
-      targetStatus: '변경대상',
-      policyNumber: 'LA12345678',
-      changedDesignNumber: '계약변경설계이동',
-      beforeInjuryGrade: '2급',
-      beforeJobName: '회사 사무직 종사자',
-      afterInjuryGrade: '2',
-      afterJobName: '-',
-    },
-  ];
-
-  //제한담보
-  const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
-    {
-      id: 1,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '10,000',
-    },
-    {
-      id: 2,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 3,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 4,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 5,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 6,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-  ];
-
-  // 보험료 할증
-  const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
-    {
-      id: 1,
-      coverageName: '보험료압입명제대상보장(8대사유)1',
-    },
-    {
-      id: 2,
-      coverageName: '보험료압입명제대상보장(8대사유)1',
-    },
-    {
-      id: 3,
-      coverageName: '보험료압입명제대상보장(8대사유)1',
-    },
-    {
-      id: 4,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-    },
-    {
-      id: 5,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-    },
-    {
-      id: 6,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-    },
-  ];
-
-  //부 담보(부위/질병)
-  const expectedUwExclusionCoverageData: ExpectedUwAmountRow[] = [
-    {
-      id: 1,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '10,000',
-    },
-    {
-      id: 2,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 3,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 4,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 5,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-    {
-      id: 6,
-      coverageName: '보험료압입명제대상보장(8대사유)',
-      amount: '-',
-    },
-  ];
 
   // 공통
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -886,56 +934,6 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
   const accumRadioItemClassName =
     'h-[3rem]! rounded-full! border-transparent! bg-[#E5E5E5]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[#777777]! data-[state=checked]:border-transparent! data-[state=checked]:bg-[#414141]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!';
 
-  const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
-    {
-      id: 1,
-      title: '한화 시그니처 여성 간편건강보험4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년납/100세만기',
-      detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
-    },
-    {
-      id: 2,
-      title: '한화 시그니처 여성 간편건강보험4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년납/100세만기',
-      detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
-    },
-    {
-      id: 3,
-      title: '한화 시그니처 여성 간편건강보험4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년납/100세만기',
-      detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
-    },
-  ];
-
-  function formatAmountWithComma(value: unknown): string {
-    const normalized = String(value ?? '')
-      .replace(/,/g, '')
-      .trim();
-
-    if (normalized === '') {
-      return '';
-    }
-
-    const digitsOnly = normalized.replace(/[^0-9]/g, '');
-
-    if (digitsOnly === '') {
-      return '';
-    }
-
-    return Number(digitsOnly).toLocaleString('ko-KR');
-  }
-
-  function designAmountValueFormatter(params: ValueFormatterParams): string {
-    return formatAmountWithComma(params.value);
-  }
-
-  function designAmountValueParser(params: ValueParserParams): string {
-    return formatAmountWithComma(params.newValue);
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -1132,9 +1130,9 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                         resizable: false,
                         suppressMovable: true,
                       }}
-                      getRowStyle={(params) => ({
-                        backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
-                      })}
+                      // getRowStyle={(params) => ({
+                      //   backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
+                      // })}
                       headerHeight={30}
                       groupHeaderHeight={30}
                       rowHeight={30}
@@ -1284,9 +1282,6 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                               suppressMovable: true,
                               cellClass: 'flex! items-center!',
                             }}
-                            getRowStyle={(params) => ({
-                              backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
-                            })}
                             headerHeight={28}
                             rowHeight={30}
                             domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
@@ -1320,9 +1315,6 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                               suppressMovable: true,
                               cellClass: 'flex! items-center!',
                             }}
-                            getRowStyle={(params) => ({
-                              backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
-                            })}
                             headerHeight={28}
                             rowHeight={30}
                             domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
@@ -1356,9 +1348,6 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                               suppressMovable: true,
                               cellClass: 'flex! items-center!',
                             }}
-                            getRowStyle={(params) => ({
-                              backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
-                            })}
                             headerHeight={28}
                             rowHeight={30}
                             domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}

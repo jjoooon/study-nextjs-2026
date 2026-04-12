@@ -7,7 +7,6 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
@@ -42,98 +41,86 @@ export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'} lineTop={false} caption="">
+            <FormTable variant={'head'} lineTop={false}>
               <FormRow>
                 <FormCell title={'설계접수번호'}>LA260209313558</FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <Gcol placement="ss" className="w-full" gap={5}>
+          <Gcol placement="ss" gap={5}>
             <TableFold>
-              <TableFoldHead title="요청내용"></TableFoldHead>
+              <TableFoldHead title="요청내용" />
               <TableFoldBody>
-                <Grow className="w-full">
-                  <FormTable
-                    caption="피보험자의 위험정보 테이블"
-                    cols={['w-[12rem]', 'flex-1', 'w-[12rem]', 'flex-1', 'w-[12rem]', 'flex-1']}
-                  >
-                    <FormRow>
-                      <FormCell title={'접수번호'}>26012723081</FormCell>
-                      <FormCell title={'진행상태'}>처리중</FormCell>
-                      <FormCell title={''}></FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'요청자사번'}>8012345</FormCell>
-                      <FormCell title={'요청자명'}>김한화</FormCell>
-                      <FormCell title={'요청자 휴대폰번호'}>010-1234-1234</FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'상품(상품유형)'}>운전자보험</FormCell>
-                      <FormCell title={'플랜'}>&nbsp;</FormCell>
-                      <FormCell title={'희망보험료'}>5만원이하</FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'계약자명'}>박한화</FormCell>
-                      <FormCell title={'계약자 생년월일'}>2000-01-01</FormCell>
-                      <FormCell title={''}>&nbsp;</FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'피보험자'}>박한화</FormCell>
-                      <FormCell title={'피보험자 생년월일'}>2000-01-01</FormCell>
-                      <FormCell title={'상해급수'}>3급</FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'기타요청내용'} colSpan={5}>
-                        text
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
+                <FormTable
+                  caption="피보험자의 위험정보 테이블"
+                  cols={['w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto']}
+                >
+                  <FormRow>
+                    <FormCell title={'접수번호'}>26012723081</FormCell>
+                    <FormCell title={'진행상태'}>처리중</FormCell>
+                    <FormCell title={''}></FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'요청자사번'}>8012345</FormCell>
+                    <FormCell title={'요청자명'}>김한화</FormCell>
+                    <FormCell title={'요청자 휴대폰번호'}>010-1234-1234</FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'상품(상품유형)'}>운전자보험</FormCell>
+                    <FormCell title={'플랜'}></FormCell>
+                    <FormCell title={'희망보험료'}>5만원이하</FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'계약자명'}>박한화</FormCell>
+                    <FormCell title={'계약자 생년월일'}>2000-01-01</FormCell>
+                    <FormCell title={''}></FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'피보험자'}>박한화</FormCell>
+                    <FormCell title={'피보험자 생년월일'}>2000-01-01</FormCell>
+                    <FormCell title={'상해급수'}>3급</FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'기타요청내용'} colSpan={5}>
+                      text
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
               </TableFoldBody>
             </TableFold>
 
             <TableFold>
               <TableFoldHead title="처리결과" />
               <TableFoldBody>
-                <Gcol className="w-full" gap={5}>
-                  <Grow className="w-full">
-                    <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
-                      <FormRow>
-                        <FormCell title={'처리결과'}>
-                          <RadioGroup
-                            className="gap-2"
-                            errorMsg="하나를 선택해주세요."
-                            errorPs="bl"
-                            onValueChange={() => {}}
-                            width="full"
-                          >
-                            <RadioGroupItem id="result1" value="option1" checked={true}>
-                              설계완료
+                <Gcol gap={5} placement="ss">
+                  <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
+                    <FormRow>
+                      <FormCell title={'처리결과'}>
+                        <RadioGroup className="gap-2" defaultValue="option1" onValueChange={() => {}} width="full">
+                          {[
+                            { id: 'option1', label: '설계완료' },
+                            { id: 'option2', label: '반려' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} id={option.id} value={option.id}>
+                              {option.label}
                             </RadioGroupItem>
-                            <RadioGroupItem id="result2" value="option2">
-                              반려
-                            </RadioGroupItem>
-                          </RadioGroup>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'설계번호'}>
-                          <Input placeholder="" value="" width="20rem" readOnly />
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'메모'}>
-                          <Input placeholder="" value="" readOnly />
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                  </Grow>
-                  <InfoBox
-                    title="처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다."
-                    variant={'info'}
-                    bg={false}
-                  ></InfoBox>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'설계번호'}>
+                        <Input width={200} readOnly />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'메모'}>
+                        <Input width={200} readOnly />
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <Typo icon={'info'}>처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다.</Typo>
                 </Gcol>
               </TableFoldBody>
             </TableFold>

@@ -32,152 +32,152 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type LTPA904TabType = {
+  name: string;
+  value: string;
+  label: string;
+};
+const DATA_TABS: LTPA904TabType[] = [
+  {
+    name: '납입예정',
+    value: 'tab1',
+    label: '납입예정',
+  },
+  {
+    name: '담보',
+    value: 'tab2',
+    label: '담보',
+  },
+];
+
+// tab1 dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+  field23: string | number;
+  field24: string | number;
+  field25: string | number;
+  field26: string | number;
+  field27: string | number;
+  field28: string | number;
+  field29: string | number;
+  field30: string | number;
+  field31: string | number;
+  field32: string | number;
+  field33: string | number;
+  field34: string | number;
+  field35: string | number;
+  field36: string | number;
+  field37: string | number;
+  field38: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+    field22: '',
+    field23: '',
+    field24: '',
+    field25: '',
+    field26: '',
+    field27: '',
+    field28: '',
+    field29: '',
+    field30: '',
+    field31: '',
+    field32: '',
+    field33: '',
+    field34: '',
+    field35: '',
+    field36: '',
+    field37: '',
+    field38: '',
+  },
+  {
+    id: 2,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+    field22: '',
+    field23: '',
+    field24: '',
+    field25: '',
+    field26: '',
+    field27: '',
+    field28: '',
+    field29: '',
+    field30: '',
+    field31: '',
+    field32: '',
+    field33: '',
+    field34: '',
+    field35: '',
+    field36: '',
+    field37: '',
+    field38: '',
+  },
+];
+
 export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type LTPA904TabType = {
-    name: string;
-    value: string;
-    label: string;
-  };
-
-  const DATA_TABS: LTPA904TabType[] = [
-    {
-      name: '납입예정',
-      value: 'tab1',
-      label: '납입예정',
-    },
-    {
-      name: '담보',
-      value: 'tab2',
-      label: '담보',
-    },
-  ];
-
-  // tab1 dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
-    field20: string | number;
-    field21: string | number;
-    field22: string | number;
-    field23: string | number;
-    field24: string | number;
-    field25: string | number;
-    field26: string | number;
-    field27: string | number;
-    field28: string | number;
-    field29: string | number;
-    field30: string | number;
-    field31: string | number;
-    field32: string | number;
-    field33: string | number;
-    field34: string | number;
-    field35: string | number;
-    field36: string | number;
-    field37: string | number;
-    field38: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-      field08: '',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-      field16: '',
-      field17: '',
-      field18: '',
-      field19: '',
-      field20: '',
-      field21: '',
-      field22: '',
-      field23: '',
-      field24: '',
-      field25: '',
-      field26: '',
-      field27: '',
-      field28: '',
-      field29: '',
-      field30: '',
-      field31: '',
-      field32: '',
-      field33: '',
-      field34: '',
-      field35: '',
-      field36: '',
-      field37: '',
-      field38: '',
-    },
-    {
-      id: 2,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-      field08: '',
-      field09: '',
-      field10: '',
-      field11: '',
-      field12: '',
-      field13: '',
-      field14: '',
-      field15: '',
-      field16: '',
-      field17: '',
-      field18: '',
-      field19: '',
-      field20: '',
-      field21: '',
-      field22: '',
-      field23: '',
-      field24: '',
-      field25: '',
-      field26: '',
-      field27: '',
-      field28: '',
-      field29: '',
-      field30: '',
-      field31: '',
-      field32: '',
-      field33: '',
-      field34: '',
-      field35: '',
-      field36: '',
-      field37: '',
-      field38: '',
-    },
-  ];
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -186,7 +186,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 100,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '납입_응당일',
@@ -194,7 +194,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 120,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '계약_영업보험료',
@@ -202,7 +202,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -212,7 +212,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -222,7 +222,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -232,7 +232,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -242,7 +242,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -252,7 +252,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -262,7 +262,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -272,7 +272,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -282,7 +282,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -292,7 +292,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -302,7 +302,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -312,7 +312,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -323,7 +323,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         autoHeight: true,
         editable: false,
 
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -333,7 +333,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 160,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -343,7 +343,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '적립_계수_02',
@@ -351,7 +351,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '적립금',
@@ -359,7 +359,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -369,7 +369,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -379,7 +379,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 200,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -389,7 +389,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 220,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -399,7 +399,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 220,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -409,7 +409,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -419,7 +419,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -429,7 +429,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 200,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -439,7 +439,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 230,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -449,7 +449,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 200,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -459,7 +459,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -469,7 +469,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -479,7 +479,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
       },
       {
         headerName: '손해조사비고정금액[Ce(c)]',
@@ -487,7 +487,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -497,7 +497,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 180,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '중도인출금액적립액',
@@ -505,7 +505,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -515,7 +515,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -525,7 +525,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 150,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-right',
+        cellClass: 'text-right',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -535,7 +535,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 120,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '할인율만기',
@@ -543,7 +543,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 120,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
     ],
     []
@@ -589,7 +589,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 300,
         editable: false,
         autoHeight: true,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '납입_응당일',
@@ -597,14 +597,14 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         flex: 1,
         editable: false,
         autoHeight: true,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '담보코드',
         field: 'field2_03',
         flex: 1,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
       },
       {
         headerName: '담보보험료',
@@ -612,7 +612,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
         flex: 1,
         autoHeight: true,
         editable: false,
-        cellClass: 'flex! items-center! justify-center! text-center',
+        cellClass: 'text-center',
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
@@ -802,11 +802,6 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           rowData={DummyData}
                           columnDefs={columnDefs}
-                          defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                          }}
-                          animateRows={false}
                           domLayout="autoHeight"
                         />
                       </div>
@@ -840,33 +835,29 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <FormCell title={'총예상납입보험료'}>
                             <Input
                               commaAmount={true}
-                              after="원"
                               value={form.type10}
                               onChange={(e) => setFormField('type10', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'중도환급금'}>
                             <Input
                               commaAmount={true}
-                              after="원"
                               value={form.type11}
                               onChange={(e) => setFormField('type11', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'예상만기환급금'}>
                             <Input
                               commaAmount={true}
-                              after="원"
                               value={form.type12}
                               onChange={(e) => setFormField('type12', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type13}
-                              onChange={(e) => setFormField('type13', e.target.value)}
-                            />
+                            <Input value={form.type13} onChange={(e) => setFormField('type13', e.target.value)} />%
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -894,18 +885,18 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <FormCell title={'추천보험료'}>
                             <Input
                               commaAmount={true}
-                              after="원"
                               value={form.type14}
                               onChange={(e) => setFormField('type14', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'최소추천(출생후)1'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type15}
                               onChange={(e) => setFormField('type15', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={null} colSpan={4}></FormCell>
                         </FormRow>
@@ -913,33 +904,25 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <FormRow>
                           <FormCell title={'최소추천보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type16}
                               onChange={(e) => setFormField('type16', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'최소예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type17}
-                              onChange={(e) => setFormField('type17', e.target.value)}
-                            />
+                            <Input value={form.type17} onChange={(e) => setFormField('type17', e.target.value)} />%
                           </FormCell>
                           <FormCell title={'최다추천보험료'}>
-                            <Input
-                              after="%"
-                              value={form.type18}
-                              onChange={(e) => setFormField('type18', e.target.value)}
-                            />
+                            <Input value={form.type18} onChange={(e) => setFormField('type18', e.target.value)} />%
                           </FormCell>
                           <FormCell title={'최대추천보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type19}
                               onChange={(e) => setFormField('type19', e.target.value)}
                             />
+                            원
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -965,11 +948,11 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <FormRow>
                           <FormCell title={'만기환급담보환급금'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type20}
                               onChange={(e) => setFormField('type20', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'적립보험료대체납입특약보험료'}>
                             <Input
@@ -1004,18 +987,13 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <TableFold>
                   <TableFoldHead title="담보" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine w-full h-[200rem]">
+                    <div className="ag-theme-alpine ">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={DummyData2}
                         columnDefs={columnDefs2}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          cellClass: 'p-0',
-                          cellStyle: { padding: 0 },
-                        }}
+                        domLayout="autoHeight"
                       />
                     </div>
                   </TableFoldBody>
@@ -1051,12 +1029,12 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                             placeholder=""
                             size="lg"
                             variant="default"
-                            after="원"
                             commaAmount={true}
                             width="full"
                             value={form.type01}
                             onChange={(e) => setFormField('type01', e.target.value)}
                           />
+                          원
                         </FormCell>
                         <FormCell title={'중도환급금'}>
                           <Input
@@ -1064,11 +1042,11 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                             size="lg"
                             variant="default"
                             width="full"
-                            after="원"
                             commaAmount={true}
                             value={form.type02}
                             onChange={(e) => setFormField('type02', e.target.value)}
                           />
+                          원
                         </FormCell>
                         <FormCell title={'예상만기환급금'}>
                           <Input
@@ -1087,10 +1065,10 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                             size="lg"
                             variant="default"
                             width="full"
-                            after="%"
                             value={form.type04}
                             onChange={(e) => setFormField('type04', e.target.value)}
                           />
+                          %
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -1118,52 +1096,43 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <FormRow>
                           <FormCell title={'추천보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type05}
                               onChange={(e) => setFormField('type05', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'최소추천(출생후)'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type06}
                               onChange={(e) => setFormField('type06', e.target.value)}
                             />
-                            <FormCell title={null} colSpan={4}></FormCell>
+                            원<FormCell title={null} colSpan={4}></FormCell>
                           </FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title={'최소추천보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type07}
                               onChange={(e) => setFormField('type07', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'최소예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type08}
-                              onChange={(e) => setFormField('type08', e.target.value)}
-                            />
+                            <Input value={form.type08} onChange={(e) => setFormField('type08', e.target.value)} />%
                           </FormCell>
                           <FormCell title={'최대추천보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type09}
                               onChange={(e) => setFormField('type09', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'최대예상만기환급율'}>
-                            <Input
-                              after="%"
-                              value={form.type10}
-                              onChange={(e) => setFormField('type10', e.target.value)}
-                            />
+                            <Input value={form.type10} onChange={(e) => setFormField('type10', e.target.value)} />%
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -1192,35 +1161,35 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <FormRow>
                           <FormCell title={'만기환급담보환급금'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type11}
                               onChange={(e) => setFormField('type11', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'적립보험료대체납입특약보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type12}
                               onChange={(e) => setFormField('type12', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'실손의료비예상납입보험료'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type13}
                               onChange={(e) => setFormField('type13', e.target.value)}
                             />
+                            원
                           </FormCell>
                           <FormCell title={'만기유지보너스'}>
                             <Input
-                              after="원"
                               commaAmount={true}
                               value={form.type14}
                               onChange={(e) => setFormField('type14', e.target.value)}
                             />
+                            원
                           </FormCell>
                         </FormRow>
                       </FormTable>

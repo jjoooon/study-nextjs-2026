@@ -22,7 +22,7 @@ import type { RefObject } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
-import { Typo, Gcol, Grow } from '@atoms';
+import { Typo, Grow, Grid } from '@atoms';
 import { AmountUnitInput } from '@common/AmountUnitInput';
 import { DatePickerInput } from '@common/DatePicker';
 import { InfoBoxWarningIcon } from '@icons';
@@ -534,7 +534,8 @@ type FieldRendererSource<T> = keyof T | React.ReactNode | FieldRendererResolver<
  */
 export const createFieldRenderer = <T extends Record<string, unknown>>(
   field1: FieldRendererSource<T>,
-  field2?: FieldRendererSource<T>
+  field2?: FieldRendererSource<T>,
+  div: 'row' | 'col' = 'col'
 ) => {
   const renderer = (params: ICellRendererParams<T>) => {
     const data = params.data as T | undefined;
@@ -568,17 +569,21 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
 
     const aNode = resolveNode(field1);
     const bNode = resolveNode(field2);
-
     const renderCell = (value: React.ReactNode) => {
       if (React.isValidElement(value)) return value;
       return <Typo>{String(value ?? '')}</Typo>;
     };
 
-    return (
-      <Gcol className="w-full h-[5.6rem] justify-start divide-y divide-gray-200" gap={0}>
+    return div === 'col' ? (
+      <Grid className="w-full h-[5.6rem] grid-rowss-[1fr_1fr] divide-y divide-gray-200" gap={0}>
         <div className="h-[2.8rem] w-full leading-[2.8rem]">{renderCell(aNode)}</div>
         <div className="h-[2.8rem] w-full leading-[2.8rem]">{renderCell(bNode)}</div>
-      </Gcol>
+      </Grid>
+    ) : (
+      <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200" gap={0}>
+        <div>{renderCell(aNode)}</div>
+        <div>{renderCell(bNode)}</div>
+      </Grid>
     );
   };
 
@@ -915,4 +920,14 @@ export function useDynamicPx(targetPx: number, standardFontSize: number = 12): n
   }, [standardFontSize, targetPx]);
 
   return dynamicPx;
+}
+
+export function renderTbodyTh(children: React.ReactNode) {
+  return (
+    <Grow className="w-full px-2 py-1  h-full">
+      <Typo className="w-full whitespace-pre-wrap" color="gray" tag="span" variant="body-md" weight="bold">
+        {children}
+      </Typo>
+    </Grow>
+  );
 }
