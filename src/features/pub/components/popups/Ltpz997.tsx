@@ -7,18 +7,18 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, Dialo
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
-export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field1: string;
-    field2: string;
-    field3: string;
-  };
-  const dummyData: DummyDataType[] = [
-    { id: 1, field1: '홍길동', field2: 'ESG추진하트', field3: '-' },
-    { id: 2, field1: '홍길순', field2: '-', field3: '-' },
-  ];
+type DummyDataType = {
+  id: number;
+  field1: string;
+  field2: string;
+  field3: string;
+};
+const dummyData: DummyDataType[] = [
+  { id: 1, field1: '홍길동', field2: 'ESG추진하트', field3: '-' },
+  { id: 2, field1: '홍길순', field2: '-', field3: '-' },
+];
 
+export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">

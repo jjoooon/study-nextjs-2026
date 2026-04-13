@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import AsideFoot from '@/shared/components/features/AsideFoot';
+import { AsideFoot } from '@features/AsideFoot';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof AsideFoot> = {

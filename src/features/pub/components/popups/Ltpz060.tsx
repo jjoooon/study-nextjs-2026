@@ -25,175 +25,172 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isChecked: boolean;
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+  field6: string;
+  field7: string;
+  field8: string;
+  field9: string;
+};
+type DummyDataType2 = {
+  id: number;
+  isChecked: boolean;
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+  field6: string;
+  field7: string;
+  field8: string;
+  field9: string;
+};
+
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isChecked: false,
+    field1: 'S92',
+    field2: '발등 골절',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '고지필요',
+  },
+  {
+    id: 2,
+    isChecked: false,
+    field1: 'M51',
+    field2: '추간판장애',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '고지필요',
+  },
+  {
+    id: 3,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '',
+  },
+  {
+    id: 4,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '',
+  },
+  {
+    id: 5,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+];
+const dummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    isChecked: false,
+    field1: 'S92',
+    field2: '발등 골절',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '고지필요',
+  },
+  {
+    id: 2,
+    isChecked: false,
+    field1: 'M51',
+    field2: '추간판장애',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '고지필요',
+  },
+  {
+    id: 3,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '',
+  },
+  {
+    id: 4,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '',
+  },
+  {
+    id: 5,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+];
+
+
 export const Ltpz060 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    isChecked: boolean;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-    field8: string;
-    field9: string;
-  };
-
-  type DummyDataType2 = {
-    id: number;
-    isChecked: boolean;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-    field8: string;
-    field9: string;
-  };
-
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isChecked: false,
-      field1: 'S92',
-      field2: '발등 골절',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '3',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
-    },
-    {
-      id: 2,
-      isChecked: false,
-      field1: 'M51',
-      field2: '추간판장애',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
-    },
-    {
-      id: 3,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
-    },
-    {
-      id: 4,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
-    },
-    {
-      id: 5,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '고지',
-      field9: '',
-    },
-  ];
-
-  const dummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      isChecked: false,
-      field1: 'S92',
-      field2: '발등 골절',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
-    },
-    {
-      id: 2,
-      isChecked: false,
-      field1: 'M51',
-      field2: '추간판장애',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '고지필요',
-    },
-    {
-      id: 3,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
-    },
-    {
-      id: 4,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '미고지',
-      field9: '',
-    },
-    {
-      id: 5,
-      isChecked: false,
-      field1: 'M54',
-      field2: '요통',
-      field3: '2025-12-01',
-      field4: '2021-03-02',
-      field5: '22(2025-12-01~2027-12-01)',
-      field6: '',
-      field7: 'Y',
-      field8: '고지',
-      field9: '',
-    },
-  ];
-
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
-
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
@@ -342,14 +339,14 @@ export const Ltpz060 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormRow>
                   <FormCell title={'FP정보제공동의(유효일자)'}>
-                    <Input aria-label="" width={'10rem'} value={'2026-03-01'} readOnly />
+                    <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
                   </FormCell>
                   <FormCell title={'전문호출기간'}>
-                    <Input aria-label="" width={'10rem'} value={'2026-03-01'} readOnly />-
-                    <Input aria-label="" width={'10rem'} value={'2026-03-01'} readOnly />
+                    <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
+                    <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
                   </FormCell>
                   <FormCell title={'최종적재일'}>
-                    <Input aria-label="" width={'10rem'} value={'2026-03-01'} readOnly />
+                    <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>

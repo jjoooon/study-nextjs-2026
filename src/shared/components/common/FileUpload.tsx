@@ -23,12 +23,20 @@ type FileUploadProps = {
   className?: string;
   errorMessage?: string;
   onClickButton?: () => void;
+  onClickFileName?: (file: FileItem, index: number) => void;
   onRemove?: (file: FileItem, index: number) => void;
 };
 
 // ─── FileUpload ───────────────────────────────────────────────────────────────
 
-export function FileUpload({ id, files: filesProp = [], errorMessage, onClickButton, onRemove }: FileUploadProps) {
+export function FileUpload({
+  id,
+  files: filesProp = [],
+  errorMessage,
+  onClickButton,
+  onClickFileName,
+  onRemove,
+}: FileUploadProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
 
@@ -71,6 +79,10 @@ export function FileUpload({ id, files: filesProp = [], errorMessage, onClickBut
             ext={file.ext}
             lastname={file.nameLastWord}
             hasError={!!errorMessage}
+            onNameClick={() => {
+              onClickButton?.();
+              onClickFileName?.(file, index);
+            }}
             onRemove={() => handleRemove(file, index)}
           />
         ))}
@@ -103,9 +115,10 @@ type FileTagProps = {
   lastname?: string;
   onRemove: () => void;
   hasError?: boolean;
+  onNameClick?: () => void;
 };
 
-function FileTag({ name, ext, lastname, onRemove, hasError = false }: FileTagProps) {
+function FileTag({ name, ext, lastname, onRemove, hasError = false, onNameClick }: FileTagProps) {
   const displayName = truncateTail(name);
   const isTruncated = displayName !== name;
 
@@ -119,16 +132,22 @@ function FileTag({ name, ext, lastname, onRemove, hasError = false }: FileTagPro
           >
             <FileItemIcon className="shrink-0" />
 
-            <Typo
-              variant="body-sm"
-              tag="div"
-              className={cn(
-                'transition-colors duration-100 truncate tracking-0 pr-[0.3rem]',
-                hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
-              )}
+            <button
+              type="button"
+              onClick={onNameClick}
+              className={cn(onNameClick ? 'cursor-pointer' : 'cursor-default')}
             >
-              {name}
-            </Typo>
+              <Typo
+                variant="body-sm"
+                tag="div"
+                className={cn(
+                  'transition-colors duration-100 truncate tracking-0 pr-[0.3rem]',
+                  hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
+                )}
+              >
+                {name}
+              </Typo>
+            </button>
 
             {isTruncated && (
               <Typo variant="body-sm" tag="div" className="tracking-0">

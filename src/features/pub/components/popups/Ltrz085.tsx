@@ -28,86 +28,85 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  type: string;
+  designNo: string;
+  policyNo: string;
+  status: string;
+  changeDate: string;
+  paymentStatus: string;
+  productName: string;
+  contractor: string;
+  insured: string;
+  detailCondition: boolean;
+  mandatoryYn: string;
+};
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    type: '계약변경',
+    designNo: 'LA260209313558',
+    policyNo: 'LA260209313558',
+    status: '청약중',
+    changeDate: '2026-03-22',
+    paymentStatus: 'TEXT',
+    productName: '한화실손의료보험(갱신형)2601',
+    contractor: '김한화',
+    insured: '변경조건적용',
+    detailCondition: true,
+    mandatoryYn: 'Y',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    type: '만기예정',
+    designNo: 'LA260209313558',
+    policyNo: 'LA260209313558',
+    status: '정상',
+    changeDate: '2026-03-22',
+    paymentStatus: 'TEXT',
+    productName: '한화실손의료보험(갱신형)2601',
+    contractor: '김한화',
+    insured: '변경조건적용',
+    detailCondition: true,
+    mandatoryYn: 'N',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    type: '만기예정',
+    designNo: 'LA260209313558',
+    policyNo: 'LA260209313558',
+    status: '청약중',
+    changeDate: '2026-03-22',
+    paymentStatus: '',
+    productName: '한화실손의료보험(갱신형)2601',
+    contractor: '김한화',
+    insured: '변경조건적용',
+    detailCondition: true,
+    mandatoryYn: 'N',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    type: '선택',
+    designNo: 'LA260209313558',
+    policyNo: '',
+    status: '',
+    changeDate: '',
+    paymentStatus: '',
+    productName: '',
+    contractor: '',
+    insured: '',
+    detailCondition: true,
+    mandatoryYn: 'Y',
+  },
+];
+
 export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    isCheck: boolean;
-    type: string;
-    designNo: string;
-    policyNo: string;
-    status: string;
-    changeDate: string;
-    paymentStatus: string;
-    productName: string;
-    contractor: string;
-    insured: string;
-    detailCondition: boolean;
-    mandatoryYn: string;
-  };
-
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isCheck: false,
-      type: '계약변경',
-      designNo: 'LA260209313558',
-      policyNo: 'LA260209313558',
-      status: '청약중',
-      changeDate: '2026-03-22',
-      paymentStatus: 'TEXT',
-      productName: '한화실손의료보험(갱신형)2601',
-      contractor: '김한화',
-      insured: '변경조건적용',
-      detailCondition: true,
-      mandatoryYn: 'Y',
-    },
-    {
-      id: 2,
-      isCheck: false,
-      type: '만기예정',
-      designNo: 'LA260209313558',
-      policyNo: 'LA260209313558',
-      status: '정상',
-      changeDate: '2026-03-22',
-      paymentStatus: 'TEXT',
-      productName: '한화실손의료보험(갱신형)2601',
-      contractor: '김한화',
-      insured: '변경조건적용',
-      detailCondition: true,
-      mandatoryYn: 'N',
-    },
-    {
-      id: 3,
-      isCheck: false,
-      type: '만기예정',
-      designNo: 'LA260209313558',
-      policyNo: 'LA260209313558',
-      status: '청약중',
-      changeDate: '2026-03-22',
-      paymentStatus: '',
-      productName: '한화실손의료보험(갱신형)2601',
-      contractor: '김한화',
-      insured: '변경조건적용',
-      detailCondition: true,
-      mandatoryYn: 'N',
-    },
-    {
-      id: 4,
-      isCheck: false,
-      type: '선택',
-      designNo: 'LA260209313558',
-      policyNo: '',
-      status: '',
-      changeDate: '',
-      paymentStatus: '',
-      productName: '',
-      contractor: '',
-      insured: '',
-      detailCondition: true,
-      mandatoryYn: 'Y',
-    },
-  ];
-
   const [relationValue, setRelationValue] = useState('');
   const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
   const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
@@ -154,8 +153,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '설계번호/증권번호',
       field: 'designNo',
-      flex: 1,
-      minWidth: 160,
+      width: 140,
       cellClass: 'text-center p-0!',
       cellRenderer: designNoCellRenderer,
     },
@@ -182,7 +180,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'productName',
       flex: 1,
       minWidth: 180,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '계약자',
@@ -308,7 +306,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
-                      width: 60,
+                      width: 30,
                       cellClass: 'text-center editable-cell',
                     }}
                     domLayout="autoHeight"

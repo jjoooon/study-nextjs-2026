@@ -1,6 +1,6 @@
 'use client';
 // 권오택
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -25,77 +25,75 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '교보생명',
+    field02: 'LA234545233434-3',
+    field03: '한화 세이프단체보',
+    field04: '2010-09-30',
+    field05: '2099-12-31',
+    field06: '암(4대유사암제외)진단비',
+    field07: '2,000',
+    field08: '1.0',
+    field09: '정상',
+    field10: '1,000',
+  },
+  {
+    id: 2,
+    field01: '당사',
+    field02: '-',
+    field03: '한화 세이프단체보2',
+    field04: '2010-09-30',
+    field05: '2099-12-31',
+    field06: '암(4대유사암제외)진단비',
+    field07: '2,000',
+    field08: '1.0',
+    field09: '정상',
+    field10: '1,000',
+  },
+  {
+    id: 3,
+    field01: '당사',
+    field02: '-',
+    field03: '한화 세이프단체보2 한화 세이프단체보2한화 세이프단체보2한화 세이프단체보2',
+    field04: '2010-09-30',
+    field05: '2099-12-31',
+    field06: '암(4대유사암제외)진단비',
+    field07: '2,000',
+    field08: '1.0',
+    field09: '정상',
+    field10: '1,000',
+  },
+  {
+    id: 4,
+    field01: '교보생명',
+    field02: '-',
+    field03: '한화 세이프단체보1',
+    field04: '2010-09-30',
+    field05: '2099-12-31',
+    field06: '암(4대유사암제외)진단비',
+    field07: '2,000',
+    field08: '1.0',
+    field09: '정상',
+    field10: '1,000',
+  },
+];
 export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-    field03: string | number;
-    field04: string | number;
-    field05: string | number;
-    field06: string | number;
-    field07: string | number;
-    field08: string | number;
-    field09: string | number;
-    field10: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '교보생명',
-      field02: '-',
-      field03: '한화 세이프단체보',
-      field04: '2010-09-30',
-      field05: '2099-12-31',
-      field06: '암(4대유사암제외)진단비',
-      field07: '2,000',
-      field08: '1.0',
-      field09: '정상',
-      field10: '1,000',
-    },
-    {
-      id: 2,
-      field01: '당사',
-      field02: '-',
-      field03: '한화 세이프단체보2',
-      field04: '2010-09-30',
-      field05: '2099-12-31',
-      field06: '암(4대유사암제외)진단비',
-      field07: '2,000',
-      field08: '1.0',
-      field09: '정상',
-      field10: '1,000',
-    },
-    {
-      id: 3,
-      field01: '당사',
-      field02: '-',
-      field03: '한화 세이프단체보2',
-      field04: '2010-09-30',
-      field05: '2099-12-31',
-      field06: '암(4대유사암제외)진단비',
-      field07: '2,000',
-      field08: '1.0',
-      field09: '정상',
-      field10: '1,000',
-    },
-    {
-      id: 4,
-      field01: '교보생명',
-      field02: '-',
-      field03: '한화 세이프단체보1',
-      field04: '2010-09-30',
-      field05: '2099-12-31',
-      field06: '암(4대유사암제외)진단비',
-      field07: '2,000',
-      field08: '1.0',
-      field09: '정상',
-      field10: '1,000',
-    },
-  ];
-
-  // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '회사명',
@@ -109,64 +107,78 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '증권번호/설계번호',
       field: 'field02',
-      flex: 1,
+      width: 140,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
       cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '상품명',
       field: 'field03',
+      wrapText: true,
+      autoHeight: true,
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
       cellClass: 'flex! items-center! justify-start!',
+      cellStyle: {
+        whiteSpace: 'normal',
+        wordWrap: 'break-word',
+      },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        return (
+          <div
+            className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: String(params.data?.field03 ?? '') }}
+          />
+        );
+      },
     },
     {
       headerName: '보호시기',
       field: 'field04',
-      flex: 1,
+      width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'text-center',
+     cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '보험종기',
       field: 'field05',
-      width: 100,
+      width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'text-center',
+     cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '담보명',
       field: 'field06',
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'text-center',
+     cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '가입금액',
       field: 'field07',
       width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'text-right',
+     cellClass: 'flex! items-center! justify-end!',
     },
     {
       headerName: '배수',
       field: 'field08',
-      width: 80,
+      width: 60,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'text-right',
+     cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '상태',
       field: 'field09',
-      width: 80,
+      width: 60,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'text-center',
+     cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '반영금액',
       field: 'field10',
       width: 80,
-      cellClass: 'text-right',
+      cellClass: 'flex! items-center! justify-end!',
     },
   ];
 
@@ -178,9 +190,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       const parsed = Number(String(value).replace(/,/g, ''));
       return Number.isFinite(parsed) ? parsed : 0;
     };
-
     const totalField10 = rowData.reduce((sum, row) => sum + parse(row.field10), 0);
-
     return [
       {
         id: -1,
@@ -204,10 +214,10 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              실손의료비 전환 계약 조회
+              기 누적금액 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ040)
+              (LTPZ086)
             </Typo>
           </DialogTitle>
         </DialogHeader>

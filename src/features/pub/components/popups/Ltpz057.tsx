@@ -3,7 +3,7 @@
 // React
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
@@ -61,32 +61,26 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Gcol placement="ss" gap={2}>
                   <Grow>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="가입업종"
+                      width={160}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       value={form.type01}
                     />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'20rem'} value={'상품명 text'} readOnly />
+                    <Input aria-label="" width={200} value={'상품명 text'} readOnly />
                   </Grow>
                   <Grow>
-                    <Checkbox
-                      color="primary"
-                      errorMsg="선택은 필수입니다."
-                      errorPs="bl"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="default"
-                    >
-                      가입업종 외 건물 내 다른업종 없음{' '}
+                    <Checkbox size="md">
+                      가입업종 외 건물 내 다른업종 없음
                     </Checkbox>
                   </Grow>
                 </Gcol>
               </FormCell>
             </FormRow>
           </FormTable>
+
           <FormTable caption="월클릭스켄" cols={['w-[16rem]', 'w-auto']}>
             <FormRow>
               <FormCell
@@ -97,83 +91,83 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Gcol>
                 }
               >
-                <div className="grid grid-cols-5 gap-x-4 gap-y-2">
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                <Grid className="grid-cols-5 gap-x-4 gap-y-2">
+                  <Checkbox size="md">
                     이용원, 미용원, 기타미용실
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     학원(기관 및 교육목적)
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     소형판매시설
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     대형판매시설
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     목욕탕
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     여관, 여인숙, 유스호스텔
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     금융업소, 부동산
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     휴게음식점
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     일반음식점
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     오피스텔
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     금속기계기구제조(금속가공)
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     예식장, 장례식장
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     공연장(극장, 영화관)
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     사찰
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     교회, 성당
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     창고시설(보통품)
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     목공, 목재가공
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     비디오감상실 전화방
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     단란주점
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     유흥주점
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     컴퓨터 게임장(전자오락실)
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     직물재단 및 재봉
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     세탁소(드라이클리닝)
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     시장
                   </Checkbox>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default">
+                  <Checkbox size="md">
                     의원, 병원
                   </Checkbox>
-                </div>
+                </Grid>
               </FormCell>
             </FormRow>
           </FormTable>
@@ -187,18 +181,12 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Gcol>
                 }
               >
-                <div className="grid grid-cols-3 gap-x-6 gap-y-2">
+                <Grid className="grid-cols-3 gap-x-6 gap-y-2">
                   <Grow>
-                    <Checkbox
-                      className=""
-                      color="primary"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="noneText"
-                    ></Checkbox>
+                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="주변업종 직접 검색"
+                      width={160}
                       onChange={(e) => setFormField('type02', e.target.value)}
                       value={form.type02}
                     />
@@ -207,16 +195,10 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                    <Checkbox
-                      className=""
-                      color="primary"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="noneText"
-                    ></Checkbox>
+                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="주변업종 직접 검색"
+                      width={160}
                       onChange={(e) => setFormField('type03', e.target.value)}
                       value={form.type03}
                     />
@@ -225,16 +207,10 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                    <Checkbox
-                      className=""
-                      color="primary"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="noneText"
-                    ></Checkbox>
+                   <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="주변업종 직접 검색"
+                      width={160}
                       onChange={(e) => setFormField('type04', e.target.value)}
                       value={form.type04}
                     />
@@ -243,16 +219,10 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                    <Checkbox
-                      className=""
-                      color="primary"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="noneText"
-                    ></Checkbox>
+                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="주변업종 직접 검색"
+                      width={160}
                       onChange={(e) => setFormField('type05', e.target.value)}
                       value={form.type05}
                     />
@@ -261,16 +231,10 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                    <Checkbox
-                      className=""
-                      color="primary"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="noneText"
-                    ></Checkbox>
+                   <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="주변업종 직접 검색"
+                      width={160}
                       onChange={(e) => setFormField('type06', e.target.value)}
                       value={form.type06}
                     />
@@ -279,16 +243,10 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                    <Checkbox
-                      className=""
-                      color="primary"
-                      onCheckedChange={() => {}}
-                      size="md"
-                      variant="noneText"
-                    ></Checkbox>
+                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
-                      aria-label=""
-                      width={'16rem'}
+                      aria-label="주변업종 직접 검색"
+                      width={160}
                       onChange={(e) => setFormField('type07', e.target.value)}
                       value={form.type07}
                     />
@@ -296,7 +254,7 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                   </Grow>
-                </div>
+                </Grid>
               </FormCell>
             </FormRow>
           </FormTable>
@@ -341,5 +299,3 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-
-export default LTPZ057;

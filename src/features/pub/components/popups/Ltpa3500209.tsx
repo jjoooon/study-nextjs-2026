@@ -31,30 +31,24 @@ export const Ltpa3500209 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
             <Gcol className="w-full text-center" gap={1}>
               <Button
-                color="primary"
-                style={{ width: '19.1rem' }}
+                style={{ width: '20rem' }}
                 onClick={() => {}}
-                only="default"
                 size="xl"
                 variant="outlined"
               >
                 현재고객으로 복사
               </Button>
               <Button
-                color="primary"
-                style={{ width: '19.1rem' }}
+                style={{ width: '20rem' }}
                 onClick={() => {}}
-                only="default"
                 size="xl"
                 variant="outlined"
               >
                 신규 고객으로 복사 (간편 설계)
               </Button>
               <Button
-                color="primary"
-                style={{ width: '19.1rem' }}
+                style={{ width: '20rem' }}
                 onClick={() => {}}
-                only="default"
                 size="xl"
                 variant="outlined"
               >

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
-import PageProcess, { type PageProcessItem } from '@/shared/components/features/PageProcess';
+import { PageProcess,  type PageProcessItem } from '@/shared/components/features/PageProcess';
 
 const demoItems: PageProcessItem[] = [
   { step: 1, label: '계약사항' },

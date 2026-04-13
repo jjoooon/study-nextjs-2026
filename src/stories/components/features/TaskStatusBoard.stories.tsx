@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TaskStatusBoard from '@features/TaskStatusBoard';
+import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 // 꼭 확인해야 할 일!
