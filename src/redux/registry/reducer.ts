@@ -84,6 +84,10 @@ class ReducerRegistry {
    */
   register(name: string, reducer: Reducer, priority: number = 50) {
     if (this.isLocked) {
+      // HMR/모듈 재평가 시 이미 등록된 리듀서는 건너뛰기
+      if (this.entries.has(name)) {
+        return;
+      }
       throw new Error(
         `[ReducerRegistry] Cannot register "${name}" - registry is locked. ` +
           `Register reducers before store initialization or use injectReducer action.`
