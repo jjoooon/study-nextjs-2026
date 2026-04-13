@@ -22,7 +22,6 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -131,6 +130,9 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
       field2: '상해통원비(외래/처방조제) 특약',
     },
   ];
+  
+export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
+
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   const columnDefs: ColDef<DummyDataType>[] = [

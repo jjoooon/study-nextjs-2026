@@ -238,7 +238,7 @@ export default function Ltpa350Section() {
     ), // prop 추가
     3: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
     4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
-    5: <Ltpa350Step5 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    5: <Ltpa350Step5 viewKey={currentViewKey} />,
     6: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
   };
 

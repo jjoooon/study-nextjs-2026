@@ -27,7 +27,6 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PaperIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
-import { Accordion } from '@uiux/Accordion';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -898,16 +897,6 @@ export function Ltpa350Step2({
                             <Button variant="outlined" size="md" className="w-full">
                               나만의설계저장
                             </Button>
-                            <Accordion>
-                              <Accordion.Item value="item-1">
-                                <Accordion.Trigger>Section 1</Accordion.Trigger>
-                                <Accordion.Content>Section 1 Content</Accordion.Content>
-                              </Accordion.Item>
-                              <Accordion.Item value="item-2">
-                                <Accordion.Trigger>Section 2</Accordion.Trigger>
-                                <Accordion.Content>Section 2 Content</Accordion.Content>
-                              </Accordion.Item>
-                            </Accordion>
                           </Gcol>
                         </SelectDrop>
 

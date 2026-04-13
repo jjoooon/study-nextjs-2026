@@ -22,36 +22,34 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    { id: 1, field01: '여성통합암(4대유사암 제외)진단비', field02: 0 },
-    { id: 2, field01: '여성통합암(4대유사암 제외)진단비', field02: 100 },
-    { id: 3, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-    { id: 4, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-    { id: 5, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-    { id: 6, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-  ];
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+};
+const DummyData: DummyDataType[] = [
+  { id: 1, field01: '여성통합암(4대유사암 제외)진단비', field02: 0 },
+  { id: 2, field01: '여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비여성통합암(4대유사암 제외)진단비', field02: 100 },
+  { id: 3, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
+  { id: 4, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
+  { id: 5, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
+  { id: 6, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
+];
 
-  // AgGrid Column
+export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
       flex: 1,
       field: 'field01',
-      cellClass: 'text-left flex [&>div>span]:h-auto!',
+      cellClass: 'text-left',
       autoHeight: true,
     },
     {
       headerName: '설계금액',
-      width: 180,
+      width: 120,
       field: 'field02',
-      cellClass:
-        'text-right pr-[1rem]! [&_.ag-cell-wrapper]:overflow-visible! [&_.ag-cell-value]:overflow-visible! [&_.ag-cell-value]:whitespace-nowrap [&_.ag-input-field-input]:pr-[1rem]! [&_.ag-input-field-input]:tracking-normal',
+      cellClass: 'text-right editable-cell [&_.ag-cell-value]:-tracking-[0.03rem]! [&_input]:-tracking-[0.03rem]!',
       autoHeight: true,
       valueFormatter: numberValueFormatter,
       editable: true,
@@ -69,7 +67,7 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -97,7 +95,6 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                     resizable: false,
                     autoHeight: true,
                   }}
-                  animateRows={false}
                   singleClickEdit={true}
                   domLayout="autoHeight"
                 />

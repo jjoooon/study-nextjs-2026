@@ -22,79 +22,78 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isChecked: boolean;
+  field1: string;
+  field2: string;
+  field3: string;
+  field4: string;
+  field5: string;
+  field6: string;
+  field7: string;
+  field8: string;
+  field9: string;
+};
+
+type DummyDataType2 = {
+  id: number;
+  isChecked: boolean;
+  field1: string;
+  field2: string;
+  field3: string;
+};
+
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isChecked: false,
+    field1: '',
+    field2: '',
+    field3: '',
+    field4: '',
+    field5: '',
+    field6: '',
+    field7: '',
+    field8: '',
+    field9: '',
+  },
+  {
+    id: 2,
+    isChecked: false,
+    field1: '',
+    field2: '',
+    field3: '',
+    field4: '',
+    field5: '',
+    field6: '',
+    field7: '',
+    field8: '',
+    field9: '',
+  },
+];
+
+const dummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    isChecked: false,
+    field1: '최근5년이내치료여부',
+    field2: '예',
+    field3: '입원, 계속하여 7일이상 치료',
+  },
+  {
+    id: 2,
+    isChecked: false,
+    field1: '최근3개월내약물복용',
+    field2: '예',
+    field3: '',
+  },
+];
+
+
 export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
-  type DummyDataType = {
-    id: number;
-    isChecked: boolean;
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-    field8: string;
-    field9: string;
-  };
-
-  type DummyDataType2 = {
-    id: number;
-    isChecked: boolean;
-    field1: string;
-    field2: string;
-    field3: string;
-  };
-
-  const dummyData: DummyDataType[] = [
-    {
-      id: 1,
-      isChecked: false,
-      field1: '',
-      field2: '',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: '',
-      field7: '',
-      field8: '',
-      field9: '',
-    },
-    {
-      id: 2,
-      isChecked: false,
-      field1: '',
-      field2: '',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: '',
-      field7: '',
-      field8: '',
-      field9: '',
-    },
-  ];
-
-  const dummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      isChecked: false,
-      field1: '최근5년이내치료여부',
-      field2: '예',
-      field3: '입원, 계속하여 7일이상 치료',
-    },
-    {
-      id: 2,
-      isChecked: false,
-      field1: '최근3개월내약물복용',
-      field2: '예',
-      field3: '',
-    },
-  ];
-
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
-
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
@@ -158,7 +157,6 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
       ),
     },
   ];
-
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '대표질병코드',
@@ -201,7 +199,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
 
             <TableFold>
-              <TableFoldHead title="필수고지"></TableFoldHead>
+              <TableFoldHead title="필수고지" />
               <TableFoldBody>
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
@@ -226,8 +224,9 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </div>
               </TableFoldBody>
             </TableFold>
+
             <TableFold>
-              <TableFoldHead title="질문항목(질병)"></TableFoldHead>
+              <TableFoldHead title="질문항목(질병)" />
               <TableFoldBody>
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
@@ -250,7 +249,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                   />
                 </div>
-                <Gcol variant={'box-warning'} placement={'ss'} className="w-full mt-[0.8rem]">
+                <Gcol variant={'box-warning'} placement={'ss'} className="mt-[0.8rem]">
                   <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
                     보험금 지급이력은 정보의 불안정성으로 부정확할 수 있습니다.(정보 누락, 시간차 존재, 오기재 등)
                   </Typo>
@@ -261,7 +260,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldBody>
             </TableFold>
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} className="text-[#E43939]">
+              <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
                 <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
               </Typo>
             </Gcol>
