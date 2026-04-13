@@ -1,29 +1,33 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AgAbstractInputField, AgInputTextField, type ColDef, type EditableCallbackParams, type ICellRendererParams } from 'ag-grid-community';
+import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { editableSelectCellRenderer, numberValueFormatter, useAgGridInfiniteAppend } from '@/shared/components/agGridUtils/AgGridUtils';
+import {
+  createCellClickSelectionToggleHandler,
+  editableSelectCellRenderer,
+  numberValueFormatter,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableMore } from '@common/TablePagination';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, PlusIcon } from '@icons';
 import { LayoutMain, LayoutMainFoot } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { Checkbox } from '@uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 import { Ltpa350Step6Data } from '../data/ltpa350Step6Data';
-import type { Ltpa350Step6GridRow, Ltpa350Step6GridRow1 } from '../data/ltpa350Step6Data';
+import type { Ltpa350Step6GridRow } from '../data/ltpa350Step6Data';
 import { Ltpz014 } from './popups/Ltpz014';
 
 const DUMMY_DATA = {
@@ -48,8 +52,11 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
 
   const [isLtpz014Open, setIsLtpz014Open] = useState(false);
 
-  const bankSelectCellRenderer = (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
-    editableSelectCellRenderer<Ltpa350Step6GridRow>(params);
+  const bankSelectCellRenderer = useCallback(
+    (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+      editableSelectCellRenderer<Ltpa350Step6GridRow>(params),
+    []
+  );
 
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -58,254 +65,142 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
     type04: '',
     type05: '',
     type06: '',
+    type07: '',
+    type08: '',
+    type09: '',
+    type10: '',
+    type11: '',
+    type12: '',
+    type13: '',
+    type14: '',
+    type15: '',
+    type16: '',
+    type17: '',
+    type18: '',
+    type19: '',
+    type20: '',
+    type21: '',
+    type22: '',
+    type23: '',
+    type24: '',
+    type25: '',
+    type26: '',
   });
 
   const gridRows = useMemo<Ltpa350Step6GridRow[]>(
-    () => Ltpa350Step6Data.ImmediateDeposit,
+    () => Ltpa350Step6Data.agGridTable ?? [],
     []
   );
 
-  const gridRowsCard = useMemo<Ltpa350Step6GridRow1[]>(
-    () => Ltpa350Step6Data.ImmediateDepositCard,
-    []
+  const depositGridRows = useMemo(
+    () => gridRows.filter((row) => !row.isSumRow),
+    [gridRows]
   );
 
-  const columnDefs = useMemo<ColDef<Ltpa350Step6GridRow>[]>(() =>
-    [
-      { 
-        headerName: '구분', 
-        field: 'sortation', 
-        width: 70, 
-        cellClass: 'text-center' 
-      },
-      { 
-        headerName: '은행', 
-        field: 'bank', 
-        width: 110, 
-        cellClass: 'text-center editable-cell',
-        sortable: false,
-        filter: false,
-        editable: (params: EditableCallbackParams<Ltpa350Step6GridRow>) => params.data?.canEditExpiry ?? false,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: ['선택'],
-        },
-        cellRenderer: bankSelectCellRenderer,
-      },
-      { 
-        headerName: '고객계좌번호', 
-        field: 'customerAccountNum', 
-        width: 220, 
-        cellClass: 'text-left required editable-cell',
-        cellEditor: 'agInputCellEditor',
-        editable: true,
-      },
-      { 
-        headerName: '금액',
-        field: 'amount',
-        width: 150,
-        cellClass: 'text-right editable-cell',
-        sortable: false,
-        filter: false,
-        editable: false,
-        // cellEditor: 'agInputCellEditor',
-        valueFormatter: numberValueFormatter,
-        autoHeaderHeight: true,  // 줄바꿈 적용 시 필요
-        wrapHeaderText: true,    // 줄바꿈 적용 시 필요 
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) => (
-          <Grow className="w-full h-full flex items-center gap-1">
-            <input 
-              aria-label=""
-              className="ag-input-field-input ag-text-field-input w-[6.4rem]"
-              value={String(params.data?.withdrawalStatus ?? '')}
-              readOnly
-              onClick={(e) => e.stopPropagation()}
-            />
-            원
-          </Grow>
-        ),
-      },
-      { 
-        headerName: '출금동의상태', 
-        field: 'withdrawalStatus', 
-        width: 300, 
-        cellClass: 'text-center editable-cell' ,
-        sortable: false,
-        filter: false,
-        editable: true,
-        // cellEditor: 'agInputCellEditor',
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) => (
-          <Grow className="w-full flex items-center gap-1 h-full py-1">
-            <input 
-              aria-label=""
-              className="ag-input-field-input ag-text-field-input w-[6.4rem]"
-              value={String(params.data?.withdrawalStatus ?? '')}
-              readOnly
-              onClick={(e) => e.stopPropagation()}
-            />
-            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
-              출금동의
-              <PlusIcon color={'var(--color-secondary-50)'} />
-            </Button>            
-            <input
-              aria-label=""
-              className="ag-input-field-input ag-text-field-input w-[6.4rem]"
-              value={''}
-              readOnly
-              onClick={(e) => e.stopPropagation()}
-            />
-            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
-              스캔
-              <PlusIcon color={'var(--color-secondary-50)'} />
-            </Button>
-          </Grow>
-        ),
-      },
-      { 
-        headerName: '집금상태', 
-        field: 'collectionStatus',
-        flex: 1,
-        cellClass: 'text-left required editable-cell',
-        cellEditor: 'agInputCellEditor',
-        editable: true,
-      },
-      { 
-        headerName: '삭제', 
-        field: 'delete', 
-        width:100, 
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) => (
-          <Grow className="w-full h-full flex items-center gap-1">
-            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
-              삭제
-            </Button>            
-          </Grow>
-        ),
-      },
-    ],
-    []
-  );
+  const [selectedDepositCount, setSelectedDepositCount] = useState(0);
+  const [selectedDepositAmount, setSelectedDepositAmount] = useState(0);
 
-  const columnDefs1 = useMemo<ColDef<Ltpa350Step6GridRow1>[]>(() =>
-    [
-      { 
-        headerName: '구분', 
-        field: 'sortation', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '카드사', 
-        field: 'cardIssuer', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '카드번호', 
-        field: 'cardNumber', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      
-      },
-      { 
-        headerName: '유효기간', 
-        field: 'expiryDate', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '할부', 
-        field: 'installment', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '금액', 
-        field: 'amount', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false, 
-        filter: false,
-        editable: false,
-        valueFormatter: numberValueFormatter, 
-      },
-      { 
-        headerName: '후청구', 
-        field: 'postBilling', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '승인번호', 
-        field: 'approvalNumber', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '승인상태', 
-        field: 'approvalStatus', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false,
-        filter: false,
-        editable: false,
-      },
-      { 
-        headerName: '삭제', 
-        field: 'delete', 
-        width: 70, 
-        cellClass: 'text-center',
-        sortable: false, 
-        filter: false,
-        editable: false,
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) => (
-          <Grow className="w-full h-full flex items-center gap-1">
-            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
-              삭제
-            </Button>            
-          </Grow>
-        ),
-      },
-    ],
-    []
-  );
+  const depositSumRow = useMemo<Ltpa350Step6GridRow[]>(() => [
+    {
+      id: -1,
+      field01: String(selectedDepositCount),
+      field02: '선택합계',
+      field03: selectedDepositAmount.toLocaleString(),
+      field04: '',
+      field05: '',
+      isSumRow: true,
+    },
+  ], [selectedDepositAmount, selectedDepositCount]);
 
-  const pageSize = 4;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: gridRows,
-    pageSize,
-  });
+  // ─── 입금사항 dummy data ──────────────────────────────────────────────────────────
+  const columnDefs = useMemo<ColDef<Ltpa350Step6GridRow>[]>(() => [
+    {
+      headerName: '구분',
+      field: 'field01',
+      width: 110,
+      cellClass: (params) => (params.data?.isSumRow ? 'text-right pr-2 font-bold' : 'text-center editable-cell'),
+      sortable: false,
+      filter: false,
+      editable: (params) => !params.data?.isSumRow,
+      cellEditor: 'agInputCellEditor',
+      cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+        params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+    },
+    {
+      headerName: '입금일자',
+      field: 'field02',
+      sortable: false,
+      width: 200,
+      cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-left editable-cell'),
+      editable: (params) => !params.data?.isSumRow,
+      cellEditor: 'agInputCellEditor',
+      cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+        params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+    },
+    {
+      headerName: '금액',
+      field: 'field03',
+      width: 150,
+      cellClass: (params) => (params.data?.isSumRow ? 'text-right font-bold' : 'text-right'),
+      headerClass: 'px-0!',
+      sortable: false,
+      filter: false,
+      editable: (params) => !params.data?.isSumRow,
+      valueParser: (params) => {
+        const parsedValue = String(params.newValue ?? '').replace(/,/g, '').trim();
+        return parsedValue === '' ? '' : Number(parsedValue) || 0;
+      },
+      valueFormatter: (params) => {
+        if (params.data?.isSumRow) return String(params.value ?? '');
+        return numberValueFormatter(params);
+      },
+      cellClassRules: {
+        'ag-cell-error-border': (params) =>
+          !params.data?.isSumRow && (params.value === '' || params.value === undefined || Number(params.value) === 0),
+      },
+      cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+        params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+    },
+    {
+      headerName: '적요',
+      field: 'field04',
+      width: 200,
+      cellClass: (params) => (params.data?.isSumRow ? 'text-right font-bold' : 'text-right editable-cell'),
+      sortable: false,
+      filter: false,
+      editable: (params) => !params.data?.isSumRow,
+      cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+        params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+    },
+    {
+      headerName: '비고',
+      field: 'field05',
+      flex: 1,
+      cellClass: 'text-center editable-cell',
+      sortable: false,
+      filter: false,
+      editable: (params) => !params.data?.isSumRow,
 
-  const {
-    loadedCount: loadedCountCard,
-    totalCount: totalCountCard,
-    dataSource: dataSourceCard,
-    handleLoadAll: handleLoadAllCard,
-    handleLoadNext: handleLoadNextCard,
-  } = useAgGridInfiniteAppend({
-    allRows: gridRowsCard,
-    pageSize,
-  });
+    },
+  ], [bankSelectCellRenderer]);
+
+  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<Ltpa350Step6GridRow>(), []);
+
+  const handleDepositSelectionChanged = useCallback((event: SelectionChangedEvent<Ltpa350Step6GridRow>) => {
+    const selectedRows = event.api
+      .getSelectedNodes()
+      .map((node) => node.data)
+      .filter((row): row is Ltpa350Step6GridRow => row !== undefined && !row.isSumRow);
+
+    const nextSelectedAmount = selectedRows.reduce((total, row) => {
+      const parsedValue = String(row.field03 ?? '').replace(/,/g, '').trim();
+      return total + (parsedValue === '' ? 0 : Number(parsedValue) || 0);
+    }, 0);
+
+    setSelectedDepositCount(selectedRows.length);
+    setSelectedDepositAmount(nextSelectedAmount);
+
+  }, []);
 
   useEffect(() => {
     replaceTabs(DUMMY_DATA[viewKey]);
@@ -341,9 +236,9 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                       </FormCell>
                       <FormCell title={'조직구분'}>
                         <NativeSelect
-                          aria-label="설계조직 선택"
+                          aria-label="조직구분 선택"
                           value={form.type01}
-                          width="10rem"
+                          width={100}
                           required
                           onChange={(e) => setFormField('type01', e.target.value)}
                         >
@@ -389,7 +284,6 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                     <FormRow>
                       <FormCell title={'점검방법'}>
                         <Input
-                          aria-label=""
                           width={'14rem'}
                           value={form.type04}
                           onChange={(e) => setFormField('type04', e.target.value)}
@@ -400,7 +294,7 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                       </FormCell>
                       <FormCell title={'점검결과'}>
                         <NativeSelect
-                          aria-label="점검방법 선택"
+                          aria-label="점검결과 선택"
                           value={form.type05}
                           width="14rem"
                           onChange={(e) => setFormField('type05', e.target.value)}
@@ -434,7 +328,7 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                       </FormCell>
                     </FormRow>
                   </FormTable>
-    
+
                   <Grow>
                     <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                       조회
@@ -446,11 +340,12 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                       variant={'outlined'}
                       onClick={() => {}}
                       aria-label="새로고침"
-                    >00
+                    >
                       <ResetIcon />
                     </Button>
                   </Grow>
                 </Grow>
+
                 <Gcol placement={'ss'} className="w-full gap-1.5">
                   <Typo variant="heading-md">청약사항</Typo>
                   <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
@@ -495,112 +390,523 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                       </FormCell>
                       <FormCell title={'입금선택'} colSpan={4}>
                         <RadioGroup defaultValue="계약자">
-                            {[
-                              { value: '계약자', id: 'contractor', label: '계약자' },
-                              { value: '피보험자', id: 'insurant', label: '피보험자' },
-                            ].map((option) => (
-                              <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
+                          {[
+                            { value: '계약자', id: 'contractor', label: '계약자' },
+                            { value: '피보험자', id: 'insurant', label: '피보험자' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
                       </FormCell>
                     </FormRow>
                   </FormTable>
                 </Gcol>
-                
+                {/* 즉시집금 */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="즉시집금" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<Ltpa350Step6GridRow>
-                        getRowId={(params) => String(params.data.id)}
-                        columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          editable: false,
-                        }}
-                        domLayout="autoHeight"
-                        key={loadedCount}
-                        rowModelType="infinite"
-                        cacheBlockSize={pageSize}
-                        maxBlocksInCache={2}
-                        datasource={dataSource}
-                        singleClickEdit={true}
-                      />
-                    </div>
-                    <TableMore
-                      loadedCount={loadedCount}
-                      totalCount={totalCount}
-                      pageSize={pageSize}
-                      onLoadAll={handleLoadAll}
-                      onLoadNext={handleLoadNext}
-                    />
+                    <Table variant="default">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead  className="w-[4.5rem] min-w-[4.5rem]">구분</TableHead>
+                          <TableHead>은행</TableHead>
+                          <TableHead>고객계좌번호</TableHead>
+                          <TableHead>금액</TableHead>
+                          <TableHead>출금동의상태</TableHead>
+                          <TableHead>집금상태</TableHead>
+                          <TableHead>삭제</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="text-center">1</TableCell>
+                          <TableCell>
+                            <NativeSelect
+                              size="lg"
+                              value={form.type07}
+                              variant="default"
+                              width="full"
+                              onChange={(e) => setFormField('type07', e.target.value)}
+                            >
+                              {[
+                                { value: 'selection', id: 'type07-1', label: '선택1' },
+                                { value: 'selection2', id: 'type07-2', label: '선택2' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </TableCell>
+                          <TableCell>
+                            <Input size="lg" variant="default" placeholder="숫자만 입력" onChange={(e) => setFormField('type08', e.target.value)} value={form.type08} />
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input size="lg" variant="default" placeholder="" width={250} onChange={(e) => setFormField('type09', e.target.value)} value={form.type09} commaAmount />
+                              원
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                onChange={() => {}}
+                                size="lg"
+                                value=""
+                                variant="default"
+                                width={120}
+                                placeholder=""
+                                commaAmount
+                                readOnly
+                              />
+                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between! w-[80]">
+                                출금동의
+                                <PlusIcon color={'var(--color-secondary-50)'} />
+                              </Button>
+                              <Input
+                                onChange={() => {}}
+                                size="lg"
+                                value=""
+                                variant="default"
+                                width={120}
+                                placeholder=""
+                                commaAmount
+                                readOnly
+                              />
+                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+                                스캔
+                                <PlusIcon color={'var(--color-secondary-50)'} />
+                              </Button>
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              commaAmount
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center! w-auto">
+                              삭제
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="text-center">2</TableCell>
+                          <TableCell className="w-[100]">
+                            <NativeSelect
+                              size="lg"
+                              value={form.type07}
+                              variant="default"
+                              width="full"
+                              onChange={(e) => setFormField('type07', e.target.value)}
+                            >
+                              {[
+                                { value: 'selection', id: 'type07-1', label: '선택1' },
+                                { value: 'selection2', id: 'type07-2', label: '선택2' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.id} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </TableCell>
+                          <TableCell>
+                            <Input size="lg" variant="default" placeholder="숫자만 입력" onChange={(e) => setFormField('type08', e.target.value)} value={form.type08} />
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input size="lg" variant="default" placeholder="" width={250} onChange={(e) => setFormField('type09', e.target.value)} value={form.type09} commaAmount />
+                              원
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                onChange={() => {}}
+                                size="lg"
+                                value=""
+                                variant="default"
+                                width={120}
+                                placeholder=""
+                                commaAmount
+                                readOnly
+                              />
+                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between! w-[80]">
+                                출금동의
+                                <PlusIcon color={'var(--color-secondary-50)'} />
+                              </Button>
+                              <Input
+                                onChange={() => {}}
+                                size="lg"
+                                value=""
+                                variant="default"
+                                width={120}
+                                placeholder=""
+                                commaAmount
+                                readOnly
+                              />
+                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+                                스캔
+                                <PlusIcon color={'var(--color-secondary-50)'} />
+                              </Button>
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              commaAmount
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center! w-auto">
+                              삭제
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </TableFoldBody>
                 </TableFold>
-
+                {/* 카드 */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="카드" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<Ltpa350Step6GridRow1>
-                        getRowId={(params) => String(params.data.id)}
-                        columnDefs={columnDefs1}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          editable: false,
-                        }}
-                        domLayout="autoHeight"
-                        key={loadedCountCard}
-                        rowModelType="infinite"
-                        cacheBlockSize={pageSize}
-                        maxBlocksInCache={2}
-                        datasource={dataSourceCard}
-                        singleClickEdit={true}
-                      />
-                    </div>
-                    <TableMore
-                      loadedCount={loadedCountCard}
-                      totalCount={totalCountCard}
-                      pageSize={pageSize}
-                      onLoadAll={handleLoadAllCard}
-                      onLoadNext={handleLoadNextCard}
-                    />
+                    <Table variant="default">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[4.5rem] min-w-[4.5rem]">구분</TableHead>
+                          <TableHead>카드사</TableHead>
+                          <TableHead>카드번호</TableHead>
+                          <TableHead>유효기간</TableHead>
+                          <TableHead>할부</TableHead>
+                          <TableHead>금액</TableHead>
+                          <TableHead className="w-[5.5rem] min-w-[5.5rem] text-center">후청구</TableHead>
+                          <TableHead>승인번호</TableHead>
+                          <TableHead>승인상태</TableHead>
+                          <TableHead>삭제</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="w-[4.5rem] min-w-[4.5rem] text-center">1</TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type10}
+                                onChange={(e) => setFormField('type10', e.target.value)}
+                              />
+                              -
+                              <Input
+                                value={form.type11}
+                                onChange={(e) => setFormField('type11', e.target.value)}
+                              />
+                              -
+                              <Input
+                                value={form.type12}
+                                onChange={(e) => setFormField('type12', e.target.value)}
+                              />
+                              -
+                              <Input
+                                value={form.type13}
+                                onChange={(e) => setFormField('type13', e.target.value)}
+                              />
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type14}
+                                onChange={(e) => setFormField('type14', e.target.value)}
+                              />
+                              월
+                              <Input
+                                value={form.type15}
+                                onChange={(e) => setFormField('type15', e.target.value)}
+                              />
+                              년
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type16}
+                                onChange={(e) => setFormField('type16', e.target.value)}
+                                />
+                              월
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type17}
+                                onChange={(e) => setFormField('type17', e.target.value)} commaAmount
+                              />
+                              원
+                            </Grow>
+                          </TableCell>
+                          <TableCell className="w-[5.5rem] min-w-[5.5rem">
+                            <Grow>
+                              <Checkbox
+                                color="primary"
+                                errorMsg="선택은 필수입니다."
+                                errorPs="bl"
+                                onCheckedChange={() => {}}
+                                size="lg"
+                                variant="default"
+                              />
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center! w-auto">
+                              삭제
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="w-[4.5rem] min-w-[4.5rem] text-center">2</TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type18}
+                                onChange={(e) => setFormField('type18', e.target.value)}
+                              />
+                              -
+                              <Input
+                                value={form.type19}
+                                onChange={(e) => setFormField('type19', e.target.value)}
+                              />
+                              -
+                              <Input
+                                value={form.type20}
+                                onChange={(e) => setFormField('type20', e.target.value)}
+                              />
+                              -
+                              <Input
+                                value={form.type21}
+                                onChange={(e) => setFormField('type21', e.target.value)}
+                              />
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type22}
+                                onChange={(e) => setFormField('type22', e.target.value)}
+                              />
+                              월
+                              <Input
+                                value={form.type23}
+                                onChange={(e) => setFormField('type23', e.target.value)}
+                              />
+                              년
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                value={form.type24}
+                                onChange={(e) => setFormField('type24', e.target.value)} 
+                              />
+                              월
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Grow>
+                              <Input
+                                size="lg"
+                                value={form.type25}
+                                variant="default"
+                                width="full"
+                                placeholder=""
+                                onChange={(e) => setFormField('type25', e.target.value)}
+                                commaAmount
+                              />
+                              원
+                            </Grow>
+                          </TableCell>
+                          <TableCell className="w-[5.5rem] min-w-[5.5rem]">
+                            <Grow>
+                              <Checkbox
+                                color="primary"
+                                errorMsg="선택은 필수입니다."
+                                errorPs="bl"
+                                onCheckedChange={() => {}}
+                                size="lg"
+                                variant="default"
+                              />
+                            </Grow>
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              onChange={() => {}}
+                              size="lg"
+                              value=""
+                              variant="default"
+                              width="full"
+                              placeholder=""
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center! w-auto">
+                              삭제
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </TableFoldBody>
                 </TableFold>
-
+                {/* 입금사항 */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="입금사항" />
                   <TableFoldBody>
                     <div className="ag-theme-alpine">
                       <AgGridReact<Ltpa350Step6GridRow>
                         getRowId={(params) => String(params.data.id)}
+                        rowData={depositGridRows}
+                        pinnedBottomRowData={depositSumRow}
                         columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          editable: false,
-                        }}
+                        defaultColDef={{ sortable: false, resizable: false, editable: false }}
                         domLayout="autoHeight"
-                        key={loadedCount}
-                        rowModelType="infinite"
-                        cacheBlockSize={pageSize}
-                        maxBlocksInCache={2}
-                        datasource={dataSource}
                         singleClickEdit={true}
+                        rowSelection={{
+                          mode: 'multiRow' as const,
+                          checkboxes: true,
+                          headerCheckbox: true,
+                          enableClickSelection: false,
+                          enableSelectionWithoutKeys: true,
+                        }}
+                        onCellClicked={handleGridCellClickToggle}
+                        onSelectionChanged={handleDepositSelectionChanged}
+                        selectionColumnDef={{
+                          headerName: '',
+                          width: 50,
+                          cellClass: 'text-center p-0!',
+                          cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+                            params.node.rowPinned ? <b>선택건수</b> : null,
+                          cellClassRules: {
+                            'pointer-events-none': (params) => !!params.data?.locked,
+                          },
+                        }}
                       />
                     </div>
-                    <TableMore
-                      loadedCount={loadedCount}
-                      totalCount={totalCount}
-                      pageSize={pageSize}
-                      onLoadAll={handleLoadAll}
-                      onLoadNext={handleLoadNext}
-                    />
                   </TableFoldBody>
                 </TableFold>
+                {/* 수납사항 */}
+                <TableFold variant={'default'}>
+                  <TableFoldHead title="수납사항" />
+                  <TableFoldBody>
+                    <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                      <FormRow>
+                        <FormCell title={'영수할보험료'}>
+                          <Input aria-label="영수할보험료" width={'full'} commaAmount value={'46500'} readOnly />원
+                        </FormCell>
+                        <FormCell title={'입금보험료'}>
+                          <Input aria-label="입금보험료" width={'full'} commaAmount value={'46500'} readOnly />원
+                        </FormCell>
+                        <FormCell title={'차액보험료'}>
+                          <Input aria-label="차액보험료" width={'full'} commaAmount value={'46500'} readOnly />원
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'계약번호'}>
+                          <Input aria-label="계약번호" width={'full'} value={''} readOnly />
+                        </FormCell>
+                        <FormCell title={'계상일자'}>
+                          <Input aria-label="계상일자" width={'full'} value={''} readOnly />
+                        </FormCell>
+                        <FormCell title={'수납번호'}>
+                          <Input
+                            size="lg"
+                            value={form.type26}
+                            variant="default"
+                            width="full"
+                            placeholder=""
+                            onChange={(e) => setFormField('type26', e.target.value)}
+                          />
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                  </TableFoldBody>
+                </TableFold>
+                {/* 수납일자 */}
+                <Grow>
+                  <Grow>
+                    <Typo variant="heading-md" className="w-[7.1rem]">수납일자</Typo>
+                  </Grow>
+                  <Input aria-label="수납일자" width={100} value={'2024-03-18'} readOnly />
+                </Grow>
               </>
             )}
           </Gcol>
