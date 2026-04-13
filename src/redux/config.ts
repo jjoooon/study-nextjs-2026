@@ -125,48 +125,11 @@ export const devToolsConfig:
   | {
       trace: boolean;
       traceLimit: number;
-      actionSanitizer: (action: { type: string }) => { type: string };
-      stateSanitizer: (state: Record<string, unknown>) => Record<string, unknown>;
     } =
   process.env.NODE_ENV === 'development'
     ? {
         // DevTools의 액션 추적 기능 확장
         trace: true,
         traceLimit: 25,
-
-        // 액션 이름을 더 읽기 쉽게 변환 (정규식으로 모든 API/Service 자동 처리)
-        actionSanitizer: (action: { type: string }) => {
-          // 모든 API/Service 액션 자동 처리 (예: usersApi, authService, dashboardService 등)
-          const apiMatch = action.type.match(/^(\w+)(Api|Service)\/(.+)$/);
-          if (apiMatch) {
-            const [, apiName, rest] = apiMatch;
-            return {
-              ...action,
-              type: `[${apiName}] ${rest}`
-                .replace('/execute', '')
-                .replace('/pending', '⏳')
-                .replace('/fulfilled', '✅')
-                .replace('/rejected', '❌'),
-            };
-          }
-          return action;
-        },
-
-        // 상태를 더 읽기 쉽게 변환 (정규식으로 모든 API/Service 자동 처리)
-        stateSanitizer: (state: Record<string, unknown>) => {
-          const sanitized = { ...state };
-
-          // 불필요한 RTK Query 내부 상태 제거 (모든 API/Service 자동 처리)
-          Object.keys(sanitized).forEach((key) => {
-            if (key.endsWith('Api') || key.endsWith('Service')) {
-              const apiState = sanitized[key] as Record<string, unknown> | undefined;
-              if (apiState?.subscriptions) {
-                delete apiState.subscriptions;
-              }
-            }
-          });
-
-          return sanitized as Record<string, unknown>;
-        },
       }
     : false; // 프로덕션에서는 비활성화
