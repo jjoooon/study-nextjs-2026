@@ -19,9 +19,11 @@
   border-right: 0;
   border-top: .2rem solid #000;
 }
-.ag-center-cols-container > [role="row"]:nth-child(2n) {
+
+.ag-center-cols-container>[role="row"]:nth-child(2n) {
   background-color: transparent;
 }
+
 /* .ag-row-odd {
   background-color: transparent;
 } */
@@ -241,6 +243,13 @@
 .ag-cell-value {
   min-height: 100%;
   letter-spacing: -0.08rem;
+}
+
+/* 대상 컬럼: 2줄 셀 행 높이 고정 */
+.ag-cell.field02-cell .ag-cell-value {
+  display: flex !important;
+  flex-direction: column;
+  height: 2.9rem !important;
 }
 
 /* .ag-cell-wrapper .ag-cell-value {
@@ -516,3 +525,17 @@
   display: block;
   text-align: center;
 } */
+
+.ag-header-cell-label .ag-header-cell-text {
+  overflow: visible !important;
+}
+
+.ag-tooltip {
+  max-width: 30rem;
+  border-radius: 0.6rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  color: var(--color-gray-70);
+  letter-spacing: -0.03rem;
+  border: 1px solid var(--color-gray-20) !important;
+}

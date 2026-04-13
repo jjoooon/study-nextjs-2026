@@ -132,16 +132,12 @@ export default function Ltpa301Section() {
         mainBody={
           <Gcol className="w-full" placement="ss">
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable variant={'none'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
+              <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                 <FormRow>
                   <FormCell title={'증권번호'}>
                     <Input
-                      aria-label=""
-                      width="16rem"
-                      size={'sm'}
-                      value={form.type01 || 'LA20148716422000'}
-                      isFocused
-                      onChange={(e) => setFormField('type01', e.target.value)}
+                      aria-label="증권번호 입력"
+                      width={160}
                     />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
@@ -165,148 +161,133 @@ export default function Ltpa301Section() {
                 </Button>
               </Grow>
             </Grow>
+
             <Gcol gap={4}>
-              <Grow className="ag-theme-alpine w-full">
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="정액담보점검내역" />
-                  <TableFoldBody>
-                    <Gcol gap={4}>
-                      <Grow className="w-full" placement={'bwe'}>
-                        <FormTable
-                          caption="정액담보점검내역 테이블"
-                          cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
+              <TableFold variant={'accordion'}>
+                <TableFoldHead title="정액담보점검내역" />
+                <TableFoldBody>
+                  <FormTable
+                    caption="정액담보점검내역 테이블"
+                    cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
+                  >
+                    <FormRow>
+                      <FormCell title={'증권번호'}>
+                        <Input aria-label="증권번호 입력" width={160} readOnly />
+                        <Button
+                          aria-label="검색"
+                          variant={'outlined'}
+                          only="icon"
+                          size={'md'}
+                          color={'gray-light'}
                         >
-                          <FormRow>
-                            <FormCell title={'증권번호'}>
-                              <Input width="16rem" size={'sm'} value={''} readOnly />
-                              <Button
-                                aria-label="검색"
-                                variant={'outlined'}
-                                only="icon"
-                                size={'md'}
-                                color={'gray-light'}
-                              >
-                                <ArrowNext color={'var(--color-primary-50)'} />
-                              </Button>
-                            </FormCell>
-                            <FormCell title={'계약방법'}>
-                              <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
-                            </FormCell>
-                          </FormRow>
-                          <FormRow>
-                            <FormCell title={'점검일자'}>
-                              <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
-                            </FormCell>
-                            <FormCell title={'점검방법'}>
-                              <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
-                            </FormCell>
-                          </FormRow>
-                          <FormRow>
-                            <FormCell title={'점검상태'}>
-                              <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
-                            </FormCell>
-                            <FormCell title={'점검이력순번'}>
-                              <Input aria-label="" width="16rem" size={'sm'} value={''} readOnly />
-                            </FormCell>
-                          </FormRow>
-                        </FormTable>
-                      </Grow>
-                    </Gcol>
-                  </TableFoldBody>
-                </TableFold>
-              </Grow>
-              <Grow className="w-full">
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="정액담보점검결과">
-                    <Grow>
-                      <Typo variant="body-md">(단위: 원)</Typo>
-                    </Grow>
-                  </TableFoldHead>
-                  <TableFoldBody>
-                    <Gcol gap={4}>
-                      <div className="ag-theme-alpine">
-                        <AgGridReact<Ltpa301DummyDataRow>
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={Ltpa301DummyData}
-                          columnDefs={columnDefs}
-                          defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                            cellClass: 'text-center p-0!',
-                          }}
-                          singleClickEdit={true}
-                          onCellValueChanged={() => {}}
-                          rowSelection={{
-                            mode: 'multiRow',
-                            checkboxes: true,
-                            headerCheckbox: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            width: 40,
-                            cellClass: 'text-center p-0!',
-                            cellClassRules: {
-                              'pointer-events-none': (params) => !!params.data?.locked,
-                            },
-                          }}
-                          domLayout="autoHeight"
-                        />
-                      </div>
-                    </Gcol>
-                  </TableFoldBody>
-                </TableFold>
-              </Grow>
-              <Grow className="w-full">
-                <TableFold variant={'accordion'}>
-                  <TableFoldHead title="정액담보점검 관리">
-                    <Grow className="w-full justify-end" placement="ee">
-                      <Button color="gray" variant="outlined">
-                        실손특약조회
-                      </Button>
-                      <Button color="gray" variant="outlined">
-                        업계한도조회
-                      </Button>
-                      <Button color="primary" variant="contained">
-                        저장
-                      </Button>
-                    </Grow>
-                  </TableFoldHead>
-                  <TableFoldBody>
-                    <Gcol gap={4}>
-                      <Grow className="w-full" placement={'bwe'}>
-                        <FormTable caption="정액담보점검관리 테이블" cols={['w-[10rem]', 'flex-1']}>
-                          <FormRow>
-                            <FormCell title={'처리구분'}>
-                              <NativeSelect
-                                aria-label="처리구분 선택"
-                                width="13rem"
-                                value={form.type02}
-                                onChange={(e) => setFormField('type02', e.target.value)}
-                              >
-                                {[
-                                  { value: 'selection', id: 'type02-1', label: '처리구분' },
-                                  { value: 'selection2', id: 'type02-2', label: '처리내용' },
-                                ].map((option) => (
-                                  <NativeSelectOption key={option.id} value={option.value}>
-                                    {option.label}
-                                  </NativeSelectOption>
-                                ))}
-                              </NativeSelect>
-                            </FormCell>
-                          </FormRow>
-                          <FormRow>
-                            <FormCell title={'처리내용'}>
-                              <Textarea placeholder="" resize={true} />
-                            </FormCell>
-                          </FormRow>
-                        </FormTable>
-                      </Grow>
-                    </Gcol>
-                  </TableFoldBody>
-                </TableFold>
-              </Grow>
+                          <ArrowNext color={'var(--color-primary-50)'} />
+                        </Button>
+                      </FormCell>
+                      <FormCell title={'계약방법'}>
+                        <Input aria-label="계약방법 입력" width={160} readOnly />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'점검일자'}>
+                        <Input aria-label="점검일자 입력" width={160} readOnly />
+                      </FormCell>
+                      <FormCell title={'점검방법'}>
+                        <Input aria-label="점검방법 입력" width={160} readOnly />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'점검상태'}>
+                        <Input aria-label="점검상태 입력" width={160} readOnly />
+                      </FormCell>
+                      <FormCell title={'점검이력순번'}>
+                        <Input aria-label="점검이력순번 입력" width={160} readOnly />
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </TableFoldBody>
+              </TableFold>
+
+              <TableFold variant={'accordion'}>
+                <TableFoldHead title="정액담보점검결과">
+                  <Typo variant="body-md">(단위: 원)</Typo>
+                </TableFoldHead>
+                <TableFoldBody>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<Ltpa301DummyDataRow>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={Ltpa301DummyData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                        cellClass: 'text-center p-0!',
+                      }}
+                      singleClickEdit={true}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        checkboxes: true,
+                        headerCheckbox: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        width: 30,
+                        cellClass: 'text-center p-0!',
+                        cellClassRules: {
+                          'pointer-events-none': (params) => !!params.data?.locked,
+                        },
+                      }}
+                      domLayout="autoHeight"
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+
+              <TableFold variant={'accordion'}>
+                <TableFoldHead title="정액담보점검 관리">
+                  <Grow className="w-full justify-end" placement="ee">
+                    <Button color="gray" variant="outlined">
+                      실손특약조회
+                    </Button>
+                    <Button color="gray" variant="outlined">
+                      업계한도조회
+                    </Button>
+                    <Button color="primary" variant="contained">
+                      저장
+                    </Button>
+                  </Grow>
+                </TableFoldHead>
+                <TableFoldBody>
+                  <FormTable caption="정액담보점검관리 테이블" cols={['w-[10rem]', 'flex-1']}>
+                    <FormRow>
+                      <FormCell title={'처리구분'}>
+                        <NativeSelect
+                          aria-label="처리구분 선택"
+                          width={130}
+                          value={form.type02}
+                          onChange={(e) => setFormField('type02', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type02-1', label: '처리구분' },
+                            { value: 'selection2', id: 'type02-2', label: '처리내용' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'처리내용'}>
+                        <Textarea placeholder="" resize={true} />
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </TableFoldBody>
+              </TableFold>
             </Gcol>
+
             <Gcol className="w-full" gap={2}>
               <Gcol className="s-full" variant={'box-warning'} placement="ss">
                 <Typo variant={'body-sm'} icon={'warning'}>
