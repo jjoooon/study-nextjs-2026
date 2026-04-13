@@ -3,7 +3,7 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches:
-      - main  # main 브랜치에 push될 때 실행
+      - pub  # main 브랜치에 push될 때 실행
 
 permissions:
   contents: read
