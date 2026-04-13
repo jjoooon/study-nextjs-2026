@@ -3,10 +3,10 @@
  *
  * @description
  * 비즈니스 코드 처리를 위한 유틸리티 함수
- * - fetchBizcodeData: 순수 조회 (SSR/CSR 공통) → 데이터만 반환
- * - loadBizcode:      조회 + window.__BIZCODE__ 저장 (CSR 전용)
- * - hydrateBizcode:   이미 조회된 데이터를 window.__BIZCODE__에 저장 (SSR→CSR 전달용)
- * - getBizcode:       window.__BIZCODE__에서 데이터 반환
+ * - fetchBizcode: 순수 조회 (SSR/CSR 공통) → 데이터만 반환
+ * - loadBizcode:      조회 + window.bizCodes 저장 (CSR 전용)
+ * - hydrateBizcode:   이미 조회된 데이터를 window.bizCodes에 저장 (SSR→CSR 전달용)
+ * - getBizcode:       window.bizCodes에서 데이터 반환
  *
  * @key-format
  * 키는 슬래시(/) 구분 문자열로 관리됩니다.
@@ -18,7 +18,7 @@
  * const data = getBizcode('codeSearch', 'code1');
  *
  * // [SSR] layout에서 조회 → hydrator에서 저장 → page에서 사용
- * const result = await fetchBizcodeData({ codeSearch: ['code1'] });  // layout (서버)
+ * const result = await fetchBizcode({ codeSearch: ['code1'] });  // layout (서버)
  * hydrateBizcode(result);                                            // StoreHydrator (클라이언트)
  * const data = getBizcode('codeSearch', 'code1');                    // page (클라이언트)
  */
@@ -44,7 +44,7 @@ export interface PartCodeSearchGroup {
   code: BizCodeKey[];
 }
 
-/** loadBizcode / fetchBizcodeData 파라미터 템플릿 */
+/** loadBizcode / fetchBizcode 파라미터 템플릿 */
 export interface BizCodeTemplate {
   codeSearch?: BizCodeKey[];
   complexCodeSearch?: BizCodeKey[];
@@ -94,18 +94,18 @@ interface CodeFullSearchRawResponse {
   }[];
 }
 
-/** window.__BIZCODE__ 전역 저장소 타입 */
+/** window.bizCodes 전역 저장소 타입 */
 export type BizcodeStore = {
   [T in BizCodeType]: Record<BizCodeKey, BizcodeResultItem[]>;
 };
 
-/** fetchBizcodeData 반환 타입 (조회 결과 전체) */
+/** fetchBizcode 반환 타입 (조회 결과 전체) */
 export type BizcodeDataResult = Partial<BizcodeStore>;
 
 /** window 타입 확장 */
 declare global {
   interface Window {
-    __BIZCODE__: BizcodeStore;
+    bizCodes: BizcodeStore;
   }
 }
 
@@ -455,7 +455,7 @@ async function fetchXmlSearch(keys: BizCodeKey[]): Promise<Record<BizCodeKey, Bi
 }
 
 // ============================================================================
-// INTERNAL - window.__BIZCODE__ 관리
+// INTERNAL - window.bizCodes 관리
 // ============================================================================
 
 function initGlobalStore(): BizcodeStore {
@@ -463,8 +463,8 @@ function initGlobalStore(): BizcodeStore {
     throw new Error('[BizcodeUtils] window is not available (hydrateBizcode는 클라이언트에서만 사용 가능합니다)');
   }
 
-  if (!window.__BIZCODE__) {
-    window.__BIZCODE__ = {
+  if (!window.bizCodes) {
+    window.bizCodes = {
       codeSearch: {},
       complexCodeSearch: {},
       partCodeSearch: {},
@@ -473,7 +473,7 @@ function initGlobalStore(): BizcodeStore {
     };
   }
 
-  return window.__BIZCODE__;
+  return window.bizCodes;
 }
 
 // ============================================================================
@@ -492,14 +492,14 @@ function initGlobalStore(): BizcodeStore {
  *
  * @example
  * // SSR layout.tsx (서버 컴포넌트)
- * const result = await fetchBizcodeData({
+ * const result = await fetchBizcode({
  *   codeSearch: ['code1', 'code3/temp1//20130101'],
  *   complexCodeSearch: ['code3/temp1'],
  * });
  * // result = { codeSearch: { 'code1': [...], 'code3/temp1//20130101': [...] }, complexCodeSearch: { ... } }
  */
-export async function fetchBizcodeData(template: BizCodeTemplate): Promise<BizcodeDataResult> {
-  logger.debug('[BizcodeUtils] fetchBizcodeData start', template);
+export async function fetchBizcode(template: BizCodeTemplate): Promise<BizcodeDataResult> {
+  logger.debug('[BizcodeUtils] fetchBizcode start', template);
 
   const result: BizcodeDataResult = {};
   const tasks: Promise<void>[] = [];
@@ -522,18 +522,18 @@ export async function fetchBizcodeData(template: BizCodeTemplate): Promise<Bizco
 
   await Promise.all(tasks);
 
-  logger.debug('[BizcodeUtils] fetchBizcodeData complete', result);
+  logger.debug('[BizcodeUtils] fetchBizcode complete', result);
   return result;
 }
 
 /**
- * 조회 결과를 window.__BIZCODE__에 저장 (SSR→CSR 전달용)
+ * 조회 결과를 window.bizCodes에 저장 (SSR→CSR 전달용)
  *
  * @description
- * fetchBizcodeData로 조회한 결과를 window.__BIZCODE__에 병합 저장합니다.
+ * fetchBizcode로 조회한 결과를 window.bizCodes에 병합 저장합니다.
  * SSR layout에서 조회한 데이터를 클라이언트 StoreHydrator에서 저장할 때 사용합니다.
  *
- * @param data - fetchBizcodeData의 반환값
+ * @param data - fetchBizcode의 반환값
  *
  * @example
  * // StoreHydrator.tsx (클라이언트 컴포넌트)
@@ -556,7 +556,7 @@ export function hydrateBizcode(data: BizcodeDataResult): void {
  * 비즈니스 코드 조회 + 저장 (CSR 전용)
  *
  * @description
- * fetchBizcodeData로 조회한 뒤, 결과를 window.__BIZCODE__에 자동 저장합니다.
+ * fetchBizcode로 조회한 뒤, 결과를 window.bizCodes에 자동 저장합니다.
  * 클라이언트 컴포넌트에서 조회와 저장을 한번에 처리할 때 사용합니다.
  *
  * @param template - 조회할 비즈니스 코드 템플릿
@@ -569,7 +569,7 @@ export function hydrateBizcode(data: BizcodeDataResult): void {
  * });
  */
 export async function loadBizcode(template: BizCodeTemplate): Promise<void> {
-  const data = await fetchBizcodeData(template);
+  const data = await fetchBizcode(template);
   hydrateBizcode(data);
 }
 
@@ -577,7 +577,7 @@ export async function loadBizcode(template: BizCodeTemplate): Promise<void> {
  * 비즈니스 코드 데이터 반환
  *
  * @description
- * window.__BIZCODE__에 저장된 비즈니스 코드 데이터를 반환합니다.
+ * window.bizCodes에 저장된 비즈니스 코드 데이터를 반환합니다.
  *
  * @param type - 비즈니스 코드 유형
  * @param key - 슬래시 구분 키 문자열
@@ -590,12 +590,12 @@ export async function loadBizcode(template: BizCodeTemplate): Promise<void> {
 export function getBizcode(type: BizCodeType, key: BizCodeKey): BizcodeResultItem[] | undefined {
   logger.debug(`[BizcodeUtils] getBizcode: type=${type}, key=${key}`);
 
-  if (typeof window === 'undefined' || !window.__BIZCODE__) {
-    logger.warn('[BizcodeUtils] getBizcode: window.__BIZCODE__가 초기화되지 않았습니다.');
+  if (typeof window === 'undefined' || !window.bizCodes) {
+    logger.warn('[BizcodeUtils] getBizcode: window.bizCodes가 초기화되지 않았습니다.');
     return undefined;
   }
 
-  const typeData = window.__BIZCODE__[type];
+  const typeData = window.bizCodes[type];
   if (!typeData) {
     return undefined;
   }
@@ -608,7 +608,7 @@ export function getBizcode(type: BizCodeType, key: BizCodeKey): BizcodeResultIte
  */
 export function clearBizcode(): void {
   if (typeof window !== 'undefined') {
-    window.__BIZCODE__ = {
+    window.bizCodes = {
       codeSearch: {},
       complexCodeSearch: {},
       partCodeSearch: {},

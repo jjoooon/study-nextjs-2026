@@ -6,8 +6,8 @@ import type { BizcodeDataResult } from '@/shared/utils/bizcodeUtils';
 
 // ============================================================================
 // StoreHydrator (클라이언트 컴포넌트)
-// - SSR layout에서 fetchBizcodeData로 조회한 결과를 전달받아
-// - hydrateBizcode()로 window.__BIZCODE__에 저장
+// - SSR layout에서 fetchBizcode로 조회한 결과를 전달받아
+// - hydrateBizcode()로 window.bizCodes에 저장
 // ============================================================================
 
 interface StoreHydratorProps {

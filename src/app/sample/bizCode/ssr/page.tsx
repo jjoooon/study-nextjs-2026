@@ -38,7 +38,7 @@ export default function BizCodeSSRPage() {
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Bizcode SSR 샘플</h1>
       <p className="text-gray-600 mb-8">
-        layout.tsx(SSR) → fetchBizcodeData(template) → StoreHydrator → hydrateBizcode() → page.tsx → getBizcode()
+        layout.tsx(SSR) → fetchBizcode(template) → StoreHydrator → hydrateBizcode() → page.tsx → getBizcode()
       </p>
 
       {/* 각 search 타입별 결과 표시 */}
@@ -56,13 +56,13 @@ export default function BizCodeSSRPage() {
         </section>
       ))}
 
-      {/* window.__BIZCODE__ 상태 확인 */}
+      {/* window.bizCodes 상태 확인 */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">window.__BIZCODE__ 상태</h2>
+        <h2 className="text-xl font-semibold mb-4">window.bizCodes 상태</h2>
         <div className="bg-gray-50 border rounded-lg p-4">
           <pre className="text-xs overflow-auto max-h-96">
-            {typeof window !== 'undefined' && window.__BIZCODE__
-              ? JSON.stringify(window.__BIZCODE__, null, 2)
+            {typeof window !== 'undefined' && window.bizCodes
+              ? JSON.stringify(window.bizCodes, null, 2)
               : '초기화되지 않음'}
           </pre>
         </div>

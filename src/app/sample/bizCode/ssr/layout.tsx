@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-import { fetchBizcodeData } from '@/shared/utils/bizcodeUtils';
+import { fetchBizcode } from '@/shared/utils/bizcodeUtils';
 import type { BizCodeTemplate } from '@/shared/utils/bizcodeUtils';
 import { StoreHydrator } from './StoreHydrator';
 
 // ============================================================================
 // SSR Bizcode 샘플 - Layout (서버 컴포넌트)
-// 동일한 BizCodeTemplate으로 fetchBizcodeData 호출 → StoreHydrator로 전달
+// 동일한 BizCodeTemplate으로 fetchBizcode 호출 → StoreHydrator로 전달
 // ============================================================================
 
 /** 이 페이지에서 사용할 비즈코드 템플릿 (5개 search 타입 전체) */
@@ -27,7 +27,7 @@ interface LayoutProps {
 }
 
 export default async function BizCodeSSRLayout({ children }: LayoutProps) {
-  const bizcodeData = await fetchBizcodeData(BIZCODE_TEMPLATE);
+  const bizcodeData = await fetchBizcode(BIZCODE_TEMPLATE);
 
   return (
     <StoreHydrator bizcodeData={bizcodeData}>

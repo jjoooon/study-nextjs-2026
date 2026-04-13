@@ -8,21 +8,21 @@
 
 | 함수 | 환경 | 역할 |
 |---|---|---|
-| `fetchBizcodeData` | SSR/CSR 공통 | 순수 조회, 데이터만 반환 (저장 안함) |
-| `hydrateBizcode` | 클라이언트 전용 | 조회 결과를 `window.__BIZCODE__`에 저장 |
-| `loadBizcode` | 클라이언트 전용 | `fetchBizcodeData` + `hydrateBizcode` 한번에 |
-| `getBizcode` | 클라이언트 전용 | `window.__BIZCODE__`에서 데이터 반환 |
-| `clearBizcode` | 클라이언트 전용 | `window.__BIZCODE__` 전체 초기화 |
+| `fetchBizcode` | SSR/CSR 공통 | 순수 조회, 데이터만 반환 (저장 안함) |
+| `hydrateBizcode` | 클라이언트 전용 | 조회 결과를 `window.bizCodes`에 저장 |
+| `loadBizcode` | 클라이언트 전용 | `fetchBizcode` + `hydrateBizcode` 한번에 |
+| `getBizcode` | 클라이언트 전용 | `window.bizCodes`에서 데이터 반환 |
+| `clearBizcode` | 클라이언트 전용 | `window.bizCodes` 전체 초기화 |
 
 ## 아키텍처
 
 ```
 [CSR] 조회 + 저장 한번에
-loadBizcode(template)  →  내부: fetchBizcodeData + hydrateBizcode
-getBizcode(type, key)  →  window.__BIZCODE__에서 조회
+loadBizcode(template)  →  내부: fetchBizcode + hydrateBizcode
+getBizcode(type, key)  →  window.bizCodes에서 조회
 
 [SSR] 조회와 저장을 분리
-layout.tsx        →  fetchBizcodeData(template)    // 서버에서 순수 조회
+layout.tsx        →  fetchBizcode(template)    // 서버에서 순수 조회
 StoreHydrator.tsx →  hydrateBizcode(data)           // 클라이언트에서 window에 저장
 page.tsx          →  getBizcode(type, key)           // 클라이언트에서 조회
 ```
@@ -39,10 +39,10 @@ page.tsx          →  getBizcode(type, key)           // 클라이언트에서 
 - 2번째 이후 값은 선택이며, 없으면 생략하거나 빈 문자열로 표현 (e.g., `'a//c'`)
 - 유틸 내부에서 `key.split('/')` → 각 search 타입에 맞는 서버 파라미터로 매핑
 
-## 저장소: window.__BIZCODE__
+## 저장소: window.bizCodes
 
 ```typescript
-window.__BIZCODE__ = {
+window.bizCodes = {
   codeSearch:        { 'CD001': ResultItem[], 'CD002/2/PPR01/20130101': ResultItem[] },
   complexCodeSearch: { 'REL01': ResultItem[], 'REL02/DTL01/DTL02': ResultItem[] },
   partCodeSearch:    { 'PARAM01': ResultItem[], 'PARAM02/PARAM03': ResultItem[] },
@@ -242,7 +242,7 @@ export default function Page() {
 
 ```typescript
 // 1. layout.tsx (서버 컴포넌트) - 순수 조회
-import { fetchBizcodeData, BizCodeTemplate } from '@/shared/utils/bizcodeUtils';
+import { fetchBizcode, BizCodeTemplate } from '@/shared/utils/bizcodeUtils';
 
 const TEMPLATE: BizCodeTemplate = {
   codeSearch: ['CD001'],
@@ -250,7 +250,7 @@ const TEMPLATE: BizCodeTemplate = {
 };
 
 export default async function Layout({ children }) {
-  const data = await fetchBizcodeData(TEMPLATE);
+  const data = await fetchBizcode(TEMPLATE);
   return <StoreHydrator bizcodeData={data}>{children}</StoreHydrator>;
 }
 
@@ -258,7 +258,7 @@ export default async function Layout({ children }) {
 import { hydrateBizcode } from '@/shared/utils/bizcodeUtils';
 
 export function StoreHydrator({ bizcodeData, children }) {
-  hydrateBizcode(bizcodeData);  // window.__BIZCODE__에 저장
+  hydrateBizcode(bizcodeData);  // window.bizCodes에 저장
   return <>{children}</>;
 }
 
@@ -286,6 +286,6 @@ export default function Page() {
 - `loadBizcode`는 비동기 함수이므로 `await`으로 호출해야 합니다.
 - `getBizcode`는 데이터가 먼저 저장된 후에 사용해야 합니다.
 - 조회 결과가 없으면 `undefined`를 반환합니다.
-- `window.__BIZCODE__`는 클라이언트 전용입니다. SSR에서는 `fetchBizcodeData`를 사용하세요.
+- `window.bizCodes`는 클라이언트 전용입니다. SSR에서는 `fetchBizcode`를 사용하세요.
 - 1번째 값만 필수이며, 나머지는 선택입니다. 단일 값 `'CD001'`도 정상 입력입니다.
 - `clearBizcode()`로 전역 저장소를 초기화할 수 있습니다.

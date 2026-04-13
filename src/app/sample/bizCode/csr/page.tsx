@@ -6,7 +6,7 @@ import type { BizcodeResultItem, BizCodeTemplate } from '@/shared/utils/bizcodeU
 
 // ============================================================================
 // CSR Bizcode 샘플
-// loadBizcode(template) → window.__BIZCODE__ 저장 → getBizcode()로 조회
+// loadBizcode(template) → window.bizCodes 저장 → getBizcode()로 조회
 // ============================================================================
 
 /** 5개 search 타입 전체 템플릿 */
@@ -68,7 +68,7 @@ export default function BizCodeCSRPage() {
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Bizcode CSR 샘플</h1>
       <p className="text-gray-600 mb-8">
-        loadBizcode(template) → window.__BIZCODE__ 저장 → getBizcode()로 조회
+        loadBizcode(template) → window.bizCodes 저장 → getBizcode()로 조회
       </p>
 
       {/* 액션 버튼 */}
@@ -106,13 +106,13 @@ export default function BizCodeCSRPage() {
             </section>
           ))}
 
-          {/* window.__BIZCODE__ 상태 확인 */}
+          {/* window.bizCodes 상태 확인 */}
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">window.__BIZCODE__ 상태</h2>
+            <h2 className="text-xl font-semibold mb-4">window.bizCodes 상태</h2>
             <div className="bg-gray-50 border rounded-lg p-4">
               <pre className="text-xs overflow-auto max-h-96">
-                {typeof window !== 'undefined' && window.__BIZCODE__
-                  ? JSON.stringify(window.__BIZCODE__, null, 2)
+                {typeof window !== 'undefined' && window.bizCodes
+                  ? JSON.stringify(window.bizCodes, null, 2)
                   : '초기화되지 않음'}
               </pre>
             </div>
