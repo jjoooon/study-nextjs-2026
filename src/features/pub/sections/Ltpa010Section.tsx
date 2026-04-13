@@ -52,7 +52,6 @@ export default function Ltpa010Section() {
     {
       headerName: '상품명/구분',
       headerClass: 'ag-header-right-divider',
-
       children: [
         {
           flex: 2,
@@ -82,13 +81,14 @@ export default function Ltpa010Section() {
             );
 
             return (
-              <Grow placement="cc" className="h-full pr-1">
-                {data?.field03}
+              <Grow placement="cc" className="h-full pr-1 ">
+                <div className="truncate">{data?.field03}</div>
+                
                 {hasTooltip ? (
                   <Tooltip>
                     <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
                     <TooltipContent align="center" side="bottom" sideOffset={0} variant="default" className="w-[16rem]">
-                      <div
+                      <div 
                         dangerouslySetInnerHTML={{
                           __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
                         }}
@@ -424,7 +424,7 @@ export default function Ltpa010Section() {
                 variant={'none'}
                 lineTop={false}
                 caption="설계번호"
-                cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
+                cols={['w-[6rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>
@@ -481,7 +481,7 @@ export default function Ltpa010Section() {
                       aria-label="설계경로 선택"
                       value={form.type05}
                       onChange={(e) => setFormField('type05', e.target.value)}
-                      width={'10.8rem'}
+                      width={110}
                     >
                       {[
                         { value: 'selection', id: 'personalinfo-1', label: '전체' },
@@ -498,7 +498,7 @@ export default function Ltpa010Section() {
                   <FormCell title={'설계조직'} colSpan={3}>
                     <NativeSelect
                       aria-label="설계조직 선택"
-                      width="10.8rem"
+                      width={110}
                       value={form.type07}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
@@ -512,11 +512,11 @@ export default function Ltpa010Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input aria-label="" width={'5.9rem'} value={'1301097'} required />
+                    <Input aria-label="" width={80} value={'1301097'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'9.1rem'} value={'신부산GA지점'} readOnly />
+                    <Input aria-label="" width={180} value={'신부산GA지점'} readOnly />
                   </FormCell>
                   <FormCell title={'영업가족'}>
                     <NativeSelect

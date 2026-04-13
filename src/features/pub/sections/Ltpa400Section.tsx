@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -30,8 +30,6 @@ import {
   type Ltpa400DummyDataRow2,
 } from '../data/ltpa400Data';
 
-// Side Effects
-ModuleRegistry.registerModules([AllCommunityModule]);
 // Tab 정의
 type Ltpa400TabType = { name: string; value: string; label: string };
 const DATA_TABS: Ltpa400TabType[] = [
@@ -39,98 +37,96 @@ const DATA_TABS: Ltpa400TabType[] = [
   { name: '모집자 설계', value: 'tab2', label: '모집자 설계' },
 ];
 
-// data
+// Side Effects
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-
-  // Tab1 AGGrid Column
   const columnDefs: ColDef<Ltpa400DummyDataRow>[] = [
     {
       headerName: '설계접수번호',
       field: 'field01',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 110,
+      cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field02',
       width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'truncate',
     },
     {
       headerName: '대리점',
       field: 'field03',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
+      minWidth: 150,
+      cellClass: 'truncate',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field03' }),
     },
     {
       headerName: '사용인',
       field: 'field04',
-      width: 160,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 120,
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
-        <span className="flex items-center gap-1">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="none" size="md" only="icon">
-                {params.data?.field04}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent variant="default" side="top" align="center" sideOffset={5}>
-              {'사용인에 대한 안내 메시지입니다.'}
-            </TooltipContent>
-          </Tooltip>
-        </span>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="none" size="md" only="icon" className="truncate w-full block">
+              {params.data?.field04}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent variant="default" side="top" align="center" sideOffset={5}>
+            {'사용인에 대한 안내 메시지입니다.'}
+          </TooltipContent>
+        </Tooltip>
       ),
     },
     {
       headerName: '상품',
       field: 'field05',
       width: 120,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
     },
     {
       headerName: '고객명',
       field: 'field06',
       width: 130,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'truncate text-center',
     },
     {
       headerName: '요청일시',
       field: 'field07',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 120,
+      cellClass: 'text-center',
     },
     {
       headerName: '처리일시',
       field: 'field08',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 120,
+      cellClass: 'text-center',
     },
     {
       headerName: '진행상태',
       field: 'field09',
       width: 130,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
     },
     {
       headerName: '담당SM',
       field: 'field10',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 120,
+       cellClass: 'truncate text-center',
     },
     {
       headerName: '지원SM',
       field: 'field11',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 120,
+       cellClass: 'truncate text-center',
     },
     {
       headerName: '설계번호',
       field: 'field12',
-      width: 150,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 110,
+      cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
           {params.data?.field12 ?? ''}
@@ -144,80 +140,68 @@ export default function Ltpa400Section() {
     {
       headerName: 'No',
       field: 'id',
-      width: 80,
-      cellClass: 'flex! items-center! justify-center!',
+      width: 50,
+      cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field01_01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '대리점코드',
       field: 'field02_01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '대리점명',
       field: 'field03_01',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '사용인코드',
       field: 'field04_01',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '사용인명',
       field: 'field05_01',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '상품명',
       field: 'field06_01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '플랜명',
       field: 'field07_01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '고객명',
       field: 'field08_01',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '설계일자',
       field: 'field09_01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '담당SM',
       field: 'field10_01',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '설계번호',
       field: 'field11_01',
       flex: 1.4,
-      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '증권번호',
       field: 'field12_01',
       flex: 1.4,
-      cellClass: 'flex! items-center! justify-center!',
     },
   ];
 
@@ -264,7 +248,7 @@ export default function Ltpa400Section() {
                 <>
                   <Grow className="w-full mb-3" variant="box" placement={'bwe'}>
                     <FormTable
-                      variant={'none'}
+                      variant={'head'}
                       lineTop={false}
                       caption="장기보험 설계요청 조회 테이블"
                       cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}
@@ -347,6 +331,9 @@ export default function Ltpa400Section() {
                       getRowId={(params) => String(params.data.id)}
                       rowData={Ltpa400DummyData}
                       columnDefs={columnDefs}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      tooltipHideDelay={3000}
                       defaultColDef={{
                         sortable: false,
                         resizable: false,
@@ -365,13 +352,13 @@ export default function Ltpa400Section() {
                       variant={'none'}
                       lineTop={false}
                       caption="장기보험 모집자 설계 조회 테이블"
-                      cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
+                      cols={['w-[6rem]', 'w-[10rem]', 'w-[8rem]', 'w-[10rem]', 'w-[8rem]', 'w-[auto]']}
                     >
                       <FormRow>
                         <FormCell title={'소속'}>
                           <NativeSelect
                             aria-label="소속 선택"
-                            width="12rem"
+                            width={120}
                             value={form.type04}
                             onChange={(e) => setFormField('type04', e.target.value)}
                             readOnly
@@ -387,7 +374,7 @@ export default function Ltpa400Section() {
                           </NativeSelect>
                           <NativeSelect
                             aria-label="사업단 선택"
-                            width="15.2rem"
+                            width={152}
                             value={form.type05}
                             onChange={(e) => setFormField('type05', e.target.value)}
                             readOnly
@@ -403,7 +390,7 @@ export default function Ltpa400Section() {
                           </NativeSelect>
                           <NativeSelect
                             aria-label="지점 선택"
-                            width="15rem"
+                            width={152}
                             value={form.type06}
                             onChange={(e) => setFormField('type06', e.target.value)}
                             readOnly
@@ -419,11 +406,11 @@ export default function Ltpa400Section() {
                           </NativeSelect>
                         </FormCell>
                         <FormCell title={'담당SM'}>
-                          <Input aria-label="" width={'15rem'} value={'12345678'} readOnly />
+                          <Input aria-label="" width={152} value={'12345678'} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+                          <Input aria-label="" width={152} value={'김한화'} readOnly />
                         </FormCell>
                         <FormCell title={'설계일자'}>
                           <DatePickerInput
@@ -431,7 +418,6 @@ export default function Ltpa400Section() {
                             onChange={() => {}}
                             rangeValue={{ from: '2026-02', to: '2026-03' }}
                             size="lg"
-                            width="sm"
                           />
                         </FormCell>
                       </FormRow>
@@ -439,7 +425,7 @@ export default function Ltpa400Section() {
                         <FormCell title={'대리인'}>
                           <NativeSelect
                             aria-label="대리점 선택"
-                            width="12rem"
+                            width={120}
                             value={form.type07}
                             onChange={(e) => setFormField('type07', e.target.value)}
                           >
@@ -454,21 +440,21 @@ export default function Ltpa400Section() {
                           </NativeSelect>
                           <Input
                             aria-label=""
-                            width={'12rem'}
+                            width={120}
                             value={form.type07 || '12345678'}
                             onChange={(e) => setFormField('type07', e.target.value)}
                           />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="" width={'15rem'} value={'신부산지점GA지점'} readOnly />
+                          <Input aria-label="" width={152} value={'신부산지점GA지점'} readOnly />
                         </FormCell>
                         <FormCell title={'사용인'}>
-                          <Input aria-label="사용인" width={'15rem'} value={'12345678'} readOnly />
+                          <Input aria-label="사용인" width={152} value={'12345678'} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="" width={'15rem'} value={'김한화'} readOnly />
+                          <Input aria-label="" width={152} value={'김한화'} readOnly />
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -508,10 +494,14 @@ export default function Ltpa400Section() {
                       onCellValueChanged={() => {}}
                       rowSelection={{
                         mode: 'singleRow',
+                        
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
-                      selectionColumnDef={{ headerName: '선택' }}
+                      selectionColumnDef={{ 
+                        headerName: '선택',
+                        width: 30, 
+                      }}
                       onGridReady={(params) => {
                         params.api.forEachNode((node) => {
                           if (node.data?.isCheck) {

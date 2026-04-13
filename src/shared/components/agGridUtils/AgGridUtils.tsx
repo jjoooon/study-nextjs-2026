@@ -576,13 +576,13 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
 
     return div === 'col' ? (
       <Grid className="w-full h-[5.6rem] grid-rowss-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-        <div className="h-[2.8rem] w-full leading-[2.8rem]">{renderCell(aNode)}</div>
-        <div className="h-[2.8rem] w-full leading-[2.8rem]">{renderCell(bNode)}</div>
+        <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(aNode)}</div>
+        <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(bNode)}</div>
       </Grid>
     ) : (
       <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200" gap={0}>
-        <div>{renderCell(aNode)}</div>
-        <div>{renderCell(bNode)}</div>
+        <div className="truncate">{renderCell(aNode)}</div>
+        <div className="truncate">{renderCell(bNode)}</div>
       </Grid>
     );
   };
