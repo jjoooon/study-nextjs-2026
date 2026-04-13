@@ -52,6 +52,7 @@ interface FormTrProps {
   children?: ReactNode;
   vertical?: boolean;
   cols?: string[]; // ["col-s", "", "col-l", ""]
+  className?: string;
 }
 
 // vertical context 생성
@@ -250,19 +251,20 @@ export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
   );
 };
 
-export const FormRow = ({ children, vertical, cols: _cols }: FormTrProps) => {
+export const FormRow = ({ children, vertical, cols: _cols, className }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
       <tr
-        className={
+        className={cn(
           vertical
             ? `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
-      [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
-      [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
-      [&>td]:min-h-[3rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
-      [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! `
-            : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!'
-        }
+            [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
+            [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
+            [&>td]:min-h-[3rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
+            [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! `
+            : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!',
+          className
+        )}
       >
         {children}
       </tr>

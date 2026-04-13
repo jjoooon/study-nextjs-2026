@@ -1,4 +1,5 @@
 import { Grow, Typo } from '@atoms';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 interface KeyValueItem {
   key: React.ReactNode;
@@ -30,11 +31,17 @@ interface KeyValueItemProps {
   label: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
+  variant?: 'default' | 'info' | 'error';
 }
 
-export const KeyValueItem = ({ label, children, className }: KeyValueItemProps) => {
+export const KeyValueItem = ({ label, children, className, variant = 'default' }: KeyValueItemProps) => {
+  const variantStyles = {
+    default: '',
+    info: '[&>div]:text-[1.3rem] [&>div]:text-[var(--color-gray-70)] flex gap-2 items-center [&>div+div]:text-[var(--color-gray-100)] [&>div+div]:font-bold',
+    error: 'text-[var(--color-text-danger)]',
+  };
   return (
-    <Grow className={className}>
+    <Grow className={cn(className, variantStyles[variant])}>
       <Typo tag="div">{label}</Typo>
       <Grow>{children}</Grow>
     </Grow>

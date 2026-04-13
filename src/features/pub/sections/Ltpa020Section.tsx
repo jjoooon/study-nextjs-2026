@@ -1,25 +1,30 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
-import { AdderIcon2, AiIcon, CalendarIcon, ChevronDownIcon, FileItemIcon, ResetIcon, SearchIcon } from '@icons';
+import { AdderIcon2, AiIcon, CalendarIcon, ChevronDownIcon, FileItemIcon, ResetIcon, SearchIcon, ZoomInIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import * as React from 'react';
-import { PageID } from '@/shared/components/features/PageID';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
+import { PageID } from '@features/PageID';
+import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { useCallback, useState } from 'react';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridReact } from 'ag-grid-react';
-import { Badge } from '@/shared/components/uiux/Badge';
+import { Badge } from '@uiux/Badge';
+import { KeyValueItem } from '@common/KeyValueList';
+import { InputCombo } from '@common/InputCombo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+
+
 import {
   dummyData,
   dummyData2,
@@ -28,6 +33,7 @@ import {
   type DummyDataType2,
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
+import { DatePickerInput } from '@/shared/components/common/DatePicker';
 
 const productCategoryOptions = [
   { value: 'all', label: '전체' },
@@ -50,12 +56,6 @@ const productFeatureOptions = [
   { value: 'longTerm', label: '연만기' },
 ];
 
-const recentCustomerTags = [
-  { id: 1, label: '홍길동 42세(남)' },
-  { id: 2, label: '반짝반짝빛... 42세(남)' },
-  { id: 3, label: '김한화 55세(남)' },
-  { id: 4, label: '피보험자 63세(여)' },
-];
 
 const newCustomerTags = [
   { id: 1, label: '32세(여) 1급', selected: true },
@@ -194,9 +194,6 @@ export default function Ltpa020Section() {
       detail: '9형(올인원플랜)(15~89세)...',
     },
   ];
-
-
-
 
   // 상품선택
   const [checkedMap, setCheckedMap] = React.useState({ selected: true, unselected: false });
@@ -360,6 +357,25 @@ export default function Ltpa020Section() {
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
+
+
+
+  const [tabSelectValue, setTabSelectValue] = useState('tab1');
+  type ComboFieldKey = 'policyNumber';
+  const [comboValues, setComboValues] = useState<Record<ComboFieldKey, string>>({
+    policyNumber: '',
+  });
+  const handleComboValueChange = useCallback(
+    <TField extends ComboFieldKey>(field: TField) =>
+      (nextValue: string) => {
+        setComboValues((prev) => ({
+          ...prev,
+          [field]: nextValue,
+        }));
+      },
+    []
+  );
+
   return (
     <>
       <LayoutHead>
@@ -367,365 +383,183 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className='w-full' gap={0}>
-            <Gcol
-              className="w-full"
-              gap={4}
-            >
-              <TabPager
-                active={activeTab}
-                data={ltpa020Tabs}
-                getValue={(tab) => tab.value}
-                onRemove={() => {}}
-                renderTab={(tab) => (
-                  <Grow
-                    className={`rounded-[0.4rem] px-[1.8rem] py-[0.4rem] ${
-                      activeTab === tab.value
-                        ? 'bg-[linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] text-white'
-                        : 'text-[#453C38]'
-                    }`}
-                    gap={0.4}
-                    placement="sc"
-                  >
-                    {tab.value === 'product' ? (
-                      <FileItemIcon color={activeTab === tab.value ? '#FFFFFF' : '#777777'} size={18} />
-                    ) : (
-                      <AiIcon
-                        className="scale-[0.72]"
-                        color={activeTab === tab.value ? '#FFE7C2' : '#F4E7D0'}
-                        color2={activeTab === tab.value ? '#FFFFFF' : '#777777'}
-                      />
-                    )}
-                    <Typo tag="span" variant="body-sm" weight="bold" className="whitespace-nowrap">
-                      {tab.label}
-                    </Typo>
-                  </Grow>
-                )}
-                setActive={(value) => {
-                  if (value === 'product' || value === 'recommend') {
-                    setActiveTab(value);
-                  }
-                }}
-                variant="box"
-                visibleCount={4}
-              >
-                <Grow className="flex w-full" placement='ss'>
-                  <div className={`w-full ${activeTab === 'product' ? 'block' : 'hidden'}`}>
-                    <Grow className='w-full' placement='ss' gap={5}>
-                      <TableFold>
-                        <TableFoldHead title="상품정보"></TableFoldHead>
-                        <TableFoldBody className="w-full">
-                          <div className="ag-theme-alpine w-full h-[50rem]!">
-                            <AgGridReact<DummyDataType>
-                              getRowId={(params) => String(params.data.id)}
-                              noRowsOverlayComponent={AgGridEmptyComponent}
-                              rowData={dummyData}
-                              columnDefs={columnDefs}
-                              defaultColDef={{
-                                sortable: false,
-                                resizable: false,
-                              }}
-                              headerHeight={30}
-                              rowHeight={30}
-                              domLayout="normal"
-                            />
-                          </div>
-                        </TableFoldBody>
-                      </TableFold>
-                      <Gcol className='max-w-[42.5rem]'>
-                        <TableFold>
-                          <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"></TableFoldHead>
-                          <TableFoldBody>
-                            <Gcol className='w-full' gap={5}>
-                              <Gcol className='w-full'>
-                                  <div className="ag-theme-alpine w-full h-60!">
-                                  <AgGridReact<DummyDataType2>
-                                    getRowId={(params) => String(params.data.id)}
-                                    noRowsOverlayComponent={AgGridEmptyComponent}
-                                    rowData={dummyData2}
-                                    columnDefs={columnDefs2}
-                                    defaultColDef={{
-                                      sortable: false,
-                                      resizable: false,
-                                    }}
-                                    headerHeight={30}
-                                    rowHeight={30}
-                                    domLayout="normal"
-                                  />
-                                </div>
-                              </Gcol>
-                              <Gcol className='w-full'>
-                                <TabPager
-                                    data={tabs}
-                                    active={active}
-                                    setActive={setActive}
-                                    removable={false}
-                                    onRemove={handleRemove}
-                                    visibleCount={4}
-                                    variant="default"
-                                    hasTableBelow={true}
-                                    error={false}
-                                    errorMsg="에러 메시지 예시"
-                                    getValue={(tab) => String(tab.value)}
-                                    renderTab={(tab) => <span>{tab.label}</span>}
-                                    renderDropdownItem={false}
-                                  >
-                                  <div className="ag-theme-alpine w-full h-[30rem]! ag-border-t">
-                                    <AgGridReact<DummyDataType3>
-                                      getRowId={(params) => String(params.data.id)}
-                                      noRowsOverlayComponent={AgGridEmptyComponent}
-                                      rowData={dummyData3}
-                                      columnDefs={columnDefs3}
-                                      defaultColDef={{
-                                        sortable: false,
-                                        resizable: false,
-                                      }}
-                                      headerHeight={30}
-                                      rowHeight={30}
-                                      domLayout="normal"
-                                    />
-                                  </div>
-                                </TabPager>
-                              </Gcol>
-                            </Gcol>  
-                          </TableFoldBody>
-                        </TableFold>
-                      </Gcol>
-                    </Grow>
-                  </div>
-                </Grow>
-              </TabPager>
-            </Gcol>
+          <Gcol className='w-full' gap={1.5} placement='ss'>
+            <Grow>
+              <RadioGroup
+                value={tabSelectValue}
+                onValueChange={(value) => setTabSelectValue(value)}>
+                <RadioGroupItem variant={'button'} value="tab1">상품선택</RadioGroupItem>
+                <RadioGroupItem variant={'button'} value="tab2">추천설계</RadioGroupItem>
+              </RadioGroup>
+            </Grow>
 
+            <Gcol variant="box-round" placement="ss" className='bg-[var(--color-blue-gray-15)]'>
+              <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
+                <FormRow className='items-start!'>
+                  <FormCell title={'고객정보'} className='align-top [&>span]:block [&>span]:pt-1'>
+                    <Grow placement='ss' gap={5}>
+                      <RadioGroup value={customerType} onValueChange={setCustomerType} className="gap-[0.4rem] shrink-0 flex-nowrap">
+                        <RadioGroupItem value="recent" variant="button" size="md">
+                          최근등록고객
+                        </RadioGroupItem>
+                        <RadioGroupItem value="new" variant="button" size="md">
+                          미등록고객
+                        </RadioGroupItem>
+                      </RadioGroup>
+    
+                      <Gcol placement='ss' gap={2}>
+                        {customerType === 'recent' && (
+                          <Grow placement="sc" className="flex-1 min-w-0 flex-wrap gap-x-5 gap-y-1">
+                            <Grow placement='sc'>
+                              <InputCombo
+                                aria-label="고객 검색"
+                                width={110}
+                                col={2}
+                                options={[
+                                    { value: '홍길순 32세(여)', label: <td>홍길순</td> },
+                                    { value: '홍길동 32세(여)', label: <td>홍길동</td> },
+                                    { value: '김한화 32세(여)', label: <td>김한화</td> },
+                                  ]}
+                                value={comboValues.policyNumber}
+                                onChange={handleComboValueChange('policyNumber')}
+                                placeholder="고객 검색"
+                              />
+                              <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
+                                <SearchIcon size={14} color="var(--color-primary-50)" />
+                              </Button>
+                            </Grow>
 
-            {/* 추천설계 */}
-            <Gcol className={`w-full ${activeTab === 'recommend' ? 'block' : 'hidden'}`} gap={0}>
-              <Grow className="w-full bg-white px-[1rem] py-[0.4rem] border-b border-[#E5E5E5]" placement="bwe">
-                <Grow gap={0.5} placement="sc">
-                  <Input
-                    aria-label="설계번호 검색"
-                    width="14rem"
-                    value={tabSearchValue}
-                    onChange={(e) => setTabSearchValue(e.target.value)}
-                    placeholder="설계번호 검색"
-                  />
-                  <Button only="icon" size="md" variant="outlined" color="gray-light" aria-label="검색">
-                    <SearchIcon size={14} color="var(--color-primary-50)" />
-                  </Button>
-                </Grow>
-              </Grow>
-              <Gcol className="w-full p-[1rem]" gap={1} placement="ss">
-                {/* 고객정보 박스 (294:27700) */}
-                <Gcol
-                  className={`w-full rounded-[0.8rem] bg-[#e4e7ec] px-[1rem] py-[1rem]${customerType === 'new' ? ' ring-2 ring-[#ff5c2e] ring-inset' : ''}`}
-                  gap={1}
-                  placement="ss"
-                >
-                  {/* Row1: 고객정보 label + 라디오 + 정보 */}
-                  <Grow className="w-full" gap={1.5} placement="sc">
-                    <Typo
-                      tag="span"
-                      variant="body-sm"
-                      weight="bold"
-                      className="whitespace-nowrap shrink-0 text-[#4b5563]"
-                    >
-                      고객정보
-                    </Typo>
-                    <RadioGroup value={customerType} onValueChange={setCustomerType} className="gap-[0.4rem]">
-                      <RadioGroupItem value="recent" variant="button" size="md">
-                        최근등록고객
-                      </RadioGroupItem>
-                      <RadioGroupItem value="new" variant="button" size="md">
-                        미등록고객
-                      </RadioGroupItem>
-                    </RadioGroup>
-                    {customerType === 'recent' && (
-                      <Grow gap={1.5} placement="sc" className="flex-1 min-w-0 flex-wrap">
-                        {/* 검색 입력 */}
-                        <div className="relative shrink-0">
-                          <Grow gap={0.5} placement="sc">
-                            <Input
-                              aria-label="고객 검색"
-                              value={searchValue}
-                              onChange={(e) => {
-                                setSearchValue(e.target.value);
-                                setShowDropdown(e.target.value.length > 0);
-                              }}
-                              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-                              width="11.6rem"
-                            />
-                            <Button
-                              only="icon"
-                              size="md"
-                              variant="outlined"
-                              color="gray-light"
-                              onClick={() => setShowDropdown((v) => !v)}
-                              aria-label="검색"
-                            >
-                              <SearchIcon size={14} color="var(--color-primary-50)" />
+                            <Grow placement='sc' gap={3}>
+                              <KeyValueItem label={'직업'} variant="info">
+                                (1급)회사 사무직 종사자
+                              </KeyValueItem>
+                              <Divider />
+
+                              <KeyValueItem label={'보장분석'} variant="info" className="gap-2">
+                                2026-01-01 
+                                <Button 
+                                  variant={'contained'}
+                                  size={'sm'}
+                                  color={'coolgray-light'}
+                                  onClick={() => setAnalysisScore(280)}
+                                >
+                                  조회
+                                </Button>
+                                {analysisScore !== null && (
+                                  <span className="inline-flex h-[2.2rem] min-w-[3rem] items-center justify-center rounded-full bg-[#ff5c2e] px-[0.6rem] text-[1.2rem] font-bold text-white">
+                                    {analysisScore}
+                                  </span>
+                                )}
+                              </KeyValueItem>
+                              <Divider />
+                              
+                              <KeyValueItem label={'보험금지급 이력정보'} variant="info" className="gap-2">
+                                2026-01-01 
+                                <Button 
+                                  variant={'contained'}
+                                  size={'sm'}
+                                  color={'coolgray-light'}
+                                  onClick={() => setHistoryScore(190)}
+                                >
+                                  조회
+                                </Button>
+                                {historyScore !== null && (
+                                <span className="inline-flex h-[2.2rem] min-w-[3rem] items-center justify-center rounded-full bg-[#e43939] px-[0.6rem] text-[1.2rem] font-bold text-white">
+                                  {historyScore}
+                                </span>
+                              )}
+                              </KeyValueItem>
+                            </Grow>
+                          </Grow>
+                        )}
+                        {customerType === 'new' && (
+                          <Grow placement='sc' gap={3}>
+                            <KeyValueItem label={'나이'} variant="info">
+                              <Input size="sm" value={'42세'} width={48} />
+                              <DatePickerInput value='1994-05-10' />
+                            </KeyValueItem>
+                            <Divider />
+
+                            <KeyValueItem label={'성별'} variant="info">
+                              <RadioGroup className='gap-1' defaultValue='남'>
+                                {[
+                                  { value:'남', label: '남' },
+                                  { value:'여', label: '여' },
+                                ].map((tag) => (
+                                  <RadioGroupItem value={tag.value}>{tag.label}</RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </KeyValueItem>
+                            <Divider />
+
+                            <KeyValueItem label={'직업'} variant="info">
+                              <RadioGroup className='gap-1' defaultValue='1급'>
+                                {[
+                                  { value:'1급', label: '1급' },
+                                  { value:'2급', label: '2급' },
+                                  { value:'3급', label: '3급' },
+                                ].map((tag) => (
+                                  <RadioGroupItem value={tag.value}>{tag.label}</RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </KeyValueItem>
+
+                            <Button variant="contained" size="md" color="gray" className='gap-1' onClick={() => {}}>
+                              고객등록
+                              <ZoomInIcon size={16}   />
                             </Button>
                           </Grow>
-                          {showDropdown && (
-                            <div className="absolute left-0 top-full z-10 mt-[0.2rem] min-w-48 rounded-[0.4rem] border border-[#d8d8d8] bg-white py-[0.4rem] shadow-md">
-                              {searchDropdownOptions.map((name) => (
-                                <button
-                                  key={name}
-                                  type="button"
-                                  className="w-full px-[1rem] py-[0.6rem] text-left text-[1.3rem] hover:bg-[#f5f5f5]"
-                                  onMouseDown={() => {
-                                    setSearchValue(name);
-                                    setShowDropdown(false);
-                                  }}
-                                >
-                                  {name}
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                        {/* divider */}
-                        <div className="h-[1rem] w-px shrink-0 bg-[#ccc]" />
-                        {/* 직업 */}
-                        <Grow gap={0.5} placement="sc" className="shrink-0">
-                          <Typo tag="span" variant="body-sm" className="whitespace-nowrap shrink-0 text-[#414141]">
-                            직업
-                          </Typo>
-                          <Typo tag="span" variant="body-sm" weight="bold" className="whitespace-nowrap text-black">
-                            (1급)회사 사무직 종사자
-                          </Typo>
-                        </Grow>
-                        {/* divider */}
-                        <div className="h-[1rem] w-px shrink-0 bg-[#ccc]" />
-                        {/* 보장분석 */}
-                        <Grow gap={0.5} placement="sc" className="shrink-0">
-                          <Typo tag="span" variant="body-sm" className="whitespace-nowrap shrink-0 text-[#414141]">
-                            보장분석
-                          </Typo>
-                          <Typo tag="span" variant="body-sm" weight="bold" className="whitespace-nowrap text-black">
-                            2026-01-01
-                          </Typo>
-                          <button
-                            type="button"
-                            className="h-[2.2rem] rounded-[0.3rem] bg-[#6b7280] px-[0.6rem] py-[0.4rem] text-[1.2rem] font-bold leading-none text-white whitespace-nowrap"
-                            onClick={() => setAnalysisScore(280)}
-                          >
-                            조회
-                          </button>
-                          {analysisScore !== null && (
-                            <span className="inline-flex h-[2.2rem] min-w-[3rem] items-center justify-center rounded-full bg-[#ff5c2e] px-[0.6rem] text-[1.2rem] font-bold text-white">
-                              {analysisScore}
-                            </span>
-                          )}
-                        </Grow>
-                        {/* divider */}
-                        <div className="h-[1rem] w-px shrink-0 bg-[#ccc]" />
-                        {/* 보험금지급 이력정보 */}
-                        <Grow gap={0.5} placement="sc" className="shrink-0">
-                          <Typo tag="span" variant="body-sm" className="whitespace-nowrap shrink-0 text-[#414141]">
-                            보험금지급 이력정보
-                          </Typo>
-                          <Typo tag="span" variant="body-sm" weight="bold" className="whitespace-nowrap text-black">
-                            2026-01-01
-                          </Typo>
-                          <button
-                            type="button"
-                            className="h-[2.2rem] rounded-[0.3rem] bg-[#6b7280] px-[0.6rem] py-[0.4rem] text-[1.2rem] font-bold leading-none text-white whitespace-nowrap"
-                            onClick={() => setHistoryScore(190)}
-                          >
-                            조회
-                          </button>
-                          {historyScore !== null && (
-                            <span className="inline-flex h-[2.2rem] min-w-[3rem] items-center justify-center rounded-full bg-[#e43939] px-[0.6rem] text-[1.2rem] font-bold text-white">
-                              {historyScore}
-                            </span>
-                          )}
-                        </Grow>
-                      </Grow>
-                    )}
-                    {customerType === 'new' && (
-                      <Grow gap={1.5} placement="sc" className="flex-wrap">
-                        <Grow gap={0.5} placement="sc">
-                          <Typo tag="span" variant="body-sm" className="whitespace-nowrap shrink-0 text-[#414141]">
-                            나이
-                          </Typo>
-                          <Input aria-label="나이" width="4rem" value="32세" readOnly />
-                        </Grow>
-                        <Grow gap={0.5} placement="sc">
-                          <Input aria-label="생년월일" width="11rem" value="1994 - 02 - 12" />
-                          <Button only="icon" size="md" variant="outlined" color="gray-light" onClick={() => {}}>
-                            <CalendarIcon size={14} />
-                          </Button>
-                        </Grow>
-                        <Grow gap={0.5} placement="sc">
-                          <Typo tag="span" variant="body-sm" className="whitespace-nowrap shrink-0 text-[#414141]">
-                            성별
-                          </Typo>
-                          <RadioGroup value={gender} onValueChange={setGender} className="gap-[0.4rem]">
-                            <RadioGroupItem value="male" variant="button" size="md">
-                              남
-                            </RadioGroupItem>
-                            <RadioGroupItem value="female" variant="button" size="md">
-                              여
-                            </RadioGroupItem>
-                          </RadioGroup>
-                        </Grow>
-                        <Grow gap={0.5} placement="sc">
-                          <Typo tag="span" variant="body-sm" className="whitespace-nowrap shrink-0 text-[#414141]">
-                            직업
-                          </Typo>
-                          <RadioGroup value={jobGrade} onValueChange={setJobGrade} className="gap-[0.4rem]">
-                            <RadioGroupItem value="1" variant="button" size="md">
-                              1급
-                            </RadioGroupItem>
-                            <RadioGroupItem value="2" variant="button" size="md">
-                              2급
-                            </RadioGroupItem>
-                            <RadioGroupItem value="3" variant="button" size="md">
-                              3급
-                            </RadioGroupItem>
-                          </RadioGroup>
-                        </Grow>
-                        <Button variant="contained" size="md" color="primary" onClick={() => {}}>
-                          고객등록 +
-                        </Button>
-                      </Grow>
-                    )}
-                  </Grow>
-                  {/* Row2: 고객 태그 */}
-                  <Grow gap={1} placement="sc" className="w-full flex-wrap">
-                    {customerType === 'recent'
-                      ? recentCustomerTags.map((tag) => (
-                          <button
-                            key={tag.id}
-                            type="button"
-                            className={`flex items-center gap-[0.2rem] rounded-full px-[0.8rem] py-[0.4rem] text-[1.3rem] whitespace-nowrap${tag.id === selectedTagId ? ' bg-[#ff5c2e] text-white' : ' border border-[#d8d8d8] bg-white text-[#4b5563]'}`}
-                            onClick={() => setSelectedTagId(tag.id)}
-                          >
-                            <span className="font-bold">#</span>
-                            <span className="font-bold">{tag.label.split(' ')[0]}</span>
-                            <span>{tag.label.split(' ').slice(1).join(' ')}</span>
-                          </button>
-                        ))
-                      : newCustomerTags.map((tag) => (
-                          <button
-                            key={tag.id}
-                            type="button"
-                            className={`flex items-center gap-[0.2rem] rounded-full px-[0.8rem] py-[0.4rem] text-[1.3rem] whitespace-nowrap${tag.selected ? ' bg-[#ff5c2e] text-white' : ' border border-[#d8d8d8] bg-white text-[#4b5563]'}`}
-                          >
-                            <span className="font-bold">#</span>
-                            <span>{tag.label}</span>
-                          </button>
-                        ))}
-                    {customerType === 'new' && (
-                      <Button variant="outlined" size="sm" color="gray-light" onClick={() => {}}>
-                        # 편집
-                      </Button>
-                    )}
-                  </Grow>
-                </Gcol>
+                        )}
 
-                {/* 상품 필터 박스 (294:27742) */}
-                <div className="w-full rounded-[0.8rem] bg-[#f3f4f6] px-[1rem] py-[1rem]">
+                        {/* Row2: 고객 태그 */}
+                        <Grow>
+                          {customerType === 'recent' ? (
+                            <RadioGroup className='gap-1' defaultValue='홍길동'>
+                              {[
+                                { value: '홍길동', age: 42, level: 1, gender: '남', name: '홍길동' },
+                                { value: '반짝반짝빛반짝반짝빛', age: 42, level: 2, gender: '남', name: '반짝반짝빛반짝반짝빛' },
+                                { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
+                                { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
+                              ].map((tag) => (
+                                <RadioGroupItem value={tag.value} variant="chipBox" size="md">
+                                  <b>#</b>
+                                  <b>{tag.name}</b> 
+                                  {tag.age}세 ({tag.gender})
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          ) : (
+                            <RadioGroup className='gap-1' defaultValue='홍길동'>
+                              {[
+                                { value: '홍길동', age: 42, level: 1, gender: '남', name: '홍길동' },
+                                { value: '반짝반짝빛반짝반짝빛', age: 42, level: 2, gender: '남', name: '반짝반짝빛반짝반짝빛' },
+                                { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
+                                { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
+                              ].map((tag) => (
+                                <RadioGroupItem value={tag.value} variant="chipBox" size="md">
+                                  <b>#</b>
+                                  <b>{tag.name}</b> 
+                                  {tag.level}급
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          )}
+                          {customerType === 'new' && (
+                            <Button variant="outlined" size="sm" color="gray-light" onClick={() => {}}>
+                              # 편집
+                            </Button>
+                          )}
+                        </Grow>
+                      </Gcol>
+                    </Grow>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Gcol>
+
+            {tabSelectValue === 'tab1' ? (
+              <Gcol>
+                <Grow variant={'box-round'} className="w-full">
                   <Grow className="w-full" placement="bwe" gap={1}>
                     <Gcol gap={1} placement="ss">
                       {/* 상품분류 */}
@@ -793,7 +627,92 @@ export default function Ltpa020Section() {
                       <ResetIcon size={16} />
                     </Button>
                   </Grow>
-                </div>
+                </Grow>
+                <Grow className='w-full' placement='ss' gap={5}>
+                  <TableFold>
+                    <TableFoldHead title="상품정보"></TableFoldHead>
+                    <TableFoldBody className="w-full">
+                      <div className="ag-theme-alpine w-full h-[50rem]!">
+                        <AgGridReact<DummyDataType>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={dummyData}
+                          columnDefs={columnDefs}
+                          defaultColDef={{
+                            sortable: false,
+                            resizable: false,
+                          }}
+                          headerHeight={30}
+                          rowHeight={30}
+                          domLayout="normal"
+                        />
+                      </div>
+                    </TableFoldBody>
+                  </TableFold>
+                  <Gcol className='max-w-[42.5rem]'>
+                    <TableFold>
+                      <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"></TableFoldHead>
+                      <TableFoldBody>
+                        <Gcol className='w-full' gap={5}>
+                          <Gcol className='w-full'>
+                              <div className="ag-theme-alpine w-full h-60!">
+                              <AgGridReact<DummyDataType2>
+                                getRowId={(params) => String(params.data.id)}
+                                noRowsOverlayComponent={AgGridEmptyComponent}
+                                rowData={dummyData2}
+                                columnDefs={columnDefs2}
+                                defaultColDef={{
+                                  sortable: false,
+                                  resizable: false,
+                                }}
+                                headerHeight={30}
+                                rowHeight={30}
+                                domLayout="normal"
+                              />
+                            </div>
+                          </Gcol>
+                          <Gcol className='w-full'>
+                            <TabPager
+                                data={tabs}
+                                active={active}
+                                setActive={setActive}
+                                removable={false}
+                                onRemove={handleRemove}
+                                visibleCount={4}
+                                variant="default"
+                                hasTableBelow={true}
+                                error={false}
+                                errorMsg="에러 메시지 예시"
+                                getValue={(tab) => String(tab.value)}
+                                renderTab={(tab) => <span>{tab.label}</span>}
+                                renderDropdownItem={false}
+                              >
+                              <div className="ag-theme-alpine w-full h-[30rem]! ag-border-t">
+                                <AgGridReact<DummyDataType3>
+                                  getRowId={(params) => String(params.data.id)}
+                                  noRowsOverlayComponent={AgGridEmptyComponent}
+                                  rowData={dummyData3}
+                                  columnDefs={columnDefs3}
+                                  defaultColDef={{
+                                    sortable: false,
+                                    resizable: false,
+                                  }}
+                                  headerHeight={30}
+                                  rowHeight={30}
+                                  domLayout="normal"
+                                />
+                              </div>
+                            </TabPager>
+                          </Gcol>
+                        </Gcol>  
+                      </TableFoldBody>
+                    </TableFold>
+                  </Gcol>
+                </Grow>
+              </Gcol>
+            ) : (
+              <Gcol>
+              
                 <Grow className="w-full items-start" gap={1.2}>
                   <Gcol className="flex-1 min-w-0" gap={0}>
                     <div className="relative">
@@ -969,7 +888,8 @@ export default function Ltpa020Section() {
                   </Gcol>
                 </Grow>
               </Gcol>
-            </Gcol>
+            )}
+
           </Gcol>
         }
       ></LayoutTemplate>
