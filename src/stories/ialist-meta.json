@@ -53,7 +53,13 @@
     "ltpz057",
     "ltpz060",
     "ltpz062",
-    "ltpz085"
+    "ltpz085",
+    "ltpz086",
+    "ltpz994",
+    "ltpz996",
+    "ltpz997",
+    "ltpz998",
+    "ltpz999"
   ],
   "ingList": [
     "LTPA350_2",
@@ -105,10 +111,8 @@
     "LTPZ030",
     "LTPZ031",
     "LTPZ032",
-    "LTPZ033",
     "LTPZ005",
     "LTPZ062",
-    "LTPA060",
     "LTPZ027",
     "LTPZ028",
     "LTPZ023",
@@ -124,7 +128,6 @@
     "LTPZ024",
     "LTPZ027",
     "LTPZ032",
-    "LTPZ033",
     "LTPA160",
     "LTPA170",
     "LTPA130",

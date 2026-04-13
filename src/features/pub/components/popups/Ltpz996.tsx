@@ -31,11 +31,18 @@ const DummyData: DummyDataType[] = [
     field4: 'COM10107',
     field5: '자료가 조회되었습니다.',
   },
+  {
+    id: 2,
+    field1: 'sMenuInfo',
+    field2: 'transComG100',
+    field3: 'RB',
+    field4: 'COM10107',
+    field5: '자료가 조회되었습니다.',
+  },
 ];
 
 export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
   const rowData = DummyData;
-
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {

@@ -587,4 +587,10 @@
   .sb-show-main.sb-main-padded {
     padding: 0 !important;
   }
+
+  .ag-picker-field-display,
+  input,
+  select {
+    letter-spacing: 0 !important;
+  }
 }

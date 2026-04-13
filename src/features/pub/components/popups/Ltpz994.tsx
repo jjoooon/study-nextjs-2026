@@ -4,9 +4,8 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FileItemIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
+import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
 import {
   Dialog,
   DialogContent,
@@ -19,6 +18,12 @@ import {
 } from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+const fileList = [
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1344024', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '103324', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
+];
 
 export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
@@ -41,23 +46,15 @@ export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
               className="flex justify-start h-[24rem] bg-[#FFF5F3] border border-dashed border-[var(--color-primary-50)] gap-2"
             >
               <Gcol className="w-full min-h-{17rem} overflow-y-auto overflow-x-hidden justify-start">
-                <Grow
-                  variant="box-line"
-                  className="w-full border-[var(--color-gray-15)] items-center h-[56.rem] bg-[#FFF] rounded-[0.8rem] py-[0.8rem] px-[1rem]"
-                  placement="bwe"
-                >
-                  <Gcol className="flex items-start">
-                    <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="default">
-                      <Typo variant={'body-md'} className="flex justify-start items-center gap-0.5">
-                        <FileItemIcon />
-                        스크린샷 2026-0209-555-8989.png
-                      </Typo>
-                      <Typo variant={'body-sm'} className="text-[var(--color-primary-50)] mr-[1rem]">
-                        117KB
-                      </Typo>
-                    </Checkbox>
-                  </Gcol>
-                </Grow>
+                
+                {fileList.map((file, index) => (
+                  <FileDownLoad
+                    key={index}
+                    filename={file.filename}
+                    filesize={file.filesize}
+                    fileAddress={file.fileAddress}
+                  />
+                ))}
 
               </Gcol>
             </Gcol>
@@ -65,11 +62,11 @@ export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Typo variant={'body-sm'}>
                 파일 
                 <Typo tag={'span'} className="text-[var(--color-primary-50)]">
-                  3
+                  {fileList.length}
                 </Typo>
                 개 / 
                 <Typo tag={'span'} className="text-[var(--color-primary-50)]">
-                  200.98KB
+                  {formatTotalFileSize(fileList)}
                 </Typo>
                 용량
               </Typo>
