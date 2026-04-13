@@ -34,7 +34,6 @@ export default function Ltpa300Section() {
     type05: '',
     type06: '',
   });
-
   const columnDefs = React.useMemo<ColDef<Ltpa300DummyDataRow>[]>(
     () => [
       { headerName: '취급기관', field: 'field01', width: 120, cellClass: 'text-center' },
@@ -54,7 +53,6 @@ export default function Ltpa300Section() {
     ],
     []
   );
-
   const pageSize = 4;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa300DummyData,
@@ -80,7 +78,7 @@ export default function Ltpa300Section() {
                 variant={'none'}
                 lineTop={false}
                 caption="정액담보점검목록 조회"
-                cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
+                cols={['w-[6rem]', 'w-[22rem]', 'w-[8rem]', 'w-[38rem]', 'w-[8rem]', 'w-[auto]']}
               >
                 <FormRow>
                   <FormCell title={'점검일자'}>
@@ -91,7 +89,6 @@ export default function Ltpa300Section() {
                       onChange={() => {}}
                       rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                       size="lg"
-                      width="sm"
                       required
                     />
                   </FormCell>
@@ -99,7 +96,7 @@ export default function Ltpa300Section() {
                     <NativeSelect
                       aria-label="설계조직 선택"
                       value={form.type01}
-                      width="10rem"
+                      width={100}
                       required
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
@@ -113,8 +110,8 @@ export default function Ltpa300Section() {
                       ))}
                     </NativeSelect>
                     <Input
-                      aria-label=""
-                      width={'10rem'}
+                      aria-label="조직구분명 입력"
+                      width={100}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                       required
@@ -122,13 +119,13 @@ export default function Ltpa300Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'14rem'} value={'신부산GA지점'} readOnly />
+                    <Input aria-label="조직구분명 입력" width={140} value={'신부산GA지점'} readOnly />
                   </FormCell>
                   <FormCell title={'점검방법'}>
                     <NativeSelect
                       aria-label="점검방법 선택"
                       value={form.type03}
-                      width="14rem"
+                      width={140}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
                       {[
@@ -145,8 +142,8 @@ export default function Ltpa300Section() {
                 <FormRow>
                   <FormCell title={'점검방법'}>
                     <Input
-                      aria-label=""
-                      width={'14rem'}
+                      aria-label="점검방법 입력"
+                      width={140}
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     />
@@ -158,7 +155,7 @@ export default function Ltpa300Section() {
                     <NativeSelect
                       aria-label="점검방법 선택"
                       value={form.type05}
-                      width="14rem"
+                      width={140}
                       onChange={(e) => setFormField('type05', e.target.value)}
                     >
                       {[
@@ -175,7 +172,7 @@ export default function Ltpa300Section() {
                     <NativeSelect
                       aria-label="점검구분 선택"
                       value={form.type06}
-                      width="14rem"
+                      width={140}
                       onChange={(e) => setFormField('type06', e.target.value)}
                     >
                       {[

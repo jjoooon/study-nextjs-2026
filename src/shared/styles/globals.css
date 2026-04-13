@@ -591,6 +591,6 @@
   .ag-picker-field-display,
   input,
   select {
-    letter-spacing: 0 !important;
+    letter-spacing: -0.03rem !important;
   }
 }
