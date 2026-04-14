@@ -1,9 +1,11 @@
 'use client';
 
-import { Gcol, Grow, Typo, Divider, Grid, FormItem} from '@atoms';
+import { Gcol, Grow, Typo, Divider, Grid } from '@atoms';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+
 import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
-import { AdderIcon2, AiIcon, ChevronDownIcon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon } from '@icons';
+import { AdderIcon, AdderIcon2, AiIcon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -16,7 +18,7 @@ import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { useCallback, useState } from 'react';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridReact } from 'ag-grid-react';
 import { Badge } from '@uiux/Badge';
@@ -25,195 +27,100 @@ import { InputCombo } from '@common/InputCombo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { DatePickerInput } from '@common/DatePicker';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 
 import {
-  comparisonRows,
   dummyData,
   dummyData2,
+  dummyData3Tab,
   dummyData3,
-  type ComparisonRow,
+  dummyData3b,
+  dummyData3c,
+  dummyData4List,
+  type DummyData4ListType,
   type DummyDataType,
   type DummyDataType2,
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 
+ModuleRegistry.registerModules([AllCommunityModule]);
 
-type Ltpa020TabItem = {
-  label: string;
-  value: 'product' | 'recommend';
-};
 
-const ltpa020Tabs: Ltpa020TabItem[] = [
-  {
-    label: '상품선택',
-    value: 'product',
-  },
-  {
-    label: '추천설계',
-    value: 'recommend',
-  },
-];
 
-const recommendReasonTexts = [
-  '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다.',
-  '목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
-  '담보별 권장 보장금액 기준 설계도 함께 확인해보실 수 있습니다.',
-];
 
-const detailTableRows: Array<{ id: number; name: string; amount: string; premium: string }> = [
-  { id: 1, name: '보통약관(상해사망)', amount: '100', premium: '10' },
-  { id: 2, name: '한화 더 경증 간편건강보험', amount: '100', premium: '100' },
-  { id: 3, name: '보장보험료50%납입지원Ⅱ', amount: '50', premium: '494' },
-  { id: 4, name: '상해사망(체증형)', amount: '100', premium: '100' },
-  { id: 5, name: '상해사망추가', amount: '100', premium: '100' },
-  { id: 6, name: '상해후유장해(3-100%)(갱신형)', amount: '100', premium: '100' },
-  { id: 7, name: '질병사망', amount: '100', premium: '100' },
-  { id: 8, name: '4대유사암진단비', amount: '100', premium: '100' },
-  { id: 9, name: '...', amount: '100', premium: '100' },
-];
 
 export default function Ltpa020Section() {
-  const [activeTab, setActiveTab] = React.useState<Ltpa020TabItem['value']>(ltpa020Tabs[0]?.value ?? 'product');
   const [customerType, setCustomerType] = React.useState('recent');
-  const [searchValue, setSearchValue] = React.useState('');
-  const [showDropdown, setShowDropdown] = React.useState(false);
-  const [gender, setGender] = React.useState('female');
-  const [jobGrade, setJobGrade] = React.useState('1');
   const [productCategory, setProductCategory] = React.useState<string[]>(['comprehensive', 'female']);
   const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
   const [visibleCount, setVisibleCount] = React.useState(6);
   const [analysisScore, setAnalysisScore] = React.useState<number | null>(null);
   const [historyScore, setHistoryScore] = React.useState<number | null>(null);
-  const [selectedTagId, setSelectedTagId] = React.useState<number>(1);
-  const [tabSearchValue, setTabSearchValue] = React.useState('');
-
-  React.useEffect(() => {
-    if (!ltpa020Tabs.some((tab) => tab.value === activeTab)) {
-      setActiveTab(ltpa020Tabs[0]?.value ?? 'product');
-    }
-  }, [activeTab]);
-
-  const recommendData = [
-    {
-      id: 1,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 2,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 3,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 4,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 5,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 6,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 7,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 8,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 9,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-    {
-      id: 10,
-      title: '한화 시그니처 여성 간편건강보험 4.0',
-      plan: '납입면제형 · 기본형 · 3N5간편고지형',
-      term: '20년늩/100세만기',
-      detail: '9형(올인원플랜)(15~89세)...',
-    },
-  ];
-
-  // 상품선택
-  const [checkedMap, setCheckedMap] = React.useState({ selected: true, unselected: false });
-  const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [gridKey, setGridKey] = useState(0);
-  const [coverageName, setCoverageName] = useState('');
-  const handleActionButtonClick = useCallback(() => {}, []);
-  const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
-    setCheckedMap((map) => ({ ...map, [key]: !!checked }));
-  };
 
 
+  // 상품선택 AG-Grid 컬럼 정의
   const importanceCellRenderer =  (params: ICellRendererParams<DummyDataType>) => {
-    return <Grow className='w-full' placement='bwc'>
-      <Grow>
-        <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="favorite">중요</Checkbox>{params.data?.field2 ?? ''}
-      </Grow>
-      <Grow>
-        {params.data?.badge && (
+    const badgeText = params.data?.badge ?? '';
+    return (
+      <Grow className='w-full' placement='bwc'>
+        <Grow className="overflow-hidden -tracking-[0.03rem]">
+          <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="favorite">중요</Checkbox>
+          <div className="truncate">{params.data?.field2 ?? ''}</div>
+        </Grow>
+        <Grow>
+          {badgeText && (
             <Grow className="shrink-0">
-              {params.data.badge.includes('무해지') && (
-                <Badge color={'green'} className="w-[3rem]">
-                  무해지
-                </Badge>
-              )}
-              {params.data.badge.includes('간편') && (
-                <Badge color={'blue'} className="w-[3rem]">
-                  간편
-                </Badge>
-              )}
-              {params.data.badge.includes('할증') && (
-                <Badge color={'red'} className="w-[3rem]">
-                  할증
-                </Badge>
-              )}
-              {params.data.badge.includes('여성') && (
-                <Badge color={'purple'} className="w-[3rem]">
-                  여성
-                </Badge>
+              {([
+                { label: '무해지', color: 'green' },
+                { label: '간편', color: 'blue' },
+                { label: '할증', color: 'red' },
+                { label: '여성', color: 'purple' },
+              ] as const).map((badge) =>
+                badgeText.includes(badge.label) ? (
+                  <Badge key={badge.label} color={badge.color} className="w-[3rem]">
+                    {badge.label}
+                  </Badge>
+                ) : null
               )}
             </Grow>
           )}
+        </Grow>
       </Grow>
-    </Grow>;
+    );  
   };
-  
-
-
+  const designCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
+    return (
+      <Grow className="h-full w-full">
+        <Grow className="border-r border-[var(--color-gray-10)] h-full aspect-auto w-[4rem] flex items-center justify-center shrink-0 pr-[1rem] pl-[0.4rem]">
+          {params.data?.field1}
+        </Grow>
+        <Grow className="flex-1 truncate block text-left">
+          {params.data?.field2}
+        </Grow>
+        <Grow>
+          {params.data?.btn && (
+            <Button
+              color="gray"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="contained"
+            >
+              납면
+            </Button>
+            )}
+        </Grow>
+      </Grow>
+    );
+  };
+  const moreCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
+    return (
+      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+        보기
+      </Button>
+    )
+  };  
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상품분류', 
@@ -235,43 +142,6 @@ export default function Ltpa020Section() {
       width: 100,
     },
   ];
-
-  const designCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
-    return (
-      <Grow className="h-full w-full">
-        <Grow className="border-r border-[#ddddde] h-full aspect-auto w-[4rem] flex items-center justify-center shrink-0 pr-[1rem] pl-[0.4rem]">
-          {params.data?.field1}
-        </Grow>
-        <Grow className="flex-1 justify-start">
-          {params.data?.field2}
-        </Grow>
-        <Grow>
-          {params.data?.btn && (
-            <Button
-              color="gray"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="contained"
-            >
-              납면
-            </Button>
-            )}
-        </Grow>
-      </Grow>
-    );
-  };
-  const moreCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
-    return (
-      <Grow className="h-full w-full">
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-          보기
-        </Button>
-      </Grow>
-    )
-  };  
-
-
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '종구분', 
@@ -287,9 +157,6 @@ export default function Ltpa020Section() {
       cellRenderer: moreCellRenderer,
     },
   ];
-  
-
-
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
       headerName: '플랜명', 
@@ -298,39 +165,21 @@ export default function Ltpa020Section() {
     },
     {
       headerName: '담보보기', 
+      cellClass: 'text-center',
       width: 60,
       cellRenderer: moreCellRenderer,
     },
   ];
 
-  type Ltpz032TabType = {
-    name: string;
-    value: string;
-    label: string;
+  const { tabs, active, setActive } = useTabs(dummyData3Tab);
+  const planRowDataMap: Record<string, DummyDataType3[]> = {
+    tab1: dummyData3,
+    tab2: dummyData3b,
+    tab3: dummyData3c,
   };
+  const selectedPlanRowData = planRowDataMap[active] ?? dummyData3;
 
-  const DATA_TABS: Ltpz032TabType[] = [
-    {
-      name: '회사플랜',
-      value: 'tab1',
-      label: '회사플랜(6)',
-    },
-    {
-      name: '기관플랜',
-      value: 'tab2',
-      label: '기관플랜(6)',
-    },
-    {
-      name: '나만의플랜',
-      value: 'tab3',
-      label: '나만의플랜(6)',
-    },
-  ];
-
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-
-
-  const [tabSelectValue, setTabSelectValue] = useState('tab1');
+  const [tabSelectValue, setTabSelectValue] = useState('tabPage2');
   type ComboFieldKey = 'policyNumber';
   const [comboValues, setComboValues] = useState<Record<ComboFieldKey, string>>({
     policyNumber: '',
@@ -346,25 +195,27 @@ export default function Ltpa020Section() {
     []
   );
 
-const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
-  {
-    headerName: '담보명',
-    field: 'coverage',
-    flex: 1,
-  },
-  {
-    headerName: '가입금액(원)',
-    field: 'amount',
-    width: 70,
-    cellClass: 'text-right',
-  },
-  {
-    headerName: '보험료(원)',
-    field: 'premium',
-    width: 70,
-    cellClass: 'text-right',
-  },
-];
+  const columnDefs4: ColDef<DummyData4ListType>[] = [
+    {
+      headerName: '담보명',
+      valueGetter: (params) => params.data?.detail?.[0]?.field1 ?? '',
+      flex: 1,
+    },
+    {
+      headerName: '가입금액(원)',
+      valueGetter: (params) => params.data?.detail?.[0]?.field2 ?? '',
+      width: 70,
+      cellClass: 'text-right',
+    },
+    {
+      headerName: '보험료(원)',
+      valueGetter: (params) => params.data?.detail?.[0]?.field3 ?? '',
+      width: 70,
+      cellClass: 'text-right',
+    },
+  ];
+
+  const [listSelected] = useState<number | null>(dummyData4List[0]?.id ?? null);
 
   return (
     <>
@@ -374,8 +225,8 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
           <RadioGroup
             value={tabSelectValue}
             onValueChange={(value) => setTabSelectValue(value)}>
-            <RadioGroupItem variant={'button'} value="tab1">상품선택</RadioGroupItem>
-            <RadioGroupItem variant={'button'} value="tab2">추천설계</RadioGroupItem>
+            <RadioGroupItem variant={'button'} value="tabPage1">상품선택</RadioGroupItem>
+            <RadioGroupItem variant={'button'} value="tabPage2">추천설계</RadioGroupItem>
           </RadioGroup>
           <Grow className="gap-1 shrink-0" placement={'ec'}>
             <Input
@@ -559,8 +410,8 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
                 </FormTable>
               </Gcol>
               
-              {tabSelectValue === 'tab1' ? (
-                <Grow variant={'box-round'} className="w-full">
+              {tabSelectValue === 'tabPage1' ? (
+                <Grow variant={'box-round'} className="w-full" placement='bwe'>
                   <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                     <FormRow className='items-start!'>
                       <FormCell title={'상품분류'}>
@@ -614,51 +465,42 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
                       </FormCell>
                     </FormRow>
                   </FormTable>
+                  <Button variant="outlined" color="gray" only="icon">
+                    <ResetIcon />
+                  </Button>
                 </Grow>
               ) :(
                 <></>
               )}
             </Gcol>
 
-            {tabSelectValue === 'tab1' ? (
+            {tabSelectValue === 'tabPage1' ? (
               <Grow className='w-full overflow-hidden' placement='ss' gap={5}>
                 <TableFold className="h-full">
                   <TableFoldHead title="상품정보" variant="default" />
                   <TableFoldBody className="w-full h-full">
-                    <div className="ag-theme-alpine w-full h-full absolute">
+                    <div className="ag-theme-alpine w-full h-full min-h-0">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={dummyData}
                         columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                        }}
-                        headerHeight={30}
-                        rowHeight={30}
                         domLayout="normal"
                       />
                     </div>
                   </TableFoldBody>
                 </TableFold>
 
-                <Grid className='max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_60%]' gap={5}>
+                <Grid className='max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_1fr]' gap={5}>
                   <TableFold className="">
                     <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"  variant="default" />
                     <TableFoldBody className="w-full h-full">
-                      <div className="ag-theme-alpine w-full h-full absolute">
+                      <div className="ag-theme-alpine w-full h-full min-h-0">
                         <AgGridReact<DummyDataType2>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           rowData={dummyData2}
                           columnDefs={columnDefs2}
-                          defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                          }}
-                          headerHeight={30}
-                          rowHeight={30}
                           domLayout="normal"
                         />
                       </div>
@@ -668,29 +510,24 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
                     data={tabs}
                     active={active}
                     setActive={setActive}
-                    removable={false}
-                    onRemove={handleRemove}
-                    visibleCount={4}
-                    variant="default"
                     hasTableBelow={true}
-                    error={false}
-                    errorMsg="에러 메시지 예시"
                     getValue={(tab) => String(tab.value)}
-                    renderTab={(tab) => <span>{tab.label}</span>}
+                    renderTab={(tab) => {
+                      return (
+                        <>
+                          <span>{tab.label}</span>
+                          <span>({tab.count})</span>
+                        </>
+                      );
+                    }}
                     renderDropdownItem={false}
                   >
-                    <div className="ag-theme-alpine w-full ag-border-t">
+                    <div className="ag-theme-alpine w-full ag-border-t h-full">
                       <AgGridReact<DummyDataType3>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={dummyData3}
+                        rowData={selectedPlanRowData}
                         columnDefs={columnDefs3}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                        }}
-                        headerHeight={30}
-                        rowHeight={30}
                         domLayout="normal"
                       />
                     </div>
@@ -699,80 +536,62 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
                 </Grid>
               </Grow>
             ) : (
-              <Grid className="w-full h-full grid-cols-[60%_40%] items-start overflow-hidden" gap={1.2}>
-                <Gcol className="flex-1 min-w-0" gap={0}>
-                  <div className="relative">
-                    <div className="grid grid-cols-3 gap-[1.2rem] w-full">
-                      {recommendData.slice(0, visibleCount).map((item) => (
-                        <RecommendCard
-                          key={item.id}
-                          variant="checkbox"
-                          title={item.title}
-                          plan={item.plan}
-                          term={item.term}
-                          detail={item.detail}
-                        />
-                      ))}
-                    </div>
-                    {visibleCount < recommendData.length && (
-                      <div
-                        className="absolute bottom-0 left-0 right-0 h-[4rem] pointer-events-none"
-                        style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.95))' }}
-                      />
-                    )}
-                  </div>
-                  {visibleCount < recommendData.length && (
-                    <Grow placement="cc" className="w-full pt-[0.8rem]">
-                      <button
-                        type="button"
-                        onClick={() => setVisibleCount((v) => v + 6)}
-                        className="flex items-center gap-[0.6rem] rounded-[100px] bg-[#FEF4D4] px-[0.8rem] py-[0.4rem]"
-                      >
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                          <path
-                            d="M1 1.5L5 5.5L9 1.5"
-                            stroke="#FF5C2E"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M1 4.5L5 8.5L9 4.5"
-                            stroke="#FF5C2E"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        <Typo
-                          tag="span"
-                          variant="body-xs"
-                          weight="bold"
-                          className="whitespace-nowrap text-(--color-primary-50)"
-                        >
-                          추천설계 더보기
-                        </Typo>
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                          <path
-                            d="M1 1.5L5 5.5L9 1.5"
-                            stroke="#FF5C2E"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M1 4.5L5 8.5L9 4.5"
-                            stroke="#FF5C2E"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                    </Grow>
-                  )}
-                </Gcol>
-                <Grid className="shrink-0 w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
+              <Grid className="w-full h-full grid-cols-[1fr_auto] gap-4 items-start overflow-hidden" gap={1.2}>
+                <Grid className="grid-cols-3 gap-[1.2rem] w-full">
+                  {dummyData4List.slice(0, visibleCount).map((item) => (
+                    <Gcol
+                      className={`group bg-[var(--color-secondary-40)] rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative ${listSelected === item.id ? 'card-selected' : ''}`}
+                      key={item.id}
+                    >
+                      <div className="absolute top-[1rem] right-[1rem] z-10">
+                        <Checkbox size="xl"></Checkbox>
+                      </div>
+                      <Gcol className="bg-[#fff] group-[.card-selected]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] rounded-b-[1rem] p-[1rem] gap-2 w-full px-[1.6rem] pt-[2rem] pb-[1rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white">
+                        <h3 className="truncate w-[calc(100%-2.4rem)] text-[1.5rem] font-bold">
+                          {item.field1}
+                        </h3>
+                        <ul className='w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
+                          {item.field2.map((text, index) => (
+                            <li key={index}>{text}</li>
+                          ))}
+                        </ul>
+                        <Grow placement='bwc'>
+                          <ul className='flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
+                            {item.field3.map((text, index) => (
+                              <li key={index}>{text}</li>
+                            ))}
+                          </ul>
+                          <Grow>
+                            <AdderIcon />
+                            <strong className="text-[1.5rem] font-bold text-[var(--color-primary-50)] group-[.card-selected]:text-white">{item.field5.toLocaleString()}원</strong>
+                          </Grow>
+                        </Grow>
+                        <Gcol variant={'box-round'} className="w-full h-fit gap-1 px-[1rem] py-[0.8rem] min-h-[5.4rem]" placement='ss'>
+                          <BulletList className="w-full">
+                            {item.field4.map((text, index) => (
+                              <BulletListItem key={index} size="xs" className='leading-[1.2] text-[var(--color-gray-70)]'>
+                                <div className="truncate w-[calc(100%-0.6rem)]">{text}</div>
+                              </BulletListItem>
+                            ))}
+                          </BulletList>
+                        </Gcol>
+                      </Gcol>
+                      <Grow>
+                        <Button variant={'none'} className='text-[#fff] font-bold pt-[0.8rem] pb-[1rem] h-[auto] text-[1.3rem]'>
+                          <PaperIcon size={16} color={'var(--color-white)'} />
+                           보장내용 확인
+                        </Button>
+                      </Grow>
+                    </Gcol>
+                  ))}
+                </Grid>
+
+
+
+
+
+                <Grid className="shrink-0 w-[29.4rem] h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
+                  
                   <Gcol
                     className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] [background-repeat:no-repeat] [background-position:right_top,left_top] rounded-b-[1rem]"
                     placement='ss'
@@ -814,7 +633,11 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
                         </AccordionTrigger>
                         <AccordionContent>
                           <Gcol className="max-h-[8.8rem] overflow-y-auto mt-[0.8rem] pr-[0.2rem]" gap={0.4}>
-                            {recommendReasonTexts.map((text) => (
+                            {[
+                              '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다.',
+                              '목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
+                              '담보별 권장 보장금액 기준 설계도 함께 확인해보실 수 있습니다.',
+                            ].map((text) => (
                               <Typo key={text} tag="p" variant="body-xs" className="text-black">
                                 {text}
                               </Typo>
@@ -824,11 +647,11 @@ const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
                       </AccordionItem>
                     </Accordion>
                     <div className='ag-theme-alpine'>
-                      <AgGridReact<ComparisonRow>
+                      <AgGridReact<DummyData4ListType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={comparisonRows}
-                        columnDefs={comparisonColumnDefs}
+                        rowData={dummyData4List}
+                        columnDefs={columnDefs4}
                         defaultColDef={{
                           suppressMovable: true,
                           sortable: false,
