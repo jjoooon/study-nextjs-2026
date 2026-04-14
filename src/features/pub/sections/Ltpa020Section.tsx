@@ -3,7 +3,7 @@
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
-import { AdderIcon2, AiIcon, CalendarIcon, ChevronDownIcon, FileItemIcon, ResetIcon, SearchIcon, ZoomInIcon } from '@icons';
+import { AdderIcon2, AiIcon, ChevronDownIcon, ResetIcon, SearchIcon, SelectDropIcon, ZoomInIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -34,6 +34,8 @@ import {
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 
 const productCategoryOptions = [
   { value: 'all', label: '전체' },
@@ -375,6 +377,33 @@ export default function Ltpa020Section() {
       },
     []
   );
+
+  type ComparisonRow = {
+    id: number;
+    coverage: string;
+    amount: string;
+    premium: string;
+  };
+
+  
+const comparisonRows: ComparisonRow[] = [
+  { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: '3,000', premium: '3,000' },
+  { id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: '10', premium: '10' },
+  { id: 3, coverage: '상해사망(간편)', amount: '15,000', premium: '15,000' },
+  { id: 4, coverage: '상해후유장해(3-100%)', amount: '10,000', premium: '10,000' },
+  { id: 5, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 6, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 7, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 8, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 9, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 10, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 11, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 12, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 13, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 14, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 15, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+  { id: 16, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+];
 
   return (
     <>
@@ -788,101 +817,73 @@ export default function Ltpa020Section() {
                   </Gcol>
                   <Gcol className="shrink-0 w-[29.4rem] rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
                     <Gcol
-                      className="relative px-[1.6rem] py-[1rem] gap-[0.2rem]"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(358deg, #FF5C2E 9.4%, #FF8D02 97.24%), url('/images/Ltpa020/cand_on_bg.png')",
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'left top, right top',
-                      }}
+                      className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] [background-repeat:no-repeat] [background-position:right_top,left_top] rounded-b-[1rem]"
+                      placement='ss'
                     >
-                      <Typo tag="p" variant="body-md" weight="bold" className="text-white">
+                      <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
                         한화 시그니처 여성 간편건강보험4.0
                       </Typo>
                       <Typo tag="p" variant="body-sm" className="text-white">
                         납입면제형 · 기본형 · 3N5간편고지형
                       </Typo>
-                      <Grow className="w-full" placement="ec" gap={0.4}>
+                      <Grow className="w-full" placement="ec" gap={1}>
                         <AdderIcon2 size={14} />
-                        <Typo tag="p" variant="body-xs" className="text-white">
+                        <Typo tag="p" variant="body-xs" weight={'normal'} className="text-white">
                           예상보험료
                         </Typo>
-                        <Typo tag="p" variant="body-xs" weight="bold" className="text-white">
+                        <Typo tag="p" variant="body-xs" weight={'bold'} className="text-white">
                           70,000원
                         </Typo>
                       </Grow>
                     </Gcol>
 
                     <Gcol className="px-[1rem] pb-[1rem] pt-[0.8rem]" gap={0.8}>
-                      <Gcol className="w-full rounded-[0.8rem] bg-[#E0EFFF] p-[0.8rem]" gap={0.8}>
-                        <Grow
-                          className="w-full rounded-[999px] border border-[#006FF2] bg-white px-[0.8rem] py-[0.6rem]"
-                          placement="bwe"
-                        >
-                          <Grow gap={0.2} placement="sc">
-                            <AiIcon />
-                            <Typo tag="p" variant="body-xs" weight="bold" className="text-[#006FF2]">
-                              AI 추천이유
-                            </Typo>
-                          </Grow>
-                          <ChevronDownIcon size={12} className="rotate-180 text-[#006FF2]" />
-                        </Grow>
-
-                        <Gcol className="max-h-[8.8rem] overflow-y-auto pr-[0.2rem]" gap={0.4}>
-                          {recommendReasonTexts.map((text) => (
-                            <Typo key={text} tag="p" variant="body-xs" className="text-black">
-                              {text}
-                            </Typo>
-                          ))}
-                        </Gcol>
-                      </Gcol>
-
-                      <div className="w-full overflow-hidden border border-[#E5E5E5] border-t-2 border-t-[#1E2124]">
-                        <div className="grid grid-cols-[1.58fr_0.72fr_0.7fr] bg-[#F4F4F4]">
-                          <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] text-center">
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black">
-                              담보명
-                            </Typo>
-                          </div>
-                          <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] text-center">
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.4]">
-                              가입금액
-                            </Typo>
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.2]">
-                              (만원)
-                            </Typo>
-                          </div>
-                          <div className="border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] text-center">
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.4]">
-                              보험료
-                            </Typo>
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.2]">
-                              (원)
-                            </Typo>
-                          </div>
-                        </div>
-
-                        <div className="max-h-108 overflow-y-auto">
-                          {detailTableRows.map((row) => (
-                            <div key={row.id} className="grid grid-cols-[1.58fr_0.72fr_0.7fr]">
-                              <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] min-h-[3rem] flex items-center">
-                                <Typo tag="p" variant="body-md" className="text-black truncate w-full">
-                                  {row.name}
+                      <Accordion type="single" collapsible defaultValue="item-1" className="w-full bg-[#E0EFFF] px-[0.8rem] py-[1rem] rounded-[1rem]">
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger className="group w-full rounded-[1rem]">
+                            <Grow
+                              className="w-full rounded-[999px] border border-[#006FF2] bg-white px-[0.8rem] py-[0.6rem]"
+                              placement="bwe"
+                            >
+                              <Grow gap={0.2} placement="sc">
+                                <AiIcon size={10} color='#006FF2' />
+                                <Typo tag="p" variant="body-xs" weight="bold" className="text-[#006FF2]">
+                                  AI 추천이유
                                 </Typo>
-                              </div>
-                              <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] min-h-[3rem] flex items-center justify-center">
-                                <Typo tag="p" variant="body-md" className="text-black">
-                                  {row.amount}
+                              </Grow>
+                              <SelectDropIcon
+                                className="text-[#006FF2] transition-transform group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0"
+                              />
+                            </Grow>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <Gcol className="max-h-[8.8rem] overflow-y-auto mt-[0.8rem] pr-[0.2rem]" gap={0.4}>
+                              {recommendReasonTexts.map((text) => (
+                                <Typo key={text} tag="p" variant="body-xs" className="text-black">
+                                  {text}
                                 </Typo>
-                              </div>
-                              <div className="border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] min-h-[3rem] flex items-center justify-center">
-                                <Typo tag="p" variant="body-md" className="text-black">
-                                  {row.premium}
-                                </Typo>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                              ))}
+                            </Gcol>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                      
+
+                      <div className='ag-theme-alpine'>
+                        <AgGridReact<ComparisonRow>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={comparisonRows}
+                          columnDefs={comparisonColumnDefs}
+                          headerHeight={0}
+                          groupHeaderHeight={0}
+                          defaultColDef={{
+                            suppressMovable: true,
+                            sortable: false,
+                            resizable: false,
+                          }}
+                          domLayout="autoHeight"
+                        />
                       </div>
                     </Gcol>
                   </Gcol>
