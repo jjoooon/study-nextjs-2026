@@ -313,7 +313,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['lg', 'md'],
+      options: ['lg', 'md', 'xl'],
       table: { category: '스타일 props' },
     },
     color: {
@@ -391,6 +391,8 @@ export const Default: Story = {
       setChecked(args.checked ?? false);
     }, [args.checked]);
 
+    const groupSize = args.size === 'xl' ? 'lg' : args.size;
+
     const handleCheckedChange = (value: boolean | 'indeterminate') => {
       setChecked(value);
       args.onCheckedChange?.(value);
@@ -417,7 +419,7 @@ export const Default: Story = {
               onValueChange={handleGroupChange}
 
               variant={args.variant}
-              size={args.size}
+              size={groupSize}
               color={args.color}
               disabled={args.disabled}
 
