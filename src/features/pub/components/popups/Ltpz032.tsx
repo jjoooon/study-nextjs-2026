@@ -51,6 +51,7 @@ const DATA_TABS: Ltpz032TabType[] = [
 // tab1-1 dummy data
 type DummyDataType11 = {
   id: number;
+  isCheck: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -91,6 +92,7 @@ type DummyDataType11 = {
 const DummyData11: DummyDataType11[] = [
   {
     id: 1,
+    isCheck: false,
     field01: '',
     field02: '2026-01-01',
     field03: 'LA260204310842',
@@ -132,6 +134,7 @@ const DummyData11: DummyDataType11[] = [
 // Tab1-2
 type DummyDataType12 = {
   id: number;
+  isCheck: boolean,
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -173,6 +176,7 @@ type DummyDataType12 = {
 const DummyData12: DummyDataType12[] = [
   {
     id: 1,
+    isCheck: false,
     field01: '',
     field02: '2026-01-01',
     field03: 'LA260204310842',
@@ -215,6 +219,7 @@ const DummyData12: DummyDataType12[] = [
 // tab2-1 dummy data
 type DummyDataType21 = {
   id: number;
+  isCheck: boolean;
   field2_01: string | number;
   field2_02: string | number;
   field2_03: string | number;
@@ -232,6 +237,7 @@ type DummyDataType21 = {
 const DummyData21: DummyDataType21[] = [
   {
     id: 1,
+    isCheck: false,
     field2_01: '',
     field2_02: '',
     field2_03: '',
@@ -249,6 +255,7 @@ const DummyData21: DummyDataType21[] = [
 ];
 type DummyDataType22 = {
   id: number;
+  isCheck: boolean;
   field2_01: string | number;
   field2_02: string | number;
   field2_03: string | number;
@@ -266,6 +273,7 @@ type DummyDataType22 = {
 const DummyData22: DummyDataType22[] = [
   {
     id: 1,
+    isCheck: false,
     field2_01: '',
     field2_02: '',
     field2_03: '',
@@ -283,6 +291,7 @@ const DummyData22: DummyDataType22[] = [
 ];
 type DummyDataType23 = {
   id: number;
+  isCheck: boolean;
   field2_01: string | number;
   field2_02: string | number;
   field2_03: string | number;
@@ -300,6 +309,7 @@ type DummyDataType23 = {
 const DummyData23: DummyDataType23[] = [
   {
     id: 1,
+    isCheck: false,
     field2_01: '',
     field2_02: '',
     field2_03: '',
@@ -317,47 +327,39 @@ const DummyData23: DummyDataType23[] = [
 ];
 
 export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const [selectedRowId11, setSelectedRowId11] = React.useState<string>(String(DummyData11[0]?.id ?? ''));
+  // const [selectedRowId11, setSelectedRowId11] = React.useState<string>(String(DummyData11[0]?.id ?? ''));
   const [isDetailPopupOpen, setIsDetailPopupOpen] = React.useState(false);
 
   const handleOpenDetailPopup = React.useCallback(() => {
     setIsDetailPopupOpen(true);
   }, []);
 
-  const selectionRenderer11 = React.useCallback(
-    (params: ICellRendererParams<DummyDataType11>) => {
-      if (!params.data) {
-        return null;
-      }
+  // const selectionRenderer11 = React.useCallback(
+  //   (params: ICellRendererParams<DummyDataType11>) => {
+  //     if (!params.data) {
+  //       return null;
+  //     }
 
-      const rowId = String(params.data.id);
+  //     const rowId = String(params.data.id);
 
-      return (
-        <div className="flex h-full w-full items-center justify-center">
-          <input
-            aria-label={`설계번호 ${rowId} 선택`}
-            checked={selectedRowId11 === rowId}
-            className="h-[1.6rem] w-[1.6rem] cursor-pointer accent-[var(--color-primary-50)]"
-            name="ltpz032-selection-11"
-            onChange={() => setSelectedRowId11(rowId)}
-            type="radio"
-          />
-        </div>
-      );
-    },
-    [selectedRowId11, setSelectedRowId11]
-  );
+  //     return (
+  //       <div className="flex h-full w-full items-center justify-center">
+  //         <input
+  //           aria-label={`설계번호 ${rowId} 선택`}
+  //           checked={selectedRowId11 === rowId}
+  //           className="h-[1.6rem] w-[1.6rem] cursor-pointer accent-[var(--color-primary-50)]"
+  //           name="ltpz032-selection-11"
+  //           onChange={() => setSelectedRowId11(rowId)}
+  //           type="radio"
+  //         />
+  //       </div>
+  //     );
+  //   },
+  //   [selectedRowId11, setSelectedRowId11]
+  // );
 
   const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(() => {
     return [
-      {
-        headerName: '선택',
-        field: 'field01',
-        width: 70,
-        autoHeight: true,
-        editable: false,
-        cellRenderer: selectionRenderer11,
-      },
       {
         headerName: '입력일자',
         field: 'field02',
@@ -620,7 +622,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         editable: false,
       },
     ];
-  }, [handleOpenDetailPopup, selectionRenderer11]);
+  }, [handleOpenDetailPopup]);
 
   const [selectedRowId12, setSelectedRowId12] = React.useState<string>(String(DummyData12[0]?.id ?? ''));
 
@@ -649,14 +651,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   const columnDefs12: ColDef<DummyDataType12>[] = [
-    {
-      headerName: '선택',
-      field: 'field01',
-      width: 70,
-      autoHeight: true,
-      editable: false,
-      cellRenderer: selectionRenderer12,
-    },
     {
       headerName: '입력일자',
       field: 'field02',
@@ -1251,7 +1245,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableFold>
                       <TableFoldHead title="일반/건강고지" />
                       <TableFoldBody>
-                        <div className="ag-theme-alpine w-full">
+                        <div className="ag-theme-alpine w-full radio-selection">
                           <AgGridReact<DummyDataType11>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1262,6 +1256,16 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                               resizable: false,
                               cellClass: 'text-center',
                             }}
+                            // selection 설정
+                            rowSelection={{
+                              mode: 'singleRow',
+                              checkboxes: true,
+                              enableClickSelection: false,
+                            }}
+                            selectionColumnDef={{
+                              headerName: '선택',
+                              cellClass: 'text-center editable-cell',
+                            }}
                             domLayout="autoHeight"
                           />
                         </div>
@@ -1270,7 +1274,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableFold variant={'accordion'}>
                       <TableFoldHead title="간편고지" />
                       <TableFoldBody>
-                        <div className="ag-theme-alpine w-full">
+                        <div className="ag-theme-alpine w-full radio-selection">
                           <AgGridReact<DummyDataType12>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1280,6 +1284,16 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                               sortable: false,
                               resizable: false,
                               cellClass: 'text-center',
+                            }}
+                            // selection 설정
+                            rowSelection={{
+                              mode: 'singleRow',
+                              checkboxes: true,
+                              enableClickSelection: false,
+                            }}
+                            selectionColumnDef={{
+                              headerName: '선택',
+                              cellClass: 'text-center editable-cell',
                             }}
                             domLayout="autoHeight"
                           />
@@ -1299,6 +1313,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </Typo>
                     </Gcol>
                   </Gcol>
+
                 </>
               ) : (
                 <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
@@ -1316,6 +1331,16 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             sortable: false,
                             resizable: false,
                             cellClass: 'text-center',
+                          }}
+                          // selection 설정
+                          rowSelection={{
+                            mode: 'singleRow',
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '선택',
+                            cellClass: 'text-center editable-cell',
                           }}
                           domLayout="autoHeight"
                         />
@@ -1338,6 +1363,16 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             resizable: false,
                             cellClass: 'text-center',
                           }}
+                          // selection 설정
+                          rowSelection={{
+                            mode: 'singleRow',
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '선택',
+                            cellClass: 'text-center editable-cell',
+                          }}
                           domLayout="autoHeight"
                         />
                       </div>
@@ -1358,6 +1393,16 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             sortable: false,
                             resizable: false,
                             cellClass: 'text-center',
+                          }}
+                          // selection 설정
+                          rowSelection={{
+                            mode: 'singleRow',
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '선택',
+                            cellClass: 'text-center editable-cell',
                           }}
                           domLayout="autoHeight"
                         />

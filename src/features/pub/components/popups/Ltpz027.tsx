@@ -132,7 +132,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Gcol gap={3}>
             <Gcol placement={'ss'} gap={1.5}>
               <Typo variant="heading-sm" color="default">
-                이륜차부담보 가입 사이 계약
+                발송대상
               </Typo>
 
               <Table variant="default">

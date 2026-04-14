@@ -539,3 +539,31 @@
   letter-spacing: -0.03rem;
   border: 1px solid var(--color-gray-20) !important;
 }
+
+/* 라디오 버튼 스타일 */
+.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper {
+  position: relative;
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--color-border-gray-light) !important;
+  background-color: var(--color-element-inverse) !important;
+}
+
+.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  width: 1rem !important;
+  height: 1rem !important;
+  border-radius: 9999px !important;
+  background-color: transparent !important;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--color-element-primary) !important;
+}
