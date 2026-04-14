@@ -488,6 +488,7 @@ function initGlobalStore(): BizcodeStore {
  * 어디에도 저장하지 않으므로 SSR 서버 컴포넌트에서도 안전하게 사용 가능합니다.
  *
  * @param template - 조회할 비즈니스 코드 템플릿
+ * @param callback - 조회가 모두 끝난 뒤(반환 직전) 호출. 생략 가능
  * @returns bizCodeType별 { key: data[] } 구조의 조회 결과
  *
  * @example
@@ -498,7 +499,10 @@ function initGlobalStore(): BizcodeStore {
  * });
  * // result = { codeSearch: { 'code1': [...], 'code3/temp1//20130101': [...] }, complexCodeSearch: { ... } }
  */
-export async function fetchBizcode(template: BizCodeTemplate): Promise<BizcodeDataResult> {
+export async function fetchBizcode(
+  template: BizCodeTemplate,
+  callback?: () => void,
+): Promise<BizcodeDataResult> {
   logger.debug('[BizcodeUtils] fetchBizcode start', template);
 
   const result: BizcodeDataResult = {};
@@ -523,6 +527,7 @@ export async function fetchBizcode(template: BizCodeTemplate): Promise<BizcodeDa
   await Promise.all(tasks);
 
   logger.debug('[BizcodeUtils] fetchBizcode complete', result);
+  callback?.();
   return result;
 }
 
@@ -560,6 +565,7 @@ export function applyBizcodeToWindow(data: BizcodeDataResult): void {
  * 클라이언트 컴포넌트에서 조회와 저장을 한번에 처리할 때 사용합니다.
  *
  * @param template - 조회할 비즈니스 코드 템플릿
+ * @param callback - 조회 및 `window.bizCodes` 반영이 끝난 뒤 호출. 생략 가능
  *
  * @example
  * // CSR page.tsx (클라이언트 컴포넌트)
@@ -568,9 +574,10 @@ export function applyBizcodeToWindow(data: BizcodeDataResult): void {
  *   complexCodeSearch: ['code1', 'code3/temp1'],
  * });
  */
-export async function loadBizcode(template: BizCodeTemplate): Promise<void> {
+export async function loadBizcode(template: BizCodeTemplate, callback?: () => void): Promise<void> {
   const data = await fetchBizcode(template);
   applyBizcodeToWindow(data);
+  callback?.();
 }
 
 /**

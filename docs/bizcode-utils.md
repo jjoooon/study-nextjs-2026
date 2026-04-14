@@ -8,9 +8,9 @@
 
 | 함수 | 환경 | 역할 |
 |---|---|---|
-| `fetchBizcode` | SSR/CSR 공통 | 순수 조회, 데이터만 반환 (저장 안함) |
+| `fetchBizcode` | SSR/CSR 공통 | 순수 조회, 데이터만 반환 (저장 안함). 선택 인자 `callback?: () => void` — 조회 완료 직후(반환 직전) 호출 |
 | `applyBizcodeToWindow` | 클라이언트 전용 | 조회 결과를 `window.bizCodes`에 저장 |
-| `loadBizcode` | 클라이언트 전용 | `fetchBizcode` + `applyBizcodeToWindow` 한번에 |
+| `loadBizcode` | 클라이언트 전용 | `fetchBizcode` + `applyBizcodeToWindow` 한번에. 선택 인자 `callback?: () => void` — `window` 반영까지 끝난 뒤 호출 |
 | `getBizcode` | 클라이언트 전용 | `window.bizCodes`에서 데이터 반환 |
 | `clearBizcode` | 클라이언트 전용 | `window.bizCodes` 전체 초기화 |
 
@@ -18,11 +18,11 @@
 
 ```
 [CSR] 조회 + 저장 한번에
-loadBizcode(template)  →  내부: fetchBizcode + applyBizcodeToWindow
+loadBizcode(template, callback?)  →  내부: fetchBizcode + applyBizcodeToWindow → callback?()
 getBizcode(type, key)  →  window.bizCodes에서 조회
 
 [SSR] 조회와 저장을 분리
-layout.tsx        →  fetchBizcode(template)    // 서버에서 순수 조회
+layout.tsx        →  fetchBizcode(template, callback?)    // 서버에서 순수 조회, callback은 조회 완료 직후
 StoreHydrator.tsx →  applyBizcodeToWindow(data)           // 클라이언트에서 window에 저장
 page.tsx          →  getBizcode(type, key)           // 클라이언트에서 조회
 ```
@@ -223,13 +223,18 @@ import { loadBizcode, getBizcode } from '@/shared/utils/bizcodeUtils';
 export default function Page() {
   useEffect(() => {
     async function init() {
-      await loadBizcode({
-        codeSearch: ['CD001', 'CD002/2/PPR01/20130101'],
-        complexCodeSearch: ['REL01', 'REL02/DTL01/DTL02'],
-        partCodeSearch: [{ txCode: 'TRX001', record: 'REC01', code: ['PARAM01', 'PARAM02/PARAM03'] }],
-        codeFullSearch: ['FULL01', 'FULL02/20130101/3/PPR01'],
-        xmlSearch: ['PROD01/GDRSK/20130101/Y/01', 'PROD02'],
-      });
+      await loadBizcode(
+        {
+          codeSearch: ['CD001', 'CD002/2/PPR01/20130101'],
+          complexCodeSearch: ['REL01', 'REL02/DTL01/DTL02'],
+          partCodeSearch: [{ txCode: 'TRX001', record: 'REC01', code: ['PARAM01', 'PARAM02/PARAM03'] }],
+          codeFullSearch: ['FULL01', 'FULL02/20130101/3/PPR01'],
+          xmlSearch: ['PROD01/GDRSK/20130101/Y/01', 'PROD02'],
+        },
+        () => {
+          // window.bizCodes 반영 완료 후 실행
+        },
+      );
 
       const data = getBizcode('codeSearch', 'CD001');
     }
@@ -250,7 +255,9 @@ const TEMPLATE: BizCodeTemplate = {
 };
 
 export default async function Layout({ children }) {
-  const data = await fetchBizcode(TEMPLATE);
+  const data = await fetchBizcode(TEMPLATE, () => {
+    // 조회 완료 직후(아직 window에는 없음). SSR에서는 로깅 등 부수효과만 권장
+  });
   return <StoreHydrator bizcodeData={data}>{children}</StoreHydrator>;
 }
 
@@ -276,13 +283,16 @@ export default function Page() {
 
 | 경로 | 설명 |
 |---|---|
-| `/sample/bizCode/ssr` | SSR: layout(조회) → StoreHydrator(저장) → page(사용) |
-| `/sample/bizCode/csr` | CSR: loadBizcode(조회+저장) → getBizcode(사용) |
+| `/sample/bizCode/ssr` | SSR: layout(`fetchBizcode`, 선택 `callback`) → StoreHydrator(저장) → page(사용) |
+| `/sample/bizCode/csr` | CSR: `loadBizcode`(조회+저장, 선택 `callback`) → `getBizcode`(사용) |
 
 두 샘플 모두 5개 search 타입 전체를 포함합니다.
 
 ## 주의사항
 
+- `fetchBizcode` / `loadBizcode`의 `callback`은 **선택**이며, 생략해도 동작은 동일합니다.
+- `fetchBizcode`의 `callback`은 모든 병렬 조회가 **성공적으로 끝난 뒤**, 반환값이 준비된 직후에 호출됩니다. 일부 조회가 실패해 `Promise`가 reject되면 `callback`은 호출되지 않습니다.
+- `loadBizcode`의 `callback`은 `applyBizcodeToWindow`까지 끝난 **이후**에 호출되므로, 그 시점에는 `getBizcode`로 읽을 수 있습니다.
 - `loadBizcode`는 비동기 함수이므로 `await`으로 호출해야 합니다.
 - `getBizcode`는 데이터가 먼저 저장된 후에 사용해야 합니다.
 - 조회 결과가 없으면 `undefined`를 반환합니다.
