@@ -29,7 +29,9 @@ type CheckboxGroupContextValue = {
   variant: UICheckboxProps['variant'];
   size: UICheckboxProps['size'];
   color: UICheckboxProps['color'];
-  toggleValue: (value: string, checked: boolean | 'indeterminate') => void;
+  isItemChecked: (value: string, selectAll?: boolean) => boolean;
+  toggleValue: (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => void;
+  registerItem: (value: string, options?: { disabled?: boolean; selectAll?: boolean }) => () => void;
 };
 
 const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null);
@@ -299,6 +301,21 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   color?: 'primary' | 'info';
 }
 
+type CheckboxGroupItemRegistration = {
+  disabled: boolean;
+  selectAll: boolean;
+};
+
+const uniq = (values: string[]) => Array.from(new Set(values));
+
+const areSameValues = (left: string[], right: string[]) => {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  return left.every((value, index) => value === right[index]);
+};
+
 function CheckboxGroup({
   className,
   children,
@@ -321,9 +338,28 @@ function CheckboxGroup({
 }: CheckboxGroupProps) {
   const [internalValues, setInternalValues] = React.useState<string[]>(defaultValue);
   const [hasValidationStarted, setHasValidationStarted] = React.useState(false);
+  const [registeredItems, setRegisteredItems] = React.useState<Record<string, CheckboxGroupItemRegistration>>({});
   const isControlled = valueProp !== undefined;
   const values = isControlled ? valueProp : internalValues;
   const errorId = React.useId();
+
+  const selectAllValue = React.useMemo(
+    () => Object.entries(registeredItems).find(([, item]) => item.selectAll)?.[0],
+    [registeredItems]
+  );
+
+  const selectableValues = React.useMemo(
+    () =>
+      Object.entries(registeredItems)
+        .filter(([itemValue, item]) => !item.selectAll && !item.disabled && itemValue !== selectAllValue)
+        .map(([itemValue]) => itemValue),
+    [registeredItems, selectAllValue]
+  );
+
+  const isAllSelectableChecked = React.useMemo(
+    () => selectableValues.length > 0 && selectableValues.every((itemValue) => values.includes(itemValue)),
+    [selectableValues, values]
+  );
 
   const setValues = React.useCallback(
     (nextValues: string[]) => {
@@ -335,17 +371,86 @@ function CheckboxGroup({
     [isControlled, onValueChange]
   );
 
+  const registerItem = React.useCallback(
+    (value: string, options?: { disabled?: boolean; selectAll?: boolean }) => {
+      setRegisteredItems((prev) => {
+        const nextItem: CheckboxGroupItemRegistration = {
+          disabled: options?.disabled ?? false,
+          selectAll: options?.selectAll ?? false,
+        };
+
+        if (
+          prev[value]?.disabled === nextItem.disabled &&
+          prev[value]?.selectAll === nextItem.selectAll
+        ) {
+          return prev;
+        }
+
+        return {
+          ...prev,
+          [value]: nextItem,
+        };
+      });
+
+      return () => {
+        setRegisteredItems((prev) => {
+          if (!(value in prev)) {
+            return prev;
+          }
+
+          const next = { ...prev };
+          delete next[value];
+          return next;
+        });
+      };
+    },
+    []
+  );
+
+  const isItemChecked = React.useCallback(
+    (value: string, selectAll?: boolean) => {
+      if (selectAll) {
+        return isAllSelectableChecked;
+      }
+
+      return values.includes(value);
+    },
+    [isAllSelectableChecked, values]
+  );
+
   const toggleValue = React.useCallback(
-    (value: string, checked: boolean | 'indeterminate') => {
+    (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => {
+      if (selectAll && selectAllValue) {
+        const nextValues = checked === true
+          ? uniq([...values.filter((item) => item !== selectAllValue), ...selectableValues, selectAllValue])
+          : values.filter((item) => item !== selectAllValue && !selectableValues.includes(item));
+
+        setValues(nextValues);
+        return;
+      }
+
+      const nextSelectedValues = checked === true
+        ? values.includes(value)
+          ? values
+          : [...values, value]
+        : values.filter((item) => item !== value);
+
+      if (!selectAllValue) {
+        setValues(nextSelectedValues);
+        return;
+      }
+
+      const nextWithoutSelectAll = nextSelectedValues.filter((item) => item !== selectAllValue);
+      const shouldCheckSelectAll =
+        selectableValues.length > 0 && selectableValues.every((itemValue) => nextWithoutSelectAll.includes(itemValue));
+
       setValues(
-        checked === true
-          ? values.includes(value)
-            ? values
-            : [...values, value]
-          : values.filter((item) => item !== value)
+        shouldCheckSelectAll
+          ? uniq([...nextWithoutSelectAll, selectAllValue])
+          : nextWithoutSelectAll
       );
     },
-    [setValues, values]
+    [selectAllValue, selectableValues, setValues, values]
   );
 
   React.useEffect(() => {
@@ -355,7 +460,8 @@ function CheckboxGroup({
   }, [error, validateMode]);
 
   const usesCountValidation = required || minSelected > 1;
-  const countError = values.length < minSelected;
+  const selectedCount = selectAllValue ? values.filter((item) => item !== selectAllValue).length : values.length;
+  const countError = selectedCount < minSelected;
   const hasStartedValidation = validateMode === 'auto' ? true : hasValidationStarted;
   const isError = usesCountValidation ? (hasStartedValidation ? countError : false) : error;
 
@@ -365,9 +471,23 @@ function CheckboxGroup({
 
   const resolvedErrorMsg = errorMsg ?? `${minSelected}개 이상 선택해 주세요.`;
 
+  React.useEffect(() => {
+    if (!selectAllValue) {
+      return;
+    }
+
+    const normalizedValues = isAllSelectableChecked
+      ? uniq([...values.filter((item) => item !== selectAllValue), selectAllValue])
+      : values.filter((item) => item !== selectAllValue);
+
+    if (!areSameValues(normalizedValues, values)) {
+      setValues(normalizedValues);
+    }
+  }, [isAllSelectableChecked, selectAllValue, setValues, values]);
+
   const contextValue = React.useMemo(
-    () => ({ values, required, disabled, error: isError, variant, size, color, toggleValue }),
-    [color, disabled, isError, required, size, toggleValue, values, variant]
+    () => ({ values, required, disabled, error: isError, variant, size, color, isItemChecked, toggleValue, registerItem }),
+    [color, disabled, isError, isItemChecked, registerItem, required, size, toggleValue, values, variant]
   );
 
   return (
@@ -401,16 +521,23 @@ interface CheckboxGroupItemProps extends Omit<
   'checked' | 'defaultChecked' | 'onCheckedChange' | 'value'
 > {
   value: string;
+  selectAll?: boolean;
 }
 
-function CheckboxGroupItem({ value, ...props }: CheckboxGroupItemProps) {
+function CheckboxGroupItem({ value, selectAll = false, ...props }: CheckboxGroupItemProps) {
   const context = React.useContext(CheckboxGroupContext);
 
   if (!context) {
     throw new Error('CheckboxGroupItem must be used within CheckboxGroup.');
   }
 
-  const isChecked = context.values.includes(value);
+  const { registerItem } = context;
+
+  React.useEffect(() => {
+    return registerItem(value, { disabled: props.disabled, selectAll });
+  }, [props.disabled, registerItem, selectAll, value]);
+
+  const isChecked = context.isItemChecked(value, selectAll);
 
   return (
     <Checkbox
@@ -424,7 +551,7 @@ function CheckboxGroupItem({ value, ...props }: CheckboxGroupItemProps) {
       showErrorMsg={false}
       checked={isChecked}
       onCheckedChange={(checked) => {
-        context.toggleValue(value, checked);
+        context.toggleValue(value, checked, selectAll);
       }}
     />
   );
