@@ -192,29 +192,31 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <TableFold>
-            <Grow className="w-full relative mt-10">
-              <Grow className="absolute top-[-2.5rem] left-[0rem]">
-                <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
-              </Grow>
+        <DialogSection className="grid-rows-[auto_1fr] gap-2 pt-[2rem]">
+            <Grow className="w-full justify-start">
+              <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
+            </Grow>
 
-              {/* A안 / B안 / C안 상단 탭 */}
-              <Grow className="flex flex-row w-[60rem] absolute top-[-4rem] right-0 items-start gap-0">
-                {PLAN_COLS.map(({ key: plan }) => {
-                  const isActive = selectedPlan === plan;
-                  const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
-                  return (
-                    <div
-                      key={plan}
-                      className="flex flex-col w-[20rem] cursor-pointer"
-                      onClick={() => setSelectedPlan(plan)}
+            {/* A안 / B안 / C안 상단 탭 */}
+            
+            <div className='relative'>
+              <Grow className="flex flex-row w-[60rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+              {PLAN_COLS.map(({ key: plan }) => {
+                const isActive = selectedPlan === plan;
+                const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
+                return (
+                  <div
+                    key={plan}
+                    className="flex flex-col w-[20rem] cursor-pointer h-[100%]"
+                    onClick={() => setSelectedPlan(plan)}
+                  >
+                    {/* 탭 헤더 */}
+                    <Grow
+                      className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 "
+                       
                     >
-                      {/* 탭 헤더 */}
-                      <Grow
-                        className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem]"
-                        style={{ backgroundColor: bg }}
-                      >
+                      <div className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
+                      style={{ backgroundColor: bg }}>
                         <Typo className="text-[1.4rem] font-bold text-white">
                           {plan}안
                         </Typo>
@@ -231,16 +233,17 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                             variant="default"
                           />
                         </RadioGroup>
-                      </Grow>
-                    </div>
-                  );
-                })}
+                      </div>
+                      <div className='border w-full h-full'></div>
+                    </Grow>
+                  </div>
+                );
+              })}
               </Grow>
-
               {/* 그리드 */}
-              <div className="ag-theme-alpine relative z-10 w-[60rem]">
+              <div className="ag-theme-alpine relative z-10   min-h-[30rem]">
                 
-                <Grow className="pointer-events-none absolute inset-0 z-20">
+                {/* <Grow className="pointer-events-none absolute inset-0 z-20">
                   {PLAN_COLS.map(({ key }) => {
                     const borderColor = selectedPlan === key
                       ? 'var(--color-primary-50)'
@@ -263,7 +266,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                       />
                     );
                   })}
-                </Grow>
+                </Grow> */}
                 <AgGridReact<DummyDataType>
                   onGridReady={handleGridReady}
                   onFirstDataRendered={handleFirstDataRendered}
@@ -277,12 +280,10 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                     resizable: false,
                   }}
                   enableCellSpan={true}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                 />
               </div>
-
-            </Grow>
-          </TableFold>
+            </div>
         </DialogSection>
 
         <DialogFooter>
