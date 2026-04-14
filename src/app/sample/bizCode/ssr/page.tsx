@@ -6,7 +6,7 @@ import type { BizcodeResultItem } from '@/shared/utils/bizcodeUtils';
 
 // ============================================================================
 // SSR Bizcode 샘플 - Page (클라이언트 컴포넌트)
-// layout.tsx(SSR) → StoreHydrator → hydrateBizcode() → 여기서 getBizcode()
+// layout.tsx(SSR) → StoreHydrator → applyBizcodeToWindow() → 여기서 getBizcode()
 // ============================================================================
 
 /** 샘플에서 조회할 키 목록 (layout.tsx의 BIZCODE_TEMPLATE과 대응) */
@@ -38,7 +38,7 @@ export default function BizCodeSSRPage() {
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Bizcode SSR 샘플</h1>
       <p className="text-gray-600 mb-8">
-        layout.tsx(SSR) → fetchBizcode(template) → StoreHydrator → hydrateBizcode() → page.tsx → getBizcode()
+        layout.tsx(SSR) → fetchBizcode(template) → StoreHydrator → applyBizcodeToWindow() → page.tsx → getBizcode()
       </p>
 
       {/* 각 search 타입별 결과 표시 */}

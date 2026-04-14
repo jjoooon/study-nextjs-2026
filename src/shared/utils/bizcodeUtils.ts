@@ -5,7 +5,7 @@
  * 비즈니스 코드 처리를 위한 유틸리티 함수
  * - fetchBizcode: 순수 조회 (SSR/CSR 공통) → 데이터만 반환
  * - loadBizcode:      조회 + window.bizCodes 저장 (CSR 전용)
- * - hydrateBizcode:   이미 조회된 데이터를 window.bizCodes에 저장 (SSR→CSR 전달용)
+ * - applyBizcodeToWindow:   이미 조회된 데이터를 window.bizCodes에 저장 (SSR→CSR 전달용)
  * - getBizcode:       window.bizCodes에서 데이터 반환
  *
  * @key-format
@@ -19,7 +19,7 @@
  *
  * // [SSR] layout에서 조회 → hydrator에서 저장 → page에서 사용
  * const result = await fetchBizcode({ codeSearch: ['code1'] });  // layout (서버)
- * hydrateBizcode(result);                                            // StoreHydrator (클라이언트)
+ * applyBizcodeToWindow(result);                                            // StoreHydrator (클라이언트)
  * const data = getBizcode('codeSearch', 'code1');                    // page (클라이언트)
  */
 
@@ -460,7 +460,7 @@ async function fetchXmlSearch(keys: BizCodeKey[]): Promise<Record<BizCodeKey, Bi
 
 function initGlobalStore(): BizcodeStore {
   if (typeof window === 'undefined') {
-    throw new Error('[BizcodeUtils] window is not available (hydrateBizcode는 클라이언트에서만 사용 가능합니다)');
+    throw new Error('[BizcodeUtils] window is not available (applyBizcodeToWindow는 클라이언트에서만 사용 가능합니다)');
   }
 
   if (!window.bizCodes) {
@@ -537,9 +537,9 @@ export async function fetchBizcode(template: BizCodeTemplate): Promise<BizcodeDa
  *
  * @example
  * // StoreHydrator.tsx (클라이언트 컴포넌트)
- * hydrateBizcode(bizcodeData);
+ * applyBizcodeToWindow(bizcodeData);
  */
-export function hydrateBizcode(data: BizcodeDataResult): void {
+export function applyBizcodeToWindow(data: BizcodeDataResult): void {
   const store = initGlobalStore();
 
   for (const [type, entries] of Object.entries(data)) {
@@ -549,7 +549,7 @@ export function hydrateBizcode(data: BizcodeDataResult): void {
     }
   }
 
-  logger.debug('[BizcodeUtils] hydrateBizcode complete');
+  logger.debug('[BizcodeUtils] applyBizcodeToWindow complete');
 }
 
 /**
@@ -570,7 +570,7 @@ export function hydrateBizcode(data: BizcodeDataResult): void {
  */
 export async function loadBizcode(template: BizCodeTemplate): Promise<void> {
   const data = await fetchBizcode(template);
-  hydrateBizcode(data);
+  applyBizcodeToWindow(data);
 }
 
 /**

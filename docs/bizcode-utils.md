@@ -9,8 +9,8 @@
 | 함수 | 환경 | 역할 |
 |---|---|---|
 | `fetchBizcode` | SSR/CSR 공통 | 순수 조회, 데이터만 반환 (저장 안함) |
-| `hydrateBizcode` | 클라이언트 전용 | 조회 결과를 `window.bizCodes`에 저장 |
-| `loadBizcode` | 클라이언트 전용 | `fetchBizcode` + `hydrateBizcode` 한번에 |
+| `applyBizcodeToWindow` | 클라이언트 전용 | 조회 결과를 `window.bizCodes`에 저장 |
+| `loadBizcode` | 클라이언트 전용 | `fetchBizcode` + `applyBizcodeToWindow` 한번에 |
 | `getBizcode` | 클라이언트 전용 | `window.bizCodes`에서 데이터 반환 |
 | `clearBizcode` | 클라이언트 전용 | `window.bizCodes` 전체 초기화 |
 
@@ -18,12 +18,12 @@
 
 ```
 [CSR] 조회 + 저장 한번에
-loadBizcode(template)  →  내부: fetchBizcode + hydrateBizcode
+loadBizcode(template)  →  내부: fetchBizcode + applyBizcodeToWindow
 getBizcode(type, key)  →  window.bizCodes에서 조회
 
 [SSR] 조회와 저장을 분리
 layout.tsx        →  fetchBizcode(template)    // 서버에서 순수 조회
-StoreHydrator.tsx →  hydrateBizcode(data)           // 클라이언트에서 window에 저장
+StoreHydrator.tsx →  applyBizcodeToWindow(data)           // 클라이언트에서 window에 저장
 page.tsx          →  getBizcode(type, key)           // 클라이언트에서 조회
 ```
 
@@ -255,10 +255,10 @@ export default async function Layout({ children }) {
 }
 
 // 2. StoreHydrator.tsx (클라이언트 컴포넌트) - window에 저장
-import { hydrateBizcode } from '@/shared/utils/bizcodeUtils';
+import { applyBizcodeToWindow } from '@/shared/utils/bizcodeUtils';
 
 export function StoreHydrator({ bizcodeData, children }) {
-  hydrateBizcode(bizcodeData);  // window.bizCodes에 저장
+  applyBizcodeToWindow(bizcodeData);  // window.bizCodes에 저장
   return <>{children}</>;
 }
 
