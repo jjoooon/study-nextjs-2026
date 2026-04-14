@@ -39,7 +39,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               isRadio={true}
               isValue="Y"
             >
-              <Gcol className="w-full gap-0!" placement='ss'>
+              <Gcol className="w-full" placement='ss'>
                 <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
                   <Checkbox
                     color="primary"
