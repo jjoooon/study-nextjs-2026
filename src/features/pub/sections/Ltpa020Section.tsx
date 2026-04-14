@@ -786,7 +786,7 @@ export default function Ltpa020Section() {
                       </Grow>
                     )}
                   </Gcol>
-                  <Gcol className="shrink-0 w-[26.2rem] rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
+                  <Gcol className="shrink-0 w-[29.4rem] rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
                     <Gcol
                       className="relative px-[1.6rem] py-[1rem] gap-[0.2rem]"
                       style={{
