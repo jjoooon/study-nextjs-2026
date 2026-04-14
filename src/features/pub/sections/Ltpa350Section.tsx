@@ -25,6 +25,7 @@ import { Ltpa350Step5 } from '../components/Ltpa350Step5';
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 import { Ltpz005, type Ltpz005TabValue } from '../components/popups/Ltpz005';
 import { Ltpz018, type Ltpz018MenuItem } from '../components/popups/Ltpz018';
+import { Ltpa350Step6 } from '../components/Ltpa350Step6';
 
 // types
 type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
@@ -93,8 +94,8 @@ const data: Ltpa350DataType = {
       { step: 6, label: '수납' },
     ],
     state: {
-      complete: [4], //완료단계
-      active: 5, //현재단계
+      complete: [6], //완료단계
+      active: 1, //현재단계
     },
   },
 };

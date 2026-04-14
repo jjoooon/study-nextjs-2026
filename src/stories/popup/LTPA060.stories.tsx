@@ -3,11 +3,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz060 } from '@/features/pub/components/popups/Ltpz060';
+import { Ltpa060 } from '@/features/pub/components/popups/Ltpa060';
 
 export default {
-  title: 'popup/Ltpz060',
-  component: Ltpz060,
+  title: 'popup/Ltpa060',
+  component: Ltpa060,
 };
 
 export const Default = () => {
@@ -15,10 +15,10 @@ export const Default = () => {
   return (
     <LayoutDoc>
       <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
-        <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz062 열기</Button>
+        <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpa060 열기</Button>
       </div>
 
-      <Ltpz060 open={open} onOpenChange={setOpen} />
+      <Ltpa060 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };
