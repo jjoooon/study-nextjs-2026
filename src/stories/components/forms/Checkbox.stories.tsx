@@ -75,6 +75,7 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
   errorMsg={'2개 이상 선택은 필수입니다.'}
   errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
 >
+  <CheckboxGroupItem value="all" selectAll>전체</CheckboxGroupItem>
   <CheckboxGroupItem value="a">옵션 A</CheckboxGroupItem>
   <CheckboxGroupItem value="b">옵션 B</CheckboxGroupItem>
   <CheckboxGroupItem value="c">옵션 C</CheckboxGroupItem>
@@ -429,6 +430,9 @@ export const Default: Story = {
 
               className="gap-3"
             >
+              <CheckboxGroupItem value="all" selectAll>
+                {args.variant === 'chipBox' ? <><strong>전체</strong><span>선택</span></> : '전체'}
+              </CheckboxGroupItem>
               <CheckboxGroupItem value="a">{args.variant === 'chipBox' ? <><strong>옵션</strong><span>A</span></> : '옵션 A'}</CheckboxGroupItem>
               <CheckboxGroupItem value="b">{args.variant === 'chipBox' ? <><strong>옵션</strong><span>B</span></> : '옵션 B'}</CheckboxGroupItem>
               <CheckboxGroupItem value="c">{args.variant === 'chipBox' ? <><strong>옵션</strong><span>C</span></> : '옵션 C'}</CheckboxGroupItem>

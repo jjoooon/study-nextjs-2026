@@ -139,7 +139,10 @@
     "LTPA160",
     "LTPA170",
     "LTPA130",
-    "LTPA350_5"
+    "LTPA350_5",
+    "LTPA350_6",
+    "LTPZ068",
+    "LTPZ033"
   ],
   "workListK": [
     "LTPA350_1",
@@ -151,7 +154,8 @@
     "LTPZ012",
     "LTPZ013",
     "LTPZ019",
-    "LTPZ004"
+    "LTPZ004",
+    "LTPA060"
   ],
   "workListJ": [
     "LTPZ999",

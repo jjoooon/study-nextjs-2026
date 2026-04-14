@@ -6,6 +6,7 @@ type TableFoldVariant = 'default' | 'accordion';
 type TableFoldProps = {
   variant?: TableFoldVariant;
   children?: React.ReactNode;
+  className?: string;
 };
 
 interface TableFoldContextValue {
@@ -24,11 +25,11 @@ interface TableFoldHeadProps {
   variant?: TableFoldVariant;
 }
 
-export const TableFold = ({ children, variant = 'accordion' }: TableFoldProps) => {
+export const TableFold = ({ children, variant = 'accordion', className }: TableFoldProps) => {
   const [open, setOpen] = React.useState(true);
   return (
     <TableFoldContext.Provider value={{ variant, open, setOpen }}>
-      <Grid data-table-fold="wrap" gap={1.5} className="w-full grid-rows-[auto_1fr] " placement={'bwc'}>
+      <Grid data-table-fold="wrap" gap={1.5} className={cn('w-full grid-rows-[auto_1fr]', className)} placement={'bwc'}>
         {children}
       </Grid>
     </TableFoldContext.Provider>
