@@ -9,11 +9,8 @@ import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,12 +22,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { GridIcon } from 'lucide-react';
-import { t } from 'i18next';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -415,7 +408,9 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
                         domLayout="autoHeight"
                         rowSelection={{
                           mode: 'multiRow',
-                          checkboxes: (params) => params.data?.isCheck !== null,
+                          checkboxes: true,
+                          headerCheckbox: true,
+                          isRowSelectable: (node) => node.data?.isCheck !== null,
                           hideDisabledCheckboxes: true,
                           enableClickSelection: false,
                         }}
