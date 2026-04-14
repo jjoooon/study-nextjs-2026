@@ -25,7 +25,7 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { PaperIcon, ResetIcon, SearchIcon, SizeIcon } from '@icons';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SelectDropIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -35,8 +35,12 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 // data
+import { planAccordionItems } from '../data/ltpa3500204';
 import type { Ltpa350Step2DataType, Ltpa350Step2DataType2 } from '../data/ltpa350Step2Data';
 import { Ltpa350Step2Data, Ltpa350Step2Data2 } from '../data/ltpa350Step2Data';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import { t } from 'i18next';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -754,7 +758,7 @@ export function Ltpa350Step2({
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" sideOffset={8}>
-                  <BulletList>
+                  <BulletList className='gap-[0.5rem]'>
                     {tab.info.map((info: string, index: number) => (
                       <BulletListItem key={index} type="dot">
                         {info}
@@ -892,12 +896,39 @@ export function Ltpa350Step2({
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <SelectDrop typeMode="custom" size="md" width={140} placeholder="나만의 설계선택">
+                        <SelectDrop typeMode="custom" size="md" width={160} placeholder="나만의 설계선택">
+                          {/* 여기에 */}
                           <Gcol className="w-full p-[0.2rem]">
                             <Button variant="outlined" size="md" className="w-full">
-                              나만의설계저장
+                              <SaveIcon /> 나만의설계저장
                             </Button>
+
+                            <Accordion
+                              type="multiple"
+                              className="w-full"
+                            >
+                              {planAccordionItems.map((item) => (
+                                <AccordionItem key={item.value} value={item.value}>
+                                  <AccordionTrigger className='w-full group flex justify-between items-center text-[1.3rem] font-bold'>
+                                    {item.trigger}
+                                    <ChevronDownIcon
+                                      size={14}
+                                      color='#777'
+                                      className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
+                                    />
+                                  </AccordionTrigger>
+                                  <AccordionContent className='px-[0.8rem]'>
+                                    {item.content.map((text, index) => (
+                                      <Typo key={`${item.value}-${index}`} variant="body-md">
+                                        {text}
+                                      </Typo>
+                                    ))}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              ))}
+                            </Accordion>
                           </Gcol>
+
                         </SelectDrop>
 
                         <Button
