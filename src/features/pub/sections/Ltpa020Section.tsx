@@ -1,9 +1,9 @@
 'use client';
 
-import { Gcol, Grow, Typo, Divider } from '@atoms';
+import { Gcol, Grow, Typo, Divider, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
-import { AdderIcon2, AiIcon, CalendarIcon, ChevronDownIcon, FileItemIcon, ResetIcon, SearchIcon, ZoomInIcon } from '@icons';
+import { AdderIcon2, AiIcon, ChevronDownIcon, SearchIcon, ZoomInIcon, ArrowNext } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -23,7 +23,7 @@ import { Badge } from '@uiux/Badge';
 import { KeyValueItem } from '@common/KeyValueList';
 import { InputCombo } from '@common/InputCombo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 import {
   dummyData,
@@ -34,38 +34,8 @@ import {
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { Arrow } from '@radix-ui/react-tooltip';
 
-const productCategoryOptions = [
-  { value: 'all', label: '전체' },
-  { value: 'comprehensive', label: '종합건강' },
-  { value: 'simple', label: '간편' },
-  { value: 'female', label: '여성' },
-  { value: 'cancer', label: '암/간병' },
-  { value: 'childDental', label: '자녀/치아' },
-  { value: 'accident', label: '상해' },
-  { value: 'medical', label: '의료비' },
-  { value: 'property', label: '재물' },
-  { value: 'annuity', label: '연금/저축' },
-];
-
-const productFeatureOptions = [
-  { value: 'all', label: '전체' },
-  { value: 'simple', label: '간편' },
-  { value: 'noRefund', label: '무해지' },
-  { value: 'shortTerm', label: '세만기' },
-  { value: 'longTerm', label: '연만기' },
-];
-
-
-const newCustomerTags = [
-  { id: 1, label: '32세(여) 1급', selected: true },
-  { id: 2, label: '42세(남) 1급', selected: false },
-  { id: 3, label: '28세(여) 1급', selected: false },
-  { id: 4, label: '55세(남) 1급', selected: false },
-  { id: 5, label: '63세(여) 1급', selected: false },
-];
-
-const searchDropdownOptions = ['홍길순', '홍길동', '반짝반짝빛...', '김한화', '피보험자', '홍길자'];
 
 type Ltpa020TabItem = {
   label: string;
@@ -383,7 +353,7 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className='w-full' gap={1.5} placement='ss'>
+          <Grid className='w-full h-full grid-rows-[auto_auto_auto_1fr]' gap={1.5} placement='ss'>
             <Grow>
               <RadioGroup
                 value={tabSelectValue}
@@ -521,9 +491,9 @@ export default function Ltpa020Section() {
                                 { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
                                 { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                               ].map((tag) => (
-                                <RadioGroupItem value={tag.value} variant="chipBox" size="md">
+                                <RadioGroupItem value={tag.value} variant="chipBox" size="md" className="flex items-center">
                                   <b>#</b>
-                                  <b>{tag.name}</b> 
+                                  <b className="max-w-[7rem] truncate block">{tag.name}</b> 
                                   {tag.age}세 ({tag.gender})
                                 </RadioGroupItem>
                               ))}
@@ -558,20 +528,11 @@ export default function Ltpa020Section() {
             </Gcol>
 
             {tabSelectValue === 'tab1' ? (
-              <Gcol>
+              <>
                 <Grow variant={'box-round'} className="w-full">
-                  <Grow className="w-full" placement="bwe" gap={1}>
-                    <Gcol gap={1} placement="ss">
-                      {/* 상품분류 */}
-                      <Grow gap={1} placement="sc" className="flex-wrap">
-                        <Typo
-                          tag="span"
-                          variant="body-sm"
-                          weight="bold"
-                          className="whitespace-nowrap shrink-0 text-[#6b7280]"
-                        >
-                          상품분류
-                        </Typo>
+                  <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
+                    <FormRow className='items-start!'>
+                      <FormCell title={'상품분류'}>
                         <CheckboxGroup
                           value={productCategory}
                           onValueChange={setProductCategory}
@@ -579,23 +540,27 @@ export default function Ltpa020Section() {
                           size="md"
                           className="gap-[0.4rem] flex-wrap"
                         >
-                          {productCategoryOptions.map((opt) => (
-                            <CheckboxGroupItem key={opt.value} value={opt.value}>
+                          {[
+                            { value: 'all', label: '전체' },
+                            { value: 'comprehensive', label: '종합건강' },
+                            { value: 'simple', label: '간편' },
+                            { value: 'female', label: '여성' },
+                            { value: 'cancer', label: '암/간병' },
+                            { value: 'childDental', label: '자녀/치아' },
+                            { value: 'accident', label: '상해' },
+                            { value: 'medical', label: '의료비' },
+                            { value: 'property', label: '재물' },
+                            { value: 'annuity', label: '연금/저축' },
+                          ].map((opt) => (
+                            <CheckboxGroupItem key={opt.value} value={opt.value} selectAll={opt.value === 'all'}>
                               {opt.label}
                             </CheckboxGroupItem>
                           ))}
                         </CheckboxGroup>
-                      </Grow>
-                      {/* 상품특징 */}
-                      <Grow gap={1} placement="sc" className="flex-wrap">
-                        <Typo
-                          tag="span"
-                          variant="body-sm"
-                          weight="bold"
-                          className="whitespace-nowrap shrink-0 text-[#6b7280]"
-                        >
-                          상품특징
-                        </Typo>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow className='items-start!'>
+                      <FormCell title={'상품특징'}>
                         <CheckboxGroup
                           value={productFeature}
                           onValueChange={setProductFeature}
@@ -603,36 +568,28 @@ export default function Ltpa020Section() {
                           size="md"
                           className="gap-[0.4rem] flex-wrap"
                         >
-                          {productFeatureOptions.map((opt) => (
-                            <CheckboxGroupItem key={opt.value} value={opt.value}>
+                          {[
+                            { value: 'all', label: '전체' },
+                            { value: 'simple', label: '간편' },
+                            { value: 'noRefund', label: '무해지' },
+                            { value: 'shortTerm', label: '세만기' },
+                            { value: 'longTerm', label: '연만기' },
+                          ].map((opt) => (
+                            <CheckboxGroupItem key={opt.value} value={opt.value} selectAll={opt.value === 'all'}>
                               {opt.label}
                             </CheckboxGroupItem>
                           ))}
                         </CheckboxGroup>
-                      </Grow>
-                    </Gcol>
-                    {/* 초기화 버튼 */}
-                    <Button
-                      only="icon"
-                      size="md"
-                      variant="outlined"
-                      color="gray"
-                      className="shrink-0"
-                      onClick={() => {
-                        setProductCategory(['all']);
-                        setProductFeature(['all']);
-                      }}
-                      aria-label="초기화"
-                    >
-                      <ResetIcon size={16} />
-                    </Button>
-                  </Grow>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
                 </Grow>
-                <Grow className='w-full' placement='ss' gap={5}>
-                  <TableFold>
-                    <TableFoldHead title="상품정보"></TableFoldHead>
-                    <TableFoldBody className="w-full">
-                      <div className="ag-theme-alpine w-full h-[50rem]!">
+
+                <Grow className='w-full overflow-hidden' placement='ss' gap={5}>
+                  <TableFold className="h-full">
+                    <TableFoldHead title="상품정보" variant="default" />
+                    <TableFoldBody className="w-full h-full">
+                      <div className="ag-theme-alpine w-full h-full absolute">
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -649,70 +606,65 @@ export default function Ltpa020Section() {
                       </div>
                     </TableFoldBody>
                   </TableFold>
-                  <Gcol className='max-w-[42.5rem]'>
-                    <TableFold>
-                      <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"></TableFoldHead>
-                      <TableFoldBody>
-                        <Gcol className='w-full' gap={5}>
-                          <Gcol className='w-full'>
-                              <div className="ag-theme-alpine w-full h-60!">
-                              <AgGridReact<DummyDataType2>
-                                getRowId={(params) => String(params.data.id)}
-                                noRowsOverlayComponent={AgGridEmptyComponent}
-                                rowData={dummyData2}
-                                columnDefs={columnDefs2}
-                                defaultColDef={{
-                                  sortable: false,
-                                  resizable: false,
-                                }}
-                                headerHeight={30}
-                                rowHeight={30}
-                                domLayout="normal"
-                              />
-                            </div>
-                          </Gcol>
-                          <Gcol className='w-full'>
-                            <TabPager
-                                data={tabs}
-                                active={active}
-                                setActive={setActive}
-                                removable={false}
-                                onRemove={handleRemove}
-                                visibleCount={4}
-                                variant="default"
-                                hasTableBelow={true}
-                                error={false}
-                                errorMsg="에러 메시지 예시"
-                                getValue={(tab) => String(tab.value)}
-                                renderTab={(tab) => <span>{tab.label}</span>}
-                                renderDropdownItem={false}
-                              >
-                              <div className="ag-theme-alpine w-full h-[30rem]! ag-border-t">
-                                <AgGridReact<DummyDataType3>
-                                  getRowId={(params) => String(params.data.id)}
-                                  noRowsOverlayComponent={AgGridEmptyComponent}
-                                  rowData={dummyData3}
-                                  columnDefs={columnDefs3}
-                                  defaultColDef={{
-                                    sortable: false,
-                                    resizable: false,
-                                  }}
-                                  headerHeight={30}
-                                  rowHeight={30}
-                                  domLayout="normal"
-                                />
-                              </div>
-                            </TabPager>
-                          </Gcol>
-                        </Gcol>  
+
+                  <Grid className='max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_60%]' gap={5}>
+                    <TableFold className="">
+                      <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"  variant="default" />
+                      <TableFoldBody className="w-full h-full">
+                        <div className="ag-theme-alpine w-full h-full absolute">
+                          <AgGridReact<DummyDataType2>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={dummyData2}
+                            columnDefs={columnDefs2}
+                            defaultColDef={{
+                              sortable: false,
+                              resizable: false,
+                            }}
+                            headerHeight={30}
+                            rowHeight={30}
+                            domLayout="normal"
+                          />
+                        </div>
                       </TableFoldBody>
                     </TableFold>
-                  </Gcol>
+                    <TabPager
+                      data={tabs}
+                      active={active}
+                      setActive={setActive}
+                      removable={false}
+                      onRemove={handleRemove}
+                      visibleCount={4}
+                      variant="default"
+                      hasTableBelow={true}
+                      error={false}
+                      errorMsg="에러 메시지 예시"
+                      getValue={(tab) => String(tab.value)}
+                      renderTab={(tab) => <span>{tab.label}</span>}
+                      renderDropdownItem={false}
+                    >
+                      <div className="ag-theme-alpine w-full ag-border-t">
+                        <AgGridReact<DummyDataType3>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={dummyData3}
+                          columnDefs={columnDefs3}
+                          defaultColDef={{
+                            sortable: false,
+                            resizable: false,
+                          }}
+                          headerHeight={30}
+                          rowHeight={30}
+                          domLayout="normal"
+                        />
+                      </div>
+                    </TabPager>
+                   
+                  </Grid>
                 </Grow>
-              </Gcol>
+              </>
             ) : (
               <Gcol>
-              
                 <Grow className="w-full items-start" gap={1.2}>
                   <Gcol className="flex-1 min-w-0" gap={0}>
                     <div className="relative">
@@ -890,7 +842,24 @@ export default function Ltpa020Section() {
               </Gcol>
             )}
 
-          </Gcol>
+          </Grid>
+        }
+        mainFoot={
+          <MainBottom>
+            <MainBottomItem className="justify-end">
+              
+              <Grow gap={1}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  <AiIcon size={22} color={'var(--color-secondary-90)'} color2={'var(--color-secondary-90)'} />
+                  추천설계
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  설계시작
+                  <ArrowNext size={16} />
+                </Button>
+              </Grow>
+            </MainBottomItem>
+          </MainBottom>
         }
       ></LayoutTemplate>
       <LayoutFoot>
