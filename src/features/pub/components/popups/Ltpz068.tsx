@@ -194,10 +194,9 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <TableFold>
-            <Grow className="w-full relative mt-12">
-              {/* 말풍선 */}
-              <Grow className="absolute top-[-4.5rem] left-[7.9rem] w-auto px-2.5 py-2 bg-[var(--color-information-10)] rounded-[0.4rem]">
-                <Typo variant={'body-lg'}>AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
+            <Grow className="w-full relative mt-10">
+              <Grow className="absolute top-[-2.5rem] left-[0rem]">
+                <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
               </Grow>
 
               {/* A안 / B안 / C안 상단 탭 */}
@@ -255,7 +254,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                     return (
                       <div
                         key={`plan-box-${key}`}
-                        className="absolute top-0 bottom-0 border-2"
+                        className="absolute top-0 bottom-0 border-[0.3rem]"
                         style={{
                           left: `${rect.left}px`,
                           width: `${rect.width}px`,
