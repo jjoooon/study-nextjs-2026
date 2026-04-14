@@ -3,7 +3,7 @@
 import { Gcol, Grow, Typo, Divider, Grid, FormItem} from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
-import { AdderIcon2, AiIcon, ChevronDownIcon, SearchIcon, ZoomInIcon, ArrowNext } from '@icons';
+import { AdderIcon2, AiIcon, ChevronDownIcon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -27,14 +27,16 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { DatePickerInput } from '@common/DatePicker';
 
 import {
+  comparisonRows,
   dummyData,
   dummyData2,
   dummyData3,
+  type ComparisonRow,
   type DummyDataType,
   type DummyDataType2,
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
-
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 
 
 type Ltpa020TabItem = {
@@ -343,6 +345,26 @@ export default function Ltpa020Section() {
       },
     []
   );
+
+const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
+  {
+    headerName: '담보명',
+    field: 'coverage',
+    flex: 1,
+  },
+  {
+    headerName: '가입금액(원)',
+    field: 'amount',
+    width: 70,
+    cellClass: 'text-right',
+  },
+  {
+    headerName: '보험료(원)',
+    field: 'premium',
+    width: 70,
+    cellClass: 'text-right',
+  },
+];
 
   return (
     <>
@@ -677,182 +699,147 @@ export default function Ltpa020Section() {
                 </Grid>
               </Grow>
             ) : (
-              <Gcol>
-                <Grow className="w-full items-start" gap={1.2}>
-                  <Gcol className="flex-1 min-w-0" gap={0}>
-                    <div className="relative">
-                      <div className="grid grid-cols-3 gap-[1.2rem] w-full">
-                        {recommendData.slice(0, visibleCount).map((item) => (
-                          <RecommendCard
-                            key={item.id}
-                            variant="checkbox"
-                            title={item.title}
-                            plan={item.plan}
-                            term={item.term}
-                            detail={item.detail}
-                          />
-                        ))}
-                      </div>
-                      {visibleCount < recommendData.length && (
-                        <div
-                          className="absolute bottom-0 left-0 right-0 h-[4rem] pointer-events-none"
-                          style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.95))' }}
+              <Grid className="w-full h-full grid-cols-[60%_40%] items-start overflow-hidden" gap={1.2}>
+                <Gcol className="flex-1 min-w-0" gap={0}>
+                  <div className="relative">
+                    <div className="grid grid-cols-3 gap-[1.2rem] w-full">
+                      {recommendData.slice(0, visibleCount).map((item) => (
+                        <RecommendCard
+                          key={item.id}
+                          variant="checkbox"
+                          title={item.title}
+                          plan={item.plan}
+                          term={item.term}
+                          detail={item.detail}
                         />
-                      )}
+                      ))}
                     </div>
                     {visibleCount < recommendData.length && (
-                      <Grow placement="cc" className="w-full pt-[0.8rem]">
-                        <button
-                          type="button"
-                          onClick={() => setVisibleCount((v) => v + 6)}
-                          className="flex items-center gap-[0.6rem] rounded-[100px] bg-[#FEF4D4] px-[0.8rem] py-[0.4rem]"
-                        >
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                            <path
-                              d="M1 1.5L5 5.5L9 1.5"
-                              stroke="#FF5C2E"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M1 4.5L5 8.5L9 4.5"
-                              stroke="#FF5C2E"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <Typo
-                            tag="span"
-                            variant="body-xs"
-                            weight="bold"
-                            className="whitespace-nowrap text-(--color-primary-50)"
-                          >
-                            추천설계 더보기
-                          </Typo>
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                            <path
-                              d="M1 1.5L5 5.5L9 1.5"
-                              stroke="#FF5C2E"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M1 4.5L5 8.5L9 4.5"
-                              stroke="#FF5C2E"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </button>
-                      </Grow>
+                      <div
+                        className="absolute bottom-0 left-0 right-0 h-[4rem] pointer-events-none"
+                        style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.95))' }}
+                      />
                     )}
-                  </Gcol>
-                  <Gcol className="shrink-0 w-[26.2rem] rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
-                    <Gcol
-                      className="relative px-[1.6rem] py-[1rem] gap-[0.2rem]"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(358deg, #FF5C2E 9.4%, #FF8D02 97.24%), url('/images/Ltpa020/cand_on_bg.png')",
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'left top, right top',
-                      }}
-                    >
-                      <Typo tag="p" variant="body-md" weight="bold" className="text-white">
-                        한화 시그니처 여성 간편건강보험4.0
-                      </Typo>
-                      <Typo tag="p" variant="body-sm" className="text-white">
-                        납입면제형 · 기본형 · 3N5간편고지형
-                      </Typo>
-                      <Grow className="w-full" placement="ec" gap={0.4}>
-                        <AdderIcon2 size={14} />
-                        <Typo tag="p" variant="body-xs" className="text-white">
-                          예상보험료
-                        </Typo>
-                        <Typo tag="p" variant="body-xs" weight="bold" className="text-white">
-                          70,000원
-                        </Typo>
-                      </Grow>
-                    </Gcol>
-
-                    <Gcol className="px-[1rem] pb-[1rem] pt-[0.8rem]" gap={0.8}>
-                      <Gcol className="w-full rounded-[0.8rem] bg-[#E0EFFF] p-[0.8rem]" gap={0.8}>
-                        <Grow
-                          className="w-full rounded-[999px] border border-[#006FF2] bg-white px-[0.8rem] py-[0.6rem]"
-                          placement="bwe"
+                  </div>
+                  {visibleCount < recommendData.length && (
+                    <Grow placement="cc" className="w-full pt-[0.8rem]">
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCount((v) => v + 6)}
+                        className="flex items-center gap-[0.6rem] rounded-[100px] bg-[#FEF4D4] px-[0.8rem] py-[0.4rem]"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                          <path
+                            d="M1 1.5L5 5.5L9 1.5"
+                            stroke="#FF5C2E"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M1 4.5L5 8.5L9 4.5"
+                            stroke="#FF5C2E"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <Typo
+                          tag="span"
+                          variant="body-xs"
+                          weight="bold"
+                          className="whitespace-nowrap text-(--color-primary-50)"
                         >
-                          <Grow gap={0.2} placement="sc">
-                            <AiIcon />
-                            <Typo tag="p" variant="body-xs" weight="bold" className="text-[#006FF2]">
-                              AI 추천이유
-                            </Typo>
-                          </Grow>
-                          <ChevronDownIcon size={12} className="rotate-180 text-[#006FF2]" />
-                        </Grow>
-
-                        <Gcol className="max-h-[8.8rem] overflow-y-auto pr-[0.2rem]" gap={0.4}>
-                          {recommendReasonTexts.map((text) => (
-                            <Typo key={text} tag="p" variant="body-xs" className="text-black">
-                              {text}
-                            </Typo>
-                          ))}
-                        </Gcol>
-                      </Gcol>
-
-                      <div className="w-full overflow-hidden border border-[#E5E5E5] border-t-2 border-t-[#1E2124]">
-                        <div className="grid grid-cols-[1.58fr_0.72fr_0.7fr] bg-[#F4F4F4]">
-                          <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] text-center">
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black">
-                              담보명
-                            </Typo>
-                          </div>
-                          <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] text-center">
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.4]">
-                              가입금액
-                            </Typo>
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.2]">
-                              (만원)
-                            </Typo>
-                          </div>
-                          <div className="border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] text-center">
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.4]">
-                              보험료
-                            </Typo>
-                            <Typo tag="p" variant="body-md" weight="bold" className="text-black leading-[1.2]">
-                              (원)
-                            </Typo>
-                          </div>
-                        </div>
-
-                        <div className="max-h-108 overflow-y-auto">
-                          {detailTableRows.map((row) => (
-                            <div key={row.id} className="grid grid-cols-[1.58fr_0.72fr_0.7fr]">
-                              <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] min-h-[3rem] flex items-center">
-                                <Typo tag="p" variant="body-md" className="text-black truncate w-full">
-                                  {row.name}
-                                </Typo>
-                              </div>
-                              <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] min-h-[3rem] flex items-center justify-center">
-                                <Typo tag="p" variant="body-md" className="text-black">
-                                  {row.amount}
-                                </Typo>
-                              </div>
-                              <div className="border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem] min-h-[3rem] flex items-center justify-center">
-                                <Typo tag="p" variant="body-md" className="text-black">
-                                  {row.premium}
-                                </Typo>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </Gcol>
+                          추천설계 더보기
+                        </Typo>
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                          <path
+                            d="M1 1.5L5 5.5L9 1.5"
+                            stroke="#FF5C2E"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M1 4.5L5 8.5L9 4.5"
+                            stroke="#FF5C2E"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </Grow>
+                  )}
+                </Gcol>
+                <Grid className="shrink-0 w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
+                  <Gcol
+                    className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] [background-repeat:no-repeat] [background-position:right_top,left_top] rounded-b-[1rem]"
+                    placement='ss'
+                  >
+                    <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
+                      한화 시그니처 여성 간편건강보험4.0
+                    </Typo>
+                    <Typo tag="p" variant="body-sm" className="text-white">
+                      납입면제형 · 기본형 · 3N5간편고지형
+                    </Typo>
+                    <Grow className="w-full" placement="ec" gap={1}>
+                      <AdderIcon2 size={14} />
+                      <Typo tag="p" variant="body-xs" weight={'normal'} className="text-white">
+                        예상보험료
+                      </Typo>
+                      <Typo tag="p" variant="body-xs" weight={'bold'} className="text-white">
+                        70,000원
+                      </Typo>
+                    </Grow>
                   </Gcol>
-                </Grow>
-              </Gcol>
+                  <Gcol className="px-[1rem] pb-[1rem] pt-[0.8rem] flex gap-[0.8rem]">
+                    <Accordion type="single" collapsible defaultValue="item-1" className="w-full bg-[#E0EFFF] px-[0.8rem] py-[1rem] rounded-[1rem]">
+                      <AccordionItem value="item-1">
+                        <AccordionTrigger className="group w-full rounded-[1rem]">
+                          <Grow
+                            className="w-full rounded-[999px] border border-[#006FF2] bg-white px-[0.8rem] py-[0.6rem]"
+                            placement="bwe"
+                          >
+                            <Grow gap={0.2} placement="sc">
+                              <AiIcon size={10} color='#006FF2' />
+                              <Typo tag="p" variant="body-xs" weight="bold" className="text-[#006FF2]">
+                                AI 추천이유
+                              </Typo>
+                            </Grow>
+                            <SelectDropIcon
+                              className="text-[#006FF2] transition-transform group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0"
+                            />
+                          </Grow>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <Gcol className="max-h-[8.8rem] overflow-y-auto mt-[0.8rem] pr-[0.2rem]" gap={0.4}>
+                            {recommendReasonTexts.map((text) => (
+                              <Typo key={text} tag="p" variant="body-xs" className="text-black">
+                                {text}
+                              </Typo>
+                            ))}
+                          </Gcol>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                    <div className='ag-theme-alpine'>
+                      <AgGridReact<ComparisonRow>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={comparisonRows}
+                        columnDefs={comparisonColumnDefs}
+                        defaultColDef={{
+                          suppressMovable: true,
+                          sortable: false,
+                          resizable: false,
+                        }}
+                        domLayout="autoHeight"
+                      />
+                    </div>
+                  </Gcol>
+                </Grid>
+              </Grid>
             )}
           </Grid>
         }

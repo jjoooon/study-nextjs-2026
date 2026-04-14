@@ -215,6 +215,13 @@ export type DummyDataType3 = {
 	field1: string | number;
 };
 
+export type ComparisonRow = {
+	id: number;
+	coverage: string;
+	amount: string;
+	premium: string;
+};
+
 export const dummyData3: DummyDataType3[] = [
 	{
 		id: 1,
@@ -266,4 +273,23 @@ export const dummyData3: DummyDataType3[] = [
 		id: 12,
 		field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)(15~40세)',
 	},
+];
+
+export const comparisonRows: ComparisonRow[] = [
+	{ id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: '3,000', premium: '3,000' },
+	{ id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: '10', premium: '10' },
+	{ id: 3, coverage: '상해사망(간편)', amount: '15,000', premium: '15,000' },
+	{ id: 4, coverage: '상해후유장해(3-100%)', amount: '10,000', premium: '10,000' },
+	{ id: 5, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 6, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 7, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 8, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 9, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 10, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 11, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 12, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 13, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 14, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 15, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+	{ id: 16, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
 ];
