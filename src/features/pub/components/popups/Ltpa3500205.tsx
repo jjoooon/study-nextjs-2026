@@ -1,12 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
-
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -19,106 +13,90 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Input } from '@/shared/components/uiux/Input';
+import { useState } from 'react';
+import { ArrowIcon } from '@/shared/components/icons';
+import { id } from 'date-fns/locale';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
 
-const parseNumericValue = (value: unknown): number => {
-  if (value === null || value === undefined || value === '') return 0;
-  const normalized = String(value).replace(/,/g, '').trim();
-  const parsed = Number(normalized);
-  return Number.isNaN(parsed) ? 0 : parsed;
-};
-
-const formatNumericValue = (value: unknown): string => {
-  if (value === null || value === undefined || value === '') return '';
-  const normalized = String(value).replace(/,/g, '').trim();
-  const parsed = Number(normalized);
-  return Number.isNaN(parsed) ? '' : parsed.toLocaleString();
-};
-
-type DummyDataType = {
-  id: number;
-  field01: string;
-  field02: string | number;
-};
-
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field01: '1',
-    field02: '암',
-  },
-  {
-    id: 2,
-    field01: '2',
-    field02: '뇌',
-  },
-  {
-    id: 3,
-    field01: '3',
-    field02: '심',
-  },
-  {
-    id: 4,
-    field01: '4',
-    field02: '수술',
-  },
-  {
-    id: 5,
-    field01: '5',
-    field02: '특정',
-  },
-  {
-    id: 6,
-    field01: '6',
-    field02: '표적',
-  },
-  {
-    id: 7,
-    field01: '7',
-    field02: '치료',
-  },
-  {
-    id: 8,
-    field01: '8',
-    field02: '골절',
-  },
-  {
-    id: 9,
-    field01: '9',
-    field02: '화상',
-  },
-  {
-    id: 10,
-    field01: '10',
-    field02: '치매',
-  },
-];
 
 export const Ltpa3500205 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+  // 초기 키워드 값
+  const items = [ 
     {
-      headerName: '순서',
-      field: 'field01',
-      width: 70,
-      cellClass: 'text-center',
-      autoHeight: true,
+      idx: 1,
+      keyword: '암',
     },
     {
-      headerName: '키워드',
-      field: 'field02',
-      flex: 1,
-      cellClass: 'text-center',
-      autoHeight: true,
-      editable: true,
-      cellClassRules: {
-        'ag-cell-error-border': (params) => params.value === '' || params.value === undefined,
-      },
+      idx: 2,
+      keyword: '뇌',
     },
-    
+    {
+      idx: 3,
+      keyword: '심장',
+    },
+    {
+      idx: 4,
+      keyword: '폐',
+    },
+    {
+      idx: 5,
+      keyword: '간',
+    },
+    {
+      idx: 6,
+      keyword: '위',
+    },
+    {
+      idx: 7,
+      keyword: '신장',
+    },
+    {
+      idx: 8,
+      keyword: '당뇨',
+    },
+    {
+      idx: 9,
+      keyword: '치매',
+    },
+    {
+      idx: 10,
+      keyword: '우울증',
+    }
   ];
 
-  const [rowData, setRowData] = useState<DummyDataType[]>(DummyData);
+  const [keywords, setKeywords] = useState<string[]>(items.map(item => item.keyword));
+  // 선택된 인덱스(포커스된 input)
+  const [selectedIdx, setSelectedIdx] = useState<number>(0);
+
+  // 입력값 변경
+  const handleInputChange = (idx: number, value: string) => {
+    setKeywords((prev) => prev.map((v, i) => (i === idx ? value : v)));
+  };
+
+  // 위로 이동
+  const moveUp = () => {
+    if (selectedIdx > 0) {
+      setKeywords((prev) => {
+        const next = [...prev];
+        [next[selectedIdx - 1], next[selectedIdx]] = [next[selectedIdx], next[selectedIdx - 1]];
+        return next;
+      });
+      setSelectedIdx(selectedIdx - 1);
+    }
+  };
+  // 아래로 이동
+  const moveDown = () => {
+    if (selectedIdx < keywords.length - 1) {
+      setKeywords((prev) => {
+        const next = [...prev];
+        [next[selectedIdx + 1], next[selectedIdx]] = [next[selectedIdx], next[selectedIdx + 1]];
+        return next;
+      });
+      setSelectedIdx(selectedIdx + 1);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -132,22 +110,41 @@ export const Ltpa3500205 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine">
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              rowData={rowData}
-              columnDefs={columnDefs}
-              headerHeight={52}
-              defaultColDef={{
-                sortable: false,
-                resizable: false,
-              }}
-              singleClickEdit={true}
-              domLayout="autoHeight"
-              alwaysShowHorizontalScroll={true}
-            />
+          <div className="flex gap-2 mb-2">
+            <Button color="primary" onClick={moveUp} only="default" size="lg" variant="contained" disabled={selectedIdx === 0}>
+              <ArrowIcon className='rotate-90'/>
+              위로
+            </Button>
+            <Button color="primary" onClick={moveDown} only="default" size="lg" variant="outlined" disabled={selectedIdx === keywords.length - 1}>
+              <ArrowIcon className='-rotate-90'/>
+              아래로
+            </Button>
           </div>
+          <Grow className='w-full h-full' placement='ss'>
+            <Gcol className='w-[4rem] h-[31.6rem] justify-between py-[0.4rem]' placement='ss'>
+              {keywords.map((_, i) => (
+                <Badge key={i} color="secondary" size="md" variant="contained">{i + 1}</Badge>
+              ))}
+            </Gcol>
+            <Gcol className='w-full'>
+              {keywords.map((kw, i) => (
+                <Input
+                  key={i}
+                  errorMsg="입력은 필수입니다."
+                  errorPs="bl"
+                  onChange={(e) => handleInputChange(i, e.target.value)}
+                  size="lg"
+                  value={kw}
+                  variant="default"
+                  width="full"
+                  onFocus={() => setSelectedIdx(i)}
+                  className={selectedIdx === i ? 'ring-2 ring-primary-500' : ''}
+                  placeholder='최대 한글 6자'
+                  clear
+                />
+              ))}
+            </Gcol>
+          </Grow>
         </DialogSection>
 
         <DialogFooter>

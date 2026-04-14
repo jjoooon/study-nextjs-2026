@@ -36,6 +36,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   vertical?: boolean;
   tdClassName?: string;
   tdNone?: boolean;
+  style?: React.CSSProperties;
 }
 
 interface FormTableProps {
@@ -132,6 +133,7 @@ export const FormCell = ({
   titleColSpan,
   titleRowSpan,
   tdClassName,
+  style,
   tdNone = false,
 }: FormCellProps) => {
   const contextVertical = useContext(VerticalContext);
@@ -165,6 +167,7 @@ export const FormCell = ({
           className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] "
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
+          style={style}
         >
           {contextVertical ? (
             <TooltipIfOverflow>{children}</TooltipIfOverflow>
