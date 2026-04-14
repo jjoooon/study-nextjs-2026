@@ -11,7 +11,7 @@ interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof Checkbox
   children?: React.ReactNode;
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
   size?: 'xl' | 'lg' | 'md';
-  color?: 'primary' | 'info';
+  color?: 'primary' | 'info' | 'secondary';
   required?: boolean;
   error?: boolean;
   errorMsg?: React.ReactNode;
@@ -96,6 +96,10 @@ function Checkbox({
       data-[state=checked]:bg-[var(--color-information-50)] 
       data-[state=checked]:border-[var(--color-information-50)] 
       data-[state=checked]:text-white`,
+    secondary: `hover:border-[var(--color-secondary-50)] 
+      data-[state=checked]:bg-[var(--color-secondary-50)] 
+      data-[state=checked]:border-[var(--color-secondary-50)] 
+      data-[state=checked]:text-white`,
   };
   const buttonColorStyles = {
     primary: `data-[state=checked]:bg-[var(--color-primary-5)] 
@@ -106,6 +110,10 @@ function Checkbox({
       data-[state=checked]:text-[var(--color-information-50)] 
       data-[state=checked]:border-[var(--color-information-50)] 
       data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(0,111,242,0.20)]`,
+    secondary: `data-[state=checked]:bg-[var(--color-secondary-40)] 
+      data-[state=checked]:text-[var(--color-secondary-90)] 
+      data-[state=checked]:border-[var(--color-secondary-90)] 
+      data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(27,46,91,0.20)]`,
   };
   const chipBoxColorStyles = {
     primary: `data-[state=checked]:bg-[var(--color-primary-50)] 
@@ -116,12 +124,17 @@ function Checkbox({
       data-[state=checked]:text-[#FFF] 
       data-[state=checked]:border-[#006ff2] 
       data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(0,111,242,0.19)]`,
+    secondary: `data-[state=checked]:bg-[var(--color-secondary-90)] 
+      data-[state=checked]:text-[#FFF] 
+      data-[state=checked]:border-[var(--color-secondary-90)] 
+      data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(27,46,91,0.19)]`,
   };
 
   const iconSize = size === 'xl' ? 19 : size === 'lg' ? 16 : 14;
   const checkedColorStyles = {
     primary: 'var(--color-primary-50)',
     info: 'var(--color-element-information)',
+    secondary: 'var(--color-secondary-90)',
   };
 
   // support both controlled and uncontrolled usage
@@ -302,7 +315,7 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   width?: 'full' | 'auto';
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
   size?: 'lg' | 'md';
-  color?: 'primary' | 'info';
+  color?: 'primary' | 'info' | 'secondary';
 }
 
 type CheckboxGroupItemRegistration = {

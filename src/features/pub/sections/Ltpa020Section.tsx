@@ -5,7 +5,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import { BottomBar } from '@common/BottomBar';
 import { RecommendCard } from '@common/RecommendCard';
-import { AdderIcon, AdderIcon2, AiIcon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon } from '@icons';
+import { AdderIcon, AdderIcon2, AiIcon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon, ArrowDoubleIcon, ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -16,7 +16,7 @@ import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridEmptyComponent } from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -37,6 +37,7 @@ import {
   dummyData3b,
   dummyData3c,
   dummyData4List,
+  type DummyData4ListDetailType,
   type DummyData4ListType,
   type DummyDataType,
   type DummyDataType2,
@@ -195,27 +196,118 @@ export default function Ltpa020Section() {
     []
   );
 
-  const columnDefs4: ColDef<DummyData4ListType>[] = [
+  const columnDefs4: ColDef<DummyData4ListDetailType>[] = [
     {
       headerName: '담보명',
-      valueGetter: (params) => params.data?.detail?.[0]?.field1 ?? '',
+      field: 'field1',
       flex: 1,
     },
     {
       headerName: '가입금액(원)',
-      valueGetter: (params) => params.data?.detail?.[0]?.field2 ?? '',
+      field: 'field2',
       width: 70,
       cellClass: 'text-right',
     },
     {
       headerName: '보험료(원)',
-      valueGetter: (params) => params.data?.detail?.[0]?.field3 ?? '',
+      field: 'field3',
       width: 70,
       cellClass: 'text-right',
     },
   ];
 
-  const [listSelected] = useState<number | null>(dummyData4List[0]?.id ?? null);
+  const [listSelected, setListSelected] = useState<number | null>(dummyData4List[0]?.id ?? null);
+  const [checkedMap, setCheckedMap] = useState<Record<number, boolean>>({});
+  const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
+  const [amountValues, setAmountValues] = useState<Record<string, string>>({});
+  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(false);
+  const [showMoreButton, setShowMoreButton] = useState<boolean>(true);
+  const [isAddPanelOpen, setIsAddPanelOpen] = useState<boolean>(false);
+  const listScrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollAnimRef = useRef<number | null>(null);
+
+  const selectedRecommendPlan =
+    dummyData4List.find((item) => item.id === listSelected) ?? dummyData4List[0];
+  const selectedAiReasonLines = (selectedRecommendPlan?.ai ?? '')
+    .split('<br />')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  const updateMoreButtonVisibility = useCallback(() => {
+    const container = listScrollRef.current;
+    if (!container) {
+      return;
+    }
+
+    const isAtEnd = container.scrollTop + container.clientHeight >= container.scrollHeight - 1;
+    setShowMoreButton(!isAtEnd);
+  }, []);
+
+  const handleMoreRecommendClick = useCallback(() => {
+    const container = listScrollRef.current;
+    if (!container) {
+      return;
+    }
+
+    const items = Array.from(
+      container.querySelectorAll<HTMLElement>('.card-selected')
+    );
+
+    if (items.length === 0) {
+      return;
+    }
+
+    const itemHeight = items[0]?.offsetHeight ?? 0;
+    if (itemHeight <= 0) {
+      return;
+    }
+
+    const viewportTop = container.scrollTop;
+    const maxScrollTop = Math.max(container.scrollHeight - container.clientHeight, 0);
+    const visibleItemCount = Math.max(1, Math.floor(container.clientHeight / itemHeight));
+    const step = visibleItemCount * (itemHeight + 12);
+    const targetTop = Math.min(viewportTop + step, maxScrollTop);
+
+    if (scrollAnimRef.current !== null) {
+      cancelAnimationFrame(scrollAnimRef.current);
+    }
+
+    const startTop = container.scrollTop;
+    const distance = targetTop - startTop;
+    const duration = 420;
+    const startTime = performance.now();
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeInOutCubic(progress);
+      container.scrollTop = startTop + distance * eased;
+
+      if (progress < 1) {
+        scrollAnimRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      scrollAnimRef.current = null;
+      updateMoreButtonVisibility();
+    };
+
+    scrollAnimRef.current = requestAnimationFrame(animate);
+  }, [updateMoreButtonVisibility]);
+
+  useEffect(() => {
+    updateMoreButtonVisibility();
+  }, [updateMoreButtonVisibility]);
+
+  useEffect(() => {
+    return () => {
+      if (scrollAnimRef.current !== null) {
+        cancelAnimationFrame(scrollAnimRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -339,7 +431,7 @@ export default function Ltpa020Section() {
                                     { value:'남', label: '남' },
                                     { value:'여', label: '여' },
                                   ].map((tag) => (
-                                    <RadioGroupItem value={tag.value}>{tag.label}</RadioGroupItem>
+                                    <RadioGroupItem key={tag.value} value={tag.value}>{tag.label}</RadioGroupItem>
                                   ))}
                                 </RadioGroup>
                               </KeyValueItem>
@@ -352,7 +444,7 @@ export default function Ltpa020Section() {
                                     { value:'2급', label: '2급' },
                                     { value:'3급', label: '3급' },
                                   ].map((tag) => (
-                                    <RadioGroupItem value={tag.value}>{tag.label}</RadioGroupItem>
+                                    <RadioGroupItem key={tag.value} value={tag.value}>{tag.label}</RadioGroupItem>
                                   ))}
                                 </RadioGroup>
                               </KeyValueItem>
@@ -364,7 +456,6 @@ export default function Ltpa020Section() {
                             </Grow>
                           )}
 
-                          {/* Row2: 고객 태그 */}
                           <Grow>
                             {customerType === 'recent' ? (
                               <RadioGroup className='gap-1' defaultValue='홍길동'>
@@ -374,7 +465,7 @@ export default function Ltpa020Section() {
                                   { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                 ].map((tag) => (
-                                  <RadioGroupItem value={tag.value} variant="chipBox" size="md" className="flex items-center">
+                                  <RadioGroupItem key={tag.value} value={tag.value} variant="chipBox" size="md" className="flex items-center">
                                     <b>#</b>
                                     <b className="max-w-[7rem] truncate block">{tag.name}</b> 
                                     {tag.age}세 ({tag.gender})
@@ -389,7 +480,7 @@ export default function Ltpa020Section() {
                                   { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                 ].map((tag) => (
-                                  <RadioGroupItem value={tag.value} variant="chipBox" size="md">
+                                  <RadioGroupItem key={tag.value} value={tag.value} variant="chipBox" size="md">
                                     <b>#</b>
                                     <b>{tag.name}</b> 
                                     {tag.level}급
@@ -398,7 +489,7 @@ export default function Ltpa020Section() {
                               </RadioGroup>
                             )}
                             {customerType === 'new' && (
-                              <Button variant="outlined" size="sm" color="gray-light" onClick={() => {}}>
+                              <Button variant="outlined" size="md" color="gray-light" onClick={() => {}}>
                                 # 편집
                               </Button>
                             )}
@@ -470,7 +561,196 @@ export default function Ltpa020Section() {
                   </Button>
                 </Grow>
               ) :(
-                <></>
+                <Grow variant={'box-round'} className="w-full pl-[4.5rem] gap-[2rem] relative z-20" placement='bwc'>
+                  {/* 추가설정 좌측 */}
+                  <div className={`absolute top-[0.46rem] left-0 h-[3.6rem] bg-[var(--color-blue-gray-50)] rounded-r-full px-[0.2rem] gap-[0.2rem] flex items-center justify-start whitespace-nowrap text-[#fff] z-10 transition-transform duration-300 ease-out ${isAddPanelOpen ? 'translate-x-[0]' : '-translate-x-[calc(100%-4.2rem)]'}`}>
+                    <Grow className='px-[1.6rem]'>
+                      <CheckboxGroup className="gap-[1rem]">
+                        {[
+                          { value: '담보군', label: '담보군' },
+                          { value: '상품특징', label: '상품특징' },
+                          { value: '보장분석', label: '보장분석' },
+                          { value: '상품명', label: '상품명' },
+                        ].map((opt) => (
+                          <CheckboxGroupItem key={opt.value} value={opt.value} size="lg">
+                            {opt.label}
+                          </CheckboxGroupItem>
+                        ))}
+                      </CheckboxGroup>
+                    </Grow>
+                    <button type="button" className="w-[3.7rem] flex items-center gap-[0.2rem]" onClick={() => setIsAddPanelOpen((prev) => !prev)}>
+                     {isAddPanelOpen ? '닫기' : '추가'}
+                     <ArrowIcon className={isAddPanelOpen ? '' : 'rotate-[180deg]'} size={12}  />
+                    </button>
+                  </div>
+                  {/* 기본 */}
+                  <FormTable caption="" cols={
+                    [
+                    'w-[4rem]', 'w-auto', 
+                    'w-[6rem]', 'w-auto',
+                    'w-[6rem]', 'w-auto',
+                     'w-[6rem]', 'w-[18rem]'
+                    ]} variant={'none'}>
+                    <FormRow className='items-start!'>
+                      <FormCell title={'담보군'} className="items-center! min-h-[2.8rem]! pt-[0.6rem]">
+                        <button
+                          type="button"
+                          className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                          onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                          aria-expanded={isFilterOptionOpen}
+                        >
+                          <span className="w-[100%] flex items-center font-normal">선택</span>
+                          <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                        </button>
+                      </FormCell>
+                      <FormCell title={'상품특징'}>
+                        <button
+                          type="button"
+                          className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                          onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                          aria-expanded={isFilterOptionOpen}
+                        >
+                          <span className="w-[100%] flex items-center font-normal">선택</span>
+                          <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                        </button>
+                      </FormCell>
+                      <FormCell title={'보장분석'}>
+                        <button
+                          type="button"
+                          className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                          onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                          aria-expanded={isFilterOptionOpen}
+                        >
+                          <span className="w-[100%] flex items-center font-normal">선택</span>
+                          <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                        </button>
+                      </FormCell>
+
+                      <FormCell title={'상품명'}>
+                        <Input
+                          aria-label="상품명 입력"
+                          type="text"
+                          value={'한화 시그니처 여성 간편건강보험 4.0'}
+                          width={'full'}
+                        />
+                        <Button variant={'outlined'} color={'gray-light'} aria-label="상품 검색" only={'icon'} size={'lg'}>
+                          <SearchIcon color="var(--color-primary-50)" />
+                        </Button>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <Grow>
+                    <Button variant="contained" color="coolgray" size={'lg'}>
+                      설계추천
+                    </Button>
+                    <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
+                      <ResetIcon />
+                    </Button>
+                  </Grow>
+                  
+                  {isFilterOptionOpen && (
+                    <Grow variant='box-round-b' className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] px-4 py-2.5 gap-0 z-10 pl-[4.5rem]! justify-stretch! " placement='ss'>
+                    <Gcol className="gap-[0.4rem]" placement='ss'>
+                      {[
+                        { value: '사망/후유', label: '사망/후유' }, 
+                        { value: '진단비', label: '진단비' },
+                        { value: '입원/통원', label: '입원/통원' },
+                        { value: '수술/치료', label: '수술/치료' },
+                        { value: '골절/화상', label: '골절/화상' },
+                        { value: '검사/지원', label: '검사/지원' },
+                        { value: '운전/비용', label: '운전/비용' },
+
+                      ].map((opt) => (
+                        <Grow className='w-full' placement='ss'>
+                          <Checkbox key={opt.value} value={opt.value} variant="button" className="w-[8rem]">{opt.label}</Checkbox>
+                          {isAmountInputVisible && (
+                            <Input
+                              after="만원"
+                              width={120}
+                              placeholder='가입금액'
+                              commaAmount
+                              size={'md'}
+                              value={amountValues[opt.value] ?? ''}
+                              onChange={(e) =>
+                                setAmountValues((prev) => ({
+                                  ...prev,
+                                  [opt.value]: e.target.value,
+                                }))
+                              }
+                            />
+                          )}
+                        </Grow>
+                      ))}
+                      <Checkbox
+                        checked={isAmountInputVisible}
+                        onCheckedChange={(checked) => setIsAmountInputVisible(checked === true)}
+                      >
+                        금액입력
+                      </Checkbox>
+                    </Gcol>
+                    <Divider className='self-stretch h-auto' />
+                    <Gcol placement='ss' className='pl-[1.2rem]'>
+                      <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
+                        <FormRow>
+                          <FormCell title={'무해지'}>
+                             <RadioGroup>
+                              {[
+                                { value: '적용', label: '적용' },
+                                { value: '미적용', label: '미적용' },
+                              ].map((opt) => (
+                                <RadioGroupItem key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </RadioGroupItem>
+                              ))}
+                             </RadioGroup>
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title={'납면'}>
+                             <RadioGroup>
+                              {[
+                                { value: '적용', label: '적용' },
+                                { value: '미적용', label: '미적용' },
+                              ].map((opt) => (
+                                <RadioGroupItem key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </RadioGroupItem>
+                              ))}
+                             </RadioGroup>
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title={'만기'}>
+                             <RadioGroup>
+                              {[
+                                { value: '세만기', label: '세만기' },
+                                { value: '연만기', label: '연만기' },
+                              ].map((opt) => (
+                                <RadioGroupItem key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </RadioGroupItem>
+                              ))}
+                             </RadioGroup>
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Gcol>
+                    <Divider className='self-stretch h-auto' />
+                    <Gcol placement='ss' className='pl-[1.2rem]'>
+                      <CheckboxGroup className="gap-[0.4rem] flex-col items-start" value={[]} onValueChange={() => {}}>
+                        {[
+                          { value: '보장분석 부족자금', label: '보장분석 부족자금' },
+                          { value: '기계약 누적해소', label: '기계약 누적해소' },
+                          { value: '기계약 유지', label: '기계약 유지' },
+                        ].map((opt) => (
+                          <Checkbox key={opt.value} value={opt.value} variant="button" className="w-[12.7rem]">{opt.label}</Checkbox>
+                        ))}
+                      </CheckboxGroup>
+                    </Gcol>
+                    <div className='w-[36rem] shrink-0'></div>
+                    </Grow>
+                  )}
+                </Grow>
               )}
             </Gcol>
 
@@ -536,131 +816,151 @@ export default function Ltpa020Section() {
                 </Grid>
               </Grow>
             ) : (
-              <Grid className="w-full h-full grid-cols-[1fr_auto] gap-4 items-start overflow-hidden" gap={1.2}>
-                <Grid className="grid-cols-3 gap-[1.2rem] w-full">
-                  {dummyData4List.slice(0, visibleCount).map((item) => (
-                    <Gcol
-                      className={`group bg-[var(--color-secondary-40)] rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative ${listSelected === item.id ? 'card-selected' : ''}`}
-                      key={item.id}
-                    >
-                      <div className="absolute top-[1rem] right-[1rem] z-10">
-                        <Checkbox size="xl"></Checkbox>
-                      </div>
-                      <Gcol className="bg-[#fff] group-[.card-selected]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] rounded-b-[1rem] p-[1rem] gap-2 w-full px-[1.6rem] pt-[2rem] pb-[1rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white">
-                        <h3 className="truncate w-[calc(100%-2.4rem)] text-[1.5rem] font-bold">
-                          {item.field1}
-                        </h3>
-                        <ul className='w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
-                          {item.field2.map((text, index) => (
-                            <li key={index}>{text}</li>
-                          ))}
-                        </ul>
-                        <Grow placement='bwc'>
-                          <ul className='flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
-                            {item.field3.map((text, index) => (
-                              <li key={index}>{text}</li>
-                            ))}
-                          </ul>
+              <Grid className="w-full h-full grid-cols-[1fr_auto] gap-4 items-stretch overflow-hidden" gap={1.2}>
+                {/* 리스트 */}
+                <div className="relative w-full h-full min-h-0">
+                  <div className="h-full min-h-0 relative overflow-y-auto" ref={listScrollRef} onScroll={updateMoreButtonVisibility}>
+                    <Grid className="grid-cols-3 gap-[1.2rem] w-full">
+                      {dummyData4List.map((item) => (
+                        <Gcol
+                          data-recommend-item="true"
+                          className={`group bg-[var(--color-secondary-40)] rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative ${listSelected === item.id ? 'card-selected' : ''}`}
+                          key={item.id}
+                        >
+                          <div className="absolute top-[1rem] right-[1rem] z-10">
+                            <Checkbox
+                              size="xl"
+                              color='secondary'
+                              checked={checkedMap[item.id] ?? false}
+                              onCheckedChange={(checked) => {
+                                setCheckedMap((prev) => ({
+                                  ...prev,
+                                  [item.id]: checked === true,
+                                }));
+                              }}
+                            ></Checkbox>
+                          </div>
+                          <Gcol className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top]   rounded-b-[1rem] p-[1rem] gap-2 w-full px-[1.6rem] pt-[2rem] pb-[1rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white" placement='ss'>
+                            <h3 className="truncate w-[calc(100%-2.4rem)] text-[1.5rem] font-bold">
+                              {item.field1}
+                            </h3>
+                            <div className='w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
+                              {item?.field2.join(' · ') ?? ''}
+                            </div>
+                            <Grow placement='bwc'>
+                              <div className='w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
+                                {item?.field3.join(' / ') ?? ''}
+                              </div>
+                            
+                              <Grow className='shrink-0'>
+                                <AdderIcon 
+                                color={listSelected === item.id ? 'var(--color-primary-70)' : '#FFAC27'}
+                                color2={listSelected === item.id ? 'var(--color-primary-50)' : '#FFCF64'}
+                                color3={listSelected === item.id ? 'var(--color-primary-20)' : '#FFE8AE'} />
+                                <strong className="text-[1.5rem] font-bold text-[var(--color-primary-50)] group-[.card-selected]:text-white">{item.field5.toLocaleString()}원</strong>
+                              </Grow>
+                            </Grow>
+                            <Gcol variant={'box-round'} className="w-full h-fit gap-1 px-[1rem] py-[0.8rem] min-h-[5.4rem]" placement='ss'>
+                              <BulletList className="w-full">
+                                {item.field4.map((text, index) => (
+                                  <BulletListItem key={index} size="xs" className='leading-[1.2] text-[var(--color-gray-70)]'>
+                                    <div className="truncate w-[calc(100%-0.6rem)]">{text}</div>
+                                  </BulletListItem>
+                                ))}
+                              </BulletList>
+                            </Gcol>
+                          </Gcol>
                           <Grow>
-                            <AdderIcon />
-                            <strong className="text-[1.5rem] font-bold text-[var(--color-primary-50)] group-[.card-selected]:text-white">{item.field5.toLocaleString()}원</strong>
+                            <Button
+                              variant={'none'}
+                              className='text-[#fff] font-bold pt-[0.8rem] pb-[1rem] h-[auto] text-[1.3rem]'
+                              onClick={() => setListSelected(item.id)}
+                            >
+                              <PaperIcon size={16} color={'var(--color-white)'} />
+                              보장내용 확인
+                            </Button>
                           </Grow>
-                        </Grow>
-                        <Gcol variant={'box-round'} className="w-full h-fit gap-1 px-[1rem] py-[0.8rem] min-h-[5.4rem]" placement='ss'>
-                          <BulletList className="w-full">
-                            {item.field4.map((text, index) => (
-                              <BulletListItem key={index} size="xs" className='leading-[1.2] text-[var(--color-gray-70)]'>
-                                <div className="truncate w-[calc(100%-0.6rem)]">{text}</div>
-                              </BulletListItem>
-                            ))}
-                          </BulletList>
                         </Gcol>
-                      </Gcol>
-                      <Grow>
-                        <Button variant={'none'} className='text-[#fff] font-bold pt-[0.8rem] pb-[1rem] h-[auto] text-[1.3rem]'>
-                          <PaperIcon size={16} color={'var(--color-white)'} />
-                           보장내용 확인
-                        </Button>
-                      </Grow>
-                    </Gcol>
-                  ))}
-                </Grid>
-
-
-
-
-
-                <Grid className="shrink-0 w-[29.4rem] h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden">
-                  
+                      ))}
+                    </Grid>
+                  </div>
+                  {showMoreButton && (
+                    <div className="absolute bottom-0 right-0 z-10 w-full h-[2.7rem] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,#fff_100%)] flex items-center justify-center">
+                      <Button type="button" className='mb-2 bg-[var(--color-warning-10)] rounded-full text-[var(--color-primary-50)] gap1.5 h-[2.5rem] border-0 px-[0.6rem] hover:bg-[var(--color-warning-20)]' onClick={handleMoreRecommendClick}>
+                        <ArrowDoubleIcon />
+                        추천설계 더보기
+                        <ArrowDoubleIcon />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                
+                {/* 상세 */}
+                <Grid className="shrink-0 w-[29.4rem] h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr]" gap={0}>
                   <Gcol
                     className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] [background-repeat:no-repeat] [background-position:right_top,left_top] rounded-b-[1rem]"
                     placement='ss'
                   >
                     <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
-                      한화 시그니처 여성 간편건강보험4.0
+                      {selectedRecommendPlan?.field1 ?? ''}
                     </Typo>
                     <Typo tag="p" variant="body-sm" className="text-white">
-                      납입면제형 · 기본형 · 3N5간편고지형
+                      {selectedRecommendPlan?.field2.join(' · ') ?? ''}
                     </Typo>
+
                     <Grow className="w-full" placement="ec" gap={1}>
                       <AdderIcon2 size={14} />
                       <Typo tag="p" variant="body-xs" weight={'normal'} className="text-white">
                         예상보험료
                       </Typo>
                       <Typo tag="p" variant="body-xs" weight={'bold'} className="text-white">
-                        70,000원
+                        {selectedRecommendPlan?.field5.toLocaleString()}원
                       </Typo>
                     </Grow>
                   </Gcol>
-                  <Gcol className="px-[1rem] pb-[1rem] pt-[0.8rem] flex gap-[0.8rem]">
-                    <Accordion type="single" collapsible defaultValue="item-1" className="w-full bg-[#E0EFFF] px-[0.8rem] py-[1rem] rounded-[1rem]">
-                      <AccordionItem value="item-1">
+
+                  <Grid className="px-[1rem] pb-[1rem] pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_1fr]">
+                    <Accordion type="single" collapsible defaultValue="item-1" className="w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem]">
+                      <AccordionItem value="item-1" className="flex flex-col gap-2">
                         <AccordionTrigger className="group w-full rounded-[1rem]">
                           <Grow
-                            className="w-full rounded-[999px] border border-[#006FF2] bg-white px-[0.8rem] py-[0.6rem]"
+                            className="w-full rounded-[1.2rem] border border-[var(--color-information-50)] bg-white px-[0.8rem] py-[0.2rem] h-[2.4rem]"
                             placement="bwe"
                           >
                             <Grow gap={0.2} placement="sc">
-                              <AiIcon size={10} color='#006FF2' />
-                              <Typo tag="p" variant="body-xs" weight="bold" className="text-[#006FF2]">
+                              <AiIcon size={10} color='var(--color-information-50)' />
+                              <Typo tag="p" variant="body-xs" weight="bold" className="text-[var(--color-information-50)]">
                                 AI 추천이유
                               </Typo>
                             </Grow>
                             <SelectDropIcon
-                              className="text-[#006FF2] transition-transform group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0"
+                              className="text-[var(--color-information-50)] transition-transform group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0 "
                             />
                           </Grow>
                         </AccordionTrigger>
                         <AccordionContent>
-                          <Gcol className="max-h-[8.8rem] overflow-y-auto mt-[0.8rem] pr-[0.2rem]" gap={0.4}>
-                            {[
-                              '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다.',
-                              '목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
-                              '담보별 권장 보장금액 기준 설계도 함께 확인해보실 수 있습니다.',
-                            ].map((text) => (
-                              <Typo key={text} tag="p" variant="body-xs" className="text-black">
+                          <div className="max-h-[9.2rem] overflow-y-auto pr-[0.2rem] text-[1.1rem] leading-[1.5]">
+                            {selectedAiReasonLines.map((text, index) => (
+                              <React.Fragment key={`${text}-${index}`}>
                                 {text}
-                              </Typo>
+                                {index < selectedAiReasonLines.length - 1 && <br />}
+                              </React.Fragment>
                             ))}
-                          </Gcol>
+                          </div>
                         </AccordionContent>
                       </AccordionItem>
                     </Accordion>
                     <div className='ag-theme-alpine'>
-                      <AgGridReact<DummyData4ListType>
+                      <AgGridReact<DummyData4ListDetailType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={dummyData4List}
+                        rowData={selectedRecommendPlan?.detail ?? []}
                         columnDefs={columnDefs4}
-                        defaultColDef={{
-                          suppressMovable: true,
-                          sortable: false,
-                          resizable: false,
-                        }}
-                        domLayout="autoHeight"
+                       
+                        domLayout="normal"
                       />
                     </div>
-                  </Gcol>
+                  </Grid>
                 </Grid>
               </Grid>
             )}
