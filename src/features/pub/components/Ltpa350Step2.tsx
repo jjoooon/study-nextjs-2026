@@ -1010,7 +1010,7 @@ export function Ltpa350Step2({
                       ]}
                     >
                       <FormRow>
-                        <FormCell title="만기금(환급률)">
+                        <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
                           <Button variant={'outlined'} color={'gray'} size={'sm'}>
                             예상
                           </Button>
@@ -1202,11 +1202,11 @@ export function Ltpa350Step2({
                 <MainBottom>
                   <MainBottomItem className="p-0!">
                     <FormTable
-                      className="w-[100%]! [&_tr]:justify-between [&_th]:border-b [&_td]:border-b"
+                      className="relative w-[100%]! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-full after:h-[0.1rem] after:bg-[#ccc]"
                       lineTop={false}
                       variant={'none'}
                       cols={[
-                        'w-[9rem]',
+                        'w-[9.3rem]',
                         'w-[auto]',
                         'w-[8rem]',
                         'w-[auto]',
@@ -1214,40 +1214,30 @@ export function Ltpa350Step2({
                         'w-[auto]',
                         'w-[8rem]',
                         'w-[auto]',
-                      ]}
+                      ]} 
                     >
-                      <FormRow>
+                      <FormRow className='overflow-hidden'>
                         <FormCell
-                          className="bg-[var(--color-primary-10)]!"
+                          className="bg-[var(--color-primary-10)]! rounded-tl-[1rem]!"
                           title={
-                            <>
-                              출생<b>전</b>
-                            </>
+                            <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
+                              출생<b className='text-[#FF5C2E]'>전</b>
+                            </Typo>
                           }
                         />
-                        <FormCell title="환급금" tdClassName="pt-2 pb-2.5">
-                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                            예상
-                          </Button>
-                          <Input
-                            type="tel"
-                            commaAmount={true}
-                            value={100000}
-                            width={'full'}
-                            readOnly={true}
-                            className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
-                          />
-                          <Input
-                            type="text"
-                            commaAmount={true}
-                            value={refundRate}
-                            onChange={(e) => setRefundRate(e.target.value)}
-                            width={60}
-                            className="[&_input]:text-right shrink-0"
-                          />
-                          %
+                        <FormCell title="환급금" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>div]:justify-end w-[13rem] [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem]' >
+                          <Grow className='w-full flex justify-end'>
+                            <Input
+                              type="tel"
+                              commaAmount={true}
+                              value={100000}
+                              width={'full'}
+                              readOnly={true}
+                              className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                            />
+                          </Grow>
                         </FormCell>
-                        <FormCell title="보장보험료" tdClassName="pt-2 pb-2.5">
+                        <FormCell title="보장보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>span]:text-[1.2rem]'>
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1257,7 +1247,7 @@ export function Ltpa350Step2({
                             className="[&_input]:text-right"
                           />
                         </FormCell>
-                        <FormCell title="적립보험료" tdClassName="pt-2 pb-2.5">
+                        <FormCell title="적립보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>span]:text-[1.2rem]'>
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1267,7 +1257,7 @@ export function Ltpa350Step2({
                             className="text-right"
                           />
                         </FormCell>
-                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3">
+                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3" className='[&>span]:text-[#000]! [&>span]:text-[1.2rem]'>
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1282,23 +1272,38 @@ export function Ltpa350Step2({
                             error={testError}
                             errorMsg={'계약자 입력은 필수입니다.'}
                             errorPs={'tr'}
-                            className="text-right font-bold"
+                            className="text-right"
                           />
                         </FormCell>
                       </FormRow>
-                      <FormRow>
+                      <FormRow className='overflow-hidden'>
                         <FormCell
                           className="bg-[var(--color-primary-10)]!"
                           title={
-                            <>
-                              출생<b>후</b>
-                            </>
+                            <Grow>
+                              <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
+                                출생<b className='text-[#FF5C2E]'>후</b>
+                              </Typo>
+                              <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                                설명
+                              </Button>
+                            </Grow>
                           }
                         />
-                        <FormCell title="만기금(환급률)" tdClassName="pt-2 pb-2.5">
-                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                            예상
-                          </Button>
+                        <FormCell
+                          title={
+                            <Grow className='w-[12rem] absolute left-[10rem]'>
+                              <Typo variant="body-sm" weight={'bold'}>
+                                만기금(환급률)
+                              </Typo>
+                              <Button variant={'outlined'} color={'gray'} size={'sm'} className=" align-middle">
+                                설명
+                              </Button>
+                            </Grow>
+                          }
+                          tdClassName="pt-2 pb-2.5 relative"
+                          className=' [&>span]:text-[#000]! [&>div]:justify-end [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem] [&>span]:relative!]'
+                        >
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1314,10 +1319,11 @@ export function Ltpa350Step2({
                             onChange={(e) => setRefundRate(e.target.value)}
                             width={60}
                             className="[&_input]:text-right shrink-0"
+                            readOnly={true}
+                            after={'%'}
                           />
-                          %
                         </FormCell>
-                        <FormCell title="보장보험료" tdClassName="pt-2 pb-2.5">
+                        <FormCell title="보장보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! text-[1.2rem]'>
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1327,7 +1333,7 @@ export function Ltpa350Step2({
                             className="[&_input]:text-right"
                           />
                         </FormCell>
-                        <FormCell title="적립보험료" tdClassName="pt-2 pb-2.5">
+                        <FormCell title="적립보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! text-[1.2rem]'>
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1338,7 +1344,7 @@ export function Ltpa350Step2({
                           />
                         </FormCell>
 
-                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3">
+                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3" className='[&>span]:text-[#000]!'>
                           <Input
                             type="tel"
                             commaAmount={true}
