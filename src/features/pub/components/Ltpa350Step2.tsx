@@ -1772,35 +1772,35 @@ export function Ltpa350Step2({
           {viewKey === 'view3' && (
             <>
               <LayoutMainBody>
-                <LayoutScrollWrap className="grid-rows-[auto_1fr]">
-                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
-                    <Grow className="gap-1.5">
-                      <Typo variant="heading-sm">화재기본담보</Typo>
-                      <Typo variant="body-md">(060400, (1))</Typo>
-                    </Grow>
-                    <Grow className="gap-2.5">
-                      <Grow className="gap-1">
-                        <NativeSelect aria-label="실손전부보상" width={140} size={'sm'} readOnly={false} required={false}>
-                          {[
-                            { label: '실손전부보상', value: 'planA' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <Button
-                          variant={'outlined'}
-                          color={'gray'}
-                          size={'md'}
-                          onClick={() => setIsHeightExpanded(!isHeightExpanded)}
-                        >
-                          가입설계도우미 알림톡발송
-                        </Button>
+                <LayoutScrollWrap className="grid-rows-[60%_1fr] gap-[2rem]">
+                  <LayoutScrollItem className="w-full">
+                    <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                      <Grow className="gap-1.5">
+                        <Typo variant="heading-sm">화재기본담보</Typo>
+                        <Typo variant="body-md">(060400, (1))</Typo>
+                      </Grow>
+                      <Grow className="gap-2.5">
+                        <Grow className="gap-1">
+                          <NativeSelect aria-label="실손전부보상" width={140} size={'sm'} readOnly={false} required={false}>
+                            {[
+                              { label: '실손전부보상', value: 'planA' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <Button
+                            variant={'outlined'}
+                            color={'gray'}
+                            size={'md'}
+                            onClick={() => setIsHeightExpanded(!isHeightExpanded)}
+                          >
+                            가입설계도우미 알림톡발송
+                          </Button>
+                        </Grow>
                       </Grow>
                     </Grow>
-                  </Grow>
-                  <LayoutScrollItem className="w-full">
                     <div className="ag-theme-alpine">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
@@ -1839,6 +1839,64 @@ export function Ltpa350Step2({
                       />
                     </div>
                   </LayoutScrollItem>
+                  <LayoutScrollItem className="w-full">
+                    <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                      <Grow className="gap-1.5">
+                        <Typo variant="heading-sm">화재특약담보</Typo>
+                      </Grow>
+                      <Grow className="gap-2.5">
+                        <Button
+                          color="gray"
+                          onClick={() => {}}
+                          only="default"
+                          size="md"
+                          variant="contained"
+                        >
+                          질권설정
+                        </Button>
+                          <TooltipQ>
+                            {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
+                          </TooltipQ>
+                      </Grow>
+                    </Grow>
+                      <div className="ag-theme-alpine">
+                        <AgGridReact<LTPA350GridRow>
+                          key={gridKey}
+                          rowData={rowData}
+                          columnDefs={columnDefs5}
+                          getRowId={(params) => String(params.data.id)}
+                          singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                          rowSelection={{
+                            mode: 'multiRow' as const,
+                            checkboxes: true,
+                            headerCheckbox: true,
+                            enableClickSelection: false,
+                            enableSelectionWithoutKeys: true,
+                          }}
+                          onCellClicked={handleGridCellClickToggle}
+                          selectionColumnDef={{
+                            width: 30,
+                            // pinned: 'left',
+                            cellClass: 'text-center p-0!',
+                            cellClassRules: {
+                              'pointer-events-none': (params) => !!params.data?.locked,
+                            },
+                          }}
+                          onSelectionChanged={handleGridSelectionChanged}
+                          onGridReady={handleGridReady}
+                          onRowDataUpdated={handleRowDataUpdated}
+                          suppressRowHoverHighlight={false}
+                          getRowClass={(params) => {
+                            if (params.data?.isDuplicate) return 'is-duplicate';
+                            if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                            return '';
+                          }}
+                          tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                          tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                          tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                        />
+                      </div>
+                  </LayoutScrollItem>      
                 </LayoutScrollWrap>
               </LayoutMainBody>
               <LayoutMainFoot>
@@ -1975,7 +2033,6 @@ export function Ltpa350Step2({
                         </TooltipQ>
                     </Grow>
                   </Grow>
-                  <LayoutScrollItem className="w-full">
                     <div className="ag-theme-alpine">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
@@ -2013,7 +2070,6 @@ export function Ltpa350Step2({
                         tooltipMouseTrack={showProductNameTooltip ? true : undefined}
                       />
                     </div>
-                  </LayoutScrollItem>
                 </LayoutScrollWrap>
               </LayoutMainBody>
               <LayoutMainFoot>
