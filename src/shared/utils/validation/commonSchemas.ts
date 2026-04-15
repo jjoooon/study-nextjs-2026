@@ -21,6 +21,33 @@
 import { z } from 'zod';
 
 // ============================================================================
+// KOREAN POSTPOSITION HELPER
+// ============================================================================
+
+/**
+ * 한국어 마지막 글자의 받침 여부 확인
+ */
+const hasBatchim = (str: string): boolean => {
+  const lastChar = str[str.length - 1];
+  const code = lastChar.charCodeAt(0);
+  if (code < 0xac00 || code > 0xd7a3) return false;
+  return (code - 0xac00) % 28 !== 0;
+};
+
+/**
+ * 필드명에 적절한 조사를 붙여 반환
+ *
+ * @param fieldName - 필드명
+ * @param type - '은는' | '을를' | '이가'
+ */
+const josa = (fieldName: string, type: '은는' | '을를' | '이가'): string => {
+  const hasB = hasBatchim(fieldName);
+  if (type === '은는') return fieldName + (hasB ? '은' : '는');
+  if (type === '을를') return fieldName + (hasB ? '을' : '를');
+  return fieldName + (hasB ? '이' : '가');
+};
+
+// ============================================================================
 // BASE FIELD SCHEMAS
 // ============================================================================
 
@@ -44,10 +71,10 @@ export const baseFieldSchemas = {
    */
   requiredString: (fieldName: string, minLength: number = 1, maxLength: number = 100) =>
     z
-      .string({ message: `${fieldName}은 문자열이어야 합니다.` })
-      .min(minLength, { message: `${fieldName}을 입력해주세요.` })
+      .string({ message: `${josa(fieldName, '은는')} 문자열이어야 합니다.` })
+      .min(minLength, { message: `${josa(fieldName, '을를')} 입력해주세요.` })
       .max(maxLength, {
-        message: `${fieldName}은 ${maxLength}자 이하여야 합니다.`,
+        message: `${josa(fieldName, '은는')} ${maxLength}자 이하여야 합니다.`,
       })
       .trim(),
 
@@ -62,7 +89,7 @@ export const baseFieldSchemas = {
     z
       .string()
       .max(maxLength, {
-        message: `${fieldName}은 ${maxLength}자 이하여야 합니다.`,
+        message: `${josa(fieldName, '은는')} ${maxLength}자 이하여야 합니다.`,
       })
       .trim()
       .optional(),
@@ -80,9 +107,9 @@ export const baseFieldSchemas = {
    */
   positiveNumber: (fieldName: string, min: number = 0, max: number = Number.MAX_SAFE_INTEGER) =>
     z
-      .number({ message: `${fieldName}은 숫자이어야 합니다.` })
-      .min(min, { message: `${fieldName}은 ${min}보다 커야 합니다.` })
-      .max(max, { message: `${fieldName}이 너무 큽니다.` }),
+      .number({ message: `${josa(fieldName, '은는')} 숫자이어야 합니다.` })
+      .min(min, { message: `${josa(fieldName, '은는')} ${min} 이상이어야 합니다.` })
+      .max(max, { message: `${josa(fieldName, '이가')} 너무 큽니다.` }),
 
   /**
    * 선택적 숫자 필드
@@ -90,7 +117,8 @@ export const baseFieldSchemas = {
    * @param fieldName - 필드 이름
    * @returns Zod 스키마
    */
-  optionalNumber: (fieldName: string) => z.number({ message: `${fieldName}은 숫자이어야 합니다.` }).optional(),
+  optionalNumber: (fieldName: string) =>
+    z.number({ message: `${josa(fieldName, '은는')} 숫자이어야 합니다.` }).optional(),
 
   /**
    * 이메일 필드
@@ -103,8 +131,8 @@ export const baseFieldSchemas = {
    */
   email: (fieldName: string = '이메일') =>
     z
-      .string({ message: `${fieldName}은 문자열이어야 합니다.` })
-      .min(1, { message: `${fieldName}을 입력해주세요.` })
+      .string({ message: `${josa(fieldName, '은는')} 문자열이어야 합니다.` })
+      .min(1, { message: `${josa(fieldName, '을를')} 입력해주세요.` })
       .email({ message: `올바른 ${fieldName} 형식이 아닙니다.` })
       .trim()
       .toLowerCase(),
@@ -117,7 +145,7 @@ export const baseFieldSchemas = {
    */
   url: (fieldName: string = 'URL') =>
     z
-      .string({ message: `${fieldName}은 문자열이어야 합니다.` })
+      .string({ message: `${josa(fieldName, '은는')} 문자열이어야 합니다.` })
       .url({ message: `올바른 ${fieldName} 형식이 아닙니다.` })
       .trim(),
 
@@ -129,9 +157,9 @@ export const baseFieldSchemas = {
    */
   phoneNumber: (fieldName: string = '전화번호') =>
     z
-      .string({ message: `${fieldName}은 문자열이어야 합니다.` })
-      .min(10, { message: `${fieldName}은 10자 이상이어야 합니다.` })
-      .max(15, { message: `${fieldName}은 15자 이하여야 합니다.` })
+      .string({ message: `${josa(fieldName, '은는')} 문자열이어야 합니다.` })
+      .min(10, { message: `${josa(fieldName, '은는')} 10자 이상이어야 합니다.` })
+      .max(15, { message: `${josa(fieldName, '은는')} 15자 이하여야 합니다.` })
       .regex(/^[\d-+\s()]+$/, { message: `올바른 ${fieldName} 형식이 아닙니다.` })
       .trim(),
 
@@ -142,7 +170,7 @@ export const baseFieldSchemas = {
    * @returns Zod 스키마
    */
   dateString: (fieldName: string = '날짜') =>
-    z.string({ message: `${fieldName}은 문자열이어야 합니다.` }).refine((val) => !isNaN(Date.parse(val)), {
+    z.string({ message: `${josa(fieldName, '은는')} 문자열이어야 합니다.` }).refine((val) => !isNaN(Date.parse(val)), {
       message: `올바른 ${fieldName} 형식이 아닙니다.`,
     }),
 
@@ -180,9 +208,9 @@ export const baseFieldSchemas = {
    */
   description: (fieldName: string = '설명', maxLength: number = 2000) =>
     z
-      .string({ message: `${fieldName}은 문자열이어야 합니다.` })
-      .min(1, { message: `${fieldName}을 입력해주세요.` })
-      .max(maxLength, { message: `${fieldName}은 ${maxLength}자 이하여야 합니다.` })
+      .string({ message: `${josa(fieldName, '은는')} 문자열이어야 합니다.` })
+      .min(1, { message: `${josa(fieldName, '을를')} 입력해주세요.` })
+      .max(maxLength, { message: `${josa(fieldName, '은는')} ${maxLength}자 이하여야 합니다.` })
       .trim(),
 
   /**
@@ -190,12 +218,12 @@ export const baseFieldSchemas = {
    *
    * @param fieldName - 필드 이름
    * @param maxLength - 최대 길이 (기본: 2000)
-   * @returns Zch 스키마
+   * @returns Zod 스키마
    */
   optionalDescription: (fieldName: string = '설명', maxLength: number = 2000) =>
     z
       .string()
-      .max(maxLength, { message: `${fieldName}은 ${maxLength}자 이하여야 합니다.` })
+      .max(maxLength, { message: `${josa(fieldName, '은는')} ${maxLength}자 이하여야 합니다.` })
       .trim()
       .optional(),
 };
@@ -208,8 +236,8 @@ export const baseFieldSchemas = {
  * 페이지네이션 파라미터 스키마
  */
 export const paginationParamsSchema = z.object({
-  page: z.coerce.number().int().positive().optional(),
-  pageSize: z.coerce.number().int().positive().optional(),
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).default(20),
 });
 
 /**
@@ -262,7 +290,7 @@ export const buildCreateSchema = <T extends Record<string, z.ZodTypeAny>>(fields
  * });
  */
 export const buildUpdateSchema = <T extends Record<string, z.ZodTypeAny>>(fields: T) => {
-  return z.object(fields).refine((data) => Object.keys(data).length > 0, {
+  return z.object(fields).refine((data) => Object.values(data).some((v) => v !== undefined), {
     message: '최소한 하나의 필드는 수정해야 합니다.',
   });
 };
