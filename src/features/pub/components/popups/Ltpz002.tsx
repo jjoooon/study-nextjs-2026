@@ -258,7 +258,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
 
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[15rem]">
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -267,7 +267,8 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                     defaultColDef={{
                       cellClass: 'text-center',
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                     // selection 설정
                     rowSelection={{
                       mode: 'singleRow',
@@ -304,7 +305,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           </FormCell>
                         </FormRow>
                       </FormTable>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[15rem]">
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
@@ -313,7 +314,8 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           defaultColDef={{
                             cellClass: 'text-center',
                           }}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -339,7 +341,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           </FormCell>
                         </FormRow>
                       </FormTable>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[15rem]">
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
@@ -348,7 +350,8 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           defaultColDef={{
                             cellClass: 'text-center',
                           }}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>

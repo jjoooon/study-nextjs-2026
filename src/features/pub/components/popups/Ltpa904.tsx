@@ -796,13 +796,14 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="납입예정" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine w-full">
+                      <div className="ag-theme-alpine w-full min-h-[13rem]">
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           rowData={DummyData}
                           columnDefs={columnDefs}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -987,13 +988,14 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <TableFold>
                   <TableFoldHead title="담보" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine ">
+                    <div className="ag-theme-alpine min-h-[13rem]">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={DummyData2}
                         columnDefs={columnDefs2}
-                        domLayout="autoHeight"
+                        domLayout="normal"
+                        alwaysShowVerticalScroll={true}
                       />
                     </div>
                   </TableFoldBody>

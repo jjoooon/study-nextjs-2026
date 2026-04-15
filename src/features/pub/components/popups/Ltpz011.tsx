@@ -128,7 +128,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[36.5rem]">
                 <AgGridReact<ComparisonRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -141,7 +141,8 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </TableFoldBody>

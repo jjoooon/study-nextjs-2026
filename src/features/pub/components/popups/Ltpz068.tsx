@@ -15,7 +15,6 @@ import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
@@ -259,10 +258,8 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                     resizable: false,
                   }}
                   alwaysShowVerticalScroll={true}
-                  // alwaysShowHorizontalScroll={true}
                   enableCellSpan={true}
                   domLayout="normal"
-                  // domLayout="autoHeight"
                 />
               </div>
             </div>

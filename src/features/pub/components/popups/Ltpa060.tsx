@@ -355,7 +355,7 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="필수고지"></TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.5rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData}
@@ -368,7 +368,6 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="autoHeight"
                     rowSelection={{
                       mode: 'multiRow',
                       isRowSelectable: (node) => node.data?.field8 !== '고지',
@@ -376,6 +375,8 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                       hideDisabledCheckboxes: false,
                       enableClickSelection: false,
                     }}
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>
@@ -383,7 +384,7 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="고지확인대상"></TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.5rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2}
@@ -396,7 +397,6 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="autoHeight"
                     rowSelection={{
                       mode: 'multiRow',
                       isRowSelectable: (node) => node.data?.field8 !== '고지',
@@ -404,6 +404,8 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                       hideDisabledCheckboxes: false,
                       enableClickSelection: false,
                     }}
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>

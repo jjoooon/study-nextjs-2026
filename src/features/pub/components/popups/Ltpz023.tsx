@@ -232,13 +232,14 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Grow>
             <Gcol className="w-full">
               <Gcol className="w-full" gap={4}>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[15.3rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
                     columnDefs={columnDefs}
-                    domLayout="autoHeight"
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </Gcol>

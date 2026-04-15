@@ -91,19 +91,20 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Typo>
             </Gcol>
             <Gcol placement="ss" className="w-full" gap={5}>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[30rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
                   columnDefs={columnDefs}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </Gcol>
             <Gcol>
               <TableFold variant="default">
-                <TableFoldHead title="모집자 확인사항"></TableFoldHead>
+                <TableFoldHead title="모집자 확인사항" />
                 <TableFoldBody>
                   <Gcol className="w-full" placement="ss" variant="box-warning">
                     <Typo variant="body-sm">

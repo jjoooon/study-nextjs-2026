@@ -236,7 +236,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
               은행유자격자조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ043)
+              (LTPZ042)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -292,7 +292,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
 
           {/* 유자격자: Grid1 단독 */}
           {!isEmpNo && (
-            <div className="ag-theme-alpine ltpa010-grid w-full">
+            <div className="ag-theme-alpine ltpa010-grid w-full min-h-[18.5rem]">
               <AgGridReact<DummyDataType>
                 key="ltpz042-grid-qualified"
                 getRowId={(params) => `qualified-${params.data.id}`}
@@ -302,7 +302,8 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                 defaultColDef={{ sortable: false, resizable: false }}
                 rowSelection={rowSelection}
                 selectionColumnDef={selectionColumnDef}
-                domLayout="autoHeight"
+                domLayout="normal"
+                alwaysShowVerticalScroll={true}
               />
             </div>
           )}
@@ -310,7 +311,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
           {isEmpNo && (
             <Grow className="w-full" gap={1} placement="ss">
               {/* Grid2 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3">
+              <div className="ag-theme-alpine ltpa010-grid w-1/3 min-h-[18.5rem]">
                 <AgGridReact<DummyDataType2>
                   key="ltpz042-grid-empno-1"
                   getRowId={(params) => `empno-1-${params.data.id}`}
@@ -320,11 +321,12 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{ sortable: false, resizable: false }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
               {/* Grid3 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3">
+              <div className="ag-theme-alpine ltpa010-grid w-1/3 min-h-[18.5rem]">
                 <AgGridReact<DummyDataType3>
                   key="ltpz042-grid-empno-2"
                   getRowId={(params) => `empno-2-${params.data.id}`}
@@ -334,11 +336,12 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{ sortable: false, resizable: false }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
               {/* Grid4 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3">
+              <div className="ag-theme-alpine ltpa010-grid w-1/3 min-h-[18.5rem]">
                 <AgGridReact<DummyDataType4>
                   key="ltpz042-grid-empno-3"
                   getRowId={(params) => `empno-3-${params.data.id}`}
@@ -348,7 +351,8 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{ sortable: false, resizable: false }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
-                  domLayout="autoHeight"
+                   domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </Grow>

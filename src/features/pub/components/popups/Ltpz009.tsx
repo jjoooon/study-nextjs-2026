@@ -150,7 +150,7 @@ export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           <Gcol placement={'ss'} className="w-full gap-6">
-            <div className="ag-theme-alpine">
+            <div className="ag-theme-alpine min-h-[12.4rem]">
               <AgGridReact<ToggleTopRow<DummyDataType>>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -159,7 +159,8 @@ export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
                 defaultColDef={{
                   cellClass: 'text-center',
                 }}
-                domLayout="autoHeight"
+                domLayout="normal"
+                alwaysShowVerticalScroll={true}
               />
             </div>
 

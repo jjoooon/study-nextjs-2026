@@ -1245,7 +1245,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableFold>
                       <TableFoldHead title="일반/건강고지" />
                       <TableFoldBody>
-                        <div className="ag-theme-alpine w-full radio-selection">
+                        <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
                           <AgGridReact<DummyDataType11>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1274,7 +1274,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableFold variant={'accordion'}>
                       <TableFoldHead title="간편고지" />
                       <TableFoldBody>
-                        <div className="ag-theme-alpine w-full radio-selection">
+                        <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
                           <AgGridReact<DummyDataType12>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1296,6 +1296,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                               cellClass: 'text-center editable-cell',
                             }}
                             domLayout="autoHeight"
+                            alwaysShowVerticalScroll={true}
                           />
                         </div>
                       </TableFoldBody>
@@ -1321,7 +1322,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="일반고지" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine w-full">
+                      <div className="ag-theme-alpine w-full min-h-[13rem]">
                         <AgGridReact<DummyDataType21>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1342,8 +1343,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             headerName: '선택',
                             cellClass: 'text-center editable-cell',
                           }}
-                          domLayout="autoHeight"
-                        />
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
+                          />
                       </div>
                     </TableFoldBody>
                   </TableFold>
@@ -1352,7 +1354,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="건강고지" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine w-full">
+                      <div className="ag-theme-alpine w-full min-h-[13rem]">
                         <AgGridReact<DummyDataType22>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1373,7 +1375,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             headerName: '선택',
                             cellClass: 'text-center editable-cell',
                           }}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -1383,7 +1386,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="간편고지" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine w-full">
+                      <div className="ag-theme-alpine w-full min-h-[13rem]">
                         <AgGridReact<DummyDataType23>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1404,7 +1407,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             headerName: '선택',
                             cellClass: 'text-center editable-cell',
                           }}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>

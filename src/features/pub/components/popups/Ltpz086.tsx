@@ -247,7 +247,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldHead title="계약전환용 실손의료비(갱신형)" />
               <TableFoldBody className="grid-rows-[auto_1fr]">
                 <Gcol className="w-full" gap={4}>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -260,7 +260,8 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
                       }}
                       rowClassRules={{}}
                       enableCellSpan={true}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
                     />
                   </div>
                 </Gcol>

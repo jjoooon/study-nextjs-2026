@@ -490,7 +490,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="피보험자목록" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[15.3rem]">
                         <AgGridReact<InsuredListRow>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -510,7 +510,8 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                             width: 30,
                             cellClass: 'text-center editable-cell',
                           }}
-                          domLayout={'autoHeight'}
+                          domLayout={'normal'}
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -521,7 +522,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold variant={'accordion'}>
                     <TableFoldHead title="담보목록" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[15.3rem]">
                         <AgGridReact<CoverageListRow>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -533,7 +534,8 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                           }}
                           animateRows={false}
                           rowClassRules={{}}
-                          domLayout={'autoHeight'}
+                          domLayout={'normal'}
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -545,7 +547,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <TableFold>
                   <TableFoldHead title="목적물 소유자 및 소재지" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine min-h-[15.3rem]">
                       <AgGridReact<PropertyListRow>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
