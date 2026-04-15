@@ -192,28 +192,30 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <TableFold>
-            <Grow className="w-full relative mt-12">
-              {/* 말풍선 */}
-              <Grow className="absolute top-[-4.5rem] left-[7.9rem] w-auto px-2.5 py-2 bg-[var(--color-information-10)] rounded-[0.4rem]">
-                <Typo variant={'body-lg'}>AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
-              </Grow>
+        <DialogSection className="grid-rows-[auto_1fr] gap-2 pt-[2rem]">
+            <Grow className="w-full justify-start">
+              <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
+            </Grow>
 
-              {/* A안 / B안 / C안 상단 탭 */}
-              <Grow className="flex flex-row w-[60rem] absolute top-[-4rem] right-0 items-start gap-0">
-                {PLAN_COLS.map(({ key: plan }) => {
-                  const isActive = selectedPlan === plan;
-                  const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
-                  return (
-                    <div
-                      key={plan}
-                      className="flex flex-col w-[20rem] cursor-pointer"
-                      onClick={() => setSelectedPlan(plan)}
+            {/* A안 / B안 / C안 상단 탭 */}
+            
+            <div className='relative'>
+              <Grow className="flex flex-row w-[60.9rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+              {PLAN_COLS.map(({ key: plan }) => {
+                const isActive = selectedPlan === plan;
+                const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
+                return (
+                  <div
+                    key={plan}
+                    className="flex flex-col w-[20.3rem] cursor-pointer h-[100%]"
+                    onClick={() => setSelectedPlan(plan)}
+                  >
+                    {/* 탭 헤더 */}
+                    <Grow
+                      className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 "
                     >
-                      {/* 탭 헤더 */}
-                      <Grow
-                        className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem]"
+                      <div
+                        className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
                         style={{ backgroundColor: bg }}
                       >
                         <Typo className="text-[1.4rem] font-bold text-white">
@@ -232,39 +234,18 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                             variant="default"
                           />
                         </RadioGroup>
-                      </Grow>
-                    </div>
-                  );
-                })}
-              </Grow>
-
-              {/* 그리드 */}
-              <div className="ag-theme-alpine relative z-10 w-[60rem]">
-                
-                <Grow className="pointer-events-none absolute inset-0 z-20">
-                  {PLAN_COLS.map(({ key }) => {
-                    const borderColor = selectedPlan === key
-                      ? 'var(--color-primary-50)'
-                      : 'var(--color-secondary-50)';
-                    const rect = planBoxRects[key];
-
-                    if (!rect) {
-                      return null;
-                    }
-
-                    return (
+                      </div>
                       <div
-                        key={`plan-box-${key}`}
-                        className="absolute top-0 bottom-0 border-2"
-                        style={{
-                          left: `${rect.left}px`,
-                          width: `${rect.width}px`,
-                          borderColor,
-                        }}
-                      />
-                    );
-                  })}
-                </Grow>
+                        className='border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]'
+                        style={{ borderColor: bg, borderWidth: isActive ? '4px' : '2px' }}
+                      ></div>
+                    </Grow>
+                  </div>
+                );
+              })}
+              </Grow>
+              {/* 그리드 */}
+              <div className="ag-theme-alpine relative z-10 min-h-[30rem]">
                 <AgGridReact<DummyDataType>
                   onGridReady={handleGridReady}
                   onFirstDataRendered={handleFirstDataRendered}
@@ -277,13 +258,14 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                     sortable: false,
                     resizable: false,
                   }}
+                  alwaysShowVerticalScroll={true}
+                  // alwaysShowHorizontalScroll={true}
                   enableCellSpan={true}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  // domLayout="autoHeight"
                 />
               </div>
-
-            </Grow>
-          </TableFold>
+            </div>
         </DialogSection>
 
         <DialogFooter>

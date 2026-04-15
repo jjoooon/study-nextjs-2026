@@ -18,11 +18,19 @@
  * ```
  */
 
+import { ZodError } from 'zod';
 import type { z } from 'zod';
 
 // ============================================================================
 // VALIDATION ERROR TYPES
 // ============================================================================
+
+/**
+ * 스키마 검증 결과 타입
+ */
+export type ValidationResult<T extends z.ZodType> =
+  | { success: true; data: z.infer<T> }
+  | { success: false; error: z.ZodError; fieldErrors: FieldErrors; formError: string };
 
 /**
  * Zod 검증 에러 형식
@@ -80,14 +88,13 @@ export function zodToFieldErrors(error: unknown): FieldErrors {
   const fieldErrors: FieldErrors = {};
 
   error.issues.forEach((issue) => {
-    const path = issue.path.join('.');
-    fieldErrors[path] = issue.message;
+    // path가 빈 배열이면 루트 레벨 에러 → _form 키로 통일
+    const path = issue.path.length > 0 ? issue.path.join('.') : '_form';
+    // 동일 필드에 여러 에러가 있을 경우 첫 번째 에러만 보존
+    if (!fieldErrors[path]) {
+      fieldErrors[path] = issue.message;
+    }
   });
-
-  // 첫 번째 에러를 폼 레벨 에러로도 설정
-  if (error.issues.length > 0 && !fieldErrors._form) {
-    fieldErrors._form = error.issues[0].message;
-  }
 
   return fieldErrors;
 }
@@ -137,12 +144,7 @@ function isZodError(error: unknown): error is z.ZodError {
  * }
  * ```
  */
-export function validateSchema<T extends z.ZodType>(
-  schema: T,
-  data: unknown
-):
-  | { success: true; data: z.infer<T> }
-  | { success: false; error: z.ZodError; fieldErrors: FieldErrors; formError: string } {
+export function validateSchema<T extends z.ZodType>(schema: T, data: unknown): ValidationResult<T> {
   const result = schema.safeParse(data);
 
   if (result.success) {
@@ -167,13 +169,7 @@ export function validateSchema<T extends z.ZodType>(
  * @param data - 검증할 데이터
  * @returns 검증 결과 Promise
  */
-export async function validateSchemaAsync<T extends z.ZodType>(
-  schema: T,
-  data: unknown
-): Promise<
-  | { success: true; data: z.infer<T> }
-  | { success: false; error: z.ZodError; fieldErrors: FieldErrors; formError: string }
-> {
+export async function validateSchemaAsync<T extends z.ZodType>(schema: T, data: unknown): Promise<ValidationResult<T>> {
   try {
     const result = await schema.safeParseAsync(data);
 
@@ -190,12 +186,15 @@ export async function validateSchemaAsync<T extends z.ZodType>(
       fieldErrors,
       formError,
     };
-  } catch (error) {
+  } catch {
+    // safeParseAsync는 검증 실패 시 throw하지 않음
+    // 여기서 잡히는 예외는 ZodError가 아닌 예기치 못한 런타임 오류
+    const errorMessage = '검증 중 오류가 발생했습니다.';
     return {
       success: false,
-      error: error as z.ZodError,
-      fieldErrors: { _form: '검증 중 오류가 발생했습니다.' },
-      formError: '검증 중 오류가 발생했습니다.',
+      error: new ZodError([]),
+      fieldErrors: { _form: errorMessage },
+      formError: errorMessage,
     };
   }
 }
@@ -224,15 +223,6 @@ export function hasFieldError(fieldErrors: FieldErrors, fieldName: string): bool
  */
 export function getFieldError(fieldErrors: FieldErrors, fieldName: string): string | null {
   return fieldErrors[fieldName] || null;
-}
-
-/**
- * 모든 필드 에러 초기화
- *
- * @returns 빈 필드 에러 맵
- */
-export function clearFieldErrors(): FieldErrors {
-  return {};
 }
 
 /**

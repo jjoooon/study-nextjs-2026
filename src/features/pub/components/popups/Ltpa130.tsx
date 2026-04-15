@@ -35,6 +35,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 // Grid dummy data
 type DummyDataType = {
   id: number;
+  isCheck: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -54,6 +55,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    isCheck: false,
     field01: '안형민',
     field02: '1234567',
     field03: '900101',
@@ -72,6 +74,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
+    isCheck: false,
     field01: '에이플러스',
     field02: '3484604',
     field03: '900101',
@@ -90,6 +93,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
+    isCheck: false,
     field01: '안형민',
     field02: '1234567',
     field03: '900101',
@@ -108,6 +112,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
+    isCheck: false,
     field01: '안형민',
     field02: '1234567',
     field03: '900101',
@@ -126,6 +131,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 5,
+    isCheck: false,
     field01: '',
     field02: '',
     field03: '',
@@ -144,6 +150,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
+    isCheck: false,
     field01: '안형민',
     field02: '1234567',
     field03: '900101',
@@ -162,6 +169,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 7,
+    isCheck: false,
     field01: '안형민',
     field02: '1234567',
     field03: '900101',
@@ -196,20 +204,6 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      colId: 'radio-select',
-      headerName: '선택',
-      width: 30,
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
-        <input
-          type="radio"
-          checked={params.node.isSelected() ?? false}
-          onChange={() => params.node.setSelected(true)}
-          className="cursor-pointer"
-        />
-      ),
-    },
     {
       headerName: '취급직원',
       width: 150,
@@ -362,9 +356,9 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     }
   };
 
-  const handleSelectionChanged = () => {
-    gridRef.current?.api?.refreshCells({ force: true, columns: ['radio-select'] });
-  };
+  // const handleSelectionChanged = () => {
+  //   gridRef.current?.api?.refreshCells({ force: true, columns: ['radio-select'] });
+  // };
 
   const handlePageChange = (page: number) => {
     if (gridRef.current?.api) {
@@ -518,7 +512,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FileExportIcon />
                   </Button>
                 </Grow>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine radio-selection">
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -533,10 +527,13 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     // selection 설정
                     rowSelection={{
                       mode: 'singleRow',
-                      checkboxes: false,
-                      enableClickSelection: true,
+                      checkboxes: true,
+                      enableClickSelection: false,
                     }}
-                    onSelectionChanged={handleSelectionChanged}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      cellClass: 'text-center editable-cell',
+                    }}
                     // pagination 설정 (TablePagination과 연동)
                     pagination={true} // ag-Grid의 페이징 기능 활성화
                     paginationPageSize={pageSize} // 페이지당 행 수
@@ -554,7 +551,6 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                   itemsPerPage={pageSize}
                 />
               </Gcol>
-
               <Grow className="w-full">
                 <Table>
                   <TableHeader>

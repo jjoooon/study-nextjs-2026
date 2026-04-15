@@ -71,7 +71,7 @@ import { IAListWithPreview } from "./IAListWithPreview";
     }
     .ia-preview-pane {
       flex:1;
-      max-width:168rem;
+      max-width:118.4rem;
       min-width:40rem;
       width:100%;
       height: 130vh;
@@ -101,6 +101,10 @@ import { IAListWithPreview } from "./IAListWithPreview";
     .selected{
       outline:1px solid red;
       outline-offset:-1px;
+    }
+    @media screen and (min-width: 1600px) {
+      .ia-preview-iframe { transform:scale(1);min-width: 118.4rem;}
+      .ia-preview-pane {height:90vh;max-width:118.4rem;}
     }
   `}
 </style>

@@ -1,7 +1,6 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
@@ -18,12 +17,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
 
 export const Ltpa02003 = ({ open, onOpenChange }: PopupBaseProps) => {
   
@@ -106,7 +102,7 @@ export const Ltpa02003 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 출력
               </Button>
               <Button variant={'contained'} size={'xl'}>

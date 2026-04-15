@@ -1,6 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry } from 'ag-grid-community';
+import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 
@@ -78,12 +78,19 @@ export const Ltpa3500208 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 70,
       cellClass: 'text-center bg-[#f4f4f4]!',
       autoHeight: true,
+      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
+        <Grow className="w-full h-full">
+          <Typo className="w-full whitespace-pre-wrap text-[#000000]" tag="span" variant="body-md" weight="bold">
+            {_params.value}
+          </Typo>
+        </Grow>
+      ),
     },
     {
       headerName: '납입회차',
       field: 'field02',
       width: 70,
-      cellClass: 'text-center flex [&>div>span]:h-auto!',
+      cellClass: 'text-center flex',
       autoHeight: true,
       editable: true,
       cellClassRules: {
@@ -93,8 +100,8 @@ export const Ltpa3500208 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '보장P (일시납외)보장',
       field: 'field03',
-      flex: 1,
-      cellClass: 'text-center flex',
+      width: 120,
+      cellClass: 'text-right',
       autoHeight: true,
       editable: true,
       valueParser: (params) => parseNumericValue(params.newValue),
@@ -107,8 +114,8 @@ export const Ltpa3500208 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '보장P (일시납)',
       field: 'field04',
-      width: 95,
-      cellClass: 'text-center flex',
+      width: 90,
+      cellClass: 'text-right',
       autoHeight: true,
       editable: true,
       valueParser: (params) => parseNumericValue(params.newValue),
@@ -159,7 +166,6 @@ export const Ltpa3500208 = ({ open, onOpenChange }: PopupBaseProps) => {
           합계보험료/<br />(=적용보험료)
         </div>
       ),
-      cellEditor: 'agSelectCellEditor',
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
       cellClassRules: {
@@ -190,9 +196,6 @@ export const Ltpa3500208 = ({ open, onOpenChange }: PopupBaseProps) => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               출생전후 예정보험료
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA350)
             </Typo>
           </DialogTitle>
         </DialogHeader>
