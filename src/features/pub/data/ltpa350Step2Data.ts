@@ -417,6 +417,17 @@ export interface Ltpa350Step2DataType3 {
     selected?: boolean;
     badge?: string[];
   }>;
+  agGridTable2: Array<{
+    id: number;
+    isChecked: boolean;
+    field1: string;
+    field2: string;
+    field3: boolean;
+    field4: number;
+    field5: string;
+    field6: string;
+    field7: number;
+  }>;
 }
 export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
   tabList: [
@@ -495,6 +506,64 @@ export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
       locked: false,
       isHighlighted: false,
       badge: ['독립'],
+    },
+  ],
+
+  agGridTable2: [
+    {
+      id: 1,
+      isChecked: true,
+      field1: '배상책임',
+      field2: '보통약관(화재배상책임)',
+      field3: false,
+      field4: 100,
+      field5: '20년',
+      field6: '전기납',
+      field7: 0,
+    },
+    {
+      id: 2,
+      isChecked: true,
+      field1: '배상책임',
+      field2: '보통약관(화재배상책임, 무과실)',
+      field3: true,
+      field4: 100,
+      field5: '20년',
+      field6: '전기납',
+      field7: 0,
+    },
+    {
+      id: 3,
+      isChecked: true,
+      field1: '배상책임',
+      field2: '보통약관(화재배상책임, 무과실)',
+      field3: true,
+      field4: 100,
+      field5: '20년',
+      field6: '전기납',
+      field7: 0,
+    },
+    {
+      id: 4,
+      isChecked: true,
+      field1: '배상책임2',
+      field2: '보통약관(화재배상책임, 무과실)',
+      field3: true,
+      field4: 100,
+      field5: '20년',
+      field6: '전기납',
+      field7: 0,
+    },
+    {
+      id: 5,
+      isChecked: true,
+      field1: '배상책임3',
+      field2: '보통약관(화재배상책임, 무과실)',
+      field3: true,
+      field4: 100,
+      field5: '20년',
+      field6: '전기납',
+      field7: 0,
     },
   ],
 };
@@ -674,7 +743,7 @@ export const Ltpa350Step2Data5: Ltpa350Step2DataType5 = {
   agGridTable1: [
     {
       id: 1,
-      field1: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
+      field1: '적립보험료',
       field2: true,
       field3: 500,
       field4: 450,
@@ -687,11 +756,10 @@ export const Ltpa350Step2Data5: Ltpa350Step2DataType5 = {
       locked: true,
 
       isHighlighted: true,
-      badge: ['독립', '갱신'],
     },
     {
       id: 2,
-      field1: '무배당 KB손해보험 암보험',
+      field1: '적립보험료2',
       field2: true,
       field3: 300,
       field4: 280,
@@ -702,11 +770,10 @@ export const Ltpa350Step2Data5: Ltpa350Step2DataType5 = {
       field9: false,
       locked: false,
       isHighlighted: false,
-      badge: ['갱신'],
     },
     {
       id: 3,
-      field1: '무배당 현대해상 3대질병보험',
+      field1: '적립보험료3',
       field2: false,
       field3: 400,
       field4: 380,
@@ -717,7 +784,6 @@ export const Ltpa350Step2Data5: Ltpa350Step2DataType5 = {
       field9: false,
       locked: false,
       isHighlighted: false,
-      badge: ['독립'],
     },
   ],
 };
