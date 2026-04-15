@@ -384,13 +384,14 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                 errorPs="bl"
                 onValueChange={() => {}}
                 width="full"
-              >
-                <RadioGroupItem color="primary" id="d1" size="lg" value="option1" variant="default">
-                  네, 현재 고객으로 상세설계할게요.
-                </RadioGroupItem>
-                <RadioGroupItem color="primary" id="d2" size="lg" value="option2" variant="default">
-                  아니오, 신규 고객으로 간편설계할게요.
-                </RadioGroupItem>
+              > {[
+                    { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
+                    { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
+                ].map((option) => (
+                  <RadioGroupItem key={option.value} value={option.value}>
+                    {option.label}
+                  </RadioGroupItem>
+                ))}
               </RadioGroup>
             </Gcol>
 
