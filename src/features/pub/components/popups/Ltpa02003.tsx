@@ -102,7 +102,7 @@ export const Ltpa02003 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 출력
               </Button>
               <Button variant={'contained'} size={'xl'}>
