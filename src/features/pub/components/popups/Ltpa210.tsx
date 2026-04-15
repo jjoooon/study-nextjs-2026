@@ -253,7 +253,8 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
                       singleClickEdit={true}
                       domLayout="autoHeight"
                       rowSelection={{
-                        mode: 'singleRow',
+                        mode: 'multiRow',
+                        headerCheckbox: false,
                         checkboxes: true,
                         enableClickSelection: false,
                       }}

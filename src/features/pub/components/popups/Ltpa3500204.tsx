@@ -1,15 +1,13 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Grow, Typo } from '@atoms';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
@@ -22,19 +20,163 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { Checkbox } from '@uiux/Checkbox';
+import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-// dummy data
-type DummyDataType = {
+const CombinedConstructionHeader = () => {
+  const headerAreaStyle: React.CSSProperties = {
+    width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
+  };
+
+  return (
+    <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
+      <div className="flex h-full w-full items-center justify-center text-center">구분</div>
+    </div>
+  );
+};
+
+const CombinedConstructionCell = ({ data }: ICellRendererParams<DummyDataType1>) => {
+  const field01 = data?.field01 ?? '';
+  const field02 = data?.field02 ?? '';
+  const field03 = data?.field03 ?? '';
+  const level = data?.level ?? 3;
+
+  // 레벨 2: field02가 있으면 2칸(50/50), 없으면 1칸(전체)
+  if (level === 2) {
+    if (field02) {
+      return (
+        <div className="grid h-full grid-cols-2">
+          <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+            {field01}
+          </div>
+          <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">
+            {field02}
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="flex h-full min-h-[2.5rem] h-[3rem] w-full items-center justify-center px-2 text-center">
+        {field01 || '\u00A0'}
+      </div>
+    );
+  }
+
+  // 레벨 3 (기본): 3칸
+  return (
+    <div className="grid h-full grid-cols-3">
+      <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+        {field01}
+      </div>
+      <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+        {field02}
+      </div>
+      <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field03}</div>
+    </div>
+  );
+};
+
+const FullWidthIsDetailsRenderer = ({ data }: ICellRendererParams<DummyDataType1>) => {
+  const content = String(data?.field01 ?? data?.field02 ?? data?.field03 ?? '\u00A0');
+  return (
+    <div className="flex h-full w-full min-h-[2.5rem] items-center justify-center px-2 text-center">
+      {content}
+    </div>
+  );
+};
+
+// 담보패키지 dummy data
+type DummyDataType1 = {
+  id: number;
+  isCheck: boolean | false;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  isDetails?: boolean;
+  level?: 2 | 3;
+};
+
+const DummyData1: DummyDataType1[] = [
+  {
+    id: 1,
+    isCheck: true,
+    field01: '사용',
+    field02: '180일한도',
+    field03: '10년 갱신',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '사용',
+    field02: '180일한도',
+    field03: '10년 갱신',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: '지원',
+    field02: '180일한도',
+    field03: '5년 갱신',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: '지원',
+    field02: '180일한도',
+    field03: '10년 갱신',
+  },
+  {
+    id: 5,
+    isCheck: true,
+    field01: '',
+    field02: '',
+    field03: '',
+    isDetails: true,
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: '암주요',
+    field02: '기본형',
+    field03: '',
+    level: 2,
+  },
+  {
+    id: 7,
+    isCheck: false,
+    field01: '통합암주요',
+    field02: '체중형',
+    field03: '',
+    level: 2,
+  },
+  {
+    id: 8,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    isDetails: true,
+  },
+  {
+    id: 9,
+    isCheck: false,
+    field01: '운전자비용',
+    field02: '',
+    field03: '',
+    level: 2,
+  },
+];
+
+// 담보 dummy data
+type DummyDataType2 = {
   id: number;
   isCheck: boolean | null;
   field01: string | number;
 };
 
-const DummyData: DummyDataType[] = [
+const DummyData2: DummyDataType2[] = [
   {
     id: 1,
     isCheck: true,
@@ -63,7 +205,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 6,
     isCheck: null,
-    field01: '- 전이암특정치료비(수술)(암전문의료기관(상급종합병원등))(연간1회한)',
+    field01: '',
   },
   {
     id: 7,
@@ -98,336 +240,193 @@ const DummyData: DummyDataType[] = [
 ];
 
 export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // AgGrid Column
-  const columnDefs: ColDef<DummyDataType>[] = [
+
+  // 담보 AgGrid Column
+  const columnDefs1: ColDef<DummyDataType1>[] = [
+    {
+      headerName: '구분',
+      flex: 1,
+      autoHeight: true,
+      wrapText: true,
+      cellClass: 'p-0! flex',
+      headerComponent: CombinedConstructionHeader,
+      cellRenderer: CombinedConstructionCell,
+    },
+  ];
+  
+  // 담보 AgGrid Column
+  const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '담보명',
       field: 'field01',
       flex: 1,
-      cellClass: 'text-left',
+      cellClass: 'text-left truncate',
+      tooltipValueGetter: (params) => String(params.data?.field01 ?? ''),
     },
   ];
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-  });
+  const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
+  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              보장패키지 선택
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA350)
+              담보패키지 선택
             </Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grid className='w-full grid-cols-[auto_1fr]' placement='ss' gap={5}>
-            <Grow placement='ss'>
-              <TableFold>
-                <TableFoldHead title="패키지 유형" />
-                <TableFoldBody>
-                  <Table variant="default">
-                    <colgroup>
-                      <col style={{ width: '10rem' }} />
-                      <col style={{ width: '5rem' }} />
-                      <col style={{ width: 'auto' }} />
-                    </colgroup>
-                    <TableBody>
-                      <TableRow>
-                        <TableHead className='text-left'>
-                          간병
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              암주요치료(상급종합)
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          암주요치료(상급종합)
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className='text-left' rowSpan={5}>
-                          암주요
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              암주요치료(종합병원)
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          암주요치료(종합병원)
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              암주요치료(비급여)
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          암주요치료(비급여)
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              암주요치료(전이암)
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          암주요치료(전이암)
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              표적항암
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          표적항암
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              요양병원제외
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          요양병원제외
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className='text-left' rowSpan={3}>
-                          순환계치료비
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              상급종합병원
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          주요순환계
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell >
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              주요순환계
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          상급종합병원
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              유/갑/생
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          유/갑/생
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className='text-left'>
-                          여성
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              여성
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          미혼자용
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className='text-left'>
-                          출산/난임
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              기혼자용
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          기혼자용
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className='text-left' rowSpan={2}>
-                          입원
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              1인실
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          1인실
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              2~3인실  
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          2~3인실  
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className='text-left'>
-                          운전자
-                        </TableHead>
-                        <TableCell>
-                          <Checkbox
-                              color="primary"
-                              onCheckedChange={() => {}}
-                              size="md"
-                              variant="noneText"
-                              className='mx-auto '
-                            >
-                              운전자비용
-                            </Checkbox>
-                        </TableCell>
-                        <TableCell>
-                          운전자비용
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableFoldBody>
-              </TableFold>  
+          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <Grow>
+              <RadioGroup
+                className="gap-2"
+                onValueChange={() => {}}
+                width="full"
+              >
+                <RadioGroupItem
+                  color="primary"
+                  id="d1"
+                  size="md"
+                  value="option1"
+                  variant="button"
+                  checked={true}
+                >
+                  간병인
+                </RadioGroupItem>
+                <RadioGroupItem
+                  color="primary"
+                  id="d2"
+                  size="md"
+                  value="option2"
+                  variant="button"
+                >
+                  암주요
+                </RadioGroupItem>
+                <RadioGroupItem
+                  color="primary"
+                  id="d3"
+                  size="md"
+                  value="option3"
+                  variant="button"
+                >
+                  표적항암
+                </RadioGroupItem>
+                <RadioGroupItem
+                  color="primary"
+                  id="d4"
+                  size="md"
+                  value="option4"
+                  variant="button"
+                >
+                  1인실
+                </RadioGroupItem>
+                <RadioGroupItem
+                  color="primary"
+                  id="d5"
+                  size="md"
+                  value="option5"
+                  variant="button"
+                >
+                  운전자비용
+                </RadioGroupItem>
+                <RadioGroupItem
+                  color="primary"
+                  id="d6"
+                  size="md"
+                  value="option6"
+                  variant="button"
+                >
+                  패키지명
+                </RadioGroupItem>
+              </RadioGroup>
             </Grow>
-            <Grow placement="ss" className="w-full" gap={5}>
-              <TableFold>
-                <TableFoldHead title="세부담보" />
-                <TableFoldBody>
-                  <Grow className="w-full" gap={5}>
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<DummyDataType>
-                        // getRowId 적용: id 필드를 고유 식별자로 사용
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        enableCellSpan={true}
-                        domLayout="autoHeight"
-                        rowSelection={{
-                          mode: 'multiRow',
-                          checkboxes: true,
-                          headerCheckbox: true,
-                          isRowSelectable: (node) => node.data?.isCheck !== null,
-                          hideDisabledCheckboxes: true,
-                          enableClickSelection: false,
-                        }}
-                      />
-                    </div>
-                  </Grow>
-                </TableFoldBody>
-              </TableFold>
-            </Grow>
-          </Grid>
+            <Button
+              color={'gray'}
+              only={'icon'}
+              size={'lg'}
+              variant={'outlined'}
+              onClick={() => {}}
+              aria-label="새로고침"
+            >
+              <ResetIcon />
+            </Button>
+          </Grow>
+          <Grow placement='ss' className="w-full" gap={5}>
+            <TableFold variant={'default'} className="w-[40%] shrink-0">
+              <TableFoldHead title="담보패키지" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[30rem]">
+                  <AgGridReact<DummyDataType1>
+                    // getRowId 적용: id 필드를 고유 식별자로 사용
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData1}
+                    columnDefs={columnDefs1}
+                    enableCellSpan={true}
+                    isFullWidthRow={(params) => params.rowNode.data?.isDetails === true}
+                    fullWidthCellRenderer={FullWidthIsDetailsRenderer}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: false,
+                      checkboxes: (params) => params.data?.isCheck !== null,
+                      hideDisabledCheckboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      cellClass: 'text-center editable-cell',
+                      width: 40,
+                    }}
+                    alwaysShowVerticalScroll={true}
+                    domLayout="normal"
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>  
+            <TableFold variant={'default'}>
+              <TableFoldHead title="담보" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[30rem]">
+                  <AgGridReact<DummyDataType2>
+                    // getRowId 적용: id 필드를 고유 식별자로 사용
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData2}
+                    columnDefs={columnDefs2}
+                    enableCellSpan={true}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: (params) => params.data?.isCheck !== null,
+                      hideDisabledCheckboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      width: 40,
+                      cellClass: 'editable-cell',
+                    }}
+                    tooltipShowDelay={0}
+                    tooltipHideDelay={9999}
+                    tooltipMouseTrack={true}
+                    alwaysShowVerticalScroll={true}
+                    domLayout="normal"
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+          </Grow>
+          <Grow placement="ss" className="w-full" gap={5}>
+          </Grow>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                저장
+                선택
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -436,7 +435,6 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
-          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

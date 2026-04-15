@@ -1,7 +1,7 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState, useRef } from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
@@ -111,6 +111,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [relationValue, setRelationValue] = useState('');
   const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
   const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
+  const gridRef = useRef<AgGridReact<DummyDataType>>(null);
 
   // 중복 행 추가 추적용 ref
   const pendingSelectIdRef = useRef<number | null>(null);
@@ -143,6 +144,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
         patchCopiedRow: (originalRow, nextId) => ({
           ...originalRow,
           id: nextId,
+          isCheck: true,
           isDuplicate: true,
         }),
         isVisible: () => true, // 원본 행에만 렌더되므로 항상 true
@@ -259,6 +261,43 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
+
+  const handleRowDataUpdated = useCallback(() => {
+    const pendingSelectId = pendingSelectIdRef.current;
+
+    if (pendingSelectId === null) {
+      return;
+    }
+
+    const node = gridRef.current?.api.getRowNode(String(pendingSelectId));
+
+    if (!node) {
+      return;
+    }
+
+    node.setSelected(true);
+    pendingSelectIdRef.current = null;
+  }, []);
+
+  const handleRowSelected = useCallback((event: RowSelectedEvent<DummyDataType>) => {
+    const data = event.data;
+
+    if (!data) {
+      return;
+    }
+
+    const isSelected = Boolean(event.node.isSelected());
+
+    if (!isSelected && data.isDuplicate) {
+      setRowData((prev) => prev.filter((row) => row.id !== data.id));
+      if (pendingSelectIdRef.current === data.id) {
+        pendingSelectIdRef.current = null;
+      }
+      return;
+    }
+
+    setRowData((prev) => prev.map((row) => (row.id === data.id ? { ...row, isCheck: isSelected } : row)));
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -424,6 +463,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldBody>
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
+                    ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
@@ -435,7 +475,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}
                     rowSelection={{
-                      mode: 'singleRow',
+                      mode: 'multiRow',
                       checkboxes: true,
                       enableClickSelection: false,
                     }}
@@ -444,6 +484,8 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
                       cellClass: 'text-center editable-cell',
                     }}
                     domLayout="autoHeight"
+                    onRowDataUpdated={handleRowDataUpdated}
+                    onRowSelected={handleRowSelected}
                     onGridReady={(params) => {
                       params.api.forEachNode((node) => {
                         if (node.data?.isCheck) {

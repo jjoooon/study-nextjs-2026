@@ -418,7 +418,7 @@ export default function Ltpa010Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol placement="ss">
+          <Gcol placement="ss" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'none'}
@@ -581,7 +581,7 @@ export default function Ltpa010Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Gcol className="w-full">
+            <Gcol className="w-full" gap={6}>
               <div className="ag-theme-alpine ltpa010-grid">
                 <AgGridReact<Ltpa010DummyDataRow>
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -600,7 +600,7 @@ export default function Ltpa010Section() {
                   onCellValueChanged={onCellValueChanged}
                   // 체크박스 시
                   rowSelection={{
-                    mode: 'singleRow',
+                    mode: 'multiRow',
                     checkboxes: true,
                     enableClickSelection: false,
                   }}
@@ -634,7 +634,7 @@ export default function Ltpa010Section() {
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
                   rowSelection={{
-                    mode: 'singleRow',
+                    mode: 'multiRow',
                     checkboxes: true,
                     enableClickSelection: false,
                   }}
@@ -665,7 +665,7 @@ export default function Ltpa010Section() {
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
                   rowSelection={{
-                    mode: 'singleRow',
+                    mode: 'multiRow',
                     checkboxes: true,
                     enableClickSelection: false,
                   }}
