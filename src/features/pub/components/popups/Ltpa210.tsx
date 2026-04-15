@@ -297,8 +297,3 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * 전체체크의 사용여부
- * <Grow className="ml-32"> 간격체크
- */

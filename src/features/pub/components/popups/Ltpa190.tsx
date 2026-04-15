@@ -330,7 +330,3 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * 전체체크의 사용여부
- */

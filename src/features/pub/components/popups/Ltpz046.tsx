@@ -5,7 +5,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -40,8 +40,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: '9,999,999,999',
-    field05: '9,999,999,999',
+    field04: '9999999999',
+    field05: '9999999999',
   },
   {
     id: 2,
@@ -49,8 +49,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: '9,999,999,999',
-    field05: '9,999,999,999',
+    field04: '9999999999',
+    field05: '9999999999',
   },
   {
     id: 3,
@@ -58,8 +58,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: '9,999,999,999',
-    field05: '9,999,999,999',
+    field04: '9999999999',
+    field05: '9999999999',
   },
   {
     id: 4,
@@ -67,8 +67,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: '9,999,999,999',
-    field05: '9,999,999,999',
+    field04: '9999999999',
+    field05: '9999999999',
   },
   {
     id: 5,
@@ -76,8 +76,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: '9,999,999,999',
-    field05: '9,999,999,999',
+    field04: '9999999999',
+    field05: '9999999999',
   },
   {
     id: 6,
@@ -85,8 +85,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: '9,999,999,999',
-    field05: '9,999,999,999',
+    field04: '9999999999',
+    field05: '9999999999',
   },
 ];
 
@@ -120,6 +120,7 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field04',
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       autoHeight: true,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '가입금액',
@@ -127,6 +128,7 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field05',
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       autoHeight: true,
+      valueFormatter: numberValueFormatter,
     },
   ];
 
