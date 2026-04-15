@@ -8,7 +8,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -91,83 +91,50 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Gcol>
                 }
               >
-                <Grid className="grid-cols-5 gap-x-4 gap-y-2">
-                  <Checkbox size="md">
-                    이용원, 미용원, 기타미용실
-                  </Checkbox>
-                  <Checkbox size="md">
-                    학원(기관 및 교육목적)
-                  </Checkbox>
-                  <Checkbox size="md">
-                    소형판매시설
-                  </Checkbox>
-                  <Checkbox size="md">
-                    대형판매시설
-                  </Checkbox>
-                  <Checkbox size="md">
-                    목욕탕
-                  </Checkbox>
-                  <Checkbox size="md">
-                    여관, 여인숙, 유스호스텔
-                  </Checkbox>
-                  <Checkbox size="md">
-                    금융업소, 부동산
-                  </Checkbox>
-                  <Checkbox size="md">
-                    휴게음식점
-                  </Checkbox>
-                  <Checkbox size="md">
-                    일반음식점
-                  </Checkbox>
-                  <Checkbox size="md">
-                    오피스텔
-                  </Checkbox>
-                  <Checkbox size="md">
-                    금속기계기구제조(금속가공)
-                  </Checkbox>
-                  <Checkbox size="md">
-                    예식장, 장례식장
-                  </Checkbox>
-                  <Checkbox size="md">
-                    공연장(극장, 영화관)
-                  </Checkbox>
-                  <Checkbox size="md">
-                    사찰
-                  </Checkbox>
-                  <Checkbox size="md">
-                    교회, 성당
-                  </Checkbox>
-                  <Checkbox size="md">
-                    창고시설(보통품)
-                  </Checkbox>
-                  <Checkbox size="md">
-                    목공, 목재가공
-                  </Checkbox>
-                  <Checkbox size="md">
-                    비디오감상실 전화방
-                  </Checkbox>
-                  <Checkbox size="md">
-                    단란주점
-                  </Checkbox>
-                  <Checkbox size="md">
-                    유흥주점
-                  </Checkbox>
-                  <Checkbox size="md">
-                    컴퓨터 게임장(전자오락실)
-                  </Checkbox>
-                  <Checkbox size="md">
-                    직물재단 및 재봉
-                  </Checkbox>
-                  <Checkbox size="md">
-                    세탁소(드라이클리닝)
-                  </Checkbox>
-                  <Checkbox size="md">
-                    시장
-                  </Checkbox>
-                  <Checkbox size="md">
-                    의원, 병원
-                  </Checkbox>
-                </Grid>
+                <CheckboxGroup
+                  className=""
+                  color="primary"
+                  errorMsg="2개 이상 선택해 주세요."
+                  errorPs="bl"
+                  minSelected={2}
+                  onValueChange={() => {}}
+                  value={[]}
+                  variant="default"
+                >
+                  <Grid className="grid-cols-5 gap-x-4 gap-y-2">
+                    {[
+                      '이용원, 미용원, 기타미용실',
+                      '학원(기관 및 교육목적)',
+                      '소형판매시설',
+                      '대형판매시설',
+                      '목욕탕',
+                      '여관, 여인숙, 유스호스텔',
+                      '금융업소, 부동산',
+                      '휴게음식점',
+                      '일반음식점',
+                      '오피스텔',
+                      '금속기계기구제조(금속가공)',
+                      '예식장, 장례식장',
+                      '공연장(극장, 영화관)',
+                      '사찰',
+                      '교회, 성당',
+                      '창고시설(보통품)',
+                      '목공, 목재가공',
+                      '비디오감상실 전화방',
+                      '단란주점',
+                      '유흥주점',
+                      '컴퓨터 게임장(전자오락실)',
+                      '직물재단 및 재봉',
+                      '세탁소(드라이클리닝)',
+                      '시장',
+                      '의원, 병원',
+                    ].map((label, idx) => (
+                      <Checkbox size="md" value={`chk${idx + 1}`} key={label + idx}>
+                        {label}
+                      </Checkbox>
+                    ))}
+                  </Grid>
+                </CheckboxGroup>
               </FormCell>
             </FormRow>
           </FormTable>

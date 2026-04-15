@@ -36,11 +36,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 // data
 import { planAccordionItems } from '../data/ltpa3500204';
-import type { Ltpa350Step2DataType, Ltpa350Step2DataType2 } from '../data/ltpa350Step2Data';
-import { Ltpa350Step2Data, Ltpa350Step2Data2 } from '../data/ltpa350Step2Data';
+
+import type { Ltpa350Step2DataType, Ltpa350Step2DataType2, Ltpa350Step2DataType3, Ltpa350Step2DataType4, Ltpa350Step2DataType5 } from '../data/ltpa350Step2Data';
+import { Ltpa350Step2Data, Ltpa350Step2Data2, Ltpa350Step2Data3, Ltpa350Step2Data4, Ltpa350Step2Data5 } from '../data/ltpa350Step2Data';
+
 import { Accordion } from '@/shared/components/uiux/Accordion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { t } from 'i18next';
+import { TooltipQ } from '@/shared/components/common/TooltipQ';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -48,8 +50,12 @@ type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
 type LTPA350GridRow =
   | (Ltpa350Step2DataType['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
-  | (Ltpa350Step2DataType2['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number });
-type MainHeadTab = (Ltpa350Step2DataType['tabList'][number] | Ltpa350Step2DataType2['tabList'][number]) & {
+  | (Ltpa350Step2DataType2['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
+  | (Ltpa350Step2DataType3['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
+  | (Ltpa350Step2DataType4['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
+  | (Ltpa350Step2DataType5['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number });
+
+type MainHeadTab = (Ltpa350Step2DataType['tabList'][number] | Ltpa350Step2DataType2['tabList'][number] | Ltpa350Step2DataType3['tabList'][number] | Ltpa350Step2DataType4['tabList'][number] | Ltpa350Step2DataType5['tabList'][number]) & {
   value: string;
 };
 
@@ -518,7 +524,7 @@ export function Ltpa350Step2({
       {
         headerName: '보험료(만원)',
         field: 'field7',
-        width: attributeColumnWidth[1],
+        width: attributeColumnWidth[2],
         cellClass: 'text-right',
         headerClass: 'px-0!',
         sortable: false,
@@ -529,7 +535,7 @@ export function Ltpa350Step2({
         headerName: '예상UW',
         field: 'field8',
         headerClass: 'px-0!',
-        width: attributeColumnWidth[1],
+        width: attributeColumnWidth[2],
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
@@ -724,7 +730,213 @@ export function Ltpa350Step2({
     ]
   );
   // 재물
+  const columnDefs4: ColDef<LTPA350GridRow>[] = useMemo(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field1',
+        flex: 1,
+        cellClass: 'text-left p-0!',
+        sortable: false,
+        filter: false,
+        autoHeight: true,
+        suppressMovable: true, // 이동 방지
+        lockPosition: 'left', // 왼쪽 고정 유지
+        lockPinned: true, // 고정 열에서 제외 방지
+        tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
+          label: '담보명',
+          field: 'field1',
+        }),
+        headerComponent: productNameHeader,
+        cellRenderer: titleRenderer,
+      },
+      {
+        headerName: '속성',
+        field: 'field2',
+        width: attributeColumnWidth[0],
+        cellClass: 'text-center',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        resizable: false,
+        cellRenderer: attributeRenderer,
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'field3',
+        width: attributeColumnWidth[4],
+        headerClass: 'px-0!',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
+        cellClassRules: amountCellClassRules,
+        sortable: false,
+        filter: false,
+        editable: false,
+        cellRenderer: coverageAmountCellRenderer,
+      },
+      {
+        headerName: '만기',
+        field: 'field5',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        editable: getEditableCallback('whenSelected'),
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '납기',
+        field: 'field6',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        editable: getEditableCallback('whenSelected'),
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '보험료(만원)',
+        field: 'field7',
+        width: attributeColumnWidth[3],
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+      },
+    ],
+    [
+      amountCellClassRules,
+      attributeColumnWidth,
+      duplicateRenderer,
+      expiryCellRenderer,
+      getEditableCallback,
+      editableCellClassRules,
+      productNameHeader,
+      titleRenderer,
+    ]
+  );
 
+  // 연금/저축
+  const columnDefs5: ColDef<LTPA350GridRow>[] = useMemo(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field1',
+        flex: 1,
+        cellClass: 'text-left p-0!',
+        sortable: false,
+        filter: false,
+        autoHeight: true,
+        suppressMovable: true, // 이동 방지
+        lockPosition: 'left', // 왼쪽 고정 유지
+        lockPinned: true, // 고정 열에서 제외 방지
+        tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
+          label: '담보명',
+          field: 'field1',
+        }),
+        headerComponent: productNameHeader,
+        cellRenderer: titleRenderer,
+      },
+      {
+        headerName: '속성',
+        field: 'field2',
+        width: attributeColumnWidth[0],
+        cellClass: 'text-center',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        resizable: false,
+        cellRenderer: attributeRenderer,
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'field3',
+        width: attributeColumnWidth[4],
+        headerClass: 'px-0!',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
+        cellClassRules: amountCellClassRules,
+        sortable: false,
+        filter: false,
+        editable: false,
+        cellRenderer: coverageAmountCellRenderer,
+      },
+      {
+        headerName: '만기',
+        field: 'field5',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        editable: getEditableCallback('whenSelected'),
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '납기',
+        field: 'field6',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-center px-[0.2rem]!',
+        cellClassRules: editableCellClassRules,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        editable: getEditableCallback('whenSelected'),
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+        },
+        cellRenderer: expiryCellRenderer,
+      },
+      {
+        headerName: '보험료(만원)',
+        field: 'field7',
+        width: attributeColumnWidth[4],
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+      },
+      {
+        headerName: '중복',
+        field: 'field9',
+        width: attributeColumnWidth[0],
+        headerClass: 'text-center px-0!',
+        cellClass: 'text-center px-0!',
+        sortable: false,
+        filter: false,
+        cellRenderer: duplicateRenderer,
+        resizable: false,
+      },
+    ],
+    [
+      amountCellClassRules,
+      attributeColumnWidth,
+      duplicateRenderer,
+      expiryCellRenderer,
+      getEditableCallback,
+      editableCellClassRules,
+      productNameHeader,
+      titleRenderer,
+    ]
+  );
   const [amount, setAmount] = useState('0');
   const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
@@ -1369,6 +1581,411 @@ export function Ltpa350Step2({
                     <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                       고지유형별보험료비교
                     </Button>
+                    <Grow className="gap-1">
+                      <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                        상품비교설계
+                      </Button>
+                      <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                        동일상품복사
+                      </Button>
+                      <Button
+                        type="submit"
+                        form={'page2-MainForm'}
+                        variant={'contained'}
+                        color={'primary'}
+                        size={'xl'}
+                        // onClick={onCalcGuidelineClick}
+                      >
+                        보험료계산(지침)
+                      </Button>
+                    </Grow>
+                  </MainBottomItem>
+                </MainBottom>
+              </LayoutMainFoot>
+            </>
+          )}
+
+          
+          {/* 연금 */}
+          {viewKey === 'view4' && (
+            <>
+              <LayoutMainBody>
+                <LayoutScrollWrap className="grid-rows-[auto_1fr]">
+                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                    <Grow className="gap-1.5">
+                      <Typo variant="heading-sm">화재특약담보</Typo>
+                    </Grow>
+                    <Grow className="gap-2.5">
+                      <Button
+                        color="gray"
+                        onClick={() => {}}
+                        only="default"
+                        size="md"
+                        variant="contained"
+                      >
+                        질권설정
+                      </Button>
+                        <TooltipQ>
+                          {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
+                        </TooltipQ>
+                    </Grow>
+                  </Grow>
+                  <LayoutScrollItem className="w-full">
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<LTPA350GridRow>
+                        key={gridKey}
+                        rowData={rowData}
+                        columnDefs={columnDefs5}
+                        getRowId={(params) => String(params.data.id)}
+                        singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                        rowSelection={{
+                          mode: 'multiRow' as const,
+                          checkboxes: true,
+                          headerCheckbox: true,
+                          enableClickSelection: false,
+                          enableSelectionWithoutKeys: true,
+                        }}
+                        onCellClicked={handleGridCellClickToggle}
+                        selectionColumnDef={{
+                          width: 30,
+                          // pinned: 'left',
+                          cellClass: 'text-center p-0!',
+                          cellClassRules: {
+                            'pointer-events-none': (params) => !!params.data?.locked,
+                          },
+                        }}
+                        onSelectionChanged={handleGridSelectionChanged}
+                        onGridReady={handleGridReady}
+                        onRowDataUpdated={handleRowDataUpdated}
+                        suppressRowHoverHighlight={false}
+                        getRowClass={(params) => {
+                          if (params.data?.isDuplicate) return 'is-duplicate';
+                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                          return '';
+                        }}
+                        tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                        tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                        tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      />
+                    </div>
+                  </LayoutScrollItem>
+                </LayoutScrollWrap>
+              </LayoutMainBody>
+              <LayoutMainFoot>
+                <MainBottom>
+                  <MainBottomItem>
+                    <FormTable
+                      className="w-[100%]! [&_tr]:justify-between"
+                      lineTop={false}
+                      variant={'none'}
+                      cols={[
+                        'w-[9rem]',
+                        'w-[auto]',
+                        'w-[8rem]',
+                        'w-[auto]',
+                        'w-[8rem]',
+                        'w-[auto]',
+                        'w-[8rem]',
+                        'w-[auto]',
+                      ]}
+                    >
+                      <FormRow>
+                        <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
+                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                            예상
+                          </Button>
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={100000}
+                            width={'full'}
+                            readOnly={true}
+                            className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                          />
+                          <Input
+                            type="text"
+                            commaAmount={true}
+                            value={refundRate}
+                            onChange={(e) => setRefundRate(e.target.value)}
+                            width={60}
+                            className="[&_input]:text-right shrink-0"
+                          />
+                          %
+                        </FormCell>
+                        <FormCell title="보장보험료">
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={100000}
+                            width={'full'}
+                            readOnly={true}
+                            className="[&_input]:text-right"
+                          />
+                        </FormCell>
+                        <FormCell title="적립보험료">
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={100000}
+                            width={'full'}
+                            readOnly={true}
+                            className="text-right"
+                          />
+                        </FormCell>
+
+                        <FormCell title="합계보험료">
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={amount}
+                            clear={true}
+                            width={'full'}
+                            onChange={(e) => {
+                              setAmount(e.target.value);
+                              setTestError(!e.target.value);
+                            }}
+                            required={true}
+                            error={testError}
+                            errorMsg={'계약자 입력은 필수입니다.'}
+                            errorPs={'tr'}
+                            className="text-right font-bold"
+                          />
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                  </MainBottomItem>
+                  <MainBottomItem>
+                    <Grow></Grow>
+                    <Grow className="gap-1">
+                      <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                        상품비교설계
+                      </Button>
+                      <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                        동일상품복사
+                      </Button>
+                      <Button
+                        type="submit"
+                        form={'page2-MainForm'}
+                        variant={'contained'}
+                        color={'primary'}
+                        size={'xl'}
+                        // onClick={onCalcGuidelineClick}
+                      >
+                        보험료계산(지침)
+                      </Button>
+                    </Grow>
+                  </MainBottomItem>
+                </MainBottom>
+              </LayoutMainFoot>
+            </>
+          )}
+          {/* 연금/저축 */}
+          {viewKey === 'view5' && (
+            <>
+              <LayoutMainBody>
+                <LayoutScrollWrap className="grid-rows-[auto_1fr]">
+                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                    <Grow className="gap-1.5">
+                      <Typo variant="heading-sm">100세만기 · 20년납입 · 월납 · 20년 갱신 · 1형</Typo>
+                      <Button variant={'outlined'} color={'gray'} size={'md'}>
+                        변경
+                      </Button>
+                    </Grow>
+                    <Grow className="gap-2.5">
+                      <Checkbox>담보초기화</Checkbox>
+                      <Checkbox>플랜기본값</Checkbox>
+                      <Grow className="gap-1">
+                        <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
+                          {[
+                            { label: '플랜 선택', value: 'planA' },
+                            { label: '올인원플랜(15~89세)', value: 'planB' },
+                            { label: '플1형(355간편고지형)(프리미엄올인원플랜)(1.7189형)(15~80세)', value: 'planC' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <SelectDrop typeMode="custom" size="md" width={160} placeholder="나만의 설계선택">
+                          {/* 여기에 */}
+                          <Gcol className="w-full p-[0.2rem]">
+                            <Button variant="outlined" size="md" className="w-full">
+                              <SaveIcon /> 나만의설계저장
+                            </Button>
+
+                            <Accordion
+                              type="multiple"
+                              className="w-full"
+                            >
+                              {planAccordionItems.map((item) => (
+                                <AccordionItem key={item.value} value={item.value}>
+                                  <AccordionTrigger className='w-full group flex justify-between items-center text-[1.3rem] font-bold'>
+                                    {item.trigger}
+                                    <ChevronDownIcon
+                                      size={14}
+                                      color='#777'
+                                      className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
+                                    />
+                                  </AccordionTrigger>
+                                  <AccordionContent className='px-[0.8rem]'>
+                                    {item.content.map((text, index) => (
+                                      <Typo key={`${item.value}-${index}`} variant="body-md">
+                                        {text}
+                                      </Typo>
+                                    ))}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              ))}
+                            </Accordion>
+                          </Gcol>
+
+                        </SelectDrop>
+
+                        <Button
+                          variant={'outlined'}
+                          color={'gray'}
+                          size={'md'}
+                          onClick={() => setIsHeightExpanded(!isHeightExpanded)}
+                        >
+                          <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
+                        </Button>
+                        <Button
+                          variant={'outlined'}
+                          color={'gray'}
+                          size={'md'}
+                          onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
+                        >
+                          <SizeIcon color="var(--color-secondary-50)" />
+                        </Button>
+                      </Grow>
+                    </Grow>
+                  </Grow>
+                  <LayoutScrollItem className="w-full">
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<LTPA350GridRow>
+                        key={gridKey}
+                        rowData={rowData}
+                        columnDefs={columnDefs5}
+                        getRowId={(params) => String(params.data.id)}
+                        singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                        rowSelection={{
+                          mode: 'multiRow' as const,
+                          checkboxes: true,
+                          headerCheckbox: true,
+                          enableClickSelection: false,
+                          enableSelectionWithoutKeys: true,
+                        }}
+                        onCellClicked={handleGridCellClickToggle}
+                        selectionColumnDef={{
+                          width: 30,
+                          // pinned: 'left',
+                          cellClass: 'text-center p-0!',
+                          cellClassRules: {
+                            'pointer-events-none': (params) => !!params.data?.locked,
+                          },
+                        }}
+                        onSelectionChanged={handleGridSelectionChanged}
+                        onGridReady={handleGridReady}
+                        onRowDataUpdated={handleRowDataUpdated}
+                        suppressRowHoverHighlight={false}
+                        getRowClass={(params) => {
+                          if (params.data?.isDuplicate) return 'is-duplicate';
+                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                          return '';
+                        }}
+                        tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                        tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                        tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      />
+                    </div>
+                  </LayoutScrollItem>
+                </LayoutScrollWrap>
+              </LayoutMainBody>
+              <LayoutMainFoot>
+                <MainBottom>
+                  <MainBottomItem>
+                    <FormTable
+                      className="w-[100%]! [&_tr]:justify-between"
+                      lineTop={false}
+                      variant={'none'}
+                      cols={[
+                        'w-[9rem]',
+                        'w-[auto]',
+                        'w-[8rem]',
+                        'w-[auto]',
+                        'w-[8rem]',
+                        'w-[auto]',
+                        'w-[8rem]',
+                        'w-[auto]',
+                      ]}
+                    >
+                      <FormRow>
+                        <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
+                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                            예상
+                          </Button>
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={100000}
+                            width={'full'}
+                            readOnly={true}
+                            className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                          />
+                          <Input
+                            type="text"
+                            commaAmount={true}
+                            value={refundRate}
+                            onChange={(e) => setRefundRate(e.target.value)}
+                            width={60}
+                            className="[&_input]:text-right shrink-0"
+                          />
+                          %
+                        </FormCell>
+                        <FormCell title="보장보험료">
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={100000}
+                            width={'full'}
+                            readOnly={true}
+                            className="[&_input]:text-right"
+                          />
+                        </FormCell>
+                        <FormCell title="적립보험료">
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={100000}
+                            width={'full'}
+                            readOnly={true}
+                            className="text-right"
+                          />
+                        </FormCell>
+
+                        <FormCell title="합계보험료">
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={amount}
+                            clear={true}
+                            width={'full'}
+                            onChange={(e) => {
+                              setAmount(e.target.value);
+                              setTestError(!e.target.value);
+                            }}
+                            required={true}
+                            error={testError}
+                            errorMsg={'계약자 입력은 필수입니다.'}
+                            errorPs={'tr'}
+                            className="text-right font-bold"
+                          />
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                  </MainBottomItem>
+                  <MainBottomItem>
+                    <Grow></Grow>
                     <Grow className="gap-1">
                       <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                         상품비교설계
