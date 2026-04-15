@@ -451,7 +451,7 @@ export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
   agGridTable1: [
     {
       id: 1,
-      field1: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
+      field1: '건물',
       field2: true,
       field3: 500,
       field4: 450,

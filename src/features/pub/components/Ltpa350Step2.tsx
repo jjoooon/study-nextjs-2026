@@ -112,6 +112,26 @@ export function Ltpa350Step2({
     isFetus ? Ltpa350Step2Data2.agGridTable1 : Ltpa350Step2Data.agGridTable1
   );
 
+
+  // 2) Tabs/rowData 분기
+  const isFetus3 = viewKey === 'view3';
+  const tabListData3 = isFetus3 ? Ltpa350Step2Data3.tabList : Ltpa350Step2Data3.tabList;
+  const stringifiedTabs3: MainHeadTab[] = tabListData3.map((item) => ({
+    ...item,
+    value: String(item.id),
+  }));
+  const {
+    tabs: LTPA350Tabs3,
+    active: LTPA350Active3,
+    setActive: Ltpa350SetActive3,
+  } = useTabs<MainHeadTab>(stringifiedTabs3);
+
+  // 3) Grid data
+  const [rowData3, setRowData3] = useState<LTPA350GridRow[]>(
+    isFetus3 ? Ltpa350Step2Data3.agGridTable1 : Ltpa350Step2Data3.agGridTable1
+  );
+
+
   // 중복 행 자동 선택 / 선택 해제 시 삭제 추적
   const pendingSelectIdRef = useRef<number | null>(null);
   const prevSelectedIdsRef = useRef<Set<number>>(new Set());
@@ -1784,7 +1804,7 @@ export function Ltpa350Step2({
                     <div className="ag-theme-alpine">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
-                        rowData={rowData}
+                        rowData={rowData3}
                         columnDefs={columnDefs3}
                         getRowId={(params) => String(params.data.id)}
                         singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
