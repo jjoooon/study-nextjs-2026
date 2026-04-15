@@ -74,8 +74,19 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                   </NativeSelectOption>
                                 ))}
                               </NativeSelect>
-                              <Input aria-label="만기수익자 주민등록번호" width={120} value={'900101-1234567'} readOnly />
-                              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <Input
+                                aria-label="만기수익자 주민등록번호"
+                                width={120}
+                                value={'900101-1234567'}
+                                readOnly
+                              />
+                              <Button
+                                aria-label="검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
                               <Input aria-label="만기수익자 이름" width={75} value={'김한화'} readOnly />
@@ -107,7 +118,9 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                   </RadioGroupItem>
                                 ))}
                               </RadioGroup>
-                              <Grow className="pl-2">부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동 (하단동)</Grow>
+                              <Grow className="pl-2">
+                                부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동 (하단동)
+                              </Grow>
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -116,8 +129,8 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                 <Grow gap={1} placement="sc">
                                   전자적 안내동의
                                   <TooltipQ>
-                                    문서서명/TM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서
-                                    선택하시면 됩니다.
+                                    문서서명/TM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을
+                                    화면에서 선택하시면 됩니다.
                                     <br />
                                     전자서명/전자청약은 전자적 안내동의가 필수사항입니다.
                                   </TooltipQ>
@@ -296,7 +309,7 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                             </FormCell>
                             <FormCell title={'해지 방지 휴대폰 결제'}>
                               <Grow placement="bws">
-                                <Grow placement='ss'>
+                                <Grow placement="ss">
                                   <RadioGroup defaultValue="동의함" className="w-[10rem]" required>
                                     {[
                                       { value: '동의함', id: 'agree', label: '동의함' },
@@ -357,8 +370,8 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                   성년후견인지정여부
                                   <TooltipQ>
                                     <b>성년후견제도란?</b>
-                                    <br /> 정신적 제약으로 보호가 필요한 성인의 권익보호와 지원을 위해 마련된 제도로, 보호가
-                                    필요한 성인의 정신능력정도 등에 따라 성년/한정/특정/임의후견으로
+                                    <br /> 정신적 제약으로 보호가 필요한 성인의 권익보호와 지원을 위해 마련된 제도로,
+                                    보호가 필요한 성인의 정신능력정도 등에 따라 성년/한정/특정/임의후견으로
                                     나뉨(민법제9조,제12조,제14조의2 및 제959조의 14)
                                   </TooltipQ>
                                 </Grow>
@@ -559,8 +572,8 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                       법정상속인간보험급 지급에 관한 분쟁이 발생할 수 있습니다. <br />
                                       (예시)양육에 기여하지 않은 부모가 보험금에 대한 지분을 요구
                                       <br />
-                                      *상품설명서의 &apos;보험금 수익자 지정&apos;에 관한 사항을 참고하여 계약자에게 안내해
-                                      주시기 바랍니다.
+                                      *상품설명서의 &apos;보험금 수익자 지정&apos;에 관한 사항을 참고하여 계약자에게
+                                      안내해 주시기 바랍니다.
                                     </TooltipQ>
                                   </Grow>
                                 }
@@ -589,7 +602,12 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                               </FormCell>
                               <FormCell title="사망외수익자">
                                 <Input aria-label="사망외수익자명" width={90} value={'김한화'} readOnly />
-                                <Input aria-label="사망외수익자 주민등록번호" width={130} value={'900101-1234567'} readOnly />
+                                <Input
+                                  aria-label="사망외수익자 주민등록번호"
+                                  width={130}
+                                  value={'900101-1234567'}
+                                  readOnly
+                                />
                                 <Button
                                   aria-label="사망외수익자 검색"
                                   variant={'outlined'}
