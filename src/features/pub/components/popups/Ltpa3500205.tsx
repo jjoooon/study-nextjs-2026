@@ -100,7 +100,7 @@ export const Ltpa3500205 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="sm">
+      <DialogContent showCloseButton resizable={true} size="md" className='w-[28rem]!' >
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -109,39 +109,41 @@ export const Ltpa3500205 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
-          <div className="flex gap-2 mb-2">
-            <Button color="primary" onClick={moveUp} only="default" size="lg" variant="contained" disabled={selectedIdx === 0}>
-              <ArrowIcon className='rotate-90'/>
-              위로
+        <DialogSection className="grid-rows-[auto_1fr] gap-[0.4rem]">
+          <Grow className="flex justify-end">
+            <Button color="gray-light" onClick={moveUp} only="icon" size="sm" variant="outlined" disabled={selectedIdx === 0}>
+              <ArrowIcon className='rotate-90' color={'#FF5C2E'} size={13}/>
             </Button>
-            <Button color="primary" onClick={moveDown} only="default" size="lg" variant="outlined" disabled={selectedIdx === keywords.length - 1}>
-              <ArrowIcon className='-rotate-90'/>
-              아래로
+            <Button color="gray-light" onClick={moveDown} only="icon" size="sm" variant="outlined" disabled={selectedIdx === keywords.length - 1}>
+              <ArrowIcon className='-rotate-90' color={'#FF5C2E'} size={13}/>
             </Button>
-          </div>
-          <Grow className='w-full h-full' placement='ss'>
-            <Gcol className='w-[4rem] h-[31.6rem] justify-between py-[0.4rem]' placement='ss'>
+          </Grow>
+          <Grow className='w-full' placement='ss'>
+            <Gcol className='w-[1.8rem]' placement='ss'>
               {keywords.map((_, i) => (
-                <Badge key={i} color="secondary" size="md" variant="contained">{i + 1}</Badge>
+                <Gcol className='w-[1.8rem] h-[3.4rem]' key={i}>
+                  <Badge color="secondary" size="md" variant="contained" className='w-[1.8rem] bg-[#263143]'>{i + 1}</Badge>
+                </Gcol>  
               ))}
             </Gcol>
             <Gcol className='w-full'>
               {keywords.map((kw, i) => (
-                <Input
-                  key={i}
-                  errorMsg="입력은 필수입니다."
-                  errorPs="bl"
-                  onChange={(e) => handleInputChange(i, e.target.value)}
-                  size="lg"
-                  value={kw}
-                  variant="default"
-                  width="full"
-                  onFocus={() => setSelectedIdx(i)}
-                  className={selectedIdx === i ? 'ring-2 ring-primary-500' : ''}
-                  placeholder='최대 한글 6자'
-                  clear
-                />
+                <Gcol className='h-[3.4rem] bg-[#E4E7EC] rounded-[0.4rem] p-[0.4rem] box-border' key={i}>
+                  <Input
+                    key={i}
+                    errorMsg="입력은 필수입니다."
+                    errorPs="bl"
+                    onChange={(e) => handleInputChange(i, e.target.value)}
+                    size="lg"
+                    value={kw}
+                    variant="default"
+                    width="full"
+                    onFocus={() => setSelectedIdx(i)}
+                    className={selectedIdx === i ? 'ring-2 ring-primary-500' : ''}
+                    placeholder='최대 한글 6자'
+                    clear
+                  />
+                </Gcol>  
               ))}
             </Gcol>
           </Grow>
