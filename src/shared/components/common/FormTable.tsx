@@ -47,6 +47,7 @@ interface FormTableProps {
   className?: string;
   lineTop?: boolean;
   vertical?: boolean;
+  after?: React.ReactNode;
 }
 
 interface FormTrProps {
@@ -54,6 +55,7 @@ interface FormTrProps {
   vertical?: boolean;
   cols?: string[]; // ["col-s", "", "col-l", ""]
   className?: string;
+  style?: React.CSSProperties;
 }
 
 // vertical context 생성
@@ -156,6 +158,7 @@ export const FormCell = ({
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
+          {...(style && { style })}
         >
           <Typo variant={titleTypoVariant} weight="bold" color={titleTypoColor}>
             {title}
@@ -187,6 +190,7 @@ export const FormTable = ({
   className,
   variant = 'default',
   lineTop = true,
+  after,
 }: FormTableProps) => {
   const variantStyles = {
     default: `table-fixed w-full border-collapse ` + className,
@@ -221,27 +225,30 @@ export const FormTable = ({
   // variant가 'none'이면 lineTop을 무시
   const showLineTop = lineTop && variant !== 'none';
   return (
-    <Table
-      className={cn(
-        'overflow-visible',
-        variantStyles[variant as keyof typeof variantStyles],
-        showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0',
-        className
-      )}
-      data-variant={variant}
-    >
-      {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
-      {cols && cols.length > 0 && (
-        <colgroup>
-          {cols.map((colClass, index) => (
-            <col key={index} className={colClass || undefined} />
-          ))}
-        </colgroup>
-      )}
-      <VariantContext.Provider value={variant as FormVariant}>
-        <TableBody>{children}</TableBody>
-      </VariantContext.Provider>
-    </Table>
+    <>
+      <Table
+        className={cn(
+          'overflow-visible',
+          variantStyles[variant as keyof typeof variantStyles],
+          showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0',
+          className
+        )}
+        data-variant={variant}
+      >
+        {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
+        {cols && cols.length > 0 && (
+          <colgroup>
+            {cols.map((colClass, index) => (
+              <col key={index} className={colClass || undefined} />
+            ))}
+          </colgroup>
+        )}
+        <VariantContext.Provider value={variant as FormVariant}>
+          <TableBody>{children}</TableBody>
+        </VariantContext.Provider>
+      </Table>
+      {after}
+    </>
   );
 };
 export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
@@ -254,7 +261,7 @@ export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
   );
 };
 
-export const FormRow = ({ children, vertical, cols: _cols, className }: FormTrProps) => {
+export const FormRow = ({ children, vertical, cols: _cols, className, style }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
       <tr
@@ -268,6 +275,7 @@ export const FormRow = ({ children, vertical, cols: _cols, className }: FormTrPr
             : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!',
           className
         )}
+        {...(style && { style })}
       >
         {children}
       </tr>
