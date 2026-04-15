@@ -310,6 +310,7 @@ export default function Ltpa020Section() {
     };
   }, []);
 
+  // 담보군
   const coverageOptions = [
     { value: '사망/후유', label: '사망/후유' },
     { value: '진단비', label: '진단비' },
@@ -327,7 +328,7 @@ export default function Ltpa020Section() {
       : selectedCoverageValues.length === 1
         ? selectedCoverageValues[0]
         : `${selectedCoverageValues[0]} 외 ${selectedCoverageValues.length - 1}개`;
-
+  // 보장분석
   const AnalysisOptions = [
    { value: '보장분석 부족자금', label: '보장분석 부족자금' },
   { value: '기계약 누적해소', label: '기계약 누적해소' },
@@ -341,7 +342,7 @@ export default function Ltpa020Section() {
       : selectedAnalysisValues.length === 1
         ? selectedAnalysisValues[0]
         : `${selectedAnalysisValues[0]} 외 ${selectedAnalysisValues.length - 1}개`;
-
+  // 상품특징
   type ApplyOptionValue = '' | '적용' | '미적용';
   type MaturityOptionValue = '' | '세만기' | '연만기';
   const [noRefundValue, setNoRefundValue] = useState<ApplyOptionValue>('');
@@ -354,9 +355,23 @@ export default function Ltpa020Section() {
   ].filter((value) => value.length > 0);
   const selectedProductFeatureSummary =
     productFeatureSummaryValues.length > 0 ? productFeatureSummaryValues.join(', ') : '선택';
+  // 고지유형
 
   const [dataNone, setDataNone] = useState<boolean>(true);
   const [isPdName, setIsPdName] = useState<boolean>(false);
+  // 고지유형(간편/추가질병/입원수술) 상태
+  const [simpleType, setSimpleType] = useState<string>(''); // '표준' | '간편' | ''
+  const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]
+  const [hospitalInputs, setHospitalInputs] = useState<string[]>(['', '', '', '', '']);
+
+  // 고지유형 요약
+  const hasHospitalInput = hospitalInputs.some((v) => v.trim() !== '');
+  const selectedNoticeSummary = [
+    simpleType,
+    ...additionalDiseases,
+    hasHospitalInput ? '입원수술' : '',
+  ].filter(Boolean).join(', ') || '선택';
+
   return (
     <>
       <LayoutHead>
@@ -654,6 +669,7 @@ export default function Ltpa020Section() {
                      <ArrowIcon className={isAddPanelOpen ? '' : 'rotate-[180deg]'} size={12}  />
                     </button>
                   </div>
+                  
                   {/* 기본 */}
                   <FormTable caption="" cols={
                     isPdName ? [
@@ -710,7 +726,7 @@ export default function Ltpa020Section() {
                             onClick={() => setIsFilterOptionOpen((prev) => !prev)}
                             aria-expanded={isFilterOptionOpen}
                           >
-                            <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
+                            <span className="w-[100%] flex items-center font-normal">{selectedNoticeSummary}</span>
                             <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
                           </button>
                         </FormCell>
@@ -868,7 +884,10 @@ export default function Ltpa020Section() {
                         <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                           <FormRow>
                             <FormCell title={'간편'}>
-                              <RadioGroup value={noRefundValue} onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}>
+                              <RadioGroup
+                                value={simpleType}
+                                onValueChange={(value) => setSimpleType(value)}
+                              >
                                 {[
                                   { value: '표준', label: '표준' },
                                   { value: '간편', label: '간편' },
@@ -881,74 +900,61 @@ export default function Ltpa020Section() {
                             </FormCell>
                           </FormRow>
                           <FormRow>
-                            <FormCell title={
-                              <div >
-                                입원수술<br /><Button variant={'outlined'} size="sm" color="gray">예외질환조회</Button>
-                              </div>
-                            } className='align-top! pt-[0.8rem]!'>
-                               <Gcol placement='ss'>
-                                  <Grow placement='sc'>
-                                    <Input width={86} placeholder='질병명검색' />
-                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
+                            <FormCell
+                              title={
+                                <div>
+                                  입원수술<br />
+                                  <Button variant={'outlined'} size="sm" color="gray">예외질환조회</Button>
+                                </div>
+                              }
+                              className='align-top! pt-[0.8rem]!'
+                            >
+                              <Gcol placement='ss'>
+                                {[0, 1, 2, 3, 4].map((idx) => (
+                                  <Grow placement='sc' key={idx}>
+                                    <Input
+                                      width={86}
+                                      placeholder='질병명검색'
+                                      value={hospitalInputs[idx]}
+                                      onChange={(e) => {
+                                        const next = [...hospitalInputs];
+                                        next[idx] = e.target.value;
+                                        setHospitalInputs(next);
+                                      }}
+                                    />
+                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색">
                                       <SearchIcon color="var(--color-primary-50)" />
                                     </Button>
-                                    <Input width={120} placeholder='필수입력' />
+                                    <Input width={80} placeholder='필수입력' />
                                   </Grow>
-                                  <Grow placement='sc'>
-                                    <Input width={86} placeholder='질병명검색' />
-                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
-                                      <SearchIcon color="var(--color-primary-50)" />
-                                    </Button>
-                                    <Input width={120} placeholder='필수입력' />
-                                  </Grow>
-                                  <Grow placement='sc'>
-                                    <Input width={86} placeholder='질병명검색' />
-                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
-                                      <SearchIcon color="var(--color-primary-50)" />
-                                    </Button>
-                                    <Input width={120} placeholder='필수입력' />
-                                  </Grow>
-                                  <Grow placement='sc'>
-                                    <Input width={86} placeholder='질병명검색' />
-                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
-                                      <SearchIcon color="var(--color-primary-50)" />
-                                    </Button>
-                                    <Input width={120} placeholder='필수입력' />
-                                  </Grow>
-                                  <Grow placement='sc'>
-                                    <Input width={86} placeholder='질병명검색' />
-                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
-                                      <SearchIcon color="var(--color-primary-50)" />
-                                    </Button>
-                                    <Input width={120} placeholder='필수입력' />
-                                  </Grow>
-                                    
-
-                               </Gcol>
+                                ))}
+                              </Gcol>
                             </FormCell>
                           </FormRow>
                           <FormRow>
                             <FormCell title={'추가질병'}>
-                              <CheckboxGroup className="gap-3 items-start" value={[]} onValueChange={() => {}}>
+                              <CheckboxGroup
+                                className="gap-3 items-start"
+                                value={additionalDiseases}
+                                onValueChange={(values) => setAdditionalDiseases(values)}
+                              >
                                 {[
                                   { value: '고혈압', label: '고혈압' },
                                   { value: '당뇨', label: '당뇨' },
                                 ].map((opt) => (
-                                  <Checkbox 
-                                    key={opt.value} 
-                                    value={opt.value} 
-                                  >{opt.label}</Checkbox>
+                                  <CheckboxGroupItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </CheckboxGroupItem>
                                 ))}
                               </CheckboxGroup>
                             </FormCell>
                           </FormRow>
                         </FormTable>
-                        
                       </Gcol>
                     )}
-                    {isPdName && (
+                    {isPdName ? (
                       <div className='w-[36rem] shrink-0'></div>
-                    )}
+                    ) : <div className='w-[10rem] shrink-0'></div>}
                     </Grow>
                   )}
                 </Grow>
