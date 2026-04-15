@@ -385,6 +385,15 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                 />
               </div>
             </Gcol>
+
+            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+              <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                기타 필수 스캔 대상 서류안내
+              </Typo>
+              <Typo variant={'body-sm'} icon={'dot'}>
+                실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류 
+              </Typo>
+            </Gcol>
           </Gcol>
 
           <Grid gap={2} placement={'ss'} className="w-[26.4rem] shrink-0 grid-rows-[auto_1fr] overflow-hidden">
