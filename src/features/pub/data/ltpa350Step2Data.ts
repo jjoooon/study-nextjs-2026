@@ -403,19 +403,13 @@ export interface Ltpa350Step2DataType3 {
     id: number;
 
     field1: string;
-    field2: boolean;
+    field2: number;
     field3: number;
-    field4: number;
+    field4: string;
     field5: string;
     field6: string;
-    field7: number;
+    field7: string;
     field8: string;
-    field9: boolean;
-
-    locked?: boolean; // 잠금 여부 추가
-    isHighlighted: boolean;
-    selected?: boolean;
-    badge?: string[];
   }>;
 }
 export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
@@ -451,50 +445,91 @@ export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
   agGridTable1: [
     {
       id: 1,
-      field1: '건물',
-      field2: true,
-      field3: 500,
-      field4: 450,
-      field5: '80세',
-      field6: '20년',
-      field7: 100,
-      field8: '인수',
-      field9: true,
-
-      locked: true,
-
-      isHighlighted: true,
-      badge: ['독립', '갱신'],
+      field1: '건물(실손)',
+      field2: 0,
+      field3: 0,
+      field4: '',
+      field5: '',
+      field6: '',
+      field7: '',
+      field8: '',
     },
     {
       id: 2,
-      field1: '무배당 KB손해보험 암보험',
-      field2: true,
-      field3: 300,
-      field4: 280,
-      field5: '100세',
-      field6: '30년',
-      field7: 80,
-      field8: '인수',
-      field9: false,
-      locked: false,
-      isHighlighted: false,
-      badge: ['갱신'],
+      field1: '가재(실손)',
+      field2: 0,
+      field3: 0,
+      field4: '일체',
+      field5: '',
+      field6: '건물내',
+      field7: '아니오',
+      field8: '',
     },
     {
       id: 3,
-      field1: '무배당 현대해상 3대질병보험',
-      field2: false,
-      field3: 400,
-      field4: 380,
-      field5: '90세',
-      field6: '25년',
-      field7: 120,
-      field8: '인수',
-      field9: false,
-      locked: false,
-      isHighlighted: false,
-      badge: ['독립'],
+      field1: '기계(실손)',
+      field2: 0,
+      field3: 0,
+      field4: '일체',
+      field5: '',
+      field6: '건물내',
+      field7: '아니오',
+      field8: '',
+    },
+    {
+      id: 4,
+      field1: '시설(실손)',
+      field2: 0,
+      field3: 0,
+      field4: '일체',
+      field5: '',
+      field6: '건물내',
+      field7: '아니오',
+      field8: '',
+    },
+    {
+      id: 5,
+      field1: '재고자산(실손)',
+      field2: 100,
+      field3: 0,
+      field4: '일체',
+      field5: '',
+      field6: '건물밖야적',
+      field7: '',
+      field8: '가연성',
+    },
+    {
+      id: 6,
+      field1: '집기비품(실손)',
+      field2: 0,
+      field3: 0,
+      field4: '일체',
+      field5: '',
+      field6: '건물내',
+      field7: '아니오',
+      field8: '',
+    },
+    {
+      id: 7,
+      field1: '전기실비(실손)',
+      field2: 0,
+      field3: 0,
+      field4: '일체',
+      field5: '',
+      field6: '건물내',
+      field7: '아니오',
+      field8: '',
+    },
+    {
+      id: 8,
+      field1: '임차자배상',
+      field2: 0,
+      field3: 0,
+      field4: '',
+      field5: '',
+      field6: '',
+      field7: '',
+      field8: '',
     },
   ],
 };
