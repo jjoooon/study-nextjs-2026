@@ -1019,7 +1019,6 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
     ]
   );
 
