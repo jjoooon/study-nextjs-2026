@@ -68,6 +68,7 @@
     "ltpa010",
     "ltpa400",
     "LTPA030",
+    "LTPA020",
     "LTPA350_1"
   ],
   "ingList": [
@@ -167,6 +168,7 @@
     "LTPZ997",
     "LTPZ996",
     "LTPZ018",
+    "LTPA020",
     "LTPA030"
   ]
 }

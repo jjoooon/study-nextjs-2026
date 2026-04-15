@@ -16,7 +16,7 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -264,21 +264,21 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
               </div>
             </div>
         </DialogSection>
-
-        <DialogFooter>
-          <Gcol className="w-full" gap={0}>
-            <Grow placement={'ee'} gap={2} className="w-full pb-5 px-6">
-              <Grow>
-                <Button variant={'contained'} size={'xl'}>
+        
+         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
                   적용
                 </Button>
+              <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
                 </Button>
-              </Grow>
+              </DialogClose>
             </Grow>
-            <DialogBottomInfo />
-          </Gcol>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>
