@@ -3,15 +3,16 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { RecommendCard } from '@common/RecommendCard';
 import { BadgeCheckIcon, CalendarIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { Badge } from '@uiux/Badge';
 import {
   Dialog,
   DialogClose,
@@ -25,529 +26,430 @@ import {
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-// ag-theme-alpine div의 스크롤 동기화를 위한 Context
-type TableScrollSyncContextType = {
-  register: (ref: React.RefObject<HTMLDivElement | null>) => void;
-  unregister: (ref: React.RefObject<HTMLDivElement | null>) => void;
-  syncScroll: (source: HTMLDivElement, scrollTop: number) => void;
-};
 
-const TableScrollSyncContext = React.createContext<TableScrollSyncContextType | null>(null);
+type OptionType =
+  | { 옵션1: string }
+  | { 옵션2: string }
+  | { 옵션3: string[] }
+  | { 옵션4: string };
 
-function TableScrollSyncProvider({ children }: { children: React.ReactNode }) {
-  const refs = React.useRef<React.RefObject<HTMLDivElement | null>[]>([]);
-  const isSyncing = React.useRef(false);
-
-  const register = React.useCallback((ref: React.RefObject<HTMLDivElement | null>) => {
-    if (!refs.current.includes(ref)) {
-      refs.current.push(ref);
-    }
-  }, []);
-  const unregister = React.useCallback((ref: React.RefObject<HTMLDivElement | null>) => {
-    refs.current = refs.current.filter((r) => r !== ref);
-  }, []);
-  const syncScroll = React.useCallback((source: HTMLDivElement, scrollTop: number) => {
-    if (isSyncing.current) return;
-    isSyncing.current = true;
-    refs.current.forEach((ref) => {
-      const div = ref.current;
-      if (div && div !== source) {
-        div.scrollTop = scrollTop;
-      }
-    });
-    setTimeout(() => {
-      isSyncing.current = false;
-    }, 0);
-  }, []);
-  return (
-    <TableScrollSyncContext.Provider value={{ register, unregister, syncScroll }}>
-      {children}
-    </TableScrollSyncContext.Provider>
-  );
-}
-
-type ComparisonRow = {
+type InfoDataType = {
   id: number;
-  coverage: string;
-  amount: string;
-  premium: string;
+  담보명: string;
+  가능: string;
+  옵션: OptionType[];
 };
-
-type CompareCardProps = {
-  mode: 'base' | 'compare';
-  compareLabel?: string;
-  statusText?: '인수가능' | '조건인수가능';
-  total: TotalRow;
+const InfoData: InfoDataType = {
+  id: 1,
+  담보명: '한화 시그니처 여성 건강보험4.0 2504',
+  가능: '인수가능',
+  옵션: [
+    {옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형'},
+    {옵션2: '비대면진단심사플랜(20~40세)'},
+    {옵션3: ['20년납', '100세만기', '갱신 20년']},
+    {옵션4: '1형(일반 고지 형)'},
+  ],
 };
-
-type CompareSelectForm = {
-  planType: string;
-  underwritingPlan: string;
-  paymentTerm: string;
-  maturityTerm: string;
-  renewalTerm: string;
-  noticeType: string;
-};
-
-type SelectOption = {
-  id: string;
+type selectOption1Type = {
   value: string;
   label: string;
-};
-
-type TotalRow = {
-  totalCost: number;
-  percent: number;
-};
-
-const comparisonRows: ComparisonRow[] = [
-  { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: '3,000', premium: '3,000' },
-  { id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: '10', premium: '10' },
-  { id: 3, coverage: '상해사망(간편)', amount: '15,000', premium: '15,000' },
-  { id: 4, coverage: '상해후유장해(3-100%)', amount: '10,000', premium: '10,000' },
-  { id: 5, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 6, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 7, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 8, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 9, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 10, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 11, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 12, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 13, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 14, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 15, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
-  { id: 16, coverage: '질병사망(간편)', amount: '10,000', premium: '10,000' },
+}[];
+const selectOption1:selectOption1Type = [
+  { value: '옵션1', label: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+  { value: '옵션2', label: '2납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
 ];
-const cardTotals = {
-  base: {
-    totalCost: 70001,
-    percent: 39.4,
-  },
-  compare1: {
-    totalCost: 70001,
-    percent: 39.4,
-  },
-  compare2: {
-    totalCost: 70001,
-    percent: 39.4,
-  },
-  compare3: {
-    totalCost: 70001,
-    percent: 39.4,
-  },
-};
-
-const comparisonColumnDefs: ColDef<ComparisonRow>[] = [
-  {
-    headerName: '담보명',
-    field: 'coverage',
-    flex: 1,
-  },
-  {
-    headerName: '가입금액(원)',
-    field: 'amount',
-    width: 70,
-    cellClass: 'text-right',
-  },
-  {
-    headerName: '보험료(원)',
-    field: 'premium',
-    width: 70,
-    cellClass: 'text-right',
-  },
+const selectOption2:selectOption1Type = [
+  { value: '옵션1', label: '비대면진단심사플랜(20~40세)' },
+  { value: '옵션2', label: '2비대면진단심사플랜(20~40세)' },
+];
+const selectOption3:selectOption1Type = [
+  { value: '옵션1', label: '20년납' },
+  { value: '옵션2', label: '30년납' },
+];
+const selectOption4:selectOption1Type = [
+  { value: '옵션1', label: '100세만기' },
+  { value: '옵션2', label: '200세만기' },
+];
+const selectOption5:selectOption1Type = [
+  { value: '옵션1', label: '갱신 20년' },
+  { value: '옵션2', label: '갱신 30년' },
+];
+const selectOption6:selectOption1Type = [
+  { value: '옵션1', label: '1형(일반고지형)' },
+  { value: '옵션2', label: '2형(갱신형)' },
 ];
 
-function getComparisonHeaderCellStyle(column: ColDef<ComparisonRow>): React.CSSProperties {
-  if (typeof column.width === 'number') {
-    const width = `${column.width}px`;
+type DummyDataType = {
+  id: number;
+  field1: string;
+  field2: number;
+  field3: number;
+};
+const DummyData: DummyDataType[] = [
+  { 
+    id: 1, 
+    field1: '보통약관(상해80%이상후유장해)', 
+    field2: 13000, 
+    field3: 3000 
+  },
+  { id: 2, field1: '보험료납입면제대상보장(5대유사)', field2: 10, field3: 10 },
+  { id: 3, field1: '상해사망(간편)', field2: 15000, field3: 15000 },
+  { id: 4, field1: '상해후유장해(3-100%)', field2: 10000, field3: 10000 },
+  { id: 5, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 6, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 7, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 8, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 9, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 10, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 11, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 12, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 13, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 14, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 15, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+  { id: 16, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
+];
 
-    return {
-      flex: '0 0 auto',
-      minWidth: width,
-      width,
-    };
-  }
+function CardBox({ children, bottom, color }: { children: React.ReactNode; bottom: React.ReactNode; color?: string }) {
+  return (
+    <Grid
+      placement='ss'
+      data-recommend-item="true"
+      className={`group bg-[var(--color-secondary-40)] gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] grid-rows-[1fr_auto] ${color ? `bg-[${color}]` : ''}`}
+    >
+      <Grid className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top] rounded-b-[1rem] p-[1rem] gap-2 w-full p-0 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white gap-0 grid-rows-[1fr_auto]" placement='ss'>
+        {children}
+      </Grid>
+      <Grow placement='bwc' className='px-[1.6rem] h-[4rem] text-white'>
+        <b>보험료(환급률)</b>
+        {bottom}
+      </Grow>
+    </Grid>
+  )
+}
 
-  if (typeof column.flex === 'number') {
+
+
+export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+
+  // 외부 스크롤 div ref 배열
+  const scrollRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  // 스크롤 이벤트 동기화 중복 방지 플래그
+  const isSyncing = React.useRef(false);
+
+  // 스크롤 동기화 핸들러
+  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
+    if (isSyncing.current) return;
+    isSyncing.current = true;
+    const target = e.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
+    scrollRefs.current.forEach((ref, i) => {
+      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
+        ref.scrollTop = scrollTop;
+      }
+    });
+    // 다음 이벤트 루프에서 플래그 해제
+    setTimeout(() => { isSyncing.current = false; }, 0);
+  };
+
+  function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
+    if (typeof column.width === 'number') {
+      const width = `${column.width}px`;
+  
+      return {
+        flex: '0 0 auto',
+        minWidth: width,
+        width,
+      };
+    }
+  
+    if (typeof column.flex === 'number') {
+      return {
+        flex: `${column.flex} ${column.flex} 0%`,
+        minWidth: 0,
+      };
+    }
+  
     return {
-      flex: `${column.flex} ${column.flex} 0%`,
+      flex: '1 1 0%',
       minWidth: 0,
     };
   }
-
-  return {
-    flex: '1 1 0%',
-    minWidth: 0,
-  };
-}
-
-const planTypeOptions: SelectOption[] = [
-  { id: 'planType-1', value: 'planType-1', label: '납입면제 강화형, 납입후 50% 해약환급 금지급형' },
-];
-
-const underwritingPlanOptions: SelectOption[] = [
-  { id: 'underwritingPlan-1', value: 'underwritingPlan-1', label: '비대면진단심사플랜(20~40세)' },
-];
-
-const paymentTermOptions: SelectOption[] = [{ id: 'paymentTerm-1', value: 'paymentTerm-1', label: '20년납' }];
-const maturityTermOptions: SelectOption[] = [{ id: 'maturityTerm-1', value: 'maturityTerm-1', label: '100세만기' }];
-const renewalTermOptions: SelectOption[] = [{ id: 'renewalTerm-1', value: 'renewalTerm-1', label: '갱신 20년' }];
-
-const noticeTypeOptions: SelectOption[] = [{ id: 'noticeType-1', value: 'noticeType-1', label: '1형(일반고지형)' }];
-
-function CompareDesignCard({ mode, compareLabel, statusText = '인수가능', total }: CompareCardProps) {
-  const isCompare = mode === 'compare';
-  const [compareForm, setCompareForm] = React.useState<CompareSelectForm>({
-    planType: planTypeOptions[0]?.value ?? '',
-    underwritingPlan: underwritingPlanOptions[0]?.value ?? '',
-    paymentTerm: paymentTermOptions[0]?.value ?? '',
-    maturityTerm: maturityTermOptions[0]?.value ?? '',
-    renewalTerm: renewalTermOptions[0]?.value ?? '',
-    noticeType: noticeTypeOptions[0]?.value ?? '',
-  });
-
-  const setCompareField = React.useCallback((field: keyof CompareSelectForm, value: string) => {
-    setCompareForm((prev) => ({ ...prev, [field]: value }));
-  }, []);
-
-  // ag-theme-alpine div ref 및 스크롤 동기화
-  const scrollDivRef = React.useRef<HTMLDivElement>(null);
-  const scrollSync = React.useContext(TableScrollSyncContext);
-  React.useEffect(() => {
-    if (!scrollSync) return;
-    scrollSync.register(scrollDivRef);
-    return () => scrollSync.unregister(scrollDivRef);
-  }, [scrollSync]);
-  React.useEffect(() => {
-    if (!scrollSync) return;
-    const div = scrollDivRef.current;
-    if (!div) return;
-    const handleScroll = () => {
-      if (!scrollSync) return;
-      scrollSync.syncScroll(div, div.scrollTop);
-    };
-    div.addEventListener('scroll', handleScroll);
-    return () => div.removeEventListener('scroll', handleScroll);
-  }, [scrollSync]);
-  const compareFooter = (
-    <Grow className="w-full px-[1.6rem] py-[1rem]" placement="bwc" gap={0}>
-      <Typo tag={'p'} variant={'body-md'} weight={'bold'} className="text-white">
-        보험료(환급률)
-      </Typo>
-      <Grow className="text-white" placement="ec" gap={0.2}>
-        <Typo tag={'p'} variant={'body-lg'} weight={'bold'} className="text-white">
-          {total.totalCost.toLocaleString()}
-        </Typo>
-        <Typo tag={'span'} variant={'body-md'} className="text-white">
-          원
-        </Typo>
-        <Typo tag={'span'} variant={'body-md'} className="text-white">
-          ({total.percent}%)
-        </Typo>
-      </Grow>
-    </Grow>
-  );
-
-  const baseFooter = (
-    <Grow className="w-full px-[1.6rem] py-[1rem]  " placement="bwc" gap={0}>
-      <Typo tag={'p'} variant={'body-md'} weight={'bold'} className="text-white">
-        보험료(환급률)
-      </Typo>
-      <Grow className="text-white" placement="ec" gap={0.2}>
-        <Typo tag={'p'} variant={'body-lg'} weight={'bold'} className="text-white">
-          {total.totalCost.toLocaleString()}
-        </Typo>
-        <Typo tag={'span'} variant={'body-md'} className="text-white">
-          원
-        </Typo>
-        <Typo tag={'span'} variant={'body-md'} className="text-white">
-          ({total.percent}%)
-        </Typo>
-      </Grow>
-    </Grow>
-  );
-
-  const footerByMode: Record<CompareCardProps['mode'], React.ReactNode> = {
-    base: baseFooter,
-    compare: compareFooter,
-  };
-
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '담보명',
+      field: 'field1',
+      flex: 1,
+      colSpan: (params) => {
+        // 합계 행이면 이름+서브레이블 합치기
+        if (params.data?.id === 0) return 2;
+        return 1;
+      },
+    },
+    {
+      headerName: '가입금액(원)',
+      field: 'field2',
+      width: 70,
+      valueFormatter: numberValueFormatter,
+      colSpan: (params) => {
+        // 합계 행이면 숨김
+        if (params.data?.id === 0) return 0;
+        return 1;
+      },
+      cellClass: (params) => {
+        if (params.data?.id === 0) return 'hidden';
+        return 'text-right';
+      },
+    },
+    {
+      headerName: '보험료(원)',
+      field: 'field3',
+      width: 70,
+      valueFormatter: numberValueFormatter, 
+      cellClass: (params) => {
+        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
+        return 'text-right';
+      },
+      editable: false, 
+    },
+  ];
+  
   return (
-    <Grow className="w-full gap-[2rem]!">
-      <RecommendCard
-        variant={'free'}
-        className={`w-[31.2rem] ${isCompare ? '[&>div]:bg-[#006FF2]!' : undefined}`}
-        footer={footerByMode[mode]}
-      >
-        {isCompare ? (
-          <Grow className="w-full" placement="bwe">
-            <Checkbox
-              color="primary"
-              errorMsg="선택은 필수입니다."
-              errorPs="bl"
-              onCheckedChange={() => {}}
-              size="lg"
-              variant="noneText"
-            >
-              선택
-            </Checkbox>
-            <Button variant="outlined" size="sm" color="gray-light" onClick={() => {}}>
-              변경
-            </Button>
-          </Grow>
-        ) : (
-          <Grow
-            className="w-full h-[4rem] rounded-t-[0.8rem] bg-[#FF5C2E] absolute top-0 left-0 px-[1.6rem]"
-            placement="sc"
-          >
-            <FixingPinIcon />
-            <Typo tag={'p'} variant={'body-md'} weight={'bold'} className="text-white">
-              기준설계
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent showCloseButton resizable={true} size="2xl">
+        <DialogHeader>
+          <DialogTitle>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              상품비교설계
             </Typo>
-          </Grow>
-        )}
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ013)
+            </Typo>
+          </DialogTitle>
+        </DialogHeader>
 
-        <div className="w-full">
-          {isCompare ? (
-            <Grow className="w-full" placement="sc" gap={1}>
-              <Typo tag={'p'} variant={'body-sm'} weight={'bold'} className="text-[#006FF2]">
-                {compareLabel}
-              </Typo>
-              <Grow
-                className={`rounded-full px-[0.6rem] py-[0.2rem] ${statusText === '조건인수가능' ? 'bg-[#FEF4D4]' : 'bg-[#E0EFFF]'}`}
-                placement="sc"
-                gap={1}
-              >
-                <CircleCheckIcon color={statusText === '조건인수가능' ? '#FFB800' : '#006FF2'} />
-                <Typo
-                  tag={'span'}
-                  variant={'body-xs'}
-                  weight={'bold'}
-                  className={statusText === '조건인수가능' ? 'text-[#FF8D02]' : 'text-[#006FF2]'}
-                >
-                  {statusText}
-                </Typo>
-              </Grow>
+        <DialogSection>
+          <Grid className="w-full grid-cols-[auto_1fr] gap-6">
+            {/* 기준설계 */}
+            <Grid className='h-full pb-[1.6rem] grid-rows-[1fr]'>
+              <CardBox bottom={
+                <div><b>70000</b>원(39.4%)</div>
+              }>
+                <Grid className='grid-rows-[auto_1fr]'>
+                  <Grow className='bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem]'>
+                    <FixingPinIcon />
+                    기준설계
+                  </Grow>
+                  <Grid className='p-[1.6rem] gap-5 grid-rows-[1fr_auto]' placement='ss'>
+                    <Gcol className='gap-1' placement='ss'>
+                      <Gcol placement='ss'>
+                        <Typo tag="h3" variant={'body-xl'} weight={'bold'} className=''>
+                          {InfoData.담보명}
+                        </Typo>
+                      </Gcol>
+                      <Gcol variant='box-warning' placement='ss' className='border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]'>
+                        {InfoData.옵션.map((option, index) => {
+                          const optionKey = `옵션${index + 1}` as keyof typeof option;
+                          return (
+                            <Grow key={index} placement='ss' className='text-[1.3rem]'>
+                              {index === 0 && <ShieldIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
+                              {index === 1 && <NoteIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={16} />}
+                              {index === 2 && <CalendarIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
+                              {index === 3 && <BadgeCheckIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
+                              {option[optionKey as keyof typeof option]}
+                            </Grow>
+                          )
+                        })} 
+                      </Gcol>
+                    </Gcol>
+                    <div
+                      className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      ref={el => { scrollRefs.current[0] = el; }}
+                      onScroll={e => handleSyncScroll(0, e)}
+                    >
+                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
+                        {columnDefs.map((column, index) => {
+                          const key = column.field ?? column.headerName ?? `column-${index}`;
+            
+                          return (
+                            <div
+                              key={key}
+                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
+                              style={getComparisonHeaderCellStyle(column)}
+                            >
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                                {column.headerName}
+                              </Typo>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <AgGridReact<DummyDataType>
+                        // 합계 행 설정
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        headerHeight={0}
+                        groupHeaderHeight={0}
+                        defaultColDef={{
+                          suppressMovable: true,
+                          sortable: false,
+                          resizable: false,
+                        }}
+                        domLayout="autoHeight"
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+              </CardBox>
+            </Grid>
+            
+            <Grow placement='ss' className='overflow-y-hidden overflow-x-auto h-full pb-[1rem]' gap={3}>
+              {[...Array(3)].map((_, i) => (
+                <CardBox color="var(--color-information-50)" bottom={
+                  <div><b>70000</b>원(39.4%)</div>
+                } key={i}>
+                  <Gcol className='p-[1.6rem] gap-5' placement='ss'>
+                    <Gcol className='gap-1' placement='ss'>
+                      <Grow placement='bwc' className='w-full'>
+                        <Checkbox aria-label='선택'></Checkbox>
+                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                          변경
+                        </Button>
+                      </Grow>
+                      <Gcol placement='ss'>
+                        <Typo tag="div" variant={'body-sm'} weight={'bold'} color={'information'} className='flex gap-1 items-center' >
+                          비교설계{i + 1} 
+                          <Badge color="blue" className='h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]'>
+                            <CircleCheckIcon size={12} color='var(--color-information-50)'  />
+                            인수가능
+                          </Badge>
+                        </Typo>
+                        <Typo tag="h3" variant={'body-xl'} weight={'bold'}>
+                          {InfoData.담보명}
+                        </Typo>
+                      </Gcol>
+                      <Gcol variant='box-info' placement='ss' className='border border-[var(--color-information-15)]'>
+                        <NativeSelect size="md">
+                          {selectOption1.map((option, index) => {
+                            return (  
+                              <NativeSelectOption key={index} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            )
+                          })}
+                        </NativeSelect>
+                        <NativeSelect size="md">
+                          {selectOption2.map((option, index) => {
+                            return (  
+                              <NativeSelectOption key={index} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            )
+                          })}
+                        </NativeSelect>
+                        <Grow>
+                          <NativeSelect size="md">
+                            {selectOption3.map((option, index) => {
+                              return (  
+                                <NativeSelectOption key={index} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              )
+                            })}
+                          </NativeSelect>
+                          <NativeSelect size="md">
+                            {selectOption4.map((option, index) => {
+                              return (  
+                                <NativeSelectOption key={index} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              )
+                            })}
+                          </NativeSelect>
+                          <NativeSelect size="md">
+                            {selectOption5.map((option, index) => {
+                              return (  
+                                <NativeSelectOption key={index} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              )
+                            })}
+                          </NativeSelect>
+                        </Grow>
+                        <NativeSelect size="md">
+                          {selectOption6.map((option, index) => {
+                            return (  
+                              <NativeSelectOption key={index} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            )
+                          })}
+                        </NativeSelect>
+                      </Gcol>
+                    </Gcol>
+                    <div
+                      className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      ref={el => { scrollRefs.current[i + 1] = el; }}
+                      onScroll={e => handleSyncScroll(i + 1, e)}
+                    >
+                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
+                        {columnDefs.map((column, index) => {
+                          const key = column.field ?? column.headerName ?? `column-${index}`;
+                          return (
+                            <div
+                              key={key}
+                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
+                              style={getComparisonHeaderCellStyle(column)}
+                            >
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                                {column.headerName}
+                              </Typo>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <AgGridReact<DummyDataType>
+                        // 합계 행 설정
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        headerHeight={0}
+                        groupHeaderHeight={0}
+                        defaultColDef={{
+                          suppressMovable: true,
+                          sortable: false,
+                          resizable: false,
+                        }}
+                        domLayout="autoHeight"
+                      />
+                    </div>
+                  </Gcol>
+                </CardBox>
+              ))}
+             
             </Grow>
-          ) : null}
+          </Grid>
+        </DialogSection>
 
-          <Typo
-            tag={'strong'}
-            variant={'body-xl'}
-            className={`${isCompare ? 'mt-[0.4rem]' : 'mt-[3.6rem]'} block text-[#000]`}
-          >
-            한화 시그니처 여성 건강보험4.0 2504
-          </Typo>
-        </div>
-
-        {isCompare ? (
-          <Gcol className="w-full rounded-[0.8rem] border border-[#CBE3FF] bg-[#EFF8FF] p-[1.2rem] gap-[0.4rem]">
-            <NativeSelect
-              aria-label="납입면제 설정 선택"
-              size="sm"
-              value={compareForm.planType}
-              onChange={(e) => setCompareField('planType', e.target.value)}
-            >
-              {planTypeOptions.map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>
-                  {option.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-
-            <NativeSelect
-              aria-label="심사플랜 선택"
-              size="sm"
-              value={compareForm.underwritingPlan}
-              onChange={(e) => setCompareField('underwritingPlan', e.target.value)}
-            >
-              {underwritingPlanOptions.map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>
-                  {option.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-
-            <Grow className="w-full flex gap-[0.4rem]!" placement="ss">
-              <NativeSelect
-                className="w-full"
-                aria-label="납입기간 선택"
-                size="sm"
-                value={compareForm.paymentTerm}
-                onChange={(e) => setCompareField('paymentTerm', e.target.value)}
-              >
-                {paymentTermOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-
-              <NativeSelect
-                className="w-full"
-                aria-label="만기 선택"
-                size="sm"
-                value={compareForm.maturityTerm}
-                onChange={(e) => setCompareField('maturityTerm', e.target.value)}
-              >
-                {maturityTermOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-
-              <NativeSelect
-                className="w-full"
-                aria-label="갱신주기 선택"
-                size="sm"
-                value={compareForm.renewalTerm}
-                onChange={(e) => setCompareField('renewalTerm', e.target.value)}
-              >
-                {renewalTermOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.value}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-            </Grow>
-
-            <NativeSelect
-              aria-label="고지형태 선택"
-              size="sm"
-              value={compareForm.noticeType}
-              onChange={(e) => setCompareField('noticeType', e.target.value)}
-            >
-              {noticeTypeOptions.map((option) => (
-                <NativeSelectOption key={option.id} value={option.value}>
-                  {option.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </Gcol>
-        ) : (
-          <Gcol
-            className="w-full min-h-[15.6rem] rounded-[0.8rem] border border-[#FFCCBE] bg-[#FFF7F4] p-[1.2rem] gap-[0.8rem]"
-            placement="cs"
-          >
-            <Typo tag={'p'} variant={'body-md'} className="flex items-start gap-1">
-              <ShieldIcon className="w-[1.3rem] ml-[0.2rem] mt-[0.3rem]" />
-              납입면제 강화형, 납입후 50% 해약환급금지급형
-            </Typo>
-            <Typo tag={'p'} variant={'body-md'} className="flex items-center gap-1">
-              <NoteIcon size={16} color="#4B5563" className="-ml-px" />
-              비대면진단심사플랜(20~40세)
-            </Typo>
-            <Typo tag={'p'} variant={'body-md'} className="flex items-center gap-1">
-              <CalendarIcon size={14} color="#4B5563" /> 20년납 · 100세만기 · 갱신 20년
-            </Typo>
-            <Typo tag={'p'} variant={'body-md'} className="flex items-center gap-1">
-              <BadgeCheckIcon size={14} color="#4B5563" /> 1형(일반 고지 형)
-            </Typo>
-          </Gcol>
-        )}
-
-        <div
-          ref={scrollDivRef}
-          className="ag-theme-alpine no-header w-full min-h-132 mt-[1.2rem] max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-        >
-          <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-            {comparisonColumnDefs.map((column, index) => {
-              const key = column.field ?? column.headerName ?? `column-${index}`;
-
-              return (
-                <div
-                  key={key}
-                  className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                  style={getComparisonHeaderCellStyle(column)}
-                >
-                  <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
-                    {column.headerName}
-                  </Typo>
-                </div>
-              );
-            })}
-          </div>
-          <AgGridReact<ComparisonRow>
-            getRowId={(params) => String(params.data.id)}
-            noRowsOverlayComponent={AgGridEmptyComponent}
-            rowData={comparisonRows}
-            columnDefs={comparisonColumnDefs}
-            headerHeight={0}
-            groupHeaderHeight={0}
-            defaultColDef={{
-              suppressMovable: true,
-              sortable: false,
-              resizable: false,
-            }}
-            domLayout="autoHeight"
-          />
-        </div>
-      </RecommendCard>
-      {/* 여기 부분에 들어가게 */}
-    </Grow>
-  );
-}
-
-export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
-  return (
-    <TableScrollSyncProvider>
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent showCloseButton resizable={true} size="2xl">
-          <DialogHeader>
-            <DialogTitle>
-              <Typo tag={'strong'} variant={'heading-lg'}>
-                상품비교설계
-              </Typo>
-              <Typo tag={'p'} variant={'body-xl'}>
-                (LTPZ013)
-              </Typo>
-            </DialogTitle>
-          </DialogHeader>
-
-          <DialogSection>
-            <div className="h-full overflow-x-auto overflow-y-hidden pb-2">
-              <Grow className="relative h-full min-w-max items-start" gap={6} placement="ss">
-                <CompareDesignCard mode="base" total={cardTotals.base} />
-                <CompareDesignCard
-                  mode="compare"
-                  compareLabel="비교설계1"
-                  statusText="인수가능"
-                  total={cardTotals.compare1}
-                />
-                <CompareDesignCard
-                  mode="compare"
-                  compareLabel="비교설계2"
-                  statusText="인수가능"
-                  total={cardTotals.compare2}
-                />
-                <CompareDesignCard
-                  mode="compare"
-                  compareLabel="비교설계3"
-                  statusText="조건인수가능"
-                  total={cardTotals.compare3}
-                />
-              </Grow>
-            </div>
-          </DialogSection>
-
-          <DialogFooter>
-            <DialogFooterArea>
-              <Grow>
-                <Button variant={'contained'} size={'xl'}>
-                  설계생성
+        <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                설계생성
+              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
                 </Button>
-                <DialogClose asChild>
-                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                    닫기
-                  </Button>
-                </DialogClose>
-              </Grow>
-            </DialogFooterArea>
-            <DialogBottomInfo />
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </TableScrollSyncProvider>
-  );
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
+          <DialogBottomInfo />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+);
 };
