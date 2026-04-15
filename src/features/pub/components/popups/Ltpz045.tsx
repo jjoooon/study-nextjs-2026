@@ -153,13 +153,17 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormRow>
                       <FormCell title={'계약자가 실소유자가 맞습니까?'}>
                         <RadioGroup>
-                          <RadioGroupItem value="option1" id="r1">
-                            예
-                          </RadioGroupItem>
-                          <div className="px-[1rem]">/</div>
-                          <RadioGroupItem value="option2" id="r2">
-                            아니오
-                          </RadioGroupItem>
+                          {[
+                            { value: 'option1', label: '예' },
+                            { value: 'option2', label: '아니오' },
+                          ].map((option, idx, arr) => (
+                            <React.Fragment key={option.value}>
+                              <RadioGroupItem value={option.value}>
+                                {option.label}
+                              </RadioGroupItem>
+                              {idx === 0 && <div className="px-[1rem]">/</div>}
+                            </React.Fragment>
+                          ))}
                         </RadioGroup>
                       </FormCell>
                     </FormRow>
@@ -176,21 +180,17 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormRow>
                       <FormCell title={'실소유자구분'} colSpan={3}>
                         <RadioGroup className="gap-1 flex-col items-start">
-                          <RadioGroupItem value="optionA" id="a">
-                            1단계: 25% 이상 지분증권 소유한 사람
-                          </RadioGroupItem>
-                          <RadioGroupItem value="optionB" id="b">
-                            2-1단계: ① 대표자, 임원, 업무집행사원의 과반수를 선임한 주주
-                          </RadioGroupItem>
-                          <RadioGroupItem value="optionC" id="c">
-                            2-2단계: ② 최대 지분증권을 소유한 사람
-                          </RadioGroupItem>
-                          <RadioGroupItem value="optionD" id="d">
-                            2-3단계: ③, ①, ② 외에 법인, 단체를 사실상 지배하는 사람
-                          </RadioGroupItem>
-                          <RadioGroupItem value="optionE" id="e">
-                            3단계: 법인 또는 단체의 대표자
-                          </RadioGroupItem>
+                          {[
+                            { value: 'optionA', label: '1단계: 25% 이상 지분증권 소유한 사람' },
+                            { value: 'optionB', label: '2-1단계: ① 대표자, 임원, 업무집행사원의 과반수를 선임한 주주' },
+                            { value: 'optionC', label: '2-2단계: ② 최대 지분증권을 소유한 사람' },
+                            { value: 'optionD', label: '2-3단계: ③, ①, ② 외에 법인, 단체를 사실상 지배하는 사람' },
+                            { value: 'optionE', label: '3단계: 법인 또는 단체의 대표자' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.value} value={option.value}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
                         </RadioGroup>
                       </FormCell>
                     </FormRow>

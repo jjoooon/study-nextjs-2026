@@ -248,7 +248,7 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldHead>
               <TableFoldBody>
                 <Gcol gap={5}>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[30rem]">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       ref={gridRef}
@@ -258,7 +258,8 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
                     />
                   </div>
                   <Gcol>

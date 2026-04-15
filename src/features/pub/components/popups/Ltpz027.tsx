@@ -169,7 +169,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Typo variant="heading-sm" color="default">
                 진행이력
               </Typo>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[15.3rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -179,7 +179,8 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
                     sortable: false,
                     resizable: false,
                   }}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                   className="text-center"
                   enableCellSpan={true}
                 />

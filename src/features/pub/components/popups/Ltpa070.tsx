@@ -72,7 +72,7 @@ export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
               고지유형별 보험료비교
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA430)
+              (LTPA070)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -86,13 +86,14 @@ export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine">
+          <div className="ag-theme-alpine min-h-[18.5rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowData={rowData}
               columnDefs={columnDefs}
-              domLayout="autoHeight"
+              domLayout="normal"
+              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>

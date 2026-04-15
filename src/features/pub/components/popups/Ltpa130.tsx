@@ -609,8 +609,3 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * colId: 'radio-select',를 사용해야하는지? 기본 체크박스 singleRow selection으로도 구현 가능해보이는 부분
- * renderDivCol 추가
- */

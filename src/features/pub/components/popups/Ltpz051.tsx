@@ -213,7 +213,7 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                         99건
                       </Typo>
                     </Grow>
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine h-[18.4rem] w-full">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
@@ -223,7 +223,8 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                           sortable: false,
                           resizable: false,
                         }}
-                        domLayout="autoHeight"
+                        domLayout="normal"
+                        alwaysShowVerticalScroll={true}
                       />
                     </div>
                   </Gcol>
@@ -245,7 +246,7 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                         99건
                       </Typo>
                     </Grow>
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine h-[18.4rem] w-full">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
@@ -255,7 +256,8 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                           sortable: false,
                           resizable: false,
                         }}
-                        domLayout="autoHeight"
+                        domLayout="normal"
+                        alwaysShowVerticalScroll={true}
                       />
                     </div>
                   </Gcol>

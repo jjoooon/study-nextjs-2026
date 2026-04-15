@@ -1001,7 +1001,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                   <TableFold>
                     <TableFoldHead title="필수지침"></TableFoldHead>
                     <TableFoldBody>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[24rem]">
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1013,7 +1013,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                           }}
                           rowClassRules={{}}
                           enableCellSpan={true}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -1049,39 +1050,31 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       value={accumOptionValue}
                       width="auto"
                     >
-                      <RadioGroupItem
-                        className={accumRadioItemClassName}
-                        color="primary"
-                        id="d1"
-                        size="lg"
-                        value="option1"
-                        variant="chipBox"
-                        width="auto"
-                      >
-                        인수기준(3)
-                      </RadioGroupItem>
-                      <RadioGroupItem
-                        className={accumRadioItemClassName}
-                        color="primary"
-                        id="d2"
-                        size="lg"
-                        value="option2"
-                        variant="chipBox"
-                        width="auto"
-                      >
-                        청약완료불가(당수누적)(4)
-                      </RadioGroupItem>
-                      <RadioGroupItem
-                        className={accumRadioItemClassName}
-                        color="primary"
-                        id="d3"
-                        size="lg"
-                        value="option3"
-                        variant="chipBox"
-                        width="auto"
-                      >
-                        청약완료불가(업계누적)(1)
-                      </RadioGroupItem>
+                      {[
+                        {
+                          value: 'option1',
+                          label: '인수기준(3)',
+                        },
+                        {
+                          value: 'option2',
+                          label: '청약완료불가(당수누적)(4)',
+                        },
+                        {
+                          value: 'option3',
+                          label: '청약완료불가(업계누적)(1)',
+                        },
+                      ].map((option) => (
+                        <RadioGroupItem
+                          key={option.value}
+                          className={accumRadioItemClassName}
+                          size="lg"
+                          value={option.value}
+                          variant="chipBox"
+                          width="auto"
+                        >
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
                     </RadioGroup>
                   </div>
                 </TabPager>
@@ -1119,7 +1112,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       <FormCell title={'직업정보(현재 설계기준)'}>2급/제품 및 광고영업원</FormCell>
                     </FormRow>
                   </FormTable>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[24rem]">
                     <AgGridReact<JobDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1136,7 +1129,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       headerHeight={30}
                       groupHeaderHeight={30}
                       rowHeight={30}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
                     />
                   </div>
 

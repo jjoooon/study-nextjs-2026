@@ -256,14 +256,15 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold variant={'default'}>
             <TableFoldHead title=""></TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[41.6rem]">
                 <AgGridReact<UnderwritingViolationRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={violationRowData}
                   columnDefs={spanColumnDefs}
                   defaultColDef={spanDefaultColDef}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                   enableCellSpan={true}
                   onGridReady={(params) => {
                     gridApiRef.current = params.api;

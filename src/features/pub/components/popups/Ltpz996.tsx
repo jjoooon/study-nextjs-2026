@@ -102,7 +102,7 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine">
+          <div className="ag-theme-alpine min-h-[18.4rem]">
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
@@ -112,7 +112,8 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
                 sortable: true,
                 resizable: true,
               }}
-              domLayout="autoHeight"
+              domLayout="normal"
+              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>

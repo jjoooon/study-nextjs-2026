@@ -183,7 +183,7 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </FormRow>
               </FormTable>
             </Grow>
-            <div className="ag-theme-alpine aggrid-pagination-ko w-full">
+            <div className="ag-theme-alpine aggrid-pagination-ko w-full min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}
@@ -195,7 +195,8 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
                   resizable: false,
                   autoHeight: true,
                 }}
-                domLayout="autoHeight"
+                domLayout="normal"
+                alwaysShowVerticalScroll={true}
               />
             </div>
             <Typo icon="info">

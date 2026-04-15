@@ -161,7 +161,7 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
               {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
             </Gcol>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18.3rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -186,7 +186,8 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                       }
                     });
                   }}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </TableFoldBody>

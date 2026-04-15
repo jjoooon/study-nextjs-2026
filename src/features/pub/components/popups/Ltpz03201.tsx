@@ -174,7 +174,7 @@ export const Ltpz03201 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           {/* 조회 정보 */}
           <Gcol placement="ss" className="w-full" gap={5}>
-            <div className="ag-theme-alpine">
+            <div className="ag-theme-alpine w-full min-h-[24.4rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={DummyData}
@@ -189,7 +189,8 @@ export const Ltpz03201 = ({ open, onOpenChange }: PopupBaseProps) => {
                   },
                 }}
                 enableCellSpan={true}
-                domLayout="autoHeight"
+                domLayout="normal"
+                alwaysShowVerticalScroll={true}
                 className="text-center"
               />
             </div>

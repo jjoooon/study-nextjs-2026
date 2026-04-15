@@ -461,7 +461,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold variant={'default'}>
               <TableFoldHead title="담보가입사항"></TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[15rem]">
                   <AgGridReact<DummyDataType>
                     ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
@@ -483,7 +483,8 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
                       headerName: '선택',
                       cellClass: 'text-center editable-cell',
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                     onRowDataUpdated={handleRowDataUpdated}
                     onRowSelected={handleRowSelected}
                     onGridReady={(params) => {

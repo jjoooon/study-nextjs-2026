@@ -242,7 +242,7 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldHead title="등록사항" />
               <TableFoldBody>
                 <Grow className="w-full" gap={5}>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[30rem]">
                     <AgGridReact<DummyDataType>
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
@@ -251,7 +251,8 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
                       columnDefs={columnDefs}
                       enableCellSpan={true}
                       singleClickEdit={true}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
                       rowSelection={{
                         mode: 'multiRow',
                         headerCheckbox: false,
@@ -297,8 +298,3 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * 전체체크의 사용여부
- * <Grow className="ml-32"> 간격체크
- */

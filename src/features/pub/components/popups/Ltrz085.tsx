@@ -285,7 +285,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[20rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -309,7 +309,8 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                       width: 30,
                       cellClass: 'text-center editable-cell',
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                     onGridReady={(params) => {
                       params.api.forEachNode((node) => {
                         if (node.data?.isCheck) {

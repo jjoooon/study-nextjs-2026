@@ -223,7 +223,7 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </FormRow>
                   </FormTable>
                   <Gcol className="w-full" gap={4}>
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine min-h-[12.5rem]">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -248,7 +248,8 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
                           });
                         }}
                         enableCellSpan={true}
-                        domLayout="autoHeight"
+                        domLayout="normal"
+                        alwaysShowVerticalScroll={true}
                       />
                     </div>
                     <Gcol className="w-full" placement="ss" variant="box-detail">

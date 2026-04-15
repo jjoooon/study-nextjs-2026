@@ -109,7 +109,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine">
+          <div className="ag-theme-alpine min-h-[18.4rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -119,7 +119,8 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
                 sortable: false,
                 resizable: false,
               }}
-              domLayout="autoHeight"
+              domLayout="normal"
+              alwaysShowVerticalScroll={true}
               // 체크박스 시
               rowSelection={{
                 mode: 'multiRow',

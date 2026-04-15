@@ -278,7 +278,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18.5rem]">
                 <AgGridReact<DummyDataType>
                   // 필수 props
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -288,7 +288,8 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{
                     cellClass: 'text-center',
                   }}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                   // tree data 설정
                   treeData={true}
                   getDataPath={(row) => row.filePath}
@@ -345,7 +346,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18.5rem]">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -354,7 +355,8 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{
                     cellClass: 'text-center',
                   }}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                   treeData={true}
                   getDataPath={(row) => row.filePath}
                   groupDefaultExpanded={-1}

@@ -374,7 +374,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -382,7 +382,8 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section2SumData}
                     defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'autoHeight'}
+                    domLayout={'normal'}
+                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>
@@ -392,7 +393,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="감점계산" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -403,7 +404,8 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
                     defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'autoHeight'}
+                    domLayout={'normal'}
+                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>
@@ -413,14 +415,15 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="정책요소" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[10.3rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={policyData}
                     columnDefs={columnDefs}
                     defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'autoHeight'}
+                    domLayout={'normal'}
+                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>

@@ -201,7 +201,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="필수고지" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.3rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData}
@@ -214,7 +214,8 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                     rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,
@@ -228,7 +229,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="질문항목(질병)" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[15.3rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2}
@@ -241,7 +242,8 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
+                    alwaysShowVerticalScroll={true}
                     rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,

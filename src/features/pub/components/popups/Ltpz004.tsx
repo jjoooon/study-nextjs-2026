@@ -204,13 +204,14 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold>
             <TableFoldHead title="1형(355간편고지형)(프리미엄올인원플랜)(1.7.8.9형)(15~80세)"></TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[33rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  domLayout="autoHeight"
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </TableFoldBody>

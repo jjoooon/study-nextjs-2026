@@ -274,12 +274,12 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[30rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                   enableCellSpan={true}
                   singleClickEdit={true}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -293,6 +293,7 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
                     headerName: '√',
                     width: 30,
                   }}
+                  alwaysShowVerticalScroll={true}
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {
                       if (node.data?.isCheck) {
