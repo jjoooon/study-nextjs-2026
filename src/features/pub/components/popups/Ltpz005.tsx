@@ -1001,7 +1001,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                   <TableFold>
                     <TableFoldHead title="필수지침"></TableFoldHead>
                     <TableFoldBody>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[24rem]">
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1013,7 +1013,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                           }}
                           rowClassRules={{}}
                           enableCellSpan={true}
-                          domLayout="autoHeight"
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -1111,7 +1112,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       <FormCell title={'직업정보(현재 설계기준)'}>2급/제품 및 광고영업원</FormCell>
                     </FormRow>
                   </FormTable>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[24rem]">
                     <AgGridReact<JobDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1128,7 +1129,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       headerHeight={30}
                       groupHeaderHeight={30}
                       rowHeight={30}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
                     />
                   </div>
 
