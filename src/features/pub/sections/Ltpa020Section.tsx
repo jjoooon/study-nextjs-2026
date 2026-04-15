@@ -689,17 +689,33 @@ export default function Ltpa020Section() {
                           <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
                         </button>
                       </FormCell>
-                      <FormCell title={'보장분석'}>
-                        <button
-                          type="button"
-                          className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                          onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                          aria-expanded={isFilterOptionOpen}
-                        >
-                          <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
-                          <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
-                        </button>
-                      </FormCell>
+
+                      {customerType === 'recent' ? (
+                        <FormCell title={'보장분석'}>
+                          <button
+                            type="button"
+                            className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                            onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                            aria-expanded={isFilterOptionOpen}
+                          >
+                            <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
+                            <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                          </button>
+                        </FormCell>
+                      ) : (
+                        <FormCell title={'고지유형'}>
+                          <button
+                            type="button"
+                            className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                            onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                            aria-expanded={isFilterOptionOpen}
+                          >
+                            <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
+                            <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                          </button>
+                        </FormCell>
+                      )}
+
 
                       {isPdName && (
                         <FormCell title={'상품명'}>
@@ -727,6 +743,7 @@ export default function Ltpa020Section() {
                   
                   {isFilterOptionOpen && (
                     <Grow variant='box-round-b' className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] px-4 py-2.5 gap-0 z-10 pl-[4.5rem]! justify-stretch! " placement='ss'>
+                    {/* 담보군 */}
                     <Gcol className="gap-[0.4rem]" placement='ss'>
                       {coverageOptions.map((opt) => (
                         <Grow key={opt.value} className='w-full' placement='ss'>
@@ -773,6 +790,7 @@ export default function Ltpa020Section() {
                       </Checkbox>
                     </Gcol>
                     <Divider className='self-stretch h-auto' />
+                    {/* 상품특징 */}
                     <Gcol placement='ss' className='pl-[1.2rem]'>
                       <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                         <FormRow>
@@ -820,28 +838,114 @@ export default function Ltpa020Section() {
                       </FormTable>
                     </Gcol>
                     <Divider className='self-stretch h-auto' />
-                    <Gcol placement='ss' className='pl-[1.2rem]'>
-                      <CheckboxGroup className="gap-[0.4rem] flex-col items-start" value={[]} onValueChange={() => {}}>
-                        {AnalysisOptions.map((opt) => (
-                          <Checkbox 
-                            key={opt.value} 
-                            value={opt.value} 
-                            variant="button"
-                            className="w-[12.7rem]"
-                            checked={selectedAnalysisValues.includes(opt.value)}
-                            onCheckedChange={(checked) => {
-                              setSelectedAnalysisValues((prev) => {
-                                const nextChecked = checked === true;
-                                if (nextChecked) {
-                                  return prev.includes(opt.value) ? prev : [...prev, opt.value];
-                                }
-                                return prev.filter((value) => value !== opt.value);
-                              });
-                            }}
-                           >{opt.label}</Checkbox>
-                        ))}
-                      </CheckboxGroup>
-                    </Gcol>
+                    
+                    {/* 보장분석 or 고지유형 */}
+                    {customerType === 'recent' ? (
+                      <Gcol placement='ss' className='pl-[1.2rem]'>
+                        <CheckboxGroup className="gap-[0.4rem] flex-col items-start" value={[]} onValueChange={() => {}}>
+                          {AnalysisOptions.map((opt) => (
+                            <Checkbox 
+                              key={opt.value} 
+                              value={opt.value} 
+                              variant="button"
+                              className="w-[12.7rem]"
+                              checked={selectedAnalysisValues.includes(opt.value)}
+                              onCheckedChange={(checked) => {
+                                setSelectedAnalysisValues((prev) => {
+                                  const nextChecked = checked === true;
+                                  if (nextChecked) {
+                                    return prev.includes(opt.value) ? prev : [...prev, opt.value];
+                                  }
+                                  return prev.filter((value) => value !== opt.value);
+                                });
+                              }}
+                            >{opt.label}</Checkbox>
+                          ))}
+                        </CheckboxGroup>
+                      </Gcol>
+                    ) : (
+                      <Gcol placement='ss' className='pl-[1.2rem]'>
+                        <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
+                          <FormRow>
+                            <FormCell title={'간편'}>
+                              <RadioGroup value={noRefundValue} onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}>
+                                {[
+                                  { value: '표준', label: '표준' },
+                                  { value: '간편', label: '간편' },
+                                ].map((opt) => (
+                                  <RadioGroupItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title={
+                              <div >
+                                입원수술<br /><Button variant={'outlined'} size="sm" color="gray">예외질환조회</Button>
+                              </div>
+                            } className='align-top! pt-[0.8rem]!'>
+                               <Gcol placement='ss'>
+                                  <Grow placement='sc'>
+                                    <Input width={86} placeholder='질병명검색' />
+                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
+                                      <SearchIcon color="var(--color-primary-50)" />
+                                    </Button>
+                                    <Input width={120} placeholder='필수입력' />
+                                  </Grow>
+                                  <Grow placement='sc'>
+                                    <Input width={86} placeholder='질병명검색' />
+                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
+                                      <SearchIcon color="var(--color-primary-50)" />
+                                    </Button>
+                                    <Input width={120} placeholder='필수입력' />
+                                  </Grow>
+                                  <Grow placement='sc'>
+                                    <Input width={86} placeholder='질병명검색' />
+                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
+                                      <SearchIcon color="var(--color-primary-50)" />
+                                    </Button>
+                                    <Input width={120} placeholder='필수입력' />
+                                  </Grow>
+                                  <Grow placement='sc'>
+                                    <Input width={86} placeholder='질병명검색' />
+                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
+                                      <SearchIcon color="var(--color-primary-50)" />
+                                    </Button>
+                                    <Input width={120} placeholder='필수입력' />
+                                  </Grow>
+                                  <Grow placement='sc'>
+                                    <Input width={86} placeholder='질병명검색' />
+                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색"> 
+                                      <SearchIcon color="var(--color-primary-50)" />
+                                    </Button>
+                                    <Input width={120} placeholder='필수입력' />
+                                  </Grow>
+                                    
+
+                               </Gcol>
+                            </FormCell>
+                          </FormRow>
+                          <FormRow>
+                            <FormCell title={'추가질병'}>
+                              <CheckboxGroup className="gap-3 items-start" value={[]} onValueChange={() => {}}>
+                                {[
+                                  { value: '고혈압', label: '고혈압' },
+                                  { value: '당뇨', label: '당뇨' },
+                                ].map((opt) => (
+                                  <Checkbox 
+                                    key={opt.value} 
+                                    value={opt.value} 
+                                  >{opt.label}</Checkbox>
+                                ))}
+                              </CheckboxGroup>
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        
+                      </Gcol>
+                    )}
                     {isPdName && (
                       <div className='w-[36rem] shrink-0'></div>
                     )}
