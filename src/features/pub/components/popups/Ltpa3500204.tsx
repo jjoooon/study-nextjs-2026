@@ -97,7 +97,6 @@ type DummyDataType1 = {
   isDetails?: boolean;
   level?: 2 | 3;
 };
-
 const DummyData1: DummyDataType1[] = [
   {
     id: 1,
@@ -128,14 +127,6 @@ const DummyData1: DummyDataType1[] = [
     field03: '10년 갱신',
   },
   {
-    id: 5,
-    isCheck: true,
-    field01: '',
-    field02: '',
-    field03: '',
-    isDetails: true,
-  },
-  {
     id: 6,
     isCheck: false,
     field01: '암주요',
@@ -150,14 +141,6 @@ const DummyData1: DummyDataType1[] = [
     field02: '체중형',
     field03: '',
     level: 2,
-  },
-  {
-    id: 8,
-    isCheck: false,
-    field01: '',
-    field02: '',
-    field03: '',
-    isDetails: true,
   },
   {
     id: 9,
@@ -175,7 +158,6 @@ type DummyDataType2 = {
   isCheck: boolean | null;
   field01: string | number;
 };
-
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
@@ -201,11 +183,6 @@ const DummyData2: DummyDataType2[] = [
     id: 5,
     isCheck: true,
     field01: '전이암특정치료비(암전문의료기관(상급종합병원등))(각연간1회한)',
-  },
-  {
-    id: 6,
-    isCheck: null,
-    field01: '',
   },
   {
     id: 7,
@@ -240,8 +217,6 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-  // 담보 AgGrid Column
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
       headerName: '구분',
@@ -253,8 +228,6 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: CombinedConstructionCell,
     },
   ];
-  
-  // 담보 AgGrid Column
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '담보명',
@@ -283,65 +256,26 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <Grow>
               <RadioGroup
-                className="gap-2"
+                className="gap-1"
                 onValueChange={() => {}}
                 width="full"
+                defaultValue='간병인'
               >
-                <RadioGroupItem
-                  color="primary"
-                  id="d1"
-                  size="md"
-                  value="option1"
-                  variant="button"
-                  checked={true}
-                >
-                  간병인
-                </RadioGroupItem>
-                <RadioGroupItem
-                  color="primary"
-                  id="d2"
-                  size="md"
-                  value="option2"
-                  variant="button"
-                >
-                  암주요
-                </RadioGroupItem>
-                <RadioGroupItem
-                  color="primary"
-                  id="d3"
-                  size="md"
-                  value="option3"
-                  variant="button"
-                >
-                  표적항암
-                </RadioGroupItem>
-                <RadioGroupItem
-                  color="primary"
-                  id="d4"
-                  size="md"
-                  value="option4"
-                  variant="button"
-                >
-                  1인실
-                </RadioGroupItem>
-                <RadioGroupItem
-                  color="primary"
-                  id="d5"
-                  size="md"
-                  value="option5"
-                  variant="button"
-                >
-                  운전자비용
-                </RadioGroupItem>
-                <RadioGroupItem
-                  color="primary"
-                  id="d6"
-                  size="md"
-                  value="option6"
-                  variant="button"
-                >
-                  패키지명
-                </RadioGroupItem>
+                {[
+                  { value: '간병인', label: '간병인' },
+                  { value: '암주요', label: '암주요' },
+                  { value: '표적항암', label: '표적항암' },
+                  { value: '1인실', label: '1인실' },
+                  { value: '운전자비용', label: '운전자비용' },
+                  { value: '패키지명', label: '패키지명' },
+                ].map((option, index) => (
+                  <RadioGroupItem
+                    value={option.value}
+                    variant="button"
+                  >
+                    {option.label}
+                  </RadioGroupItem>
+                ))}
               </RadioGroup>
             </Grow>
             <Button
