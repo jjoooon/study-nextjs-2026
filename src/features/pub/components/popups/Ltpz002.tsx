@@ -6,8 +6,8 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -35,7 +35,7 @@ const dummyData: DummyDataType[] = [
   {
     id: 1,
     field1: '구분정보',
-    field2: '보험종목명 ',
+    field2: '보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명 ',
     field3: '설계번호',
     field4: '계약자',
     field5: '290000',
@@ -63,6 +63,32 @@ const dummyData: DummyDataType[] = [
     field7: '상태',
   },
 ];
+type DummyDataType2 = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+  field3: string | number;
+};
+const dummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    field1: '고액함암약물허가치료(신정원)고액함암약물허가치료(신정원)고액함암약물허가치료(신정원)',
+    field2: '28990',
+    field3: '20년납',
+  },
+  {
+    id: 2,
+    field1: '담보명',
+    field2: '28990',
+    field3: '20년납',
+  },
+  {
+    id: 3,
+    field1: '담보명',
+    field2: '28990',
+    field3: '20년납',
+  },
+];
 
 export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -75,6 +101,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '보험종목명',
       field: 'field2',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '설계번호',
@@ -105,38 +132,13 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  type DummyDataType2 = {
-    id: number;
-    field1: string | number;
-    field2: string | number;
-    field3: string | number;
-  };
-  const dummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      field1: '고액함암약물허가치료(신정원)',
-      field2: '28990',
-      field3: '20년납',
-    },
-    {
-      id: 2,
-      field1: '담보명',
-      field2: '28990',
-      field3: '20년납',
-    },
-    {
-      id: 3,
-      field1: '담보명',
-      field2: '28990',
-      field3: '20년납',
-    },
-  ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '담보명',
       field: 'field1',
       cellClass: 'text-left',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
@@ -149,13 +151,35 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '보험기간',
       field: 'field3',
       width: 80,
+      cellClass: 'text-center',
+    },
+  ];
+  const columnDefs3: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '담보명',
+      field: 'field1',
       cellClass: 'text-left',
+      flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
+    },
+    {
+      headerName: '가입금액(만원)',
+      field: 'field2',
+      width: 100,
+      cellClass: 'text-right',
+      cellRenderer: numberValueFormatter,
+    },
+    {
+      headerName: '보험기간',
+      field: 'field3',
+      width: 80,
+      cellClass: 'text-center',
     },
   ];
 
   const [rowData] = useState<DummyDataType[]>(dummyData);
   const [rowData2] = useState<DummyDataType2[]>(dummyData2);
-
+  const [rowData3] = useState<DummyDataType2[]>(dummyData2);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -246,7 +270,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grow>
               </Grow>
 
-              <Gcol gap={2.5} placement="ss">
+              <Grid gap={2.5} className="grid-rows-[auto_1fr_auto_auto]">
                 <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'동일모집인'}>1  동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.</FormCell>
@@ -272,20 +296,21 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                       cellClass: 'text-center',
                     }}
                     domLayout="normal"
-                    alwaysShowVerticalScroll={true}
-                    // selection 설정
                     rowSelection={{
                       mode: 'singleRow',
-                      checkboxes: true, // 각 행에 체크박스 표시
-                      enableClickSelection: false, // 셀 클릭 시 selection 변경 비활성화(오직 체크박스 클릭만 허용)
+                      checkboxes: true, 
+                      enableClickSelection: false, 
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
                       width: 30,
                       cellClass: 'text-center editable-cell',
                     }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
+
                 <Grow className="w-full" placement="ss" gap={5}>
                   <TableFold>
                     <TableFoldHead title={'현재 설계'} />
@@ -325,7 +350,8 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                             cellClass: 'text-center',
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                         />
                       </div>
                     </TableFoldBody>
@@ -362,13 +388,14 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
-                          rowData={rowData2}
-                          columnDefs={columnDefs2}
+                          rowData={rowData3}
+                          columnDefs={columnDefs3}
                           defaultColDef={{
                             cellClass: 'text-center',
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                         />
                       </div>
                     </TableFoldBody>
@@ -381,7 +408,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                     바립니다.
                   </Typo>
                 </Gcol>
-              </Gcol>
+              </Grid>
             </TableFoldBody>
           </TableFold>
         </DialogSection>
