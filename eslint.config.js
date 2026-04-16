@@ -150,13 +150,17 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         rules: [
           {
             from: { type: 'shared' },
-            allow: [{ to: { type: 'shared' } }],
-            message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
+            allow: { to: { type: 'shared' } },
           },
           {
             from: { type: 'features' },
-            allow: [{ to: { type: 'shared' } }],
-            message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
+            allow: {
+              to: [
+                { type: 'shared' },
+                // features/shared 폴더는 feature 간 공유 허용
+                { type: 'features', captured: { featureName: 'shared' } },
+              ],
+            },
           },
         ],
       },
@@ -171,13 +175,15 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     },
     'boundaries/elements': [
       {
+        // src/features/* 의 각 폴더가 하나의 element, featureName으로 캡처
         type: 'features',
-        pattern: 'src/features/**/*',
+        pattern: 'src/features/*',
+        capture: ['featureName'],
         mode: 'folder',
       },
       {
         type: 'shared',
-        pattern: 'src/shared/**/*',
+        pattern: 'src/shared/*',
         mode: 'folder',
       },
     ],
