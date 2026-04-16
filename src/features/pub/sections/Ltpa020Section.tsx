@@ -44,7 +44,6 @@ import {
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { first } from '@/shared/utils/stringUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -52,11 +51,8 @@ export default function Ltpa020Section() {
   const [customerType, setCustomerType] = React.useState('recent');
   const [productCategory, setProductCategory] = React.useState<string[]>(['comprehensive', 'female']);
   const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
-  const [visibleCount, setVisibleCount] = React.useState(6);
   const [analysisScore, setAnalysisScore] = React.useState<number | null>(null);
   const [historyScore, setHistoryScore] = React.useState<number | null>(null);
-
-
 
 
   // 상품선택 AG-Grid 컬럼 정의
@@ -226,7 +222,6 @@ export default function Ltpa020Section() {
   const listScrollRef = useRef<HTMLDivElement | null>(null);
   const scrollAnimRef = useRef<number | null>(null);
 
-
   const selectedRecommendPlan =
     dummyData4List.find((item) => item.id === listSelected) ?? dummyData4List[0];
   const selectedAiReasonLines = (selectedRecommendPlan?.ai ?? '')
@@ -330,9 +325,9 @@ export default function Ltpa020Section() {
         : `${selectedCoverageValues[0]} 외 ${selectedCoverageValues.length - 1}개`;
   // 보장분석
   const AnalysisOptions = [
-   { value: '보장분석 부족자금', label: '보장분석 부족자금' },
-  { value: '기계약 누적해소', label: '기계약 누적해소' },
-  { value: '기계약 유지', label: '기계약 유지' },
+    { value: '보장분석 부족자금', label: '보장분석 부족자금' },
+    { value: '기계약 누적해소', label: '기계약 누적해소' },
+    { value: '기계약 유지', label: '기계약 유지' },
   ] as const;
   type AnalysisOptionValue = (typeof AnalysisOptions)[number]['value'];
   const [selectedAnalysisValues, setSelectedAnalysisValues] = useState<AnalysisOptionValue[]>([]);
@@ -356,7 +351,6 @@ export default function Ltpa020Section() {
   const selectedProductFeatureSummary =
     productFeatureSummaryValues.length > 0 ? productFeatureSummaryValues.join(', ') : '선택';
   // 고지유형
-
   const [dataNone, setDataNone] = useState<boolean>(true);
   const [isPdName, setIsPdName] = useState<boolean>(false);
   // 고지유형(간편/추가질병/입원수술) 상태
@@ -379,7 +373,7 @@ export default function Ltpa020Section() {
         <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-2">
           <RadioGroup
             value={tabSelectValue}
-            onValueChange={(value) => setTabSelectValue(value)} className="p-[0.2rem] bg-[var(--color-warning-10)] gap-[0.2rem]">
+            onValueChange={(value) => setTabSelectValue(value)} className="p-[0.2rem] bg-[var(--color-warning-10)] gap-[0.2rem] rounded-[0.6rem]">
             <RadioGroupItem variant={'button'} value="tabPage1" className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]">
               <Image
                 src={tabSelectValue === 'tabPage1' ? "/images/Ltpa020/planIcon1.svg" : "/images/Ltpa020/planIcon1_off.svg"}
@@ -543,6 +537,7 @@ export default function Ltpa020Section() {
                                   { value: '반짝반짝빛반짝반짝빛', age: 42, level: 2, gender: '남', name: '반짝반짝빛반짝반짝빛' },
                                   { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
+                                  { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                 ].map((tag) => (
                                   <RadioGroupItem key={tag.value} value={tag.value} variant="chipBox" size="md" className="flex items-center">
                                     <b>#</b>
@@ -557,6 +552,7 @@ export default function Ltpa020Section() {
                                   { value: '홍길동', age: 42, level: 1, gender: '남', name: '홍길동' },
                                   { value: '반짝반짝빛반짝반짝빛', age: 42, level: 2, gender: '남', name: '반짝반짝빛반짝반짝빛' },
                                   { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
+                                  { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                 ].map((tag) => (
                                   <RadioGroupItem key={tag.value} value={tag.value} variant="chipBox" size="md">
