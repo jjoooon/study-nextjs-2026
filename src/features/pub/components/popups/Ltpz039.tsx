@@ -335,7 +335,7 @@ export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
                     color="primary"
                     onCheckedChange={() => {}}
                     >
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">재조회 경과시간이 n년 단위로 산출 됨(자동실행)</Typo>
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">☞재조회 경과시간이 n년 단위로 산출 됨(자동실행)</Typo>
                   </Checkbox>
                 </FormCell>
               </FormRow>

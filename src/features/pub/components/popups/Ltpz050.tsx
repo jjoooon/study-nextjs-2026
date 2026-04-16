@@ -73,19 +73,51 @@ export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
             >
               <FormRow>
                 <FormCell title={'부실유의계약 대상 사유'}>
-                  <Textarea
-                    placeholder="내용을 입력하세요"
-                    showMinLengthCount
-                    readOnly
-                    />
+                  <Grow className='w-full [&>div]:w-full!' placement='ss'> 
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      showMinLengthCount
+                      readOnly
+                      />
+                  </Grow>
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={'선별인수 사유'} className='[&>div]:w-full'>
-                  <Textarea
-                    placeholder="내용을 입력하세요"
-                    showMinLengthCount
-                    />
+                <FormCell title={'선별인수 사유[지점장(BM)]'}>
+                  <Grow className='w-full [&>div]:w-full!' placement='ss'>
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      showMinLengthCount
+                      />
+                  </Grow> 
+                </FormCell>
+              </FormRow>
+            </FormTable>
+            <FormTable
+              caption="부실유의계약 대상 사유"
+              cols={['w-[10rem]', 'w-auto',]}
+              lineTop
+              variant="default"
+            >
+              <FormRow>
+                <FormCell title={'부실유의계약 대상 사유'}>
+                  <Grow className='w-full [&>div]:w-full!' placement='ss'> 
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      showMinLengthCount
+                      readOnly
+                      />
+                  </Grow>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'선별인수 사유[지점장(BM)]'}>
+                  <Grow className='w-full [&>div]:w-full!' placement='ss'>
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      showMinLengthCount
+                      />
+                  </Grow> 
                 </FormCell>
               </FormRow>
             </FormTable>
