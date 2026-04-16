@@ -212,7 +212,6 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     type05_04: '',
   });
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
-  
   const [searchWord, setSearchWord] = useState('척추');
 
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -322,9 +321,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Grow className="w-full">
                     <Input
                       placeholder="병명 또는 코드 입력"
-                      value={form.type01_01}
-                      className="flex-1"
-                      onChange={(e) => setFormField('type01_01', e.target.value)}
+                      className="w-full"
                     />
                     <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
                       <SearchIcon color={'var(--color-primary-50)'} />

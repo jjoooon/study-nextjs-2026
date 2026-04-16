@@ -252,7 +252,6 @@ export const FormTable = ({
     [&>table>tbody>tr>td]:justify-start 
     [&>table>tbody>tr>td]:gap-4 
     [&>table>tbody>tr>td]:h-[auto] 
-    [&>table>tbody>tr>td]:font-bold 
     [&>table>tbody>tr>td]:text-[1.4rem] 
     [&>table>tbody>tr>td+th]:pl-[1.6rem]`,
 
@@ -267,7 +266,6 @@ export const FormTable = ({
     [&>table>tbody>tr>td]:border-0 
     [&>table>tbody>tr>td]:p-0 
     [&>table>tbody>tr>td]:h-auto  
-    [&>table>tbody>tr>td]:font-bold  
     [&>table>tbody>tr]:border-0! 
     [&>table>tbody>tr>td+th]:pl-[2.4rem] 
     [&>table>tbody>tr~tr>*]:pt-[0.6rem]`,

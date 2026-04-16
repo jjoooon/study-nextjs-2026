@@ -91,9 +91,6 @@
   width: 100%;
 }
 
-.ag-cell-focus {
-  background-color: var(--color-warning-15);
-}
 
 .ag-cell-focus:not(.ag-cell-range-selected):focus-within,
 .ag-cell-range-single-cell,
@@ -104,10 +101,16 @@
   border: 0;
 }
 
+.ag-row.ag-row-focus .ag-cell,
 .ag-row.ag-row-focus .editable-cell,
 .ag-row.ag-row-focus {
   background-color: var(--color-warning-10);
 }
+
+.ag-row.ag-row-focus .ag-cell.ag-cell-focus {
+  background-color: var(--color-warning-15);
+}
+
 
 .ag-row-hover.editable-cell,
 .ag-row-hover.editable-cell .ag-cell,
