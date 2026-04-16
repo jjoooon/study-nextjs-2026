@@ -192,8 +192,8 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
-          <Gcol className="bg-[#EFF8FF] border border-[#CBE3FF] rounded-[0.6rem] p-[1rem]" placement="ss">
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Gcol variant='box-info-line' placement="ss">
             <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
               한화 3N5 더간편건강보험(세만기형) 2601 상품의 담보코드와 메시지입니다.
             </Typo>
@@ -204,7 +204,7 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold>
             <TableFoldHead title="1형(355간편고지형)(프리미엄올인원플랜)(1.7.8.9형)(15~80세)"></TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[33rem]">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}
