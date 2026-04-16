@@ -14,7 +14,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { QuestionMark, SearchIcon } from '@icons';
+import { QuestionMark, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -29,6 +29,15 @@ import {
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { useTabs } from '@/shared/hooks/useTabs';
+
+const DataTabs = [
+  { label: '척추염좌', value: 'TAB1' },
+  { label: '자궁근종', value: 'TAB2' },
+  { label: '대장·직장용종', value: 'TAB3' },
+  { label: '추간판장애', value: 'TAB4' },
+  { label: '어깨병변', value: 'TAB5' },
+]
 
 export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
   // form event
@@ -66,6 +75,8 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   const [tabActive, setTabActive] = React.useState('TAB1');
+  const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="xl">
@@ -80,6 +91,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="w-full gap-5">
+          
           <Grow variant={'box-info-line'} placement={'bwc'} className="border-transparent">
             <Typo variant={'body-lg'}>
               자동고지(ICIS/심평원) 또는 질병 가져오기를 통해 질병 정보를 간편하게 입력하세요.
@@ -96,8 +108,10 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
           </Grow>
-          <Grow className="grid w-full grid-cols-[24.7rem_minmax(0,1fr)] gap-5" placement={'ss'}>
-            <Gcol placement={'ss'} className="w-[24.7rem] shrink-0 overflow-hidden" gap={5}>
+
+          <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-5" placement={'ss'}>
+            {/* 많이찾는질병 & 질병검색 */}
+            <Gcol placement={'ss'} className="w-full overflow-hidden" gap={5}>
               <Gcol className="w-full" placement={'ss'} gap={2}>
                 <Typo variant="heading-md">많이 찾는 질병</Typo>
                 <Grow variant="box-round" placement={'bwc'}>
@@ -221,6 +235,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Gcol>
             </Gcol>
 
+            {/* 질병 */}
             <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
               <Grow className="w-full min-w-0">
                 <Gcol className="w-full min-w-0" placement={'ss'}>
@@ -234,16 +249,19 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                     ]}
                     active={tabActive}
                     setActive={setTabActive}
+                    removable={true}
+                    onRemove={handleRemove}
                     getValue={(tab) => tab.value}
                     renderTab={(tab) => <span>{tab.label}</span>}
-                    visibleCount={4}
+                    visibleCount={5}
                   >
                     {/* Tab1 */}
                     <Gcol placement={'ss'} className="w-full mt-2" gap={3}>
                       <TableFold>
                         <TableFoldHead title="기본질문">
-                          <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                          <Button variant={'outlined'} size={'md'} color={'gray'}>
                             초기화
+                            <ResetIcon size={14} color={'var(--color-gray-60)'} />
                           </Button>
                         </TableFoldHead>
                         <TableFoldBody>

@@ -287,7 +287,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold>
                     <TableFoldHead title={'현재 설계'} />
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
                         <FormRow>
                           <FormCell title={'설계번호'}>
                             <b>234234</b>
@@ -301,7 +301,10 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                             <b>ㅇㅇㅇㅇㅇㅇ</b>
                           </FormCell>
                           <FormCell title={'취급자'}>
-                            <b>홍길동</b>
+                            <div className='w-full'>
+                              <b className='truncate inline-block w-[8rem]'>홍길동홍길동홍길동홍길동홍길동홍길동홍길동</b>
+                            </div>
+                            
                           </FormCell>
                         </FormRow>
                       </FormTable>
