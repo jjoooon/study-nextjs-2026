@@ -175,13 +175,13 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <NativeSelect
                     aria-label="선택"
                     width={100}
-                    value={form.type06}
+                    value={form.type07}
                     required
-                    onChange={(e) => setFormField('type06', e.target.value)}
+                    onChange={(e) => setFormField('type07', e.target.value)}
                   >
                     {[
-                      { value: 'selection', id: 'type06-1', label: '선택1' },
-                      { value: 'selection2', id: 'type06-2', label: '선택2' },
+                      { value: 'selection', id: 'type07-1', label: '선택1' },
+                      { value: 'selection2', id: 'type07-2', label: '선택2' },
                     ].map((option) => (
                       <NativeSelectOption key={option.id} value={option.value}>
                         {option.label}
@@ -195,13 +195,13 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <NativeSelect
                     aria-label="선택"
                     width={100}
-                    value={form.type07}
+                    value={form.type08}
                     required
-                    onChange={(e) => setFormField('type07', e.target.value)}
+                    onChange={(e) => setFormField('type08', e.target.value)}
                   >
                     {[
-                      { value: 'selection', id: 'type07-1', label: '선택1' },
-                      { value: 'selection2', id: 'type07-2', label: '선택2' },
+                      { value: 'selection', id: 'type08-1', label: '선택1' },
+                      { value: 'selection2', id: 'type08-2', label: '선택2' },
                     ].map((option) => (
                       <NativeSelectOption key={option.id} value={option.value}>
                         {option.label}

@@ -77,7 +77,6 @@ export const Ltpz998 = ({ open, onOpenChange }: PopupBaseProps) => {
               rowData={rowData}
               columnDefs={columnDefs}
               domLayout="normal"
-              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>

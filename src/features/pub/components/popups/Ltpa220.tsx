@@ -330,7 +330,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <TableFold>
                   <TableFoldHead title="담보별 CSM" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[16rem]">
+                    <div className="ag-theme-alpine min-h-[18.4rem]">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -341,7 +341,6 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
                           suppressMovable: true,
                         }}
                         domLayout="normal"
-                        alwaysShowVerticalScroll={true}
                       />
                     </div>
                   </TableFoldBody>

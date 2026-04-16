@@ -303,7 +303,6 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                 rowSelection={rowSelection}
                 selectionColumnDef={selectionColumnDef}
                 domLayout="normal"
-                alwaysShowVerticalScroll={true}
               />
             </div>
           )}

@@ -120,7 +120,6 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
                 resizable: false,
               }}
               domLayout="normal"
-              alwaysShowVerticalScroll={true}
               // 체크박스 시
               rowSelection={{
                 mode: 'multiRow',

@@ -52,12 +52,12 @@ export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormTable caption="사업자" cols={['w-[14rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'사업자명'}>
-                      <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} required />
+                      <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} disabled />
                     </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'사업자번호'}>
-                      <Input value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} required />
+                      <Input value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} disabled />
                     </FormCell>
                   </FormRow>
                 </FormTable>

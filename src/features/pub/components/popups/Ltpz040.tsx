@@ -50,7 +50,7 @@ const DummyData: DummyDataType[] = [
     field01: '정상',
     field02: 'LA231231231',
     field03: '한화 세이프단체보',
-    field04: '일상해의료비(가입자)',
+    field04: '일상해의료비(가입자)일상해의료비(가입자)',
     field05: '999,999,999',
     field06: '999,999,999',
     field07: 'CLA00172',

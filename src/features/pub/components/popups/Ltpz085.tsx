@@ -82,7 +82,7 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol className="w-full">
             <Grow className="w-full">
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={gridRowData}
@@ -97,7 +97,7 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                     autoHeight: true,
                   }}
                   singleClickEdit={true}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                 />

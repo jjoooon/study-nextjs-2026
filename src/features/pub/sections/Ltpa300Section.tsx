@@ -213,7 +213,7 @@ export default function Ltpa300Section() {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<Ltpa300DummyDataRow>
                     // noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -223,7 +223,7 @@ export default function Ltpa300Section() {
                       resizable: false,
                       editable: false,
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
                     key={loadedCount}
                     rowModelType="infinite"
                     cacheBlockSize={pageSize}

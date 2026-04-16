@@ -4,7 +4,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -49,7 +49,7 @@ const dummyData: DummyDataType[] = [
     id: 1,
     isChecked: false,
     field1: '',
-    field2: '',
+    field2: '질병명질병명질병명질병명질병명질병명질병명질병명',
     field3: '',
     field4: '',
     field5: '',
@@ -106,6 +106,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field2',
       width: 100,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
@@ -201,7 +202,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="필수고지" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[13.4rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData}
@@ -214,12 +215,14 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
                     rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,
                       enableClickSelection: false,
                     }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
               </TableFoldBody>
@@ -228,7 +231,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="질문항목(질병)" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[13.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2}
@@ -241,7 +244,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="autoHeight"
+                    domLayout="normal"
                     rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,

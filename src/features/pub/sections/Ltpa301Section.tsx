@@ -212,7 +212,7 @@ export default function Ltpa301Section() {
                   <Typo variant="body-md">(단위: 원)</Typo>
                 </TableFoldHead>
                 <TableFoldBody>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<Ltpa301DummyDataRow>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -237,7 +237,7 @@ export default function Ltpa301Section() {
                           'pointer-events-none': (params) => !!params.data?.locked,
                         },
                       }}
-                      domLayout="autoHeight"
+                      domLayout="normal"
                     />
                   </div>
                 </TableFoldBody>

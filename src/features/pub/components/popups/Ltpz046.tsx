@@ -73,7 +73,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 5,
     isCheck: false,
-    field01: '',
+    field01: '5',
     field02: '',
     field03: '',
     field04: '9999999999',
@@ -198,7 +198,6 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
                     });
                   }}
                   domLayout="normal"
-                  alwaysShowHorizontalScroll={true}
                 />
               </div>
             </Grow>

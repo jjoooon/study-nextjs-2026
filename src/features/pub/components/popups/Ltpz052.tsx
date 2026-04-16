@@ -180,16 +180,16 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
     },
     {
-      headerName: '변경전 직업정보',
+      headerName: '출력/발송 결과',
       children: [
         {
-          headerName: '상해급수',
+          headerName: '동의서',
           flex: 1,
           field: 'field04',
           cellClass: 'text-center px-0! whitespace-nowrap',
         },
         {
-          headerName: '직업',
+          headerName: '모바일',
           flex: 1,
           field: 'field05',
           cellClass: 'text-center px-0! whitespace-nowrap',
@@ -215,12 +215,12 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
-            <FormTable caption="증권번호" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} variant={'head'}>
+            <FormTable caption="취급자 정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
-                <FormCell title={'증권번호'} className="w-full">
+                <FormCell title={'취급자 사번'} className="w-full">
                   <Grow>
                     <Input
-                      aria-label="증권번호 검색"
+                      aria-label="취급자 사번 검색"
                       width={'10rem'}
                       value={policySearchPart}
                       onChange={(e) => setPolicySearchPart(e.target.value)}
@@ -228,13 +228,13 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'30rem'} value={'한화 더 건강한 1040종합'} readOnly />
+                    <Input aria-label="" width={'10rem'} value={'김한화'} readOnly />
                   </Grow>
                 </FormCell>
-                <FormCell title={'증권번호'} className="w-full">
+                <FormCell title={'취급자 연락처'} className="w-full">
                   <Grow>
-                    <Input aria-label="" width={'6rem'} value={'123'} />
-                    <Input aria-label="" width={'6rem'} value={'1234'} />
+                    <Input aria-label="" width={'6rem'} value={'123'} />-
+                    <Input aria-label="" width={'6rem'} value={'1234'} />-
                     <Input aria-label="" width={'6rem'} value={'1234'} />
                   </Grow>
                 </FormCell>
@@ -265,7 +265,6 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                       resizable: false,
                     }}
                     domLayout="normal"
-                    alwaysShowVerticalScroll={true}
                     onCellValueChanged={onCellValueChanged}
                     // 체크박스 시
                     rowSelection={{
