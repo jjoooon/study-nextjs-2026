@@ -153,6 +153,7 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                     aria-label="선택"
                     width={100}
                     value={form.type06}
+                    required
                     onChange={(e) => setFormField('type06', e.target.value)}
                   >
                     {[
@@ -175,6 +176,7 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                     aria-label="선택"
                     width={100}
                     value={form.type06}
+                    required
                     onChange={(e) => setFormField('type06', e.target.value)}
                   >
                     {[

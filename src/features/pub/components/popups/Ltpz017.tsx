@@ -99,7 +99,7 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '등록일자',
       field: 'registrationDate',
-      width: 120,
+      width: 100,
       cellClass: 'text-center',
     },
     {
@@ -146,7 +146,7 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Input value={'김한화'} readOnly />
                 </FormCell>
                 <FormCell title={'상품명'}>
-                  <Input value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input className='w-full' value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -172,10 +172,11 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                   onCellValueChanged={onCellValueChanged}
                   rowSelection={{
                     mode: 'multiRow',
-                    headerCheckbox: true,
+                    headerCheckbox: false,
                     checkboxes: true,
                   }}
                   selectionColumnDef={{
+                    headerName: '선택',
                     width: 30,
                   }}
                   rowClassRules={{}}
@@ -187,7 +188,6 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                     });
                   }}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </TableFoldBody>

@@ -62,10 +62,6 @@ export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
             </TableBody>
           </Table>
         </DialogSection>
-
-        <DialogFooter>
-          <DialogBottomInfo />
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

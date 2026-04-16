@@ -77,9 +77,6 @@ export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                버튼
-              </Button>
               <Button variant={'contained'} size={'xl'}>
                 다운로드
               </Button>

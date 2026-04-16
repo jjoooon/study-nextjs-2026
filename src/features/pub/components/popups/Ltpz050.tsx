@@ -18,6 +18,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Textarea } from '@/shared/components/uiux/Textarea';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -64,6 +65,30 @@ export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
                 }}
               />
             </InfoBox>
+            <FormTable
+              caption="부실유의계약 대상 사유"
+              cols={['w-[10rem]', 'w-auto',]}
+              lineTop
+              variant="default"
+            >
+              <FormRow>
+                <FormCell title={'부실유의계약 대상 사유'}>
+                  <Textarea
+                    placeholder="내용을 입력하세요"
+                    showMinLengthCount
+                    readOnly
+                    />
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'선별인수 사유'} className='[&>div]:w-full'>
+                  <Textarea
+                    placeholder="내용을 입력하세요"
+                    showMinLengthCount
+                    />
+                </FormCell>
+              </FormRow>
+            </FormTable>
           </Gcol>
         </DialogSection>
 
