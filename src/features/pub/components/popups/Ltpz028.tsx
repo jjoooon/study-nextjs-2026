@@ -20,7 +20,7 @@ import {
 } from '@/shared/components/uiux/Dialog';
 import { Input } from '@/shared/components/uiux/Input';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -132,6 +132,7 @@ const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     flex: 1,
     minWidth: 240,
     cellClass: 'p-0! flex',
+    tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     headerComponent: CombinedQuestionHeader,
     cellRenderer: CombinedQuestionCell,
   },
@@ -141,6 +142,7 @@ const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     autoHeight: true,
     wrapText: true,
     cellClass: 'p-0! flex',
+    tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     cellRenderer: CombinedAnswerCell,
   },
 ];
@@ -162,7 +164,7 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
+        <DialogSection className="grid grid-rows-[auto_1fr]">
           <Grow placement="bwe" className="w-full" variant="box-round" gap={5}>
             <FormTable
               variant="head"
@@ -190,10 +192,9 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
               noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{
                 sortable: false,
-                resizable: false,
+                resizable: true,
               }}
               domLayout="normal"
-              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>

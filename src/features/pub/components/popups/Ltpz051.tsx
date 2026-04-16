@@ -7,7 +7,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -23,6 +23,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -197,7 +198,8 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
               removable={false}
             >
               {active === 'basic' ? (
-                <Gcol className="w-full" gap={4}>
+                <Grid className="w-full grid-rows-[auto_1fr]" gap={4}>
+                
                   <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
                     <FormRow>
                       <FormCell title={'고객명'}>김한화</FormCell>
@@ -213,24 +215,23 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                         99건
                       </Typo>
                     </Grow>
-                    <div className="ag-theme-alpine h-[18.4rem] w-full">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                        }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
-                      />
-                    </div>
                   </Gcol>
-                </Gcol>
+                 <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      domLayout="normal"
+                    />
+                  </div>
+                </Grid> 
               ) : (
-                <Gcol className="w-full" gap={4}>
+                <Grid className="w-full grid-rows-[auto_1fr]" gap={4}>
                   <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
                     <FormRow>
                       <FormCell title={'고객명'}>김한화2</FormCell>
@@ -246,7 +247,7 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                         99건
                       </Typo>
                     </Grow>
-                    <div className="ag-theme-alpine h-[18.4rem] w-full">
+                    <div className="ag-theme-alpine min-h-[18.4rem]">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
@@ -257,12 +258,33 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                           resizable: false,
                         }}
                         domLayout="normal"
-                        alwaysShowVerticalScroll={true}
                       />
                     </div>
                   </Gcol>
-                </Gcol>
+                </Grid>
               )}
+              <Gcol className="w-full mt-[2rem]" placement="ss" variant="box-info">
+                <BulletList>
+                  <BulletListItem size="sm">
+                    신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행 (변경설계가 청약중 이후이고 변경후 직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
+                  </BulletListItem>
+                  <BulletListItem size="sm">
+                    기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약 설계 진행
+                  </BulletListItem>
+                  <BulletListItem size="sm">
+                    직업정보는 현재기준 [2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로 매핑한 결과로 비교함)
+                  </BulletListItem>
+                  <BulletListItem size="sm">
+                    변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다. (계약변경설계이동 클릭 시 변경설계화면으로 이동)
+                  </BulletListItem>
+                  <BulletListItem size="sm">
+                    상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하여 재확인 바랍니다.
+                  </BulletListItem>
+                  <BulletListItem size="sm">
+                    관련문서: [대내-1507-1552] 직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
+                  </BulletListItem>
+                </BulletList>
+              </Gcol>
             </TabPager>
           </Gcol>
         </DialogSection>

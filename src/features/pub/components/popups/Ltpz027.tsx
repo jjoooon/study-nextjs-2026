@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { InfoBox } from '@common/InfoBox';
 import { Button } from '@uiux/Button';
@@ -128,70 +128,66 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="w-full gap-5">
-          <Gcol gap={3}>
-            <Gcol placement={'ss'} gap={1.5}>
-              <Typo variant="heading-sm" color="default">
-                발송대상
-              </Typo>
-
-              <Table variant="default">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>성명</TableHead>
-                    <TableHead>생년월일</TableHead>
-                    <TableHead>휴대폰번호</TableHead>
-                    <TableHead colSpan={2}>발송구분</TableHead>
-                    <TableHead>진행상태</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow className="text-center">
-                    <TableCell>김한화</TableCell>
-                    <TableCell>1990-01-01</TableCell>
-                    <TableCell>010-1234-5678</TableCell>
-                    <TableCell>
-                      <Button aria-label="발송" variant={'contained'} size={'md'} color={'primary'}>
-                        발송
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button aria-label="취소" variant={'outlined'} size={'md'} color={'gray'}>
-                        취소
-                      </Button>
-                    </TableCell>
-                    <TableCell>진행중</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Gcol>
-            <Gcol placement={'ss'} gap={1.5}>
-              <Typo variant="heading-sm" color="default">
-                진행이력
-              </Typo>
-              <div className="ag-theme-alpine min-h-[15.3rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                  }}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
-                  className="text-center"
-                  enableCellSpan={true}
-                />
-              </div>
-            </Gcol>
+        <DialogSection className="w-full grid h-full gap-5 grid-rows-[auto_1fr]">
+          <Gcol placement={'ss'} gap={1.5}>
+            <Typo variant="heading-sm" color="default">
+              발송대상
+            </Typo>
+            <Table variant="default">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>성명</TableHead>
+                  <TableHead>생년월일</TableHead>
+                  <TableHead>휴대폰번호</TableHead>
+                  <TableHead colSpan={2}>발송구분</TableHead>
+                  <TableHead>진행상태</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow className="text-center">
+                  <TableCell>김한화</TableCell>
+                  <TableCell>1990-01-01</TableCell>
+                  <TableCell>010-1234-5678</TableCell>
+                  <TableCell>
+                    <Button aria-label="발송" variant={'contained'} size={'md'} color={'primary'}>
+                      발송
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button aria-label="취소" variant={'outlined'} size={'md'} color={'gray'}>
+                      취소
+                    </Button>
+                  </TableCell>
+                  <TableCell>진행중</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Gcol>
+          <Grid className='grid-rows-[auto_1fr]' placement={'ss'} gap={1.5}>
+            <Typo variant="heading-sm" color="default">
+              진행이력
+            </Typo>
+            <div className="ag-theme-alpine min-h-[15.3rem]">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={{
+                  sortable: false,
+                  resizable: false,
+                }}
+                domLayout="normal"
+                className="text-center"
+                enableCellSpan={true}
+              />
+            </div>
             <InfoBox
               bg
               subTitle="알림톡 발송불가 대상: 채널 (방카,TM) / 연령(만 19세미만) / 고객정보(휴대폰 또는 고객번호누락) / 심사상태(심사중 또는 심사승인)"
               variant="warning"
             ></InfoBox>
-          </Gcol>
+          </Grid>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

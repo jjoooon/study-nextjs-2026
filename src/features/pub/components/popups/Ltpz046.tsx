@@ -169,7 +169,7 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormTable>
             </Grow>
             <Grow className="w-full">
-              <div className="ag-theme-alpine aggrid-pagination-ko w-full min-h-[18.4rem]">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}

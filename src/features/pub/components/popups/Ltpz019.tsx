@@ -55,7 +55,7 @@ type DummyDataType3 = {
 const dummyData3: DummyDataType3[] = [
   {
     id: 1,
-    field1: '올인원플랜(15~40세)',
+    field1: '올인원플랜(15~40세)올인원플랜(15~40세)올인원플랜(15~40세)올인원플랜(15~40세)올인원플랜(15~40세)',
   },
   {
     id: 2,
@@ -91,7 +91,7 @@ const dummyData2: DummyDataType2[] = [
   {
     id: 1,
     field1: '1종',
-    field2: '납입면제 강화형, 기본형(할증운영상품)',
+    field2: '납입면제 강화형, 기본형(할증운영상품)납입면제 강화형, 기본형(할증운영상품)납입면제 강화형, 기본형(할증운영상품)',
   },
   {
     id: 2,
@@ -310,7 +310,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
         <Grow className="border-r border-[#ddddde] h-full aspect-auto w-[3rem] flex items-center justify-center shrink-0">
           {params.data?.field1}
         </Grow>
-        <Grow className="flex-1 justify-start">{params.data?.field2}</Grow>
+        <Grow className="flex-1 justify-start ">{params.data?.field2}</Grow>
       </Grow>
     );
   };
@@ -320,6 +320,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '종구분',
       field: 'field1',
       flex: 1,
+      cellClass: '[&>div]:flex! [&>div]:justify-between!',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
       cellRenderer: designCellRenderer,
     },
   ];
@@ -329,6 +331,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '플랜면',
       field: 'field1',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
     },
   ];
 
@@ -443,6 +446,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                               headerHeight={30}
                               rowHeight={30}
                               domLayout="normal"
+                              tooltipShowMode="whenTruncated"
+                              tooltipShowDelay={0}
                             />
                           </div>
                         </Gcol>
@@ -475,6 +480,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 headerHeight={30}
                                 rowHeight={30}
                                 domLayout="normal"
+                                tooltipShowMode="whenTruncated"
+                                tooltipShowDelay={0}
                               />
                             </div>
                           </TabPager>

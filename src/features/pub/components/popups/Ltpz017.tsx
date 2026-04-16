@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -40,7 +40,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     isCheck: false,
-    planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
+    planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8(355간편지형)(프리미엄을인원플랜)(1.7.8',
     myPlanName: '3대진단형',
     registrationDate: '2026-03-22',
     target: true,
@@ -90,6 +90,7 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '회사플랜명',
       field: 'planName',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
     },
     {
       headerName: '나만의플랜명',
@@ -188,6 +189,8 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                     });
                   }}
                   domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </TableFoldBody>
