@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter, useAgGridColumnVisibility } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useAgGridColumnVisibility } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -46,7 +46,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: 'LA20165772444000',
-    field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ16',
+    field02: '무배당 마이라이프 굿밸런스보장보험Ⅱ1무배당 마이라이프 굿밸런스보장보험Ⅱ1무배당 마이라이프 굿밸런스보장보험Ⅱ1무배당 마이라이프 굿밸런스보장보험Ⅱ16',
     field03: '2026-03-22',
     field04: '2027-03-22',
     field05: '2026-02',
@@ -114,6 +114,7 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field02',
       width: 270,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '보험시기',
@@ -248,7 +249,7 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldHead>
               <TableFoldBody>
                 <Gcol gap={5}>
-                  <div className="ag-theme-alpine min-h-[30rem]">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       ref={gridRef}
@@ -259,7 +260,8 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
                       domLayout="normal"
-                      alwaysShowVerticalScroll={true}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
                   <Gcol>
