@@ -571,5 +571,11 @@
 .ag-cell-value:not(.ag-allow-overflow),
 .ag-group-value {
   overflow: hidden;
-  text-overflow: initial;
+  text-overflow: clip;
+}
+
+.truncate-no {
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
 }

@@ -407,11 +407,8 @@ export function createTooltipValueGetter<T extends Record<string, unknown>>(
 
   return (params: { data?: T }) => {
     if (!params.data) return '';
-
     const rawValue = valueGetter ? valueGetter(params.data) : field ? params.data[field] : '';
-
     const value = rawValue === null || rawValue === undefined ? '' : String(rawValue);
-
     if (!label) return value;
     return `${label}: ${value}`;
   };

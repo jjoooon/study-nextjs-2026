@@ -6,7 +6,7 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
 import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Badge } from '@/shared/components/uiux/Badge';
@@ -107,6 +107,66 @@ const DummyData: DummyDataType[] = [
     field2: '척추관협착증',
     field3: ['SI경증(감액)', '부담보'],
   },
+  {
+    id: 11,
+    field1: 'M34.5',
+    field2: '척추관협착증척추관협착증척추관협착증',
+    field3: ['할증', '부담보', 'SI경증'],
+  },
+  {
+    id: 12,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 13,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 14,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 15,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 16,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 17,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 18,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 19,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 20,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
 ];
 
 const DataTabs = [
@@ -152,28 +212,43 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     type05_04: '',
   });
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
+  
+  const [searchWord, setSearchWord] = useState('척추');
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'KCD코드',
       field: 'field1',
       width: 80,
+      cellClass: 'text-center',
     },
     {
       headerName: '질병명',
       field: 'field2',
       flex: 1,
-      cellRenderer: (params: ICellRendererParams) => {
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (!params.data) return null;
         const { field2, field3 } = params.data;
+        // "척추" 단어를 <b className="font-bold">로 감싸기
+        const parts = field2.split(new RegExp(`(${searchWord})`, 'g'));
         return (
-          <Grow className='w-full' placement='bwc'>
-            <div className='truncate'>{field2}</div>
-            <div className="flex gap-1 mt-1 shrink-0">
-              {field3.includes('할증') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>}
-              {field3.includes('부담보') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>}
-              {field3.includes('SI경증') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>}
-              {field3.includes('SI경증(감액)') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>}
+          <Grow className='w-full' placement='bwc' gap={2}>
+            <div className='truncate-no'>
+              {parts.map((part, idx) =>
+                part === searchWord ? (
+                  <b key={idx} className="font-bold">{part}</b>
+                ) : (
+                  <React.Fragment key={idx}>{part}</React.Fragment>
+                )
+              )}
             </div>
+            <Grow className="gap-[0.2rem] mt-1 shrink-0" placement='ec'>
+              {field3.includes('할증') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-danger-50)]"></div>}
+              {field3.includes('부담보') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-success-60)]"></div>}
+              {field3.includes('SI경증') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-information-50)]"></div>}
+              {field3.includes('SI경증(감액)') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-warning-40)]"></div>}
+            </Grow>
           </Grow>
         );
       }
@@ -212,7 +287,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
           <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-5" placement={'ss'}>
             {/* 많이찾는질병 & 질병검색 */}
-            <Gcol placement={'ss'} className="w-full overflow-hidden" gap={5}>
+            <Grid placement={'ss'} className="w-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
               <Gcol className="w-full" placement={'ss'} gap={2}>
                 <Typo variant="heading-md">많이 찾는 질병</Typo>
                 <Grow variant="box-round" placement={'bwc'}>
@@ -236,7 +311,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </CheckboxGroup>
                 </Grow>
               </Gcol>
-              <Gcol className="w-full" placement={'ss'} gap={2}>
+              <Grid className="w-full grid-rows-[auto_1fr]" placement={'ss'} gap={2}>
                 <Grow placement={'bwe'}>
                   <Typo variant="heading-md">질병검색</Typo>
                   <Badge color="blue" size="md" variant="contained" className="">
@@ -267,95 +342,21 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>SI경증(감액)</Grow>
                   </Grow>
 
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[36rem] ">
                     <AgGridReact<DummyDataType>
-                      // 필수 props
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+      
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
-
-                  <Table variant="default">
-                    <caption className="a11y-hidden">테이블 소개글</caption>
-                    <colgroup>
-
-                    </colgroup>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>KCD코드</TableHead>
-                        <TableHead>질병명</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow className="text-center bg-white">
-                        <TableCell>M48.0</TableCell>
-                        <TableCell>
-                          <b className="text-[var(--color-primary-50)]">척추</b>관협착증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-[var(--color-gray-5)]">
-                        <TableCell>M48.1</TableCell>
-                        <TableCell>
-                          <b className="text-[var(--color-primary-50)]">척추</b>만곡증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-white">
-                        <TableCell>M48.2</TableCell>
-                        <TableCell>
-                          <b className="text-[var(--color-primary-50)]">척추</b>분리증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-[var(--color-gray-5)]">
-                        <TableCell>M48.3</TableCell>
-                        <TableCell>
-                          <b className="text-[var(--color-primary-50)]">척추</b>전방전위증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-white">
-                        <TableCell>M48.4</TableCell>
-                        <TableCell>
-                          <b className="text-[var(--color-primary-50)]">척추</b>증
-                          <b className="text-[var(--color-primary-50)]">척추</b>병증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-[var(--color-gray-5)]">
-                        <TableCell>M48.5</TableCell>
-                        <TableCell>
-                          강직성<b className="text-[var(--color-primary-50)]">척추</b>염
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-white">
-                        <TableCell>M48.6</TableCell>
-                        <TableCell>
-                          염증성<b className="text-[var(--color-primary-50)]">척추</b>병증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-[var(--color-gray-5)]">
-                        <TableCell>M48.7</TableCell>
-                        <TableCell>
-                          염증성<b className="text-[var(--color-primary-50)]">척추</b>병증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-white">
-                        <TableCell>M48.8</TableCell>
-                        <TableCell>
-                          염증성<b className="text-[var(--color-primary-50)]">척추</b>병증
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="text-center bg-[var(--color-gray-5)]">
-                        <TableCell>M48.9</TableCell>
-                        <TableCell>
-                          염증성<b className="text-[var(--color-primary-50)]">척추</b>병증
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
                 </Gcol>
-              </Gcol>
-            </Gcol>
+              </Grid>
+            </Grid>
 
             {/* 질병 */}
             <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
