@@ -264,7 +264,6 @@ export function Ltpa350Step2({
     });
 
     if (!params.data || !params.data.isDuplicate) {
-      // 원본 행: 1,2,3...
       const order = params.data ? (idToOrder.get(params.data.id) ?? '') : '';
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
@@ -287,12 +286,9 @@ export function Ltpa350Step2({
         </Grow>
       );
     } else {
-      // 복사 행: 원본 순번-복사 인덱스
       const originId = params.data.displayNo;
       const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
-      // 같은 원본에서 복사된 행들 중 현재 행의 인덱스
-      // const sameOriginCopies = allRows.filter((r) => r.isDuplicate && r.displayNo === originId);
-      // const myIdx = sameOriginCopies.findIndex((r) => r === params.data) + 1;
+      
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
@@ -1696,7 +1692,6 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
@@ -1991,7 +1986,6 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
@@ -2269,7 +2263,6 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
