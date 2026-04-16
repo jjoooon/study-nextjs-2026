@@ -41,7 +41,7 @@ export default function Ltpa300Section() {
       { headerName: '모집직원명', field: 'field03', width: 100, cellClass: 'text-center' },
       { headerName: '사용인번호', field: 'field04', width: 100, cellClass: 'text-center' },
       { headerName: '사용인', field: 'field05', width: 80, cellClass: 'text-center' },
-      { headerName: '증권번호', field: 'field06', width: 170, cellClass: 'text-center' },
+      { headerName: '증권번호', field: 'field06', flex: 170, cellClass: 'text-center' },
       { headerName: '점검설계번호', field: 'field07', width: 110, cellClass: 'text-center' },
       { headerName: '점검', field: 'field08', width: 110, cellClass: 'text-center' },
       { headerName: '피보험자명', field: 'field09', width: 100, cellClass: 'text-center' },

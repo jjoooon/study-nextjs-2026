@@ -4,7 +4,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@/shared/components/agGridUtils';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -29,7 +29,7 @@ type DummyDataType = {
 };
 const DummyData: DummyDataType[] = [
   { id: 1, field01: '여성통합암(4대유사암 제외)진단비', field02: 0 },
-  { id: 2, field01: '여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비여성통합암(4대유사암 제외)진단비', field02: 100 },
+  { id: 2, field01: '여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비여성통합암(4대유사암 제외)진단비', field02: 100 },
   { id: 3, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
   { id: 4, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
   { id: 5, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
@@ -44,6 +44,7 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field01',
       cellClass: 'text-left',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '설계금액',
@@ -81,7 +82,7 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol className="w-full">
             <Grow className="w-full">
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={gridRowData}
@@ -96,8 +97,9 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                     autoHeight: true,
                   }}
                   singleClickEdit={true}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  domLayout="autoHeight"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </Grow>

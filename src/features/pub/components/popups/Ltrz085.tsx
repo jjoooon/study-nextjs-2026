@@ -5,7 +5,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -53,7 +53,7 @@ const dummyData: DummyDataType[] = [
     status: '청약중',
     changeDate: '2026-03-22',
     paymentStatus: 'TEXT',
-    productName: '한화실손의료보험(갱신형)2601',
+    productName: '한화실손의료보험(갱신형)2601한화실손의료보험(갱신형)2601한화실손의료보험(갱신형)2601',
     contractor: '김한화',
     insured: '변경조건적용',
     detailCondition: true,
@@ -181,6 +181,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
       flex: 1,
       minWidth: 180,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'productName' }),
     },
     {
       headerName: '계약자',
@@ -285,7 +286,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[20rem]">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -318,6 +319,8 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                         }
                       });
                     }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
               </TableFoldBody>

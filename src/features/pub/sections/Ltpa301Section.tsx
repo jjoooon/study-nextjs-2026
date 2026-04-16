@@ -130,7 +130,7 @@ export default function Ltpa301Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className="w-full" placement="ss">
+          <Gcol className="w-full" placement="ss" gap={5}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                 <FormRow>
@@ -162,7 +162,7 @@ export default function Ltpa301Section() {
               </Grow>
             </Grow>
 
-            <Gcol gap={4}>
+            <Gcol gap={5}>
               <TableFold variant={'accordion'}>
                 <TableFoldHead title="정액담보점검내역" />
                 <TableFoldBody>

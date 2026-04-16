@@ -25,7 +25,7 @@ export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              화면권한보기
+              화면담당자
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ997)

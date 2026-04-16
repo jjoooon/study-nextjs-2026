@@ -187,7 +187,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
               고지콕콕 입력 서비스 안내
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ0)
+              (LTPZ062)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -201,7 +201,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="필수고지" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.3rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData}
@@ -214,8 +214,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="normal"
-                    alwaysShowVerticalScroll={true}
+                    domLayout="autoHeight"
                     rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,
@@ -229,7 +228,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="질문항목(질병)" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[15.3rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2}
@@ -242,8 +241,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                       sortable: false,
                       resizable: false,
                     }}
-                    domLayout="normal"
-                    alwaysShowVerticalScroll={true}
+                    domLayout="autoHeight"
                     rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,

@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
@@ -82,6 +82,7 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
         field: 'field5',
         flex: 1,
         cellClass: 'text-center',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field5' }),
       },
     ],
     []
@@ -102,7 +103,7 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
@@ -112,8 +113,9 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
                 sortable: true,
                 resizable: true,
               }}
-              domLayout="normal"
-              alwaysShowVerticalScroll={true}
+              domLayout="autoHeight"
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
             />
           </div>
         </DialogSection>
