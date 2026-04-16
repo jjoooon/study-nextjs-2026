@@ -22,6 +22,7 @@ interface TabPagerProps<T> {
   setActive: (value: string) => void;
   onRemove?: (value: string) => void;
   renderButtons?: React.ReactNode;
+  renderAfter?: React.ReactNode;
   renderTab?: (tab: T) => React.ReactNode;
   renderDropdownItem?:
     | false
@@ -51,6 +52,7 @@ export function TabPager<T>({
   errorMsg = '입력하세요.',
   renderDropdownItem,
   renderButtons,
+  renderAfter,
   getValue,
   contentClass,
 }: TabPagerProps<T>) {
@@ -155,6 +157,7 @@ export function TabPager<T>({
                 )}
               </Grow>
             )}
+            {renderAfter}
           </Grow>
         </TabsLine>
         <TabsContent value={active ?? ''} className={contentClass}>

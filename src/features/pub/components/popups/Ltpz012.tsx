@@ -360,7 +360,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </FormCell>
                 <FormCell title={'피보험자'}>
                   <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly />
-                  <Input aria-label="생년월일" width={140} value={'940302-2*****'} readOnly />
+                  <Input aria-label="생년월일" width={140} value={'940302-2******'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -374,7 +374,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -382,8 +382,8 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section2SumData}
                     defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'normal'}
-                    alwaysShowVerticalScroll={true}
+                    domLayout={'autoHeight'}
+                    // alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>
@@ -393,7 +393,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="감점계산" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -404,8 +404,8 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
                     defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'normal'}
-                    alwaysShowVerticalScroll={true}
+                    domLayout={'autoHeight'}
+                    // alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>
@@ -415,15 +415,15 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="정책요소" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[10.3rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={policyData}
                     columnDefs={columnDefs}
                     defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'normal'}
-                    alwaysShowVerticalScroll={true}
+                    domLayout={'autoHeight'}
+                    // alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>
