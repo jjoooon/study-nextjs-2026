@@ -1,6 +1,12 @@
 'use client';
 
 import * as React from 'react';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { TreeDataModule } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { AgGridEmptyComponent } from '@aggrid';
 
 import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Badge } from '@/shared/components/uiux/Badge';
@@ -30,7 +36,78 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Div } from 'storybook/internal/components';
+
+ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
+
+type DummyDataType = {
+  id: number;
+  field1: string;
+  field2: string;
+  field3: string[];
+
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: 'M34.5',
+    field2: '척추관협착증척추관협착증척추관협착증',
+    field3: ['할증', '부담보', 'SI경증'],
+  },
+  {
+    id: 2,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 3,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 4,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 5,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 6,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 7,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 8,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 9,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+  {
+    id: 10,
+    field1: 'M34.5',
+    field2: '척추관협착증',
+    field3: ['SI경증(감액)', '부담보'],
+  },
+];
 
 const DataTabs = [
   { label: '척추염좌', value: 'TAB1' },
@@ -41,7 +118,7 @@ const DataTabs = [
 ]
 
 export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // form event
+  const [rowData] = useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
     // Tab1
     type01_01: '',
@@ -74,8 +151,34 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     type05_03: '',
     type05_04: '',
   });
-
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
+
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: 'KCD코드',
+      field: 'field1',
+      width: 80,
+    },
+    {
+      headerName: '질병명',
+      field: 'field2',
+      flex: 1,
+      cellRenderer: (params: ICellRendererParams) => {
+        const { field2, field3 } = params.data;
+        return (
+          <Grow className='w-full' placement='bwc'>
+            <div className='truncate'>{field2}</div>
+            <div className="flex gap-1 mt-1 shrink-0">
+              {field3.includes('할증') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>}
+              {field3.includes('부담보') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>}
+              {field3.includes('SI경증') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>}
+              {field3.includes('SI경증(감액)') && <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>}
+            </div>
+          </Grow>
+        );
+      }
+    },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -157,8 +260,29 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       총 <b className="text-[var(--color-primary-50)]">18건</b>
                     </Typo>
                   </Grow>
+                  <Grow className='text-[1.1rem] w-full' placement='sc'>
+                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증</Grow>
+                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보</Grow>
+                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>SI검증</Grow>
+                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>SI경증(감액)</Grow>
+                  </Grow>
+
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType>
+                      // 필수 props
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      domLayout="autoHeight"
+                    />
+                  </div>
+
                   <Table variant="default">
                     <caption className="a11y-hidden">테이블 소개글</caption>
+                    <colgroup>
+
+                    </colgroup>
                     <TableHeader>
                       <TableRow>
                         <TableHead>KCD코드</TableHead>
@@ -653,10 +777,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <Grow className="w-full" gap={3} placement="sc">
                                   <RadioGroup
                                     className="gap-3"
-                                    errorMsg="하나를 선택해주세요."
-                                    errorPs="bl"
                                     onValueChange={() => {}}
-                                    required
                                   >
                                     {[
                                       { value: '경추', label: '경추' },
@@ -677,10 +798,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               <FormCell title={'발생원인'}>
                                 <RadioGroup
                                   className="gap-3"
-                                  errorMsg="하나를 선택해주세요."
-                                  errorPs="bl"
                                   onValueChange={() => {}}
-                                  required
                                 >
                                   {[
                                     { value: '교통사고 外원인', label: '교통사고 外원인' },
@@ -799,6 +917,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Grow>
           </Grow>
         </DialogSection>
+
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
