@@ -352,14 +352,14 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
               setActive={setTabActive}
               visibleCount={4}
               getValue={(tab) => String(tab.value)}
-              contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)]"
+              contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem]"
               renderTab={(tab) => <span>{tab.label}</span>}
             >
-              <Gcol className="h-full absolute px-2.5 py-3" placement={'ss'}>
+              <Gcol className="h-full absolute px-2.5 py-3  after:[content:''] after:block after:min-h-[0.1rem] after:border after:w-full after:border-[transparent]" gap={4} placement={'ss'}>
                 {/* 프린트 */}
                 {tabActive === 'tab1' && (
-                  <Gcol placement={'ss'} gap={4} className="w-full pb-[3.5rem]">
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                  <>
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         인쇄타입
                       </Typo>
@@ -375,7 +375,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </RadioGroup>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         일괄출력
                       </Typo>
@@ -391,7 +391,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </CheckboxGroup>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         계약체결동의서 유형
                       </Typo>
@@ -407,7 +407,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </CheckboxGroup>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         마케팅 동의서 유형
                       </Typo>
@@ -423,7 +423,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </RadioGroup>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         필수 스캔문서 출력일시
                       </Typo>
@@ -450,24 +450,24 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <BulletListItem>본인확인서(FATCA/CRS): 미출력</BulletListItem>
                       </BulletList>
                     </Gcol>
-                  </Gcol>
+                  </>
                 )}
                 {/* 이메일 */}
                 {tabActive === 'tab2' && (
-                  <Gcol placement={'ss'} gap={4} className="w-full pb-[3.5rem] ">
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                  <>
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         제목
                       </Typo>
                       <Textarea placeholder="제목을 입력해주세요." maxLength={1000} resize={false} />
                     </Gcol>
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         내용
                       </Typo>
                       <Textarea placeholder="내용을 입력해주세요." maxLength={1000} resize={false} />
                     </Gcol>
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         이메일
                       </Typo>
@@ -499,12 +499,12 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
-                  </Gcol>
+                  </>
                 )}
                 {/* 팩스 */}
                 {tabActive === 'tab3' && (
-                  <Gcol placement={'ss'} gap={4} className="w-full pb-[3.5rem] ">
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                  <>
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         팩스번호
                       </Typo>
@@ -539,12 +539,12 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
-                  </Gcol>
+                  </>
                 )}
                 {/* 모바일 */}
                 {tabActive === 'tab4' && (
-                  <Gcol placement={'ss'} gap={4} className="w-full pb-[3.5rem]">
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                  <>
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         전송대상
                       </Typo>
@@ -562,7 +562,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </RadioGroup>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         전송대상
                       </Typo>
@@ -578,7 +578,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </RadioGroup>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         수신자명
                       </Typo>
@@ -587,7 +587,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </Grow>
                     </Gcol>
 
-                    <Gcol placement={'ss'} gap={2} className="w-full">
+                    <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         휴대폰번호
                       </Typo>
@@ -625,8 +625,29 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
-                  </Gcol>
+                  </>
                 )}
+                
+                {/* 리포트내용선택 */}
+                <Divider dir="row" className="w-full" />
+                <Gcol placement={'ss'} gap={2}>
+                  <Typo tag={'h3'} variant={'heading-sm'}>
+                    리포트내용선택
+                  </Typo>
+                  <CheckboxGroup className="gap-1.5" defaultValue={['']}>
+                    {[
+                      { value: '설계단계 안내', label: '설계단계 안내' },
+                      { value: '고객 및 기계약 요약정보', label: '고객 및 기계약 요약정보' },
+                      { value: '설계조건정보', label: '설계조건정보' },
+                      { value: '발급서류 및 비발급서류 안내', label: '발급서류 및 비발급서류 안내' },
+                      { value: '주요문의 FAQ 요약', label: '주요문의 FAQ 요약' },
+                    ].map((option) => (
+                      <CheckboxGroupItem key={option.value} value={option.value}>
+                        {option.label}
+                      </CheckboxGroupItem>
+                    ))}
+                  </CheckboxGroup>
+                </Gcol>
               </Gcol>
             </TabPager>
           </Grid>
