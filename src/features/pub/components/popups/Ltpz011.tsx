@@ -28,46 +28,61 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 type ComparisonRow = {
   id: number;
+  state: string;
+  code: string;
+  term1: string;
+  term2: string;
   coverage: string;
-  amount: number;
   premium: number;
   isSumRow?: boolean;
 };
 
 const comparisonRows: ComparisonRow[] = [
-  { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: 3000, premium: 3000 },
-  { id: 2, coverage: '보험료납입면제대상보장(5대유사)', amount: 10, premium: 10 },
-  { id: 3, coverage: '상해사망(간편)', amount: 15000, premium: 15000 },
-  { id: 4, coverage: '상해후유장해(3-100%)', amount: 10000, premium: 10000 },
-  { id: 5, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-  { id: 6, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-  { id: 7, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-  { id: 8, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-  { id: 9, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
-  { id: 10, coverage: '질병사망(간편)', amount: 10000, premium: 10000 },
+  { id: 1, state: '보통약관', code:'A001', term1: '2026-11-11', term2: '2026-11-11', coverage: '보통약관(상해80%이상후유장해)', premium: 3000 },
+  { id: 2, state: '보험료납', code:'A002', term1: '2026-11-11', term2: '2026-11-11', coverage: '보험료납입면제대상보장(5대유사)', premium: 10 },
+  { id: 3, state: '상해사망', code:'A003', term1: '2026-11-11', term2: '2026-11-11', coverage: '상해사망(간편)', premium: 15000 },
+  { id: 4, state: '상해후유장해', code:'A004', term1: '2026-11-11', term2: '2026-11-11', coverage: '상해후유장해(3-100%)', premium: 10000 },
+  { id: 5, state: '질병사망', code:'A005', term1: '2026-11-11', term2: '2026-11-11', coverage: '질병사망(간편)', premium: 10000 },
+  { id: 6, state: '질병사망', code:'A006', term1: '2026-11-11', term2: '2026-11-11', coverage: '질병사망(간편)', premium: 10000 },
+  { id: 7, state: '질병사망', code:'A007', term1: '2026-11-11', term2: '2026-11-11', coverage: '질병사망(간편)', premium: 10000 },
+  { id: 8, state: '질병사망', code:'A008', term1: '2026-11-11', term2: '2026-11-11', coverage: '질병사망(간편)', premium: 10000 },
+  { id: 9, state: '질병사망', code:'A009', term1: '2026-11-11', term2: '2026-11-11', coverage: '질병사망(간편)', premium: 10000 },
+  { id: 10, state: '질병사망', code:'A010', term1: '2026-11-11', term2: '2026-11-11', coverage: '질병사망(간편)', premium: 10000 },
 ];
 
 export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs2: ColDef<ComparisonRow>[] = [
     {
-      headerName: '담보명',
+      headerName: '담보상태',
+      field: 'state',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '담보코드',
+      field: 'code',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '담보보험시기',
+      field: 'term1',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '담보보험종기',
+      field: 'term2',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '세부담보명',
       field: 'coverage',
       flex: 1,
       cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-center'),
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         params.data?.isSumRow ? <b>합계</b> : params.value,
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'amount',
-      width: 120,
-      cellClass: 'text-right',
-      cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
-        params.data?.isSumRow ? (
-          <b>{Number(params.value ?? 0).toLocaleString()}</b>
-        ) : (
-          Number(params.value ?? 0).toLocaleString()
-        ),
     },
     {
       headerName: '보험료(원)',
@@ -88,8 +103,11 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
     () => [
       {
         id: -1,
+        state: '',
+        code: '',
+        term1: '',
+        term2: '',
         coverage: '합계',
-        amount: rowData2.reduce((sum, row) => sum + row.amount, 0),
         premium: rowData2.reduce((sum, row) => sum + row.premium, 0),
         isSumRow: true,
       },
@@ -152,9 +170,6 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                저장
-              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

@@ -81,10 +81,6 @@ export const Ltpz998 = ({ open, onOpenChange }: PopupBaseProps) => {
             />
           </div>
         </DialogSection>
-
-        <DialogFooter>
-          <DialogBottomInfo />
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -14,9 +14,10 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogFooterArea, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -113,21 +114,21 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
   const dummyData2: DummyDataType2[] = [
     {
       id: 1,
-      field1: '담보명',
+      field1: '고액함암약물허가치료(신정원)',
       field2: '28990',
-      field3: '2026-01-01~2026-12-31',
+      field3: '20년납',
     },
     {
       id: 2,
       field1: '담보명',
       field2: '28990',
-      field3: '2026-01-01~2026-12-31',
+      field3: '20년납',
     },
     {
       id: 3,
       field1: '담보명',
       field2: '28990',
-      field3: '2026-01-01~2026-12-31',
+      field3: '20년납',
     },
   ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
@@ -147,7 +148,8 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '보험기간',
       field: 'field3',
-      flex: 1,
+      width: 80,
+      cellClass: 'text-left',
     },
   ];
 
@@ -187,6 +189,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormCell title={'설계상태'}>
                       <NativeSelect width={'auto'}>
                         {[
+                          '전체',
                           '설계중',
                           '간편설계',
                           '설계심사중',
@@ -246,11 +249,12 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Gcol gap={2.5} placement="ss">
                 <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'동일모집인'}>동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.</FormCell>
+                    <FormCell title={'동일모집인'}>1  동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.</FormCell>
                     <FormCell title={'상장구분'}>
                       <b>hong gum</b>
                     </FormCell>
-                    <FormCell title={'설립일자'} tdClassName={'justify-center'}>
+                    <FormCell title={'설립일자'} tdClassName={'justify-between'}>
+                      3
                       <Button color="gray" onClick={() => {}} size="lg" variant="contained">
                         설계조회
                       </Button>
@@ -282,12 +286,11 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                   />
                 </div>
-
                 <Grow className="w-full" placement="ss" gap={5}>
                   <TableFold>
                     <TableFoldHead title={'현재 설계'} />
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
                         <FormRow>
                           <FormCell title={'설계번호'}>
                             <b>234234</b>
@@ -301,7 +304,14 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                             <b>ㅇㅇㅇㅇㅇㅇ</b>
                           </FormCell>
                           <FormCell title={'취급자'}>
-                            <b>홍길동</b>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <b className='truncate block w-[8rem]'>홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동</b>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                {`홍길동홍길동`}
+                              </TooltipContent>
+                            </Tooltip>
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -323,7 +333,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <TableFold>
                     <TableFoldHead title={'비교 설계'} />
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
                         <FormRow>
                           <FormCell title={'설계번호'}>
                             <b>234234</b>
@@ -337,7 +347,14 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                             <b>ㅇㅇㅇㅇㅇㅇ</b>
                           </FormCell>
                           <FormCell title={'취급자'}>
-                            <b>홍길동</b>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <b className='truncate block w-[8rem]'>홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동</b>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                {`홍길동홍길동`}
+                              </TooltipContent>
+                            </Tooltip>
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -370,6 +387,18 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogSection>
 
         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                저장
+              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

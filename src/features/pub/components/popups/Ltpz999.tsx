@@ -173,6 +173,7 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
                 resizable: true,
               }}
               domLayout="normal"
+              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>
