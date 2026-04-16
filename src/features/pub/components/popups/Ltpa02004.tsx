@@ -1,10 +1,10 @@
 'use client';
 
+
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -22,15 +22,6 @@ import {
 import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
-// ag-theme-alpine div의 스크롤 동기화를 위한 Context
-type TableScrollSyncContextType = {
-  register: (ref: React.RefObject<HTMLDivElement | null>) => void;
-  unregister: (ref: React.RefObject<HTMLDivElement | null>) => void;
-  syncScroll: (source: HTMLDivElement, scrollTop: number) => void;
-};
-
-const TableScrollSyncContext = React.createContext<TableScrollSyncContextType | null>(null);
 
 function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
   if (typeof column.width === 'number') {
@@ -102,14 +93,12 @@ function getComparisonHeaderCellStyle2(column: ColDef): React.CSSProperties {
   };
 }
 
-// 첫번째 항목 DummyDataType
 type DummyDataType = {
   id: number;
   field1: string | number;
   field2: string | number;
   field3: string | number;
 };
-
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -173,21 +162,12 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 11,
-    field1: '질병사항(간편)',
+    field1: '4444질병사항(간편)',
     field2: '10000',
     field3: '10000',
   },
 ];
-
-// 두번째 항목 DummyDataType
-type DummyDataType1 = {
-  id: number;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-};
-
-const DummyData1: DummyDataType1[] = [
+const DummyData1: DummyDataType[] = [
   {
     id: 1,
     field1: '보험료납입면제대상보장(5대유해)(간편)',
@@ -255,16 +235,7 @@ const DummyData1: DummyDataType1[] = [
     field3: '10000',
   },
 ];
-
-// 세번째 항목 DummyDataType
-type DummyDataType2 = {
-  id: number;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-};
-
-const DummyData2: DummyDataType2[] = [
+const DummyData2: DummyDataType[] = [
   {
     id: 1,
     field1: '보험료납입면제대상보장(5대유해)(간편)',
@@ -321,22 +292,22 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 10,
-    field1: '질병사항(간편)',
+    field1: '444질병사항(간편)',
     field2: '10000',
     field3: '10000',
   },
   {
     id: 11,
-    field1: '질병사항(간편)',
+    field1: '222질병사항(간편)',
     field2: '10000',
     field3: '10000',
   },
 ];
 
 export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
-  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const [rowData1] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData2] = React.useState<DummyDataType[]>(DummyData1);
+  const [rowData3] = React.useState<DummyDataType[]>(DummyData2);
 
   // DummyDataType
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -377,9 +348,45 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
       editable: false, 
     },
   ];
-
-  // DummyDataType1
-  const columnDefs1: ColDef<DummyDataType1>[] = [
+  const columnDefs1: ColDef<DummyDataType>[] = [
+    {
+      headerName: '담보명',
+      field: 'field1',
+      flex: 1,
+      colSpan: (params) => {
+        // 합계 행이면 이름+서브레이블 합치기
+        if (params.data?.id === 0) return 2;
+        return 1;
+      },
+    },
+    {
+      headerName: '가입금액(원)',
+      field: 'field2',
+      width: 70,
+      valueFormatter: numberValueFormatter,
+      colSpan: (params) => {
+        // 합계 행이면 숨김
+        if (params.data?.id === 0) return 0;
+        return 1;
+      },
+      cellClass: (params) => {
+        if (params.data?.id === 0) return 'hidden';
+        return 'text-right';
+      },
+    },
+    {
+      headerName: '보험료(원)',
+      field: 'field3',
+      width: 70,
+      valueFormatter: numberValueFormatter, 
+      cellClass: (params) => {
+        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
+        return 'text-right';
+      },
+      editable: false, 
+    },
+  ];
+  const columnDefs2: ColDef<DummyDataType>[] = [
     {
       headerName: '담보명',
       field: 'field1',
@@ -418,112 +425,21 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  // DummyDataType2
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      flex: 1,
-      colSpan: (params) => {
-        // 합계 행이면 이름+서브레이블 합치기
-        if (params.data?.id === 0) return 2;
-        return 1;
-      },
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'field2',
-      width: 70,
-      valueFormatter: numberValueFormatter,
-      colSpan: (params) => {
-        // 합계 행이면 숨김
-        if (params.data?.id === 0) return 0;
-        return 1;
-      },
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'hidden';
-        return 'text-right';
-      },
-    },
-    {
-      headerName: '보험료(원)',
-      field: 'field3',
-      width: 70,
-      valueFormatter: numberValueFormatter, 
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
-        return 'text-right';
-      },
-      editable: false, 
-    },
-  ];
-
-  // 첫 번째 합계 행 생성 (field3가 숫자인 값만 합산)
-  const sumRow = React.useMemo(() => {
-    const total = rowData.reduce((acc, cur) => {
-      const field3Num = typeof cur.field3 === 'number' ? cur.field3 : Number(cur.field3);
-      return acc + (isNaN(field3Num) ? 0 : field3Num);
-    }, 0);
-    return [{ 
-      id: 0, 
-      field1: '예상보험료', 
-      field2: '',           
-      field3: total 
-    }];
-
-  }, [rowData]);
-
-  // 두 번째 합계 행 생성 (rowData1 기준)
-  const sumRow1 = React.useMemo(() => {
-    const total = rowData1.reduce((acc, cur) => {
-      const field3Num = typeof cur.field3 === 'number' ? cur.field3 : Number(cur.field3);
-      return acc + (isNaN(field3Num) ? 0 : field3Num);
-    }, 0);
-    return [
-      {
-        id: 0,
-        field1: '예상보험료',
-        field2: '',
-        field3: total,
-      },
-    ];
-  }, [rowData1]);
-
-  // 세 번째 합계 행 생성 (rowData2 기준)
-  const sumRow2 = React.useMemo(() => {
-    const total = rowData2.reduce((acc, cur) => {
-      const field3Num = typeof cur.field3 === 'number' ? cur.field3 : Number(cur.field3);
-      return acc + (isNaN(field3Num) ? 0 : field3Num);
-    }, 0);
-    return [
-      {
-        id: 0,
-        field1: '예상보험료',
-        field2: '',
-        field3: total,
-      },
-    ];
-  }, [rowData2]);
-
-  // ag-theme-alpine div ref 및 스크롤 동기화
-  const scrollDivRef = React.useRef<HTMLDivElement>(null);
-  const scrollSync = React.useContext(TableScrollSyncContext);
-  React.useEffect(() => {
-    if (!scrollSync) return;
-    scrollSync.register(scrollDivRef);
-    return () => scrollSync.unregister(scrollDivRef);
-  }, [scrollSync]);
-  React.useEffect(() => {
-    if (!scrollSync) return;
-    const div = scrollDivRef.current;
-    if (!div) return;
-    const handleScroll = () => {
-      if (!scrollSync) return;
-      scrollSync.syncScroll(div, div.scrollTop);
-    };
-    div.addEventListener('scroll', handleScroll);
-    return () => div.removeEventListener('scroll', handleScroll);
-  }, [scrollSync]);
+  // 013페이지 방식: 외부 스크롤 div 동기화
+  const scrollRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const isSyncing = React.useRef(false);
+  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
+    if (isSyncing.current) return;
+    isSyncing.current = true;
+    const target = e.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
+    scrollRefs.current.forEach((ref, i) => {
+      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
+        ref.scrollTop = scrollTop;
+      }
+    });
+    setTimeout(() => { isSyncing.current = false; }, 0);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -538,6 +454,7 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[1fr]">
           <Grow gap={3}>
+            {[...Array(3)].map((_, i) => (
             <Gcol className="overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5">
               <Grow placement='bws' className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
                 <Gcol placement="ss">
@@ -557,11 +474,12 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
                   ></Checkbox>
                 </Grow>
               </Grow>
-              <Grow className="w-full px-[1rem] pb-[1rem]">
+              <Grow className="w-full px-[1rem] pb-[2rem] [&_.ag-floating-bottom]:!sticky [&_.ag-floating-bottom]:bottom-0">
                 {/* scrollable content */}
-                <div 
-                  ref={scrollDivRef}
+                <div
                   className="ag-theme-alpine no-header w-full min-h-132 max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                  ref={el => { scrollRefs.current[i + 1] = el; }}
+                  onScroll={e => handleSyncScroll(i + 1, e)}
                 >
                   <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
                     {columnDefs.map((column, index) => {
@@ -580,138 +498,34 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
                       );
                     })}
                   </div>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      domLayout="autoHeight"
-                      // 합계 행 설정
-                      pinnedBottomRowData={sumRow}
-                    />
-                  </div>
+                  <AgGridReact<DummyDataType>
+                    // 합계 행 설정
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3}
+                    columnDefs={columnDefs}
+                    headerHeight={0}
+                    groupHeaderHeight={0}
+                    defaultColDef={{
+                      suppressMovable: true,
+                      sortable: false,
+                      resizable: false,
+                    }}
+                    domLayout="autoHeight"
+                  />
+                 
+                  <Grow className="sticky bottom-0 z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]" placement='bwc'>
+                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-gray-100)]">
+                      예상보험표
+                    </Typo>
+                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
+                      7000
+                    </Typo>
+                  </Grow>
                 </div>
               </Grow>
-
             </Gcol>
-            {/* 두번째 항목 */}
-            <Gcol className="overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5">
-              <Grow placement='bws' className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
-                <Gcol placement="ss">
-                  <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
-                    한화 3N5 더간편건강보험(세만기형) 2601
-                  </Typo>
-                  <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
-                    기본형·납입면제운영형·3N5간편고간편고지형III
-                  </Typo> 
-                </Gcol>
-                <Grow>
-                  <Checkbox
-                    color="primary"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="default"
-                  ></Checkbox>
-                </Grow>
-              </Grow>
-              <Grow className="w-full px-[1rem] pb-[1rem]">
-                {/* scrollable content */}
-                <div 
-                  ref={scrollDivRef}
-                  className="ag-theme-alpine no-header w-full min-h-132 max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                >
-                  <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                    {columnDefs.map((column, index) => {
-                      const key = column.field ?? column.headerName ?? `column-${index}`;
-        
-                      return (
-                        <div
-                          key={key}
-                          className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                          style={getComparisonHeaderCellStyle1(column)}
-                        >
-                          <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
-                            {column.headerName}
-                          </Typo>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType1>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData1}
-                      columnDefs={columnDefs1}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      domLayout="autoHeight"
-                      // 합계 행 설정
-                      pinnedBottomRowData={sumRow}
-                    />
-                  </div>
-                </div>
-              </Grow>
-
-              
-            </Gcol>
-             {/* 세번째 항목 */}
-             <Gcol className="overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5">
-              <Grow placement='bws' className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
-                <Gcol placement="ss">
-                  <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
-                    한화 3N5 더간편건강보험(세만기형) 2601
-                  </Typo>
-                  <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
-                    기본형·납입면제운영형·3N5간편고간편고지형III
-                  </Typo> 
-                </Gcol>
-                <Grow>
-                  <Checkbox
-                    color="primary"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="default"
-                  ></Checkbox>
-                </Grow>
-              </Grow>
-              <Grow className="w-full px-[1rem] pb-[1rem]">
-                {/* scrollable content */}
-                <div 
-                  ref={scrollDivRef}
-                  className="ag-theme-alpine no-header w-full min-h-132 max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                >
-                  <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                    {columnDefs.map((column, index) => {
-                      const key = column.field ?? column.headerName ?? `column-${index}`;
-        
-                      return (
-                        <div
-                          key={key}
-                          className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                          style={getComparisonHeaderCellStyle2(column)}
-                        >
-                          <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
-                            {column.headerName}
-                          </Typo>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData2}
-                      columnDefs={columnDefs2}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      domLayout="autoHeight"
-                      // 합계 행 설정
-                      pinnedBottomRowData={sumRow}
-                    />
-                  </div>
-                </div>
-              </Grow>
-
-            </Gcol>
+            ))}
           </Grow>
         </DialogSection>
 
