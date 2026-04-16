@@ -4,7 +4,7 @@ import { Gcol, Grow, Typo, Divider, Grid } from '@atoms';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import { BottomBar } from '@common/BottomBar';
-import { AdderIcon, AdderIcon2, AiIcon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon, ArrowDoubleIcon, ArrowIcon } from '@icons';
+import { AdderIcon, AdderIcon2, Ai2Icon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon, ArrowDoubleIcon, ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -17,7 +17,7 @@ import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridReact } from 'ag-grid-react';
 import { Badge } from '@uiux/Badge';
@@ -28,7 +28,7 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { DatePickerInput } from '@common/DatePicker';
 import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 import Image from 'next/image';
-
+import AIChatBot from '@features/AIChatBot';
 import {
   dummyData,
   dummyData2,
@@ -54,8 +54,51 @@ export default function Ltpa020Section() {
   const [analysisScore, setAnalysisScore] = React.useState<number | null>(null);
   const [historyScore, setHistoryScore] = React.useState<number | null>(null);
 
+  const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+  const [gridKey, setGridKey] = useState(0);
+
+  const [coverageName, setCoverageName] = useState('');
+
 
   // 상품선택 AG-Grid 컬럼 정의
+  const productNameHeader = useCallback(() => {
+    const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
+      setShowProductNameTooltip(!!checked);
+      if (!checked) setGridKey((key) => key + 1);
+    };
+    return (
+      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
+        <Grow>
+          <Input
+            aria-label="상품명"
+            placeholder="상품명 입력"
+            type="text"
+            width={'full'}
+            size={'sm'}
+            clear={true}
+          />
+          <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+          <Button
+            aria-label="상품명 초기화"
+            variant={'outlined'}
+            color={'gray-light'}
+            only={'icon'}
+            size={'md'}
+          >
+            <ResetIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </Grow>
+        <Grow placement={'sc'}>
+          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
+            상품명 말풍선
+          </Checkbox>
+        </Grow>
+      </Grow>
+    );
+  }, [coverageName, showProductNameTooltip]);
+
   const importanceCellRenderer =  (params: ICellRendererParams<DummyDataType>) => {
     const badgeText = params.data?.badge ?? '';
     return (
@@ -69,7 +112,7 @@ export default function Ltpa020Section() {
             <Grow className="shrink-0">
               {([
                 { label: '무해지', color: 'green' },
-                { label: '간편', color: 'blue' },
+                { label: '차움', color: 'blue' },
                 { label: '할증', color: 'red' },
                 { label: '여성', color: 'purple' },
               ] as const).map((badge) =>
@@ -129,7 +172,9 @@ export default function Ltpa020Section() {
       flex: 1,
       field: 'field2',
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
       cellRenderer: importanceCellRenderer,
+      headerComponent: productNameHeader,
     },
     {
       headerName: '상품분류', 
@@ -144,6 +189,7 @@ export default function Ltpa020Section() {
       field: 'field1',
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
       cellRenderer: designCellRenderer,
     },
      {
@@ -158,6 +204,7 @@ export default function Ltpa020Section() {
       headerName: '플랜명', 
       field: 'field1',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
     },
     {
       headerName: '담보보기', 
@@ -196,11 +243,12 @@ export default function Ltpa020Section() {
       headerName: '담보명',
       field: 'field1',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyData4ListDetailType>({ field: 'field1' }),
     },
     {
-      headerName: '가입금액(원)',
+      headerName: '가입금액(만원)',
       field: 'field2',
-      width: 70,
+      width: 80,
       cellClass: 'text-right',
     },
     {
@@ -212,9 +260,7 @@ export default function Ltpa020Section() {
   ];
 
   const [listSelected, setListSelected] = useState<number | null>(dummyData4List[0]?.id ?? null);
-  const [checkedMap, setCheckedMap] = useState<Record<number, boolean>>({});
   const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
-  const [amountValues, setAmountValues] = useState<Record<string, string>>({});
   const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(false);
   const [showMoreButton, setShowMoreButton] = useState<boolean>(true);
   const [isAddPanelOpen, setIsAddPanelOpen] = useState<boolean>(false);
@@ -330,13 +376,9 @@ export default function Ltpa020Section() {
     { value: '기계약 유지', label: '기계약 유지' },
   ] as const;
   type AnalysisOptionValue = (typeof AnalysisOptions)[number]['value'];
-  const [selectedAnalysisValues, setSelectedAnalysisValues] = useState<AnalysisOptionValue[]>([]);
-  const selectedAnalysisSummary =
-    selectedAnalysisValues.length === 0
-      ? '선택'
-      : selectedAnalysisValues.length === 1
-        ? selectedAnalysisValues[0]
-        : `${selectedAnalysisValues[0]} 외 ${selectedAnalysisValues.length - 1}개`;
+  type AnalysisOptionValueWithEmpty = '' | AnalysisOptionValue;
+  const [selectedAnalysisValue, setSelectedAnalysisValue] = useState<AnalysisOptionValueWithEmpty>('');
+  const selectedAnalysisSummary = selectedAnalysisValue ? selectedAnalysisValue : '선택';
   // 상품특징
   type ApplyOptionValue = '' | '적용' | '미적용';
   type MaturityOptionValue = '' | '세만기' | '연만기';
@@ -783,13 +825,6 @@ export default function Ltpa020Section() {
                               placeholder='가입금액'
                               commaAmount
                               size={'md'}
-                              value={amountValues[opt.value] ?? ''}
-                              onChange={(e) =>
-                                setAmountValues((prev) => ({
-                                  ...prev,
-                                  [opt.value]: e.target.value,
-                                }))
-                              }
                             />
                           )}
                         </Grow>
@@ -807,12 +842,12 @@ export default function Ltpa020Section() {
                       <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                         <FormRow>
                           <FormCell title={'무해지'}>
-                             <RadioGroup value={noRefundValue} onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}>
+                             <RadioGroup value={noRefundValue} onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)} className='grid grid-cols-[1fr_1fr] w-[16rem]'>
                               {[
                                 { value: '적용', label: '적용' },
                                 { value: '미적용', label: '미적용' },
                               ].map((opt) => (
-                                <RadioGroupItem key={opt.value} value={opt.value}>
+                                <RadioGroupItem key={opt.value} value={opt.value} >
                                   {opt.label}
                                 </RadioGroupItem>
                               ))}
@@ -821,7 +856,7 @@ export default function Ltpa020Section() {
                         </FormRow>
                         <FormRow>
                           <FormCell title={'납면'}>
-                             <RadioGroup value={premiumWaiverValue} onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)}>
+                             <RadioGroup value={premiumWaiverValue} onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)} className='grid grid-cols-[1fr_1fr] w-[16rem]'>
                               {[
                                 { value: '적용', label: '적용' },
                                 { value: '미적용', label: '미적용' },
@@ -835,7 +870,7 @@ export default function Ltpa020Section() {
                         </FormRow>
                         <FormRow>
                           <FormCell title={'만기'}>
-                             <RadioGroup value={maturityValue} onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)}>
+                             <RadioGroup value={maturityValue} onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)} className='grid grid-cols-[1fr_1fr] w-[16rem]'>
                               {[
                                 { value: '세만기', label: '세만기' },
                                 { value: '연만기', label: '연만기' },
@@ -854,26 +889,22 @@ export default function Ltpa020Section() {
                     {/* 보장분석 or 고지유형 */}
                     {customerType === 'recent' ? (
                       <Gcol placement='ss' className='pl-[1.2rem]'>
-                        <CheckboxGroup className="gap-[0.4rem] flex-col items-start" value={[]} onValueChange={() => {}}>
+                        <RadioGroup
+                          className="gap-[0.4rem] flex-col items-start"
+                          value={selectedAnalysisValue}
+                          onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                        >
                           {AnalysisOptions.map((opt) => (
-                            <Checkbox 
-                              key={opt.value} 
-                              value={opt.value} 
+                            <RadioGroupItem
+                              key={opt.value}
+                              value={opt.value}
                               variant="button"
-                              className="w-[12.7rem]"
-                              checked={selectedAnalysisValues.includes(opt.value)}
-                              onCheckedChange={(checked) => {
-                                setSelectedAnalysisValues((prev) => {
-                                  const nextChecked = checked === true;
-                                  if (nextChecked) {
-                                    return prev.includes(opt.value) ? prev : [...prev, opt.value];
-                                  }
-                                  return prev.filter((value) => value !== opt.value);
-                                });
-                              }}
-                            >{opt.label}</Checkbox>
+                              className="w-[15rem] !text-left"
+                            >
+                              {opt.label}
+                            </RadioGroupItem>
                           ))}
-                        </CheckboxGroup>
+                        </RadioGroup>
                       </Gcol>
                     ) : (
                       <Gcol placement='ss' className='pl-[1.2rem]'>
@@ -969,6 +1000,8 @@ export default function Ltpa020Section() {
                         rowData={dummyData}
                         columnDefs={columnDefs}
                         domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </TableFoldBody>
@@ -985,6 +1018,8 @@ export default function Ltpa020Section() {
                           rowData={dummyData2}
                           columnDefs={columnDefs2}
                           domLayout="normal"
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                         />
                       </div>
                     </TableFoldBody>
@@ -1012,6 +1047,8 @@ export default function Ltpa020Section() {
                         rowData={selectedPlanRowData}
                         columnDefs={columnDefs3}
                         domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </TabPager>
@@ -1050,13 +1087,6 @@ export default function Ltpa020Section() {
                                 <Checkbox
                                   size="xl"
                                   color='secondary'
-                                  checked={checkedMap[item.id] ?? false}
-                                  onCheckedChange={(checked) => {
-                                    setCheckedMap((prev) => ({
-                                      ...prev,
-                                      [item.id]: checked === true,
-                                    }));
-                                  }}
                                 ></Checkbox>
                               </div>
                               <Gcol className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top]   rounded-b-[1rem] p-[1rem] gap-2 w-full px-[1.6rem] pt-[2rem] pb-[1rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white" placement='ss'>
@@ -1146,7 +1176,7 @@ export default function Ltpa020Section() {
                                 placement="bwe"
                               >
                                 <Grow gap={0.2} placement="sc">
-                                  <AiIcon size={10} color='var(--color-information-50)' />
+                                  <Ai2Icon size={10} color='var(--color-information-50)' />
                                   <Typo tag="p" variant="body-xs" weight="bold" className="text-[var(--color-information-50)]">
                                     AI 추천이유
                                   </Typo>
@@ -1176,6 +1206,8 @@ export default function Ltpa020Section() {
                             columnDefs={columnDefs4}
                           
                             domLayout="normal"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </Grid>
@@ -1191,16 +1223,30 @@ export default function Ltpa020Section() {
           <MainBottom>
             <MainBottomItem className="justify-end">
               
-              <Grow gap={1}>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  <AiIcon size={22} color={'var(--color-secondary-90)'} color2={'var(--color-secondary-90)'} />
-                  추천설계
-                </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                  설계시작
-                  <ArrowNext size={16} />
-                </Button>
-              </Grow>
+              {dataNone ? (
+                <Grow gap={1}>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    <Ai2Icon />
+                    추천설계
+                  </Button>
+                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                    설계시작
+                    <ArrowNext size={16} />
+                  </Button>
+                </Grow>
+              ) : (
+                <Grow gap={1}>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    <Ai2Icon />
+                    추천설계비교
+                  </Button>
+                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                    설계생성(2)
+                    <ArrowNext size={16} />
+                  </Button>
+                  <AIChatBot />
+                </Grow>
+              )}
             </MainBottomItem>
           </MainBottom>
         }
