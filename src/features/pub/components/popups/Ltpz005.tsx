@@ -400,8 +400,8 @@ const DummyData3: DummyDataType3[] = [
 const DummyData4: DummyDataType4[] = [
   {
     id: 201,
-    accumName: '암진단비(업계누적)',
-    accumType: '업계',
+    accumName: '암진단비(손생보)',
+    accumType: '-',
     pseudoAccumAmount: '15,000',
     totalAmount: '20,000',
     limitAmount: '18,000',
@@ -413,16 +413,16 @@ const DummyData4: DummyDataType4[] = [
   },
   {
     id: 202,
-    accumName: '유사암진단비(업계누적)',
-    accumType: '업계',
-    pseudoAccumAmount: '2,000',
-    totalAmount: '3,000',
-    limitAmount: '3,000',
+    accumName: '암진단비(손생보)',
+    accumType: '-',
+    pseudoAccumAmount: '15,000',
+    totalAmount: '20,000',
+    limitAmount: '18,000',
     guaranteeName: '유사암진단비(기타피부암)',
     designAmount: '1,000',
     multiplier: '1.0',
     appliedAmount: '1,000',
-    excessAmount: '0',
+    excessAmount: '2,000',
   },
 ];
 
@@ -707,7 +707,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
       cellClass: 'flex! items-center! justify-center!',
     },
     {
-      headerName: '가누적금액(원)',
+      headerName: '기누적금액(원)',
       field: 'pseudoAccumAmount',
       width: 90,
       spanRows: true,

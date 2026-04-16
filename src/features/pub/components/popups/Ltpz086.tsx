@@ -103,6 +103,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       colSpan: (params) => (params.node?.rowPinned ? 9 : 1),
       cellClass: 'flex! items-center! justify-center!',
       cellStyle: (params) => (params.node?.rowPinned ? { textAlign: 'center' } : undefined),
+      
     },
     {
       headerName: '증권번호/설계번호',
@@ -235,7 +236,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormCell title="인수제한">청약완료불가(업계누적)</FormCell>
                     <FormCell title="누적명">암진단비(손생보)</FormCell>
                     <FormCell title="누적유형">-</FormCell>
-                    <FormCell title="기눅적금액">4,700</FormCell>
+                    <FormCell title="기누적금액">4,700</FormCell>
                     <FormCell title="합계">4,700</FormCell>
                     <FormCell title="한도">30,000</FormCell>
                   </FormRow>
@@ -244,7 +245,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
             </TableFold>
 
             <TableFold>
-              <TableFoldHead title="계약전환용 실손의료비(갱신형)" />
+              <TableFoldHead title="기계약 사항" />
               <TableFoldBody className="grid-rows-[auto_1fr]">
                 <Gcol className="w-full" gap={4}>
                   <div className="ag-theme-alpine min-h-[18.4rem]">
