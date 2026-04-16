@@ -1,9 +1,12 @@
 'use client';
 
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { TooltipQ } from '@/shared/components/common/TooltipQ';
+import { Accordion } from '@/shared/components/uiux/Accordion';
 import { useTabs } from '@/shared/hooks/useTabs';
 import {
   amountUnitInputCellRenderer,
@@ -37,12 +40,20 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 // data
 import { planAccordionItems } from '../data/ltpa3500204';
 
-import type { Ltpa350Step2DataType, Ltpa350Step2DataType2, Ltpa350Step2DataType3, Ltpa350Step2DataType4, Ltpa350Step2DataType5 } from '../data/ltpa350Step2Data';
-import { Ltpa350Step2Data, Ltpa350Step2Data2, Ltpa350Step2Data3, Ltpa350Step2Data4, Ltpa350Step2Data5 } from '../data/ltpa350Step2Data';
-
-import { Accordion } from '@/shared/components/uiux/Accordion';
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { TooltipQ } from '@/shared/components/common/TooltipQ';
+import type {
+  Ltpa350Step2DataType,
+  Ltpa350Step2DataType2,
+  Ltpa350Step2DataType3,
+  Ltpa350Step2DataType4,
+  Ltpa350Step2DataType5,
+} from '../data/ltpa350Step2Data';
+import {
+  Ltpa350Step2Data,
+  Ltpa350Step2Data2,
+  Ltpa350Step2Data3,
+  Ltpa350Step2Data4,
+  Ltpa350Step2Data5,
+} from '../data/ltpa350Step2Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -98,7 +109,13 @@ type LTPA350GridRow =
       field9?: boolean;
     });
 
-type MainHeadTab = (Ltpa350Step2DataType['tabList'][number] | Ltpa350Step2DataType2['tabList'][number] | Ltpa350Step2DataType3['tabList'][number] | Ltpa350Step2DataType4['tabList'][number] | Ltpa350Step2DataType5['tabList'][number]) & {
+type MainHeadTab = (
+  | Ltpa350Step2DataType['tabList'][number]
+  | Ltpa350Step2DataType2['tabList'][number]
+  | Ltpa350Step2DataType3['tabList'][number]
+  | Ltpa350Step2DataType4['tabList'][number]
+  | Ltpa350Step2DataType5['tabList'][number]
+) & {
   value: string;
 };
 
@@ -155,7 +172,6 @@ export function Ltpa350Step2({
     isFetus ? Ltpa350Step2Data2.agGridTable1 : Ltpa350Step2Data.agGridTable1
   );
 
-
   // 2) Tabs/rowData 분기
   const isFetus3 = viewKey === 'view3';
   const tabListData3 = isFetus3 ? Ltpa350Step2Data3.tabList : Ltpa350Step2Data3.tabList;
@@ -173,7 +189,7 @@ export function Ltpa350Step2({
   const [rowData3, setRowData3] = useState<LTPA350GridRow[]>(
     isFetus3 ? Ltpa350Step2Data3.agGridTable1 : Ltpa350Step2Data3.agGridTable1
   );
-   const [rowData3b, setRowData3b] = useState<LTPA350GridRow[]>(
+  const [rowData3b, setRowData3b] = useState<LTPA350GridRow[]>(
     isFetus3 ? Ltpa350Step2Data3.agGridTable2 : Ltpa350Step2Data3.agGridTable2
   );
 
@@ -189,7 +205,7 @@ export function Ltpa350Step2({
     setActive: Ltpa350SetActive5,
   } = useTabs<MainHeadTab>(stringifiedTabs5);
 
-   // 3) Grid data
+  // 3) Grid data
   const [rowData5, setRowData5] = useState<LTPA350GridRow[]>(
     isFetus5 ? Ltpa350Step2Data5.agGridTable1 : Ltpa350Step2Data5.agGridTable1
   );
@@ -290,7 +306,6 @@ export function Ltpa350Step2({
     });
 
     if (!params.data || !params.data.isDuplicate) {
-      // 원본 행: 1,2,3...
       const order = params.data ? (idToOrder.get(params.data.id) ?? '') : '';
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
@@ -313,12 +328,9 @@ export function Ltpa350Step2({
         </Grow>
       );
     } else {
-      // 복사 행: 원본 순번-복사 인덱스
       const originId = params.data.displayNo;
       const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
-      // 같은 원본에서 복사된 행들 중 현재 행의 인덱스
-      // const sameOriginCopies = allRows.filter((r) => r.isDuplicate && r.displayNo === originId);
-      // const myIdx = sameOriginCopies.findIndex((r) => r === params.data) + 1;
+      
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
@@ -843,7 +855,7 @@ export function Ltpa350Step2({
         sortable: false,
         filter: false,
         editable: true,
-        valueParser: params => Number(params.newValue) || 0,
+        valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter, // 천단위 콤마 표시
       },
       {
@@ -936,12 +948,11 @@ export function Ltpa350Step2({
     [
       amountCellClassRules,
       attributeColumnWidth,
-      duplicateRenderer,
+      // duplicateRenderer,
       expiryCellRenderer,
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
     ]
   );
   const columnDefs3b: ColDef<LTPA350GridRow>[] = useMemo(
@@ -954,7 +965,7 @@ export function Ltpa350Step2({
         sortable: false,
         filter: false,
         spanRows: true,
-        cellClass: 'flex! items-center! justify-center! text-center'
+        cellClass: 'flex! items-center! justify-center! text-center',
       },
       {
         headerName: '',
@@ -965,7 +976,7 @@ export function Ltpa350Step2({
         filter: false,
         autoHeight: true,
         suppressMovable: true, // 이동 방지
-        
+
         // tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
         //   label: '담보명',
         //   field: 'field1',
@@ -995,7 +1006,7 @@ export function Ltpa350Step2({
         sortable: false,
         filter: false,
         editable: true,
-        valueParser: params => Number(params.newValue) || 0,
+        valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter, // 천단위 콤마 표시
       },
       {
@@ -1040,7 +1051,6 @@ export function Ltpa350Step2({
         },
         cellRenderer: expiryCellRenderer,
       },
-      
     ],
     [
       amountCellClassRules,
@@ -1050,10 +1060,8 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
     ]
   );
-
 
   const columnDefs4: ColDef<LTPA350GridRow>[] = useMemo(
     () => [
@@ -1073,7 +1081,7 @@ export function Ltpa350Step2({
           field: 'field1',
         }),
         headerComponent: productNameHeader,
-        cellRenderer: titleRenderer,
+        // cellRenderer: titleRenderer,
       },
       {
         headerName: '속성',
@@ -1149,7 +1157,7 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
+      // titleRenderer,
     ]
   );
 
@@ -1172,7 +1180,7 @@ export function Ltpa350Step2({
           field: 'field1',
         }),
         headerComponent: productNameHeader,
-        cellRenderer: titleRenderer,
+        // cellRenderer: titleRenderer,
       },
       {
         headerName: '속성',
@@ -1259,7 +1267,7 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
+      // titleRenderer,
     ]
   );
   const [amount, setAmount] = useState('0');
@@ -1295,7 +1303,7 @@ export function Ltpa350Step2({
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" sideOffset={8}>
-                  <BulletList className='gap-[0.5rem]'>
+                  <BulletList className="gap-[0.5rem]">
                     {tab.info.map((info: string, index: number) => (
                       <BulletListItem key={index} type="dot">
                         {info}
@@ -1440,21 +1448,18 @@ export function Ltpa350Step2({
                               <SaveIcon /> 나만의설계저장
                             </Button>
 
-                            <Accordion
-                              type="multiple"
-                              className="w-full"
-                            >
+                            <Accordion type="multiple" className="w-full">
                               {planAccordionItems.map((item) => (
                                 <AccordionItem key={item.value} value={item.value}>
-                                  <AccordionTrigger className='w-full group flex justify-between items-center text-[1.3rem] font-bold'>
+                                  <AccordionTrigger className="w-full group flex justify-between items-center text-[1.3rem] font-bold">
                                     {item.trigger}
                                     <ChevronDownIcon
                                       size={14}
-                                      color='#777'
+                                      color="#777"
                                       className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
                                     />
                                   </AccordionTrigger>
-                                  <AccordionContent className='px-[0.8rem]'>
+                                  <AccordionContent className="px-[0.8rem]">
                                     {item.content.map((text, index) => (
                                       <Typo key={`${item.value}-${index}`} variant="body-md">
                                         {text}
@@ -1465,7 +1470,6 @@ export function Ltpa350Step2({
                               ))}
                             </Accordion>
                           </Gcol>
-
                         </SelectDrop>
 
                         <Button
@@ -1719,7 +1723,6 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
@@ -1746,19 +1749,23 @@ export function Ltpa350Step2({
                         'w-[auto]',
                         'w-[8rem]',
                         'w-[auto]',
-                      ]} 
+                      ]}
                     >
-                      <FormRow className='overflow-hidden'>
+                      <FormRow className="overflow-hidden">
                         <FormCell
                           className="bg-(--color-primary-10)! rounded-tl-[1rem]!"
                           title={
                             <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
-                              출생<b className='text-[#FF5C2E]'>전</b>
+                              출생<b className="text-[#FF5C2E]">전</b>
                             </Typo>
                           }
                         />
-                        <FormCell title="환급금" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>div]:justify-end w-52 [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem]' >
-                          <Grow className='w-full flex justify-end'>
+                        <FormCell
+                          title="환급금"
+                          tdClassName="pt-2 pb-2.5"
+                          className="[&>span]:text-[#000]! [&>div]:justify-end w-[13rem] [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem]"
+                        >
+                          <Grow className="w-full flex justify-end">
                             <Input
                               type="tel"
                               commaAmount={true}
@@ -1769,7 +1776,11 @@ export function Ltpa350Step2({
                             />
                           </Grow>
                         </FormCell>
-                        <FormCell title="보장보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>span]:text-[1.2rem]'>
+                        <FormCell
+                          title="보장보험료"
+                          tdClassName="pt-2 pb-2.5"
+                          className="[&>span]:text-[#000]! [&>span]:text-[1.2rem]"
+                        >
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1779,7 +1790,11 @@ export function Ltpa350Step2({
                             className="[&_input]:text-right"
                           />
                         </FormCell>
-                        <FormCell title="적립보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>span]:text-[1.2rem]'>
+                        <FormCell
+                          title="적립보험료"
+                          tdClassName="pt-2 pb-2.5"
+                          className="[&>span]:text-[#000]! [&>span]:text-[1.2rem]"
+                        >
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1789,7 +1804,11 @@ export function Ltpa350Step2({
                             className="text-right"
                           />
                         </FormCell>
-                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3" className='[&>span]:text-[#000]! [&>span]:text-[1.2rem]'>
+                        <FormCell
+                          title="합계보험료"
+                          tdClassName="pt-2 pb-2.5 pr-3"
+                          className="[&>span]:text-[#000]! [&>span]:text-[1.2rem]"
+                        >
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1808,13 +1827,13 @@ export function Ltpa350Step2({
                           />
                         </FormCell>
                       </FormRow>
-                      <FormRow className='overflow-hidden'>
+                      <FormRow className="overflow-hidden">
                         <FormCell
                           className="bg-(--color-primary-10)!"
                           title={
                             <Grow>
                               <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
-                                출생<b className='text-[#FF5C2E]'>후</b>
+                                출생<b className="text-[#FF5C2E]">후</b>
                               </Typo>
                               <Button variant={'outlined'} color={'gray'} size={'sm'}>
                                 설명
@@ -1824,7 +1843,7 @@ export function Ltpa350Step2({
                         />
                         <FormCell
                           title={
-                            <Grow className='w-48 absolute left-40'>
+                            <Grow className="w-[12rem] absolute left-[10rem]">
                               <Typo variant="body-sm" weight={'bold'}>
                                 만기금(환급률)
                               </Typo>
@@ -1834,7 +1853,7 @@ export function Ltpa350Step2({
                             </Grow>
                           }
                           tdClassName="pt-2 pb-2.5 relative"
-                          className=' [&>span]:text-[#000]! [&>div]:justify-end [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem] [&>span]:relative!]'
+                          className=" [&>span]:text-[#000]! [&>div]:justify-end [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem] [&>span]:relative!]"
                         >
                           <Input
                             type="tel"
@@ -1855,7 +1874,11 @@ export function Ltpa350Step2({
                             after={'%'}
                           />
                         </FormCell>
-                        <FormCell title="보장보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! text-[1.2rem]'>
+                        <FormCell
+                          title="보장보험료"
+                          tdClassName="pt-2 pb-2.5"
+                          className="[&>span]:text-[#000]! text-[1.2rem]"
+                        >
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1865,7 +1888,11 @@ export function Ltpa350Step2({
                             className="[&_input]:text-right"
                           />
                         </FormCell>
-                        <FormCell title="적립보험료" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! text-[1.2rem]'>
+                        <FormCell
+                          title="적립보험료"
+                          tdClassName="pt-2 pb-2.5"
+                          className="[&>span]:text-[#000]! text-[1.2rem]"
+                        >
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1876,7 +1903,7 @@ export function Ltpa350Step2({
                           />
                         </FormCell>
 
-                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3" className='[&>span]:text-[#000]!'>
+                        <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3" className="[&>span]:text-[#000]!">
                           <Input
                             type="tel"
                             commaAmount={true}
@@ -1929,7 +1956,8 @@ export function Ltpa350Step2({
             <>
               <LayoutMainBody>
                 <LayoutScrollWrap className="grid-rows-[60%_1fr] gap-[2rem]">
-                  <LayoutScrollItem className="w-full">
+                  
+                  <LayoutScrollItem className="w-full grid grid-rows-[auto_1fr]">
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
                         <Typo variant="heading-sm">화재기본담보</Typo>
@@ -1937,10 +1965,14 @@ export function Ltpa350Step2({
                       </Grow>
                       <Grow className="gap-2.5">
                         <Grow className="gap-1">
-                          <NativeSelect aria-label="실손전부보상" width={140} size={'sm'} readOnly={false} required={false}>
-                            {[
-                              { label: '실손전부보상', value: 'planA' },
-                            ].map((option) => (
+                          <NativeSelect
+                            aria-label="실손전부보상"
+                            width={140}
+                            size={'sm'}
+                            readOnly={false}
+                            required={false}
+                          >
+                            {[{ label: '실손전부보상', value: 'planA' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
@@ -1986,35 +2018,28 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
+                        // domLayout="normal"
+                        // alwaysShowVerticalScroll={true}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                         tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                         tooltipMouseTrack={showProductNameTooltip ? true : undefined}
                       />
                     </div>
                   </LayoutScrollItem>
-                  <LayoutScrollItem className="w-full">
+                  <LayoutScrollItem className="w-full grid grid-rows-[auto_1fr]">
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
                         <Typo variant="heading-sm">화재특약담보</Typo>
                       </Grow>
                       <Grow className="gap-2.5">
-                        <Button
-                          color="gray"
-                          onClick={() => {}}
-                          only="default"
-                          size="md"
-                          variant="contained"
-                        >
+                        <Button color="gray" onClick={() => {}} only="default" size="md" variant="contained">
                           질권설정
                         </Button>
-                          <TooltipQ>
-                            {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
-                          </TooltipQ>
+                        <TooltipQ>
+                          {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
+                        </TooltipQ>
                       </Grow>
                     </Grow>
                       <div className="ag-theme-alpine h-80">
@@ -2166,7 +2191,7 @@ export function Ltpa350Step2({
             </>
           )}
           {/* 임시 */}
-          
+
           {/* 연금/저축 */}
           {viewKey === 'view5' && (
             <>
@@ -2201,21 +2226,18 @@ export function Ltpa350Step2({
                               <SaveIcon /> 나만의설계저장
                             </Button>
 
-                            <Accordion
-                              type="multiple"
-                              className="w-full"
-                            >
+                            <Accordion type="multiple" className="w-full">
                               {planAccordionItems.map((item) => (
                                 <AccordionItem key={item.value} value={item.value}>
-                                  <AccordionTrigger className='w-full group flex justify-between items-center text-[1.3rem] font-bold'>
+                                  <AccordionTrigger className="w-full group flex justify-between items-center text-[1.3rem] font-bold">
                                     {item.trigger}
                                     <ChevronDownIcon
                                       size={14}
-                                      color='#777'
+                                      color="#777"
                                       className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
                                     />
                                   </AccordionTrigger>
-                                  <AccordionContent className='px-[0.8rem]'>
+                                  <AccordionContent className="px-[0.8rem]">
                                     {item.content.map((text, index) => (
                                       <Typo key={`${item.value}-${index}`} variant="body-md">
                                         {text}
@@ -2226,7 +2248,6 @@ export function Ltpa350Step2({
                               ))}
                             </Accordion>
                           </Gcol>
-
                         </SelectDrop>
 
                         <Button
@@ -2278,7 +2299,6 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
