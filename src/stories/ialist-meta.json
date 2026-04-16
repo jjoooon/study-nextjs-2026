@@ -1,8 +1,40 @@
 {
-  "inspectionList": [],
+  "inspectionList": [
+    "LTPZ999",
+    "LTPZ010",
+    "LTPZ011",
+    "LTPZ012",
+    "LTPZ013",
+    "LTPZ014",
+    "LTPA170",
+    "LTPZ017",
+    "LTPZ019",
+    "LTPZ018",
+    "LTPZ022",
+    "LTPZ024",
+    "LTPZ027",
+    "LTPZ028",
+    "LTPZ030",
+    "LTPZ031",
+    "LTPZ042",
+    "LTPA070",
+    "LTPZ085",
+    "LTPZ086",
+    "LTPA401",
+    "LTPA430",
+    "LTPA160",
+    "LTPA130",
+    "LTPZ062",
+    "LTPZ994",
+    "LTPZ995",
+    "LTPZ996",
+    "LTPZ997"
+  ],
   "ingList": [
     "LTPA350_2",
-    "LTPA050"
+    "LTPA050",
+    "LTPZ050",
+    "LTPZ051"
   ],
   "workListPrev": [
     "LTPZ010",

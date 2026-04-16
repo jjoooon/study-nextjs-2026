@@ -383,7 +383,6 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     pinnedBottomRowData={section2SumData}
                     defaultColDef={{ sortable: false, resizable: false }}
                     domLayout={'normal'}
-                    alwaysShowVerticalScroll={true}
                   />
                 </div>
               </TableFoldBody>

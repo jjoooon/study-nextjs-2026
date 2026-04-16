@@ -3,7 +3,7 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
@@ -180,6 +180,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '담보명',
       field: 'field1',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
       colSpan: (params) => {
         // 합계 행이면 이름+서브레이블 합치기
         if (params.data?.id === 0) return 2;
@@ -298,6 +299,8 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                           resizable: false,
                         }}
                         domLayout="autoHeight"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </Grid>
@@ -424,6 +427,8 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                           resizable: false,
                         }}
                         domLayout="autoHeight"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </Gcol>

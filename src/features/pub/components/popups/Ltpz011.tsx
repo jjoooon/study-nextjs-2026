@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -80,6 +80,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '세부담보명',
       field: 'coverage',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
       cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-center'),
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         params.data?.isSumRow ? <b>합계</b> : params.value,
@@ -160,7 +161,8 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
                   singleClickEdit={true}
                   rowClassRules={{}}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </TableFoldBody>
