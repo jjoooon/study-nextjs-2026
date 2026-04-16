@@ -167,8 +167,6 @@ const DummyData: DummyDataType[] = [
 
 export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
   const handlePreviewClick = (row: DummyDataType) => {
-    // TODO: 실제 미리보기 팝업/라우팅 연동
-    // eslint-disable-next-line no-console
     console.log('[LTPZ001] 미리보기 클릭', row);
   };
 
@@ -278,7 +276,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
               </Grow>
-              <div className="ag-theme-alpine min-h-[18.5rem]">
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   // 필수 props
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -288,8 +286,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{
                     cellClass: 'text-center',
                   }}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  domLayout="autoHeight"
                   // tree data 설정
                   treeData={true}
                   getDataPath={(row) => row.filePath}
@@ -346,7 +343,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
               </Grow>
-              <div className="ag-theme-alpine min-h-[18.5rem]">
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -355,8 +352,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{
                     cellClass: 'text-center',
                   }}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  domLayout="autoHeight"
                   treeData={true}
                   getDataPath={(row) => row.filePath}
                   groupDefaultExpanded={-1}
