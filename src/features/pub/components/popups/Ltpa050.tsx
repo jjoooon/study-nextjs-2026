@@ -23,7 +23,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 
-export const Ltpz021 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa050 = ({ open, onOpenChange }: PopupBaseProps) => {
   const insuranceTabs = [
     { label: '인보험', value: 'human' },
     { label: '물보험', value: 'property' },
@@ -40,7 +40,7 @@ export const Ltpz021 = ({ open, onOpenChange }: PopupBaseProps) => {
               설계비교
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ021)
+              (LTPA050)
             </Typo>
           </DialogTitle>
         </DialogHeader>
