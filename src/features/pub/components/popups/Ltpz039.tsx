@@ -22,6 +22,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -318,21 +319,29 @@ export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full">
-            <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'head'} lineTop={false} caption="">
-                <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                      LA123123123123
-                    </Typo>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                      설계번호의 상품명 text
-                    </Typo>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
+          <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <FormTable variant={'head'} lineTop={false} caption="">
+              <FormRow>
+                <FormCell title={'설계번호'}>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
+                    LA123123123123
+                  </Typo>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
+                    설계번호의 상품명 text
+                  </Typo>
+                </FormCell>
+                <FormCell title={'경과기간세부산출(n년)'}>
+                  <Checkbox
+                    color="primary"
+                    onCheckedChange={() => {}}
+                    >
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">재조회 경과시간이 n년 단위로 산출 됨(자동실행)</Typo>
+                  </Checkbox>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <Gcol className='w-full grid-rows-[auto_1fr]'>
             <div className="ag-theme-alpine min-h-[25.3rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
@@ -344,8 +353,7 @@ export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
                   resizable: false,
                 }}
                 domLayout="normal"
-                alwaysShowVerticalScroll={true}
-/>
+              />
             </div>
             <Gcol className="w-full" placement="ss" variant="box-info">
               <BulletList>
@@ -374,10 +382,7 @@ export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogFooter>
           <DialogFooterArea>
-            <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                확인
-              </Button>
+            <Grow>              
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
