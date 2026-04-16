@@ -786,39 +786,29 @@ export function Ltpa350Step2({
     () => [
       {
         headerName: '부호',
-        field: 'field1',
-        flex: 1,
-        cellClass: 'text-left p-0!',
+        field: 'id',
+        cellClass: 'text-center',
+        width: attributeColumnWidth[0],
         sortable: false,
         filter: false,
         autoHeight: true,
-        suppressMovable: true, // 이동 방지
-        lockPosition: 'left', // 왼쪽 고정 유지
-        lockPinned: true, // 고정 열에서 제외 방지
-        // tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
-        //   label: '담보명',
-        //   field: 'field1',
-        // }),
-        headerComponent: productNameHeader,
-        cellRenderer: titleRenderer,
       },
       {
         headerName: '구분',
-        field: 'field2',
-        width: attributeColumnWidth[0],
-        cellClass: 'text-center',
-        headerClass: 'px-0!',
+        field: 'field1',
+        flex: 1,
+        cellClass: 'text-left',
+        width: attributeColumnWidth[2],
         sortable: false,
         filter: false,
-        resizable: false,
-        cellRenderer: attributeRenderer,
+        autoHeight: true,
       },
       {
         headerName: '가입금액(만원)',
-        field: 'field3',
-        width: attributeColumnWidth[2],
+        field: 'field2',
+        width: attributeColumnWidth[4],
         headerClass: 'px-0!',
-        cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
+        cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: amountCellClassRules,
         sortable: false,
         filter: false,
@@ -828,45 +818,44 @@ export function Ltpa350Step2({
       },
       {
         headerName: '보험료(원)',
-        field: 'field4',
+        field: 'field3',
         width: attributeColumnWidth[2],
-        cellClass: 'text-right',
+        cellClass: 'text-right editable-cell [&_input]:text-right',
         headerClass: 'px-0!',
         sortable: false,
         filter: false,
-        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+        editable: true,
+        cellClassRules: amountCellClassRules,
+        valueParser: params => Number(params.newValue) || 0,
+        valueFormatter: numberValueFormatter, // 천단위 콤마 표시
       },
       {
         headerName: '목적물상세',
-        field: 'field5',
-        width: attributeColumnWidth[1],
-        cellClass: 'text-center px-[0.2rem]!',
+        field: 'field4',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-left px-[0.2rem]!',
         cellClassRules: editableCellClassRules,
         sortable: false,
         filter: false,
         resizable: false,
+        editable: true,
       },
       {
         headerName: '수용장소상세',
-        field: 'field6',
-        width: attributeColumnWidth[1],
-        cellClass: 'text-center px-[0.2rem]!',
+        field: 'field5',
+        width: attributeColumnWidth[2],
+        cellClass: 'text-left',
         cellClassRules: editableCellClassRules,
         sortable: false,
         filter: false,
         resizable: false,
-        editable: getEditableCallback('whenSelected'),
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
-        },
-        cellRenderer: expiryCellRenderer,
+        editable: true,
       },
       {
         headerName: '건물내/외',
-        field: 'field7',
+        field: 'field6',
         headerClass: 'text-center px-0!',
-        width: attributeColumnWidth[1],
+        width: attributeColumnWidth[3],
         cellClass: 'text-center px-[0.2rem]!',
         cellClassRules: editableCellClassRules,
         sortable: false,
@@ -881,8 +870,9 @@ export function Ltpa350Step2({
       },
       {
         headerName: '지하수용',
-        field: 'field8',
+        field: 'field7',
         headerClass: 'text-center px-0!',
+        width: attributeColumnWidth[2],
         cellClass: 'text-center px-[0.2rem]!',
         cellClassRules: editableCellClassRules,
         sortable: false,
@@ -897,8 +887,8 @@ export function Ltpa350Step2({
       },
       {
         headerName: '야적물건',
-        field: 'field9',
-        width: attributeColumnWidth[0],
+        field: 'field8',
+        width: attributeColumnWidth[3],
         headerClass: 'text-center px-0!',
         cellClass: 'text-center px-[0.2rem]!',
         cellClassRules: editableCellClassRules,
@@ -908,7 +898,7 @@ export function Ltpa350Step2({
         editable: getEditableCallback('whenSelected'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: ['가연성', ''],
+          values: ['가연성', '가연성2'],
         },
         cellRenderer: expiryCellRenderer,
       },
@@ -1957,7 +1947,7 @@ export function Ltpa350Step2({
                         </Grow>
                       </Grow>
                     </Grow>
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine h-[20rem]">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
                         rowData={rowData3}
@@ -1967,15 +1957,15 @@ export function Ltpa350Step2({
                         rowSelection={{
                           mode: 'multiRow' as const,
                           checkboxes: true,
-                          headerCheckbox: true,
+                          headerCheckbox: false,
                           enableClickSelection: false,
                           enableSelectionWithoutKeys: true,
                         }}
                         onCellClicked={handleGridCellClickToggle}
                         selectionColumnDef={{
                           width: 30,
-                          // pinned: 'left',
                           cellClass: 'text-center p-0!',
+                          headerName: '선택',
                           cellClassRules: {
                             'pointer-events-none': (params) => !!params.data?.locked,
                           },
@@ -1988,6 +1978,8 @@ export function Ltpa350Step2({
                           if (params.data?.isDuplicate) return 'is-duplicate';
                           return '';
                         }}
+                        domLayout="normal"
+                        alwaysShowVerticalScroll={true}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                         tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                         tooltipMouseTrack={showProductNameTooltip ? true : undefined}
@@ -2008,40 +2000,42 @@ export function Ltpa350Step2({
                         </TooltipQ>
                       </Grow>
                     </Grow>
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<LTPA350GridRow>
-                        key={gridKey}
-                        rowData={rowData3b}
-                        columnDefs={columnDefs3b}
-                        getRowId={(params) => String(params.data.id)}
-                        singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
-                        rowSelection={{
-                          mode: 'multiRow' as const,
-                          checkboxes: true,
-                          headerCheckbox: false,
-                          enableClickSelection: false,
-                          enableSelectionWithoutKeys: true,
-                        }}
-                        onCellClicked={handleGridCellClickToggle}
-                        enableCellSpan={true}
-                        selectionColumnDef={{
-                          width: 30,
-                          // pinned: 'left',
-                          cellClass: 'text-center p-0!',
-                          cellClassRules: {
-                            'pointer-events-none': (params) => !!params.data?.locked,
-                          },
-                        }}
-                        onSelectionChanged={handleGridSelectionChanged}
-                        onGridReady={handleGridReady}
-                        onRowDataUpdated={handleRowDataUpdated}
-                        suppressRowHoverHighlight={false}
-                        tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                        tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                        tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-                      />
-                    </div>
-                  </LayoutScrollItem>
+                      <div className="ag-theme-alpine h-[20rem]">
+                        <AgGridReact<LTPA350GridRow>
+                          key={gridKey}
+                          rowData={rowData3b}
+                          columnDefs={columnDefs3b}
+                          getRowId={(params) => String(params.data.id)}
+                          singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                          rowSelection={{
+                            mode: 'multiRow' as const,
+                            checkboxes: true,
+                            headerCheckbox: false,
+                            enableClickSelection: false,
+                            enableSelectionWithoutKeys: true,
+                          }}
+                          onCellClicked={handleGridCellClickToggle}
+                          enableCellSpan={true}
+                          selectionColumnDef={{
+                            width: 30,
+                            // pinned: 'left',
+                            cellClass: 'text-center p-0!',
+                            cellClassRules: {
+                              'pointer-events-none': (params) => !!params.data?.locked,
+                            },
+                          }}
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
+                          onSelectionChanged={handleGridSelectionChanged}
+                          onGridReady={handleGridReady}
+                          onRowDataUpdated={handleRowDataUpdated}
+                          suppressRowHoverHighlight={false}
+                          tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                          tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                          tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                        />
+                      </div>
+                  </LayoutScrollItem>      
                 </LayoutScrollWrap>
               </LayoutMainBody>
               <LayoutMainFoot>

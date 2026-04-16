@@ -226,7 +226,7 @@ export default function Ltpa350Section() {
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
-  const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
+  const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view3');
 
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
