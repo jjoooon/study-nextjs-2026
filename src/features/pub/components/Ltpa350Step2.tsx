@@ -894,12 +894,11 @@ export function Ltpa350Step2({
     [
       amountCellClassRules,
       attributeColumnWidth,
-      duplicateRenderer,
+      // duplicateRenderer,
       expiryCellRenderer,
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
     ]
   );
   const columnDefs3b: ColDef<LTPA350GridRow>[] = useMemo(
@@ -1008,7 +1007,6 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
     ]
   );
 
@@ -1031,7 +1029,7 @@ export function Ltpa350Step2({
           field: 'field1',
         }),
         headerComponent: productNameHeader,
-        cellRenderer: titleRenderer,
+        // cellRenderer: titleRenderer,
       },
       {
         headerName: '속성',
@@ -1107,7 +1105,7 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
+      // titleRenderer,
     ]
   );
 
@@ -1130,7 +1128,7 @@ export function Ltpa350Step2({
           field: 'field1',
         }),
         headerComponent: productNameHeader,
-        cellRenderer: titleRenderer,
+        // cellRenderer: titleRenderer,
       },
       {
         headerName: '속성',
@@ -1217,7 +1215,7 @@ export function Ltpa350Step2({
       getEditableCallback,
       editableCellClassRules,
       productNameHeader,
-      titleRenderer,
+      // titleRenderer,
     ]
   );
   const [amount, setAmount] = useState('0');
@@ -1677,7 +1675,7 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                          // if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
@@ -1887,7 +1885,8 @@ export function Ltpa350Step2({
             <>
               <LayoutMainBody>
                 <LayoutScrollWrap className="grid-rows-[60%_1fr] gap-[2rem]">
-                  <LayoutScrollItem className="w-full">
+                  
+                  <LayoutScrollItem className="w-full grid grid-rows-[auto_1fr]">
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
                         <Typo variant="heading-sm">화재기본담보</Typo>
@@ -1915,7 +1914,7 @@ export function Ltpa350Step2({
                         </Grow>
                       </Grow>
                     </Grow>
-                    <div className="ag-theme-alpine h-[20rem]">
+                    <div className="ag-theme-alpine">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
                         rowData={rowData3}
@@ -1944,18 +1943,18 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
+                          
                           return '';
                         }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
+                        // domLayout="normal"
+                        // alwaysShowVerticalScroll={true}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                         tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                         tooltipMouseTrack={showProductNameTooltip ? true : undefined}
                       />
                     </div>
                   </LayoutScrollItem>
-                  <LayoutScrollItem className="w-full">
+                  <LayoutScrollItem className="w-full grid grid-rows-[auto_1fr]">
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
                         <Typo variant="heading-sm">화재특약담보</Typo>
@@ -1975,41 +1974,39 @@ export function Ltpa350Step2({
                           </TooltipQ>
                       </Grow>
                     </Grow>
-                      <div className="ag-theme-alpine h-[20rem]">
-                        <AgGridReact<LTPA350GridRow>
-                          key={gridKey}
-                          rowData={rowData3b}
-                          columnDefs={columnDefs3b}
-                          getRowId={(params) => String(params.data.id)}
-                          singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
-                          rowSelection={{
-                            mode: 'multiRow' as const,
-                            checkboxes: true,
-                            headerCheckbox: false,
-                            enableClickSelection: false,
-                            enableSelectionWithoutKeys: true,
-                          }}
-                          onCellClicked={handleGridCellClickToggle}
-                          enableCellSpan={true}
-                          selectionColumnDef={{
-                            width: 30,
-                            // pinned: 'left',
-                            cellClass: 'text-center p-0!',
-                            cellClassRules: {
-                              'pointer-events-none': (params) => !!params.data?.locked,
-                            },
-                          }}
-                          domLayout="normal"
-                          alwaysShowVerticalScroll={true}
-                          onSelectionChanged={handleGridSelectionChanged}
-                          onGridReady={handleGridReady}
-                          onRowDataUpdated={handleRowDataUpdated}
-                          suppressRowHoverHighlight={false}
-                          tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                          tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                          tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-                        />
-                      </div>
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<LTPA350GridRow>
+                        key={gridKey}
+                        rowData={rowData3b}
+                        columnDefs={columnDefs3b}
+                        getRowId={(params) => String(params.data.id)}
+                        singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                        rowSelection={{
+                          mode: 'multiRow' as const,
+                          checkboxes: true,
+                          headerCheckbox: false,
+                          enableClickSelection: false,
+                          enableSelectionWithoutKeys: true,
+                        }}
+                        onCellClicked={handleGridCellClickToggle}
+                        enableCellSpan={true}
+                        selectionColumnDef={{
+                          width: 30,
+                          // pinned: 'left',
+                          cellClass: 'text-center p-0!',
+                          cellClassRules: {
+                            'pointer-events-none': (params) => !!params.data?.locked,
+                          },
+                        }}
+                        onSelectionChanged={handleGridSelectionChanged}
+                        onGridReady={handleGridReady}
+                        onRowDataUpdated={handleRowDataUpdated}
+                        suppressRowHoverHighlight={false}
+                        tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                        tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                        tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      />
+                    </div>
                   </LayoutScrollItem>      
                 </LayoutScrollWrap>
               </LayoutMainBody>
@@ -2236,7 +2233,6 @@ export function Ltpa350Step2({
                         suppressRowHoverHighlight={false}
                         getRowClass={(params) => {
                           if (params.data?.isDuplicate) return 'is-duplicate';
-                          if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
