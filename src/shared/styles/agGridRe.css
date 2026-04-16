@@ -567,3 +567,9 @@
 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after {
   background-color: var(--color-element-primary) !important;
 }
+
+.ag-cell-value:not(.ag-allow-overflow),
+.ag-group-value {
+  overflow: hidden;
+  text-overflow: initial;
+}

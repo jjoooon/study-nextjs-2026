@@ -691,6 +691,9 @@ export default function Ltpa010Section() {
             <MainBottomItem>
               <Grow gap={1}>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  삭제설계 확인
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   출력물
                 </Button>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
@@ -716,8 +719,14 @@ export default function Ltpa010Section() {
                 </Button>
               </Grow>
               <Grow gap={1}>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
+                  설계예외처리
+                </Button>
+                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
                   저장
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  설계삭제
                 </Button>
               </Grow>
             </MainBottomItem>

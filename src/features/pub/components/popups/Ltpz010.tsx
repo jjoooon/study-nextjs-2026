@@ -12,14 +12,14 @@ import {
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -327,136 +327,158 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
             </FormTable>
           </Grow>
 
-          <Gcol placement={'ss'} className="w-full gap-6">
-            <TableFold variant={'default'}>
-              <TableFoldHead title="계약기본사항"></TableFoldHead>
-              <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'상품선택'} colSpan={3}>
-                      <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="4세대신손">
-                        {[
-                          { value: '4세대신손', label: '4세대신손' },
-                          { value: '간편실손', label: '간편실손' },
-                        ].map((option, index) => (
-                          <RadioGroupItem key={index} value={option.value}>
-                            {option.label}
-                          </RadioGroupItem>
-                        ))}
-                      </RadioGroup>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'보험시기'}>2026-03-06</FormCell>
-                    <FormCell title={'유효설계'}>2026-03-06까지</FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'보장내용변경주기'}>
-                      <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="05년만기">
-                        <RadioGroupItem value="05년만기">05년만기</RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                    <FormCell title={'납기'}>
-                      <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="전기납">
-                        <RadioGroupItem value="전기납">전기납</RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'납기주기'}>
-                      <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="월납">
-                        {[
-                          { value: '월납', id: 'Monthly1', label: '월납' },
-                          { value: '2월납', id: 'Monthly2', label: '2월납' },
-                          { value: '3월납', id: 'Monthly3', label: '3월납' },
-                          { value: '6월납', id: 'Monthly6', label: '6월납' },
-                          { value: '년납', id: 'Yearly1', label: '년납' },
-                        ].map((option, index) => (
-                          <RadioGroupItem key={index} value={option.value}>
-                            {option.label}
-                          </RadioGroupItem>
-                        ))}
-                      </RadioGroup>
-                    </FormCell>
-                    <FormCell title={'갱신주기'}>
-                      <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="1년">
-                        <RadioGroupItem value="1년">1년</RadioGroupItem>
-                      </RadioGroup>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'태아여부'}>
-                      <Checkbox onCheckedChange={() => {}}>가입</Checkbox>
-                    </FormCell>
-                    <FormCell title={'일신부'}>
-                      <Input aria-label="" width={70} value={''} readOnly />
-                      <Input aria-label="" width={140} value={''} readOnly />
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
-
-            <TableFold variant={'default'}>
-              <TableFoldHead title="피보험자/계약자"></TableFoldHead>
-              <TableFoldBody>
-                <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'피보험자'}>
-                      <Input aria-label="" width={70} value={'김한화'} readOnly />
-                      <Input aria-label="" width={140} value={'910101-1******'} readOnly />
-                    </FormCell>
-                    <FormCell title={'알림사항'}>
-                      <Grow placement={'bwc'}>
-                        <Grow>
-                          <Input aria-label="" width={40} value={'무'} readOnly />
-                          <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                            입력
+          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[auto_1fr]">
+            <Gcol gap={6}>
+              <TableFold variant={'default'}>
+                <TableFoldHead title="계약기본사항"></TableFoldHead>
+                <TableFoldBody>
+                  <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                    <FormRow>
+                      <FormCell title={'상품선택'} colSpan={3}>
+                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="4세대신손">
+                          {[
+                            { value: '4세대신손', label: '4세대신손' },
+                            { value: '간편실손', label: '간편실손' },
+                          ].map((option, index) => (
+                            <RadioGroupItem key={index} value={option.value}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'보험시기'}>2026-03-06</FormCell>
+                      <FormCell title={'유효설계'}>2026-03-06까지</FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'보장내용변경주기'}>
+                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="05년만기">
+                          <RadioGroupItem value="05년만기">05년만기</RadioGroupItem>
+                        </RadioGroup>
+                      </FormCell>
+                      <FormCell title={'납기'}>
+                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="전기납">
+                          <RadioGroupItem value="전기납">전기납</RadioGroupItem>
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'납기주기'}>
+                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="월납">
+                          {[
+                            { value: '월납', id: 'Monthly1', label: '월납' },
+                            { value: '2월납', id: 'Monthly2', label: '2월납' },
+                            { value: '3월납', id: 'Monthly3', label: '3월납' },
+                            { value: '6월납', id: 'Monthly6', label: '6월납' },
+                            { value: '년납', id: 'Yearly1', label: '년납' },
+                          ].map((option, index) => (
+                            <RadioGroupItem key={index} value={option.value}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                      <FormCell title={'갱신주기'}>
+                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="1년">
+                          <RadioGroupItem value="1년">1년</RadioGroupItem>
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'태아여부'}>
+                        <Grow placement={'sc'}>
+                          <CheckboxGroup
+                            className="gap-3"
+                            onValueChange={() => {}}
+                            variant="default"
+                          >
+                            <CheckboxGroupItem value="a">
+                              가입
+                            </CheckboxGroupItem>
+                            <CheckboxGroupItem value="b">
+                              다태아
+                            </CheckboxGroupItem>
+                          </CheckboxGroup>
+                          <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined" className='ml-[1rem]'>
+                            다태아 연계
                           </Button>
                         </Grow>
-                        <Checkbox onCheckedChange={() => {}}>의료급여수급권자할인</Checkbox>
-                      </Grow>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'계약자'}>
-                      <Input aria-label="" width={70} value={'김한화'} readOnly />
-                      <Input aria-label="" width={140} value={'910101-1******'} readOnly />
-                    </FormCell>
-                    <FormCell title={'주피와관계'}>
-                      주피보험자(김한화)는 계약자의
-                      <NativeSelect
-                        aria-label="개인정보취득경로 선택"
-                        width={100}
-                        readOnly
-                        value={relationValue}
-                        onChange={(event) => setRelationValue(event.target.value)}
-                      >
-                        {[
-                          { value: 'selection', label: '선택1' },
-                          { value: 'selection2', label: '선택2' },
-                        ].map((option, idx) => (
-                          <NativeSelectOption key={idx} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
+                      </FormCell>
 
-            <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
-              <FormRow>
-                <FormCell title={'합계보험료'}>
-                  <Input aria-label="" width={200} value={'123456'} commaAmount readOnly />원
-                  <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                    보험료 계산
-                  </Button>
-                </FormCell>
-              </FormRow>
-            </FormTable>
+                      <FormCell title={'일신부'}>
+                        <Input aria-label="" width={70} value={''} readOnly />
+                        <Input aria-label="" width={140} value={''} readOnly />
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </TableFoldBody>
+              </TableFold>
+
+              <TableFold variant={'default'}>
+                <TableFoldHead title="피보험자/계약자"></TableFoldHead>
+                <TableFoldBody>
+                  <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                    <FormRow>
+                      <FormCell title={'피보험자'}>
+                        <Input aria-label="" width={70} value={'김한화'} readOnly />
+                        <Input aria-label="" width={140} value={'910101-1******'} readOnly />
+                      </FormCell>
+                      <FormCell title={'알림사항'}>
+                        <Grow placement={'bwc'}>
+                          <Grow>
+                            <Input aria-label="" width={40} value={'무'} readOnly />
+                            <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                              입력
+                            </Button>
+                          </Grow>
+                          <Checkbox onCheckedChange={() => {}}>의료급여수급권자할인</Checkbox>
+                        </Grow>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'계약자'}>
+                        <Input aria-label="" width={70} value={'김한화'} readOnly />
+                        <Input aria-label="" width={140} value={'910101-1******'} readOnly />
+                      </FormCell>
+                      <FormCell title={'주피와관계'}>
+                        주피보험자(김한화)는 계약자의
+                        <NativeSelect
+                          aria-label="개인정보취득경로 선택"
+                          width={100}
+                          readOnly
+                          value={relationValue}
+                          onChange={(event) => setRelationValue(event.target.value)}
+                        >
+                          {[
+                            { value: 'selection', label: '선택1' },
+                            { value: 'selection2', label: '선택2' },
+                          ].map((option, idx) => (
+                            <NativeSelectOption key={idx} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </TableFoldBody>
+              </TableFold>
+
+              <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
+                <FormRow>
+                  <FormCell title={'합계보험료'}>
+                    <Input aria-label="" width={200} value={'123456'} commaAmount readOnly />원
+                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                      출생후 보혐료
+                    </Button>
+                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                      보험료 계산
+                    </Button>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Gcol>
 
             <TableFold variant={'default'}>
               <TableFoldHead title="담보가입사항"></TableFoldHead>
@@ -484,7 +506,6 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
                       cellClass: 'text-center editable-cell',
                     }}
                     domLayout="normal"
-                    alwaysShowVerticalScroll={true}
                     onRowDataUpdated={handleRowDataUpdated}
                     onRowSelected={handleRowSelected}
                     onGridReady={(params) => {
@@ -498,7 +519,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </div>
               </TableFoldBody>
             </TableFold>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

@@ -59,10 +59,15 @@ function Textarea({
     ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] focus-visible:border-[var(--color-input-border-error)] focus-visible:ring-[var(--color-input-surface-error)]'
     : '';
 
-  return (
-    <div
-      className={`relative w-full bg-[#fff] border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 w-[24rem] ${maxLength === 0 ? 'pb-2' : 'pb-0'} ${showError ? 'bg-[var(--color-danger-5)] border-[var(--color-danger-50)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]' : ''}`}
-    >
+    return (
+      <div
+        className={cn(
+          'relative w-full bg-[#fff] border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 w-[24rem]',
+          maxLength === 0 ? 'pb-2' : 'pb-0',
+          showError ? 'bg-[var(--color-danger-5)] border-[var(--color-danger-50)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]' : '',
+          props.readOnly ? 'bg-[#E5E5E5] border-[0.1rem] border-solid border-[#CCC]' : ''
+        )}
+      >
       <textarea
         data-slot="textarea"
         aria-invalid={showError || undefined}
@@ -82,7 +87,7 @@ function Textarea({
         <div
           className={`absolute  right-1 pointer-events-none text-gray-400 event-none bg-[#fff] ${maxLength === 0 ? 'bottom-[0.6rem]' : 'bottom-[2.4rem]'}`}
         >
-          <ReSizeIcon />
+          <ReSizeIcon className={props.readOnly ? 'bg-[#E5E5E5]' : ''} /> 
         </div>
       )}
 

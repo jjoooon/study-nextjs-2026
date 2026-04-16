@@ -37,9 +37,9 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     isCheck: false,
-    field01: '',
-    field02: '',
-    field03: '',
+    field01: '1',
+    field02: '건물(실손)',
+    field03: '1급',
     field04: '9999999999',
     field05: '9999999999',
   },
@@ -95,7 +95,7 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '부호',
-      width: 80,
+      width: 60,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
@@ -109,7 +109,7 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '급수',
-      width: 150,
+      width: 60,
       field: 'field03',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,

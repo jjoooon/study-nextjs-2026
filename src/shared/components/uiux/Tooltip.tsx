@@ -35,9 +35,9 @@ function TooltipContent({
 }) {
   const variantStyles = {
     // 1. 외부 컨테이너 배경 및 텍스트 색상 수정
-    default: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem] z-10',
+    default: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem] z-100',
     dark: 'bg-[var(--color-gray-90)] text-[var(--color-gray-0)] border border-[var(--color-gray-90)]',
-    light: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem] z-10',
+    light: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem] z-100',
   };
 
   const arrowStyles = {

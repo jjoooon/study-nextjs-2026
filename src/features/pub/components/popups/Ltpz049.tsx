@@ -165,44 +165,41 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5} placement="ss">
-            <Grow className="w-full" variant="box-round">
-              <FormTable variant={'head'} lineTop={false} caption="">
-                <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                      LA123123123123
-                    </Typo>
-                  </FormCell>
-                  <FormCell title={'피보험자'}>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                      김한화(901212-1111111)
-                    </Typo>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-            <div className="ag-theme-alpine aggrid-pagination-ko w-full min-h-[18.4rem]">
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                pinnedBottomRowData={sumRow}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                defaultColDef={{
-                  sortable: false,
-                  resizable: false,
-                  autoHeight: true,
-                }}
-                domLayout="normal"
-                alwaysShowVerticalScroll={true}
-              />
-            </div>
-            <Typo icon="info">
-              할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
-            </Typo>
-          </Gcol>
+        <DialogSection className="grid-rows-[auto_1fr] gap-5">
+          <Grow className="w-full" variant="box-round">
+            <FormTable variant={'head'} lineTop={false} caption="">
+              <FormRow>
+                <FormCell title={'설계번호'}>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
+                    LA123123123123
+                  </Typo>
+                </FormCell>
+                <FormCell title={'피보험자'}>
+                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
+                    김한화(901212-1111111)
+                  </Typo>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <div className="ag-theme-alpine min-h-[18.4rem]">
+            <AgGridReact<DummyDataType>
+              getRowId={(params) => String(params.data.id)}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              pinnedBottomRowData={sumRow}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              defaultColDef={{
+                sortable: false,
+                resizable: false,
+                autoHeight: true,
+              }}
+              domLayout="normal"
+            />
+          </div>
+          <Typo icon="info">
+            할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
+          </Typo>
         </DialogSection>
 
         <DialogFooter>
