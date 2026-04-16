@@ -1915,7 +1915,7 @@ export function Ltpa350Step2({
                         </Grow>
                       </Grow>
                     </Grow>
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine h-[20rem]">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
                         rowData={rowData3}
@@ -1947,6 +1947,8 @@ export function Ltpa350Step2({
                           if (params.data?.isHighlighted) return 'ag-row-highlighted';
                           return '';
                         }}
+                        domLayout="normal"
+                        alwaysShowVerticalScroll={true}
                         tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                         tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                         tooltipMouseTrack={showProductNameTooltip ? true : undefined}
@@ -1973,7 +1975,7 @@ export function Ltpa350Step2({
                           </TooltipQ>
                       </Grow>
                     </Grow>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine h-[20rem]">
                         <AgGridReact<LTPA350GridRow>
                           key={gridKey}
                           rowData={rowData3b}
@@ -1997,6 +1999,8 @@ export function Ltpa350Step2({
                               'pointer-events-none': (params) => !!params.data?.locked,
                             },
                           }}
+                          domLayout="normal"
+                          alwaysShowVerticalScroll={true}
                           onSelectionChanged={handleGridSelectionChanged}
                           onGridReady={handleGridReady}
                           onRowDataUpdated={handleRowDataUpdated}

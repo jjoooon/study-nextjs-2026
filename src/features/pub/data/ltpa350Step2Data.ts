@@ -44,9 +44,9 @@ export const Ltpa350Step2Data: Ltpa350Step2DataType = {
     },
     {
       id: 2,
-      name: '반짝빛나리반짝빛나리',
-      age: '2',
-      gender: '남',
+      name: '목적물',
+      age: '1',
+      gender: '',
       value: 'tab2',
       error: true,
       info: ['추가정보1', '추가정보2', '추가정보3'],
