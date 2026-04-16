@@ -49,12 +49,54 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
 type LTPA350GridRow =
-  | (Ltpa350Step2DataType['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
-  | (Ltpa350Step2DataType2['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
-  | (Ltpa350Step2DataType3['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
-  | (Ltpa350Step2DataType3['agGridTable2'][number] & { isDuplicate?: boolean; displayNo?: number })
-  | (Ltpa350Step2DataType4['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number })
-  | (Ltpa350Step2DataType5['agGridTable1'][number] & { isDuplicate?: boolean; displayNo?: number });
+  | (Ltpa350Step2DataType['agGridTable1'][number] & {
+      isDuplicate?: boolean;
+      displayNo?: number;
+      badge?: string[];
+      locked?: boolean;
+      isHighlighted?: boolean;
+      field9?: boolean;
+    })
+  | (Ltpa350Step2DataType2['agGridTable1'][number] & {
+      isDuplicate?: boolean;
+      displayNo?: number;
+      badge?: string[];
+      locked?: boolean;
+      isHighlighted?: boolean;
+      field9?: boolean;
+    })
+  | (Ltpa350Step2DataType3['agGridTable1'][number] & {
+      isDuplicate?: boolean;
+      displayNo?: number;
+      badge?: string[];
+      locked?: boolean;
+      isHighlighted?: boolean;
+      field9?: boolean;
+    })
+  | (Ltpa350Step2DataType3['agGridTable2'][number] & {
+      isDuplicate?: boolean;
+      displayNo?: number;
+      badge?: string[];
+      locked?: boolean;
+      isHighlighted?: boolean;
+      field9?: boolean;
+    })
+  | (Ltpa350Step2DataType4['agGridTable1'][number] & {
+      isDuplicate?: boolean;
+      displayNo?: number;
+      badge?: string[];
+      locked?: boolean;
+      isHighlighted?: boolean;
+      field9?: boolean;
+    })
+  | (Ltpa350Step2DataType5['agGridTable1'][number] & {
+      isDuplicate?: boolean;
+      displayNo?: number;
+      badge?: string[];
+      locked?: boolean;
+      isHighlighted?: boolean;
+      field9?: boolean;
+    });
 
 type MainHeadTab = (Ltpa350Step2DataType['tabList'][number] | Ltpa350Step2DataType2['tabList'][number] | Ltpa350Step2DataType3['tabList'][number] | Ltpa350Step2DataType4['tabList'][number] | Ltpa350Step2DataType5['tabList'][number]) & {
   value: string;
@@ -254,7 +296,7 @@ export function Ltpa350Step2({
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
           <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
-          {params.data?.badge && (
+          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
             <Grow className="shrink-0">
               {params.data.badge.includes('독립') && (
                 <Badge color={'green'} className="w-[3rem]">
@@ -281,7 +323,7 @@ export function Ltpa350Step2({
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
           <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
-          {params.data?.badge && (
+          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
             <Grow className="shrink-0">
               {params.data.badge.includes('독립') && (
                 <Badge color={'green'} className="w-[3rem]">
@@ -1485,7 +1527,7 @@ export function Ltpa350Step2({
                 <MainBottom>
                   <MainBottomItem>
                     <FormTable
-                      className="w-[100%]! [&_tr]:justify-between"
+                      className="w-full! [&_tr]:justify-between"
                       lineTop={false}
                       variant={'none'}
                       cols={[
@@ -1692,7 +1734,7 @@ export function Ltpa350Step2({
                 <MainBottom>
                   <MainBottomItem className="p-0!">
                     <FormTable
-                      className="relative w-[100%]! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-full after:h-[0.1rem] after:bg-[#ccc]"
+                      className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-full after:h-px after:bg-[#ccc]"
                       lineTop={false}
                       variant={'none'}
                       cols={[
@@ -1708,14 +1750,14 @@ export function Ltpa350Step2({
                     >
                       <FormRow className='overflow-hidden'>
                         <FormCell
-                          className="bg-[var(--color-primary-10)]! rounded-tl-[1rem]!"
+                          className="bg-(--color-primary-10)! rounded-tl-[1rem]!"
                           title={
                             <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
                               출생<b className='text-[#FF5C2E]'>전</b>
                             </Typo>
                           }
                         />
-                        <FormCell title="환급금" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>div]:justify-end w-[13rem] [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem]' >
+                        <FormCell title="환급금" tdClassName="pt-2 pb-2.5" className='[&>span]:text-[#000]! [&>div]:justify-end w-52 [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem]' >
                           <Grow className='w-full flex justify-end'>
                             <Input
                               type="tel"
@@ -1768,7 +1810,7 @@ export function Ltpa350Step2({
                       </FormRow>
                       <FormRow className='overflow-hidden'>
                         <FormCell
-                          className="bg-[var(--color-primary-10)]!"
+                          className="bg-(--color-primary-10)!"
                           title={
                             <Grow>
                               <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
@@ -1782,7 +1824,7 @@ export function Ltpa350Step2({
                         />
                         <FormCell
                           title={
-                            <Grow className='w-[12rem] absolute left-[10rem]'>
+                            <Grow className='w-48 absolute left-40'>
                               <Typo variant="body-sm" weight={'bold'}>
                                 만기금(환급률)
                               </Typo>
@@ -1915,7 +1957,7 @@ export function Ltpa350Step2({
                         </Grow>
                       </Grow>
                     </Grow>
-                    <div className="ag-theme-alpine h-[20rem]">
+                    <div className="ag-theme-alpine h-80">
                       <AgGridReact<LTPA350GridRow>
                         key={gridKey}
                         rowData={rowData3}
@@ -1975,7 +2017,7 @@ export function Ltpa350Step2({
                           </TooltipQ>
                       </Grow>
                     </Grow>
-                      <div className="ag-theme-alpine h-[20rem]">
+                      <div className="ag-theme-alpine h-80">
                         <AgGridReact<LTPA350GridRow>
                           key={gridKey}
                           rowData={rowData3b}
@@ -2017,7 +2059,7 @@ export function Ltpa350Step2({
                 <MainBottom>
                   <MainBottomItem>
                     <FormTable
-                      className="w-[100%]! [&_tr]:justify-between"
+                      className="w-full! [&_tr]:justify-between"
                       lineTop={false}
                       variant={'none'}
                       cols={[
@@ -2251,7 +2293,7 @@ export function Ltpa350Step2({
                 <MainBottom>
                   <MainBottomItem>
                     <FormTable
-                      className="w-[100%]! [&_tr]:justify-between"
+                      className="w-full! [&_tr]:justify-between"
                       lineTop={false}
                       variant={'none'}
                       cols={[
