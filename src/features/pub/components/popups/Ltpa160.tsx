@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -44,11 +44,11 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     accName: '상해사망후유',
-    accRisk: '일반상해사망',
+    accRisk: '일반상해사망일반상해사망일반상해사망일반상해사망',
     accDesignAmt: '1000000',
     accTotalAmt: '1000000',
     upperAccName: '상해사망후유',
-    upperAccRisk: '일반상해사망',
+    upperAccRisk: '일반상해사망일반상해사망일반상해사망일반상해사망일반상해사망',
     upperDesignAmt: '1000000',
     upperTotalAmt: '1000000',
   },
@@ -131,6 +131,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
       suppressMovable: true,
       resizable: true,
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'accRisk' }),
     },
     {
       headerName: '설계별 누적금액',
@@ -176,6 +177,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
       suppressMovable: true,
       resizable: true,
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'upperAccRisk' }),
     },
     {
       headerName: '설계별 누적금액',
@@ -325,7 +327,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
               <TableFoldBody>
                 <Gcol gap={5}>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -334,6 +336,8 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
                       domLayout="autoHeight"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
                   <Gcol className="w-full">
