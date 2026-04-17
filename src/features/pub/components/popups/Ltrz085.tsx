@@ -188,6 +188,7 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'contractor',
       width: 60,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'contractor' }),
     },
     {
       headerName: '피보험자(명)',

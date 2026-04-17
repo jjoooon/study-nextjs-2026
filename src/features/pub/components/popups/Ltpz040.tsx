@@ -116,6 +116,7 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
       spanRows: true,
       width: 110,
       cellClass: 'flex! items-center! justify-center! text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '담보명',

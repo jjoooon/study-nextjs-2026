@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -144,6 +144,7 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '메시지',
       field: 'field2',
       flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
   ];
 
@@ -173,7 +174,8 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
                 resizable: false,
               }}
               domLayout="normal"
-              alwaysShowVerticalScroll={true}
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
             />
           </div>
         </DialogSection>
