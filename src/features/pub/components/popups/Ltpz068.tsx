@@ -18,6 +18,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -35,7 +36,7 @@ type DummyDataType = {
 
 const DummyData: DummyDataType[] = [
   { id: 1,   field01: '1',   field02: '보통약관(상해사망)',                                                             field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
-  { id: 2,   field01: '2',   field02: '보험료납입면제대상보장(8대사융Ⅱ)',                                                field03: 10,  field04: 320, field05: 10,  field06: 320, field07: 10,  field08: 320 },
+  { id: 2,   field01: '2',   field02: '보험료납입면제대상보장(8대사융Ⅱ 보험료납입면제대상보장(8대사융Ⅱ) 보험료납입면제대상보장(8대사융Ⅱ)',                                                field03: 10,  field04: 320, field05: 10,  field06: 320, field07: 10,  field08: 320 },
   { id: 3,   field01: '3',   field02: '보장보험료50%납입지원Ⅱ(4대유사암)',                                               field03: 30,  field04: 28,  field05: 50,  field06: 28,  field07: 30,  field08: 28  },
   { id: 4,   field01: '4',   field02: '상해사망(체증형)',                                                               field03: 300, field04: 960, field05: 200, field06: 640, field07: 300, field08: 960 },
   { id: 5,   field01: '5',   field02: '상해사망추가',                                                                   field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
@@ -155,6 +156,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
         autoHeight: true,
         editable: false,
         cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },
       ...PLAN_COLS.flatMap(({ leftField, rightField }): ColDef<DummyDataType>[] => [
         {
@@ -260,6 +262,8 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                   alwaysShowVerticalScroll={true}
                   enableCellSpan={true}
                   domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </div>
