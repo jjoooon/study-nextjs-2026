@@ -8,8 +8,7 @@ import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 type SortOrder = 'default' | 'asc' | 'desc';
-type SortKey = 'dep4' | 'plan' | 'pub' | 'dev';
-
+type SortKey = 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id';
 type SortState = {
   key: SortKey | null;
   order: SortOrder;
@@ -92,8 +91,10 @@ export function IAListWithPreview() {
     const sortKey = sortState.key;
 
     return [...visibleRows].sort((left, right) => {
-      const compareResult = left[sortKey].localeCompare(right[sortKey], 'ko');
-
+      // path, id, dep4, plan, pub, dev 모두 string이므로 localeCompare 사용
+      const leftValue = (left as any)[sortKey] ?? '';
+      const rightValue = (right as any)[sortKey] ?? '';
+      const compareResult = leftValue.localeCompare(rightValue, 'ko');
       return sortState.order === 'asc' ? compareResult : -compareResult;
     });
   }, [sortState, visibleRows]);
@@ -152,15 +153,12 @@ export function IAListWithPreview() {
       if (sortState.key !== key) {
         return '';
       }
-
       if (sortState.order === 'asc') {
         return ' ↑';
       }
-
       if (sortState.order === 'desc') {
         return ' ↓';
       }
-
       return '';
     },
     [sortState]
@@ -195,9 +193,13 @@ export function IAListWithPreview() {
           </colgroup>
           <thead>
             <tr>
-                <th scope="col">No</th>
-                <th scope="col">경로</th>
-                <th scope="col">ID</th>
+              <th scope="col">No</th>
+              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('path')}>
+                경로{getSortIndicator('path')}
+              </th>
+              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('id')}>
+                ID{getSortIndicator('id')}
+              </th>
               <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('dep4')}>
                 화면명{getSortIndicator('dep4')}
               </th>
