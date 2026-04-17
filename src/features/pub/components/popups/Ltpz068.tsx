@@ -172,7 +172,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
             })}
             </Grow>
             {/* 그리드 */}
-            <div className="ag-theme-alpine relative min-h-[30rem]">
+            <div className="ag-theme-alpine relative min-h-[calc(100vh-30rem)]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}

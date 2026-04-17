@@ -187,9 +187,9 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
       },
     },
     {
-      headerName: '가입금액(원)',
+      headerName: '가입금액(만원)',
       field: 'field2',
-      width: 70,
+      width: 80,
       valueFormatter: numberValueFormatter,
       colSpan: (params) => {
         // 합계 행이면 숨김
@@ -204,7 +204,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '보험료(원)',
       field: 'field3',
-      width: 70,
+      width: 65,
       valueFormatter: numberValueFormatter, 
       cellClass: (params) => {
         if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
@@ -237,7 +237,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
               }>
                 <Grid className='grid-rows-[auto_1fr]'>
                   <Grow className='bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem]'>
-                    <FixingPinIcon />
+                    <FixingPinIcon className="" />
                     기준설계
                   </Grow>
                   <Grid className='p-[1.6rem] gap-5 grid-rows-[1fr_auto]' placement='ss'>
@@ -253,7 +253,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                           return (
                             <Grow key={index} placement='ss' className='text-[1.3rem]'>
                               {index === 0 && <ShieldIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
-                              {index === 1 && <NoteIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={16} />}
+                              {index === 1 && <NoteIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.3rem] translate-x-[-0.05rem] shrink-0' size={16} />}
                               {index === 2 && <CalendarIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
                               {index === 3 && <BadgeCheckIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
                               {option[optionKey as keyof typeof option]}
