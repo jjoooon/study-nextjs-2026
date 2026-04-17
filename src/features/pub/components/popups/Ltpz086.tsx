@@ -130,7 +130,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       },
     },
     {
-      headerName: '보호시기',
+      headerName: '보험시기',
       field: 'field04',
       width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),

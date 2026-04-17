@@ -334,7 +334,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '철회사유',
-      flex: 1,
+      width: 170,
       field: 'field15',
       autoHeight: true,
     },
