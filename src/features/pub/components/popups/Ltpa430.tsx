@@ -69,7 +69,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '1형(355간편고지형)',
       flex: 1,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       valueGetter: (params) => params.data?.field01?.[0],
       valueFormatter: numberValueFormatter,
@@ -85,7 +85,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '2형(305간편고지형)',
       flex: 1,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field02?.[0])}</span>,
@@ -107,7 +107,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '3형(305간편고지형)',
       flex: 1,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field03?.[0])}</span>,
@@ -129,7 +129,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '4형(305간편고지형)',
       flex: 1,
       field: 'field04',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field04?.[0])}</span>,
@@ -151,7 +151,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '5형(305간편고지형)',
       flex: 1,
       field: 'field05',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field05?.[0])}</span>,
@@ -173,7 +173,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '6형(305간편고지형)',
       flex: 1,
       field: 'field06',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field06?.[0])}</span>,
@@ -218,8 +218,8 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
                     -
                     <Input aria-label="" width={30} value={'1'} readOnly />
-                    <Input aria-label="" width={300} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
-                    <Input aria-label="" width={200} value={'1형(345간편고지형)'} readOnly />
+                    <Typo variant={'body-sm'}>무배당 1등 엄마의 똑똑한 자녀보힘 1404</Typo>
+                    <Typo variant={'body-sm'}>1형(345간편고지형)</Typo>
                   </FormCell>
                 </FormRow>
               </FormTable>

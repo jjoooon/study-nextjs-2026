@@ -19,6 +19,7 @@ type QuestionRadioCardProps = {
   onValueChange?: (value: string) => void;
   radioErrorMsg?: string;
   radioErrorPs?: 'bl' | 'br' | 'tl' | 'tr';
+  disabled?: boolean;
 };
 
 export const QuestionRadioCard = ({
@@ -33,6 +34,7 @@ export const QuestionRadioCard = ({
   onValueChange,
   radioErrorMsg = '하나를 선택해주세요.',
   radioErrorPs = 'bl',
+  disabled = false,
 }: QuestionRadioCardProps) => {
   const radioId = useId();
   const [internalValue, setInternalValue] = useState<string | undefined>(isValue);
@@ -70,11 +72,12 @@ export const QuestionRadioCard = ({
             onValueChange={handleRadioChange}
             value={radioValue}
             width="auto"
+            disabled={disabled}
           >
-            <RadioGroupItem color="primary" id={`${radioId}-yes`} size="lg" value="Y" variant="default">
+            <RadioGroupItem color="primary" id={`${radioId}-yes`} size="lg" value="Y" variant="default" disabled={disabled}>
               예
             </RadioGroupItem>
-            <RadioGroupItem color="primary" id={`${radioId}-no`} size="lg" value="N" variant="default">
+            <RadioGroupItem color="primary" id={`${radioId}-no`} size="lg" value="N" variant="default" disabled={disabled}>
               아니요
             </RadioGroupItem>
           </RadioGroup>

@@ -77,7 +77,7 @@ export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormCell title={''}></FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'피보험자'}>박한화</FormCell>
+                    <FormCell title={'피보험자명'}>박한화</FormCell>
                     <FormCell title={'피보험자 생년월일'}>2000-01-01</FormCell>
                     <FormCell title={'상해급수'}>3급</FormCell>
                   </FormRow>

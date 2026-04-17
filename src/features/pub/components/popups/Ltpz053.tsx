@@ -1,7 +1,7 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
@@ -34,14 +34,28 @@ type DummyDataType = {
   field01: string | number;
   field02: string | number;
   field03: string | number;
+  field04: string | number;
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
-  { id: 2, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
-  { id: 3, isCheck: true, field01: '김한화', field02: '911212-1111111', field03: '010-1234-5678' },
+  { id: 1, isCheck: true, field01: '김한화', field02: '계약자', field03: '등록대상', field04: '-' },
+  { id: 2, isCheck: true, field01: '김한화', field02: '법인대리인', field03: '등록대상', field04: '-' },
+  { id: 3, isCheck: true, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
 ];
 
 export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+  const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
+    return (
+      <Grow className="h-full w-full">
+        <Grow className="flex-1 justify-start">
+          {params.data?.field02}
+        </Grow>
+        <Grow className="border-l border-[#ddddde] h-full pl-1 text-left! aspect-auto flex-1 items-center justify-start">
+          {params.data?.field03}
+        </Grow>
+      </Grow>
+    );
+  };
   const [form, setFormField] = useFormFields({
     type01: '',
   });
@@ -58,13 +72,14 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '실명증표진위여부 확인서',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center',
+      cellClass: 'text-center ',
       autoHeight: true,
+      cellRenderer: designCellRenderer,
     },
     {
       headerName: '타인사망피보험자 동의확인서',
       flex: 1,
-      field: 'field03',
+      field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
     },
@@ -174,6 +189,17 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Input aria-label="" width={160} value={'12345678'} required readOnly />
                     <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                       신원확인
+                    </Button>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'사업자명'} colSpan={2}>
+                    <Input aria-label="" width={160} value={'(명)삼원주류판매'} required readOnly />
+                  </FormCell>
+                  <FormCell title={'사업자등록번호'} colSpan={2}>
+                    <Input aria-label="" width={160} value={'123-45-678'} required readOnly />
+                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                      사업자등록번호조회
                     </Button>
                   </FormCell>
                 </FormRow>
