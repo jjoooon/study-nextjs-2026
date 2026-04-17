@@ -29,6 +29,7 @@ import {
   type Ltpa400DummyDataRow,
   type Ltpa400DummyDataRow2,
 } from '../data/ltpa400Data';
+import { DummyDataType } from '../data/ltpa020Data';
 
 // Tab 정의
 type Ltpa400TabType = { name: string; value: string; label: string };
@@ -91,6 +92,7 @@ export default function Ltpa400Section() {
       field: 'field06',
       width: 130,
       cellClass: 'truncate text-center',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field06' }),
     },
     {
       headerName: '요청일시',
@@ -114,13 +116,15 @@ export default function Ltpa400Section() {
       headerName: '담당SM',
       field: 'field10',
       width: 120,
-       cellClass: 'truncate text-center',
+      cellClass: 'truncate text-center',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field10' }),
     },
     {
       headerName: '지원SM',
       field: 'field11',
       width: 120,
        cellClass: 'truncate text-center',
+       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
     },
     {
       headerName: '설계번호',
