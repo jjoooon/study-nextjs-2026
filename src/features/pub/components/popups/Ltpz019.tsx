@@ -328,7 +328,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
-      headerName: '플랜면',
+      headerName: '플랜명',
       field: 'field1',
       flex: 1,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),

@@ -69,10 +69,10 @@ export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              고지유형별 보험료비교
+              견종검색
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA070)
+              (LTPA083)
             </Typo>
           </DialogTitle>
         </DialogHeader>

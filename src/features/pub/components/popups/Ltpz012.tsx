@@ -374,7 +374,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine ag-blue-text">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

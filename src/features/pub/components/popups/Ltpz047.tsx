@@ -20,6 +20,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { EssentialIcon } from '@/shared/components/icons/CommonIcons';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -197,7 +198,11 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'종업원담보업종'} titleColSpan={2} colSpan={4}></FormCell>
+                  <FormCell
+                    title={<Grow placement='sc'><span>종업원담보업종</span><EssentialIcon /></Grow>}
+                    titleColSpan={2}
+                    colSpan={4}
+                  ></FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'할인율'} titleColSpan={2} colSpan={4}>

@@ -38,6 +38,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               question="최근 3개월 이내에 의사로부터 진찰 또는 검사(건강검진 포함)를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?"
               isRadio={true}
               isValue="Y"
+              disabled
             >
               <Gcol className="w-full" placement='ss'>
                 <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
@@ -48,6 +49,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     질병확정진단
                   </Checkbox>
@@ -58,6 +60,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     질병의심소견
                   </Checkbox>
@@ -68,6 +71,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     치료
                   </Checkbox>
@@ -78,6 +82,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     입원
                   </Checkbox>
@@ -88,6 +93,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     수술(제왕절개포함)
                   </Checkbox>
@@ -98,6 +104,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     투약
                   </Checkbox>
@@ -117,6 +124,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               question="최근 3개월 이내에 마약을 사용하거나 혈압강하제, 신경안정제, 수면제, 각성제(흥분제), 진통제 등 약물을 상시 복용한 사실이 있습니까?"
               isRadio={true}
               isValue="Y"
+              disabled
             >
               <Gcol className="w-full" placement='ss'>
                 <Gcol className="w-full" placement="ss" variant="box-detail">
@@ -131,6 +139,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               question="최근 1년 이내에 의사로부터 진찰 또는 검사를 받고, 이를 통하여 추가검사(재검사)를 받은 사실이 있습니까?"
               isRadio={true}
               isValue="Y"
+              disabled
             >
               <Gcol className="w-full" placement='ss'>
                 <Gcol className="w-full" placement="ss" variant="box-detail">
@@ -145,6 +154,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               question="최근 5년 이내에 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?"
               isRadio={true}
               isValue="Y"
+              disabled
             >
               <Gcol className="w-full" placement='ss'>
                 <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
@@ -155,6 +165,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     입원
                   </Checkbox>
@@ -165,6 +176,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     수술(제왕제갤포함)
                   </Checkbox>
@@ -175,6 +187,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     계속하여 7일이상 치료
                   </Checkbox>
@@ -185,6 +198,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     계속하여 30일이상 투약
                   </Checkbox>
@@ -196,6 +210,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               question="최근 5년 이내에 아래의 질병으로 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?"
               isRadio={true}
               isValue="Y"
+              disabled
             >
               <Gcol className="w-full" placement='ss'>
                 <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
@@ -206,6 +221,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     암
                   </Checkbox>
@@ -216,6 +232,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     백혈병
                   </Checkbox>
@@ -226,6 +243,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     고혈압
                   </Checkbox>
@@ -236,6 +254,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     협심증
                   </Checkbox>
@@ -246,6 +265,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     심근경색
                   </Checkbox>
@@ -256,6 +276,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     심장판막
                   </Checkbox>
@@ -266,6 +287,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     간경화증
                   </Checkbox>
@@ -276,6 +298,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     뇌졸중증(뇌출혈, 뇌경색)
                   </Checkbox>
@@ -286,6 +309,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     당뇨병
                   </Checkbox>
@@ -296,6 +320,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     에이즈(AIDS) 및 HIV보균
                   </Checkbox>
@@ -306,6 +331,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     직장 또는 항문 관련 질환(치질, 치루(누공), 치열(찢어짐))
                   </Checkbox>
@@ -316,6 +342,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     항문 농양(고름집)
                   </Checkbox>
@@ -326,6 +353,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onCheckedChange={() => {}}
                     size="lg"
                     variant="default"
+                    disabled
                   >
                     직장또는
                   </Checkbox>

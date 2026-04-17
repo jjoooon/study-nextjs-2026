@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { createCellValueChangedHandler, createFieldRenderer } from '@aggrid';
+import { createCellValueChangedHandler, createFieldRenderer, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -15,7 +15,7 @@ import { InfoBox } from '@common/InfoBox';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, MemoIcon } from '@icons';
+import { SearchIcon, ResetIcon, MemoIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -25,6 +25,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import { Ltpa010DummyData } from '../data/ltpa010Data';
 import type { Ltpa010DummyDataRow } from '../data/ltpa010Data';
+import { TableMore } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -51,12 +52,12 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '상품명/구분',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           flex: 2,
           headerName: '고지유형/플랜명',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           autoHeight: true,
           tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({ 
             field: 'field02', 
@@ -110,14 +111,14 @@ export default function Ltpa010Section() {
 
     {
       headerName: '계약자',
-      cellClass: 'text-center px-0!',
-      headerClass: 'ag-header-right-divider',
+      cellClass: 'text-center px-0! text-[1.3rem]',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       autoHeight: true,
       children: [
         {
           headerName: '생년월일',
           width: 80,
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! ',
           autoHeight: true,
           tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({ 
             field: 'field05', 
@@ -129,8 +130,8 @@ export default function Ltpa010Section() {
 
     {
       headerName: '피보험자',
-      cellClass: 'text-center px-0!',
-      headerClass: 'ag-header-right-divider',
+      cellClass: 'text-center px-0! text-[1.3rem]',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       autoHeight: true,
       children: [
         {
@@ -144,12 +145,12 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '보험료(원)',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       autoHeight: true,
       children: [
         {
           headerName: '환급률',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           width: 100,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field07', 'field08'),
@@ -158,12 +159,12 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '설계일자',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       autoHeight: true,
       children: [
         {
           headerName: '유효기간',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           width: 90,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>(
@@ -179,11 +180,11 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '설계상태',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           headerName: '심사결과',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           width: 90,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field09', 'field10'),
@@ -192,11 +193,11 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '청약서출력',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           headerName: '스캔여부',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           width: 100,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>(
@@ -210,11 +211,11 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '취급기관/팀',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           headerName: '취급자',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem] ',
           flex: 1,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field12', 'field13'),
@@ -223,11 +224,11 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '최초설계자',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           headerName: 'SM',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           flex: 1,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field14', (data?: Ltpa010DummyDataRow) => (
@@ -257,11 +258,11 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '사용인',
-      headerClass: 'ag-header-right-divider',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           headerName: '부실유의',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           width: 80,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field16', 'field17'),
@@ -270,10 +271,11 @@ export default function Ltpa010Section() {
     },
     {
       headerName: '설계종료',
+      headerClass: 'ag-header-right-divider text-[1.3rem]',
       children: [
         {
           headerName: '증권번호',
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-center px-0! text-[1.3rem]',
           flex: 1,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field18', (data?: Ltpa010DummyDataRow) => (
@@ -412,6 +414,11 @@ export default function Ltpa010Section() {
     [setRowData, setErrorRows]
   );
 
+  const pageSize = 2;
+  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+    allRows: Ltpa010DummyData,
+    pageSize,
+  });
   return (
     <>
       <LayoutHead>
@@ -427,31 +434,48 @@ export default function Ltpa010Section() {
           <Gcol placement="ss" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
-                variant={'none'}
+                variant={'head'}
                 lineTop={false}
                 caption="설계번호"
-                cols={['w-[6rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>
                     <NativeSelect
+                      width={108}
                       aria-label="조회구분 선택"
-                      value={form.type01}
+                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       required
                     >
                       {[
-                        { value: 'selection', id: 'type01-1', label: '전체' },
-                        { value: 'selection2', id: 'type01-2', label: '전체2' },
+                        { value: 'selection', id: 'type01-1', label: '피보험자번호' },
+                        { value: 'selection2', id: 'type01-2', label: '계약자번호' },
+                        { value: 'selection3', id: 'type01-3', label: '설계번호' },
+                        { value: 'selection4', id: 'type01-4', label: '차량번호' },
+                        { value: 'selection5', id: 'type01-5', label: '증권번호' },
+                        { value: 'selection6', id: 'type01-6', label: '상품명' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
+                    {form.type01 === 'selection' || form.type01 === 'selection2' ? (
+                      <Grow>
+                        <Input aria-label="" width={157} value={'김현화'} required />
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                      </Grow>
+                    ) : (
+                      <Grow>
+                        <Input aria-label="" width={157} value={'김현화'} readOnly />
+                      </Grow>
+                    )}
                   </FormCell>
                   <FormCell title={'설계구분'}>
                     <NativeSelect
+                      width={108}
                       aria-label="설계구분 선택"
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
@@ -468,6 +492,7 @@ export default function Ltpa010Section() {
                   </FormCell>
                   <FormCell title={'설계상태'}>
                     <NativeSelect
+                      width={108}
                       aria-label="설계상태 선택"
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
@@ -487,7 +512,7 @@ export default function Ltpa010Section() {
                       aria-label="설계경로 선택"
                       value={form.type05}
                       onChange={(e) => setFormField('type05', e.target.value)}
-                      width={110}
+                      width={108}
                     >
                       {[
                         { value: 'selection', id: 'personalinfo-1', label: '전체' },
@@ -504,7 +529,7 @@ export default function Ltpa010Section() {
                   <FormCell title={'설계조직'} colSpan={3}>
                     <NativeSelect
                       aria-label="설계조직 선택"
-                      width={110}
+                      width={108}
                       value={form.type07}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
@@ -518,11 +543,11 @@ export default function Ltpa010Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input aria-label="" width={80} value={'1301097'} required />
+                    <Input aria-label="" width={59} value={'1301097'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={180} value={'신부산GA지점'} readOnly />
+                    <Input aria-label="" width={91} value={'신부산GA지점'} readOnly />
                   </FormCell>
                   <FormCell title={'영업가족'}>
                     <NativeSelect
@@ -555,7 +580,7 @@ export default function Ltpa010Section() {
                     />
                     <NativeSelect
                       aria-label="설계일자"
-                      width="10.8rem"
+                      width={108}
                       value={form.type09}
                       onChange={(e) => setFormField('type09', e.target.value)}
                     >
@@ -586,6 +611,12 @@ export default function Ltpa010Section() {
                   <ResetIcon />
                 </Button>
               </Grow>
+            </Grow>
+            <Grow className='w-full' placement="ec">
+              <Button color="success" variant="outlined">
+                엑셀내보내기
+                <FileExportIcon />
+              </Button>
             </Grow>
             <Gcol className="w-full" gap={6}>
               <div className="ag-theme-alpine ltpa010-grid">
@@ -623,10 +654,20 @@ export default function Ltpa010Section() {
                   domLayout="autoHeight"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
+                  cacheBlockSize={pageSize}
+                  maxBlocksInCache={2}
+                  datasource={dataSource}
                 />
               </div>
+              <TableMore
+                loadedCount={loadedCount}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onLoadAll={handleLoadAll}
+                onLoadNext={handleLoadNext}
+              />
               {/* Grid2: SM → 최초설계자 */}
-              <div className="ag-theme-alpine ltpa010-grid">
+              {/* <div className="ag-theme-alpine ltpa010-grid">
                 <AgGridReact<Ltpa010DummyDataRow>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -656,10 +697,10 @@ export default function Ltpa010Section() {
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                 />
-              </div>
+              </div> */}
 
               {/* Grid3: 최초설계자/사용인/부실유의 제거 */}
-              <div className="ag-theme-alpine ltpa010-grid">
+              {/* <div className="ag-theme-alpine ltpa010-grid">
                 <AgGridReact<Ltpa010DummyDataRow>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -689,7 +730,7 @@ export default function Ltpa010Section() {
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                 />
-              </div>
+              </div> */}
               <InfoBox
                 title="설계조회 가능기간 "
                 variant="info"

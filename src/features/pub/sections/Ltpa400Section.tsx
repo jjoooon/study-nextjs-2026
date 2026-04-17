@@ -56,6 +56,7 @@ export default function Ltpa400Section() {
       field: 'field02',
       width: 150,
       cellClass: 'truncate',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field02' }),
     },
     {
       headerName: '대리점',

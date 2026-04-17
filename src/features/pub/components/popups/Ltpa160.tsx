@@ -217,7 +217,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              담보내용상세
+              피보험자별누적조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPA160)
@@ -263,6 +263,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                       aria-label="항목 선택"
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
+                      required
                     >
                       {[
                         { value: 'selection', id: 'type03-1', label: '김한화(890823-1******)' },
