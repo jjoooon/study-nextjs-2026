@@ -8,8 +8,8 @@ import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Ltpz03201 } from './Ltpz03201';
+import { DummyDataType } from '../../data/ltpa020Data';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -96,7 +97,7 @@ const DummyData11: DummyDataType11[] = [
     field01: '',
     field02: '2026-01-01',
     field03: 'LA260204310842',
-    field04: '한화 더건강한 한아름종합보험2601',
+    field04: '한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601',
     field05: '납입면제형, 기본형',
     field06: '보기',
     field07: '척추염좌',
@@ -180,7 +181,7 @@ const DummyData12: DummyDataType12[] = [
     field01: '',
     field02: '2026-01-01',
     field03: 'LA260204310842',
-    field04: '한화 더건강한 한아름종합보험2601',
+    field04: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
     field05: '납입면제형, 기본형',
     field06: '보기',
     field07: '척추염좌',
@@ -380,6 +381,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 200,
         autoHeight: true,
         editable: false,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType11>({ field: 'field04' }),
       },
       {
         headerName: '고지유형',
@@ -671,6 +673,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 200,
       autoHeight: true,
       editable: false,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType12>({ field: 'field04' }),
     },
     {
       headerName: '고지유형',
@@ -984,6 +987,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 130,
         autoHeight: true,
         editable: false,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType21>({ field: 'field2_10' }),
       },
       {
         headerName: '고지유형',
@@ -1081,6 +1085,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 130,
         autoHeight: true,
         editable: false,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType22>({ field: 'field2_10' }),
       },
       {
         headerName: '고지유형',
@@ -1178,6 +1183,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         width: 130,
         autoHeight: true,
         editable: false,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType22>({ field: 'field2_10' }),
       },
       {
         headerName: '고지유형',
@@ -1223,7 +1229,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Typo>
             </DialogTitle>
           </DialogHeader>
-          <DialogSection className="grid-rows-[auto_1fr]">
+          <DialogSection className="grid-rows-[1fr]">
             <TabPager
               data={tabs}
               active={active}
@@ -1239,10 +1245,10 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
               renderTab={(tab) => <span>{tab.label}</span>}
               renderDropdownItem={false}
             >
+              
               {active === 'tab1' ? (
-                <>
-                  <Gcol placement="ss" className="w-full pt-2" gap={5}>
-                    <TableFold>
+                  <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={5}>
+                    <TableFold className="">
                       <TableFoldHead title="일반/건강고지" />
                       <TableFoldBody>
                         <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
@@ -1266,12 +1272,14 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                               headerName: '선택',
                               cellClass: 'text-center editable-cell',
                             }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </TableFoldBody>
                     </TableFold>
-                    <TableFold variant={'accordion'}>
+                    <TableFold className=''>
                       <TableFoldHead title="간편고지" />
                       <TableFoldBody>
                         <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
@@ -1295,8 +1303,9 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                               headerName: '선택',
                               cellClass: 'text-center editable-cell',
                             }}
-                            domLayout="autoHeight"
-                            alwaysShowVerticalScroll={true}
+                            domLayout="normal"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </TableFoldBody>
@@ -1313,13 +1322,11 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                         피보험자에게 최종확인하셔야 합니다.
                       </Typo>
                     </Gcol>
-                  </Gcol>
-
-                </>
+                  </Grid>
               ) : (
-                <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_1fr_auto]" gap={5}>
                   {/* Tab2-1 일반고지 */}
-                  <TableFold variant={'accordion'}>
+                  <TableFold>
                     <TableFoldHead title="일반고지" />
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full min-h-[13rem]">
@@ -1344,14 +1351,15 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             cellClass: 'text-center editable-cell',
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                           />
                       </div>
                     </TableFoldBody>
                   </TableFold>
 
                   {/* Tab2-2 건강고지 */}
-                  <TableFold variant={'accordion'}>
+                  <TableFold>
                     <TableFoldHead title="건강고지" />
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full min-h-[13rem]">
@@ -1376,14 +1384,15 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             cellClass: 'text-center editable-cell',
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                         />
                       </div>
                     </TableFoldBody>
                   </TableFold>
 
                   {/* Tab2-3 간편고지 */}
-                  <TableFold variant={'accordion'}>
+                  <TableFold>
                     <TableFoldHead title="간편고지" />
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full min-h-[13rem]">
@@ -1408,7 +1417,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             cellClass: 'text-center editable-cell',
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -1425,7 +1433,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                       피보험자에게 최종확인하셔야 합니다.
                     </Typo>
                   </Gcol>
-                </Gcol>
+                </Grid>
               )}
             </TabPager>
           </DialogSection>

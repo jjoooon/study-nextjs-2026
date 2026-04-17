@@ -153,7 +153,7 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
             </FormTable>
           </Grow>
 
-          <TableFold variant={'accordion'}>
+          <TableFold className='grid grid-rows-[auto_auto_1fr]'>
             <TableFoldHead title="플랜등록사항" />
             <Gcol className="w-full" placement="ss" variant="box-detail">
               <Typo icon="detail" variant="body-sm">
