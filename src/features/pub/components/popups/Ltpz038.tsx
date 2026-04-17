@@ -161,7 +161,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '보험료',
       flex: 1,
       field: 'field07',
-      cellClass: 'text-center',
+      cellClass: 'text-right',
       autoHeight: true,
     },
     {

@@ -276,7 +276,7 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFoldHead title="등록사항"></TableFoldHead>
             <TableFoldBody>
               <Grow className="w-full">
-                <div className="ag-theme-alpine min-h-[30rem]">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType>
                     // getRowId 적용: id 필드를 고유 식별자로 사용
                     getRowId={(params) => String(params.data.id)}
@@ -284,7 +284,6 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={columnDefs}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     domLayout="normal"
-                    alwaysShowVerticalScroll={true}
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}
                     // 체크박스 시
