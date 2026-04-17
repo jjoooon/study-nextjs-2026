@@ -242,7 +242,7 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableFoldHead title="등록사항" />
               <TableFoldBody>
                 <Grow className="w-full" gap={5}>
-                  <div className="ag-theme-alpine min-h-[30rem]">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
@@ -252,7 +252,6 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
                       enableCellSpan={true}
                       singleClickEdit={true}
                       domLayout="normal"
-                      alwaysShowVerticalScroll={true}
                       rowSelection={{
                         mode: 'multiRow',
                         headerCheckbox: false,
