@@ -219,8 +219,8 @@ export default function Ltpa301Section() {
                       rowData={Ltpa301DummyData}
                       columnDefs={columnDefs}
                       defaultColDef={{
-                        sortable: false,
-                        resizable: false,
+                        sortable: true,
+                        resizable: true,
                         cellClass: 'text-center p-0!',
                       }}
                       singleClickEdit={true}

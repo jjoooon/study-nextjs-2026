@@ -5,7 +5,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, useAgGridPagination } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridPagination } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -62,6 +62,7 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field01',
       cellClass: 'text-center',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '결과',
@@ -76,6 +77,7 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
   ];
 
@@ -118,6 +120,8 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
                         suppressPaginationPanel={true}
                         ref={gridRef}
                         onGridReady={handleGridReady}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                     <TablePagination
