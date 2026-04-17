@@ -193,13 +193,12 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
-          <Gcol className="w-full" gap={5} placement="ss">
+        <DialogSection className="grid-rows-[auto_1fr_1fr] gap-5">
             <Typo tag={'p'} variant={'body-lg'}>
               보험금지급이력을 기반으로 필요한 정보를 예상하여 자동입력합니다.
             </Typo>
 
-            <TableFold>
+            <TableFold className="grid-rows-[auto_1fr]">
               <TableFoldHead title="필수고지" />
               <TableFoldBody>
                 <div className="ag-theme-alpine min-h-[13.4rem]">
@@ -228,7 +227,7 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldBody>
             </TableFold>
 
-            <TableFold>
+            <TableFold className="grid-rows-[auto_1fr]">
               <TableFoldHead title="질문항목(질병)" />
               <TableFoldBody>
                 <div className="ag-theme-alpine min-h-[13.4rem]">
@@ -262,15 +261,17 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Gcol>
               </TableFoldBody>
             </TableFold>
+        </DialogSection>
+
+        <DialogFooter>
+          <div className="flex items-center px-6 mb-3">
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
                 <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
               </Typo>
             </Gcol>
-          </Gcol>
-        </DialogSection>
 
-        <DialogFooter>
+          </div>
           <DialogFooterArea>
             <Grow>
               <Button variant={'outlined'} size={'xl'} color={'gray'}>

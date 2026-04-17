@@ -79,31 +79,27 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full">
-            <Grow className="w-full">
-              <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={gridRowData}
-                  columnDefs={columnDefs}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowStyle={(params) =>
-                    params.node.rowIndex === 0 && !params.node.rowPinned ? { fontWeight: '700' } : undefined
-                  }
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                    autoHeight: true,
-                  }}
-                  singleClickEdit={true}
-                  domLayout="normal"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                />
-              </div>
-            </Grow>
-          </Gcol>
+        <DialogSection className="grid-rows-[1fr]">
+          <div className="ag-theme-alpine min-h-[18.4rem]">
+            <AgGridReact<DummyDataType>
+              getRowId={(params) => String(params.data.id)}
+              rowData={gridRowData}
+              columnDefs={columnDefs}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              getRowStyle={(params) =>
+                params.node.rowIndex === 0 && !params.node.rowPinned ? { fontWeight: '700' } : undefined
+              }
+              defaultColDef={{
+                sortable: false,
+                resizable: false,
+                autoHeight: true,
+              }}
+              singleClickEdit={true}
+              domLayout="normal"
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
+            />
+          </div>
         </DialogSection>
 
         <DialogFooter>
