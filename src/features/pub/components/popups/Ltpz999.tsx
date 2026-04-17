@@ -171,7 +171,7 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
               noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{
                 sortable: true,
-                resizable: false,
+                resizable: true,
               }}
               domLayout="normal"
               tooltipShowMode="whenTruncated"

@@ -295,8 +295,8 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                         groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
-                          sortable: false,
-                          resizable: false,
+                          sortable: true,
+                          resizable: true,
                         }}
                         domLayout="autoHeight"
                         tooltipShowMode="whenTruncated"
@@ -423,8 +423,8 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                         groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
-                          sortable: false,
-                          resizable: false,
+                          sortable: true,
+                          resizable: true,
                         }}
                         domLayout="autoHeight"
                         tooltipShowMode="whenTruncated"

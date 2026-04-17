@@ -157,10 +157,11 @@ export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{
+                  sortable: true,
+                  resizable: true,
                   cellClass: 'text-center',
                 }}
                 domLayout="normal"
-                alwaysShowVerticalScroll={true}
               />
             </div>
 
