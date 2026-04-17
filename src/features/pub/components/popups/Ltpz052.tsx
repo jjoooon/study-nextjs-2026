@@ -241,82 +241,80 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol className="w-full" gap={2.5}>
-            <TableFold variant="accordion">
-              <TableFoldHead title="고객정보">
-                <Grow>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                    행추가
-                  </Button>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                    행삭제
-                  </Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                    }}
-                    domLayout="normal"
-                    onCellValueChanged={onCellValueChanged}
-                    // 체크박스 시
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: true,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    onGridReady={(params) => {
-                      gridApiRef.current = params.api;
-                      params.api.forEachNode((node) => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-            <Gcol className="w-full" placement="ss" variant="box-warning">
-              <Typo icon="warning" variant="body-sm">
-                <b>주의사항</b>
-              </Typo>
-              <BulletList color={'warning'} size="sm">
-                <BulletListItem>
-                  <em>단체보험 등 다수의 고객에게 동의</em>
-                  <b>를</b> 받아야 하는 경우 사용하는 화면입니다.
-                </BulletListItem>
-                <BulletListItem>
-                  <b>인증방법별 주민등록번호(동의서), 휴대전화번호(모바일)</b> <em>필수</em>입니다.
-                </BulletListItem>
-                <BulletListItem>
-                  <b>모바일 동의는 당사 홈페이지 주소가 휴대폰 문자로 전송</b>되며,{' '}
-                  <em>고객이 링크를 연결하여 직접 인증</em>하는 방식입니다. <em>(LMS인증과 다름)</em>
-                </BulletListItem>
-                <BulletListItem>
-                  <b>모바일 동의는</b> <em>본인명의 핸드폰 일 때만 인증가능</em>합니다.
-                </BulletListItem>
-                <BulletListItem>
-                  <em>카카오톡 미설치 고객의</em> 경우 카카오톡 알림톡 대신 <em>문자로 URL이 전송</em>됩니다.
-                </BulletListItem>
-                <BulletListItem>
-                  LMS문자동의는 이 화면에서 불가하오니 <b>개별 동의</b>를 받으시기 바랍니다.{' '}
-                  <em>(인증번호 적용으로 불가)</em>
-                </BulletListItem>
-                <BulletListItem>
-                  <b>엑셀 업로드를</b> 통해서 <b>한꺼번에 여러 고객의 정보를 화면에 적용</b>가능합니다.{' '}
-                  <em>(인증방법은 한가지에만 &apos;1&apos;로 표시하셔야 업로드 시 오류가 나지 않습니다.)</em>
-                </BulletListItem>
-              </BulletList>
-            </Gcol>
+          <TableFold variant="accordion" className="grid-rows-[auto_1fr] gap-2.5">
+            <TableFoldHead title="고객정보">
+              <Grow>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  행추가
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  행삭제
+                </Button>
+              </Grow>
+            </TableFoldHead>
+            <TableFoldBody>
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  defaultColDef={{
+                    sortable: false,
+                    resizable: false,
+                  }}
+                  domLayout="normal"
+                  onCellValueChanged={onCellValueChanged}
+                  // 체크박스 시
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: true,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  onGridReady={(params) => {
+                    gridApiRef.current = params.api;
+                    params.api.forEachNode((node) => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
+          <Gcol className="w-full" placement="ss" variant="box-warning">
+            <Typo icon="warning" variant="body-sm">
+              <b>주의사항</b>
+            </Typo>
+            <BulletList color={'warning'} size="sm">
+              <BulletListItem>
+                <em>단체보험 등 다수의 고객에게 동의</em>
+                <b>를</b> 받아야 하는 경우 사용하는 화면입니다.
+              </BulletListItem>
+              <BulletListItem>
+                <b>인증방법별 주민등록번호(동의서), 휴대전화번호(모바일)</b> <em>필수</em>입니다.
+              </BulletListItem>
+              <BulletListItem>
+                <b>모바일 동의는 당사 홈페이지 주소가 휴대폰 문자로 전송</b>되며,{' '}
+                <em>고객이 링크를 연결하여 직접 인증</em>하는 방식입니다. <em>(LMS인증과 다름)</em>
+              </BulletListItem>
+              <BulletListItem>
+                <b>모바일 동의는</b> <em>본인명의 핸드폰 일 때만 인증가능</em>합니다.
+              </BulletListItem>
+              <BulletListItem>
+                <em>카카오톡 미설치 고객의</em> 경우 카카오톡 알림톡 대신 <em>문자로 URL이 전송</em>됩니다.
+              </BulletListItem>
+              <BulletListItem>
+                LMS문자동의는 이 화면에서 불가하오니 <b>개별 동의</b>를 받으시기 바랍니다.{' '}
+                <em>(인증번호 적용으로 불가)</em>
+              </BulletListItem>
+              <BulletListItem>
+                <b>엑셀 업로드를</b> 통해서 <b>한꺼번에 여러 고객의 정보를 화면에 적용</b>가능합니다.{' '}
+                <em>(인증방법은 한가지에만 &apos;1&apos;로 표시하셔야 업로드 시 오류가 나지 않습니다.)</em>
+              </BulletListItem>
+            </BulletList>
           </Gcol>
         </DialogSection>
 

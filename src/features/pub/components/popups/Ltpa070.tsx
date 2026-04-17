@@ -93,7 +93,6 @@ export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
               rowData={rowData}
               columnDefs={columnDefs}
               domLayout="normal"
-              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>
