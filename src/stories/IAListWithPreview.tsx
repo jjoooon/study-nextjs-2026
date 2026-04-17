@@ -35,6 +35,7 @@ type IARow = {
   file?: string;
   phase?: string;
   popup?: string;
+  path?: string;
 };
 
 const ROWS: IARow[] = iaListData as IARow[];
@@ -178,23 +179,25 @@ export function IAListWithPreview() {
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex justify-start">
-        <table className="text-[1.2rem] IA-list m-0! shrink-0!">
+        <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
             <col style={{ width: '1rem' }} />
+            <col style={{ width: '4rem' }} />
             <col style={{ width: '8rem' }} />
             <col />
             <col />
             <col style={{ width: '2rem' }} />
             <col />
             <col />
+            {/* <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} />
+            <col style={{ width: '5rem' }} /> */}
           </colgroup>
           <thead>
             <tr>
-              <th scope="col">No</th>
-              <th scope="col">ID</th>
+                <th scope="col">No</th>
+                <th scope="col">경로</th>
+                <th scope="col">ID</th>
               <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('dep4')}>
                 화면명{getSortIndicator('dep4')}
               </th>
@@ -206,7 +209,7 @@ export function IAListWithPreview() {
               <th scope="col">완료일</th>
               <th scope="col">수정일</th>
 
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
+              {/* <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
               </th>
               <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('pub')}>
@@ -214,7 +217,7 @@ export function IAListWithPreview() {
               </th>
               <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('dev')}>
                 개발{getSortIndicator('dev')}
-              </th>
+              </th> */}
             </tr>
           </thead>
           <tbody>
@@ -222,8 +225,8 @@ export function IAListWithPreview() {
               const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
               const isIng = ingIdSet.has(row.id) || ingIdSet.has(row.subId ?? '');
               const isWork = workIdSet.has(row.id) || workIdSet.has(row.subId ?? '');
-              const rowBgClass = isWork ? 'bg-[#dbeafe]!' : isIng ? 'bg-[#fff3cd]!' : '';
-              const rowIdBgClass = isWork ? 'bg-[#bfdbfe]!' : isIng ? 'bg-[#c5bfbf]!' : '';
+              const rowBgClass = isWork ? 'bg-[#dbeafe]! tracking-0' : isIng ? 'bg-[#fff3cd]! tracking-0' : 'tracking-0';
+              const rowIdBgClass = isWork ? 'bg-[#bfdbfe]! tracking-0' : isIng ? 'bg-[#c5bfbf]! tracking-0' : 'tracking-0';
               const isInspected = [row.id, row.subId]
                 .filter(Boolean)
                 .some((id) => inspectionList.some((insp) => insp.toLowerCase() === String(id).toLowerCase()));
@@ -237,6 +240,9 @@ export function IAListWithPreview() {
                 >
                   <td className={rowBgClass}>
                     <b>{index + 1}</b>
+                  </td>
+                  <td className={rowBgClass+ ' '}>
+                    <b>{row.path ?? ''}</b>
                   </td>
                   <th scope="row" className={rowIdBgClass}>
                     {row.id}
@@ -267,10 +273,10 @@ export function IAListWithPreview() {
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{row.modify}</b>
                   </td>
-
+{/* 
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
+                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td> */}
                 </tr>
               );
             })}
