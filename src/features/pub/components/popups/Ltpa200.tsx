@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -47,7 +47,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: false,
     field01: '',
-    field02: '',
+    field02: '대상대상대상대상대상대상대상대상대상대상대상대상대상대상대상',
     field03: '2023-03-01',
     field04: '9999-12-31',
     field05: '',
@@ -91,7 +91,8 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '대상',
       field: 'field02',
       flex: 2,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-start!',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '적용시작일자',
@@ -142,7 +143,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -273,6 +274,8 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
                         }
                       });
                     }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
               </Grow>
