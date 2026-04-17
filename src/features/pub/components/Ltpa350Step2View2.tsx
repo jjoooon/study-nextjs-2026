@@ -185,7 +185,6 @@ export function Ltpa350Step2({
   onSelectPlan,
   isWidthExpanded = false,
   setIsWidthExpanded,
-  viewKey,
 }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
@@ -711,7 +710,7 @@ export function Ltpa350Step2({
       >
         <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
           <TabPager
-           data={Tabs}
+            data={Tabs}
             active={TabActive}
             setActive={TabSetActive}
             visibleCount={5}
