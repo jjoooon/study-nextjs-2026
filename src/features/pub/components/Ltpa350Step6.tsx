@@ -29,6 +29,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Ltpa350Step6Data } from '../data/ltpa350Step6Data';
 import type { Ltpa350Step6GridRow } from '../data/ltpa350Step6Data';
 import { Ltpz014 } from './popups/Ltpz014';
+import { BulletItem, BulletList } from '@/shared/components/common/BulletList';
 
 const DUMMY_DATA = {
   view1: [
@@ -218,113 +219,12 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                   <FormTable
                     variant={'none'}
                     lineTop={false}
-                    caption="정액담보점검목록 조회"
-                    cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
+                    caption="영수관리번호 조회"
+                    cols={['w-[10rem]', 'flex-1']}
                   >
                     <FormRow>
-                      <FormCell title={'점검일자'}>
-                        <DatePickerInput
-                          errorMsg="입력은 필수입니다."
-                          errorPs="bl"
-                          mode="range"
-                          onChange={() => {}}
-                          rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
-                          size="lg"
-                          width="sm"
-                          required
-                        />
-                      </FormCell>
-                      <FormCell title={'조직구분'}>
-                        <NativeSelect
-                          aria-label="조직구분 선택"
-                          value={form.type01}
-                          width={100}
-                          required
-                          onChange={(e) => setFormField('type01', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type01-1', label: '선택1' },
-                            { value: 'selection2', id: 'type01-2', label: '선택2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <Input
-                          aria-label=""
-                          width={'10rem'}
-                          value={form.type02}
-                          onChange={(e) => setFormField('type02', e.target.value)}
-                          required
-                        />
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                        <Input aria-label="" width={'14rem'} value={'신부산GA지점'} readOnly />
-                      </FormCell>
-                      <FormCell title={'점검방법'}>
-                        <NativeSelect
-                          aria-label="점검방법 선택"
-                          value={form.type03}
-                          width="14rem"
-                          onChange={(e) => setFormField('type03', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type03-1', label: '전체' },
-                            { value: 'selection2', id: 'type03-2', label: '전체2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'점검방법'}>
-                        <Input
-                          width={'14rem'}
-                          value={form.type04}
-                          onChange={(e) => setFormField('type04', e.target.value)}
-                        />
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                      </FormCell>
-                      <FormCell title={'점검결과'}>
-                        <NativeSelect
-                          aria-label="점검결과 선택"
-                          value={form.type05}
-                          width="14rem"
-                          onChange={(e) => setFormField('type05', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type05-1', label: '전체' },
-                            { value: 'selection2', id: 'type05-2', label: '전체2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                      </FormCell>
-                      <FormCell title={'점검구분'}>
-                        <NativeSelect
-                          aria-label="점검구분 선택"
-                          value={form.type06}
-                          width="14rem"
-                          onChange={(e) => setFormField('type06', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type06-1', label: '전체' },
-                            { value: 'selection2', id: 'type06-2', label: '전체2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
+                      <FormCell title={'영수관리번호'}>
+                        <Input aria-label="영수관리번호" value={'영수관리번호'} required  />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -475,7 +375,7 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                                 commaAmount
                                 readOnly
                               />
-                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center!">
                                 스캔
                                 <PlusIcon color={'var(--color-secondary-50)'} />
                               </Button>
@@ -554,7 +454,7 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                                 commaAmount
                                 readOnly
                               />
-                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+                              <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center!">
                                 스캔
                                 <PlusIcon color={'var(--color-secondary-50)'} />
                               </Button>
@@ -582,6 +482,18 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                     </Table>
                   </TableFoldBody>
                 </TableFold>
+                <Grow>
+                  <BulletItem
+                    before="ⓐ"
+                    className="whitespace-nowrap"
+                    color="default"
+                    onClick={() => {}}
+                    size="md"
+                    type="dot"
+                  >
+                  같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터 즉시이체출금에 성공한 것이니 입금내역을 확인하세요. 
+                  </BulletItem>
+                </Grow>
                 {/* 카드 */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="카드" />
@@ -829,7 +741,11 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                 </TableFold>
                 {/* 입금사항 */}
                 <TableFold variant={'default'}>
-                  <TableFoldHead title="입금사항" />
+                  <TableFoldHead title="입금사항">
+                    <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-center! w-auto">
+                      입금입력
+                    </Button>
+                  </TableFoldHead>
                   <TableFoldBody>
                     <div className="ag-theme-alpine">
                       <AgGridReact<Ltpa350Step6GridRow>
@@ -884,7 +800,17 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                           <Input aria-label="계약번호" width={'full'} value={''} readOnly />
                         </FormCell>
                         <FormCell title={'계상일자'}>
-                          <Input aria-label="계상일자" width={'full'} value={''} readOnly />
+                          <DatePickerInput
+                            errorMsg="입력은 필수입니다."
+                            errorPs="bl"
+                            mode="single"
+                            onChange={() => {}}
+                            size="lg"
+                            value="2026-04-17"
+                            width="sm"
+                            readOnly
+                          />
+                          {/* <Input aria-label="계상일자" width={'full'} value={''} readOnly /> */}
                         </FormCell>
                         <FormCell title={'수납번호'}>
                           <Input
