@@ -187,8 +187,8 @@ export function IAListWithPreview() {
             <col />
             <col />
             <col style={{ width: '2rem' }} />
-            <col />
-            <col />
+            {/* <col />
+            <col /> */}
             {/* <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} /> */}
@@ -206,8 +206,8 @@ export function IAListWithPreview() {
               <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
                 1차{showPhaseOnly ? ' ✓' : ''}
               </th>
-              <th scope="col">완료일</th>
-              <th scope="col">수정일</th>
+              {/* <th scope="col">완료일</th>
+              <th scope="col">수정일</th> */}
 
               {/* <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
@@ -267,12 +267,12 @@ export function IAListWithPreview() {
                     <b>{row.phase === 'Y' ? 'Y' : ''}</b>
                   </td>
 
-                  <td className={`text-center ${rowBgClass}`}>
+                  {/* <td className={`text-center ${rowBgClass}`}>
                     <b>{row.date}</b>
                   </td>
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{row.modify}</b>
-                  </td>
+                  </td> */}
 {/* 
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
