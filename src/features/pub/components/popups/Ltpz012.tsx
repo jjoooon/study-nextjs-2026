@@ -381,8 +381,8 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     rowData={section2Data}
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section2SumData}
-                    defaultColDef={{ sortable: false, resizable: false }}
-                    domLayout={'normal'}
+                    defaultColDef={{ sortable: true, resizable: true }}
+                    domLayout={'autoHeight'}
                   />
                 </div>
               </TableFoldBody>
@@ -402,7 +402,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     getRowStyle={(params) =>
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
-                    defaultColDef={{ sortable: false, resizable: false }}
+                    defaultColDef={{ sortable: true, resizable: true }}
                     domLayout={'autoHeight'}
                     // alwaysShowVerticalScroll={true}
                   />
@@ -420,7 +420,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={policyData}
                     columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false, resizable: false }}
+                    defaultColDef={{ sortable: true, resizable: true }}
                     domLayout={'autoHeight'}
                     // alwaysShowVerticalScroll={true}
                   />
@@ -444,7 +444,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     headerHeight={0}
                     groupHeaderHeight={0}
                     getRowStyle={() => ({ backgroundColor: '#FFEFEA' })}
-                    defaultColDef={{ sortable: false, resizable: false }}
+                    defaultColDef={{ sortable: true, resizable: true }}
                     rowClassRules={{}}
                     domLayout={'autoHeight'}
                   />

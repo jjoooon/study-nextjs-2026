@@ -230,8 +230,8 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
                       rowData={rowData}
                       columnDefs={columnDefs}
                       defaultColDef={{
-                        sortable: false,
-                        resizable: false,
+                        sortable: true,
+                        resizable: true,
                       }}
                       rowSelection={{
                         mode: 'multiRow',

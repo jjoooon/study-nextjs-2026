@@ -27,6 +27,7 @@ import {
 } from '@uiux/Dialog';
 import { Ltpz03201 } from './Ltpz03201';
 import { DummyDataType } from '../../data/ltpa020Data';
+import { t } from 'i18next';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -1258,8 +1259,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             rowData={DummyData11}
                             columnDefs={columnDefs11}
                             defaultColDef={{
-                              sortable: false,
-                              resizable: false,
+                              sortable: true,
+                              resizable: true,
                               cellClass: 'text-center',
                             }}
                             // selection 설정
@@ -1289,8 +1290,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                             rowData={DummyData12}
                             columnDefs={columnDefs12}
                             defaultColDef={{
-                              sortable: false,
-                              resizable: false,
+                              sortable: true,
+                              resizable: true,
                               cellClass: 'text-center',
                             }}
                             // selection 설정
@@ -1336,8 +1337,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           rowData={DummyData21}
                           columnDefs={columnDefs21}
                           defaultColDef={{
-                            sortable: false,
-                            resizable: false,
+                            sortable: true,
+                            resizable: true,
                             cellClass: 'text-center',
                           }}
                           // selection 설정
@@ -1369,8 +1370,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           rowData={DummyData22}
                           columnDefs={columnDefs22}
                           defaultColDef={{
-                            sortable: false,
-                            resizable: false,
+                            sortable: true,
+                            resizable: true,
                             cellClass: 'text-center',
                           }}
                           // selection 설정
@@ -1402,8 +1403,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           rowData={DummyData23}
                           columnDefs={columnDefs23}
                           defaultColDef={{
-                            sortable: false,
-                            resizable: false,
+                            sortable: true,
+                            resizable: true,
                             cellClass: 'text-center',
                           }}
                           // selection 설정

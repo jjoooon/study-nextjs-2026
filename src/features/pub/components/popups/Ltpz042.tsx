@@ -299,7 +299,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={rowData}
                 columnDefs={columnDefs}
-                defaultColDef={{ sortable: false, resizable: false }}
+                defaultColDef={{ sortable: true, resizable: true }}
                 rowSelection={rowSelection}
                 selectionColumnDef={selectionColumnDef}
                 domLayout="normal"
@@ -317,7 +317,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
-                  defaultColDef={{ sortable: false, resizable: false }}
+                  defaultColDef={{ sortable: true, resizable: true }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
                   domLayout="normal"
@@ -332,7 +332,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData3}
                   columnDefs={columnDefs3}
-                  defaultColDef={{ sortable: false, resizable: false }}
+                  defaultColDef={{ sortable: true, resizable: true }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
                   domLayout="normal"
@@ -347,7 +347,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData4}
                   columnDefs={columnDefs4}
-                  defaultColDef={{ sortable: false, resizable: false }}
+                  defaultColDef={{ sortable: true, resizable: true }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
                    domLayout="normal"

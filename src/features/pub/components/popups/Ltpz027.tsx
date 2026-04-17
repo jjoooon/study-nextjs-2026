@@ -174,8 +174,8 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{
-                  sortable: false,
-                  resizable: false,
+                  sortable: true,
+                  resizable: true,
                 }}
                 domLayout="normal"
                 className="text-center"

@@ -175,8 +175,8 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
                 columnDefs={columnDefs}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 defaultColDef={{
-                  sortable: false,
-                  resizable: false,
+                  sortable: true,
+                  resizable: true,
                   autoHeight: true,
                 }}
                 singleClickEdit={true}

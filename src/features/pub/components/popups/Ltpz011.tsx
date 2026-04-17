@@ -155,8 +155,8 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
                   columnDefs={columnDefs2}
                   pinnedBottomRowData={sumRow2}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}

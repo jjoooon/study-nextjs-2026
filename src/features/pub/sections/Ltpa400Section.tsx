@@ -30,6 +30,7 @@ import {
   type Ltpa400DummyDataRow2,
 } from '../data/ltpa400Data';
 import { DummyDataType } from '../data/ltpa020Data';
+import { t } from 'i18next';
 
 // Tab 정의
 type Ltpa400TabType = { name: string; value: string; label: string };
@@ -339,8 +340,8 @@ export default function Ltpa400Section() {
                       tooltipShowDelay={0}
                       tooltipHideDelay={3000}
                       defaultColDef={{
-                        sortable: false,
-                        resizable: false,
+                        sortable: true,
+                        resizable: true,
                       }}
                       singleClickEdit={true}
                       onCellValueChanged={() => {}}
@@ -491,8 +492,8 @@ export default function Ltpa400Section() {
                       rowData={Ltpa400DummyData2}
                       columnDefs={columnDefs2}
                       defaultColDef={{
-                        sortable: false,
-                        resizable: false,
+                        sortable: true,
+                        resizable: true,
                       }}
                       singleClickEdit={true}
                       onCellValueChanged={() => {}}

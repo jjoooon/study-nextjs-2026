@@ -321,9 +321,9 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   const spanDefaultColDef: ColDef<UnderwritingViolationRow> = {
-    sortable: false,
+    sortable: true,
     filter: false,
-    resizable: false,
+    resizable: true,
     suppressMovable: true,
     headerClass: 'ag-header-center',
   };
@@ -565,7 +565,6 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={spanColumnDefs}
                     defaultColDef={spanDefaultColDef}
                     domLayout="autoHeight"
-                    // alwaysShowVerticalScroll={true}
                     enableCellSpan={true}
                     onGridReady={(params) => {
                       gridApiRef.current = params.api;
@@ -585,7 +584,6 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={spanColumnDefs2}
                     defaultColDef={spanDefaultColDef}
                     domLayout="autoHeight"
-                    // alwaysShowVerticalScroll={true}
                     enableCellSpan={true} 
                     onGridReady={(params) => {
                       gridApiRef.current = params.api;
@@ -605,7 +603,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={spanColumnDefs3}
                     defaultColDef={spanDefaultColDef}
                     domLayout="autoHeight"
-                    // alwaysShowVerticalScroll={true}
+                    
                     enableCellSpan={true} 
                     onGridReady={(params) => {
                       gridApiRef.current = params.api;
