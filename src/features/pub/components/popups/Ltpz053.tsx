@@ -116,8 +116,8 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
               columnDefs={columnDefs}
               noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
               }}
               domLayout="normal"
               // 체크박스 시

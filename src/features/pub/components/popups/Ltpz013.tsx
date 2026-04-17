@@ -8,7 +8,6 @@ import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { RecommendCard } from '@common/RecommendCard';
 import { BadgeCheckIcon, CalendarIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -295,8 +294,8 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                         groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
-                          sortable: false,
-                          resizable: false,
+                          sortable: true,
+                          resizable: true,
                         }}
                         domLayout="autoHeight"
                         tooltipShowMode="whenTruncated"
@@ -423,8 +422,8 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                         groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
-                          sortable: false,
-                          resizable: false,
+                          sortable: true,
+                          resizable: true,
                         }}
                         domLayout="autoHeight"
                         tooltipShowMode="whenTruncated"

@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter, DatePickerCellEditor } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -114,6 +114,7 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
           '(전략영업-전속)휴대폰전자서명요청제한',
         ],
       },
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '판매채널',
@@ -186,7 +187,7 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -283,6 +284,8 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
                     rowData={rowData}
                     columnDefs={columnDefs}
                     noRowsOverlayComponent={AgGridEmptyComponent}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                     domLayout="normal"
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}

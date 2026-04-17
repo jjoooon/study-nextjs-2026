@@ -7,7 +7,7 @@ import React from 'react';
 
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -162,6 +162,7 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field1',
       flex: 1,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },
     {
       headerName: '가입연령',
@@ -211,7 +212,12 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
                   columnDefs={columnDefs}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                   defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                    }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </TableFoldBody>

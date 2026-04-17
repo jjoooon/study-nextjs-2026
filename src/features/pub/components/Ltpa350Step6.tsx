@@ -29,6 +29,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Ltpa350Step6Data } from '../data/ltpa350Step6Data';
 import type { Ltpa350Step6GridRow } from '../data/ltpa350Step6Data';
 import { Ltpz014 } from './popups/Ltpz014';
+import { BulletItem, BulletList } from '@/shared/components/common/BulletList';
 
 const DUMMY_DATA = {
   view1: [

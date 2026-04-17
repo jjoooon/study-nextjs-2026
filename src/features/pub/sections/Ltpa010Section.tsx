@@ -598,8 +598,8 @@ export default function Ltpa010Section() {
                   rowData={rowData}
                   columnDefs={columnDefs}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   // 에디터 시
                   singleClickEdit={true}
@@ -636,8 +636,8 @@ export default function Ltpa010Section() {
                   rowData={rowData}
                   columnDefs={columnDefs2}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
@@ -669,8 +669,8 @@ export default function Ltpa010Section() {
                   rowData={rowData}
                   columnDefs={columnDefs3}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}

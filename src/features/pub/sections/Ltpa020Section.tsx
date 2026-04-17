@@ -189,7 +189,7 @@ export default function Ltpa020Section() {
       field: 'field1',
       flex: 1,
       cellClass: 'text-center',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
       cellRenderer: designCellRenderer,
     },
      {

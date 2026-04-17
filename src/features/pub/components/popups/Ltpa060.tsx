@@ -364,8 +364,8 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   rowSelection={{
                     mode: 'multiRow',
@@ -393,8 +393,8 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   rowSelection={{
                     mode: 'multiRow',

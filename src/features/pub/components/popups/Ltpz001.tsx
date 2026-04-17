@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -301,6 +301,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                       headerName: '출력물',
                       field: 'field1',
                       flex: 1,
+                      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
                     }}
                     // selection 설정
                     rowSelection={{
@@ -322,6 +323,8 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                         }
                       });
                     }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
               </Gcol>

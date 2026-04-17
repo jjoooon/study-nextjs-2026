@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -48,7 +48,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: false,
     field01: '',
-    field02: '',
+    field02: '대상대상대상대상대상대상대상대상대상대상대상대상대상대상대상대상',
     field03: '2026-03-01',
     field04: '9999-12-31',
     field05: '',
@@ -93,6 +93,7 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field02',
       flex: 2,
       cellClass: 'flex! items-center! justify-center!',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '적용시작일자',
@@ -237,45 +238,45 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Grow>
           </Grow>
 
-          <Gcol placement="ss" className="w-full" gap={5}>
-            <TableFold>
-              <TableFoldHead title="등록사항" />
-              <TableFoldBody>
-                <Grow className="w-full" gap={5}>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType>
-                      // getRowId 적용: id 필드를 고유 식별자로 사용
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      enableCellSpan={true}
-                      singleClickEdit={true}
-                      domLayout="normal"
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '√',
-                        cellClass: 'text-center',
-                        width: 30,
-                      }}
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                    />
-                  </div>
-                </Grow>
-              </TableFoldBody>
-            </TableFold>
-          </Gcol>
+          <TableFold>
+            <TableFoldHead title="등록사항" />
+            <TableFoldBody>
+              <Grow className="w-full" gap={5}>
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType>
+                    // getRowId 적용: id 필드를 고유 식별자로 사용
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    enableCellSpan={true}
+                    singleClickEdit={true}
+                    domLayout="normal"
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: false,
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '√',
+                      cellClass: 'text-center',
+                      width: 30,
+                    }}
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
+                        if (node.data?.isCheck) {
+                          node.setSelected(true);
+                        }
+                      });
+                    }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
+              </Grow>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>

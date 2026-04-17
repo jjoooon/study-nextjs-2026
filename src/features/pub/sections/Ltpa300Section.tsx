@@ -5,7 +5,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { useAgGridInfiniteAppend } from '@aggrid';
+import { createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -41,10 +41,10 @@ export default function Ltpa300Section() {
       { headerName: '모집직원명', field: 'field03', width: 100, cellClass: 'text-center' },
       { headerName: '사용인번호', field: 'field04', width: 100, cellClass: 'text-center' },
       { headerName: '사용인', field: 'field05', width: 80, cellClass: 'text-center' },
-      { headerName: '증권번호', field: 'field06', flex: 170, cellClass: 'text-center' },
+      { headerName: '증권번호', field: 'field06', width: 170, cellClass: 'text-center', tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field06' })},
       { headerName: '점검설계번호', field: 'field07', width: 110, cellClass: 'text-center' },
       { headerName: '점검', field: 'field08', width: 110, cellClass: 'text-center' },
-      { headerName: '피보험자명', field: 'field09', width: 100, cellClass: 'text-center' },
+      { headerName: '피보험자명', field: 'field09', width: 100, cellClass: 'text-center', tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field09' })},
       { headerName: '점검일자', field: 'field10', width: 110, cellClass: 'text-center' },
       { headerName: '결과순번', field: 'field11', width: 90, cellClass: 'text-center' },
       { headerName: '사전확인시사용여부', field: 'field12', width: 130, cellClass: 'text-center' },
@@ -219,8 +219,8 @@ export default function Ltpa300Section() {
                     getRowId={(params) => String(params.data.id)}
                     columnDefs={columnDefs}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                       editable: false,
                     }}
                     domLayout="normal"
@@ -229,6 +229,8 @@ export default function Ltpa300Section() {
                     cacheBlockSize={pageSize}
                     maxBlocksInCache={2}
                     datasource={dataSource}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
                 <TableMore

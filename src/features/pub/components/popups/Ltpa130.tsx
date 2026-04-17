@@ -519,8 +519,8 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                     rowData={rowData}
                     columnDefs={columnDefs}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                       cellClass: 'text-center p-0!',
                     }}
                     domLayout="autoHeight"
