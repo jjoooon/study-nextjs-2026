@@ -199,7 +199,7 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'head'} lineTop={false} caption="누적조회">
               <FormRow>
-                <FormCell title={'조회구분'}>김한화</FormCell>
+                <FormCell title={'피보험자'}>김한화</FormCell>
               </FormRow>
             </FormTable>
           </Grow>

@@ -274,7 +274,16 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Grow>
           </Grow>
           <TableFold>
-            <TableFoldHead title="등록사항"></TableFoldHead>
+            <TableFoldHead title="등록사항">
+             <Grow>
+                <Button color="gray" variant="outlined">
+                  행추가
+                </Button>
+                <Button color="gray" variant="outlined">
+                  행삭제
+                </Button>
+              </Grow>
+            </TableFoldHead>
             <TableFoldBody>
               <Grow className="w-full">
                 <div className="ag-theme-alpine min-h-[18.4rem]">

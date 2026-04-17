@@ -205,7 +205,7 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 상세조회
               </Button>
             </Grow>

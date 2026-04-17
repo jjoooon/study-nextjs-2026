@@ -1,12 +1,12 @@
 ﻿'use client';
 // 권오택
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -140,15 +140,19 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '설계번호',
       width: 110,
-      field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataType>((data?: DummyDataType) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {data?.field04}
+        </Button>
+      )),
     },
     {
       headerName: '계약자',
       width: 80,
       field: 'field05',
-      cellClass: 'text-center',
+      cellClass: 'text-center', 
       autoHeight: true,
     },
     {

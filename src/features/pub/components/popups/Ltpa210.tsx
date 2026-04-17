@@ -159,7 +159,7 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'등록항목'}>
                   <NativeSelect
                     aria-label="항목 선택"
-                    width={90}
+                    width={108}
                     value={form.type01}
                     onChange={(e) => setFormField('type01', e.target.value)}
                     required
@@ -177,7 +177,7 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormCell title={'조직구분'}>
                   <NativeSelect
                     aria-label="조직구분 선택"
-                    width={90}
+                    width={108}
                     value={form.type02}
                     onChange={(e) => setFormField('type02', e.target.value)}
                     required
@@ -239,7 +239,16 @@ export const Ltpa210 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           <TableFold>
-            <TableFoldHead title="등록사항" />
+            <TableFoldHead title="등록사항">
+              <Grow>
+                <Button color="gray" variant="outlined">
+                  행추가
+                </Button>
+                <Button color="gray" variant="outlined">
+                  행삭제
+                </Button>
+              </Grow>
+            </TableFoldHead>
             <TableFoldBody>
               <Grow className="w-full" gap={5}>
                 <div className="ag-theme-alpine min-h-[18.4rem]">

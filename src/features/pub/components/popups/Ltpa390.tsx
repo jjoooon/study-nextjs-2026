@@ -87,7 +87,7 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Grid placement="ss" className="grid-rows-[auto_1fr_auto] gap-4">
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} icon={'warning'}>
-                <b>안내사항 노출 영역</b>
+                아래 내용은 청약완료까지 해소되지 않을경우 수납이 불가능합니다.(청약완료 불가)
               </Typo>
             </Gcol>
             <Gcol placement="ss" className="w-full" gap={5}>

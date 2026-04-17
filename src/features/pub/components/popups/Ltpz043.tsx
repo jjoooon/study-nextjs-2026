@@ -75,7 +75,6 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                     value={form.type01}
                     width={100}
                     commaAmount
-                    required
                   />
                   <div>㎡</div>
                   <div>↔</div>
@@ -86,7 +85,6 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
                     value={form.type02}
                     width={100}
                     commaAmount
-                    required
                   />
                   평
                 </FormCell>
