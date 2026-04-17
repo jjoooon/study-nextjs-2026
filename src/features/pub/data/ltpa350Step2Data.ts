@@ -393,8 +393,8 @@ export interface Ltpa350Step2DataType3 {
   tabList: Array<{
     id: string | number;
     name: string;
-    age: string | number;
-    gender: string;
+    age?: string | number;
+    gender?: string;
     value: string;
     error: boolean;
     info: string[];
@@ -410,17 +410,6 @@ export interface Ltpa350Step2DataType3 {
     field7: string;
     field8: string;
   }>;
-  agGridTable2: Array<{
-    id: number;
-    isChecked: boolean;
-    field1: string;
-    field2: string;
-    field3: boolean;
-    field4: number;
-    field5: string;
-    field6: string;
-    field7: number;
-  }>;
 }
 export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
   tabList: [
@@ -435,9 +424,7 @@ export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
     },
     {
       id: 2,
-      name: '반짝빛나리반짝빛나리',
-      age: '2',
-      gender: '남',
+      name: '목적물',
       value: 'tab2',
       error: true,
       info: ['추가정보1', '추가정보2', '추가정보3'],
@@ -542,8 +529,59 @@ export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
       field8: '',
     },
   ],
+};
 
-  agGridTable2: [
+export interface Ltpa350Step2DataType4 {
+  tabList: Array<{
+    id: string | number;
+    name: string;
+    age?: string | number;
+    gender?: string;
+    value: string;
+    error: boolean;
+    info: string[];
+  }>;
+  agGridTable1: Array<{
+    id: number;
+    field1: string;
+    field2: number;
+    field3: number;
+    field4: string;
+    field5: string;
+    field6: string;
+    field7: string;
+    field8: string;
+  }>;
+}
+export const Ltpa350Step2Data4: Ltpa350Step2DataType4 = {
+  tabList: [
+    {
+      id: 1,
+      name: '홍길동',
+      age: '1',
+      gender: '여',
+      value: 'tab1',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+    },
+    {
+      id: 2,
+      name: '목적물',
+      value: 'tab2',
+      error: true,
+      info: ['추가정보1', '추가정보2', '추가정보3'],
+    },
+    {
+      id: 3,
+      name: '반짝빛나리반짝빛나리',
+      age: '3',
+      gender: '여',
+      value: 'tab3',
+      error: false,
+      info: ['추가정보1', '추가정보2'],
+    },
+  ],
+  agGridTable1: [
     {
       id: 1,
       isChecked: true,
@@ -601,119 +639,6 @@ export const Ltpa350Step2Data3: Ltpa350Step2DataType3 = {
     },
   ],
 };
-
-
-
-export interface Ltpa350Step2DataType4 {
-  tabList: Array<{
-    id: string | number;
-    name: string;
-    age: string | number;
-    gender: string;
-    value: string;
-    error: boolean;
-    info: string[];
-  }>;
-  agGridTable1: Array<{
-    id: number;
-
-    field1: string;
-    field2: boolean;
-    field3: number;
-    field4: number;
-    field5: string;
-    field6: string;
-    field7: number;
-    field8: string;
-    field9: boolean;
-
-    locked?: boolean; // 잠금 여부 추가
-    isHighlighted: boolean;
-    selected?: boolean;
-    badge?: string[];
-  }>;
-}
-export const Ltpa350Step2Data4: Ltpa350Step2DataType4 = {
-  tabList: [
-    {
-      id: 1,
-      name: '홍길동',
-      age: '1',
-      gender: '여',
-      value: 'tab1',
-      error: true,
-      info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
-    },
-    {
-      id: 2,
-      name: '반짝빛나리반짝빛나리',
-      age: '2',
-      gender: '남',
-      value: 'tab2',
-      error: true,
-      info: ['추가정보1', '추가정보2', '추가정보3'],
-    },
-    {
-      id: 3,
-      name: '반짝빛나리반짝빛나리',
-      age: '3',
-      gender: '여',
-      value: 'tab3',
-      error: false,
-      info: ['추가정보1', '추가정보2'],
-    },
-  ],
-  agGridTable1: [
-    {
-      id: 1,
-      field1: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
-      field2: true,
-      field3: 500,
-      field4: 450,
-      field5: '80세',
-      field6: '20년',
-      field7: 100,
-      field8: '인수',
-      field9: true,
-
-      locked: true,
-
-      isHighlighted: true,
-      badge: ['독립', '갱신'],
-    },
-    {
-      id: 2,
-      field1: '무배당 KB손해보험 암보험',
-      field2: true,
-      field3: 300,
-      field4: 280,
-      field5: '100세',
-      field6: '30년',
-      field7: 80,
-      field8: '인수',
-      field9: false,
-      locked: false,
-      isHighlighted: false,
-      badge: ['갱신'],
-    },
-    {
-      id: 3,
-      field1: '무배당 현대해상 3대질병보험',
-      field2: false,
-      field3: 400,
-      field4: 380,
-      field5: '90세',
-      field6: '25년',
-      field7: 120,
-      field8: '인수',
-      field9: false,
-      locked: false,
-      isHighlighted: false,
-      badge: ['독립'],
-    },
-  ],
-};
-
 
 export interface Ltpa350Step2DataType5 {
   tabList: Array<{
