@@ -6,7 +6,7 @@ import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import {
   Dialog,
   DialogClose,
@@ -494,7 +494,7 @@ const JobDummyData: JobDataType[] = [
 const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
   {
     id: 1,
-    coverageName: '보험료압입명제대상보장(8대사유)',
+    coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
     amount: '10,000',
   },
   {
@@ -528,7 +528,7 @@ const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
 const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
   {
     id: 1,
-    coverageName: '보험료압입명제대상보장(8대사유)1',
+    coverageName: '보험료압입명제대상보장(8대사유)1보험료압입명제대상보장(8대사유)',
   },
   {
     id: 2,
@@ -556,7 +556,7 @@ const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
 const expectedUwExclusionCoverageData: ExpectedUwAmountRow[] = [
   {
     id: 1,
-    coverageName: '보험료압입명제대상보장(8대사유)',
+    coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
     amount: '10,000',
   },
   {
@@ -686,7 +686,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
       headerName: '위배내용',
       field: 'field03',
       flex: 1,
-      cellClass: 'flex! items-center! justify-start!',
+      cellClass: 'flex! items-center! justify-start! whitespace-normal!',
+      autoHeight: true,
     },
   ];
 
@@ -698,6 +699,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
       width: 200,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'accumName' }),
     },
     {
       headerName: '누적유형',
@@ -745,6 +747,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
       field: 'guaranteeName',
       flex: 1,
       cellClass: 'flex! items-center! justify-start!',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'guaranteeName' }),
     },
     {
       headerName: '설계금액(원)',
@@ -863,6 +866,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
       field: 'coverageName',
       flex: 1,
       cellClass: 'justify-start!',
+      tooltipValueGetter: createTooltipValueGetter<ExpectedUwAmountRow>({ field: 'coverageName' }),
     },
     {
       headerName: '가입금액(원)',
@@ -888,6 +892,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
       field: 'coverageName',
       flex: 1,
       cellClass: 'justify-start! border-r-0!',
+      tooltipValueGetter: createTooltipValueGetter<ExpectedUwSingleRow>({ field: 'coverageName' }),
       headerClass: 'border-r-0!',
       cellStyle: { borderRight: 'none' },
     },
@@ -1008,13 +1013,12 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                           rowData={rowData}
                           columnDefs={columnDefs}
                           defaultColDef={{
-                            sortable: false,
-                            resizable: false,
+                            sortable: true,
+                            resizable: true,
                           }}
                           rowClassRules={{}}
                           enableCellSpan={true}
-                          domLayout="normal"
-                          alwaysShowVerticalScroll={true}
+                          domLayout="autoHeight"
                         />
                       </div>
                     </TableFoldBody>
@@ -1085,12 +1089,14 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                     rowData={selectedAccumRowData}
                     columnDefs={columnDefs2}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                     }}
                     rowClassRules={{}}
                     enableCellSpan={true}
                     domLayout="autoHeight"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
               </Gcol>
@@ -1119,8 +1125,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       rowData={jobRowData}
                       columnDefs={jobColumnDefs}
                       defaultColDef={{
-                        sortable: false,
-                        resizable: false,
+                        sortable: true,
+                        resizable: true,
                         suppressMovable: true,
                       }}
                       // getRowStyle={(params) => ({
@@ -1130,7 +1136,8 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       groupHeaderHeight={30}
                       rowHeight={30}
                       domLayout="normal"
-                      alwaysShowVerticalScroll={true}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
 
@@ -1271,14 +1278,16 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                             rowData={expectedUwLimitedCoverageRowData}
                             columnDefs={expectedUwAmountColumnDefs}
                             defaultColDef={{
-                              sortable: false,
-                              resizable: false,
+                              sortable: true,
+                              resizable: true,
                               suppressMovable: true,
                               cellClass: 'flex! items-center!',
                             }}
                             headerHeight={28}
                             rowHeight={30}
                             domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </TableFoldBody>
@@ -1304,14 +1313,16 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                             rowData={expectedUwPremiumSurchargeRowData}
                             columnDefs={expectedUwSingleColumnDefs}
                             defaultColDef={{
-                              sortable: false,
-                              resizable: false,
+                              sortable: true,
+                              resizable: true,
                               suppressMovable: true,
                               cellClass: 'flex! items-center!',
                             }}
                             headerHeight={28}
                             rowHeight={30}
                             domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </TableFoldBody>
@@ -1337,14 +1348,16 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                             rowData={expectedUwExclusionCoverageRowData}
                             columnDefs={expectedUwAmountColumnDefs}
                             defaultColDef={{
-                              sortable: false,
-                              resizable: false,
+                              sortable: true,
+                              resizable: true,
                               suppressMovable: true,
                               cellClass: 'flex! items-center!',
                             }}
                             headerHeight={28}
                             rowHeight={30}
                             domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </TableFoldBody>
