@@ -5,7 +5,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { createCellValueChangedHandler, createFieldRenderer } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -58,6 +58,9 @@ export default function Ltpa010Section() {
           headerName: '고지유형/플랜명',
           cellClass: 'text-center px-0!',
           autoHeight: true,
+          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({ 
+            field: 'field02', 
+          }),
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field02', (data?: Ltpa010DummyDataRow) => {
             const hasTooltip = data?.field04 === 'memoView';
             const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
@@ -116,6 +119,9 @@ export default function Ltpa010Section() {
           width: 80,
           cellClass: 'text-center px-0!',
           autoHeight: true,
+          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({ 
+            field: 'field05', 
+          }),
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field05', 'field06'),
         },
       ],
@@ -615,6 +621,8 @@ export default function Ltpa010Section() {
                     });
                   }}
                   domLayout="autoHeight"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
               {/* Grid2: SM → 최초설계자 */}
@@ -645,6 +653,8 @@ export default function Ltpa010Section() {
                     });
                   }}
                   domLayout="autoHeight"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
 
@@ -676,6 +686,8 @@ export default function Ltpa010Section() {
                     });
                   }}
                   domLayout="autoHeight"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
               <InfoBox

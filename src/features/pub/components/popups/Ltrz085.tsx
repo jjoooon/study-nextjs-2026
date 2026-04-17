@@ -273,59 +273,57 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
             </FormTable>
           </Grow>
 
-          <Gcol placement={'ss'} className="w-full">
-            <TableFold variant="accordion">
-              <TableFoldHead title="변경조건 설계/계약">
-                <Grow>
-                  <Button id="btnCA" variant={'outlined'} size={'xl'} color={'gray'}>
-                    행추가
-                  </Button>
-                  <Button id="btnDA" variant={'outlined'} size={'xl'} color={'gray'}>
-                    행삭제
-                  </Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                      cellClass: 'p-0',
-                      cellStyle: { padding: 0 },
-                    }}
-                    singleClickEdit={true}
-                    onCellValueChanged={onCellValueChanged}
-                    rowSelection={{
-                      mode: 'singleRow',
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    domLayout="normal"
-                    alwaysShowVerticalScroll={true}
-                    onGridReady={(params) => {
-                      params.api.forEachNode((node) => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-          </Gcol>
+          <TableFold variant="accordion" className="grid-rows-[auto_1fr]">
+            <TableFoldHead title="변경조건 설계/계약">
+              <Grow>
+                <Button id="btnCA" variant={'outlined'} size={'xl'} color={'gray'}>
+                  행추가
+                </Button>
+                <Button id="btnDA" variant={'outlined'} size={'xl'} color={'gray'}>
+                  행삭제
+                </Button>
+              </Grow>
+            </TableFoldHead>
+            <TableFoldBody>
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: false,
+                    resizable: false,
+                    cellClass: 'p-0',
+                    cellStyle: { padding: 0 },
+                  }}
+                  singleClickEdit={true}
+                  onCellValueChanged={onCellValueChanged}
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    cellClass: 'text-center editable-cell',
+                  }}
+                  domLayout="normal"
+                  alwaysShowVerticalScroll={true}
+                  onGridReady={(params) => {
+                    params.api.forEachNode((node) => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
 
           <Gcol placement={'ss'} variant={'box-info'} className="w-full">
             <Typo variant={'body-md'} icon={'info'}>

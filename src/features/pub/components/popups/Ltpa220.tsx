@@ -294,64 +294,58 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
-            <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
-                <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Input
-                      aria-label=""
-                      width={150}
-                      value={form.type01}
-                      onChange={(e) => setFormField('type01', e.target.value)}
-                      required
-                    />
-                  </FormCell>
-                  <FormCell title={'CSM배수'}>
-                    <Input
-                      aria-label=""
-                      width={150}
-                      value={form.type02}
-                      onChange={(e) => setFormField('type02', e.target.value)}
-                    />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-              <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                  조회
-                </Button>
-                <Button color={'gray'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                  재계산
-                </Button>
-              </Grow>
+        <DialogSection className="grid-rows-[auto_1fr]" gap-5>
+          <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
+              <FormRow>
+                <FormCell title={'설계번호'}>
+                  <Input
+                    aria-label=""
+                    width={150}
+                    value={form.type01}
+                    onChange={(e) => setFormField('type01', e.target.value)}
+                    required
+                  />
+                </FormCell>
+                <FormCell title={'CSM배수'}>
+                  <Input
+                    aria-label=""
+                    width={150}
+                    value={form.type02}
+                    onChange={(e) => setFormField('type02', e.target.value)}
+                  />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+            <Grow>
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                조회
+              </Button>
+              <Button color={'gray'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                재계산
+              </Button>
             </Grow>
-            <Gcol className="w-full">
-              <Gcol className="w-full">
-                <TableFold>
-                  <TableFoldHead title="담보별 CSM" />
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.4rem]">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        pinnedBottomRowData={pinnedBottomRowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={{
-                          suppressMovable: true,
-                        }}
-                        domLayout="normal"
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-              </Gcol>
-            </Gcol>
-          </Gcol>
+          </Grow>
+          <TableFold>
+            <TableFoldHead title="담보별 CSM" />
+            <TableFoldBody>
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  pinnedBottomRowData={pinnedBottomRowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    suppressMovable: true,
+                  }}
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>

@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -47,7 +47,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     field01: '',
     field02: '',
-    field03: '',
+    field03: '한화보험한화보험한화보험한화보험한화보험한화보험',
     field04: 'LA26234242342',
     field05: '김한화',
     field06: '',
@@ -135,6 +135,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '설계번호',
@@ -328,17 +329,19 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           <Gcol className="w-full">
-            <div className="ag-theme-alpine">
+            <div className="ag-theme-alpine min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
                 key={loadedCount}
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 columnDefs={columnDefs}
-                domLayout="autoHeight"
+                domLayout="normal"
                 rowModelType="infinite"
                 cacheBlockSize={pageSize}
                 maxBlocksInCache={2}
                 datasource={dataSource}
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
               />
             </div>
             <TableMore
