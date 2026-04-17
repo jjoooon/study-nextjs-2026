@@ -1,19 +1,12 @@
 'use client';
 
-import type {
-  ColDef,
-  DisplayedColumnsChangedEvent,
-  FirstDataRenderedEvent,
-  GridApi,
-  GridReadyEvent,
-  GridSizeChangedEvent,
-} from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
@@ -59,11 +52,6 @@ const INACTIVE_BG = 'var(--color-secondary-50)';
 
 type PlanKey = 'A' | 'B' | 'C';
 
-type PlanBoxRect = {
-  left: number;
-  width: number;
-};
-
 const PLAN_COLS: Array<{
   key: PlanKey;
   leftField: keyof DummyDataType;
@@ -77,67 +65,6 @@ const PLAN_COLS: Array<{
 export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [selectedPlan, setSelectedPlan] = React.useState<PlanKey>('A');
-  const [planBoxRects, setPlanBoxRects] = React.useState<Partial<Record<PlanKey, PlanBoxRect>>>({});
-  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-
-  const updatePlanBoxRects = React.useCallback(() => {
-    const api = gridApiRef.current;
-
-    if (!api) {
-      return;
-    }
-
-    const columns = api.getAllDisplayedColumns();
-    const nextRects: Partial<Record<PlanKey, PlanBoxRect>> = {};
-
-    PLAN_COLS.forEach(({ key, leftField, rightField }) => {
-      const leftColumn = columns.find((column) => column.getColId() === leftField);
-      const rightColumn = columns.find((column) => column.getColId() === rightField);
-
-      if (!leftColumn || !rightColumn) {
-        return;
-      }
-
-      const left = leftColumn.getLeft() ?? 0;
-      const right = (rightColumn.getLeft() ?? 0) + rightColumn.getActualWidth();
-
-      nextRects[key] = {
-        left,
-        width: right - left,
-      };
-    });
-
-    setPlanBoxRects(nextRects);
-  }, []);
-
-  const schedulePlanBoxRectsUpdate = React.useCallback(() => {
-    window.requestAnimationFrame(() => {
-      updatePlanBoxRects();
-    });
-  }, [updatePlanBoxRects]);
-
-  const handleGridReady = React.useCallback((event: GridReadyEvent<DummyDataType>) => {
-    gridApiRef.current = event.api;
-    schedulePlanBoxRectsUpdate();
-  }, [schedulePlanBoxRectsUpdate]);
-
-  const handleFirstDataRendered = React.useCallback((_: FirstDataRenderedEvent<DummyDataType>) => {
-    schedulePlanBoxRectsUpdate();
-  }, [schedulePlanBoxRectsUpdate]);
-
-  const handleDisplayedColumnsChanged = React.useCallback((_: DisplayedColumnsChangedEvent<DummyDataType>) => {
-    schedulePlanBoxRectsUpdate();
-  }, [schedulePlanBoxRectsUpdate]);
-
-  const handleGridSizeChanged = React.useCallback((_: GridSizeChangedEvent<DummyDataType>) => {
-    schedulePlanBoxRectsUpdate();
-  }, [schedulePlanBoxRectsUpdate]);
-
-  React.useEffect(() => {
-    if (open) {
-      schedulePlanBoxRectsUpdate();
-    }
-  }, [open, schedulePlanBoxRectsUpdate]);
 
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(() => {
     return [
@@ -193,81 +120,75 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr] gap-2 pt-[2rem]">
-            <Grow className="w-full justify-start">
-              <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
-            </Grow>
+          <Grow className="w-full justify-start">
+            <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
+          </Grow>
 
-            {/* A안 / B안 / C안 상단 탭 */}
-            
-            <div className='relative'>
-              <Grow className="flex flex-row w-[60.9rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
-              {PLAN_COLS.map(({ key: plan }) => {
-                const isActive = selectedPlan === plan;
-                const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
-                return (
-                  <div
-                    key={plan}
-                    className="flex flex-col w-[20.3rem] cursor-pointer h-[100%]"
-                    onClick={() => setSelectedPlan(plan)}
+          {/* A안 / B안 / C안 상단 탭 */}
+          
+          <div className='relative'>
+            <Grow className="flex flex-row w-[60.9rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+            {PLAN_COLS.map(({ key: plan }) => {
+              const isActive = selectedPlan === plan;
+              const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
+              return (
+                <div
+                  key={plan}
+                  className="flex flex-col w-[20.3rem] cursor-pointer h-[100%]"
+                  onClick={() => setSelectedPlan(plan)}
+                >
+                  {/* 탭 헤더 */}
+                  <Grow
+                    className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 "
                   >
-                    {/* 탭 헤더 */}
-                    <Grow
-                      className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 "
+                    <div
+                      className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
+                      style={{ backgroundColor: bg }}
                     >
-                      <div
-                        className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
-                        style={{ backgroundColor: bg }}
+                      <Typo className="text-[1.4rem] font-bold text-white">
+                        {plan}안
+                      </Typo>
+                      <RadioGroup
+                        value={isActive ? plan : ''}
+                        onValueChange={() => setSelectedPlan(plan)}
+                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
                       >
-                        <Typo className="text-[1.4rem] font-bold text-white">
-                          {plan}안
-                        </Typo>
-                        <RadioGroup
-                          value={isActive ? plan : ''}
-                          onValueChange={() => setSelectedPlan(plan)}
-                          onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                        >
-                          <RadioGroupItem
-                            color="primary"
-                            id={`plan-${plan}`}
-                            size="lg"
-                            value={plan}
-                            variant="default"
-                          />
-                        </RadioGroup>
-                      </div>
-                      <div
-                        className='border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]'
-                        style={{ borderColor: bg, borderWidth: isActive ? '4px' : '2px' }}
-                      ></div>
-                    </Grow>
-                  </div>
-                );
-              })}
-              </Grow>
-              {/* 그리드 */}
-              <div className="ag-theme-alpine relative z-10 min-h-[30rem]">
-                <AgGridReact<DummyDataType>
-                  onGridReady={handleGridReady}
-                  onFirstDataRendered={handleFirstDataRendered}
-                  onDisplayedColumnsChanged={handleDisplayedColumnsChanged}
-                  onGridSizeChanged={handleGridSizeChanged}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                    tooltipComponent: 'agTooltipComponent',
-                  }}
-                  alwaysShowVerticalScroll={true}
-                  enableCellSpan={true}
-                  domLayout="normal"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                  enableBrowserTooltips={true} 
-                />
-              </div>
+                        <RadioGroupItem
+                          color="primary"
+                          id={`plan-${plan}`}
+                          size="lg"
+                          value={plan}
+                          variant="default"
+                        />
+                      </RadioGroup>
+                    </div>
+                    <div
+                      className='border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]'
+                      style={{ borderColor: bg, borderWidth: isActive ? '4px' : '2px' }}
+                    ></div>
+                  </Grow>
+                </div>
+              );
+            })}
+            </Grow>
+            {/* 그리드 */}
+            <div className="ag-theme-alpine relative min-h-[30rem]">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={{
+                  sortable: false,
+                  resizable: false,
+                }}
+                alwaysShowVerticalScroll={true}
+                enableCellSpan={true}
+                domLayout="normal"
+                tooltipShowMode="standard"
+                tooltipShowDelay={0}
+              />
             </div>
+          </div>
         </DialogSection>
         
          <DialogFooter>

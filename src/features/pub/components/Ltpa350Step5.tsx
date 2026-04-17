@@ -90,7 +90,7 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
                               <Input aria-label="만기수익자 이름" width={75} value={'김한화'} readOnly />
-                              <NativeSelect aria-label="만기수익자 은행선택" width={100} className="ml-[0.4rem]">
+                              <NativeSelect aria-label="만기수익자 은행선택" width={100} className="ml-[0.4rem]" required>
                                 {[
                                   { value: '은행선택', id: 'bank-selection', label: '은행선택' },
                                   { value: '우리은행', id: 'woori-bank', label: '우리은행' },
@@ -100,7 +100,7 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                   </NativeSelectOption>
                                 ))}
                               </NativeSelect>
-                              <Input aria-label="은행 계좌번호" width={150} placeholder={'계좌번호 입력'} value={''} />
+                              <Input aria-label="은행 계좌번호" width={150} placeholder={'계좌번호 입력'} value={''} required />
                               <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
                                 계좌확인
                               </Button>
@@ -185,9 +185,10 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                     size="lg"
                                     width="auto"
                                     variant="default"
+                                    disabled
                                   >
                                     <CheckboxGroupItem value="1">예</CheckboxGroupItem>
-                                    <CheckboxGroupItem value="2" disabled>
+                                    <CheckboxGroupItem value="2">
                                       아니오
                                     </CheckboxGroupItem>
                                   </CheckboxGroup>
@@ -256,8 +257,8 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                     </RadioGroupItem>
                                   ))}
                                 </RadioGroup>
-                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                  알림톡발송
+                                <Button color={'secondary'} size={'lg'} variant={'contained'} onClick={() => {}}>
+                                  FATCA/CRS정보
                                 </Button>
                               </Grow>
                             </FormCell>
@@ -280,7 +281,7 @@ export const Ltpa350Step5 = ({ viewKey }: Ltpa350Step5Props) => {
                                     CDD등록
                                   </Button>
                                   <Button color={'secondary'} size={'lg'} variant={'contained'} onClick={() => {}}>
-                                    CDD등록
+                                    BDD등록
                                   </Button>
                                 </Grow>
                               </Grow>
