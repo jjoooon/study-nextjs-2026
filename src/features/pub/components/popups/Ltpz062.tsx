@@ -211,8 +211,8 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                     }}
                     domLayout="normal"
                     rowSelection={{
@@ -240,8 +240,8 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                     }}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                     }}
                     domLayout="normal"
                     rowSelection={{

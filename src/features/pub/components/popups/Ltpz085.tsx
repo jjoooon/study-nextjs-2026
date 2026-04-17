@@ -90,8 +90,8 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                 params.node.rowIndex === 0 && !params.node.rowPinned ? { fontWeight: '700' } : undefined
               }
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
                 autoHeight: true,
               }}
               singleClickEdit={true}

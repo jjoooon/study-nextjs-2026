@@ -8,7 +8,6 @@ import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { RecommendCard } from '@common/RecommendCard';
 import { BadgeCheckIcon, CalendarIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';

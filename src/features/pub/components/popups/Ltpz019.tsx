@@ -418,8 +418,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                           rowData={dummyData}
                           columnDefs={columnDefs}
                           defaultColDef={{
-                            sortable: false,
-                            resizable: false,
+                            sortable: true,
+                            resizable: true,
                           }}
                           headerHeight={30}
                           rowHeight={30}
@@ -440,8 +440,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                               rowData={dummyData2}
                               columnDefs={columnDefs2}
                               defaultColDef={{
-                                sortable: false,
-                                resizable: false,
+                                sortable: true,
+                                resizable: true,
                               }}
                               headerHeight={30}
                               rowHeight={30}
@@ -474,8 +474,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 rowData={dummyData3}
                                 columnDefs={columnDefs3}
                                 defaultColDef={{
-                                  sortable: false,
-                                  resizable: false,
+                                  sortable: true,
+                                  resizable: true,
                                 }}
                                 headerHeight={30}
                                 rowHeight={30}

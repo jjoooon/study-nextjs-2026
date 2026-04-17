@@ -190,8 +190,8 @@ export const Ltpz049 = ({ open, onOpenChange }: PopupBaseProps) => {
               pinnedBottomRowData={sumRow}
               noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
                 autoHeight: true,
               }}
               domLayout="normal"

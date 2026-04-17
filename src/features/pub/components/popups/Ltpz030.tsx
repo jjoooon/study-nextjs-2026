@@ -337,8 +337,8 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                         rowData={DummyData1T1}
                         columnDefs={columnDefs1T1}
                         defaultColDef={{
-                          sortable: false,
-                          resizable: false,
+                          sortable: true,
+                          resizable: true,
                         }}
                         animateRows={false}
                         domLayout="autoHeight"

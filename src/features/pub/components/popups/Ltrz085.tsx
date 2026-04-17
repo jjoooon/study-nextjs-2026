@@ -293,8 +293,8 @@ export const Ltrz085 = ({ open, onOpenChange }: PopupBaseProps) => {
                   rowData={rowData}
                   columnDefs={columnDefs}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                     cellClass: 'p-0',
                     cellStyle: { padding: 0 },
                   }}
