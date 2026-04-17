@@ -47,7 +47,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: false,
     field01: '',
-    field02: '대상대상대상대상대상대상대상대상대상대상대상대상대상대상대상',
+    field02: '대상대상대상대상대상대상대상대상대상대상대상대상',
     field03: '2023-03-01',
     field04: '9999-12-31',
     field05: '',
@@ -91,7 +91,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '대상',
       field: 'field02',
       flex: 2,
-      cellClass: 'flex! items-center! justify-start!',
+      cellClass: 'flex! items-center! justify-center!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {

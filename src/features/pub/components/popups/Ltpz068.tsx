@@ -153,9 +153,8 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
         headerName: '담보명',
         field: 'field02',
         flex: 1,
-        autoHeight: true,
         editable: false,
-        cellClass: 'text-left',
+        cellClass: 'text-left ',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },
       ...PLAN_COLS.flatMap(({ leftField, rightField }): ColDef<DummyDataType>[] => [
@@ -165,7 +164,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
           width: 100,
           autoHeight: true,
           editable: false,
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-right',
         },
         {
           headerName: '보험료(원)',
@@ -173,7 +172,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
           width: 100,
           autoHeight: true,
           editable: false,
-          cellClass: 'text-center px-0!',
+          cellClass: 'text-right',
         },
       ]),
     ];
@@ -258,12 +257,14 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{
                     sortable: false,
                     resizable: false,
+                    tooltipComponent: 'agTooltipComponent',
                   }}
                   alwaysShowVerticalScroll={true}
                   enableCellSpan={true}
                   domLayout="normal"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
+                  enableBrowserTooltips={true} 
                 />
               </div>
             </div>
