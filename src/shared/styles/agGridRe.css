@@ -582,3 +582,8 @@
   text-overflow: clip;
   white-space: nowrap;
 }
+
+
+/* .ag-blue-text .ag-cell {
+  color: var(--color-information-50);
+} */
