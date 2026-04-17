@@ -33,7 +33,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
 
   return (
     <Gcol placement="bwc" className="w-[4rem] pb-[2rem]">
-      <Gcol className="justify-between h-full max-h-[54rem] items-center rounded-tr-[2rem] rounded-br-[0.4rem] bg-[#FFFBEF] shadow-[0_0.2rem_1.2rem_0_rgba(230,136,103,0.20)] py-[1rem]">
+      <Gcol className="justify-between h-full max-h-[54rem] items-center rounded-tr-[2rem] rounded-br-[0.4rem] bg-[var(--color-warning-5)] shadow-[0_0.1rem_0.1rem_0.1rem_rgba(77, 61, 12, 0.15)] py-[1rem]">
         {items.map((item, index) => (
           <Fragment key={item.step}>
             {(() => {

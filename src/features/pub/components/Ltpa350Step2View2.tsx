@@ -5,6 +5,7 @@ import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionCh
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { TooltipQ } from '@/shared/components/common/TooltipQ';
 import { Accordion } from '@/shared/components/uiux/Accordion';
 import { useTabs } from '@/shared/hooks/useTabs';
 import {
@@ -36,28 +37,142 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-// data
-import { planAccordionItems } from '../data/ltpa3500204';
-
-import {
-  Ltpa350Step2Data,
-  type Ltpa350Step2DataType,
-} from '../data/ltpa350Step2Data';
-
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+interface TabDataType {
+  id: string | number;
+  name?: string;
+  age?: string | number;
+  gender?: string;
+  value: string;
+  error?: boolean;
+  info: string[];
+}
+const TabData: TabDataType[] = [
+  {
+    id: 1,
+    name: '태아',
+    age: '1',
+    gender: '여',
+    value: 'tab1',
+    error: true,
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
+  {
+    id: 2,
+    name: '반짝빛나리반짝빛나리',
+    age: '2',
+    gender: '남',
+    value: 'tab2',
+    error: true,
+    info: ['추가정보1', '추가정보2', '추가정보3'],
+  },
+];
+
+interface DummyDataType {
+  id: number;
+  isChecked?: boolean;
+  field1?: string | number | boolean;
+  field2?: string | number | boolean;
+  field3?: string | number | boolean;
+  field4?: string | number | boolean;
+  field5?: string | number | boolean;
+  field6?: string | number | boolean;
+  field7?: string | number | boolean;
+  field8?: string | number | boolean;
+  field9?: string | number | boolean;
+  locked?: boolean;
+  isHighlighted?: boolean;
+  badge?: string[];
+  [key: string]: unknown;
+}
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
+    field2: true,
+    field3: 500,
+    field4: 450,
+    field5: '80세',
+    field6: '20년',
+    field7: 100,
+    field8: '인수',
+    field9: true,
+    locked: true,
+    isHighlighted: true,
+    badge: ['독립', '갱신'],
+  },
+  {
+    id: 2,
+    field1: '무배당 KB손해보험 암보험',
+    field2: true,
+    field3: 300,
+    field4: 280,
+    field5: '100세',
+    field6: '30년',
+    field7: 80,
+    field8: '인수',
+    field9: false,
+    locked: false,
+    isHighlighted: false,
+    badge: ['갱신'],
+  },
+  {
+    id: 3,
+    field1: '무배당 현대해상 3대질병보험',
+    field2: false,
+    field3: 400,
+    field4: 380,
+    field5: '90세',
+    field6: '25년',
+    field7: 120,
+    field8: '인수',
+    field9: false,
+    locked: false,
+    isHighlighted: false,
+    badge: ['독립'],
+  },
+]
+
+type PlanAccordionItem = {
+  value: string;
+  trigger: string;
+  content: string[];
+};
+const planAccordionItems: PlanAccordionItem[] = [
+  {
+    value: 'item-1',
+    trigger: '기관플랜(5)',
+    content: [
+      '(지점)올인원플랜(15~40세)',
+      '(지점)올인원플랜(15~40세)',
+      '(지점)올인원플랜(15~40세)',
+      '(지점)올인원플랜(15~40세)',
+    ],
+  },
+  {
+    value: 'item-2',
+    trigger: '기관플랜(0)',
+    content: ['(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)'],
+  },
+  {
+    value: 'item-3',
+    trigger: '모집자플랜(0)',
+    content: ['(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)'],
+  },
+];
+
+
+
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-type LTPA350GridRow = (Ltpa350Step2DataType['agGridTable1'][number] & {
+
+type AgGridRow = (DummyDataType & {
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
-  field9?: boolean;
-})
-type MainHeadTab = (Ltpa350Step2DataType['tabList'][number]) & {
-  value: string;
-};
+});
 
 interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
@@ -70,6 +185,7 @@ export function Ltpa350Step2({
   onSelectPlan,
   isWidthExpanded = false,
   setIsWidthExpanded,
+  viewKey,
 }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
@@ -83,6 +199,7 @@ export function Ltpa350Step2({
   };
 
   // Dynamic widths based on zoom scale
+  const colWidth0 = useDynamicPx(40);
   const colWidth40 = useDynamicPx(40);
   const colWidth60 = useDynamicPx(60);
   const colWidth80 = useDynamicPx(80);
@@ -97,21 +214,20 @@ export function Ltpa350Step2({
   );
 
   // 2) Tabs/rowData 분기
-  const tabListData = Ltpa350Step2Data.tabList;
-  const stringifiedTabs: MainHeadTab[] = tabListData.map((item) => ({
+  const tabListData = TabData;
+  const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({
     ...item,
     value: String(item.id),
   }));
   const {
-    tabs: LTPA350Tabs,
-    active: LTPA350Active,
-    setActive: Ltpa350SetActive,
-  } = useTabs<MainHeadTab>(stringifiedTabs);
+    tabs: Tabs,
+    active: TabActive,
+    setActive: TabSetActive,
+    handleRemove 
+  } = useTabs<TabDataType>(stringifiedTabs);
 
   // 3) Grid data
-  const [rowData, setRowData] = useState<LTPA350GridRow[]>(
-    Ltpa350Step2Data.agGridTable1
-  );
+  const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
 
   // 중복 행 자동 선택 / 선택 해제 시 삭제 추적
   const pendingSelectIdRef = useRef<number | null>(null);
@@ -119,7 +235,7 @@ export function Ltpa350Step2({
 
   // setRowData를 래핑하여 새로 삽입된 중복 행 id를 pendingSelectIdRef에 저장
   const setRowDataWithTracking = useCallback(
-    (updater: LTPA350GridRow[] | ((prev: LTPA350GridRow[]) => LTPA350GridRow[])) => {
+    (updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
       setRowData((prev) => {
         const next = typeof updater === 'function' ? updater(prev) : updater;
         if (next.length > prev.length) {
@@ -162,9 +278,10 @@ export function Ltpa350Step2({
           <Input
             aria-label="담보명"
             placeholder="담보명 입력"
+            type="text"
             width={'full'}
             size={'sm'}
-            // clear={true}
+            clear={true}
             value={coverageName}
             onChange={(e) => setCoverageName(e.target.value)}
           />
@@ -177,6 +294,7 @@ export function Ltpa350Step2({
             color={'gray-light'}
             only={'icon'}
             size={'md'}
+            onClick={() => setCoverageName('')}
           >
             <ResetIcon color={'var(--color-primary-50)'} />
           </Button>
@@ -191,10 +309,10 @@ export function Ltpa350Step2({
   }, [checkedMap, coverageName, showProductNameTooltip]);
 
   // 셀: 순번 · 담보명 텍스트 · 독립/갱신 뱃지
-  const titleRenderer = useCallback((params: ICellRendererParams<LTPA350GridRow>) => {
+  const titleRenderer = useCallback((params: ICellRendererParams<AgGridRow>) => {
     // 전체 rowData에서 원본(복사본 아님)만 필터링
     const api = params.api;
-    const allRows: LTPA350GridRow[] = [];
+    const allRows: AgGridRow[] = [];
     api.forEachNode((node) => {
       if (node.data) allRows.push(node.data);
     });
@@ -211,7 +329,7 @@ export function Ltpa350Step2({
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
-          <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
+          <p className="truncate-no w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
           {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
             <Grow className="shrink-0">
               {params.data.badge.includes('독립') && (
@@ -235,7 +353,7 @@ export function Ltpa350Step2({
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
-          <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
+          <p className="truncate-no w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
           {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
             <Grow className="shrink-0">
               {params.data.badge.includes('독립') && (
@@ -257,7 +375,7 @@ export function Ltpa350Step2({
 
   // ── 속성 열 (field2) ─────────────────────────────────────────────────────────
   // 셀: 속성 값이 있을 때 돋보기 아이콘 버튼 표시
-  const attributeRenderer = (params: ICellRendererParams<LTPA350GridRow>) => {
+  const attributeRenderer = (params: ICellRendererParams<AgGridRow>) => {
     if (!params.value) return null;
     return (
       <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
@@ -276,19 +394,21 @@ export function Ltpa350Step2({
 
   // ── 가입금액 열 (field3) ──────────────────────────────────────────────────────
   // 셀: 금액 입력 컴포넌트 (ref 배열로 포커스 제어 지원)
-  const coverageAmountCellRenderer = (params: ICellRendererParams<LTPA350GridRow>) =>
-    amountUnitInputCellRenderer<LTPA350GridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+  const coverageAmountCellRenderer = (params: ICellRendererParams<AgGridRow>) =>
+    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs.current });
 
   // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
   // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)
   const expiryCellRenderer = useCallback(
-    (params: ICellRendererParams<LTPA350GridRow>) => editableSelectCellRenderer<LTPA350GridRow>(params),
+    (align: 'left' | 'center' | 'right' = 'right') =>
+      (params: ICellRendererParams<AgGridRow>) =>
+        editableSelectCellRenderer<AgGridRow>({ ...params, align }),
     []
   );
 
   // 만기/납기 편집 조건 생성기: 'whenSelected' | 'always' 모드를 인자로 받아 editable 콜백 반환
   const getEditableCallback = useCallback(
-    (mode: 'always' | 'whenSelected') => createEditableCallback<LTPA350GridRow>(mode),
+    (mode: 'always' | 'whenSelected') => createEditableCallback<AgGridRow>(mode),
     []
   );
 
@@ -296,7 +416,7 @@ export function Ltpa350Step2({
   // 납기는 항상 editable이므로 cellClass에 editable-cell을 고정으로 포함 → 별도 rules 불필요
   const editableCellClassRules = useMemo(
     () => ({
-      'editable-cell': (params: CellClassParams<LTPA350GridRow>) => {
+      'editable-cell': (params: CellClassParams<AgGridRow>) => {
         const isRowChecked = params.node?.isSelected?.() ?? false;
         return isRowChecked;
       },
@@ -308,19 +428,19 @@ export function Ltpa350Step2({
   // - 필수: row.field3Required === true (미지정 시 기본 true)
   // - 에러: 필수 + 값이 0(또는 빈값)
   const amountCellClassRules = useMemo(() => {
-    const isAmountRequired = (params: CellClassParams<LTPA350GridRow>) => {
+    const isAmountRequired = (params: CellClassParams<AgGridRow>) => {
       // field3Required가 존재하는 경우만 사용, 없으면 true로 처리
       if (typeof params.data !== 'undefined' && 'field3Required' in params.data) {
         return (params.data as { field3Required?: boolean }).field3Required ?? true;
       }
       return true;
     };
-    const isAmountInvalid = (params: CellClassParams<LTPA350GridRow>) =>
+    const isAmountInvalid = (params: CellClassParams<AgGridRow>) =>
       params.value === '' || params.value === undefined || Number(params.value) === 0;
 
     return {
       required: isAmountRequired,
-      ...createCellErrorClassRules<LTPA350GridRow>((params) => isAmountRequired(params) && isAmountInvalid(params)),
+      ...createCellErrorClassRules<AgGridRow>((params) => isAmountRequired(params) && isAmountInvalid(params)),
     };
   }, []);
 
@@ -328,7 +448,7 @@ export function Ltpa350Step2({
   // 셀: 행 복사 버튼 — 행이 선택(체크)된 경우에만 노출/동작
   const duplicateRenderer = useMemo(
     () =>
-      createInsertCopiedRowButtonCellRenderer<LTPA350GridRow, 'id'>(setRowDataWithTracking, {
+      createInsertCopiedRowButtonCellRenderer<AgGridRow, 'id'>(setRowDataWithTracking, {
         idKey: 'id',
         getNextId: (rows) => rows.reduce((maxId, row) => (row.id > maxId ? row.id : maxId), 0) + 1,
         patchCopiedRow: (originalRow, nextId) => ({
@@ -349,7 +469,7 @@ export function Ltpa350Step2({
 
   // ── 행 선택 핸들러 ────────────────────────────────────────────────────────────
   // locked 행은 항상 선택 상태 유지 (체크박스 해제 방지)
-  const ensureLockedRowsSelected = useCallback((api: GridApi<LTPA350GridRow>) => {
+  const ensureLockedRowsSelected = useCallback((api: GridApi<AgGridRow>) => {
     api.forEachNode((node) => {
       if (node.data?.locked && !node.isSelected()) {
         node.setSelected(true);
@@ -359,13 +479,13 @@ export function Ltpa350Step2({
 
   // 선택된 행의 id를 부모(onSelectPlan)로 전달
   const handleSelectionChanged = useMemo(
-    () => createSelectionChangedHandler<LTPA350GridRow, number>('id', onSelectPlan),
+    () => createSelectionChangedHandler<AgGridRow, number>('id', onSelectPlan),
     [onSelectPlan]
   );
 
   // 그리드 선택 변경 통합 핸들러: locked 행 유지 → 중복 행 선택 해제 시 삭제 → 부모 전달 → 셀 스타일 갱신
   const handleGridSelectionChanged = useCallback(
-    (event: SelectionChangedEvent<LTPA350GridRow>) => {
+    (event: SelectionChangedEvent<AgGridRow>) => {
       ensureLockedRowsSelected(event.api);
 
       // 현재 선택된 id 목록
@@ -399,11 +519,11 @@ export function Ltpa350Step2({
     },
     [ensureLockedRowsSelected, handleSelectionChanged]
   );
-  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<LTPA350GridRow>(), []);
+  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow>(), []);
 
   // 그리드 준비 핸들러: locked 행 초기 선택 + 선택 상태 초기화
   const handleGridReady = useCallback(
-    (params: { api: GridApi<LTPA350GridRow> }) => {
+    (params: { api: GridApi<AgGridRow> }) => {
       ensureLockedRowsSelected(params.api);
       prevSelectedIdsRef.current = new Set(
         params.api
@@ -417,7 +537,7 @@ export function Ltpa350Step2({
 
   // 행 데이터 갱신 핸들러: locked 행 유지 + 신규 중복 행 자동 선택
   const handleRowDataUpdated = useCallback(
-    (params: { api: GridApi<LTPA350GridRow> }) => {
+    (params: { api: GridApi<AgGridRow> }) => {
       ensureLockedRowsSelected(params.api);
       if (pendingSelectIdRef.current !== null) {
         const nodeToSelect = params.api.getRowNode(String(pendingSelectIdRef.current));
@@ -430,21 +550,18 @@ export function Ltpa350Step2({
     [ensureLockedRowsSelected]
   );
 
-  // 인보험
-  const columnDefs: ColDef<LTPA350GridRow>[] = useMemo(
+  // 태아
+  const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
       {
         headerName: '담보명',
         field: 'field1',
         flex: 1,
         cellClass: 'text-left p-0!',
-        sortable: false,
-        filter: false,
-        autoHeight: true,
         suppressMovable: true, // 이동 방지
         lockPosition: 'left', // 왼쪽 고정 유지
         lockPinned: true, // 고정 열에서 제외 방지
-        tooltipValueGetter: createTooltipValueGetter<LTPA350GridRow>({
+        tooltipValueGetter: createTooltipValueGetter<AgGridRow>({
           label: '담보명',
           field: 'field1',
         }),
@@ -454,77 +571,89 @@ export function Ltpa350Step2({
       {
         headerName: '속성',
         field: 'field2',
-        width: attributeColumnWidth[0],
+        width: attributeColumnWidth[1],
         cellClass: 'text-center',
-        headerClass: 'px-0!',
-        sortable: false,
-        filter: false,
-        resizable: false,
         cellRenderer: attributeRenderer,
       },
       {
         headerName: '가입금액(만원)',
         field: 'field3',
-        width: attributeColumnWidth[2],
-        headerClass: 'px-0!',
+        width: attributeColumnWidth[4],
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
         cellClassRules: amountCellClassRules,
-        sortable: false,
-        filter: false,
-        editable: false,
         cellRenderer: coverageAmountCellRenderer,
       },
       {
-        headerName: '가능금액(만원)',
-        field: 'field4',
-        width: attributeColumnWidth[2],
-        cellClass: 'text-right',
-        headerClass: 'px-0!',
-        sortable: false,
-        filter: false,
-        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+        headerName: '보험료(원)',
+        children: [
+          {
+            field: 'field4',
+            headerName: '출생전',
+            cellClass: 'text-center',
+            width: attributeColumnWidth[2],
+            valueFormatter: numberValueFormatter<AgGridRow>,
+          },
+          {
+            field: 'field4',
+            headerName: '출생후',
+            cellClass: 'text-center',
+            width: attributeColumnWidth[2],
+            valueFormatter: numberValueFormatter<AgGridRow>,
+          },
+        ],
       },
       {
         headerName: '만기',
-        field: 'field5',
-        width: attributeColumnWidth[1],
-        cellClass: 'text-center px-[0.2rem]!',
-        cellClassRules: editableCellClassRules,
-        sortable: false,
-        filter: false,
-        resizable: false,
-        editable: getEditableCallback('whenSelected'),
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
-        },
-        cellRenderer: expiryCellRenderer,
+        children: [
+          {
+            field: 'field5',
+            headerName: '출생전',
+            cellClass: 'text-center',
+            width: attributeColumnWidth[2],
+            cellClassRules: editableCellClassRules, 
+            editable: getEditableCallback('whenSelected'), 
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+            },
+            cellRenderer: expiryCellRenderer('left'),
+          },
+          {
+            field: 'field5',
+            headerName: '출생후',
+            cellClass: 'text-center',
+            width: attributeColumnWidth[2],
+            cellClassRules: editableCellClassRules, 
+            editable: getEditableCallback('whenSelected'),
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+            },
+            cellRenderer: expiryCellRenderer('left'),
+          },
+        ],
       },
       {
         headerName: '납기',
-        field: 'field6',
-        width: attributeColumnWidth[1],
         cellClass: 'text-center px-[0.2rem]!',
-        cellClassRules: editableCellClassRules,
         sortable: false,
         filter: false,
         resizable: false,
-        editable: getEditableCallback('whenSelected'),
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
-        },
-        cellRenderer: expiryCellRenderer,
-      },
-      {
-        headerName: '보험료(만원)',
-        field: 'field7',
-        width: attributeColumnWidth[2],
-        cellClass: 'text-right',
-        headerClass: 'px-0!',
-        sortable: false,
-        filter: false,
-        valueFormatter: numberValueFormatter<LTPA350GridRow>,
+        children: [
+          {
+            field: 'field6',
+            headerName: '출생후',
+            cellClass: 'text-center',
+            width: attributeColumnWidth[2],
+            cellClassRules: editableCellClassRules, 
+            editable: getEditableCallback('whenSelected'),
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+            },
+            cellRenderer: expiryCellRenderer('left'),
+          },
+        ],
       },
       {
         headerName: '예상UW',
@@ -534,7 +663,7 @@ export function Ltpa350Step2({
         cellClass: 'text-center px-0! tracking-tighter',
         sortable: false,
         filter: false,
-        cellStyle: (params: CellClassParams<LTPA350GridRow>) => {
+        cellStyle: (params: CellClassParams<AgGridRow>) => {
           const value = params.value as string;
           if (value === '인수') return { color: '#006FF2' };
           if (value === '거절' || value === '조건부인수') return { color: '#FB3F3F' };
@@ -582,9 +711,9 @@ export function Ltpa350Step2({
       >
         <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
           <TabPager
-            data={LTPA350Tabs}
-            active={LTPA350Active}
-            setActive={Ltpa350SetActive}
+           data={Tabs}
+            active={TabActive}
+            setActive={TabSetActive}
             visibleCount={5}
             error={testError}
             errorMsg="입력하세요."
@@ -763,7 +892,6 @@ export function Ltpa350Step2({
                         </Accordion>
                       </Gcol>
                     </SelectDrop>
-
                     <Button
                       variant={'outlined'}
                       color={'gray'}
@@ -785,7 +913,7 @@ export function Ltpa350Step2({
               </Grow>
               <LayoutScrollItem className="w-full">
                 <div className="ag-theme-alpine">
-                  <AgGridReact<LTPA350GridRow>
+                  <AgGridReact<AgGridRow>
                     key={gridKey}
                     rowData={rowData}
                     columnDefs={columnDefs}
@@ -811,6 +939,10 @@ export function Ltpa350Step2({
                     onGridReady={handleGridReady}
                     onRowDataUpdated={handleRowDataUpdated}
                     suppressRowHoverHighlight={false}
+                    getRowClass={(params) => {
+                      if (params.data?.isDuplicate) return 'is-duplicate';
+                      return '';
+                    }}
                     tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                     tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                     tooltipMouseTrack={showProductNameTooltip ? true : undefined}
@@ -821,13 +953,13 @@ export function Ltpa350Step2({
           </LayoutMainBody>
           <LayoutMainFoot>
             <MainBottom>
-              <MainBottomItem>
+              <MainBottomItem className="p-0!">
                 <FormTable
-                  className="w-full! [&_tr]:justify-between"
+                  className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-full after:h-px after:bg-[#ccc]"
                   lineTop={false}
                   variant={'none'}
                   cols={[
-                    'w-[9rem]',
+                    'w-[9.3rem]',
                     'w-[auto]',
                     'w-[8rem]',
                     'w-[auto]',
@@ -837,11 +969,110 @@ export function Ltpa350Step2({
                     'w-[auto]',
                   ]}
                 >
-                  <FormRow>
-                    <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
-                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                        예상
-                      </Button>
+                  <FormRow className="overflow-hidden">
+                    <FormCell
+                      className="bg-(--color-primary-10)! rounded-tl-[1rem]!"
+                      title={
+                        <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
+                          출생<b className="text-[#FF5C2E]">전</b>
+                        </Typo>
+                      }
+                    />
+                    <FormCell
+                      title="환급금"
+                      tdClassName="pt-2 pb-2.5"
+                      className="[&>span]:text-[#000]! [&>div]:justify-end w-[13rem] [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem]"
+                    >
+                      <Grow className="w-full flex justify-end">
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value={100000}
+                          width={'full'}
+                          readOnly={true}
+                          className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                        />
+                      </Grow>
+                    </FormCell>
+                    <FormCell
+                      title="보장보험료"
+                      tdClassName="pt-2 pb-2.5"
+                      className="[&>span]:text-[#000]! [&>span]:text-[1.2rem]"
+                    >
+                      <Input
+                        type="tel"
+                        commaAmount={true}
+                        value={100000}
+                        width={'full'}
+                        readOnly={true}
+                        className="[&_input]:text-right"
+                      />
+                    </FormCell>
+                    <FormCell
+                      title="적립보험료"
+                      tdClassName="pt-2 pb-2.5"
+                      className="[&>span]:text-[#000]! [&>span]:text-[1.2rem]"
+                    >
+                      <Input
+                        type="tel"
+                        commaAmount={true}
+                        value={100000}
+                        width={'full'}
+                        readOnly={true}
+                        className="text-right"
+                      />
+                    </FormCell>
+                    <FormCell
+                      title="합계보험료"
+                      tdClassName="pt-2 pb-2.5 pr-3"
+                      className="[&>span]:text-[#000]! [&>span]:text-[1.2rem]"
+                    >
+                      <Input
+                        type="tel"
+                        commaAmount={true}
+                        value={amount}
+                        clear={true}
+                        width={'full'}
+                        onChange={(e) => {
+                          setAmount(e.target.value);
+                          setTestError(!e.target.value);
+                        }}
+                        required={true}
+                        error={testError}
+                        errorMsg={'계약자 입력은 필수입니다.'}
+                        errorPs={'tr'}
+                        className="text-right"
+                      />
+                    </FormCell>
+                  </FormRow>
+                  <FormRow className="overflow-hidden">
+                    <FormCell
+                      className="bg-(--color-primary-10)!"
+                      title={
+                        <Grow>
+                          <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
+                            출생<b className="text-[#FF5C2E]">후</b>
+                          </Typo>
+                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                            설명
+                          </Button>
+                        </Grow>
+                      }
+                    />
+                    <FormCell
+                      title={
+                        <Grow className="w-[12rem] absolute left-[10rem]">
+                          <Typo variant="body-sm" weight={'bold'}>
+                            만기금(환급률)
+                          </Typo>
+                          <Button variant={'outlined'} color={'gray'} size={'sm'} className=" align-middle">
+                            설명
+                          </Button>
+                        </Grow>
+                      }
+                      tdClassName="pt-2 pb-2.5 relative"
+                      className=" [&>span]:text-[#000]! [&>div]:justify-end [&>span]:ml-[-1.2rem]! [&>span]:text-[1.2rem] [&>span]:relative!]"
+                    >
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -857,10 +1088,15 @@ export function Ltpa350Step2({
                         onChange={(e) => setRefundRate(e.target.value)}
                         width={60}
                         className="[&_input]:text-right shrink-0"
+                        readOnly={true}
+                        after={'%'}
                       />
-                      %
                     </FormCell>
-                    <FormCell title="보장보험료">
+                    <FormCell
+                      title="보장보험료"
+                      tdClassName="pt-2 pb-2.5"
+                      className="[&>span]:text-[#000]! text-[1.2rem]"
+                    >
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -870,7 +1106,11 @@ export function Ltpa350Step2({
                         className="[&_input]:text-right"
                       />
                     </FormCell>
-                    <FormCell title="적립보험료">
+                    <FormCell
+                      title="적립보험료"
+                      tdClassName="pt-2 pb-2.5"
+                      className="[&>span]:text-[#000]! text-[1.2rem]"
+                    >
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -881,7 +1121,7 @@ export function Ltpa350Step2({
                       />
                     </FormCell>
 
-                    <FormCell title="합계보험료">
+                    <FormCell title="합계보험료" tdClassName="pt-2 pb-2.5 pr-3" className="[&>span]:text-[#000]!">
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -927,7 +1167,6 @@ export function Ltpa350Step2({
               </MainBottomItem>
             </MainBottom>
           </LayoutMainFoot>
-      
         </LayoutMain>
       </form>
     </LayoutMainBody>

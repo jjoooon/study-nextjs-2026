@@ -124,12 +124,16 @@
 
 .editor-select svg {
   display: none;
-  ;
 }
 
-.editable-cell .editor-select svg {
+.ag-row-selected .editor-select svg {
   display: block;
 }
+
+/* 
+.editable-cell .editor-select svg {
+  display: block;
+} */
 
 /* .ag-row.ag-row-selected .editable-cell,
 .ag-row-selected {

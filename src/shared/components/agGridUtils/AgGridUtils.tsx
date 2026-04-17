@@ -461,11 +461,28 @@ export function amountUnitInputCellRenderer<RowType>(
 /**
  * 만기/납기 셀 렌더러 (셀 편집 가능 여부에 따라 화살표 색상 변경)
  */
-export function editableSelectCellRenderer<RowType>(params: ICellRendererParams<RowType>) {
+/**
+ * editableSelectCellRenderer
+ * @param params ICellRendererParams
+ * @param align 'left' | 'center' | 'right' (default: 'right')
+ */
+export function editableSelectCellRenderer<RowType>(
+  params: ICellRendererParams<RowType> & { align?: 'left' | 'center' | 'right' }
+) {
+  const align = params.align ?? 'right';
+  let justifyClass = 'justify-end';
+  let textClass = 'text-right';
+  if (align === 'left') {
+    justifyClass = 'justify-start';
+    textClass = 'text-left';
+  } else if (align === 'center') {
+    justifyClass = 'justify-center';
+    textClass = 'text-center';
+  }
   return (
-    <div className="flex items-center justify-end gap-1 w-full h-full editor-select">
-      <span className="block w-auto text-right">{params.value}</span>
-      <SelectDropIcon size={12} color={'var(--color-gray-50)'} />
+    <div className={`flex items-center px-1 ${justifyClass} gap-1 w-full h-full editor-select`}>
+      <span className={`block flex-1 ${textClass}`}>{params.value}</span>
+      <SelectDropIcon size={12} color={'var(--color-gray-50)'} className='shrink-0' />
     </div>
   );
 }

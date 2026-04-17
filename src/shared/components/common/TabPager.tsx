@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsContent, TabsTrigger, TabsLine } from '@uiux/Tabs';
 interface TabPagerProps<T> {
   data: T[];
   visibleCount?: number;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   variant?: string;
   hasTableBelow?: boolean;
   removable?: boolean;
