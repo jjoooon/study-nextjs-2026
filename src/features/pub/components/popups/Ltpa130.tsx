@@ -388,7 +388,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
               <FormTable variant={'none'} cols={['w-[6rem]', 'w-[20rem]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'조직구분'}>
-                    <NativeSelect width={'auto'}>
+                    <NativeSelect width={100}>
                       {[
                         { value: '전체', label: '전체' },
                         { value: '취급기관', label: '취급기관' },
@@ -427,7 +427,7 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'조회구분'}>
-                    <NativeSelect width={'auto'}>
+                    <NativeSelect width={100}>
                       <NativeSelectOption value="">주민번호</NativeSelectOption>
                       <NativeSelectOption value="">생년월일</NativeSelectOption>
                     </NativeSelect>

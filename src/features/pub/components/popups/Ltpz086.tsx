@@ -4,7 +4,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -73,9 +73,9 @@ const DummyData: DummyDataType[] = [
     field03: '한화 세이프단체보2 한화 세이프단체보2한화 세이프단체보2한화 세이프단체보2',
     field04: '2010-09-30',
     field05: '2099-12-31',
-    field06: '암(4대유사암제외)진단비',
+    field06: '암(4대유사암제외)진단비 암(4대유사암제외)진단비',
     field07: '2,000',
-    field08: '1.0',
+    field08: '20.0',
     field09: '정상',
     field10: '1,000',
   },
@@ -119,11 +119,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-start!',
-      cellStyle: {
-        whiteSpace: 'normal',
-        wordWrap: 'break-word',
-      },
+      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         return (
           <div
@@ -152,7 +148,15 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field06',
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        return (
+          <div
+            className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: String(params.data?.field06 ?? '') }}
+          />
+        );
+      },
     },
     {
       headerName: '가입금액',
@@ -166,7 +170,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field08',
       width: 60,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-center!',
+     cellClass: 'flex! items-center! justify-end!',
     },
     {
       headerName: '상태',
@@ -236,9 +240,11 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormCell title="인수제한">청약완료불가(업계누적)</FormCell>
                     <FormCell title="누적명">암진단비(손생보)</FormCell>
                     <FormCell title="누적유형">-</FormCell>
-                    <FormCell title="기누적금액">4,700</FormCell>
-                    <FormCell title="합계">4,700</FormCell>
-                    <FormCell title="한도">30,000</FormCell>
+                    <FormCell title="기누적금액">
+                      <div className="w-full text-right">5,700</div>
+                    </FormCell>
+                    <FormCell title="합계"><div className="w-full text-right">4,700</div></FormCell>
+                    <FormCell title="한도"><div className="w-full text-right">30,000</div></FormCell>
                   </FormRow>
                 </FormTable>
               </TableFoldBody>

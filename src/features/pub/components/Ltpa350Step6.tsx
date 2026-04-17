@@ -482,17 +482,10 @@ export const Ltpa350Step6 = ({ viewKey }: Ltpa350Step6Props) => {
                     </Table>
                   </TableFoldBody>
                 </TableFold>
-                <Grow>
-                  <BulletItem
-                    before="ⓐ"
-                    className="whitespace-nowrap"
-                    color="default"
-                    onClick={() => {}}
-                    size="md"
-                    type="dot"
-                  >
-                  같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터 즉시이체출금에 성공한 것이니 입금내역을 확인하세요. 
-                  </BulletItem>
+                <Grow className="w-full" variant="box-info" placement="ss">
+                  <Typo icon="info" variant="body-sm">
+                    같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터 즉시이체출금에 성공한 것이니 입금내역을 확인하세요. 
+                  </Typo>
                 </Grow>
                 {/* 카드 */}
                 <TableFold variant={'default'}>
