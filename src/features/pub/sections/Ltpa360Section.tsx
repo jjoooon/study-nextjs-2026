@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
-import { Grow, Gcol } from '@atoms';
+import { Grow, Gcol, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,22 +22,560 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-
-import {
-  Ltpa360DummyData1,
-  Ltpa360DummyData1b,
-  Ltpa360DummyData2,
-  Ltpa360DummyData3,
-  Ltpa360DummyData4,
-  type Ltpa360DummyDataRow1,
-  type Ltpa360DummyDataRow1b,
-  type Ltpa360DummyDataRow2,
-  type Ltpa360DummyDataRow3,
-  type Ltpa360DummyDataRow4,
-} from '../data/ltpa360Data';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 // Side Effect (모듈 등록 등)
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+type Ltpa360DummyDataRow1 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+};
+
+const Ltpa360DummyData1: Ltpa360DummyDataRow1[] = [
+  {
+    id: 1,
+    field01: '기초서류',
+    field02: '기초서류 작성 및 유관부서 송부',
+    field03: '2025-10-01',
+    field04: '2025-10-01',
+    field05: '30/50',
+    field06: '',
+  },
+  {
+    id: 2,
+    field01: '상품정보',
+    field02: '상품정보시스템 입력',
+    field03: '2025-10-01',
+    field04: '2025-10-01',
+    field05: '30/50',
+    field06: '',
+  },
+  {
+    id: 3,
+    field01: 'PV',
+    field02: '보험료 및 준비금 테이블 반영',
+    field03: '2025-10-01',
+    field04: '2025-10-01',
+    field05: '30/50',
+    field06: '',
+  },
+  {
+    id: 4,
+    field01: '룰',
+    field02: '룰 시스템 개발 및 반영',
+    field03: '2025-10-01',
+    field04: '2025-10-01',
+    field05: '30/50',
+    field06: '',
+  },
+  {
+    id: 5,
+    field01: '통합테스트개시',
+    field02: '관련부서 통합 설계 테스트',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 6,
+    field01: '출력물검수',
+    field02: '청약서류(상품설명서, 청약서, 증권) 검수',
+    field03: '2025-10-01',
+    field04: '2025-10-01',
+    field05: '30/50',
+    field06: '',
+  },
+  {
+    id: 7,
+    field01: '상품출시',
+    field02: '상품판매 준비완료',
+    field03: '2025-10-01',
+    field04: '2025-10-01',
+    field05: '30/50',
+    field06: '',
+  },
+];
+
+type Ltpa360DummyDataRow1b = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: React.ReactNode;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  isSelect?: boolean;
+};
+
+const Ltpa360DummyData1b: Ltpa360DummyDataRow1b[] = [
+  {
+    id: 1,
+    field01: '2025-10-13',
+    field02: '*',
+    field03: '25년 10월 개정',
+    field04: '지연(37)건',
+    field05: '지연(37)건',
+    field06: '지연(37)건',
+    field07: '지연(37)건',
+    field08: '',
+    field09: '',
+    field10: '',
+  },
+  {
+    id: 2,
+    field01: '2025-10-13',
+    field02: 'LA02768',
+    field03: '(담보추가)더건강한 한아름종합보험 2504 - 납입면제형, 기본형)',
+    field04: '미완료',
+    field05: '미완료',
+    field06: '미완료',
+    field07: '미완료',
+    field08: '미완료',
+    field09: '미완료',
+    field10: '준비중',
+  },
+  {
+    id: 3,
+    field01: '2025-10-13',
+    field02: 'LA02769',
+    field03: '(담보추가)더건강한 한아름종합보험 2504 - 납입면제형, 기본형)',
+    field04: '미완료',
+    field05: '미완료',
+    field06: '미완료',
+    field07: '미완료',
+    field08: '미완료',
+    field09: '미완료',
+    field10: '준비중',
+  },
+  {
+    id: 4,
+    field01: '2025-10-13',
+    field02: 'LA02770',
+    field03: '(담보추가)더건강한 한아름종합보험 2504 - 납입면제형, 기본형)',
+    field04: '미완료',
+    field05: '미완료',
+    field06: '미완료',
+    field07: '미완료',
+    field08: '미완료',
+    field09: '미완료',
+    field10: '준비중',
+  },
+];
+
+type Ltpa360DummyDataRow2 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+};
+
+const Ltpa360DummyData2: Ltpa360DummyDataRow2[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '25년 10월 개정',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '한화 더건강한 1040 종합보험 무배당2510 - 기본형',
+    field03: '',
+    field04: '',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '한화 더건강한 1040 종합보험 무배당2510 - 납입후 50% 해약 환급금 지급형',
+    field03: '',
+    field04: '',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '한화 더건강한 1040 종합보험 무배당2510_TM - 기본형',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '한화 더건강한 1040 종합보험 무배당2510_TM - 납입후50% 해약 환급금 지급형',
+    field03: '',
+    field04: '',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '한화 건강쑥쑥 어린이보험 무배당2510 - 기본형',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 7,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '',
+    field19: '',
+    field20: '',
+    field21: '',
+  },
+  {
+    id: 8,
+    isCheck: false,
+    field01: 'LA02843001',
+    field02: '한화 더건강한 1040 종합보험 무배당2510_TM - 기본형',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '',
+    field11: '',
+    field12: '',
+    field13: '',
+    field14: '',
+    field15: '',
+    field16: '',
+    field17: '',
+    field18: '개발중',
+    field19: '준비중',
+    field20: 'LA02843001',
+    field21: 'LA02843001',
+  },
+];
+
+type Ltpa360DummyDataRow3 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+};
+
+const Ltpa360DummyData3: Ltpa360DummyDataRow3[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: 'CLA70772',
+    field02: '고열동반특정패혈증진단비',
+    field03: '0',
+    field04: '90',
+    field05: '',
+    field06: '세부담보 중 일부 면적',
+    field07:
+      '[담보]보험기간 중에 진단확정된 질병 또는 상해의 직접 결과로써 생활기능 또는 업무능력에 지장을 가져오면서 "고열"로 인하여 중환자실에 입원하여 치료를 받은 경우 보험가입금액 지급',
+    field08: '간편고지/독립/모담보',
+    field09: '2026-03-17',
+    field10: '박한화',
+    field11: '2025-10-13',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: 'CLA70772',
+    field02: '고열동반특정패혈증진단비',
+    field03: '0',
+    field04: '90',
+    field05: '',
+    field06: '없음',
+    field07:
+      '[담보]보장개시일 이후에 약관에서 정한 "암(특정유사암포함)"으로 진단확정되고, 그 질병으로 입원 중에 "급여 암(특정유사암포함) 재활치료"를 받은 경우 또는 통원하여 "급여 암(특정유사암포함) 재활치료"를 받은 경우 보험가입금액 지급',
+    field08: '간편고지/독립',
+    field09: '2026-03-17',
+    field10: '',
+    field11: '2025-10-13',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: 'CLA70772',
+    field02: '고열동반특정패혈증진단비',
+    field03: '0',
+    field04: '90',
+    field05: '',
+    field06: '세부담보 중 일부 면적',
+    field07: '',
+    field08: '',
+    field09: '2026-03-17',
+    field10: '',
+    field11: '2025-10-13',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: '신규',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '삭제(기 판매 위)',
+    field09: '2026-03-17',
+    field10: '',
+    field11: '2025-10-13',
+  },
+];
+
+type Ltpa360DummyDataRow4 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+};
+
+const Ltpa360DummyData4: Ltpa360DummyDataRow4[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: 'LAC8399197',
+    field02: '급여 메일리 영유아발달검사 이용률(연연)',
+    field03: '99기타',
+    field04: '99기타',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '암 치료',
+    field08: '삭제(기 판매 위)',
+    field09: '2025-09-11',
+    field10: '',
+    field11: '2025-10-13',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: 'LAC8399198',
+    field02: '급여 메일리 영유아발달검사 이용률(연연)',
+    field03: '99기타',
+    field04: '99기타',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '암 치료',
+    field08: '삭제(기 판매 위)',
+    field09: '2025-09-11',
+    field10: '',
+    field11: '2025-10-13',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    field01: 'LAC8399199',
+    field02: '급여 메일리 영유아발달검사 이용률(연연)',
+    field03: '99기타',
+    field04: '99기타',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '암 치료',
+    field08: '삭제(기 판매 위)',
+    field09: '2025-09-11',
+    field10: '',
+    field11: '2025-10-13',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: 'LAC8399199',
+    field02: '급여 메일리 영유아발달검사 이용률(연연)',
+    field03: '99기타',
+    field04: '99기타',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '암 치료',
+    field08: '삭제(기 판매 위)',
+    field09: '2025-09-11',
+    field10: '',
+    field11: '2025-10-13',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: '신규',
+    field02: '급여 메일리 영유아발달검사 이용률(연연)',
+    field03: '99기타',
+    field04: '99기타',
+    field05: 'LAC1208303',
+    field06: 'F552102',
+    field07: '암 치료',
+    field08: '삭제(기 판매 위)',
+    field09: '2025-09-11',
+    field10: '',
+    field11: '2025-10-13',
+  },
+];
 
 // Tab 정의
 type Ltpa360TabType = { name: string; value: string; label: string };
@@ -681,644 +1219,631 @@ export default function Ltpa360Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className="w-full" placement="ss">
-            <TabPager
-              data={tabs}
-              active={active}
-              setActive={setActive}
-              removable={false}
-              onRemove={handleRemove}
-              visibleCount={10}
-              variant="default"
-              hasTableBelow={true}
-              error={false}
-              errorMsg="에러 메시지 예시"
-              getValue={(tab) => String(tab.value)}
-              renderTab={(tab) => <span>{tab.label}</span>}
-              renderDropdownItem={false}
-            >
-              {/* TAB1 */}
-              {active === 'tab1' && (
-                <Gcol placement="ss" className="ag-theme-alpine w-full" gap={5}>
-                  <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                    <FormTable
-                      variant={'none'}
-                      lineTop={false}
-                      caption="총괄장표 조회 테이블"
-                      cols={['w-[10rem]', 'flex-1']}
+          <TabPager
+            data={tabs}
+            active={active}
+            setActive={setActive}
+            removable={false}
+            onRemove={handleRemove}
+            visibleCount={10}
+            variant="default"
+            hasTableBelow={true}
+            error={false}
+            errorMsg="에러 메시지 예시"
+            getValue={(tab) => String(tab.value)}
+            renderTab={(tab) => <span>{tab.label}</span>}
+            renderDropdownItem={false}
+          >
+            {/* TAB1 */}
+            {active === 'tab1' && (
+              <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={3}>
+                <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
+                  <FormTable
+                    variant={'none'}
+                    lineTop={false}
+                    caption="총괄장표 조회 테이블"
+                    cols={['w-[10rem]', 'flex-1']}
+                  >
+                    <FormRow>
+                      <FormCell title={'상품판매일자'}>
+                        <NativeSelect
+                          aria-label="상품판매일자 선택"
+                          width="12rem"
+                          value={form.type01}
+                          onChange={(e) => setFormField('type01', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type01-1', label: '2025-10-13' },
+                            { value: 'selection2', id: 'type01-2', label: '2025-10-13' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <Grow>
+                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                      조회
+                    </Button>
+                    <Button
+                      color={'gray'}
+                      only={'icon'}
+                      size={'lg'}
+                      variant={'outlined'}
+                      onClick={() => {}}
+                      aria-label="새로고침"
                     >
-                      <FormRow>
-                        <FormCell title={'상품판매일자'}>
-                          <NativeSelect
-                            aria-label="상품판매일자 선택"
-                            width="12rem"
-                            value={form.type01}
-                            onChange={(e) => setFormField('type01', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type01-1', label: '2025-10-13' },
-                              { value: 'selection2', id: 'type01-2', label: '2025-10-13' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                    <Grow>
-                      <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                        조회
-                      </Button>
-                      <Button
-                        color={'gray'}
-                        only={'icon'}
-                        size={'lg'}
-                        variant={'outlined'}
-                        onClick={() => {}}
-                        aria-label="새로고침"
-                      >
-                        <ResetIcon />
-                      </Button>
-                    </Grow>
+                      <ResetIcon />
+                    </Button>
                   </Grow>
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="전체현황" />
-                    <TableFoldBody>
-                      <Gcol placement="ss" className="w-full" gap={5}>
-                        <Grow className="w-full">
-                          <div className="ag-theme-alpine w-full">
-                            <AgGridReact<Ltpa360DummyDataRow1>
-                              noRowsOverlayComponent={AgGridEmptyComponent}
-                              getRowId={(params) => String(params.data.id)}
-                              rowData={Ltpa360DummyData1}
-                              columnDefs={columnDefs1}
-                              defaultColDef={{
-                                sortable: false,
-                                resizable: false,
-                                cellClass: 'text-center p-0! flex',
-                              }}
-                              singleClickEdit={true}
-                              onCellValueChanged={() => {}}
-                              domLayout="autoHeight"
-                            />
-                          </div>
-                        </Grow>
-                      </Gcol>
-                    </TableFoldBody>
-                  </TableFold>
-                  {/* TAB1_1 */}
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="세부현황" />
-                    <TableFoldBody>
-                      <Gcol placement="ss" className="w-full" gap={5}>
-                        <Grow className="w-full">
-                          <div className="ag-theme-alpine w-full">
-                            <AgGridReact<Ltpa360DummyDataRow1b>
-                              noRowsOverlayComponent={AgGridEmptyComponent}
-                              getRowId={(params) => String(params.data.id)}
-                              rowData={Ltpa360DummyData1b}
-                              columnDefs={columnDefs1b}
-                              defaultColDef={{
-                                sortable: false,
-                                resizable: false,
-                                cellClass: 'text-center',
-                              }}
-                              singleClickEdit={true}
-                              onCellValueChanged={() => {}}
-                              domLayout="autoHeight"
-                              selectionColumnDef={{
-                                cellClass: 'text-center p-0!',
-                              }}
-                            />
-                          </div>
-                        </Grow>
-                      </Gcol>
-                    </TableFoldBody>
-                  </TableFold>
-                </Gcol>
-              )}
-              {/* TAB2 */}
-              {active === 'tab2' && (
-                <Gcol placement="ss" className="ag-theme-alpine w-full" gap={4}>
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="입력장표">
-                      <Grow className="justify-end" placement="ee">
-                        <Button variant={'outlined'} color={'success'}>
-                          엑셀가져오기
-                          <FileImportIcon />
-                        </Button>
-                        <Button color="success" variant="outlined">
-                          엑셀내보내기
-                          <FileExportIcon />
-                        </Button>
-                        <Button color="gray" variant="outlined">
-                          행추가
-                        </Button>
-                        <Button color="gray" variant="outlined">
-                          행삭제
-                        </Button>
-                        <Button color="gray" variant="outlined">
-                          파일등록
-                        </Button>
-                        <Button color="gray" variant="outlined">
-                          메모
-                        </Button>
-                      </Grow>
-                    </TableFoldHead>
-                    <TableFoldBody>
-                      <Gcol gap={4}>
-                        <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                          <FormTable
-                            variant={'none'}
-                            caption="입력장표 조회 테이블"
-                            cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
-                          >
-                            <FormRow>
-                              <FormCell title={'상품판매일자'}>
-                                <NativeSelect
-                                  aria-label="상품판매일자 선택"
-                                  width="12rem"
-                                  value={form.type02}
-                                  onChange={(e) => setFormField('type02', e.target.value)}
-                                >
-                                  {[
-                                    { value: 'selection', id: 'type02-1', label: '2025-10-13' },
-                                    { value: 'selection2', id: 'type02-2', label: '2025-10-14' },
-                                  ].map((option) => (
-                                    <NativeSelectOption key={option.id} value={option.value}>
-                                      {option.label}
-                                    </NativeSelectOption>
-                                  ))}
-                                </NativeSelect>
-                              </FormCell>
-                              <FormCell title={'조회구분'}>
-                                <NativeSelect
-                                  aria-label="조회구분 선택"
-                                  width="9rem"
-                                  value={form.type03}
-                                  onChange={(e) => setFormField('type03', e.target.value)}
-                                >
-                                  {[
-                                    { value: 'selection', id: 'type03-1', label: '상품명' },
-                                    { value: 'selection2', id: 'type03-2', label: '상품코드' },
-                                  ].map((option) => (
-                                    <NativeSelectOption key={option.id} value={option.value}>
-                                      {option.label}
-                                    </NativeSelectOption>
-                                  ))}
-                                </NativeSelect>
-                                <Input
-                                  aria-label=""
-                                  width={'12rem'}
-                                  size={'sm'}
-                                  value={form.type04 || '12345678'}
-                                  isFocused
-                                  onChange={(e) => setFormField('type04', e.target.value)}
-                                />
-                                <NativeSelect
-                                  aria-label="조회구분 선택"
-                                  width="9rem"
-                                  size={'md'}
-                                  value={form.type05}
-                                  onChange={(e) => setFormField('type05', e.target.value)}
-                                >
-                                  {[
-                                    { value: 'selection', id: 'type05-1', label: '선택' },
-                                    { value: 'selection2', id: 'type05-2', label: '담당자' },
-                                    { value: 'selection3', id: 'type04-3', label: '담당부서' },
-                                  ].map((option) => (
-                                    <NativeSelectOption key={option.id} value={option.value}>
-                                      {option.label}
-                                    </NativeSelectOption>
-                                  ))}
-                                </NativeSelect>
-                                <Input
-                                  aria-label=""
-                                  width={'12rem'}
-                                  size={'sm'}
-                                  value={form.type06 || '12345678'}
-                                  isFocused
-                                  onChange={(e) => setFormField('type06', e.target.value)}
-                                />
-                                <Button
-                                  aria-label="검색"
-                                  variant={'outlined'}
-                                  only="icon"
-                                  size={'md'}
-                                  color={'gray-light'}
-                                >
-                                  <SearchIcon color={'var(--color-primary-50)'} />
-                                </Button>
-                                <Input aria-label="" width={'15rem'} size={'sm'} value={'신부산GA지점'} readOnly />
-                              </FormCell>
-                            </FormRow>
-                          </FormTable>
-                          <Grow>
-                            <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                              조회
-                            </Button>
-                            <Button
-                              color={'gray'}
-                              only={'icon'}
-                              size={'lg'}
-                              variant={'outlined'}
-                              onClick={() => {}}
-                              aria-label="새로고침"
-                            >
-                              <ResetIcon />
-                            </Button>
-                          </Grow>
-                        </Grow>
-                        <div className="ag-theme-alpine">
-                          <AgGridReact<Ltpa360DummyDataRow2>
+                </Grow>
+                <ResizablePanelGroup orientation="vertical" className="w-full h-full">
+                  <ResizablePanel defaultSize={50}>
+                    <TableFold variant={'accordion'} className="h-full">
+                      <TableFoldHead title="전체현황" />
+                      <TableFoldBody>
+                        <div className="ag-theme-alpine min-h-[18.4rem]">
+                          <AgGridReact<Ltpa360DummyDataRow1>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             getRowId={(params) => String(params.data.id)}
-                            rowData={Ltpa360DummyData2}
-                            columnDefs={columnDefs2}
+                            rowData={Ltpa360DummyData1}
+                            columnDefs={columnDefs1}
                             defaultColDef={{
-                              sortable: false,
-                              resizable: false,
-                              cellClass: 'text-center p-0!',
+                              sortable: true,
+                              resizable: true,
+                              cellClass: 'text-center p-0! flex',
                             }}
                             singleClickEdit={true}
                             onCellValueChanged={() => {}}
-                            rowSelection={{
-                              mode: 'singleRow',
-                              checkboxes: true,
-                              enableClickSelection: false,
-                            }}
-                            selectionColumnDef={{
-                              width: 40,
-                              pinned: 'left',
-                              cellClass: 'text-center p-0!',
-                              cellClassRules: {
-                                'pointer-events-none': (params) => !!params.data?.locked,
-                              },
-                            }}
-                            domLayout="autoHeight"
                           />
                         </div>
-                      </Gcol>
-                    </TableFoldBody>
-                  </TableFold>
-                </Gcol>
-              )}
-              {/* TAB3 */}
-              {active === 'tab3' && (
-                <Gcol placement="ss" className="ag-theme-alpine w-full" gap={4}>
-                  <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                    <FormTable
-                      variant={'none'}
-                      caption="사고담보코드 조회 테이블"
-                      cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
-                    >
-                      <FormRow>
-                        <FormCell title={'상품판매일자'}>
-                          <NativeSelect
-                            aria-label="상품판매일자 선택"
-                            width="12rem"
-                            value={form.type07}
-                            onChange={(e) => setFormField('type07', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type07-1', label: '2025-10-13' },
-                              { value: 'selection2', id: 'type07-2', label: '2025-10-13' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                        <FormCell title={'조회구분'}>
-                          <NativeSelect
-                            aria-label="조회구분 선택"
-                            width="17rem"
-                            value={form.type08}
-                            onChange={(e) => setFormField('type08', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type08-1', label: '선택' },
-                              { value: 'selection2', id: 'type08-2', label: '신규' },
-                              { value: 'selection3', id: 'type08-3', label: '제도성' },
-                              { value: 'selection4', id: 'type08-4', label: '담보일반' },
-                              { value: 'selection5', id: 'type08-5', label: '모담보' },
-                              { value: 'selection6', id: 'type08-6', label: '독립특약' },
-                              { value: 'selection7', id: 'type08-7', label: '판매취소' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                        <FormCell title={'담보구분'}>
-                          <NativeSelect
-                            aria-label="담보구분 선택"
-                            width="15rem"
-                            value={form.type09}
-                            onChange={(e) => setFormField('type09', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type09-1', label: '담보코드' },
-                              { value: 'selection2', id: 'type09-2', label: '담보명' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Input
-                            aria-label=""
-                            width={'15rem'}
-                            value={form.type10 || 'CLA23429'}
-                            onChange={(e) => setFormField('type10', e.target.value)}
+                      </TableFoldBody>
+                    </TableFold>
+                  </ResizablePanel>
+                  <ResizableHandle />
+                  <ResizablePanel defaultSize={50}>
+                    <TableFold variant={'accordion'} className="h-full">
+                      <TableFoldHead title="세부현황" />
+                      <TableFoldBody>
+                        <div className="ag-theme-alpine min-h-[18.4rem]">
+                          <AgGridReact<Ltpa360DummyDataRow1b>
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            getRowId={(params) => String(params.data.id)}
+                            rowData={Ltpa360DummyData1b}
+                            columnDefs={columnDefs1b}
+                            defaultColDef={{
+                              sortable: true,
+                              resizable: true,
+                              cellClass: 'text-center',
+                            }}
+                            singleClickEdit={true}
+                            onCellValueChanged={() => {}}
+                            selectionColumnDef={{
+                              cellClass: 'text-center p-0!',
+                            }}
                           />
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'요청자'}>
-                          <Input
-                            aria-label=""
-                            width={'10rem'}
-                            value={form.type11 || '12345678'}
-                            onChange={(e) => setFormField('type11', e.target.value)}
-                          />
-                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <Input aria-label="" width={'15rem'} value={'신부산GA지점'} readOnly />
-                        </FormCell>
-                        <FormCell title={'요청일자'} colSpan={3}>
-                          <DatePickerInput
-                            mode="range"
-                            onChange={() => {}}
-                            rangeValue={{ from: '2026-02', to: '2026-03' }}
-                            size="lg"
-                            width="sm"
-                            readOnly
-                          />
-                          <NativeSelect
-                            aria-label="요청일자 선택"
-                            width="10rem"
-                            value={form.type12}
-                            onChange={(e) => setFormField('type12', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type12-1', label: '전체' },
-                              { value: 'selection2', id: 'type12-2', label: '' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                    <Grow>
-                      <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                        조회
+                        </div>
+                      </TableFoldBody>
+                    </TableFold>
+                  </ResizablePanel>
+                </ResizablePanelGroup>
+              </Grid>
+            )}
+            {/* TAB2 */}
+            {active === 'tab2' && (
+              <Grid className="grid-rows-[1fr] w-full h-full pt-2" gap={3}>
+                <TableFold variant={'accordion'}>
+                  <TableFoldHead title="입력장표">
+                    <Grow className="justify-end" placement="ee">
+                      <Button variant={'outlined'} color={'success'}>
+                        엑셀가져오기
+                        <FileImportIcon />
                       </Button>
-                      <Button
-                        color={'gray'}
-                        only={'icon'}
-                        size={'lg'}
-                        variant={'outlined'}
-                        onClick={() => {}}
-                        aria-label="새로고침"
-                      >
-                        <ResetIcon />
-                      </Button>
-                    </Grow>
-                  </Grow>
-                  <Gcol>
-                    <Grow className="w-full justify-end">
                       <Button color="success" variant="outlined">
                         엑셀내보내기
                         <FileExportIcon />
                       </Button>
                       <Button color="gray" variant="outlined">
-                        초기화
-                      </Button>
-                      <Button color="gray" variant="outlined">
                         행추가
                       </Button>
                       <Button color="gray" variant="outlined">
                         행삭제
                       </Button>
+                      <Button color="gray" variant="outlined">
+                        파일등록
+                      </Button>
+                      <Button color="gray" variant="outlined">
+                        메모
+                      </Button>
                     </Grow>
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<Ltpa360DummyDataRow3>
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={Ltpa360DummyData3}
-                        columnDefs={columnDefs3}
-                        defaultColDef={{
-                          sortable: false,
-                          resizable: false,
-                          cellClass: 'text-center p-0!',
-                        }}
-                        singleClickEdit={true}
-                        onCellValueChanged={() => {}}
-                        rowSelection={{
-                          mode: 'singleRow',
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        selectionColumnDef={{ headerName: '선택' }}
-                        onGridReady={(params) => {
-                          params.api.forEachNode((node) => {
-                            if (node.data?.isCheck) {
-                              node.setSelected(true);
-                            }
-                          });
-                        }}
-                        domLayout="autoHeight"
-                      />
-                    </div>
-                  </Gcol>
-                </Gcol>
-              )}
-              {/* TAB4 */}
-              {active === 'tab4' && (
-                <Gcol placement="ss" className="ag-theme-alpine w-full" gap={4}>
-                  <Gcol className="w-full gap-[1.2rem]">
-                    <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                      <FormTable
-                        variant={'none'}
-                        caption="사고담보코드 조회 테이블"
-                        cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
-                      >
-                        <FormRow>
-                          <FormCell title={'상품판매일자'}>
-                            <NativeSelect
-                              aria-label="상품판매일자 선택"
-                              width="12rem"
-                              value={form.type01}
-                              onChange={(e) => setFormField('type01', e.target.value)}
-                            >
-                              {[
-                                { value: 'selection', id: 'type01-1', label: '2025-10-13' },
-                                { value: 'selection2', id: 'type01-2', label: '2025-10-13' },
-                              ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>
-                                  {option.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
-                          </FormCell>
-                          <FormCell title={'조회구분'}>
-                            <NativeSelect
-                              aria-label="조회구분 선택"
-                              width="17rem"
-                              value={form.type02}
-                              onChange={(e) => setFormField('type02', e.target.value)}
-                            >
-                              {[
-                                { value: 'selection', id: 'type02-1', label: '선택' },
-                                { value: 'selection2', id: 'type02-2', label: '신규' },
-                                { value: 'selection3', id: 'type02-3', label: '판매취소' },
-                              ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>
-                                  {option.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
-                          </FormCell>
-                          <FormCell title={'담보구분'}>
-                            <NativeSelect
-                              aria-label="담보구분 선택"
-                              width="15rem"
-                              value={form.type03}
-                              onChange={(e) => setFormField('type03', e.target.value)}
-                            >
-                              {[
-                                { value: 'selection', id: 'type03-1', label: '사고담보명' },
-                                { value: 'selection2', id: 'type03-2', label: '사고담보코드' },
-                              ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>
-                                  {option.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
-                            <Input
-                              aria-label=""
-                              width={'15rem'}
-                              value={form.type04 || 'CLA23429'}
-                              onChange={(e) => setFormField('type04', e.target.value)}
-                            />
-                          </FormCell>
-                        </FormRow>
-                        <FormRow>
-                          <FormCell title={'요청자'}>
-                            <Input
-                              aria-label=""
-                              width={'10rem'}
-                              value={form.type05 || '12345678'}
-                              onChange={(e) => setFormField('type05', e.target.value)}
-                            />
-                            <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                              <SearchIcon color={'var(--color-primary-50)'} />
-                            </Button>
-                            <Input aria-label="" width={'15rem'} value={'신부산GA지점'} readOnly />
-                          </FormCell>
-                          <FormCell title={'요청일자'} colSpan={3}>
-                            <DatePickerInput
-                              mode="range"
-                              onChange={() => {}}
-                              rangeValue={{ from: '2026-02', to: '2026-03' }}
-                              size="lg"
-                              width="sm"
-                              readOnly
-                            />
-                            <NativeSelect
-                              aria-label="요청일자 선택"
-                              width="10rem"
-                              value={form.type02}
-                              onChange={(e) => setFormField('type02', e.target.value)}
-                            >
-                              {[
-                                { value: 'selection', id: 'type02-1', label: '전체' },
-                                { value: 'selection2', id: 'type02-2', label: '' },
-                              ].map((option) => (
-                                <NativeSelectOption key={option.id} value={option.value}>
-                                  {option.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                      <Grow>
-                        <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                          조회
-                        </Button>
-                        <Button
-                          color={'gray'}
-                          only={'icon'}
-                          size={'lg'}
-                          variant={'outlined'}
-                          onClick={() => {}}
-                          aria-label="새로고침"
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={4}>
+                      <Grow className="w-full" variant="box-round" placement={'bwe'}>
+                        <FormTable
+                          variant={'none'}
+                          caption="입력장표 조회 테이블"
+                          cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
                         >
-                          <ResetIcon />
-                        </Button>
+                          <FormRow>
+                            <FormCell title={'상품판매일자'}>
+                              <NativeSelect
+                                aria-label="상품판매일자 선택"
+                                width="12rem"
+                                value={form.type02}
+                                onChange={(e) => setFormField('type02', e.target.value)}
+                              >
+                                {[
+                                  { value: 'selection', id: 'type02-1', label: '2025-10-13' },
+                                  { value: 'selection2', id: 'type02-2', label: '2025-10-14' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                            </FormCell>
+                            <FormCell title={'조회구분'}>
+                              <NativeSelect
+                                aria-label="조회구분 선택"
+                                width="9rem"
+                                value={form.type03}
+                                onChange={(e) => setFormField('type03', e.target.value)}
+                              >
+                                {[
+                                  { value: 'selection', id: 'type03-1', label: '상품명' },
+                                  { value: 'selection2', id: 'type03-2', label: '상품코드' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                              <Input
+                                aria-label=""
+                                width={'12rem'}
+                                size={'sm'}
+                                value={form.type04 || '12345678'}
+                                isFocused
+                                onChange={(e) => setFormField('type04', e.target.value)}
+                              />
+                              <NativeSelect
+                                aria-label="조회구분 선택"
+                                width="9rem"
+                                size={'md'}
+                                value={form.type05}
+                                onChange={(e) => setFormField('type05', e.target.value)}
+                              >
+                                {[
+                                  { value: 'selection', id: 'type05-1', label: '선택' },
+                                  { value: 'selection2', id: 'type05-2', label: '담당자' },
+                                  { value: 'selection3', id: 'type04-3', label: '담당부서' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.id} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                              <Input
+                                aria-label=""
+                                width={'12rem'}
+                                size={'sm'}
+                                value={form.type06 || '12345678'}
+                                isFocused
+                                onChange={(e) => setFormField('type06', e.target.value)}
+                              />
+                              <Button
+                                aria-label="검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'md'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <Input aria-label="" width={'15rem'} size={'sm'} value={'신부산GA지점'} readOnly />
+                            </FormCell>
+                          </FormRow>
+                        </FormTable>
+                        <Grow>
+                          <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                            조회
+                          </Button>
+                          <Button
+                            color={'gray'}
+                            only={'icon'}
+                            size={'lg'}
+                            variant={'outlined'}
+                            onClick={() => {}}
+                            aria-label="새로고침"
+                          >
+                            <ResetIcon />
+                          </Button>
+                        </Grow>
                       </Grow>
-                    </Grow>
-                  </Gcol>
-                  <Gcol>
-                    <Grow className="w-full justify-end">
-                      <Button color="gray" variant="outlined">
-                        초기화
-                      </Button>
-                      <Button color="gray" variant="outlined">
-                        행추가
-                      </Button>
-                      <Button color="gray" variant="outlined">
-                        행삭제
-                      </Button>
-                    </Grow>
-                    <Grow className="w-full">
-                      <div className="ag-theme-alpine">
-                        <AgGridReact<Ltpa360DummyDataRow4>
+                      <div className="ag-theme-alpine min-h-[18.4rem] w-full">
+                        <AgGridReact<Ltpa360DummyDataRow2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
-                          rowData={Ltpa360DummyData4}
-                          columnDefs={columnDefs4}
+                          rowData={Ltpa360DummyData2}
+                          columnDefs={columnDefs2}
                           defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                            cellClass: 'text-center p-0! ',
+                            sortable: true,
+                            resizable: true,
+                            cellClass: 'text-center p-0!',
                           }}
-                          alwaysShowHorizontalScroll={true}
                           singleClickEdit={true}
-                          // 체크박스 시
+                          onCellValueChanged={() => {}}
                           rowSelection={{
-                            mode: 'multiRow',
+                            mode: 'singleRow',
                             checkboxes: true,
-                            headerCheckbox: true,
                             enableClickSelection: false,
                           }}
-                          selectionColumnDef={{ headerName: '' }}
-                          onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isCheck) {
-                                node.setSelected(true);
-                              }
-                            });
+                          selectionColumnDef={{
+                            width: 40,
+                            pinned: 'left',
+                            cellClass: 'text-center p-0!',
+                            cellClassRules: {
+                              'pointer-events-none': (params) => !!params.data?.locked,
+                            },
                           }}
-                          domLayout="autoHeight"
                         />
                       </div>
-                    </Grow>
-                  </Gcol>
+                    </Grid>
+                  </TableFoldBody>
+                </TableFold>
+              </Grid>
+            )}
+            {/* TAB3 */}
+            {active === 'tab3' && (
+              <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={3}>
+                <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
+                  <FormTable
+                    variant={'none'}
+                    caption="사고담보코드 조회 테이블"
+                    cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
+                  >
+                    <FormRow>
+                      <FormCell title={'상품판매일자'}>
+                        <NativeSelect
+                          aria-label="상품판매일자 선택"
+                          width="12rem"
+                          value={form.type07}
+                          onChange={(e) => setFormField('type07', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type07-1', label: '2025-10-13' },
+                            { value: 'selection2', id: 'type07-2', label: '2025-10-13' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                      <FormCell title={'조회구분'}>
+                        <NativeSelect
+                          aria-label="조회구분 선택"
+                          width="17rem"
+                          value={form.type08}
+                          onChange={(e) => setFormField('type08', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type08-1', label: '선택' },
+                            { value: 'selection2', id: 'type08-2', label: '신규' },
+                            { value: 'selection3', id: 'type08-3', label: '제도성' },
+                            { value: 'selection4', id: 'type08-4', label: '담보일반' },
+                            { value: 'selection5', id: 'type08-5', label: '모담보' },
+                            { value: 'selection6', id: 'type08-6', label: '독립특약' },
+                            { value: 'selection7', id: 'type08-7', label: '판매취소' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                      <FormCell title={'담보구분'}>
+                        <NativeSelect
+                          aria-label="담보구분 선택"
+                          width="15rem"
+                          value={form.type09}
+                          onChange={(e) => setFormField('type09', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type09-1', label: '담보코드' },
+                            { value: 'selection2', id: 'type09-2', label: '담보명' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <Input
+                          aria-label=""
+                          width={'15rem'}
+                          value={form.type10 || 'CLA23429'}
+                          onChange={(e) => setFormField('type10', e.target.value)}
+                        />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'요청자'}>
+                        <Input
+                          aria-label=""
+                          width={'10rem'}
+                          value={form.type11 || '12345678'}
+                          onChange={(e) => setFormField('type11', e.target.value)}
+                        />
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                        <Input aria-label="" width={'15rem'} value={'신부산GA지점'} readOnly />
+                      </FormCell>
+                      <FormCell title={'요청일자'} colSpan={3}>
+                        <DatePickerInput
+                          mode="range"
+                          onChange={() => {}}
+                          rangeValue={{ from: '2026-02', to: '2026-03' }}
+                          size="lg"
+                          width="sm"
+                          readOnly
+                        />
+                        <NativeSelect
+                          aria-label="요청일자 선택"
+                          width="10rem"
+                          value={form.type12}
+                          onChange={(e) => setFormField('type12', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type12-1', label: '전체' },
+                            { value: 'selection2', id: 'type12-2', label: '' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <Grow>
+                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                      조회
+                    </Button>
+                    <Button
+                      color={'gray'}
+                      only={'icon'}
+                      size={'lg'}
+                      variant={'outlined'}
+                      onClick={() => {}}
+                      aria-label="새로고침"
+                    >
+                      <ResetIcon />
+                    </Button>
+                  </Grow>
+                </Grow>
+                <Gcol>
+                  <Grow className="w-full justify-end">
+                    <Button color="success" variant="outlined">
+                      엑셀내보내기
+                      <FileExportIcon />
+                    </Button>
+                    <Button color="gray" variant="outlined">
+                      초기화
+                    </Button>
+                    <Button color="gray" variant="outlined">
+                      행추가
+                    </Button>
+                    <Button color="gray" variant="outlined">
+                      행삭제
+                    </Button>
+                  </Grow>
+                  <div className="ag-theme-alpine min-h-[18.4rem] w-full">
+                    <AgGridReact<Ltpa360DummyDataRow3>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={Ltpa360DummyData3}
+                      columnDefs={columnDefs3}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                        cellClass: 'text-center p-0!',
+                      }}
+                      singleClickEdit={true}
+                      onCellValueChanged={() => {}}
+                      rowSelection={{
+                        mode: 'singleRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{ headerName: '선택' }}
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                    />
+                  </div>
                 </Gcol>
-              )}
-            </TabPager>
-          </Gcol>
+              </Grid>
+            )}
+            {/* TAB4 */}
+            {active === 'tab4' && (
+              <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={3}>
+                <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
+                  <FormTable
+                    variant={'none'}
+                    caption="사고담보코드 조회 테이블"
+                    cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
+                  >
+                    <FormRow>
+                      <FormCell title={'상품판매일자'}>
+                        <NativeSelect
+                          aria-label="상품판매일자 선택"
+                          width="12rem"
+                          value={form.type01}
+                          onChange={(e) => setFormField('type01', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type01-1', label: '2025-10-13' },
+                            { value: 'selection2', id: 'type01-2', label: '2025-10-13' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                      <FormCell title={'조회구분'}>
+                        <NativeSelect
+                          aria-label="조회구분 선택"
+                          width="17rem"
+                          value={form.type02}
+                          onChange={(e) => setFormField('type02', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type02-1', label: '선택' },
+                            { value: 'selection2', id: 'type02-2', label: '신규' },
+                            { value: 'selection3', id: 'type02-3', label: '판매취소' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                      <FormCell title={'담보구분'}>
+                        <NativeSelect
+                          aria-label="담보구분 선택"
+                          width="15rem"
+                          value={form.type03}
+                          onChange={(e) => setFormField('type03', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type03-1', label: '사고담보명' },
+                            { value: 'selection2', id: 'type03-2', label: '사고담보코드' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <Input
+                          aria-label=""
+                          width={'15rem'}
+                          value={form.type04 || 'CLA23429'}
+                          onChange={(e) => setFormField('type04', e.target.value)}
+                        />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'요청자'}>
+                        <Input
+                          aria-label=""
+                          width={'10rem'}
+                          value={form.type05 || '12345678'}
+                          onChange={(e) => setFormField('type05', e.target.value)}
+                        />
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                        <Input aria-label="" width={'15rem'} value={'신부산GA지점'} readOnly />
+                      </FormCell>
+                      <FormCell title={'요청일자'} colSpan={3}>
+                        <DatePickerInput
+                          mode="range"
+                          onChange={() => {}}
+                          rangeValue={{ from: '2026-02', to: '2026-03' }}
+                          size="lg"
+                          width="sm"
+                          readOnly
+                        />
+                        <NativeSelect
+                          aria-label="요청일자 선택"
+                          width="10rem"
+                          value={form.type02}
+                          onChange={(e) => setFormField('type02', e.target.value)}
+                        >
+                          {[
+                            { value: 'selection', id: 'type02-1', label: '전체' },
+                            { value: 'selection2', id: 'type02-2', label: '' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                  <Grow>
+                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                      조회
+                    </Button>
+                    <Button
+                      color={'gray'}
+                      only={'icon'}
+                      size={'lg'}
+                      variant={'outlined'}
+                      onClick={() => {}}
+                      aria-label="새로고침"
+                    >
+                      <ResetIcon />
+                    </Button>
+                  </Grow>
+                </Grow>
+                <Gcol>
+                  <Grow className="w-full justify-end">
+                    <Button color="gray" variant="outlined">
+                      초기화
+                    </Button>
+                    <Button color="gray" variant="outlined">
+                      행추가
+                    </Button>
+                    <Button color="gray" variant="outlined">
+                      행삭제
+                    </Button>
+                  </Grow>
+                  <div className="ag-theme-alpine min-h-[18.4rem] w-full">
+                    <AgGridReact<Ltpa360DummyDataRow4>
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={Ltpa360DummyData4}
+                      columnDefs={columnDefs4}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                        cellClass: 'text-center p-0! ',
+                      }}
+                      alwaysShowHorizontalScroll={true}
+                      singleClickEdit={true}
+                      // 체크박스 시
+                      rowSelection={{
+                        mode: 'multiRow',
+                        checkboxes: true,
+                        headerCheckbox: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{ headerName: '' }}
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                </Gcol>
+              </Grid>
+            )}
+          </TabPager>
         }
         mainFoot={
           <MainBottom>

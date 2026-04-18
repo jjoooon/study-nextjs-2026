@@ -376,7 +376,7 @@ export default function Ltpa400Section() {
             setActive={setActive}
             removable={false}
             onRemove={handleRemove}
-            visibleCount={3}
+            visibleCount={6}
             variant="default"
             hasTableBelow={true}
             error={false}
@@ -386,7 +386,7 @@ export default function Ltpa400Section() {
             renderDropdownItem={false}
           >
             {active === 'tab1' && (
-              <Grid className="w-full grid-rows-[auto_1fr] gap-4 h-full">
+              <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
                 <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
                   <FormTable
                     variant={'head'}
@@ -487,7 +487,7 @@ export default function Ltpa400Section() {
               </Grid>
             )}
             {active === 'tab2' && (
-              <Grid className="w-full grid-rows-[auto_1fr] gap-4 h-full">
+              <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
                 <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
                   <FormTable
                     variant={'none'}

@@ -6,7 +6,6 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Gcol, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -162,53 +161,53 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
-  const [value, setValue] = React.useState<string>(String(props.value ?? ''));
-
-  type CellEditorRef = { getValue: () => string; isCancelAfterEnd: () => boolean };
-  type PropsWithRef = ICellEditorParams<DummyDataType> & { forwardedRef?: React.Ref<CellEditorRef> };
-  const propsWithRef = props as unknown as PropsWithRef;
-
-  React.useEffect(() => {
-    setValue(String(props.value ?? ''));
-  }, [props.value]);
-  React.useImperativeHandle(
-    propsWithRef.forwardedRef,
-    () => ({ getValue: () => value, isCancelAfterEnd: () => false }),
-    [value]
-  );
-
-  return (
-    <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200 gap-0">
-      <Grow className="px-1 w-full h-full">
-        <Input
-          aria-label=""
-          width={'full'}
-          value={value}
-          size="sm"
-          autoFocus
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <Button
-          aria-label="검색"
-          variant={'outlined'}
-          only="icon"
-          size={'md'}
-          color={'gray-light'}
-          onMouseDown={(e) => e.stopPropagation()}
-          onClick={() => {
-            /* 검색 로직 */
-          }}
-        >
-          <SearchIcon color={'var(--color-primary-50)'} />
-        </Button>
-      </Grow>
-      <div className="w-full truncate min-w-0 px-1">{String(props.data?.field03 ?? '')}</div>
-    </Grid>
-  );
-}
-
 export default function Ltpa030Section() {
+  function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
+    const [value, setValue] = React.useState<string>(String(props.value ?? ''));
+
+    type CellEditorRef = { getValue: () => string; isCancelAfterEnd: () => boolean };
+    type PropsWithRef = ICellEditorParams<DummyDataType> & { forwardedRef?: React.Ref<CellEditorRef> };
+    const propsWithRef = props as unknown as PropsWithRef;
+
+    React.useEffect(() => {
+      setValue(String(props.value ?? ''));
+    }, [props.value]);
+    React.useImperativeHandle(
+      propsWithRef.forwardedRef,
+      () => ({ getValue: () => value, isCancelAfterEnd: () => false }),
+      [value]
+    );
+
+    return (
+      <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200 gap-0">
+        <Grow className="px-1 w-full h-full">
+          <Input
+            aria-label=""
+            width={'full'}
+            value={value}
+            size="sm"
+            autoFocus
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <Button
+            aria-label="검색"
+            variant={'outlined'}
+            only="icon"
+            size={'md'}
+            color={'gray-light'}
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={() => {
+              /* 검색 로직 */
+            }}
+          >
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </Grow>
+        <div className="w-full truncate min-w-0 px-1">{String(props.data?.field03 ?? '')}</div>
+      </Grid>
+    );
+  }
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '체크단계',
@@ -361,13 +360,6 @@ export default function Ltpa030Section() {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-  });
-
   const pageSize = 4;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData2,
@@ -381,7 +373,7 @@ export default function Ltpa030Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={4}>
+          <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
@@ -391,51 +383,33 @@ export default function Ltpa030Section() {
               >
                 <FormRow>
                   <FormCell title={'보종군'}>
-                    <NativeSelect
-                      aria-label="항목 선택"
-                      width={100}
-                      value={form.type01}
-                      required
-                      onChange={(e) => setFormField('type01', e.target.value)}
-                    >
-                      {[{ value: 'selection', id: 'type01-1', label: '공통' }].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
+                    <NativeSelect aria-label="항목 선택" width={100} required>
+                      {[{ value: 'selection', label: '공통' }].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'적용사항'}>
-                    <NativeSelect
-                      aria-label="적용사항 선택"
-                      width={120}
-                      value={form.type02}
-                      required
-                      onChange={(e) => setFormField('type02', e.target.value)}
-                    >
+                    <NativeSelect aria-label="적용사항 선택" width={120} required>
                       {[
-                        { value: 'selection', id: 'type02-1', label: '선택' },
-                        { value: 'selection2', id: 'type02-2', label: '모집자실명제준수 예외' },
+                        { value: 'selection', label: '선택' },
+                        { value: 'selection2', label: '모집자실명제준수 예외' },
                       ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
+                        <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'적용대상'}>
-                    <NativeSelect
-                      aria-label="적용대상 선택"
-                      width={120}
-                      value={form.type03}
-                      required
-                      onChange={(e) => setFormField('type03', e.target.value)}
-                    >
+                    <NativeSelect aria-label="적용대상 선택" width={120} required>
                       {[
-                        { value: 'selection', id: 'type03-1', label: '선택' },
-                        { value: 'selection2', id: 'type03-2', label: '모집자실명제준수 예외' },
+                        { value: 'selection', label: '선택' },
+                        { value: 'selection2', label: '모집자실명제준수 예외' },
                       ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
+                        <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}

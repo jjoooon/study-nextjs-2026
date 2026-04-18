@@ -7,13 +7,12 @@ import * as React from 'react';
 
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Grow, Gcol, Typo } from '@atoms';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
@@ -22,10 +21,64 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
 
-import { Ltpa301DummyData } from '../data/ltpa301Data';
-import type { Ltpa301DummyDataRow } from '../data/ltpa301Data';
-
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+type Ltpa301DummyDataRow = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+};
+const Ltpa301DummyData: Ltpa301DummyDataRow[] = [
+  {
+    id: 1,
+    isCheck: true,
+    field01: 'TEXT',
+    field02: '3',
+    field03: '2026-01-01',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: '김한화',
+    field07: 'TEXT',
+    field08: '999999999',
+    field09: '999999999',
+    field10: '999999999',
+    field11: '999999999',
+    field12: '김직원',
+    field13: '2026-01-01',
+    field14: 'TEXT',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'TEXT',
+    field02: '3',
+    field03: '2026-01-01',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: '김한화',
+    field07: 'TEXT',
+    field08: '999999999',
+    field09: '999999999',
+    field10: '999999999',
+    field11: '999999999',
+    field12: '김직원',
+    field13: '2026-01-01',
+    field14: 'TEXT',
+  },
+];
 
 export default function Ltpa301Section() {
   // AgGrid Column
@@ -111,13 +164,6 @@ export default function Ltpa301Section() {
     },
   ];
 
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-  });
-
   return (
     <>
       <LayoutHead>
@@ -130,7 +176,7 @@ export default function Ltpa301Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className="w-full" placement="ss" gap={5}>
+          <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={5}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                 <FormRow>
@@ -159,7 +205,7 @@ export default function Ltpa301Section() {
               </Grow>
             </Grow>
 
-            <Gcol gap={5}>
+            <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={5}>
               <TableFold variant={'accordion'}>
                 <TableFoldHead title="정액담보점검내역" />
                 <TableFoldBody>
@@ -249,17 +295,12 @@ export default function Ltpa301Section() {
                   <FormTable caption="정액담보점검관리 테이블" cols={['w-[10rem]', 'flex-1']}>
                     <FormRow>
                       <FormCell title={'처리구분'}>
-                        <NativeSelect
-                          aria-label="처리구분 선택"
-                          width={130}
-                          value={form.type02}
-                          onChange={(e) => setFormField('type02', e.target.value)}
-                        >
+                        <NativeSelect aria-label="처리구분 선택" width={130}>
                           {[
-                            { value: 'selection', id: 'type02-1', label: '처리구분' },
-                            { value: 'selection2', id: 'type02-2', label: '처리내용' },
+                            { value: 'selection', label: '처리구분' },
+                            { value: 'selection2', label: '처리내용' },
                           ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            <NativeSelectOption key={option.value} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
@@ -268,13 +309,13 @@ export default function Ltpa301Section() {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'처리내용'}>
-                        <Textarea placeholder="" resize={true} />
+                        <Textarea placeholder="" resize={true} className="w-full" />
                       </FormCell>
                     </FormRow>
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-            </Gcol>
+            </Grid>
 
             <Gcol className="w-full" gap={2}>
               <Gcol className="s-full" variant={'box-warning'} placement="ss">
@@ -307,7 +348,7 @@ export default function Ltpa301Section() {
                 </BulletList>
               </Gcol>
             </Gcol>
-          </Gcol>
+          </Grid>
         }
         mainFoot={
           <MainBottom>

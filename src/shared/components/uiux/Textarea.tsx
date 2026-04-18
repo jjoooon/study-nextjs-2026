@@ -62,7 +62,7 @@ function Textarea({
   return (
     <div
       className={cn(
-        'relative w-full bg-[#fff] border border-[var(--color-gray-20)] rounded-[0.4rem] p-2 w-[24rem]',
+        'relative w-full bg-[#fff] border border-[var(--color-gray-20)] rounded-[0.4rem] p-2',
         maxLength === 0 ? 'pb-2' : 'pb-0',
         showError
           ? 'bg-[var(--color-danger-5)] border-[var(--color-danger-50)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
