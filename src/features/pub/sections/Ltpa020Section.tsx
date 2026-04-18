@@ -1,34 +1,12 @@
 'use client';
 
-import { Gcol, Grow, Typo, Divider, Grid } from '@atoms';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-
-import { BottomBar } from '@common/BottomBar';
-import { AdderIcon, AdderIcon2, Ai2Icon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon, ArrowDoubleIcon, ArrowIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
-import { PageID } from '@features/PageID';
-import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridReact } from 'ag-grid-react';
-import { Badge } from '@uiux/Badge';
-import { KeyValueItem } from '@common/KeyValueList';
-import { InputCombo } from '@common/InputCombo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { DatePickerInput } from '@common/DatePicker';
-import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 import Image from 'next/image';
-import AIChatBot from '@features/AIChatBot';
+import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   dummyData,
   dummyData2,
@@ -43,7 +21,29 @@ import {
   type DummyDataType2,
   type DummyDataType3,
 } from '@/features/pub/data/ltpa020Data';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Gcol, Grow, Typo, Divider, Grid } from '@atoms';
+
+import { BottomBar } from '@common/BottomBar';
+import { PageID } from '@features/PageID';
+import { AdderIcon, AdderIcon2, Ai2Icon, SearchIcon, ZoomInIcon, ArrowNext, SelectDropIcon, ResetIcon, PaperIcon, ArrowDoubleIcon, ArrowIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Badge } from '@uiux/Badge';
+import { KeyValueItem } from '@common/KeyValueList';
+import { InputCombo } from '@common/InputCombo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { DatePickerInput } from '@common/DatePicker';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
+import AIChatBot from '@features/AIChatBot';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -59,7 +59,6 @@ export default function Ltpa020Section() {
 
   const [coverageName, setCoverageName] = useState('');
 
-
   // 상품선택 AG-Grid 컬럼 정의
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
@@ -69,24 +68,11 @@ export default function Ltpa020Section() {
     return (
       <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
         <Grow>
-          <Input
-            aria-label="상품명"
-            placeholder="상품명 입력"
-            type="text"
-            width={'full'}
-            size={'sm'}
-            clear={true}
-          />
+          <Input aria-label="상품명" placeholder="상품명 입력" type="text" width={'full'} size={'sm'} clear={true} />
           <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
-          <Button
-            aria-label="상품명 초기화"
-            variant={'outlined'}
-            color={'gray-light'}
-            only={'icon'}
-            size={'md'}
-          >
+          <Button aria-label="상품명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <ResetIcon color={'var(--color-primary-50)'} />
           </Button>
         </Grow>
@@ -99,23 +85,27 @@ export default function Ltpa020Section() {
     );
   }, [coverageName, showProductNameTooltip]);
 
-  const importanceCellRenderer =  (params: ICellRendererParams<DummyDataType>) => {
+  const importanceCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     const badgeText = params.data?.badge ?? '';
     return (
-      <Grow className='w-full' placement='bwc'>
+      <Grow className="w-full" placement="bwc">
         <Grow className="overflow-hidden -tracking-[0.03rem]">
-          <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="favorite">중요</Checkbox>
+          <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="favorite">
+            중요
+          </Checkbox>
           <div className="truncate">{params.data?.field2 ?? ''}</div>
         </Grow>
         <Grow>
           {badgeText && (
             <Grow className="shrink-0">
-              {([
-                { label: '무해지', color: 'green' },
-                { label: '차움', color: 'blue' },
-                { label: '할증', color: 'red' },
-                { label: '여성', color: 'purple' },
-              ] as const).map((badge) =>
+              {(
+                [
+                  { label: '무해지', color: 'green' },
+                  { label: '차움', color: 'blue' },
+                  { label: '할증', color: 'red' },
+                  { label: '여성', color: 'purple' },
+                ] as const
+              ).map((badge) =>
                 badgeText.includes(badge.label) ? (
                   <Badge key={badge.label} color={badge.color} className="w-[3rem]">
                     {badge.label}
@@ -126,7 +116,7 @@ export default function Ltpa020Section() {
           )}
         </Grow>
       </Grow>
-    );  
+    );
   };
   const designCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
     return (
@@ -134,21 +124,13 @@ export default function Ltpa020Section() {
         <Grow className="border-r border-[var(--color-gray-10)] h-full aspect-auto w-[4rem] flex items-center justify-center shrink-0 pr-[1rem] pl-[0.4rem]">
           {params.data?.field1}
         </Grow>
-        <Grow className="flex-1 truncate block text-left">
-          {params.data?.field2}
-        </Grow>
+        <Grow className="flex-1 truncate block text-left">{params.data?.field2}</Grow>
         <Grow>
           {params.data?.btn && (
-            <Button
-              color="gray"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="contained"
-            >
+            <Button color="gray" onClick={() => {}} only="default" size="sm" variant="contained">
               납면
             </Button>
-            )}
+          )}
         </Grow>
       </Grow>
     );
@@ -158,11 +140,11 @@ export default function Ltpa020Section() {
       <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
         보기
       </Button>
-    )
-  };  
+    );
+  };
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '상품분류', 
+      headerName: '상품분류',
       field: 'field1',
       cellClass: 'text-center',
       width: 100,
@@ -177,7 +159,7 @@ export default function Ltpa020Section() {
       headerComponent: productNameHeader,
     },
     {
-      headerName: '상품분류', 
+      headerName: '상품분류',
       field: 'field3',
       cellClass: 'text-center',
       width: 100,
@@ -185,15 +167,15 @@ export default function Ltpa020Section() {
   ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      headerName: '종구분', 
+      headerName: '종구분',
       field: 'field1',
       flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
       cellRenderer: designCellRenderer,
     },
-     {
-      headerName: '알릴사항', 
+    {
+      headerName: '알릴사항',
       cellClass: 'text-center',
       width: 60,
       cellRenderer: moreCellRenderer,
@@ -201,13 +183,13 @@ export default function Ltpa020Section() {
   ];
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
-      headerName: '플랜명', 
+      headerName: '플랜명',
       field: 'field1',
       flex: 1,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
     },
     {
-      headerName: '담보보기', 
+      headerName: '담보보기',
       cellClass: 'text-center',
       width: 60,
       cellRenderer: moreCellRenderer,
@@ -268,8 +250,7 @@ export default function Ltpa020Section() {
   const listScrollRef = useRef<HTMLDivElement | null>(null);
   const scrollAnimRef = useRef<number | null>(null);
 
-  const selectedRecommendPlan =
-    dummyData4List.find((item) => item.id === listSelected) ?? dummyData4List[0];
+  const selectedRecommendPlan = dummyData4List.find((item) => item.id === listSelected) ?? dummyData4List[0];
   const selectedAiReasonLines = (selectedRecommendPlan?.ai ?? '')
     .split('<br />')
     .map((line) => line.trim())
@@ -291,9 +272,7 @@ export default function Ltpa020Section() {
       return;
     }
 
-    const items = Array.from(
-      container.querySelectorAll<HTMLElement>('.card-selected')
-    );
+    const items = Array.from(container.querySelectorAll<HTMLElement>('.card-selected'));
 
     if (items.length === 0) {
       return;
@@ -318,8 +297,7 @@ export default function Ltpa020Section() {
     const distance = targetTop - startTop;
     const duration = 420;
     const startTime = performance.now();
-    const easeInOutCubic = (t: number) =>
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     const animate = (now: number) => {
       const elapsed = now - startTime;
@@ -402,11 +380,8 @@ export default function Ltpa020Section() {
 
   // 고지유형 요약
   const hasHospitalInput = hospitalInputs.some((v) => v.trim() !== '');
-  const selectedNoticeSummary = [
-    simpleType,
-    ...additionalDiseases,
-    hasHospitalInput ? '입원수술' : '',
-  ].filter(Boolean).join(', ') || '선택';
+  const selectedNoticeSummary =
+    [simpleType, ...additionalDiseases, hasHospitalInput ? '입원수술' : ''].filter(Boolean).join(', ') || '선택';
 
   return (
     <>
@@ -415,19 +390,33 @@ export default function Ltpa020Section() {
         <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-2">
           <RadioGroup
             value={tabSelectValue}
-            onValueChange={(value) => setTabSelectValue(value)} className="p-[0.2rem] bg-[var(--color-warning-10)] gap-[0.2rem] rounded-[0.6rem]">
-            <RadioGroupItem variant={'button'} value="tabPage1" className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]">
+            onValueChange={(value) => setTabSelectValue(value)}
+            className="p-[0.2rem] bg-[var(--color-warning-10)] gap-[0.2rem] rounded-[0.6rem]"
+          >
+            <RadioGroupItem
+              variant={'button'}
+              value="tabPage1"
+              className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]"
+            >
               <Image
-                src={tabSelectValue === 'tabPage1' ? "/images/Ltpa020/planIcon1.svg" : "/images/Ltpa020/planIcon1_off.svg"}
+                src={
+                  tabSelectValue === 'tabPage1' ? '/images/Ltpa020/planIcon1.svg' : '/images/Ltpa020/planIcon1_off.svg'
+                }
                 alt="설명"
                 width={22}
                 height={22}
               />
               상품선택
             </RadioGroupItem>
-            <RadioGroupItem variant={'button'} value="tabPage2" className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]">
+            <RadioGroupItem
+              variant={'button'}
+              value="tabPage2"
+              className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]"
+            >
               <Image
-                src={tabSelectValue === 'tabPage2' ? "/images/Ltpa020/planIcon2.svg" : "/images/Ltpa020/planIcon2_off.svg"}
+                src={
+                  tabSelectValue === 'tabPage2' ? '/images/Ltpa020/planIcon2.svg' : '/images/Ltpa020/planIcon2_off.svg'
+                }
                 alt="설명"
                 width={22}
                 height={22}
@@ -436,12 +425,7 @@ export default function Ltpa020Section() {
             </RadioGroupItem>
           </RadioGroup>
           <Grow className="gap-1 shrink-0" placement={'ec'}>
-            <Input
-              aria-label="계약자명 입력"
-              type="text"
-              value={'6012345 박하늘별님달'}
-              width={'full'}
-            />
+            <Input aria-label="계약자명 입력" type="text" value={'6012345 박하늘별님달'} width={'full'} />
             <Button variant={'outlined'} color={'gray-light'} aria-label="계약자 추가" only={'icon'} size={'lg'}>
               <SearchIcon color="var(--color-primary-50)" />
             </Button>
@@ -450,15 +434,19 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className='w-full h-full grid-rows-[auto_1fr]' gap={4} placement='ss'>
+          <Grid className="w-full h-full grid-rows-[auto_1fr]" gap={4} placement="ss">
             {/* 검색 */}
             <Gcol gap={1.5}>
-              <Gcol variant="box-round" placement="ss" className='bg-[var(--color-blue-gray-15)]'>
+              <Gcol variant="box-round" placement="ss" className="bg-[var(--color-blue-gray-15)]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
-                  <FormRow className='items-start!'>
-                    <FormCell title={'고객정보'} className='align-top [&>span]:block [&>span]:pt-1'>
-                      <Grow placement='ss' gap={5}>
-                        <RadioGroup value={customerType} onValueChange={setCustomerType} className="gap-[0.4rem] shrink-0 flex-nowrap">
+                  <FormRow className="items-start!">
+                    <FormCell title={'고객정보'} className="align-top [&>span]:block [&>span]:pt-1">
+                      <Grow placement="ss" gap={5}>
+                        <RadioGroup
+                          value={customerType}
+                          onValueChange={setCustomerType}
+                          className="gap-[0.4rem] shrink-0 flex-nowrap"
+                        >
                           <RadioGroupItem value="recent" variant="button" size="md">
                             최근등록고객
                           </RadioGroupItem>
@@ -466,20 +454,20 @@ export default function Ltpa020Section() {
                             미등록고객
                           </RadioGroupItem>
                         </RadioGroup>
-      
-                        <Gcol placement='ss' gap={2}>
+
+                        <Gcol placement="ss" gap={2}>
                           {customerType === 'recent' && (
                             <Grow placement="sc" className="flex-1 min-w-0 flex-wrap gap-x-5 gap-y-1">
-                              <Grow placement='sc'>
+                              <Grow placement="sc">
                                 <InputCombo
                                   aria-label="고객 검색"
                                   width={110}
                                   col={2}
                                   options={[
-                                      { value: '홍길순 32세(여)', label: <td>홍길순</td> },
-                                      { value: '홍길동 32세(여)', label: <td>홍길동</td> },
-                                      { value: '김한화 32세(여)', label: <td>김한화</td> },
-                                    ]}
+                                    { value: '홍길순 32세(여)', label: <td>홍길순</td> },
+                                    { value: '홍길동 32세(여)', label: <td>홍길동</td> },
+                                    { value: '김한화 32세(여)', label: <td>김한화</td> },
+                                  ]}
                                   value={comboValues.policyNumber}
                                   onChange={handleComboValueChange('policyNumber')}
                                   placeholder="고객 검색"
@@ -489,15 +477,15 @@ export default function Ltpa020Section() {
                                 </Button>
                               </Grow>
 
-                              <Grow placement='sc' gap={3}>
+                              <Grow placement="sc" gap={3}>
                                 <KeyValueItem label={'직업'} variant="info">
                                   (1급)회사 사무직 종사자
                                 </KeyValueItem>
                                 <Divider />
 
                                 <KeyValueItem label={'보장분석'} variant="info" className="gap-2">
-                                  2026-01-01 
-                                  <Button 
+                                  2026-01-01
+                                  <Button
                                     variant={'contained'}
                                     size={'sm'}
                                     color={'coolgray-light'}
@@ -512,10 +500,10 @@ export default function Ltpa020Section() {
                                   )}
                                 </KeyValueItem>
                                 <Divider />
-                                
+
                                 <KeyValueItem label={'보험금지급 이력정보'} variant="info" className="gap-2">
-                                  2026-01-01 
-                                  <Button 
+                                  2026-01-01
+                                  <Button
                                     variant={'contained'}
                                     size={'sm'}
                                     color={'coolgray-light'}
@@ -524,82 +512,104 @@ export default function Ltpa020Section() {
                                     조회
                                   </Button>
                                   {historyScore !== null && (
-                                  <span className="inline-flex h-[2.2rem] min-w-[3rem] items-center justify-center rounded-full bg-[#e43939] px-[0.6rem] text-[1.2rem] font-bold text-white">
-                                    {historyScore}
-                                  </span>
-                                )}
+                                    <span className="inline-flex h-[2.2rem] min-w-[3rem] items-center justify-center rounded-full bg-[#e43939] px-[0.6rem] text-[1.2rem] font-bold text-white">
+                                      {historyScore}
+                                    </span>
+                                  )}
                                 </KeyValueItem>
                               </Grow>
                             </Grow>
                           )}
                           {customerType === 'new' && (
-                            <Grow placement='sc' gap={3}>
+                            <Grow placement="sc" gap={3}>
                               <KeyValueItem label={'나이'} variant="info">
                                 <Input size="sm" value={'42세'} width={48} />
-                                <DatePickerInput value='1994-05-10' />
+                                <DatePickerInput value="1994-05-10" />
                               </KeyValueItem>
                               <Divider />
 
                               <KeyValueItem label={'성별'} variant="info">
-                                <RadioGroup className='gap-1' defaultValue='남'>
+                                <RadioGroup className="gap-1" defaultValue="남">
                                   {[
-                                    { value:'남', label: '남' },
-                                    { value:'여', label: '여' },
+                                    { value: '남', label: '남' },
+                                    { value: '여', label: '여' },
                                   ].map((tag) => (
-                                    <RadioGroupItem key={tag.value} value={tag.value}>{tag.label}</RadioGroupItem>
+                                    <RadioGroupItem key={tag.value} value={tag.value}>
+                                      {tag.label}
+                                    </RadioGroupItem>
                                   ))}
                                 </RadioGroup>
                               </KeyValueItem>
                               <Divider />
 
                               <KeyValueItem label={'직업'} variant="info">
-                                <RadioGroup className='gap-1' defaultValue='1급'>
+                                <RadioGroup className="gap-1" defaultValue="1급">
                                   {[
-                                    { value:'1급', label: '1급' },
-                                    { value:'2급', label: '2급' },
-                                    { value:'3급', label: '3급' },
+                                    { value: '1급', label: '1급' },
+                                    { value: '2급', label: '2급' },
+                                    { value: '3급', label: '3급' },
                                   ].map((tag) => (
-                                    <RadioGroupItem key={tag.value} value={tag.value}>{tag.label}</RadioGroupItem>
+                                    <RadioGroupItem key={tag.value} value={tag.value}>
+                                      {tag.label}
+                                    </RadioGroupItem>
                                   ))}
                                 </RadioGroup>
                               </KeyValueItem>
 
-                              <Button variant="contained" size="md" color="gray" className='gap-1' onClick={() => {}}>
+                              <Button variant="contained" size="md" color="gray" className="gap-1" onClick={() => {}}>
                                 고객등록
-                                <ZoomInIcon size={16}   />
+                                <ZoomInIcon size={16} />
                               </Button>
                             </Grow>
                           )}
 
                           <Grow>
                             {customerType === 'recent' ? (
-                              <RadioGroup className='gap-1' defaultValue='홍길동'>
+                              <RadioGroup className="gap-1" defaultValue="홍길동">
                                 {[
                                   { value: '홍길동', age: 42, level: 1, gender: '남', name: '홍길동' },
-                                  { value: '반짝반짝빛반짝반짝빛', age: 42, level: 2, gender: '남', name: '반짝반짝빛반짝반짝빛' },
+                                  {
+                                    value: '반짝반짝빛반짝반짝빛',
+                                    age: 42,
+                                    level: 2,
+                                    gender: '남',
+                                    name: '반짝반짝빛반짝반짝빛',
+                                  },
                                   { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                 ].map((tag) => (
-                                  <RadioGroupItem key={tag.value} value={tag.value} variant="chipBox" size="md" className="flex items-center">
+                                  <RadioGroupItem
+                                    key={tag.value}
+                                    value={tag.value}
+                                    variant="chipBox"
+                                    size="md"
+                                    className="flex items-center"
+                                  >
                                     <b>#</b>
-                                    <b className="max-w-[7rem] truncate block">{tag.name}</b> 
+                                    <b className="max-w-[7rem] truncate block">{tag.name}</b>
                                     {tag.age}세 ({tag.gender})
                                   </RadioGroupItem>
                                 ))}
                               </RadioGroup>
                             ) : (
-                              <RadioGroup className='gap-1' defaultValue='홍길동'>
+                              <RadioGroup className="gap-1" defaultValue="홍길동">
                                 {[
                                   { value: '홍길동', age: 42, level: 1, gender: '남', name: '홍길동' },
-                                  { value: '반짝반짝빛반짝반짝빛', age: 42, level: 2, gender: '남', name: '반짝반짝빛반짝반짝빛' },
+                                  {
+                                    value: '반짝반짝빛반짝반짝빛',
+                                    age: 42,
+                                    level: 2,
+                                    gender: '남',
+                                    name: '반짝반짝빛반짝반짝빛',
+                                  },
                                   { value: '김한화', age: 55, level: 3, gender: '남', name: '김한화' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                   { value: '피보험자', age: 63, level: 4, gender: '여', name: '피보험자' },
                                 ].map((tag) => (
                                   <RadioGroupItem key={tag.value} value={tag.value} variant="chipBox" size="md">
                                     <b>#</b>
-                                    <b>{tag.name}</b> 
+                                    <b>{tag.name}</b>
                                     {tag.level}급
                                   </RadioGroupItem>
                                 ))}
@@ -617,11 +627,11 @@ export default function Ltpa020Section() {
                   </FormRow>
                 </FormTable>
               </Gcol>
-              
+
               {tabSelectValue === 'tabPage1' ? (
-                <Grow variant={'box-round'} className="w-full" placement='bwe'>
+                <Grow variant={'box-round'} className="w-full" placement="bwe">
                   <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
-                    <FormRow className='items-start!'>
+                    <FormRow className="items-start!">
                       <FormCell title={'상품분류'}>
                         <CheckboxGroup
                           value={productCategory}
@@ -649,7 +659,7 @@ export default function Ltpa020Section() {
                         </CheckboxGroup>
                       </FormCell>
                     </FormRow>
-                    <FormRow className='items-start!'>
+                    <FormRow className="items-start!">
                       <FormCell title={'상품특징'}>
                         <CheckboxGroup
                           value={productFeature}
@@ -677,24 +687,26 @@ export default function Ltpa020Section() {
                     <ResetIcon />
                   </Button>
                 </Grow>
-              ) :(
-                <Grow variant={'box-round'} className="w-full pl-[4.5rem] gap-[2rem] relative z-20" placement='bwc'>
+              ) : (
+                <Grow variant={'box-round'} className="w-full pl-[4.5rem] gap-[2rem] relative z-20" placement="bwc">
                   {/* 추가설정 좌측 */}
-                  <div className={`absolute top-[0.46rem] left-0 h-[3.6rem] bg-[var(--color-blue-gray-50)] rounded-r-full px-[0.2rem] gap-[0.2rem] flex items-center justify-start whitespace-nowrap text-[#fff] z-10 transition-transform duration-300 ease-out ${isAddPanelOpen ? 'translate-x-[0]' : '-translate-x-[calc(100%-4.2rem)]'}`}>
-                    <Grow className='px-[1.6rem]'>
-                      <CheckboxGroup 
-                        className="gap-[1rem]" 
-                        value={addPanelCheckedValues} 
+                  <div
+                    className={`absolute top-[0.46rem] left-0 h-[3.6rem] bg-[var(--color-blue-gray-50)] rounded-r-full px-[0.2rem] gap-[0.2rem] flex items-center justify-start whitespace-nowrap text-[#fff] z-10 transition-transform duration-300 ease-out ${isAddPanelOpen ? 'translate-x-[0]' : '-translate-x-[calc(100%-4.2rem)]'}`}
+                  >
+                    <Grow className="px-[1.6rem]">
+                      <CheckboxGroup
+                        className="gap-[1rem]"
+                        value={addPanelCheckedValues}
                         onValueChange={(nextValues: string[]) => {
                           setAddPanelCheckedValues(nextValues);
                           setIsPdName(nextValues.includes('상품명'));
                         }}
                       >
                         {[
-                          { check:true, disabled:true, value: '담보군', label: '담보군' },
-                          { check:true, disabled:true, value: '상품특징', label: '상품특징' },
-                          { check:true, disabled:true, value: '보장분석', label: '보장분석' },
-                          { check:false, disabled:false, value: '상품명', label: '상품명' },
+                          { check: true, disabled: true, value: '담보군', label: '담보군' },
+                          { check: true, disabled: true, value: '상품특징', label: '상품특징' },
+                          { check: true, disabled: true, value: '보장분석', label: '보장분석' },
+                          { check: false, disabled: false, value: '상품명', label: '상품명' },
                         ].map((opt) => (
                           <CheckboxGroupItem key={opt.value} value={opt.value} size="lg" disabled={opt.disabled}>
                             {opt.label}
@@ -702,25 +714,36 @@ export default function Ltpa020Section() {
                         ))}
                       </CheckboxGroup>
                     </Grow>
-                    <button type="button" className="w-[3.7rem] flex items-center gap-[0.2rem]" onClick={() => setIsAddPanelOpen((prev) => !prev)}>
-                     {isAddPanelOpen ? '닫기' : '추가'}
-                     <ArrowIcon className={isAddPanelOpen ? '' : 'rotate-[180deg]'} size={12}  />
+                    <button
+                      type="button"
+                      className="w-[3.7rem] flex items-center gap-[0.2rem]"
+                      onClick={() => setIsAddPanelOpen((prev) => !prev)}
+                    >
+                      {isAddPanelOpen ? '닫기' : '추가'}
+                      <ArrowIcon className={isAddPanelOpen ? '' : 'rotate-[180deg]'} size={12} />
                     </button>
                   </div>
-                  
+
                   {/* 기본 */}
-                  <FormTable caption="" cols={
-                    isPdName ? [
-                    'w-[4rem]', 'w-[30%]', 
-                    'w-[6rem]', 'w-[30%]',
-                    'w-[6rem]', 'w-[30%]',
-                    'w-[6rem]', 'w-[18rem] min-w-[18rem]'
-                    ] : [
-                    'w-[4rem]', 'w-[30%]', 
-                    'w-[6rem]', 'w-[30%]',
-                    'w-[6rem]', 'w-[30%]'
-                    ]} variant={'none'}>
-                    <FormRow className='items-start!'>
+                  <FormTable
+                    caption=""
+                    cols={
+                      isPdName
+                        ? [
+                            'w-[4rem]',
+                            'w-[30%]',
+                            'w-[6rem]',
+                            'w-[30%]',
+                            'w-[6rem]',
+                            'w-[30%]',
+                            'w-[6rem]',
+                            'w-[18rem] min-w-[18rem]',
+                          ]
+                        : ['w-[4rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]']
+                    }
+                    variant={'none'}
+                  >
+                    <FormRow className="items-start!">
                       <FormCell title={'담보군'} className="items-center! min-h-[2.8rem]! pt-[0.6rem]">
                         <button
                           type="button"
@@ -739,7 +762,9 @@ export default function Ltpa020Section() {
                           onClick={() => setIsFilterOptionOpen((prev) => !prev)}
                           aria-expanded={isFilterOptionOpen}
                         >
-                          <span className="w-[100%] flex items-center font-normal">{selectedProductFeatureSummary}</span>
+                          <span className="w-[100%] flex items-center font-normal">
+                            {selectedProductFeatureSummary}
+                          </span>
                           <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
                         </button>
                       </FormCell>
@@ -770,7 +795,6 @@ export default function Ltpa020Section() {
                         </FormCell>
                       )}
 
-
                       {isPdName && (
                         <FormCell title={'상품명'}>
                           <Input
@@ -779,7 +803,13 @@ export default function Ltpa020Section() {
                             value={'한화 시그니처 여성 간편건강보험 4.0'}
                             width={'full'}
                           />
-                          <Button variant={'outlined'} color={'gray-light'} aria-label="상품 검색" only={'icon'} size={'lg'}>
+                          <Button
+                            variant={'outlined'}
+                            color={'gray-light'}
+                            aria-label="상품 검색"
+                            only={'icon'}
+                            size={'lg'}
+                          >
                             <SearchIcon color="var(--color-primary-50)" />
                           </Button>
                         </FormCell>
@@ -794,130 +824,60 @@ export default function Ltpa020Section() {
                       <ResetIcon />
                     </Button>
                   </Grow>
-                  
+
                   {isFilterOptionOpen && (
-                    <Grow variant='box-round-b' className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] px-4 py-2.5 gap-0 z-10 pl-[4.5rem]! justify-stretch! " placement='ss'>
-                    {/* 담보군 */}
-                    <Gcol className="gap-[0.4rem]" placement='ss'>
-                      {coverageOptions.map((opt) => (
-                        <Grow key={opt.value} className='w-full' placement='ss'>
-                          <Checkbox 
-                            value={opt.value} 
-                            variant="button" 
-                            className="w-[8rem]"
-                            checked={selectedCoverageValues.includes(opt.value)}
-                            onCheckedChange={(checked) => {
-                              setSelectedCoverageValues((prev) => {
-                                const nextChecked = checked === true;
-                                if (nextChecked) {
-                                  return prev.includes(opt.value) ? prev : [...prev, opt.value];
-                                }
-                                return prev.filter((value) => value !== opt.value);
-                              });
-                            }}
-                          >
-                            {opt.label}
-                          </Checkbox>
-                          {isAmountInputVisible && (
-                            <Input
-                              after="만원"
-                              width={120}
-                              placeholder='가입금액'
-                              commaAmount
-                              size={'md'}
-                            />
-                          )}
-                        </Grow>
-                      ))}
-                      <Checkbox
-                        checked={isAmountInputVisible}
-                        onCheckedChange={(checked) => setIsAmountInputVisible(checked === true)}
-                      >
-                        금액입력
-                      </Checkbox>
-                    </Gcol>
-                    <Divider className='self-stretch h-auto' />
-                    {/* 상품특징 */}
-                    <Gcol placement='ss' className='pl-[1.2rem]'>
-                      <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
-                        <FormRow>
-                          <FormCell title={'무해지'}>
-                             <RadioGroup value={noRefundValue} onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)} className='grid grid-cols-[1fr_1fr] w-[16rem]'>
-                              {[
-                                { value: '적용', label: '적용' },
-                                { value: '미적용', label: '미적용' },
-                              ].map((opt) => (
-                                <RadioGroupItem key={opt.value} value={opt.value} >
-                                  {opt.label}
-                                </RadioGroupItem>
-                              ))}
-                             </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                        <FormRow>
-                          <FormCell title={'납면'}>
-                             <RadioGroup value={premiumWaiverValue} onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)} className='grid grid-cols-[1fr_1fr] w-[16rem]'>
-                              {[
-                                { value: '적용', label: '적용' },
-                                { value: '미적용', label: '미적용' },
-                              ].map((opt) => (
-                                <RadioGroupItem key={opt.value} value={opt.value}>
-                                  {opt.label}
-                                </RadioGroupItem>
-                              ))}
-                             </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                        <FormRow>
-                          <FormCell title={'만기'}>
-                             <RadioGroup value={maturityValue} onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)} className='grid grid-cols-[1fr_1fr] w-[16rem]'>
-                              {[
-                                { value: '세만기', label: '세만기' },
-                                { value: '연만기', label: '연만기' },
-                              ].map((opt) => (
-                                <RadioGroupItem key={opt.value} value={opt.value}>
-                                  {opt.label}
-                                </RadioGroupItem>
-                              ))}
-                             </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                    </Gcol>
-                    <Divider className='self-stretch h-auto' />
-                    
-                    {/* 보장분석 or 고지유형 */}
-                    {customerType === 'recent' ? (
-                      <Gcol placement='ss' className='pl-[1.2rem]'>
-                        <RadioGroup
-                          className="gap-[0.4rem] flex-col items-start"
-                          value={selectedAnalysisValue}
-                          onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
-                        >
-                          {AnalysisOptions.map((opt) => (
-                            <RadioGroupItem
-                              key={opt.value}
+                    <Grow
+                      variant="box-round-b"
+                      className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] px-4 py-2.5 gap-0 z-10 pl-[4.5rem]! justify-stretch! "
+                      placement="ss"
+                    >
+                      {/* 담보군 */}
+                      <Gcol className="gap-[0.4rem]" placement="ss">
+                        {coverageOptions.map((opt) => (
+                          <Grow key={opt.value} className="w-full" placement="ss">
+                            <Checkbox
                               value={opt.value}
                               variant="button"
-                              className="w-[15rem] !text-left"
+                              className="w-[8rem]"
+                              checked={selectedCoverageValues.includes(opt.value)}
+                              onCheckedChange={(checked) => {
+                                setSelectedCoverageValues((prev) => {
+                                  const nextChecked = checked === true;
+                                  if (nextChecked) {
+                                    return prev.includes(opt.value) ? prev : [...prev, opt.value];
+                                  }
+                                  return prev.filter((value) => value !== opt.value);
+                                });
+                              }}
                             >
                               {opt.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
+                            </Checkbox>
+                            {isAmountInputVisible && (
+                              <Input after="만원" width={120} placeholder="가입금액" commaAmount size={'md'} />
+                            )}
+                          </Grow>
+                        ))}
+                        <Checkbox
+                          checked={isAmountInputVisible}
+                          onCheckedChange={(checked) => setIsAmountInputVisible(checked === true)}
+                        >
+                          금액입력
+                        </Checkbox>
                       </Gcol>
-                    ) : (
-                      <Gcol placement='ss' className='pl-[1.2rem]'>
+                      <Divider className="self-stretch h-auto" />
+                      {/* 상품특징 */}
+                      <Gcol placement="ss" className="pl-[1.2rem]">
                         <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                           <FormRow>
-                            <FormCell title={'간편'}>
+                            <FormCell title={'무해지'}>
                               <RadioGroup
-                                value={simpleType}
-                                onValueChange={(value) => setSimpleType(value)}
+                                value={noRefundValue}
+                                onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}
+                                className="grid grid-cols-[1fr_1fr] w-[16rem]"
                               >
                                 {[
-                                  { value: '표준', label: '표준' },
-                                  { value: '간편', label: '간편' },
+                                  { value: '적용', label: '적용' },
+                                  { value: '미적용', label: '미적용' },
                                 ].map((opt) => (
                                   <RadioGroupItem key={opt.value} value={opt.value}>
                                     {opt.label}
@@ -927,61 +887,149 @@ export default function Ltpa020Section() {
                             </FormCell>
                           </FormRow>
                           <FormRow>
-                            <FormCell
-                              title={
-                                <div>
-                                  입원수술<br />
-                                  <Button variant={'outlined'} size="sm" color="gray">예외질환조회</Button>
-                                </div>
-                              }
-                              className='align-top! pt-[0.8rem]!'
-                            >
-                              <Gcol placement='ss'>
-                                {[0, 1, 2, 3, 4].map((idx) => (
-                                  <Grow placement='sc' key={idx}>
-                                    <Input
-                                      width={86}
-                                      placeholder='질병명검색'
-                                      value={hospitalInputs[idx]}
-                                      onChange={(e) => {
-                                        const next = [...hospitalInputs];
-                                        next[idx] = e.target.value;
-                                        setHospitalInputs(next);
-                                      }}
-                                    />
-                                    <Button variant={'outlined'} color={'gray-light'} size={'lg'} only={'icon'} aria-label="질병 검색">
-                                      <SearchIcon color="var(--color-primary-50)" />
-                                    </Button>
-                                    <Input width={80} placeholder='필수입력' />
-                                  </Grow>
+                            <FormCell title={'납면'}>
+                              <RadioGroup
+                                value={premiumWaiverValue}
+                                onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)}
+                                className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                              >
+                                {[
+                                  { value: '적용', label: '적용' },
+                                  { value: '미적용', label: '미적용' },
+                                ].map((opt) => (
+                                  <RadioGroupItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </RadioGroupItem>
                                 ))}
-                              </Gcol>
+                              </RadioGroup>
                             </FormCell>
                           </FormRow>
                           <FormRow>
-                            <FormCell title={'추가질병'}>
-                              <CheckboxGroup
-                                className="gap-3 items-start"
-                                value={additionalDiseases}
-                                onValueChange={(values) => setAdditionalDiseases(values)}
+                            <FormCell title={'만기'}>
+                              <RadioGroup
+                                value={maturityValue}
+                                onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)}
+                                className="grid grid-cols-[1fr_1fr] w-[16rem]"
                               >
                                 {[
-                                  { value: '고혈압', label: '고혈압' },
-                                  { value: '당뇨', label: '당뇨' },
+                                  { value: '세만기', label: '세만기' },
+                                  { value: '연만기', label: '연만기' },
                                 ].map((opt) => (
-                                  <CheckboxGroupItem key={opt.value} value={opt.value}>
+                                  <RadioGroupItem key={opt.value} value={opt.value}>
                                     {opt.label}
-                                  </CheckboxGroupItem>
+                                  </RadioGroupItem>
                                 ))}
-                              </CheckboxGroup>
+                              </RadioGroup>
                             </FormCell>
                           </FormRow>
                         </FormTable>
                       </Gcol>
-                    )}
-                    {isPdName ? (
-                      <div className='w-[36rem] shrink-0'></div>
-                    ) : <div className='w-[10rem] shrink-0'></div>}
+                      <Divider className="self-stretch h-auto" />
+
+                      {/* 보장분석 or 고지유형 */}
+                      {customerType === 'recent' ? (
+                        <Gcol placement="ss" className="pl-[1.2rem]">
+                          <RadioGroup
+                            className="gap-[0.4rem] flex-col items-start"
+                            value={selectedAnalysisValue}
+                            onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                          >
+                            {AnalysisOptions.map((opt) => (
+                              <RadioGroupItem
+                                key={opt.value}
+                                value={opt.value}
+                                variant="button"
+                                className="w-[15rem] !text-left"
+                              >
+                                {opt.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
+                        </Gcol>
+                      ) : (
+                        <Gcol placement="ss" className="pl-[1.2rem]">
+                          <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
+                            <FormRow>
+                              <FormCell title={'간편'}>
+                                <RadioGroup value={simpleType} onValueChange={(value) => setSimpleType(value)}>
+                                  {[
+                                    { value: '표준', label: '표준' },
+                                    { value: '간편', label: '간편' },
+                                  ].map((opt) => (
+                                    <RadioGroupItem key={opt.value} value={opt.value}>
+                                      {opt.label}
+                                    </RadioGroupItem>
+                                  ))}
+                                </RadioGroup>
+                              </FormCell>
+                            </FormRow>
+                            <FormRow>
+                              <FormCell
+                                title={
+                                  <div>
+                                    입원수술
+                                    <br />
+                                    <Button variant={'outlined'} size="sm" color="gray">
+                                      예외질환조회
+                                    </Button>
+                                  </div>
+                                }
+                                className="align-top! pt-[0.8rem]!"
+                              >
+                                <Gcol placement="ss">
+                                  {[0, 1, 2, 3, 4].map((idx) => (
+                                    <Grow placement="sc" key={idx}>
+                                      <Input
+                                        width={86}
+                                        placeholder="질병명검색"
+                                        value={hospitalInputs[idx]}
+                                        onChange={(e) => {
+                                          const next = [...hospitalInputs];
+                                          next[idx] = e.target.value;
+                                          setHospitalInputs(next);
+                                        }}
+                                      />
+                                      <Button
+                                        variant={'outlined'}
+                                        color={'gray-light'}
+                                        size={'lg'}
+                                        only={'icon'}
+                                        aria-label="질병 검색"
+                                      >
+                                        <SearchIcon color="var(--color-primary-50)" />
+                                      </Button>
+                                      <Input width={80} placeholder="필수입력" />
+                                    </Grow>
+                                  ))}
+                                </Gcol>
+                              </FormCell>
+                            </FormRow>
+                            <FormRow>
+                              <FormCell title={'추가질병'}>
+                                <CheckboxGroup
+                                  className="gap-3 items-start"
+                                  value={additionalDiseases}
+                                  onValueChange={(values) => setAdditionalDiseases(values)}
+                                >
+                                  {[
+                                    { value: '고혈압', label: '고혈압' },
+                                    { value: '당뇨', label: '당뇨' },
+                                  ].map((opt) => (
+                                    <CheckboxGroupItem key={opt.value} value={opt.value}>
+                                      {opt.label}
+                                    </CheckboxGroupItem>
+                                  ))}
+                                </CheckboxGroup>
+                              </FormCell>
+                            </FormRow>
+                          </FormTable>
+                        </Gcol>
+                      )}
+                      {isPdName ? (
+                        <div className="w-[36rem] shrink-0"></div>
+                      ) : (
+                        <div className="w-[10rem] shrink-0"></div>
+                      )}
                     </Grow>
                   )}
                 </Grow>
@@ -989,7 +1037,7 @@ export default function Ltpa020Section() {
             </Gcol>
 
             {tabSelectValue === 'tabPage1' ? (
-              <Grow className='w-full overflow-hidden' placement='ss' gap={5}>
+              <Grow className="w-full overflow-hidden" placement="ss" gap={5}>
                 <TableFold className="h-full">
                   <TableFoldHead title="상품정보" variant="default" />
                   <TableFoldBody className="w-full h-full">
@@ -1007,9 +1055,9 @@ export default function Ltpa020Section() {
                   </TableFoldBody>
                 </TableFold>
 
-                <Grid className='max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_1fr]' gap={5}>
+                <Grid className="max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_1fr]" gap={5}>
                   <TableFold className="">
-                    <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보"  variant="default" />
+                    <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보" variant="default" />
                     <TableFoldBody className="w-full h-full">
                       <div className="ag-theme-alpine w-full h-full min-h-0">
                         <AgGridReact<DummyDataType2>
@@ -1052,30 +1100,37 @@ export default function Ltpa020Section() {
                       />
                     </div>
                   </TabPager>
-                  
                 </Grid>
               </Grow>
             ) : (
               <Grid className="w-full h-full grid-cols-[1fr_auto] gap-4 items-stretch overflow-hidden" gap={1.2}>
                 {dataNone ? (
-                  <Gcol className='h-full gap-2.5 ' placement='cc'>
-                    <div className='w-[24.8rem]'>
+                  <Gcol className="h-full gap-2.5 " placement="cc">
+                    <div className="w-[24.8rem]">
                       <Image
                         src="/images/Ltpa020/pro100.jpg"
                         alt="설명"
-                        fill style={{ objectFit: 'cover' }} 
+                        fill
+                        style={{ objectFit: 'cover' }}
                         onClick={() => setDataNone(false)}
-                        className='relative!'
+                        className="relative!"
                       />
                     </div>
-                    <p className='text-center text-[1.3rem] font-bold text-[var(--color-secondary-70)]'>상품을 추천할 고객과 조건을 선택하고<br />
-                    <b className='text-[var(--color-primary-50)]'>최적의 상품 플랜</b>을 확인하세요!</p>
+                    <p className="text-center text-[1.3rem] font-bold text-[var(--color-secondary-70)]">
+                      상품을 추천할 고객과 조건을 선택하고
+                      <br />
+                      <b className="text-[var(--color-primary-50)]">최적의 상품 플랜</b>을 확인하세요!
+                    </p>
                   </Gcol>
                 ) : (
                   <>
                     {/* 리스트 */}
                     <div className="relative w-full h-full min-h-0">
-                      <div className="h-full min-h-0 relative overflow-y-auto" ref={listScrollRef} onScroll={updateMoreButtonVisibility}>
+                      <div
+                        className="h-full min-h-0 relative overflow-y-auto"
+                        ref={listScrollRef}
+                        onScroll={updateMoreButtonVisibility}
+                      >
                         <Grid className="grid-cols-3 gap-[1.2rem] w-full">
                           {dummyData4List.map((item) => (
                             <Gcol
@@ -1084,35 +1139,46 @@ export default function Ltpa020Section() {
                               key={item.id}
                             >
                               <div className="absolute top-[1rem] right-[1rem] z-10">
-                                <Checkbox
-                                  size="xl"
-                                  color='secondary'
-                                ></Checkbox>
+                                <Checkbox size="xl" color="secondary"></Checkbox>
                               </div>
-                              <Gcol className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top]   rounded-b-[1rem] p-[1rem] gap-2 w-full px-[1.6rem] pt-[2rem] pb-[1rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white" placement='ss'>
+                              <Gcol
+                                className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top]   rounded-b-[1rem] p-[1rem] gap-2 w-full px-[1.6rem] pt-[2rem] pb-[1rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white"
+                                placement="ss"
+                              >
                                 <h3 className="truncate w-[calc(100%-2.4rem)] text-[1.5rem] font-bold">
                                   {item.field1}
                                 </h3>
-                                <div className='w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
+                                <div className="w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white">
                                   {item?.field2.join(' · ') ?? ''}
                                 </div>
-                                <Grow placement='bwc'>
-                                  <div className='w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white'>
+                                <Grow placement="bwc">
+                                  <div className="w-full flex gap-1 text-[1.1rem] text-[var(--color-gray-70)] group-[.card-selected]:text-white">
                                     {item?.field3.join(' / ') ?? ''}
                                   </div>
-                                
-                                  <Grow className='shrink-0'>
-                                    <AdderIcon 
-                                    color={listSelected === item.id ? 'var(--color-primary-70)' : '#FFAC27'}
-                                    color2={listSelected === item.id ? 'var(--color-primary-50)' : '#FFCF64'}
-                                    color3={listSelected === item.id ? 'var(--color-primary-20)' : '#FFE8AE'} />
-                                    <strong className="text-[1.5rem] font-bold text-[var(--color-primary-50)] group-[.card-selected]:text-white">{item.field5.toLocaleString()}원</strong>
+
+                                  <Grow className="shrink-0">
+                                    <AdderIcon
+                                      color={listSelected === item.id ? 'var(--color-primary-70)' : '#FFAC27'}
+                                      color2={listSelected === item.id ? 'var(--color-primary-50)' : '#FFCF64'}
+                                      color3={listSelected === item.id ? 'var(--color-primary-20)' : '#FFE8AE'}
+                                    />
+                                    <strong className="text-[1.5rem] font-bold text-[var(--color-primary-50)] group-[.card-selected]:text-white">
+                                      {item.field5.toLocaleString()}원
+                                    </strong>
                                   </Grow>
                                 </Grow>
-                                <Gcol variant={'box-round'} className="w-full h-fit gap-1 px-[1rem] py-[0.8rem] min-h-[5.4rem]" placement='ss'>
+                                <Gcol
+                                  variant={'box-round'}
+                                  className="w-full h-fit gap-1 px-[1rem] py-[0.8rem] min-h-[5.4rem]"
+                                  placement="ss"
+                                >
                                   <BulletList className="w-full">
                                     {item.field4.map((text, index) => (
-                                      <BulletListItem key={index} size="xs" className='leading-[1.2] text-[var(--color-gray-70)]'>
+                                      <BulletListItem
+                                        key={index}
+                                        size="xs"
+                                        className="leading-[1.2] text-[var(--color-gray-70)]"
+                                      >
                                         <div className="truncate w-[calc(100%-0.6rem)]">{text}</div>
                                       </BulletListItem>
                                     ))}
@@ -1122,7 +1188,7 @@ export default function Ltpa020Section() {
                               <Grow>
                                 <Button
                                   variant={'none'}
-                                  className='text-[#fff] font-bold pt-[0.8rem] pb-[1rem] h-[auto] text-[1.3rem]'
+                                  className="text-[#fff] font-bold pt-[0.8rem] pb-[1rem] h-[auto] text-[1.3rem]"
                                   onClick={() => setListSelected(item.id)}
                                 >
                                   <PaperIcon size={16} color={'var(--color-white)'} />
@@ -1135,7 +1201,11 @@ export default function Ltpa020Section() {
                       </div>
                       {showMoreButton && (
                         <div className="absolute bottom-0 right-0 z-10 w-full h-[2.7rem] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,#fff_100%)] flex items-center justify-center">
-                          <Button type="button" className='mb-2 bg-[var(--color-warning-10)] rounded-full text-[var(--color-primary-50)] gap1.5 h-[2.5rem] border-0 px-[0.6rem] hover:bg-[var(--color-warning-20)]' onClick={handleMoreRecommendClick}>
+                          <Button
+                            type="button"
+                            className="mb-2 bg-[var(--color-warning-10)] rounded-full text-[var(--color-primary-50)] gap1.5 h-[2.5rem] border-0 px-[0.6rem] hover:bg-[var(--color-warning-20)]"
+                            onClick={handleMoreRecommendClick}
+                          >
                             <ArrowDoubleIcon />
                             추천설계 더보기
                             <ArrowDoubleIcon />
@@ -1144,10 +1214,13 @@ export default function Ltpa020Section() {
                       )}
                     </div>
                     {/* 상세 */}
-                    <Grid className="shrink-0 w-[29.4rem] h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr]" gap={0}>
+                    <Grid
+                      className="shrink-0 w-[29.4rem] h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_2px_2px_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr]"
+                      gap={0}
+                    >
                       <Gcol
                         className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] [background-repeat:no-repeat] [background-position:right_top,left_top] rounded-b-[1rem]"
-                        placement='ss'
+                        placement="ss"
                       >
                         <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
                           {selectedRecommendPlan?.field1 ?? ''}
@@ -1168,7 +1241,12 @@ export default function Ltpa020Section() {
                       </Gcol>
 
                       <Grid className="px-[1rem] pb-[1rem] pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_1fr]">
-                        <Accordion type="single" collapsible defaultValue="item-1" className="w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem]">
+                        <Accordion
+                          type="single"
+                          collapsible
+                          defaultValue="item-1"
+                          className="w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem]"
+                        >
                           <AccordionItem value="item-1" className="flex flex-col gap-2">
                             <AccordionTrigger className="group w-full rounded-[1rem]">
                               <Grow
@@ -1176,14 +1254,17 @@ export default function Ltpa020Section() {
                                 placement="bwe"
                               >
                                 <Grow gap={0.2} placement="sc">
-                                  <Ai2Icon size={10} color='var(--color-information-50)' />
-                                  <Typo tag="p" variant="body-xs" weight="bold" className="text-[var(--color-information-50)]">
+                                  <Ai2Icon size={10} color="var(--color-information-50)" />
+                                  <Typo
+                                    tag="p"
+                                    variant="body-xs"
+                                    weight="bold"
+                                    className="text-[var(--color-information-50)]"
+                                  >
                                     AI 추천이유
                                   </Typo>
                                 </Grow>
-                                <SelectDropIcon
-                                  className="text-[var(--color-information-50)] transition-transform group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0 "
-                                />
+                                <SelectDropIcon className="text-[var(--color-information-50)] transition-transform group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0 " />
                               </Grow>
                             </AccordionTrigger>
                             <AccordionContent>
@@ -1198,13 +1279,12 @@ export default function Ltpa020Section() {
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
-                        <div className='ag-theme-alpine'>
+                        <div className="ag-theme-alpine">
                           <AgGridReact<DummyData4ListDetailType>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={selectedRecommendPlan?.detail ?? []}
                             columnDefs={columnDefs4}
-                          
                             domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
@@ -1214,7 +1294,6 @@ export default function Ltpa020Section() {
                     </Grid>
                   </>
                 )}
-                
               </Grid>
             )}
           </Grid>
@@ -1222,7 +1301,6 @@ export default function Ltpa020Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem className="justify-end">
-              
               {dataNone ? (
                 <Grow gap={1}>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>

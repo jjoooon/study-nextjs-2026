@@ -5,7 +5,6 @@ import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionCh
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { TooltipQ } from '@/shared/components/common/TooltipQ';
 import { Accordion } from '@/shared/components/uiux/Accordion';
 import { useTabs } from '@/shared/hooks/useTabs';
 import {
@@ -28,7 +27,7 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SelectDropIcon, SizeIcon } from '@icons';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -89,7 +88,8 @@ interface DummyDataType {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field1: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
+    field1:
+      '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험',
     field2: true,
     field3: 500,
     field4: 450,
@@ -132,7 +132,7 @@ const DummyData: DummyDataType[] = [
     isHighlighted: false,
     badge: ['독립'],
   },
-]
+];
 
 type PlanAccordionItem = {
   value: string;
@@ -162,17 +162,15 @@ const planAccordionItems: PlanAccordionItem[] = [
   },
 ];
 
-
-
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
-type AgGridRow = (DummyDataType & {
+type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
-});
+};
 
 interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
@@ -181,11 +179,7 @@ interface Ltpa350Step2Props {
   viewKey: ViewKey;
 }
 
-export function Ltpa350Step2({
-  onSelectPlan,
-  isWidthExpanded = false,
-  setIsWidthExpanded,
-}: Ltpa350Step2Props) {
+export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -198,7 +192,6 @@ export function Ltpa350Step2({
   };
 
   // Dynamic widths based on zoom scale
-  const colWidth0 = useDynamicPx(40);
   const colWidth40 = useDynamicPx(40);
   const colWidth60 = useDynamicPx(60);
   const colWidth80 = useDynamicPx(80);
@@ -218,12 +211,7 @@ export function Ltpa350Step2({
     ...item,
     value: String(item.id),
   }));
-  const {
-    tabs: Tabs,
-    active: TabActive,
-    setActive: TabSetActive,
-    handleRemove 
-  } = useTabs<TabDataType>(stringifiedTabs);
+  const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
   // 3) Grid data
   const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
@@ -233,22 +221,19 @@ export function Ltpa350Step2({
   const prevSelectedIdsRef = useRef<Set<number>>(new Set());
 
   // setRowData를 래핑하여 새로 삽입된 중복 행 id를 pendingSelectIdRef에 저장
-  const setRowDataWithTracking = useCallback(
-    (updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
-      setRowData((prev) => {
-        const next = typeof updater === 'function' ? updater(prev) : updater;
-        if (next.length > prev.length) {
-          const prevIds = new Set(prev.map((r) => r.id));
-          const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
-          if (newDuplicate) {
-            pendingSelectIdRef.current = newDuplicate.id;
-          }
+  const setRowDataWithTracking = useCallback((updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
+    setRowData((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      if (next.length > prev.length) {
+        const prevIds = new Set(prev.map((r) => r.id));
+        const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
+        if (newDuplicate) {
+          pendingSelectIdRef.current = newDuplicate.id;
         }
-        return next;
-      });
-    },
-    []
-  );
+      }
+      return next;
+    });
+  }, []);
 
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
@@ -348,7 +333,7 @@ export function Ltpa350Step2({
     } else {
       const originId = params.data.displayNo;
       const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
-      
+
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
@@ -609,8 +594,8 @@ export function Ltpa350Step2({
             headerName: '출생전',
             cellClass: 'text-center',
             width: attributeColumnWidth[2],
-            cellClassRules: editableCellClassRules, 
-            editable: getEditableCallback('whenSelected'), 
+            cellClassRules: editableCellClassRules,
+            editable: getEditableCallback('whenSelected'),
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: {
               values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
@@ -622,7 +607,7 @@ export function Ltpa350Step2({
             headerName: '출생후',
             cellClass: 'text-center',
             width: attributeColumnWidth[2],
-            cellClassRules: editableCellClassRules, 
+            cellClassRules: editableCellClassRules,
             editable: getEditableCallback('whenSelected'),
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: {
@@ -644,7 +629,7 @@ export function Ltpa350Step2({
             headerName: '출생후',
             cellClass: 'text-center',
             width: attributeColumnWidth[2],
-            cellClassRules: editableCellClassRules, 
+            cellClassRules: editableCellClassRules,
             editable: getEditableCallback('whenSelected'),
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: {

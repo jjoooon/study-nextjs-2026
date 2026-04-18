@@ -5,6 +5,8 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
+import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
@@ -20,8 +22,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -51,9 +51,7 @@ const CombinedConstructionCell = ({ data }: ICellRendererParams<DummyDataType1>)
           <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
             {field01}
           </div>
-          <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">
-            {field02}
-          </div>
+          <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field02}</div>
         </div>
       );
     }
@@ -81,9 +79,7 @@ const CombinedConstructionCell = ({ data }: ICellRendererParams<DummyDataType1>)
 const FullWidthIsDetailsRenderer = ({ data }: ICellRendererParams<DummyDataType1>) => {
   const content = String(data?.field01 ?? data?.field02 ?? data?.field03 ?? '\u00A0');
   return (
-    <div className="flex h-full w-full min-h-[2.5rem] items-center justify-center px-2 text-center">
-      {content}
-    </div>
+    <div className="flex h-full w-full min-h-[2.5rem] items-center justify-center px-2 text-center">{content}</div>
   );
 };
 
@@ -255,12 +251,7 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <Grow>
-              <RadioGroup
-                className="gap-1"
-                onValueChange={() => {}}
-                width="full"
-                defaultValue='간병인'
-              >
+              <RadioGroup className="gap-1" onValueChange={() => {}} width="full" defaultValue="간병인">
                 {[
                   { value: '간병인', label: '간병인' },
                   { value: '암주요', label: '암주요' },
@@ -269,10 +260,7 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
                   { value: '운전자비용', label: '운전자비용' },
                   { value: '패키지명', label: '패키지명' },
                 ].map((option, index) => (
-                  <RadioGroupItem
-                    value={option.value}
-                    variant="button"
-                  >
+                  <RadioGroupItem value={option.value} variant="button">
                     {option.label}
                   </RadioGroupItem>
                 ))}
@@ -289,7 +277,7 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
               <ResetIcon />
             </Button>
           </Grow>
-          <Grow placement='ss' className="w-full" gap={5}>
+          <Grow placement="ss" className="w-full" gap={5}>
             <TableFold variant={'default'} className="w-[40%] shrink-0">
               <TableFoldHead title="담보패키지" />
               <TableFoldBody>
@@ -320,7 +308,7 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
                   />
                 </div>
               </TableFoldBody>
-            </TableFold>  
+            </TableFold>
             <TableFold variant={'default'}>
               <TableFoldHead title="담보" />
               <TableFoldBody>
@@ -352,8 +340,7 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldBody>
             </TableFold>
           </Grow>
-          <Grow placement="ss" className="w-full" gap={5}>
-          </Grow>
+          <Grow placement="ss" className="w-full" gap={5}></Grow>
         </DialogSection>
 
         <DialogFooter>

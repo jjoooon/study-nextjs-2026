@@ -147,13 +147,13 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Input value={'김한화'} readOnly />
                 </FormCell>
                 <FormCell title={'상품명'}>
-                  <Input className='w-full' value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input className="w-full" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <TableFold className='grid grid-rows-[auto_auto_1fr]'>
+          <TableFold className="grid grid-rows-[auto_auto_1fr]">
             <TableFoldHead title="플랜등록사항" />
             <Gcol className="w-full" placement="ss" variant="box-detail">
               <Typo icon="detail" variant="body-sm">

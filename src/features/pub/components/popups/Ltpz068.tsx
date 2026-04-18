@@ -5,13 +5,22 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -28,26 +37,196 @@ type DummyDataType = {
 };
 
 const DummyData: DummyDataType[] = [
-  { id: 1,   field01: '1',   field02: '보통약관(상해사망)',                                                             field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
-  { id: 2,   field01: '2',   field02: '보험료납입면제대상보장(8대사융Ⅱ 보험료납입면제대상보장(8대사융Ⅱ) 보험료납입면제대상보장(8대사융Ⅱ)',                                                field03: 10,  field04: 320, field05: 10,  field06: 320, field07: 10,  field08: 320 },
-  { id: 3,   field01: '3',   field02: '보장보험료50%납입지원Ⅱ(4대유사암)',                                               field03: 30,  field04: 28,  field05: 50,  field06: 28,  field07: 30,  field08: 28  },
-  { id: 4,   field01: '4',   field02: '상해사망(체증형)',                                                               field03: 300, field04: 960, field05: 200, field06: 640, field07: 300, field08: 960 },
-  { id: 5,   field01: '5',   field02: '상해사망추가',                                                                   field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
-  { id: 6,   field01: '6',   field02: '상해80%이상후유장애',                                                            field03: 100, field04: 320, field05: 100, field06: 320, field07: 100, field08: 320 },
-  { id: 7,   field01: '7',   field02: '상해후유장해(3-100%)(갱신형)',                                                   field03: 100, field04: 320, field05: 100, field06: 320, field07: 100, field08: 320 },
-  { id: 8,   field01: '8',   field02: '질병사망',                                                                       field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
-  { id: 181, field01: '181', field02: '주요순환계질환Ⅰ특정치료비(상급종합병원,권역심뇌혈관질환센터)(각연간',               field03: 600, field04: 320, field05: 500, field06: 320, field07: 600, field08: 320 },
-  { id: 182, field01: '182', field02: '암(4대유사암제외)진단후특정치료비(암전문의료기관(상급종합 병원))(진',               field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
-  { id: 292, field01: '292', field02: '주요뇌혈관질환(90일면책)진단비(간편)',                                            field03: 100, field04: 28,  field05: 100, field06: 28,  field07: 100, field08: 28  },
-  { id: 598, field01: '598', field02: '암(갑상선암및전립선암제외)다빈치로봇수술비(1회한)(갱신형)(CLA07606)',               field03: 500, field04: 948, field05: 300, field06: 558, field07: 200, field08: 294 },
-  { id: 601, field01: '601', field02: '뇌혈관질환수술비(수술1회당)',                                                     field03: 10,  field04: 68,  field05: 20,  field06: 136, field07: 30,  field08: 204 },
-  { id: 602, field01: '602', field02: '뇌혈관질환수술비(수술1회당)(갱신형)',                                             field03: 10,  field04: 13,  field05: 20,  field06: 26,  field07: 30,  field08: 39  },
-  { id: 605, field01: '605', field02: '허혈성심장질환수술비(수술1회당)',                                                 field03: 10,  field04: 66,  field05: 20,  field06: 132, field07: 30,  field08: 198 },
-  { id: 612, field01: '612', field02: '상해종합병원1인실입원비(1일이상30일한도)',                                        field03: 1,   field04: 37,  field05: 2,   field06: 74,  field07: 3,   field08: 111 },
-  { id: 619, field01: '619', field02: '상해중환자실입원비(1일이상10일한도)',                                             field03: 1,   field04: 87,  field05: 2,   field06: 174, field07: 3,   field08: 261 },
+  {
+    id: 1,
+    field01: '1',
+    field02: '보통약관(상해사망)',
+    field03: 100,
+    field04: 28,
+    field05: 100,
+    field06: 28,
+    field07: 100,
+    field08: 28,
+  },
+  {
+    id: 2,
+    field01: '2',
+    field02: '보험료납입면제대상보장(8대사융Ⅱ 보험료납입면제대상보장(8대사융Ⅱ) 보험료납입면제대상보장(8대사융Ⅱ)',
+    field03: 10,
+    field04: 320,
+    field05: 10,
+    field06: 320,
+    field07: 10,
+    field08: 320,
+  },
+  {
+    id: 3,
+    field01: '3',
+    field02: '보장보험료50%납입지원Ⅱ(4대유사암)',
+    field03: 30,
+    field04: 28,
+    field05: 50,
+    field06: 28,
+    field07: 30,
+    field08: 28,
+  },
+  {
+    id: 4,
+    field01: '4',
+    field02: '상해사망(체증형)',
+    field03: 300,
+    field04: 960,
+    field05: 200,
+    field06: 640,
+    field07: 300,
+    field08: 960,
+  },
+  {
+    id: 5,
+    field01: '5',
+    field02: '상해사망추가',
+    field03: 100,
+    field04: 28,
+    field05: 100,
+    field06: 28,
+    field07: 100,
+    field08: 28,
+  },
+  {
+    id: 6,
+    field01: '6',
+    field02: '상해80%이상후유장애',
+    field03: 100,
+    field04: 320,
+    field05: 100,
+    field06: 320,
+    field07: 100,
+    field08: 320,
+  },
+  {
+    id: 7,
+    field01: '7',
+    field02: '상해후유장해(3-100%)(갱신형)',
+    field03: 100,
+    field04: 320,
+    field05: 100,
+    field06: 320,
+    field07: 100,
+    field08: 320,
+  },
+  {
+    id: 8,
+    field01: '8',
+    field02: '질병사망',
+    field03: 100,
+    field04: 28,
+    field05: 100,
+    field06: 28,
+    field07: 100,
+    field08: 28,
+  },
+  {
+    id: 181,
+    field01: '181',
+    field02: '주요순환계질환Ⅰ특정치료비(상급종합병원,권역심뇌혈관질환센터)(각연간',
+    field03: 600,
+    field04: 320,
+    field05: 500,
+    field06: 320,
+    field07: 600,
+    field08: 320,
+  },
+  {
+    id: 182,
+    field01: '182',
+    field02: '암(4대유사암제외)진단후특정치료비(암전문의료기관(상급종합 병원))(진',
+    field03: 100,
+    field04: 28,
+    field05: 100,
+    field06: 28,
+    field07: 100,
+    field08: 28,
+  },
+  {
+    id: 292,
+    field01: '292',
+    field02: '주요뇌혈관질환(90일면책)진단비(간편)',
+    field03: 100,
+    field04: 28,
+    field05: 100,
+    field06: 28,
+    field07: 100,
+    field08: 28,
+  },
+  {
+    id: 598,
+    field01: '598',
+    field02: '암(갑상선암및전립선암제외)다빈치로봇수술비(1회한)(갱신형)(CLA07606)',
+    field03: 500,
+    field04: 948,
+    field05: 300,
+    field06: 558,
+    field07: 200,
+    field08: 294,
+  },
+  {
+    id: 601,
+    field01: '601',
+    field02: '뇌혈관질환수술비(수술1회당)',
+    field03: 10,
+    field04: 68,
+    field05: 20,
+    field06: 136,
+    field07: 30,
+    field08: 204,
+  },
+  {
+    id: 602,
+    field01: '602',
+    field02: '뇌혈관질환수술비(수술1회당)(갱신형)',
+    field03: 10,
+    field04: 13,
+    field05: 20,
+    field06: 26,
+    field07: 30,
+    field08: 39,
+  },
+  {
+    id: 605,
+    field01: '605',
+    field02: '허혈성심장질환수술비(수술1회당)',
+    field03: 10,
+    field04: 66,
+    field05: 20,
+    field06: 132,
+    field07: 30,
+    field08: 198,
+  },
+  {
+    id: 612,
+    field01: '612',
+    field02: '상해종합병원1인실입원비(1일이상30일한도)',
+    field03: 1,
+    field04: 37,
+    field05: 2,
+    field06: 74,
+    field07: 3,
+    field08: 111,
+  },
+  {
+    id: 619,
+    field01: '619',
+    field02: '상해중환자실입원비(1일이상10일한도)',
+    field03: 1,
+    field04: 87,
+    field05: 2,
+    field06: 174,
+    field07: 3,
+    field08: 261,
+  },
 ];
 
-const ACTIVE_BG   = 'var(--color-primary-50)';
+const ACTIVE_BG = 'var(--color-primary-50)';
 const INACTIVE_BG = 'var(--color-secondary-50)';
 
 type PlanKey = 'A' | 'B' | 'C';
@@ -121,55 +300,53 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr] gap-2 pt-[2rem]">
           <Grow className="w-full justify-start">
-            <Typo variant={'body-lg'} className="font-bold">AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.</Typo>
+            <Typo variant={'body-lg'} className="font-bold">
+              AI의 해결안을 적용하면 인수지침 위배 항목이 자동 해소됩니다.
+            </Typo>
           </Grow>
 
           {/* A안 / B안 / C안 상단 탭 */}
-          
-          <div className='relative'>
+
+          <div className="relative">
             <Grow className="flex flex-row w-[60.9rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
-            {PLAN_COLS.map(({ key: plan }) => {
-              const isActive = selectedPlan === plan;
-              const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
-              return (
-                <div
-                  key={plan}
-                  className="flex flex-col w-[20.3rem] cursor-pointer h-[100%]"
-                  onClick={() => setSelectedPlan(plan)}
-                >
-                  {/* 탭 헤더 */}
-                  <Grow
-                    className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 "
+              {PLAN_COLS.map(({ key: plan }) => {
+                const isActive = selectedPlan === plan;
+                const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
+                return (
+                  <div
+                    key={plan}
+                    className="flex flex-col w-[20.3rem] cursor-pointer h-[100%]"
+                    onClick={() => setSelectedPlan(plan)}
                   >
-                    <div
-                      className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
-                      style={{ backgroundColor: bg }}
-                    >
-                      <Typo className="text-[1.4rem] font-bold text-white">
-                        {plan}안
-                      </Typo>
-                      <RadioGroup
-                        value={isActive ? plan : ''}
-                        onValueChange={() => setSelectedPlan(plan)}
-                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                    {/* 탭 헤더 */}
+                    <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
+                      <div
+                        className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
+                        style={{ backgroundColor: bg }}
                       >
-                        <RadioGroupItem
-                          color="primary"
-                          id={`plan-${plan}`}
-                          size="lg"
-                          value={plan}
-                          variant="default"
-                        />
-                      </RadioGroup>
-                    </div>
-                    <div
-                      className='border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]'
-                      style={{ borderColor: bg, borderWidth: isActive ? '4px' : '2px' }}
-                    ></div>
-                  </Grow>
-                </div>
-              );
-            })}
+                        <Typo className="text-[1.4rem] font-bold text-white">{plan}안</Typo>
+                        <RadioGroup
+                          value={isActive ? plan : ''}
+                          onValueChange={() => setSelectedPlan(plan)}
+                          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                        >
+                          <RadioGroupItem
+                            color="primary"
+                            id={`plan-${plan}`}
+                            size="lg"
+                            value={plan}
+                            variant="default"
+                          />
+                        </RadioGroup>
+                      </div>
+                      <div
+                        className="border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]"
+                        style={{ borderColor: bg, borderWidth: isActive ? '4px' : '2px' }}
+                      ></div>
+                    </Grow>
+                  </div>
+                );
+              })}
             </Grow>
             {/* 그리드 */}
             <div className="ag-theme-alpine relative min-h-[calc(100vh-30rem)]">
@@ -190,13 +367,13 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
             </div>
           </div>
         </DialogSection>
-        
-         <DialogFooter>
+
+        <DialogFooter>
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                  적용
-                </Button>
+                적용
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

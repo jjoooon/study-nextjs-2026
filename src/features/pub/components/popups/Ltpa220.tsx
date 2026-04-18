@@ -40,7 +40,8 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '홍길동',
-    field02: '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+    field02:
+      '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
     field03: '2016-01-01',
     field04: '1000000',
     field05: '1',
@@ -224,7 +225,6 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
       flex: 1,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-
     },
     {
       headerName: '실납입기간',

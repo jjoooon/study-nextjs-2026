@@ -103,7 +103,6 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       colSpan: (params) => (params.node?.rowPinned ? 9 : 1),
       cellClass: 'flex! items-center! justify-center!',
       cellStyle: (params) => (params.node?.rowPinned ? { textAlign: 'center' } : undefined),
-      
     },
     {
       headerName: '증권번호/설계번호',
@@ -134,14 +133,14 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field04',
       width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '보험종기',
       field: 'field05',
       width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '담보명',
@@ -163,21 +162,21 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field07',
       width: 80,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-end!',
+      cellClass: 'flex! items-center! justify-end!',
     },
     {
       headerName: '배수',
       field: 'field08',
       width: 60,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-end!',
+      cellClass: 'flex! items-center! justify-end!',
     },
     {
       headerName: '상태',
       field: 'field09',
       width: 60,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-     cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '반영금액',
@@ -243,8 +242,12 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormCell title="기누적금액">
                       <div className="w-full text-right">5,700</div>
                     </FormCell>
-                    <FormCell title="합계"><div className="w-full text-right">4,700</div></FormCell>
-                    <FormCell title="한도"><div className="w-full text-right">30,000</div></FormCell>
+                    <FormCell title="합계">
+                      <div className="w-full text-right">4,700</div>
+                    </FormCell>
+                    <FormCell title="한도">
+                      <div className="w-full text-right">30,000</div>
+                    </FormCell>
                   </FormRow>
                 </FormTable>
               </TableFoldBody>

@@ -3,6 +3,7 @@
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { t } from 'i18next';
 import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -23,14 +24,13 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
+import { DummyDataType } from '../data/ltpa020Data';
 import {
   Ltpa400DummyData,
   Ltpa400DummyData2,
   type Ltpa400DummyDataRow,
   type Ltpa400DummyDataRow2,
 } from '../data/ltpa400Data';
-import { DummyDataType } from '../data/ltpa020Data';
-import { t } from 'i18next';
 
 // Tab 정의
 type Ltpa400TabType = { name: string; value: string; label: string };
@@ -125,8 +125,8 @@ export default function Ltpa400Section() {
       headerName: '지원SM',
       field: 'field11',
       width: 120,
-       cellClass: 'truncate text-center',
-       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
+      cellClass: 'truncate text-center',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
     },
     {
       headerName: '설계번호',
@@ -500,13 +500,13 @@ export default function Ltpa400Section() {
                       onCellValueChanged={() => {}}
                       rowSelection={{
                         mode: 'singleRow',
-                        
+
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
-                      selectionColumnDef={{ 
+                      selectionColumnDef={{
                         headerName: '선택',
-                        width: 30, 
+                        width: 30,
                       }}
                       onGridReady={(params) => {
                         params.api.forEachNode((node) => {

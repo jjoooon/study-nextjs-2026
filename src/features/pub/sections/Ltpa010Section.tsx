@@ -12,6 +12,7 @@ import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InfoBox } from '@common/InfoBox';
+import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
@@ -25,7 +26,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import { Ltpa010DummyData } from '../data/ltpa010Data';
 import type { Ltpa010DummyDataRow } from '../data/ltpa010Data';
-import { TableMore } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -59,8 +59,8 @@ export default function Ltpa010Section() {
           headerName: '고지유형/플랜명',
           cellClass: 'text-center px-0! text-[1.3rem]',
           autoHeight: true,
-          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({ 
-            field: 'field02', 
+          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({
+            field: 'field02',
           }),
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field02', (data?: Ltpa010DummyDataRow) => {
             const hasTooltip = data?.field04 === 'memoView';
@@ -87,12 +87,12 @@ export default function Ltpa010Section() {
             return (
               <Grow placement="cc" className="h-full pr-1 ">
                 <div className="truncate">{data?.field03}</div>
-                
+
                 {hasTooltip ? (
                   <Tooltip>
                     <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
                     <TooltipContent align="center" side="bottom" sideOffset={0} variant="default" className="w-[16rem]">
-                      <div 
+                      <div
                         dangerouslySetInnerHTML={{
                           __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
                         }}
@@ -120,8 +120,8 @@ export default function Ltpa010Section() {
           width: 80,
           cellClass: 'text-center px-0! ',
           autoHeight: true,
-          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({ 
-            field: 'field05', 
+          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({
+            field: 'field05',
           }),
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field05', 'field06'),
         },
@@ -433,17 +433,13 @@ export default function Ltpa010Section() {
         mainBody={
           <Gcol placement="ss" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable
-                variant={'head'}
-                lineTop={false}
-                caption="설계번호"
-              >
+              <FormTable variant={'head'} lineTop={false} caption="설계번호">
                 <FormRow>
                   <FormCell title={'조회구분'}>
                     <NativeSelect
                       width={108}
                       aria-label="조회구분 선택"
-                       value={form.type01}
+                      value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       required
                     >
@@ -612,7 +608,7 @@ export default function Ltpa010Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Grow className='w-full' placement="ec">
+            <Grow className="w-full" placement="ec">
               <Button color="success" variant="outlined">
                 엑셀내보내기
                 <FileExportIcon />

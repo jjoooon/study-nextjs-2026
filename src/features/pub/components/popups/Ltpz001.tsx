@@ -335,7 +335,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                 기타 필수 스캔 대상 서류안내
               </Typo>
               <Typo variant={'body-sm'} icon={'dot'}>
-                실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류 
+                실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
               </Typo>
             </Gcol>
           </Gcol>
@@ -358,7 +358,11 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
               contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem]"
               renderTab={(tab) => <span>{tab.label}</span>}
             >
-              <Gcol className="h-full absolute px-2.5 py-3  after:[content:''] after:block after:min-h-[0.1rem] after:border after:w-full after:border-[transparent]" gap={4} placement={'ss'}>
+              <Gcol
+                className="h-full absolute px-2.5 py-3  after:[content:''] after:block after:min-h-[0.1rem] after:border after:w-full after:border-[transparent]"
+                gap={4}
+                placement={'ss'}
+              >
                 {/* 프린트 */}
                 {tabActive === 'tab1' && (
                   <>
@@ -630,7 +634,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Gcol>
                   </>
                 )}
-                
+
                 {/* 리포트내용선택 */}
                 <Divider dir="row" className="w-full" />
                 <Gcol placement={'ss'} gap={2}>

@@ -91,7 +91,8 @@ const dummyData2: DummyDataType2[] = [
   {
     id: 1,
     field1: '1종',
-    field2: '납입면제 강화형, 기본형(할증운영상품)납입면제 강화형, 기본형(할증운영상품)납입면제 강화형, 기본형(할증운영상품)',
+    field2:
+      '납입면제 강화형, 기본형(할증운영상품)납입면제 강화형, 기본형(할증운영상품)납입면제 강화형, 기본형(할증운영상품)',
   },
   {
     id: 2,
@@ -387,9 +388,11 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                 errorPs="bl"
                 onValueChange={() => {}}
                 width="full"
-              > {[
-                    { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
-                    { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
+              >
+                {' '}
+                {[
+                  { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
+                  { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
                 ].map((option) => (
                   <RadioGroupItem key={option.value} value={option.value}>
                     {option.label}

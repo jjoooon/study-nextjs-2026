@@ -187,7 +187,6 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-
 export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
@@ -408,7 +407,7 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
                 />
               </div>
             </TableFoldBody>
-        </TableFold>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>

@@ -194,7 +194,7 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol variant='box-info-line' placement="ss">
+          <Gcol variant="box-info-line" placement="ss">
             <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
               한화 3N5 더간편건강보험(세만기형) 2601 상품의 담보코드와 메시지입니다.
             </Typo>
@@ -212,10 +212,10 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
                   columnDefs={columnDefs}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   domLayout="normal"
-                   defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                    }}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                 />

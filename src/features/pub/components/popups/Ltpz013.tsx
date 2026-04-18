@@ -3,15 +3,15 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { BadgeCheckIcon, CalendarIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { Badge } from '@uiux/Badge';
 import {
   Dialog,
   DialogClose,
@@ -26,11 +26,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type OptionType =
-  | { 옵션1: string }
-  | { 옵션2: string }
-  | { 옵션3: string[] }
-  | { 옵션4: string };
+type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[] } | { 옵션4: string };
 
 type InfoDataType = {
   id: number;
@@ -43,37 +39,37 @@ const InfoData: InfoDataType = {
   담보명: '한화 시그니처 여성 건강보험4.0 2504',
   가능: '인수가능',
   옵션: [
-    {옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형'},
-    {옵션2: '비대면진단심사플랜(20~40세)'},
-    {옵션3: ['20년납', '100세만기', '갱신 20년']},
-    {옵션4: '1형(일반 고지 형)'},
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
   ],
 };
 type selectOption1Type = {
   value: string;
   label: string;
 }[];
-const selectOption1:selectOption1Type = [
+const selectOption1: selectOption1Type = [
   { value: '옵션1', label: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
   { value: '옵션2', label: '2납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
 ];
-const selectOption2:selectOption1Type = [
+const selectOption2: selectOption1Type = [
   { value: '옵션1', label: '비대면진단심사플랜(20~40세)' },
   { value: '옵션2', label: '2비대면진단심사플랜(20~40세)' },
 ];
-const selectOption3:selectOption1Type = [
+const selectOption3: selectOption1Type = [
   { value: '옵션1', label: '20년납' },
   { value: '옵션2', label: '30년납' },
 ];
-const selectOption4:selectOption1Type = [
+const selectOption4: selectOption1Type = [
   { value: '옵션1', label: '100세만기' },
   { value: '옵션2', label: '200세만기' },
 ];
-const selectOption5:selectOption1Type = [
+const selectOption5: selectOption1Type = [
   { value: '옵션1', label: '갱신 20년' },
   { value: '옵션2', label: '갱신 30년' },
 ];
-const selectOption6:selectOption1Type = [
+const selectOption6: selectOption1Type = [
   { value: '옵션1', label: '1형(일반고지형)' },
   { value: '옵션2', label: '2형(갱신형)' },
 ];
@@ -85,11 +81,11 @@ type DummyDataType = {
   field3: number;
 };
 const DummyData: DummyDataType[] = [
-  { 
-    id: 1, 
-    field1: '보통약관(상해80%이상후유장해)', 
-    field2: 13000, 
-    field3: 3000 
+  {
+    id: 1,
+    field1: '보통약관(상해80%이상후유장해)',
+    field2: 13000,
+    field3: 3000,
   },
   { id: 2, field1: '보험료납입면제대상보장(5대유사)', field2: 10, field3: 10 },
   { id: 3, field1: '상해사망(간편)', field2: 15000, field3: 15000 },
@@ -111,22 +107,23 @@ const DummyData: DummyDataType[] = [
 function CardBox({ children, bottom, color }: { children: React.ReactNode; bottom: React.ReactNode; color?: string }) {
   return (
     <Grid
-      placement='ss'
+      placement="ss"
       data-recommend-item="true"
       className={`group bg-[var(--color-secondary-40)] gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] grid-rows-[1fr_auto] ${color ? `bg-[${color}]` : ''}`}
     >
-      <Grid className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top] rounded-b-[1rem] p-[1rem] gap-2 w-full p-0 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white gap-0 grid-rows-[1fr_auto]" placement='ss'>
+      <Grid
+        className="bg-[#fff] group-[.card-selected]:bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top] rounded-b-[1rem] p-[1rem] gap-2 w-full p-0 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white gap-0 grid-rows-[1fr_auto]"
+        placement="ss"
+      >
         {children}
       </Grid>
-      <Grow placement='bwc' className='px-[1.6rem] h-[4rem] text-white'>
+      <Grow placement="bwc" className="px-[1.6rem] h-[4rem] text-white">
         <b>보험료(환급률)</b>
         {bottom}
       </Grow>
     </Grid>
-  )
+  );
 }
-
-
 
 export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
@@ -148,27 +145,29 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
       }
     });
     // 다음 이벤트 루프에서 플래그 해제
-    setTimeout(() => { isSyncing.current = false; }, 0);
+    setTimeout(() => {
+      isSyncing.current = false;
+    }, 0);
   };
 
   function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
     if (typeof column.width === 'number') {
       const width = `${column.width}px`;
-  
+
       return {
         flex: '0 0 auto',
         minWidth: width,
         width,
       };
     }
-  
+
     if (typeof column.flex === 'number') {
       return {
         flex: `${column.flex} ${column.flex} 0%`,
         minWidth: 0,
       };
     }
-  
+
     return {
       flex: '1 1 0%',
       minWidth: 0,
@@ -205,15 +204,15 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '보험료(원)',
       field: 'field3',
       width: 65,
-      valueFormatter: numberValueFormatter, 
+      valueFormatter: numberValueFormatter,
       cellClass: (params) => {
         if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
         return 'text-right';
       },
-      editable: false, 
+      editable: false,
     },
   ];
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -231,46 +230,80 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection>
           <Grid className="w-full grid-cols-[auto_1fr] gap-6">
             {/* 기준설계 */}
-            <Grid className='h-full pb-[1.6rem] grid-rows-[1fr]'>
-              <CardBox bottom={
-                <div><b>70000</b>원(39.4%)</div>
-              }>
-                <Grid className='grid-rows-[auto_1fr]'>
-                  <Grow className='bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem]'>
+            <Grid className="h-full pb-[1.6rem] grid-rows-[1fr]">
+              <CardBox
+                bottom={
+                  <div>
+                    <b>70000</b>원(39.4%)
+                  </div>
+                }
+              >
+                <Grid className="grid-rows-[auto_1fr]">
+                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem]">
                     <FixingPinIcon className="" />
                     기준설계
                   </Grow>
-                  <Grid className='p-[1.6rem] gap-5 grid-rows-[1fr_auto]' placement='ss'>
-                    <Gcol className='gap-1' placement='ss'>
-                      <Gcol placement='ss'>
-                        <Typo tag="h3" variant={'body-xl'} weight={'bold'} className=''>
+                  <Grid className="p-[1.6rem] gap-5 grid-rows-[1fr_auto]" placement="ss">
+                    <Gcol className="gap-1" placement="ss">
+                      <Gcol placement="ss">
+                        <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="">
                           {InfoData.담보명}
                         </Typo>
                       </Gcol>
-                      <Gcol variant='box-warning' placement='ss' className='border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]'>
+                      <Gcol
+                        variant="box-warning"
+                        placement="ss"
+                        className="border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]"
+                      >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
                           return (
-                            <Grow key={index} placement='ss' className='text-[1.3rem]'>
-                              {index === 0 && <ShieldIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
-                              {index === 1 && <NoteIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.3rem] translate-x-[-0.05rem] shrink-0' size={16} />}
-                              {index === 2 && <CalendarIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
-                              {index === 3 && <BadgeCheckIcon color={'var(--color-blue-gray-60)'} className='translate-y-[0.4rem] shrink-0' size={14} />}
+                            <Grow key={index} placement="ss" className="text-[1.3rem]">
+                              {index === 0 && (
+                                <ShieldIcon
+                                  color={'var(--color-blue-gray-60)'}
+                                  className="translate-y-[0.4rem] shrink-0"
+                                  size={14}
+                                />
+                              )}
+                              {index === 1 && (
+                                <NoteIcon
+                                  color={'var(--color-blue-gray-60)'}
+                                  className="translate-y-[0.3rem] translate-x-[-0.05rem] shrink-0"
+                                  size={16}
+                                />
+                              )}
+                              {index === 2 && (
+                                <CalendarIcon
+                                  color={'var(--color-blue-gray-60)'}
+                                  className="translate-y-[0.4rem] shrink-0"
+                                  size={14}
+                                />
+                              )}
+                              {index === 3 && (
+                                <BadgeCheckIcon
+                                  color={'var(--color-blue-gray-60)'}
+                                  className="translate-y-[0.4rem] shrink-0"
+                                  size={14}
+                                />
+                              )}
                               {option[optionKey as keyof typeof option]}
                             </Grow>
-                          )
-                        })} 
+                          );
+                        })}
                       </Gcol>
                     </Gcol>
                     <div
                       className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                      ref={el => { scrollRefs.current[0] = el; }}
-                      onScroll={e => handleSyncScroll(0, e)}
+                      ref={(el) => {
+                        scrollRefs.current[0] = el;
+                      }}
+                      onScroll={(e) => handleSyncScroll(0, e)}
                     >
                       <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
                         {columnDefs.map((column, index) => {
                           const key = column.field ?? column.headerName ?? `column-${index}`;
-            
+
                           return (
                             <div
                               key={key}
@@ -306,25 +339,37 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grid>
               </CardBox>
             </Grid>
-            
-            <Grow placement='ss' className='overflow-y-hidden overflow-x-auto h-full pb-[1rem]' gap={3}>
+
+            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
               {[...Array(3)].map((_, i) => (
-                <CardBox color="var(--color-information-50)" bottom={
-                  <div><b>70000</b>원(39.4%)</div>
-                } key={i}>
-                  <Gcol className='p-[1.6rem] gap-5' placement='ss'>
-                    <Gcol className='gap-1' placement='ss'>
-                      <Grow placement='bwc' className='w-full'>
-                        <Checkbox aria-label='선택'></Checkbox>
+                <CardBox
+                  color="var(--color-information-50)"
+                  bottom={
+                    <div>
+                      <b>70000</b>원(39.4%)
+                    </div>
+                  }
+                  key={i}
+                >
+                  <Gcol className="p-[1.6rem] gap-5" placement="ss">
+                    <Gcol className="gap-1" placement="ss">
+                      <Grow placement="bwc" className="w-full">
+                        <Checkbox aria-label="선택"></Checkbox>
                         <Button variant={'outlined'} color={'gray'} size={'sm'}>
                           변경
                         </Button>
                       </Grow>
-                      <Gcol placement='ss'>
-                        <Typo tag="div" variant={'body-sm'} weight={'bold'} color={'information'} className='flex gap-1 items-center' >
-                          비교설계{i + 1} 
-                          <Badge color="blue" className='h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]'>
-                            <CircleCheckIcon size={12} color='var(--color-information-50)'  />
+                      <Gcol placement="ss">
+                        <Typo
+                          tag="div"
+                          variant={'body-sm'}
+                          weight={'bold'}
+                          color={'information'}
+                          className="flex gap-1 items-center"
+                        >
+                          비교설계{i + 1}
+                          <Badge color="blue" className="h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]">
+                            <CircleCheckIcon size={12} color="var(--color-information-50)" />
                             인수가능
                           </Badge>
                         </Typo>
@@ -332,69 +377,71 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                           {InfoData.담보명}
                         </Typo>
                       </Gcol>
-                      <Gcol variant='box-info' placement='ss' className='border border-[var(--color-information-15)]'>
+                      <Gcol variant="box-info" placement="ss" className="border border-[var(--color-information-15)]">
                         <NativeSelect size="md">
                           {selectOption1.map((option, index) => {
-                            return (  
+                            return (
                               <NativeSelectOption key={index} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
-                            )
+                            );
                           })}
                         </NativeSelect>
                         <NativeSelect size="md">
                           {selectOption2.map((option, index) => {
-                            return (  
+                            return (
                               <NativeSelectOption key={index} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
-                            )
+                            );
                           })}
                         </NativeSelect>
                         <Grow>
                           <NativeSelect size="md">
                             {selectOption3.map((option, index) => {
-                              return (  
+                              return (
                                 <NativeSelectOption key={index} value={option.value}>
                                   {option.label}
                                 </NativeSelectOption>
-                              )
+                              );
                             })}
                           </NativeSelect>
                           <NativeSelect size="md">
                             {selectOption4.map((option, index) => {
-                              return (  
+                              return (
                                 <NativeSelectOption key={index} value={option.value}>
                                   {option.label}
                                 </NativeSelectOption>
-                              )
+                              );
                             })}
                           </NativeSelect>
                           <NativeSelect size="md">
                             {selectOption5.map((option, index) => {
-                              return (  
+                              return (
                                 <NativeSelectOption key={index} value={option.value}>
                                   {option.label}
                                 </NativeSelectOption>
-                              )
+                              );
                             })}
                           </NativeSelect>
                         </Grow>
                         <NativeSelect size="md">
                           {selectOption6.map((option, index) => {
-                            return (  
+                            return (
                               <NativeSelectOption key={index} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
-                            )
+                            );
                           })}
                         </NativeSelect>
                       </Gcol>
                     </Gcol>
                     <div
                       className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                      ref={el => { scrollRefs.current[i + 1] = el; }}
-                      onScroll={e => handleSyncScroll(i + 1, e)}
+                      ref={(el) => {
+                        scrollRefs.current[i + 1] = el;
+                      }}
+                      onScroll={(e) => handleSyncScroll(i + 1, e)}
                     >
                       <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
                         {columnDefs.map((column, index) => {
@@ -433,7 +480,6 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Gcol>
                 </CardBox>
               ))}
-             
             </Grow>
           </Grid>
         </DialogSection>
@@ -455,5 +501,5 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-);
+  );
 };

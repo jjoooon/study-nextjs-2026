@@ -4,6 +4,7 @@
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { t } from 'i18next';
 import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -25,9 +26,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Ltpz03201 } from './Ltpz03201';
 import { DummyDataType } from '../../data/ltpa020Data';
-import { t } from 'i18next';
+import { Ltpz03201 } from './Ltpz03201';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -136,7 +136,7 @@ const DummyData11: DummyDataType11[] = [
 // Tab1-2
 type DummyDataType12 = {
   id: number;
-  isCheck: boolean,
+  isCheck: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -1246,84 +1246,83 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
               renderTab={(tab) => <span>{tab.label}</span>}
               renderDropdownItem={false}
             >
-              
               {active === 'tab1' ? (
-                  <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={5}>
-                    <TableFold className="">
-                      <TableFoldHead title="일반/건강고지" />
-                      <TableFoldBody>
-                        <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
-                          <AgGridReact<DummyDataType11>
-                            getRowId={(params) => String(params.data.id)}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            rowData={DummyData11}
-                            columnDefs={columnDefs11}
-                            defaultColDef={{
-                              sortable: true,
-                              resizable: true,
-                              cellClass: 'text-center',
-                            }}
-                            // selection 설정
-                            rowSelection={{
-                              mode: 'singleRow',
-                              checkboxes: true,
-                              enableClickSelection: false,
-                            }}
-                            selectionColumnDef={{
-                              headerName: '선택',
-                              cellClass: 'text-center editable-cell',
-                            }}
-                            domLayout="normal"
-                            tooltipShowMode="whenTruncated"
-                            tooltipShowDelay={0}
-                          />
-                        </div>
-                      </TableFoldBody>
-                    </TableFold>
-                    <TableFold className=''>
-                      <TableFoldHead title="간편고지" />
-                      <TableFoldBody>
-                        <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
-                          <AgGridReact<DummyDataType12>
-                            getRowId={(params) => String(params.data.id)}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            rowData={DummyData12}
-                            columnDefs={columnDefs12}
-                            defaultColDef={{
-                              sortable: true,
-                              resizable: true,
-                              cellClass: 'text-center',
-                            }}
-                            // selection 설정
-                            rowSelection={{
-                              mode: 'singleRow',
-                              checkboxes: true,
-                              enableClickSelection: false,
-                            }}
-                            selectionColumnDef={{
-                              headerName: '선택',
-                              cellClass: 'text-center editable-cell',
-                            }}
-                            domLayout="normal"
-                            tooltipShowMode="whenTruncated"
-                            tooltipShowDelay={0}
-                          />
-                        </div>
-                      </TableFoldBody>
-                    </TableFold>
-                    <Gcol className="w-full" placement="ss" variant="box-warning">
-                      <Typo icon="warning" variant="body-sm">
-                        최근 1개월이내 설계번호(유형별 최대 5개) 표시
-                      </Typo>
-                      <Typo icon="warning" variant="body-sm">
-                        질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
-                      </Typo>
-                      <Typo icon="warning" variant="body-sm">
-                        실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
-                        피보험자에게 최종확인하셔야 합니다.
-                      </Typo>
-                    </Gcol>
-                  </Grid>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={5}>
+                  <TableFold className="">
+                    <TableFoldHead title="일반/건강고지" />
+                    <TableFoldBody>
+                      <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
+                        <AgGridReact<DummyDataType11>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={DummyData11}
+                          columnDefs={columnDefs11}
+                          defaultColDef={{
+                            sortable: true,
+                            resizable: true,
+                            cellClass: 'text-center',
+                          }}
+                          // selection 설정
+                          rowSelection={{
+                            mode: 'singleRow',
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '선택',
+                            cellClass: 'text-center editable-cell',
+                          }}
+                          domLayout="normal"
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
+                        />
+                      </div>
+                    </TableFoldBody>
+                  </TableFold>
+                  <TableFold className="">
+                    <TableFoldHead title="간편고지" />
+                    <TableFoldBody>
+                      <div className="ag-theme-alpine w-full radio-selection min-h-[13rem]">
+                        <AgGridReact<DummyDataType12>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={DummyData12}
+                          columnDefs={columnDefs12}
+                          defaultColDef={{
+                            sortable: true,
+                            resizable: true,
+                            cellClass: 'text-center',
+                          }}
+                          // selection 설정
+                          rowSelection={{
+                            mode: 'singleRow',
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '선택',
+                            cellClass: 'text-center editable-cell',
+                          }}
+                          domLayout="normal"
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
+                        />
+                      </div>
+                    </TableFoldBody>
+                  </TableFold>
+                  <Gcol className="w-full" placement="ss" variant="box-warning">
+                    <Typo icon="warning" variant="body-sm">
+                      최근 1개월이내 설계번호(유형별 최대 5개) 표시
+                    </Typo>
+                    <Typo icon="warning" variant="body-sm">
+                      질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
+                    </Typo>
+                    <Typo icon="warning" variant="body-sm">
+                      실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
+                      피보험자에게 최종확인하셔야 합니다.
+                    </Typo>
+                  </Gcol>
+                </Grid>
               ) : (
                 <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_1fr_auto]" gap={5}>
                   {/* Tab2-1 일반고지 */}
@@ -1354,7 +1353,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           domLayout="normal"
                           tooltipShowMode="whenTruncated"
                           tooltipShowDelay={0}
-                          />
+                        />
                       </div>
                     </TableFoldBody>
                   </TableFold>

@@ -227,8 +227,16 @@ export function IAListWithPreview() {
               const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
               const isIng = ingIdSet.has(row.id) || ingIdSet.has(row.subId ?? '');
               const isWork = workIdSet.has(row.id) || workIdSet.has(row.subId ?? '');
-              const rowBgClass = isWork ? 'bg-[#dbeafe]! tracking-0' : isIng ? 'bg-[#fff3cd]! tracking-0' : 'tracking-0';
-              const rowIdBgClass = isWork ? 'bg-[#bfdbfe]! tracking-0' : isIng ? 'bg-[#c5bfbf]! tracking-0' : 'tracking-0';
+              const rowBgClass = isWork
+                ? 'bg-[#dbeafe]! tracking-0'
+                : isIng
+                  ? 'bg-[#fff3cd]! tracking-0'
+                  : 'tracking-0';
+              const rowIdBgClass = isWork
+                ? 'bg-[#bfdbfe]! tracking-0'
+                : isIng
+                  ? 'bg-[#c5bfbf]! tracking-0'
+                  : 'tracking-0';
               const isInspected = [row.id, row.subId]
                 .filter(Boolean)
                 .some((id) => inspectionList.some((insp) => insp.toLowerCase() === String(id).toLowerCase()));
@@ -243,7 +251,7 @@ export function IAListWithPreview() {
                   <td className={rowBgClass}>
                     <b>{index + 1}</b>
                   </td>
-                  <td className={rowBgClass+ ' '}>
+                  <td className={rowBgClass + ' '}>
                     <b>{row.path ?? ''}</b>
                   </td>
                   <th scope="row" className={rowIdBgClass}>
@@ -275,7 +283,7 @@ export function IAListWithPreview() {
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{row.modify}</b>
                   </td> */}
-{/* 
+                  {/* 
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.dev}</td> */}

@@ -217,62 +217,60 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold>
             <TableFoldHead title="계약전환용 실손의료비(갱신형)" />
             <TableFoldBody className="grid-rows-[auto_1fr] gap-2">
-                <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'피보험자'}>김한화(901231-1234567)</FormCell>
-                  </FormRow>
-                </FormTable>
-                <Gcol className="w-full" gap={4}>
-                  <div className="ag-theme-alpine min-h-[12.5rem]">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: true,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      rowClassRules={{}}
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      enableCellSpan={true}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
-                  <Gcol className="w-full" placement="ss" variant="box-detail">
-                    <Typo icon="detail" variant="body-sm">
-                      전환전 계약과 동일한 조건(담보, 가입금액 등)으로 전환용 계약 설계에 반영됩니다.
-                    </Typo>
-                    <Typo icon="detail" variant="body-sm">
-                      전환전 계약에 「특정 신체부위 질병 보장제한부 인수 특별약관」, 「특별조건부 특별약관」 등이
-                      부가되어 있을 경우, 전환용 계약에 전환전 계약의 조건과 동일하게 부가하여 효력을 갖출 수
-                      있습니다.
-                    </Typo>
-                    <Typo icon="detail" variant="body-sm">
-                      <b>
-                        전환전 계약의 해약일 또는 변경기준일자와 전환후 신계약 보험시기가 동일하여야 청약완료
-                        가능합니다.
-                      </b>
-                    </Typo>
-                    <Typo icon="detail" variant="body-sm">
-                      <b>전환용 신계약 설계유효기간은 전환전 계약 의료비 담보의 보험종기까지입니다.</b>
-                    </Typo>
-                  </Gcol>
+              <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
+                <FormRow>
+                  <FormCell title={'피보험자'}>김한화(901231-1234567)</FormCell>
+                </FormRow>
+              </FormTable>
+              <Gcol className="w-full" gap={4}>
+                <div className="ag-theme-alpine min-h-[12.5rem]">
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                    }}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: true,
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    rowClassRules={{}}
+                    onGridReady={(params) => {
+                      params.api.forEachNode((node) => {
+                        if (node.data?.isCheck) {
+                          node.setSelected(true);
+                        }
+                      });
+                    }}
+                    enableCellSpan={true}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
+                <Gcol className="w-full" placement="ss" variant="box-detail">
+                  <Typo icon="detail" variant="body-sm">
+                    전환전 계약과 동일한 조건(담보, 가입금액 등)으로 전환용 계약 설계에 반영됩니다.
+                  </Typo>
+                  <Typo icon="detail" variant="body-sm">
+                    전환전 계약에 「특정 신체부위 질병 보장제한부 인수 특별약관」, 「특별조건부 특별약관」 등이 부가되어
+                    있을 경우, 전환용 계약에 전환전 계약의 조건과 동일하게 부가하여 효력을 갖출 수 있습니다.
+                  </Typo>
+                  <Typo icon="detail" variant="body-sm">
+                    <b>
+                      전환전 계약의 해약일 또는 변경기준일자와 전환후 신계약 보험시기가 동일하여야 청약완료 가능합니다.
+                    </b>
+                  </Typo>
+                  <Typo icon="detail" variant="body-sm">
+                    <b>전환용 신계약 설계유효기간은 전환전 계약 의료비 담보의 보험종기까지입니다.</b>
+                  </Typo>
                 </Gcol>
+              </Gcol>
             </TableFoldBody>
           </TableFold>
         </DialogSection>

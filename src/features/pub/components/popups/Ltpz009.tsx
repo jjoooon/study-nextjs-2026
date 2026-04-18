@@ -169,7 +169,7 @@ export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Typo tag={'h3'} variant={'heading-sm'}>
                 메모 입력
               </Typo>
-              <Textarea className='w-full' placeholder="제목을 입력해주세요." maxLength={4000} resize={false} />              
+              <Textarea className="w-full" placeholder="제목을 입력해주세요." maxLength={4000} resize={false} />
             </Gcol>
 
             <Gcol placement={'ss'} variant={'box-warning'}>

@@ -1,25 +1,25 @@
 'use client';
 
-import { BottomBar } from '@common/BottomBar';
-import { PageID } from '@features/PageID';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import type { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
+import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend  } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Checkbox } from '@uiux/Checkbox';
-import { TableMore } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -168,7 +168,9 @@ function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
   type PropsWithRef = ICellEditorParams<DummyDataType> & { forwardedRef?: React.Ref<CellEditorRef> };
   const propsWithRef = props as unknown as PropsWithRef;
 
-  React.useEffect(() => { setValue(String(props.value ?? '')); }, [props.value]);
+  React.useEffect(() => {
+    setValue(String(props.value ?? ''));
+  }, [props.value]);
   React.useImperativeHandle(
     propsWithRef.forwardedRef,
     () => ({ getValue: () => value, isCancelAfterEnd: () => false }),
@@ -193,21 +195,20 @@ function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
           size={'md'}
           color={'gray-light'}
           onMouseDown={(e) => e.stopPropagation()}
-          onClick={() => { /* 검색 로직 */ }}
+          onClick={() => {
+            /* 검색 로직 */
+          }}
         >
           <SearchIcon color={'var(--color-primary-50)'} />
         </Button>
       </Grow>
-      <div className="w-full truncate min-w-0 px-1">
-        {String(props.data?.field03 ?? '')}
-      </div>
-      
+      <div className="w-full truncate min-w-0 px-1">{String(props.data?.field03 ?? '')}</div>
     </Grid>
   );
 }
 
 export default function Ltpa030Section() {
-   const columnDefs: ColDef<DummyDataType>[] = [
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '체크단계',
       field: 'field01',
@@ -272,7 +273,7 @@ export default function Ltpa030Section() {
       width: 70,
       editable: true,
       cellClass: 'editable-cell',
-      cellRenderer: 'agCheckboxCellRenderer', 
+      cellRenderer: 'agCheckboxCellRenderer',
       cellEditor: 'agCheckboxCellEditor',
     },
     {
@@ -304,11 +305,7 @@ export default function Ltpa030Section() {
       cellClass: 'editable-cell p-0! text-center field02-cell',
       cellRenderer: createFieldRenderer<DummyDataType2>(
         'field02',
-        (data?: DummyDataType2) => (
-          <div className="w-full truncate min-w-0 px-1">
-            {data?.field03}
-          </div>
-        ),
+        (data?: DummyDataType2) => <div className="w-full truncate min-w-0 px-1">{data?.field03}</div>,
         'row'
       ),
       cellEditor: Field02CellEditor,
@@ -375,7 +372,7 @@ export default function Ltpa030Section() {
     allRows: DummyData2,
     pageSize,
   });
-    
+
   return (
     <>
       <LayoutHead>
@@ -383,7 +380,7 @@ export default function Ltpa030Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className='w-full' gap={4}>
+          <Gcol className="w-full" gap={4}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
@@ -490,7 +487,7 @@ export default function Ltpa030Section() {
                 </div>
               </TableFoldBody>
             </TableFold>
-    
+
             <TableFold>
               <TableFoldHead title="추가 등록사항(수납후스캔)">
                 <Grow>
@@ -504,48 +501,48 @@ export default function Ltpa030Section() {
               </TableFoldHead>
               <TableFoldBody>
                 <Gcol>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType2>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData2}
-                    columnDefs={columnDefs2}
-                    domLayout="autoHeight"
-                    enableCellSpan={true}
-                    singleClickEdit={true}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: false,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '√',
-                      width: 30,
-                    }}
-                    onGridReady={(params) => {
-                      params.api.forEachNode((node) => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                    onCellValueChanged={(params) => {
-                      const field = params.colDef.field;
-                      if (!field) return;
-                      setRowData2((prev) =>
-                        prev.map((row) => (row.id === params.data.id ? { ...row, [field]: params.newValue } : row))
-                      );
-                    }}
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData2}
+                      columnDefs={columnDefs2}
+                      domLayout="autoHeight"
+                      enableCellSpan={true}
+                      singleClickEdit={true}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '√',
+                        width: 30,
+                      }}
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      onCellValueChanged={(params) => {
+                        const field = params.colDef.field;
+                        if (!field) return;
+                        setRowData2((prev) =>
+                          prev.map((row) => (row.id === params.data.id ? { ...row, [field]: params.newValue } : row))
+                        );
+                      }}
+                    />
+                  </div>
+                  <TableMore
+                    loadedCount={loadedCount}
+                    totalCount={totalCount}
+                    pageSize={pageSize}
+                    onLoadAll={handleLoadAll}
+                    onLoadNext={handleLoadNext}
                   />
-                </div>
-                <TableMore
-                  loadedCount={loadedCount}
-                  totalCount={totalCount}
-                  pageSize={pageSize}
-                  onLoadAll={handleLoadAll}
-                  onLoadNext={handleLoadNext}
-                />
                 </Gcol>
               </TableFoldBody>
             </TableFold>
@@ -553,7 +550,7 @@ export default function Ltpa030Section() {
         }
         mainFoot={
           <MainBottom>
-            <MainBottomItem className='justify-end'>
+            <MainBottomItem className="justify-end">
               <Grow gap={1}>
                 <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   저장

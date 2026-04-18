@@ -6,7 +6,12 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter, DatePickerCellEditor } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  createTooltipValueGetter,
+  DatePickerCellEditor,
+} from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -275,7 +280,7 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
           <TableFold>
             <TableFoldHead title="등록사항">
-             <Grow>
+              <Grow>
                 <Button color="gray" variant="outlined">
                   행추가
                 </Button>

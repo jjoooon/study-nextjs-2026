@@ -27,7 +27,7 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SelectDropIcon, SizeIcon } from '@icons';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -259,7 +259,8 @@ interface DummyDataType {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field1: '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험',
+    field1:
+      '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험',
     field2: true,
     field3: 500,
     field3Required: true, // 필수 여부 설정
@@ -337,15 +338,14 @@ const planAccordionItems: PlanAccordionItem[] = [
   },
 ];
 
-
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-type AgGridRow = (DummyDataType & {
+type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
-});
+};
 
 interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
@@ -354,11 +354,7 @@ interface Ltpa350Step2Props {
   viewKey: ViewKey;
 }
 
-export function Ltpa350Step2({
-  onSelectPlan,
-  isWidthExpanded = false,
-  setIsWidthExpanded,
-}: Ltpa350Step2Props) {
+export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -390,39 +386,29 @@ export function Ltpa350Step2({
     ...item,
     value: String(item.id),
   }));
-  const {
-    tabs: Tabs,
-    active: TabActive,
-    setActive: TabSetActive,
-    handleRemove 
-  } = useTabs<TabDataType>(stringifiedTabs);
-
+  const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
   // 3) Grid data
   const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
-
 
   // 중복 행 자동 선택 / 선택 해제 시 삭제 추적
   const pendingSelectIdRef = useRef<number | null>(null);
   const prevSelectedIdsRef = useRef<Set<number>>(new Set());
 
   // setRowData를 래핑하여 새로 삽입된 중복 행 id를 pendingSelectIdRef에 저장
-  const setRowDataWithTracking = useCallback(
-    (updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
-      setRowData((prev) => {
-        const next = typeof updater === 'function' ? updater(prev) : updater;
-        if (next.length > prev.length) {
-          const prevIds = new Set(prev.map((r) => r.id));
-          const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
-          if (newDuplicate) {
-            pendingSelectIdRef.current = newDuplicate.id;
-          }
+  const setRowDataWithTracking = useCallback((updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
+    setRowData((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      if (next.length > prev.length) {
+        const prevIds = new Set(prev.map((r) => r.id));
+        const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
+        if (newDuplicate) {
+          pendingSelectIdRef.current = newDuplicate.id;
         }
-        return next;
-      });
-    },
-    []
-  );
+      }
+      return next;
+    });
+  }, []);
 
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
@@ -460,13 +446,7 @@ export function Ltpa350Step2({
           <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
-          <Button
-            aria-label="담보명 초기화"
-            variant={'outlined'}
-            color={'gray-light'}
-            only={'icon'}
-            size={'md'}
-          >
+          <Button aria-label="담보명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <ResetIcon color={'var(--color-primary-50)'} />
           </Button>
         </Grow>
@@ -520,7 +500,7 @@ export function Ltpa350Step2({
     } else {
       const originId = params.data.displayNo;
       const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
-      
+
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
           <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
@@ -766,7 +746,7 @@ export function Ltpa350Step2({
         headerName: '만기',
         field: 'field5',
         width: attributeColumnWidth[2],
-        cellClassRules: editableCellClassRules, 
+        cellClassRules: editableCellClassRules,
         editable: getEditableCallback('whenSelected'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -1187,7 +1167,6 @@ export function Ltpa350Step2({
               </MainBottomItem>
             </MainBottom>
           </LayoutMainFoot>
-      
         </LayoutMain>
       </form>
     </LayoutMainBody>

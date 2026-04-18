@@ -135,10 +135,7 @@ export default function Ltpa301Section() {
               <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                 <FormRow>
                   <FormCell title={'증권번호'}>
-                    <Input
-                      aria-label="증권번호 입력"
-                      width={160}
-                    />
+                    <Input aria-label="증권번호 입력" width={160} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
@@ -166,20 +163,11 @@ export default function Ltpa301Section() {
               <TableFold variant={'accordion'}>
                 <TableFoldHead title="정액담보점검내역" />
                 <TableFoldBody>
-                  <FormTable
-                    caption="정액담보점검내역 테이블"
-                    cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}
-                  >
+                  <FormTable caption="정액담보점검내역 테이블" cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}>
                     <FormRow>
                       <FormCell title={'증권번호'}>
                         <Input aria-label="증권번호 입력" width={160} readOnly />
-                        <Button
-                          aria-label="검색"
-                          variant={'outlined'}
-                          only="icon"
-                          size={'md'}
-                          color={'gray-light'}
-                        >
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <ArrowNext color={'var(--color-primary-50)'} />
                         </Button>
                       </FormCell>

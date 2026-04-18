@@ -152,7 +152,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '계약자',
       width: 80,
       field: 'field05',
-      cellClass: 'text-center', 
+      cellClass: 'text-center',
       autoHeight: true,
     },
     {

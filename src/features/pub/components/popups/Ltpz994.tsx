@@ -4,8 +4,8 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Button } from '@uiux/Button';
 import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -46,7 +46,6 @@ export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
               className="flex justify-start h-[24rem] bg-[#FFF5F3] border border-dashed border-[var(--color-primary-50)] gap-2"
             >
               <Gcol className="w-full min-h-{17rem} overflow-y-auto overflow-x-hidden justify-start">
-                
                 {fileList.map((file, index) => (
                   <FileDownLoad
                     key={index}
@@ -55,16 +54,15 @@ export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
                     fileAddress={file.fileAddress}
                   />
                 ))}
-
               </Gcol>
             </Gcol>
             <Grow className="w-full justify-end">
               <Typo variant={'body-sm'}>
-                파일 
+                파일
                 <Typo tag={'span'} className="text-[var(--color-primary-50)]">
                   {fileList.length}
                 </Typo>
-                개 / 
+                개 /
                 <Typo tag={'span'} className="text-[var(--color-primary-50)]">
                   {formatTotalFileSize(fileList)}
                 </Typo>

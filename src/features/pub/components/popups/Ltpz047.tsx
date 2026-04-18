@@ -2,6 +2,7 @@
 // 권오택
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import * as React from 'react';
+import { EssentialIcon } from '@/shared/components/icons/CommonIcons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -20,7 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { EssentialIcon } from '@/shared/components/icons/CommonIcons';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -199,7 +199,12 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </FormRow>
                 <FormRow>
                   <FormCell
-                    title={<Grow placement='sc'><span>종업원담보업종</span><EssentialIcon /></Grow>}
+                    title={
+                      <Grow placement="sc">
+                        <span>종업원담보업종</span>
+                        <EssentialIcon />
+                      </Grow>
+                    }
                     titleColSpan={2}
                     colSpan={4}
                   ></FormCell>

@@ -1,19 +1,20 @@
 'use client';
 
-import * as React from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useState } from 'react';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-
 import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { Input } from '@/shared/components/uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+
 import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -35,7 +36,6 @@ import {
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
@@ -44,7 +44,6 @@ type DummyDataType = {
   field1: string;
   field2: string;
   field3: string[];
-
 };
 const DummyData: DummyDataType[] = [
   {
@@ -175,7 +174,7 @@ const DataTabs = [
   { label: '대장·직장용종', value: 'TAB3' },
   { label: '추간판장애', value: 'TAB4' },
   { label: '어깨병변', value: 'TAB5' },
-]
+];
 
 export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
@@ -232,25 +231,35 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
         // "척추" 단어를 <b className="font-bold">로 감싸기
         const parts = field2.split(new RegExp(`(${searchWord})`, 'g'));
         return (
-          <Grow className='w-full' placement='bwc' gap={2}>
-            <div className='truncate-no'>
+          <Grow className="w-full" placement="bwc" gap={2}>
+            <div className="truncate-no">
               {parts.map((part, idx) =>
                 part === searchWord ? (
-                  <b key={idx} className="font-bold">{part}</b>
+                  <b key={idx} className="font-bold">
+                    {part}
+                  </b>
                 ) : (
                   <React.Fragment key={idx}>{part}</React.Fragment>
                 )
               )}
             </div>
-            <Grow className="gap-[0.2rem] mt-1 shrink-0" placement='ec'>
-              {field3.includes('할증') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-danger-50)]"></div>}
-              {field3.includes('부담보') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-success-60)]"></div>}
-              {field3.includes('SI경증') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-information-50)]"></div>}
-              {field3.includes('SI경증(감액)') && <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-warning-40)]"></div>}
+            <Grow className="gap-[0.2rem] mt-1 shrink-0" placement="ec">
+              {field3.includes('할증') && (
+                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-danger-50)]"></div>
+              )}
+              {field3.includes('부담보') && (
+                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-success-60)]"></div>
+              )}
+              {field3.includes('SI경증') && (
+                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-information-50)]"></div>
+              )}
+              {field3.includes('SI경증(감액)') && (
+                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-warning-40)]"></div>
+              )}
             </Grow>
           </Grow>
         );
-      }
+      },
     },
   ];
 
@@ -319,10 +328,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grow>
                 <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]">
                   <Grow className="w-full">
-                    <Input
-                      placeholder="병명 또는 코드 입력"
-                      className="w-full"
-                    />
+                    <Input placeholder="병명 또는 코드 입력" className="w-full" />
                     <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
@@ -332,11 +338,20 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       총 <b className="text-[var(--color-primary-50)]">18건</b>
                     </Typo>
                   </Grow>
-                  <Grow className='text-[1.1rem] w-full' placement='sc'>
-                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증</Grow>
-                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보</Grow>
-                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>SI검증</Grow>
-                    <Grow placement='sc'><div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>SI경증(감액)</Grow>
+                  <Grow className="text-[1.1rem] w-full" placement="sc">
+                    <Grow placement="sc">
+                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
+                    </Grow>
+                    <Grow placement="sc">
+                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
+                    </Grow>
+                    <Grow placement="sc">
+                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>SI검증
+                    </Grow>
+                    <Grow placement="sc">
+                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
+                      SI경증(감액)
+                    </Grow>
                   </Grow>
 
                   <div className="ag-theme-alpine min-h-[36rem] ">
@@ -346,7 +361,6 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       rowData={rowData}
                       columnDefs={columnDefs}
                       domLayout="normal"
-      
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                     />
@@ -383,7 +397,6 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             <FormRow vertical={false}>
                               <FormCell title={'병명'}>
                                 <Grow placement={'bwc'}>
-
                                   {active === 'TAB1' ? (
                                     <Grow placement={'sc'}>
                                       척추염좌
@@ -730,7 +743,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               ];
                               const groups: React.ReactNode[] = [];
                               for (let i = 0; i < items.length; i += 3) {
-                                let idx = i;
+                                const idx = i;
                                 const isEtcGroup = i === 6;
                                 groups.push(
                                   <>
@@ -738,21 +751,27 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                                       key={i}
                                       className={
                                         isEtcGroup
-                                          ? "w-full min-h-[3.8rem]"
-                                          : "grid grid-cols-3 gap-3 w-full min-h-[3.8rem]"
+                                          ? 'w-full min-h-[3.8rem]'
+                                          : 'grid grid-cols-3 gap-3 w-full min-h-[3.8rem]'
                                       }
                                     >
                                       {items.slice(i, i + 3).map((item) => (
                                         <Grow key={item.value} gap={3} placement="bwc" className="w-full">
                                           <CheckboxGroupItem value={item.value}>{item.label}</CheckboxGroupItem>
-                                          
+
                                           {item.value === '한방치료' && (
-                                            <Button variant={'outlined'} size={'md'} color={'gray'}>기타</Button>
+                                            <Button variant={'outlined'} size={'md'} color={'gray'}>
+                                              기타
+                                            </Button>
                                           )}
                                           {item.value === '기타' && (
-                                            <Input aria-label="기타 치료 입력" value={''} readOnly className="w-[57.4rem]" />
+                                            <Input
+                                              aria-label="기타 치료 입력"
+                                              value={''}
+                                              readOnly
+                                              className="w-[57.4rem]"
+                                            />
                                           )}
-
                                         </Grow>
                                       ))}
                                     </Grid>
@@ -773,10 +792,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             <FormRow vertical={false}>
                               <FormCell title={'발생부위'}>
                                 <Grow className="w-full" gap={3} placement="sc">
-                                  <RadioGroup
-                                    className="gap-3"
-                                    onValueChange={() => {}}
-                                  >
+                                  <RadioGroup className="gap-3" onValueChange={() => {}}>
                                     {[
                                       { value: '경추', label: '경추' },
                                       { value: '흉추', label: '흉추' },
@@ -794,10 +810,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             </FormRow>
                             <FormRow>
                               <FormCell title={'발생원인'}>
-                                <RadioGroup
-                                  className="gap-3"
-                                  onValueChange={() => {}}
-                                >
+                                <RadioGroup className="gap-3" onValueChange={() => {}}>
                                   {[
                                     { value: '교통사고 外원인', label: '교통사고 外원인' },
                                     { value: '교통사고 원인', label: '교통사고 원인' },

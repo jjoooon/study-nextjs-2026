@@ -30,28 +30,13 @@ export const Ltpa3500209 = ({ open, onOpenChange }: PopupBaseProps) => {
               복사할 기능을 선택하세요.
             </Typo>
             <Gcol className="w-full text-center" gap={1}>
-              <Button
-                style={{ width: '20rem' }}
-                onClick={() => {}}
-                size="xl"
-                variant="outlined"
-              >
+              <Button style={{ width: '20rem' }} onClick={() => {}} size="xl" variant="outlined">
                 현재고객으로 복사
               </Button>
-              <Button
-                style={{ width: '20rem' }}
-                onClick={() => {}}
-                size="xl"
-                variant="outlined"
-              >
+              <Button style={{ width: '20rem' }} onClick={() => {}} size="xl" variant="outlined">
                 신규 고객으로 복사 (간편 설계)
               </Button>
-              <Button
-                style={{ width: '20rem' }}
-                onClick={() => {}}
-                size="xl"
-                variant="outlined"
-              >
+              <Button style={{ width: '20rem' }} onClick={() => {}} size="xl" variant="outlined">
                 다태아연계 복사
               </Button>
             </Gcol>

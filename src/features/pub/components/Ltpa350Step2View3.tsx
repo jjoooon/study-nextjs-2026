@@ -1,41 +1,30 @@
 'use client';
 
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-
-import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import type { CellClassParams, ColDef, ICellRendererParams, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { TooltipQ } from '@/shared/components/common/TooltipQ';
-import { Accordion } from '@/shared/components/uiux/Accordion';
 import { useTabs } from '@/shared/hooks/useTabs';
 import {
-  amountUnitInputCellRenderer,
   editableSelectCellRenderer,
   numberValueFormatter,
-  createInsertCopiedRowButtonCellRenderer,
-  createSelectionChangedHandler,
-  createCellClickSelectionToggleHandler,
   createTooltipValueGetter,
   createEditableCallback,
-  createCellErrorClassRules,
   useDynamicPx,
 } from '@aggrid';
-import { Grow, Gcol, Typo, Divider } from '@atoms';
+import { Grow, Typo, Divider, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
-import { HashList } from '@common/HashList';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
-import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SelectDropIcon, SizeIcon } from '@icons';
+import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
-import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -115,7 +104,7 @@ const DummyData: DummyDataType[] = [
     field7: '아니오',
     field8: '가연성',
   },
-]
+];
 
 interface DummyData2Type {
   id: number;
@@ -145,7 +134,8 @@ const DummyData2: DummyData2Type[] = [
     id: 2,
     isChecked: false,
     field1: '배상책임',
-    field2: '보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)',
+    field2:
+      '보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)',
     field3: true,
     field4: 100,
     field5: '20년',
@@ -174,39 +164,29 @@ const DummyData2: DummyData2Type[] = [
     field6: '전기납',
     field7: 0,
   },
-]
+];
 
-type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-
-type AgGridRow = (DummyDataType & {
+type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
-});
+};
 
-type AgGridRow2 = (DummyData2Type & {
+type AgGridRow2 = DummyData2Type & {
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
-});
+};
 
-interface Ltpa350Step2Props {
-  onSelectPlan?: (planId: number) => void;
-  isWidthExpanded?: boolean;
-  setIsWidthExpanded?: (value: boolean) => void;
-  viewKey: ViewKey;
-}
-
-export function Ltpa350Step2({}: Ltpa350Step2Props) {
+export function Ltpa350Step2View3() {
   // 1) INLINED STATE (default)
-  const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [gridKey, setGridKey] = useState(0);
+  const [, setGridKey] = useState<number>(0);
   const handleActionButtonClick = useCallback(() => {}, []);
   const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
     setCheckedMap((map) => ({ ...map, [key]: !!checked }));
@@ -225,7 +205,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
     () => [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180],
     [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180]
   );
-  
+
   // 2) Tabs/rowData 분기
   const tabListData = TabData;
   const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({
@@ -236,13 +216,13 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
     tabs: Tabs,
     active: TabActive,
     setActive: TabSetActive,
-    handleRemove 
+    handleRemove,
   } = useTabs<TabDataType>(stringifiedTabs);
-  
+
   // 3) Grid data
-  const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
-  const [rowData2, setRowData2] = useState<AgGridRow2[]>(DummyData2);
-  
+  const [rowData] = useState<AgGridRow[]>(DummyData);
+  const [rowData2] = useState<AgGridRow2[]>(DummyData2);
+
   // rowData의 isChecked가 true인 row를 자동 선택
   const gridRef = useRef<AgGridReact<AgGridRow>>(null);
   const gridRef2 = useRef<AgGridReact<AgGridRow2>>(null);
@@ -264,16 +244,13 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
   }, [rowData, rowData2]);
 
   // ag-Grid가 완전히 준비된 후에도 체크박스 선택 보장
-  const handleGridReady = (params: any) => {
-    params.api.forEachNode((node: any) => {
+  const handleGridReady = (params: GridReadyEvent) => {
+    params.api.forEachNode((node: IRowNode<AgGridRow>) => {
       if (node.data && node.data.isChecked) {
         node.setSelected(true);
       }
     });
   };
-  // const [rowDatab, setRowDatab] = useState<AgGridRow[]>(Ltpa350Step2Data3.agGridTable2);
-  // ag-Grid ref
-  
 
   // rowData의 isChecked가 true인 row를 자동 선택
   useEffect(() => {
@@ -286,12 +263,11 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
     }
   }, [rowData]);
 
-
   const [coverageName, setCoverageName] = useState('');
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
-      if (!checked) setGridKey((key) => key + 1);
+      if (!checked) setGridKey((key: number) => key + 1);
     };
     return (
       <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
@@ -340,7 +316,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         </Grow>
       </Grow>
     );
-  }, [checkedMap, coverageName, showProductNameTooltip]);
+  }, [checkedMap, coverageName, showProductNameTooltip, setGridKey]);
 
   const editableCellClassRules = useMemo(
     () => ({
@@ -407,7 +383,6 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         cellClass: 'text-left',
         width: attributeColumnWidth[2],
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
-
       },
       {
         headerName: '가입금액(만원)',
@@ -417,7 +392,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         editable: true,
         valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter, 
+        valueFormatter: numberValueFormatter,
       },
       {
         headerName: '보험료(원)',
@@ -426,7 +401,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         cellClass: 'text-right editable-cell [&_input]:text-right',
         headerClass: 'px-0!',
         editable: true,
-        valueParser: params => Number(params.newValue) || 0,
+        valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
       {
@@ -483,13 +458,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         cellRenderer: expiryCellRenderer('left'),
       },
     ],
-    [
-      attributeColumnWidth,
-      productNameHeader,
-      editableCellClassRules,
-      expiryCellRenderer,
-      getEditableCallback,
-    ]
+    [attributeColumnWidth, productNameHeader, editableCellClassRules, expiryCellRenderer, getEditableCallback]
   );
   const columnDefs2: ColDef<AgGridRow2>[] = useMemo(
     () => [
@@ -525,7 +494,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter, 
+        valueFormatter: numberValueFormatter,
       },
       {
         headerName: '만기',
@@ -554,12 +523,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
         cellEditor: 'agSelectCellEditor',
       },
     ],
-    [
-      attributeColumnWidth,
-      productNameHeader,
-      getEditableCallback2,
-      expiryCellRenderer2,
-    ]
+    [attributeColumnWidth, productNameHeader, getEditableCallback2, expiryCellRenderer2]
   );
 
   const [amount, setAmount] = useState('0');
@@ -593,7 +557,7 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
                 <TooltipTrigger asChild>
                   <span className="flex items-center">
                     <span className="max-w-20 truncate block">{tab.name}</span>
-                    {tab.age && tab.gender && <span className="block">{`${tab.age}세(${tab.gender})`}</span>} 
+                    {tab.age && tab.gender && <span className="block">{`${tab.age}세(${tab.gender})`}</span>}
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" sideOffset={8}>
@@ -629,119 +593,119 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
           />
 
           <LayoutMainBody>
-            <LayoutScrollWrap className="grid-rows-[60%_1fr] gap-[2rem]">
-              <LayoutScrollItem className="w-full grid grid-rows-[auto_1fr]">
-                
-                <Grow placement={'bwc'} className="gap-1 w-full pb-1">
-                  <Grow className="gap-1.5">
-                    <Typo variant="heading-sm">화재기본담보</Typo>
-                    <Typo variant="body-md">(060400, (1))</Typo>
-                  </Grow>
-                  <Grow className="gap-2.5">
-                    <Grow className="gap-1">
-                      <NativeSelect
-                        aria-label="실손전부보상"
-                        width={140}
-                        size={'sm'}
-                        readOnly={false}
-                        required={false}
-                      >
-                        {[
-                          { label: '실손전부보상', value: '실손전부보상' },
-                          { label: '실손전부보상2', value: '실손전부보상2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.value} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                      <Button
-                        variant={'outlined'}
-                        color={'gray'}
-                        size={'md'}
-                      >
-                        가입설계도우미 알림톡발송
-                      </Button>
+            <ResizablePanelGroup orientation="vertical" className="w-full">
+              <ResizablePanel defaultSize={50}>
+                <Grid className="w-full grid grid-rows-[auto_1fr] h-full">
+                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                    <Grow className="gap-1.5">
+                      <Typo variant="heading-sm">화재기본담보</Typo>
+                      <Typo variant="body-md">(060400, (1))</Typo>
+                    </Grow>
+                    <Grow className="gap-2.5">
+                      <Grow className="gap-1">
+                        <NativeSelect
+                          aria-label="실손전부보상"
+                          width={140}
+                          size={'sm'}
+                          readOnly={false}
+                          required={false}
+                        >
+                          {[
+                            { label: '실손전부보상', value: '실손전부보상' },
+                            { label: '실손전부보상2', value: '실손전부보상2' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          가입설계도우미 알림톡발송
+                        </Button>
+                      </Grow>
                     </Grow>
                   </Grow>
-                </Grow>
 
-                <div className="ag-theme-alpine">
-                  <AgGridReact<AgGridRow>
-                    ref={gridRef}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    getRowId={(params) => String(params.data.id)}
-                    singleClickEdit={true}
-                    rowSelection={{
-                      mode: 'multiRow' as const,
-                      checkboxes: true,
-                      headerCheckbox: true,
-                      enableClickSelection: false,
-                      enableSelectionWithoutKeys: true,
-                    }}
-                    selectionColumnDef={{
-                      width: 30,
-                      cellClass: 'text-center p-0!',
-                      cellClassRules: {
-                        'pointer-events-none': (params) => !!params.data?.locked,
-                      },
-                    }}
-                    suppressRowHoverHighlight={false}
-                    domLayout="normal"
-                    tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                    tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                    tooltipMouseTrack={showProductNameTooltip ? true : undefined}
-                    onGridReady={handleGridReady}
-                  />
-                </div>
-              </LayoutScrollItem>
-              <LayoutScrollItem className="w-full grid grid-rows-[auto_1fr]">
-                <Grow placement={'bwc'} className="gap-1 w-full pb-1">
-                  <Grow className="gap-1.5">
-                    <Typo variant="heading-sm">화재특약담보</Typo>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<AgGridRow>
+                      ref={gridRef}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      getRowId={(params) => String(params.data.id)}
+                      singleClickEdit={true}
+                      rowSelection={{
+                        mode: 'multiRow' as const,
+                        checkboxes: true,
+                        headerCheckbox: true,
+                        enableClickSelection: false,
+                        enableSelectionWithoutKeys: true,
+                      }}
+                      selectionColumnDef={{
+                        width: 30,
+                        cellClass: 'text-center p-0!',
+                        cellClassRules: {
+                          'pointer-events-none': (params) => !!params.data?.locked,
+                        },
+                      }}
+                      suppressRowHoverHighlight={false}
+                      domLayout="normal"
+                      tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
+                      tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
+                      tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      onGridReady={handleGridReady}
+                    />
+                  </div>
+                </Grid>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={50}>
+                <Grid className="w-full grid grid-rows-[auto_1fr] h-full">
+                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                    <Grow className="gap-1.5">
+                      <Typo variant="heading-sm">화재특약담보</Typo>
+                    </Grow>
+                    <Grow className="gap-2.5">
+                      <Button color="gray" onClick={() => {}} only="default" size="md" variant="contained">
+                        질권설정
+                      </Button>
+                      <TooltipQ>
+                        {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
+                      </TooltipQ>
+                    </Grow>
                   </Grow>
-                  <Grow className="gap-2.5">
-                    <Button color="gray" onClick={() => {}} only="default" size="md" variant="contained">
-                      질권설정
-                    </Button>
-                    <TooltipQ>
-                      {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
-                    </TooltipQ>
-                  </Grow>
-                </Grow>
-                <div className="ag-theme-alpine h-80">
-                  <AgGridReact<AgGridRow2>
-                    ref={gridRef2}
-                    rowData={DummyData2}
-                    columnDefs={columnDefs2}
-                    getRowId={(params) => String(params.data.id)}
-                    singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
-                    rowSelection={{
-                      mode: 'multiRow' as const,
-                      checkboxes: true,
-                      headerCheckbox: false,
-                      enableClickSelection: false,
-                      enableSelectionWithoutKeys: true,
-                    }}
-                    enableCellSpan={true}
-                    selectionColumnDef={{
-                      width: 30,
-                      // pinned: 'left',
-                      cellClass: 'text-center p-0!',
-                      cellClassRules: {
-                        'pointer-events-none': (params) => !!params.data?.locked,
-                      },
-                    }}
-                    domLayout="normal"
-                    suppressRowHoverHighlight={false}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    onGridReady={handleGridReady}
-                  />
-                </div>
-              </LayoutScrollItem>      
-            </LayoutScrollWrap>
+                  <div className="ag-theme-alpine h-80">
+                    <AgGridReact<AgGridRow2>
+                      ref={gridRef2}
+                      rowData={DummyData2}
+                      columnDefs={columnDefs2}
+                      getRowId={(params) => String(params.data.id)}
+                      singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                      rowSelection={{
+                        mode: 'multiRow' as const,
+                        checkboxes: true,
+                        headerCheckbox: false,
+                        enableClickSelection: false,
+                        enableSelectionWithoutKeys: true,
+                      }}
+                      enableCellSpan={true}
+                      selectionColumnDef={{
+                        width: 30,
+                        // pinned: 'left',
+                        cellClass: 'text-center p-0!',
+                        cellClassRules: {
+                          'pointer-events-none': (params) => !!params.data?.locked,
+                        },
+                      }}
+                      domLayout="normal"
+                      suppressRowHoverHighlight={false}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      onGridReady={handleGridReady}
+                    />
+                  </div>
+                </Grid>
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </LayoutMainBody>
           <LayoutMainFoot>
             <MainBottom>
@@ -848,7 +812,6 @@ export function Ltpa350Step2({}: Ltpa350Step2Props) {
               </MainBottomItem>
             </MainBottom>
           </LayoutMainFoot>
-    
         </LayoutMain>
       </form>
     </LayoutMainBody>

@@ -5,12 +5,13 @@ import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams 
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
+import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 import { AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -24,7 +25,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -251,7 +251,6 @@ const violationRowData3: UnderwritingViolationRow3[] = [
     details: '[한화NEWRICH간병입원플랜]',
   },
 ];
-
 
 export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
   type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'target' | 'criteria'>;
@@ -538,7 +537,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                 AI자동해소
               </Button>
             }
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
+            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
               <Button
                 variant="text"
                 key={String(tab.value)}
@@ -550,9 +549,8 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                     setVisibleStart(page * visibleCount);
                   }
                 }}
-              >
-              </Button>
-              )}
+              ></Button>
+            )}
           >
             {active === 'tab1' ? (
               <>
@@ -575,7 +573,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
               </>
             ) : active === 'tab2' ? (
               <>
-                {/* TAB2 */ }
+                {/* TAB2 */}
                 <div className="ag-theme-alpine ag-border-t">
                   <AgGridReact<UnderwritingViolationRow2>
                     getRowId={(params) => String(params.data.id)}
@@ -584,7 +582,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={spanColumnDefs2}
                     defaultColDef={spanDefaultColDef}
                     domLayout="autoHeight"
-                    enableCellSpan={true} 
+                    enableCellSpan={true}
                     onGridReady={(params) => {
                       gridApiRef.current = params.api;
                     }}
@@ -594,7 +592,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
               </>
             ) : active === 'tab3' ? (
               <>
-                {/* TAB3 */ }
+                {/* TAB3 */}
                 <div className="ag-theme-alpine ag-border-t">
                   <AgGridReact<UnderwritingViolationRow3>
                     getRowId={(params) => String(params.data.id)}
@@ -603,8 +601,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={spanColumnDefs3}
                     defaultColDef={spanDefaultColDef}
                     domLayout="autoHeight"
-                    
-                    enableCellSpan={true} 
+                    enableCellSpan={true}
                     onGridReady={(params) => {
                       gridApiRef.current = params.api;
                     }}
@@ -612,8 +609,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
                   />
                 </div>
               </>
-            ) 
-            : null}
+            ) : null}
           </TabPager>
         </DialogSection>
 

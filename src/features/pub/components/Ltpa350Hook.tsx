@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { Grow, Divider } from '@atoms';
+import { SearchIcon, ResetIcon } from '@icons';
+import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
-import { Button } from '@uiux/Button';
-import { SearchIcon, ResetIcon } from '@icons';
 
 interface CoverageNameHeaderProps {
   checkedMap: { selected: boolean; unselected: boolean };

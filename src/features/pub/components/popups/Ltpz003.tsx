@@ -18,8 +18,6 @@ import {
 } from '@uiux/Dialog';
 
 export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
-
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -32,7 +30,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <Gcol placement='ss' gap={1} className='w-full'>
+          <Gcol placement="ss" gap={1} className="w-full">
             <QuestionRadioCard
               badgeLabel="1"
               question="최근 3개월 이내에 의사로부터 진찰 또는 검사(건강검진 포함)를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?"
@@ -40,8 +38,8 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               isValue="Y"
               disabled
             >
-              <Gcol className="w-full" placement='ss'>
-                <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
+              <Gcol className="w-full" placement="ss">
+                <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
                   <Checkbox
                     color="primary"
                     errorMsg="선택은 필수입니다."
@@ -108,13 +106,15 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                   >
                     투약
                   </Checkbox>
-                </Grid>  
+                </Grid>
                 <Gcol className="w-full" placement="ss" variant="box-detail">
                   <Typo icon="detail" variant="body-sm">
-                    <b>질병의심소견</b>이란 의사가 진단서나 소견서 또는 진료의뢰서 등을 포함하여 서면(전자문서 포함)으로 교부한 경우를 말합니다.
+                    <b>질병의심소견</b>이란 의사가 진단서나 소견서 또는 진료의뢰서 등을 포함하여 서면(전자문서 포함)으로
+                    교부한 경우를 말합니다.
                   </Typo>
                   <Typo icon="detail" variant="body-sm">
-                    <b>투약이란</b> 의사가 환자에게 약을 처방하는 행위를 말하는 것으로 실제로 약을 구입하지 않았어도 기재해야 합니다. 
+                    <b>투약이란</b> 의사가 환자에게 약을 처방하는 행위를 말하는 것으로 실제로 약을 구입하지 않았어도
+                    기재해야 합니다.
                   </Typo>
                 </Gcol>
               </Gcol>
@@ -126,10 +126,11 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               isValue="Y"
               disabled
             >
-              <Gcol className="w-full" placement='ss'>
+              <Gcol className="w-full" placement="ss">
                 <Gcol className="w-full" placement="ss" variant="box-detail">
                   <Typo icon="detail" variant="body-sm">
-                    <b>혈압강하제</b>란 혈압을 내리게 하는 의약품을 말하며, 각성제란 신경계를 흥분시켜 잠이 오는 것을 억제하는 의약품을 말합니다.
+                    <b>혈압강하제</b>란 혈압을 내리게 하는 의약품을 말하며, 각성제란 신경계를 흥분시켜 잠이 오는 것을
+                    억제하는 의약품을 말합니다.
                   </Typo>
                 </Gcol>
               </Gcol>
@@ -141,10 +142,12 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               isValue="Y"
               disabled
             >
-              <Gcol className="w-full" placement='ss'>
+              <Gcol className="w-full" placement="ss">
                 <Gcol className="w-full" placement="ss" variant="box-detail">
                   <Typo icon="detail" variant="body-sm">
-                    <b>추가검사(재검사)</b>란 검사 결과 이상 소견이 확인되어 보다 정확한 진단을 위해 시행한 검사를 의미하며, 병증에 대한 치료 필요 없이 유지되는 상태에서 시행하는 정기검사 또는 추적관찰은 포함하지 않습니다.
+                    <b>추가검사(재검사)</b>란 검사 결과 이상 소견이 확인되어 보다 정확한 진단을 위해 시행한 검사를
+                    의미하며, 병증에 대한 치료 필요 없이 유지되는 상태에서 시행하는 정기검사 또는 추적관찰은 포함하지
+                    않습니다.
                   </Typo>
                 </Gcol>
               </Gcol>
@@ -156,8 +159,8 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               isValue="Y"
               disabled
             >
-              <Gcol className="w-full" placement='ss'>
-                <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
+              <Gcol className="w-full" placement="ss">
+                <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
                   <Checkbox
                     color="primary"
                     errorMsg="선택은 필수입니다."
@@ -212,8 +215,8 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
               isValue="Y"
               disabled
             >
-              <Gcol className="w-full" placement='ss'>
-                <Grid className='w-full grid-cols-4 gap-[0.8rem] px-[1rem]'>
+              <Gcol className="w-full" placement="ss">
+                <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
                   <Checkbox
                     color="primary"
                     errorMsg="선택은 필수입니다."
@@ -357,8 +360,8 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                   >
                     직장또는
                   </Checkbox>
-                </Grid>  
-              </Gcol>               
+                </Grid>
+              </Gcol>
             </QuestionRadioCard>
           </Gcol>
         </DialogSection>

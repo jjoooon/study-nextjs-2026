@@ -45,7 +45,14 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <FormRow>
                   <FormCell title={'설계번호'}>
                     <Input width={130} value={'LA260209313558'} readOnly />
-                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                    <Button
+                      aria-label="검색"
+                      variant={'outlined'}
+                      only="icon"
+                      size={'lg'}
+                      color={'gray-light'}
+                      disabled
+                    >
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input width={70} value={'김한화'} readOnly />

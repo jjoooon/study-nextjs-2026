@@ -19,8 +19,12 @@ import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import { Ltpa350Step1 } from '../components/Ltpa350Step1'; // 01. 가입설계
-import { Ltpa350Step2 } from '../components/Ltpa350Step2'; // 02. 담보설계
-import { Ltpa350Step5 } from '../components/Ltpa350Step5';  // 05. 추가사항
+import { Ltpa350Step2View1 } from '../components/Ltpa350Step2View1'; // 02. 담보설계
+import { Ltpa350Step2View2 } from '../components/Ltpa350Step2View2'; // 02. 담보설계
+import { Ltpa350Step2View3 } from '../components/Ltpa350Step2View3'; // 02. 담보설계
+import { Ltpa350Step2View4 } from '../components/Ltpa350Step2View4'; // 02. 담보설계
+import { Ltpa350Step2View5 } from '../components/Ltpa350Step2View5'; // 02. 담보설계
+import { Ltpa350Step5 } from '../components/Ltpa350Step5'; // 05. 추가사항
 import { Ltpa350Step6 } from '../components/Ltpa350Step6'; // 06. 수납
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
@@ -228,19 +232,48 @@ export default function Ltpa350Section() {
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
   const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
 
+  const renderStep2 = () => {
+    switch (currentViewKey) {
+      case 'view1':
+        return (
+          <Ltpa350Step2View1
+            isWidthExpanded={isWidthExpanded}
+            setIsWidthExpanded={setIsWidthExpanded}
+            viewKey={currentViewKey}
+          />
+        );
+      case 'view2':
+        return (
+          <Ltpa350Step2View2
+            isWidthExpanded={isWidthExpanded}
+            setIsWidthExpanded={setIsWidthExpanded}
+            viewKey={currentViewKey}
+          />
+        );
+      case 'view3':
+        return <Ltpa350Step2View3 />;
+      case 'view4':
+        return (
+          <Ltpa350Step2View4
+            isWidthExpanded={isWidthExpanded}
+            setIsWidthExpanded={setIsWidthExpanded}
+            viewKey={currentViewKey}
+          />
+        );
+      case 'view5':
+        return <Ltpa350Step2View5 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />;
+      default:
+        return null;
+    }
+  };
+
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
-    2: (
-      <Ltpa350Step2
-        isWidthExpanded={isWidthExpanded}
-        setIsWidthExpanded={setIsWidthExpanded}
-        viewKey={currentViewKey}
-      />
-    ), // prop 추가
+    2: renderStep2(),
     3: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
     4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
-    5: <Ltpa350Step5 viewKey={'view1'} />,
-    6: <Ltpa350Step6 viewKey={'view1'} />,
+    5: <Ltpa350Step5 />,
+    6: <Ltpa350Step6 />,
   };
 
   return (

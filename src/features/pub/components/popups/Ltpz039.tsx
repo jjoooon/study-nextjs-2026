@@ -5,6 +5,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -22,7 +23,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -331,17 +331,16 @@ export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Typo>
                 </FormCell>
                 <FormCell title={'경과기간세부산출(n년)'}>
-                  <Checkbox
-                    color="primary"
-                    onCheckedChange={() => {}}
-                    >
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">☞재조회 경과시간이 n년 단위로 산출 됨(자동실행)</Typo>
+                  <Checkbox color="primary" onCheckedChange={() => {}}>
+                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
+                      ☞재조회 경과시간이 n년 단위로 산출 됨(자동실행)
+                    </Typo>
                   </Checkbox>
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol className='w-full grid-rows-[auto_1fr]'>
+          <Gcol className="w-full grid-rows-[auto_1fr]">
             <div className="ag-theme-alpine min-h-[25.3rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
@@ -382,7 +381,7 @@ export const Ltpz039 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogFooter>
           <DialogFooterArea>
-            <Grow>              
+            <Grow>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

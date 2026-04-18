@@ -163,7 +163,9 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
       editable: true,
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal leading-5">
-          합계보험료/<br />(=적용보험료)
+          합계보험료/
+          <br />
+          (=적용보험료)
         </div>
       ),
       valueParser: (params) => parseNumericValue(params.newValue),
@@ -237,7 +239,8 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Gcol>
             <Gcol className="w-full" placement="ss" variant="box-info">
               <Typo icon="info">
-                예정보험료는 설계의 출생예정일 기준으로 산출된 값으로 실제출생일 출생성별이 다른 경우 변경될 수 있습니다.
+                예정보험료는 설계의 출생예정일 기준으로 산출된 값으로 실제출생일 출생성별이 다른 경우 변경될 수
+                있습니다.
               </Typo>
               <Typo icon="info">
                 일시납, 1년납, 미래보장 담보 가입여부에 따라 실제 회차별 납입보험료는 변동될 수 있습니다.

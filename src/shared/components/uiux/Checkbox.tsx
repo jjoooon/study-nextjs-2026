@@ -388,41 +388,35 @@ function CheckboxGroup({
     [isControlled, onValueChange]
   );
 
-  const registerItem = React.useCallback(
-    (value: string, options?: { disabled?: boolean; selectAll?: boolean }) => {
-      setRegisteredItems((prev) => {
-        const nextItem: CheckboxGroupItemRegistration = {
-          disabled: options?.disabled ?? false,
-          selectAll: options?.selectAll ?? false,
-        };
+  const registerItem = React.useCallback((value: string, options?: { disabled?: boolean; selectAll?: boolean }) => {
+    setRegisteredItems((prev) => {
+      const nextItem: CheckboxGroupItemRegistration = {
+        disabled: options?.disabled ?? false,
+        selectAll: options?.selectAll ?? false,
+      };
 
-        if (
-          prev[value]?.disabled === nextItem.disabled &&
-          prev[value]?.selectAll === nextItem.selectAll
-        ) {
+      if (prev[value]?.disabled === nextItem.disabled && prev[value]?.selectAll === nextItem.selectAll) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [value]: nextItem,
+      };
+    });
+
+    return () => {
+      setRegisteredItems((prev) => {
+        if (!(value in prev)) {
           return prev;
         }
 
-        return {
-          ...prev,
-          [value]: nextItem,
-        };
+        const next = { ...prev };
+        delete next[value];
+        return next;
       });
-
-      return () => {
-        setRegisteredItems((prev) => {
-          if (!(value in prev)) {
-            return prev;
-          }
-
-          const next = { ...prev };
-          delete next[value];
-          return next;
-        });
-      };
-    },
-    []
-  );
+    };
+  }, []);
 
   const isItemChecked = React.useCallback(
     (value: string, selectAll?: boolean) => {
@@ -438,19 +432,21 @@ function CheckboxGroup({
   const toggleValue = React.useCallback(
     (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => {
       if (selectAll && selectAllValue) {
-        const nextValues = checked === true
-          ? uniq([...values.filter((item) => item !== selectAllValue), ...selectableValues, selectAllValue])
-          : values.filter((item) => item !== selectAllValue && !selectableValues.includes(item));
+        const nextValues =
+          checked === true
+            ? uniq([...values.filter((item) => item !== selectAllValue), ...selectableValues, selectAllValue])
+            : values.filter((item) => item !== selectAllValue && !selectableValues.includes(item));
 
         setValues(nextValues);
         return;
       }
 
-      const nextSelectedValues = checked === true
-        ? values.includes(value)
-          ? values
-          : [...values, value]
-        : values.filter((item) => item !== value);
+      const nextSelectedValues =
+        checked === true
+          ? values.includes(value)
+            ? values
+            : [...values, value]
+          : values.filter((item) => item !== value);
 
       if (!selectAllValue) {
         setValues(nextSelectedValues);
@@ -461,11 +457,7 @@ function CheckboxGroup({
       const shouldCheckSelectAll =
         selectableValues.length > 0 && selectableValues.every((itemValue) => nextWithoutSelectAll.includes(itemValue));
 
-      setValues(
-        shouldCheckSelectAll
-          ? uniq([...nextWithoutSelectAll, selectAllValue])
-          : nextWithoutSelectAll
-      );
+      setValues(shouldCheckSelectAll ? uniq([...nextWithoutSelectAll, selectAllValue]) : nextWithoutSelectAll);
     },
     [selectAllValue, selectableValues, setValues, values]
   );
@@ -503,7 +495,18 @@ function CheckboxGroup({
   }, [isAllSelectableChecked, selectAllValue, setValues, values]);
 
   const contextValue = React.useMemo(
-    () => ({ values, required, disabled, error: isError, variant, size, color, isItemChecked, toggleValue, registerItem }),
+    () => ({
+      values,
+      required,
+      disabled,
+      error: isError,
+      variant,
+      size,
+      color,
+      isItemChecked,
+      toggleValue,
+      registerItem,
+    }),
     [color, disabled, isError, isItemChecked, registerItem, required, size, toggleValue, values, variant]
   );
 

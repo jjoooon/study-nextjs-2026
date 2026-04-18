@@ -5,9 +5,7 @@ import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionCh
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { TooltipQ } from '@/shared/components/common/TooltipQ';
 import { Accordion } from '@/shared/components/uiux/Accordion';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   amountUnitInputCellRenderer,
   editableSelectCellRenderer,
@@ -21,21 +19,17 @@ import {
   useDynamicPx,
 } from '@aggrid';
 import { Grow, Gcol, Typo, Divider } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { HashList } from '@common/HashList';
 import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
-import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SelectDropIcon, SizeIcon } from '@icons';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
-import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -59,7 +53,8 @@ interface DummyDataType {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field1: '적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료',
+    field1:
+      '적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료적립보험료',
     field2: true,
     field3: 500,
     field4: 450,
@@ -131,29 +126,21 @@ const planAccordionItems: PlanAccordionItem[] = [
   },
 ];
 
-type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-
-type AgGridRow = (DummyDataType & {
+type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
-});
+};
 
 interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
-  viewKey: ViewKey;
 }
 
-export function Ltpa350Step2({
-  onSelectPlan,
-  isWidthExpanded = false,
-  setIsWidthExpanded,
-  viewKey,
-}: Ltpa350Step2Props) {
+export function Ltpa350Step2View5({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -187,22 +174,19 @@ export function Ltpa350Step2({
   const prevSelectedIdsRef = useRef<Set<number>>(new Set());
 
   // setRowData를 래핑하여 새로 삽입된 중복 행 id를 pendingSelectIdRef에 저장
-  const setRowDataWithTracking = useCallback(
-    (updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
-      setRowData((prev) => {
-        const next = typeof updater === 'function' ? updater(prev) : updater;
-        if (next.length > prev.length) {
-          const prevIds = new Set(prev.map((r) => r.id));
-          const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
-          if (newDuplicate) {
-            pendingSelectIdRef.current = newDuplicate.id;
-          }
+  const setRowDataWithTracking = useCallback((updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
+    setRowData((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      if (next.length > prev.length) {
+        const prevIds = new Set(prev.map((r) => r.id));
+        const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
+        if (newDuplicate) {
+          pendingSelectIdRef.current = newDuplicate.id;
         }
-        return next;
-      });
-    },
-    []
-  );
+      }
+      return next;
+    });
+  }, []);
 
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
@@ -260,71 +244,6 @@ export function Ltpa350Step2({
       </Grow>
     );
   }, [checkedMap, coverageName, showProductNameTooltip]);
-
-  // 셀: 순번 · 담보명 텍스트 · 독립/갱신 뱃지
-  const titleRenderer = useCallback((params: ICellRendererParams<AgGridRow>) => {
-    // 전체 rowData에서 원본(복사본 아님)만 필터링
-    const api = params.api;
-    const allRows: AgGridRow[] = [];
-    api.forEachNode((node) => {
-      if (node.data) allRows.push(node.data);
-    });
-    const originals = allRows.filter((r) => !r.isDuplicate);
-
-    // 원본 행의 id → 순번 매핑
-    const idToOrder = new Map<number, number>();
-    originals.forEach((row, idx) => {
-      idToOrder.set(row.id, idx + 1);
-    });
-
-    if (!params.data || !params.data.isDuplicate) {
-      const order = params.data ? (idToOrder.get(params.data.id) ?? '') : '';
-      return (
-        <Grow className="h-full pr-1.5" placement={'bwc'}>
-          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
-          <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
-          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
-            <Grow className="shrink-0">
-              {params.data.badge.includes('독립') && (
-                <Badge color={'green'} className="w-[3rem]">
-                  독립
-                </Badge>
-              )}
-              {params.data.badge.includes('갱신') && (
-                <Badge color={'blue'} className="w-[3rem]">
-                  갱신
-                </Badge>
-              )}
-            </Grow>
-          )}
-        </Grow>
-      );
-    } else {
-      const originId = params.data.displayNo;
-      const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
-      
-      return (
-        <Grow className="h-full pr-1.5" placement={'bwc'}>
-          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
-          <p className="truncate w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
-          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
-            <Grow className="shrink-0">
-              {params.data.badge.includes('독립') && (
-                <Badge color={'green'} className="w-[3rem]">
-                  독립
-                </Badge>
-              )}
-              {params.data.badge.includes('갱신') && (
-                <Badge color={'blue'} className="w-[3rem]">
-                  갱신
-                </Badge>
-              )}
-            </Grow>
-          )}
-        </Grow>
-      );
-    }
-  }, []);
 
   // ── 속성 열 (field2) ─────────────────────────────────────────────────────────
   // 셀: 속성 값이 있을 때 돋보기 아이콘 버튼 표시
@@ -624,7 +543,9 @@ export function Ltpa350Step2({
         }}
         noValidate
       >
-        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
+        <LayoutMain
+          className={`grid ${!isHeightExpanded ? 'grid-rows-[auto_1fr_auto]' : 'grid-rows-[1fr_auto]'} gap-[1rem] h-full`}
+        >
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
             <Grow gap={3}>
               <Button variant={'contained'} color={'coolgray-light'} size={'md'}>

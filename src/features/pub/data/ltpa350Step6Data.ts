@@ -8,7 +8,6 @@ export type Ltpa350Step6GridRow = {
   isSumRow?: boolean;
 };
 
-
 export interface Ltpa350Step6DataType {
   agGridTable: Ltpa350Step6GridRow[];
 }
@@ -21,7 +20,7 @@ export const Ltpa350Step6Data: Ltpa350Step6DataType = {
       field02: '0',
       field03: '선택합계',
       field04: '46,500',
-      field05: '', 
+      field05: '',
       isSumRow: true,
     },
     {
@@ -30,7 +29,7 @@ export const Ltpa350Step6Data: Ltpa350Step6DataType = {
       field02: '',
       field03: '',
       field04: '',
-      field05: '',      
+      field05: '',
     },
     {
       id: 2,
@@ -38,8 +37,7 @@ export const Ltpa350Step6Data: Ltpa350Step6DataType = {
       field02: '',
       field03: '',
       field04: '',
-      field05: '',      
+      field05: '',
     },
   ],
-
 };

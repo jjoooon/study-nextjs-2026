@@ -163,7 +163,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableBody>
             </Table>
           </Gcol>
-          <Grid className='grid-rows-[auto_1fr]' placement={'ss'} gap={1.5}>
+          <Grid className="grid-rows-[auto_1fr]" placement={'ss'} gap={1.5}>
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>

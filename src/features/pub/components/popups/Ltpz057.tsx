@@ -72,9 +72,7 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Input aria-label="" width={200} value={'상품명 text'} readOnly />
                   </Grow>
                   <Grow>
-                    <Checkbox size="md">
-                      가입업종 외 건물 내 다른업종 없음
-                    </Checkbox>
+                    <Checkbox size="md">가입업종 외 건물 내 다른업종 없음</Checkbox>
                   </Grow>
                 </Gcol>
               </FormCell>
@@ -174,7 +172,7 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                   <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
+                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
                       aria-label="주변업종 직접 검색"
                       width={160}
@@ -198,7 +196,7 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Button>
                   </Grow>
                   <Grow>
-                   <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
+                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
                     <Input
                       aria-label="주변업종 직접 검색"
                       width={160}

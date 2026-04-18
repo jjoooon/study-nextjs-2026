@@ -243,7 +243,7 @@ export const Ltpa200 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           <TableFold>
-            <TableFoldHead title="등록사항" >
+            <TableFoldHead title="등록사항">
               <Grow>
                 <Button color="gray" variant="outlined">
                   행추가

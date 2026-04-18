@@ -388,19 +388,18 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormRow>
                       <FormCell title={'태아여부'}>
                         <Grow placement={'sc'}>
-                          <CheckboxGroup
-                            className="gap-3"
-                            onValueChange={() => {}}
-                            variant="default"
-                          >
-                            <CheckboxGroupItem value="a">
-                              가입
-                            </CheckboxGroupItem>
-                            <CheckboxGroupItem value="b">
-                              다태아
-                            </CheckboxGroupItem>
+                          <CheckboxGroup className="gap-3" onValueChange={() => {}} variant="default">
+                            <CheckboxGroupItem value="a">가입</CheckboxGroupItem>
+                            <CheckboxGroupItem value="b">다태아</CheckboxGroupItem>
                           </CheckboxGroup>
-                          <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined" className='ml-[1rem]'>
+                          <Button
+                            color="secondary"
+                            onClick={() => {}}
+                            only="default"
+                            size="lg"
+                            variant="outlined"
+                            className="ml-[1rem]"
+                          >
                             다태아 연계
                           </Button>
                         </Grow>

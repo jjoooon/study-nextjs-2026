@@ -158,9 +158,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                             { value: 'option2', label: '아니오' },
                           ].map((option, idx, arr) => (
                             <React.Fragment key={option.value}>
-                              <RadioGroupItem value={option.value}>
-                                {option.label}
-                              </RadioGroupItem>
+                              <RadioGroupItem value={option.value}>{option.label}</RadioGroupItem>
                               {idx === 0 && <div className="px-[1rem]">/</div>}
                             </React.Fragment>
                           ))}

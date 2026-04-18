@@ -350,7 +350,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
                   defaultColDef={{ sortable: true, resizable: true }}
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
-                   domLayout="normal"
+                  domLayout="normal"
                   alwaysShowVerticalScroll={true}
                 />
               </div>

@@ -1,6 +1,5 @@
 'use client';
 
-
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
@@ -9,6 +8,7 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -19,57 +19,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
-  if (typeof column.width === 'number') {
-    const width = `${column.width}px`;
-
-    return {
-      flex: '0 0 auto',
-      minWidth: width,
-      width,
-    };
-  }
-
-  if (typeof column.flex === 'number') {
-    return {
-      flex: `${column.flex} ${column.flex} 0%`,
-      minWidth: 0,
-    };
-  }
-
-  return {
-    flex: '1 1 0%',
-    minWidth: 0,
-  };
-}
-function getComparisonHeaderCellStyle1(column: ColDef): React.CSSProperties {
-  if (typeof column.width === 'number') {
-    const width = `${column.width}px`;
-
-    return {
-      flex: '0 0 auto',
-      minWidth: width,
-      width,
-    };
-  }
-
-  if (typeof column.flex === 'number') {
-    return {
-      flex: `${column.flex} ${column.flex} 0%`,
-      minWidth: 0,
-    };
-  }
-
-  return {
-    flex: '1 1 0%',
-    minWidth: 0,
-  };
-}
-function getComparisonHeaderCellStyle2(column: ColDef): React.CSSProperties {
   if (typeof column.width === 'number') {
     const width = `${column.width}px`;
 
@@ -340,88 +293,12 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '보험료(원)',
       field: 'field3',
       width: 70,
-      valueFormatter: numberValueFormatter, 
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
-        return 'text-right';
-      },
-      editable: false, 
-    },
-  ];
-  const columnDefs1: ColDef<DummyDataType>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      flex: 1,
-      colSpan: (params) => {
-        // 합계 행이면 이름+서브레이블 합치기
-        if (params.data?.id === 0) return 2;
-        return 1;
-      },
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'field2',
-      width: 70,
       valueFormatter: numberValueFormatter,
-      colSpan: (params) => {
-        // 합계 행이면 숨김
-        if (params.data?.id === 0) return 0;
-        return 1;
-      },
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'hidden';
-        return 'text-right';
-      },
-    },
-    {
-      headerName: '보험료(원)',
-      field: 'field3',
-      width: 70,
-      valueFormatter: numberValueFormatter, 
       cellClass: (params) => {
         if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
         return 'text-right';
       },
-      editable: false, 
-    },
-  ];
-  const columnDefs2: ColDef<DummyDataType>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      flex: 1,
-      colSpan: (params) => {
-        // 합계 행이면 이름+서브레이블 합치기
-        if (params.data?.id === 0) return 2;
-        return 1;
-      },
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'field2',
-      width: 70,
-      valueFormatter: numberValueFormatter,
-      colSpan: (params) => {
-        // 합계 행이면 숨김
-        if (params.data?.id === 0) return 0;
-        return 1;
-      },
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'hidden';
-        return 'text-right';
-      },
-    },
-    {
-      headerName: '보험료(원)',
-      field: 'field3',
-      width: 70,
-      valueFormatter: numberValueFormatter, 
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
-        return 'text-right';
-      },
-      editable: false, 
+      editable: false,
     },
   ];
 
@@ -438,7 +315,9 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
         ref.scrollTop = scrollTop;
       }
     });
-    setTimeout(() => { isSyncing.current = false; }, 0);
+    setTimeout(() => {
+      isSyncing.current = false;
+    }, 0);
   };
 
   return (
@@ -455,76 +334,76 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[1fr]">
           <Grow gap={3}>
             {[...Array(3)].map((_, i) => (
-            <Gcol className="overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5">
-              <Grow placement='bws' className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
-                <Gcol placement="ss">
-                  <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
-                    한화 3N5 더간편건강보험(세만기형) 2601
-                  </Typo>
-                  <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
-                    기본형·납입면제운영형·3N5간편고간편고지형III
-                  </Typo> 
-                </Gcol>
-                <Grow>
-                  <Checkbox
-                    color="primary"
-                    onCheckedChange={() => {}}
-                    size="lg"
-                    variant="default"
-                  ></Checkbox>
-                </Grow>
-              </Grow>
-              <Grow className="w-full px-[1rem] pb-[2rem] [&_.ag-floating-bottom]:!sticky [&_.ag-floating-bottom]:bottom-0">
-                {/* scrollable content */}
-                <div
-                  className="ag-theme-alpine no-header w-full min-h-132 max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                  ref={el => { scrollRefs.current[i + 1] = el; }}
-                  onScroll={e => handleSyncScroll(i + 1, e)}
-                >
-                  <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                    {columnDefs.map((column, index) => {
-                      const key = column.field ?? column.headerName ?? `column-${index}`;
-        
-                      return (
-                        <div
-                          key={key}
-                          className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                          style={getComparisonHeaderCellStyle(column)}
-                        >
-                          <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
-                            {column.headerName}
-                          </Typo>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <AgGridReact<DummyDataType>
-                    // 합계 행 설정
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3}
-                    columnDefs={columnDefs}
-                    headerHeight={0}
-                    groupHeaderHeight={0}
-                    defaultColDef={{
-                      suppressMovable: true,
-                      sortable: false,
-                      resizable: false,
-                    }}
-                    domLayout="autoHeight"
-                  />
-                 
-                  <Grow className="sticky bottom-0 z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]" placement='bwc'>
-                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-gray-100)]">
-                      예상보험표
+              <Gcol className="overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5" key={i}>
+                <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
+                  <Gcol placement="ss">
+                    <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
+                      한화 3N5 더간편건강보험(세만기형) 2601
                     </Typo>
-                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                      7000
+                    <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
+                      기본형·납입면제운영형·3N5간편고간편고지형III
                     </Typo>
+                  </Gcol>
+                  <Grow>
+                    <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="default"></Checkbox>
                   </Grow>
-                </div>
-              </Grow>
-            </Gcol>
+                </Grow>
+                <Grow className="w-full px-[1rem] pb-[2rem] [&_.ag-floating-bottom]:!sticky [&_.ag-floating-bottom]:bottom-0">
+                  {/* scrollable content */}
+                  <div
+                    className="ag-theme-alpine no-header w-full min-h-132 max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                    ref={(el) => {
+                      scrollRefs.current[i + 1] = el;
+                    }}
+                    onScroll={(e) => handleSyncScroll(i + 1, e)}
+                  >
+                    <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
+                      {columnDefs.map((column, index) => {
+                        const key = column.field ?? column.headerName ?? `column-${index}`;
+
+                        return (
+                          <div
+                            key={key}
+                            className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
+                            style={getComparisonHeaderCellStyle(column)}
+                          >
+                            <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                              {column.headerName}
+                            </Typo>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <AgGridReact<DummyDataType>
+                      // 합계 행 설정
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3}
+                      columnDefs={columnDefs}
+                      headerHeight={0}
+                      groupHeaderHeight={0}
+                      defaultColDef={{
+                        suppressMovable: true,
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      domLayout="autoHeight"
+                    />
+
+                    <Grow
+                      className="sticky bottom-0 z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
+                      placement="bwc"
+                    >
+                      <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-gray-100)]">
+                        예상보험표
+                      </Typo>
+                      <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
+                        7000
+                      </Typo>
+                    </Grow>
+                  </div>
+                </Grow>
+              </Gcol>
             ))}
           </Grow>
         </DialogSection>

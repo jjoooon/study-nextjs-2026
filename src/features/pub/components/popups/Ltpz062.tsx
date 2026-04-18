@@ -90,7 +90,6 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-
 export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
@@ -198,69 +197,69 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
             보험금지급이력을 기반으로 필요한 정보를 예상하여 자동입력합니다.
           </Typo>
 
-            <TableFold className="grid-rows-[auto_1fr]">
-              <TableFoldHead title="필수고지" />
-              <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[13.4rem]">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    selectionColumnDef={{
-                      width: 30,
-                    }}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                    }}
-                    domLayout="normal"
-                    rowSelection={{
-                      mode: 'singleRow',
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
+          <TableFold className="grid-rows-[auto_1fr]">
+            <TableFoldHead title="필수고지" />
+            <TableFoldBody>
+              <div className="ag-theme-alpine min-h-[13.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  selectionColumnDef={{
+                    width: 30,
+                  }}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  domLayout="normal"
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
 
-            <TableFold className="grid-rows-[auto_1fr]">
-              <TableFoldHead title="질문항목(질병)" />
-              <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[13.4rem]">
-                  <AgGridReact<DummyDataType2>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData2}
-                    columnDefs={columnDefs2}
-                    selectionColumnDef={{
-                      width: 30,
-                    }}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                    }}
-                    domLayout="normal"
-                    rowSelection={{
-                      mode: 'singleRow',
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                  />
-                </div>
-                <Gcol variant={'box-warning'} placement={'ss'} className="mt-[0.8rem]">
-                  <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
-                    보험금 지급이력은 정보의 불안정성으로 부정확할 수 있습니다.(정보 누락, 시간차 존재, 오기재 등)
-                  </Typo>
-                  <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
-                    해당 서비스는 고객의 고지의무를 대체할 수 없으며, 반드시 참고 보완자료로만 활용하시기 바랍니다.
-                  </Typo>
-                </Gcol>
-              </TableFoldBody>
-            </TableFold>
+          <TableFold className="grid-rows-[auto_1fr]">
+            <TableFoldHead title="질문항목(질병)" />
+            <TableFoldBody>
+              <div className="ag-theme-alpine min-h-[13.4rem]">
+                <AgGridReact<DummyDataType2>
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData2}
+                  columnDefs={columnDefs2}
+                  selectionColumnDef={{
+                    width: 30,
+                  }}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  domLayout="normal"
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                />
+              </div>
+              <Gcol variant={'box-warning'} placement={'ss'} className="mt-[0.8rem]">
+                <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
+                  보험금 지급이력은 정보의 불안정성으로 부정확할 수 있습니다.(정보 누락, 시간차 존재, 오기재 등)
+                </Typo>
+                <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
+                  해당 서비스는 고객의 고지의무를 대체할 수 없으며, 반드시 참고 보완자료로만 활용하시기 바랍니다.
+                </Typo>
+              </Gcol>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>
@@ -270,7 +269,6 @@ export const Ltpz062 = ({ open, onOpenChange }: PopupBaseProps) => {
                 <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
               </Typo>
             </Gcol>
-
           </div>
           <DialogFooterArea>
             <Grow>

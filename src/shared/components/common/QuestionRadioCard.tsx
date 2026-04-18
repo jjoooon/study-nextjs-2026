@@ -3,8 +3,8 @@
 import { useId, useState, type ReactNode } from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Badge } from '@uiux/Badge';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Badge } from '@uiux/Badge';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 type QuestionRadioCardProps = {
@@ -51,13 +51,10 @@ export const QuestionRadioCard = ({
 
   return (
     <Gcol
-      className={cn(
-        'w-full overflow-hidden rounded-[1.2rem] border border-solid border-[#D8D8D8]',
-        className
-      )}
+      className={cn('w-full overflow-hidden rounded-[1.2rem] border border-solid border-[#D8D8D8]', className)}
       placement="ss"
     >
-      <Grow className="w-full bg-[#F4F4F4] p-[1rem]" placement="bwc"gap="[1rem]">
+      <Grow className="w-full bg-[#F4F4F4] p-[1rem]" placement="bwc" gap="[1rem]">
         <Typo tag={'h3'} variant={'body-lg'} className="flex items-baseline gap-[0.6rem]" weight={'bold'}>
           <Badge color="secondary" variant="contained" className="h-[1.8rem] w-[1.8rem]">
             {badgeLabel}
@@ -74,10 +71,24 @@ export const QuestionRadioCard = ({
             width="auto"
             disabled={disabled}
           >
-            <RadioGroupItem color="primary" id={`${radioId}-yes`} size="lg" value="Y" variant="default" disabled={disabled}>
+            <RadioGroupItem
+              color="primary"
+              id={`${radioId}-yes`}
+              size="lg"
+              value="Y"
+              variant="default"
+              disabled={disabled}
+            >
               예
             </RadioGroupItem>
-            <RadioGroupItem color="primary" id={`${radioId}-no`} size="lg" value="N" variant="default" disabled={disabled}>
+            <RadioGroupItem
+              color="primary"
+              id={`${radioId}-no`}
+              size="lg"
+              value="N"
+              variant="default"
+              disabled={disabled}
+            >
               아니요
             </RadioGroupItem>
           </RadioGroup>

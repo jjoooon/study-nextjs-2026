@@ -482,7 +482,7 @@ export function editableSelectCellRenderer<RowType>(
   return (
     <div className={`flex items-center px-1 ${justifyClass} gap-1 w-full h-full editor-select`}>
       <span className={`block flex-1 ${textClass}`}>{params.value}</span>
-      <SelectDropIcon size={12} color={'var(--color-gray-50)'} className='shrink-0' />
+      <SelectDropIcon size={12} color={'var(--color-gray-50)'} className="shrink-0" />
     </div>
   );
 }

@@ -98,12 +98,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormCell title={'만기'} colSpan={3}>
                             <RadioGroup defaultValue="80세">
                               {[
-                                { value: '80세', id: 'insurance-period-80', label: '80세' },
-                                { value: '90세', id: 'insurance-period-90', label: '90세' },
-                                { value: '100세', id: 'insurance-period-100', label: '100세' },
-                                { value: '110세', id: 'insurance-period-110', label: '110세' },
+                                { value: '80세', label: '80세' },
+                                { value: '90세', label: '90세' },
+                                { value: '100세', label: '100세' },
+                                { value: '110세', label: '110세' },
                               ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                <RadioGroupItem key={option.value} value={option.value}>
                                   {option.label}
                                 </RadioGroupItem>
                               ))}
@@ -115,14 +115,14 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormCell title={'납기'} colSpan={3}>
                             <RadioGroup defaultValue="10년납">
                               {[
-                                { value: '10년납', id: 'payment-period-10', label: '10년납' },
-                                { value: '15년납', id: 'payment-period-15', label: '15년납' },
-                                { value: '20년납', id: 'payment-period-20', label: '20년납' },
-                                { value: '25년납', id: 'payment-period-25', label: '25년납' },
-                                { value: '30년납', id: 'payment-period-30', label: '30년납' },
-                                { value: '전기납', id: 'payment-period-lifetime', label: '전기납' },
+                                { value: '10년납', label: '10년납' },
+                                { value: '15년납', label: '15년납' },
+                                { value: '20년납', label: '20년납' },
+                                { value: '25년납', label: '25년납' },
+                                { value: '30년납', label: '30년납' },
+                                { value: '전기납', label: '전기납' },
                               ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                <RadioGroupItem key={option.value} value={option.value}>
                                   {option.label}
                                 </RadioGroupItem>
                               ))}
@@ -133,12 +133,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormCell title={'납입주기'}>
                             <RadioGroup defaultValue="월납">
                               {[
-                                { value: '월납', id: 'payment-cycle-monthly', label: '월납' },
-                                { value: '3개월', id: 'payment-cycle-quarterly', label: '3개월' },
-                                { value: '6개월', id: 'payment-cycle-semiannual', label: '6개월' },
-                                { value: '연납', id: 'payment-cycle-annual', label: '연납' },
+                                { value: '월납', label: '월납' },
+                                { value: '3개월', label: '3개월' },
+                                { value: '6개월', label: '6개월' },
+                                { value: '연납', label: '연납' },
                               ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                <RadioGroupItem key={option.value} value={option.value}>
                                   {option.label}
                                 </RadioGroupItem>
                               ))}
@@ -147,11 +147,11 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormCell title={'갱신주기'}>
                             <RadioGroup defaultValue="3년">
                               {[
-                                { value: '3년', id: 'renewal-period-3', label: '3년' },
-                                { value: '10년', id: 'renewal-period-10', label: '10년' },
-                                { value: '20년', id: 'renewal-period-20', label: '20년' },
+                                { value: '3년', label: '3년' },
+                                { value: '10년', label: '10년' },
+                                { value: '20년', label: '20년' },
                               ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                <RadioGroupItem key={option.value} value={option.value}>
                                   {option.label}
                                 </RadioGroupItem>
                               ))}
@@ -169,36 +169,30 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                               {[
                                 {
                                   value: '1형(일반고지형)',
-                                  id: 'notification-type-1',
                                   label: '1형(일반고지형)',
                                 },
                                 {
                                   value: '2형(건강고지형II(6년))',
-                                  id: 'notification-type-2',
                                   label: '2형(건강고지형II(6년))',
                                 },
                                 {
                                   value: '3형(건강고지형II(7년))',
-                                  id: 'notification-type-3',
                                   label: '3형(건강고지형II(7년))',
                                 },
                                 {
                                   value: '4형(건강고지형II(8년))',
-                                  id: 'notification-type-4',
                                   label: '4형(건강고지형II(8년))',
                                 },
                                 {
                                   value: '5형(건강고지형II(9년))',
-                                  id: 'notification-type-5',
                                   label: '5형(건강고지형II(9년))',
                                 },
                                 {
                                   value: '6형(건강고지형II(10년))',
-                                  id: 'notification-type-6',
                                   label: '6형(건강고지형II(10년))',
                                 },
                               ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                <RadioGroupItem key={option.value} value={option.value}>
                                   {option.label}
                                 </RadioGroupItem>
                               ))}
@@ -237,7 +231,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                               >
                                 <Grow placement="sc">
                                   <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
-                                  <Input aria-label="주민등록번호 마스킹" width={110} value={'900101-1******'} readOnly />
+                                  <Input
+                                    aria-label="주민등록번호 마스킹"
+                                    width={110}
+                                    value={'900101-1******'}
+                                    readOnly
+                                  />
                                   <Button
                                     aria-label="피보험자 검색"
                                     variant={'outlined'}
@@ -298,10 +297,10 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                                 </Button>
                                 <RadioGroup defaultValue="man">
                                   {[
-                                    { value: 'man', id: 'v1-insured-gender-man', label: '남' },
-                                    { value: 'woman', id: 'v1-insured-gender-woman', label: '여' },
+                                    { value: 'man', label: '남' },
+                                    { value: 'woman', label: '여' },
                                   ].map((option) => (
-                                    <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                    <RadioGroupItem key={option.value} value={option.value}>
                                       {option.label}
                                     </RadioGroupItem>
                                   ))}
@@ -319,7 +318,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
                               <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
-                              <Input aria-label="직업분류" width={274} value={'소규모상점경영및읽선관리종사원'} readOnly />
+                              <Input
+                                aria-label="직업분류"
+                                width={274}
+                                value={'소규모상점경영및읽선관리종사원'}
+                                readOnly
+                              />
                               <Button
                                 aria-label="피보험자 검색"
                                 variant={'outlined'}
@@ -336,11 +340,11 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormCell title="운전형태">
                               <RadioGroup defaultValue="자가용">
                                 {[
-                                  { value: '자가용', id: 'driving-type-private', label: '자가용' },
-                                  { value: '영업용', id: 'driving-type-commercial', label: '영업용' },
-                                  { value: '비운전자', id: 'driving-type-nondriver', label: '비운전자' },
+                                  { value: '자가용', label: '자가용' },
+                                  { value: '영업용', label: '영업용' },
+                                  { value: '비운전자', label: '비운전자' },
                                 ].map((option) => (
-                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                  <RadioGroupItem key={option.value} value={option.value}>
                                     {option.label}
                                   </RadioGroupItem>
                                 ))}
@@ -349,10 +353,10 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormCell title="이륜차">
                               <RadioGroup defaultValue="운전함">
                                 {[
-                                  { value: '운전함', id: 'motorcycle-drives', label: '운전함' },
-                                  { value: '운전안함', id: 'motorcycle-nondriver', label: '운전안함' },
+                                  { value: '운전함', label: '운전함' },
+                                  { value: '운전안함', label: '운전안함' },
                                 ].map((option) => (
-                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                  <RadioGroupItem key={option.value} value={option.value}>
                                     {option.label}
                                   </RadioGroupItem>
                                 ))}
@@ -381,7 +385,13 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormRow>
                             <FormCell title={'할인적용'} colSpan={3}>
                               <Checkbox color="primary">가족연계할인</Checkbox>
-                              <Button aria-label="피보험자 검색" variant="outlined" only="icon" size="lg" color="gray-light">
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant="outlined"
+                                only="icon"
+                                size="lg"
+                                color="gray-light"
+                              >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                             </FormCell>
@@ -507,7 +517,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                                 <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                   <Grow>
                                     <Input aria-label="피보험자명" width={76} value={'태아'} readOnly />
-                                    <Input aria-label="주민등록번호 마스킹" width={120} value={'200101-0000000'} readOnly />
+                                    <Input
+                                      aria-label="주민등록번호 마스킹"
+                                      width={120}
+                                      value={'200101-0000000'}
+                                      readOnly
+                                    />
                                     <Button
                                       aria-label="피보험자 검색"
                                       variant={'outlined'}
@@ -585,7 +600,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
                               <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
-                              <Input aria-label="직업분류" width={274} value={'소규모상점경영및읽선관리종사원'} readOnly />
+                              <Input
+                                aria-label="직업분류"
+                                width={274}
+                                value={'소규모상점경영및읽선관리종사원'}
+                                readOnly
+                              />
                               <Button
                                 aria-label="피보험자 검색"
                                 variant={'outlined'}
@@ -647,7 +667,13 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                           <FormRow>
                             <FormCell title={'할인적용'}>
                               <Checkbox color="primary">가족연계할인</Checkbox>
-                              <Button aria-label="피보험자 검색" variant="outlined" only="icon" size="lg" color="gray-light">
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant="outlined"
+                                only="icon"
+                                size="lg"
+                                color="gray-light"
+                              >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                             </FormCell>
@@ -699,11 +725,13 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                         <FormRow>
                           <FormCell title={'납기'}>
                             <RadioGroup defaultValue="전기납">
-                              {[{ value: '전기납', id: 'property-payment-period-full', label: '전기납' }].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                  {option.label}
-                                </RadioGroupItem>
-                              ))}
+                              {[{ value: '전기납', id: 'property-payment-period-full', label: '전기납' }].map(
+                                (option) => (
+                                  <RadioGroupItem key={option.id} value={option.value} id={option.id}>
+                                    {option.label}
+                                  </RadioGroupItem>
+                                )
+                              )}
                             </RadioGroup>
                           </FormCell>
                           <FormCell title={'단체취급'}>
@@ -776,7 +804,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                                 >
                                   <Grow placement="sc">
                                     <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
-                                    <Input aria-label="주민등록번호 마스킹" width={110} value={'900101-1******'} readOnly />
+                                    <Input
+                                      aria-label="주민등록번호 마스킹"
+                                      width={110}
+                                      value={'900101-1******'}
+                                      readOnly
+                                    />
                                     <Button
                                       aria-label="피보험자 검색"
                                       variant={'outlined'}
@@ -857,7 +890,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormRow>
                               <FormCell title="직업" colSpan={3}>
                                 <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
-                                <Input aria-label="직업분류" width={274} value={'소규모상점경영및읽선관리종사원'} readOnly />
+                                <Input
+                                  aria-label="직업분류"
+                                  width={274}
+                                  value={'소규모상점경영및읽선관리종사원'}
+                                  readOnly
+                                />
                                 <Button
                                   aria-label="피보험자 검색"
                                   variant={'outlined'}
@@ -900,7 +938,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormRow>
                               <FormCell title="주피와 관계" colSpan={3}>
                                 <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는
-                                <NativeSelect aria-label="주피와 관계 선택" width={156} className="ml-[0.4rem]" required>
+                                <NativeSelect
+                                  aria-label="주피와 관계 선택"
+                                  width={156}
+                                  className="ml-[0.4rem]"
+                                  required
+                                >
                                   {[
                                     { value: '고용인(종업원)', id: 'motorcycle-drives', label: '고용인(종업원)' },
                                     { value: '배우자', id: 'motorcycle-nondriver', label: '배우자' },
@@ -925,7 +968,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                                 <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                   <Grow placement="sc">
                                     <Input aria-label="소유자명" width={75} value={'김환화'} readOnly />
-                                    <Input aria-label="주민등록번호 마스킹" width={110} value={'900101-1******'} readOnly />
+                                    <Input
+                                      aria-label="주민등록번호 마스킹"
+                                      width={110}
+                                      value={'900101-1******'}
+                                      readOnly
+                                    />
                                     <Button
                                       aria-label="소유자 검색"
                                       variant={'outlined'}
@@ -955,7 +1003,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormRow>
                               <FormCell title="소재지" colSpan={3}>
                                 <Input aria-label="목적물명" width={76} value={'목적물1'} />
-                                <Button aria-label="목적물 주소찾기" variant={'outlined'} size={'lg'} color={'gray-light'}>
+                                <Button
+                                  aria-label="목적물 주소찾기"
+                                  variant={'outlined'}
+                                  size={'lg'}
+                                  color={'gray-light'}
+                                >
                                   주소찾기
                                 </Button>
                                 <Input aria-label="목적물 소재지" width={'auto'} readOnly />
@@ -1009,11 +1062,13 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormRow>
                               <FormCell title="실손보상구분">
                                 <NativeSelect aria-label="실손보상구분" width={200} required>
-                                  {[{ value: 'selection', id: 'property-reimbursement-1', label: '선택' }].map((option) => (
-                                    <NativeSelectOption key={option.id} value={option.value}>
-                                      {option.label}
-                                    </NativeSelectOption>
-                                  ))}
+                                  {[{ value: 'selection', id: 'property-reimbursement-1', label: '선택' }].map(
+                                    (option) => (
+                                      <NativeSelectOption key={option.id} value={option.value}>
+                                        {option.label}
+                                      </NativeSelectOption>
+                                    )
+                                  )}
                                 </NativeSelect>
                                 <Button aria-label="알림톡발송" variant={'outlined'} size={'lg'} color={'gray-light'}>
                                   알림톡발송
@@ -1205,7 +1260,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormRow>
                               <FormCell title="직업" colSpan={3}>
                                 <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
-                                <Input aria-label="직업분류" width={274} value={'소규모상점경영및읽선관리종사원'} readOnly />
+                                <Input
+                                  aria-label="직업분류"
+                                  width={274}
+                                  value={'소규모상점경영및읽선관리종사원'}
+                                  readOnly
+                                />
                                 <Button
                                   aria-label="피보험자 검색"
                                   variant={'outlined'}
@@ -1407,7 +1467,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                             <FormRow>
                               <FormCell title="주피와 관계">
                                 <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는 계약자의
-                                <NativeSelect aria-label="주피와 관계 선택" width={156} className="ml-[0.4rem]" required>
+                                <NativeSelect
+                                  aria-label="주피와 관계 선택"
+                                  width={156}
+                                  className="ml-[0.4rem]"
+                                  required
+                                >
                                   {[
                                     { value: '본인', id: 'motorcycle-drives', label: '본인' },
                                     { value: '배우자', id: 'motorcycle-nondriver', label: '배우자' },
@@ -1574,7 +1639,12 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                       <FormRow>
                         <FormCell title="보험차익비과세">
                           <Checkbox color="primary">가입</Checkbox>
-                          <NativeSelect aria-label="보험차익비과세 선택" width={'auto'} required className="ml-[0.4rem]">
+                          <NativeSelect
+                            aria-label="보험차익비과세 선택"
+                            width={'auto'}
+                            required
+                            className="ml-[0.4rem]"
+                          >
                             {[
                               { value: '월납식비과세', id: 'monthly-payment-monthly', label: '월납식비과세' },
                               {

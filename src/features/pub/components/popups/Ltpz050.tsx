@@ -2,6 +2,7 @@
 // 권오택
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import * as React from 'react';
+import { Textarea } from '@/shared/components/uiux/Textarea';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,7 +19,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Textarea } from '@/shared/components/uiux/Textarea';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -65,59 +65,35 @@ export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
                 }}
               />
             </InfoBox>
-            <FormTable
-              caption="부실유의계약 대상 사유"
-              cols={['w-[10rem]', 'w-auto',]}
-              lineTop
-              variant="default"
-            >
+            <FormTable caption="부실유의계약 대상 사유" cols={['w-[10rem]', 'w-auto']} lineTop variant="default">
               <FormRow>
                 <FormCell title={'부실유의계약 대상 사유'}>
-                  <Grow className='w-full [&>div]:w-full!' placement='ss'> 
-                    <Textarea
-                      placeholder="내용을 입력하세요"
-                      showMinLengthCount
-                      readOnly
-                      />
+                  <Grow className="w-full [&>div]:w-full!" placement="ss">
+                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount readOnly />
                   </Grow>
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'선별인수 사유[지점장(BM)]'}>
-                  <Grow className='w-full [&>div]:w-full!' placement='ss'>
-                    <Textarea
-                      placeholder="내용을 입력하세요"
-                      showMinLengthCount
-                      />
-                  </Grow> 
+                  <Grow className="w-full [&>div]:w-full!" placement="ss">
+                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount />
+                  </Grow>
                 </FormCell>
               </FormRow>
             </FormTable>
-            <FormTable
-              caption="부실유의계약 대상 사유"
-              cols={['w-[10rem]', 'w-auto',]}
-              lineTop
-              variant="default"
-            >
+            <FormTable caption="부실유의계약 대상 사유" cols={['w-[10rem]', 'w-auto']} lineTop variant="default">
               <FormRow>
                 <FormCell title={'부실유의계약 대상 사유'}>
-                  <Grow className='w-full [&>div]:w-full!' placement='ss'> 
-                    <Textarea
-                      placeholder="내용을 입력하세요"
-                      showMinLengthCount
-                      readOnly
-                      />
+                  <Grow className="w-full [&>div]:w-full!" placement="ss">
+                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount readOnly />
                   </Grow>
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'선별인수 사유[지점장(BM)]'}>
-                  <Grow className='w-full [&>div]:w-full!' placement='ss'>
-                    <Textarea
-                      placeholder="내용을 입력하세요"
-                      showMinLengthCount
-                      />
-                  </Grow> 
+                  <Grow className="w-full [&>div]:w-full!" placement="ss">
+                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount />
+                  </Grow>
                 </FormCell>
               </FormRow>
             </FormTable>

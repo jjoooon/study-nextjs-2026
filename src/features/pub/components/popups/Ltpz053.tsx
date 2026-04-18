@@ -43,13 +43,10 @@ const DummyData: DummyDataType[] = [
 ];
 
 export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     return (
       <Grow className="h-full w-full">
-        <Grow className="flex-1 justify-start">
-          {params.data?.field02}
-        </Grow>
+        <Grow className="flex-1 justify-start">{params.data?.field02}</Grow>
         <Grow className="border-l border-[#ddddde] h-full pl-1 text-left! aspect-auto flex-1 items-center justify-start">
           {params.data?.field03}
         </Grow>

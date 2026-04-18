@@ -1,7 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ArrowIcon, InputClearIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -13,18 +20,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Badge } from '@uiux/Badge';
 import { Input } from '@uiux/Input';
-import { useState } from 'react';
-import { ArrowIcon, InputClearIcon } from '@icons';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { DatePickerInput } from '@common/DatePicker';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 export const Ltpa02002 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   // items 상태로 관리
   const [items, setItems] = useState([
     { idx: 1, age: 32, gender: '여', job: '1급' },
@@ -38,9 +37,9 @@ export const Ltpa02002 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   // 행 삭제
   const handleRemove = (idx: number) => {
-    setItems(prev => prev.filter((_, i) => i !== idx));
+    setItems((prev) => prev.filter((_, i) => i !== idx));
     // 삭제 후 선택 인덱스 조정
-    setSelectedIdx(prev => {
+    setSelectedIdx((prev) => {
       if (prev > idx) return prev - 1;
       if (prev === idx) return -1;
       return prev;
@@ -60,13 +59,13 @@ export const Ltpa02002 = ({ open, onOpenChange }: PopupBaseProps) => {
     }
   };
 
- const [form, setFormField] = useFormFields({
+  const [form, setFormField] = useFormFields({
     type01: '',
   });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="sm" >
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -77,121 +76,118 @@ export const Ltpa02002 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr] gap-[2rem]">
           <Grow className="w-full bg-[#F3F4F6]" variant="box-round" placement={'se'}>
-            <FormTable
-              caption="보험정보"
-              cols={['w-auto', 'w-auto']}
-              variant="head"
-            >
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
-                <FormCell title={<b className='text-[#000]! font-bold'>나이</b>}>
-                  <Input aria-label="" className='mr-[0.4rem]' width={'4.8rem'} value={form.type01} onChange={(e) => setFormField('type01', e.target.value)}/>
-                  <DatePickerInput
-                    mode="single"
-                    onChange={() => {}}
-                    size="lg"
-                    value=""
-                    width="sm"
+                <FormCell title={<b className="text-[#000]! font-bold">나이</b>}>
+                  <Input
+                    aria-label=""
+                    className="mr-[0.4rem]"
+                    width={'4.8rem'}
+                    value={form.type01}
+                    onChange={(e) => setFormField('type01', e.target.value)}
                   />
+                  <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" width="sm" />
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={<b className='text-[#000]! font-bold'>성별</b>}>
-                <RadioGroup
-                  className="gap-3"
-                  onValueChange={() => {}}
-                  width="full"
-                  defaultValue='남'
-                > {[
-                    { value: '남', label: '남' },
-                    { value: '여', label: '여' },
-                  ].map((option) => (
-                    <RadioGroupItem
-                      key={option.value}
-                      value={option.value}>
-                      {option.label}
-                    </RadioGroupItem>
-                  ))}
+                <FormCell title={<b className="text-[#000]! font-bold">성별</b>}>
+                  <RadioGroup className="gap-3" onValueChange={() => {}} width="full" defaultValue="남">
+                    {' '}
+                    {[
+                      { value: '남', label: '남' },
+                      { value: '여', label: '여' },
+                    ].map((option) => (
+                      <RadioGroupItem key={option.value} value={option.value}>
+                        {option.label}
+                      </RadioGroupItem>
+                    ))}
                   </RadioGroup>
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={<b className='text-[#000]! font-bold'>직업</b>}>
-                <RadioGroup
-                  className="gap-3"
-                  onValueChange={() => {}}
-                  width="full"
-                  defaultValue='1급'
-                > {[
-                    { value: '1급', label: '1급' },
-                    { value: '2급', label: '2급' },
-                    { value: '3급', label: '3급' },
-                ].map((option) => (
-                  <RadioGroupItem
-                    key={option.value}
-                    value={option.value}>
-                    {option.label}
-                  </RadioGroupItem>
-                ))}
-                   
-                </RadioGroup>
+                <FormCell title={<b className="text-[#000]! font-bold">직업</b>}>
+                  <RadioGroup className="gap-3" onValueChange={() => {}} width="full" defaultValue="1급">
+                    {' '}
+                    {[
+                      { value: '1급', label: '1급' },
+                      { value: '2급', label: '2급' },
+                      { value: '3급', label: '3급' },
+                    ].map((option) => (
+                      <RadioGroupItem key={option.value} value={option.value}>
+                        {option.label}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
                 </FormCell>
               </FormRow>
             </FormTable>
-            <Button
-              color="coolgray-light"
-              onClick={() => {}}
-              only="default"
-              size="md"
-              variant="contained"
-            >
+            <Button color="coolgray-light" onClick={() => {}} only="default" size="md" variant="contained">
               키워드 추가
             </Button>
-          </Grow>    
+          </Grow>
           <TableFold variant="accordion">
             <TableFoldHead title="등록된 키워드">
               <Grow className="flex justify-end">
-                <Button color="gray-light" onClick={moveUp} only="icon" size="sm" variant="outlined" disabled={selectedIdx === 0}>
-                  <ArrowIcon className='rotate-90' color={'#FF5C2E'} size={13}/>
+                <Button
+                  color="gray-light"
+                  onClick={moveUp}
+                  only="icon"
+                  size="sm"
+                  variant="outlined"
+                  disabled={selectedIdx === 0}
+                >
+                  <ArrowIcon className="rotate-90" color={'#FF5C2E'} size={13} />
                 </Button>
-                <Button color="gray-light" onClick={moveDown} only="icon" size="sm" variant="outlined" disabled={selectedIdx === items.length - 1}>
-                  <ArrowIcon className='-rotate-90' color={'#FF5C2E'} size={13}/>
+                <Button
+                  color="gray-light"
+                  onClick={moveDown}
+                  only="icon"
+                  size="sm"
+                  variant="outlined"
+                  disabled={selectedIdx === items.length - 1}
+                >
+                  <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
                 </Button>
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <Grow className='w-full' placement='ss'>
-                <Gcol className='w-[1.8rem]' placement='ss'>
+              <Grow className="w-full" placement="ss">
+                <Gcol className="w-[1.8rem]" placement="ss">
                   {items.map((_, i) => (
-                    <Gcol className='w-[1.8rem] h-[2.5rem]' key={i}>
-                      <Badge color="secondary" size="md" variant="contained" className='w-[1.8rem] bg-[#263143]'>{i + 1}</Badge>
-                    </Gcol>  
+                    <Gcol className="w-[1.8rem] h-[2.5rem]" key={i}>
+                      <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] bg-[#263143]">
+                        {i + 1}
+                      </Badge>
+                    </Gcol>
                   ))}
                 </Gcol>
-                <Gcol className='w-full'>
+                <Gcol className="w-full">
                   {items.map((item, i) => (
                     <Gcol
                       className={[
                         'flex flex-row justify-between h-[2.5rem] rounded-[0.4rem] p-[0.4rem] border-[0.1rem] transition-colors duration-150 cursor-pointer',
-                        selectedIdx === i
-                          ? 'border-[#FF5C2E] bg-[#FFF7F4]'
-                          : 'border-[#CCC]'
+                        selectedIdx === i ? 'border-[#FF5C2E] bg-[#FFF7F4]' : 'border-[#CCC]',
                       ].join(' ')}
                       key={item.idx}
                       onClick={() => setSelectedIdx(i)}
                     >
-                      <Typo variant={'body-md'} className={[
-                        selectedIdx === i ? 'text-[#FF5C2E]' : 'text-[#000]'
-                      ].join(' ')}>
+                      <Typo
+                        variant={'body-md'}
+                        className={[selectedIdx === i ? 'text-[#FF5C2E]' : 'text-[#000]'].join(' ')}
+                      >
                         {`${item.age}세(${item.gender}) ${item.job}`}
                       </Typo>
                       <Button
                         color="transparent"
-                        onClick={e => { e.stopPropagation(); handleRemove(i); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemove(i);
+                        }}
                         only="icon"
                         size="xs"
                         variant="contained"
                       >
-                        <InputClearIcon color={selectedIdx === i ? '#FF5C2E' : '#777'}/>
+                        <InputClearIcon color={selectedIdx === i ? '#FF5C2E' : '#777'} />
                       </Button>
                     </Gcol>
                   ))}

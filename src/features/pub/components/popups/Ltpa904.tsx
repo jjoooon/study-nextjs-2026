@@ -792,7 +792,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
           >
             {active === 'tab1' ? (
               <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_auto_auto_auto]" gap={5}>
-                <TableFold variant={'accordion'} className='grid grid-rows-[auto_1fr]'>
+                <TableFold variant={'accordion'} className="grid grid-rows-[auto_1fr]">
                   <TableFoldHead title="납입예정" />
                   <TableFoldBody>
                     <div className="ag-theme-alpine w-full min-h-[13rem]">

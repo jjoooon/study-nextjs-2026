@@ -5,6 +5,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
@@ -14,10 +15,18 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogFooterArea, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -273,7 +282,9 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Grid gap={2.5} className="grid-rows-[auto_1fr_auto_auto]">
                 <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'동일모집인'}>1  동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.</FormCell>
+                    <FormCell title={'동일모집인'}>
+                      1 동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.
+                    </FormCell>
                     <FormCell title={'상장구분'}>
                       <b>hong gum</b>
                     </FormCell>
@@ -298,8 +309,8 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                     domLayout="normal"
                     rowSelection={{
                       mode: 'singleRow',
-                      checkboxes: true, 
-                      enableClickSelection: false, 
+                      checkboxes: true,
+                      enableClickSelection: false,
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
@@ -331,11 +342,11 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <FormCell title={'취급자'}>
                             <Tooltip>
                               <TooltipTrigger>
-                                <b className='truncate block w-[8rem]'>홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동</b>
+                                <b className="truncate block w-[8rem]">
+                                  홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동
+                                </b>
                               </TooltipTrigger>
-                              <TooltipContent>
-                                {`홍길동홍길동`}
-                              </TooltipContent>
+                              <TooltipContent>{`홍길동홍길동`}</TooltipContent>
                             </Tooltip>
                           </FormCell>
                         </FormRow>
@@ -375,11 +386,11 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <FormCell title={'취급자'}>
                             <Tooltip>
                               <TooltipTrigger>
-                                <b className='truncate block w-[8rem]'>홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동</b>
+                                <b className="truncate block w-[8rem]">
+                                  홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동
+                                </b>
                               </TooltipTrigger>
-                              <TooltipContent>
-                                {`홍길동홍길동`}
-                              </TooltipContent>
+                              <TooltipContent>{`홍길동홍길동`}</TooltipContent>
                             </Tooltip>
                           </FormCell>
                         </FormRow>

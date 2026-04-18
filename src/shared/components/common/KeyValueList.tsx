@@ -1,5 +1,5 @@
-import { Grow, Typo } from '@atoms';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow, Typo } from '@atoms';
 
 interface KeyValueItem {
   key: React.ReactNode;
