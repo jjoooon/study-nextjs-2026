@@ -6,7 +6,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
 import { FileUpload } from '@common/FileUpload';
-import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
+import { FileUploadIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,

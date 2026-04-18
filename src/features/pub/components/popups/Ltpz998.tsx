@@ -8,8 +8,7 @@ import React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

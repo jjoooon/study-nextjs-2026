@@ -4,7 +4,6 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -64,11 +63,11 @@ export const Ltpa02003 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <TableCell>
                       ①상해로 장해분류표에서 정한 장해지급률이 80% 이상에 해당하는 장해상태가 된 경우<br></br>
                       ②질병으로 장해분류표에서 정한 장해지급률이 80% 이상에 해당하는 장해상태가 된 경우<br></br>
-                      ③납입면제 보장개시일 이후 **"암"**으로 진단확정된 경우 (*기타피부암, 갑상선암, 제자리암 및
-                      경계성종양 제외)<br></br>
-                      ④"뇌졸중"**으로 진단확정된 경우<br></br>
-                      ⑤"급성심근경색증"**으로 진단확정된 경우<br></br>
-                      ⑥"특정상해성뇌출혈"**로 진단확정된 경우
+                      ③납입면제 보장개시일 이후 **&quot;암&quot;**으로 진단확정된 경우 (*기타피부암, 갑상선암, 제자리암
+                      및 경계성종양 제외)<br></br>
+                      ④&quot;뇌졸중&quot;**으로 진단확정된 경우<br></br>
+                      ⑤&quot;급성심근경색증&quot;**으로 진단확정된 경우<br></br>
+                      ⑥&quot;특정상해성뇌출혈&quot;**로 진단확정된 경우
                     </TableCell>
                   </TableRow>
                   <TableRow>

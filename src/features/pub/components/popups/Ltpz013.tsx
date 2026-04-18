@@ -45,31 +45,31 @@ const InfoData: InfoDataType = {
     { 옵션4: '1형(일반 고지 형)' },
   ],
 };
-type selectOption1Type = {
+type SelectOptionType = {
   value: string;
   label: string;
 }[];
-const selectOption1: selectOption1Type = [
+const selectOption1: SelectOptionType = [
   { value: '옵션1', label: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
   { value: '옵션2', label: '2납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
 ];
-const selectOption2: selectOption1Type = [
+const selectOption2: SelectOptionType = [
   { value: '옵션1', label: '비대면진단심사플랜(20~40세)' },
   { value: '옵션2', label: '2비대면진단심사플랜(20~40세)' },
 ];
-const selectOption3: selectOption1Type = [
+const selectOption3: SelectOptionType = [
   { value: '옵션1', label: '20년납' },
   { value: '옵션2', label: '30년납' },
 ];
-const selectOption4: selectOption1Type = [
+const selectOption4: SelectOptionType = [
   { value: '옵션1', label: '100세만기' },
   { value: '옵션2', label: '200세만기' },
 ];
-const selectOption5: selectOption1Type = [
+const selectOption5: SelectOptionType = [
   { value: '옵션1', label: '갱신 20년' },
   { value: '옵션2', label: '갱신 30년' },
 ];
-const selectOption6: selectOption1Type = [
+const selectOption6: SelectOptionType = [
   { value: '옵션1', label: '1형(일반고지형)' },
   { value: '옵션2', label: '2형(갱신형)' },
 ];

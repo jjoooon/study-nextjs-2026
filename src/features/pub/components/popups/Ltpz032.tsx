@@ -1,10 +1,8 @@
 'use client';
-// 허승하
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { t } from 'i18next';
 import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -26,7 +24,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DummyDataType } from '../../data/ltpa020Data';
 import { Ltpz03201 } from './Ltpz03201';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -336,30 +333,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     setIsDetailPopupOpen(true);
   }, []);
 
-  // const selectionRenderer11 = React.useCallback(
-  //   (params: ICellRendererParams<DummyDataType11>) => {
-  //     if (!params.data) {
-  //       return null;
-  //     }
-
-  //     const rowId = String(params.data.id);
-
-  //     return (
-  //       <div className="flex h-full w-full items-center justify-center">
-  //         <input
-  //           aria-label={`설계번호 ${rowId} 선택`}
-  //           checked={selectedRowId11 === rowId}
-  //           className="h-[1.6rem] w-[1.6rem] cursor-pointer accent-[var(--color-primary-50)]"
-  //           name="ltpz032-selection-11"
-  //           onChange={() => setSelectedRowId11(rowId)}
-  //           type="radio"
-  //         />
-  //       </div>
-  //     );
-  //   },
-  //   [selectedRowId11, setSelectedRowId11]
-  // );
-
   const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(() => {
     return [
       {
@@ -626,33 +599,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
       },
     ];
   }, [handleOpenDetailPopup]);
-
-  const [selectedRowId12, setSelectedRowId12] = React.useState<string>(String(DummyData12[0]?.id ?? ''));
-
-  const selectionRenderer12 = React.useCallback(
-    (params: ICellRendererParams<DummyDataType12>) => {
-      if (!params.data) {
-        return null;
-      }
-
-      const rowId = String(params.data.id);
-
-      return (
-        <div className="flex h-full w-full items-center justify-center">
-          <input
-            aria-label={`설계번호 ${rowId} 선택`}
-            checked={selectedRowId12 === rowId}
-            className="h-[1.6rem] w-[1.6rem] cursor-pointer accent-[var(--color-primary-50)]"
-            name="ltpz032-selection-12"
-            onChange={() => setSelectedRowId12(rowId)}
-            type="radio"
-          />
-        </div>
-      );
-    },
-    [selectedRowId12, setSelectedRowId12]
-  );
-
   const columnDefs12: ColDef<DummyDataType12>[] = [
     {
       headerName: '입력일자',
@@ -917,7 +863,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  // tab2-1 AgGrid Column
   const columnDefs21 = React.useMemo<ColDef<DummyDataType21>[]>(
     () => [
       {
@@ -1014,8 +959,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     ],
     []
   );
-
-  // tab2-2 AgGrid Column
   const columnDefs22 = React.useMemo<ColDef<DummyDataType22>[]>(
     () => [
       {
@@ -1112,8 +1055,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     ],
     []
   );
-
-  // tab2-3 AgGrid Column
   const columnDefs23 = React.useMemo<ColDef<DummyDataType23>[]>(
     () => [
       {
@@ -1212,9 +1153,6 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-
-  // ag-Grid + TablePagination 연동 (공통 훅 사용)
-  // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
   return (
     <>

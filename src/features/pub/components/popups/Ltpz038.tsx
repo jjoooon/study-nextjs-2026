@@ -1,10 +1,8 @@
 ﻿'use client';
-// 권오택
+
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -106,14 +104,6 @@ const DummyData: DummyDataType[] = [
 ];
 
 export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
-  });
-
-  // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
@@ -210,43 +200,32 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'보종군'}>
-                  <NativeSelect
-                    aria-label="보종군 선택"
-                    width={100}
-                    value={form.type01}
-                    required
-                    onChange={(e) => setFormField('type01', e.target.value)}
-                  >
+                  <NativeSelect aria-label="보종군 선택" width={100} required>
                     {[
-                      { value: 'selection', id: 'type01-1', label: '전체' },
-                      { value: 'selection2', id: 'type01-2', label: '장기보험' },
-                      { value: 'selection3', id: 'type01-3', label: '자동차보험' },
-                      { value: 'selection4', id: 'type01-4', label: '화재특종' },
-                      { value: 'selection5', id: 'type01-5', label: '해상보험' },
-                      { value: 'selection6', id: 'type01-6', label: '퇴직연금' },
-                      { value: 'selection7', id: 'type01-7', label: '단체증권' },
+                      { value: 'selection', label: '전체' },
+                      { value: 'selection2', label: '장기보험' },
+                      { value: 'selection3', label: '자동차보험' },
+                      { value: 'selection4', label: '화재특종' },
+                      { value: 'selection5', label: '해상보험' },
+                      { value: 'selection6', label: '퇴직연금' },
+                      { value: 'selection7', label: '단체증권' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
                 <FormCell title={'조회구분'}>
-                  <NativeSelect
-                    aria-label="조회구분 선택"
-                    width={100}
-                    value={form.type02}
-                    onChange={(e) => setFormField('type02', e.target.value)}
-                  >
+                  <NativeSelect aria-label="조회구분 선택" width={100}>
                     {[
-                      { value: 'selection', id: 'type02-1', label: '선택' },
-                      { value: 'selection2', id: 'type02-2', label: '피보험자 번호' },
-                      { value: 'selection3', id: 'type02-3', label: '계약자 번호' },
-                      { value: 'selection4', id: 'type02-4', label: '설계번호' },
-                      { value: 'selection5', id: 'type02-5', label: '차량번호' },
+                      { value: 'selection', label: '선택' },
+                      { value: 'selection2', label: '피보험자 번호' },
+                      { value: 'selection3', label: '계약자 번호' },
+                      { value: 'selection4', label: '설계번호' },
+                      { value: 'selection5', label: '차량번호' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}
@@ -257,18 +236,12 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Button>
                 </FormCell>
                 <FormCell title={'설계상태'}>
-                  <NativeSelect
-                    aria-label="설계상태 선택"
-                    width={100}
-                    value={form.type03}
-                    required
-                    onChange={(e) => setFormField('type03', e.target.value)}
-                  >
+                  <NativeSelect aria-label="설계상태 선택" width={100} required>
                     {[
-                      { value: 'selection', id: 'type03-1', label: '전체' },
-                      { value: 'selection2', id: 'type03-2', label: '전체2' },
+                      { value: 'selection', label: '전체' },
+                      { value: 'selection2', label: '전체2' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}
@@ -277,17 +250,12 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
               <FormRow>
                 <FormCell title={'설계조직'} colSpan={3}>
-                  <NativeSelect
-                    aria-label="설계조직 선택"
-                    width={100}
-                    value={form.type04}
-                    onChange={(e) => setFormField('type04', e.target.value)}
-                  >
+                  <NativeSelect aria-label="설계조직 선택" width={100}>
                     {[
-                      { value: 'selection', id: 'type04-1', label: '취급기관' },
-                      { value: 'selection2', id: 'type04-2', label: '취급기관2' },
+                      { value: 'selection', label: '취급기관' },
+                      { value: 'selection2', label: '취급기관2' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}

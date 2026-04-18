@@ -314,9 +314,18 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                 const bg = isActive ? ACTIVE_BG : INACTIVE_BG;
                 return (
                   <div
+                    role="button"
                     key={plan}
                     className="flex flex-col w-[20.3rem] cursor-pointer h-[100%]"
+                    tabIndex={0}
                     onClick={() => setSelectedPlan(plan)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedPlan(plan);
+                      }
+                    }}
+                    aria-pressed={isActive}
                   >
                     {/* 탭 헤더 */}
                     <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
@@ -355,7 +364,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{
-                  sortable: false,
+                  sortable: true,
                   resizable: false,
                 }}
                 alwaysShowVerticalScroll={true}

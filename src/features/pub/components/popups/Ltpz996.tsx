@@ -8,8 +8,7 @@ import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -48,25 +47,25 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
       {
         headerName: '통신레코드',
         field: 'field1',
-        flex: 1,
+        width: 100,
         cellClass: 'text-center',
       },
       {
         headerName: '서비스코드',
         field: 'field2',
-        flex: 1,
+        width: 120,
         cellClass: 'text-center',
       },
       {
         headerName: '거래코드',
         field: 'field3',
-        flex: 1,
+        width: 100,
         cellClass: 'text-center',
       },
       {
         headerName: '메세지코드',
         field: 'field4',
-        flex: 1,
+        width: 120,
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           if (!params.value) return null;
@@ -90,7 +89,7 @@ export const Ltpz996 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

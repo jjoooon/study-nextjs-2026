@@ -8,7 +8,7 @@ import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { Grow, Gcol, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -20,6 +20,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -357,7 +358,7 @@ export default function Ltpa030Section() {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   // form event
@@ -368,7 +369,7 @@ export default function Ltpa030Section() {
   });
 
   const pageSize = 4;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData2,
     pageSize,
   });
@@ -380,7 +381,7 @@ export default function Ltpa030Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Gcol className="w-full" gap={4}>
+          <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={4}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
@@ -463,90 +464,96 @@ export default function Ltpa030Section() {
                 </Button>
               </Grow>
             </Grow>
-
-            <TableFold>
-              <TableFoldHead title="기본사항">
-                <Grow>
-                  (<Checkbox>삭제건포함</Checkbox>)
-                  <Button color="gray" variant="outlined">
-                    행추가
-                  </Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    domLayout="autoHeight"
-                    enableCellSpan={true}
-                    singleClickEdit={true}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-
-            <TableFold>
-              <TableFoldHead title="추가 등록사항(수납후스캔)">
-                <Grow>
-                  <Button color="gray" variant="outlined">
-                    행추가
-                  </Button>
-                  <Button color="gray" variant="outlined">
-                    행삭제
-                  </Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <Gcol>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData2}
-                      columnDefs={columnDefs2}
-                      domLayout="autoHeight"
-                      enableCellSpan={true}
-                      singleClickEdit={true}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '√',
-                        width: 30,
-                      }}
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      onCellValueChanged={(params) => {
-                        const field = params.colDef.field;
-                        if (!field) return;
-                        setRowData2((prev) =>
-                          prev.map((row) => (row.id === params.data.id ? { ...row, [field]: params.newValue } : row))
-                        );
-                      }}
-                    />
-                  </div>
-                  <TableMore
-                    loadedCount={loadedCount}
-                    totalCount={totalCount}
-                    pageSize={pageSize}
-                    onLoadAll={handleLoadAll}
-                    onLoadNext={handleLoadNext}
-                  />
-                </Gcol>
-              </TableFoldBody>
-            </TableFold>
-          </Gcol>
+            <ResizablePanelGroup orientation="vertical" className="w-full h-full">
+              <ResizablePanel defaultSize={30}>
+                <TableFold className="h-full">
+                  <TableFoldHead title="기본사항">
+                    <Grow>
+                      (<Checkbox>삭제건포함</Checkbox>)
+                      <Button color="gray" variant="outlined">
+                        행추가
+                      </Button>
+                    </Grow>
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        enableCellSpan={true}
+                        singleClickEdit={true}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={70}>
+                <TableFold className="h-full">
+                  <TableFoldHead title="추가 등록사항(수납후스캔)">
+                    <Grow>
+                      <Button color="gray" variant="outlined">
+                        행추가
+                      </Button>
+                      <Button color="gray" variant="outlined">
+                        행삭제
+                      </Button>
+                    </Grow>
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    <Gcol>
+                      <div className="ag-theme-alpine min-h-[18.4rem]">
+                        <AgGridReact<DummyDataType2>
+                          getRowId={(params) => String(params.data.id)}
+                          rowData={rowData2}
+                          columnDefs={columnDefs2}
+                          domLayout="normal"
+                          enableCellSpan={true}
+                          singleClickEdit={true}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowSelection={{
+                            mode: 'multiRow',
+                            headerCheckbox: false,
+                            checkboxes: true,
+                            enableClickSelection: false,
+                          }}
+                          selectionColumnDef={{
+                            headerName: '√',
+                            width: 30,
+                          }}
+                          onGridReady={(params) => {
+                            params.api.forEachNode((node) => {
+                              if (node.data?.isCheck) {
+                                node.setSelected(true);
+                              }
+                            });
+                          }}
+                          onCellValueChanged={(params) => {
+                            const field = params.colDef.field;
+                            if (!field) return;
+                            setRowData2((prev) =>
+                              prev.map((row) =>
+                                row.id === params.data.id ? { ...row, [field]: params.newValue } : row
+                              )
+                            );
+                          }}
+                        />
+                      </div>
+                      <TableMore
+                        loadedCount={loadedCount}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onLoadAll={handleLoadAll}
+                        onLoadNext={handleLoadNext}
+                      />
+                    </Gcol>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </Grid>
         }
         mainFoot={
           <MainBottom>

@@ -8,7 +8,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';

@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';

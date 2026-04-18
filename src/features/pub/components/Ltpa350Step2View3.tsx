@@ -458,7 +458,7 @@ export function Ltpa350Step2View3() {
         cellRenderer: expiryCellRenderer('left'),
       },
     ],
-    [attributeColumnWidth, productNameHeader, editableCellClassRules, expiryCellRenderer, getEditableCallback]
+    [attributeColumnWidth, editableCellClassRules, expiryCellRenderer, getEditableCallback]
   );
   const columnDefs2: ColDef<AgGridRow2>[] = useMemo(
     () => [
@@ -485,7 +485,7 @@ export function Ltpa350Step2View3() {
         width: attributeColumnWidth[0],
         cellClass: 'text-center',
         headerClass: 'px-0!',
-        cellRenderer: attributeRenderer as any, // AgGridRow2에도 재사용, 타입 충돌시 as any
+        cellRenderer: attributeRenderer,
       },
       {
         headerName: '가입금액(만원)',

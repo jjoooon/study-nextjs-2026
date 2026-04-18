@@ -21,8 +21,8 @@ type DialogSizeConfig = {
 
 type DialogSize = DialogSizePreset | DialogSizeConfig;
 
-const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
-const DEFAULT_DIALOG_CONTENT_Z_INDEX = DEFAULT_DIALOG_OVERLAY_Z_INDEX + 1;
+// const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
+const DEFAULT_DIALOG_CONTENT_Z_INDEX = 50;
 const DIALOG_VIEWPORT_GAP = '2.4rem';
 const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
 const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
@@ -203,8 +203,9 @@ function DialogContent({
 }) {
   const depth = React.useContext(DialogDepthContext);
   // depth 기반 z-index: 상위 다이얼로그 content 위에 하위 암막/content가 올라옴
-  const overlayZIndex = DEFAULT_DIALOG_OVERLAY_Z_INDEX + (depth - 1) * 2;
-  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (depth - 1) * 2;
+  // 암막과 content가 항상 동일한 z-index를 갖도록 조정 (첫 번째 50, 두 번째 51 ...)
+  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (depth - 1);
+  // const overlayZIndex = autoContentZIndex;
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [maxOpenDepth, setMaxOpenDepth] = React.useState(_getMaxOpenDepth);
@@ -218,6 +219,17 @@ function DialogContent({
       }),
     []
   );
+
+  // 병렬 구조 지원: 열린 모달이 있다면 자동으로 zIndex를 더 높게 할당
+  const parallelZIndex = React.useMemo(() => {
+    // zIndex prop가 명시되면 그대로 사용
+    if (zIndex !== undefined) return zIndex;
+    // 병렬 구조에서 여러 모달가 열려 있으면, 열린 개수만큼 zIndex 증가
+    if (openCount > 1) {
+      return DEFAULT_DIALOG_CONTENT_Z_INDEX + openCount - 1;
+    }
+    return autoContentZIndex;
+  }, [zIndex, openCount, autoContentZIndex]);
 
   // 단일 팝업 → 항상 암막 표시 / 중첩 → 가장 위(depth === maxOpenDepth)만 표시
   const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || depth >= maxOpenDepth);
@@ -247,39 +259,48 @@ function DialogContent({
       minHeight: resolvedSize.minHeight,
       maxWidth: resolvedSize.maxWidth,
       maxHeight: resolvedSize.maxHeight,
-      zIndex: zIndex ?? autoContentZIndex,
+      zIndex: parallelZIndex,
     }),
-    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, resolvedSize, zIndex, autoContentZIndex]
+    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, resolvedSize, parallelZIndex]
   );
+
+  // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
+  const [initialCapture, setInitialCapture] = React.useState<{
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
 
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
-      if (isFullSize) return; // full 사이즈일 때 드래그/리사이즈 비활성화
-      // DialogHeader 또는 드래그 가능한 영역에서만 시작
+      if (isFullSize) return;
       const target = e.target as HTMLElement;
-      const dialogHeader = target.closest('[data-slot="dialog-header"]');
-      const dialogClose = target.closest('[data-slot="dialog-close"]');
       const resizeHandle = target.closest('[data-slot="resize-handle"]');
+      const dialogHeader = target.closest('[data-slot="dialog-header"]');
 
-      // Close 버튼이면 드래그하지 않음
-      if (dialogClose) return;
-
-      // Resize handle에서 시작하면 resize 모드
       if (resizeHandle) {
         e.preventDefault();
+        const rect = contentRef.current!.getBoundingClientRect();
         setIsResizing(resizeHandle.getAttribute('data-direction'));
-        setDragStart({ x: e.clientX, y: e.clientY });
+        // 리사이즈 시작 시점의 모든 상태를 스냅샷으로 저장
+        setInitialCapture({
+          width: rect.width,
+          height: rect.height,
+          x: position.x,
+          y: position.y,
+          mouseX: e.clientX,
+          mouseY: e.clientY,
+        });
         return;
       }
 
-      // Header가 있고 Header 내부이거나, Header가 없으면 드래그 허용
       if (dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]')) {
-        e.preventDefault();
+        // 드래그 로직은 기존과 동일하게 유지해도 무방함
         setIsDragging(true);
-        setDragStart({
-          x: e.clientX - position.x,
-          y: e.clientY - position.y,
-        });
+        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
       }
     },
     [position, isFullSize]
@@ -287,60 +308,59 @@ function DialogContent({
 
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      document.body.style.userSelect = 'none';
       if (isDragging && !isResizing) {
-        const newX = e.clientX - dragStart.x;
-        const newY = e.clientY - dragStart.y;
-        setPosition({ x: newX, y: newY });
+        setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
       }
 
-      if (isResizing && contentRef.current) {
-        const rect = contentRef.current.getBoundingClientRect();
-        const deltaX = e.clientX - dragStart.x;
-        const deltaY = e.clientY - dragStart.y;
+      if (isResizing && initialCapture) {
+        // 시작점으로부터 마우스가 움직인 총 거리
+        const deltaX = e.clientX - initialCapture.mouseX;
+        const deltaY = e.clientY - initialCapture.mouseY;
 
-        const baseWidth = resizedSize.width || rect.width;
-        const baseHeight = resizedSize.height || rect.height;
-        let shiftX = 0;
-        let shiftY = 0;
+        let newWidth = initialCapture.width;
+        let newHeight = initialCapture.height;
+        let newX = initialCapture.x;
+        let newY = initialCapture.y;
 
-        const newSize = { ...resizedSize };
-
+        // --- X축 계산 ---
         if (isResizing.includes('e')) {
-          const nextWidth = Math.max(300, baseWidth + deltaX);
-          newSize.width = nextWidth;
-          shiftX += (nextWidth - baseWidth) / 2;
-        }
-        if (isResizing.includes('w')) {
-          const nextWidth = Math.max(300, baseWidth - deltaX);
-          newSize.width = nextWidth;
-          shiftX -= (nextWidth - baseWidth) / 2;
-        }
-        if (isResizing.includes('s')) {
-          const nextHeight = Math.max(200, baseHeight + deltaY);
-          newSize.height = nextHeight;
-          shiftY += (nextHeight - baseHeight) / 2;
-        }
-        if (isResizing.includes('n')) {
-          const nextHeight = Math.max(200, baseHeight - deltaY);
-          newSize.height = nextHeight;
-          shiftY -= (nextHeight - baseHeight) / 2;
+          // 오른쪽 확장: 너비는 늘어나고, 중심점은 늘어난 양의 절반만큼 오른쪽(+X)으로
+          const addedWidth = deltaX;
+          newWidth = Math.max(300, initialCapture.width + addedWidth);
+          const actualAddedWidth = newWidth - initialCapture.width;
+          newX = initialCapture.x + actualAddedWidth / 2;
+        } else if (isResizing.includes('w')) {
+          // 왼쪽 확장: 너비는 늘어나고, 중심점은 늘어난 양의 절반만큼 왼쪽(-X)으로
+          const addedWidth = -deltaX;
+          newWidth = Math.max(300, initialCapture.width + addedWidth);
+          const actualAddedWidth = newWidth - initialCapture.width;
+          newX = initialCapture.x - actualAddedWidth / 2;
         }
 
-        setResizedSize(newSize);
-        if (shiftX !== 0 || shiftY !== 0) {
-          setPosition((prev) => ({
-            x: prev.x + shiftX,
-            y: prev.y + shiftY,
-          }));
+        // --- Y축 계산 ---
+        if (isResizing.includes('s')) {
+          // 아래쪽 확장: 높이는 늘어나고, 중심점은 늘어난 양의 절반만큼 아래(+Y)로
+          const addedHeight = deltaY;
+          newHeight = Math.max(200, initialCapture.height + addedHeight);
+          const actualAddedHeight = newHeight - initialCapture.height;
+          newY = initialCapture.y + actualAddedHeight / 2;
+        } else if (isResizing.includes('n')) {
+          // 위쪽 확장: 높이는 늘어나고, 중심점은 늘어난 양의 절반만큼 위(-Y)로
+          const addedHeight = -deltaY;
+          newHeight = Math.max(200, initialCapture.height + addedHeight);
+          const actualAddedHeight = newHeight - initialCapture.height;
+          newY = initialCapture.y - actualAddedHeight / 2;
         }
-        setDragStart({ x: e.clientX, y: e.clientY });
+
+        setResizedSize({ width: newWidth, height: newHeight });
+        setPosition({ x: newX, y: newY });
       }
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
       setIsResizing(null);
+      setInitialCapture(null); // 캡처 데이터 초기화
       document.body.style.userSelect = 'auto';
     };
 
@@ -353,11 +373,11 @@ function DialogContent({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, isResizing, dragStart, resizedSize]);
+  }, [isDragging, isResizing, dragStart, resizedSize, initialCapture]);
 
   return (
     <DialogPortal data-slot="dialog-portal">
-      {resolvedShowOverlay && <DialogOverlay style={{ zIndex: overlayZIndex }} className={overlayClassName} />}
+      {resolvedShowOverlay && <DialogOverlay style={{ zIndex: parallelZIndex }} className={overlayClassName} />}
       <DialogPrimitive.Content
         ref={contentRef}
         data-slot="dialog-content"

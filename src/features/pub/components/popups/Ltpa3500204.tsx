@@ -259,8 +259,8 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
                   { value: '1인실', label: '1인실' },
                   { value: '운전자비용', label: '운전자비용' },
                   { value: '패키지명', label: '패키지명' },
-                ].map((option, index) => (
-                  <RadioGroupItem value={option.value} variant="button">
+                ].map((option) => (
+                  <RadioGroupItem value={option.value} variant="button" key={option.value}>
                     {option.label}
                   </RadioGroupItem>
                 ))}

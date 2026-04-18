@@ -9,7 +9,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/com
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';

@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -97,37 +97,32 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '부호',
       width: 60,
       field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-center',
     },
     {
       headerName: '구분',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-left',
     },
     {
       headerName: '급수',
       width: 60,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-center',
     },
     {
       headerName: '목적물가입금액',
       flex: 1,
       field: 'field04',
-      cellClass: 'text-right flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '가입금액',
       flex: 1,
       field: 'field05',
-      cellClass: 'text-right flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
   ];

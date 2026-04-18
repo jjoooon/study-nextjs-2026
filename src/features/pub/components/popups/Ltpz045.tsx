@@ -156,7 +156,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                           {[
                             { value: 'option1', label: '예' },
                             { value: 'option2', label: '아니오' },
-                          ].map((option, idx, arr) => (
+                          ].map((option, idx) => (
                             <React.Fragment key={option.value}>
                               <RadioGroupItem value={option.value}>{option.label}</RadioGroupItem>
                               {idx === 0 && <div className="px-[1rem]">/</div>}
@@ -235,10 +235,10 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                           onChange={(e) => setFormField('type02', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type02-1', label: '선택1' },
-                            { value: 'selection2', id: 'type02-2', label: '선택2' },
+                            { value: 'selection', label: '선택1' },
+                            { value: 'selection2', label: '선택2' },
                           ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            <NativeSelectOption key={option.value} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
@@ -267,10 +267,10 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                           onChange={(e) => setFormField('type01', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type01-1', label: '선택1' },
-                            { value: 'selection2', id: 'type01-2', label: '선택2' },
+                            { value: 'selection', label: '선택1' },
+                            { value: 'selection2', label: '선택2' },
                           ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            <NativeSelectOption key={option.value} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}

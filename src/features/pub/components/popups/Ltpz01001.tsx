@@ -2,11 +2,11 @@
 
 import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -177,19 +177,7 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  const [rowData, setRowData] = useState<DummyDataType[]>(DummyData);
-  const [errorRows, setErrorRows] = useState<number[]>([]);
-
-  const onCellValueChanged = useMemo(
-    () =>
-      createCellValueChangedHandler<DummyDataType, number>(
-        ['field02', 'field03', 'field04', 'field05', 'field06', 'field07'],
-        setRowData,
-        setErrorRows,
-        'id'
-      ),
-    [setRowData, setErrorRows]
-  );
+  const [rowData] = useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -226,13 +214,11 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
               columnDefs={columnDefs}
               headerHeight={52}
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
               }}
               singleClickEdit={true}
               domLayout="autoHeight"
-              onCellValueChanged={onCellValueChanged}
-              alwaysShowHorizontalScroll={true}
             />
           </div>
 

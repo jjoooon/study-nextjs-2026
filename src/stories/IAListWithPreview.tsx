@@ -92,8 +92,13 @@ export function IAListWithPreview() {
 
     return [...visibleRows].sort((left, right) => {
       // path, id, dep4, plan, pub, dev 모두 string이므로 localeCompare 사용
-      const leftValue = (left as any)[sortKey] ?? '';
-      const rightValue = (right as any)[sortKey] ?? '';
+      type SortableKeys = keyof Pick<IARow, 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
+      if (!sortKey || !['dep4', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
+        return 0;
+      }
+      const key = sortKey as SortableKeys;
+      const leftValue = left[key] ?? '';
+      const rightValue = right[key] ?? '';
       const compareResult = leftValue.localeCompare(rightValue, 'ko');
       return sortState.order === 'asc' ? compareResult : -compareResult;
     });

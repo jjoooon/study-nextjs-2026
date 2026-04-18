@@ -2,8 +2,7 @@
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
@@ -21,7 +20,7 @@ const dummyData: DummyDataType[] = [
 export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -35,7 +34,7 @@ export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[1fr]">
           <Table>
-            <caption className="a11y-hidden">테이블 소개글</caption>
+            <caption className="a11y-hidden">화면담당자 정보입니다.</caption>
             <TableHeader>
               <TableRow>
                 <TableHead>구문</TableHead>

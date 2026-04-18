@@ -6,11 +6,10 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -174,6 +173,38 @@ const DummyData: DummyDataType[] = [
     field36: '',
     field37: '',
     field38: '',
+  },
+];
+
+// tab2 dummy data
+type DummyDataType2 = {
+  id: number;
+  field2_01: string | number;
+  field2_02: string | number;
+  field2_03: string | number;
+  field2_04: string | number;
+};
+const DummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    field2_01: '',
+    field2_02: '',
+    field2_03: '',
+    field2_04: '',
+  },
+  {
+    id: 2,
+    field2_01: '',
+    field2_02: '',
+    field2_03: '',
+    field2_04: '',
+  },
+  {
+    id: 3,
+    field2_01: '',
+    field2_02: '',
+    field2_03: '',
+    field2_04: '',
   },
 ];
 
@@ -548,39 +579,6 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
     ],
     []
   );
-
-  // tab2 dummy data
-  type DummyDataType2 = {
-    id: number;
-    field2_01: string | number;
-    field2_02: string | number;
-    field2_03: string | number;
-    field2_04: string | number;
-  };
-  const DummyData2: DummyDataType2[] = [
-    {
-      id: 1,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-    {
-      id: 2,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-    {
-      id: 3,
-      field2_01: '',
-      field2_02: '',
-      field2_03: '',
-      field2_04: '',
-    },
-  ];
-  // tab2 AgGrid Column
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
     () => [
       {
@@ -622,36 +620,6 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
-  // ag-Grid + TablePagination 연동 (공통 훅 사용)
-  // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
-    type05: '',
-    type06: '',
-    type07: '',
-    type08: '',
-    type09: '',
-    type10: '',
-    type11: '',
-    type12: '',
-    type13: '',
-    type14: '',
-    type15: '',
-    type16: '',
-    type17: '',
-    type18: '',
-    type19: '',
-    type20: '',
-    type21: '',
-    type22: '',
-    type23: '',
-  });
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -685,71 +653,59 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} />
+                  <Input />
                 </FormCell>
                 <FormCell title={'발행후변경순번'}>
-                  <Input value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} />
+                  <Input />
                 </FormCell>
                 <FormCell title={'증권번호'}>
-                  <Input value={form.type03} onChange={(e) => setFormField('type03', e.target.value)} />
+                  <Input />
                 </FormCell>
                 <FormCell title={'시작납입회차'}>
-                  <Input value={form.type04} onChange={(e) => setFormField('type04', e.target.value)} />
+                  <Input />
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'업무구분1'}>
-                  <NativeSelect
-                    aria-label="업무구분1 선택"
-                    value={form.type05}
-                    onChange={(e) => setFormField('type05', e.target.value)}
-                  >
+                  <NativeSelect aria-label="업무구분1 선택">
                     {[
-                      { value: 'selection', id: 'type05-1', label: '(10)가입설계' },
-                      { value: 'selection2', id: 'type05-2', label: '(20)변경설계' },
+                      { value: 'selection', label: '(10)가입설계' },
+                      { value: 'selection2', label: '(20)변경설계' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
                 <FormCell title={'업무구분2'}>
-                  <NativeSelect
-                    aria-label="업무구분2 선택"
-                    value={form.type06}
-                    onChange={(e) => setFormField('type06', e.target.value)}
-                  >
+                  <NativeSelect aria-label="업무구분2 선택">
                     {[
-                      { value: 'selection', id: 'type06-1', label: '(11)예상만기' },
-                      { value: 'selection2', id: 'type06-2', label: '(13)최소최대' },
-                      { value: 'selection3', id: 'type06-3', label: '(21)추천' },
-                      { value: 'selection4', id: 'type06-4', label: '(12)인수심사' },
+                      { value: 'selection', label: '(11)예상만기' },
+                      { value: 'selection2', label: '(13)최소최대' },
+                      { value: 'selection3', label: '(21)추천' },
+                      { value: 'selection4', label: '(12)인수심사' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </FormCell>
                 <FormCell title={'환급률'}>
-                  <Input value={form.type07} onChange={(e) => setFormField('type07', e.target.value)} />
+                  <Input />
                 </FormCell>
                 <FormCell title={'환급금'}>
-                  <Input value={form.type08} onChange={(e) => setFormField('type08', e.target.value)} />
+                  <Input />
                 </FormCell>
                 <FormCell title={'추천구분'}>
-                  <NativeSelect
-                    aria-label="추천구분 선택"
-                    value={form.type09}
-                    onChange={(e) => setFormField('type09', e.target.value)}
-                  >
+                  <NativeSelect aria-label="추천구분 선택">
                     {[
-                      { value: 'selection', id: 'type09-1', label: '(10)목표환급율' },
-                      { value: 'selection2', id: 'type09-2', label: '(01)목표환급율' },
-                      { value: 'selection3', id: 'type09-3', label: '(02)목표환급금' },
+                      { value: 'selection', label: '(10)목표환급율' },
+                      { value: 'selection2', label: '(01)목표환급율' },
+                      { value: 'selection3', label: '(02)목표환급금' },
                     ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
+                      <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
                       </NativeSelectOption>
                     ))}
@@ -832,31 +788,16 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                     >
                       <FormRow>
                         <FormCell title={'총예상납입보험료'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type10}
-                            onChange={(e) => setFormField('type10', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'중도환급금'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type11}
-                            onChange={(e) => setFormField('type11', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'예상만기환급금'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type12}
-                            onChange={(e) => setFormField('type12', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'예상만기환급율'}>
-                          <Input value={form.type13} onChange={(e) => setFormField('type13', e.target.value)} />%
+                          <Input />%
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -882,46 +823,26 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                     >
                       <FormRow>
                         <FormCell title={'추천보험료'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type14}
-                            onChange={(e) => setFormField('type14', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'최소추천(출생후)1'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type15}
-                            onChange={(e) => setFormField('type15', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={null} colSpan={4}></FormCell>
                       </FormRow>
 
                       <FormRow>
                         <FormCell title={'최소추천보험료'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type16}
-                            onChange={(e) => setFormField('type16', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'최소예상만기환급율'}>
-                          <Input value={form.type17} onChange={(e) => setFormField('type17', e.target.value)} />%
+                          <Input />%
                         </FormCell>
                         <FormCell title={'최다추천보험료'}>
-                          <Input value={form.type18} onChange={(e) => setFormField('type18', e.target.value)} />%
+                          <Input />%
                         </FormCell>
                         <FormCell title={'최대추천보험료'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type19}
-                            onChange={(e) => setFormField('type19', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -946,34 +867,16 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                     >
                       <FormRow>
                         <FormCell title={'만기환급담보환급금'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type20}
-                            onChange={(e) => setFormField('type20', e.target.value)}
-                          />
-                          원
+                          <Input commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'적립보험료대체납입특약보험료'}>
-                          <Input
-                            commaAmount={true}
-                            variant="default"
-                            value={form.type21}
-                            onChange={(e) => setFormField('type21', e.target.value)}
-                          />
+                          <Input commaAmount={true} />
                         </FormCell>
                         <FormCell title={'실손의료비예상납입보험료'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type22}
-                            onChange={(e) => setFormField('type22', e.target.value)}
-                          />
+                          <Input commaAmount={true} />
                         </FormCell>
                         <FormCell title={'만기유지보너스'}>
-                          <Input
-                            commaAmount={true}
-                            value={form.type23}
-                            onChange={(e) => setFormField('type23', e.target.value)}
-                          />
+                          <Input commaAmount={true} />
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -1023,50 +926,16 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                     >
                       <FormRow>
                         <FormCell title={'총예상납입보험료'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            commaAmount={true}
-                            width="full"
-                            value={form.type01}
-                            onChange={(e) => setFormField('type01', e.target.value)}
-                          />
-                          원
+                          <Input placeholder="" size="lg" variant="default" commaAmount={true} width="full" />원
                         </FormCell>
                         <FormCell title={'중도환급금'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
-                            commaAmount={true}
-                            value={form.type02}
-                            onChange={(e) => setFormField('type02', e.target.value)}
-                          />
-                          원
+                          <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} />원
                         </FormCell>
                         <FormCell title={'예상만기환급금'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
-                            value={form.type03}
-                            onChange={(e) => setFormField('type03', e.target.value)}
-                          />
-                          원
+                          <Input placeholder="" size="lg" variant="default" width="full" />원
                         </FormCell>
                         <FormCell title={'예상만기환급율'}>
-                          <Input
-                            placeholder=""
-                            size="lg"
-                            variant="default"
-                            width="full"
-                            value={form.type04}
-                            onChange={(e) => setFormField('type04', e.target.value)}
-                          />
-                          %
+                          <Input placeholder="" size="lg" variant="default" width="full" />%
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -1093,44 +962,24 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                       >
                         <FormRow>
                           <FormCell title={'추천보험료'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type05}
-                              onChange={(e) => setFormField('type05', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'최소추천(출생후)'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type06}
-                              onChange={(e) => setFormField('type06', e.target.value)}
-                            />
-                            원<FormCell title={null} colSpan={4}></FormCell>
+                            <Input commaAmount={true} />원<FormCell title={null} colSpan={4}></FormCell>
                           </FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title={'최소추천보험료'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type07}
-                              onChange={(e) => setFormField('type07', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'최소예상만기환급율'}>
-                            <Input value={form.type08} onChange={(e) => setFormField('type08', e.target.value)} />%
+                            <Input />%
                           </FormCell>
                           <FormCell title={'최대추천보험료'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type09}
-                              onChange={(e) => setFormField('type09', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'최대예상만기환급율'}>
-                            <Input value={form.type10} onChange={(e) => setFormField('type10', e.target.value)} />%
+                            <Input />%
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -1158,36 +1007,16 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
                       >
                         <FormRow>
                           <FormCell title={'만기환급담보환급금'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type11}
-                              onChange={(e) => setFormField('type11', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'적립보험료대체납입특약보험료'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type12}
-                              onChange={(e) => setFormField('type12', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'실손의료비예상납입보험료'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type13}
-                              onChange={(e) => setFormField('type13', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'만기유지보너스'}>
-                            <Input
-                              commaAmount={true}
-                              value={form.type14}
-                              onChange={(e) => setFormField('type14', e.target.value)}
-                            />
-                            원
+                            <Input commaAmount={true} />원
                           </FormCell>
                         </FormRow>
                       </FormTable>

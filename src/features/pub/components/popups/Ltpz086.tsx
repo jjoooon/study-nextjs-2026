@@ -4,9 +4,9 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -225,58 +225,54 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
-            <TableFold>
-              <TableFoldHead title="위배내용">
-                <Typo tag="span" variant={'body-md'}>
-                  단위:원
-                </Typo>
-              </TableFoldHead>
-              <TableFoldBody className="grid-rows-[auto_1fr]">
-                <FormTable caption="위배내용" className="" lineTop variant="default">
-                  <FormRow vertical>
-                    <FormCell title="인수제한">청약완료불가(업계누적)</FormCell>
-                    <FormCell title="누적명">암진단비(손생보)</FormCell>
-                    <FormCell title="누적유형">-</FormCell>
-                    <FormCell title="기누적금액">
-                      <div className="w-full text-right">5,700</div>
-                    </FormCell>
-                    <FormCell title="합계">
-                      <div className="w-full text-right">4,700</div>
-                    </FormCell>
-                    <FormCell title="한도">
-                      <div className="w-full text-right">30,000</div>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
+        <DialogSection className="grid-rows-[auto_1fr] gap-5">
+          <TableFold>
+            <TableFoldHead title="위배내용">
+              <Typo tag="span" variant={'body-md'}>
+                단위:원
+              </Typo>
+            </TableFoldHead>
+            <TableFoldBody className="grid-rows-[1fr]">
+              <FormTable caption="위배내용" className="" lineTop variant="default">
+                <FormRow vertical>
+                  <FormCell title="인수제한">청약완료불가(업계누적)</FormCell>
+                  <FormCell title="누적명">암진단비(손생보)</FormCell>
+                  <FormCell title="누적유형">-</FormCell>
+                  <FormCell title="기누적금액">
+                    <div className="w-full text-right">5,700</div>
+                  </FormCell>
+                  <FormCell title="합계">
+                    <div className="w-full text-right">4,700</div>
+                  </FormCell>
+                  <FormCell title="한도">
+                    <div className="w-full text-right">30,000</div>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </TableFoldBody>
+          </TableFold>
 
-            <TableFold>
-              <TableFoldHead title="기계약 사항" />
-              <TableFoldBody className="grid-rows-[auto_1fr]">
-                <Gcol className="w-full" gap={4}>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
-                      pinnedBottomRowData={sumRow}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      rowClassRules={{}}
-                      enableCellSpan={true}
-                      domLayout="autoHeight"
-                    />
-                  </div>
-                </Gcol>
-              </TableFoldBody>
-            </TableFold>
-          </Gcol>
+          <TableFold>
+            <TableFoldHead title="기계약 사항" />
+            <TableFoldBody className="grid-rows-[1fr]">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  pinnedBottomRowData={sumRow}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  rowClassRules={{}}
+                  enableCellSpan={true}
+                  domLayout="normal"
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>

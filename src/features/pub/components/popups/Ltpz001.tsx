@@ -1,7 +1,7 @@
 'use client';
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
@@ -166,27 +166,13 @@ const DummyData: DummyDataType[] = [
 ];
 
 export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const handlePreviewClick = (row: DummyDataType) => {
-    console.log('[LTPZ001] 미리보기 클릭', row);
-  };
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '미리보기',
       field: 'field2',
       width: 80,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
-        <Button
-          variant={'text'}
-          size={'lg'}
-          color={'link'}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (params.data) {
-              handlePreviewClick(params.data);
-            }
-          }}
-        >
+      cellRenderer: () => (
+        <Button variant={'text'} size={'lg'} color={'link'}>
           미리보기
         </Button>
       ),

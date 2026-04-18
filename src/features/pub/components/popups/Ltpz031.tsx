@@ -211,7 +211,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     type05_04: '',
   });
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
-  const [searchWord, setSearchWord] = useState('척추');
+  const [searchWord] = useState('척추');
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -743,7 +743,6 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               ];
                               const groups: React.ReactNode[] = [];
                               for (let i = 0; i < items.length; i += 3) {
-                                const idx = i;
                                 const isEtcGroup = i === 6;
                                 groups.push(
                                   <>
