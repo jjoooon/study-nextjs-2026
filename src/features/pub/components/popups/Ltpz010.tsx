@@ -540,7 +540,3 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * 중복의 동작 방식, 선택이 싱글모드인지 확인 필요
- */

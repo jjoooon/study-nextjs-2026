@@ -332,8 +332,3 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * selectionColumnDef: 전체체크여부
- * mode: 'multiRow' 선택인지 확인필요
- */

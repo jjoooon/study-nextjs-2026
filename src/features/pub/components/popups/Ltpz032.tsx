@@ -1396,7 +1396,3 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
     </>
   );
 };
-/**
- * 확인요청
- * 선택 라디오에서 기본 셀렉트 사용 ?
- */

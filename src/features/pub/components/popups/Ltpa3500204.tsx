@@ -25,64 +25,6 @@ import {
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const CombinedConstructionHeader = () => {
-  const headerAreaStyle: React.CSSProperties = {
-    width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
-  };
-
-  return (
-    <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
-      <div className="flex h-full w-full items-center justify-center text-center">구분</div>
-    </div>
-  );
-};
-
-const CombinedConstructionCell = ({ data }: ICellRendererParams<DummyDataType1>) => {
-  const field01 = data?.field01 ?? '';
-  const field02 = data?.field02 ?? '';
-  const field03 = data?.field03 ?? '';
-  const level = data?.level ?? 3;
-
-  // 레벨 2: field02가 있으면 2칸(50/50), 없으면 1칸(전체)
-  if (level === 2) {
-    if (field02) {
-      return (
-        <div className="grid h-full grid-cols-2">
-          <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
-            {field01}
-          </div>
-          <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field02}</div>
-        </div>
-      );
-    }
-    return (
-      <div className="flex h-full min-h-[2.5rem] h-[3rem] w-full items-center justify-center px-2 text-center">
-        {field01 || '\u00A0'}
-      </div>
-    );
-  }
-
-  // 레벨 3 (기본): 3칸
-  return (
-    <div className="grid h-full grid-cols-3">
-      <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
-        {field01}
-      </div>
-      <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
-        {field02}
-      </div>
-      <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field03}</div>
-    </div>
-  );
-};
-
-const FullWidthIsDetailsRenderer = ({ data }: ICellRendererParams<DummyDataType1>) => {
-  const content = String(data?.field01 ?? data?.field02 ?? data?.field03 ?? '\u00A0');
-  return (
-    <div className="flex h-full w-full min-h-[2.5rem] items-center justify-center px-2 text-center">{content}</div>
-  );
-};
-
 // 담보패키지 dummy data
 type DummyDataType1 = {
   id: number;
@@ -213,6 +155,64 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const CombinedConstructionHeader = () => {
+    const headerAreaStyle: React.CSSProperties = {
+      width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
+    };
+
+    return (
+      <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
+        <div className="flex h-full w-full items-center justify-center text-center">구분</div>
+      </div>
+    );
+  };
+
+  const CombinedConstructionCell = ({ data }: ICellRendererParams<DummyDataType1>) => {
+    const field01 = data?.field01 ?? '';
+    const field02 = data?.field02 ?? '';
+    const field03 = data?.field03 ?? '';
+    const level = data?.level ?? 3;
+
+    // 레벨 2: field02가 있으면 2칸(50/50), 없으면 1칸(전체)
+    if (level === 2) {
+      if (field02) {
+        return (
+          <div className="grid h-full grid-cols-2">
+            <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+              {field01}
+            </div>
+            <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field02}</div>
+          </div>
+        );
+      }
+      return (
+        <div className="flex h-full min-h-[2.5rem] h-[3rem] w-full items-center justify-center px-2 text-center">
+          {field01 || '\u00A0'}
+        </div>
+      );
+    }
+
+    // 레벨 3 (기본): 3칸
+    return (
+      <div className="grid h-full grid-cols-3">
+        <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+          {field01}
+        </div>
+        <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+          {field02}
+        </div>
+        <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field03}</div>
+      </div>
+    );
+  };
+
+  const FullWidthIsDetailsRenderer = ({ data }: ICellRendererParams<DummyDataType1>) => {
+    const content = String(data?.field01 ?? data?.field02 ?? data?.field03 ?? '\u00A0');
+    return (
+      <div className="flex h-full w-full min-h-[2.5rem] items-center justify-center px-2 text-center">{content}</div>
+    );
+  };
+
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
       headerName: '구분',
@@ -361,8 +361,3 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * 전체체크의 사용여부
- * <Grow className="ml-32"> 간격체크
- */

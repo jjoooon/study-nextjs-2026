@@ -205,7 +205,3 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
-/**
- * 확인요청
- * 이륜차부담보 가입 사이 계약 테이블 ag grid 확인
- */
