@@ -1,9 +1,10 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 import AIChatBot from './AIChatBot';
 
@@ -40,9 +41,11 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
           className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
         >
           <Checkbox variant={'button'}>4세대</Checkbox>
-          <Grow className="gap-[0.2rem]">
-            <Typo variant={'amount-md'}>{resolvedDataTotal.insGen}</Typo>
-            <Typo variant={'heading-md'}>원</Typo>
+          <Grow>
+            <Button variant={'none'}>
+              <Typo variant={'amount-md'}>{resolvedDataTotal.insGen}</Typo>
+              <Typo variant={'heading-md'}>원</Typo>
+            </Button>
           </Grow>
         </Grow>
       )}
@@ -52,22 +55,26 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
           <Typo variant={'body-sm'} weight={'bold'}>
             납입보험료
           </Typo>
-          <Grow className="gap-[0.2rem]">
-            <Typo variant={'amount-md'} color={'primary'}>
-              {paymentAmountText}
-            </Typo>
-            <Typo variant={'heading-md'}>원</Typo>
+          <Grow>
+            <Button variant={'none'}>
+              <Typo variant={'amount-md'} color={'primary'}>
+                {paymentAmountText}
+              </Typo>
+              <Typo variant={'heading-md'}>원</Typo>
+            </Button>
           </Grow>
         </Grow>
         <Grow placement={'bwc'}>
           <Typo variant={'heading-xs'} color={'gray-light'}>
             청약포인트
           </Typo>
-          <Grow className="gap-[0.2rem]">
-            <Typo variant={'amount-xs'} color={'information'}>
-              {pointText}
-            </Typo>
-            <Typo variant={'heading-xs'}>P</Typo>
+          <Grow>
+            <Button variant={'none'}>
+              <Typo variant={'amount-xs'} color={'information'}>
+                {pointText}
+              </Typo>
+              <Typo variant={'heading-xs'}>P</Typo>
+            </Button>
           </Grow>
         </Grow>
       </Gcol>
@@ -76,10 +83,31 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
           제안서
           <PlusIcon color={'var(--color-secondary-50)'} />
         </Button>
-        <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
-          출력
-          <PlusIcon color={'var(--color-secondary-50)'} />
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+              출력
+              <PlusIcon color={'var(--color-secondary-50)'} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+            <Grid className="w-full grid-cols-[1fr] gap-1">
+              <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                출력물 공통팝업
+              </Button>
+              <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                설계요약서
+              </Button>
+              <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                가입제안서
+              </Button>
+              <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                상품설명서
+              </Button>
+            </Grid>
+          </PopoverContent>
+        </Popover>
+
         <AIChatBot />
       </Grow>
     </Gcol>

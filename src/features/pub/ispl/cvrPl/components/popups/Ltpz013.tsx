@@ -488,7 +488,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                설계생성
+                설계생성(0)
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

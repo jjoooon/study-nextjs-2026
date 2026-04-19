@@ -140,7 +140,9 @@ export const BulletListItem = ({
         {resolvedType === 'dot' && <DotIcon size={3} />}
         {resolvedType === 'dotBig' && <DotIcon size={8} />}
         {resolvedType === 'dash' && <DashIcon size={8} />}
-        {resolvedType === 'star' && <StarIcon size={11} />}
+        {resolvedType === 'star' && (
+          <StarIcon size={11} className={resolvedSize === 'xs' ? '-translate-y-[0.2rem]' : undefined} />
+        )}
         {resolvedType === 'hash' && <HashIcon size={10} />}
         {resolvedType === 'symbols' && before}
       </div>

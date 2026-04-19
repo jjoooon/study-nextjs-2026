@@ -94,6 +94,7 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
           ref={ref}
           align={align}
           sideOffset={sideOffset}
+          tabIndex={-1}
           className={cn(
             'z-50 w-auto border border-[var(--color-gray-10)] rounded-[.6rem] px-2.5 py-2 shadow-md outline-none',
             variantStyles[variant] ?? variantStyles.default,
@@ -101,6 +102,11 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
             'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]',
             className
           )}
+          onOpenAutoFocus={(e) => {
+            e.preventDefault();
+            // inputRef.current?.focus(); // trigger input ref를 여기서 받아서 focus
+          }}
+          onMouseDown={(e) => e.preventDefault()}
           {...rest}
         >
           {closeButton && (

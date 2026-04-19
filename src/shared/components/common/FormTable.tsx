@@ -278,10 +278,11 @@ export const FormTable = ({
     [&>table>tbody>tr>th]:break-keep   
     [&>table>tbody>tr>td]:border-0 
     [&>table>tbody>tr>td]:p-0 
+    [&>table>tbody>tr>td]:pt-[1rem] 
+    [&>table>tbody>tr>td]:pb-[0.8rem] 
     [&>table>tbody>tr>td]:h-auto   
-    [&>table>tbody>tr]:border-0 
-    [&>table>tbody>tr>td+th]:pl-[2.4rem] 
-    [&>table>tbody>tr~tr>*]:pt-[0.6rem]`,
+    [&>table>tbody>tr]:!border-0 
+    [&>table>tbody>tr>td+th]:pl-[2.4rem]`,
   };
 
   // variant가 'none'이면 lineTop을 무시

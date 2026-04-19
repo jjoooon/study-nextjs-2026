@@ -11,11 +11,13 @@ import {
   numberValueFormatter,
   createTooltipValueGetter,
   createEditableCallback,
-  useDynamicPx,
+  useDynamicColumnWidths,
+  CoveragePopover,
 } from '@aggrid';
 import { Grow, Typo, Divider, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
+import { KeyValueList } from '@common/KeyValueList';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { ResetIcon, SearchIcon } from '@icons';
@@ -24,6 +26,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
@@ -117,6 +120,11 @@ interface DummyData2Type {
   field6?: string | number | boolean;
   field7?: string | number | boolean;
   field8?: string | number | boolean;
+  field10?: {
+    title: string;
+    description: string;
+    info: string[];
+  };
 }
 const DummyData2: DummyData2Type[] = [
   {
@@ -129,6 +137,12 @@ const DummyData2: DummyData2Type[] = [
     field5: '20년',
     field6: '전기납',
     field7: 0,
+    field10: {
+      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
   },
   {
     id: 2,
@@ -141,6 +155,12 @@ const DummyData2: DummyData2Type[] = [
     field5: '20년',
     field6: '전기납',
     field7: 0,
+    field10: {
+      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
   },
   {
     id: 1,
@@ -152,6 +172,12 @@ const DummyData2: DummyData2Type[] = [
     field5: '20년',
     field6: '전기납',
     field7: 0,
+    field10: {
+      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
   },
   {
     id: 2,
@@ -163,6 +189,12 @@ const DummyData2: DummyData2Type[] = [
     field5: '20년',
     field6: '전기납',
     field7: 0,
+    field10: {
+      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
   },
 ];
 
@@ -193,18 +225,7 @@ export function Ltpa350Step2View3() {
   };
 
   // Dynamic widths based on zoom scale
-  const colWidth40 = useDynamicPx(40);
-  const colWidth60 = useDynamicPx(60);
-  const colWidth80 = useDynamicPx(80);
-  const colWidth100 = useDynamicPx(100);
-  const colWidth120 = useDynamicPx(120);
-  const colWidth140 = useDynamicPx(140);
-  const colWidth160 = useDynamicPx(160);
-  const colWidth180 = useDynamicPx(180);
-  const attributeColumnWidth = useMemo(
-    () => [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180],
-    [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180]
-  );
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 2) Tabs/rowData 분기
   const tabListData = TabData;
@@ -477,6 +498,9 @@ export function Ltpa350Step2View3() {
         cellClass: 'text-left',
         suppressMovable: true, // 이동 방지
         headerComponent: productNameHeader,
+        cellRenderer: (params: ICellRendererParams<AgGridRow2>) => {
+          return <CoveragePopover text={String(params.data?.field2 ?? '')} data={params.data?.field10} />;
+        },
       },
 
       {
@@ -526,8 +550,6 @@ export function Ltpa350Step2View3() {
     [attributeColumnWidth, productNameHeader, getEditableCallback2, expiryCellRenderer2]
   );
 
-  const [amount, setAmount] = useState('0');
-  const [refundRate, setRefundRate] = useState('39.4');
   const [testError, setTestError] = useState(false);
 
   return (
@@ -709,20 +731,20 @@ export function Ltpa350Step2View3() {
           </LayoutMainBody>
           <LayoutMainFoot>
             <MainBottom>
-              <MainBottomItem>
+              <MainBottomItem className="!py-0">
                 <FormTable
                   className="w-full! [&_tr]:justify-between"
                   lineTop={false}
-                  variant={'none'}
+                  variant={'bottom'}
                   cols={[
-                    'w-[9rem]',
-                    'w-[auto]',
-                    'w-[8rem]',
-                    'w-[auto]',
-                    'w-[8rem]',
-                    'w-[auto]',
-                    'w-[8rem]',
-                    'w-[auto]',
+                    'min-w-[9rem]',
+                    'w-[36%]',
+                    'min-w-[8rem]',
+                    'w-[30%]',
+                    'min-w-[8rem]',
+                    'w-[30%]',
+                    'min-w-[8rem]',
+                    'min-w-[15rem]',
                   ]}
                 >
                   <FormRow>
@@ -734,29 +756,53 @@ export function Ltpa350Step2View3() {
                         type="tel"
                         commaAmount={true}
                         value={100000}
+                        size={'md'}
                         width={'full'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                       />
-                      <Input
-                        type="text"
-                        commaAmount={true}
-                        value={refundRate}
-                        onChange={(e) => setRefundRate(e.target.value)}
-                        width={60}
-                        className="[&_input]:text-right shrink-0"
-                      />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Input
+                            type="text"
+                            commaAmount={true}
+                            value={39.4}
+                            size={'md'}
+                            width={60}
+                            className="[&_input]:text-right shrink-0 cursor-pointer"
+                          />
+                        </PopoverTrigger>
+                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                          <KeyValueList
+                            direction="col"
+                            variant="amount"
+                            data={[
+                              { key: '총압입보험료', value: '000,000,000원' },
+                              { key: '중도환급금', value: '0원' },
+                              { key: '만기환급금', value: '000,000,000원' },
+                            ]}
+                            className="w-full"
+                          />
+                        </PopoverContent>
+                      </Popover>
                       %
                     </FormCell>
                     <FormCell title="보장보험료">
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={100000}
-                        width={'full'}
-                        readOnly={true}
-                        className="[&_input]:text-right"
-                      />
+                      <Popover>
+                        <PopoverTrigger className="w-full">
+                          <span className="block w-full rounded-[0.4rem] h-[2.5rem] bg-[var(--color-gray-10)] px-2 text-[1.4rem] border border-[0.1rem] border-[var(--color-gray-20)] box-border tracking-[0] leading-[2.5rem] appearance-none truncate text-right cursor-pointer">
+                            {Number(100000).toLocaleString()}
+                          </span>
+                        </PopoverTrigger>
+                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                          <KeyValueList
+                            direction="col"
+                            variant="amount"
+                            data={[{ key: '일시납보험료', value: '000,000,000원' }]}
+                            className="w-full"
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </FormCell>
                     <FormCell title="적립보험료">
                       <Input
@@ -764,28 +810,41 @@ export function Ltpa350Step2View3() {
                         commaAmount={true}
                         value={100000}
                         width={'full'}
+                        size={'md'}
                         readOnly={true}
                         className="text-right"
                       />
                     </FormCell>
 
                     <FormCell title="합계보험료">
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={amount}
-                        clear={true}
-                        width={'full'}
-                        onChange={(e) => {
-                          setAmount(e.target.value);
-                          setTestError(!e.target.value);
-                        }}
-                        required={true}
-                        error={testError}
-                        errorMsg={'계약자 입력은 필수입니다.'}
-                        errorPs={'tr'}
-                        className="text-right font-bold"
-                      />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Input
+                            type="tel"
+                            commaAmount={true}
+                            value={0}
+                            clear={true}
+                            width={'full'}
+                            size={'md'}
+                            required={true}
+                            error={testError}
+                            errorMsg={'계약자 입력은 필수입니다.'}
+                            errorPs={'tr'}
+                            className="text-right font-bold"
+                          />
+                        </PopoverTrigger>
+                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                          <KeyValueList
+                            direction="col"
+                            variant="amount"
+                            data={[
+                              { key: '최소 보험료', value: '000,000,000원' },
+                              { key: '최대 보험료', value: '000,000,000원' },
+                            ]}
+                            className="w-full"
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </FormCell>
                   </FormRow>
                 </FormTable>

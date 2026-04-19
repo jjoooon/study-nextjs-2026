@@ -5,7 +5,7 @@ import { Grow, Typo, FormItem, Grid } from '@atoms';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { ViewMode } from '@common/ViewMode';
-import { SearchIcon, MemoIcon } from '@icons';
+import { SearchIcon, MemoIcon, ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -95,24 +95,23 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
   }));
 
   return (
-    <Grow placement="bwc" className="w-full py-1 gap-3">
+    <Grow placement="bwc" className="w-full py-1 gap-1.5">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
         <ViewMode state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="none" color="gray">
+            <Button variant="none" color="gray" className="px-0">
               <Typo tag="h2" variant="heading-lg">
                 {safeData.title}
               </Typo>
+              <ArrowIcon className="rotate-180" color="var(--color-gray-60)" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" sideOffset={8}>
             {safeData.title}
           </TooltipContent>
         </Tooltip>
-
-        <div className="w-[0.4rem] h-[0.4rem] rounded-full bg-[var(--color-gray-30)]"></div>
 
         <NativeSelect aria-label="플랜 선택" width={200} readOnly={false} required={false}>
           <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>

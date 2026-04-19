@@ -19,16 +19,18 @@ import type {
 import type { ICellEditorParams } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
 import type { RefObject } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
-import { Typo, Grow, Grid } from '@atoms';
+import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { AmountUnitInput } from '@common/AmountUnitInput';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { InfoBoxWarningIcon } from '@icons';
 import { SelectDropIcon, PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 export type ToggleTopRow<T> = T & {
   originalIndex: number;
@@ -945,3 +947,77 @@ export function renderTbodyTh(children: React.ReactNode) {
     </Grow>
   );
 }
+
+export function useDynamicColumnWidths() {
+  const colWidth40 = useDynamicPx(40);
+  const colWidth60 = useDynamicPx(60);
+  const colWidth80 = useDynamicPx(80);
+  const colWidth100 = useDynamicPx(100);
+  const colWidth120 = useDynamicPx(120);
+  const colWidth140 = useDynamicPx(140);
+  const colWidth160 = useDynamicPx(160);
+  const colWidth180 = useDynamicPx(180);
+
+  const attributeColumnWidth = useMemo(
+    () => [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180],
+    [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180]
+  );
+
+  return {
+    colWidth40,
+    colWidth60,
+    colWidth80,
+    colWidth100,
+    colWidth120,
+    colWidth140,
+    colWidth160,
+    colWidth180,
+    attributeColumnWidth,
+  };
+}
+
+export const CoveragePopover = ({
+  text,
+  data,
+}: {
+  text: string;
+  data?: { title: string; description: string; info: string[] };
+}) => {
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          ref={triggerRef}
+          type="button"
+          className="truncate-no w-full pl-1.5 flex-1 text-left"
+          aria-haspopup="dialog"
+        >
+          {text}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent side="bottom" align="start" className="max-w-[42.5rem]" closeButton={true}>
+        <Gcol>
+          <Grow className="w-full" placement="bws">
+            <Typo variant={'heading-sm'}>{data?.title}</Typo>
+            <Button size={'sm'} className="-translate-y-[0.2rem]">
+              AI 질문하기
+            </Button>
+          </Grow>
+          <Gcol className="w-full" placement="ss">
+            <Typo variant={'body-sm'} color={'gray'}>
+              {data?.description}
+            </Typo>
+            <BulletList type={'star'} size={'xs'}>
+              {data?.info.map((item, index) => (
+                <BulletListItem key={index}>{item}</BulletListItem>
+              ))}
+            </BulletList>
+          </Gcol>
+        </Gcol>
+      </PopoverContent>
+    </Popover>
+  );
+};

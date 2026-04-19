@@ -177,8 +177,13 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
             </Grow>
             <Gcol className="gap-1.5" placement={'ss'}>
               <Grow className="gap-1.5" placement={'bwc'}>
-                <Button variant={'outlined'} color={'gray-light'} only={'icon'} onClick={() => handleAmountChange(100)}>
-                  <PlusIcon color="var(--color-primary-50)" className="translate-y-[0.1rem]" />
+                <Button
+                  variant={'outlined'}
+                  color={'gray-light'}
+                  only={'icon'}
+                  onClick={() => handleAmountChange(-100)}
+                >
+                  <MinusIcon color="var(--color-primary-50)" />
                 </Button>
                 <Input
                   variant={'default'}
@@ -190,13 +195,8 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                   after={'만원'}
                   width={'min'}
                 />
-                <Button
-                  variant={'outlined'}
-                  color={'gray-light'}
-                  only={'icon'}
-                  onClick={() => handleAmountChange(-100)}
-                >
-                  <MinusIcon color="var(--color-primary-50)" />
+                <Button variant={'outlined'} color={'gray-light'} only={'icon'} onClick={() => handleAmountChange(100)}>
+                  <PlusIcon color="var(--color-primary-50)" className="translate-y-[0.1rem]" />
                 </Button>
               </Grow>
               <Grow>

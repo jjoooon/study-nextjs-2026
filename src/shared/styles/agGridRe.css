@@ -587,7 +587,10 @@
   white-space: nowrap;
 }
 
-
+.ag-header-group-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
 /* .ag-blue-text .ag-cell {
   color: var(--color-information-50);
 } */

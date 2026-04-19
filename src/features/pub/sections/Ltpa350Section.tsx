@@ -4,7 +4,6 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 
 import { LayoutHead, LayoutFoot } from '@/shared/components/layout/BaseLayout';
-
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
