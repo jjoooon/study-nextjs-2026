@@ -4,10 +4,10 @@ import * as React from 'react';
 
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpa050 } from '../../features/pub/components/popups/Ltpa050';
+import { Ltpa050 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa050';
 
 const meta: Meta<typeof Ltpa050> = {
-  title: 'app/popup/Ltpa050',
+  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa050',
   component: Ltpa050,
   tags: ['autodocs'],
   parameters: {
