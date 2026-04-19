@@ -367,7 +367,7 @@ export const Ltpa350Step6 = () => {
 
                   <Gcol placement={'ss'} className="w-full gap-1.5">
                     <Typo variant="heading-md">청약사항</Typo>
-                    <FormTable cols={['w-[8rem]', 'w-[30rem]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}>
+                    <FormTable cols={['min-w-[8rem]', 'w-[30%]', 'min-w-[8rem]', 'w-[30%]', 'min-w-[8rem]', 'w-[30%]']}>
                       <FormRow>
                         <FormCell title={'보험종목'}>
                           <Input
