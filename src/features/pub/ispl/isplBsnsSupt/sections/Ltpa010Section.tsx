@@ -557,11 +557,11 @@ export default function Ltpa010Section() {
         mainBody={
           <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable variant={'head'} lineTop={false} caption="설계번호">
+              <FormTable variant={'non'} lineTop={false} caption="설계번호">
                 <FormRow>
                   <FormCell title={'조회구분'}>
                     <NativeSelect
-                      width={108}
+                      width={137}
                       aria-label="조회구분 선택"
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}

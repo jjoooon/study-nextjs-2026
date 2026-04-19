@@ -197,10 +197,15 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable variant={'head'} lineTop={false} caption="">
+            <FormTable
+              variant={'none'}
+              lineTop={false}
+              caption=""
+              cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
+            >
               <FormRow>
                 <FormCell title={'보종군'}>
-                  <NativeSelect aria-label="보종군 선택" width={100} required>
+                  <NativeSelect aria-label="보종군 선택" width={130} required>
                     {[
                       { value: 'selection', label: '전체' },
                       { value: 'selection2', label: '장기보험' },
@@ -217,7 +222,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </NativeSelect>
                 </FormCell>
                 <FormCell title={'조회구분'}>
-                  <NativeSelect aria-label="조회구분 선택" width={100}>
+                  <NativeSelect aria-label="조회구분 선택" width={130}>
                     {[
                       { value: 'selection', label: '선택' },
                       { value: 'selection2', label: '피보험자 번호' },
@@ -250,7 +255,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
               <FormRow>
                 <FormCell title={'설계조직'} colSpan={3}>
-                  <NativeSelect aria-label="설계조직 선택" width={100}>
+                  <NativeSelect aria-label="설계조직 선택" width={130}>
                     {[
                       { value: 'selection', label: '취급기관' },
                       { value: 'selection2', label: '취급기관2' },
@@ -264,7 +269,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" width={163} value={'신부산GA지점'} readOnly />
+                  <Input aria-label="" width={222} value={'신부산GA지점'} readOnly />
                 </FormCell>
                 <FormCell title={'설계일자'} colSpan={3}>
                   <DatePickerInput

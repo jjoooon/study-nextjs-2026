@@ -1,7 +1,7 @@
 'use client';
 // 권오택
 import { ColDef, ColGroupDef } from 'ag-grid-community';
-
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -39,6 +39,8 @@ import {
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 type CheckTab = {
   name: string;
@@ -941,7 +943,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="max-h-[calc(100vh-4rem)] h-full">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -1019,6 +1021,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                           rowClassRules={{}}
                           enableCellSpan={true}
                           domLayout="autoHeight"
+                          animateRows={false}
                         />
                       </div>
                     </TableFoldBody>
@@ -1104,11 +1107,11 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
               <Gcol className="w-full" gap={5}>
                 <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                   <Typo variant={'body-sm'} icon={'info'}>
-                    고객 직업정보(상해수급)가 <b>불일치 할 경우 체결이 불가능</b> 하며 해당 신계약 청약완료 이전에
-                    <b>가계약의 작업변경을 완료 필요</b>
+                    고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료
+                    이전에 기계약의 작업변경을 완료하시기 바랍니다.
                   </Typo>
                   <Typo variant={'body-sm'} icon={'info'}>
-                    신계약 청약서 발행 이전에 <b>가계약의 직업변경 배서(청약중 이후) 진행 필요</b>
+                    <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
                   </Typo>
                 </Gcol>
                 <Gcol className="w-full" gap={2}>
@@ -1160,7 +1163,10 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                         변경설계화면으로 이동)
                       </BulletListItem>
                       <BulletListItem size={'sm'} type="dash">
-                        상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.{' '}
+                        상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
+                      </BulletListItem>
+                      <BulletListItem size={'sm'} type="dash">
+                        관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
                       </BulletListItem>
                     </BulletList>
                   </Gcol>
