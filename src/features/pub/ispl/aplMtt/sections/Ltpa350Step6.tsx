@@ -367,7 +367,7 @@ export const Ltpa350Step6 = () => {
 
                   <Gcol placement={'ss'} className="w-full gap-1.5">
                     <Typo variant="heading-md">청약사항</Typo>
-                    <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                    <FormTable cols={['w-[8rem]', 'w-[30rem]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}>
                       <FormRow>
                         <FormCell title={'보험종목'}>
                           <Input
@@ -433,6 +433,15 @@ export const Ltpa350Step6 = () => {
                     <TableFoldHead title="즉시집금" />
                     <TableFoldBody>
                       <Table variant="default">
+                        <colgroup>
+                          <col style={{ width: '5rem' }} />
+                          <col style={{ width: '10rem' }} />
+                          <col style={{ width: '14rem' }} />
+                          <col style={{ width: 'auto' }} />
+                          <col style={{ width: 'auto' }} />
+                          <col style={{ width: '10rem' }} />
+                          <col style={{ width: '5rem' }} />
+                        </colgroup>
                         <TableHeader>
                           <TableRow>
                             <TableHead className="w-[4.5rem] min-w-[4.5rem]">구분</TableHead>
@@ -480,7 +489,7 @@ export const Ltpa350Step6 = () => {
                                   size="lg"
                                   variant="default"
                                   placeholder=""
-                                  width={250}
+                                  width={'full'}
                                   onChange={(e) => setFormField('type09', e.target.value)}
                                   value={form.type09}
                                   commaAmount
@@ -588,7 +597,7 @@ export const Ltpa350Step6 = () => {
                                   size="lg"
                                   variant="default"
                                   placeholder=""
-                                  width={250}
+                                  width="full"
                                   onChange={(e) => setFormField('type09', e.target.value)}
                                   value={form.type09}
                                   commaAmount
