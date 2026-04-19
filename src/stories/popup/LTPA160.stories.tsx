@@ -1,12 +1,12 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpa160 } from '@/features/pub/components/popups/Ltpa160';
+import { Ltpa160 } from '@/features/pub/shared/components/popups/Ltpa160';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/Ltpa160',
+  title: 'shared/components/popups/Ltpa160',
   component: Ltpa160,
 };
 

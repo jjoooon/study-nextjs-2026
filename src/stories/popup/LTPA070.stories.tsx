@@ -1,11 +1,11 @@
 
 import * as React from 'react';
-import { Ltpa070 } from '@/features/pub/components/popups/Ltpa070';
+import { Ltpa070 } from '@/features/pub/ispl/cvrPl/components/popups/Ltpa070';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/Ltpa070',
+  title: 'ispl/cvrPl/components/popups/Ltpa070',
   component: Ltpa070,
 };
 

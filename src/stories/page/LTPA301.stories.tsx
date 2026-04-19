@@ -1,8 +1,8 @@
-import LTPA301 from '@/app/pub/pages/LTPA301';
+import LTPA301 from '@/app/pub/aqg/pages/LTPA301';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'page/LTPA301',
+  ttitle: 'aqg/isplBsnsSupt/LTPA301',
   component: LTPA301,
 };
 

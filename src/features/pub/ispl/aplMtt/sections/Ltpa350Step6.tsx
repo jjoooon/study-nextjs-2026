@@ -24,7 +24,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
-import { Ltpz014 } from './popups/Ltpz014';
+import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
 
 type Ltpa350Step6GridRow = {
   id: number;

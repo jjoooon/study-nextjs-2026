@@ -1,11 +1,11 @@
 
 import * as React from 'react';
-import { Ltpz042} from '@/features/pub/components/popups/Ltpz042';
+import { Ltpz042} from '@/features/pub/ispl/isplBansSupt/components/popups/Ltpz042';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/Ltpz042',
+  title: '/ispl/isplBansSupt/components/popups/Ltpz042',
   component: Ltpz042,
 };
 

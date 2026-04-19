@@ -3,10 +3,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpa060 } from '@/features/pub/components/popups/Ltpa060';
+import { Ltpa060 } from '@/features/pub/shared/components/popups/ncMtt/Ltpa060';
 
 export default {
-  title: 'popup/Ltpa060',
+  title: 'shared/components/popups/ncMtt/Ltpa060',
   component: Ltpa060,
 };
 

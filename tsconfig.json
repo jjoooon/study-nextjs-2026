@@ -35,7 +35,7 @@
 
       "@aggrid": ["./src/shared/components/agGridUtils/index.ts"],
       "@atoms": ["./src/shared/components/atoms/index.ts"],
-      "@icons": ["./src/shared/components/icons/index.ts"]
+      "@icons": ["./src/shared/components/icons/index.ts"],
     }
   },
   "include": [

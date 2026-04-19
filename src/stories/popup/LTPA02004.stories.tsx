@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Ltpa02004 } from '@/features/pub/components/popups/Ltpa02004';
+import { Ltpa02004 } from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpa02004';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 

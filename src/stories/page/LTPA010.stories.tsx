@@ -1,8 +1,8 @@
-import LTPA010 from '@/app/pub/pages/LTPA010';
+import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'page/LTPA010',
+  title: 'ispl/isplBsnsSupt/LTPA010',
   component: LTPA010,
 };
 

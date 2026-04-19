@@ -22,7 +22,7 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
-import { Ltpz014 } from './popups/Ltpz014';
+import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
 
 const DUMMY_DATA = {
   view1: [

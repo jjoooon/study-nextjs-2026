@@ -3,10 +3,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz062 } from '@/features/pub/components/popups/Ltpz062';
+import { Ltpz062 } from '@/features/pub/ispl/ncMtt/components/popups/Ltpz062';
 
 export default {
-  title: 'popup/Ltpz062',
+  title: '/ispl/ncMtt/components/popups/Ltpz062',
   component: Ltpz062,
 };
 
