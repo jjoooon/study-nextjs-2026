@@ -5,7 +5,7 @@ import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: '/ispl/ncMtt/components/popups/Ltpz030',
+  title: 'app/ispl/ncMtt/components/popups/Ltpz030',
   component: Ltpz030,
 };
 

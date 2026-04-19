@@ -165,7 +165,7 @@
     "dev": "미정",
     "date": "00.00.00",
     "modify": "00.00.00",
-    "subId": "LTPA350_1",
+    "subId": "step_1",
     "phase": "Y",
     "popup": "화면"
   },
@@ -318,7 +318,7 @@
     "dev": "미정",
     "date": "00.00.00",
     "modify": "00.00.00",
-    "subId": "LTPA350_2",
+    "subId": "step_2",
     "phase": "Y",
     "popup": "화면"
   },
@@ -573,7 +573,7 @@
     "dev": "미정",
     "date": "00.00.00",
     "modify": "00.00.00",
-    "subId": "LTPA350_3",
+    "subId": "step_3",
     "phase": "",
     "popup": "화면"
   },
@@ -760,7 +760,7 @@
     "dev": "미정",
     "date": "00.00.00",
     "modify": "00.00.00",
-    "subId": "LTPA350_5",
+    "subId": "step_5",
     "phase": "Y",
     "popup": "화면"
   },
@@ -777,7 +777,7 @@
     "dev": "미정",
     "date": "00.00.00",
     "modify": "00.00.00",
-    "subId": "LTPA350_6",
+    "subId": "step_6",
     "phase": "Y",
     "popup": "화면"
   },

@@ -7,7 +7,7 @@ import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 const meta: Meta<typeof Ltpa3500205> = {
-  title: 'popup/Ltpa3500205',
+  title: 'app/popup/Ltpa3500205',
   component: Ltpa3500205,
   tags: ['autodocs'],
   parameters: {

@@ -5,7 +5,7 @@ import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'ispl/cvrPl/components/popups/Ltpa070',
+  title: 'app/ispl/cvrPl/components/popups/Ltpa070',
   component: Ltpa070,
 };
 

@@ -1,12 +1,12 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpz004 } from '@/features/pub/components/popups/Ltpz004';
+import { Ltpz004 } from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz004';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'popup/Ltpz004',
+  title: 'app/ispl/gdPlSlc/components/popups/Ltpz004',
   component: Ltpz004,
 };
 

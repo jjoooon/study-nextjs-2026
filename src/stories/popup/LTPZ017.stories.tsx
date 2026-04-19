@@ -7,7 +7,7 @@ import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 const meta: Meta<typeof Ltpz017> = {
-  title: 'ispl/cvrPl/components/popups/Ltpz017',
+  title: 'app/ispl/cvrPl/components/popups/Ltpz017',
   component: Ltpz017,
   tags: ['autodocs'],
   parameters: {

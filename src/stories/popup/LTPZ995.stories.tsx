@@ -3,7 +3,7 @@ import { Ltpz995 } from '@/features/pub/components/popups/Ltpz995';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'popup/Ltpz995',
+  title: 'app/popup/Ltpz995',
   component: Ltpz995,
 };
 

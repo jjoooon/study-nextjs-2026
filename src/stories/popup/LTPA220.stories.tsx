@@ -4,7 +4,7 @@ import { Button } from '@uiux/Button';
 import { Ltpa220 } from '@/features/pub/aqg/components/popups/Ltpa220';
 
 export default {
-  title: 'aqg/components/popups/Ltpa220',
+  title: 'app/aqg/components/popups/Ltpa220',
   component: Ltpa220,
 };
 

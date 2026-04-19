@@ -4,10 +4,10 @@ import * as React from 'react';
 
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz03201 } from '../../features/pub/shared/components/popups/ncMtt/Ltpz03201';
+import { Ltpz03201 } from '@/features/pub/shared/components/popups/ncMtt/Ltpz03201';
 
 const meta: Meta<typeof Ltpz03201> = {
-  title: 'popup/Ltpz03201',
+  title: 'app/popup/Ltpz03201',
   component: Ltpz03201,
   tags: ['autodocs'],
   parameters: {

@@ -6,7 +6,7 @@ import { Button } from '@uiux/Button';
 import { Ltpz062 } from '@/features/pub/ispl/ncMtt/components/popups/Ltpz062';
 
 export default {
-  title: '/ispl/ncMtt/components/popups/Ltpz062',
+  title: 'app/ispl/ncMtt/components/popups/Ltpz062',
   component: Ltpz062,
 };
 

@@ -2,7 +2,7 @@ import LTPA400 from '@/app/pub/ispl/pages/LTPA400';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'ispl/isplBsnsSupt/LTPA400',
+  title: 'app/ispl/isplBsnsSupt/LTPA400',
   component: LTPA400,
 };
 

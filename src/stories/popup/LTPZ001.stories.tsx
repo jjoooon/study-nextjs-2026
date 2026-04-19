@@ -6,7 +6,7 @@ import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'shared/components/popups/Ltpz001',
+  title: 'app/shared/components/popups/Ltpz001',
   component: Ltpz001,
 };
 

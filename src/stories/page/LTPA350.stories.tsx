@@ -2,7 +2,7 @@ import LTPA350 from '@/app/pub/ispl/pages/LTPA350';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'ispl/LTPA350',
+  title: 'app/ispl/LTPA350',
   component: LTPA350,
 };
 

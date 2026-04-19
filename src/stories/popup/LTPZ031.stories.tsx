@@ -7,7 +7,7 @@ import { Button } from '@uiux/Button';
 import { Ltpz031 } from '@/features/pub/shared/components/popups/ncMtt/Ltpz031';
 
 const meta: Meta<typeof Ltpz031> = {
-  title: 'shared/components/popups/ncMtt/Ltpz031',
+  title: 'app/shared/components/popups/ncMtt/Ltpz031',
   component: Ltpz031,
   tags: ['autodocs'],
   parameters: {

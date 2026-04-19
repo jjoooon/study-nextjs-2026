@@ -6,7 +6,7 @@ import { Button } from '@uiux/Button';
 import { Ltpa060 } from '@/features/pub/shared/components/popups/ncMtt/Ltpa060';
 
 export default {
-  title: 'shared/components/popups/ncMtt/Ltpa060',
+  title: 'app/shared/components/popups/ncMtt/Ltpa060',
   component: Ltpa060,
 };
 

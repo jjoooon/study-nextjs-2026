@@ -2,38 +2,43 @@ const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
 const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
 
 function getStorybookBaseUrl(): string {
-  if (typeof window === 'undefined') {
-    return LOCAL_STORYBOOK_BASE_URL;
-  }
-
+  if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;
   const { hostname } = window.location;
+  return hostname === 'localhost' || hostname === '127.0.0.1' ? LOCAL_STORYBOOK_BASE_URL : PROD_STORYBOOK_BASE_URL;
+}
 
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return LOCAL_STORYBOOK_BASE_URL;
+/**
+ * path: 'ispl/isplBsnsSupt', id: 'LTPA010' => app-ispl-isplbsnssupt-ltpa010--default
+ */
+export function getStoryUrl(id: string, path: string, activeStep?: number, subId?: string): string {
+  const storybookBaseUrl = getStorybookBaseUrl();
+  let finalPath = path;
+  if (/^LTPA350/i.test(id)) {
+    finalPath = 'ispl';
   }
-
-  return PROD_STORYBOOK_BASE_URL;
-}
-
-type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
-
-export function getStoryUrl(data: string, activeStep?: PageProcessStep, popup?: string): string {
-  const storybookBaseUrl = getStorybookBaseUrl();
+  const storyPath = 'app-' + finalPath.replace(/\//g, '-').toLowerCase() + '-' + id.toLowerCase();
   const stepQuery = activeStep ? `&activeStep=${activeStep}` : '';
-  const popupQuery = popup === '팝업' ? `&popup=${popup}` : '';
-  return `${storybookBaseUrl}/?path=/story/${popup === '팝업' ? `popup` : 'page'}-${data.toLowerCase()}--default${stepQuery}${popupQuery}`;
+  const subIdQuery = subId && subId.includes('sub_') ? `&step=${encodeURIComponent(subId)}` : '';
+  return `${storybookBaseUrl}/?path=/story/${storyPath}--default${stepQuery}${subIdQuery}`;
 }
 
-/** 사이드바/컨트롤 없이 캔버스만 표시하는 iframe 전용 URL */
-export function getStoryIframeUrl(data: string, activeStep?: PageProcessStep, popup?: string): string {
+/**
+ * 사이드바/컨트롤 없이 캔버스만 표시하는 iframe 전용 URL
+ */
+export function getStoryIframeUrl(id: string, path: string, activeStep?: number, subId?: string): string {
   const storybookBaseUrl = getStorybookBaseUrl();
+  let finalPath = path;
+  if (/^LTPA350/i.test(id)) {
+    finalPath = 'ispl';
+  }
+  const storyPath = 'app-' + finalPath.replace(/\//g, '-').toLowerCase() + '-' + id.toLowerCase();
   const stepQuery = activeStep ? `&activeStep=${activeStep}` : '';
-  const popupQuery = popup === '팝업' ? `&popup=${popup}` : '';
-  return `${storybookBaseUrl}/iframe.html?id=${popup === '팝업' ? `popup` : 'page'}-${data.toLowerCase()}--default&viewMode=story${stepQuery}${popupQuery}`;
+  const subIdQuery = subId && subId.includes('sub_') ? `&step=${encodeURIComponent(subId)}` : '';
+  return `${storybookBaseUrl}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
 }
 
-export default function LinkGo(data: string, activeStep?: PageProcessStep, popup?: string): string {
-  const url = getStoryUrl(data, activeStep, popup);
+export default function LinkGo(id: string, path: string, activeStep?: number, subId?: string): string {
+  const url = getStoryUrl(id, path, activeStep, subId);
   window.open(url, '_blank', 'noopener,noreferrer');
   return url;
 }

@@ -44,6 +44,18 @@ const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?
 export function IAListWithPreview() {
   const [showPhaseOnly, setShowPhaseOnly] = React.useState(true);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
+  // 정렬 핸들러 복구
+  const handleSort = React.useCallback((key: SortKey) => {
+    setSortState((prev) => {
+      if (prev.key !== key || prev.order === 'default') {
+        return { key, order: 'asc' };
+      }
+      if (prev.order === 'asc') {
+        return { key, order: 'desc' };
+      }
+      return { key: null, order: 'default' };
+    });
+  }, []);
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
   const workListH = React.useMemo(() => meta.workListH as string[], []);
@@ -121,37 +133,15 @@ export function IAListWithPreview() {
 
   const activeStep = toPageStep(activeRow?.subId ?? '');
   const previewUrl = activeRow
-    ? activeStep
-      ? getStoryIframeUrl(activeRow.id, activeStep, activeRow.popup)
-      : getStoryIframeUrl(activeRow.id, undefined, activeRow.popup)
+    ? getStoryIframeUrl(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId)
     : '';
 
   const handleMovePage = React.useCallback(() => {
     if (!activeRow) {
       return;
     }
-
-    if (activeStep) {
-      LinkGo(activeRow.id, activeStep, activeRow.popup);
-      return;
-    }
-
-    LinkGo(activeRow.id, undefined, activeRow.popup);
+    LinkGo(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId);
   }, [activeRow, activeStep]);
-
-  const handleSort = React.useCallback((key: SortKey) => {
-    setSortState((prev) => {
-      if (prev.key !== key || prev.order === 'default') {
-        return { key, order: 'asc' };
-      }
-
-      if (prev.order === 'asc') {
-        return { key, order: 'desc' };
-      }
-
-      return { key: null, order: 'default' };
-    });
-  }, []);
 
   const getSortIndicator = React.useCallback(
     (key: SortKey) => {
@@ -261,13 +251,7 @@ export function IAListWithPreview() {
                   </td>
                   <th scope="row" className={rowIdBgClass}>
                     {row.id}
-                    {row.subId ? (
-                      <>
-                        <br /> ({row.subId})
-                      </>
-                    ) : (
-                      ''
-                    )}
+                    {row.subId ? <>({row.subId})</> : ''}
                   </th>
                   <td className={rowBgClass}>
                     <b>{row.dep4}</b>

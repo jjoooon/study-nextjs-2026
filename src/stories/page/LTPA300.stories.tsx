@@ -2,7 +2,7 @@ import LTPA300 from '@/app/pub/aqg/pages/LTPA300';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'aqg/isplBsnsSupt/LTPA300',
+  title: 'app/aqg/isplBsnsSupt/LTPA300',
   component: LTPA300,
 };
 

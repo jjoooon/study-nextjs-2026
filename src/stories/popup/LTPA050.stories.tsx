@@ -7,7 +7,7 @@ import { Button } from '@uiux/Button';
 import { Ltpa050 } from '../../features/pub/components/popups/Ltpa050';
 
 const meta: Meta<typeof Ltpa050> = {
-  title: 'popup/Ltpa050',
+  title: 'app/popup/Ltpa050',
   component: Ltpa050,
   tags: ['autodocs'],
   parameters: {
