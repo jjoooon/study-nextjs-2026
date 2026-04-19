@@ -168,7 +168,7 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol className="w-full" gap={2.5}>
+          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={2.5}>
             <Gcol variant={'box-info'}>
               <Typo variant="body-sm" icon={'info'}>
                 고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당
@@ -197,55 +197,29 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
               visibleCount={4}
               removable={false}
             >
-              {active === 'basic' ? (
-                <Grid className="w-full grid-rows-[auto_1fr]" gap={4}>
-                  <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
-                    <FormRow>
-                      <FormCell title={'고객명'}>김한화</FormCell>
-                      <FormCell title={'직업정보'}>1급/회사원</FormCell>
-                    </FormRow>
-                  </FormTable>
-                  <Gcol>
-                    <Grow className="w-full" gap={1} placement="se">
-                      <Typo variant="body-md" color="default">
-                        직업정보(상해급수) 상이 계약
-                      </Typo>
-                      <Typo variant="body-md" weight={'bold'} color="primary">
-                        99건
-                      </Typo>
-                    </Grow>
-                  </Gcol>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      domLayout="normal"
-                    />
-                  </div>
-                </Grid>
-              ) : (
-                <Grid className="w-full grid-rows-[auto_1fr]" gap={4}>
-                  <FormTable caption="직업 상세" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} lineTop={false}>
-                    <FormRow>
-                      <FormCell title={'고객명'}>김한화2</FormCell>
-                      <FormCell title={'직업정보'}>1급/회사원2</FormCell>
-                    </FormRow>
-                  </FormTable>
-                  <Gcol>
-                    <Grow className="w-full" gap={1} placement="se">
-                      <Typo variant="body-md" color="default">
-                        이륜차부담보 가입 사이 계약
-                      </Typo>
-                      <Typo variant="body-md" weight={'bold'} color="primary">
-                        99건
-                      </Typo>
-                    </Grow>
+              <Grid className="grid-rows-[1fr_auto] h-full">
+                {active === 'basic' ? (
+                  <Grid className="w-full grid-rows-[auto_auto_1fr] h-full" gap={4}>
+                    <FormTable
+                      caption="직업 상세"
+                      cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
+                      lineTop={false}
+                    >
+                      <FormRow>
+                        <FormCell title={'고객명'}>김한화</FormCell>
+                        <FormCell title={'직업정보'}>1급/회사원</FormCell>
+                      </FormRow>
+                    </FormTable>
+                    <Gcol>
+                      <Grow className="w-full" gap={1} placement="se">
+                        <Typo variant="body-md" color="default">
+                          직업정보(상해급수) 상이 계약
+                        </Typo>
+                        <Typo variant="body-md" weight={'bold'} color="primary">
+                          99건
+                        </Typo>
+                      </Grow>
+                    </Gcol>
                     <div className="ag-theme-alpine min-h-[18.4rem]">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -259,37 +233,73 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                         domLayout="normal"
                       />
                     </div>
-                  </Gcol>
-                </Grid>
-              )}
-              <Gcol className="w-full mt-[2rem]" placement="ss" variant="box-info">
-                <BulletList>
-                  <BulletListItem size="sm">
-                    신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행 (변경설계가 청약중 이후이고 변경후
-                    직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
-                  </BulletListItem>
-                  <BulletListItem size="sm">
-                    기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약
-                    설계 진행
-                  </BulletListItem>
-                  <BulletListItem size="sm">
-                    직업정보는 현재기준 [2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로
-                    매핑한 결과로 비교함)
-                  </BulletListItem>
-                  <BulletListItem size="sm">
-                    변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다. (계약변경설계이동 클릭 시
-                    변경설계화면으로 이동)
-                  </BulletListItem>
-                  <BulletListItem size="sm">
-                    상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하여 재확인 바랍니다.
-                  </BulletListItem>
-                  <BulletListItem size="sm">
-                    관련문서: [대내-1507-1552] 직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
-                  </BulletListItem>
-                </BulletList>
-              </Gcol>
+                  </Grid>
+                ) : (
+                  <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={4}>
+                    <FormTable
+                      caption="직업 상세"
+                      cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
+                      lineTop={false}
+                    >
+                      <FormRow>
+                        <FormCell title={'고객명'}>김한화2</FormCell>
+                        <FormCell title={'직업정보'}>1급/회사원2</FormCell>
+                      </FormRow>
+                    </FormTable>
+                    <Gcol>
+                      <Grow className="w-full" gap={1} placement="se">
+                        <Typo variant="body-md" color="default">
+                          이륜차부담보 가입 사이 계약
+                        </Typo>
+                        <Typo variant="body-md" weight={'bold'} color="primary">
+                          99건
+                        </Typo>
+                      </Grow>
+                      <div className="ag-theme-alpine min-h-[18.4rem]">
+                        <AgGridReact<DummyDataType>
+                          getRowId={(params) => String(params.data.id)}
+                          rowData={rowData}
+                          columnDefs={columnDefs}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          defaultColDef={{
+                            sortable: true,
+                            resizable: true,
+                          }}
+                          domLayout="normal"
+                        />
+                      </div>
+                    </Gcol>
+                  </Grid>
+                )}
+                <Gcol className="w-full mt-[2rem]" placement="ss" variant="box-info">
+                  <BulletList>
+                    <BulletListItem size="sm">
+                      신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행 (변경설계가 청약중 이후이고 변경후
+                      직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약
+                      설계 진행
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      직업정보는 현재기준 [2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로
+                      매핑한 결과로 비교함)
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다. (계약변경설계이동 클릭 시
+                      변경설계화면으로 이동)
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하여 재확인 바랍니다.
+                    </BulletListItem>
+                    <BulletListItem size="sm">
+                      관련문서: [대내-1507-1552] 직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
+                    </BulletListItem>
+                  </BulletList>
+                </Gcol>
+              </Grid>
             </TabPager>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -350,7 +350,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid h-full grid-rows-[auto_minmax(0,1fr)]">
+        <DialogSection className="grid h-full grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable caption="기본정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
               <FormRow>
@@ -365,7 +365,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol placement="ss" className="min-h-0 w-full overflow-y-auto" gap={4}>
+          <Grid placement="ss" className="min-h-0 w-full overflow-y-auto grid-rows-[1fr_1fr_auto_auto]" gap={4}>
             {/* 가점계산 */}
             <TableFold>
               <TableFoldHead title="가점계산">
@@ -374,7 +374,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine ag-blue-text">
+                <div className="ag-theme-alpine ag-blue-text min-h-[18.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -382,7 +382,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section2SumData}
                     defaultColDef={{ sortable: true, resizable: true }}
-                    domLayout={'autoHeight'}
+                    domLayout={'normal'}
                   />
                 </div>
               </TableFoldBody>
@@ -392,7 +392,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="감점계산" />
               <TableFoldBody>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -403,7 +403,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
                     defaultColDef={{ sortable: true, resizable: true }}
-                    domLayout={'autoHeight'}
+                    domLayout={'normal'}
                     // alwaysShowVerticalScroll={true}
                   />
                 </div>
@@ -451,7 +451,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </div>
               </TableFoldBody>
             </TableFold>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

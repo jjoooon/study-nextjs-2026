@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -332,9 +332,12 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[1fr]">
-          <Grow gap={3}>
+          <Grow gap={3} placement="ss">
             {[...Array(3)].map((_, i) => (
-              <Gcol className="overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5" key={i}>
+              <Grid
+                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full"
+                key={i}
+              >
                 <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
                   <Gcol placement="ss">
                     <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
@@ -348,10 +351,13 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="default"></Checkbox>
                   </Grow>
                 </Grow>
-                <Grow className="w-full px-[1rem] pb-[2rem] [&_.ag-floating-bottom]:!sticky [&_.ag-floating-bottom]:bottom-0">
+                <Grow
+                  className="w-full h-full px-[1rem] pb-[2rem] [&_.ag-floating-bottom]:!sticky [&_.ag-floating-bottom]:bottom-0"
+                  placement="ss"
+                >
                   {/* scrollable content */}
                   <div
-                    className="ag-theme-alpine no-header w-full min-h-132 max-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                    className="ag-theme-alpine no-header w-full min-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
                     ref={(el) => {
                       scrollRefs.current[i + 1] = el;
                     }}
@@ -387,7 +393,6 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
                         sortable: false,
                         resizable: false,
                       }}
-                      domLayout="autoHeight"
                     />
 
                     <Grow
@@ -403,7 +408,7 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Grow>
                   </div>
                 </Grow>
-              </Gcol>
+              </Grid>
             ))}
           </Grow>
         </DialogSection>

@@ -4,7 +4,7 @@ import { AllCommunityModule, ColDef, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -171,30 +171,25 @@ export const Ltpz03201 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
-          {/* 조회 정보 */}
-          <Gcol placement="ss" className="w-full" gap={5}>
-            <div className="ag-theme-alpine w-full min-h-[24.4rem]">
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                rowData={DummyData}
-                columnDefs={columnDefs}
-                defaultColDef={{
-                  sortable: false,
-                  resizable: false,
-                  cellStyle: {
-                    whiteSpace: 'normal',
-                    overflowWrap: 'anywhere',
-                    // lineHeight: '2rem',
-                  },
-                }}
-                enableCellSpan={true}
-                domLayout="normal"
-                alwaysShowVerticalScroll={true}
-                className="text-center"
-              />
-            </div>
-          </Gcol>
+        <DialogSection className="grid-rows-[1fr]">
+          <div className="ag-theme-alpine w-full min-h-[24.4rem]">
+            <AgGridReact<DummyDataType>
+              getRowId={(params) => String(params.data.id)}
+              rowData={DummyData}
+              columnDefs={columnDefs}
+              defaultColDef={{
+                sortable: false,
+                resizable: false,
+                cellStyle: {
+                  whiteSpace: 'normal',
+                  overflowWrap: 'anywhere',
+                  // lineHeight: '2rem',
+                },
+              }}
+              enableCellSpan={true}
+              domLayout="normal"
+            />
+          </div>
         </DialogSection>
 
         <DialogFooter>

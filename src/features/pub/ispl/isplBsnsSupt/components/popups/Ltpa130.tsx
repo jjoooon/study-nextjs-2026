@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -382,199 +382,196 @@ export const Ltpa130 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol gap={3}>
-            <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable variant={'none'} cols={['w-[6rem]', 'w-[20rem]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                <FormRow>
-                  <FormCell title={'조직구분'}>
-                    <NativeSelect width={100}>
-                      {[
-                        { value: '전체', label: '전체' },
-                        { value: '취급기관', label: '취급기관' },
-                        { value: '취급직원', label: '취급직원' },
-                        { value: '사용인', label: '사용인' },
-                      ].map((option, index) => (
-                        <NativeSelectOption key={index} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input value={'1301097'} width={80} />
-                    <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                    <Input value={'신부산GA지점'} readOnly />
-                  </FormCell>
-                  <FormCell title={'조회일자'} colSpan={3}>
-                    <DatePickerInput mode={'range'} />
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button only="icon" size="md" variant="none">
-                          <QuestionMark color="#61554F" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent
-                        side="right"
-                        sideOffset={1}
-                        variant="default"
-                        className="z-[999] [&>span]:whitespace-auto!"
-                      >
-                        {`1년 이전건은 조회불가합니다.`}
-                      </TooltipContent>
-                    </Tooltip>
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'조회구분'}>
-                    <NativeSelect width={100}>
-                      <NativeSelectOption value="">주민번호</NativeSelectOption>
-                      <NativeSelectOption value="">생년월일</NativeSelectOption>
-                    </NativeSelect>
-                    <Input value={''} width={130} />
-                    <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                    <Input value={''} width={80} readOnly />
-                    <Checkbox color="primary" size="lg" variant="default">
-                      <span className="whitespace-nowrap">교차제외</span>
-                    </Checkbox>
-                  </FormCell>
-                  <FormCell title={'동의구분'}>
-                    <NativeSelect width={'auto'}>
-                      {[
-                        { value: '전체', label: '전체' },
-                        { value: '스캔(개인)', label: '스캔(개인)' },
-                        { value: '스캔(변경,단체)', label: '스캔(변경,단체)' },
-                        { value: '넷팩스(개인)', label: '넷팩스(개인)' },
-                        { value: '넷팩스(변경,단체)', label: '넷팩스(변경,단체)' },
-                        { value: '휴대폰(LMS)', label: '휴대폰(LMS)' },
-                        { value: '휴대폰(홈페이지)', label: '휴대폰(홈페이지)' },
-                        { value: '공인인증서', label: '공인인증서' },
-                        { value: '음성녹음', label: '음성녹음' },
-                        { value: '방카', label: '방카' },
-                        { value: '카드인증', label: '카드인증' },
-                        { value: '카카오인증', label: '카카오인증' },
-                        { value: '네이버인증', label: '네이버인증' },
-                        { value: '전자서명', label: '전자서명' },
-                        { value: '사진인식', label: '사진인식' },
-                        { value: '토스인증', label: '토스인증' },
-                        { value: 'PASS인증', label: 'PASS인증' },
-                        { value: 'PIN인증', label: 'PIN인증' },
-                        { value: '지문/Face ID인증', label: '지문/Face ID인증' },
-                        { value: '금융인증서', label: '금융인증서' },
-                        { value: 'ARS', label: 'ARS' },
-                      ].map((option, index) => (
-                        <NativeSelectOption key={index} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                  </FormCell>
-                  <FormCell title={'등록상태'}>
-                    <NativeSelect width={'auto'}>
-                      {[
-                        { value: '전체', label: '전체' },
-                        { value: '정상', label: '정상' },
-                        { value: '확인대상', label: '확인대상' },
-                        { value: '보완(재스캔)', label: '보완(재스캔)' },
-                      ].map((option, index) => (
-                        <NativeSelectOption key={index} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-              <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                  조회
-                </Button>
-                <Button
-                  color={'gray'}
-                  only={'icon'}
-                  size={'lg'}
-                  variant={'outlined'}
-                  onClick={() => {}}
-                  aria-label="새로고침"
-                >
-                  <ResetIcon />
-                </Button>
-              </Grow>
-            </Grow>
-
-            <Gcol gap={2}>
-              <Gcol placement={'ss'} gap={1}>
-                <Grow className="w-full justify-end">
-                  <Button color="success" variant="outlined">
-                    엑셀내보내기
-                    <FileExportIcon />
+        <DialogSection className="grid-rows-[auto_1fr] gap-3">
+          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <FormTable variant={'none'} cols={['w-[6rem]', 'w-[20rem]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+              <FormRow>
+                <FormCell title={'조직구분'}>
+                  <NativeSelect width={100}>
+                    {[
+                      { value: '전체', label: '전체' },
+                      { value: '취급기관', label: '취급기관' },
+                      { value: '취급직원', label: '취급직원' },
+                      { value: '사용인', label: '사용인' },
+                    ].map((option, index) => (
+                      <NativeSelectOption key={index} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                  <Input value={'1301097'} width={80} />
+                  <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
+                    <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                </Grow>
-                <div className="ag-theme-alpine radio-selection">
-                  <AgGridReact<DummyDataType>
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                      cellClass: 'text-center p-0!',
-                    }}
-                    domLayout="autoHeight"
-                    // selection 설정
-                    rowSelection={{
-                      mode: 'singleRow',
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    // pagination 설정 (TablePagination과 연동)
-                    pagination={true} // ag-Grid의 페이징 기능 활성화
-                    paginationPageSize={pageSize} // 페이지당 행 수
-                    suppressPaginationPanel={true} // ag-Grid 기본 페이징 UI 숨김(커스텀 TablePagination만 노출)
-                    // 페이지네이션 연동을 위한 onGridReady 핸들러
-                    ref={gridRef} // ag-Grid API 접근용 ref
-                    onGridReady={handleGridReady} // ag-Grid 준비 완료 시 호출(초기 API 세팅, 페이지 정보 등)
-                    onPaginationChanged={handlePaginationChanged}
-                  />
-                </div>
-                <TablePagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                  itemsPerPage={pageSize}
+                  <Input value={'신부산GA지점'} readOnly />
+                </FormCell>
+                <FormCell title={'조회일자'} colSpan={3}>
+                  <DatePickerInput mode={'range'} />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button only="icon" size="md" variant="none">
+                        <QuestionMark color="#61554F" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="right"
+                      sideOffset={1}
+                      variant="default"
+                      className="z-[999] [&>span]:whitespace-auto!"
+                    >
+                      {`1년 이전건은 조회불가합니다.`}
+                    </TooltipContent>
+                  </Tooltip>
+                </FormCell>
+              </FormRow>
+              <FormRow>
+                <FormCell title={'조회구분'}>
+                  <NativeSelect width={100}>
+                    <NativeSelectOption value="">주민번호</NativeSelectOption>
+                    <NativeSelectOption value="">생년월일</NativeSelectOption>
+                  </NativeSelect>
+                  <Input value={''} width={130} />
+                  <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
+                    <SearchIcon color={'var(--color-primary-50)'} />
+                  </Button>
+                  <Input value={''} width={80} readOnly />
+                  <Checkbox color="primary" size="lg" variant="default">
+                    <span className="whitespace-nowrap">교차제외</span>
+                  </Checkbox>
+                </FormCell>
+                <FormCell title={'동의구분'}>
+                  <NativeSelect width={'auto'}>
+                    {[
+                      { value: '전체', label: '전체' },
+                      { value: '스캔(개인)', label: '스캔(개인)' },
+                      { value: '스캔(변경,단체)', label: '스캔(변경,단체)' },
+                      { value: '넷팩스(개인)', label: '넷팩스(개인)' },
+                      { value: '넷팩스(변경,단체)', label: '넷팩스(변경,단체)' },
+                      { value: '휴대폰(LMS)', label: '휴대폰(LMS)' },
+                      { value: '휴대폰(홈페이지)', label: '휴대폰(홈페이지)' },
+                      { value: '공인인증서', label: '공인인증서' },
+                      { value: '음성녹음', label: '음성녹음' },
+                      { value: '방카', label: '방카' },
+                      { value: '카드인증', label: '카드인증' },
+                      { value: '카카오인증', label: '카카오인증' },
+                      { value: '네이버인증', label: '네이버인증' },
+                      { value: '전자서명', label: '전자서명' },
+                      { value: '사진인식', label: '사진인식' },
+                      { value: '토스인증', label: '토스인증' },
+                      { value: 'PASS인증', label: 'PASS인증' },
+                      { value: 'PIN인증', label: 'PIN인증' },
+                      { value: '지문/Face ID인증', label: '지문/Face ID인증' },
+                      { value: '금융인증서', label: '금융인증서' },
+                      { value: 'ARS', label: 'ARS' },
+                    ].map((option, index) => (
+                      <NativeSelectOption key={index} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </FormCell>
+                <FormCell title={'등록상태'}>
+                  <NativeSelect width={'auto'}>
+                    {[
+                      { value: '전체', label: '전체' },
+                      { value: '정상', label: '정상' },
+                      { value: '확인대상', label: '확인대상' },
+                      { value: '보완(재스캔)', label: '보완(재스캔)' },
+                    ].map((option, index) => (
+                      <NativeSelectOption key={index} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+            <Grow>
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                조회
+              </Button>
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
+                <ResetIcon />
+              </Button>
+            </Grow>
+          </Grow>
+
+          <Grid className="grid-rows-[1fr_auto_auto] gap-2">
+            <Grid className="grid-rows-[auto_1fr_auto] gap-1">
+              <Grow className="w-full justify-end">
+                <Button color="success" variant="outlined">
+                  엑셀내보내기
+                  <FileExportIcon />
+                </Button>
+              </Grow>
+              <div className="ag-theme-alpine radio-selection min-h-[18.3rem]">
+                <AgGridReact<DummyDataType>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                    cellClass: 'text-center p-0!',
+                  }}
+                  // selection 설정
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    cellClass: 'text-center editable-cell',
+                  }}
+                  // pagination 설정 (TablePagination과 연동)
+                  pagination={true} // ag-Grid의 페이징 기능 활성화
+                  paginationPageSize={pageSize} // 페이지당 행 수
+                  suppressPaginationPanel={true} // ag-Grid 기본 페이징 UI 숨김(커스텀 TablePagination만 노출)
+                  // 페이지네이션 연동을 위한 onGridReady 핸들러
+                  ref={gridRef} // ag-Grid API 접근용 ref
+                  onGridReady={handleGridReady} // ag-Grid 준비 완료 시 호출(초기 API 세팅, 페이지 정보 등)
+                  onPaginationChanged={handlePaginationChanged}
                 />
-              </Gcol>
-              <Grow className="w-full">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>공인인증서</TableHead>
-                      <TableHead>스캔(개인)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="text-center">4건(57.1%)</TableCell>
-                      <TableCell className="text-center">3건(42.9%)</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </Grow>
-              <Grow className="w-full" variant="box-info" placement="ss">
-                <Typo icon="info" variant="body-sm">
-                  기등록 고객의 경우 고객찾기 버튼을 통해 <b>가입설계동의</b>와 <b>고객정보</b>를 매칭시켜 주시기
-                  바랍니다.
-                </Typo>
-              </Grow>
-            </Gcol>
-          </Gcol>
+              </div>
+              <TablePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                itemsPerPage={pageSize}
+              />
+            </Grid>
+            <Grow className="w-full">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>공인인증서</TableHead>
+                    <TableHead>스캔(개인)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="text-center">4건(57.1%)</TableCell>
+                    <TableCell className="text-center">3건(42.9%)</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Grow>
+            <Grow className="w-full" variant="box-info" placement="ss">
+              <Typo icon="info" variant="body-sm">
+                기등록 고객의 경우 고객찾기 버튼을 통해 <b>가입설계동의</b>와 <b>고객정보</b>를 매칭시켜 주시기
+                바랍니다.
+              </Typo>
+            </Grow>
+          </Grid>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

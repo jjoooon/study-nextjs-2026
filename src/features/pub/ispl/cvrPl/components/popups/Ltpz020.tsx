@@ -8,7 +8,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -409,12 +409,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  const {
-    tabs: subTabs,
-    active: subActive,
-    setActive: setSubActive,
-    handleRemove: handleSubRemove,
-  } = useTabs(DATA_SUB_TABS);
+  const { tabs: subTabs, active: subActive, setActive: setSubActive } = useTabs(DATA_SUB_TABS);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
 
   return (
@@ -543,19 +538,19 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </ResizablePanel>
               </ResizablePanelGroup>
             ) : (
-              <Grid className="w-full pt-2 grid-rows-[auto_1fr]" gap={5}>
+              <Grid className="w-full pt-2 grid-rows-[auto_1fr] h-full" gap={5}>
                 <TableFold>
                   <TableFoldHead title="목적물 소유자 및 소재지" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[15.3rem]">
+                    <div className="ag-theme-alpine min-h-[9.8rem]">
                       <AgGridReact<PropertyListRow>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={propertyListDataColumnDefs}
                         defaultColDef={{
-                          sortable: false,
-                          resizable: false,
+                          sortable: true,
+                          resizable: true,
                           cellClass: 'p-0',
                           cellStyle: { padding: 0 },
                         }}
@@ -571,7 +566,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                           width: 30,
                           cellClass: 'text-center editable-cell',
                         }}
-                        domLayout="autoHeight"
                         onGridReady={(params) => {
                           params.api.forEachNode((node) => {
                             if (node.data?.isCheck) {
@@ -589,34 +583,29 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                   data={subTabs}
                   active={subActive}
                   setActive={setSubActive}
-                  removable={false}
-                  onRemove={handleSubRemove}
                   visibleCount={4}
                   variant="default"
                   hasTableBelow={true}
-                  error={false}
-                  errorMsg="에러 메시지 예시"
                   getValue={(tab) => String(tab.value)}
                   renderTab={(tab) => <span>{tab.label}</span>}
                   renderDropdownItem={false}
                 >
                   {subActive === 'fireCoverage' ? (
-                    <Gcol className="pt-2 w-full" placement="ss" gap={2}>
+                    <Grid className="pt-2 w-full grid-rows-[1fr_1fr] gap-2 h-full">
                       <TableFold>
                         <TableFoldHead title="소재지별 건물(수용장소)의 목록" />
                         <TableFoldBody>
-                          <div className="ag-theme-alpine">
+                          <div className="ag-theme-alpine min-h-[15.3rem]">
                             <AgGridReact<BuildingByLocationRow>
                               getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
                               rowData={buildingByLocationData}
                               columnDefs={buildingByLocationColumnDefs}
                               defaultColDef={{
-                                sortable: false,
-                                resizable: false,
+                                sortable: true,
+                                resizable: true,
                               }}
                               animateRows={false}
-                              domLayout="autoHeight"
                             />
                           </div>
                         </TableFoldBody>
@@ -632,8 +621,8 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                               rowData={insuranceObjectData}
                               columnDefs={insuranceObjectColumnDefs}
                               defaultColDef={{
-                                sortable: false,
-                                resizable: false,
+                                sortable: true,
+                                resizable: true,
                               }}
                               animateRows={false}
                               domLayout="autoHeight"
@@ -641,7 +630,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
                           </div>
                         </TableFoldBody>
                       </TableFold>
-                    </Gcol>
+                    </Grid>
                   ) : null}
                 </TabPager>
               </Grid>

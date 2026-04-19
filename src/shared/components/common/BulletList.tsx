@@ -133,7 +133,8 @@ export const BulletListItem = ({
         className={cn(
           'flex items-center justify-center shrink-0',
           itemHeight[resolvedSize],
-          bulletStyles[resolvedType]
+          bulletStyles[resolvedType],
+          resolvedType === 'symbols' && '-translate-y-[0.2rem] leading-[1.5]'
         )}
       >
         {resolvedType === 'ref' && <RefIcon size={10} />}

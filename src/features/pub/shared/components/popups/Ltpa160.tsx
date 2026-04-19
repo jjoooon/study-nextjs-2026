@@ -8,7 +8,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -297,7 +297,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
 
           {/* 조회 정보 */}
-          <Gcol placement="ss" className="w-full" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)">
                 <Grow>
@@ -327,7 +327,7 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold>
               <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
               <TableFoldBody>
-                <Gcol gap={5}>
+                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
                   <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
@@ -336,7 +336,6 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
                       enableCellSpan={true}
-                      domLayout="autoHeight"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                     />
@@ -354,10 +353,10 @@ export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </Typo>
                     </Gcol>
                   </Gcol>
-                </Gcol>
+                </Grid>
               </TableFoldBody>
             </TableFold>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

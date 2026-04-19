@@ -12,7 +12,7 @@ import {
   numberValueFormatter,
   useAgGridColumnVisibility,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -209,7 +209,7 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol placement="ss" className="w-full" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)"></TableFoldHead>
               <TableFoldBody>
@@ -254,7 +254,7 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Gcol gap={5}>
+                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
                   <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -282,10 +282,10 @@ export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </Typo>
                     </Gcol>
                   </Gcol>
-                </Gcol>
+                </Grid>
               </TableFoldBody>
             </TableFold>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

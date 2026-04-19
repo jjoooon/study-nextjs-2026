@@ -27,7 +27,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

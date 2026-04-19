@@ -181,7 +181,7 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -190,7 +190,7 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable
               caption="보험정보"
@@ -206,7 +206,7 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
             </FormTable>
           </Grow>
 
-          <div className="ag-theme-alpine">
+          <div className="ag-theme-alpine min-h-[11.6rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -218,7 +218,7 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
                 resizable: true,
               }}
               singleClickEdit={true}
-              domLayout="autoHeight"
+              domLayout="normal"
             />
           </div>
 

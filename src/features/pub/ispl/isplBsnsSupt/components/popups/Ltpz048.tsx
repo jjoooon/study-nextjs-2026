@@ -90,7 +90,7 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg" className="">
+      <DialogContent showCloseButton resizable={false} size="lg" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

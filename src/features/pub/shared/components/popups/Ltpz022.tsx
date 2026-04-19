@@ -301,14 +301,13 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
               ></Button>
             )}
           >
-            <div className="ag-theme-alpine ag-border-t">
+            <div className="ag-theme-alpine ag-border-t min-h-[36rem]">
               <AgGridReact<UnderwritingViolationRow>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 rowData={violationRowData}
                 columnDefs={spanColumnDefs}
                 defaultColDef={spanDefaultColDef}
-                domLayout="autoHeight"
                 enableCellSpan={true}
                 onGridReady={(params) => {
                   gridApiRef.current = params.api;

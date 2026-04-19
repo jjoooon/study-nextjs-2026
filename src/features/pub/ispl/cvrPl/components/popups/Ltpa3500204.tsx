@@ -249,7 +249,7 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+          <Grow className="w-full h--full" variant="box-round" placement={'bwe'}>
             <Grow>
               <RadioGroup className="gap-1" onValueChange={() => {}} width="full" defaultValue="간병인">
                 {[
@@ -277,8 +277,8 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
               <ResetIcon />
             </Button>
           </Grow>
-          <Grow placement="ss" className="w-full" gap={5}>
-            <TableFold variant={'default'} className="w-[40%] shrink-0">
+          <Grow placement="ss" className="w-full h-full" gap={5}>
+            <TableFold variant={'default'} className="w-[40%] shrink-0 h-full">
               <TableFoldHead title="담보패키지" />
               <TableFoldBody>
                 <div className="ag-theme-alpine min-h-[30rem]">
@@ -303,13 +303,12 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
                       cellClass: 'text-center editable-cell',
                       width: 40,
                     }}
-                    alwaysShowVerticalScroll={true}
                     domLayout="normal"
                   />
                 </div>
               </TableFoldBody>
             </TableFold>
-            <TableFold variant={'default'}>
+            <TableFold variant={'default'} className="h-full">
               <TableFoldHead title="담보" />
               <TableFoldBody>
                 <div className="ag-theme-alpine min-h-[30rem]">
@@ -340,7 +339,6 @@ export const Ltpa3500204 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableFoldBody>
             </TableFold>
           </Grow>
-          <Grow placement="ss" className="w-full" gap={5}></Grow>
         </DialogSection>
 
         <DialogFooter>

@@ -7,7 +7,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -209,42 +209,35 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
-            <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
-                <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
-                    <Input aria-label="" width={240} value={'한화 더 경증 간편건강보험2(세만기형)2'} readOnly />
-                    <Input aria-label="" width={100} value={''} readOnly />
-                  </FormCell>
-                  <FormCell title={'플랜명'}>
-                    <Input
-                      aria-label=""
-                      width={360}
-                      value={'한화 더 경증 간편건강보험2(세만기형)2올인원플랜(1~4형)'}
-                      readOnly
-                    />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-            <Gcol className="w-full">
-              <Gcol className="w-full" gap={4}>
-                <div className="ag-theme-alpine min-h-[15.3rem]">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    domLayout="normal"
-                    alwaysShowVerticalScroll={true}
+        <DialogSection className="grid-rows-[auto_1fr] gap-3">
+          <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
+              <FormRow>
+                <FormCell title={'설계번호'}>
+                  <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={240} value={'한화 더 경증 간편건강보험2(세만기형)2'} readOnly />
+                  <Input aria-label="" width={100} value={''} readOnly />
+                </FormCell>
+                <FormCell title={'플랜명'}>
+                  <Input
+                    aria-label=""
+                    width={360}
+                    value={'한화 더 경증 간편건강보험2(세만기형)2올인원플랜(1~4형)'}
+                    readOnly
                   />
-                </div>
-              </Gcol>
-            </Gcol>
-          </Gcol>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <div className="ag-theme-alpine min-h-[15.3rem]">
+            <AgGridReact<DummyDataType>
+              getRowId={(params) => String(params.data.id)}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              domLayout="normal"
+            />
+          </div>
         </DialogSection>
 
         <DialogFooter>

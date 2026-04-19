@@ -32,7 +32,7 @@ export const Ltpa02003 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol className="bg-[#EFF8FF] border border-[#CBE3FF] rounded-[0.6rem] p-[1rem]" placement="ss">
             <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
               한화 3N5 더간편건강보험(세만기형) 2601
