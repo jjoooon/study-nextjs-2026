@@ -40,7 +40,8 @@ export function QuickLinks({ menus, onMoreClick }: QuickLinksProps) {
           편집
         </Button>
       </Grow>
-      <Grid variant="box-line" className="grid-cols-[1fr_1fr] w-full gap-[0.6rem]" placement="ss">
+      {/* M1. gap-1 수정 */}
+      <Grid variant="box-line" className="grid-cols-[1fr_1fr] w-full gap-1" placement="ss">
         {quickMenus.map((menu, index) => (
           <Button
             asChild
