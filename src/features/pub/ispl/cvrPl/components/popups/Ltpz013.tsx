@@ -8,7 +8,7 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { BadgeCheckIcon, CalendarIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
+import { BadgeCheckIcon, CalendarIcon, CalendarIcon2, CheckboxIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -263,7 +263,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 <ShieldIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.4rem] shrink-0"
-                                  size={14}
+                                  size={16}
                                 />
                               )}
                               {index === 1 && (
@@ -274,17 +274,17 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                                 />
                               )}
                               {index === 2 && (
-                                <CalendarIcon
+                                <CalendarIcon2
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.4rem] shrink-0"
-                                  size={14}
+                                  size={16}
                                 />
                               )}
                               {index === 3 && (
-                                <BadgeCheckIcon
+                                <CheckboxIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.4rem] shrink-0"
-                                  size={14}
+                                  size={16}
                                 />
                               )}
                               {option[optionKey as keyof typeof option]}
