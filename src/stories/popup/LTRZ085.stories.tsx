@@ -1,11 +1,11 @@
 
 import * as React from 'react';
-import { Ltrz085 } from '@/features/pub/components/popups/Ltrz085';
+import { Ltrz085 } from '@/features/pub/shared/components/popups/Ltrz085';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/popup/Ltrz085',
+  title: 'app/shared/components/popups/Ltrz085',
   component: Ltrz085,
 };
 
