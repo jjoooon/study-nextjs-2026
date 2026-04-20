@@ -186,7 +186,7 @@ export function MainBottom({ children }: { children: React.ReactNode }) {
 
 export function MainBottomItem({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Grow placement={'bwc'} className={cn('px-3 pt-2 pb-2.5 gap-3', className)}>
+    <Grow placement={'bwc'} className={cn('px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem]', className)}>
       {children}
     </Grow>
   );

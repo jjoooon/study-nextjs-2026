@@ -249,7 +249,9 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                                   <Input aria-label="피보험자 나이" width={56} value={'134세'} readOnly />
                                   <Input aria-label="피보험자 성별" width={32} value={'남'} readOnly />
                                 </Grow>
-                                <Grow gap={2}>
+
+                                {/* M1. 간격수정 */}
+                                <Grow gap={2.5}>
                                   <KeyValueItem label={'상령일'}>
                                     <Typo weight={'bold'}>2023-01-12</Typo>
                                     <Badge color={'blue'} size={'md'} variant={'contained'}>
@@ -1565,7 +1567,8 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
 
                   {/* 계약자 - 상세 */}
                   {!_simpleMode && (
-                    <FormTable caption="계약자 정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                    // M1. className="-mt-2" 추가
+                    <FormTable caption="계약자 정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']} className="-mt-2">
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">
                           <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
@@ -1679,7 +1682,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
           </LayoutMainBody>
           <LayoutMainFoot>
             <MainBottom>
-              <MainBottomItem>
+              <MainBottomItem className="bg-[var(--color-gray-5)]">
                 <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => setIsLtpz014Open(true)}>
                   동영상매뉴얼
                 </Button>

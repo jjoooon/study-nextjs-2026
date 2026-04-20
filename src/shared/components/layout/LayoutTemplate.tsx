@@ -44,12 +44,14 @@ export const LayoutTemplateLTPA350 = ({
       <div className="col-span-3 pl-2.5">{pageTitle}</div>
       <LayoutProcess>{pageProcess}</LayoutProcess>
       {mainBody}
-      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-[1rem] ${hideAside ? 'hidden' : ''}`}>
+      {/* M1. 간격수정 gap-3 */}
+      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-3 ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>
           <LayoutScrollWrap>
             <LayoutScrollItem>
-              <Gcol className="gap-2 w-full pb-[4.9rem]" placement="ss">
+              {/* M1. 간격수정 gap-3 */}
+              <Gcol className="gap-3 w-full pb-[4.9rem]" placement="ss">
                 {asideInfo}
                 {asideLinks}
               </Gcol>

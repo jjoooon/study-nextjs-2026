@@ -167,7 +167,7 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
-          className="border-b border-[#E5E5E5] px-[1rem] py-[0.4rem] "
+          className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem] "
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
           style={style}
@@ -293,7 +293,7 @@ export const FormTable = ({
         className={cn(
           'overflow-visible',
           variantStyles[variant as keyof typeof variantStyles],
-          showLineTop ? 'border-t border-t-[.2rem] border-t-[#61554F]' : 'border-t-0',
+          showLineTop ? 'border-t border-t-[.2rem] border-t-[#000]' : 'border-t-0',
           className
         )}
         data-variant={variant}

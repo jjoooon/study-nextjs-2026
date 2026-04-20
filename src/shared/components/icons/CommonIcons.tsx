@@ -1676,3 +1676,62 @@ export const CalendarIcon2: React.FC<IconProps> = ({ className = '', size = 16, 
     <path d="M10.4 1.93701C10.7645 1.93701 11.0598 2.23227 11.0598 2.59678V4.99678C11.0598 5.36129 10.7645 5.65654 10.4 5.65654C10.0355 5.65654 9.74023 5.36129 9.74023 4.99678V2.59678C9.74023 2.23227 10.0355 1.93701 10.4 1.93701Z" fill={color}/>
 </svg>
 );
+
+export const DialogPocIcon: React.FC<IconProps> = ({ className = '', size = 12, color = 'currentColor' }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 12 12" 
+    fill="none"
+    className={className}
+  >
+    <path fillRule="evenodd" clipRule="evenodd" d="M9 1C9.55228 1 10 1.44772 10 2V10C10 10.5523 9.55228 11 9 11H3C2.44772 11 2 10.5523 2 10V2C2 1.44772 2.44772 1 3 1H9ZM6 6C4.89543 6 3 6.5 3 9C3 9.5 3.5 10 6 10C8.5 10 9 9.5 9 9C9 6.5 7.10457 6 6 6ZM6 2.5C5.17157 2.5 4.5 3.17157 4.5 4C4.5 4.82843 5.17157 5.5 6 5.5C6.82843 5.5 7.5 4.82843 7.5 4C7.5 3.17157 6.82843 2.5 6 2.5Z" fill="#545454"/>
+</svg>
+);
+
+export const PenIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 24 24" 
+    fill="none"
+    className={className}
+  >
+    <path fillRule="evenodd" clipRule="evenodd" d="M11.9696 6.82512C12.1257 6.66904 12.3798 6.6693 12.536 6.82512L16.9188 11.2079C17.075 11.3641 17.0758 11.6181 16.9198 11.7743L9.09949 19.5946C8.8491 19.845 8.53666 20.0241 8.19422 20.1142L2.66297 21.5702C2.36677 21.6482 2.09686 21.3781 2.17469 21.082L3.62977 15.5497C3.71992 15.2074 3.89999 14.8957 4.15027 14.6454L11.9696 6.82512ZM15.7714 3.10051C16.3986 2.4904 17.3997 2.49739 18.0184 3.11613L20.705 5.80265C21.3359 6.43362 21.329 7.45881 20.6893 8.08098L18.1923 10.5097C18.0354 10.6621 17.7854 10.6604 17.6307 10.5058L13.247 6.12199C13.0893 5.9643 13.0911 5.70821 13.2509 5.55265L15.7714 3.10051Z" fill={color}/>
+</svg>
+);
+
+export const SrPermIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 24 24" 
+    fill="none"
+    className={className}
+  >
+    <path fillRule="evenodd" clipRule="evenodd" d="M18 2C19.1046 2 20 2.89543 20 4V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V4C4 2.89543 4.89543 2 6 2H18ZM17.7207 7.66895C17.2617 7.27142 16.5668 7.32059 16.1689 7.7793L10.3848 14.4521L7.71582 12.165C7.25461 11.77 6.56034 11.8231 6.16504 12.2842C5.76987 12.7453 5.82329 13.4396 6.28418 13.835L9.78418 16.835C10.2435 17.2285 10.9347 17.1776 11.3311 16.7207L17.8311 9.2207C18.2287 8.76177 18.1793 8.06688 17.7207 7.66895Z" fill={color}/>
+</svg>
+);
+export const SrDecIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 24 24" 
+    fill="none"
+    className={className}
+  >
+    <path d="M20.4004 3C21.2837 3.00021 21.9998 3.71626 22 4.59961V15.4004C21.9998 16.2837 21.2837 16.9998 20.4004 17H9.40039C9.17948 17 9 17.1795 9 17.4004V20.7676C8.99982 21.0839 8.64993 21.2746 8.38379 21.1035L2.73438 17.4727C2.27665 17.1783 2.00016 16.6711 2 16.127V4.59961C2.00021 3.71626 2.71626 3.00021 3.59961 3H20.4004Z" fill={color}/>
+</svg>
+);
+export const NewWin: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" 
+    width={toRem(size)} 
+    height={toRem(size)} 
+    viewBox="0 0 24 24" 
+    fill="none"
+    className={className}
+  >
+  <path fillRule="evenodd" clipRule="evenodd" d="M20 2C21.1046 2 22 2.89543 22 4V16C22 17.1046 21.1046 18 20 18H8C6.89543 18 6 17.1046 6 16V4C6 2.89543 6.89543 2 8 2H20ZM8.2002 15.7998H19.7998V4.2002H8.2002V15.7998Z" fill={color}/>
+  <path d="M2 8C2 6.89543 2.89543 6 4 6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H4C2.89543 22 2 21.1046 2 20V8Z" fill={color}/>
+</svg>
+);
