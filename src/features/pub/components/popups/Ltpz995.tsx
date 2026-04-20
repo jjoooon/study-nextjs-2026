@@ -7,7 +7,11 @@ import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@uiux/Dialog';
+import { FileUpload } from '@common/FileUpload';
+import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,DialogFooterArea, DialogClose, DialogSection } from '@uiux/Dialog';
 import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
 import log from '@/shared/utils/logger';
 
@@ -15,8 +19,8 @@ import log from '@/shared/utils/logger';
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
 // Import FilePond styles
-import 'filepond/dist/filepond.min.css';
-import './FileUploader2.css';
+// import 'filepond/dist/filepond.min.css';
+// import './FileUploader2.css';
 
 const logger = log.getLogger('FileUploader');
 
@@ -34,7 +38,8 @@ export interface FileUploadResult {
 }
 
 export interface FileUploaderProps {
-  title?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   /** Promise resolve 함수 (결과 반환) */
   resolve: (result: FileUploadResult) => void;
 }
@@ -50,7 +55,7 @@ function formatFileSize(bytes: number): string {
   return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
-export default function FileUploader({ title = '파일업로드', resolve }: FileUploaderProps) {
+export default function FileUploader({ open, onOpenChange, resolve }: FileUploaderProps) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
@@ -218,14 +223,30 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
   };
 
   return (
-    <Dialog open onOpenChange={handleCancel}>
-      <DialogContent className="h-[35vh] w-360 min-w-7xl min-h-240" resizable={true}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <FileUpload
+        files={[{ name: '첨부파일.png', key: 'file-1' }]}
+        onClickButton={() => {
+          onOpenChange?.(true);
+        }}
+        onRemove={() => {
+          /* 목록에서 제거 */
+        }}
+      />
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              파일업로드
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ994)
+            </Typo>
+          </DialogTitle>
         </DialogHeader>
-        <div className="flex-1 w-full px-[3.2rem] flex flex-col gap-4">
-          {/* FilePond Drop Area */}
-          <div>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Gcol className="w-full h-full gap-1 [&_.filepond--wrapper]:w-full [&_.filepond--wrapper]:!bg-[var(--color-primary-5)] [&_.filepond--wrapper]:rounded-[0.8rem] [&_.filepond--wrapper]:border [&_.filepond--wrapper]:border-dashed [&_.filepond--wrapper]:border-[var(--color-primary-50)] [&_.filepond--root]:!h-[26.4rem] [&_.filepond--root]:!max-h-[26.4rem] [&_.filepond--root]:overflow-x-hidden [&_.filepond--root]:overflow-y-auto [&_.filepond--drop-label]:flex [&_.filepond--drop-label]:flex-col [&_.filepond--drop-label]:justify-center [&_.filepond--drop-label]:items-center [&_.filepond--drop-label]:text-[var(--color-primary-50)] [&_.filepond--drop-label]:w-full [&_.filepond--drop-label]:h-full [&_.filepond--browser]:hidden [&_.filepond--data]:hidden [&_.filepond--list-scroller]:bg-red [&_.filepond--root]:h-full [&_.filepond--root]:border  ">
+            {/* FilePond Drop Area */}
             <FilePond
               ref={pondRef}
               files={pondFiles.map((f) => f.source)}
@@ -253,31 +274,38 @@ export default function FileUploader({ title = '파일업로드', resolve }: Fil
               instantUpload={false}
               server={{}}
             />
-          </div>
 
-          {/* Footer */}
-          <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] h-[2rem] border-t border-(--color-table-border-border-gray)">
-            <span>
-              최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
-              <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
-            </span>
-            <span>
-              <span className="text-(--color-text-danger) font-semibold">{fileCount}</span> 개,{' '}
-              <span className="text-(--color-text-danger) font-semibold"> {formatFileSize(totalSize)}</span> 추가됨
-            </span>
-          </div>
-        </div>
+            {/* Footer */}
+            <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] h-[2rem] border-t border-(--color-table-border-border-gray)">
+              <span>
+                최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
+                <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
+              </span>
+              <span>
+                <span className="text-(--color-text-danger) font-semibold">{fileCount}</span> 개,{' '}
+                <span className="text-(--color-text-danger) font-semibold"> {formatFileSize(totalSize)}</span> 추가됨
+              </span>
+            </div>
+          </Gcol>
+        </DialogSection>
 
         <DialogFooter>
-          <Button variant="outline" size="lg" color="gray" onClick={handleSearch}>
-            파일검색
-          </Button>
-          <Button variant="outline" size="lg" color="gray" onClick={handleUpload}>
-            선택완료
-          </Button>
-          <Button variant="contained" size="lg" onClick={handleCancel}>
-            닫기
-          </Button>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'} onClick={handleSearch}>
+                파일검색
+              </Button>
+              <Button variant={'contained'} size={'xl'} onClick={handleUpload}>
+                선택완료
+              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>
