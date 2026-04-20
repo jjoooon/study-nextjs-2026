@@ -8,6 +8,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import useMounted from '@/shared/hooks/useMounted';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 
@@ -320,13 +321,13 @@ export function Ltpa020View2({
     updateMoreButtonVisibility();
   }, [updateMoreButtonVisibility]);
 
-  useEffect(() => {
+  useMounted(() => {
     return () => {
       if (scrollAnimRef.current !== null) {
         cancelAnimationFrame(scrollAnimRef.current);
       }
     };
-  }, []);
+  });
 
   // dataNone, setDataNone은 부모에서 props로 받음
 
