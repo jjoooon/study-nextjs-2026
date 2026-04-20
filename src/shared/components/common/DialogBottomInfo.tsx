@@ -1,7 +1,7 @@
 'use client';
 
 import { Grow, Typo } from '@atoms';
-import { DialogListIcon, DialogResetIcon } from '@icons';
+import { DialogListIcon, DialogResetIcon, DialogPocIcon } from '@icons';
 import { TextBabbleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
@@ -17,6 +17,12 @@ export const DialogBottomInfo = () => {
         </Typo>
       </Grow>
       <Grow>
+        {/* M1. 화면담당자추가 */}
+        <Button variant={'none'} className='text-[1.1rem]'>
+          <DialogPocIcon color={'var(--color-secondary-50)'} />
+          화면담당자
+        </Button>
+        
         <Button variant={'none'} only={'icon'} aria-label="목록">
           <DialogListIcon color={'var(--color-secondary-50)'} />
         </Button>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Grow, Typo } from '@atoms';
-import { DialogListIcon, DialogResetIcon } from '@icons';
+import { DialogListIcon, DialogResetIcon, SrPermIcon, SrDecIcon, NewWin } from '@icons';
 import { TextBabbleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
@@ -17,8 +17,25 @@ export const BottomBar = () => {
         </Typo>
       </Grow>
       <Grow>
+        <Button variant={'none'}>
+          <SrPermIcon color={'var(--color-secondary-50)'} size={12} />
+          화면권한보기
+        </Button>
+        <Button variant={'none'}>
+          <DialogListIcon color={'var(--color-secondary-50)'} size={12} />
+          화면담당자
+        </Button>
+        <Button variant={'none'}>
+          <SrDecIcon color={'var(--color-secondary-50)'} size={12} />
+          화면설명
+        </Button>
+        <Button variant={'none'}>
+          <NewWin color={'var(--color-secondary-50)'} size={12} />
+          새창띄우기
+        </Button>
+
         <Button variant={'none'} only={'icon'} aria-label="목록">
-          <DialogListIcon color={'var(--color-secondary-50)'} />
+          <DialogListIcon color={'var(--color-secondary-50)'} size={12} />
         </Button>
         <Button variant={'none'} only={'icon'} aria-label="초기화">
           <DialogResetIcon color={'var(--color-secondary-50)'} />

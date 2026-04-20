@@ -5,7 +5,7 @@ import { Grow, Typo, FormItem, Grid } from '@atoms';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { ViewMode } from '@common/ViewMode';
-import { SearchIcon, MemoIcon, ArrowIcon } from '@icons';
+import { SearchIcon, MemoIcon, ArrowIcon, PenIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -120,7 +120,8 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
       </Grow>
       <Grow className="gap-2.5 shrink-0" placement="ec">
         <Button variant="outlined" color="secondary" size="md">
-          <MemoIcon />
+          {/* M1. 아이콘 수정 */}
+          <PenIcon size={12} />
           메모
         </Button>
         <FormTable caption="계약자 관련 정보 입력하세요." cols={['', '']} variant="none" lineTop={false}>

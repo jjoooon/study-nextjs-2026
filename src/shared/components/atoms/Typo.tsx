@@ -6,21 +6,21 @@ import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIc
 const typoVariants = cva('', {
   variants: {
     variant: {
-      'heading-lg': 'block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-md': 'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-sm': 'block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-xs': 'block text-[1.1rem] font-normal leading-[150%] tracking-[-0.08rem]',
+      'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-md': 'heading-md block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-sm': 'heading-sm block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',
+      'heading-xs': 'heading-xs block text-[1.1rem] font-normal leading-[150%] tracking-[-0.08rem]',
 
-      'body-xl': 'text-[1.5rem] leading-[150%] tracking-[-0.13rem]',
-      'body-lg': 'text-[1.4rem] leading-[150%] tracking-[-0.13rem]',
-      'body-md': 'text-[1.3rem] leading-[150%] tracking-[-0.13rem]',
-      'body-sm': 'text-[1.2rem] leading-[150%] tracking-[-0.13rem]',
-      'body-xs': 'text-[1.1rem] leading-[150%] tracking-[-0.13rem]',
+      'body-xl': 'body-xl text-[1.5rem] leading-[150%] tracking-[-0.13rem]',
+      'body-lg': 'body-lg text-[1.4rem] leading-[150%] tracking-[-0.13rem]',
+      'body-md': 'body-md text-[1.3rem] leading-[150%] tracking-[-0.13rem]',
+      'body-sm': 'body-sm text-[1.2rem] leading-[150%] tracking-[-0.13rem]',
+      'body-xs': 'body-xs text-[1.1rem] leading-[150%] tracking-[-0.13rem]',
 
-      'button-lg': 'text-[1.4rem] leading-[100%] tracking-[-0.13rem]',
-      'button-md': 'text-[1.3rem] leading-[100%] tracking-[-0.13rem]',
-      'button-sm': 'text-[1.2rem] leading-[100%] tracking-[-0.13rem]',
-      'button-xs': 'text-[1.1rem] leading-[100%] tracking-[-0.13rem]',
+      'button-lg': 'button-lg text-[1.4rem] leading-[100%] tracking-[-0.13rem]',
+      'button-md': 'button-md text-[1.3rem] leading-[100%] tracking-[-0.13rem]',
+      'button-sm': 'button-sm text-[1.2rem] leading-[100%] tracking-[-0.13rem]',
+      'button-xs': 'button-xs text-[1.1rem] leading-[100%] tracking-[-0.13rem]',
 
       'amount-md':
         'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
@@ -102,7 +102,7 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   if (icon === 'star') IconComponent = <StarIcon className="inline-flex -translate-y-[0.15rem] mr-1" size={10} />;
 
   const indentStyle = {
-    info: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
+    info: 'inline-block relative -indent-[2rem] ml-[2rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
     warning:
       'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
     detail:
