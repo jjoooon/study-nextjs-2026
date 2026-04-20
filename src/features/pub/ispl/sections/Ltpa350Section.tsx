@@ -17,20 +17,20 @@ import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
-import { Ltpa350Step5 } from '../ispl/aplMtt/sections/Ltpa350Step5'; // 05. 추가사항
-import { Ltpa350Step6 } from '../ispl/aplMtt/sections/Ltpa350Step6'; // 06. 수납
-import { Ltpa350Step1 } from '../ispl/crmtt/sections/Ltpa350Step1'; // 01. 가입설계
-import { Ltpa350Step2View1 } from '../ispl/cvrPl/sections/Ltpa350Step2View1'; // 02. 담보설계
-import { Ltpa350Step2View2 } from '../ispl/cvrPl/sections/Ltpa350Step2View2'; // 02. 담보설계
-import { Ltpa350Step2View3 } from '../ispl/cvrPl/sections/Ltpa350Step2View3'; // 02. 담보설계
-import { Ltpa350Step2View4 } from '../ispl/cvrPl/sections/Ltpa350Step2View4'; // 02. 담보설계
-import { Ltpa350Step2View5 } from '../ispl/cvrPl/sections/Ltpa350Step2View5'; // 02. 담보설계
+import { Ltpa350Step5 } from '../aplMtt/sections/Ltpa350Step5'; // 05. 추가사항
+import { Ltpa350Step6 } from '../aplMtt/sections/Ltpa350Step6'; // 06. 수납
+import { Ltpa350Step1 } from '../crmtt/sections/Ltpa350Step1'; // 01. 가입설계
+import { Ltpa350Step2View1 } from '../cvrPl/sections/Ltpa350Step2View1'; // 02. 담보설계
+import { Ltpa350Step2View2 } from '../cvrPl/sections/Ltpa350Step2View2'; // 02. 담보설계
+import { Ltpa350Step2View3 } from '../cvrPl/sections/Ltpa350Step2View3'; // 02. 담보설계
+import { Ltpa350Step2View4 } from '../cvrPl/sections/Ltpa350Step2View4'; // 02. 담보설계
+import { Ltpa350Step2View5 } from '../cvrPl/sections/Ltpa350Step2View5'; // 02. 담보설계
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-import { Ltpz005 } from '../shared/components/popups/Ltpz005';
-import type { Ltpz005TabValue } from '../shared/components/popups/Ltpz005';
-import { Ltpz018 } from '../shared/components/popups/Ltpz018';
-import type { Ltpz018MenuItem } from '../shared/components/popups/Ltpz018';
+import { Ltpz005 } from '../../shared/components/popups/Ltpz005';
+import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
+import { Ltpz018 } from '../../shared/components/popups/Ltpz018';
+import type { Ltpz018MenuItem } from '../../shared/components/popups/Ltpz018';
 
 // types
 type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
