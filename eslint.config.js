@@ -165,6 +165,13 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         ],
       },
     ],
+    'no-restricted-syntax': [
+      "error",
+      {
+        "selector": "CallExpression[callee.name='useEffect'][arguments.1.type='ArrayExpression'][arguments.1.elements.length=0]",
+        "message": "useEffect의 의존성 배열을 비우지 마세요. 초기 마운트 시에만 실행되는 로직은 커스텀 훅(useMounted)을 사용하세요."
+      }
+    ]
   },
   settings: {
     react: {
