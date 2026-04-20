@@ -42,7 +42,7 @@ const ROWS: IARow[] = iaListData as IARow[];
 const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
 
 export function IAListWithPreview() {
-  const [showPhaseOnly, setShowPhaseOnly] = React.useState(true);
+  const [showPhaseOnly, setShowPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   // 정렬 핸들러 복구
   const handleSort = React.useCallback((key: SortKey) => {
