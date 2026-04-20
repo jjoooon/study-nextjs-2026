@@ -79,13 +79,15 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
         </Grow>
       </Gcol>
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
-        <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+        {/* M1. color={'gray'} 수정, className삭제 */}
+        <Button variant={'outlined'} color={'gray'} size={'lg'} >
           제안서
           <PlusIcon color={'var(--color-secondary-50)'} />
         </Button>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant={'outlined'} color={'secondary'} size={'lg'} className="flex-1 justify-between!">
+            {/* M1. color={'gray'} 수정, className삭제 */}
+            <Button variant={'outlined'} color={'gray'} size={'lg'} >
               출력
               <PlusIcon color={'var(--color-secondary-50)'} />
             </Button>

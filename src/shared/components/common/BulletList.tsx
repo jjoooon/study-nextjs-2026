@@ -147,7 +147,7 @@ export const BulletListItem = ({
         {resolvedType === 'hash' && <HashIcon size={10} />}
         {resolvedType === 'symbols' && before}
       </div>
-      <div className="flex-1 tracking-[-0.03rem] w-full">{children}</div>
+      <div className="flex-1 tracking-[-0.06rem] w-full">{children}</div>
     </li>
   );
 };

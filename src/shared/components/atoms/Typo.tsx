@@ -3,6 +3,8 @@ import { ReactNode, createElement } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
+// M1. 수정
+
 const typoVariants = cva('', {
   variants: {
     variant: {
@@ -45,7 +47,7 @@ const typoVariants = cva('', {
     },
     color: {
       default: 'text-[var(--color-gray-100)]',
-      'gray-light': 'text-[var(--color-gray-30)]',
+      'gray-light': 'text-[var(--color-gray-50)]',
       gray: 'text-[var(--color-gray-70)]',
       blueGray: 'text-[var(--color-blue-gray-50)]',
       danger: 'text-[var(--color-danger-50)]',

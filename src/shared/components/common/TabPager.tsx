@@ -111,15 +111,15 @@ export function TabPager<T>({
           <Grow gap={2.5} className="mb-[0.2rem]" placement={'es'}>
             {renderButtons}
             {Math.ceil(data.length / visibleCount) > 1 && (
-              <Grow>
+              <Grow placement="cc" gap={1}>
                 <Grow className="gap-[0.1rem] pt-[0.1rem]">
                   <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
                     {Math.ceil((visibleStart + visibleCount) / visibleCount)}
                   </Typo>
-                  <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
+                  <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
                     /
                   </Typo>
-                  <Typo className="tracking-[0]!" color={'gray-light'} weight={'bold'}>
+                  <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
                     {Math.ceil(data.length / visibleCount)}
                   </Typo>
                 </Grow>

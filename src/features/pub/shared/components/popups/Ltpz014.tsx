@@ -62,7 +62,8 @@ export const Ltpz014 = ({ open, onOpenChange }: PopupBaseProps) => {
                 휴대폰 전자서명 및 바이오인증 매뉴얼
               </Button>
             </Gcol>
-            <Typo color="default" icon="info" tag="div" variant="body-md" weight="normal">
+            {/* M1. variant="body-sm" 수정 */}
+            <Typo color="default" icon="info" tag="div" variant="body-sm" weight="normal">
               LIFEPRO 앱에서도 확인하실 수 있습니다.
               <br />
               클래스&gt;전산기초&gt;전산및모바일길라잡이&gt;기초매뉴얼

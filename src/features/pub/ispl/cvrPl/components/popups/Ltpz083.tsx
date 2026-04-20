@@ -1,5 +1,8 @@
 'use client';
-// 권오택
+
+// M1. 파일명수정 LTPA070 -> LTPZ083
+// M1. 컴포넌트명수정 LTPA070 -> LTPZ083
+
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
@@ -37,7 +40,7 @@ const DummyData: DummyDataType[] = [
   { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
 ];
 
-export const Ltpa070 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz083 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '견종명',
