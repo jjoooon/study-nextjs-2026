@@ -116,7 +116,8 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <FormCell title={'고객명'}>
                         <Input placeholder="" value="김한화" width={70} readOnly />
                         <Input placeholder="" value="900101-1******" width={120} readOnly />
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                        {/* M1. 수정 */}
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </FormCell>

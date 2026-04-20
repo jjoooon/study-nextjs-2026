@@ -260,30 +260,34 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
                           return (
                             <Grow key={index} placement="ss" className="text-[1.3rem]">
                               {index === 0 && (
+                                // M1. 수정
                                 <ShieldIcon
                                   color={'var(--color-blue-gray-60)'}
-                                  className="translate-y-[0.4rem] shrink-0"
+                                  className="translate-y-[0.2rem] shrink-0"
                                   size={16}
                                 />
                               )}
                               {index === 1 && (
+                                // M1. 수정
                                 <NoteIcon
                                   color={'var(--color-blue-gray-60)'}
-                                  className="translate-y-[0.3rem] translate-x-[-0.05rem] shrink-0"
+                                  className="translate-y-[0.2rem] shrink-0"
                                   size={16}
                                 />
                               )}
                               {index === 2 && (
+                                // M1. 수정
                                 <CalendarIcon2
                                   color={'var(--color-blue-gray-60)'}
-                                  className="translate-y-[0.4rem] shrink-0"
+                                  className="translate-y-[0.2rem] shrink-0"
                                   size={16}
                                 />
                               )}
                               {index === 3 && (
+                                // M1. 수정
                                 <CheckboxIcon
                                   color={'var(--color-blue-gray-60)'}
-                                  className="translate-y-[0.4rem] shrink-0"
+                                  className="translate-y-[0.2rem] shrink-0"
                                   size={16}
                                 />
                               )}
