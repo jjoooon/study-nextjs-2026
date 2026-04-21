@@ -1075,7 +1075,7 @@
     "dep2": "가입설계",
     "dep3": "설계데이터관리",
     "id": "LTPA210",
-    "path": "components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "장기신계약가입설계관리정보",
     "file": "전환_가입설계",
     "plan": "서영진",
@@ -1085,7 +1085,7 @@
     "modify": "",
     "subId": "",
     "phase": "Y",
-    "popup": "팝업"
+    "popup": "화면"
   },
   {
     "dep1": "차세대가입설계",

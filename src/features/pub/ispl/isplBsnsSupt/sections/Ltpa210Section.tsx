@@ -1,13 +1,14 @@
 'use client';
 
-// M1. 팝업에서 화면으로 변경
+// M1. 팝업에서 화면으로 변경, 전체 수정
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, GridApi } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createTooltipValueGetter, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, DatePickerCellEditor, useAgGridInfiniteAppend, createFieldRenderer } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -36,9 +37,9 @@ type DummyDataType = {
   field05: string | number;
   field06: string | number;
   field07: string | number;
+  field08: string | number;
 };
 
-// M1. 수정
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -46,11 +47,12 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '취급직원',
     field02: '3448460',
-    field03: '2026-03-01',
-    field04: '9999-12-31',
-    field05: '',
+    field03: '주식회사 마이디어',
+    field04: '2026-03-01',
+    field05: '9999-12-31',
     field06: '',
-    field07: '김한화',
+    field07: '',
+    field08: '김한화',
   },
   {
     id: 2,
@@ -58,23 +60,25 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '취급직원',
     field02: '3448460',
-    field03: '2026-03-01',
-    field04: '9999-12-31',
-    field05: '',
-    field06: '',
-    field07: '김한화',
+    field03: '주식회사 마이디어',
+    field04: '2026-03-01',
+    field05: '9999-12-31',
+    field06: '정상',
+    field07: '대내-2507-8950-[서울GA[청약서 스캔권한 부여요청(주)]]',
+    field08: '김한화',
   },
   {
     id: 3,
     isCheck: false,
     isNew: false,
-    field01: '',
+    field01: '취급직원',
     field02: '3448460',
-    field03: '2026-03-01',
-    field04: '9999-12-31',
-    field05: '',
-    field06: '',
-    field07: '김한화',
+    field03: '주식회사 마이디어',
+    field04: '2026-03-01',
+    field05: '9999-12-31',
+    field06: '정상',
+    field07: '대내-2507-8950-[서울GA[청약서 스캔권한 부여요청(주)]]',
+    field08: '김한화',
   },
 ];
 
@@ -88,6 +92,10 @@ export default function Ltpa210Section() {
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const isEditableNewRow = React.useCallback(
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
+    []
+  );
+  const existingRowFieldRenderer = React.useMemo(
+    () => createFieldRenderer<DummyDataType>('field02', 'field03', 'row'),
     []
   );
 
@@ -105,22 +113,25 @@ export default function Ltpa210Section() {
     {
       headerName: '대상',
       field: 'field02',
-      flex: 2,
-      cellClass: 'flex! items-center! justify-center!',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-      editable: isEditableNewRow,
-      cellEditor: 'agInputCellEditor',
+      flex: 1,
+      cellClass: 'flex! items-center! justify-center! text-center',
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return (
+            <Grow className="w-full px-1">
+              <Input aria-label="" width={'100%'} value={''} size="sm" />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grow>
+          );
+        }
+
+        return existingRowFieldRenderer(params);
+      },
     },
     {
       headerName: '적용시작일자',
-      field: 'field03',
-      flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
-      editable: isEditableNewRow,
-      cellEditor: DatePickerCellEditor,
-    },
-    {
-      headerName: '적용종료일자',
       field: 'field04',
       flex: 1,
       cellClass: 'flex! items-center! justify-center!',
@@ -128,8 +139,16 @@ export default function Ltpa210Section() {
       cellEditor: DatePickerCellEditor,
     },
     {
-      headerName: '상태',
+      headerName: '적용종료일자',
       field: 'field05',
+      flex: 1,
+      cellClass: 'flex! items-center! justify-center!',
+      editable: isEditableNewRow,
+      cellEditor: DatePickerCellEditor,
+    },
+    {
+      headerName: '상태',
+      field: 'field06',
       flex: 0.8,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
@@ -138,7 +157,7 @@ export default function Ltpa210Section() {
     },
     {
       headerName: '적용사유',
-      field: 'field06',
+      field: 'field07',
       flex: 2,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
@@ -146,7 +165,7 @@ export default function Ltpa210Section() {
     },
     {
       headerName: '등록자',
-      field: 'field07',
+      field: 'field08',
       flex: 0.7,
       cellClass: 'flex! items-center! justify-center!',
     },
@@ -159,6 +178,21 @@ export default function Ltpa210Section() {
     type03: '',
   });
 
+  const handleDeleteRow = React.useCallback(() => {
+    const gridApi = gridApiRef.current;
+    if (!gridApi) return;
+
+    const selectedIds = new Set(
+      gridApi
+        .getSelectedNodes()
+        .map((node) => node.data?.id)
+        .filter((id) => id !== undefined)
+    );
+    if (selectedIds.size === 0) return;
+
+    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
+
   const handleAddRow = React.useCallback(() => {
     const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
     const newRow: DummyDataType = {
@@ -169,9 +203,10 @@ export default function Ltpa210Section() {
       field02: '',
       field03: '',
       field04: '',
-      field05: '선택',
+      field05: '',
       field06: '',
       field07: '',
+      field08: '김한화',
     };
 
     setRowData((prev) => [...prev, newRow]);
@@ -201,7 +236,6 @@ export default function Ltpa210Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          // M1. Grid 추가
           <Grid className="grid-rows-[auto_1fr]" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable
@@ -210,7 +244,6 @@ export default function Ltpa210Section() {
                 cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
               >
                 <FormRow>
-                  {/* M1. id 삭제 */}
                   <FormCell title={'등록항목'}>
                     <NativeSelect
                       aria-label="항목 선택"
@@ -232,7 +265,6 @@ export default function Ltpa210Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'조직구분'}>
-                    {/* M1. id 삭제 */}
                     <NativeSelect
                       aria-label="조직구분 선택"
                       width={108}
@@ -257,7 +289,6 @@ export default function Ltpa210Section() {
                     </Button>
                     <Input aria-label="" width={120} value={'김한화'} readOnly />
                     <Grow className="ml-4">
-                      {/* M1. id 삭제 */}
                       <NativeSelect
                         aria-label="선택"
                         width={90}
@@ -302,7 +333,7 @@ export default function Ltpa210Section() {
                   <Button color="gray" variant="outlined" onClick={handleAddRow}>
                     행추가
                   </Button>
-                  <Button color="gray" variant="outlined">
+                  <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                     행삭제
                   </Button>
                 </Grow>
@@ -338,8 +369,6 @@ export default function Ltpa210Section() {
                           }
                         });
                       }}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
                     />
                   </div>
                   <TableMore
@@ -354,6 +383,17 @@ export default function Ltpa210Section() {
               </TableFoldBody>
             </TableFold>
           </Grid>
+        }
+        mainFoot={
+          <MainBottom>
+            <MainBottomItem className="justify-end">
+              <Grow gap={1}>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  저장
+                </Button>
+              </Grow>
+            </MainBottomItem>
+          </MainBottom>
         }
       />
       <LayoutFoot>
