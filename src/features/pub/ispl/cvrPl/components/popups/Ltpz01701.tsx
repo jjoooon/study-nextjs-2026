@@ -175,7 +175,7 @@ export const Ltpz01701 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center',
     },
   ];
-  const columnDefs2: ColDef<DummyDataType>[] = [
+  const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '코드',
       field: 'field01',
