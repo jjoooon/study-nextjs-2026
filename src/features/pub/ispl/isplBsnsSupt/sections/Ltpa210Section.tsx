@@ -1,0 +1,364 @@
+'use client';
+
+// M1. 팝업에서 화면으로 변경
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { AgGridEmptyComponent, createTooltipValueGetter, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
+import { Grid, Grow, Gcol } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+
+import { TableMore } from '@common/TablePagination';
+import { PageID } from '@features/PageID';
+import { ResetIcon, SearchIcon } from '@icons';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
+// dummy data
+type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  isNew: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+
+// M1. 수정
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    isNew: false,
+    field01: '취급직원',
+    field02: '3448460',
+    field03: '2026-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '김한화',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    isNew: false,
+    field01: '취급직원',
+    field02: '3448460',
+    field03: '2026-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '김한화',
+  },
+  {
+    id: 3,
+    isCheck: false,
+    isNew: false,
+    field01: '',
+    field02: '3448460',
+    field03: '2026-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '김한화',
+  },
+];
+
+export default function Ltpa210Section() {
+  const pageSize = 2;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
+
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const isEditableNewRow = React.useCallback(
+    (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
+    []
+  );
+
+  // AgGrid Column
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '구분',
+      field: 'field01',
+      flex: 1,
+      cellClass: 'flex! items-center! justify-center!',
+      editable: isEditableNewRow,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', '취급직원', ''] },
+    },
+    {
+      headerName: '대상',
+      field: 'field02',
+      flex: 2,
+      cellClass: 'flex! items-center! justify-center!',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+      editable: isEditableNewRow,
+      cellEditor: 'agInputCellEditor',
+    },
+    {
+      headerName: '적용시작일자',
+      field: 'field03',
+      flex: 1,
+      cellClass: 'flex! items-center! justify-center!',
+      editable: isEditableNewRow,
+      cellEditor: DatePickerCellEditor,
+    },
+    {
+      headerName: '적용종료일자',
+      field: 'field04',
+      flex: 1,
+      cellClass: 'flex! items-center! justify-center!',
+      editable: isEditableNewRow,
+      cellEditor: DatePickerCellEditor,
+    },
+    {
+      headerName: '상태',
+      field: 'field05',
+      flex: 0.8,
+      cellClass: 'flex! items-center! justify-center!',
+      editable: isEditableNewRow,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택', '정상', ''] },
+    },
+    {
+      headerName: '적용사유',
+      field: 'field06',
+      flex: 2,
+      cellClass: 'flex! items-center! justify-center!',
+      editable: isEditableNewRow,
+      cellEditor: 'agInputCellEditor',
+    },
+    {
+      headerName: '등록자',
+      field: 'field07',
+      flex: 0.7,
+      cellClass: 'flex! items-center! justify-center!',
+    },
+  ];
+
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+    type03: '',
+  });
+
+  const handleAddRow = React.useCallback(() => {
+    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+    const newRow: DummyDataType = {
+      id: nextId,
+      isCheck: false,
+      isNew: true,
+      field01: '선택',
+      field02: '',
+      field03: '',
+      field04: '',
+      field05: '선택',
+      field06: '',
+      field07: '',
+    };
+
+    setRowData((prev) => [...prev, newRow]);
+
+    requestAnimationFrame(() => {
+      const gridApi = gridApiRef.current;
+
+      if (!gridApi) {
+        return;
+      }
+
+      const rowIndex = gridApi.getDisplayedRowCount() - 1;
+      gridApi.ensureIndexVisible(rowIndex, 'bottom');
+      gridApi.startEditingCell({ rowIndex, colKey: 'field01' });
+    });
+  }, [rowData]);
+
+  return (
+    <>
+      <LayoutHead>
+        <PageID
+          data={{
+            pageName: '장기신계약가입설계관리정보',
+            pageId: 'LTPA210',
+          }}
+        />
+      </LayoutHead>
+      <LayoutTemplate
+        mainBody={
+          // M1. Grid 추가
+          <Grid className="grid-rows-[auto_1fr]" gap={3}>
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <FormTable
+                variant={'head'}
+                caption="장기보험 모집자 설계 조회 테이블"
+                cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
+              >
+                <FormRow>
+                  {/* M1. id 삭제 */}
+                  <FormCell title={'등록항목'}>
+                    <NativeSelect
+                      aria-label="항목 선택"
+                      width={210}
+                      value={form.type01}
+                      onChange={(e) => setFormField('type01', e.target.value)}
+                      required
+                    >
+                      {[
+                        { value: '선택', label: '선택' },
+                        { value: '사용자가 IT기획팀', label: '사 용자가 IT기획팀' },
+                        { value: '장기보험팀', label: '장기보험팀' },
+                        { value: 'GA영업지원파트 이외인 경우', label: 'GA영업지원파트 이외인 경우' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                  <FormCell title={'조직구분'}>
+                    {/* M1. id 삭제 */}
+                    <NativeSelect
+                      aria-label="조직구분 선택"
+                      width={108}
+                      value={form.type02}
+                      onChange={(e) => setFormField('type02', e.target.value)}
+                      required
+                    >
+                      {[
+                        { value: '선택', label: '선택' },
+                        { value: '취급기관', label: '취급기관' },
+                        { value: '취급직원', label: '취급직원' },
+                        { value: '사용인', label: '사용인' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input width={'11rem'} value={'1234567'} readOnly />
+                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                    <Input aria-label="" width={120} value={'김한화'} readOnly />
+                    <Grow className="ml-4">
+                      {/* M1. id 삭제 */}
+                      <NativeSelect
+                        aria-label="선택"
+                        width={90}
+                        value={form.type03}
+                        onChange={(e) => setFormField('type03', e.target.value)}
+                        required
+                      >
+                        {[
+                          { value: '선택', label: '선택' },
+                          { value: '항목2', label: '항목2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <DatePickerInput mode="single" onChange={() => {}} value="" required />
+                    </Grow>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  조회
+                </Button>
+                <Button
+                  color={'gray'}
+                  only={'icon'}
+                  size={'lg'}
+                  variant={'outlined'}
+                  onClick={() => {}}
+                  aria-label="새로고침"
+                >
+                  <ResetIcon />
+                </Button>
+              </Grow>
+            </Grow>
+            <TableFold>
+              <TableFoldHead title="등록사항">
+                <Grow>
+                  <Button color="gray" variant="outlined" onClick={handleAddRow}>
+                    행추가
+                  </Button>
+                  <Button color="gray" variant="outlined">
+                    행삭제
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody>
+                <Gcol className="w-full" gap={1}>
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType>
+                      // getRowId 적용: id 필드를 고유 식별자로 사용
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      enableCellSpan={true}
+                      singleClickEdit={true}
+                      domLayout="normal"
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '√',
+                        cellClass: 'text-center',
+                        width: 30,
+                      }}
+                      onGridReady={(params) => {
+                        gridApiRef.current = params.api;
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                    />
+                  </div>
+                  <TableMore
+                    isAll={false}
+                    loadedCount={loadedCount}
+                    totalCount={totalCount}
+                    pageSize={pageSize}
+                    onLoadAll={handleLoadAll}
+                    onLoadNext={handleLoadNext}
+                  />
+                </Gcol>
+              </TableFoldBody>
+            </TableFold>
+          </Grid>
+        }
+      />
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
+    </>
+  );
+}
