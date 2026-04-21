@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid } from '@atoms';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { ArrowNext, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
+import { useState } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 export function DesignStart() {
   return (
@@ -173,11 +173,21 @@ export function LTPA350Step1() {
   );
 }
 
-export function MainBottom({ children, className }: { children: React.ReactNode; className?: string }) {
+export function MainBottom({
+  children,
+  className,
+  variant,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  variant?: 'default' | 'box';
+}) {
+  const classStyle =
+    variant === 'box'
+      ? 'rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]'
+      : 'border-0 !shadow-none [&_div]:!px-0 ';
   return (
-    <Gcol
-      gap={0}
-      className={cn("w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]", className)}>
+    <Gcol gap={0} className={cn('w-full', classStyle, className)}>
       {children}
     </Gcol>
   );

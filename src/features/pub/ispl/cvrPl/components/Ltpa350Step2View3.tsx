@@ -1,11 +1,5 @@
 'use client';
 
-import type { CellClassParams, ColDef, ICellRendererParams, GridReadyEvent, IRowNode } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { TooltipQ } from '@/shared/components/common/TooltipQ';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   editableSelectCellRenderer,
   numberValueFormatter,
@@ -29,6 +23,12 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { CellClassParams, ColDef, ICellRendererParams, GridReadyEvent, IRowNode } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { TooltipQ } from '@/shared/components/common/TooltipQ';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -730,7 +730,8 @@ export function Ltpa350Step2View3() {
             </ResizablePanelGroup>
           </LayoutMainBody>
           <LayoutMainFoot>
-            <MainBottom>
+            {/* M1. variant="box" 추가 */}
+            <MainBottom variant="box">
               <MainBottomItem className="!py-0">
                 <FormTable
                   className="w-full! [&_tr]:justify-between"

@@ -757,4 +757,20 @@
   .filepond--root .filepond--list-scroller {
     margin: 0 !important;
   }
+
+  [data-slot="dialog-content"] [data-layout="head"] {
+    display: none !important;
+  }
+
+  [data-slot="dialog-content"]>[data-group="row"] {
+    grid-template-rows: 1fr !important;
+  }
+
+  [data-slot="dialog-content"] footer {
+    display: none !important;
+  }
+
+  [data-slot="dialog-content"] [data-layout="main"] {
+    padding: 0 !important;
+  }
 }

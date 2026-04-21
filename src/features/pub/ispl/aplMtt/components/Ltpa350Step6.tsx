@@ -1,13 +1,5 @@
 'use client';
 
-import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
-
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
-import {
-  createCellClickSelectionToggleHandler,
-  numberValueFormatter,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,8 +15,15 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
+import {
+  createCellClickSelectionToggleHandler,
+  numberValueFormatter,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 
 type Ltpa350Step6GridRow = {
   id: number;
@@ -971,8 +970,10 @@ export const Ltpa350Step6 = () => {
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            <MainBottom>
-              <MainBottomItem>
+            {/* M1. variant="box" 추가 */}
+            <MainBottom variant="box">
+              {/* M1. className 추가 */}
+              <MainBottomItem className="bg-[var(--color-gray-5)]">
                 <Grow>
                   <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => setIsLtpz014Open(false)}>
                     할부무이자

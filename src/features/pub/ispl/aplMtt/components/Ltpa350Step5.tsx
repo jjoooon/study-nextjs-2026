@@ -1,6 +1,5 @@
 'use client';
 
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -16,6 +15,7 @@ import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 interface TabDataType {
   id: string | number;
@@ -835,8 +835,10 @@ export const Ltpa350Step5 = () => {
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            <MainBottom>
-              <MainBottomItem>
+            {/* M1. variant="box" 추가 */}
+            <MainBottom variant="box">
+              {/* M1. className 추가 */}
+              <MainBottomItem className="bg-[var(--color-gray-5)]">
                 <Grow>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     설계수정
