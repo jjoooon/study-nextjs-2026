@@ -17,6 +17,7 @@ interface TableMoreProps {
   onPageChange?: (pageNumber: number) => void;
   itemsPerPage?: number | null;
 
+  isAll?: boolean;
   loadedCount?: number;
   totalCount?: number;
   pageSize?: number;
@@ -119,6 +120,7 @@ export function TableMore({
   loadedCount,
   totalCount,
   pageSize,
+  isAll = true,
   onLoadedCountChange,
   onLoadAll,
   onLoadNext,
@@ -179,9 +181,11 @@ export function TableMore({
       </Grow>
 
       <Grow>
-        <Button variant={'contained'} size={'md'} color={'coolgray'} onClick={handleLoadAll} disabled={isLastPage}>
-          전체조회
-        </Button>
+        {isAll && (
+          <Button variant={'contained'} size={'md'} color={'coolgray'} onClick={handleLoadAll} disabled={isLastPage}>
+            전체조회
+          </Button>
+        )}
         <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleLoadNext} disabled={isLastPage}>
           다음
         </Button>

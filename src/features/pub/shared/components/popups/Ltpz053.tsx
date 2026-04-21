@@ -8,6 +8,7 @@ import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -45,9 +46,10 @@ const DummyData: DummyDataType[] = [
 export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     return (
+      // M1. 수정
       <Grow className="h-full w-full">
-        <Grow className="flex-1 justify-start">{params.data?.field02}</Grow>
-        <Grow className="border-l border-[#ddddde] h-full pl-1 text-left! aspect-auto flex-1 items-center justify-start">
+        <Grow className="flex-1 justify-center">{params.data?.field02}</Grow>
+        <Grow className="border-l border-[#ddddde] h-full pl-1 text-left! aspect-auto flex-1 items-center justify-center text-[var(--color-danger-50)]">
           {params.data?.field03}
         </Grow>
       </Grow>
@@ -55,6 +57,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
   const [form, setFormField] = useFormFields({
     type01: '',
+    type02: '주민등록증',
   });
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -82,6 +85,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  // M1. 추가
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -155,54 +159,99 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
           <TableFold variant="accordion">
             <TableFoldHead title="조회항목"></TableFoldHead>
             <TableFoldBody>
+              {/* M1. 수정 */}
               <FormTable
-                caption="월클릭스켄"
-                cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
+                caption="조회항목"
+                cols={['w-[11rem]', 'w-auto', 'w-[11rem]', 'w-auto', 'w-[11rem]', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'구분'} colSpan={5}>
-                    <RadioGroup>
+                    <RadioGroup value={form.type02} onValueChange={(value) => setFormField('type02', value)}>
                       {[
-                        { id: 'd1', value: 'option1', label: '주민등록증' },
-                        { id: 'd2', value: 'option2', label: '운전면허증' },
-                        { id: 'd3', value: 'option3', label: '외국인등록증' },
-                        { id: 'd4', value: 'option4', label: '사업자등록번호' },
+                        { value: '주민등록증', label: '주민등록증' },
+                        { value: '운전면허증', label: '운전면허증' },
+                        { value: '외국인등록증', label: '외국인등록증' },
+                        { value: '사업자등록번호', label: '사업자등록번호' },
                       ].map((option) => (
-                        <RadioGroupItem key={option.id} value={option.value}>
+                        <RadioGroupItem key={option.value} value={option.value}>
                           {option.label}
                         </RadioGroupItem>
                       ))}
                     </RadioGroup>
                   </FormCell>
                 </FormRow>
-                <FormRow>
-                  <FormCell title={'취급자 연락처'}>
-                    <Input aria-label="" width={160} value={'12345678'} required readOnly />
-                  </FormCell>
-                  <FormCell title={'주민등록번호'}>
-                    <Input aria-label="" width={160} value={'12345678'} required readOnly />
-                  </FormCell>
-                  <FormCell title={'발급일자'}>
-                    <Input aria-label="" width={160} value={'12345678'} required readOnly />
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      신원확인
-                    </Button>
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'사업자명'} colSpan={2}>
-                    <Input aria-label="" width={160} value={'(명)삼원주류판매'} required readOnly />
-                  </FormCell>
-                  <FormCell title={'사업자등록번호'} colSpan={2}>
-                    <Input aria-label="" width={160} value={'123-45-678'} required readOnly />
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      사업자등록번호조회
-                    </Button>
-                  </FormCell>
-                </FormRow>
+                {form.type02 === '주민등록증' && (
+                  <FormRow>
+                    <FormCell title={'성명'}>
+                      <Input aria-label="" value={''} required />
+                    </FormCell>
+                    <FormCell title={'주민등록번호'}>
+                      <Input aria-label="" value={''} required />
+                    </FormCell>
+                    <FormCell title={'발급일자'}>
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                      <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                        신원확인
+                      </Button>
+                    </FormCell>
+                  </FormRow>
+                )}
+                {form.type02 === '운전면허증' && (
+                  <FormRow>
+                    <FormCell title={'성명'}>
+                      <Input aria-label="" value={''} required />
+                    </FormCell>
+                    <FormCell title={'생년월일'}>
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                    </FormCell>
+                    <FormCell title={'발급일자'}>
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                      <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                        신원확인
+                      </Button>
+                    </FormCell>
+                  </FormRow>
+                )}
+                {form.type02 === '외국인등록증' && (
+                  <>
+                    <FormRow>
+                      <FormCell title={'성명'}>
+                        <Input aria-label="" value={''} required />
+                      </FormCell>
+                      <FormCell title={'외국인번호'}>
+                        <Input aria-label="" value={''} required />
+                      </FormCell>
+                      <FormCell title={'발급일자'}>
+                        <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                        <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                          신원확인
+                        </Button>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'일련번호'} colSpan={5}>
+                        <Input aria-label="" width={140} value={''} required />
+                      </FormCell>
+                    </FormRow>
+                  </>
+                )}
+                {form.type02 === '사업자등록번호' && (
+                  <FormRow>
+                    <FormCell title={'사업자명'}>
+                      <Input aria-label="" width={160} value={''} required />
+                    </FormCell>
+                    <FormCell title={'사업자등록번호'} colSpan={5}>
+                      <Input aria-label="" width={160} value={''} required />
+                      <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                        사업자등록번호조회
+                      </Button>
+                    </FormCell>
+                  </FormRow>
+                )}
               </FormTable>
             </TableFoldBody>
           </TableFold>
+
           <TableFold variant="accordion">
             <TableFoldHead title="신원확인결과"></TableFoldHead>
             <TableFoldBody>

@@ -70,7 +70,7 @@ function TooltipContent({
       >
         <div
           className={cn(
-            'p-0 relative z-51 whitespace-normal text-[var(--color-gray-70)] text-[1.2rem]',
+            'p-0 relative z-51 whitespace-normal text-[var(--color-gray-70)] text-[1.2rem] text-wrap',
             contentStyles[variant]
           )}
         >

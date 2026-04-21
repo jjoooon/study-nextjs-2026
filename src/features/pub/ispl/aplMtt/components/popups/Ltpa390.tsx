@@ -1,5 +1,4 @@
 'use client';
-// 허승하
 
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';

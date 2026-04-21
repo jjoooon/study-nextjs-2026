@@ -1,12 +1,12 @@
 'use client';
-// 권오택
+
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { TableMore } from '@/shared/components/common/TablePagination';
 import {
   Dialog,
   DialogClose,
@@ -20,6 +20,7 @@ import {
 } from '@/shared/components/uiux/Dialog';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -39,7 +40,6 @@ import {
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { TableMore } from '@/shared/components/common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -942,13 +942,14 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
   const accumRadioItemClassName =
     'h-[3rem]! rounded-full! border-transparent! bg-[#E5E5E5]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[#777777]! data-[state=checked]:border-transparent! data-[state=checked]:bg-[#414141]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!';
 
-  {/* M2. 수정 */}  
+  {
+    /* M2. 수정 */
+  }
   const pageSize = 5;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
   });
-
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -1117,11 +1118,12 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                 <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                   {/* M1. 텍스트 수정 */}
                   <Typo variant={'body-sm'} icon={'info'}>
-                    고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료 이전에 기계약의 작업변경을 완료하시기 바랍니다.
+                    고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료
+                    이전에 기계약의 작업변경을 완료하시기 바랍니다.
                   </Typo>
                   {/* M1. 텍스트 수정 */}
                   <Typo variant={'body-sm'} icon={'info'}>
-                    <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.  
+                    <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
                   </Typo>
                 </Gcol>
                 <Gcol className="w-full" gap={2}>
@@ -1152,7 +1154,6 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
-                      
                       rowModelType="infinite"
                       cacheBlockSize={pageSize}
                       maxBlocksInCache={2}
@@ -1190,7 +1191,9 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
                         상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
                       </BulletListItem>
                       {/* M2. 수정 */}
-                      <BulletListItem className='mt-2' size={'sm'} type="dotBig">관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트</BulletListItem>
+                      <BulletListItem className="mt-2" size={'sm'} type="dotBig">
+                        관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
+                      </BulletListItem>
                     </BulletList>
                   </Gcol>
                 </Gcol>

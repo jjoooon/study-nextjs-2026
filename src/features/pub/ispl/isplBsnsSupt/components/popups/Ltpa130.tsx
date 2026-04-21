@@ -1,5 +1,5 @@
 'use client';
-// 권오택
+
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';

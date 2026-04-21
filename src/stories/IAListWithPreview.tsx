@@ -1,8 +1,10 @@
 'use client';
 
-import * as React from 'react';
 import { Grow } from '@atoms';
+import * as React from 'react';
 import LinkGo, { getStoryIframeUrl } from './Link';
+// iaEndModify import 제거, meta.data만 사용
+import iaDateData from './ia-date.json';
 import meta from './ialist-meta.json';
 import iaListData from './ialist.json';
 
@@ -84,11 +86,12 @@ export function IAListWithPreview() {
   }, [workListH, workListJ, workListK]);
 
   const visibleRows = React.useMemo(() => {
+    // dep1이 '차세대가입설계'인 항목만 노출
+    const filtered = rowsWithPubOwner.filter((row) => row.dep1 === '차세대가입설계');
     if (!showPhaseOnly) {
-      return rowsWithPubOwner;
+      return filtered;
     }
-
-    return rowsWithPubOwner.filter((row) => row.phase === 'Y');
+    return filtered.filter((row) => row.phase === 'Y');
   }, [rowsWithPubOwner, showPhaseOnly]);
 
   const activeRow = React.useMemo(() => {
@@ -180,8 +183,8 @@ export function IAListWithPreview() {
             <col />
             <col />
             <col style={{ width: '2rem' }} />
-            {/* <col />
-            <col /> */}
+            <col />
+            <col />
             {/* <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} /> */}
@@ -203,8 +206,8 @@ export function IAListWithPreview() {
               <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
                 1차{showPhaseOnly ? ' ✓' : ''}
               </th>
-              {/* <th scope="col">완료일</th>
-              <th scope="col">수정일</th> */}
+              <th scope="col">완료일</th>
+              <th scope="col">수정일</th>
 
               {/* <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
@@ -236,6 +239,27 @@ export function IAListWithPreview() {
                 .filter(Boolean)
                 .some((id) => inspectionList.some((insp) => insp.toLowerCase() === String(id).toLowerCase()));
 
+              // 완료일/수정일: ia-date.json 기준으로 계산
+              let completeDate = row.date;
+              let modifyDate = row.modify;
+              const dateData = iaDateData as Record<string, string[]>;
+              for (const key of Object.keys(dateData)) {
+                if (key.startsWith('e') && key.length === 7) {
+                  const dateStr = key.slice(1);
+                  const idList = dateData[key];
+                  if (Array.isArray(idList) && idList.includes(row.id)) {
+                    completeDate = `${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+                  }
+                }
+                if (key.startsWith('m') && key.length === 7) {
+                  const dateStr = key.slice(1);
+                  const idList = dateData[key];
+                  if (Array.isArray(idList) && idList.includes(row.id)) {
+                    modifyDate = `${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+                  }
+                }
+              }
+
               return (
                 <tr
                   key={`${getRowKey(row)}-${index}`}
@@ -265,13 +289,13 @@ export function IAListWithPreview() {
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{row.phase === 'Y' ? 'Y' : ''}</b>
                   </td>
-
-                  {/* <td className={`text-center ${rowBgClass}`}>
-                    <b>{row.date}</b>
+                  <td className={`text-center ${rowBgClass}`}>
+                    <b>{completeDate}</b>
                   </td>
                   <td className={`text-center ${rowBgClass}`}>
-                    <b>{row.modify}</b>
-                  </td> */}
+                    <b>{modifyDate}</b>
+                  </td>
+
                   {/* 
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>

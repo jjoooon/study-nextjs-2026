@@ -393,7 +393,8 @@ export default function Ltpa030Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'적용사항'}>
-                    <NativeSelect aria-label="적용사항 선택" width={120} required>
+                    {/* M1. 수정 */}
+                    <NativeSelect aria-label="적용사항 선택" width={180} required>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection2', label: '모집자실명제준수 예외' },
@@ -405,7 +406,8 @@ export default function Ltpa030Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'적용대상'}>
-                    <NativeSelect aria-label="적용대상 선택" width={120} required>
+                    {/* M1. 수정 */}
+                    <NativeSelect aria-label="적용대상 선택" width={180} required>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection2', label: '모집자실명제준수 예외' },
