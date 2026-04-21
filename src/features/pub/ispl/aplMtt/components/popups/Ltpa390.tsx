@@ -1,11 +1,6 @@
 'use client';
 // 허승하
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -23,6 +18,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
