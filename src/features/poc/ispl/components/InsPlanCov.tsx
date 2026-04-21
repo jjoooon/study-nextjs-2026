@@ -160,7 +160,7 @@ export function InsPlanCov({ data, selectedPlanId: _selectedPlanId }: InsPlanCov
     const Component = () => (
       <ProductNameHeader onSearch={handleSearch} onReset={handleSearchReset} initialValue={searchQuery} />
     );
-    Component.displayName = 'ProductNameHeaderComponent';
+    // Component.displayName = 'ProductNameHeaderComponent';
     return Component;
   }, [handleSearch, handleSearchReset, searchQuery]);
 

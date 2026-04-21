@@ -68,8 +68,7 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
 
   useEffect(() => {
     replaceTabs(DUMMY_DATA[viewKey]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewKey]);
+  }, [replaceTabs, viewKey]);
 
   return (
     <LayoutTemplateLTPA350MainBody
@@ -1568,7 +1567,11 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
                   {/* 계약자 - 상세 */}
                   {!_simpleMode && (
                     // M1. className="-mt-2" 추가
-                    <FormTable caption="계약자 정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']} className="-mt-2">
+                    <FormTable
+                      caption="계약자 정보"
+                      cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
+                      className="-mt-2"
+                    >
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">
                           <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
