@@ -193,6 +193,7 @@ export default function Ltpa210Section() {
     setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
   }, []);
 
+  // 행추가 버튼 클릭시 row행 노출
   const handleAddRow = React.useCallback(() => {
     const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
     const newRow: DummyDataType = {
