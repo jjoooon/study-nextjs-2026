@@ -1,4 +1,5 @@
 'use client';
+
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
@@ -191,7 +192,8 @@ export default function Ltpa170Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full">
+          // M1. gap 수정
+          <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} lineTop={false} caption="누적조회">
                 <FormRow>
@@ -199,7 +201,8 @@ export default function Ltpa170Section() {
                 </FormRow>
               </FormTable>
             </Grow>
-            <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+            {/* M1. gap 수정 */}
+            <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={3}>
               <TableFold>
                 <TableFoldHead title="피보험자의 위험정보(고객정보)"></TableFoldHead>
                 <TableFoldBody>
@@ -244,7 +247,8 @@ export default function Ltpa170Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody>
-                  <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
+                  {/* M1. gap 수정 */}
+                  <Grid className="w-full grid-rows-[1fr_auto] gap-2 h-full">
                     <div className="ag-theme-alpine min-h-[18.4rem]">
                       <AgGridReact<DummyDataType>
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -279,7 +283,8 @@ export default function Ltpa170Section() {
           </Grid>
         }
         mainFoot={
-          <MainBottom className="border-none!">
+          // M1. className 삭제
+          <MainBottom>
             <MainBottomItem>
               <Grow gap={1}>
                 <Button variant={'outlined'} size={'xl'} color={'gray'}>

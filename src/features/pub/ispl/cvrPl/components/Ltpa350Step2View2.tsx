@@ -1,12 +1,5 @@
 'use client';
 
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Accordion } from '@/shared/components/uiux/Accordion';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   amountUnitInputCellRenderer,
   editableSelectCellRenderer,
@@ -31,6 +24,7 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -38,6 +32,12 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -949,7 +949,8 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            <MainBottom>
+            {/* M1. variant="box" 추가 */}
+            <MainBottom variant="box">
               <MainBottomItem className="pl-0! pb-0! pt-0!">
                 <FormTable
                   className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-full after:h-px after:bg-[#ccc]"

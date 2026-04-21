@@ -201,8 +201,8 @@ export function IAListWithPreview() {
             <col style={{ width: '1rem' }} />
             <col style={{ width: '4rem' }} />
             <col style={{ width: '8rem' }} />
-            <col />
-            <col />
+            <col style={{ width: '12rem' }} />
+            <col style={{ width: '6rem' }} />
             <col style={{ width: '2rem' }} />
             <col />
             <col />
@@ -302,9 +302,7 @@ export function IAListWithPreview() {
                     {row.id}
                     {row.subId ? <>({row.subId})</> : ''}
                   </th>
-                  <td className={rowBgClass}>
-                    <b>{row.dep4}</b>
-                  </td>
+                  <td className={rowBgClass}>{row.dep4}</td>
 
                   <td className={rowBgClass}>{row.file}</td>
 
