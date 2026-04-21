@@ -1,5 +1,5 @@
 'use client';
-// 권오택
+
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import * as React from 'react';
 import { EssentialIcon } from '@/shared/components/icons/CommonIcons';

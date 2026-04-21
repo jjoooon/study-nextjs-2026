@@ -1,12 +1,12 @@
 'use client';
 
-import { useId, useState, useEffect } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { FileUploadIcon, InputClearIcon } from '@icons';
 import { FileItemIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { useId, useState, useEffect } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -14,7 +14,6 @@ type FileItem = {
   name: string;
   ext?: string;
   key?: string;
-  nameLastWord?: string;
 };
 
 type FileUploadProps = {
@@ -36,6 +35,7 @@ export function FileUpload({
   onClickButton,
   onClickFileName,
   onRemove,
+  className,
 }: FileUploadProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
@@ -53,7 +53,7 @@ export function FileUpload({
   };
 
   return (
-    <Grow placement={'ss'} gap={1.5}>
+    <Grow placement={'ss'} gap={1.5} className={className}>
       {/* ── 파일선택 버튼 ── */}
       <div className="relative w-[7.7rem] h-[2.5rem]">
         <Button
@@ -77,7 +77,6 @@ export function FileUpload({
             key={file.key ?? `${file.name}-${index}`}
             name={file.name}
             ext={file.ext}
-            lastname={file.nameLastWord}
             hasError={!!errorMessage}
             onNameClick={() => {
               onClickButton?.();
@@ -102,59 +101,64 @@ export function FileUpload({
 
 // ─── Utils ───────────────────────────────────────────────────────────────────
 
-function truncateTail(name: string, keepStart = 12, keepEnd = 1): string {
-  if (name.length <= keepStart + keepEnd) return name;
-  return `${name.slice(0, keepStart)}...${name.slice(-keepEnd)}`;
-}
+// 확장자를 제외한 본문에서 마지막 글자를 빼고 ...처리, 마지막 글자+확장자만 남김
 
 // ─── FileTag ─────────────────────────────────────────────────────────────────
 
 type FileTagProps = {
   name: string;
   ext?: string;
-  lastname?: string;
   onRemove: () => void;
   hasError?: boolean;
   onNameClick?: () => void;
 };
 
-function FileTag({ name, ext, lastname, onRemove, hasError = false, onNameClick }: FileTagProps) {
-  const displayName = truncateTail(name);
-  const isTruncated = displayName !== name;
+function FileTag({ name, ext, onRemove, hasError = false, onNameClick }: FileTagProps) {
+  // 확장자/마지막글자 분리
+  let base = name;
+  let extension = ext;
+  if (!ext && name.includes('.')) {
+    const idx = name.lastIndexOf('.');
+    base = name.slice(0, idx);
+    extension = name.slice(idx + 1);
+  }
+  const lastChar = base.slice(-1);
+  const baseWithoutLast = base.slice(0, -1);
 
   return (
-    <Grow placement={'sc'}>
+    <Grow placement={'sc'} className="w-full">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Grow
-            className="w-full max-w-[12.3rem] gap-[0.2rem] hover:[&>div]:underline hover:[&>div]:text-[#006FF2]"
-            placement={'sc'}
+          <button
+            type="button"
+            onClick={onNameClick}
+            className={cn(
+              'flex items-center gap-[0.2rem] hover:[&>div]:underline hover:[&>div]:text-[#006FF2]',
+              onNameClick ? 'cursor-pointer' : 'cursor-default'
+            )}
           >
             <FileItemIcon className="shrink-0" />
-
-            <button
-              type="button"
-              onClick={onNameClick}
-              className={cn(onNameClick ? 'cursor-pointer' : 'cursor-default')}
+            <Typo
+              variant="body-sm"
+              tag="div"
+              className={cn(
+                'grid grid-cols-[1fr_auto] transition-colors duration-100 tracking-0 pr-[0.3rem] w-full',
+                hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
+              )}
             >
-              <Typo
-                variant="body-sm"
-                tag="div"
-                className={cn(
-                  'transition-colors duration-100 truncate tracking-0 pr-[0.3rem]',
-                  hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
-                )}
-              >
-                {name}
-              </Typo>
-            </button>
-
-            {isTruncated && (
-              <Typo variant="body-sm" tag="div" className="tracking-0">
-                {ext ? `${lastname}.${ext}` : ''}
-              </Typo>
-            )}
-          </Grow>
+              {baseWithoutLast.length > 0 ? (
+                <>
+                  <span className="truncate inline-block align-middle">{baseWithoutLast}</span>
+                  <span className="inline-block align-middle tracking-[-0.02rem]">
+                    {lastChar}
+                    {extension ? '.' + extension : ''}
+                  </span>
+                </>
+              ) : (
+                <span className="inline-block align-middle">{name}</span>
+              )}
+            </Typo>
+          </button>
         </TooltipTrigger>
         <TooltipContent variant="default" side="bottom" align="center" sideOffset={0}>
           {name}

@@ -1,9 +1,8 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FileUpload } from '@common/FileUpload';
-import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,7 +17,8 @@ import {
 import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
@@ -70,6 +70,20 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
+  // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
+  const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
+
+  // 모달 닫힐 때 파일 상태 초기화
+  useEffect(() => {
+    if (!open) {
+      // setState를 마이크로태스크로 비동기 처리하여 React 경고 방지
+      Promise.resolve().then(() => {
+        setPondFiles([]);
+        setFileCount(0);
+        setTotalSize(0);
+      });
+    }
+  }, [open]);
 
   // 허용할 파일 MIME 타입 설정
   const ACCEPTED_FILE_TYPES: MimeType[] = [
@@ -175,42 +189,9 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
   };
 
   const handleUpload = async () => {
-    // TODO: @YunJunmo
-    // try {
-    //   // 1. FormData 생성
-    //   const formData = new FormData();
-
-    //   pondFiles.forEach((file) => {
-    //     // file.source가 실제 File 객체
-    //     formData.append('files', file.source);
-    //   });
-
-    //   // 2. 서버 업로드 API 호출 (예시)
-    //   const response = await fetch('/api/upload', {
-    //     method: 'POST',
-    //     body: formData,
-    //   });
-
-    //   // 3. 응답 처리
-    //   const result = await response.json();
-    //   logger.info('서버 업로드 결과:', result);
-
-    //   // 4. API 응답값을 resolve로 전달
-    //   resolve({
-    //     action: 'select',
-    //     files: result.uploadedFiles, // 서버에서 반환한 파일 정보
-    //   });
-    // } catch (error) {
-    //   logger.error('파일 업로드 실패:', error);
-
-    //   // 에러 시 사용자에게 알림 (옵션)
-    //   // alert({ message: '파일 업로드에 실패했습니다.' });
-
-    //   resolve({
-    //     action: 'cancel',
-    //   });
-    // }
-
+    // FileUpload에 파일 목록 반영
+    setFilesForUpload(pondFiles.map((file) => ({ name: file.filename, key: file.id })));
+    // 기존 resolve 로직 유지 (필요시 수정)
     const filesWithSource = pondFiles.map((file) => ({
       id: file.id,
       filename: file.filename,
@@ -224,18 +205,21 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
       action: 'select',
       files: [],
     });
+    // 업로드 후 창 닫기
+    onOpenChange?.(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <FileUpload
-        files={[{ name: '첨부파일.png', key: 'file-1' }]}
+        files={filesForUpload}
         onClickButton={() => {
           onOpenChange?.(true);
         }}
         onRemove={() => {
           /* 목록에서 제거 */
         }}
+        className="w-[26rem]"
       />
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
@@ -248,56 +232,54 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full h-full gap-1">
-            {/* FilePond Drop Area */}
-            <FilePond
-              ref={pondRef}
-              files={pondFiles.map((f) => f.source)}
-              onaddfile={handleAddFile}
-              onremovefile={handleRemoveFile}
-              onreorderfiles={handleReorderFiles}
-              onerror={handleError}
-              onwarning={handleWarning}
-              beforeAddFile={handleBeforeAddFile}
-              credits={false}
-              allowMultiple={true}
-              allowReorder={true}
-              maxFiles={500}
-              acceptedFileTypes={ACCEPTED_FILE_TYPES}
-              maxFileSize={MAX_FILE_SIZE}
-              labelMaxFileSizeExceeded="1GB 이상의 파일은 업로드할 수 없습니다"
-              labelMaxFileSize="최대 1GB"
-              labelFileTypeNotAllowed="허용되지 않는 파일 형식입니다"
-              fileValidateTypeLabelExpectedTypes="허용되지 않는 파일 형식입니다"
-              labelIdle={`<FileUploadIcon />이곳을 클릭 또는 파일을 드래그 하세요.`}
-              allowFileTypeValidation={true}
-              allowFileSizeValidation={true}
-              // stylePanelLayout="compact"
-              dropValidation
-              instantUpload={false}
-              server={{}}
-            />
+        <DialogSection className="grid-rows-[1fr_auto] gap-1">
+          <FilePond
+            ref={pondRef}
+            files={pondFiles.map((f) => f.source)}
+            onaddfile={handleAddFile}
+            onremovefile={handleRemoveFile}
+            onreorderfiles={handleReorderFiles}
+            onerror={handleError}
+            onwarning={handleWarning}
+            beforeAddFile={handleBeforeAddFile}
+            credits={false}
+            allowMultiple={true}
+            allowReorder={true}
+            maxFiles={500}
+            acceptedFileTypes={ACCEPTED_FILE_TYPES}
+            maxFileSize={MAX_FILE_SIZE}
+            labelMaxFileSizeExceeded="1GB 이상의 파일은 업로드할 수 없습니다"
+            labelMaxFileSize="최대 1GB"
+            labelFileTypeNotAllowed="허용되지 않는 파일 형식입니다"
+            fileValidateTypeLabelExpectedTypes="허용되지 않는 파일 형식입니다"
+            labelIdle={`<FileUploadIcon />이곳을 클릭 또는 파일을 드래그 하세요.`}
+            allowFileTypeValidation={true}
+            allowFileSizeValidation={true}
+            // stylePanelLayout="compact"
+            dropValidation
+            instantUpload={false}
+            server={{}}
+            styleButtonRemoveItemPosition="right"
+            styleButtonProcessItemPosition="right"
+            styleLoadIndicatorPosition="right"
+            styleProgressIndicatorPosition="right"
+          />
 
-            {/* Footer */}
-            <div className="flex justify-between items-center text-[1.3rem] px-[0.6rem] h-[2rem] border-t border-(--color-table-border-border-gray)">
-              <span>
-                최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
-                <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
-              </span>
-              <span>
-                <span className="text-(--color-text-danger) font-semibold">{fileCount}</span> 개,{' '}
-                <span className="text-(--color-text-danger) font-semibold"> {formatFileSize(totalSize)}</span> 추가됨
-              </span>
-            </div>
-          </Gcol>
+          <Grow className="w-full" placement="ec">
+            {/* <span>
+              최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
+              <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
+            </span> */}
+            파일 <span className="text-(--color-text-danger)">{fileCount}</span> 개 /
+            <span className="text-(--color-text-danger)"> {formatFileSize(totalSize)}</span> 용량
+          </Grow>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'} onClick={handleSearch}>
-                파일검색
+              <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleSearch}>
+                파일찾기
               </Button>
               <Button variant={'contained'} size={'xl'} onClick={handleUpload}>
                 선택완료

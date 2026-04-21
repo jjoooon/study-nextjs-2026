@@ -1,25 +1,25 @@
 'use client';
 
 // M1. 팝업에서 화면으로 변경
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
-import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
-import { BottomBar } from '@common/BottomBar';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
 import { ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -684,7 +684,7 @@ export default function Ltpa904Section() {
     ],
     []
   );
-  
+
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
@@ -832,7 +832,9 @@ export default function Ltpa904Section() {
                   </TableFold>
                   {/* 예상만기환급금 테이블 */}
                   <TableFold variant={'accordion'}>
-                    <TableFoldHead title="예상만기환급금"> {/* M1. 텍스트 수정 */}
+                    <TableFoldHead title="예상만기환급금">
+                      {' '}
+                      {/* M1. 텍스트 수정 */}
                       <Grow>
                         <Button color="success" variant="outlined">
                           엑셀내보내기
@@ -1001,7 +1003,8 @@ export default function Ltpa904Section() {
                             <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} />원
                           </FormCell>
                           <FormCell title={'예상만기환급금'}>
-                            <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} />원 {/* M1. commaAmount 추가 */}
+                            <Input placeholder="" size="lg" variant="default" width="full" commaAmount={true} />원{' '}
+                            {/* M1. commaAmount 추가 */}
                           </FormCell>
                           <FormCell title={'예상만기환급율'}>
                             <Input placeholder="" size="lg" variant="default" width="full" />%
