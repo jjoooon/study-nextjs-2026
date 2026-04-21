@@ -1,5 +1,5 @@
 'use client';
-// 허승하
+
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';

@@ -1,5 +1,5 @@
 'use client';
-// 권오택
+
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
