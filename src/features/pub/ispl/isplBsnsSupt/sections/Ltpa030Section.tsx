@@ -1,11 +1,5 @@
 'use client';
 
-import type { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Gcol, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -20,6 +14,12 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
+import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -368,6 +368,7 @@ export default function Ltpa030Section() {
 
   return (
     <>
+      {/* M2. 팝업에서 페이지로 변경 */}
       <LayoutHead>
         <PageID data={{ pageName: '신계약기준관리', pageId: 'LTPA030' }} />
       </LayoutHead>

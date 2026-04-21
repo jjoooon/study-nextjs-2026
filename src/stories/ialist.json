@@ -285,7 +285,7 @@
     "date": "00.00.00",
     "modify": "00.00.00",
     "subId": "",
-    "phase": "Y",
+    "phase": "N",
     "popup": "팝업"
   },
   {
@@ -428,7 +428,7 @@
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
     "dep3": "가입설계",
-    "id": "LTPZ017_01",
+    "id": "LTPZ01701",
     "path": "ispl/cvrPl/components/popups",
     "dep4": "적용대상관리 및 조회",
     "file": "전환_가입설계",
@@ -438,7 +438,7 @@
     "date": "00.00.00",
     "modify": "00.00.00",
     "subId": "",
-    "phase": "Y",
+    "phase": "",
     "popup": "팝업"
   },
   {
@@ -847,6 +847,23 @@
     "modify": "00.00.00",
     "subId": "",
     "phase": "Y",
+    "popup": "화면"
+  },
+  {
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPA01001",
+    "path": "ispl/isplBsnsSupt/components/popups",
+    "dep4": "가입설계 이력조회",
+    "file": "전환_가입설계",
+    "plan": "서영진",
+    "pub": "",
+    "dev": "미정",
+    "date": "00.00.00",
+    "modify": "00.00.00",
+    "subId": "",
+    "phase": "",
     "popup": "화면"
   },
   {

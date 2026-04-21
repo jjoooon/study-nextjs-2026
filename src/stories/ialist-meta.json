@@ -1,7 +1,5 @@
 {
-  "inspectionList": [
-    
-  ],
+  "inspectionList": [],
   "ingList": [
     "LTPA050",
     "LTPZ050"
@@ -61,6 +59,10 @@
     "LTPZ022",
     "LTPA130",
     "LTPA350",
+    "LTPZ083",
+    "LTPZ01001",
+    "LTPA01001",
+    "LTPZ01701",
     "LTPA02003"
   ],
   "workListH": [
