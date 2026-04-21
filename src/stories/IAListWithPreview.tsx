@@ -273,14 +273,14 @@ export function IAListWithPreview() {
                   const dateStr = key.slice(1);
                   const idList = dateData[key];
                   if (Array.isArray(idList) && idList.includes(row.id)) {
-                    completeDate = `${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+                    completeDate = `${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
                   }
                 }
                 if (key.startsWith('m') && key.length === 7) {
                   const dateStr = key.slice(1);
                   const idList = dateData[key];
                   if (Array.isArray(idList) && idList.includes(row.id)) {
-                    modifyDate = `${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+                    modifyDate = `${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
                   }
                 }
               }
