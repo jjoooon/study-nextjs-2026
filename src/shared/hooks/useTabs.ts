@@ -120,6 +120,7 @@ export function useTabsPagination<T>(
   useEffect(() => {
     const newStart = getStartByActive(active);
     if (visibleStart !== newStart) setVisibleStart(newStart);
+    // eslint-disable-next-line react-compiler/react-compiler
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, data, visibleCount]);
 

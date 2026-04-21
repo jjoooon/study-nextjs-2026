@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from '@/redux';
+import useMounted from '@/shared/hooks/useMounted';
 import { initializeI18n } from '@/shared/lib/i18n';
 import log from '@/shared/utils/logger';
 
@@ -13,7 +14,7 @@ const logger = log.getLogger('Global');
 export function Providers({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
+  useMounted(() => {
     /**
      * Enable MSW mocking in development.
      *
@@ -76,7 +77,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
 
     enableMocking();
-  }, []);
+  });
 
   // ✅ MSW 비활성화 또는 준비 완료 시 렌더링
   const mswEnabled = process.env.NEXT_PUBLIC_MSW_ENABLED === 'true';

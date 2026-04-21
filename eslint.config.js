@@ -11,8 +11,9 @@ import prettierPlugin from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
 import boundaries from 'eslint-plugin-boundaries';
 import checkFile from 'eslint-plugin-check-file';
+import reactCompiler from "eslint-plugin-react-compiler"
 
-export default [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig, {
+export default [js.configs.recommended, ...tseslint.configs.recommended, reactCompiler.configs.recommended, prettierConfig, {
   plugins: {
     react,
     'react-hooks': reactHooks,
