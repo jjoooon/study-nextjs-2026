@@ -15,7 +15,7 @@ import {
 import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 export default {
-  title: '페이지인팝업Test/LTRA010',
+  title: '페이지인팝업Test/LTPA010',
   component: LTPA010,
   argTypes: {
     open: { control: 'boolean' },
