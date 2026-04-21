@@ -6,7 +6,7 @@ import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/Ltpa904',
+  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa904',
   component: Ltpa904,
 };
 

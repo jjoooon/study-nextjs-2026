@@ -249,7 +249,9 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Gcol>
           {/* M1. Gcol, Typo 태그 추가  */}
           <Gcol>
-            <Typo variant="body-md" className="w-full text-right">기준 : 가입담보 사항에 해당하는 보장보험료 합계</Typo>
+            <Typo variant="body-md" className="w-full text-right">
+              기준 : 가입담보 사항에 해당하는 보장보험료 합계
+            </Typo>
             <div className="ag-theme-alpine ">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
