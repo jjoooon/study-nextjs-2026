@@ -597,4 +597,117 @@
   [data-layout="doc"] {
     min-width: 120.4rem
   }
+
+  /* filefond */
+  .filepond--wrapper {
+    width: 100%;
+    background: var(--color-primary-5);
+    border-radius: 0.8rem;
+    border: 0.1rem dashed var(--color-primary-50);
+  }
+
+  .filepond--wrapper * {
+    box-sizing: border-box !important;
+  }
+
+  .filepond--root {
+    margin: 0 !important;
+    min-height: 20rem !important;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: auto !important
+  }
+
+  .filepond--list-scroller {
+    top: auto !important;
+    transform: none !important;
+    height: auto !important;
+    bottom: 0 !important;
+    padding-bottom: 0.8rem !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: 10rem !important;
+  }
+
+  .filepond--list {
+    position: relative !important;
+    left: 0 !important;
+    padding: 0 2rem !important;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.4rem;
+    ;
+  }
+
+  .filepond--file {
+    padding: 0 !important;
+    color: #000 !important;
+    font-size: 1.3rem !important;
+  }
+
+  .filepond--panel.filepond--item-panel,
+  .filepond--panel-bottom.filepond--item-panel,
+  .filepond--panel-top.filepond--item-panel {
+    display: none !important;
+  }
+
+  .filepond--file>* {
+    position: relative !important;
+    cursor: pointer;
+    outline: 1px solid red !important;
+    left: auto !important;
+    right: auto !important;
+  }
+
+  .filepond--action-edit-item {
+    display: none !important;
+  }
+
+  .filepond--item {
+    position: relative !important;
+    transform: none !important;
+    border-radius: 0.8rem;
+    background-color: #fff;
+    padding: 0.8rem 1rem !important;
+    font-size: 1.3rem !important;
+    color: #000 !important;
+    border: 0.1rem solid var(--color-gray-15) !important;
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    right: auto !important;
+  }
+
+  .filepond--drop-label::before {
+    content: "";
+    display: block;
+    width: 3.2rem;
+    height: 3.2rem;
+    background-size: 3.2rem 3.2rem;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cpath d='M15.9998 22.3989C16.8099 22.3989 17.466 21.7428 17.466 20.9328V8.47182L22.9634 13.9692C23.5361 14.542 24.4635 14.542 25.0363 13.9692C25.6091 13.3964 25.6091 12.4691 25.0363 11.8963L17.0363 3.8963C16.9187 3.77867 16.7807 3.68219 16.6287 3.60984C16.6122 3.60198 16.596 3.59362 16.5793 3.58641C16.5526 3.57491 16.5247 3.56639 16.4972 3.55646C16.4816 3.55079 16.4662 3.54464 16.4504 3.53953C16.4314 3.53342 16.4123 3.52796 16.3931 3.5226C16.3645 3.51464 16.3361 3.50667 16.3071 3.50047C16.2955 3.49798 16.2837 3.49616 16.272 3.49396C16.2339 3.48676 16.1958 3.4812 16.1574 3.47703C16.1496 3.4762 16.1418 3.47514 16.134 3.47443C16.0975 3.47106 16.0611 3.46856 16.0246 3.46792C16.0163 3.46778 16.0081 3.46661 15.9998 3.46661C15.9916 3.46661 15.9833 3.46778 15.9751 3.46792C15.9385 3.4685 15.9022 3.47112 15.8657 3.47443C15.8579 3.47513 15.8501 3.4749 15.8423 3.47573C15.7991 3.48034 15.7561 3.48681 15.7134 3.49526C15.709 3.49612 15.7047 3.49696 15.7004 3.49786C15.4763 3.54427 15.2607 3.64252 15.0741 3.79474L14.9634 3.8963L6.96338 11.8963C6.39061 12.4691 6.39061 13.3964 6.96338 13.9692C7.53615 14.542 8.46353 14.542 9.0363 13.9692L14.5337 8.47182V20.9328C14.5337 21.7428 15.1898 22.3989 15.9998 22.3989Z' fill='%23FF5C2E'/%3E%3Cpath d='M27.466 28.3989C28.5706 28.3989 29.466 27.5035 29.466 26.3989V21.5994C29.466 20.7894 28.8099 20.1333 27.9998 20.1333C27.1898 20.1333 26.5337 20.7894 26.5337 21.5994V25.4666H5.46598V21.5994C5.46598 20.7894 4.80985 20.1333 3.99984 20.1333C3.18982 20.1333 2.53369 20.7894 2.53369 21.5994V26.3989C2.53369 27.5035 3.42912 28.3989 4.53369 28.3989H27.466Z' fill='%23FF5C2E'/%3E%3C/svg%3E");
+  }
+
+  .filepond--drop-label {
+    width: 100%;
+    font-size: 1.3rem !important;
+    color: var(--color-primary-50) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative !important;
+    margin: auto;
+  }
+
+  .filepond--panel-root {
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .filepond--root .filepond--list-scroller {
+    margin: 0 !important;
+  }
 }

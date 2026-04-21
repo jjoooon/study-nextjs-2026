@@ -1,19 +1,29 @@
 'use client';
 
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FileUpload } from '@common/FileUpload';
+import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+  DialogSection,
+} from '@uiux/Dialog';
 import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
-import { Button } from '@uiux/Button';
-import { FileUpload } from '@common/FileUpload';
-import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
-import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,DialogFooterArea, DialogClose, DialogSection } from '@uiux/Dialog';
 import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
 import log from '@/shared/utils/logger';
+import 'filepond/dist/filepond.min.css';
 
 // Register FilePond plugins
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
@@ -216,12 +226,6 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
     });
   };
 
-  const handleCancel = () => {
-    resolve({
-      action: 'cancel',
-    });
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <FileUpload
@@ -245,7 +249,7 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full h-full gap-1 [&_.filepond--wrapper]:w-full [&_.filepond--wrapper]:!bg-[var(--color-primary-5)] [&_.filepond--wrapper]:rounded-[0.8rem] [&_.filepond--wrapper]:border [&_.filepond--wrapper]:border-dashed [&_.filepond--wrapper]:border-[var(--color-primary-50)] [&_.filepond--root]:!h-[26.4rem] [&_.filepond--root]:!max-h-[26.4rem] [&_.filepond--root]:overflow-x-hidden [&_.filepond--root]:overflow-y-auto [&_.filepond--drop-label]:flex [&_.filepond--drop-label]:flex-col [&_.filepond--drop-label]:justify-center [&_.filepond--drop-label]:items-center [&_.filepond--drop-label]:text-[var(--color-primary-50)] [&_.filepond--drop-label]:w-full [&_.filepond--drop-label]:h-full [&_.filepond--browser]:hidden [&_.filepond--data]:hidden [&_.filepond--list-scroller]:bg-red [&_.filepond--root]:h-full [&_.filepond--root]:border  ">
+          <Gcol className="w-full h-full gap-1">
             {/* FilePond Drop Area */}
             <FilePond
               ref={pondRef}
@@ -266,7 +270,7 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
               labelMaxFileSize="최대 1GB"
               labelFileTypeNotAllowed="허용되지 않는 파일 형식입니다"
               fileValidateTypeLabelExpectedTypes="허용되지 않는 파일 형식입니다"
-              labelIdle="이곳을 클릭 또는 파일을 드래그 하세요."
+              labelIdle={`<FileUploadIcon />이곳을 클릭 또는 파일을 드래그 하세요.`}
               allowFileTypeValidation={true}
               allowFileSizeValidation={true}
               // stylePanelLayout="compact"
