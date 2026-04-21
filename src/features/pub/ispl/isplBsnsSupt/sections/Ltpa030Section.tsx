@@ -368,6 +368,7 @@ export default function Ltpa030Section() {
 
   return (
     <>
+      {/* M2. 팝업에서 페이지로 변경 */}
       <LayoutHead>
         <PageID data={{ pageName: '신계약기준관리', pageId: 'LTPA030' }} />
       </LayoutHead>

@@ -1,11 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -19,6 +13,12 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+
+import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -73,7 +73,7 @@ const DummyData: DummyDataType[] = [
 export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '구문',
+      headerName: '구분',
       field: 'field01',
       width: 70,
       cellClass: 'text-center bg-[#f4f4f4]!',

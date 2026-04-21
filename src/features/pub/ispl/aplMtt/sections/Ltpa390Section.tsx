@@ -1,23 +1,20 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule, ColDef } from 'ag-grid-community';
-
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Checkbox } from '@uiux/Checkbox';
+import { ModuleRegistry, AllCommunityModule, ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-
-
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -34,7 +31,6 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa390Section() {
-  
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'No',
@@ -122,7 +118,7 @@ export default function Ltpa390Section() {
           </Grid>
         }
         mainFoot={
-          <MainBottom className='border-none!'>
+          <MainBottom className="border-none!">
             <MainBottomItem>
               <Grow gap={1}>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
