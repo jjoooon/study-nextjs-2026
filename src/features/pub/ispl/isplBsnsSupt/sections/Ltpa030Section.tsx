@@ -161,53 +161,53 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
+function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
+  const [value, setValue] = React.useState<string>(String(props.value ?? ''));
+
+  type CellEditorRef = { getValue: () => string; isCancelAfterEnd: () => boolean };
+  type PropsWithRef = ICellEditorParams<DummyDataType> & { forwardedRef?: React.Ref<CellEditorRef> };
+  const propsWithRef = props as unknown as PropsWithRef;
+
+  React.useEffect(() => {
+    setValue(String(props.value ?? ''));
+  }, [props.value]);
+  React.useImperativeHandle(
+    propsWithRef.forwardedRef,
+    () => ({ getValue: () => value, isCancelAfterEnd: () => false }),
+    [value]
+  );
+
+  return (
+    <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200 gap-0">
+      <Grow className="px-1 w-full h-full">
+        <Input
+          aria-label=""
+          width={'full'}
+          value={value}
+          size="sm"
+          autoFocus
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <Button
+          aria-label="검색"
+          variant={'outlined'}
+          only="icon"
+          size={'md'}
+          color={'gray-light'}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={() => {
+            /* 검색 로직 */
+          }}
+        >
+          <SearchIcon color={'var(--color-primary-50)'} />
+        </Button>
+      </Grow>
+      <div className="w-full truncate min-w-0 px-1">{String(props.data?.field03 ?? '')}</div>
+    </Grid>
+  );
+}
+
 export default function Ltpa030Section() {
-  function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
-    const [value, setValue] = React.useState<string>(String(props.value ?? ''));
-
-    type CellEditorRef = { getValue: () => string; isCancelAfterEnd: () => boolean };
-    type PropsWithRef = ICellEditorParams<DummyDataType> & { forwardedRef?: React.Ref<CellEditorRef> };
-    const propsWithRef = props as unknown as PropsWithRef;
-
-    React.useEffect(() => {
-      setValue(String(props.value ?? ''));
-    }, [props.value]);
-    React.useImperativeHandle(
-      propsWithRef.forwardedRef,
-      () => ({ getValue: () => value, isCancelAfterEnd: () => false }),
-      [value]
-    );
-
-    return (
-      <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200 gap-0">
-        <Grow className="px-1 w-full h-full">
-          <Input
-            aria-label=""
-            width={'full'}
-            value={value}
-            size="sm"
-            autoFocus
-            onChange={(e) => setValue(e.target.value)}
-          />
-          <Button
-            aria-label="검색"
-            variant={'outlined'}
-            only="icon"
-            size={'md'}
-            color={'gray-light'}
-            onMouseDown={(e) => e.stopPropagation()}
-            onClick={() => {
-              /* 검색 로직 */
-            }}
-          >
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grow>
-        <div className="w-full truncate min-w-0 px-1">{String(props.data?.field03 ?? '')}</div>
-      </Grid>
-    );
-  }
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '체크단계',
