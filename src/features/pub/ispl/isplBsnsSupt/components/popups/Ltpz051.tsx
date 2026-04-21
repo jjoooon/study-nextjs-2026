@@ -271,29 +271,31 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </Gcol>
                   </Grid>
                 )}
-                <Gcol className="w-full mt-[2rem]" placement="ss" variant="box-info">
+                {/* M1. 수정 */}
+                <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
+                  <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                    신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행(변경설계가 청약중 이후이고 변경후
+                    직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
+                  </Typo>
+                  <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                    기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약
+                    설계 진행
+                  </Typo>
                   <BulletList>
-                    <BulletListItem size="sm">
-                      신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행 (변경설계가 청약중 이후이고 변경후
-                      직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
-                    </BulletListItem>
-                    <BulletListItem size="sm">
-                      기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약
-                      설계 진행
-                    </BulletListItem>
-                    <BulletListItem size="sm">
-                      직업정보는 현재기준 [2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로
+                    <BulletListItem size={'sm'} type="dash">
+                      직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로
                       매핑한 결과로 비교함)
                     </BulletListItem>
-                    <BulletListItem size="sm">
-                      변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다. (계약변경설계이동 클릭 시
+                    <BulletListItem size={'sm'} type="dash">
+                      변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다.(계약변경설계이동 클릭시
                       변경설계화면으로 이동)
                     </BulletListItem>
-                    <BulletListItem size="sm">
-                      상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하여 재확인 바랍니다.
+                    <BulletListItem size={'sm'} type="dash">
+                      상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
                     </BulletListItem>
-                    <BulletListItem size="sm">
-                      관련문서: [대내-1507-1552] 직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
+                    {/* M2. 수정 */}
+                    <BulletListItem className="mt-2" size={'sm'} type="dotBig">
+                      관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
                     </BulletListItem>
                   </BulletList>
                 </Gcol>
