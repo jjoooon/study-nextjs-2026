@@ -738,8 +738,10 @@
     width: 100%;
     font-size: 1.3rem !important;
     color: var(--color-primary-50) !important;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: relative !important;
     margin: auto;
     padding: 1.6rem 0 0.8rem;
