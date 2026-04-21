@@ -1,12 +1,12 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpa904 } from '@/features/pub/ispl/isplBsnsSupt/Ltpa904';
+import { Ltpa904 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa904';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/Ltpa904',
+  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa904',
   component: Ltpa904,
 };
 
