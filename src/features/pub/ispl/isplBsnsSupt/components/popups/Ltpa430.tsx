@@ -57,6 +57,7 @@ const simpleNumberFormatter = (value?: number) => {
 };
 
 export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
+  // M1. div 추가
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -76,9 +77,11 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field01?.[0])}</span>,
         (data?: DummyDataType) => (
-          <Button color="secondary" onClick={() => {}} size="sm" variant="outlined" disabled={data?.field01[1]}>
-            설계생성
-          </Button>
+          <div className="text-center!">
+            <Button color="secondary" onClick={() => {}} size="sm" variant="outlined" disabled={data?.field01[1]}>
+              설계생성
+            </Button>
+          </div>
         )
       ),
     },
@@ -90,16 +93,18 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field02?.[0])}</span>,
         (data?: DummyDataType) => (
-          <Button
-            color="secondary"
-            onClick={() => {}}
-            only="default"
-            size="sm"
-            variant="outlined"
-            disabled={data?.field02[1]}
-          >
-            설계생성
-          </Button>
+          <div className="text-center!">
+            <Button
+              color="secondary"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="outlined"
+              disabled={data?.field02[1]}
+            >
+              설계생성
+            </Button>
+          </div>
         )
       ),
     },
@@ -112,16 +117,18 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field03?.[0])}</span>,
         (data?: DummyDataType) => (
-          <Button
-            color="secondary"
-            onClick={() => {}}
-            only="default"
-            size="sm"
-            variant="outlined"
-            disabled={data?.field03[1]}
-          >
-            설계생성
-          </Button>
+          <div className="text-center!">
+            <Button
+              color="secondary"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="outlined"
+              disabled={data?.field03[1]}
+            >
+              설계생성
+            </Button>
+          </div>
         )
       ),
     },
@@ -134,16 +141,18 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field04?.[0])}</span>,
         (data?: DummyDataType) => (
-          <Button
-            color="secondary"
-            onClick={() => {}}
-            only="default"
-            size="sm"
-            variant="outlined"
-            disabled={data?.field04[1]}
-          >
-            설계생성
-          </Button>
+          <div className="text-center!">
+            <Button
+              color="secondary"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="outlined"
+              disabled={data?.field04[1]}
+            >
+              설계생성
+            </Button>
+          </div>
         )
       ),
     },
@@ -156,16 +165,18 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field05?.[0])}</span>,
         (data?: DummyDataType) => (
-          <Button
-            color="secondary"
-            onClick={() => {}}
-            only="default"
-            size="sm"
-            variant="outlined"
-            disabled={data?.field05[1]}
-          >
-            설계생성
-          </Button>
+          <div className="text-center!">
+            <Button
+              color="secondary"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="outlined"
+              disabled={data?.field05[1]}
+            >
+              설계생성
+            </Button>
+          </div>
         )
       ),
     },
@@ -178,16 +189,18 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: createFieldRenderer<DummyDataType>(
         (data?: DummyDataType) => <span className="tracking-[0]">{simpleNumberFormatter(data?.field06?.[0])}</span>,
         (data?: DummyDataType) => (
-          <Button
-            color="secondary"
-            onClick={() => {}}
-            only="default"
-            size="sm"
-            variant="outlined"
-            disabled={data?.field06[1]}
-          >
-            설계생성
-          </Button>
+          <div className="text-center!">
+            <Button
+              color="secondary"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="outlined"
+              disabled={data?.field06[1]}
+            >
+              설계생성
+            </Button>
+          </div>
         )
       ),
     },
@@ -234,19 +247,25 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Typo>
             </Gcol>
           </Gcol>
-          <div className="ag-theme-alpine ">
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              rowData={rowData}
-              columnDefs={columnDefs}
-              defaultColDef={{
-                sortable: false,
-                resizable: false,
-              }}
-              domLayout="autoHeight"
-            />
-          </div>
+          {/* M1. Gcol, Typo 태그 추가  */}
+          <Gcol>
+            <Typo variant="body-md" className="w-full text-right">
+              기준 : 가입담보 사항에 해당하는 보장보험료 합계
+            </Typo>
+            <div className="ag-theme-alpine ">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={{
+                  sortable: false,
+                  resizable: false,
+                }}
+                domLayout="autoHeight"
+              />
+            </div>
+          </Gcol>
           <Typo icon="ref">
             현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)
           </Typo>
