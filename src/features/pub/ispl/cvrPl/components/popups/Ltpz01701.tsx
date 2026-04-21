@@ -26,6 +26,7 @@ import { Input } from '@/shared/components/uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
+// M2. 신규페이지
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 type DummyDataType = {

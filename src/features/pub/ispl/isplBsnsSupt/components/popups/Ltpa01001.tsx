@@ -61,7 +61,7 @@ export const Ltpa01001 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
+  // M2. 신규 페이지
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="md">
