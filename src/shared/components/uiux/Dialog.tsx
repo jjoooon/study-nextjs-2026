@@ -1,10 +1,10 @@
 'use client';
 
+import { Grid } from '@atoms';
+import { CloseIcon } from '@icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grid } from '@atoms';
-import { CloseIcon } from '@icons';
 
 type DialogSizeValue = number | string;
 
@@ -528,7 +528,7 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
 function DialogSection({ children, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <Grid
-      gap={4}
+      gap={3}
       data-slot="dialog-section"
       className={cn('px-6 w-full h-full text-[1.4rem] overflow-auto', className)}
       {...props}
