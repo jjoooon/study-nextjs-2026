@@ -211,7 +211,7 @@ export function IAListWithPreview() {
             </div>
           </div>
           <a
-            href="/data/study-nextjs-2026-pub_260422_1554.zip"
+            href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
             download
             className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
           >
