@@ -94,6 +94,11 @@ export function IAListWithPreview() {
     return filtered.filter((row) => row.phase === 'Y');
   }, [rowsWithPubOwner, showPhaseOnly]);
 
+  // 완료/전체/진행율 계산 (visibleRows 선언 이후)
+  const totalCount = React.useMemo(() => visibleRows.length, [visibleRows]);
+  const doneCount = React.useMemo(() => visibleRows.filter((row) => row.phase === 'Y').length, [visibleRows]);
+  const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+
   const activeRow = React.useMemo(() => {
     return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
   }, [activeRowKey, visibleRows]);
@@ -195,7 +200,12 @@ export function IAListWithPreview() {
 
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
-      <div className="h-[calc(100vh-4rem)] overflow-auto flex justify-start">
+      <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
+        <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem]">
+          <div className='rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]' style={{ width: `${progressPercent}%` }}>
+             {doneCount} / {totalCount} ({progressPercent}%)
+          </div>
+        </div>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
             <col style={{ width: '1rem' }} />
