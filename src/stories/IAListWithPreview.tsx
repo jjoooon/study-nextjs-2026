@@ -216,9 +216,9 @@ export function IAListWithPreview() {
             <col style={{ width: '2rem' }} />
             <col />
             <col />
-            {/* <col style={{ width: '5rem' }} />
+           <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} /> */}
+            <col style={{ width: '5rem' }} />
           </colgroup>
           <thead>
             <tr>
@@ -244,7 +244,7 @@ export function IAListWithPreview() {
                 수정일{getSortIndicator('modifyDate')}
               </th>
 
-              {/* <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
+              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
               </th>
               <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('pub')}>
@@ -252,7 +252,7 @@ export function IAListWithPreview() {
               </th>
               <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('dev')}>
                 개발{getSortIndicator('dev')}
-              </th> */}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -329,10 +329,10 @@ export function IAListWithPreview() {
                     <b>{modifyDate}</b>
                   </td>
 
-                  {/* 
+                  
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td> */}
+                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td> 
                 </tr>
               );
             })}

@@ -8,7 +8,6 @@
     "LTPZ010",
     "LTPZ011",
     "LTPZ017",
-    "LTPZ020",
     "LTPA160",
     "LTPA904",
     "LTPA170",
@@ -32,7 +31,6 @@
     "LTPZ049",
     "LTPZ050",
     "LTPZ051",
-    "LTPZ002",
     "LTPZ052",
     "LTPZ053",
     "LTPZ057",
@@ -91,6 +89,7 @@
     "LTPZ003"
   ],
   "workListJ": [
+    "LTPZ002",
     "LTPA350",
     "LTPZ999",
     "LTPZ001",

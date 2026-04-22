@@ -38,11 +38,11 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
       {viewKey !== 'view3' && viewKey !== 'view4' && viewKey !== 'view5' && (
         <Grow
           placement={'bwc'}
-          className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
+          className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
         >
           <Checkbox variant={'button'}>4세대</Checkbox>
           <Grow>
-            <Button variant={'none'}>
+            <Button variant={'none'} className="px-0">
               <Typo variant={'amount-md'}>{resolvedDataTotal.insGen}</Typo>
               <Typo variant={'heading-md'}>원</Typo>
             </Button>
@@ -50,32 +50,28 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
         </Grow>
       )}
 
-      <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-2 shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] bg-[var(--color-gray-0)]">
+      <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] bg-[var(--color-gray-0)] min-h-[5.6rem]" gap={0} placement="cs">
         <Grow placement={'bwc'}>
           <Typo variant={'body-sm'} weight={'bold'}>
             납입보험료
           </Typo>
-          <Grow>
-            <Button variant={'none'}>
-              <Typo variant={'amount-md'} color={'primary'}>
-                {paymentAmountText}
-              </Typo>
-              <Typo variant={'heading-md'}>원</Typo>
-            </Button>
-          </Grow>
+          <Button variant={'none'} className="px-0">
+            <Typo variant={'amount-md'} color={'primary'}>
+              {paymentAmountText}
+            </Typo>
+            <Typo variant={'heading-md'}>원</Typo>
+          </Button>
         </Grow>
         <Grow placement={'bwc'}>
           <Typo variant={'heading-xs'} color={'gray-light'}>
             청약포인트
           </Typo>
-          <Grow>
-            <Button variant={'none'}>
-              <Typo variant={'amount-xs'} color={'information'}>
-                {pointText}
-              </Typo>
-              <Typo variant={'heading-xs'}>P</Typo>
-            </Button>
-          </Grow>
+          <Button variant={'none'} className="px-0">
+            <Typo variant={'amount-xs'} color={'information'}>
+              {pointText}
+            </Typo>
+            <Typo variant={'heading-xs'}>P</Typo>
+          </Button>
         </Grow>
       </Gcol>
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>

@@ -879,42 +879,45 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
               </Button>
             )}
           >
-            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-              <Grow gap={3}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
-                  <PaperIcon />
-                  담보패키지 선택
-                </Button>
-                <CheckboxGroup
-                  className="gap-1 flex-wrap"
-                  color="primary"
-                  minSelected={0}
-                  size="lg"
-                  variant="button"
-                  width="auto"
-                >
-                  {[
-                    { label: '사망후유', value: '0' },
-                    { label: '진단비', value: '1' },
-                    { label: '입원/통원', value: '2' },
-                    { label: '수술/치료', value: '3' },
-                    { label: '골절/화상', value: '4' },
-                    { label: '검사/지원', value: '5' },
-                    { label: '운전/비용', value: '6' },
-                    { label: '재물/배상', value: '7' },
-                    { label: '기타', value: '8' },
-                  ].map((category) => (
-                    <CheckboxGroupItem key={category.value} value={category.value}>
-                      {category.label}
-                    </CheckboxGroupItem>
-                  ))}
-                </CheckboxGroup>
-              </Grow>
 
-              <Grow gap={3} className="w-full" placement={'bwc'}>
-                <Grow gap={3} className="w-full" placement={'ss'}>
+            {/* M1. 간격 및 위치 수정 */}
+            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
+              <Grow gap={1.5} placement={'bwc'}>
+                <Grow gap={2}>
+                  <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                    <PaperIcon />
+                    보장패키지
+                  </Button>
+                  <Divider dir="col" />
+
                   <CheckboxGroup
-                    className="gap-1 flex-nowrap shrink-0"
+                    className="gap-[0.4rem] flex-wrap type-small"
+                    color="primary"
+                    minSelected={0}
+                    size="lg"
+                    variant="button"
+                    width="auto"
+                  >
+                    {[
+                      { label: '사망후유', value: '0' },
+                      { label: '진단비', value: '1' },
+                      { label: '입원/통원', value: '2' },
+                      { label: '수술/치료', value: '3' },
+                      { label: '골절/화상', value: '4' },
+                      { label: '검사/지원', value: '5' },
+                      { label: '운전/비용', value: '6' },
+                      { label: '재물/배상', value: '7' },
+                      { label: '기타', value: '8' },
+                    ].map((category) => (
+                      <CheckboxGroupItem key={category.value} value={category.value}>
+                        {category.label}
+                      </CheckboxGroupItem>
+                    ))}
+                  </CheckboxGroup>
+                  <Divider dir="col" />
+
+                  <CheckboxGroup
+                    className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
                     color="primary"
                     minSelected={0}
                     size="lg"
@@ -930,26 +933,6 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                       </CheckboxGroupItem>
                     ))}
                   </CheckboxGroup>
-
-                  <HashList
-                    data={[
-                      '암',
-                      '뇌',
-                      '심',
-                      '수술',
-                      '특정',
-                      '표적',
-                      '치료',
-                      '골절',
-                      '화상',
-                      '치매',
-                      '심',
-                      '수술',
-                      '특정',
-                      '표적',
-                      '치료',
-                    ]}
-                  />
                 </Grow>
                 <Grow placement={'ec'}>
                   <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
@@ -958,6 +941,7 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                 </Grow>
               </Grow>
             </Gcol>
+             {/* //M1. 간격 및 위치 수정 */}
           </TabPager>
 
           <LayoutMainBody>
@@ -970,7 +954,7 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                   </Button>
                 </Grow>
                 <Grow className="gap-2.5">
-                  <Checkbox>담보초기화</Checkbox>
+                  {/* M1. 담보초기화 삭제 */}
                   <Checkbox>플랜기본값</Checkbox>
                   <Grow className="gap-1">
                     <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
@@ -1043,7 +1027,7 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                       )}
                     </Button>
                     {/* //M1. 토글 시 아이콘 변경 추가 */}
-                    
+
                   </Grow>
                 </Grow>
               </Grow>

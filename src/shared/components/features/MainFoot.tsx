@@ -184,7 +184,7 @@ export function MainBottom({
 }) {
   const classStyle =
     variant === 'box'
-      ? 'rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]'
+      ? 'rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] [&>div+div]:!rounded-[0]'
       : 'border-0 !shadow-none [&_div]:!px-0 ';
   return (
     <Gcol gap={0} className={cn('w-full', classStyle, className)}>
@@ -195,7 +195,7 @@ export function MainBottom({
 
 export function MainBottomItem({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Grow placement={'bwc'} className={cn('px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem] [&>div]:last:w-full [&>div]:last:justify-end', className)}>
+    <Grow placement={'bwc'} className={cn('px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem] [&>*]:last:w-full [&>*+*]:last:w-auto [&>*]:last:justify-end ', className)}>
       {children}
     </Grow>
   );
