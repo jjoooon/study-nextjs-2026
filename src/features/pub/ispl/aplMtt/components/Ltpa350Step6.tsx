@@ -168,7 +168,6 @@ export const Ltpa350Step6 = () => {
       .map((node) => node.data)
       .filter((row): row is Ltpa350Step6GridRow => row !== undefined && !row.isSumRow);
 
-
     const nextSelectedAmount = selectedRows.reduce((total, row) => {
       let value = row.field3;
       if (typeof value === 'string') {
@@ -194,19 +193,18 @@ export const Ltpa350Step6 = () => {
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
                   <Grow className="w-full" variant="box-round" placement={'bwe'}>
-
                     {/* M1. FormTable 전체 수정 */}
-                    <FormTable
-                      variant={'head'}
-                      lineTop={false}
-                      cols={['flex-auto', 'flex-1']}
-                    >
+                    <FormTable variant={'head'} lineTop={false} cols={['flex-auto', 'flex-1']}>
                       <FormRow>
-                        <FormCell title={<Grow>영수관리번호<EssentialIcon aria-label="필수 입력" /></Grow>}>
-                          <Input
-                            aria-label="영수관리번호"
-                            value={'LA37784990'}
-                            />
+                        <FormCell
+                          title={
+                            <Grow>
+                              영수관리번호
+                              <EssentialIcon aria-label="필수 입력" />
+                            </Grow>
+                          }
+                        >
+                          <Input aria-label="영수관리번호" value={'LA37784990'} />
                         </FormCell>
                       </FormRow>
                     </FormTable>
@@ -303,9 +301,7 @@ export const Ltpa350Step6 = () => {
                   <TableFold variant={'default'}>
                     <TableFoldHead title="즉시집금">
                       <Grow>
-                        <Checkbox
-                          id="selectAllDeposits"
-                          aria-label="영수보험표 입력"></Checkbox>
+                        <Checkbox id="selectAllDeposits" aria-label="영수보험표 입력"></Checkbox>
                       </Grow>
                     </TableFoldHead>
                     <TableFoldBody className="gap-1">
@@ -551,18 +547,16 @@ export const Ltpa350Step6 = () => {
                       </Table>
                       {/* M1. 문구추가 */}
                       <Typo variant="body-sm" color="primary" icon="info">
-                      같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터 즉시이체출금에 성공한 것이니 입금내역을 확인하세요.
+                        같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터
+                        즉시이체출금에 성공한 것이니 입금내역을 확인하세요.
                       </Typo>
-
                     </TableFoldBody>
                   </TableFold>
                   {/* 카드 */}
                   <TableFold variant={'default'}>
                     <TableFoldHead title="카드">
                       <Grow>
-                        <Checkbox
-                          id="selectAllDeposits"
-                          aria-label="영수보험표 입력"></Checkbox>
+                        <Checkbox id="selectAllDeposits" aria-label="영수보험표 입력"></Checkbox>
                       </Grow>
                     </TableFoldHead>
                     <TableFoldBody>
@@ -776,7 +770,9 @@ export const Ltpa350Step6 = () => {
                   <TableFold variant={'default'}>
                     <TableFoldHead title="입금사항">
                       <Grow>
-                        <Button variant={'outlined'} color={'gray'}>입금입력</Button>
+                        <Button variant={'outlined'} color={'gray'}>
+                          입금입력
+                        </Button>
                       </Grow>
                     </TableFoldHead>
                     <TableFoldBody>
@@ -854,7 +850,8 @@ export const Ltpa350Step6 = () => {
                   <Grow>
                     {/* M1. Grow 삭제 및 EssentialIcon 추가 */}
                     <Typo variant="heading-md" className="w-[7.1rem] flex items-center gap-0.5">
-                      수납일자<EssentialIcon aria-label="필수 입력" />
+                      수납일자
+                      <EssentialIcon aria-label="필수 입력" />
                     </Typo>
                     <Input aria-label="수납일자" width={100} value={'2024-03-18'} readOnly />
                   </Grow>

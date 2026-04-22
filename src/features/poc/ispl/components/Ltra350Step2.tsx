@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import gridData from '@/mocks/data/ispl/dump/planCovData.json';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@uiux/Tabs';
+import { useState } from 'react';
 import { InsPlanBasic, InsPlanCov } from '../components/Page3Index';
 import { INITIAL_TABS2 } from '../constants/insPlanBasicData';
+import gridData from '@/mocks/data/ispl/dump/planCovData.json';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 export default function LniPl020Step2() {
   const { active, setActive, handleRemove, visibleTabs } = useTabs(INITIAL_TABS2);

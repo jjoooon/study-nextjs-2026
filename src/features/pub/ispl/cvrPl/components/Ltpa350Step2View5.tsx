@@ -710,7 +710,6 @@ export function Ltpa350Step2View5({ onSelectPlan, isWidthExpanded = false, setIs
                       )}
                     </Button>
                     {/* //M1. 토글 시 아이콘 변경 추가 */}
-
                   </Grow>
                 </Grow>
               </Grow>

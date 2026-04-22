@@ -1,5 +1,15 @@
 'use client';
 
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { QuestionMark, ResetIcon, SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { TreeDataModule } from 'ag-grid-enterprise';
@@ -13,17 +23,7 @@ import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup'
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
-import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { QuestionMark, ResetIcon, SearchIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -175,10 +175,10 @@ const DataTabs = [
   { label: '어깨병변', value: 'TAB5' },
 ];
 
-  const DataTabs2 = [
-    { label: '일반고지형', value: 'TAB2_1' },
-    { label: '간편고지형', value: 'TAB2_2' },
-  ];
+const DataTabs2 = [
+  { label: '일반고지형', value: 'TAB2_1' },
+  { label: '간편고지형', value: 'TAB2_2' },
+];
 
 export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
@@ -325,10 +325,11 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       autoHeight: true,
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          질병사망<br />
+          질병사망
+          <br />
           고도후유
         </div>
-      )
+      ),
     },
     {
       field: 'field6',
@@ -336,10 +337,11 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          질병휴우<br />
+          질병휴우
+          <br />
           (경증)
         </div>
-      )
+      ),
     },
     {
       headerName: '2대질병',
@@ -365,10 +367,11 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          질병중환<br />
+          질병중환
+          <br />
           자실입원
-        </div>  
-      )
+        </div>
+      ),
     },
     {
       headerName: '질병입원',
@@ -382,16 +385,17 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 80,
       cellClass: 'text-center',
     },
-    { 
+    {
       field: 'field13',
       width: 80,
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          상해사망<br />
+          상해사망
+          <br />
           고도후유
         </div>
-      )  
+      ),
     },
     {
       headerName: '상해50%',
@@ -535,8 +539,6 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-
-
   type DummyDataType3 = {
     id: number;
     field1: string | number;
@@ -596,21 +598,23 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          질병사망<br />
+          질병사망
+          <br />
           고도후유
-        </div>    
-      )
+        </div>
+      ),
     },
     {
       field: 'field6',
       width: 80,
       cellClass: 'text-center',
-       headerComponent: () => (
+      headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          질병휴우<br />
+          질병휴우
+          <br />
           (경증)
         </div>
-       )
+      ),
     },
     {
       headerName: '2대질병',
@@ -636,10 +640,11 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
-          질병중환<br />
+          질병중환
+          <br />
           자실입원
         </div>
-      )
+      ),
     },
     {
       headerName: '질병입원',
@@ -658,11 +663,12 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 80,
       cellClass: 'text-center',
       headerComponent: () => (
-      <div className="w-full text-center whitespace-normal px-1">
-        상해사망<br />
-        고도후유
-      </div>
-      )
+        <div className="w-full text-center whitespace-normal px-1">
+          상해사망
+          <br />
+          고도후유
+        </div>
+      ),
     },
     {
       headerName: '상해50%',
@@ -1371,7 +1377,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <TableFold>
                         <TableFoldHead title="질병별 사전심사 안내" />
                         <TableFoldBody>
-                           <TabPager
+                          <TabPager
                             data={tabs2}
                             active={active2}
                             setActive={setActive2}
@@ -1382,7 +1388,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             visibleCount={5}
                           >
                             {active2 === 'TAB2_1' && (
-                               <div className="ag-theme-alpine w-full h-70! ag-border-t">
+                              <div className="ag-theme-alpine w-full h-70! ag-border-t">
                                 <AgGridReact<DummyDataType2>
                                   getRowId={(params) => String(params.data.id)}
                                   noRowsOverlayComponent={AgGridEmptyComponent}

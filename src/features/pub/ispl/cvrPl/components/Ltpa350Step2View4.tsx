@@ -879,7 +879,6 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
               </Button>
             )}
           >
-
             {/* M1. 간격 및 위치 수정 */}
             <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
               <Grow gap={1.5} placement={'bwc'}>
@@ -941,7 +940,7 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                 </Grow>
               </Grow>
             </Gcol>
-             {/* //M1. 간격 및 위치 수정 */}
+            {/* //M1. 간격 및 위치 수정 */}
           </TabPager>
 
           <LayoutMainBody>
@@ -1027,7 +1026,6 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                       )}
                     </Button>
                     {/* //M1. 토글 시 아이콘 변경 추가 */}
-
                   </Grow>
                 </Grow>
               </Grow>

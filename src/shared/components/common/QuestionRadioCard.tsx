@@ -1,11 +1,10 @@
 'use client';
 
-import { useId, useState, type ReactNode } from 'react';
-
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { Badge } from '@uiux/Badge';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { useId, useState, type ReactNode } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 type QuestionRadioCardProps = {
   badgeLabel: string;

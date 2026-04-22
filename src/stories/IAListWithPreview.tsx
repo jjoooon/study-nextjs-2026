@@ -201,11 +201,20 @@ export function IAListWithPreview() {
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
-        <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem]">
-          <div className='rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]' style={{ width: `${progressPercent}%` }}>
-             {doneCount} / {totalCount} ({progressPercent}%)
+        <Grow placement='ss'>
+          <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem]">
+            <div className='rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]' style={{ width: `${progressPercent}%` }}>
+              {doneCount} / {totalCount} ({progressPercent}%)
+            </div>
           </div>
-        </div>
+          <a
+            href="/data/study-nextjs-2026-pub_260422_1554.zip"
+            download
+            className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
+          >
+            📦다운로드
+          </a>
+        </Grow>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
             <col style={{ width: '1rem' }} />

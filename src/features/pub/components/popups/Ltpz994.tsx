@@ -1,7 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
@@ -16,6 +14,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

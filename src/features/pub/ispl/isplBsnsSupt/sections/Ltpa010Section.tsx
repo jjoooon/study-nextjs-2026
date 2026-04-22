@@ -854,7 +854,7 @@ export default function Ltpa010Section() {
                 </div> */}
               </Gcol>
             </Grid>
-            <Gcol variant="box-info" placement='ss'>
+            <Gcol variant="box-info" placement="ss">
               <Typo variant="body-sm" color="primary" icon="info">
                 <b>설계조회 가능기간</b> 취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일)
               </Typo>

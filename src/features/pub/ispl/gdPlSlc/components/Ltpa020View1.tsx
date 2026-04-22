@@ -1,11 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useState } from 'react';
-
-import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 
@@ -17,6 +11,11 @@ import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

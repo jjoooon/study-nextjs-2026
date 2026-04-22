@@ -1,7 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,6 +18,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -46,13 +46,7 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'설계번호'}>
                     <Input width={130} value={'LA260209313558'} readOnly />
                     {/* M1. disabled 삭제 */}
-                    <Button
-                      aria-label="검색"
-                      variant={'outlined'}
-                      only="icon"
-                      size={'lg'}
-                      color={'gray-light'}
-                    >
+                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input width={70} value={'김한화'} readOnly />
@@ -117,7 +111,14 @@ export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
                         <Input placeholder="" value="김한화" width={70} readOnly />
                         <Input placeholder="" value="900101-1******" width={120} readOnly />
                         {/* M1. 수정 */}
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                        <Button
+                          aria-label="검색"
+                          variant={'outlined'}
+                          only="icon"
+                          size={'lg'}
+                          color={'gray-light'}
+                          disabled
+                        >
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </FormCell>

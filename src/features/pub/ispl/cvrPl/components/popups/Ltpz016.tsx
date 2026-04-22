@@ -53,15 +53,27 @@ export const Ltpz016 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
           <TableFold>
             <TableFoldHead title="가족일상생활배상책임Ⅲ(대물 20만원(누수50만원)공제)(갱신형)" />
-            <TableFoldBody className='gap-2'>
+            <TableFoldBody className="gap-2">
               <FormTable caption="설계번호" cols={['w-[24rem]', 'w-[auto]']}>
                 <FormRow>
                   <FormCell title={'자택주소동일'}>
-                    <Input aria-label="" width={400} value={'서울 영등포구 63로 328호(여의도동, 은하아파트)'} readOnly />
+                    <Input
+                      aria-label=""
+                      width={400}
+                      value={'서울 영등포구 63로 328호(여의도동, 은하아파트)'}
+                      readOnly
+                    />
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={<Grow placement='sc'>기본주소<EssentialIcon /></Grow>} >
+                  <FormCell
+                    title={
+                      <Grow placement="sc">
+                        기본주소
+                        <EssentialIcon />
+                      </Grow>
+                    }
+                  >
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
@@ -69,25 +81,32 @@ export const Ltpz016 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={<Grow placement='sc'>상세주소(동번호/층수/호수 입력)<EssentialIcon /></Grow>} >
+                  <FormCell
+                    title={
+                      <Grow placement="sc">
+                        상세주소(동번호/층수/호수 입력)
+                        <EssentialIcon />
+                      </Grow>
+                    }
+                  >
                     <Input aria-label="" width={198} value={''} readOnly />
                     <Input aria-label="" width={198} value={''} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'전체주소'} >
+                  <FormCell title={'전체주소'}>
                     <Input aria-label="" width={400} value={''} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Gcol variant={'box-info'} placement={'ss'} className='w-full'>
+              <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                 <Typo variant={'body-sm'} icon={'info'}>
-                  약관상 피보홈자가 소유, 사용, 관리 중 발생한 우연한 사고로 배상책임을 부당하는 주거용 주택을 등록해 주세요.
+                  약관상 피보홈자가 소유, 사용, 관리 중 발생한 우연한 사고로 배상책임을 부당하는 주거용 주택을 등록해
+                  주세요.
                 </Typo>
-              </Gcol>  
+              </Gcol>
             </TableFoldBody>
           </TableFold>
-          
         </DialogSection>
 
         <DialogFooter>
