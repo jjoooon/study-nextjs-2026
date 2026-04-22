@@ -1,5 +1,5 @@
 'use client';
-
+// M1. 팝업에서 화면으로 전환, 전체 수정
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
@@ -10,7 +10,7 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -19,6 +19,7 @@ import {
   createCellValueChangedHandler,
   createTooltipValueGetter,
   DatePickerCellEditor,
+  editableSelectCellRenderer,
 } from '@/shared/components/agGridUtils';
 import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
@@ -27,10 +28,12 @@ import { ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useCallback } from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 type DummyDataType = {
   id: number;
+  isNew: boolean;
   isCheck: boolean;
   field01: string | number;
   field02: string | number;
@@ -45,6 +48,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    isNew: false,
     isCheck: false,
     field01: '청약완료',
     field02: '',
@@ -58,6 +62,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '',
@@ -71,6 +76,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '',
@@ -85,9 +91,22 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa190Section() {
+  // 새로 추가한 행만 편집 가능
+  const isEditableNewRow = React.useCallback(
+    (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
+    []
+  );
+
+  const expiryCellRenderer = useCallback(
+    (align: 'left' | 'center' | 'right' = 'right') =>
+      (params: ICellRendererParams<DummyDataType>) =>
+        editableSelectCellRenderer<DummyDataType>({ ...params, align }),
+    []
+  );
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '구분',
+      headerName: '체크단계',
       field: 'field01',
       flex: 1,
       editable: false,
@@ -97,9 +116,9 @@ export default function Ltpa190Section() {
       headerName: '신계약프로세스',
       field: 'field02',
       flex: 2,
-      editable: true,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       autoHeight: true,
+      editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: {
         values: [
@@ -113,6 +132,13 @@ export default function Ltpa190Section() {
         ],
       },
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '판매채널',
@@ -125,28 +151,39 @@ export default function Ltpa190Section() {
       headerName: '적용사항',
       field: 'field04',
       flex: 1,
-      editable: true,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
+      editable: isEditableNewRow,
       cellEditorParams: { values: ['선택', '선택2'] },
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '적용시작일',
       field: 'field05',
       width: 130,
-      editable: true, // 날짜 직접 입력 가능
+      editable: isEditableNewRow, // 날짜 직접 입력 가능
       cellClass: 'text-center',
       cellEditor: DatePickerCellEditor,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
+      params.data?.field05 && String(params.data.field05).trim() !== '' ? String(params.data.field05) : '',
     },
     {
       headerName: '적용종료일',
       field: 'field06',
       width: 130,
-      editable: true, // 날짜 직접 입력 가능
+      editable: isEditableNewRow, // 날짜 직접 입력 가능
       cellClass: 'text-center',
       cellEditor: DatePickerCellEditor,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
+      params.data?.field06 && String(params.data.field06).trim() !== '' ? String(params.data.field06) : '',
     },
     {
       headerName: '입력자',
@@ -160,13 +197,13 @@ export default function Ltpa190Section() {
       flex: 0.7,
       cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
       cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
-      editable: true,
+      editable: isEditableNewRow,
     },
     {
       headerName: '비고',
       field: 'field09',
       flex: 1.5,
-      editable: true,
+      editable: isEditableNewRow,
       cellClass: 'flex! items-center! justify-center!',
     },
   ];
@@ -177,6 +214,55 @@ export default function Ltpa190Section() {
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
+
+  // agGrid 행추가
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const handleAddRow = React.useCallback(() => {
+    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+    const newRow: DummyDataType = {
+      id: nextId,
+      isCheck: false,
+      isNew: true,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: '',
+      field05: '',
+      field06: '',
+      field07: '',
+      field08: 'false',
+      field09: '',
+    };
+
+    setRowData((prev) => [...prev, newRow]);
+
+    requestAnimationFrame(() => {
+      const gridApi = gridApiRef.current;
+
+      if (!gridApi) {
+        return;
+      }
+
+      const rowIndex = gridApi.getDisplayedRowCount() - 1;
+      gridApi.ensureIndexVisible(rowIndex, 'bottom');
+    });
+  }, [rowData]);
+
+  // agGrid 행삭제
+  const handleDeleteRow = React.useCallback(() => {
+    const gridApi = gridApiRef.current;
+    if (!gridApi) return;
+
+    const selectedIds = new Set(
+      gridApi
+        .getSelectedNodes()
+        .map((node) => node.data?.id)
+        .filter((id) => id !== undefined)
+    );
+    if (selectedIds.size === 0) return;
+
+    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
 
   // form event
   const [form, setFormField] = useFormFields({
@@ -275,10 +361,10 @@ export default function Ltpa190Section() {
               <TableFoldHead title="등록사항">
                 <Grow>
                   (<Checkbox>삭제건포함</Checkbox>)
-                  <Button color="gray" variant="outlined">
+                  <Button color="gray" variant="outlined" onClick={handleAddRow}>
                     행추가
                   </Button>
-                  <Button color="gray" variant="outlined">
+                  <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                     행삭제
                   </Button>
                 </Grow>
@@ -308,12 +394,10 @@ export default function Ltpa190Section() {
                         headerName: '√',
                         width: 30,
                       }}
+                      // 행추가 된 rowCell
+                      getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
                       onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
+                        gridApiRef.current = params.api;
                       }}
                     />
                   </div>
