@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -26,6 +26,8 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 // dummy data
 type DummyDataType = {
   id: number;
+  isNew: boolean;
+  isCheck: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -38,6 +40,7 @@ type DummyDataType = {
 };
 type DummyDataType2 = {
   id: number;
+  isNew: boolean;
   isCheck: boolean;
   field01: string | number;
   field02: string | number;
@@ -51,6 +54,8 @@ type DummyDataType2 = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    isCheck: false,
+    isNew: false,
     field01: '청약완료',
     field02: '프로세스 값',
     field03: '범용',
@@ -63,6 +68,8 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
+    isCheck: false,
+    isNew: false,
     field01: '청약완료',
     field02: '',
     field03: '범용',
@@ -75,6 +82,8 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
+    isCheck: false,
+    isNew: false,
     field01: '청약완료',
     field02: '',
     field03: '범용',
@@ -87,6 +96,8 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
+    isCheck: false,
+    isNew: false,
     field01: '청약완료',
     field02: '',
     field03: '범용',
@@ -101,6 +112,7 @@ const DummyData: DummyDataType[] = [
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '3423554',
@@ -113,6 +125,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '',
@@ -125,6 +138,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 3,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '',
@@ -137,6 +151,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 4,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '',
@@ -149,6 +164,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 5,
+    isNew: false,
     isCheck: false,
     field01: '',
     field02: '',
@@ -161,53 +177,22 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-function Field02CellEditor(props: ICellEditorParams<DummyDataType>) {
-  const [value, setValue] = React.useState<string>(String(props.value ?? ''));
-
-  type CellEditorRef = { getValue: () => string; isCancelAfterEnd: () => boolean };
-  type PropsWithRef = ICellEditorParams<DummyDataType> & { forwardedRef?: React.Ref<CellEditorRef> };
-  const propsWithRef = props as unknown as PropsWithRef;
-
-  React.useEffect(() => {
-    setValue(String(props.value ?? ''));
-  }, [props.value]);
-  React.useImperativeHandle(
-    propsWithRef.forwardedRef,
-    () => ({ getValue: () => value, isCancelAfterEnd: () => false }),
-    [value]
-  );
-
-  return (
-    <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200 gap-0">
-      <Grow className="px-1 w-full h-full">
-        <Input
-          aria-label=""
-          width={'full'}
-          value={value}
-          size="sm"
-          autoFocus
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <Button
-          aria-label="검색"
-          variant={'outlined'}
-          only="icon"
-          size={'md'}
-          color={'gray-light'}
-          onMouseDown={(e) => e.stopPropagation()}
-          onClick={() => {
-            /* 검색 로직 */
-          }}
-        >
-          <SearchIcon color={'var(--color-primary-50)'} />
-        </Button>
-      </Grow>
-      <div className="w-full truncate min-w-0 px-1">{String(props.data?.field03 ?? '')}</div>
-    </Grid>
-  );
-}
-
 export default function Ltpa030Section() {
+  // 새로 추가한 행만 편집 가능
+  const isEditableNewRow = React.useCallback(
+    (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
+    []
+  );
+  const isEditableNewRow2 = React.useCallback(
+    (params: EditableCallbackParams<DummyDataType2>) => params.data?.isNew === true,
+    []
+  );
+
+  const existingRowFieldRenderer2 = React.useMemo(
+    () => createFieldRenderer<DummyDataType2>('field02', 'field03', 'row'),
+    []
+  );
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '체크단계',
@@ -219,8 +204,8 @@ export default function Ltpa030Section() {
       headerName: '신계약프로세스',
       field: 'field02',
       width: 100,
-      editable: true,
       cellClass: 'editable-cell text-center',
+      editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '프로세스 값'] },
     },
@@ -234,8 +219,8 @@ export default function Ltpa030Section() {
       headerName: '적용사항',
       field: 'field04',
       width: 100,
-      editable: true,
       cellClass: 'editable-cell text-center',
+      editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '적용사항 값'] },
     },
@@ -243,9 +228,9 @@ export default function Ltpa030Section() {
       headerName: '적용시작일',
       field: 'field05',
       width: 130,
-      editable: true,
       cellClass: 'editable-cell text-center',
       autoHeight: true,
+      editable: isEditableNewRow,
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
         params.data?.field05 && String(params.data.field05).trim() !== '' ? String(params.data.field05) : '',
@@ -254,9 +239,9 @@ export default function Ltpa030Section() {
       headerName: '적용종료일',
       field: 'field06',
       width: 130,
-      editable: true,
       cellClass: 'editable-cell text-center',
       autoHeight: true,
+      editable: isEditableNewRow,
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
         params.data?.field06 && String(params.data.field06).trim() !== '' ? String(params.data.field06) : '',
@@ -271,16 +256,16 @@ export default function Ltpa030Section() {
       headerName: '삭제여부',
       field: 'field08',
       width: 70,
-      editable: true,
+      editable: isEditableNewRow,
       cellClass: 'editable-cell',
       cellRenderer: 'agCheckboxCellRenderer',
-      cellEditor: 'agCheckboxCellEditor',
+      cellEditor: 'agCheckboxCellEditor',  
     },
     {
       headerName: '비고',
       field: 'field09',
       flex: 1,
-      editable: true,
+      editable: isEditableNewRow,
       cellClass: 'editable-cell',
     },
   ];
@@ -290,9 +275,9 @@ export default function Ltpa030Section() {
       headerName: '구분',
       field: 'field01',
       width: 90,
-      editable: true,
       cellClass: 'editable-cell',
       autoHeight: true,
+      editable: isEditableNewRow2,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '취급직원', '사용인', '설계'] },
     },
@@ -301,22 +286,28 @@ export default function Ltpa030Section() {
       field: 'field02',
       width: 260,
       autoHeight: true,
-      editable: true,
-      cellClass: 'editable-cell p-0! text-center field02-cell',
-      cellRenderer: createFieldRenderer<DummyDataType2>(
-        'field02',
-        (data?: DummyDataType2) => <div className="w-full truncate min-w-0 px-1">{data?.field03}</div>,
-        'row'
-      ),
-      cellEditor: Field02CellEditor,
+      cellClass: 'editable-cell p-0! text-center',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        if (params.data?.isNew) {
+          return (
+            <Grow className="w-full px-1">
+              <Input aria-label="" width={'100%'} value={''} size="sm" />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grow>
+          );
+        }
+        return existingRowFieldRenderer2(params);
+      },
     },
     {
       headerName: '적용시작일자',
       field: 'field04',
       width: 130,
-      editable: true,
       cellClass: 'editable-cell text-center',
       autoHeight: true,
+      editable: isEditableNewRow2,
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
         params.data?.field04 && String(params.data.field04).trim() !== '' ? String(params.data.field04) : '',
@@ -325,7 +316,7 @@ export default function Ltpa030Section() {
       headerName: '적용종료일자',
       field: 'field05',
       width: 130,
-      editable: true,
+      editable: isEditableNewRow2,
       cellClass: 'editable-cell text-center',
       autoHeight: true,
       cellEditor: DatePickerCellEditor,
@@ -336,7 +327,7 @@ export default function Ltpa030Section() {
       headerName: '상태',
       field: 'field06',
       width: 90,
-      editable: true,
+      editable: isEditableNewRow2,
       cellClass: 'editable-cell',
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
@@ -346,7 +337,7 @@ export default function Ltpa030Section() {
       headerName: '비고',
       field: 'field07',
       flex: 1,
-      editable: true,
+      editable: isEditableNewRow2,
       cellClass: 'editable-cell',
     },
     {
@@ -357,14 +348,115 @@ export default function Ltpa030Section() {
     },
   ];
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
+
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const gridApiRef2 = React.useRef<GridApi<DummyDataType2> | null>(null);
 
   const pageSize = 4;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData2,
     pageSize,
   });
+
+  // 첫번째 agGrid 행삭제
+  const handleDeleteRow = React.useCallback(() => {
+    const gridApi = gridApiRef.current;
+    if (!gridApi) return;
+
+    const selectedIds = new Set(
+      gridApi
+        .getSelectedNodes()
+        .map((node) => node.data?.id)
+        .filter((id) => id !== undefined)
+    );
+    if (selectedIds.size === 0) return;
+
+    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
+
+  // 첫번째 agGrid 행추가
+  const handleAddRow = React.useCallback(() => {
+    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+    const newRow: DummyDataType = {
+      id: nextId,
+      isCheck: false,
+      isNew: true,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: '',
+      field05: '',
+      field06: '',
+      field07: '',
+      field08: false,
+      field09: '',
+    };
+
+    setRowData((prev) => [...prev, newRow]);
+
+    requestAnimationFrame(() => {
+      const gridApi = gridApiRef.current;
+
+      if (!gridApi) {
+        return;
+      }
+
+      const rowIndex = gridApi.getDisplayedRowCount() - 1;
+      gridApi.ensureIndexVisible(rowIndex, 'bottom');
+      gridApi.startEditingCell({ rowIndex, colKey: 'field02' });
+    });
+  }, [rowData]);
+
+  // 두번째 agGrid 행삭제
+  const handleDeleteRow2 = React.useCallback(() => {
+    const gridApi = gridApiRef2.current;
+    if (!gridApi) return;
+
+    const selectedIds = new Set(
+      gridApi
+        .getSelectedNodes()
+        .map((node) => node.data?.id)
+        .filter((id) => id !== undefined)
+    );
+    if (selectedIds.size === 0) return;
+
+    setRowData2((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
+
+  // 두번째 agGrid 행추가
+  const handleAddRow2 = React.useCallback(() => {
+    const nextId = rowData2.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+    const newRow: DummyDataType2 = {
+      id: nextId,
+      isNew: true,
+      isCheck: false,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: '',
+      field05: '',
+      field06: '',
+      field07: '',
+      field08: '',
+    };
+
+    setRowData2((prev) => [...prev, newRow]);
+
+    requestAnimationFrame(() => {
+      const gridApi = gridApiRef2.current;
+
+      if (!gridApi) {
+        return;
+      }
+
+      const rowIndex = gridApi.getDisplayedRowCount() - 1;
+      gridApi.ensureIndexVisible(rowIndex, 'bottom');
+      gridApi.startEditingCell({ rowIndex, colKey: 'field01' });
+    });
+  }, [rowData2]);
+
 
   return (
     <>
@@ -447,8 +539,11 @@ export default function Ltpa030Section() {
                   <TableFoldHead title="기본사항">
                     <Grow>
                       (<Checkbox>삭제건포함</Checkbox>)
-                      <Button color="gray" variant="outlined">
+                      <Button color="gray" variant="outlined" onClick={handleAddRow}>
                         행추가
+                      </Button>
+                      <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
+                        행삭제
                       </Button>
                     </Grow>
                   </TableFoldHead>
@@ -461,6 +556,19 @@ export default function Ltpa030Section() {
                         enableCellSpan={true}
                         singleClickEdit={true}
                         noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          headerCheckbox: false,
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        selectionColumnDef={{
+                          headerName: '√',
+                          width: 30,
+                        }}
+                        onGridReady={(params) => {
+                          gridApiRef.current = params.api;
+                        }}
                       />
                     </div>
                   </TableFoldBody>
@@ -471,10 +579,10 @@ export default function Ltpa030Section() {
                 <TableFold className="h-full">
                   <TableFoldHead title="추가 등록사항(수납후스캔)">
                     <Grow>
-                      <Button color="gray" variant="outlined">
+                      <Button color="gray" variant="outlined" onClick={handleAddRow2}>
                         행추가
                       </Button>
-                      <Button color="gray" variant="outlined">
+                      <Button color="gray" variant="outlined" onClick={handleDeleteRow2}>
                         행삭제
                       </Button>
                     </Grow>
@@ -501,24 +609,12 @@ export default function Ltpa030Section() {
                             width: 30,
                           }}
                           onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isCheck) {
-                                node.setSelected(true);
-                              }
-                            });
-                          }}
-                          onCellValueChanged={(params) => {
-                            const field = params.colDef.field;
-                            if (!field) return;
-                            setRowData2((prev) =>
-                              prev.map((row) =>
-                                row.id === params.data.id ? { ...row, [field]: params.newValue } : row
-                              )
-                            );
+                            gridApiRef2.current = params.api;
                           }}
                         />
                       </div>
                       <TableMore
+                        isAll={false}
                         loadedCount={loadedCount}
                         totalCount={totalCount}
                         pageSize={pageSize}

@@ -596,3 +596,7 @@
 /* .ag-blue-text .ag-cell {
   color: var(--color-information-50);
 } */
+
+.ag-row-new .editable-cell svg {
+  display: block;
+}

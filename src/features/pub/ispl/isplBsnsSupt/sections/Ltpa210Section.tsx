@@ -90,6 +90,7 @@ export default function Ltpa210Section() {
   });
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  // 새로 추가한 행만 편집 가능
   const isEditableNewRow = React.useCallback(
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
     []
@@ -178,6 +179,7 @@ export default function Ltpa210Section() {
     type03: '',
   });
 
+  // agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
     if (!gridApi) return;
@@ -193,6 +195,7 @@ export default function Ltpa210Section() {
     setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
   }, []);
 
+  // agGrid 행추가
   const handleAddRow = React.useCallback(() => {
     const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
     const newRow: DummyDataType = {
