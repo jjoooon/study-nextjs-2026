@@ -201,9 +201,12 @@ export function IAListWithPreview() {
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
-        <Grow placement='ss'>
+        <Grow placement="ss">
           <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem]">
-            <div className='rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]' style={{ width: `${progressPercent}%` }}>
+            <div
+              className="rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]"
+              style={{ width: `${progressPercent}%` }}
+            >
               {doneCount} / {totalCount} ({progressPercent}%)
             </div>
           </div>
@@ -225,7 +228,7 @@ export function IAListWithPreview() {
             <col style={{ width: '2rem' }} />
             <col />
             <col />
-           <col style={{ width: '5rem' }} />
+            <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
           </colgroup>
@@ -338,10 +341,9 @@ export function IAListWithPreview() {
                     <b>{modifyDate}</b>
                   </td>
 
-                  
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td> 
+                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
                 </tr>
               );
             })}
