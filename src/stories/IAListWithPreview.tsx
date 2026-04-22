@@ -201,9 +201,24 @@ export function IAListWithPreview() {
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
-        <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem]">
-          <div className='rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]' style={{ width: `${progressPercent}%` }}>
-             {doneCount} / {totalCount} ({progressPercent}%)
+        <div className="w-full grid grid-cols-[1fr_auto] gap-2">
+          <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
+            <div
+              className="rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]"
+              style={{ width: `${progressPercent}%` }}
+            >
+              {doneCount} / {totalCount} ({progressPercent}%)
+            </div>
+          </div>
+          <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
+            반입일: 2026.04.22
+            <a
+              href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
+              download
+              className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
+            >
+              📦다운로드파일
+            </a>
           </div>
         </div>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
@@ -216,7 +231,7 @@ export function IAListWithPreview() {
             <col style={{ width: '2rem' }} />
             <col />
             <col />
-           <col style={{ width: '5rem' }} />
+            <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
           </colgroup>
@@ -329,10 +344,9 @@ export function IAListWithPreview() {
                     <b>{modifyDate}</b>
                   </td>
 
-                  
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td> 
+                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
                 </tr>
               );
             })}

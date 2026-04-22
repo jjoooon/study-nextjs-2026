@@ -1,8 +1,8 @@
+import { ErrorMsg } from '@common/ErrorMsg';
+import { SelectDropIcon } from '@icons';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
-import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectDropIcon } from '@icons';
 
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
   variant?: 'default';

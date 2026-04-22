@@ -1,12 +1,12 @@
 'use client';
 // M1. 전체 수정
-import type { ColDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
-import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, editableSelectCellRenderer, useAgGridInfiniteAppend } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createFieldRenderer,
+  DatePickerCellEditor,
+  editableSelectCellRenderer,
+  useAgGridInfiniteAppend,
+} from '@aggrid';
 import { Gcol, Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,10 +20,20 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type {
+  ColDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useCallback } from 'react';
-import {
-  createTooltipValueGetter,
-} from '@/shared/components/agGridUtils';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
+import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -188,7 +198,10 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const targetNameByCode = new Map(
-  DummyData2.filter((item) => String(item.field02).trim() !== '').map((item) => [String(item.field02), String(item.field03)])
+  DummyData2.filter((item) => String(item.field02).trim() !== '').map((item) => [
+    String(item.field02),
+    String(item.field03),
+  ])
 );
 
 type TargetCellEditorRef = {
@@ -299,7 +312,7 @@ export default function Ltpa030Section() {
       headerName: '신계약프로세스',
       field: 'field02',
       width: 100,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '프로세스 값'] },
@@ -321,7 +334,7 @@ export default function Ltpa030Section() {
       headerName: '적용사항',
       field: 'field04',
       width: 100,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '적용사항 값'] },
@@ -368,7 +381,7 @@ export default function Ltpa030Section() {
       editable: isEditableNewRow,
       cellClass: 'editable-cell',
       cellRenderer: 'agCheckboxCellRenderer',
-      cellEditor: 'agCheckboxCellEditor',  
+      cellEditor: 'agCheckboxCellEditor',
     },
     {
       headerName: '비고',
@@ -384,7 +397,7 @@ export default function Ltpa030Section() {
       headerName: '구분',
       field: 'field01',
       width: 90,
-      cellClass: (params) => isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       // editable: isEditableNewRow2,
       cellEditor: 'agSelectCellEditor',
@@ -424,8 +437,15 @@ export default function Ltpa030Section() {
                   params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
                   params.api.startEditingCell({ rowIndex, colKey: 'field02' });
                 }}
-              > 
-                <Input aria-label="" width={'100%'} value={''} size="sm" variant="ghost" className="pointer-events-none" />
+              >
+                <Input
+                  aria-label=""
+                  width={'100%'}
+                  value={''}
+                  size="sm"
+                  variant="ghost"
+                  className="pointer-events-none"
+                />
               </div>
               <Button
                 aria-label="검색"
@@ -479,7 +499,7 @@ export default function Ltpa030Section() {
       field: 'field06',
       width: 90,
       editable: isEditableNewRow2,
-      cellClass: (params) => isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '정상', '고객환불', '조치완료', '취소'] },
@@ -616,7 +636,6 @@ export default function Ltpa030Section() {
     });
   }, [rowData2]);
 
-
   return (
     <>
       {/* M2. 팝업에서 페이지로 변경 */}
@@ -726,7 +745,7 @@ export default function Ltpa030Section() {
                           width: 30,
                         }}
                         // 행추가 된 rowCell
-                        getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                        getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                         onGridReady={(params) => {
                           gridApiRef.current = params.api;
                         }}
@@ -772,7 +791,7 @@ export default function Ltpa030Section() {
                             width: 30,
                           }}
                           // 행추가 된 rowCell
-                          getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                          getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                           onGridReady={(params) => {
                             gridApiRef2.current = params.api;
                           }}

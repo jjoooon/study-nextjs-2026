@@ -1,14 +1,5 @@
 'use client';
 
-
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { Badge } from '@/shared/components/uiux/Badge';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -29,6 +20,13 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

@@ -1,12 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -24,7 +17,13 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Ltpz03201 } from './Ltpz03201';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

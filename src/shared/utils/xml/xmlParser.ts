@@ -1,6 +1,6 @@
 import { parseStringPromise } from 'xml2js';
-import log from '@/shared/utils/logger';
 import type { XmlParserOptions, XmlNode, XmlJson } from './xmlTypes';
+import log from '@/shared/utils/logger';
 
 /**
  * XML을 JSON으로 변환하는 유틸리티 함수

@@ -872,7 +872,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                         </Accordion>
                       </Gcol>
                     </SelectDrop>
-                    
+
                     {/* M1. 토글 시 아이콘 변경 추가 */}
                     <Button
                       variant={'outlined'}

@@ -18,11 +18,11 @@ export const DialogBottomInfo = () => {
       </Grow>
       <Grow>
         {/* M1. 화면담당자추가 */}
-        <Button variant={'none'} className='text-[1.1rem]'>
+        <Button variant={'none'} className="text-[1.1rem]">
           <DialogPocIcon color={'var(--color-secondary-50)'} />
           화면담당자
         </Button>
-        
+
         <Button variant={'none'} only={'icon'} aria-label="목록">
           <DialogListIcon color={'var(--color-secondary-50)'} />
         </Button>

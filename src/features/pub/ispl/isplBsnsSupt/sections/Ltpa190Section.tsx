@@ -14,6 +14,7 @@ import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } fro
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { useCallback } from 'react';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -28,7 +29,6 @@ import { ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { useCallback } from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 type DummyDataType = {
@@ -116,7 +116,7 @@ export default function Ltpa190Section() {
       headerName: '신계약프로세스',
       field: 'field02',
       flex: 2,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
@@ -151,7 +151,7 @@ export default function Ltpa190Section() {
       headerName: '적용사항',
       field: 'field04',
       flex: 1,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
       editable: isEditableNewRow,
@@ -173,7 +173,7 @@ export default function Ltpa190Section() {
       cellClass: 'text-center',
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
-      params.data?.field05 && String(params.data.field05).trim() !== '' ? String(params.data.field05) : '',
+        params.data?.field05 && String(params.data.field05).trim() !== '' ? String(params.data.field05) : '',
     },
     {
       headerName: '적용종료일',
@@ -183,7 +183,7 @@ export default function Ltpa190Section() {
       cellClass: 'text-center',
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) =>
-      params.data?.field06 && String(params.data.field06).trim() !== '' ? String(params.data.field06) : '',
+        params.data?.field06 && String(params.data.field06).trim() !== '' ? String(params.data.field06) : '',
     },
     {
       headerName: '입력자',
@@ -395,7 +395,7 @@ export default function Ltpa190Section() {
                         width: 30,
                       }}
                       // 행추가 된 rowCell
-                      getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                      getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                       onGridReady={(params) => {
                         gridApiRef.current = params.api;
                       }}

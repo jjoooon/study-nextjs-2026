@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
-
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { AdderIcon, AdderIcon2, AiIcon, PaperIcon } from '@icons';
 import { Checkbox } from '@uiux/Checkbox';
+import { useState, type ReactNode } from 'react';
 import { Button } from '../uiux/Button';
 
 export type RecommendCardDataItem = {

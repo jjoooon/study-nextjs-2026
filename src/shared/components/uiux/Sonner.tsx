@@ -1,8 +1,8 @@
 'use client';
 
+import { InfoToastIcon, CloseIcon } from '@icons';
 import { useTheme } from 'next-themes';
 import { Toaster as Sonner, toast } from 'sonner';
-import { InfoToastIcon, CloseIcon } from '@icons';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 

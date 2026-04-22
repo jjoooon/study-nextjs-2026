@@ -1,7 +1,7 @@
 'use client';
 
-import { ArrowUpDown, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@uiux/Button';
+import { ArrowUpDown, ChevronUp, ChevronDown } from 'lucide-react';
 
 interface SortableButtonProps {
   label: string;

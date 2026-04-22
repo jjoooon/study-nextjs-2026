@@ -1,13 +1,5 @@
 'use client';
 
-
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -24,6 +16,13 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

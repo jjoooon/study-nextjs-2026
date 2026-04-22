@@ -1,9 +1,9 @@
 'use client';
 
+import { Typo } from '@atoms';
 import { useEffect, useRef } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import log from '@/shared/utils/logger';
-import { Typo } from '@atoms';
 
 type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 

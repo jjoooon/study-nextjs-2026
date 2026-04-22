@@ -50,7 +50,11 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
         </Grow>
       )}
 
-      <Gcol className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] bg-[var(--color-gray-0)] min-h-[5.6rem]" gap={0} placement="cs">
+      <Gcol
+        className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] bg-[var(--color-gray-0)] min-h-[5.6rem]"
+        gap={0}
+        placement="cs"
+      >
         <Grow placement={'bwc'}>
           <Typo variant={'body-sm'} weight={'bold'}>
             납입보험료
@@ -76,14 +80,14 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
       </Gcol>
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
         {/* M1. color={'gray'} 수정, className삭제 */}
-        <Button variant={'outlined'} color={'gray'} size={'lg'} >
+        <Button variant={'outlined'} color={'gray'} size={'lg'}>
           제안서
           <PlusIcon color={'var(--color-secondary-50)'} />
         </Button>
         <Popover>
           <PopoverTrigger asChild>
             {/* M1. color={'gray'} 수정, className삭제 */}
-            <Button variant={'outlined'} color={'gray'} size={'lg'} >
+            <Button variant={'outlined'} color={'gray'} size={'lg'}>
               출력
               <PlusIcon color={'var(--color-secondary-50)'} />
             </Button>
