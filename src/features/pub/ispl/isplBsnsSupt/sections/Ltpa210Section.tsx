@@ -2,13 +2,13 @@
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, DatePickerCellEditor, useAgGridInfiniteAppend, createFieldRenderer } from '@aggrid';
+import { AgGridEmptyComponent, DatePickerCellEditor, useAgGridInfiniteAppend, createFieldRenderer, editableSelectCellRenderer } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -23,6 +23,10 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useCallback } from 'react';
+import {
+  createTooltipValueGetter,
+} from '@/shared/components/agGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 // dummy data
@@ -32,6 +36,7 @@ type DummyDataType = {
   isNew: boolean;
   field01: string | number;
   field02: string | number;
+  searchInputValue: string | number;
   field03: string | number;
   field04: string | number;
   field05: string | number;
@@ -47,6 +52,7 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '취급직원',
     field02: '3448460',
+    searchInputValue: '',
     field03: '주식회사 마이디어',
     field04: '2026-03-01',
     field05: '9999-12-31',
@@ -60,6 +66,7 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '취급직원',
     field02: '3448460',
+    searchInputValue: '',
     field03: '주식회사 마이디어',
     field04: '2026-03-01',
     field05: '9999-12-31',
@@ -73,6 +80,7 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '취급직원',
     field02: '3448460',
+    searchInputValue: '',
     field03: '주식회사 마이디어',
     field04: '2026-03-01',
     field05: '9999-12-31',
@@ -82,6 +90,84 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+const targetNameByCode = new Map(
+  DummyData.filter((item) => String(item.field02).trim() !== '').map((item) => [String(item.field02), String(item.field03)])
+);
+
+type TargetCellEditorRef = {
+  getValue: () => string;
+  isCancelAfterEnd: () => boolean;
+};
+
+const TargetCellEditor = React.forwardRef<TargetCellEditorRef, ICellEditorParams<DummyDataType>>((props, ref) => {
+  const [value, setValue] = React.useState<string>(String(props.data?.searchInputValue ?? ''));
+  const valueRef = React.useRef<string>(String(props.data?.searchInputValue ?? ''));
+  const isSearchConfirmedRef = React.useRef<boolean>(false);
+
+  React.useEffect(() => {
+    const initialValue = String(props.data?.searchInputValue ?? '');
+
+    setValue(initialValue);
+    valueRef.current = initialValue;
+    isSearchConfirmedRef.current = false;
+  }, [props.data?.searchInputValue]);
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      getValue: () => valueRef.current,
+      isCancelAfterEnd: () => !isSearchConfirmedRef.current,
+    }),
+    []
+  );
+
+  return (
+    // 행추가시 검색창 input 클릭시 편집모드 진입 및 검색어 입력 가능하도록 수정
+    <Grow className="w-full px-1">
+      <Input
+        aria-label=""
+        width={'100%'}
+        value={value}
+        size="sm"
+        autoFocus
+        onChange={(e) => {
+          const nextValue = e.target.value;
+
+          valueRef.current = nextValue;
+          isSearchConfirmedRef.current = false;
+          setValue(nextValue);
+          props.node.setDataValue('searchInputValue', nextValue);
+        }}
+      />
+      <Button
+        aria-label="검색"
+        variant={'outlined'}
+        only="icon"
+        size={'md'}
+        color={'gray-light'}
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+
+          const selectedCode = valueRef.current.trim();
+          const targetName = targetNameByCode.get(selectedCode) ?? '';
+
+          valueRef.current = selectedCode;
+          setValue(selectedCode);
+          props.node.setDataValue('searchInputValue', selectedCode);
+          props.node.setDataValue('field03', targetName);
+          isSearchConfirmedRef.current = true;
+          props.stopEditing?.();
+        }}
+      >
+        <SearchIcon color={'var(--color-primary-50)'} />
+      </Button>
+    </Grow>
+  );
+});
+
+TargetCellEditor.displayName = 'TargetCellEditor';
+
 export default function Ltpa210Section() {
   const pageSize = 2;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
@@ -89,7 +175,6 @@ export default function Ltpa210Section() {
     pageSize,
   });
 
-  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   // 새로 추가한 행만 편집 가능
   const isEditableNewRow = React.useCallback(
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
@@ -100,34 +185,82 @@ export default function Ltpa210Section() {
     []
   );
 
+  const expiryCellRenderer = useCallback(
+    (align: 'left' | 'center' | 'right' = 'right') =>
+      (params: ICellRendererParams<DummyDataType>) =>
+        editableSelectCellRenderer<DummyDataType>({ ...params, align }),
+    []
+  );
+
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
       field: 'field01',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '취급직원', ''] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '대상',
       field: 'field02',
       flex: 1,
       cellClass: 'flex! items-center! justify-center! text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
+      editable: isEditableNewRow,
+      cellEditor: TargetCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         if (params.data?.isNew) {
+          const rowIndex = params.node.rowIndex;
+
           return (
             <Grow className="w-full px-1">
-              <Input aria-label="" width={'100%'} value={''} size="sm" />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <div
+                className="w-full min-w-0"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (rowIndex === null) {
+                    return;
+                  }
+
+                  params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
+                  params.api.startEditingCell({ rowIndex, colKey: 'field02' });
+                }}
+              > 
+                <Input aria-label="" width={'100%'} value={''} size="sm" variant="ghost" className="pointer-events-none" />
+              </div>
+              <Button
+                aria-label="검색"
+                variant={'outlined'}
+                only="icon"
+                size={'md'}
+                color={'gray-light'}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (rowIndex === null) {
+                    return;
+                  }
+
+                  params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
+                  params.api.startEditingCell({ rowIndex, colKey: 'field02' });
+                }}
+              >
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
             </Grow>
           );
         }
-
         return existingRowFieldRenderer(params);
       },
     },
@@ -151,10 +284,17 @@ export default function Ltpa210Section() {
       headerName: '상태',
       field: 'field06',
       flex: 0.8,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '정상', ''] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '적용사유',
@@ -196,14 +336,16 @@ export default function Ltpa210Section() {
   }, []);
 
   // agGrid 행추가
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const handleAddRow = React.useCallback(() => {
     const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
     const newRow: DummyDataType = {
       id: nextId,
       isCheck: false,
       isNew: true,
-      field01: '선택',
+      field01: '',
       field02: '',
+      searchInputValue: '',
       field03: '',
       field04: '',
       field05: '',
@@ -223,7 +365,6 @@ export default function Ltpa210Section() {
 
       const rowIndex = gridApi.getDisplayedRowCount() - 1;
       gridApi.ensureIndexVisible(rowIndex, 'bottom');
-      gridApi.startEditingCell({ rowIndex, colKey: 'field01' });
     });
   }, [rowData]);
 
@@ -353,6 +494,8 @@ export default function Ltpa210Section() {
                       enableCellSpan={true}
                       singleClickEdit={true}
                       domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                       rowSelection={{
                         mode: 'multiRow',
                         headerCheckbox: false,
@@ -364,13 +507,10 @@ export default function Ltpa210Section() {
                         cellClass: 'text-center',
                         width: 30,
                       }}
+                      // 행추가 된 rowCell
+                      getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
                       onGridReady={(params) => {
                         gridApiRef.current = params.api;
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
                       }}
                     />
                   </div>
