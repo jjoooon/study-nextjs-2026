@@ -217,7 +217,7 @@ export function IAListWithPreview() {
               download
               className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
             >
-              📦다운로드파일
+              📦다운로드 파일
             </a>
           </div>
         </div>
