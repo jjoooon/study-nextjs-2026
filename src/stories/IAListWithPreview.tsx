@@ -14,7 +14,7 @@ type SortKey = 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id' | 'completeDate' 
 type SortState = {
   key: SortKey | null;
   order: SortOrder;
-};  
+};
 
 type IARow = {
   no?: number;
@@ -211,16 +211,16 @@ export function IAListWithPreview() {
             </div>
           </div>
           <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
-            반입일: 2026.04.22 
-             <a
+            반입일: 2026.04.22
+            <a
               href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
               download
               className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
             >
-              📦다운로드
+              📦다운로드파일
             </a>
           </div>
-         </div>
+        </div>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
             <col style={{ width: '1rem' }} />
