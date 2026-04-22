@@ -6,6 +6,8 @@ import {
   editableSelectCellRenderer,
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
+  DatePickerCellEditor,
+  createTooltipValueGetter,
 } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -29,15 +31,169 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
+import * as React from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState, useRef } from 'react';
+
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+type DummyDataType = {
+  id: number;
+  isNew: boolean;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+};
+
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    isCheck: false,
+    isNew: false,
+    field01: '선택',
+    field02: '3대진단형3대진단형3대진단형3대진단형',
+    field03: '2026-04-18',
+    field04:  3000,
+  },
+  {
+    id: 2,
+    isCheck: false,
+    isNew: false,
+    field01: '선택',
+    field02: '3대진단형',
+    field03: '2026-03-22',
+    field04:  3000,
+  },
+  {
+    id: 3,
+    isCheck: false,
+    isNew: false,
+    field01: '선택',
+    field02: '3대진단형',
+    field03: '2026-03-22',
+    field04:  3000,
+  },
+];
+
+
+
 export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+
+  // 첫번째 agGrid 행삭제
+  const handleDeleteRow = React.useCallback(() => {
+    const gridApi = gridApiRef.current;
+    if (!gridApi) return;
+
+    const selectedIds = new Set(
+      gridApi
+        .getSelectedNodes()
+        .map((node) => node.data?.id)
+        .filter((id) => id !== undefined)
+    );
+    if (selectedIds.size === 0) return;
+
+    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
+
+  // 첫번째 agGrid 행추가
+  const handleAddRow = React.useCallback(() => {
+    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+    const newRow: DummyDataType = {
+      id: nextId,
+      isCheck: false,
+      isNew: true,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: '',
+    };
+
+    setRowData((prev) => [...prev, newRow]);
+
+    requestAnimationFrame(() => {
+      const gridApi = gridApiRef.current;
+
+      if (!gridApi) {
+        return;
+      }
+
+      const rowIndex = gridApi.getDisplayedRowCount() - 1;
+      gridApi.ensureIndexVisible(rowIndex, 'bottom');
+      // gridApi.startEditingCell({ rowIndex, colKey: 'field02' });
+    });
+  }, [rowData]);
+
+  // 새로 추가한 행만 편집 가능
+  const isEditableNewRow = React.useCallback(
+    (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
+    []
+  );
+
+  const expiryCellRenderer = useCallback(
+      (align: 'left' | 'center' | 'right' = 'right') =>
+        (params: ICellRendererParams<DummyDataType>) =>
+          editableSelectCellRenderer<DummyDataType>({ ...params, align }),
+      []
+    );
+
+  const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '순번',
+      field: 'id',
+      width: 50,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '품명',
+      field: 'field01',
+      width: 180,
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
+      cellEditor: 'agSelectCellEditor',
+      editable: isEditableNewRow,
+      cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+      if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+      return params.value;
+      },
+    },
+    {
+      headerName: '브랜드명',
+      field: 'field02',
+      flex: 1,
+      cellClass: (params) => isEditableNewRow(params) ? 'text-left editable-cell' : 'text-left',
+      editable: isEditableNewRow,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+    },
+    {
+      headerName: '구입년월',
+      field: 'field03',
+      width: 120,
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
+      editable: isEditableNewRow,
+    },
+    {
+      headerName: '구입가격(만원)',
+      field: 'field04',
+      width: 130,
+      cellClass: (params) => isEditableNewRow(params) ? 'text-right editable-cell' : 'text-right',
+      valueParser: (params) => Number(params.newValue) || 0,
+      valueFormatter: numberValueFormatter,
+      editable: isEditableNewRow,
+    },
+  ];
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">
@@ -66,9 +222,43 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
             </FormTable>
           </Grow>
           <TableFold>
-            <TableFoldHead title="골프용품손해(실손)" />
+            <TableFoldHead title="골프용품손해(실손)">
+              <Grow>
+                <Button color="gray" variant="outlined" onClick={handleAddRow}>
+                  행추가
+                </Button>
+                <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
+                  행삭제
+                </Button>
+              </Grow>
+            </TableFoldHead>
             <TableFoldBody>
-              
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  enableCellSpan={true}
+                  singleClickEdit={true}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                  }}
+                  getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                  onGridReady={(params) => {
+                    gridApiRef.current = params.api;
+                  }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
             </TableFoldBody>
           </TableFold>
           
