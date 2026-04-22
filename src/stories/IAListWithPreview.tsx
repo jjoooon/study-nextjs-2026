@@ -10,7 +10,7 @@ import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 type SortOrder = 'default' | 'asc' | 'desc';
-type SortKey = 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id';
+type SortKey = 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id' | 'completeDate' | 'modifyDate';
 type SortState = {
   key: SortKey | null;
   order: SortOrder;
@@ -98,15 +98,36 @@ export function IAListWithPreview() {
     return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
   }, [activeRowKey, visibleRows]);
 
+  // 완료일/수정일 정렬 지원
   const sortedRows = React.useMemo(() => {
     if (sortState.key === null || sortState.order === 'default') {
       return visibleRows;
     }
-
     const sortKey = sortState.key;
-
     return [...visibleRows].sort((left, right) => {
-      // path, id, dep4, plan, pub, dev 모두 string이므로 localeCompare 사용
+      // 날짜 정렬 지원
+      if (sortKey === 'completeDate' || sortKey === 'modifyDate') {
+        // 날짜 추출 함수 (YYYY.MM.DD → YYYYMMDD)
+        const getDateNum = (row: IARow, type: 'completeDate' | 'modifyDate') => {
+          let result = type === 'completeDate' ? row.date : row.modify;
+          const dateData = iaDateData as Record<string, string[]>;
+          for (const key of Object.keys(dateData)) {
+            if (key.startsWith(type === 'completeDate' ? 'e' : 'm') && key.length === 7) {
+              const dateStr = key.slice(1);
+              const idList = dateData[key];
+              if (Array.isArray(idList) && idList.includes(row.id)) {
+                result = `20${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+              }
+            }
+          }
+          return result.replace(/\./g, '');
+        };
+        const leftValue = getDateNum(left, sortKey);
+        const rightValue = getDateNum(right, sortKey);
+        const compareResult = leftValue.localeCompare(rightValue);
+        return sortState.order === 'asc' ? compareResult : -compareResult;
+      }
+      // 기존 문자열 정렬
       type SortableKeys = keyof Pick<IARow, 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
       if (!sortKey || !['dep4', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
         return 0;
@@ -180,8 +201,8 @@ export function IAListWithPreview() {
             <col style={{ width: '1rem' }} />
             <col style={{ width: '4rem' }} />
             <col style={{ width: '8rem' }} />
-            <col />
-            <col />
+            <col style={{ width: '12rem' }} />
+            <col style={{ width: '6rem' }} />
             <col style={{ width: '2rem' }} />
             <col />
             <col />
@@ -206,8 +227,12 @@ export function IAListWithPreview() {
               <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
                 1차{showPhaseOnly ? ' ✓' : ''}
               </th>
-              <th scope="col">완료일</th>
-              <th scope="col">수정일</th>
+              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('completeDate')}>
+                완료일{getSortIndicator('completeDate')}
+              </th>
+              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('modifyDate')}>
+                수정일{getSortIndicator('modifyDate')}
+              </th>
 
               {/* <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
@@ -248,14 +273,14 @@ export function IAListWithPreview() {
                   const dateStr = key.slice(1);
                   const idList = dateData[key];
                   if (Array.isArray(idList) && idList.includes(row.id)) {
-                    completeDate = `${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+                    completeDate = `${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
                   }
                 }
                 if (key.startsWith('m') && key.length === 7) {
                   const dateStr = key.slice(1);
                   const idList = dateData[key];
                   if (Array.isArray(idList) && idList.includes(row.id)) {
-                    modifyDate = `${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
+                    modifyDate = `${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
                   }
                 }
               }
@@ -277,9 +302,7 @@ export function IAListWithPreview() {
                     {row.id}
                     {row.subId ? <>({row.subId})</> : ''}
                   </th>
-                  <td className={rowBgClass}>
-                    <b>{row.dep4}</b>
-                  </td>
+                  <td className={rowBgClass}>{row.dep4}</td>
 
                   <td className={rowBgClass}>{row.file}</td>
 
@@ -309,22 +332,25 @@ export function IAListWithPreview() {
 
       <div className="ia-preview-pane">
         {activeRow ? (
-          <div
-            className="ia-preview-label cursor-pointer"
-            role="button"
-            tabIndex={0}
-            onClick={handleMovePage}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                handleMovePage();
-              }
-            }}
-          >
-            {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
-            <b>
-              {activeRow.dep4}({activeRow.id})
-            </b>
+          <div>
+            <div
+              className="ia-preview-label cursor-pointer"
+              role="button"
+              tabIndex={0}
+              onClick={handleMovePage}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleMovePage();
+                }
+              }}
+            >
+              {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
+              <b>
+                {activeRow.dep4}({activeRow.id})
+              </b>
+            </div>
+            <div className="ia-preview-path mt-2 text-[#000] tracking-[0] !text-[1.2rem]">{activeRow.path ?? '-'}</div>
           </div>
         ) : (
           <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>

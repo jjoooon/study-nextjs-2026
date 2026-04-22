@@ -46,10 +46,10 @@
 import type { Metadata, Viewport } from 'next';
 
 import '@/shared/styles/globals.css';
+import { Providers } from './providers';
 import { AuthGuard } from '@/shared/components/AuthGuard';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import { SpinnerRoot } from '@common/SpinnerRoot';
-import { Providers } from './providers';
 
 export const viewport: Viewport = {
   width: 'device-width',

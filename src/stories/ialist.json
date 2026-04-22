@@ -282,8 +282,8 @@
     "plan": "서영진",
     "pub": "",
     "dev": "미정",
-    "date": "00.00.00",
-    "modify": "00.00.00",
+    "date": "",
+    "modify": "",
     "subId": "",
     "phase": "N",
     "popup": "팝업"
@@ -435,8 +435,8 @@
     "plan": "서영진",
     "pub": "",
     "dev": "미정",
-    "date": "00.00.00",
-    "modify": "00.00.00",
+    "date": "",
+    "modify": "",
     "subId": "",
     "phase": "",
     "popup": "팝업"
@@ -514,7 +514,7 @@
     "dep2": "인수지침/심사",
     "dep3": "인수지침",
     "id": "LTPA170",
-    "path": "shared/components/popups",
+    "path": "aqg",
     "dep4": "계약별누적위험",
     "file": "전환_인수지침_심사",
     "plan": "서영진",
@@ -524,7 +524,7 @@
     "modify": "",
     "subId": "",
     "phase": "Y",
-    "popup": "팝업"
+    "popup": "화면"
   },
   {
     "dep1": "차세대가입설계",
@@ -860,8 +860,8 @@
     "plan": "서영진",
     "pub": "",
     "dev": "미정",
-    "date": "00.00.00",
-    "modify": "00.00.00",
+    "date": "",
+    "modify": "",
     "subId": "",
     "phase": "",
     "popup": "화면"
@@ -877,8 +877,8 @@
     "plan": "서영진",
     "pub": "",
     "dev": "미정",
-    "date": "00.00.00",
-    "modify": "00.00.00",
+    "date": "",
+    "modify": "",
     "subId": "",
     "phase": "",
     "popup": "화면"
@@ -1075,7 +1075,7 @@
     "dep2": "가입설계",
     "dep3": "설계데이터관리",
     "id": "LTPA210",
-    "path": "components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "장기신계약가입설계관리정보",
     "file": "전환_가입설계",
     "plan": "서영진",
@@ -1085,7 +1085,7 @@
     "modify": "",
     "subId": "",
     "phase": "Y",
-    "popup": "팝업"
+    "popup": "화면"
   },
   {
     "dep1": "차세대가입설계",
