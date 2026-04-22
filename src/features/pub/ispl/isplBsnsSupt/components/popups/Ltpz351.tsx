@@ -1,24 +1,23 @@
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-} from '@uiux/Dialog';
 import type { ColDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -37,9 +36,7 @@ const DummyData: DummyDataType[] = [
   { id: 5, isChecked: false, field1: '', field2: '', field3: '' },
 ];
 
-
 export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -61,7 +58,6 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   // M2. 신규 페이지
   return (
@@ -78,7 +74,7 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className=''>
+        <DialogSection className="">
           <Gcol className="w-full" placement="ss" gap={2}>
             <div className="ag-theme-alpine radio-selection min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
@@ -100,8 +96,10 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
                 domLayout="normal"
               />
             </div>
-            <Grow placement='ec' className='w-full'>
-                <Button variant={'contained'} size={'md'}>전송</Button>
+            <Grow placement="ec" className="w-full">
+              <Button variant={'contained'} size={'md'}>
+                전송
+              </Button>
             </Grow>
           </Gcol>
         </DialogSection>

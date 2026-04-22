@@ -1,19 +1,5 @@
 'use client';
 
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-
-import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogFooterArea,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-} from '@uiux/Dialog';
 import { AllCommunityModule, ColDef, ModuleRegistry } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -25,6 +11,19 @@ import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons
 import { Input } from '@/shared/components/uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
 
 // M2. 신규페이지
 ModuleRegistry.registerModules([AllCommunityModule]);

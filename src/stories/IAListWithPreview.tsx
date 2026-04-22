@@ -1,7 +1,7 @@
 'use client';
 
-import { Grow } from '@atoms';
 import * as React from 'react';
+import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
 // iaEndModify import 제거, meta.data만 사용
 import iaDateData from './ia-date.json';

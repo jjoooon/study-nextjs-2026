@@ -1,6 +1,8 @@
 'use client';
 
-import { LayoutHead, LayoutFoot } from '@/shared/components/layout/BaseLayout';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
@@ -13,9 +15,11 @@ import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useState } from 'react';
-import type { ReactNode } from 'react';
 
+import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
+import { Ltpz005 } from '../../shared/components/popups/Ltpz005';
+import type { Ltpz018MenuItem } from '../../shared/components/popups/Ltpz018';
+import { Ltpz018 } from '../../shared/components/popups/Ltpz018';
 import { Ltpa350Step5 } from '../aplMtt/components/Ltpa350Step5'; // 05. 추가사항
 import { Ltpa350Step6 } from '../aplMtt/components/Ltpa350Step6'; // 06. 수납
 import { Ltpa350Step1 } from '../crmtt/components/Ltpa350Step1'; // 01. 가입설계
@@ -26,10 +30,6 @@ import { Ltpa350Step2View4 } from '../cvrPl/components/Ltpa350Step2View4'; // 02
 import { Ltpa350Step2View5 } from '../cvrPl/components/Ltpa350Step2View5'; // 02. 담보설계
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-import { Ltpz005 } from '../../shared/components/popups/Ltpz005';
-import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
-import { Ltpz018 } from '../../shared/components/popups/Ltpz018';
-import type { Ltpz018MenuItem } from '../../shared/components/popups/Ltpz018';
 
 // types
 type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6;

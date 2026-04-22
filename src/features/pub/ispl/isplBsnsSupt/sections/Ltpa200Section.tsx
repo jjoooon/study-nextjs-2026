@@ -2,13 +2,27 @@
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import type {
+  ColDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
+import { useCallback } from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, DatePickerCellEditor, useAgGridInfiniteAppend, createFieldRenderer, editableSelectCellRenderer } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  DatePickerCellEditor,
+  useAgGridInfiniteAppend,
+  createFieldRenderer,
+  editableSelectCellRenderer,
+} from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -23,10 +37,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useCallback } from 'react';
-import {
-  createTooltipValueGetter,
-} from '@/shared/components/agGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 // dummy data
@@ -67,7 +77,7 @@ const DummyData: DummyDataType[] = [
     field03: '2023-03-01',
     field04: '9999-12-31',
     field05: '',
-    
+
     field06: '',
     field07: '김한화',
   },
@@ -87,7 +97,10 @@ const DummyData: DummyDataType[] = [
 ];
 
 const targetNameByCode = new Map(
-  DummyData.filter((item) => String(item.field02).trim() !== '').map((item) => [String(item.field02), String(item.field03)])
+  DummyData.filter((item) => String(item.field02).trim() !== '').map((item) => [
+    String(item.field02),
+    String(item.field03),
+  ])
 );
 
 type TargetCellEditorRef = {
@@ -194,7 +207,7 @@ export default function Ltpa200Section() {
       headerName: '구분',
       field: 'field01',
       flex: 1,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '취급직원', ''] },
@@ -232,8 +245,15 @@ export default function Ltpa200Section() {
                   params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
                   params.api.startEditingCell({ rowIndex, colKey: 'field02' });
                 }}
-              > 
-                <Input aria-label="" width={'100%'} value={''} size="sm" variant="ghost" className="pointer-events-none" />
+              >
+                <Input
+                  aria-label=""
+                  width={'100%'}
+                  value={''}
+                  size="sm"
+                  variant="ghost"
+                  className="pointer-events-none"
+                />
               </div>
               <Button
                 aria-label="검색"
@@ -280,7 +300,7 @@ export default function Ltpa200Section() {
       headerName: '상태',
       field: 'field05',
       flex: 0.8,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '정상', ''] },
@@ -501,7 +521,7 @@ export default function Ltpa200Section() {
                         width: 30,
                       }}
                       // 행추가 된 rowCell
-                      getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                      getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                       onGridReady={(params) => {
                         gridApiRef.current = params.api;
                       }}

@@ -1,9 +1,9 @@
+import * as React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 
 import { ReSizeIcon } from '@icons';
-import * as React from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 
 interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   variant?: 'default' | 'outline';

@@ -1,5 +1,9 @@
 'use client';
 
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Grid, Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
@@ -16,10 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { useMemo, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type MenuItem = {
   code: string;

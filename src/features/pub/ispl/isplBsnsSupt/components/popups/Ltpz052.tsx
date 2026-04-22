@@ -1,12 +1,24 @@
 'use client';
 
 // React
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellRendererParams,
+  SuppressKeyboardEventParams,
+} from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
   AgGridEmptyComponent,
   GridHeaderCheckbox,
   createHeaderCheckboxParams,
   createHeaderCheckboxOnCellValueChanged,
-  createFieldRenderer,
   editableSelectCellRenderer,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -28,12 +40,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, EditableCallbackParams, GridApi, ICellRendererParams, SuppressKeyboardEventParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { useCallback } from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -82,7 +88,6 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
 export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
@@ -92,10 +97,10 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
     []
   );
-  const existingRowFieldRenderer = React.useMemo(
-    () => createFieldRenderer<DummyDataType>('field02', 'field03', 'row'),
-    []
-  );
+  // const existingRowFieldRenderer = React.useMemo(
+  //   () => createFieldRenderer<DummyDataType>('field02', 'field03', 'row'),
+  //   []
+  // );
 
   const expiryCellRenderer = useCallback(
     (align: 'left' | 'center' | 'right' = 'right') =>
@@ -177,7 +182,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           width: 100,
           editable: true,
           field: 'isAuthcheck1',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -190,7 +195,8 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           editable: true,
           field: 'isAuthcheck2',
           headerClass: 'border-r-0!',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell border-r-0!' : 'text-center border-r-0!',
+          cellClass: (params) =>
+            isEditableNewRow(params) ? 'text-center editable-cell border-r-0!' : 'text-center border-r-0!',
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -205,7 +211,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       minWidth: 240,
       field: 'field01',
       headerClass: 'border-l border-[#d4d4d5]',
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       editable: true,
       suppressNavigable: true,
@@ -243,7 +249,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '주민번호',
       flex: 1,
       field: 'field02',
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         if (params.data?.isNew) {
@@ -257,7 +263,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '전화번호',
       flex: 1,
       field: 'field03',
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         if (params.data?.isNew) {
@@ -274,7 +280,8 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '동의서',
           flex: 1,
           field: 'field04',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap', 
+          cellClass: (params) =>
+            isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
             if (params.data?.isNew) {
               return expiryCellRenderer('center')(params);
@@ -287,7 +294,8 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '모바일',
           flex: 1,
           field: 'field05',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap',
+          cellClass: (params) =>
+            isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
             if (params.data?.isNew) {
               return expiryCellRenderer('center')(params);
@@ -374,7 +382,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                     enableClickSelection: false,
                   }}
                   // 행추가 된 rowCell
-                  getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                  getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                   onGridReady={(params) => {
                     gridApiRef.current = params.api;
                   }}

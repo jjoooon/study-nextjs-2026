@@ -1,43 +1,34 @@
 'use client';
 
-import {
-  AgGridEmptyComponent,
-  createCellValueChangedHandler,
-  editableSelectCellRenderer,
-  numberValueFormatter,
-  createInsertCopiedRowButtonCellRenderer,
-  DatePickerCellEditor,
-  createTooltipValueGetter,
-} from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { EssentialIcon, SearchIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogClose,
-  DialogFooterArea,
-} from '@uiux/Dialog';
-
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-
+import { useCallback } from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  editableSelectCellRenderer,
+  numberValueFormatter,
+} from '@aggrid';
+import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+
+import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

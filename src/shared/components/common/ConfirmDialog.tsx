@@ -45,6 +45,7 @@
  * @lastModified 2026-03-05
  */
 
+import React from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,7 +57,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@uiux/AlertDialog';
-import React from 'react';
 
 /**
  * Dialog 톤 타입 (실제 시각적 상태)
