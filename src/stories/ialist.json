@@ -990,7 +990,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPA430",
-    "path": "ispl/isplBsnsSupt/components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "고지유형별 보험료비교",
     "file": "전환_가입설계",
     "plan": "서영진",
@@ -1000,7 +1000,7 @@
     "modify": "",
     "subId": "",
     "phase": "Y",
-    "popup": "팝업"
+    "popup": "화면"
   },
   {
     "dep1": "차세대가입설계",
@@ -1041,7 +1041,7 @@
     "dep2": "가입설계",
     "dep3": "설계데이터관리",
     "id": "LTPA190",
-    "path": "ispl/isplBsnsSupt/components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "장기청약서류출력기준관리",
     "file": "전환_가입설계",
     "plan": "서영진",
@@ -1051,14 +1051,14 @@
     "modify": "",
     "subId": "",
     "phase": "Y",
-    "popup": "팝업"
+    "popup": "화면"
   },
   {
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
     "dep3": "설계데이터관리",
     "id": "LTPA200",
-    "path": "ispl/isplBsnsSupt/components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "신계약스캔권한관리",
     "file": "전환_가입설계",
     "plan": "서영진",
@@ -1068,7 +1068,7 @@
     "modify": "",
     "subId": "",
     "phase": "Y",
-    "popup": "팝업"
+    "popup": "화면"
   },
   {
     "dep1": "차세대가입설계",
