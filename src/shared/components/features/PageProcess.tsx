@@ -2,6 +2,7 @@
 
 import { Fragment } from 'react';
 import { Gcol, Typo } from '@atoms';
+import  { Num1, Num2, Num3, Num4, Num5, Num6 } from '@/shared/components/icons/StepNumber';
 import { ProcessDot, CheckBoldIcon, ProcessActiveIcon } from '@icons';
 
 export type PageProcessItem = {
@@ -66,7 +67,12 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                     ) : isActive ? (
                       <ProcessActiveIcon className="animate-spin [animation-duration:4s]" />
                     ) : (
-                      item.step
+                      item.step === 1 ? <Num1 /> :
+                      item.step === 2 ? <Num2 /> :
+                      item.step === 3 ? <Num3 /> :
+                      item.step === 4 ? <Num4 /> :
+                      item.step === 5 ? <Num5 /> :
+                      item.step === 6 ? <Num6 /> : null
                     )}
                   </b>
                   <Typo

@@ -1843,3 +1843,5 @@ export const RightArrowIcon: React.FC<IconProps> = ({ className = '', size = 28,
     />
   </svg>
 );
+
+
