@@ -22,7 +22,7 @@ import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon } from '@icons';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Badge } from '@uiux/Badge';
@@ -1015,22 +1015,35 @@ export function Ltpa350Step2View4({ onSelectPlan, isWidthExpanded = false, setIs
                       </Gcol>
                     </SelectDrop>
 
+                    {/* M1. 토글 시 아이콘 변경 추가 */}
                     <Button
                       variant={'outlined'}
                       color={'gray'}
                       size={'md'}
+                      only={'icon'}
                       onClick={() => setIsHeightExpanded(!isHeightExpanded)}
                     >
-                      <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
+                      {isHeightExpanded ? (
+                        <SizeOffIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
+                      ) : (
+                        <SizeIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
+                      )}
                     </Button>
                     <Button
                       variant={'outlined'}
                       color={'gray'}
                       size={'md'}
+                      only={'icon'}
                       onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
                     >
-                      <SizeIcon color="var(--color-secondary-50)" />
+                      {isWidthExpanded ? (
+                        <SizeOffIcon size={16} color="var(--color-secondary-50)" />
+                      ) : (
+                        <SizeIcon size={16} color="var(--color-secondary-50)" />
+                      )}
                     </Button>
+                    {/* //M1. 토글 시 아이콘 변경 추가 */}
+                    
                   </Grow>
                 </Grow>
               </Grow>

@@ -343,7 +343,10 @@ export default function Ltpa350Section() {
 
               setTaskStatusActiveTab(nextActiveTab);
               setIsTaskStatusPopupOpen(true);
-              setActiveStep(2);
+              // 무한루프 방지: 이미 2면 setActiveStep 호출 안 함
+              if (activeStep !== 2) {
+                setActiveStep(2);
+              }
             }}
           />
         }

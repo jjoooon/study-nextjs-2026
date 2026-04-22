@@ -46,8 +46,9 @@ export const LayoutFoot = ({ children, className }: LayoutProps) => {
 };
 
 export const LayoutProcess = ({ children, className }: LayoutProps) => {
+  // M1. grid-cols-[1fr] 수정
   return (
-    <div data-layout="process" className={cn('relative grid grid-cols-[1fr_auto] min-w-[4rem]', className)}>
+    <div data-layout="process" className={cn('relative grid grid-cols-[1fr] min-w-[4rem]', className)}>
       {children}
     </div>
   );

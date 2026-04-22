@@ -772,5 +772,6 @@
 
   [data-slot="dialog-content"] [data-layout="main"] {
     padding: 0 !important;
+    min-height: 60rem !important;
   }
 }

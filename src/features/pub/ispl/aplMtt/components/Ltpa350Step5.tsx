@@ -369,13 +369,18 @@ export const Ltpa350Step5 = () => {
                             </CheckboxGroup>
                           </Grow>
                           <Gcol placement="se" className="w-full">
-                            <Grow className="w-full justify-start!">
-                              (승환(
-                              <Input aria-label="" width={50} value={''} readOnly />
-                              )건, 승환예정(
-                              <Input aria-label="" width={50} value={''} readOnly />
-                              )건)
+
+                            {/* M1. 정렬관련 수정 */}
+                            <Grow className="w-full flex-wrap" placement='sc'>
+                              <Grow className="whitespace-nowrap">
+                                (승환(<Input aria-label="" width={40} value={''} readOnly />)건,
+                              </Grow>
+                              <Grow className="whitespace-nowrap">
+                                승환예정(<Input aria-label="" width={40} value={''} readOnly />)건)
+                              </Grow>
                             </Grow>
+                            {/* //M1. 정렬관련 수정 */}
+
                             <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                               유사계약현황
                             </Button>
@@ -492,7 +497,9 @@ export const Ltpa350Step5 = () => {
                         </Grow>
                       </FormCell>
                       <FormCell title={'해지 방지 휴대폰 결제'}>
-                        <Grow placement="bws">
+
+                        {/* M1. 정렬관련 수정 placement="bwc */}
+                        <Grow placement="bwc">
                           <Grow placement="sc" gap={2}>
                             <RadioGroup defaultValue="동의함" required>
                               {[

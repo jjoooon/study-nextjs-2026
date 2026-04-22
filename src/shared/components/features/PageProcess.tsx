@@ -77,7 +77,11 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                 </button>
               );
             })()}
-            {index < items.length - 1 && <ProcessDot />}
+            {index < items.length - 1 && (
+              <span className="[@media(max-height:564px)]:hidden">
+                <ProcessDot />
+              </span>
+            )}
           </Fragment>
         ))}
       </Gcol>

@@ -208,8 +208,9 @@
 .ag-theme-alpine .ag-floating-bottom .ag-row-even .ag-cell {
   background-color: transparent;
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 400;
   padding: 0;
+  color: var(--color-primary-50);
   border: 0;
 }
 
@@ -591,6 +592,7 @@
   font-size: 1.3rem;
   font-weight: 700;
 }
+
 /* .ag-blue-text .ag-cell {
   color: var(--color-information-50);
 } */

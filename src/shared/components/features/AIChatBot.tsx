@@ -24,10 +24,18 @@ function getInitialDialogPosition(anchorRect: DOMRect): { x: number; y: number }
   };
 }
 
-export default function AIChatBot() {
+export interface AIChatBotProps {
+  isButton?: boolean;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
+}
+
+export default function AIChatBot({ isButton = true, open: openProp, setOpen: setOpenProp }: AIChatBotProps) {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = React.useState(false);
+  const [internalOpen, setInternalOpen] = React.useState(false);
   const [defaultPosition, setDefaultPosition] = React.useState({ x: 0, y: 0 });
+  const open = openProp !== undefined ? openProp : internalOpen;
+  const setOpen = setOpenProp !== undefined ? setOpenProp : setInternalOpen;
 
   const handleOpen = () => {
     if (buttonRef.current) {
@@ -38,21 +46,23 @@ export default function AIChatBot() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen} modal={false}>
-      <button
-        ref={buttonRef}
-        type="button"
-        aria-label={'챗봇'}
-        className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
-        onClick={handleOpen}
-      >
-        <Image
-          src="/images/chatbot.png"
-          alt="챗봇"
-          width={32}
-          height={32}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[4rem] h-[4rem]"
-        />
-      </button>
+      {isButton && (
+        <button
+          ref={buttonRef}
+          type="button"
+          aria-label={'챗봇'}
+          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
+          onClick={handleOpen}
+        >
+          <Image
+            src="/images/chatbot.png"
+            alt="챗봇"
+            width={32}
+            height={32}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[4rem] h-[4rem]"
+          />
+        </button>
+      )}
 
       <DialogContent
         defaultPosition={defaultPosition}
