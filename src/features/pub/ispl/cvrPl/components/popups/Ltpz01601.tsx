@@ -165,7 +165,6 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
       if (params.data?.isNew) {
           return expiryCellRenderer('center')(params);
         }
-        // 신규
       return params.value;
       },
     },
@@ -196,7 +195,7 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -208,7 +207,7 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
@@ -221,7 +220,7 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <TableFold>
+          <TableFold className='grid-rows-[auto_1fr]'>
             <TableFoldHead title="골프용품손해(실손)">
               <Grow>
                 <Button color="gray" variant="outlined" onClick={handleAddRow}>
