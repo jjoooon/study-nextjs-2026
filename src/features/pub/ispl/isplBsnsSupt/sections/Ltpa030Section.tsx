@@ -1,12 +1,12 @@
 'use client';
-
+// M1. 전체 수정
 import type { ColDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
-import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, editableSelectCellRenderer, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,6 +20,10 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import { useCallback } from 'react';
+import {
+  createTooltipValueGetter,
+} from '@/shared/components/agGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -44,6 +48,7 @@ type DummyDataType2 = {
   isCheck: boolean;
   field01: string | number;
   field02: string | number;
+  searchInputValue: string | number;
   field03: string | number;
   field04: string | number;
   field05: string | number;
@@ -57,7 +62,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     isNew: false,
     field01: '청약완료',
-    field02: '프로세스 값',
+    field02: '',
     field03: '범용',
     field04: '적용사항 값',
     field05: '2025-01-30',
@@ -116,6 +121,7 @@ const DummyData2: DummyDataType2[] = [
     isCheck: false,
     field01: '',
     field02: '3423554',
+    searchInputValue: '',
     field03: '문형보험대리문형보험대리점문형보험대리점점',
     field04: '2025-01-01',
     field05: '2025-01-30',
@@ -129,6 +135,7 @@ const DummyData2: DummyDataType2[] = [
     isCheck: false,
     field01: '',
     field02: '',
+    searchInputValue: '',
     field03: '',
     field04: '',
     field05: '',
@@ -142,6 +149,7 @@ const DummyData2: DummyDataType2[] = [
     isCheck: false,
     field01: '',
     field02: '',
+    searchInputValue: '',
     field03: '',
     field04: '',
     field05: '',
@@ -155,6 +163,7 @@ const DummyData2: DummyDataType2[] = [
     isCheck: false,
     field01: '',
     field02: '',
+    searchInputValue: '',
     field03: '',
     field04: '',
     field05: '',
@@ -168,6 +177,7 @@ const DummyData2: DummyDataType2[] = [
     isCheck: false,
     field01: '',
     field02: '',
+    searchInputValue: '',
     field03: '',
     field04: '',
     field05: '',
@@ -176,6 +186,84 @@ const DummyData2: DummyDataType2[] = [
     field08: '김한화',
   },
 ];
+
+const targetNameByCode = new Map(
+  DummyData2.filter((item) => String(item.field02).trim() !== '').map((item) => [String(item.field02), String(item.field03)])
+);
+
+type TargetCellEditorRef = {
+  getValue: () => string;
+  isCancelAfterEnd: () => boolean;
+};
+
+const TargetCellEditor = React.forwardRef<TargetCellEditorRef, ICellEditorParams<DummyDataType2>>((props, ref) => {
+  const [value, setValue] = React.useState<string>(String(props.data?.searchInputValue ?? ''));
+  const valueRef = React.useRef<string>(String(props.data?.searchInputValue ?? ''));
+  const isSearchConfirmedRef = React.useRef<boolean>(false);
+
+  React.useEffect(() => {
+    const initialValue = String(props.data?.searchInputValue ?? '');
+
+    setValue(initialValue);
+    valueRef.current = initialValue;
+    isSearchConfirmedRef.current = false;
+  }, [props.data?.searchInputValue]);
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      getValue: () => valueRef.current,
+      isCancelAfterEnd: () => !isSearchConfirmedRef.current,
+    }),
+    []
+  );
+
+  return (
+    // 행추가시 검색창 input 클릭시 편집모드 진입 및 검색어 입력 가능하도록 수정
+    <Grow className="w-full px-1">
+      <Input
+        aria-label=""
+        width={'100%'}
+        value={value}
+        size="sm"
+        autoFocus
+        onChange={(e) => {
+          const nextValue = e.target.value;
+
+          valueRef.current = nextValue;
+          isSearchConfirmedRef.current = false;
+          setValue(nextValue);
+          props.node.setDataValue('searchInputValue', nextValue);
+        }}
+      />
+      <Button
+        aria-label="검색"
+        variant={'outlined'}
+        only="icon"
+        size={'md'}
+        color={'gray-light'}
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+
+          const selectedCode = valueRef.current.trim();
+          const targetName = targetNameByCode.get(selectedCode) ?? '';
+
+          valueRef.current = selectedCode;
+          setValue(selectedCode);
+          props.node.setDataValue('searchInputValue', selectedCode);
+          props.node.setDataValue('field03', targetName);
+          isSearchConfirmedRef.current = true;
+          props.stopEditing?.();
+        }}
+      >
+        <SearchIcon color={'var(--color-primary-50)'} />
+      </Button>
+    </Grow>
+  );
+});
+
+TargetCellEditor.displayName = 'TargetCellEditor';
 
 export default function Ltpa030Section() {
   // 새로 추가한 행만 편집 가능
@@ -193,6 +281,13 @@ export default function Ltpa030Section() {
     []
   );
 
+  const expiryCellRenderer = useCallback(
+    (align: 'left' | 'center' | 'right' = 'right') =>
+      (params: ICellRendererParams<DummyDataType>) =>
+        editableSelectCellRenderer<DummyDataType>({ ...params, align }),
+    []
+  );
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '체크단계',
@@ -204,10 +299,17 @@ export default function Ltpa030Section() {
       headerName: '신계약프로세스',
       field: 'field02',
       width: 100,
-      cellClass: 'editable-cell text-center',
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '프로세스 값'] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '판매채널',
@@ -219,10 +321,17 @@ export default function Ltpa030Section() {
       headerName: '적용사항',
       field: 'field04',
       width: 100,
-      cellClass: 'editable-cell text-center',
+      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '적용사항 값'] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '적용시작일',
@@ -275,11 +384,18 @@ export default function Ltpa030Section() {
       headerName: '구분',
       field: 'field01',
       width: 90,
-      cellClass: 'editable-cell',
+      cellClass: (params) => isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center', 
       autoHeight: true,
-      editable: isEditableNewRow2,
+      // editable: isEditableNewRow2,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '취급직원', '사용인', '설계'] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '대상',
@@ -287,12 +403,47 @@ export default function Ltpa030Section() {
       width: 260,
       autoHeight: true,
       cellClass: 'editable-cell p-0! text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field03' }),
+      editable: isEditableNewRow2,
+      cellEditor: TargetCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
         if (params.data?.isNew) {
+          const rowIndex = params.node.rowIndex;
+
           return (
             <Grow className="w-full px-1">
-              <Input aria-label="" width={'100%'} value={''} size="sm" />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <div
+                className="w-full min-w-0"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (rowIndex === null) {
+                    return;
+                  }
+
+                  params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
+                  params.api.startEditingCell({ rowIndex, colKey: 'field02' });
+                }}
+              > 
+                <Input aria-label="" width={'100%'} value={''} size="sm" variant="ghost" className="pointer-events-none" />
+              </div>
+              <Button
+                aria-label="검색"
+                variant={'outlined'}
+                only="icon"
+                size={'md'}
+                color={'gray-light'}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (rowIndex === null) {
+                    return;
+                  }
+
+                  params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
+                  params.api.startEditingCell({ rowIndex, colKey: 'field02' });
+                }}
+              >
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
             </Grow>
@@ -328,10 +479,17 @@ export default function Ltpa030Section() {
       field: 'field06',
       width: 90,
       editable: isEditableNewRow2,
-      cellClass: 'editable-cell',
+      cellClass: (params) => isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center', 
       autoHeight: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '정상', '고객환불', '조치완료', '취소'] },
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '비고',
@@ -405,7 +563,7 @@ export default function Ltpa030Section() {
 
       const rowIndex = gridApi.getDisplayedRowCount() - 1;
       gridApi.ensureIndexVisible(rowIndex, 'bottom');
-      gridApi.startEditingCell({ rowIndex, colKey: 'field02' });
+      // gridApi.startEditingCell({ rowIndex, colKey: 'field02' });
     });
   }, [rowData]);
 
@@ -434,6 +592,7 @@ export default function Ltpa030Section() {
       isCheck: false,
       field01: '',
       field02: '',
+      searchInputValue: '',
       field03: '',
       field04: '',
       field05: '',
@@ -453,7 +612,7 @@ export default function Ltpa030Section() {
 
       const rowIndex = gridApi.getDisplayedRowCount() - 1;
       gridApi.ensureIndexVisible(rowIndex, 'bottom');
-      gridApi.startEditingCell({ rowIndex, colKey: 'field01' });
+      // gridApi.startEditingCell({ rowIndex, colKey: 'field01' });
     });
   }, [rowData2]);
 
@@ -566,6 +725,8 @@ export default function Ltpa030Section() {
                           headerName: '√',
                           width: 30,
                         }}
+                        // 행추가 된 rowCell
+                        getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
                         onGridReady={(params) => {
                           gridApiRef.current = params.api;
                         }}
@@ -598,6 +759,8 @@ export default function Ltpa030Section() {
                           enableCellSpan={true}
                           singleClickEdit={true}
                           noRowsOverlayComponent={AgGridEmptyComponent}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                           rowSelection={{
                             mode: 'multiRow',
                             headerCheckbox: false,
@@ -608,6 +771,8 @@ export default function Ltpa030Section() {
                             headerName: '√',
                             width: 30,
                           }}
+                          // 행추가 된 rowCell
+                          getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
                           onGridReady={(params) => {
                             gridApiRef2.current = params.api;
                           }}
