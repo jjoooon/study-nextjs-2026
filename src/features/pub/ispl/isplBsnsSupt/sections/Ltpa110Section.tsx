@@ -1,25 +1,25 @@
 'use client';
 
-import type { ColDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, GridApi, } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
-import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, useAgGridInfiniteAppend } from '@aggrid';
-import { Gcol, Grid, Grow } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
+import { ArrowDoubleIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -36,9 +36,57 @@ type DummyDataType = {
   field07: string | number;
 };
 
+type DummyDataType2 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    isCheck: false,
+    field01: 'LA26020945959594',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '9,000원',
+    field06: '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: false,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+];
+
+const DummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: 'LA26020945959594',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '9,000원',
+    field06: '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
     isCheck: false,
     field01: '',
     field02: '',
@@ -54,15 +102,98 @@ export default function Ltpa110Section() {
   
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '체크단계',
+      headerName: '설계번호',
       field: 'field01',
-      width: 90,
+      width: 160,
       cellClass: 'text-center',
     },
-    
+    {
+      headerName: '증권번호',
+      field: 'field02',
+      width: 160,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '계약자',
+      field: 'field03',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험시기',
+      field: 'field04',
+      width: 140,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험료',
+      field: 'field05',
+      width: 100,
+      cellClass: 'text-right',
+    },
+    {
+      headerName: '상품명',
+      field: 'field06',
+      flex: 1,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
+    },
+    {
+      headerName: '상태',
+      field: 'field07',
+      width: 100,
+      cellClass: 'text-center',
+    },
+  ];
+
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '설계번호',
+      field: 'field01',
+      width: 160,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '증권번호',
+      field: 'field02',
+      width: 160,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '계약자',
+      field: 'field03',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험시기',
+      field: 'field04',
+      width: 140,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험료',
+      field: 'field05',
+      width: 100,
+      cellClass: 'text-right',
+    },
+    {
+      headerName: '상품명',
+      field: 'field06',
+      flex: 1,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
+    },
+    {
+      headerName: '상태',
+      field: 'field07',
+      width: 100,
+      cellClass: 'text-center',
+    },
   ];
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
@@ -80,7 +211,7 @@ export default function Ltpa110Section() {
     );
     if (selectedIds.size === 0) return;
 
-    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+    setRowData2((prev) => prev.filter((row) => !selectedIds.has(row.id)));
   }, []);
 
 
@@ -133,22 +264,15 @@ export default function Ltpa110Section() {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'적용대상'}>
-                    <NativeSelect aria-label="적용대상 선택" width={180} required>
-                      {[
-                        { value: 'selection', label: '선택' },
-                        { value: 'selection2', label: '모집자실명제준수 예외' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="" width={100} value={'1234567'} readOnly />
+                  <FormCell title={'임산부 정보'}>
+                    <Input aria-label="" width={100} value={'김한화'} required/>
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={100} value={'김한화'} readOnly />
+                    <Input aria-label="" width={120} value={'910220-1234567'} readOnly />
+                  </FormCell>
+                  <FormCell title={'출산예정년월'}>
+                    <DatePickerInput required mode={'single'} value='2026-08-25'/>
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -170,16 +294,10 @@ export default function Ltpa110Section() {
             </Grow>
             <ResizablePanelGroup orientation="vertical" className="w-full h-full">
               <ResizablePanel defaultSize={30}>
-                <TableFold className="h-full">
-                  <TableFoldHead title="기본사항">
-                    <Grow>
-                      <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
-                        행삭제
-                      </Button>
-                    </Grow>
-                  </TableFoldHead>
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                <TableFold>
+                  <TableFoldHead title="기본사항"/>
+                  <TableFoldBody className='gap-2'>
+                    <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
@@ -200,10 +318,66 @@ export default function Ltpa110Section() {
                         onGridReady={(params) => {
                           gridApiRef.current = params.api;
                         }}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        domLayout="autoHeight"
                       />
                     </div>
+                    <Gcol variant={'box-info'} placement={'ss'} className='w-full'>
+                      <Typo variant={'body-sm'} icon={'info'}>
+                        등록사항을 확인하여 주십시오
+                      </Typo>
+                      <BulletList>
+                        <BulletListItem size={'sm'} type={'dash'}>
+                          설계번호(LA123123123) - 설계중
+                        </BulletListItem>
+                      </BulletList>
+                    </Gcol> 
                   </TableFoldBody>
                 </TableFold>
+                <Grow className="w-full py-1">
+                  <Button color="primary"
+                    onClick={() => {}}
+                    only="icon"
+                    size="lg"
+                    variant="outlined">
+                    <ArrowDoubleIcon />
+                  </Button>
+                </Grow>  
+                <TableFold className="h-full grid-rows-[auto_1fr]">
+                  <TableFoldHead title="선택설계">
+                    <Grow>
+                      <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
+                        행삭제
+                      </Button>
+                    </Grow>
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData2}
+                        columnDefs={columnDefs2}
+                        enableCellSpan={true}
+                        singleClickEdit={true}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          headerCheckbox: false,
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                        }}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        domLayout="autoHeight"
+                      />
+                    </div>   
+                  </TableFoldBody>
+                </TableFold>    
               </ResizablePanel>
               <ResizableHandle />
             </ResizablePanelGroup>
