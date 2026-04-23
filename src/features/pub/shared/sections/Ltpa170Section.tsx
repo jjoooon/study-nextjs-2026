@@ -1,15 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import {
-  AgGridEmptyComponent,
-  createTooltipValueGetter,
-  numberValueFormatter,
-  useAgGridColumnVisibility,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
@@ -23,6 +14,15 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  numberValueFormatter,
+  useAgGridColumnVisibility,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 
 type DummyDataType = {
   id: number;

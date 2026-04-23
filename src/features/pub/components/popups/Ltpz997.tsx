@@ -1,10 +1,10 @@
 'use client';
 
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Typo } from '@atoms';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;

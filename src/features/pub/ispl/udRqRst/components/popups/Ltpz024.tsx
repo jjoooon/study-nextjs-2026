@@ -1,6 +1,5 @@
 'use client';
 
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,6 +18,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 export const Ltpz024 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (

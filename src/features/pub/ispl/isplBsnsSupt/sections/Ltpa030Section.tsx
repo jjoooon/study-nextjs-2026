@@ -1,18 +1,5 @@
 'use client';
 // M1. 전체 수정
-import type {
-  ColDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellEditorParams,
-  ICellRendererParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import {
   AgGridEmptyComponent,
   createFieldRenderer,
@@ -33,6 +20,19 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import type {
+  ColDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback } from 'react';
+import * as React from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
+import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 
 import '@/shared/lib/agGridPub';
 

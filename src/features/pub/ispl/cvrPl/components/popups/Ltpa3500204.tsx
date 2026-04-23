@@ -1,13 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -22,6 +15,13 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+
+import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // 담보패키지 dummy data
 type DummyDataType1 = {

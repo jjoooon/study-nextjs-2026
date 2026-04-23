@@ -1,7 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -21,6 +19,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 export const Ltpa050 = ({ open, onOpenChange }: PopupBaseProps) => {
   const insuranceTabs = [

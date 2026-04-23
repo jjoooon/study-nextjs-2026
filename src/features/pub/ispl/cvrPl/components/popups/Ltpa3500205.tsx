@@ -1,10 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowIcon } from '@/shared/components/icons';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { Input } from '@/shared/components/uiux/Input';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -17,6 +12,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { useState } from 'react';
+import { ArrowIcon } from '@/shared/components/icons';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Input } from '@/shared/components/uiux/Input';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 export const Ltpa3500205 = ({ open, onOpenChange }: PopupBaseProps) => {
   // 초기 키워드 값

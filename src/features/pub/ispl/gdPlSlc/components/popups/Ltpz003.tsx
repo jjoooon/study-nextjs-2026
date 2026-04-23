@@ -1,7 +1,5 @@
 'use client';
 
-import { QuestionRadioCard } from '@/shared/components/common/QuestionRadioCard';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -16,6 +14,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { QuestionRadioCard } from '@/shared/components/common/QuestionRadioCard';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
