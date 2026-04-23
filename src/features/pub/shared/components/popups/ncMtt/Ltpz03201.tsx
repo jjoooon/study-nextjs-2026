@@ -1,6 +1,7 @@
 'use client';
 
-import { AllCommunityModule, ColDef, ModuleRegistry } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Grow, Typo } from '@atoms';
@@ -16,8 +17,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz03201 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {

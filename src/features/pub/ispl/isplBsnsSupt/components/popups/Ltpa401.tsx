@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -20,8 +19,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (

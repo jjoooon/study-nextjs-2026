@@ -1,7 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -17,7 +16,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;

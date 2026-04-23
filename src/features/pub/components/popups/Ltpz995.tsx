@@ -28,10 +28,6 @@ import 'filepond/dist/filepond.min.css';
 // Register FilePond plugins
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
-// Import FilePond styles
-// import 'filepond/dist/filepond.min.css';
-// import './FileUploader2.css';
-
 const logger = log.getLogger('FileUploader');
 
 export interface FileItem {

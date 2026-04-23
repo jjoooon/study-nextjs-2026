@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { CellClassParams, ColDef, ICellRendererParams, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
@@ -30,7 +29,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 interface TabDataType {
   id: string | number;

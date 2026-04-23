@@ -1,7 +1,6 @@
 'use client';
 
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -28,7 +27,7 @@ import {
 import { Input } from '@uiux/Input';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type LTPZ020TabType = {
   name: string;

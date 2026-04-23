@@ -1,8 +1,7 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
@@ -16,7 +15,7 @@ import { AdderIcon, AdderIcon2, Ai2Icon, SelectDropIcon, PaperIcon, ArrowDoubleI
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataListDetailType = {
   id: string;

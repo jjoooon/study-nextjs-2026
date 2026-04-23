@@ -37,8 +37,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-ModuleRegistry.registerModules([AllCommunityModule]);
+
+import '@/shared/lib/agGridPub';
 
 interface TabDataType {
   id: string | number;
