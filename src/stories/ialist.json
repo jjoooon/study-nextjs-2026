@@ -785,7 +785,7 @@
     "dep1": "차세대가입설계",
     "dep2": "인수지침/심사",
     "dep3": "심사",
-    "id": "LTPA180",
+    "id": "LTPA350",
     "path": "ispl/udRqRst",
     "dep4": "인수심사요청및결과",
     "file": "심사요청",
@@ -794,7 +794,7 @@
     "dev": "미정",
     "date": "",
     "modify": "",
-    "subId": "",
+    "subId": "step_4",
     "phase": "",
     "popup": "화면"
   },
