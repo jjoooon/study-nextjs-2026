@@ -7,10 +7,10 @@ import { Badge } from '@uiux/Badge';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 
-export const QuestionRadioCardHeader = ({ bg, children }: { bg?: string; children: ReactNode }) => {
+export const QuestionRadioCardHeader = ({ bg, children, className }: { bg?: string; children: ReactNode; className?: string }) => {
   return (
     <Grow
-      className={cn('w-full p-[1rem]', !bg ? 'bg-[#F4F4F4]' : undefined)}
+      className={cn('w-full p-[1rem] aa', !bg ? 'bg-[#F4F4F4]' : undefined, className)}
       style={bg ? { background: bg } : undefined}
       placement="bwc"
       gap="[1rem]"
@@ -23,10 +23,11 @@ export const QuestionRadioCardHeader = ({ bg, children }: { bg?: string; childre
 export const QuestionRadioCardHeaderTitle = ({ 
   badgeLabel,
   icon,
-  children 
-}: { badgeLabel?: string; icon?: ReactNode; children: ReactNode }) => {
+  children,
+  className,
+}: { badgeLabel?: string; icon?: ReactNode; children: ReactNode; className?: string }) => {
   return (
-  <Typo tag={'h3'} variant={'body-lg'} className="flex items-baseline gap-[0.6rem]" weight={'bold'}>
+  <Typo tag={'h3'} variant={'body-lg'} className={cn('flex items-baseline gap-[0.6rem]', className)} weight={'bold'}>
     {icon
       ? <span className="h-[1.8rem] w-[1.8rem] flex items-center justify-center">{icon}</span>
       : badgeLabel
@@ -39,7 +40,7 @@ export const QuestionRadioCardHeaderTitle = ({
 
 export const QuestionRadioCardContents = ({ children, className }: { bg?: string; children: ReactNode; className?: string  }) => {
   return (
-    <Grid className={cn('w-full p-2.5', className)}>{children}</Grid>
+    <Grid className={cn('w-full p-2.5 gap-2', className)}>{children}</Grid>
   );
 }
   
