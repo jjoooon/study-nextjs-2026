@@ -1,5 +1,6 @@
 import { RootState } from '@/redux';
 import log from '@/shared/utils/logger';
+import { BUTTON_AUTH } from '../constants/auth';
 import { getStore } from './globalRegistry';
 
 const logger = log.getLogger('AuthUtils');
@@ -32,4 +33,23 @@ export function getHeader(key: keyof Header): string {
   }
 
   return '';
+}
+
+export function getAuthList(): string[] {
+  const authList = ['R'];
+
+  return authList;
+}
+
+export function hasButtonAuth(id?: string) {
+  if (!id) {
+    return true;
+  }
+
+  const match = BUTTON_AUTH.ID_PATTERN.exec(id);
+  if (!match) {
+    return true;
+  }
+
+  return getAuthList().includes(match[1]);
 }
