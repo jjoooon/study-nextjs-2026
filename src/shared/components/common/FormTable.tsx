@@ -37,6 +37,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   tdClassName?: string;
   tdNone?: boolean;
   style?: React.CSSProperties;
+  tdStyle?: React.CSSProperties;
 }
 
 interface FormTableProps {
@@ -135,13 +136,14 @@ export const FormCell = ({
   titleColSpan,
   titleRowSpan,
   tdClassName,
+  tdStyle,
   style,
   tdNone = false,
 }: FormCellProps) => {
   const contextVertical = useContext(VerticalContext);
   const contextVariant = useContext(VariantContext);
   const usedVariant = variant ?? contextVariant ?? 'default';
-  const titleTypoVariant = titleVariant === 'section' ? 'body-xl' : 'body-md';
+  const titleTypoVariant = titleVariant === 'section' ? 'body-xl' : 'body-lg';
   const titleTypoColor =
     titleVariant === 'section'
       ? 'primary'
@@ -158,7 +160,7 @@ export const FormCell = ({
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
-          {...(style && { style })}
+          // {...(style && { style })}
         >
           <Typo variant={titleTypoVariant} weight="bold" color={titleTypoColor}>
             {title}
@@ -170,7 +172,7 @@ export const FormCell = ({
           className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]"
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
-          style={style}
+          style={tdStyle}
         >
           {contextVertical ? (
             <TooltipIfOverflow>{children}</TooltipIfOverflow>
@@ -202,6 +204,7 @@ export const FormTable = ({
       [&_th]:text-[#333] 
       [&_th]:font-bold 
       [&_th]:px-[2rem] 
+      // [&_th]:text-[1.4rem] 
       [&_td]:py-[0.6rem] 
       [&_th]:border-none 
       [&_td]:border-none! 
@@ -214,6 +217,7 @@ export const FormTable = ({
       [&_th]:font-bold 
       [&_th]:px-0 
       [&_th]:py-0 
+      // [&_th]:text-[1.4rem] 
       [&_th]:border-none 
       [&_td]:border-none 
       [&_tr]:border-none 
