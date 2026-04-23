@@ -1,30 +1,30 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils/AgGridUtils';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { EssentialIcon, SearchIcon } from '@icons';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogClose,
-  DialogFooterArea,
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@/shared/components/agGridUtils/AgGridUtils';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -57,9 +57,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
 export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '업종구분',
@@ -77,13 +75,19 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         return (
           <Grid className='"h-full w-full grid-cols-[1fr_1fr_1fr_1fr] items-stretch'>
-            <span className='flex h-full items-center justify-center'>{params.data?.field02}</span>
-            <span className='flex h-full items-center justify-center border-l border-gray-200 pl-2'>{params.data?.field03}</span>
-            <span className='flex h-full items-center justify-center border-l border-gray-200 pl-2'>{params.data?.field04}</span>
-            <span className='flex h-full items-center justify-center border-l border-gray-200 pl-2'>{params.data?.field05}</span>
+            <span className="flex h-full items-center justify-center">{params.data?.field02}</span>
+            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
+              {params.data?.field03}
+            </span>
+            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
+              {params.data?.field04}
+            </span>
+            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
+              {params.data?.field05}
+            </span>
           </Grid>
-        )
-      }
+        );
+      },
     },
     {
       headerName: '보상한도',
@@ -115,11 +119,12 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
       width: 100,
       cellClass: 'text-center',
       headerComponent: () => (
-      <div className="w-full text-center whitespace-normal px-1">
-        트램플린<br />
-        (에어바운스)
-      </div>
-      )
+        <div className="w-full text-center whitespace-normal px-1">
+          트램플린
+          <br />
+          (에어바운스)
+        </div>
+      ),
     },
     {
       headerName: '요양병원여부',
@@ -137,7 +142,6 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
     type05: '',
     type06: '',
   });
-
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -168,41 +172,44 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
           <TableFold>
             <TableFoldHead title="골프용품손해(실손)" />
-            <TableFoldBody className='gap-2'>
+            <TableFoldBody className="gap-2">
               <div className="ag-theme-alpine min-h-[18.4rem]">
-                 <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={DummyData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false }}
-                    enableCellSpan={true}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: false,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    headerHeight={50}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      width: 30,
-                    }}
-                  />
-                </div>
-              <Gcol variant={'box-info'} placement={'ss'} className='w-full'>
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ sortable: false }}
+                  enableCellSpan={true}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  headerHeight={50}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                  }}
+                />
+              </div>
+              <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                 <Typo variant={'body-sm'} icon={'info'}>
                   해당업조의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다.
                 </Typo>
-              </Gcol>  
-            </TableFoldBody>    
+              </Gcol>
+            </TableFoldBody>
           </TableFold>
           <TableFold>
             <TableFoldHead title="음식물배상책임" />
-            <TableFoldBody className='gap-2'>
-              <FormTable caption="설계번호" cols={['w-[8rem]','w-[6rem]','w-[6rem]', 'w-[auto]','w-[18rem]', 'w-[auto]']}>
+            <TableFoldBody className="gap-2">
+              <FormTable
+                caption="설계번호"
+                cols={['w-[8rem]', 'w-[6rem]', 'w-[6rem]', 'w-[auto]', 'w-[18rem]', 'w-[auto]']}
+              >
                 <FormRow>
                   <FormCell title={'업종구분'} titleColSpan={3}>
                     <NativeSelect
@@ -242,8 +249,8 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'보상한도'} tdNone/>
-                  <FormCell title={'대인'} tdNone/>
+                  <FormCell title={'보상한도'} tdNone />
+                  <FormCell title={'대인'} tdNone />
                   <FormCell title={'1인당'}>
                     <NativeSelect
                       aria-label="항목 선택"
@@ -282,19 +289,42 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={<Grow placement='sc'>자기부담금<EssentialIcon /></Grow>} titleColSpan={3} colSpan={3}>
-                     <Input aria-label="" width={160} value={form.type05} onChange={(e) => setFormField('type05', e.target.value)} commaAmount readOnly />
+                  <FormCell
+                    title={
+                      <Grow placement="sc">
+                        자기부담금
+                        <EssentialIcon />
+                      </Grow>
+                    }
+                    titleColSpan={3}
+                    colSpan={3}
+                  >
+                    <Input
+                      aria-label=""
+                      width={160}
+                      value={form.type05}
+                      onChange={(e) => setFormField('type05', e.target.value)}
+                      commaAmount
+                      readOnly
+                    />
                   </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'연간매출액'} titleColSpan={3} colSpan={3}>
-                     <Input aria-label="" width={160} value={form.type06} after={'만원'} onChange={(e) => setFormField('type06', e.target.value)} commaAmount required />
+                    <Input
+                      aria-label=""
+                      width={160}
+                      value={form.type06}
+                      after={'만원'}
+                      onChange={(e) => setFormField('type06', e.target.value)}
+                      commaAmount
+                      required
+                    />
                   </FormCell>
                 </FormRow>
               </FormTable>
             </TableFoldBody>
           </TableFold>
-          
         </DialogSection>
 
         <DialogFooter>

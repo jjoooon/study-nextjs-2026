@@ -2,7 +2,6 @@
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { useMemo, useState } from 'react';
-
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Grid, Grow, Typo, Gcol } from '@atoms';

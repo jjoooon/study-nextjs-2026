@@ -1,43 +1,34 @@
 'use client';
 
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
   AgGridEmptyComponent,
-  createCellValueChangedHandler,
+  createTooltipValueGetter,
   editableSelectCellRenderer,
   numberValueFormatter,
-  createInsertCopiedRowButtonCellRenderer,
-  DatePickerCellEditor,
-  createTooltipValueGetter,
 } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { EssentialIcon, SearchIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogClose,
-  DialogFooterArea,
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
-import * as React from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -59,7 +50,7 @@ const DummyData: DummyDataType[] = [
     field01: '선택',
     field02: '3대진단형3대진단형3대진단형3대진단형',
     field03: '2026-04-18',
-    field04:  3000,
+    field04: 3000,
   },
   {
     id: 2,
@@ -68,7 +59,7 @@ const DummyData: DummyDataType[] = [
     field01: '선택',
     field02: '3대진단형',
     field03: '2026-03-22',
-    field04:  3000,
+    field04: 3000,
   },
   {
     id: 3,
@@ -77,14 +68,11 @@ const DummyData: DummyDataType[] = [
     field01: '선택',
     field02: '3대진단형',
     field03: '2026-03-22',
-    field04:  3000,
+    field04: 3000,
   },
 ];
 
-
-
 export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
@@ -140,11 +128,11 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   const expiryCellRenderer = useCallback(
-      (align: 'left' | 'center' | 'right' = 'right') =>
-        (params: ICellRendererParams<DummyDataType>) =>
-          editableSelectCellRenderer<DummyDataType>({ ...params, align }),
-      []
-    );
+    (align: 'left' | 'center' | 'right' = 'right') =>
+      (params: ICellRendererParams<DummyDataType>) =>
+        editableSelectCellRenderer<DummyDataType>({ ...params, align }),
+    []
+  );
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -157,22 +145,22 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '품명',
       field: 'field01',
       width: 180,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       cellEditor: 'agSelectCellEditor',
       editable: isEditableNewRow,
       cellEditorParams: { values: ['선택1', '선택2'] },
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-      if (params.data?.isNew) {
+        if (params.data?.isNew) {
           return expiryCellRenderer('center')(params);
         }
-      return params.value;
+        return params.value;
       },
     },
     {
       headerName: '브랜드명',
       field: 'field02',
       flex: 1,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-left editable-cell' : 'text-left',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-left editable-cell' : 'text-left'),
       editable: isEditableNewRow,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -180,14 +168,14 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '구입년월',
       field: 'field03',
       width: 120,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
     },
     {
       headerName: '구입가격(만원)',
       field: 'field04',
       width: 130,
-      cellClass: (params) => isEditableNewRow(params) ? 'text-right editable-cell' : 'text-right',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-right editable-cell' : 'text-right'),
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
       editable: isEditableNewRow,
@@ -220,7 +208,7 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
           </Grow>
-          <TableFold className='grid-rows-[auto_1fr]'>
+          <TableFold className="grid-rows-[auto_1fr]">
             <TableFoldHead title="골프용품손해(실손)">
               <Grow>
                 <Button color="gray" variant="outlined" onClick={handleAddRow}>
@@ -250,7 +238,7 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
                     headerName: '선택',
                     width: 30,
                   }}
-                  getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                  getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                   onGridReady={(params) => {
                     gridApiRef.current = params.api;
                   }}
@@ -260,7 +248,6 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
               </div>
             </TableFoldBody>
           </TableFold>
-          
         </DialogSection>
 
         <DialogFooter>

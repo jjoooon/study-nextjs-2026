@@ -11,7 +11,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import useMounted from '@/shared/hooks/useMounted';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { AdderIcon, AdderIcon2, Ai2Icon, SelectDropIcon, PaperIcon, ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';

@@ -2,7 +2,6 @@
 
 import { AllCommunityModule, ColDef, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';

@@ -1,7 +1,7 @@
 'use client';
 
-import { Grow } from '@atoms';
 import * as React from 'react';
+import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
 // iaEndModify import 제거, meta.data만 사용
 import iaDateData from './ia-date.json';
@@ -93,6 +93,11 @@ export function IAListWithPreview() {
     }
     return filtered.filter((row) => row.phase === 'Y');
   }, [rowsWithPubOwner, showPhaseOnly]);
+
+  // 완료/전체/진행율 계산 (visibleRows 선언 이후)
+  const totalCount = React.useMemo(() => visibleRows.length, [visibleRows]);
+  const doneCount = React.useMemo(() => visibleRows.filter((row) => row.phase === 'Y').length, [visibleRows]);
+  const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
   const activeRow = React.useMemo(() => {
     return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
@@ -195,7 +200,27 @@ export function IAListWithPreview() {
 
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
-      <div className="h-[calc(100vh-4rem)] overflow-auto flex justify-start">
+      <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
+        <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
+            반입일: 2026.04.20
+        </div>
+        <div className="w-full grid grid-cols-[1fr_auto] gap-2">
+          <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
+            <div
+              className="rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]"
+              style={{ width: `${progressPercent}%` }}
+            >
+              {doneCount} / {totalCount} ({progressPercent}%)
+            </div>
+          </div>
+          <a
+              href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
+              download
+              className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
+            >
+              📦다운로드 파일
+            </a>
+        </div>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
             <col style={{ width: '1rem' }} />
@@ -206,9 +231,9 @@ export function IAListWithPreview() {
             <col style={{ width: '2rem' }} />
             <col />
             <col />
-            {/* <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} /> */}
+            <col style={{ width: '5rem' }} />
+            <col style={{ width: '5rem' }} />
           </colgroup>
           <thead>
             <tr>
@@ -234,7 +259,7 @@ export function IAListWithPreview() {
                 수정일{getSortIndicator('modifyDate')}
               </th>
 
-              {/* <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
+              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
                 기획{getSortIndicator('plan')}
               </th>
               <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('pub')}>
@@ -242,7 +267,7 @@ export function IAListWithPreview() {
               </th>
               <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('dev')}>
                 개발{getSortIndicator('dev')}
-              </th> */}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -319,10 +344,9 @@ export function IAListWithPreview() {
                     <b>{modifyDate}</b>
                   </td>
 
-                  {/* 
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td> */}
+                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
                 </tr>
               );
             })}

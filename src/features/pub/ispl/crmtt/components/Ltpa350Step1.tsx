@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,10 +20,8 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useEffect, useState } from 'react';
 
 import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 const DUMMY_DATA = {
   view1: [
@@ -65,9 +65,18 @@ export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1P
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA[viewKey]);
   const [isLtpz014Open, setIsLtpz014Open] = useState(false);
 
+  // M1. 무한루프에러 수정
   useEffect(() => {
-    replaceTabs(DUMMY_DATA[viewKey]);
-  }, [replaceTabs, viewKey]);
+    // 현재 tabs와 DUMMY_DATA[viewKey]가 다를 때만 replaceTabs 호출
+    const isSame =
+      tabs.length === DUMMY_DATA[viewKey].length &&
+      tabs.every(
+        (tab, idx) => tab.value === DUMMY_DATA[viewKey][idx].value && tab.name === DUMMY_DATA[viewKey][idx].name
+      );
+    if (!isSame) {
+      replaceTabs(DUMMY_DATA[viewKey]);
+    }
+  }, [replaceTabs, viewKey, tabs]);
 
   return (
     <LayoutTemplateLTPA350MainBody

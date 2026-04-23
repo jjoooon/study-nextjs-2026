@@ -70,7 +70,7 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
         <Gcol variant={'box-line'} className="w-full py-[0.6rem]! border-none! shadow-none!" placement={'ss'}>
           <Grow className="flex-1 text-[1.2rem] gap-[0.2rem]" placement={'bwc'}>
             <Grow>
-              보험시기 {data.date} <CalendarIcon />
+              보험시기 {data.date} <CalendarIcon color={'var(--color-blue-gray-50)'} />
             </Grow>
             <Badge color={'red'} size={'md'} className="shrink-0">
               경과

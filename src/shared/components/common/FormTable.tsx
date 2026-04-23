@@ -1,9 +1,9 @@
-import { Typo, Grow } from '@atoms';
-import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Typo, Grow } from '@atoms';
+import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 const FormCellVariants = cva('', {
   variants: {
@@ -167,7 +167,7 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
-          className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem] "
+          className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]"
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
           style={style}
@@ -333,7 +333,7 @@ export const FormRow = ({ children, vertical, cols: _cols, className, style }: F
             ? `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
             [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
             [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
-            [&>td]:min-h-[3rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
+            [&>td]:min-h-[3.8rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3.8rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
             [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! `
             : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!',
           className

@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { createCellValueChangedHandler, createFieldRenderer, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
@@ -17,10 +21,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -854,7 +854,7 @@ export default function Ltpa010Section() {
                 </div> */}
               </Gcol>
             </Grid>
-            <Gcol variant="box-info">
+            <Gcol variant="box-info" placement="ss">
               <Typo variant="body-sm" color="primary" icon="info">
                 <b>설계조회 가능기간</b> 취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일)
               </Typo>

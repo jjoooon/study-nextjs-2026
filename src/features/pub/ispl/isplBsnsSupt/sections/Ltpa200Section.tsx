@@ -1,7 +1,7 @@
 'use client';
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
-
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type {
   ColDef,
   EditableCallbackParams,
@@ -9,9 +9,9 @@ import type {
   ICellEditorParams,
   ICellRendererParams,
 } from 'ag-grid-community';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+
 import { useCallback } from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
@@ -52,51 +52,47 @@ type DummyDataType = {
   field05: string | number;
   field06: string | number;
   field07: string | number;
-  field08: string | number;
 };
-
 const DummyData: DummyDataType[] = [
   {
     id: 1,
     isCheck: false,
     isNew: false,
     field01: '취급직원',
-    field02: '3448460',
+    field02: '대상대상대상대상대상대상대상대상대상대상대상대상',
     searchInputValue: '',
-    field03: '주식회사 마이디어',
-    field04: '2026-03-01',
-    field05: '9999-12-31',
+    field03: '2023-03-01',
+    field04: '9999-12-31',
+    field05: '',
     field06: '',
     field07: '',
-    field08: '김한화',
   },
   {
     id: 2,
     isCheck: false,
     isNew: false,
     field01: '취급직원',
-    field02: '3448460',
+    field02: '',
     searchInputValue: '',
-    field03: '주식회사 마이디어',
-    field04: '2026-03-01',
-    field05: '9999-12-31',
-    field06: '정상',
-    field07: '대내-2507-8950-[서울GA[청약서 스캔권한 부여요청(주)]]',
-    field08: '김한화',
+    field03: '2023-03-01',
+    field04: '9999-12-31',
+    field05: '',
+
+    field06: '',
+    field07: '김한화',
   },
   {
     id: 3,
     isCheck: false,
     isNew: false,
     field01: '취급직원',
-    field02: '3448460',
+    field02: '',
     searchInputValue: '',
-    field03: '주식회사 마이디어',
-    field04: '2026-03-01',
-    field05: '9999-12-31',
-    field06: '정상',
-    field07: '대내-2507-8950-[서울GA[청약서 스캔권한 부여요청(주)]]',
-    field08: '김한화',
+    field03: '2023-03-01',
+    field04: '9999-12-31',
+    field05: '',
+    field06: '',
+    field07: '',
   },
 ];
 
@@ -181,7 +177,7 @@ const TargetCellEditor = React.forwardRef<TargetCellEditorRef, ICellEditorParams
 
 TargetCellEditor.displayName = 'TargetCellEditor';
 
-export default function Ltpa210Section() {
+export default function Ltpa200Section() {
   const pageSize = 2;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -226,9 +222,9 @@ export default function Ltpa210Section() {
     {
       headerName: '대상',
       field: 'field02',
-      flex: 1,
+      flex: 2,
       cellClass: 'flex! items-center! justify-center! text-center',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       editable: isEditableNewRow,
       cellEditor: TargetCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -286,23 +282,23 @@ export default function Ltpa210Section() {
     },
     {
       headerName: '적용시작일자',
-      field: 'field04',
-      flex: 1,
+      field: 'field03',
+      width: 120,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
       cellEditor: DatePickerCellEditor,
     },
     {
       headerName: '적용종료일자',
-      field: 'field05',
-      flex: 1,
+      field: 'field04',
+      width: 120,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
       cellEditor: DatePickerCellEditor,
     },
     {
       headerName: '상태',
-      field: 'field06',
+      field: 'field05',
       flex: 0.8,
       cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
@@ -318,7 +314,7 @@ export default function Ltpa210Section() {
     },
     {
       headerName: '적용사유',
-      field: 'field07',
+      field: 'field06',
       flex: 2,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
@@ -326,13 +322,15 @@ export default function Ltpa210Section() {
     },
     {
       headerName: '등록자',
-      field: 'field08',
+      field: 'field07',
       flex: 0.7,
       cellClass: 'flex! items-center! justify-center!',
     },
   ];
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+
+  // form event
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -371,7 +369,6 @@ export default function Ltpa210Section() {
       field05: '',
       field06: '',
       field07: '',
-      field08: '김한화',
     };
 
     setRowData((prev) => [...prev, newRow]);
@@ -393,15 +390,15 @@ export default function Ltpa210Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '장기신계약가입설계관리정보',
-            pageId: 'LTPA210',
+            pageName: '신계약스캔권한관리',
+            pageId: 'LTPA200',
           }}
         />
       </LayoutHead>
       <LayoutTemplate
         mainBody={
           <Grid className="grid-rows-[auto_1fr]" gap={3}>
-            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
                 caption="장기보험 모집자 설계 조회 테이블"
@@ -411,18 +408,16 @@ export default function Ltpa210Section() {
                   <FormCell title={'등록항목'}>
                     <NativeSelect
                       aria-label="항목 선택"
-                      width={210}
+                      width={108}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       required
                     >
                       {[
-                        { value: '선택', label: '선택' },
-                        { value: '사용자가 IT기획팀', label: '사 용자가 IT기획팀' },
-                        { value: '장기보험팀', label: '장기보험팀' },
-                        { value: 'GA영업지원파트 이외인 경우', label: 'GA영업지원파트 이외인 경우' },
+                        { value: 'selection', id: 'type01-1', label: '장기보험' },
+                        { value: 'selection2', id: 'type01-2', label: '장기보험2' },
                       ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
+                        <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
@@ -437,44 +432,42 @@ export default function Ltpa210Section() {
                       required
                     >
                       {[
-                        { value: '선택', label: '선택' },
-                        { value: '취급기관', label: '취급기관' },
-                        { value: '취급직원', label: '취급직원' },
-                        { value: '사용인', label: '사용인' },
+                        { value: 'selection', id: 'type02-1', label: '선택' },
+                        { value: 'selection', id: 'type02-2', label: '취급기관' },
+                        { value: 'selection2', id: 'type02-3', label: '취급직원' },
+                        { value: 'selection3', id: 'type02-4', label: '사용인' },
                       ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
+                        <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input width={'11rem'} value={'1234567'} readOnly />
+                    <Input aria-label="" width={110} value={''} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input aria-label="" width={120} value={'김한화'} readOnly />
-                    <Grow className="ml-4">
+                    <Grow className="ml-32">
                       <NativeSelect
-                        aria-label="선택"
+                        aria-label="조직구분 선택"
                         width={90}
                         value={form.type03}
                         onChange={(e) => setFormField('type03', e.target.value)}
-                        required
                       >
                         {[
-                          { value: '선택', label: '선택' },
-                          { value: '항목2', label: '항목2' },
+                          { value: 'selection', id: 'type03-1', label: '선택' },
+                          { value: 'selection2', id: 'type03-2', label: '기준일자' },
                         ].map((option) => (
-                          <NativeSelectOption key={option.value} value={option.value}>
+                          <NativeSelectOption key={option.id} value={option.value}>
                             {option.label}
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <DatePickerInput mode="single" onChange={() => {}} value="" required />
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" />
                     </Grow>
                   </FormCell>
                 </FormRow>
               </FormTable>
-
               <Grow>
                 <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                   조회

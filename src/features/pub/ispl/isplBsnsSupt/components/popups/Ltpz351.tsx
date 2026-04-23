@@ -1,28 +1,25 @@
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { phoneNumberValueFormatter, phoneNumberValueParser } from '@/shared/components/agGridUtils/AgGridUtils';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-} from '@uiux/Dialog';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { tr } from 'date-fns/locale';
+import { AgGridEmptyComponent, phoneNumberValueFormatter, phoneNumberValueParser } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import { SearchIcon } from '@icons';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -38,9 +35,7 @@ const DummyData: DummyDataType[] = [
   { id: 2, isChecked: false, field1: '계약자', field2: '', field3: '' },
 ];
 
-
 export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -78,7 +73,6 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
 
-  
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   
   return (
@@ -95,7 +89,7 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className=''>
+        <DialogSection className="">
           <Gcol className="w-full" placement="ss" gap={2}>
             <div className="ag-theme-alpine radio-selection min-h-[9.4rem]">
               <AgGridReact<DummyDataType>
@@ -117,8 +111,10 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
                 domLayout="normal"
               />
             </div>
-            <Grow placement='ec' className='w-full'>
-                <Button variant={'contained'} size={'md'}>전송</Button>
+            <Grow placement="ec" className="w-full">
+              <Button variant={'contained'} size={'md'}>
+                전송
+              </Button>
             </Grow>
           </Gcol>
           <Gcol className="w-full" placement="ss" variant="box-warning">

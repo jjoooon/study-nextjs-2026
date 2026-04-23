@@ -1,11 +1,25 @@
 'use client';
 
 // React
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellRendererParams,
+  SuppressKeyboardEventParams,
+} from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
   AgGridEmptyComponent,
   GridHeaderCheckbox,
   createHeaderCheckboxParams,
   createHeaderCheckboxOnCellValueChanged,
+  editableSelectCellRenderer,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
@@ -26,11 +40,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams, SuppressKeyboardEventParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -39,6 +48,7 @@ type DummyDataType = {
   isCheck: boolean;
   isAuthcheck1: boolean;
   isAuthcheck2: boolean;
+  isNew: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -51,6 +61,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     isCheck: true,
+    isNew: false,
     isAuthcheck1: true,
     isAuthcheck2: true,
     field01: '12312312',
@@ -64,6 +75,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     isCheck: true,
+    isNew: false,
     isAuthcheck1: true,
     isAuthcheck2: true,
     field01: '12312312',
@@ -77,7 +89,26 @@ const DummyData: DummyDataType[] = [
 ];
 
 export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
+
+  // 새로 추가한 행만 편집 가능
+  const isEditableNewRow = React.useCallback(
+    (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
+    []
+  );
+  // const existingRowFieldRenderer = React.useMemo(
+  //   () => createFieldRenderer<DummyDataType>('field02', 'field03', 'row'),
+  //   []
+  // );
+
+  const expiryCellRenderer = useCallback(
+    (align: 'left' | 'center' | 'right' = 'right') =>
+      (params: ICellRendererParams<DummyDataType>) =>
+        editableSelectCellRenderer<DummyDataType>({ ...params, align }),
+    []
+  );
+
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const onCellValueChanged = React.useMemo(
     () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['isAuthcheck1', 'isAuthcheck2']),
@@ -85,6 +116,54 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
   const suppressGridKeyboardOnInput = (params: SuppressKeyboardEventParams<DummyDataType>) =>
     params.event?.target instanceof HTMLInputElement;
+
+  // agGrid 행삭제
+  const handleDeleteRow = React.useCallback(() => {
+    const gridApi = gridApiRef.current;
+    if (!gridApi) return;
+
+    const selectedIds = new Set(
+      gridApi
+        .getSelectedNodes()
+        .map((node) => node.data?.id)
+        .filter((id) => id !== undefined)
+    );
+    if (selectedIds.size === 0) return;
+
+    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
+
+  // agGrid 행추가
+  const handleAddRow = React.useCallback(() => {
+    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+    const newRow: DummyDataType = {
+      id: nextId,
+      isCheck: false,
+      isAuthcheck1: false,
+      isAuthcheck2: false,
+      isNew: true,
+      field01: '',
+      field02: '',
+      field03: '',
+      field04: '',
+      field05: '',
+      field06: '',
+      field07: '',
+    };
+
+    setRowData((prev) => [...prev, newRow]);
+
+    requestAnimationFrame(() => {
+      const gridApi = gridApiRef.current;
+
+      if (!gridApi) {
+        return;
+      }
+
+      const rowIndex = gridApi.getDisplayedRowCount() - 1;
+      gridApi.ensureIndexVisible(rowIndex, 'bottom');
+    });
+  }, [rowData]);
 
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -103,7 +182,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           width: 100,
           editable: true,
           field: 'isAuthcheck1',
-          cellClass: 'text-center px-0! editable-cell',
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -116,7 +195,8 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           editable: true,
           field: 'isAuthcheck2',
           headerClass: 'border-r-0!',
-          cellClass: 'text-center px-0! editable-cell border-r-0!',
+          cellClass: (params) =>
+            isEditableNewRow(params) ? 'text-center editable-cell border-r-0!' : 'text-center border-r-0!',
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -131,7 +211,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       minWidth: 240,
       field: 'field01',
       headerClass: 'border-l border-[#d4d4d5]',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
       editable: true,
       suppressNavigable: true,
@@ -169,15 +249,29 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '주민번호',
       flex: 1,
       field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '전화번호',
       flex: 1,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       autoHeight: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        if (params.data?.isNew) {
+          return expiryCellRenderer('center')(params);
+        }
+        // 신규
+        return params.value;
+      },
     },
     {
       headerName: '출력/발송 결과',
@@ -186,19 +280,33 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '동의서',
           flex: 1,
           field: 'field04',
-          cellClass: 'text-center px-0! whitespace-nowrap',
+          cellClass: (params) =>
+            isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap',
+          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+            if (params.data?.isNew) {
+              return expiryCellRenderer('center')(params);
+            }
+            // 신규
+            return params.value;
+          },
         },
         {
           headerName: '모바일',
           flex: 1,
           field: 'field05',
-          cellClass: 'text-center px-0! whitespace-nowrap',
+          cellClass: (params) =>
+            isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap',
+          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+            if (params.data?.isNew) {
+              return expiryCellRenderer('center')(params);
+            }
+            // 신규
+            return params.value;
+          },
         },
       ],
     },
   ];
-
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -243,11 +351,12 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           </Grow>
           <TableFold variant="accordion" className="grid-rows-[auto_1fr] gap-2.5">
             <TableFoldHead title="고객정보">
+              {/* M1. onClick 추가 */}
               <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
                   행추가
                 </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
                   행삭제
                 </Button>
               </Grow>
@@ -272,13 +381,10 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                     checkboxes: true,
                     enableClickSelection: false,
                   }}
+                  // 행추가 된 rowCell
+                  getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                   onGridReady={(params) => {
                     gridApiRef.current = params.api;
-                    params.api.forEachNode((node) => {
-                      if (node.data?.isCheck) {
-                        node.setSelected(true);
-                      }
-                    });
                   }}
                 />
               </div>

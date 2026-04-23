@@ -1,12 +1,19 @@
 'use client';
 
+import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
+import {
+  createCellClickSelectionToggleHandler,
+  numberValueFormatter,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, PlusIcon } from '@icons';
+import { EssentialIcon, ResetIcon, PlusIcon } from '@icons';
 import { LayoutMain, LayoutMainFoot, LayoutScrollItem, LayoutScrollWrap, LayoutMainBody } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -15,15 +22,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
-
-import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
-import {
-  createCellClickSelectionToggleHandler,
-  numberValueFormatter,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 
 type Ltpa350Step6GridRow = {
   id: number;
@@ -53,8 +51,8 @@ const DummyData: DummyDataType = {
     {
       id: 1,
       field1: '2',
-      field2: '',
-      field3: '',
+      field2: '2023-01-01',
+      field3: '1209495',
       field4: '',
       field5: '',
     },
@@ -62,7 +60,7 @@ const DummyData: DummyDataType = {
       id: 2,
       field1: '3',
       field2: '',
-      field3: '',
+      field3: '23000',
       field4: '',
       field5: '',
     },
@@ -70,7 +68,7 @@ const DummyData: DummyDataType = {
 };
 
 export const Ltpa350Step6 = () => {
-  const [isLtpz014Open, setIsLtpz014Open] = useState(false);
+  // const [isLtpz014Open, setIsLtpz014Open] = useState(false);
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -113,7 +111,7 @@ export const Ltpa350Step6 = () => {
         id: -1,
         field1: String(selectedDepositCount),
         field2: '선택합계',
-        field3: selectedDepositAmount.toLocaleString(),
+        field3: selectedDepositAmount,
         field4: '',
         field5: '',
         isSumRow: true,
@@ -128,71 +126,33 @@ export const Ltpa350Step6 = () => {
       {
         headerName: '구분',
         field: 'field1',
-        width: 110,
-        cellClass: (params) => (params.data?.isSumRow ? 'text-right pr-2 font-bold' : 'text-center editable-cell'),
-        sortable: false,
-        filter: false,
-        editable: (params) => !params.data?.isSumRow,
-        cellEditor: 'agInputCellEditor',
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
-          params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+        width: 50,
+        cellClass: 'text-center',
       },
       {
         headerName: '입금일자',
         field: 'field2',
         sortable: false,
-        width: 200,
-        cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-left editable-cell'),
-        editable: (params) => !params.data?.isSumRow,
-        cellEditor: 'agInputCellEditor',
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
-          params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+        width: 140,
+        cellClass: 'text-center',
+        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) => params.value,
       },
       {
         headerName: '금액',
         field: 'field3',
         width: 150,
-        cellClass: (params) => (params.data?.isSumRow ? 'text-right font-bold' : 'text-right'),
-        headerClass: 'px-0!',
-        sortable: false,
-        filter: false,
-        editable: (params) => !params.data?.isSumRow,
-        valueParser: (params) => {
-          const parsedValue = String(params.newValue ?? '')
-            .replace(/,/g, '')
-            .trim();
-          return parsedValue === '' ? '' : Number(parsedValue) || 0;
-        },
-        valueFormatter: (params) => {
-          if (params.data?.isSumRow) return String(params.value ?? '');
-          return numberValueFormatter(params);
-        },
-        cellClassRules: {
-          'ag-cell-error-border': (params) =>
-            !params.data?.isSumRow && (params.value === '' || params.value === undefined || Number(params.value) === 0),
-        },
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
-          params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
       },
       {
         headerName: '적요',
         field: 'field4',
         width: 200,
-        cellClass: (params) => (params.data?.isSumRow ? 'text-right font-bold' : 'text-right editable-cell'),
-        sortable: false,
-        filter: false,
-        editable: (params) => !params.data?.isSumRow,
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
-          params.data?.isSumRow ? <b>{params.value}</b> : params.value,
       },
       {
         headerName: '비고',
         field: 'field5',
         flex: 1,
-        cellClass: 'text-center editable-cell',
-        sortable: false,
-        filter: false,
-        editable: (params) => !params.data?.isSumRow,
       },
     ],
     []
@@ -207,10 +167,15 @@ export const Ltpa350Step6 = () => {
       .filter((row): row is Ltpa350Step6GridRow => row !== undefined && !row.isSumRow);
 
     const nextSelectedAmount = selectedRows.reduce((total, row) => {
-      const parsedValue = String(row.field3 ?? '')
-        .replace(/,/g, '')
-        .trim();
-      return total + (parsedValue === '' ? 0 : Number(parsedValue) || 0);
+      let value = row.field3;
+      if (typeof value === 'string') {
+        value = value.replace(/,/g, '').trim();
+      }
+      const num = Number(value);
+
+      // console.log('value:', isNaN(num), 'num:', num, total);
+
+      return total + (isNaN(num) ? 0 : num);
     }, 0);
 
     setSelectedDepositCount(selectedRows.length);
@@ -226,119 +191,22 @@ export const Ltpa350Step6 = () => {
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
                   <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                    <FormTable
-                      variant={'none'}
-                      lineTop={false}
-                      caption="정액담보점검목록 조회"
-                      cols={['flex-auto', 'flex-1', 'flex-auto', 'flex-1', 'flex-auto', 'flex-1']}
-                    >
+                    {/* M1. FormTable 전체 수정 */}
+                    <FormTable variant={'head'} lineTop={false} cols={['flex-auto', 'flex-1']}>
                       <FormRow>
-                        <FormCell title={'점검일자'}>
-                          <DatePickerInput
-                            errorMsg="입력은 필수입니다."
-                            errorPs="bl"
-                            mode="range"
-                            onChange={() => {}}
-                            rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
-                            size="lg"
-                            width="sm"
-                            required
-                          />
-                        </FormCell>
-                        <FormCell title={'조직구분'}>
-                          <NativeSelect
-                            aria-label="조직구분 선택"
-                            value={form.type01}
-                            width={100}
-                            required
-                            onChange={(e) => setFormField('type01', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type01-1', label: '선택1' },
-                              { value: 'selection2', id: 'type01-2', label: '선택2' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Input
-                            aria-label=""
-                            width={'10rem'}
-                            value={form.type02}
-                            onChange={(e) => setFormField('type02', e.target.value)}
-                            required
-                          />
-                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <Input aria-label="" width={'14rem'} value={'신부산GA지점'} readOnly />
-                        </FormCell>
-                        <FormCell title={'점검방법'}>
-                          <NativeSelect
-                            aria-label="점검방법 선택"
-                            value={form.type03}
-                            width="14rem"
-                            onChange={(e) => setFormField('type03', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type03-1', label: '전체' },
-                              { value: 'selection2', id: 'type03-2', label: '전체2' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'점검방법'}>
-                          <Input
-                            width={'14rem'}
-                            value={form.type04}
-                            onChange={(e) => setFormField('type04', e.target.value)}
-                          />
-                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                        </FormCell>
-                        <FormCell title={'점검결과'}>
-                          <NativeSelect
-                            aria-label="점검결과 선택"
-                            value={form.type05}
-                            width="14rem"
-                            onChange={(e) => setFormField('type05', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type05-1', label: '전체' },
-                              { value: 'selection2', id: 'type05-2', label: '전체2' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                        <FormCell title={'점검구분'}>
-                          <NativeSelect
-                            aria-label="점검구분 선택"
-                            value={form.type06}
-                            width="14rem"
-                            onChange={(e) => setFormField('type06', e.target.value)}
-                          >
-                            {[
-                              { value: 'selection', id: 'type06-1', label: '전체' },
-                              { value: 'selection2', id: 'type06-2', label: '전체2' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
+                        <FormCell
+                          title={
+                            <Grow>
+                              영수관리번호
+                              <EssentialIcon aria-label="필수 입력" />
+                            </Grow>
+                          }
+                        >
+                          <Input aria-label="영수관리번호" value={'LA37784990'} />
                         </FormCell>
                       </FormRow>
                     </FormTable>
+                    {/* //M1. FormTable 전체 수정 */}
 
                     <Grow>
                       <Button
@@ -429,8 +297,12 @@ export const Ltpa350Step6 = () => {
                   </Gcol>
                   {/* 즉시집금 */}
                   <TableFold variant={'default'}>
-                    <TableFoldHead title="즉시집금" />
-                    <TableFoldBody>
+                    <TableFoldHead title="즉시집금">
+                      <Grow>
+                        <Checkbox id="selectAllDeposits" aria-label="영수보험표 입력"></Checkbox>
+                      </Grow>
+                    </TableFoldHead>
+                    <TableFoldBody className="gap-1">
                       <Table variant="default">
                         <colgroup>
                           <col style={{ width: '5rem' }} />
@@ -671,11 +543,20 @@ export const Ltpa350Step6 = () => {
                           </TableRow>
                         </TableBody>
                       </Table>
+                      {/* M1. 문구추가 */}
+                      <Typo variant="body-sm" color="primary" icon="info">
+                        같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터
+                        즉시이체출금에 성공한 것이니 입금내역을 확인하세요.
+                      </Typo>
                     </TableFoldBody>
                   </TableFold>
                   {/* 카드 */}
                   <TableFold variant={'default'}>
-                    <TableFoldHead title="카드" />
+                    <TableFoldHead title="카드">
+                      <Grow>
+                        <Checkbox id="selectAllDeposits" aria-label="영수보험표 입력"></Checkbox>
+                      </Grow>
+                    </TableFoldHead>
                     <TableFoldBody>
                       <Table variant="default">
                         <TableHeader>
@@ -885,7 +766,13 @@ export const Ltpa350Step6 = () => {
                   </TableFold>
                   {/* 입금사항 */}
                   <TableFold variant={'default'}>
-                    <TableFoldHead title="입금사항" />
+                    <TableFoldHead title="입금사항">
+                      <Grow>
+                        <Button variant={'outlined'} color={'gray'}>
+                          입금입력
+                        </Button>
+                      </Grow>
+                    </TableFoldHead>
                     <TableFoldBody>
                       <div className="ag-theme-alpine">
                         <AgGridReact<Ltpa350Step6GridRow>
@@ -893,7 +780,7 @@ export const Ltpa350Step6 = () => {
                           rowData={depositGridRows}
                           pinnedBottomRowData={depositSumRow}
                           columnDefs={columnDefs}
-                          defaultColDef={{ sortable: false, resizable: false, editable: false }}
+                          defaultColDef={{ sortable: true, resizable: true }}
                           domLayout="autoHeight"
                           singleClickEdit={true}
                           rowSelection={{
@@ -923,7 +810,8 @@ export const Ltpa350Step6 = () => {
                   <TableFold variant={'default'}>
                     <TableFoldHead title="수납사항" />
                     <TableFoldBody>
-                      <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                      {/* M1. cols 크기 수정 */}
+                      <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'영수할보험료'}>
                             <Input aria-label="영수할보험료" width={'full'} commaAmount value={'46500'} readOnly />원
@@ -958,11 +846,11 @@ export const Ltpa350Step6 = () => {
                   </TableFold>
                   {/* 수납일자 */}
                   <Grow>
-                    <Grow>
-                      <Typo variant="heading-md" className="w-[7.1rem]">
-                        수납일자
-                      </Typo>
-                    </Grow>
+                    {/* M1. Grow 삭제 및 EssentialIcon 추가 */}
+                    <Typo variant="heading-md" className="w-[7.1rem] flex items-center gap-0.5">
+                      수납일자
+                      <EssentialIcon aria-label="필수 입력" />
+                    </Typo>
                     <Input aria-label="수납일자" width={100} value={'2024-03-18'} readOnly />
                   </Grow>
                 </Gcol>
@@ -970,21 +858,14 @@ export const Ltpa350Step6 = () => {
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            {/* M1. variant="box" 추가 */}
+            {/* M1. MainBottom 수정 , variant="box" 추가 */}
             <MainBottom variant="box">
-              {/* M1. className 추가 */}
               <MainBottomItem className="bg-[var(--color-gray-5)]">
-                <Grow>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => setIsLtpz014Open(false)}>
-                    할부무이자
-                  </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => setIsLtpz014Open(false)}>
-                    원수(설계사/대리점 수납)
-                  </Button>
-                </Grow>
-                <Ltpz014 open={isLtpz014Open} onOpenChange={setIsLtpz014Open} />
                 <Grow gap={1}>
-                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  <Button form={'page2-MainForm'} size={'xl'}>
+                    원수수납
+                  </Button>
+                  <Button form={'page2-MainForm'} size={'xl'}>
                     수납
                   </Button>
                 </Grow>

@@ -109,7 +109,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         variant === 'default'
-          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3rem]'
+          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem]'
           : variant === 'message'
             ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
             : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',

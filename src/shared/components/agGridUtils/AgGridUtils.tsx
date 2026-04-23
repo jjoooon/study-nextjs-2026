@@ -2,7 +2,7 @@
 
 // 내부 공통 컴포넌트
 
-import type { GridReadyEvent } from 'ag-grid-community';
+import type { ICellEditorParams } from 'ag-grid-community';
 import type {
   CellClickedEvent,
   ValueFormatterParams,
@@ -16,11 +16,11 @@ import type {
   GridApi,
   CellValueChangedEvent,
 } from 'ag-grid-community';
-import type { ICellEditorParams } from 'ag-grid-community';
+import type { GridReadyEvent } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
-import type { RefObject } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { RefObject } from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { AmountUnitInput } from '@common/AmountUnitInput';
@@ -316,7 +316,7 @@ export function createDuplicateButtonCellRenderer<
             only={'icon'}
             className="uiux-duplicate-btn"
             size={'sm'}
-            color={'gray-light'}
+            color={'gray'}
             disabled
           >
             <PlusIcon color={'var(--color-gray-30)'} />
@@ -338,14 +338,14 @@ export function createDuplicateButtonCellRenderer<
           only={'icon'}
           className="uiux-duplicate-btn"
           size={'sm'}
-          color={'gray-light'}
+          color={'gray'}
           onMouseDown={(event) => event.stopPropagation()}
           onClick={(event) => {
             event.stopPropagation();
             onDuplicate(rowId);
           }}
         >
-          <PlusIcon color={'var(--color-gray-30)'} />
+          <PlusIcon color={'var(--color-gray-70)'} />
         </Button>
       </Grow>
     );
@@ -482,7 +482,7 @@ export function editableSelectCellRenderer<RowType>(
     textClass = 'text-center';
   }
   return (
-    <div className={`flex items-center px-1 ${justifyClass} gap-1 w-full h-full editor-select`}>
+    <div className={`flex items-center px-0 ${justifyClass} gap-1 w-full h-full editor-select`}>
       <span className={`block flex-1 ${textClass}`}>{params.value}</span>
       <SelectDropIcon size={12} color={'var(--color-gray-50)'} className="shrink-0" />
     </div>

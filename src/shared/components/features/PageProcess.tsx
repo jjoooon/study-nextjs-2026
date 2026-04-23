@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment } from 'react';
+import { Num1, Num2, Num3, Num4, Num5, Num6 } from '@/shared/components/icons/StepNumber';
 import { Gcol, Typo } from '@atoms';
 import { ProcessDot, CheckBoldIcon, ProcessActiveIcon } from '@icons';
 
@@ -65,9 +66,19 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                       <CheckBoldIcon />
                     ) : isActive ? (
                       <ProcessActiveIcon className="animate-spin [animation-duration:4s]" />
-                    ) : (
-                      item.step
-                    )}
+                    ) : item.step === 1 ? (
+                      <Num1 />
+                    ) : item.step === 2 ? (
+                      <Num2 />
+                    ) : item.step === 3 ? (
+                      <Num3 />
+                    ) : item.step === 4 ? (
+                      <Num4 />
+                    ) : item.step === 5 ? (
+                      <Num5 />
+                    ) : item.step === 6 ? (
+                      <Num6 />
+                    ) : null}
                   </b>
                   <Typo
                     className={`px-2 text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white' : 'text-[var(--color-gray-70)]'}`}
@@ -77,7 +88,11 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                 </button>
               );
             })()}
-            {index < items.length - 1 && <ProcessDot />}
+            {index < items.length - 1 && (
+              <span className="[@media(max-height:564px)]:hidden">
+                <ProcessDot />
+              </span>
+            )}
           </Fragment>
         ))}
       </Gcol>

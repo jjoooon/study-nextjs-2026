@@ -82,7 +82,7 @@ function Checkbox({
     md: 'size-[1.8rem]',
   };
   const buttonSizeStyles = {
-    xl: 'h-[3rem] px-[1.2rem]',
+    xl: 'h-[3rem] pr-[1.2rem] pl-[0.2rem]',
     lg: 'h-[2.5rem]',
     md: 'h-[2.2rem]',
   };

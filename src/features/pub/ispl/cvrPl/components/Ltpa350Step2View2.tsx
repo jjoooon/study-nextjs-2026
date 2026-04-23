@@ -1,30 +1,35 @@
 'use client';
 
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { useTabs } from '@/shared/hooks/useTabs';
 import {
   amountUnitInputCellRenderer,
-  editableSelectCellRenderer,
-  numberValueFormatter,
+  CoveragePopover,
+  createCellClickSelectionToggleHandler,
+  createCellErrorClassRules,
+  createEditableCallback,
   createInsertCopiedRowButtonCellRenderer,
   createSelectionChangedHandler,
-  createCellClickSelectionToggleHandler,
   createTooltipValueGetter,
-  createEditableCallback,
-  createCellErrorClassRules,
+  editableSelectCellRenderer,
+  numberValueFormatter,
   useDynamicColumnWidths,
-  CoveragePopover,
 } from '@aggrid';
-import { Grow, Gcol, Typo, Divider } from '@atoms';
+import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormRow, FormTable, FormCell } from '@common/FormTable';
-import { HashList } from '@common/HashList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollWrap, LayoutScrollItem } from '@common/LayoutScroll';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon } from '@icons';
-import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -32,12 +37,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Accordion } from '@/shared/components/uiux/Accordion';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -754,42 +753,44 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
               </Button>
             )}
           >
+            {/* M1. 간격 및 위치 수정 */}
             <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-              <Grow gap={3}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
-                  <PaperIcon />
-                  담보패키지 선택
-                </Button>
-                <CheckboxGroup
-                  className="gap-1 flex-wrap"
-                  color="primary"
-                  minSelected={0}
-                  size="lg"
-                  variant="button"
-                  width="auto"
-                >
-                  {[
-                    { label: '사망후유', value: '0' },
-                    { label: '진단비', value: '1' },
-                    { label: '입원/통원', value: '2' },
-                    { label: '수술/치료', value: '3' },
-                    { label: '골절/화상', value: '4' },
-                    { label: '검사/지원', value: '5' },
-                    { label: '운전/비용', value: '6' },
-                    { label: '재물/배상', value: '7' },
-                    { label: '기타', value: '8' },
-                  ].map((category) => (
-                    <CheckboxGroupItem key={category.value} value={category.value}>
-                      {category.label}
-                    </CheckboxGroupItem>
-                  ))}
-                </CheckboxGroup>
-              </Grow>
+              <Grow gap={1.5} placement={'bwc'}>
+                <Grow gap={2}>
+                  <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                    <PaperIcon />
+                    보장패키지
+                  </Button>
+                  <Divider dir="col" />
 
-              <Grow gap={3} className="w-full" placement={'bwc'}>
-                <Grow gap={3} className="w-full" placement={'ss'}>
                   <CheckboxGroup
-                    className="gap-1 flex-nowrap shrink-0"
+                    className="gap-[0.4rem] flex-wrap type-small"
+                    color="primary"
+                    minSelected={0}
+                    size="lg"
+                    variant="button"
+                    width="auto"
+                  >
+                    {[
+                      { label: '사망후유', value: '0' },
+                      { label: '진단비', value: '1' },
+                      { label: '입원/통원', value: '2' },
+                      { label: '수술/치료', value: '3' },
+                      { label: '골절/화상', value: '4' },
+                      { label: '검사/지원', value: '5' },
+                      { label: '운전/비용', value: '6' },
+                      { label: '재물/배상', value: '7' },
+                      { label: '기타', value: '8' },
+                    ].map((category) => (
+                      <CheckboxGroupItem key={category.value} value={category.value}>
+                        {category.label}
+                      </CheckboxGroupItem>
+                    ))}
+                  </CheckboxGroup>
+                  <Divider dir="col" />
+
+                  <CheckboxGroup
+                    className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
                     color="primary"
                     minSelected={0}
                     size="lg"
@@ -805,26 +806,6 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                       </CheckboxGroupItem>
                     ))}
                   </CheckboxGroup>
-
-                  <HashList
-                    data={[
-                      '암',
-                      '뇌',
-                      '심',
-                      '수술',
-                      '특정',
-                      '표적',
-                      '치료',
-                      '골절',
-                      '화상',
-                      '치매',
-                      '심',
-                      '수술',
-                      '특정',
-                      '표적',
-                      '치료',
-                    ]}
-                  />
                 </Grow>
                 <Grow placement={'ec'}>
                   <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
@@ -833,6 +814,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                 </Grow>
               </Grow>
             </Gcol>
+            {/* //M1. 간격 및 위치 수정 */}
           </TabPager>
 
           <LayoutMainBody>
@@ -845,7 +827,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                   </Button>
                 </Grow>
                 <Grow className="gap-2.5">
-                  <Checkbox>담보초기화</Checkbox>
+                  {/* M1. 담보초기화 삭제 */}
                   <Checkbox>플랜기본값</Checkbox>
                   <Grow className="gap-1">
                     <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
@@ -889,22 +871,35 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                         </Accordion>
                       </Gcol>
                     </SelectDrop>
+
+                    {/* M1. 토글 시 아이콘 변경 추가 */}
                     <Button
                       variant={'outlined'}
                       color={'gray'}
                       size={'md'}
+                      only={'icon'}
                       onClick={() => setIsHeightExpanded(!isHeightExpanded)}
                     >
-                      <SizeIcon color="var(--color-secondary-50)" className="rotate-90" />
+                      {isHeightExpanded ? (
+                        <SizeOffIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
+                      ) : (
+                        <SizeIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
+                      )}
                     </Button>
                     <Button
                       variant={'outlined'}
                       color={'gray'}
                       size={'md'}
+                      only={'icon'}
                       onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
                     >
-                      <SizeIcon color="var(--color-secondary-50)" />
+                      {isWidthExpanded ? (
+                        <SizeOffIcon size={16} color="var(--color-secondary-50)" />
+                      ) : (
+                        <SizeIcon size={16} color="var(--color-secondary-50)" />
+                      )}
                     </Button>
+                    {/* //M1. 토글 시 아이콘 변경 추가 */}
                   </Grow>
                 </Grow>
               </Grow>
@@ -949,11 +944,11 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            {/* M1. variant="box" 추가 */}
+            {/* M1. variant="box" 추가 FormTable className 수정 */}
             <MainBottom variant="box">
               <MainBottomItem className="pl-0! pb-0! pt-0!">
                 <FormTable
-                  className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-full after:h-px after:bg-[#ccc]"
+                  className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-[calc(100%+1.2rem)] after:h-px after:bg-[var(--color-gray-15)]"
                   lineTop={false}
                   variant={'bottom'}
                   cols={[
@@ -968,7 +963,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                     'min-w-[15rem]',
                   ]}
                 >
-                  <FormRow className="overflow-hidden">
+                  <FormRow className="overflow-hidden h-[4.5rem]">
                     <FormCell
                       tdNone={true}
                       className="bg-(--color-primary-10)! rounded-tl-[1rem]!"

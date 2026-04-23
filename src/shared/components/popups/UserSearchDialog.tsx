@@ -1,7 +1,7 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import { Grow, Gcol, Typo } from '@atoms';

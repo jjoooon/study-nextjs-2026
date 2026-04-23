@@ -1,7 +1,7 @@
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';

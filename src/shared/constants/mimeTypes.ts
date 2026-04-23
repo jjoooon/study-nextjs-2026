@@ -345,6 +345,7 @@ export function getMimeTypeByExtension(extension: string): string | undefined {
  * @returns true if the MIME type is an image
  */
 export function isImageMimeType(mimeType: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return Object.values(IMAGE_TYPES).includes(mimeType as any);
 }
 
@@ -354,6 +355,7 @@ export function isImageMimeType(mimeType: string): boolean {
  * @returns true if the MIME type is a document
  */
 export function isDocumentMimeType(mimeType: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return DOCUMENT_FILE_TYPES.includes(mimeType as any);
 }
 
@@ -363,6 +365,7 @@ export function isDocumentMimeType(mimeType: string): boolean {
  * @returns true if the MIME type is an archive
  */
 export function isArchiveMimeType(mimeType: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return ARCHIVE_FILE_TYPES.includes(mimeType as any);
 }
 
@@ -372,6 +375,7 @@ export function isArchiveMimeType(mimeType: string): boolean {
  * @returns true if the MIME type is audio
  */
 export function isAudioMimeType(mimeType: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return Object.values(AUDIO_TYPES).includes(mimeType as any);
 }
 
@@ -381,5 +385,6 @@ export function isAudioMimeType(mimeType: string): boolean {
  * @returns true if the MIME type is video
  */
 export function isVideoMimeType(mimeType: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return Object.values(VIDEO_TYPES).includes(mimeType as any);
 }

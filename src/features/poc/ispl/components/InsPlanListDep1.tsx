@@ -1,7 +1,7 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import { scaleChange } from '@/shared/utils/scale';
