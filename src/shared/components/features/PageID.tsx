@@ -19,7 +19,7 @@ export function PageID({ data }: PageIDProps) {
   const safeData = data ?? {};
 
   // 로그인 사용자 사번
-  getHeader('pfmStfno');
+  getHeader('stfno');
 
   return (
     <Grow placement={'bwc'} className="w-full py-1">

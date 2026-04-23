@@ -13,7 +13,7 @@ const logger = log.getLogger('AuthUtils');
 interface Header {
   pfmTxCode: string;
   pfmGlobalNo: string;
-  pfmStfno: string;
+  stfno: string;
 }
 
 /**
@@ -28,7 +28,7 @@ export function getHeader(key: keyof Header): string {
   const state = store.getState() as unknown as RootState;
 
   // TODO: @YunJunmo
-  if (key === 'pfmStfno') {
+  if (key === 'stfno') {
     return state.auth.user?.employeeId ?? '';
   }
 
