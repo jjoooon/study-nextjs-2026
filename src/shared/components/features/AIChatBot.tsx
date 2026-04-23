@@ -1,8 +1,8 @@
 'use client';
 
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import Image from 'next/image';
 import * as React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 
 const CHATBOT_DIALOG_WIDTH = 420;
 const CHATBOT_DIALOG_HEIGHT = 560;
