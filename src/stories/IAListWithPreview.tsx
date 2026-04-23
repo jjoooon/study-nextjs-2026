@@ -215,7 +215,6 @@ export function IAListWithPreview() {
             <col style={{ width: '8rem' }} />
             <col style={{ width: '12rem' }} />
             <col style={{ width: '6rem' }} />
-            <col style={{ width: '2rem' }} />
             <col />
             <col />
             <col style={{ width: '5rem' }} />
@@ -225,34 +224,93 @@ export function IAListWithPreview() {
           <thead>
             <tr>
               <th scope="col">No</th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('path')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('path')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('path'); }}
+                role="button"
+                aria-label="경로 정렬"
+              >
                 경로{getSortIndicator('path')}
               </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('id')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('id')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('id'); }}
+                role="button"
+                aria-label="ID 정렬"
+              >
                 ID{getSortIndicator('id')}
               </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('dep4')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('dep4')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('dep4'); }}
+                role="button"
+                aria-label="화면명 정렬"
+              >
                 화면명{getSortIndicator('dep4')}
               </th>
               <th scope="col">설계서명</th>
-              <th scope="col">검수</th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
-                1차{showPhaseOnly ? ' ✓' : ''}
-              </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('completeDate')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('completeDate')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('completeDate'); }}
+                role="button"
+                aria-label="완료일 정렬"
+              >
                 완료일{getSortIndicator('completeDate')}
               </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('modifyDate')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('modifyDate')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('modifyDate'); }}
+                role="button"
+                aria-label="수정일 정렬"
+              >
                 수정일{getSortIndicator('modifyDate')}
               </th>
-
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('plan')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('plan'); }}
+                role="button"
+                aria-label="기획 정렬"
+              >
                 기획{getSortIndicator('plan')}
               </th>
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('pub')}>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('pub')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('pub'); }}
+                role="button"
+                aria-label="퍼블 정렬"
+              >
                 퍼블{getSortIndicator('pub')}
               </th>
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('dev')}>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('dev')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('dev'); }}
+                role="button"
+                aria-label="개발 정렬"
+              >
                 개발{getSortIndicator('dev')}
               </th>
             </tr>
@@ -272,7 +330,13 @@ export function IAListWithPreview() {
                 <tr
                   key={`${getRowKey(row)}-${index}`}
                   data-active={isActive ? 'true' : undefined}
-                  className={isActive ? 'selected' : ''}
+                  className={
+                    [
+                      isActive ? 'selected' : '',
+                      info?.완료일 ? 'complete' : '',
+                      rowBgClass
+                    ].filter(Boolean).join(' ')
+                  }
                   onClick={() => setActiveRowKey(getRowKey(row))}
                 >
                   <td className={rowBgClass}>
@@ -281,15 +345,13 @@ export function IAListWithPreview() {
                   <td className={rowBgClass + ' '}>
                     <b>{row.path ?? ''}</b>
                   </td>
-                  <th scope="row" className={rowIdBgClass}>
-                    {row.id}
-                    {row.subId ? <>({row.subId})</> : ''}
-                  </th>
+                  <td scope="row" className={rowIdBgClass}>
+                    <b>{row.id}</b>
+                    {row.subId ? <><br />({row.subId})</> : ''}
+                  </td>
                   <td className={rowBgClass}>{row.dep4}</td>
                   <td className={rowBgClass}>{row.file}</td>
-                  <td className={`text-center ${rowBgClass}`}>
-                    <b>{row.phase === 'Y' ? 'Y' : ''}</b>
-                  </td>
+                  
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{completeDate}</b>
                   </td>
