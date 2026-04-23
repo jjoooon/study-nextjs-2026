@@ -1,5 +1,6 @@
 import { RootState } from '@/redux';
 import log from '@/shared/utils/logger';
+import { BUTTON_AUTH } from '../constants/auth';
 import { getStore } from './globalRegistry';
 
 const logger = log.getLogger('AuthUtils');
@@ -12,7 +13,7 @@ const logger = log.getLogger('AuthUtils');
 interface Header {
   pfmTxCode: string;
   pfmGlobalNo: string;
-  pfmStfno: string;
+  stfno: string;
 }
 
 /**
@@ -27,9 +28,28 @@ export function getHeader(key: keyof Header): string {
   const state = store.getState() as unknown as RootState;
 
   // TODO: @YunJunmo
-  if (key === 'pfmStfno') {
+  if (key === 'stfno') {
     return state.auth.user?.employeeId ?? '';
   }
 
   return '';
+}
+
+export function getAuthList(): string[] {
+  const authList = ['R'];
+
+  return authList;
+}
+
+export function hasButtonAuth(id?: string) {
+  if (!id) {
+    return true;
+  }
+
+  const match = BUTTON_AUTH.ID_PATTERN.exec(id);
+  if (!match) {
+    return true;
+  }
+
+  return getAuthList().includes(match[1]);
 }

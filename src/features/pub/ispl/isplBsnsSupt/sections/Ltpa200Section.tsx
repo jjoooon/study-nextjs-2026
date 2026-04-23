@@ -1,7 +1,6 @@
 'use client';
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type {
   ColDef,
   EditableCallbackParams,
@@ -38,7 +37,8 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
+
 // dummy data
 type DummyDataType = {
   id: number;

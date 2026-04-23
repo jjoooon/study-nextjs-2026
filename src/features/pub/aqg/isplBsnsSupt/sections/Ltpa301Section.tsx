@@ -1,7 +1,7 @@
 'use client';
 
+import '@/shared/lib/agGridPub';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
@@ -19,8 +19,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 type Ltpa301DummyDataRow = {
   id: number;

@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import * as React from 'react';
 import { EssentialIcon } from '@/shared/components/icons/CommonIcons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
@@ -21,8 +20,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({

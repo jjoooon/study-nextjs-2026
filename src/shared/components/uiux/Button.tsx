@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
+import { hasButtonAuth } from '@/shared/utils/authUtils';
 
 const buttonVariants = cva(
   `relative inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none select-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
@@ -424,6 +425,7 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
       asChild = false,
       only = 'default',
       type,
+      id,
       ...props
     },
     ref
@@ -439,6 +441,7 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
         data-only={only}
         className={cn(buttonVariants({ variant, color, size, only }), className)}
         type={Comp === 'button' ? (type ?? 'button') : undefined}
+        disabled={!hasButtonAuth(id)}
         {...props}
       >
         {children}

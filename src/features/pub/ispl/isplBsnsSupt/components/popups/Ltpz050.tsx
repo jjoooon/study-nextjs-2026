@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import * as React from 'react';
 import { Textarea } from '@/shared/components/uiux/Textarea';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
@@ -19,8 +18,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (

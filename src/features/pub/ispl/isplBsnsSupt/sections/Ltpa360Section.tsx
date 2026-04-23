@@ -1,7 +1,6 @@
 'use client';
 
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -24,7 +23,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 // Side Effect (모듈 등록 등)
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type Ltpa360DummyDataRow1 = {
   id: number;

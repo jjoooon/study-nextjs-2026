@@ -1,6 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -22,8 +22,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 // 담보패키지 dummy data
 type DummyDataType1 = {

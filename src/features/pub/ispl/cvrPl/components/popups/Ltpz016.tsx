@@ -1,6 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,8 +20,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz016 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (

@@ -9,7 +9,6 @@ import type {
   ICellEditorParams,
   ICellRendererParams,
 } from 'ag-grid-community';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
@@ -38,7 +37,8 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
+
 // dummy data
 type DummyDataType = {
   id: number;

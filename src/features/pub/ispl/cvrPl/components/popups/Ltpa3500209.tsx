@@ -1,13 +1,10 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpa3500209 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (

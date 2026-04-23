@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -28,7 +27,7 @@ import {
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 const underwritingDecisionMap = {
   refuse: {

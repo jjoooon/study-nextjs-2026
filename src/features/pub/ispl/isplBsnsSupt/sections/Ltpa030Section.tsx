@@ -1,6 +1,5 @@
 'use client';
 // M1. 전체 수정
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type {
   ColDef,
   EditableCallbackParams,
@@ -35,7 +34,7 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 // dummy data
 type DummyDataType = {

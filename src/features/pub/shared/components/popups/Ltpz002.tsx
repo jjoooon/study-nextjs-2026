@@ -1,7 +1,7 @@
 'use client';
 
+import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
@@ -26,8 +26,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 type DummyDataType = {
   id: number;

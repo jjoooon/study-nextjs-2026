@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
@@ -14,6 +15,12 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
   showMinLengthCount?: boolean;
   resize?: boolean; // 리사이즈 가능 여부 (기본값: true)
   maxLength?: number; // 최대 글자 수 (optional, but commonly used with textarea)
+  restrictChars?: boolean;
+}
+
+function applyRestrictedCharsFilter(value: string): string {
+  const sorted = [...INPUT_RESTRICTED_CHARS].sort((a, b) => b.length - a.length);
+  return sorted.reduce((acc, char) => acc.split(char).join(''), value);
 }
 
 function Textarea({
@@ -24,6 +31,7 @@ function Textarea({
   errorPs = 'bl',
   resize = true,
   maxLength = 0,
+  restrictChars = true,
   value: valueProp,
   defaultValue,
   onChange,
@@ -38,8 +46,13 @@ function Textarea({
   const value = isControlled ? valueProp : internalValue;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
     if (!isControlled) {
-      setInternalValue(e.target.value);
+      setInternalValue(val);
+    }
+    if (val !== e.target.value) {
+      onChange?.({ ...e, target: { ...e.target, value: val } } as React.ChangeEvent<HTMLTextAreaElement>);
+      return;
     }
     onChange?.(e);
   };

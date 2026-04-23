@@ -1,6 +1,7 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule, ColDef } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import {
@@ -22,8 +23,6 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 type DummyDataType = {
   id: number;

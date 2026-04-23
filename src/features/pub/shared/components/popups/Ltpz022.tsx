@@ -1,7 +1,7 @@
 'use client';
 
+import '@/shared/lib/agGridPub';
 import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -24,8 +24,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 type Ltpz022TabType = {
   name: string;

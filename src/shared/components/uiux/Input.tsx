@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import * as React from 'react';
 
+import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
 import { ErrorMsg } from '@common/ErrorMsg';
@@ -28,6 +29,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   formatter?: FormatterType;
   isFocused?: boolean;
   width?: 'auto' | 'full' | string | number;
+  restrictChars?: boolean;
   // debug?: boolean;
 }
 // 주민등록번호 입력 포맷터: 6자리-7자리, 빈자리는 언더바
@@ -52,6 +54,11 @@ function formatAmount(value: string) {
   }
 
   return `${formattedInt}.${decimalPartRaw}`;
+}
+
+function applyRestrictedCharsFilter(value: string): string {
+  const sorted = [...INPUT_RESTRICTED_CHARS].sort((a, b) => b.length - a.length);
+  return sorted.reduce((acc, char) => acc.split(char).join(''), value);
 }
 
 function sanitizeAmountInput(value: string): string {
@@ -84,6 +91,7 @@ function Input({
   commaAmount = false,
   clear = false,
   forceFocused = false,
+  restrictChars = true,
   onChange,
   value,
   formatter,
@@ -110,7 +118,7 @@ function Input({
   const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+    const val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
     if (commaAmount) {
       const normalizedValue = sanitizeAmountInput(val);
       if (onChange) {
@@ -127,6 +135,10 @@ function Input({
         onChange(syntheticEvent);
         return;
       }
+    }
+    if (val !== e.target.value) {
+      onChange?.({ ...e, target: { ...e.target, value: val } } as React.ChangeEvent<HTMLInputElement>);
+      return;
     }
     onChange?.(e);
   };

@@ -1,6 +1,7 @@
 'use client';
 
-import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState } from 'react';
 import {

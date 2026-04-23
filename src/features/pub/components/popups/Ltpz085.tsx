@@ -1,7 +1,7 @@
 'use client';
 
+import '@/shared/lib/agGridPub';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@/shared/components/agGridUtils';
@@ -19,8 +19,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 type DummyDataType = {
   id: number;

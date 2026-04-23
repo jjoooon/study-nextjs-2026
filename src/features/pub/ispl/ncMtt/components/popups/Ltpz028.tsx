@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
@@ -22,7 +21,7 @@ import { Input } from '@/shared/components/uiux/Input';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 const CombinedQuestionHeader = (_props: IHeaderParams<DummyDataType>) => {
   const headerAreaStyle: React.CSSProperties = {

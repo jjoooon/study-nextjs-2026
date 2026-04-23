@@ -140,7 +140,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
       </Grow>
       {open && (
         <PopoverContent
-          className="border-[var(--color-gray-20)] p-3 rounded-[0.4rem] shadow-lg gap-2.5 w-[19.4rem]"
+          className="border-[var(--color-gray-20)] p-3 rounded-[0.6rem] shadow-lg gap-2.5 w-[19.4rem]"
           align="end"
           motion="none"
           portalContainer={

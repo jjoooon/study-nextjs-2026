@@ -3,7 +3,6 @@
 // M1. 파일명수정 LTPA070 -> LTPZ083
 // M1. 컴포넌트명수정 LTPA070 -> LTPZ083
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -26,7 +25,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 // dummy data
 type DummyDataType = {

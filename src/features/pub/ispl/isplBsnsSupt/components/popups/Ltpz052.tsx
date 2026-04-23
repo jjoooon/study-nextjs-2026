@@ -9,7 +9,6 @@ import type {
   ICellRendererParams,
   SuppressKeyboardEventParams,
 } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
@@ -41,7 +40,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;
