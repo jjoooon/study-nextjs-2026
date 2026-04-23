@@ -1,6 +1,7 @@
 'use client';
 
-import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry, ICellRendererParams } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 
@@ -19,8 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 const parseNumericValue = (value: unknown): number => {
   if (value === null || value === undefined || value === '') return 0;

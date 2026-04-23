@@ -2,7 +2,6 @@
 // M1. 팝업에서 화면으로 전환, 전체 수정
 
 import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
@@ -28,7 +27,8 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
+
 type DummyDataType = {
   id: number;
   isNew: boolean;

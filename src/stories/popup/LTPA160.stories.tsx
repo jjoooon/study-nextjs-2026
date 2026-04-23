@@ -1,7 +1,7 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpa160 } from '@/features/pub/shared/components/popups/Ltpa160';
+import { Ltpa160 } from '@/features/pub/화면으로변환파일(삭제예정)/Ltpa160';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 

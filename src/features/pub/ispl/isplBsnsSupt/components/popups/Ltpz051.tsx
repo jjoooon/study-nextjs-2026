@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -25,7 +24,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type LTPZ051Tab = { name: string; value: string; label: string };
 const DATA_TABS: LTPZ051Tab[] = [

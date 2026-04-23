@@ -1,6 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ColDef, ModuleRegistry } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
@@ -26,7 +26,7 @@ import {
 } from '@uiux/Dialog';
 
 // M2. 신규페이지
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;

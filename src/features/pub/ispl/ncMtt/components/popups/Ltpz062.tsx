@@ -1,6 +1,5 @@
 'use client';
 import type { ColDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
@@ -20,7 +19,7 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;

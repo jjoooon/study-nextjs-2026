@@ -1,6 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -21,8 +20,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [form, setFormField] = useFormFields({

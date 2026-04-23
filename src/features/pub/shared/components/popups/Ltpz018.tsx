@@ -1,6 +1,6 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import '@/shared/lib/agGridPub';
 import { useMemo, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
@@ -91,8 +91,6 @@ type Ltpz018Props = PopupBaseProps & {
   myMenuList?: Ltpz018MenuItem[];
   onSaveMyMenuList?: (nextMenus: Ltpz018MenuItem[]) => void;
 };
-
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Ltpz018Props) => {
   const DATA_TABS = [

@@ -1,7 +1,6 @@
 'use client';
 
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils/AgGridUtils';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
@@ -26,7 +25,7 @@ import {
 
 import { Input } from '@uiux/Input';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;

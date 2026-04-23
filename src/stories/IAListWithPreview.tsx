@@ -3,10 +3,11 @@
 import * as React from 'react';
 import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
-// iaEndModify import 제거, meta.data만 사용
-import iaDateData from './ia-date.json';
-import meta from './ialist-meta.json';
 import iaListData from './ialist.json';
+
+import iaHsh from './ia-hsh.json';
+import iaKot from './ia-kot.json';
+import iaJhm from './ia-jhm.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 type SortOrder = 'default' | 'asc' | 'desc';
@@ -41,12 +42,30 @@ type IARow = {
 
 const ROWS: IARow[] = iaListData as IARow[];
 
+type PubInfo = {
+  화면아이디: string;
+  이름: string;
+  완료일: string;
+  수정일: string;
+};
+
+const pubInfoList: PubInfo[] = [
+  ...(iaHsh as PubInfo[]),
+  ...(iaKot as PubInfo[]),
+  ...(iaJhm as PubInfo[]),
+];
+
+// pubInfoList에서 화면아이디로 PubInfo를 찾는 헬퍼
+const getPubInfo = (row: Pick<IARow, 'id' | 'subId'>) => {
+  const bySubId = row.subId ? pubInfoList.find(info => info.화면아이디 === row.subId) : undefined;
+  return bySubId ?? pubInfoList.find(info => info.화면아이디 === row.id);
+};
+
 const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
 
 export function IAListWithPreview() {
   const [showPhaseOnly, setShowPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
-  // 정렬 핸들러 복구
   const handleSort = React.useCallback((key: SortKey) => {
     setSortState((prev) => {
       if (prev.key !== key || prev.order === 'default') {
@@ -60,41 +79,29 @@ export function IAListWithPreview() {
   }, []);
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
-  const workListH = React.useMemo(() => meta.workListH as string[], []);
-  const workListK = React.useMemo(() => meta.workListK as string[], []);
-  const workListJ = React.useMemo(() => meta.workListJ as string[], []);
-
-  const rowsWithPubOwner = React.useMemo(() => {
-    const pubOwnerById = new Map<string, string>();
-
-    workListH.forEach((id) => pubOwnerById.set(id, '허승하'));
-    workListK.forEach((id) => pubOwnerById.set(id, '권오택'));
-    workListJ.forEach((id) => pubOwnerById.set(id, '조현민'));
-
+  const rowsWithPubInfo = React.useMemo(() => {
     return ROWS.map((row) => {
-      const matchedPubOwner = pubOwnerById.get(row.subId ?? '') ?? pubOwnerById.get(row.id);
-
-      if (!matchedPubOwner) {
-        return row;
-      }
-
+      const info = getPubInfo(row);
+      if (!info) return row;
+      const phase = info.완료일 ? 'Y' : row.phase;
       return {
         ...row,
-        pub: matchedPubOwner,
+        pub: info.이름,
+        date: info.완료일 || row.date,
+        modify: info.수정일 || row.modify,
+        phase,
       };
     });
-  }, [workListH, workListJ, workListK]);
+  }, [ROWS, pubInfoList]);
 
   const visibleRows = React.useMemo(() => {
-    // dep1이 '차세대가입설계'인 항목만 노출
-    const filtered = rowsWithPubOwner.filter((row) => row.dep1 === '차세대가입설계');
+    const filtered = rowsWithPubInfo.filter((row) => row.dep1 === '차세대가입설계');
     if (!showPhaseOnly) {
       return filtered;
     }
     return filtered.filter((row) => row.phase === 'Y');
-  }, [rowsWithPubOwner, showPhaseOnly]);
+  }, [rowsWithPubInfo, showPhaseOnly]);
 
-  // 완료/전체/진행율 계산 (visibleRows 선언 이후)
   const totalCount = React.useMemo(() => visibleRows.length, [visibleRows]);
   const doneCount = React.useMemo(() => visibleRows.filter((row) => row.phase === 'Y').length, [visibleRows]);
   const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
@@ -103,28 +110,19 @@ export function IAListWithPreview() {
     return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
   }, [activeRowKey, visibleRows]);
 
-  // 완료일/수정일 정렬 지원
   const sortedRows = React.useMemo(() => {
     if (sortState.key === null || sortState.order === 'default') {
       return visibleRows;
     }
     const sortKey = sortState.key;
     return [...visibleRows].sort((left, right) => {
-      // 날짜 정렬 지원
+      // 날짜 정렬도 pubInfoList 기준으로 변경
       if (sortKey === 'completeDate' || sortKey === 'modifyDate') {
-        // 날짜 추출 함수 (YYYY.MM.DD → YYYYMMDD)
         const getDateNum = (row: IARow, type: 'completeDate' | 'modifyDate') => {
-          let result = type === 'completeDate' ? row.date : row.modify;
-          const dateData = iaDateData as Record<string, string[]>;
-          for (const key of Object.keys(dateData)) {
-            if (key.startsWith(type === 'completeDate' ? 'e' : 'm') && key.length === 7) {
-              const dateStr = key.slice(1);
-              const idList = dateData[key];
-              if (Array.isArray(idList) && idList.includes(row.id)) {
-                result = `20${dateStr.slice(0, 2)}.${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
-              }
-            }
-          }
+          const info = getPubInfo(row);
+          let result = type === 'completeDate'
+            ? (info?.완료일 || row.date)
+            : (info?.수정일 || row.modify);
           return result.replace(/\./g, '');
         };
         const leftValue = getDateNum(left, sortKey);
@@ -132,7 +130,6 @@ export function IAListWithPreview() {
         const compareResult = leftValue.localeCompare(rightValue);
         return sortState.order === 'asc' ? compareResult : -compareResult;
       }
-      // 기존 문자열 정렬
       type SortableKeys = keyof Pick<IARow, 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
       if (!sortKey || !['dep4', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
         return 0;
@@ -188,16 +185,6 @@ export function IAListWithPreview() {
     [sortState]
   );
 
-  const inspectionList = React.useMemo(() => meta.inspectionList as string[], []);
-  const ingList = React.useMemo(() => meta.ingList as string[], []);
-  const workList = React.useMemo(() => {
-    const workListPrev: string[] = meta.workListPrev as string[];
-    return [...workListPrev, ...workListH, ...workListK, ...workListJ];
-  }, [workListH, workListJ, workListK]);
-
-  const ingIdSet = React.useMemo(() => new Set(ingList), [ingList]);
-  const workIdSet = React.useMemo(() => new Set(workList), [workList]);
-
   return (
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
@@ -228,7 +215,6 @@ export function IAListWithPreview() {
             <col style={{ width: '8rem' }} />
             <col style={{ width: '12rem' }} />
             <col style={{ width: '6rem' }} />
-            <col style={{ width: '2rem' }} />
             <col />
             <col />
             <col style={{ width: '5rem' }} />
@@ -238,34 +224,93 @@ export function IAListWithPreview() {
           <thead>
             <tr>
               <th scope="col">No</th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('path')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('path')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('path'); }}
+                role="button"
+                aria-label="경로 정렬"
+              >
                 경로{getSortIndicator('path')}
               </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('id')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('id')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('id'); }}
+                role="button"
+                aria-label="ID 정렬"
+              >
                 ID{getSortIndicator('id')}
               </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('dep4')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('dep4')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('dep4'); }}
+                role="button"
+                aria-label="화면명 정렬"
+              >
                 화면명{getSortIndicator('dep4')}
               </th>
               <th scope="col">설계서명</th>
-              <th scope="col">검수</th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => setShowPhaseOnly((prev) => !prev)}>
-                1차{showPhaseOnly ? ' ✓' : ''}
-              </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('completeDate')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('completeDate')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('completeDate'); }}
+                role="button"
+                aria-label="완료일 정렬"
+              >
                 완료일{getSortIndicator('completeDate')}
               </th>
-              <th scope="col" className="cursor-pointer select-none" onClick={() => handleSort('modifyDate')}>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('modifyDate')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('modifyDate'); }}
+                role="button"
+                aria-label="수정일 정렬"
+              >
                 수정일{getSortIndicator('modifyDate')}
               </th>
-
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('plan')}>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('plan')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('plan'); }}
+                role="button"
+                aria-label="기획 정렬"
+              >
                 기획{getSortIndicator('plan')}
               </th>
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('pub')}>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('pub')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('pub'); }}
+                role="button"
+                aria-label="퍼블 정렬"
+              >
                 퍼블{getSortIndicator('pub')}
               </th>
-              <th scope="col" className="text-center cursor-pointer select-none" onClick={() => handleSort('dev')}>
+              <th
+                scope="col"
+                className="text-center cursor-pointer select-none"
+                onClick={() => handleSort('dev')}
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('dev'); }}
+                role="button"
+                aria-label="개발 정렬"
+              >
                 개발{getSortIndicator('dev')}
               </th>
             </tr>
@@ -273,48 +318,25 @@ export function IAListWithPreview() {
           <tbody>
             {sortedRows.map((row, index) => {
               const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
-              const isIng = ingIdSet.has(row.id) || ingIdSet.has(row.subId ?? '');
-              const isWork = workIdSet.has(row.id) || workIdSet.has(row.subId ?? '');
-              const rowBgClass = isWork
-                ? 'bg-[#dbeafe]! tracking-0'
-                : isIng
-                  ? 'bg-[#fff3cd]! tracking-0'
-                  : 'tracking-0';
-              const rowIdBgClass = isWork
-                ? 'bg-[#bfdbfe]! tracking-0'
-                : isIng
-                  ? 'bg-[#c5bfbf]! tracking-0'
-                  : 'tracking-0';
-              const isInspected = [row.id, row.subId]
-                .filter(Boolean)
-                .some((id) => inspectionList.some((insp) => insp.toLowerCase() === String(id).toLowerCase()));
+              const rowBgClass = 'tracking-0';
+              const rowIdBgClass = 'tracking-0';
 
-              // 완료일/수정일: ia-date.json 기준으로 계산
-              let completeDate = row.date;
-              let modifyDate = row.modify;
-              const dateData = iaDateData as Record<string, string[]>;
-              for (const key of Object.keys(dateData)) {
-                if (key.startsWith('e') && key.length === 7) {
-                  const dateStr = key.slice(1);
-                  const idList = dateData[key];
-                  if (Array.isArray(idList) && idList.includes(row.id)) {
-                    completeDate = `${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
-                  }
-                }
-                if (key.startsWith('m') && key.length === 7) {
-                  const dateStr = key.slice(1);
-                  const idList = dateData[key];
-                  if (Array.isArray(idList) && idList.includes(row.id)) {
-                    modifyDate = `${dateStr.slice(2, 4)}.${dateStr.slice(4, 6)}`;
-                  }
-                }
-              }
+              // pubInfoList 기준으로 완료일/수정일 표시
+              const info = getPubInfo(row);
+              const completeDate = info?.완료일 || row.date;
+              const modifyDate = info?.수정일 || row.modify;
 
               return (
                 <tr
                   key={`${getRowKey(row)}-${index}`}
                   data-active={isActive ? 'true' : undefined}
-                  className={isActive ? 'selected' : ''}
+                  className={
+                    [
+                      isActive ? 'selected' : '',
+                      info?.완료일 ? 'complete' : '',
+                      rowBgClass
+                    ].filter(Boolean).join(' ')
+                  }
                   onClick={() => setActiveRowKey(getRowKey(row))}
                 >
                   <td className={rowBgClass}>
@@ -323,27 +345,19 @@ export function IAListWithPreview() {
                   <td className={rowBgClass + ' '}>
                     <b>{row.path ?? ''}</b>
                   </td>
-                  <th scope="row" className={rowIdBgClass}>
-                    {row.id}
-                    {row.subId ? <>({row.subId})</> : ''}
-                  </th>
-                  <td className={rowBgClass}>{row.dep4}</td>
-
-                  <td className={rowBgClass}>{row.file}</td>
-
-                  {/* Inspection status column */}
-                  <td className={`text-center ${rowBgClass}`}>{isInspected ? '✔️' : ''}</td>
-
-                  <td className={`text-center ${rowBgClass}`}>
-                    <b>{row.phase === 'Y' ? 'Y' : ''}</b>
+                  <td scope="row" className={rowIdBgClass}>
+                    <b>{row.id}</b>
+                    {row.subId ? <><br />({row.subId})</> : ''}
                   </td>
+                  <td className={rowBgClass}>{row.dep4}</td>
+                  <td className={rowBgClass}>{row.file}</td>
+                  
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{completeDate}</b>
                   </td>
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{modifyDate}</b>
                   </td>
-
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.dev}</td>

@@ -1,7 +1,6 @@
 'use client';
 
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
@@ -23,7 +22,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 // dummy data
 type DummyDataType = {
