@@ -1,5 +1,12 @@
 'use client';
 
+import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
+import {
+  createCellClickSelectionToggleHandler,
+  numberValueFormatter,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -15,15 +22,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { type ColDef, type ICellRendererParams, type SelectionChangedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
-
-import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
-import {
-  createCellClickSelectionToggleHandler,
-  numberValueFormatter,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 
 type Ltpa350Step6GridRow = {
   id: number;
@@ -70,7 +68,7 @@ const DummyData: DummyDataType = {
 };
 
 export const Ltpa350Step6 = () => {
-  const [isLtpz014Open, setIsLtpz014Open] = useState(false);
+  // const [isLtpz014Open, setIsLtpz014Open] = useState(false);
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -175,7 +173,7 @@ export const Ltpa350Step6 = () => {
       }
       const num = Number(value);
 
-      console.log('value:', isNaN(num), 'num:', num, total);
+      // console.log('value:', isNaN(num), 'num:', num, total);
 
       return total + (isNaN(num) ? 0 : num);
     }, 0);

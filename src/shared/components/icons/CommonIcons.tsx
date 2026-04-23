@@ -1743,7 +1743,7 @@ export const CalendarIcon2: React.FC<IconProps> = ({ className = '', size = 16, 
   </svg>
 );
 
-export const DialogPocIcon: React.FC<IconProps> = ({ className = '', size = 12, color = 'currentColor' }) => (
+export const DialogPocIcon: React.FC<IconProps> = ({ className = '', size = 12 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}

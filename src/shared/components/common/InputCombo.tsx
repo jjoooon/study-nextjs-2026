@@ -3,10 +3,10 @@
 // datalist + popover 기능의 InputCombo 컴포넌트
 // 기존 Input 컴포넌트 활용
 
-import { Input } from '@uiux/Input';
 import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Input } from '@uiux/Input';
 
 // 고유 ID 생성을 위한 유틸
 function getRandomId(prefix = 'inputcombo-') {

@@ -254,18 +254,10 @@ const axiosBaseQuery: BaseQueryFn<string | BaseQueryArgs, unknown, BaseQueryErro
     hideSpinnerAndClear();
 
     if (axios.isAxiosError(error)) {
-      if (!error.response) {
-        return {
-          error: {
-            status: 0,
-            data: error.message || error.code || 'Network Error',
-          },
-        };
-      }
       return {
         error: {
-          status: error.response.status,
-          data: error.response.data,
+          status: error.response?.status || 500,
+          data: error.response?.data,
         },
       };
     }

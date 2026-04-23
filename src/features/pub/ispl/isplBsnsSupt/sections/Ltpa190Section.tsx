@@ -1,14 +1,5 @@
 'use client';
 // M1. 팝업에서 화면으로 전환, 전체 수정
-import { Grow, Grid } from '@atoms';
-import { BottomBar } from '@common/BottomBar';
-
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { PageID } from '@features/PageID';
-
-import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
 
 import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
@@ -29,6 +20,13 @@ import { ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Grow, Grid } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 type DummyDataType = {

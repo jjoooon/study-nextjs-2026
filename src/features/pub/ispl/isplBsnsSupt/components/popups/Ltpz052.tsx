@@ -1,6 +1,18 @@
 'use client';
 
 // React
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellRendererParams,
+  SuppressKeyboardEventParams,
+} from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
   AgGridEmptyComponent,
   GridHeaderCheckbox,
@@ -26,11 +38,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, EditableCallbackParams, GridApi, ICellRendererParams, SuppressKeyboardEventParams } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -81,7 +88,6 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
 ];
-
 
 export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
@@ -167,7 +173,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           width: 100,
           editable: true,
           field: 'isAuthcheck1',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -372,7 +378,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                     enableClickSelection: false,
                   }}
                   // 행추가 된 rowCell
-                  getRowClass={(params) => params.data?.isNew ? 'ag-row-new' : ''}
+                  getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                   onGridReady={(params) => {
                     gridApiRef.current = params.api;
                   }}
