@@ -6,8 +6,6 @@ import {
   GridHeaderCheckbox,
   createHeaderCheckboxParams,
   createHeaderCheckboxOnCellValueChanged,
-  createFieldRenderer,
-  editableSelectCellRenderer,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
@@ -33,7 +31,6 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { useCallback } from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -43,6 +40,7 @@ type DummyDataType = {
   isAuthcheck1: boolean;
   isAuthcheck2: boolean;
   isNew: boolean;
+  isField01InputVisible: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -58,8 +56,9 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     isAuthcheck1: true,
     isAuthcheck2: true,
-    field01: '12312312',
-    field02: '911212-1111111',
+    isField01InputVisible: true,
+    field01: '김한화',
+    field02: '',
     field03: '010-1234-5678',
     field04: '',
     field05: '',
@@ -72,8 +71,9 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     isAuthcheck1: true,
     isAuthcheck2: true,
-    field01: '12312312',
-    field02: '911212-1111111',
+    isField01InputVisible: true,
+    field01: '김한화',
+    field02: '',
     field03: '010-1234-5678',
     field04: '',
     field05: '',
@@ -92,18 +92,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
     []
   );
-  const existingRowFieldRenderer = React.useMemo(
-    () => createFieldRenderer<DummyDataType>('field02', 'field03', 'row'),
-    []
-  );
-
-  const expiryCellRenderer = useCallback(
-    (align: 'left' | 'center' | 'right' = 'right') =>
-      (params: ICellRendererParams<DummyDataType>) =>
-        editableSelectCellRenderer<DummyDataType>({ ...params, align }),
-    []
-  );
-
+  
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const onCellValueChanged = React.useMemo(
     () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['isAuthcheck1', 'isAuthcheck2']),
@@ -137,6 +126,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       isAuthcheck1: false,
       isAuthcheck2: false,
       isNew: true,
+      isField01InputVisible: false,
       field01: '',
       field02: '',
       field03: '',
@@ -190,7 +180,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           editable: true,
           field: 'isAuthcheck2',
           headerClass: 'border-r-0!',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell border-r-0!' : 'text-center border-r-0!',
+          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -202,70 +192,88 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '고객명',
       flex: 1,
-      minWidth: 240,
+      minWidth: 200,
       field: 'field01',
-      headerClass: 'border-l border-[#d4d4d5]',
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
-      autoHeight: true,
-      editable: true,
+      // headerClass: 'border-l border-[#d4d4d5]',
+      autoHeight: false,
       suppressNavigable: true,
-      suppressKeyboardEvent: suppressGridKeyboardOnInput,
+      cellClass: 'editable-cell text-center',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        return (
-          <Grow className="w-full h-full flex items-center justify-center px-2 border-l border-[#d4d4d5]">
-            <div
-              onClick={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-              onMouseDown={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-              onDoubleClick={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-              onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => event.stopPropagation()}
-              className="w-full h-full flex items-center justify-center gap-1"
-            >
-              <div className="w-[16rem] min-w-[16rem] max-w-[16rem] shrink-0">
-                <Input
-                  aria-label=""
-                  width={'full'}
-                  value={String(params.value ?? '')}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    params.node.setDataValue('field01', value);
-                  }}
-                />
+        if (params.data?.isNew) {
+          const isInputVisible = params.data.isField01InputVisible;
+          const inputContainerId = `customer-input-${String(params.data.id)}`;
+
+          return (
+            <div className="flex h-full w-full items-center gap-1 px-1 " id={inputContainerId}>
+              <div className="min-w-0 flex-1">
+                {isInputVisible ? (
+                  <Input
+                    aria-label="고객명"
+                    width={'full'}
+                    size="sm"
+                    value={String(params.data.field01 ?? '')}
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onChange={(event) => {
+                      params.node.setDataValue('field01', event.target.value);
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="h-8 w-full cursor-text"
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setRowData((prev) =>
+                        prev.map((row) =>
+                          row.id === params.data?.id ? { ...row, isField01InputVisible: true } : row
+                        )
+                      );
+
+                      requestAnimationFrame(() => {
+                        const container = document.getElementById(inputContainerId);
+                        const inputElement = container?.querySelector('input');
+
+                        inputElement?.focus();
+                      });
+                    }}
+                  />
+                )}
               </div>
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+              <Button
+                aria-label="검색"
+                color={'gray-light'}
+                variant={'outlined'}
+                only="icon"
+                size={'sm'}
+                onMouseDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
             </div>
-          </Grow>
-        );
+          );
+        }
+
+        return <Typo>{String(params.data?.field01 ?? '')}</Typo>;
       },
     },
     {
       headerName: '주민번호',
       flex: 1,
       field: 'field02',
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        if (params.data?.isNew) {
-          return expiryCellRenderer('center')(params);
-        }
-        // 신규
-        return params.value;
-      },
+      editable: isEditableNewRow,
+      cellClass: 'editable-cell text-center',
     },
     {
       headerName: '전화번호',
       flex: 1,
       field: 'field03',
-      cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center', 
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        if (params.data?.isNew) {
-          return expiryCellRenderer('center')(params);
-        }
-        // 신규
-        return params.value;
-      },
+      editable: isEditableNewRow,
+      cellClass: 'editable-cell text-center',
     },
     {
       headerName: '출력/발송 결과',
@@ -274,27 +282,15 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           headerName: '동의서',
           flex: 1,
           field: 'field04',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap', 
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-            if (params.data?.isNew) {
-              return expiryCellRenderer('center')(params);
-            }
-            // 신규
-            return params.value;
-          },
+          editable: isEditableNewRow,
+          cellClass: 'editable-cell text-center',
         },
         {
           headerName: '모바일',
           flex: 1,
           field: 'field05',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center' + 'px-0! whitespace-nowrap',
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-            if (params.data?.isNew) {
-              return expiryCellRenderer('center')(params);
-            }
-            // 신규
-            return params.value;
-          },
+          editable: isEditableNewRow,
+          cellClass: 'editable-cell text-center',
         },
       ],
     },
@@ -360,6 +356,8 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                   rowData={rowData}
                   columnDefs={columnDefs}
                   noRowsOverlayComponent={AgGridEmptyComponent}
+                  enableCellSpan={true}
+                  singleClickEdit={true}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
