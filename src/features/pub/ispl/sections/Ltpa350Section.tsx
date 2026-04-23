@@ -28,6 +28,7 @@ import { Ltpa350Step2View2 } from '../cvrPl/components/Ltpa350Step2View2'; // 02
 import { Ltpa350Step2View3 } from '../cvrPl/components/Ltpa350Step2View3'; // 02. 담보설계
 import { Ltpa350Step2View4 } from '../cvrPl/components/Ltpa350Step2View4'; // 02. 담보설계
 import { Ltpa350Step2View5 } from '../cvrPl/components/Ltpa350Step2View5'; // 02. 담보설계
+import { Ltpa350Step3 } from '../ncMtt/components/Ltpa350step3';
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
@@ -270,7 +271,7 @@ export default function Ltpa350Section() {
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
     2: renderStep2(),
-    3: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    3: <Ltpa350Step3 viewKey={currentViewKey} />,
     4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
     5: <Ltpa350Step5 />,
     6: <Ltpa350Step6 />,
