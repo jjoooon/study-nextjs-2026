@@ -60,7 +60,7 @@ const getPubInfo = (row: Pick<IARow, 'id' | 'subId'>) => {
 const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
 
 export function IAListWithPreview() {
-  const [showPhaseOnly, setShowPhaseOnly] = React.useState(false);
+  const [showPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const handleSort = React.useCallback((key: SortKey) => {
     setSortState((prev) => {

@@ -269,13 +269,13 @@ const DummyData: DummyDataType[] = [
     field1:
       '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험',
     field2: true,
-    field3: 500,
+    field3: 5000,
     field3Required: true, // 필수 여부 설정
-    field4: 450,
+    field4: 4500,
     field5: '80세',
     field6: '20년',
-    field7: 100,
-    field8: '인수',
+    field7: 1000,
+    field8: '인수가능',
     field9: true,
     field10: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -293,11 +293,11 @@ const DummyData: DummyDataType[] = [
     field2: true,
     field3: 300,
     field3Required: false,
-    field4: 280,
+    field4: 2800,
     field5: '100세',
     field6: '30년',
-    field7: 80,
-    field8: '인수',
+    field7: 8000,
+    field8: '인수불가',
     field9: true,
     field10: {
       title: '담보명 1특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -320,7 +320,7 @@ const DummyData: DummyDataType[] = [
     field5: '90세',
     field6: '25년',
     field7: 120,
-    field8: '인수',
+    field8: '조건부인수',
     field9: true,
     field10: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -734,31 +734,36 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       {
         headerName: '속성',
         field: 'field2',
-        width: attributeColumnWidth[0],
+        width: attributeColumnWidth[4],
         cellClass: 'text-center',
         cellRenderer: attributeRenderer,
         resizable: false,
       },
       {
-        headerName: '가입금액(만원)',
+        headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            가입금액<span className="text-[1.1rem]">(만원)</span> 
+          </Grow>
+        ),
         field: 'field3',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
         cellClassRules: amountCellClassRules,
         cellRenderer: coverageAmountCellRenderer,
       },
       {
-        headerName: '가능금액(만원)',
+        headerName: '가능금액',
         field: 'field4',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
         headerName: '만기',
         field: 'field5',
-        width: attributeColumnWidth[2],
+        width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules,
+        cellClass: 'px-[0.2rem]! tracking-tighter',
         editable: getEditableCallback('whenSelected'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -769,8 +774,9 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       {
         headerName: '납기',
         field: 'field6',
-        width: attributeColumnWidth[2],
+        width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules,
+        cellClass: 'px-[0.2rem]! tracking-tighter',
         editable: getEditableCallback('whenSelected'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -779,28 +785,41 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
         cellRenderer: expiryCellRenderer('left'),
       },
       {
-        headerName: '보험료(원)',
+        headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            보험료<span className="text-[1.1rem]">(원)</span> 
+          </Grow>
+        ),
         field: 'field7',
-        width: attributeColumnWidth[2],
+        width: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
         headerName: '예상UW',
+         headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            <span className="text-[1.1rem]">예상</span>UW
+          </Grow>
+        ),
         field: 'field8',
-        width: attributeColumnWidth[2],
+        width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',
-        cellStyle: (params: CellClassParams<AgGridRow>) => {
+        cellRenderer: (params: ICellRendererParams<AgGridRow>) => {
           const value = params.value as string;
-          if (value === '인수') return { color: '#006FF2' };
-          if (value === '거절' || value === '조건부인수') return { color: '#FB3F3F' };
-          return undefined;
+          const color = value === '인수가능' ? 'var(--color-success-60)' : value === '인수불가' ? 'var(--color-danger-50)' : 'var(--color-warning-40)';
+          return (
+            <Gcol className="h-full" placement="cc">
+              <div className={`w-[1rem] h-[1rem] rounded-full ${color ? `bg-[${color}]` : ''}`}></div>
+            </Gcol>
+            
+          )
         },
       },
       {
         headerName: '중복',
         field: 'field9',
-        width: attributeColumnWidth[0],
+        width: attributeColumnWidth[4],
         cellRenderer: duplicateRenderer,
         resizable: false,
       },
