@@ -24,6 +24,7 @@ import {
 } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
+import { Textarea } from '@/shared/components/uiux/Textarea';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -532,7 +533,6 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
                         <Typo variant="heading-md">지침세부내용</Typo>
-                        
                       </Grow>
                       <Grow className="gap-2.5">
                         <Button variant={'outlined'} color={'gray'} size={'md'}>
@@ -568,7 +568,6 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
                         <Typo variant="heading-md">조건부 특약 가입</Typo>
-                        
                       </Grow>
                       <Grow className="gap-1">
                         <Button variant={'outlined'} color={'gray'} size={'md'}>
@@ -610,12 +609,29 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                   </LayoutScrollWrap>
                 </Gcol>
               </Grid>
-              <Grow className="w-[29.8rem] h-full border-1 rounded-[0.8rem]">
-                <>
-                  <Grow>
-                  </Grow>
-                </>
-              </Grow>
+              <Gcol className="w-[29.8rem] h-full gap-0">
+                <Grow className="w-full h-[4.1rem] px-2.5 py-5 bg-[var(--color-secondary-50)] rounded-t-lg" placement="bwc" variant="default">
+                  <strong className='text-[1.4rem] text-white'>심사결과안내</strong>
+                  <Button variant={'outlined'} color={'secondary'} size={'md'} className="border-[var(--color-secondary-50)] text-black">
+                    이력상세
+                  </Button>   
+                </Grow>
+                <Gcol placement="bwe" className="w-full h-full border border-t-0 border-[var(--color-gray-20)] rounded-b-lg overflow-hidden">
+                  <Grow className="px-3 py-2">
+                    //
+                  </Grow> 
+                  <Gcol className="w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-15)] border-t-1 border-[var(--color-gray-20)]">
+                    <Grow placement='bwc'>
+                      <b className='text-[1.1rem]'>요청자 의견</b>
+                      <Button>심사요청</Button>
+                    </Grow>
+                    <Grow className="w-full h-[8.3rem]">
+                      <Textarea placeholder="계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다." resize={false} className="w-full text-[1.1rem]" />
+                    </Grow>
+                  </Gcol>
+                </Gcol>
+              </Gcol>
+              
             </Grow>
           </LayoutMainBody>
 
