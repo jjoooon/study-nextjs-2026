@@ -12,6 +12,7 @@ import {
   editableSelectCellRenderer,
   numberValueFormatter,
   useDynamicColumnWidths,
+  AgGridEmptyComponent,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -32,7 +33,16 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import type {
+  CellClassParams,
+  ColDef,
+  GridApi,
+  ICellRendererParams,
+  SelectionChangedEvent,
+  IGroupCellRendererParams,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+} from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Accordion } from '@/shared/components/uiux/Accordion';
@@ -244,9 +254,12 @@ const TabData: TabDataType[] = [
 interface DummyDataType {
   id: number;
   isChecked?: boolean;
+  isStandard?: string;
+  num: number | null;
   field1?: string | number | boolean;
   field2?: string | number | boolean;
-  field3?: string | number | boolean;
+  field3?: string | number | boolean | string[];
+  isSelectedField3?: boolean;
   field4?: string | number | boolean;
   field5?: string | number | boolean;
   field6?: string | number | boolean;
@@ -258,6 +271,8 @@ interface DummyDataType {
     description: string;
     info: string[];
   };
+
+  filePath?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
   badge?: string[];
@@ -266,11 +281,16 @@ interface DummyDataType {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    num: 1,
+    filePath: ['set-1'],
+    isChecked: true,
+    isStandard: '',
+
     field1:
       '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험',
     field2: true,
-    field3: 5000,
-    field3Required: true, // 필수 여부 설정
+    field3: '5000',
+    isSelectedField3: false,
     field4: 4500,
     field5: '80세',
     field6: '20년',
@@ -283,16 +303,21 @@ const DummyData: DummyDataType[] = [
         '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
+
     locked: true,
     isHighlighted: true,
     badge: ['독립', '갱신'],
   },
   {
     id: 2,
+    num: 2,
+    filePath: ['set-2'],
+    isChecked: false,
+    isStandard: '',
     field1: '무배당 KB손해보험 암보험',
     field2: true,
-    field3: 300,
-    field3Required: false,
+    field3: '300',
+    isSelectedField3: false,
     field4: 2800,
     field5: '100세',
     field6: '30년',
@@ -312,10 +337,14 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
+    num: 123,
+    filePath: ['set-123'],
+    isChecked: false,
+    isStandard: '',
     field1: '무배당 현대해상 3대질병보험',
     field2: false,
-    field3: 400,
-    field3Required: false,
+    field3: '400',
+    isSelectedField3: false,
     field4: 380,
     field5: '90세',
     field6: '25년',
@@ -329,6 +358,139 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
 
+    locked: false,
+    isHighlighted: false,
+    badge: ['독립'],
+  },
+  {
+    id: 4,
+    num: null,
+    filePath: ['set-123', 'set-123-1'],
+    isChecked: true,
+    isStandard: 'field3',
+
+    field1: '- 무배당 현대해상 3대질병보험',
+    field2: false,
+    field3: '400',
+    isSelectedField3: false,
+    field4: 380,
+    field5: '90세',
+    field6: '25년',
+    field7: 120,
+    field8: '조건부인수',
+    field9: true,
+    field10: {
+      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
+    locked: false,
+    isHighlighted: false,
+    badge: ['독립'],
+  },
+  {
+    id: 5,
+    num: null,
+    filePath: ['set-123', 'set-123-2'],
+    isChecked: true,
+    isStandard: '',
+    field1: '- 무배당 현대해상 3대질병보험',
+    field2: false,
+    field3: '400',
+    isSelectedField3: false,
+    field4: 380,
+    field5: '90세',
+    field6: '25년',
+    field7: 120,
+    field8: '조건부인수',
+    field9: true,
+    field10: {
+      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
+    locked: false,
+    isHighlighted: false,
+    badge: ['독립'],
+  },
+  {
+    id: 6,
+    num: 230,
+    filePath: ['set-230'],
+    isChecked: false,
+    isStandard: '',
+
+    field1: '무배당 현대해상 3대질병보험',
+    field2: false,
+    field3: '5460',
+    isSelectedField3: false,
+    field4: 380,
+    field5: '90세',
+    field6: '25년',
+    field7: 120,
+    field8: '조건부인수',
+    field9: true,
+    field10: {
+      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
+
+    locked: false,
+    isHighlighted: false,
+    badge: ['독립'],
+  },
+  {
+    id: 7,
+    num: null,
+    filePath: ['set-230', 'set-230-1'],
+    isChecked: true,
+    isStandard: 'field3',
+    field1: '- 무배당 현대해상 3대질병보험',
+    field2: false,
+    field3: '1천만원',
+    isSelectedField3: true,
+    field4: '380',
+    field5: '90세',
+    field6: '25년',
+    field7: 120,
+    field8: '조건부인수',
+    field9: true,
+    field10: {
+      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
+    locked: false,
+    isHighlighted: false,
+    badge: ['독립'],
+  },
+  {
+    id: 8,
+    num: null,
+    filePath: ['set-230', 'set-230-2'],
+    isChecked: true,
+    isStandard: '',
+    field1: '- 무배당 현대해상 3대질병보험',
+    field2: false,
+    field3: '1000',
+    isSelectedField3: false,
+    field4: 380,
+    field5: '90세',
+    field6: '25년',
+    field7: 120,
+    field8: '조건부인수',
+    field9: true,
+    field10: {
+      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
+      description:
+        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
+    },
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
@@ -471,7 +633,70 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       </Grow>
     );
   }, [checkedMap, coverageName, showProductNameTooltip]);
+  const productNameCellRnderer = (params: IGroupCellRendererParams<AgGridRow> & ICellRendererParams<AgGridRow>) => {
+    const api = params.api;
+    const allRows: AgGridRow[] = [];
+    api.forEachNode((node) => {
+      if (node.data) allRows.push(node.data);
+    });
+    const originals = allRows.filter((r) => !r.isDuplicate);
 
+    // 원본 행의 id → 순번 매핑
+    const idToOrder = new Map<number, number>();
+    originals.forEach((row, idx) => {
+      idToOrder.set(row.id, idx + 1);
+    });
+
+    if (!params.data || !params.data.isDuplicate) {
+      return (
+        <Grow className="h-full pr-1.5" placement={'bwc'}>
+          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
+            <span>{params.data?.num}</span>
+          </Grow>
+          <CoveragePopover text={String(params.data?.field1 ?? '')} data={params.data?.field10} />
+          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
+            <Grow className="shrink-0">
+              {params.data.badge.includes('독립') && (
+                <Badge color={'green'} className="w-[3rem]">
+                  독립
+                </Badge>
+              )}
+              {params.data.badge.includes('갱신') && (
+                <Badge color={'blue'} className="w-[3rem]">
+                  갱신
+                </Badge>
+              )}
+            </Grow>
+          )}
+        </Grow>
+      );
+    } else {
+      const originId = params.data.displayNo;
+      const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
+      return (
+        <Grow className="h-full pr-1.5" placement={'bwc'}>
+          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
+            <span>{order}</span>
+          </Grow>
+          <p className="truncate-no w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
+          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
+            <Grow className="shrink-0">
+              {params.data.badge.includes('독립') && (
+                <Badge color={'green'} className="w-[3rem]">
+                  독립
+                </Badge>
+              )}
+              {params.data.badge.includes('갱신') && (
+                <Badge color={'blue'} className="w-[3rem]">
+                  갱신
+                </Badge>
+              )}
+            </Grow>
+          )}
+        </Grow>
+      );
+    }
+  };
   const titleRenderer = useCallback((params: ICellRendererParams<AgGridRow>) => {
     // 전체 rowData에서 원본(복사본 아님)만 필터링
     const api = params.api;
@@ -488,10 +713,22 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
     });
 
     if (!params.data || !params.data.isDuplicate) {
-      const order = params.data ? (idToOrder.get(params.data.id) ?? '') : '';
       return (
         <Grow className="h-full pr-1.5" placement={'bwc'}>
-          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
+          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
+            <span
+              style={{ cursor: 'pointer', userSelect: 'none' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                const node = params.node;
+                if (node && node.setExpanded) {
+                  node.setExpanded(!node.expanded);
+                }
+              }}
+            >
+              {params.data?.id}
+            </span>
+          </Grow>
           <CoveragePopover text={String(params.data?.field1 ?? '')} data={params.data?.field10} />
           {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
             <Grow className="shrink-0">
@@ -557,8 +794,8 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
 
   // ── 가입금액 열 (field3) ──────────────────────────────────────────────────────
   // 셀: 금액 입력 컴포넌트 (ref 배열로 포커스 제어 지원)
-  const coverageAmountCellRenderer = (params: ICellRendererParams<AgGridRow>) =>
-    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+  // const coverageAmountCellRenderer = (params: ICellRendererParams<AgGridRow>) =>
+  //   amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs.current });
 
   // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
   // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)
@@ -609,26 +846,31 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
 
   // ── 중복 열 (field9) ──────────────────────────────────────────────────────────
   // 셀: 행 복사 버튼 — 행이 선택(체크)된 경우에만 노출/동작
-  const duplicateRenderer = useMemo(
-    () =>
-      createInsertCopiedRowButtonCellRenderer<AgGridRow, 'id'>(setRowDataWithTracking, {
-        idKey: 'id',
-        getNextId: (rows) => rows.reduce((maxId, row) => (row.id > maxId ? row.id : maxId), 0) + 1,
-        patchCopiedRow: (originalRow, nextId) => ({
-          id: nextId,
-          displayNo: originalRow.id, // 복사 행은 원본 id를 표시용 번호로
-          isDuplicate: true,
-        }),
-        isVisible: (params) => {
-          const isDuplicateEnabled = Boolean(params.value);
-          const isRowChecked = params.node?.isSelected?.() ?? false;
-          const isCopiedRow = params.data?.field9 === false;
-          return isDuplicateEnabled && isRowChecked && !isCopiedRow;
-        },
-        ariaLabel: '동일 담보 추가',
+  const duplicateRenderer = useMemo(() => {
+    return createInsertCopiedRowButtonCellRenderer<AgGridRow, 'id'>(setRowDataWithTracking, {
+      idKey: 'id',
+      // 순수 함수로 id 생성: 숫자 최대값+1 (숫자/문자 혼용 방지)
+      getNextId: (rows) => {
+        const ids = rows.map((r) => (typeof r.id === 'number' ? r.id : Number(r.id))).filter((n) => !isNaN(n));
+        const maxId = ids.length > 0 ? Math.max(...ids) : 0;
+        return maxId + 1;
+      },
+      patchCopiedRow: (originalRow, nextId) => ({
+        ...originalRow,
+        id: nextId,
+        displayNo: originalRow.id,
+        isDuplicate: true,
+        filePath: Array.isArray(originalRow.filePath) ? [...originalRow.filePath, String(nextId)] : [String(nextId)],
       }),
-    [setRowDataWithTracking]
-  );
+      isVisible: (params) => {
+        const isDuplicateEnabled = Boolean(params.value);
+        const isRowChecked = params.node?.isSelected?.() ?? false;
+        const isCopiedRow = params.data?.field9 === false;
+        return isDuplicateEnabled && isRowChecked && !isCopiedRow;
+      },
+      ariaLabel: '동일 담보 추가',
+    });
+  }, [setRowDataWithTracking]);
 
   // ── 행 선택 핸들러 ────────────────────────────────────────────────────────────
   // locked 행은 항상 선택 상태 유지 (체크박스 해제 방지)
@@ -646,7 +888,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
     [onSelectPlan]
   );
 
-  // 그리드 선택 변경 통합 핸들러: locked 행 유지 → 중복 행 선택 해제 시 삭제 → 부모 전달 → 셀 스타일 갱신
+  // 그리드 선택 변경 통합 핸들러: 체크박스 선택 시 트리 확장/해제
   const handleGridSelectionChanged = useCallback(
     (event: SelectionChangedEvent<AgGridRow>) => {
       ensureLockedRowsSelected(event.api);
@@ -658,6 +900,24 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           .map((n) => n.data?.id)
           .filter((id): id is number => id !== undefined)
       );
+
+      // 트리 확장/축소: 체크된 행은 expand, 해제된 행은 collapse
+      event.api.forEachNode((node) => {
+        if (node.data) {
+          const shouldExpand = currentSelectedIds.has(node.data.id);
+          if (node.expanded !== shouldExpand) {
+            node.setExpanded(shouldExpand);
+          }
+          // // 하위 트리 열릴 때 전체 체크
+          // if (shouldExpand && node.childrenAfterGroup && node.childrenAfterGroup.length > 0) {
+          //   node.childrenAfterGroup.forEach((child) => {
+          //     if (!child.isSelected()) {
+          //       child.setSelected(true);
+          //     }
+          //   });
+          // }
+        }
+      });
 
       // 이전 선택에서 해제된 중복 행 찾아 삭제
       const deselectedDuplicateIds: number[] = [];
@@ -687,7 +947,15 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
   // 그리드 준비 핸들러: locked 행 초기 선택 + 선택 상태 초기화
   const handleGridReady = useCallback(
     (params: { api: GridApi<AgGridRow> }) => {
+      // 1. 기본 isChecked=true인 row 선택
+      params.api.forEachNode((node) => {
+        if (node.data?.isChecked && !node.isSelected()) {
+          node.setSelected(true);
+        }
+      });
+      // 2. locked row 항상 선택
       ensureLockedRowsSelected(params.api);
+      // 3. 선택 상태 기록
       prevSelectedIdsRef.current = new Set(
         params.api
           .getSelectedNodes()
@@ -716,21 +984,21 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
   // 인보험
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
-      {
-        headerName: '담보명',
-        field: 'field1',
-        flex: 1,
-        cellClass: 'text-left p-0!',
-        suppressMovable: true, // 이동 방지
-        lockPosition: 'left', // 왼쪽 고정 유지
-        lockPinned: true, // 고정 열에서 제외 방지
-        tooltipValueGetter: createTooltipValueGetter<AgGridRow>({
-          label: '담보명',
-          field: 'field1',
-        }),
-        headerComponent: productNameHeader,
-        cellRenderer: titleRenderer,
-      },
+      // {
+      //   headerName: '담보명',
+      //   field: 'field1',
+      //   flex: 1,
+      //   cellClass: 'text-left p-0!',
+      //   suppressMovable: true, // 이동 방지
+      //   lockPosition: 'left', // 왼쪽 고정 유지
+      //   lockPinned: true, // 고정 열에서 제외 방지
+      //   tooltipValueGetter: createTooltipValueGetter<AgGridRow>({
+      //     label: '담보명',
+      //     field: 'field1',
+      //   }),
+      //   headerComponent: productNameHeader,
+      //   cellRenderer: titleRenderer,
+      // },
       {
         headerName: '속성',
         field: 'field2',
@@ -742,14 +1010,37 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       {
         headerComponent: () => (
           <Grow className="w-full" placement={'cc'} gap={0}>
-            가입금액<span className="text-[1.1rem]">(만원)</span> 
+            가입금액<span className="text-[1.1rem]">(만원)</span>
           </Grow>
         ),
         field: 'field3',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right px-0!',
-        cellClassRules: amountCellClassRules,
-        cellRenderer: coverageAmountCellRenderer,
+        cellClassRules: {
+          ...amountCellClassRules,
+          isStandard: (params) => {
+            const v = params.data?.isStandard;
+            return v !== undefined && v !== null && v !== '';
+          },
+        },
+        cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
+          const isSelectedField3 = params.data?.isSelectedField3 ?? false;
+          const value = params.value;
+          if (!isSelectedField3) {
+            return {
+              component: 'agNumberCellEditor',
+              params: { min: 0, max: 1000, step: 10 },
+            };
+          } else {
+            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            const values = baseOptions.includes(value) ? baseOptions : [value, ...baseOptions];
+            return {
+              component: 'agSelectCellEditor',
+              params: { values },
+            };
+          }
+        },
+        editable: true,
       },
       {
         headerName: '가능금액',
@@ -787,7 +1078,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       {
         headerComponent: () => (
           <Grow className="w-full" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span> 
+            보험료<span className="text-[1.1rem]">(원)</span>
           </Grow>
         ),
         field: 'field7',
@@ -797,7 +1088,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       },
       {
         headerName: '예상UW',
-         headerComponent: () => (
+        headerComponent: () => (
           <Grow className="w-full" placement={'cc'} gap={0}>
             <span className="text-[1.1rem]">예상</span>UW
           </Grow>
@@ -807,13 +1098,17 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: (params: ICellRendererParams<AgGridRow>) => {
           const value = params.value as string;
-          const color = value === '인수가능' ? 'var(--color-success-60)' : value === '인수불가' ? 'var(--color-danger-50)' : 'var(--color-warning-40)';
+          const color =
+            value === '인수가능'
+              ? 'var(--color-success-60)'
+              : value === '인수불가'
+                ? 'var(--color-danger-50)'
+                : 'var(--color-warning-40)';
           return (
             <Gcol className="h-full" placement="cc">
               <div className={`w-[1rem] h-[1rem] rounded-full ${color ? `bg-[${color}]` : ''}`}></div>
             </Gcol>
-            
-          )
+          );
         },
       },
       {
@@ -1058,7 +1353,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                     rowSelection={{
                       mode: 'multiRow' as const,
                       checkboxes: true,
-                      headerCheckbox: true,
+                      headerCheckbox: false,
                       enableClickSelection: false,
                       enableSelectionWithoutKeys: true,
                     }}
@@ -1078,6 +1373,17 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                     tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
                     tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
                     tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                    treeData={true}
+                    getDataPath={(row) => row.filePath?.map(String) ?? []}
+                    groupDefaultExpanded={0}
+                    autoGroupColumnDef={{
+                      headerComponent: productNameHeader,
+                      field: 'id',
+                      flex: 1,
+                      cellClass: 'text-left !p-0',
+                      cellRenderer: productNameCellRnderer,
+                    }}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
                   />
                 </div>
               </LayoutScrollItem>

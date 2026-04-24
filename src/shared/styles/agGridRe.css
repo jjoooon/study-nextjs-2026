@@ -607,3 +607,7 @@
 .ag-row-new .editable-cell svg {
   display: block;
 }
+
+.isStandard {
+  background-color: #e8dcff !important;
+}

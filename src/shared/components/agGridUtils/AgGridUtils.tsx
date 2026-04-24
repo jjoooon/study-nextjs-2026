@@ -7,9 +7,10 @@ import { AmountUnitInput } from '@common/AmountUnitInput';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { InfoBoxWarningIcon } from '@icons';
-import { SelectDropIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
+import { PlusIcon, TableSelectArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import type { GridReadyEvent } from 'ag-grid-community';
 import type {
@@ -429,6 +430,7 @@ export const productNameTooltipValueGetter = <T extends { productName?: string }
  */
 export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   if (params.value === null || params.value === undefined || params.value === '') return '';
+  if (typeof params.value === 'string') return params.value;
   // 0도 정상 노출
   return Number(params.value).toLocaleString();
 };
@@ -436,28 +438,82 @@ export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
 /**
  * 가입금액(만원) 셀 렌더러 (AmountUnitInput 사용, 행별 ref 지원)
  */
+
+// React 컴포넌트로 분리 (Hook 규칙 위반 방지)
+function AmountUnitInputCellRenderer<RowType>(
+  props: ICellRendererParams<RowType> & { amountInputRefs: Array<HTMLInputElement | null> }
+) {
+  const rowIndex = props.node?.rowIndex ?? 0;
+  if (!props.amountInputRefs) return null;
+
+  const options: string[] = Array.isArray(props.colDef?.cellEditorParams?.values)
+    ? (props.colDef.cellEditorParams.values as string[])
+    : ['1천만원', '2천만원'];
+
+  const [showSelect, setShowSelect] = React.useState(false);
+  const [localValue, setLocalValue] = React.useState(props.value);
+
+  if (typeof props.value === 'number') {
+    return (
+      <div>
+        <AmountUnitInput
+          value={props.value}
+          onChange={(newValue) => {
+            if (props.setValue) props.setValue(newValue);
+          }}
+          inputRef={(el) => {
+            props.amountInputRefs[rowIndex] = el;
+          }}
+          onEnter={() => {
+            const nextRef = props.amountInputRefs[rowIndex + 1];
+            if (nextRef) nextRef.focus();
+          }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full">
+      {!showSelect ? (
+        <button
+          type="button"
+          className={`flex items-center px-[0.6rem] gap-1 w-full h-full editor-select`}
+          onClick={() => setShowSelect(true)}
+        >
+          <span className={`block flex-1`}>{localValue}</span>
+          <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
+        </button>
+      ) : (
+        <Grow className="w-full mt-[0.2rem] px-[0.6rem] items-center ">
+          <NativeSelect
+            size="md"
+            value={localValue}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setLocalValue(e.target.value);
+              setShowSelect(false);
+              if (props.setValue) props.setValue(e.target.value);
+            }}
+            onBlur={() => setShowSelect(false)}
+            autoFocus
+          >
+            {options.map((option) => (
+              <NativeSelectOption key={option} value={option}>
+                {option}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </Grow>
+      )}
+    </div>
+  );
+}
+
+// ag-Grid cellRenderer 함수로 등록할 때는 이 래퍼를 사용
 export function amountUnitInputCellRenderer<RowType>(
   params: ICellRendererParams<RowType> & { amountInputRefs: Array<HTMLInputElement | null> }
 ) {
-  const rowIndex = params.node?.rowIndex ?? 0;
-  if (!params.amountInputRefs) return null;
-  return (
-    <div>
-      <AmountUnitInput
-        value={params.value}
-        onChange={(newValue) => {
-          if (params.setValue) params.setValue(newValue);
-        }}
-        inputRef={(el) => {
-          params.amountInputRefs[rowIndex] = el;
-        }}
-        onEnter={() => {
-          const nextRef = params.amountInputRefs[rowIndex + 1];
-          if (nextRef) nextRef.focus();
-        }}
-      />
-    </div>
-  );
+  return <AmountUnitInputCellRenderer {...params} />;
 }
 
 /**
@@ -482,7 +538,7 @@ export function editableSelectCellRenderer<RowType>(
     textClass = 'text-center';
   }
   return (
-    <div className={`flex items-center px-1 ${justifyClass} gap-1 w-full h-full editor-select`}>
+    <div className={`flex items-center px-[0.6rem] ${justifyClass} gap-1 w-full h-full editor-select`}>
       <span className={`block flex-1 ${textClass}`}>{params.value}</span>
       <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
     </div>
@@ -948,24 +1004,6 @@ export function renderTbodyTh(children: React.ReactNode) {
   );
 }
 
-export function useDynamicColumnWidths2(...widths: number[]) {
-  // widths: 원하는 px 단위 배열 (예: 80, 112, 150 등)
-  const colWidths = widths.map((w) => useDynamicPx(w));
-
-  const attributeColumnWidth = useMemo(() => [...colWidths], [colWidths]);
-
-  // 반환 객체에 colWidth{값} 형태로 동적으로 추가
-  const result = widths.reduce((acc, w, i) => {
-    acc[`colWidth${w}`] = colWidths[i];
-    return acc;
-  }, {} as Record<`colWidth${number}`, number>);
-
-  return {
-    ...result,
-    attributeColumnWidth,
-  };
-}
-
 export function useDynamicColumnWidths() {
   const colWidth0 = useDynamicPx(0);
   const colWidth10 = useDynamicPx(10);
@@ -994,7 +1032,6 @@ export function useDynamicColumnWidths() {
   const colWidth240 = useDynamicPx(240);
   const colWidth250 = useDynamicPx(250);
   const colWidth260 = useDynamicPx(260);
-
 
   const attributeColumnWidth = useMemo(
     () => [
