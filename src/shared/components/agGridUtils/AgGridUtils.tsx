@@ -7,7 +7,7 @@ import { AmountUnitInput } from '@common/AmountUnitInput';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { InfoBoxWarningIcon } from '@icons';
-import { SelectDropIcon, PlusIcon } from '@icons';
+import { SelectDropIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
@@ -482,9 +482,9 @@ export function editableSelectCellRenderer<RowType>(
     textClass = 'text-center';
   }
   return (
-    <div className={`flex items-center px-0 ${justifyClass} gap-1 w-full h-full editor-select`}>
+    <div className={`flex items-center px-1 ${justifyClass} gap-1 w-full h-full editor-select`}>
       <span className={`block flex-1 ${textClass}`}>{params.value}</span>
-      <SelectDropIcon size={12} color={'var(--color-gray-50)'} className="shrink-0" />
+      <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
     </div>
   );
 }
@@ -948,30 +948,143 @@ export function renderTbodyTh(children: React.ReactNode) {
   );
 }
 
+export function useDynamicColumnWidths2(...widths: number[]) {
+  // widths: 원하는 px 단위 배열 (예: 80, 112, 150 등)
+  const colWidths = widths.map((w) => useDynamicPx(w));
+
+  const attributeColumnWidth = useMemo(() => [...colWidths], [colWidths]);
+
+  // 반환 객체에 colWidth{값} 형태로 동적으로 추가
+  const result = widths.reduce((acc, w, i) => {
+    acc[`colWidth${w}`] = colWidths[i];
+    return acc;
+  }, {} as Record<`colWidth${number}`, number>);
+
+  return {
+    ...result,
+    attributeColumnWidth,
+  };
+}
+
 export function useDynamicColumnWidths() {
+  const colWidth0 = useDynamicPx(0);
+  const colWidth10 = useDynamicPx(10);
+  const colWidth20 = useDynamicPx(20);
+  const colWidth30 = useDynamicPx(30);
   const colWidth40 = useDynamicPx(40);
+  const colWidth50 = useDynamicPx(50);
   const colWidth60 = useDynamicPx(60);
+  const colWidth70 = useDynamicPx(70);
   const colWidth80 = useDynamicPx(80);
+  const colWidth90 = useDynamicPx(90);
   const colWidth100 = useDynamicPx(100);
+  const colWidth110 = useDynamicPx(110);
   const colWidth120 = useDynamicPx(120);
+  const colWidth130 = useDynamicPx(130);
   const colWidth140 = useDynamicPx(140);
+  const colWidth150 = useDynamicPx(150);
   const colWidth160 = useDynamicPx(160);
+  const colWidth170 = useDynamicPx(170);
   const colWidth180 = useDynamicPx(180);
+  const colWidth190 = useDynamicPx(190);
+  const colWidth200 = useDynamicPx(200);
+  const colWidth210 = useDynamicPx(210);
+  const colWidth220 = useDynamicPx(220);
+  const colWidth230 = useDynamicPx(230);
+  const colWidth240 = useDynamicPx(240);
+  const colWidth250 = useDynamicPx(250);
+  const colWidth260 = useDynamicPx(260);
+
 
   const attributeColumnWidth = useMemo(
-    () => [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180],
-    [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180]
+    () => [
+      colWidth0,
+      colWidth10,
+      colWidth20,
+      colWidth30,
+      colWidth40,
+      colWidth50,
+      colWidth60,
+      colWidth70,
+      colWidth80,
+      colWidth90,
+      colWidth100,
+      colWidth110,
+      colWidth120,
+      colWidth130,
+      colWidth140,
+      colWidth150,
+      colWidth160,
+      colWidth170,
+      colWidth180,
+      colWidth190,
+      colWidth200,
+      colWidth210,
+      colWidth220,
+      colWidth230,
+      colWidth240,
+      colWidth250,
+      colWidth260,
+    ],
+    [
+      colWidth0,
+      colWidth10,
+      colWidth20,
+      colWidth30,
+      colWidth40,
+      colWidth50,
+      colWidth60,
+      colWidth70,
+      colWidth80,
+      colWidth90,
+      colWidth100,
+      colWidth110,
+      colWidth120,
+      colWidth130,
+      colWidth140,
+      colWidth150,
+      colWidth160,
+      colWidth170,
+      colWidth180,
+      colWidth190,
+      colWidth200,
+      colWidth210,
+      colWidth220,
+      colWidth230,
+      colWidth240,
+      colWidth250,
+      colWidth260,
+    ]
   );
 
   return {
+    colWidth0,
+    colWidth10,
+    colWidth20,
+    colWidth30,
     colWidth40,
+    colWidth50,
     colWidth60,
+    colWidth70,
     colWidth80,
+    colWidth90,
     colWidth100,
+    colWidth110,
     colWidth120,
+    colWidth130,
     colWidth140,
+    colWidth150,
     colWidth160,
+    colWidth170,
     colWidth180,
+    colWidth190,
+    colWidth200,
+    colWidth210,
+    colWidth220,
+    colWidth230,
+    colWidth240,
+    colWidth250,
+    colWidth260,
     attributeColumnWidth,
   };
 }

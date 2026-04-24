@@ -59,6 +59,9 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
 
   const handleOpen = (e: React.MouseEvent<HTMLInputElement>) => {
     const width = (e.target as HTMLInputElement).offsetWidth;
+
+    console.log(width);
+
     setMeasuredWidth(width);
     setOpen(true);
     agGridAutoScroll();
@@ -109,11 +112,11 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
   };
 
   // side에 따라 Grow 위치 클래스 동적 결정
-  let growClass = 'absolute -right-[1.2rem]';
+  let growClass = 'absolute -right-[1rem]';
   if (popoverSide === 'bottom') {
-    growClass += ' -top-[4.3rem]';
+    growClass += ' -top-[4.2rem]';
   } else if (popoverSide === 'top') {
-    growClass += ' -bottom-[4.3rem]';
+    growClass += ' -bottom-[4.2rem]';
   }
 
   return (
@@ -164,12 +167,13 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                 type="number"
                 value={inputValue ? Number(String(inputValue).replace(/,/g, '')) : ''}
                 step="100"
+                size={'md'}
                 min={min}
                 max={max}
                 onChange={handleInputChange}
                 className={cn(
-                  'w-full border [&_input]:outline-[0.2rem] [&_input]:-outline-offset-[0.2rem] [&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:[appearance:textfield] [&_input]:[&::-webkit-outer-spin-button]:appearance-none [&_input]:[&::-webkit-inner-spin-button]:appearance-none',
-                  measuredWidth ? `w-[${measuredWidth / 10}rem]` : ''
+                  'border [&_input]:outline-[0.2rem] [&_input]:-outline-offset-[0.2rem] [&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:[appearance:textfield] [&_input]:[&::-webkit-outer-spin-button]:appearance-none [&_input]:[&::-webkit-inner-spin-button]:appearance-none',
+                  measuredWidth ? `!w-[${(measuredWidth / 10) - 4}rem]` : ''
                 )}
                 autoFocus
                 onKeyDown={handleKeyDown}
@@ -189,7 +193,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                   variant={'default'}
                   value={inputValue}
                   size={'sm'}
-                  className="text-right flex-1 w-[100%]"
+                  className="text-right flex-1 w-full"
                   commaAmount={true}
                   readOnly
                   after={'만원'}
