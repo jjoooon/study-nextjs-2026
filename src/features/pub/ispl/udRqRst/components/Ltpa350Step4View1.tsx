@@ -1,31 +1,27 @@
 'use client';
 
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Accordion } from '@/shared/components/uiux/Accordion';
+import { useMemo, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 
-import { Divider, Gcol, Grow, Grid, Typo } from '@atoms';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { KeyValueList } from '@common/KeyValueList';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import {
+  createTooltipValueGetter,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
 
@@ -232,7 +228,7 @@ const TabData: TabDataType[] = [
   },
 ];
 
-// agGrid 
+// 첫번째 agGrid 
 type AgGridRow = {
   id: number;
   field01: string | number;
@@ -249,41 +245,68 @@ const DummyData: AgGridRow[] = [
   {
     id: 2,
     field01: '2',
-    field02: '',
-    field03: '',
+    field02: '참고사항',
+    field03: '5년이내 치료내용이 확인 되었습니다.(담당: 장기 U/W파트)',
+  },
+  {
+    id: 3,
+    field01: '3',
+    field02: '인수기준',
+    field03: '[후유합계(80%)(2107)[전체누적][인수한도: 3000만]]',
+  },
+  {
+    id: 4,
+    field01: '4',
+    field02: '인수기준',
+    field03: '100',
+  },
+  {
+    id: 5,
+    field01: '5',
+    field02: '인수기준',
+    field03: '[후유합계(80%)(2107)[전체누적][인수한도: 3000만]][후유합계(80%)(2107)[전체누적][인수한도: 3000만]][후유합계(80%)(2107)[전체누적][인수한도: 3000만]]',
+  },
+  {
+    id: 6,
+    field01: '6',
+    field02: '인수기준',
+    field03: '100',
   },
 ];
 
-type PlanAccordionItem = {
-  value: string;
-  trigger: string;
-  content: string[];
+// 두번째 agGrid 
+type AgGridRow2 = {
+  id: number;
+  field01: string;
 };
-const planAccordionItems: PlanAccordionItem[] = [
+const DummyData2: AgGridRow2[] = [
   {
-    value: 'item-1',
-    trigger: '기관플랜(5)',
-    content: [
-      '(지점)올인원플랜(15~40세)',
-      '(지점)올인원플랜(15~40세)',
-      '(지점)올인원플랜(15~40세)',
-      '(지점)올인원플랜(15~40세)',
-    ],
+    id: 1,
+    field01: '보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편)',
   },
   {
-    value: 'item-2',
-    trigger: '기관플랜(0)',
-    content: ['(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)'],
+    id: 2,
+    field01: '보험료납입면제대상보장(5대유사)(간편)',
   },
   {
-    value: 'item-3',
-    trigger: '모집자플랜(0)',
-    content: ['(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)'],
+    id: 3,
+    field01: '상해사망(간편)',
+  },
+  {
+    id: 4,
+    field01: '상해후유장해(3-100%)',
+  },
+  {
+    id: 5,
+    field01: '질병사항(간편)',
+  },
+  {
+    id: 6,
+    field01: '질병사항(간편)',
   },
 ];
 
-type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-
+type ViewKey = 'view1' | 'view2';
 
 interface Ltpa350Step4Props {
   onSelectPlan?: (planId: number) => void;
@@ -294,14 +317,9 @@ interface Ltpa350Step4Props {
 
 export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded, viewKey }: Ltpa350Step4Props) {
   // 1) INLINED STATE (default)
-  const [isHeightExpanded, setIsHeightExpanded] = useState(false);
-  const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
-  const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [gridKey, setGridKey] = useState(0);
-  const handleActionButtonClick = useCallback(() => {}, []);
-  const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
-    setCheckedMap((map) => ({ ...map, [key]: !!checked }));
-  };
+  const [isHeightExpanded] = useState(false);
+  const [gridKey] = useState(0);
+  const [gridKey2] = useState(0);
 
   // 2) Tabs/rowData 분기
   const tabListData = TabData;
@@ -312,57 +330,56 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
   // 3) Grid data
-  const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
+  const [rowData] = useState<AgGridRow[]>(DummyData);
+  const [rowData2] = useState<AgGridRow2[]>(DummyData2);
 
-  // agGrid 컬럼 정의 useMemo 분리
+  // 첫번째 agGrid 컬럼 
   const columnDefs = useMemo<ColDef<AgGridRow>[]>(
     () => [
       {
         headerName: '순번',
-        width: 80,
         field: 'id',
-        cellClass: 'text-center px-0!',
+        width: 60,
+        cellClass: 'text-center',
         autoHeight: true,
       },
       {
         headerName: '심사구분',
-        flex: 1,
         field: 'field02',
+        flex: 1,
         autoHeight: true,
         cellClass: 'editable-cell text-center',
+        cellStyle: (params) =>
+          params.value === '인수기준'
+            ? { color: 'var(--color-danger-50)' }
+            : undefined,
       },
       {
         headerName: '세부내용',
-        flex: 1,
         field: 'field03',
+        flex: 1,
         autoHeight: true,
-        cellClass: 'editable-cell text-center',
+        cellClass: 'editable-cell text-left',
+        tooltipValueGetter: createTooltipValueGetter<AgGridRow>({ field: 'field03' }),
       },
     ],
     []
   );
 
-  // productNameHeader는 단순히 체크박스 UI만 반환
-  const productNameHeader = useCallback(() => {
-    return (
-      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <Grow gap={1.5} placement={'sc'}>
-          <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
-            선택 24건
-          </Checkbox>
-          <Divider />
-          <Checkbox
-            variant={'text'}
-            checked={checkedMap.unselected}
-            onCheckedChange={handleCheckedChange('unselected')}
-          >
-            미선택
-          </Checkbox>
-        </Grow>
-      </Grow>
-    );
-  }, [checkedMap, handleCheckedChange]);
-
+  // 두번째 agGrid 컬럼 
+  const columnDefs2 = useMemo<ColDef<AgGridRow2>[]>(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field01',
+        flex: 1,
+        cellClass: 'editable-cell text-left',
+        autoHeight: true,
+        tooltipValueGetter: createTooltipValueGetter<AgGridRow2>({ field: 'field01' }),
+      },
+    ],
+    []
+  );
 
   const [testError, setTestError] = useState(false);
 
@@ -533,23 +550,14 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                           singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
                           rowSelection={{
                             mode: 'multiRow' as const,
-                            checkboxes: true,
-                            headerCheckbox: true,
+                            checkboxes: false,
+                            headerCheckbox: false,
                             enableClickSelection: false,
                             enableSelectionWithoutKeys: true,
                           }}
-                          selectionColumnDef={{
-                            width: 30,
-                            // pinned: 'left',
-                            cellClass: 'text-center p-0!',
-                            cellClassRules: {
-                              'pointer-events-none': (params) => !!params.data?.locked,
-                            },
-                          }}
                           suppressRowHoverHighlight={false}
-                          tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                          tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                          tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                         />
                       </div>
                     </LayoutScrollItem>
@@ -562,7 +570,7 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                         <Typo variant="heading-md">조건부 특약 가입</Typo>
                         
                       </Grow>
-                      <Grow className="gap-2.5">
+                      <Grow className="gap-1">
                         <Button variant={'outlined'} color={'gray'} size={'md'}>
                           상세
                         </Button>
@@ -573,10 +581,10 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                     </Grow>
                     <LayoutScrollItem className="w-full">
                       <div className="ag-theme-alpine">
-                        <AgGridReact<AgGridRow>
-                          key={gridKey}
-                          rowData={rowData}
-                          columnDefs={columnDefs}
+                        <AgGridReact<AgGridRow2>
+                          key={gridKey2}
+                          rowData={rowData2}
+                          columnDefs={columnDefs2}
                           getRowId={(params) => String(params.data.id)}
                           singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
                           rowSelection={{
@@ -587,17 +595,15 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                             enableSelectionWithoutKeys: true,
                           }}
                           selectionColumnDef={{
-                            width: 30,
-                            // pinned: 'left',
+                            width: 60,
                             cellClass: 'text-center p-0!',
                             cellClassRules: {
                               'pointer-events-none': (params) => !!params.data?.locked,
                             },
                           }}
                           suppressRowHoverHighlight={false}
-                          tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                          tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                          tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                         />
                       </div>
                     </LayoutScrollItem>
@@ -615,144 +621,42 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
 
           <LayoutMainFoot>
             <MainBottom variant="box">
-              <MainBottomItem className="!py-0">
-                <FormTable
-                  className="w-full! [&_tr]:justify-between"
-                  lineTop={false}
-                  variant={'bottom'}
-                  cols={[
-                    'min-w-[9rem]',
-                    'w-[36%]',
-                    'min-w-[8rem]',
-                    'w-[30%]',
-                    'min-w-[8rem]',
-                    'w-[30%]',
-                    'min-w-[8rem]',
-                    'min-w-[15rem]',
-                  ]}
-                >
-                  <FormRow>
-                    <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
-                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                        예상
-                      </Button>
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={100000}
-                        size={'md'}
-                        width={'full'}
-                        readOnly={true}
-                        className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
-                      />
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Input
-                            type="text"
-                            commaAmount={true}
-                            value={39.4}
-                            size={'md'}
-                            width={60}
-                            className="[&_input]:text-right shrink-0 cursor-pointer"
-                          />
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[
-                              { key: '총압입보험료', value: '000,000,000원' },
-                              { key: '중도환급금', value: '0원' },
-                              { key: '만기환급금', value: '000,000,000원' },
-                            ]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      %
-                    </FormCell>
-                    <FormCell title="보장보험료">
-                      <Popover>
-                        <PopoverTrigger className="w-full">
-                          <span className="block w-full rounded-[0.4rem] h-[2.5rem] bg-[var(--color-gray-10)] px-2 text-[1.4rem] border border-[0.1rem] border-[var(--color-gray-20)] box-border tracking-[0] leading-[2.5rem] appearance-none truncate text-right cursor-pointer">
-                            {Number(100000).toLocaleString()}
-                          </span>
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[{ key: '일시납보험료', value: '000,000,000원' }]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormCell>
-                    <FormCell title="적립보험료">
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={100000}
-                        width={'full'}
-                        size={'md'}
-                        readOnly={true}
-                        className="text-right"
-                      />
-                    </FormCell>
-
-                    <FormCell title="합계보험료">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Input
-                            type="tel"
-                            commaAmount={true}
-                            value={0}
-                            clear={true}
-                            width={'full'}
-                            size={'md'}
-                            required={true}
-                            error={testError}
-                            errorMsg={'계약자 입력은 필수입니다.'}
-                            errorPs={'tr'}
-                            className="text-right font-bold"
-                          />
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[
-                              { key: '최소 보험료', value: '000,000,000원' },
-                              { key: '최대 보험료', value: '000,000,000원' },
-                            ]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </MainBottomItem>
               <MainBottomItem>
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                  고지유형별보험료비교
+              <Grow className="gap-1">
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  이미지스캔
                 </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  건축물대장조회스캔
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  사진/서류 알림톡
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  체크리스트 알림톡 
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  진단/적부이력
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  외부심사결과지요청
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  진단적부예외
+                </Button>
+              </Grow>
                 <Grow className="gap-1">
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                    상품비교설계
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    현장소통
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                    동일상품복사
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    조건부수용
                   </Button>
-                  <Button
-                    type="submit"
-                    form={'page2-MainForm'}
-                    variant={'contained'}
-                    color={'primary'}
-                    size={'xl'}
-                    // onClick={onCalcGuidelineClick}
-                  >
-                    보험료계산(지침)
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    긴급심사요청
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    청약후심사요청
                   </Button>
                 </Grow>
               </MainBottomItem>

@@ -205,11 +205,23 @@ const asideFoot = {
     point: 640,
   },
 };
+// step4(심사요청)만 별도 메뉴, 나머지는 기존 메뉴
 const DEFAULT_MY_MENU_LIST: Ltpz018MenuItem[] = [
   { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
   { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
   { code: 'm03', fix: false, name: '수수료조회', link: '/' },
   { code: 'm04', fix: true, name: '실손정액조회', link: '/' },
+];
+
+const STEP4_MENU_LIST: Ltpz018MenuItem[] = [
+  { code: 'm01', fix: true, name: '설계메뉴얼', link: '/' },
+  { code: 'm02', fix: false, name: '실손정액조회', link: '/' },
+  { code: 'm03', fix: false, name: '다른상품설계', link: '/' },
+  { code: 'm04', fix: true, name: '동일상품복사', link: '/' },
+  { code: 'm05', fix: false, name: '설계동의', link: '/' },
+  { code: 'm06', fix: false, name: '전체누적', link: '/' },
+  { code: 'm07', fix: false, name: '약관조회', link: '/' },
+  { code: 'm08', fix: false, name: '더보기', link: '/' },
 ];
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
@@ -286,12 +298,6 @@ export default function Ltpa350Section() {
             viewKey={currentViewKey}
           />
         );
-      case 'view3':
-        return <div>Step4 View3 화면 구현 필요</div>;
-      case 'view4':
-        return <div>Step4 View4 화면 구현 필요</div>;
-      case 'view5':
-        return <div>Step4 View5 화면 구현 필요</div>;
       default:
         return null;
     }
@@ -380,21 +386,33 @@ export default function Ltpa350Section() {
             }}
           />
         }
-        // 계약정보
-        asideInfo={<InfoContract data={asideInfo[`step${activeStep}`]} />}
         // 바로가기
         asideLinks={
           <>
-            <QuickLinks menus={myMenuList} onMoreClick={() => setIsQuickLinksPopupOpen(true)} />
+            <QuickLinks
+              menus={activeStep === 4 ? STEP4_MENU_LIST : myMenuList}
+              onMoreClick={() => setIsQuickLinksPopupOpen(true)}
+            />
             {isQuickLinksPopupOpen && (
               <Ltpz018
                 open={isQuickLinksPopupOpen}
                 onOpenChange={setIsQuickLinksPopupOpen}
-                myMenuList={myMenuList}
+                myMenuList={activeStep === 4 ? STEP4_MENU_LIST : myMenuList}
                 onSaveMyMenuList={setMyMenuList}
               />
             )}
           </>
+        }
+        // 심사요청
+        asideInfo={
+          activeStep === 4
+            ? (
+                <InfoContract
+                  data={asideInfo[`step${activeStep}`]}
+                  extraContent={true}
+                />
+              )
+            : <InfoContract data={asideInfo[`step${activeStep}`]} />
         }
         asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
         hideAside={hideAside}
