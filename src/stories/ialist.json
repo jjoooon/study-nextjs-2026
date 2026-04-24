@@ -805,14 +805,14 @@
     "id": "LTPA3500401",
     "path": "ispl/udRqRst/components/popups",
     "dep4": "인수심사요청및결과",
-    "file": "심사요청",
-    "plan": "",
+    "file": "조건부 특약 가입 상세",
+    "plan": "이현숙",
     "pub": "",
     "dev": "미정",
     "date": "",
     "modify": "",
     "subId": "step_4",
-    "phase": "",
+    "phase": "Y",
     "popup": "팝업"
   },
   {
