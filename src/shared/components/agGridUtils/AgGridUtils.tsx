@@ -430,9 +430,10 @@ export const productNameTooltipValueGetter = <T extends { productName?: string }
  */
 export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   if (params.value === null || params.value === undefined || params.value === '') return '';
-  if (typeof params.value === 'string') return params.value;
-  // 0도 정상 노출
-  return Number(params.value).toLocaleString();
+  // 문자열이지만 숫자라면 콤마 적용
+  const num = Number(params.value);
+  if (!isNaN(num)) return num.toLocaleString();
+  return params.value;
 };
 
 /**
