@@ -1,38 +1,6 @@
 'use client';
 
-import {
-  amountUnitInputCellRenderer,
-  CoveragePopover,
-  createCellClickSelectionToggleHandler,
-  createCellErrorClassRules,
-  createEditableCallback,
-  createInsertCopiedRowButtonCellRenderer,
-  createSelectionChangedHandler,
-  createTooltipValueGetter,
-  editableSelectCellRenderer,
-  numberValueFormatter,
-  useDynamicColumnWidths,
-  AgGridEmptyComponent,
-} from '@aggrid';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { SelectDrop } from '@common/SelectDrop';
-import { TabPager } from '@common/TabPager';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-
 import type {
   CellClassParams,
   ColDef,
@@ -48,6 +16,36 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Accordion } from '@/shared/components/uiux/Accordion';
 import { useTabs } from '@/shared/hooks/useTabs';
+import {
+  CoveragePopover,
+  createCellClickSelectionToggleHandler,
+  createCellErrorClassRules,
+  createInsertCopiedRowButtonCellRenderer,
+  createSelectionChangedHandler,
+  editableSelectCellRenderer,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
+} from '@aggrid';
+import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InputHash } from '@common/InputHash';
+import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { SelectDrop } from '@common/SelectDrop';
+import { TabPager } from '@common/TabPager';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import '@/shared/lib/agGridPub';
 
@@ -279,6 +277,7 @@ interface DummyDataType {
   filePath?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
+  isError?: boolean;
   badge?: string[];
   [key: string]: unknown;
 }
@@ -315,7 +314,8 @@ const DummyData: DummyDataType[] = [
 
     locked: true,
     isHighlighted: true,
-    badge: ['독립', '갱신'],
+    badge: ['독립', '갱신', '배타', '미래'],
+    isError: false,
   },
   {
     id: 2,
@@ -348,6 +348,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['갱신'],
+    isError: false,
   },
   {
     id: 3,
@@ -358,7 +359,7 @@ const DummyData: DummyDataType[] = [
       group: true,
       edit: false,
     },
-    field1: '무배당 현대해상 3대질병보험',
+    field1: '유방암(수용체타입)진단비',
     field2: false,
     field3: '4400',
     isSelectedField3: false,
@@ -380,6 +381,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 4,
@@ -391,7 +393,7 @@ const DummyData: DummyDataType[] = [
       edit: true,
     },
 
-    field1: '- 무배당 현대해상 3대질병보험',
+    field1: '유방암A타입진단비(호르몬수용체양성,HER2음성)',
     field2: false,
     field3: '4400',
     isSelectedField3: false,
@@ -412,6 +414,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 5,
@@ -423,7 +426,7 @@ const DummyData: DummyDataType[] = [
       edit: false,
     },
 
-    field1: '- 무배당 현대해상 3대질병보험',
+    field1: '유방암B타입진단비(호르몬수용체양성,HER2양성)',
     field2: false,
     field3: '4400',
     isSelectedField3: false,
@@ -444,6 +447,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 6,
@@ -455,7 +459,7 @@ const DummyData: DummyDataType[] = [
       edit: false,
     },
 
-    field1: '무배당 현대해상 3대질병보험',
+    field1: '주요순환계질환Ⅰ특정치료비(요양병원제외,각연간1회한)',
     field2: false,
     field3: '5460',
     isSelectedField3: false,
@@ -477,6 +481,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 7,
@@ -487,7 +492,7 @@ const DummyData: DummyDataType[] = [
       group: true,
       edit: true,
     },
-    field1: '- 무배당 현대해상 3대질병보험',
+    field1: '주요순환계질환Ⅰ특정치료비(수술(혈전제거술제외))(요양병원제외,－연간1회한)',
     field2: false,
     field3: '1천만원',
     isSelectedField3: true,
@@ -508,6 +513,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 8,
@@ -519,7 +525,7 @@ const DummyData: DummyDataType[] = [
       edit: false,
     },
 
-    field1: '- 무배당 현대해상 3대질병보험',
+    field1: '주요순환계질환Ⅰ특정치료비(혈전제거술)(요양병원제외,연간1회한)',
     field2: false,
     field3: '4400',
     isSelectedField3: false,
@@ -540,6 +546,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 9,
@@ -573,6 +580,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 10,
@@ -604,6 +612,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
   {
     id: 11,
@@ -636,6 +645,7 @@ const DummyData: DummyDataType[] = [
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
+    isError: false,
   },
 ];
 
@@ -667,7 +677,6 @@ const planAccordionItems: PlanAccordionItem[] = [
   },
 ];
 
-type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
   displayNo?: number;
@@ -680,21 +689,16 @@ interface Ltpa350Step2Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
-  viewKey: ViewKey;
 }
 
 export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
   // 1) INLINED STATE (default)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
-  const amountInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
+  const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [gridKey, setGridKey] = useState(0);
-  const handleActionButtonClick = useCallback(() => {}, []);
   const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
     setCheckedMap((map) => ({ ...map, [key]: !!checked }));
   };
-
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 2) Tabs/rowData 분기
@@ -733,7 +737,6 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
-      if (!checked) setGridKey((key) => key + 1);
     };
     return (
       <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
@@ -748,6 +751,10 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
             onCheckedChange={handleCheckedChange('unselected')}
           >
             미선택
+          </Checkbox>
+          <Divider />
+          <Checkbox variant={'text'} checked={checkedMap.reset} onCheckedChange={handleCheckedChange('reset')}>
+            담보초기화
           </Checkbox>
         </Grow>
         <Grow>
@@ -798,14 +805,24 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           <CoveragePopover text={String(params.data?.field1 ?? '')} data={params.data?.field10} />
           {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
             <Grow className="shrink-0">
-              {params.data.badge.includes('독립') && (
-                <Badge color={'green'} className="w-[3rem]">
-                  독립
+              {params.data.badge.includes('미래') && (
+                <Badge variant={'dark'} color={'green'} className="w-[3rem]">
+                  미래
                 </Badge>
               )}
               {params.data.badge.includes('갱신') && (
-                <Badge color={'blue'} className="w-[3rem]">
+                <Badge variant={'dark'} color={'blue'} className="w-[3rem]">
                   갱신
+                </Badge>
+              )}
+              {params.data.badge.includes('배타') && (
+                <Badge variant={'dark'} color={'primary'} className="w-[3rem]">
+                  배타
+                </Badge>
+              )}
+              {params.data.badge.includes('독립') && (
+                <Badge variant={'dark'} color={'purple'} className="w-[3rem]">
+                  독립
                 </Badge>
               )}
             </Grow>
@@ -839,85 +856,9 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
       );
     }
   };
-  const titleRenderer = useCallback((params: ICellRendererParams<AgGridRow>) => {
-    // 전체 rowData에서 원본(복사본 아님)만 필터링
-    const api = params.api;
-    const allRows: AgGridRow[] = [];
-    api.forEachNode((node) => {
-      if (node.data) allRows.push(node.data);
-    });
-    const originals = allRows.filter((r) => !r.isDuplicate);
 
-    // 원본 행의 id → 순번 매핑
-    const idToOrder = new Map<number, number>();
-    originals.forEach((row, idx) => {
-      idToOrder.set(row.id, idx + 1);
-    });
-
-    if (!params.data || !params.data.isDuplicate) {
-      return (
-        <Grow className="h-full pr-1.5" placement={'bwc'}>
-          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
-            <span
-              style={{ cursor: 'pointer', userSelect: 'none' }}
-              onClick={(e) => {
-                e.stopPropagation();
-                const node = params.node;
-                if (node && node.setExpanded) {
-                  node.setExpanded(!node.expanded);
-                }
-              }}
-            >
-              {params.data?.id}
-            </span>
-          </Grow>
-          <CoveragePopover text={String(params.data?.field1 ?? '')} data={params.data?.field10} />
-          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
-            <Grow className="shrink-0">
-              {params.data.badge.includes('독립') && (
-                <Badge color={'green'} className="w-[3rem]">
-                  독립
-                </Badge>
-              )}
-              {params.data.badge.includes('갱신') && (
-                <Badge color={'blue'} className="w-[3rem]">
-                  갱신
-                </Badge>
-              )}
-            </Grow>
-          )}
-        </Grow>
-      );
-    } else {
-      const originId = params.data.displayNo;
-      const order = originId !== undefined ? (idToOrder.get(originId) ?? '') : '';
-
-      return (
-        <Grow className="h-full pr-1.5" placement={'bwc'}>
-          <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">{order}</Grow>
-          <p className="truncate-no w-full pl-1.5 flex-1">{params.data?.field1 ?? ''}</p>
-          {Array.isArray(params.data?.badge) && params.data.badge.length > 0 && (
-            <Grow className="shrink-0">
-              {params.data.badge.includes('독립') && (
-                <Badge color={'green'} className="w-[3rem]">
-                  독립
-                </Badge>
-              )}
-              {params.data.badge.includes('갱신') && (
-                <Badge color={'blue'} className="w-[3rem]">
-                  갱신
-                </Badge>
-              )}
-            </Grow>
-          )}
-        </Grow>
-      );
-    }
-  }, []);
-
-  // ── 속성 열 (field2) ─────────────────────────────────────────────────────────
   // 셀: 속성 값이 있을 때 돋보기 아이콘 버튼 표시
-  const attributeRenderer = (params: ICellRendererParams<AgGridRow>) => {
+  const searchButtonRenderer = (params: ICellRendererParams<AgGridRow>) => {
     if (!params.value) return null;
     return (
       <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
@@ -934,23 +875,11 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
     );
   };
 
-  // ── 가입금액 열 (field3) ──────────────────────────────────────────────────────
-  // 셀: 금액 입력 컴포넌트 (ref 배열로 포커스 제어 지원)
-  const coverageAmountCellRenderer = (params: ICellRendererParams<AgGridRow>) =>
-    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs.current });
-
-  // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
-  // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)
+  // 셀: 드롭다운 선택 렌더러 정렬 및 아이콘생성
   const expiryCellRenderer = useCallback(
     (align: 'left' | 'center' | 'right' = 'right') =>
       (params: ICellRendererParams<AgGridRow>) =>
         editableSelectCellRenderer<AgGridRow>({ ...params, align }),
-    []
-  );
-
-  // 만기/납기 편집 조건 생성기: 'whenSelected' | 'always' 모드를 인자로 받아 editable 콜백 반환
-  const getEditableCallback = useCallback(
-    (mode: 'always' | 'whenSelected') => createEditableCallback<AgGridRow>(mode),
     []
   );
 
@@ -1050,14 +979,6 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           if (node.expanded !== shouldExpand) {
             node.setExpanded(shouldExpand);
           }
-          // // 하위 트리 열릴 때 전체 체크
-          // if (shouldExpand && node.childrenAfterGroup && node.childrenAfterGroup.length > 0) {
-          //   node.childrenAfterGroup.forEach((child) => {
-          //     if (!child.isSelected()) {
-          //       child.setSelected(true);
-          //     }
-          //   });
-          // }
         }
       });
 
@@ -1123,7 +1044,24 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
     [ensureLockedRowsSelected]
   );
 
-  // 인보험
+  // 1. 공통 정렬 로직을 함수로 분리 (재사용성)
+  const sortRows = (rows: any[]) => {
+    return [...rows].sort((a, b) => {
+      if (a.isError === b.isError) return 0;
+      return a.isError ? -1 : 1;
+    });
+  };
+
+  // 2. 상태 업데이트 핸들러
+  const toggleError = (id: number | string) => {
+    setRowData((prev) => {
+      const updated = prev.map((row) => (row.id == id ? { ...row, isError: !row.isError } : row));
+      // 완전히 새 배열로 반환
+      return [...sortRows(updated)];
+    });
+  };
+
+  // 인보험 ColDef
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
       // {
@@ -1146,7 +1084,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
         field: 'field2',
         width: attributeColumnWidth[4],
         cellClass: 'text-center',
-        cellRenderer: attributeRenderer,
+        cellRenderer: searchButtonRenderer,
         resizable: false,
       },
       {
@@ -1172,8 +1110,8 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           const isSelectedField3 = params.data?.isSelectedField3 ?? false;
           if (!isSelectedField3) {
             return {
-              component: 'agNumberCellEditor',
-              params: { min: 0, max: 1000, step: 10 },
+              component: AmountWithPopoverCellEditor,
+              params: { step: 500 }, // Popover에서 조정할 단위 설정
             };
           } else {
             const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
@@ -1184,10 +1122,9 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           }
         },
         // valueFormatter: numberValueFormatter<AgGridRow>,
-        cellRenderer: (params: ICellRendererParams<AgGridRow> ) => {
+        cellRenderer: (params: ICellRendererParams<AgGridRow>) => {
           // isStandardGroup(비편집) 셀 클릭 시 같은 filePath 그룹의 isStandard.edit 셀의 툴팁을 항상 보여줌
           const isSelectedField3 = params.data?.isSelectedField3 ?? false;
-          const [tooltipOpen, setTooltipOpen] = useState(false);
           if (params.data?.isStandard?.group) {
             // 그룹 내 edit 셀의 rowNode id 목록 수집 (루트 filePath 기준으로 비교)
             const groupEditNodeIds: string[] = [];
@@ -1214,7 +1151,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                 display = isNaN(num) ? value : num.toLocaleString();
               }
             }
-            // 버튼 클릭 시 그룹 내 isStandard(edit) 셀에 tooltip-on 3초간 부여 
+            // 버튼 클릭 시 그룹 내 isStandard(edit) 셀에 tooltip-on 3초간 부여
             const handleClick = () => {
               groupEditNodeIds.forEach((nodeId) => {
                 const node = params.api.getRowNode(nodeId);
@@ -1232,7 +1169,13 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
               }, 3000);
             };
             return (
-              <button type="button" onClick={handleClick} style={{ width: '100%', background: 'none', border: 'none', padding: 0, textAlign: 'right' }}>{display}</button>
+              <button
+                type="button"
+                onClick={handleClick}
+                style={{ width: '100%', background: 'none', border: 'none', padding: 0, textAlign: 'right' }}
+              >
+                {display}
+              </button>
             );
           }
           return isSelectedField3
@@ -1334,16 +1277,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
         resizable: false,
       },
     ],
-    [
-      amountCellClassRules,
-      attributeColumnWidth,
-      duplicateRenderer,
-      expiryCellRenderer,
-      getEditableCallback,
-      editableCellClassRules,
-      productNameHeader,
-      titleRenderer,
-    ]
+    [amountCellClassRules, attributeColumnWidth, duplicateRenderer, expiryCellRenderer, editableCellClassRules]
   );
 
   const [testError, setTestError] = useState(false);
@@ -1557,10 +1491,9 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                   </Grow>
                 </Grow>
               </Grow>
-              <LayoutScrollItem className="w-full">
+              <LayoutScrollItem className={`ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}>
                 <div className="ag-theme-alpine">
                   <AgGridReact<AgGridRow>
-                    key={gridKey}
                     rowData={rowData}
                     columnDefs={columnDefs}
                     getRowId={(params) => String(params.data.id)}
@@ -1585,21 +1518,22 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                     onGridReady={handleGridReady}
                     onRowDataUpdated={handleRowDataUpdated}
                     suppressRowHoverHighlight={false}
-                    tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                    tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                    tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                    tooltipShowDelay={0}
+                    tooltipHideDelay={9999}
+                    tooltipMouseTrack={true}
                     treeData={true}
                     getDataPath={(row) => row.filePath?.map(String) ?? []}
                     groupDefaultExpanded={0}
+                    getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                     autoGroupColumnDef={{
                       headerComponent: productNameHeader,
                       field: 'id',
                       flex: 1,
-                      cellClass: 'text-left !p-0',
+                      cellClass: (_) => 'text-left !p-0',
                       cellRenderer: productNameCellRnderer,
+                      tooltipValueGetter: (params) => params.data?.field1 ?? '', // 담보명 등 표시
                     }}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-
                     suppressAnimationFrame={true}
                     suppressColumnMoveAnimation={true}
                     suppressRowTransform={true}
@@ -1732,14 +1666,18 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                 </FormTable>
               </MainBottomItem>
               <MainBottomItem>
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   고지유형별보험료비교
                 </Button>
                 <Grow className="gap-1">
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                  <Button onClick={() => toggleError(9)}>231번 행 에러 토글</Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    담보전환
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     상품비교설계
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     동일상품복사
                   </Button>
                   <Button

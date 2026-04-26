@@ -609,7 +609,7 @@
 }
 
 .isStandard {
-  background-color: #e8dcff !important;
+  background-color: var(--color-purple-10) !important;
 }
 .no-edited svg {
   display: none !important;
@@ -659,4 +659,16 @@
 .isStandard.tooltip-on:after,
 .isStandard.tooltip-on:before {
   display: flex;
+}
+
+.ag-tooltip {
+  display: none !important;
+}
+/* show-product-tooltip 클래스가 있을 때만 보임 */
+.show-product-tooltip .ag-tooltip {
+  display: block !important;
+}
+.isError .ag-cell-value {
+  font-weight: 700;
+  color: var(--color-text-danger) !important;
 }

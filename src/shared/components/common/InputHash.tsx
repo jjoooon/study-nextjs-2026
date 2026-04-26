@@ -27,7 +27,7 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
   width?: number | string; // popover의 고정 너비 (기본은 Input과 동일)
 }
 
-export function InputCombo({
+export function InputHash({
   options,
   value,
   width,
@@ -66,10 +66,7 @@ export function InputCombo({
 
   // input 값 외부 변경 반영
   useEffect(() => {
-    setInputValue((prev) => {
-      if (prev !== value) return value;
-      return prev;
-    });
+    setInputValue(value);
   }, [value]);
 
   // input 포커스/블러 관리
