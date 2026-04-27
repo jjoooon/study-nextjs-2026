@@ -1,9 +1,9 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { QuestionMark } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ReactNode } from 'react';
 
 type TooltipQProps = {
   defaultOpen?: boolean;

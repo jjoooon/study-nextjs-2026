@@ -45,11 +45,15 @@
 
 import type { Metadata, Viewport } from 'next';
 
-import '@/shared/styles/globals.css';
-import { Providers } from './providers';
 import { AuthGuard } from '@/shared/components/AuthGuard';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
+import '@/shared/styles/globals.css';
+import { AuthHeader } from '@/shared/types/authTypes';
+import log from '@/shared/utils/logger';
 import { SpinnerRoot } from '@common/SpinnerRoot';
+import { Providers } from './providers';
+
+const logger = log.getLogger('Layout');
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -62,15 +66,23 @@ export const metadata: Metadata = {
   description: '한화손해보험 UI 프레임워크',
 };
 
+const authHeader: AuthHeader = {
+  agycd: '0001',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  logger.debug('xxx', authHeader);
+
+  // authHeader를 @authSlice의 initialState.header 에 주입
+
   return (
     <html lang="ko">
       <body>
-        <Providers>
+        <Providers authHeader={authHeader}>
           <AuthGuard>{children}</AuthGuard>
           <DialogRoot />
           <SpinnerRoot />
