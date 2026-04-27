@@ -1,3 +1,18 @@
+export interface AuthHeader {
+  agycd?: string;
+  answBasc?: string;
+  answCode?: string;
+  answDtal?: string;
+  answTitle?: string;
+  chnlType?: string;
+  clntIp?: string;
+  crntOrgcd?: string;
+  envrFlag?: string;
+  filter?: string;
+  fnCd?: string;
+  globalNo?: string;
+}
+
 /**
  * 사용자 정보 타입
  */
@@ -12,6 +27,7 @@ export interface User {
  * 인증 상태 타입
  */
 export interface AuthState {
+  header?: AuthHeader;
   /** 현재 로그인된 사용자 정보 */
   user: User | null;
   /** 인증 여부 */
