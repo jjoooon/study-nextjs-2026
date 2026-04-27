@@ -35,14 +35,20 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, reactCo
 
     // React Hooks rules
     ...reactHooks.configs.recommended.rules,
-    // Allow ref as a prop for React 19
-    'react-hooks/refs': 'off',
-    // Relax exhaustive-deps for complex useCallback patterns
     'react-hooks/exhaustive-deps': 'warn',
-    // Allow callbacks to reference later-declared functions when safe
+    // v7에서 추가된 React Compiler 규칙들 - 현재 코드베이스에서 비활성화
+    'react-hooks/refs': 'off',
     'react-hooks/immutability': 'off',
-    'react-hooks/static-components': 'off',
+    'react-hooks/static-components': 'error',
     'react-hooks/set-state-in-effect': 'off',
+    'react-hooks/use-memo': 'off',
+    'react-hooks/preserve-manual-memoization': 'off',
+    'react-hooks/error-boundaries': 'off',
+    'react-hooks/purity': 'off',
+    'react-hooks/set-state-in-render': 'off',
+    'react-hooks/globals': 'off',
+    'react-hooks/config': 'off',
+    'react-hooks/gating': 'off',
 
     // Accessibility rules
     // 'jsx-a11y/anchor-is-valid': 'warn',
