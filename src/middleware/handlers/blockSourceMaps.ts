@@ -14,9 +14,9 @@
 import type { NextRequest } from 'next/server';
 import type { NextResponse } from 'next/server';
 import { NextResponse as createNextResponse } from 'next/server';
-import type { MiddlewareHandler } from '../types';
 import { getClientIp } from '@/shared/utils/ipUtils';
 import log from '@/shared/utils/logger';
+import type { MiddlewareHandler } from '../types';
 
 const logger = log.getLogger('BlockSourceMaps');
 

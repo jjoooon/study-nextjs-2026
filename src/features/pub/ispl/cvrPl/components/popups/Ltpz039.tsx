@@ -1,5 +1,10 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -16,11 +21,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 

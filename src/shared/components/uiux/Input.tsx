@@ -1,15 +1,15 @@
 // design 반영
 'use client';
 
-import { ErrorMsg } from '@common/ErrorMsg';
-import { InputClearIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import { useState } from 'react';
 import * as React from 'react';
 
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { InputClearIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
