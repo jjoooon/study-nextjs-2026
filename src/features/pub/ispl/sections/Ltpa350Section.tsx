@@ -27,7 +27,6 @@ import { Ltpa350Step2View3 } from '../cvrPl/components/Ltpa350Step2View3'; // 02
 import { Ltpa350Step2View4 } from '../cvrPl/components/Ltpa350Step2View4'; // 02. 담보설계
 import { Ltpa350Step2View5 } from '../cvrPl/components/Ltpa350Step2View5'; // 02. 담보설계
 import { Ltpa350Step4View1 } from '../udRqRst/components/Ltpa350Step4View1'; // 04. 심사요청
-import { Ltpa350Step4View2 } from '../udRqRst/components/Ltpa350Step4View2'; // 04. 심사요청
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
@@ -101,7 +100,7 @@ const data: Ltpa350DataType = {
     ],
     state: {
       complete: [1], //완료단계
-      active: 4, //현재단계
+      active: 2, //현재단계
     },
   },
 };
@@ -290,16 +289,6 @@ export default function Ltpa350Section() {
             viewKey={currentViewKey}
           />
         );
-      case 'view2':
-        return (
-          <Ltpa350Step4View2
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            viewKey={currentViewKey}
-          />
-        );
-      default:
-        return null;
     }
   };
 

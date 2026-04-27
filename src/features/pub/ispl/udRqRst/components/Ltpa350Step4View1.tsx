@@ -7,12 +7,14 @@ import { useMemo, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { TabPager } from '@common/TabPager';
+
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -24,7 +26,6 @@ import {
 } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
-import { Textarea } from '@/shared/components/uiux/Textarea';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -528,7 +529,7 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
           <LayoutMainBody>
             <Grow className="w-full overflow-hidden " placement="ss" gap={5}>
               <Grid className="w-full h-full" gap={6}>
-                <Gcol>
+                <Gcol className="w-(calc(100% - 30.7rem))">
                   <LayoutScrollWrap className="grid-rows-[auto_1fr]">
                     <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                       <Grow className="gap-1.5">
@@ -609,58 +610,239 @@ export function Ltpa350Step4View1({ onSelectPlan, isWidthExpanded = false, setIs
                   </LayoutScrollWrap>
                 </Gcol>
               </Grid>
-              <Gcol className="w-[29.8rem] h-full gap-0">
+              <Gcol className="w-[30.7rem] min-w-[30.7rem] h-full gap-0">
                 <Grow className="w-full h-[4.1rem] px-2.5 py-5 bg-[var(--color-secondary-50)] rounded-t-lg" placement="bwc" variant="default">
                   <strong className='text-[1.4rem] text-white'>심사결과안내</strong>
                   <Button variant={'outlined'} color={'secondary'} size={'md'} className="border-[var(--color-secondary-50)] text-black">
                     이력상세
                   </Button>   
                 </Grow>
-                <Gcol placement="bwe" className="w-full h-full border border-t-0 border-[var(--color-gray-20)] rounded-b-lg overflow-hidden">
-                  <Grow className="px-3 py-2">
-                    //
-                  </Grow> 
-                  <Gcol className="w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-15)] border-t-1 border-[var(--color-gray-20)]">
+                <Gcol className="relative w-full overflow-hidden gap-0">
+                  <Gcol placement="bwe" className="w-full h-[41.9rem] border-l border-r border-[var(--color-gray-20)] overflow-y-scroll relative">
+                    <Gcol className="py-2 gap-4">
+                      {/* 심부산 */}
+                      <Gcol className="px-3 gap-2">
+                        <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">심부산GA지점 박하늘별(6012345)</Typo>
+                        <Gcol className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left" gap="2">
+                          <Gcol placement="ss">
+                            <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">심사의뢰</Typo>
+                            <BulletItem
+                              before="ⓐ"
+                              className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-50)]"
+                              color="default"
+                              onClick={() => {}}
+                              size="md"
+                              type="dash"
+                            >
+                              고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다
+                            </BulletItem>
+                          </Gcol>
+                          <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left "><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                        </Gcol>
+                      </Gcol> 
+                      {/* UW심사팀 */}
+                      <Gcol className="px-3 gap-2">
+                        <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">UW심사팀 이한화(6020236)</Typo>
+                        <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
+                          <Gcol>
+                            <Grow className="w-full justify-between">
+                              <Typo variant="body-xs" className="w-full justify-between align-center text-[1.1rem]"   weight="bold">결제완료 / 특별인수조건부인수</Typo>
+                              <Button
+                                color="primary"
+                                onClick={() => {}}
+                                only="default"
+                                size="sm"
+                                variant="outlined"
+                                className="text-[1.1rem] leading-[2.2rem]"
+                              >
+                                상세보기
+                              </Button>
+                            </Grow>
+                            <BulletItem
+                              className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
+                              color="default"
+                              onClick={() => {}}
+                              size="md"
+                              type="dash"
+                              before={undefined}
+                            >
+                              고지유형:1형(일반고지형)
+                            </BulletItem>
+                            <Gcol placement='ss' className="gap-0.5 pl-2">
+                              <Typo variant="body-xs" className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]">▶조건부인수</Typo>
+                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]</Typo>
+                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○표준하체(할증)</Typo>
+                              <BulletItem
+                                before="ⓐ"
+                                className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
+                                color="default"
+                                onClick={() => {}}
+                                size="md"
+                                type="ref"
+                              >
+                                <span className="inline-block align-top leading-[1.7rem]"></span>
+                                계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.
+                              </BulletItem>
+                              <Grow className="gap-1 justify-start">
+                                <Grow className="gap-0.5 aligin-center">
+                                  <CircleCheckStepIcon /> 
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">감역</Typo>
+                                </Grow>
+                                <Grow className="gap-0.5">
+                                  <CircleCheckStepIcon /> 
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">할증</Typo>
+                                </Grow>
+                              </Grow>
+                            </Gcol>
+                          </Gcol>
+                          <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                        </Gcol>
+                      </Gcol> 
+                      {/* 심부산 */}
+                      <Gcol className="px-3 gap-2">
+                        <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">심부산GA지점 박하늘별(6012345)</Typo>
+                        <Gcol className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left" gap="2">
+                          <Gcol placement="ss">
+                            <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">심사의뢰</Typo>
+                            <BulletItem
+                              before="ⓐ"
+                              className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-50)]"
+                              color="default"
+                              onClick={() => {}}
+                              size="md"
+                              type="dash"
+                            >
+                              고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다
+                            </BulletItem>
+                          </Gcol>
+                          <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                        </Gcol>
+                      </Gcol> 
+                      {/* UW심사팀 */}
+                      <Gcol className="px-3 gap-2">
+                        <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">UW심사팀 이한화(6020236)</Typo>
+                        <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
+                          <Gcol>
+                            <Grow className="w-full justify-between">
+                              <Typo variant="body-xs" className="w-full justify-between align-center text-[1.1rem]"   weight="bold">결제완료 / 특별인수조건부인수</Typo>
+                              <Button
+                                color="primary"
+                                onClick={() => {}}
+                                only="default"
+                                size="sm"
+                                variant="outlined"
+                                className="text-[1.1rem] leading-[2.2rem]"
+                              >
+                                상세보기
+                              </Button>
+                            </Grow>
+                            <BulletItem
+                              className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
+                              color="default"
+                              onClick={() => {}}
+                              size="md"
+                              type="dash"
+                              before={undefined}
+                            >
+                              {/* <span className="inline-block align-top leading-[1.7rem]"></span> */}
+                              고지유형:1형(일반고지형)
+                            </BulletItem>
+                            <Gcol placement='ss' className="gap-0.5 pl-2">
+                              <Typo variant="body-xs" className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]">▶조건부인수</Typo>
+                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]</Typo>
+                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○표준하체(할증)</Typo>
+                              <BulletItem
+                                before="ⓐ"
+                                className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
+                                color="default"
+                                onClick={() => {}}
+                                size="md"
+                                type="ref"
+                              >
+                                <span className="inline-block align-top leading-[1.7rem]"></span>
+                                계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.
+                              </BulletItem>
+                              <Grow className="gap-1 justify-start">
+                                <Grow className="gap-0.5 aligin-center">
+                                  <CircleCheckStepIcon /> 
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">감역</Typo>
+                                </Grow>
+                                <Grow className="gap-0.5">
+                                  <CircleCheckStepIcon /> 
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">할증</Typo>
+                                </Grow>
+                              </Grow>
+                            </Gcol>
+                          </Gcol>
+                          <Typo variant="body-xs" className="w-full flex justify-start items-center  text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                        </Gcol>
+                      </Gcol> 
+                    </Gcol>
+                  </Gcol>
+                  {/* 페이지 버튼 */}
+                  <Gcol className="items-end gap-2 absolute bottom-[13.8rem] right-3 z-50">
+                    <Button variant="outlined" color="link" only="icon" className="w-[4rem] h-[3.7rem] bg-[#EFF8FF]">
+                      <Typo variant="body-lg"><b>1</b>/8</Typo>
+                    </Button>
+                    <Grow>
+                      <Button variant="outlined" color="gray" only="icon" size="md">
+                        <ArrowIcon className="rotate-90" />
+                      </Button>
+                      <Button variant="outlined" color="gray" only="icon" size="md">
+                        <ArrowIcon className="rotate-270" />
+                      </Button>
+                    </Grow>
+                  </Gcol>
+                  {/* 요청자 의견 */}
+                  <Gcol className="w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-15)] border-t-1 border-[var(--color-gray-20)] sticky bottom-0">
                     <Grow placement='bwc'>
                       <b className='text-[1.1rem]'>요청자 의견</b>
                       <Button>심사요청</Button>
                     </Grow>
-                    <Grow className="w-full h-[8.3rem]">
-                      <Textarea placeholder="계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다." resize={false} className="w-full text-[1.1rem]" />
-                    </Grow>
+                    <div className="w-full h-[8.3rem] p-2 bg-white border border-[var(--color-gray-20)] rounded-lg overflow-hidden">
+                      <BulletItem
+                        before="ⓐ"
+                        className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-50)]"
+                        color="default"
+                        onClick={() => {}}
+                        size="md"
+                        type="ref"
+                      >
+                        계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.
+                      </BulletItem>
+                    </div>
                   </Gcol>
                 </Gcol>
               </Gcol>
-              
             </Grow>
           </LayoutMainBody>
 
           <LayoutMainFoot>
             <MainBottom variant="box">
               <MainBottomItem>
-              <Grow className="gap-1">
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  이미지스캔
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  건축물대장조회스캔
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  사진/서류 알림톡
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  체크리스트 알림톡 
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  진단/적부이력
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  외부심사결과지요청
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  진단적부예외
-                </Button>
-              </Grow>
+                <Grow className="gap-1">
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    이미지스캔
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    건축물대장조회스캔
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    사진/서류 알림톡
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    체크리스트 알림톡 
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    진단/적부이력
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    외부심사결과지요청$
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    진단적부예외
+                  </Button>
+                </Grow>
                 <Grow className="gap-1">
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     현장소통
