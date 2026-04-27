@@ -734,7 +734,6 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
   const [coverageName, setCoverageName] = useState('');
-
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
@@ -1138,19 +1137,6 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           // isStandardGroup(비편집) 셀 클릭 시 같은 filePath 그룹의 isStandard.edit 셀의 툴팁을 항상 보여줌
           const isSelectedField3 = params.data?.isSelectedField3 ?? false;
           if (params.data?.isStandard?.group) {
-            // 그룹 내 edit 셀의 rowNode id 목록 수집 (루트 filePath 기준으로 비교)
-            const groupEditNodeIds: string[] = [];
-            const groupRoot = Array.isArray(params.data?.filePath) ? params.data.filePath[0] : undefined;
-            params.api.forEachNode((node: any) => {
-              if (
-                Array.isArray(node.data?.filePath) &&
-                groupRoot !== undefined &&
-                node.data.filePath[0] === groupRoot &&
-                node.data?.isStandard?.edit
-              ) {
-                groupEditNodeIds.push(node.id);
-              }
-            });
             // 금액 콤마 포맷 적용
             const value = params.value;
             let display = value;
@@ -1165,16 +1151,19 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
             }
             // 버튼 클릭 시 그룹 내 isStandard(edit) 셀에 tooltip-on 3초간 부여
             const handleClick = () => {
-              groupEditNodeIds.forEach((nodeId) => {
-                const node = params.api.getRowNode(nodeId);
-                if (node && node.data) {
+              const groupRoot = params.data?.filePath?.[0];
+              const nodesToUpdate: any[] = [];
+
+              params.api.forEachNode((node: any) => {
+                if (node.data?.filePath?.[0] === groupRoot && node.data?.isStandard?.edit) {
+                  nodesToUpdate.push(node);
                   node.setData({ ...node.data, _tooltipOn: true });
                 }
               });
+
               setTimeout(() => {
-                groupEditNodeIds.forEach((nodeId) => {
-                  const node = params.api.getRowNode(nodeId);
-                  if (node && node.data) {
+                nodesToUpdate.forEach((node) => {
+                  if (node.data) {
                     node.setData({ ...node.data, _tooltipOn: false });
                   }
                 });
