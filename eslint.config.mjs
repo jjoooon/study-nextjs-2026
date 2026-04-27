@@ -41,6 +41,8 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, reactCo
     'react-hooks/exhaustive-deps': 'warn',
     // Allow callbacks to reference later-declared functions when safe
     'react-hooks/immutability': 'off',
+    'react-hooks/static-components': 'off',
+    'react-hooks/set-state-in-effect': 'off',
 
     // Accessibility rules
     // 'jsx-a11y/anchor-is-valid': 'warn',
