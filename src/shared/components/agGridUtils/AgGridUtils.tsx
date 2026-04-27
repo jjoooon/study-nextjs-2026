@@ -2,7 +2,7 @@
 
 // 내부 공통 컴포넌트
 
-import type { ICellEditorParams } from 'ag-grid-community';
+import type { GridReadyEvent } from 'ag-grid-community';
 import type {
   CellClickedEvent,
   ValueFormatterParams,
@@ -16,20 +16,21 @@ import type {
   GridApi,
   CellValueChangedEvent,
 } from 'ag-grid-community';
-import type { GridReadyEvent } from 'ag-grid-community';
+import type { ICellEditorParams } from 'ag-grid-community';
 import type { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RefObject } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import * as React from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { AmountUnitInput } from '@common/AmountUnitInput';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
-import { InfoBoxWarningIcon } from '@icons';
-import { SelectDropIcon, PlusIcon } from '@icons';
+import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 export type ToggleTopRow<T> = T & {
@@ -429,36 +430,192 @@ export const productNameTooltipValueGetter = <T extends { productName?: string }
  */
 export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   if (params.value === null || params.value === undefined || params.value === '') return '';
-  // 0도 정상 노출
-  return Number(params.value).toLocaleString();
+  // 문자열이지만 숫자라면 콤마 적용
+  const num = Number(params.value);
+  if (!isNaN(num)) return num.toLocaleString();
+  return params.value;
 };
 
 /**
  * 가입금액(만원) 셀 렌더러 (AmountUnitInput 사용, 행별 ref 지원)
  */
-export function amountUnitInputCellRenderer<RowType>(
-  params: ICellRendererParams<RowType> & { amountInputRefs: Array<HTMLInputElement | null> }
+
+// React 컴포넌트로 분리 (Hook 규칙 위반 방지)
+function AmountUnitInputCellRenderer<RowType>(
+  props: ICellRendererParams<RowType> & { amountInputRefs: React.RefObject<Array<HTMLInputElement | null>> }
 ) {
-  const rowIndex = params.node?.rowIndex ?? 0;
-  if (!params.amountInputRefs) return null;
+  const { amountInputRefs, value, node, setValue, colDef } = props;
+  const [showSelect, setShowSelect] = React.useState(false);
+  const [localValue, setLocalValue] = React.useState(value);
+  const rowIndex = node?.rowIndex ?? 0;
+  if (!amountInputRefs || !amountInputRefs.current) return null;
+
+  const options: string[] = Array.isArray(colDef?.cellEditorParams?.values)
+    ? (colDef.cellEditorParams.values as string[])
+    : [''];
+
+  if (typeof value === 'number') {
+    return (
+      <div>
+        <AmountUnitInput
+          value={value}
+          onChange={(newValue) => {
+            if (setValue) setValue(newValue);
+          }}
+          inputRef={(el) => {
+            const refs = amountInputRefs.current;
+            if (refs) {
+              refs[rowIndex] = el;
+            }
+          }}
+          onEnter={() => {
+            const nextRef = amountInputRefs.current?.[rowIndex + 1];
+            if (nextRef) nextRef.focus();
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <AmountUnitInput
-        value={params.value}
-        onChange={(newValue) => {
-          if (params.setValue) params.setValue(newValue);
-        }}
-        inputRef={(el) => {
-          params.amountInputRefs[rowIndex] = el;
-        }}
-        onEnter={() => {
-          const nextRef = params.amountInputRefs[rowIndex + 1];
-          if (nextRef) nextRef.focus();
-        }}
-      />
+    <div className="relative w-full">
+      {!showSelect ? (
+        <button
+          type="button"
+          className={`flex items-center px-[0.6rem] gap-1 w-full h-full editor-select`}
+          onClick={() => setShowSelect(true)}
+        >
+          <span className={`block flex-1`}>{localValue}</span>
+          <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
+        </button>
+      ) : (
+        <Grow className="w-full mt-[0.2rem] px-[0.6rem] items-center ">
+          <NativeSelect
+            size="md"
+            value={localValue}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setLocalValue(e.target.value);
+              setShowSelect(false);
+              if (props.setValue) props.setValue(e.target.value);
+            }}
+            onBlur={() => setShowSelect(false)}
+            autoFocus
+          >
+            {options.map((option) => (
+              <NativeSelectOption key={option} value={option}>
+                {option}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </Grow>
+      )}
     </div>
   );
 }
+
+// ag-Grid cellRenderer 함수로 등록할 때는 이 래퍼를 사용
+export function amountUnitInputCellRenderer<RowType>(
+  params: ICellRendererParams<RowType> & { amountInputRefs: React.RefObject<Array<HTMLInputElement | null>> }
+) {
+  return <AmountUnitInputCellRenderer {...params} />;
+}
+
+/**
+ * Popover를 통한 +/- 조정 기능이 포함된 숫자 편집기
+ */
+export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams, ref) => {
+  const [value, setValue] = useState<number>(Number(props.value) || 0);
+  const step = props.colDef?.cellEditorParams?.step || 100;
+  const min = props.colDef?.cellEditorParams?.min ?? 100;
+  const max = props.colDef?.cellEditorParams?.max ?? 20000;
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getValue: () => value,
+      isCancelAfterEnd: () => false,
+    }),
+    [value]
+  );
+
+  return (
+    <div className="flex items-center w-full h-full">
+      <Popover defaultOpen={true}>
+        <PopoverTrigger asChild>
+          <input
+            className="ag-input-field-input flex-1 w-full h-full border-none outline-none text-right bg-transparent p-0"
+            type="number"
+            value={value}
+            onChange={(e) => setValue(Number(e.target.value))}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') return;
+              e.stopPropagation(); // 팝오버 내부 입력 시 그리드 이벤트 전파 방지
+            }}
+            autoFocus
+          />
+        </PopoverTrigger>
+        <PopoverContent
+          side="bottom"
+          align="end"
+          className="p-3 flex flex-col gap-2 w-auto"
+          closeButton={false}
+          onOpenAutoFocus={(e) => e.preventDefault()} // 팝오버 오픈 시 인풋 포커스 유지
+        >
+          <Gcol className="items-center" gap={1.5} placement="ss">
+            <Grow gap={1.5} placement="ss">
+              <Button
+                aria-label={'백만원 추가'}
+                variant={'outlined'}
+                only={'icon'}
+                size={'md'}
+                color={'gray'}
+                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                onClick={() => setValue((v) => Math.max(min, v - step))}
+              >
+                <MinusIcon color={'var(--color-primary-50)'} />
+              </Button>
+              <Input size={'md'} value={value} after={'만'} readOnly className="w-[11.2rem]" />
+              <Button
+                aria-label={'백만원 추가'}
+                variant={'outlined'}
+                only={'icon'}
+                size={'md'}
+                color={'gray'}
+                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                onClick={() => setValue((v) => Math.min(max, v + step))}
+              >
+                <PlusIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grow>
+            <Grow>
+              <Button
+                size={'md'}
+                color={'secondary'}
+                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                onClick={() => setValue(min)}
+                className="min-w-[8.3rem]"
+              >
+                최소 {min.toLocaleString()}만원
+              </Button>
+              <Button
+                size={'md'}
+                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                onClick={() => setValue(max)}
+                className="min-w-[8.3rem]"
+              >
+                최대 {max >= 10000 ? `${max / 10000}억` : `${max.toLocaleString()}만원`}
+              </Button>
+            </Grow>
+            <Typo icon="ref" color="gray" className="mt-1">
+              가입금액 입력단위:백만원
+            </Typo>
+          </Gcol>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+});
+AmountWithPopoverCellEditor.displayName = 'AmountWithPopoverCellEditor';
 
 /**
  * 만기/납기 셀 렌더러 (셀 편집 가능 여부에 따라 화살표 색상 변경)
@@ -482,9 +639,9 @@ export function editableSelectCellRenderer<RowType>(
     textClass = 'text-center';
   }
   return (
-    <div className={`flex items-center px-0 ${justifyClass} gap-1 w-full h-full editor-select`}>
+    <div className={`flex items-center px-[0.6rem] ${justifyClass} gap-1 w-full h-full editor-select`}>
       <span className={`block flex-1 ${textClass}`}>{params.value}</span>
-      <SelectDropIcon size={12} color={'var(--color-gray-50)'} className="shrink-0" />
+      <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
     </div>
   );
 }
@@ -949,29 +1106,123 @@ export function renderTbodyTh(children: React.ReactNode) {
 }
 
 export function useDynamicColumnWidths() {
+  const colWidth0 = useDynamicPx(0);
+  const colWidth10 = useDynamicPx(10);
+  const colWidth20 = useDynamicPx(20);
+  const colWidth30 = useDynamicPx(30);
   const colWidth40 = useDynamicPx(40);
+  const colWidth50 = useDynamicPx(50);
   const colWidth60 = useDynamicPx(60);
+  const colWidth70 = useDynamicPx(70);
   const colWidth80 = useDynamicPx(80);
+  const colWidth90 = useDynamicPx(90);
   const colWidth100 = useDynamicPx(100);
+  const colWidth110 = useDynamicPx(110);
   const colWidth120 = useDynamicPx(120);
+  const colWidth130 = useDynamicPx(130);
   const colWidth140 = useDynamicPx(140);
+  const colWidth150 = useDynamicPx(150);
   const colWidth160 = useDynamicPx(160);
+  const colWidth170 = useDynamicPx(170);
   const colWidth180 = useDynamicPx(180);
+  const colWidth190 = useDynamicPx(190);
+  const colWidth200 = useDynamicPx(200);
+  const colWidth210 = useDynamicPx(210);
+  const colWidth220 = useDynamicPx(220);
+  const colWidth230 = useDynamicPx(230);
+  const colWidth240 = useDynamicPx(240);
+  const colWidth250 = useDynamicPx(250);
+  const colWidth260 = useDynamicPx(260);
 
   const attributeColumnWidth = useMemo(
-    () => [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180],
-    [colWidth40, colWidth60, colWidth80, colWidth100, colWidth120, colWidth140, colWidth160, colWidth180]
+    () => [
+      colWidth0,
+      colWidth10,
+      colWidth20,
+      colWidth30,
+      colWidth40,
+      colWidth50,
+      colWidth60,
+      colWidth70,
+      colWidth80,
+      colWidth90,
+      colWidth100,
+      colWidth110,
+      colWidth120,
+      colWidth130,
+      colWidth140,
+      colWidth150,
+      colWidth160,
+      colWidth170,
+      colWidth180,
+      colWidth190,
+      colWidth200,
+      colWidth210,
+      colWidth220,
+      colWidth230,
+      colWidth240,
+      colWidth250,
+      colWidth260,
+    ],
+    [
+      colWidth0,
+      colWidth10,
+      colWidth20,
+      colWidth30,
+      colWidth40,
+      colWidth50,
+      colWidth60,
+      colWidth70,
+      colWidth80,
+      colWidth90,
+      colWidth100,
+      colWidth110,
+      colWidth120,
+      colWidth130,
+      colWidth140,
+      colWidth150,
+      colWidth160,
+      colWidth170,
+      colWidth180,
+      colWidth190,
+      colWidth200,
+      colWidth210,
+      colWidth220,
+      colWidth230,
+      colWidth240,
+      colWidth250,
+      colWidth260,
+    ]
   );
 
   return {
+    colWidth0,
+    colWidth10,
+    colWidth20,
+    colWidth30,
     colWidth40,
+    colWidth50,
     colWidth60,
+    colWidth70,
     colWidth80,
+    colWidth90,
     colWidth100,
+    colWidth110,
     colWidth120,
+    colWidth130,
     colWidth140,
+    colWidth150,
     colWidth160,
+    colWidth170,
     colWidth180,
+    colWidth190,
+    colWidth200,
+    colWidth210,
+    colWidth220,
+    colWidth230,
+    colWidth240,
+    colWidth250,
+    colWidth260,
     attributeColumnWidth,
   };
 }

@@ -3,7 +3,6 @@
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';

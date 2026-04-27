@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 import { Gcol, Grow, Divider, Grid } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';

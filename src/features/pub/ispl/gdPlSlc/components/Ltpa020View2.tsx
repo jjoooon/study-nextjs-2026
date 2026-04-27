@@ -1,7 +1,7 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';

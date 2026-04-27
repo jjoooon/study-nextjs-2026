@@ -1,6 +1,5 @@
 'use client';
 
-
 import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';

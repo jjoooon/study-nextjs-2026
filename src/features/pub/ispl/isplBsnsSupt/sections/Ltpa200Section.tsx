@@ -1,6 +1,7 @@
 'use client';
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
+
 import type {
   ColDef,
   EditableCallbackParams,
@@ -9,9 +10,8 @@ import type {
   ICellRendererParams,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
 import { useCallback } from 'react';
+import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';

@@ -7,14 +7,20 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/redux';
 import useMounted from '@/shared/hooks/useMounted';
 import { initializeI18n } from '@/shared/lib/i18n';
+import { setHeader } from '@/shared/store/authSlice';
+import type { AuthHeader } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
 
 const logger = log.getLogger('Global');
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children, authHeader }: { children: React.ReactNode; authHeader?: AuthHeader }) {
   const [isReady, setIsReady] = useState(false);
 
   useMounted(() => {
+    // persist/REHYDRATE 이후에 서버 사이드 header 값으로 덮어쓰기
+    if (authHeader) {
+      store.dispatch(setHeader({ header: authHeader }));
+    }
     /**
      * Enable MSW mocking in development.
      *

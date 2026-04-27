@@ -357,9 +357,16 @@
   height: 1.6rem !important;
 }
 
+.ag-picker-field-wrapper,
+.ag-input-field-input {
+  padding: 0 0.4rem !important;
+  height: 2.5rem !important;
+  min-height: 2.5rem !important;
+}
+
 .ag-icon-small-down::before {
   mask-position: 50% 73%;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M9.62021 3.60161C9.835 3.38682 10.1833 3.38682 10.398 3.60161C10.6126 3.81635 10.6126 4.16422 10.398 4.37896L6.37998 8.39702C6.16518 8.6116 5.81687 8.61173 5.60215 8.39702L1.58457 4.37896C1.36985 4.16424 1.36999 3.81642 1.58457 3.60161C1.79936 3.38682 2.14713 3.38682 2.36191 3.60161L5.99082 7.23003L9.62021 3.60161Z' fill='%23777777'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
 }
 
 .ag-cell.required.ag-cell-error-border {
@@ -395,7 +402,7 @@
   border: 0.1rem solid var(--color-input-border-error);
   border-radius: 0.4rem;
   /* rounded-DEFAULT 기준 */
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1), 0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
   /* shadow-md */
 }
 
@@ -408,7 +415,7 @@
   width: 1.2rem;
   z-index: 11;
   height: 0.8rem;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFF4F4' stroke='%23E43939' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFF4F4'/%3E%3C/svg%3E%0A");
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFFFFF' stroke='%23E43939' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFF4F4'/%3E%3C/svg%3E%0A");
 }
 
 .ag-row .ag-column-last {
@@ -599,4 +606,69 @@
 
 .ag-row-new .editable-cell svg {
   display: block;
+}
+
+.isStandard {
+  background-color: var(--color-purple-10) !important;
+}
+.no-edited svg {
+  display: none !important;
+}
+.no-edited {
+  background-color: transparent !important;
+}
+.isStandardGroup,
+.ag-row-group-expanded .isStandardGroup ,
+.ag-row-group-contracted .isStandardGroup {
+  background-color: #fff !important;
+}
+
+.isStandard:after {
+  content: "기준담보 값을 수정하세요.";
+  display: none;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+  bottom: calc(100% + 0.6rem);
+  height: 2.4rem;
+  line-height: 1.1;
+  left: 0.4rem;
+  padding: 0 0.8rem;
+  font-size: 1.2rem;
+  color: var(--color-gray-70);
+  background-color: #fff;
+  /* 배경색 (after와 맞춤) */
+  border: 0.1rem solid var(--color-gray-20);
+  border-radius: 0.4rem;
+  /* rounded-DEFAULT 기준 */
+  box-shadow: 0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1), 0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
+  /* shadow-md */
+}
+
+.isStandard:before {
+  content: "";
+  display: none;
+  position: absolute;
+  bottom: calc(100% - 0rem);
+  left: 1rem;
+  width: 1.2rem;
+  z-index: 11;
+  height: 0.8rem;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFF4F4' stroke='%23CCCCCC' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFFFFF'/%3E%3C/svg%3E%0A");
+}
+.isStandard.tooltip-on:after,
+.isStandard.tooltip-on:before {
+  display: flex;
+}
+
+.ag-tooltip {
+  display: none !important;
+}
+/* show-product-tooltip 클래스가 있을 때만 보임 */
+.show-product-tooltip .ag-tooltip {
+  display: block !important;
+}
+.isError .ag-cell-value {
+  font-weight: 700;
+  color: var(--color-text-danger) !important;
 }

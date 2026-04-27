@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
-import iaListData from './ialist.json';
 
 import iaHsh from './ia-hsh.json';
-import iaKot from './ia-kot.json';
 import iaJhm from './ia-jhm.json';
+import iaKot from './ia-kot.json';
+import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 type SortOrder = 'default' | 'asc' | 'desc';
@@ -49,22 +49,18 @@ type PubInfo = {
   수정일: string;
 };
 
-const pubInfoList: PubInfo[] = [
-  ...(iaHsh as PubInfo[]),
-  ...(iaKot as PubInfo[]),
-  ...(iaJhm as PubInfo[]),
-];
+const pubInfoList: PubInfo[] = [...(iaHsh as PubInfo[]), ...(iaKot as PubInfo[]), ...(iaJhm as PubInfo[])];
 
 // pubInfoList에서 화면아이디로 PubInfo를 찾는 헬퍼
 const getPubInfo = (row: Pick<IARow, 'id' | 'subId'>) => {
-  const bySubId = row.subId ? pubInfoList.find(info => info.화면아이디 === row.subId) : undefined;
-  return bySubId ?? pubInfoList.find(info => info.화면아이디 === row.id);
+  const bySubId = row.subId ? pubInfoList.find((info) => info.화면아이디 === row.subId) : undefined;
+  return bySubId ?? pubInfoList.find((info) => info.화면아이디 === row.id);
 };
 
 const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
 
 export function IAListWithPreview() {
-  const [showPhaseOnly, setShowPhaseOnly] = React.useState(false);
+  const [showPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const handleSort = React.useCallback((key: SortKey) => {
     setSortState((prev) => {
@@ -120,9 +116,7 @@ export function IAListWithPreview() {
       if (sortKey === 'completeDate' || sortKey === 'modifyDate') {
         const getDateNum = (row: IARow, type: 'completeDate' | 'modifyDate') => {
           const info = getPubInfo(row);
-          let result = type === 'completeDate'
-            ? (info?.완료일 || row.date)
-            : (info?.수정일 || row.modify);
+          const result = type === 'completeDate' ? info?.완료일 || row.date : info?.수정일 || row.modify;
           return result.replace(/\./g, '');
         };
         const leftValue = getDateNum(left, sortKey);
@@ -189,7 +183,7 @@ export function IAListWithPreview() {
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
         <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
-            반입일: 2026.04.20
+          반입일: 2026.04.20
         </div>
         <div className="w-full grid grid-cols-[1fr_auto] gap-2">
           <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
@@ -201,12 +195,12 @@ export function IAListWithPreview() {
             </div>
           </div>
           <a
-              href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
-              download
-              className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
-            >
-              📦다운로드 파일
-            </a>
+            href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
+            download
+            className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
+          >
+            📦다운로드 파일
+          </a>
         </div>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
@@ -229,7 +223,9 @@ export function IAListWithPreview() {
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('path')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('path'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('path');
+                }}
                 role="button"
                 aria-label="경로 정렬"
               >
@@ -240,7 +236,9 @@ export function IAListWithPreview() {
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('id')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('id'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('id');
+                }}
                 role="button"
                 aria-label="ID 정렬"
               >
@@ -251,7 +249,9 @@ export function IAListWithPreview() {
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('dep4')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('dep4'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('dep4');
+                }}
                 role="button"
                 aria-label="화면명 정렬"
               >
@@ -263,7 +263,9 @@ export function IAListWithPreview() {
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('completeDate')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('completeDate'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('completeDate');
+                }}
                 role="button"
                 aria-label="완료일 정렬"
               >
@@ -274,7 +276,9 @@ export function IAListWithPreview() {
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('modifyDate')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('modifyDate'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('modifyDate');
+                }}
                 role="button"
                 aria-label="수정일 정렬"
               >
@@ -285,7 +289,9 @@ export function IAListWithPreview() {
                 className="text-center cursor-pointer select-none"
                 onClick={() => handleSort('plan')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('plan'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('plan');
+                }}
                 role="button"
                 aria-label="기획 정렬"
               >
@@ -296,7 +302,9 @@ export function IAListWithPreview() {
                 className="text-center cursor-pointer select-none"
                 onClick={() => handleSort('pub')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('pub'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('pub');
+                }}
                 role="button"
                 aria-label="퍼블 정렬"
               >
@@ -307,7 +315,9 @@ export function IAListWithPreview() {
                 className="text-center cursor-pointer select-none"
                 onClick={() => handleSort('dev')}
                 tabIndex={0}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSort('dev'); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('dev');
+                }}
                 role="button"
                 aria-label="개발 정렬"
               >
@@ -330,13 +340,9 @@ export function IAListWithPreview() {
                 <tr
                   key={`${getRowKey(row)}-${index}`}
                   data-active={isActive ? 'true' : undefined}
-                  className={
-                    [
-                      isActive ? 'selected' : '',
-                      info?.완료일 ? 'complete' : '',
-                      rowBgClass
-                    ].filter(Boolean).join(' ')
-                  }
+                  className={[isActive ? 'selected' : '', info?.완료일 ? 'complete' : '', rowBgClass]
+                    .filter(Boolean)
+                    .join(' ')}
                   onClick={() => setActiveRowKey(getRowKey(row))}
                 >
                   <td className={rowBgClass}>
@@ -347,11 +353,17 @@ export function IAListWithPreview() {
                   </td>
                   <td scope="row" className={rowIdBgClass}>
                     <b>{row.id}</b>
-                    {row.subId ? <><br />({row.subId})</> : ''}
+                    {row.subId ? (
+                      <>
+                        <br />({row.subId})
+                      </>
+                    ) : (
+                      ''
+                    )}
                   </td>
                   <td className={rowBgClass}>{row.dep4}</td>
                   <td className={rowBgClass}>{row.file}</td>
-                  
+
                   <td className={`text-center ${rowBgClass}`}>
                     <b>{completeDate}</b>
                   </td>

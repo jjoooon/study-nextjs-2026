@@ -279,7 +279,7 @@ export function Ltpa350Step2View5({ onSelectPlan, isWidthExpanded = false, setIs
   // ── 가입금액 열 (field3) ──────────────────────────────────────────────────────
   // 셀: 금액 입력 컴포넌트 (ref 배열로 포커스 제어 지원)
   const coverageAmountCellRenderer = (params: ICellRendererParams<AgGridRow>) =>
-    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs });
 
   // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
   // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)

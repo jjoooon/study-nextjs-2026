@@ -3,7 +3,6 @@ import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
-
 import { ReSizeIcon } from '@icons';
 
 interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {

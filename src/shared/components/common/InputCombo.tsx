@@ -66,7 +66,10 @@ export function InputCombo({
 
   // input 값 외부 변경 반영
   useEffect(() => {
-    setInputValue(value);
+    setInputValue((prev) => {
+      if (prev !== value) return value;
+      return prev;
+    });
   }, [value]);
 
   // input 포커스/블러 관리

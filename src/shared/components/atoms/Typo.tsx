@@ -1,7 +1,7 @@
+import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode, createElement } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 // M1. 수정
 
@@ -92,14 +92,11 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
       <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />
     );
 
-  if (icon === 'ref')
-    IconComponent = (
-      <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-primary-50)" size={10} />
-    );
+  if (icon === 'ref') IconComponent = <RefIcon className="inline-flex -translate-y-[0.1rem] mr-1" size={10} />;
   if (icon === 'dot') IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-1" />;
   if (icon === 'dotBig')
     IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
-  if (icon === 'hash') IconComponent = <HashIcon className="inline-flex -translate-y-[0.1rem] mr-1" size={10} />;
+  if (icon === 'hash') IconComponent = <HashIcon className="inline-flex -translate-y-[0.1rem]" size={10} />;
   if (icon === 'dash')
     IconComponent = <DashIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
   if (icon === 'star') IconComponent = <StarIcon className="inline-flex -translate-y-[0.15rem] mr-1" size={10} />;

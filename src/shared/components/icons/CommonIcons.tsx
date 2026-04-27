@@ -1861,3 +1861,19 @@ export const RightArrowIcon: React.FC<IconProps> = ({ className = '', size = 28,
     />
   </svg>
 );
+
+export const TableSelectArrowIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(6)}
+    viewBox="0 0 10 6"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M8.80062 0C9.2595 0 9.50277 0.568984 9.19794 0.929112L5.06447 5.81257C4.85291 6.06248 4.48075 6.06248 4.2692 5.81257L0.135084 0.929112C-0.169417 0.56897 0.0742789 0 0.533044 0H8.80062Z"
+      fill={color}
+    />
+  </svg>
+);

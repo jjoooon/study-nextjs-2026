@@ -1,7 +1,7 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
