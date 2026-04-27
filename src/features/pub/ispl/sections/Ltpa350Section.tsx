@@ -271,7 +271,7 @@ export default function Ltpa350Section() {
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
     2: renderStep2(),
-    3: <Ltpa350Step3 viewKey={currentViewKey} />,
+    3: <Ltpa350Step3 simpleMode={simpleMode} />,
     4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
     5: <Ltpa350Step5 />,
     6: <Ltpa350Step6 />,

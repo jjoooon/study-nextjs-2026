@@ -54,6 +54,7 @@ const typoVariants = cva('', {
       primary: 'text-[var(--color-primary-50)]',
       secondary: 'text-[var(--color-secondary-50)]',
       information: 'text-[var(--color-information-50)]',
+      green: 'text-[var(--color-success-50)]',
     },
   },
   defaultVariants: {

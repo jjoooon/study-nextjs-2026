@@ -786,3 +786,39 @@
     gap: 0 !important;
   }
 }
+
+.blink-border {
+  animation: blink-border 1s cubic-bezier(0.4, 0, 0.2, 1) 0s 1;
+}
+
+@keyframes blink-border {
+  0% {
+    border-color: #FFFFFF;
+    border-width: 0.2rem;
+  }
+
+  20% {
+    border-color: #D8D8D830;
+    border-width: 0.2rem;
+  }
+
+  40% {
+    border-color: #FF5C2E30;
+    border-width: 0.2rem;
+  }
+
+  60% {
+    border-color: #FFF;
+    border-width: 0.2rem;
+  }
+
+  80% {
+    border-color: #D8D8D830;
+    border-width: 0.2rem;
+  }
+
+  100% {
+    border-color: #FF5C2E;
+    border-width: 0.2rem;
+  }
+}

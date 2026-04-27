@@ -8,6 +8,7 @@ import { ArrowIcon, ListIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { Tabs, TabsList, TabsContent, TabsTrigger, TabsLine } from '@uiux/Tabs';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 interface TabPagerProps<T> {
   data: T[];
@@ -34,6 +35,7 @@ interface TabPagerProps<T> {
         visibleCount: number
       ) => React.ReactNode);
   getValue: (tab: T) => string;
+  className?: string;
   contentClass?: string;
 }
 
@@ -54,6 +56,7 @@ export function TabPager<T>({
   renderButtons,
   renderAfter,
   getValue,
+  className,
   contentClass,
 }: TabPagerProps<T>) {
   // const [active, setActive] = React.useState<string>(
@@ -75,7 +78,7 @@ export function TabPager<T>({
     value: active ?? '',
     removable,
     onValueChange: setActive,
-    className: 'w-full h-full grid grid-rows-[auto_1fr] content-start',
+    className: cn('w-full h-full grid grid-rows-[auto_1fr] content-start', className),
     ...(removable && onRemove ? { onRemove } : {}),
   };
 
@@ -160,9 +163,8 @@ export function TabPager<T>({
             {renderAfter}
           </Grow>
         </TabsLine>
-        <TabsContent value={active ?? ''} className={contentClass}>
-          {children}
-        </TabsContent>
+        {children && <TabsContent value={active ?? ''} className={contentClass}>{children}</TabsContent>}
+        
       </Tabs>
     </>
   );
