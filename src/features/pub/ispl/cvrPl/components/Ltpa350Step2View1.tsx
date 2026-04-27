@@ -1,21 +1,5 @@
 'use client';
 
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import type {
-  CellClassParams,
-  ColDef,
-  GridApi,
-  ICellRendererParams,
-  SelectionChangedEvent,
-  IGroupCellRendererParams,
-  EditableCallbackParams,
-  CellEditorSelectorResult,
-  ValueFormatterParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Accordion } from '@/shared/components/uiux/Accordion';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   CoveragePopover,
   createCellClickSelectionToggleHandler,
@@ -39,6 +23,7 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -46,6 +31,21 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type {
+  CellClassParams,
+  ColDef,
+  GridApi,
+  ICellRendererParams,
+  SelectionChangedEvent,
+  IGroupCellRendererParams,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+  ValueFormatterParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -734,6 +734,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
   // ── 담보명 열 (field1) ────────────────────────────────────────────────────────
   // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
   const [coverageName, setCoverageName] = useState('');
+
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
@@ -758,14 +759,25 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
           </Checkbox>
         </Grow>
         <Grow>
-          <Input
-            aria-label="담보명"
+          <InputHash
+            options={[
+              { value: '암암암암암', label: '암암암암암' },
+              { value: '뇌뇌뇌뇌뇌', label: '뇌뇌뇌뇌뇌' },
+              { value: '심심심심심', label: '심심심심심' },
+              { value: '표적', label: '표적' },
+              { value: '뇌', label: '뇌' },
+              { value: '심장', label: '심장' },
+              { value: '수술', label: '수술' },
+              { value: '골절', label: '골절' },
+              { value: '화상', label: '화상' },
+              { value: '치매', label: '치매' },
+              { value: '종신종신종신', label: '종신종신종신' },
+            ]}
+            size={'md'}
             placeholder="담보명 입력"
-            width={'full'}
-            size={'sm'}
-            // clear={true}
+            clear={true}
             value={coverageName}
-            onChange={(e) => setCoverageName(e.target.value)}
+            onChange={(value) => setCoverageName(value)}
           />
           <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
@@ -1290,6 +1302,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
         onSubmit={(event) => {
           event.preventDefault();
           setTestError(!testError);
+          toggleError(9);
         }}
         noValidate
       >
@@ -1670,7 +1683,6 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
                   고지유형별보험료비교
                 </Button>
                 <Grow className="gap-1">
-                  <Button onClick={() => toggleError(9)}>231번 행 에러 토글</Button>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     담보전환
                   </Button>
