@@ -38,6 +38,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         contained: '',
+        dark: '',
         soft: 'border',
         outlined: 'border bg-transparent',
         rounded:
@@ -74,6 +75,19 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
+
+      {
+        variant: 'dark',
+        color: 'blue',
+        class: 'bg-[var(--color-information-40)] text-[#FFF]',
+      },
+      { variant: 'dark', color: 'red', class: 'bg-[var(--color-danger-40)] text-[#FFF]' },
+      { variant: 'dark', color: 'green', class: 'bg-[var(--color-success-40)] text-[#FFF]' },
+      { variant: 'dark', color: 'primary', class: 'bg-[var(--color-primary-50)] text-[#FFF]' },
+      { variant: 'dark', color: 'gray', class: 'bg-[var(--color-blue-gray-15)] text-[#FFF]' },
+      { variant: 'dark', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[#FFF]' },
+      { variant: 'dark', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[#FFF]' },
+      { variant: 'dark', color: 'purple', class: 'bg-[var(--color-purple-40)] text-[#FFF]' },
 
       { variant: 'rounded', size: 'sm', class: 'pl-[0.4rem] pr-[0.6rem]' },
 

@@ -1,5 +1,11 @@
 'use client';
 
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { useTabs } from '@/shared/hooks/useTabs';
 import {
   amountUnitInputCellRenderer,
   CoveragePopover,
@@ -23,7 +29,6 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -31,11 +36,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { CellClassParams, ColDef, GridApi, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Accordion } from '@/shared/components/uiux/Accordion';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -392,7 +392,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
   // ── 가입금액 열 (field3) ──────────────────────────────────────────────────────
   // 셀: 금액 입력 컴포넌트 (ref 배열로 포커스 제어 지원)
   const coverageAmountCellRenderer = (params: ICellRendererParams<AgGridRow>) =>
-    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs.current });
+    amountUnitInputCellRenderer<AgGridRow>({ ...params, amountInputRefs: amountInputRefs });
 
   // ── 만기/납기 열 (field5, field6) ────────────────────────────────────────────
   // 셀: 드롭다운 선택 렌더러 (선택 여부에 따라 편집 가능/불가 아이콘 표시)

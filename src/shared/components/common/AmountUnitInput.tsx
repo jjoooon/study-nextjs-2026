@@ -59,10 +59,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
 
   const handleOpen = (e: React.MouseEvent<HTMLInputElement>) => {
     const width = (e.target as HTMLInputElement).offsetWidth;
-
-    console.log(width);
-
-    setMeasuredWidth(width);
+    setMeasuredWidth(width - 6);
     setOpen(true);
     agGridAutoScroll();
   };
@@ -121,7 +118,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <Grow className="relative h-full" data-pop="111">
+      <Grow className="relative h-full">
         <PopoverTrigger asChild>
           <input
             ref={(el) => {
@@ -136,7 +133,7 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
             onChange={handleInputChange}
             onClick={handleOpen}
             onMouseDown={(e) => e.preventDefault()}
-            className="text-right cursor-pointer w-full h-full px-[0.8rem] text-[1.3rem]"
+            className="text-right cursor-pointer w-full h-full px-[0.6rem] text-[1.3rem]"
             onKeyDown={handleKeyDown}
           />
         </PopoverTrigger>
@@ -172,9 +169,9 @@ export function AmountUnitInput({ value, onChange, onEnter, inputRef }: AmountUn
                 max={max}
                 onChange={handleInputChange}
                 className={cn(
-                  'border [&_input]:outline-[0.2rem] [&_input]:-outline-offset-[0.2rem] [&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:[appearance:textfield] [&_input]:[&::-webkit-outer-spin-button]:appearance-none [&_input]:[&::-webkit-inner-spin-button]:appearance-none',
-                  measuredWidth ? `!w-[${(measuredWidth / 10) - 4}rem]` : ''
+                  '[&_input]:outline-[0.2rem] [&_input]:-outline-offset-[0.2rem] [&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:[appearance:textfield] [&_input]:[&::-webkit-outer-spin-button]:appearance-none [&_input]:[&::-webkit-inner-spin-button]:appearance-none'
                 )}
+                style={measuredWidth ? { maxWidth: measuredWidth } : undefined}
                 autoFocus
                 onKeyDown={handleKeyDown}
               />
