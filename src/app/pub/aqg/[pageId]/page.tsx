@@ -7,6 +7,10 @@ import { getPageFiles } from '@/shared/utils/server/fileUtils';
 const PAGE_IDS = getPageFiles(fileURLToPath(import.meta.url));
 type PageId = (typeof PAGE_IDS)[number];
 
+const pageComponents = Object.fromEntries(
+  PAGE_IDS.map((id) => [id, dynamic(() => import(`../pages/${id}`), { ssr: true })])
+) as Record<PageId, ReturnType<typeof dynamic>>;
+
 // ==============================================================================
 // 정적 생성: 빌드 시 HTML 미리 생성
 // ==============================================================================
@@ -42,10 +46,6 @@ export default async function Page({ params }: { params: { pageId: string } }) {
   const { pageId } = await params;
   logger.debug(`pageId: ${pageId}`);
 
-  // ✅ 개선된 에러 처리: 함수 컴포넌트를 올바르게 반환
-  const PageComponent = dynamic(() => import(`../pages/${pageId}`), {
-    ssr: true,
-  });
-
+  const PageComponent = pageComponents[pageId];
   return <PageComponent />;
 }

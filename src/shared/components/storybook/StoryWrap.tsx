@@ -1,5 +1,5 @@
-import { Grow } from '@atoms';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow } from '@atoms';
 
 export function StoryWrap({ children, className }: { children: React.ReactNode; className?: string }) {
   return (

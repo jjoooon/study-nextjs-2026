@@ -43,7 +43,6 @@ export function DialogRenderer({ id, popupType, props }: DialogRendererProps) {
   // 컴포넌트 동적 로드
   useEffect(() => {
     if (!loader) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setError(new Error(`Dialog not found: ${popupType}. Please register it in popup-registry.ts`));
       return;
     }

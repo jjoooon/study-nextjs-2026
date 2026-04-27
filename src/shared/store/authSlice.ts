@@ -25,6 +25,7 @@ import type { AuthState, User } from '../types/authTypes';
  * 초기 상태
  */
 const initialState: AuthState = {
+  header: undefined,
   user: null,
   isAuthenticated: false,
   isLoading: false,
@@ -44,6 +45,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setHeader: (state, action: { payload: Pick<AuthState, 'header'> }) => {
+      state.header = action.payload.header;
+    },
     /**
      * 자격증명 저장
      *
@@ -104,7 +108,7 @@ const authSlice = createSlice({
 // ACTIONS & REDUCER
 // ============================================================================
 
-export const { setCredentials, clearCredentials, setLoading, setError, updateUser } = authSlice.actions;
+export const { setHeader, setCredentials, clearCredentials, setLoading, setError, updateUser } = authSlice.actions;
 export default authSlice.reducer;
 
 // 타입 export (selector에서 사용)
