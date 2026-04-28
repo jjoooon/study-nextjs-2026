@@ -767,9 +767,9 @@
     display: none !important;
   }
 
-  [data-slot="dialog-content"]>[data-group="row"] {
+  /* [data-slot="dialog-content"]>[data-group="row"] {
     grid-template-rows: 1fr !important;
-  }
+  } */
 
   [data-slot="dialog-content"] footer {
     display: none !important;

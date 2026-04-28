@@ -31,7 +31,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
         {/* M1. 전체적으로 수정 */}
         <DialogSection className="grid-rows-[1fr]">
           <Gcol placement="ss" gap={1} className="w-full">
-            <QuestionRadioCard isRadio={true} isValue="Y" disabled>
+            <QuestionRadioCard isRadio={true} isValue="Y" >
               <QuestionRadioCardHeader>
                 <QuestionRadioCardHeaderTitle badgeLabel="1">
                   최근 3개월 이내에 의사로부터 진찰 또는 검사(건강검진 포함)를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?
@@ -68,7 +68,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Gcol>
               </QuestionRadioCardContents>
             </QuestionRadioCard>
-            <QuestionRadioCard isRadio={true} isValue="Y" disabled>
+            <QuestionRadioCard isRadio={true} isValue="Y">
               <QuestionRadioCardHeader>
                 <QuestionRadioCardHeaderTitle badgeLabel="2">
                   최근 3개월 이내에 마약을 사용하거나 혈압강하제, 신경안정제, 수면제, 각성제(흥분제), 진통제 등 약물을 상시 복용한 사실이 있습니까?
@@ -82,7 +82,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Gcol>
               </QuestionRadioCardContents>
             </QuestionRadioCard>
-            <QuestionRadioCard isRadio={true} isValue="Y" disabled>
+            <QuestionRadioCard isRadio={true} isValue="Y">
               <QuestionRadioCardHeader>
                 <QuestionRadioCardHeaderTitle badgeLabel="3">
                   최근 1년 이내에 의사로부터 진찰 또는 검사를 받고, 이를 통하여 추가검사(재검사)를 받은 사실이 있습니까?
@@ -96,7 +96,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Gcol>
               </QuestionRadioCardContents>
             </QuestionRadioCard>
-            <QuestionRadioCard isRadio={true} isValue="Y" disabled>
+            <QuestionRadioCard isRadio={true} isValue="Y">
               <QuestionRadioCardHeader>
                 <QuestionRadioCardHeaderTitle badgeLabel="4">
                   최근 5년 이내에 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?
@@ -119,7 +119,7 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Grid>
               </QuestionRadioCardContents>
             </QuestionRadioCard>
-            <QuestionRadioCard isRadio={true} isValue="Y" disabled>
+            <QuestionRadioCard isRadio={true} isValue="Y">
               <QuestionRadioCardHeader>
                 <QuestionRadioCardHeaderTitle badgeLabel="5">
                   최근 5년 이내에 아래의 질병으로 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?
