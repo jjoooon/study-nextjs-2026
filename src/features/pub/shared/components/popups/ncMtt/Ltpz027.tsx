@@ -179,9 +179,10 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
                 enableCellSpan={true}
               />
             </div>
+            {/* M1. 텍스트 추가 */}
             <InfoBox
               bg
-              subTitle="알림톡 발송불가 대상: 채널 (방카,TM) / 연령(만 19세미만) / 고객정보(휴대폰 또는 고객번호누락) / 심사상태(심사중 또는 심사승인)"
+              subTitle="알림톡 발송불가 대상: 채널 (방카,TM) / 연령(만 19세미만) / 고객정보(휴대폰 또는 고객번호누락) / 심사상태(심사중 또는 심사승인) / 설계상태(설계수정 불가상태)"
               variant="warning"
             ></InfoBox>
           </Grid>

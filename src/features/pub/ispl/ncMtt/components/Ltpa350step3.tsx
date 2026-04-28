@@ -344,11 +344,11 @@ const DummyData: DummyDataType[] = [
   
 ];
 
+const QuestionDataList: Array<'Y' | 'N' | ''> = ['', 'N', '', 'N', 'Y', 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N'];
 
 export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
-  // 1) INLINED STATE (default)
-  const [isHeightExpanded, setIsHeightExpanded] = useState(false);
-  // 취미 관련 RadioGroup 선택값 상태
+  
+
   const [periodType, setPeriodType] = useState<string>("");
   const handleActionButtonClick = useCallback(() => {}, []);
 
@@ -363,10 +363,9 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
   
   const [testError, setTestError] = useState(false);
 
-
-  // State for highlighting QuestionRadioCard by badge number (1~15 등)
   const [highlightBadgeNum, setHighlightBadgeNum] = useState<number | null>(null);
-  // badgeLabel이 실제로 존재하는 번호만 추출 (렌더링 순서와 무관하게)
+  
+
   const badgeLabelNumbers: number[] = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
   ];
@@ -465,13 +464,11 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
     type15: '',
   });
 
-  const [qAnswerList, setQAnswerList] = React.useState<Array<'Y' | 'N'>>([
-    'N', 'N', 'Y', 'N', 'Y', 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N'
-  ]);
+  const [qAnswerList, setQAnswerList] = React.useState<Array<'Y' | 'N' | ''>>(QuestionDataList);
 
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   return (
-    <LayoutMainBody>
+    <>
       <form
         id="page3-MainForm"
         className="w-full h-full"
@@ -575,7 +572,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[0] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[0] === 'Y' ? '예' : (qAnswerList[0] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -646,7 +643,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[1] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[1] === 'Y' ? '예' : (qAnswerList[1] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -690,7 +687,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[2] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[2] === 'Y' ? '예' : (qAnswerList[2] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -735,7 +732,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[3] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[3] === 'Y' ? '예' : (qAnswerList[3] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -799,7 +796,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[4] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[4] === 'Y' ? '예' : (qAnswerList[4] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1044,7 +1041,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[5] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[5] === 'Y' ? '예' : (qAnswerList[5] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1122,7 +1119,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[6] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[6] === 'Y' ? '예' : (qAnswerList[6] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1231,7 +1228,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[7] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[7] === 'Y' ? '예' : (qAnswerList[7] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1273,7 +1270,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[8] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[8] === 'Y' ? '예' : (qAnswerList[8] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1382,7 +1379,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[9] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[9] === 'Y' ? '예' : (qAnswerList[9] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1422,7 +1419,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                        <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[10] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[10] === 'Y' ? '예' : (qAnswerList[10] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1495,7 +1492,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                          <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[11] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[11] === 'Y' ? '예' : (qAnswerList[11] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1563,7 +1560,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[12] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[12] === 'Y' ? '예' : (qAnswerList[12] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1630,7 +1627,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                          <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[13] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[13] === 'Y' ? '예' : (qAnswerList[13] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1703,7 +1700,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                         <RadioGroup
                           className={'gap-[1.2rem] w-[11rem]'}
                           width="auto"
-                          value={qAnswerList[14] === 'Y' ? '예' : '아니오'}
+                          value={qAnswerList[14] === 'Y' ? '예' : (qAnswerList[14] === 'N' ? '아니오' : undefined)}
                           onValueChange={(val) => {
                             setQAnswerList((prev) => {
                               const next = [...prev];
@@ -1897,7 +1894,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                   </Button>
                   <Button
                     type="submit"
-                    form={'page2-MainForm'}
+                    form={'page3-MainForm'}
                     variant={'contained'}
                     color={'primary'}
                     size={'xl'}
@@ -1911,6 +1908,6 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
           </LayoutMainFoot>
         </LayoutMain>
       </form>
-    </LayoutMainBody>
+    </>
   );
 }

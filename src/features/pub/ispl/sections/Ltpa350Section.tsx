@@ -240,7 +240,7 @@ export default function Ltpa350Section() {
           <Ltpa350Step2View1
             isWidthExpanded={isWidthExpanded}
             setIsWidthExpanded={setIsWidthExpanded}
-            viewKey={currentViewKey}
+            // viewKey={currentViewKey}
           />
         );
       case 'view2':
