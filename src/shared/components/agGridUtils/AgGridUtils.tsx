@@ -1229,10 +1229,10 @@ export function useDynamicColumnWidths() {
 
 export const CoveragePopover = ({
   text,
-  data,
+  items,
 }: {
   text: string;
-  data?: { title: string; description: string; info: string[] };
+  items?: { title: string; description: string; info: string[] };
 }) => {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -1252,17 +1252,17 @@ export const CoveragePopover = ({
       <PopoverContent side="bottom" align="start" className="max-w-[42.5rem]" closeButton={true}>
         <Gcol>
           <Grow className="w-full" placement="bws">
-            <Typo variant={'heading-sm'}>{data?.title}</Typo>
+            <Typo variant={'heading-sm'}>{items?.title}</Typo>
             <Button size={'sm'} className="-translate-y-[0.2rem]">
               AI 질문하기
             </Button>
           </Grow>
           <Gcol className="w-full" placement="ss">
             <Typo variant={'body-sm'} color={'gray'}>
-              {data?.description}
+              {items?.description}
             </Typo>
             <BulletList type={'star'} size={'xs'}>
-              {data?.info.map((item, index) => (
+              {items?.info.map((item, index) => (
                 <BulletListItem key={index}>{item}</BulletListItem>
               ))}
             </BulletList>
