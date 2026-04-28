@@ -1,3 +1,5 @@
+  // 가이드라인 유형 선택 상태
+  
 'use client';
 
 import '@/shared/lib/agGridPub';
@@ -20,9 +22,8 @@ import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { Input } from '@uiux/Input';
 import { ChevronDownIcon, QuestionMark, SearchIcon } from '@icons';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Tooltip, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
-import { TooltipContent } from '@radix-ui/react-tooltip';
-import { Badge } from '@/shared/components/uiux/Badge';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { TabPager } from '@common/TabPager';
 
 
 type DummyDataType = {
@@ -214,6 +215,7 @@ const DummyData4: DummyDataType4[] = [
 
 export default function Ltpa680Section() {
   const [searchWord] = useState('척추');
+  const [guidelineType, setGuidelineType] = useState('일반고지형');
   const [selectedDisease, setSelectedDisease] = useState('');
   
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -298,6 +300,14 @@ export default function Ltpa680Section() {
   const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
   const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
+
+  const DATA_TABS = [
+    { label: '인수기준', value: 'tab1' },
+    { label: '질병정보', value: 'tab2' },
+    { label: 'Mobile용', value: 'tab3' },
+  ];
+
+  const { tabs, active, setActive } = useTabs(DATA_TABS);
 
   return (
     <>
@@ -439,7 +449,50 @@ export default function Ltpa680Section() {
                 {selectedDisease && (
                   <Typo variant={'body-lg'} weight={'bold'} color={'primary'}>{selectedDisease}</Typo>
                 )}
-                
+                <TabPager
+                  data={tabs}
+                  active={active}
+                  setActive={setActive}
+                  getValue={(tab) => String(tab.value)}
+                  renderTab={(tab) => <span>{tab.label}</span>}
+                >
+                  {active === 'tab1' && (
+                    <Gcol>
+                      {/* 가이드라인 유형 선택 상태 */}
+                      {/* 상단 useState 선언부에 추가: const [guidelineType, setGuidelineType] = useState('일반고지형'); */}
+                      <RadioGroup
+                        className="gap-2"
+                        errorMsg="하나를 선택해주세요."
+                        errorPs="bl"
+                        onValueChange={setGuidelineType}
+                        width="full"
+                        value={guidelineType}
+                      >{[
+                          { value: '일반고지형', label: '일반고지형' },
+                          { value: '간편고지형', label: '간편고지형' },
+                      ].map((option) => (
+                        <RadioGroupItem
+                          key={option.value}
+                          size="lg"
+                          value={option.value}
+                          variant="chipBox"
+                          className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border data-[state=checked]:border-solid data-[state=checked]:border-[0.1rem] data-[state=checked]:border-[#414141] hover:border-[#414141]"
+                        >
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}  
+                      </RadioGroup>
+                      {/*  */}
+                    </Gcol>
+                  )}
+                  {active === 'tab2' && (
+                    <div>심사 가이드라인 내용 영역입니다.</div>
+                  )}
+                  {active === 'tab3' && (
+                    <div>심사 가이드라인 내용 영역입니다.</div>
+                  )}
+
+                </TabPager>
               </Grid>
             </Gcol>
           </Grid>
