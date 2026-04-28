@@ -627,7 +627,7 @@
 }
 
 .isStandard:after {
-  content: "기준담보 값을 수정하세요.";
+  content: "기준담보의 가입금액을 변경하세요.";
   display: none;
   align-items: center;
   position: absolute;
@@ -660,17 +660,21 @@
   background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFF4F4' stroke='%23CCCCCC' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFFFFF'/%3E%3C/svg%3E%0A");
 }
 
+.isStandard.tooltip-on {
+  overflow: visible !important;
+}
+
 .isStandard.tooltip-on:after,
 .isStandard.tooltip-on:before {
   display: flex;
 }
 
-.ag-tooltip {
+.tooltip-hidden-toggle .ag-tooltip {
   display: none !important;
 }
 
 /* show-product-tooltip 클래스가 있을 때만 보임 */
-.show-product-tooltip .ag-tooltip {
+.tooltip-hidden-toggle.show-product-tooltip .ag-tooltip {
   display: block !important;
 }
 
@@ -702,8 +706,8 @@
   padding-left: 0 !important;
 }
 
-:where(.ag-icon):before,
-.ag-icon {
+.ag-header-cell-comp-wrapper :where(.ag-icon):before,
+.ag-header-cell-comp-wrapper .ag-icon {
   width: 0.8rem !important;
   height: 0.8rem !important;
 }
