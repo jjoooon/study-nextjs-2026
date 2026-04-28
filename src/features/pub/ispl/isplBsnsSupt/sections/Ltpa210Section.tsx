@@ -22,7 +22,7 @@ import {
   createFieldRenderer,
   editableSelectCellRenderer,
 } from '@aggrid';
-import { Grid, Grow, Gcol } from '@atoms';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -44,9 +44,9 @@ type DummyDataType = {
   id: number;
   isCheck: boolean;
   isNew: boolean;
+  isField01InputVisible: boolean;
   field01: string | number;
   field02: string | number;
-  searchInputValue: string | number;
   field03: string | number;
   field04: string | number;
   field05: string | number;
@@ -60,9 +60,9 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: false,
     isNew: false,
+    isField01InputVisible: true,
     field01: '취급직원',
     field02: '3448460',
-    searchInputValue: '',
     field03: '주식회사 마이디어',
     field04: '2026-03-01',
     field05: '9999-12-31',
@@ -74,9 +74,9 @@ const DummyData: DummyDataType[] = [
     id: 2,
     isCheck: false,
     isNew: false,
+    isField01InputVisible: true,
     field01: '취급직원',
     field02: '3448460',
-    searchInputValue: '',
     field03: '주식회사 마이디어',
     field04: '2026-03-01',
     field05: '9999-12-31',
@@ -88,9 +88,9 @@ const DummyData: DummyDataType[] = [
     id: 3,
     isCheck: false,
     isNew: false,
+    isField01InputVisible: true,
     field01: '취급직원',
     field02: '3448460',
-    searchInputValue: '',
     field03: '주식회사 마이디어',
     field04: '2026-03-01',
     field05: '9999-12-31',
@@ -99,87 +99,6 @@ const DummyData: DummyDataType[] = [
     field08: '김한화',
   },
 ];
-
-const targetNameByCode = new Map(
-  DummyData.filter((item) => String(item.field02).trim() !== '').map((item) => [
-    String(item.field02),
-    String(item.field03),
-  ])
-);
-
-type TargetCellEditorRef = {
-  getValue: () => string;
-  isCancelAfterEnd: () => boolean;
-};
-
-const TargetCellEditor = React.forwardRef<TargetCellEditorRef, ICellEditorParams<DummyDataType>>((props, ref) => {
-  const [value, setValue] = React.useState<string>(String(props.data?.searchInputValue ?? ''));
-  const valueRef = React.useRef<string>(String(props.data?.searchInputValue ?? ''));
-  const isSearchConfirmedRef = React.useRef<boolean>(false);
-
-  React.useEffect(() => {
-    const initialValue = String(props.data?.searchInputValue ?? '');
-
-    setValue(initialValue);
-    valueRef.current = initialValue;
-    isSearchConfirmedRef.current = false;
-  }, [props.data?.searchInputValue]);
-
-  React.useImperativeHandle(
-    ref,
-    () => ({
-      getValue: () => valueRef.current,
-      isCancelAfterEnd: () => !isSearchConfirmedRef.current,
-    }),
-    []
-  );
-
-  return (
-    // 행추가시 검색창 input 클릭시 편집모드 진입 및 검색어 입력 가능하도록 수정
-    <Grow className="w-full px-1">
-      <Input
-        aria-label=""
-        width={'100%'}
-        value={value}
-        size="sm"
-        autoFocus
-        onChange={(e) => {
-          const nextValue = e.target.value;
-
-          valueRef.current = nextValue;
-          isSearchConfirmedRef.current = false;
-          setValue(nextValue);
-          props.node.setDataValue('searchInputValue', nextValue);
-        }}
-      />
-      <Button
-        aria-label="검색"
-        variant={'outlined'}
-        only="icon"
-        size={'md'}
-        color={'gray-light'}
-        onMouseDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation();
-
-          const selectedCode = valueRef.current.trim();
-          const targetName = targetNameByCode.get(selectedCode) ?? '';
-
-          valueRef.current = selectedCode;
-          setValue(selectedCode);
-          props.node.setDataValue('searchInputValue', selectedCode);
-          props.node.setDataValue('field03', targetName);
-          isSearchConfirmedRef.current = true;
-          props.stopEditing?.();
-        }}
-      >
-        <SearchIcon color={'var(--color-primary-50)'} />
-      </Button>
-    </Grow>
-  );
-});
-
-TargetCellEditor.displayName = 'TargetCellEditor';
 
 export default function Ltpa210Section() {
   const pageSize = 2;
@@ -227,61 +146,68 @@ export default function Ltpa210Section() {
       headerName: '대상',
       field: 'field02',
       flex: 1,
-      cellClass: 'flex! items-center! justify-center! text-center',
+      suppressNavigable: true,
+      cellClass: 'editable-cell text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
-      editable: isEditableNewRow,
-      cellEditor: TargetCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         if (params.data?.isNew) {
-          const rowIndex = params.node.rowIndex;
+          const isInputVisible = params.data.isField01InputVisible;
+          const inputContainerId = `customer-input-${String(params.data.id)}`;
 
           return (
-            <Grow className="w-full px-1">
-              <div
-                className="w-full min-w-0"
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (rowIndex === null) {
-                    return;
-                  }
+            <div className="flex h-full w-full items-center gap-1 px-1" id={inputContainerId}>
+              <div className="min-w-0 flex-1">
+                {isInputVisible ? (
+                  <Input
+                    aria-label="고객명"
+                    width={'full'}
+                    size="sm"
+                    value={String(params.data.field01 ?? '')}
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onChange={(event) => {
+                      params.node.setDataValue('field01', event.target.value);
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="h-8 w-full cursor-text"
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setRowData((prev) =>
+                        prev.map((row) =>
+                          row.id === params.data?.id ? { ...row, isField01InputVisible: true } : row
+                        )
+                      );
 
-                  params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
-                  params.api.startEditingCell({ rowIndex, colKey: 'field02' });
-                }}
-              >
-                <Input
-                  aria-label=""
-                  width={'100%'}
-                  value={''}
-                  size="sm"
-                  variant="ghost"
-                  className="pointer-events-none"
-                />
+                      requestAnimationFrame(() => {
+                        const container = document.getElementById(inputContainerId);
+                        const inputElement = container?.querySelector('input');
+
+                        inputElement?.focus();
+                      });
+                    }}
+                  />
+                )}
               </div>
               <Button
                 aria-label="검색"
+                color={'gray-light'}
                 variant={'outlined'}
                 only="icon"
-                size={'md'}
-                color={'gray-light'}
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (rowIndex === null) {
-                    return;
-                  }
-
-                  params.node.setDataValue('searchInputValue', String(params.data?.field02 ?? ''));
-                  params.api.startEditingCell({ rowIndex, colKey: 'field02' });
+                size={'sm'}
+                onMouseDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation();
                 }}
               >
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
-            </Grow>
+            </div>
           );
         }
-        return existingRowFieldRenderer(params);
+
+        return <Typo>{String(params.data?.field01 ?? '')}</Typo>;
       },
     },
     {
@@ -365,7 +291,7 @@ export default function Ltpa210Section() {
       isNew: true,
       field01: '',
       field02: '',
-      searchInputValue: '',
+      isField01InputVisible: false,
       field03: '',
       field04: '',
       field05: '',

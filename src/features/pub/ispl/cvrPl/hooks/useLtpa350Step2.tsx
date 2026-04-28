@@ -239,10 +239,13 @@ export function productNameCellRenderer<
   };
 
   return (
-    <Grow className="h-full pr-1.5" placement="bwc">
-      <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
-        <span>{displayOrder}</span>
-      </Grow>
+    <Grow className={`h-full ${data.badge ? 'pr-1.5' : 'pr-0'}`} placement="bwc">
+      {displayOrder && (
+        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
+          <span>{displayOrder}</span>
+        </Grow>
+      )}
+
       {!data.isDuplicate ? (
         <CoveragePopover text={String(data.title ?? '')} items={data.titleDetail as ProductTitleDetail | undefined} />
       ) : (

@@ -26,6 +26,7 @@ import { Ltpa350Step2View2 } from '../cvrPl/components/Ltpa350Step2View2'; // 02
 import { Ltpa350Step2View3 } from '../cvrPl/components/Ltpa350Step2View3'; // 02. 담보설계
 import { Ltpa350Step2View4 } from '../cvrPl/components/Ltpa350Step2View4'; // 02. 담보설계
 import { Ltpa350Step2View5 } from '../cvrPl/components/Ltpa350Step2View5'; // 02. 담보설계
+import { Ltpa350Step4 } from '../udRqRst/components/Ltpa350Step4'; // 04. 심사요청
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
 import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
@@ -203,11 +204,23 @@ const asideFoot = {
     point: 640,
   },
 };
+// step4(심사요청)만 별도 메뉴, 나머지는 기존 메뉴
 const DEFAULT_MY_MENU_LIST: Ltpz018MenuItem[] = [
   { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
   { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
   { code: 'm03', fix: false, name: '수수료조회', link: '/' },
   { code: 'm04', fix: true, name: '실손정액조회', link: '/' },
+];
+
+const STEP4_MENU_LIST: Ltpz018MenuItem[] = [
+  { code: 'm01', fix: true, name: '설계메뉴얼', link: '/' },
+  { code: 'm02', fix: false, name: '실손정액조회', link: '/' },
+  { code: 'm03', fix: false, name: '다른상품설계', link: '/' },
+  { code: 'm04', fix: true, name: '동일상품복사', link: '/' },
+  { code: 'm05', fix: false, name: '설계동의', link: '/' },
+  { code: 'm06', fix: false, name: '전체누적', link: '/' },
+  { code: 'm07', fix: false, name: '약관조회', link: '/' },
+  { code: 'm08', fix: false, name: '더보기', link: '/' },
 ];
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
@@ -270,8 +283,8 @@ export default function Ltpa350Section() {
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
     2: renderStep2(),
-    3: <Ltpa350Step3 simpleMode={simpleMode} />,
-    4: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    3: <Ltpa350Step1 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    4: <Ltpa350Step4 />,
     5: <Ltpa350Step5 />,
     6: <Ltpa350Step6 />,
   };
@@ -350,21 +363,33 @@ export default function Ltpa350Section() {
             }}
           />
         }
-        // 계약정보
-        asideInfo={<InfoContract data={asideInfo[`step${activeStep}`]} />}
         // 바로가기
         asideLinks={
           <>
-            <QuickLinks menus={myMenuList} onMoreClick={() => setIsQuickLinksPopupOpen(true)} />
+            <QuickLinks
+              menus={activeStep === 4 ? STEP4_MENU_LIST : myMenuList}
+              onMoreClick={() => setIsQuickLinksPopupOpen(true)}
+            />
             {isQuickLinksPopupOpen && (
               <Ltpz018
                 open={isQuickLinksPopupOpen}
                 onOpenChange={setIsQuickLinksPopupOpen}
-                myMenuList={myMenuList}
+                myMenuList={activeStep === 4 ? STEP4_MENU_LIST : myMenuList}
                 onSaveMyMenuList={setMyMenuList}
               />
             )}
           </>
+        }
+        // 심사요청
+        asideInfo={
+          activeStep === 4
+            ? (
+                <InfoContract
+                  data={asideInfo[`step${activeStep}`]}
+                  extraContent={true}
+                />
+              )
+            : <InfoContract data={asideInfo[`step${activeStep}`]} />
         }
         asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
         hideAside={hideAside}

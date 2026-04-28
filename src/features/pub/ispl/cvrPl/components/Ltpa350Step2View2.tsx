@@ -1129,7 +1129,9 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                 </Grow>
               </Grow>
               <LayoutScrollItem>
-                <div className={`ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}>
+                <div
+                  className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                >
                   <AgGridReact<AgGridRow>
                     rowData={rowData}
                     columnDefs={columnDefs}
@@ -1405,10 +1407,10 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                 </FormTable>
               </MainBottomItem>
               <MainBottomItem>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  고지유형별보험료비교
-                </Button>
                 <Grow className="gap-1">
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    담보전환
+                  </Button>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     상품비교설계
                   </Button>

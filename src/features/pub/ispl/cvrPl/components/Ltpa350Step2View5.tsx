@@ -942,7 +942,9 @@ export function Ltpa350Step2View5({ onSelectPlan, isWidthExpanded = false, setIs
                 </Grow>
               </Grow>
               <LayoutScrollItem>
-                <div className={`ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}>
+                <div
+                  className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                >
                   <AgGridReact<AgGridRow>
                     rowData={rowData}
                     columnDefs={columnDefs}
