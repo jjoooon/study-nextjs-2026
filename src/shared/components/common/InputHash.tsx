@@ -26,7 +26,7 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
 export function InputHash({ options, value, width, onChange, inputId, ...restProps }: InputComboProps) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(value ?? '');
-  const inputInternalRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; width: number }>();
   const [comboId] = useState(() => inputId || getRandomId('inputcombo-input-'));
 
@@ -43,9 +43,10 @@ export function InputHash({ options, value, width, onChange, inputId, ...restPro
   // Input focus 시 popover 위치 계산 및 열기
   const handleFocus = () => {
     setOpen(true);
-    requestAnimationFrame(() => {
-      const el = inputInternalRef.current;
+    setTimeout(() => {
+      const el = document.querySelector(`input[data-comboid="${comboId}"]`) as HTMLInputElement | null;
       if (el) {
+        inputRef.current = el;
         const rect = el.getBoundingClientRect();
         setPopoverPos({
           top: rect.bottom + window.scrollY + 4,
@@ -85,7 +86,6 @@ export function InputHash({ options, value, width, onChange, inputId, ...restPro
   return (
     <>
       <Input
-        ref={inputInternalRef}
         value={value ?? ''}
         onFocus={handleFocus}
         onBlur={handleBlur}

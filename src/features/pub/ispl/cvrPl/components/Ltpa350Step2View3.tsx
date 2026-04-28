@@ -1,33 +1,54 @@
 'use client';
 
-import type { CellClassParams, ColDef, ICellRendererParams, GridReadyEvent, IRowNode } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { TooltipQ } from '@/shared/components/common/TooltipQ';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
+  CoveragePopover,
+  createCellClickSelectionToggleHandler,
+  createCellErrorClassRules,
+  createInsertCopiedRowButtonCellRenderer,
+  createSelectionChangedHandler,
   editableSelectCellRenderer,
   numberValueFormatter,
-  createTooltipValueGetter,
-  createEditableCallback,
   useDynamicColumnWidths,
-  CoveragePopover,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
 } from '@aggrid';
-import { Grow, Typo, Divider, Grid } from '@atoms';
+import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormRow, FormTable, FormCell } from '@common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InputHash } from '@common/InputHash';
 import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { SelectDrop } from '@common/SelectDrop';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ResetIcon, SearchIcon } from '@icons';
-import { LayoutMainBody, LayoutMainFoot, LayoutMain } from '@layout/BaseLayout';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { TooltipQ } from '@common/TooltipQ';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type {
+  CellClassParams,
+  ColDef,
+  GridApi,
+  ICellRendererParams,
+  SelectionChangedEvent,
+  IGroupCellRendererParams,
+  IRowNode,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+  ValueFormatterParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Accordion } from '@/shared/components/uiux/Accordion';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@uiux/Resizable';
 
 import '@/shared/lib/agGridPub';
 
@@ -88,11 +109,15 @@ const DummyData: DummyDataType[] = [
     field1: '건물(실손)',
     field2: 0,
     field3: 0,
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
+    field4: '일체',
+    field5: '일체',
+    field6: '건물내',
+    field7: '아니오',
+    field8: '가연성',
+
+    isEditedField6: true,
+    isEditedField7: true,
+    isEditedField8: true,
   },
   {
     id: 2,
@@ -105,25 +130,68 @@ const DummyData: DummyDataType[] = [
     field6: '건물내',
     field7: '아니오',
     field8: '가연성',
+    
+    isEditedField6: true,
+    isEditedField7: true,
+    isEditedField8: true,
+  },
+  {
+    id: 3,
+    isChecked: false,
+    field1: '가재(실손)',
+    field2: 0,
+    field3: 0,
+    field4: '',
+    field5: '일체',
+    field6: '건물내',
+    field7: '아니오',
+    field8: '가연성',
+    
+    isEditedField6: true,
+    isEditedField7: true,
+    isEditedField8: true,
   },
 ];
 
 interface DummyData2Type {
   id: number;
   isChecked?: boolean;
+  isStandard?: {
+    group: boolean;
+    edit: boolean;
+  }; // [isStandard, 기준이 되는 필드명]
   field1?: string | number | boolean;
   field2?: string | number | boolean;
-  field3?: string | number | boolean;
+  field3?: string | number | boolean | string[];
+  isSelectedField4?: boolean;
   field4?: string | number | boolean;
   field5?: string | number | boolean;
   field6?: string | number | boolean;
   field7?: string | number | boolean;
   field8?: string | number | boolean;
+  field9?: string | number | boolean;
   field10?: {
     title: string;
     description: string;
     info: string[];
   };
+
+  isEditedField1?: boolean;
+  isEditedField2?: boolean;
+  isEditedField3?: boolean;
+  isEditedField4?: boolean;
+  isEditedField5?: boolean;
+  isEditedField6?: boolean;
+  isEditedField7?: boolean;
+  isEditedField8?: boolean;
+  isEditedField9?: boolean;
+
+  filePath?: string[];
+  locked?: boolean;
+  isHighlighted?: boolean;
+  isError?: boolean;
+  badge?: string[];
+  [key: string]: unknown;
 }
 const DummyData2: DummyData2Type[] = [
   {
@@ -132,10 +200,14 @@ const DummyData2: DummyData2Type[] = [
     field1: '배상책임',
     field2: '보통약관(화재배상책임)',
     field3: false,
-    field4: 100,
+    field4: '2100',
+    isSelectedField4: false,
     field5: '20년',
+    isEditedField5: true,
     field6: '전기납',
+    isEditedField6: true,
     field7: 0,
+    isEditedField7: true,
     field10: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
       description:
@@ -150,10 +222,13 @@ const DummyData2: DummyData2Type[] = [
     field2:
       '보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)',
     field3: true,
-    field4: 100,
-    field5: '20년',
+    field4: '100',
+    isSelectedField4: false,
+    isEditedField5: true,
     field6: '전기납',
+    isEditedField6: true,
     field7: 0,
+    isEditedField7: true,
     field10: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
       description:
@@ -162,15 +237,18 @@ const DummyData2: DummyData2Type[] = [
     },
   },
   {
-    id: 1,
+    id:3,
     isChecked: false,
     field1: '배상책임',
     field2: '보통약관(화재배상책임)',
     field3: false,
-    field4: 100,
-    field5: '20년',
+    field4: '4100',
+    isSelectedField4: false,
+    isEditedField5: true,
     field6: '전기납',
+    isEditedField6: true,
     field7: 0,
+    isEditedField7: true,
     field10: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
       description:
@@ -179,15 +257,17 @@ const DummyData2: DummyData2Type[] = [
     },
   },
   {
-    id: 2,
+    id: 4,
     isChecked: true,
     field1: '화재기타',
     field2: '보통약관(화재배상책임, 무과실)',
     field3: true,
     field4: 100,
-    field5: '20년',
+    isEditedField5: true,
     field6: '전기납',
+    isEditedField6: true,
     field7: 0,
+    isEditedField7: true,
     field10: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
       description:
@@ -215,177 +295,346 @@ type AgGridRow2 = DummyData2Type & {
 
 export function Ltpa350Step2View3() {
   // 1) INLINED STATE (default)
-  const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false });
-  const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [, setGridKey] = useState<number>(0);
-  const handleActionButtonClick = useCallback(() => {}, []);
-  const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
-    setCheckedMap((map) => ({ ...map, [key]: !!checked }));
-  };
-
-  // Dynamic widths based on zoom scale
-  const { attributeColumnWidth } = useDynamicColumnWidths();
-
-  // 2) Tabs/rowData 분기
-  const tabListData = TabData;
-  const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({
-    ...item,
-    value: String(item.id),
-  }));
-  const {
-    tabs: Tabs,
-    active: TabActive,
-    setActive: TabSetActive,
-    handleRemove,
-  } = useTabs<TabDataType>(stringifiedTabs);
-
-  // 3) Grid data
-  const [rowData] = useState<AgGridRow[]>(DummyData);
-  const [rowData2] = useState<AgGridRow2[]>(DummyData2);
-
-  // rowData의 isChecked가 true인 row를 자동 선택
-  const gridRef = useRef<AgGridReact<AgGridRow>>(null);
-  const gridRef2 = useRef<AgGridReact<AgGridRow2>>(null);
-  useEffect(() => {
-    if (gridRef.current && gridRef.current.api) {
-      gridRef.current.api.forEachNode((node) => {
-        if (node.data && node.data.isChecked) {
-          node.setSelected(true);
-        }
-      });
-    }
-    if (gridRef2.current && gridRef2.current.api) {
-      gridRef2.current.api.forEachNode((node) => {
-        if (node.data && node.data.isChecked) {
-          node.setSelected(true);
-        }
-      });
-    }
-  }, [rowData, rowData2]);
-
-  // ag-Grid가 완전히 준비된 후에도 체크박스 선택 보장
-  const handleGridReady = (params: GridReadyEvent) => {
-    params.api.forEachNode((node: IRowNode<AgGridRow>) => {
-      if (node.data && node.data.isChecked) {
-        node.setSelected(true);
-      }
-    });
-  };
-
-  // rowData의 isChecked가 true인 row를 자동 선택
-  useEffect(() => {
-    if (gridRef.current && gridRef.current.api) {
-      gridRef.current.api.forEachNode((node) => {
-        if (node.data && node.data.isChecked) {
-          node.setSelected(true);
-        }
-      });
-    }
-  }, [rowData]);
-
-  const [coverageName, setCoverageName] = useState('');
-  const productNameHeader = useCallback(() => {
-    const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
-      setShowProductNameTooltip(!!checked);
-      if (!checked) setGridKey((key: number) => key + 1);
+    const [isHeightExpanded, setIsHeightExpanded] = useState(false);
+    const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
+    const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+    const handleCheckedChange = (key: string) => (checked: boolean | 'indeterminate') => {
+      setCheckedMap((map) => ({ ...map, [key]: !!checked }));
     };
-    return (
-      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <Grow gap={1.5} placement={'sc'}>
-          <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
-            선택 24건
-          </Checkbox>
-          <Divider />
-          <Checkbox
-            variant={'text'}
-            checked={checkedMap.unselected}
-            onCheckedChange={handleCheckedChange('unselected')}
-          >
-            미선택
-          </Checkbox>
+    const { attributeColumnWidth } = useDynamicColumnWidths();
+    const [testError, setTestError] = useState(false);
+    // 2) Tabs/rowData 분기
+    const tabListData = TabData;
+    const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({
+      ...item,
+      value: String(item.id),
+    }));
+    const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
+  
+    // 3) Grid data
+    const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
+  
+    // 중복 행 자동 선택 / 선택 해제 시 삭제 추적
+    const pendingSelectIdRef = useRef<number | null>(null);
+    const prevSelectedIdsRef = useRef<Set<number>>(new Set());
+  
+    // setRowData를 래핑하여 새로 삽입된 중복 행 id를 pendingSelectIdRef에 저장
+    const setRowDataWithTracking = useCallback((updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
+      setRowData((prev) => {
+        const next = typeof updater === 'function' ? updater(prev) : updater;
+        if (next.length > prev.length) {
+          const prevIds = new Set(prev.map((r) => r.id));
+          const newDuplicate = next.find((r) => !prevIds.has(r.id) && r.isDuplicate);
+          if (newDuplicate) {
+            pendingSelectIdRef.current = newDuplicate.id;
+          }
+        }
+        return next;
+      });
+    }, []);
+  
+    // 헤더: 선택/미선택 카운트 체크박스 + 담보명 검색 입력 + 말풍선 토글
+    const [coverageName, setCoverageName] = useState('');
+    const productNameHeader = useCallback(() => {
+      const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
+        setShowProductNameTooltip(!!checked);
+      };
+      return (
+        <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
+          <Grow gap={1.5} placement={'sc'}>
+            <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
+              선택 24건
+            </Checkbox>
+            <Divider />
+            <Checkbox
+              variant={'text'}
+              checked={checkedMap.unselected}
+              onCheckedChange={handleCheckedChange('unselected')}
+            >
+              미선택
+            </Checkbox>
+          </Grow>
+          <Grow>
+            <InputHash
+              options={[
+                { value: '암암암암암', label: '암암암암암' },
+                { value: '뇌뇌뇌뇌뇌', label: '뇌뇌뇌뇌뇌' },
+                { value: '심심심심심', label: '심심심심심' },
+                { value: '표적', label: '표적' },
+                { value: '뇌', label: '뇌' },
+                { value: '심장', label: '심장' },
+                { value: '수술', label: '수술' },
+                { value: '골절', label: '골절' },
+                { value: '화상', label: '화상' },
+                { value: '치매', label: '치매' },
+                { value: '종신종신종신', label: '종신종신종신' },
+              ]}
+              size={'md'}
+              placeholder="담보명 입력"
+              clear={true}
+              value={coverageName}
+              onChange={(value) => setCoverageName(value)}
+            />
+            <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+            <Button aria-label="담보명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+              <ResetIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grow>
+          <Grow placement={'sc'}>
+            <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
+              담보명 말풍선
+            </Checkbox>
+          </Grow>
         </Grow>
-        <Grow>
-          <Input
-            aria-label="담보명"
-            placeholder="담보명 입력"
-            type="text"
-            width={'full'}
+      );
+    }, [checkedMap, coverageName, showProductNameTooltip]);
+  
+    // 셀: 담보명 + 번호 + 배지 렌더러 (중복 행은 원본 행의 번호 표시, 배지는 중복/원본 동일하게 표시)
+    const productNameCellRenderer = (params: IGroupCellRendererParams<AgGridRow2> & ICellRendererParams<AgGridRow2>) => {
+        const { data, api } = params;
+        if (!data) return null;
+
+        // 3. 공통 레이아웃 렌더링
+        return (
+          <CoveragePopover text={String(data.field2 ?? '')} items={data.field10} />
+        );
+      };
+  
+    // 셀: 속성 값이 있을 때 돋보기 아이콘 버튼 표시
+    const searchButtonRenderer = (params: ICellRendererParams<AgGridRow2>) => {
+      if (!params.value) return null;
+      return (
+        <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
+          <Button
+            only={'icon'}
+            variant={'none'}
             size={'sm'}
-            clear={true}
-            value={coverageName}
-            onChange={(e) => setCoverageName(e.target.value)}
-          />
-          <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+          >
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
-          <Button
-            aria-label="담보명 초기화"
-            variant={'outlined'}
-            color={'gray-light'}
-            only={'icon'}
-            size={'md'}
-            onClick={() => setCoverageName('')}
-          >
-            <ResetIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grow>
-        <Grow placement={'sc'}>
-          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
-            담보명 말풍선
-          </Checkbox>
-        </Grow>
-      </Grow>
+        </div>
+      );
+    };
+  
+    // 셀: 드롭다운 선택 렌더러 정렬 및 아이콘생성
+    const expiryCellRenderer = useCallback(
+      (align: 'left' | 'center' | 'right' = 'right') =>
+        (params: ICellRendererParams<AgGridRow>) =>
+          editableSelectCellRenderer<AgGridRow>({ ...params, align }),
+      []
     );
-  }, [checkedMap, coverageName, showProductNameTooltip, setGridKey]);
 
-  const editableCellClassRules = useMemo(
-    () => ({
-      'editable-cell': (params: CellClassParams<AgGridRow>) => {
-        const isRowChecked = params.node?.isSelected?.() ?? false;
-        return isRowChecked;
-      },
-    }),
-    []
-  );
-  const getEditableCallback = useCallback(
-    (mode: 'always' | 'whenSelected') => createEditableCallback<AgGridRow>(mode),
-    []
-  );
-  // AgGridRow2용 콜백
-  const getEditableCallback2 = useCallback(
-    (mode: 'always' | 'whenSelected') => createEditableCallback<AgGridRow2>(mode),
-    []
-  );
-  // align 값을 받아 동적으로 정렬 지정
-  const expiryCellRenderer = useCallback(
-    (align: 'left' | 'center' | 'right' = 'right') =>
-      (params: ICellRendererParams<AgGridRow>) =>
-        editableSelectCellRenderer<AgGridRow>({ ...params, align }),
-    []
-  );
-  // AgGridRow2용 cellRenderer
-  const expiryCellRenderer2 = useCallback(
-    (align: 'left' | 'center' | 'right' = 'right') =>
-      (params: ICellRendererParams<AgGridRow2>) =>
-        editableSelectCellRenderer<AgGridRow2>({ ...params, align }),
-    []
-  );
-  const attributeRenderer = (params: ICellRendererParams<AgGridRow>) => {
-    if (!params.value) return null;
-    return (
-      <div className="flex flex-wrap gap-1 justify-center items-center w-full h-full">
-        <Button
-          only={'icon'}
-          variant={'none'}
-          size={'sm'}
-          onMouseDown={(event) => event.stopPropagation()}
-          onClick={(event) => event.stopPropagation()}
-        >
-          <SearchIcon color={'var(--color-primary-50)'} />
-        </Button>
-      </div>
+    const expiryCellRenderer2 = useCallback(
+      (align: 'left' | 'center' | 'right' = 'right') =>
+        (params: ICellRendererParams<AgGridRow2>) =>
+          editableSelectCellRenderer<AgGridRow2>({ ...params, align }),
+      []
     );
-  };
+  
+    // 만기 편집 가능 셀 스타일: 행 선택 시 editable-cell 클래스 적용 (선택 변경 시 refreshCells로 즉시 반영)
+    // 납기는 항상 editable이므로 cellClass에 editable-cell을 고정으로 포함 → 별도 rules 불필요
+    const editableCellClassRules = useMemo(
+      () => ({
+        'editable-cell': (params: CellClassParams<AgGridRow>) => {
+          const isRowChecked = params.node?.isSelected?.() ?? false;
+          return isRowChecked;
+        },
+      }),
+      []
+    );
+  
+    // 가입금액 셀 필수/에러 규칙
+    // - 필수: row.field3Required === true (미지정 시 기본 true)
+    // - 에러: 필수 + 값이 0(또는 빈값)
+    const amountCellClassRules = useMemo(() => {
+      const isAmountRequired = (params: CellClassParams<AgGridRow>) => {
+        // field3Required가 존재하는 경우만 사용, 없으면 true로 처리
+        if (typeof params.data !== 'undefined' && 'field3Required' in params.data) {
+          return (params.data as { field3Required?: boolean }).field3Required ?? true;
+        }
+        return true;
+      };
+      const isAmountInvalid = (params: CellClassParams<AgGridRow>) =>
+        params.value === '' || params.value === undefined || Number(params.value) === 0;
+  
+      return {
+        required: isAmountRequired,
+        ...createCellErrorClassRules<AgGridRow>((params) => isAmountRequired(params) && isAmountInvalid(params)),
+      };
+    }, []);
+  
+    // locked 행은 항상 선택 상태 유지 (체크박스 해제 방지)
+    const ensureLockedRowsSelected = useCallback((api: GridApi<AgGridRow>) => {
+      api.forEachNode((node) => {
+        if (node.data?.locked && !node.isSelected()) {
+          node.setSelected(true);
+        }
+      });
+    }, []);
+    const ensureLockedRowsSelected2 = useCallback((api: GridApi<AgGridRow2>) => {
+      api.forEachNode((node) => {
+        if (node.data?.locked && !node.isSelected()) {
+          node.setSelected(true);
+        }
+      });
+    }, []);
+  
+    // 선택된 행의 id를 부모(onSelectPlan)로 전달
+    // const handleSelectionChanged = useMemo(
+    //   () => createSelectionChangedHandler<AgGridRow, number>('id', onSelectPlan),
+    //   [onSelectPlan]
+    // );
+  
+    // 그리드 선택 변경 통합 핸들러: 체크박스 선택 시 트리 확장/해제
+    const handleGridSelectionChanged = useCallback(
+      (event: SelectionChangedEvent<AgGridRow>) => {
+        ensureLockedRowsSelected(event.api);
+  
+        // 현재 선택된 id 목록
+        const currentSelectedIds = new Set(
+          event.api
+            .getSelectedNodes()
+            .map((n) => n.data?.id)
+            .filter((id): id is number => id !== undefined)
+        );
+  
+        // 트리 확장/축소: 체크된 행은 expand, 해제된 행은 collapse
+        event.api.forEachNode((node) => {
+          if (node.data) {
+            const shouldExpand = currentSelectedIds.has(node.data.id);
+            if (node.expanded !== shouldExpand) {
+              node.setExpanded(shouldExpand);
+            }
+          }
+        });
+  
+        // 이전 선택에서 해제된 중복 행 찾아 삭제
+        const deselectedDuplicateIds: number[] = [];
+        prevSelectedIdsRef.current.forEach((id) => {
+          if (!currentSelectedIds.has(id)) {
+            const node = event.api.getRowNode(String(id));
+            if (node?.data?.isDuplicate) {
+              deselectedDuplicateIds.push(id);
+            }
+          }
+        });
+        if (deselectedDuplicateIds.length > 0) {
+          setRowData((prev) => prev.filter((row) => !deselectedDuplicateIds.includes(row.id)));
+        }
+  
+        prevSelectedIdsRef.current = currentSelectedIds;
+        // handleSelectionChanged(event);
+        event.api.refreshCells({
+          force: true,
+          columns: ['field5', 'field6', 'field9'],
+        });
+      },
+      [ensureLockedRowsSelected]
+    );
+    const handleGridSelectionChanged2 = useCallback(
+      (event: SelectionChangedEvent<AgGridRow2>) => {
+        ensureLockedRowsSelected(event.api);
+  
+        // 현재 선택된 id 목록
+        const currentSelectedIds = new Set(
+          event.api
+            .getSelectedNodes()
+            .map((n) => n.data?.id)
+            .filter((id): id is number => id !== undefined)
+        );
+  
+        // 트리 확장/축소: 체크된 행은 expand, 해제된 행은 collapse
+        event.api.forEachNode((node) => {
+          if (node.data) {
+            const shouldExpand = currentSelectedIds.has(node.data.id);
+            if (node.expanded !== shouldExpand) {
+              node.setExpanded(shouldExpand);
+            }
+          }
+        });
+  
+        // 이전 선택에서 해제된 중복 행 찾아 삭제
+        const deselectedDuplicateIds: number[] = [];
+        prevSelectedIdsRef.current.forEach((id) => {
+          if (!currentSelectedIds.has(id)) {
+            const node = event.api.getRowNode(String(id));
+            if (node?.data?.isDuplicate) {
+              deselectedDuplicateIds.push(id);
+            }
+          }
+        });
+        if (deselectedDuplicateIds.length > 0) {
+          setRowData((prev) => prev.filter((row) => !deselectedDuplicateIds.includes(row.id)));
+        }
+  
+        prevSelectedIdsRef.current = currentSelectedIds;
+        // handleSelectionChanged(event);
+        event.api.refreshCells({
+          force: true,
+          columns: ['field5', 'field6', 'field9'],
+        });
+      },
+      [ensureLockedRowsSelected]
+    );
+
+    const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow>(), []);
+    const handleGridCellClickToggle2 = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow2>(), []);
+  
+    // 그리드 준비 핸들러: locked 행 초기 선택 + 선택 상태 초기화
+    const handleGridReady = useCallback(
+      (params: { api: GridApi<AgGridRow> }) => {
+        // 1. 기본 isChecked=true인 row 선택
+        params.api.forEachNode((node) => {
+          if (node.data?.isChecked && !node.isSelected()) {
+            node.setSelected(true);
+          }
+        });
+        // 2. locked row 항상 선택
+        ensureLockedRowsSelected(params.api);
+        // 3. 선택 상태 기록
+        prevSelectedIdsRef.current = new Set(
+          params.api
+            .getSelectedNodes()
+            .map((n) => n.data?.id)
+            .filter((id): id is number => id !== undefined)
+        );
+      },
+      [ensureLockedRowsSelected]
+    );
+  
+    // 행 데이터 갱신 핸들러: locked 행 유지 + 신규 중복 행 자동 선택
+    const handleRowDataUpdated = useCallback(
+      (params: { api: GridApi<AgGridRow> }) => {
+        ensureLockedRowsSelected(params.api);
+        if (pendingSelectIdRef.current !== null) {
+          const nodeToSelect = params.api.getRowNode(String(pendingSelectIdRef.current));
+          if (nodeToSelect) {
+            nodeToSelect.setSelected(true);
+            pendingSelectIdRef.current = null;
+          }
+        }
+      },
+      [ensureLockedRowsSelected]
+    );
+  
+    // 행 정렬: isError인 행을 상단으로
+    const sortRows = (rows: AgGridRow[]) => {
+      return [...rows].sort((a, b) => {
+        if (a.isError === b.isError) return 0;
+        return a.isError ? -1 : 1;
+      });
+    };
+    const toggleError = (id: number | string) => {
+      setRowData((prev) => {
+        const updated = prev.map((row) => (row.id == id ? { ...row, isError: !row.isError } : row));
+        // 완전히 새 배열로 반환
+        return [...sortRows(updated)];
+      });
+    };
 
   // 재물
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
@@ -394,20 +643,22 @@ export function Ltpa350Step2View3() {
         headerName: '부호',
         field: 'id',
         cellClass: 'text-center',
-        width: attributeColumnWidth[1],
+        width: attributeColumnWidth[5],
       },
       {
         headerName: '구분',
         field: 'field1',
         flex: 1,
         cellClass: 'text-left',
-        width: attributeColumnWidth[2],
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
       },
       {
-        headerName: '가입금액(만원)',
+        headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            가입금액<span className="text-[1.1rem]">(만원)</span>
+          </Grow>
+        ),
         field: 'field2',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth[10],
         headerClass: 'px-0!',
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         editable: true,
@@ -415,19 +666,22 @@ export function Ltpa350Step2View3() {
         valueFormatter: numberValueFormatter,
       },
       {
-        headerName: '보험료(원)',
+        headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            보험료<span className="text-[1.1rem]">(원)</span>
+          </Grow>
+        ),
         field: 'field3',
-        width: attributeColumnWidth[2],
-        cellClass: 'text-right editable-cell [&_input]:text-right',
+        width: attributeColumnWidth[10],
+        cellClass: 'text-right [&_input]:text-right',
         headerClass: 'px-0!',
-        editable: true,
         valueParser: (params) => Number(params.newValue) || 0,
         valueFormatter: numberValueFormatter,
       },
       {
         headerName: '목적물상세',
         field: 'field4',
-        width: attributeColumnWidth[3],
+        width: attributeColumnWidth[10],
         cellClass: 'editable-cell',
         cellClassRules: editableCellClassRules,
         editable: true,
@@ -435,7 +689,7 @@ export function Ltpa350Step2View3() {
       {
         headerName: '수용장소상세',
         field: 'field5',
-        width: attributeColumnWidth[3],
+        width: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules,
         cellClass: 'editable-cell',
         editable: true,
@@ -443,10 +697,15 @@ export function Ltpa350Step2View3() {
       {
         headerName: '건물내/외',
         field: 'field6',
-        width: attributeColumnWidth[3],
-        cellClass: 'editable-cell',
+        width: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules,
-        editable: getEditableCallback('whenSelected'),
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'px-[0.2rem]! tracking-tighter ';
+          return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+        },
+        editable: (params: EditableCallbackParams) => {
+          return params.data?.isEditedField6 === true;
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['건물내', '건물밖야적'],
@@ -456,9 +715,15 @@ export function Ltpa350Step2View3() {
       {
         headerName: '지하수용',
         field: 'field7',
-        width: attributeColumnWidth[2],
-        cellClass: 'editable-cell',
-        editable: getEditableCallback('whenSelected'),
+        width: attributeColumnWidth[10],
+        cellClassRules: editableCellClassRules,
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'px-[0.2rem]! tracking-tighter';
+          return params.data?.isEditedField7 === true ? base : `${base} no-edited`;
+        },
+        editable: (params: EditableCallbackParams) => {
+          return params.data?.isEditedField7 === true;
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['예', '아니오'],
@@ -468,9 +733,15 @@ export function Ltpa350Step2View3() {
       {
         headerName: '야적물건',
         field: 'field8',
-        width: attributeColumnWidth[3],
-        cellClass: 'editable-cell',
-        editable: getEditableCallback('whenSelected'),
+        width: attributeColumnWidth[10],
+        cellClassRules: editableCellClassRules,
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'px-[0.2rem]! tracking-tighter';
+          return params.data?.isEditedField8 === true ? base : `${base} no-edited`;
+        },
+        editable: (params: EditableCallbackParams) => {
+          return params.data?.isEditedField8 === true;
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['가연성', '가연성2'],
@@ -478,15 +749,15 @@ export function Ltpa350Step2View3() {
         cellRenderer: expiryCellRenderer('left'),
       },
     ],
-    [attributeColumnWidth, editableCellClassRules, expiryCellRenderer, getEditableCallback]
+    [attributeColumnWidth, editableCellClassRules, expiryCellRenderer, ]
   );
+
   const columnDefs2: ColDef<AgGridRow2>[] = useMemo(
     () => [
       {
         headerName: '',
         field: 'field1',
-        width: attributeColumnWidth[6],
-        headerClass: 'px-0!',
+        width: attributeColumnWidth[8],
         spanRows: true,
         cellClass: 'flex! items-center! justify-center! text-center',
       },
@@ -497,62 +768,110 @@ export function Ltpa350Step2View3() {
         cellClass: 'text-left',
         suppressMovable: true, // 이동 방지
         headerComponent: productNameHeader,
-        cellRenderer: (params: ICellRendererParams<AgGridRow2>) => {
-          return <CoveragePopover text={String(params.data?.field2 ?? '')} data={params.data?.field10} />;
-        },
+        cellRenderer: productNameCellRenderer,
       },
-
       {
         headerName: '속성',
         field: 'field3',
-        width: attributeColumnWidth[0],
+        width: attributeColumnWidth[4],
         cellClass: 'text-center',
-        headerClass: 'px-0!',
-        cellRenderer: attributeRenderer,
+        cellRenderer: searchButtonRenderer,
+        resizable: false,
       },
       {
-        headerName: '가입금액(만원)',
+        headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            가입금액<span className="text-[1.1rem]">(만원)</span>
+          </Grow>
+        ),
         field: 'field4',
-        width: attributeColumnWidth[4],
-        headerClass: 'px-0!',
+        width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
-        valueParser: (params) => Number(params.newValue) || 0,
-        valueFormatter: numberValueFormatter,
+        cellClassRules: {
+          ...amountCellClassRules,
+          'style-select': (params) => !!params.data?.isSelectedField4,
+          isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
+          isStandard: (params) => !!params.data?.isStandard?.edit,
+          'tooltip-on': (params) => !!params.data?._tooltipOn,
+        },
+        cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
+          // isStandardGroup이면 에디터 비활성화
+          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
+            return undefined;
+          }
+          const isSelectedField4 = params.data?.isSelectedField4 ?? false;
+          if (!isSelectedField4) {
+            return {
+              component: AmountWithPopoverCellEditor,
+              params: { step: 500 }, // Popover에서 조정할 단위 설정
+            };
+          } else {
+            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            return {
+              component: 'agSelectCellEditor',
+              params: { values: baseOptions },
+            };
+          }
+        },
+        // valueFormatter: numberValueFormatter<AgGridRow>,
+        cellRenderer: (params: ICellRendererParams<AgGridRow2>) => {
+          // isStandardGroup(비편집) 셀 클릭 시 같은 filePath 그룹의 isStandard.edit 셀의 툴팁을 항상 보여줌
+          const isSelectedField4 = params.data?.isSelectedField4 ?? false;
+
+          // 금액 콤마 포맷 적용
+          const value = params.value;
+          let display = value;
+          if (!isSelectedField4) {
+            if (typeof value === 'number') {
+              display = value.toLocaleString();
+            } else if (typeof value === 'string' && value !== '') {
+              // 숫자형 문자열만 콤마 적용
+              const num = Number(value.replace(/[^\d.-]/g, ''));
+              display = isNaN(num) ? value : num.toLocaleString();
+            }
+          }
+          // 버튼 클릭 시 그룹 내 isStandard(edit) 셀에 tooltip-on 3초간 부여
+
+          return isSelectedField4
+            ? expiryCellRenderer2('left')(params)
+            : numberValueFormatter<AgGridRow2>(params as ValueFormatterParams<AgGridRow2>);
+        },
+        editable: (params: EditableCallbackParams) => {
+          return true;
+        },
       },
       {
         headerName: '만기',
         field: 'field5',
-        width: attributeColumnWidth[3],
+        width: attributeColumnWidth[9],
         cellClass: 'text-center',
         headerClass: 'px-0!',
       },
       {
         headerName: '납기',
         field: 'field6',
-        width: attributeColumnWidth[3],
+        width: attributeColumnWidth[9],
         cellClass: 'editable-cell',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
         },
-        editable: getEditableCallback2('whenSelected'),
-        cellRenderer: expiryCellRenderer2('left'),
       },
       {
         headerName: '보험료(원)',
         field: 'field7',
-        width: attributeColumnWidth[3],
+        width: attributeColumnWidth[9],
         cellClass: 'text-right ',
         cellEditor: 'agSelectCellEditor',
       },
     ],
-    [attributeColumnWidth, productNameHeader, getEditableCallback2, expiryCellRenderer2]
+    [attributeColumnWidth, productNameHeader]
   );
 
-  const [testError, setTestError] = useState(false);
+  
 
   return (
-    <LayoutMainBody>
+    <>
       <form
         id="page2-MainForm"
         className="w-full h-full"
@@ -569,7 +888,6 @@ export function Ltpa350Step2View3() {
             setActive={TabSetActive}
             visibleCount={5}
             removable={true}
-            onRemove={handleRemove}
             error={testError}
             errorMsg="입력하세요."
             getValue={(tab) => String(tab.id)}
@@ -616,8 +934,8 @@ export function Ltpa350Step2View3() {
           <LayoutMainBody>
             <ResizablePanelGroup orientation="vertical" className="w-full">
               <ResizablePanel defaultSize={50}>
-                <Grid className="w-full grid grid-rows-[auto_1fr] h-full">
-                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
+                  <Grow placement={'bwc'} className="gap-1 w-full" gap={0}>
                     <Grow className="gap-1.5">
                       <Typo variant="heading-sm">화재기본담보</Typo>
                       <Typo variant="body-md">(060400, (1))</Typo>
@@ -649,7 +967,6 @@ export function Ltpa350Step2View3() {
 
                   <div className="ag-theme-alpine">
                     <AgGridReact<AgGridRow>
-                      ref={gridRef}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       getRowId={(params) => String(params.data.id)}
@@ -657,31 +974,40 @@ export function Ltpa350Step2View3() {
                       rowSelection={{
                         mode: 'multiRow' as const,
                         checkboxes: true,
-                        headerCheckbox: true,
+                        headerCheckbox: false,
                         enableClickSelection: false,
                         enableSelectionWithoutKeys: true,
                       }}
+                      
+                      onCellClicked={handleGridCellClickToggle}
                       selectionColumnDef={{
                         width: 30,
+                        // pinned: 'left',
                         cellClass: 'text-center p-0!',
                         cellClassRules: {
                           'pointer-events-none': (params) => !!params.data?.locked,
                         },
                       }}
-                      suppressRowHoverHighlight={false}
-                      domLayout="normal"
-                      tooltipShowDelay={showProductNameTooltip ? 0 : undefined}
-                      tooltipHideDelay={showProductNameTooltip ? 9999 : undefined}
-                      tooltipMouseTrack={showProductNameTooltip ? true : undefined}
+                      onSelectionChanged={handleGridSelectionChanged}
                       onGridReady={handleGridReady}
+                      onRowDataUpdated={handleRowDataUpdated}
+                      suppressRowHoverHighlight={false}
+                      
+                      getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
+                     
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      suppressAnimationFrame={true}
+                      suppressColumnMoveAnimation={true}
+                      suppressRowTransform={true}
+                      animateRows={false}
                     />
                   </div>
                 </Grid>
               </ResizablePanel>
               <ResizableHandle />
               <ResizablePanel defaultSize={50}>
-                <Grid className="w-full grid grid-rows-[auto_1fr] h-full">
-                  <Grow placement={'bwc'} className="gap-1 w-full pb-1">
+                <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
+                  <Grow placement={'bwc'} className="gap-1 w-full" gap={0}>
                     <Grow className="gap-1.5">
                       <Typo variant="heading-sm">화재특약담보</Typo>
                     </Grow>
@@ -694,13 +1020,12 @@ export function Ltpa350Step2View3() {
                       </TooltipQ>
                     </Grow>
                   </Grow>
-                  <div className="ag-theme-alpine h-80">
+                  <div className={`ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}>
                     <AgGridReact<AgGridRow2>
-                      ref={gridRef2}
+                      enableCellSpan={true}
                       rowData={DummyData2}
                       columnDefs={columnDefs2}
                       getRowId={(params) => String(params.data.id)}
-                      singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
                       rowSelection={{
                         mode: 'multiRow' as const,
                         checkboxes: true,
@@ -708,7 +1033,7 @@ export function Ltpa350Step2View3() {
                         enableClickSelection: false,
                         enableSelectionWithoutKeys: true,
                       }}
-                      enableCellSpan={true}
+                      onCellClicked={handleGridCellClickToggle2}
                       selectionColumnDef={{
                         width: 30,
                         // pinned: 'left',
@@ -717,11 +1042,21 @@ export function Ltpa350Step2View3() {
                           'pointer-events-none': (params) => !!params.data?.locked,
                         },
                       }}
-                      domLayout="normal"
-                      suppressRowHoverHighlight={false}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
+                      onSelectionChanged={handleGridSelectionChanged}
                       onGridReady={handleGridReady}
+                      onRowDataUpdated={handleRowDataUpdated}
+                      suppressRowHoverHighlight={false}
+                      tooltipShowDelay={0}
+                      tooltipHideDelay={9999}
+                      tooltipMouseTrack={true}
+
+                      getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
+                     
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      suppressAnimationFrame={true}
+                      suppressColumnMoveAnimation={true}
+                      suppressRowTransform={true}
+                      animateRows={false}
                     />
                   </div>
                 </Grid>
@@ -851,10 +1186,10 @@ export function Ltpa350Step2View3() {
               </MainBottomItem>
               <MainBottomItem className="justify-end">
                 <Grow className="gap-1">
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     상품비교설계
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     동일상품복사
                   </Button>
                   <Button
@@ -873,6 +1208,6 @@ export function Ltpa350Step2View3() {
           </LayoutMainFoot>
         </LayoutMain>
       </form>
-    </LayoutMainBody>
+    </>
   );
 }
