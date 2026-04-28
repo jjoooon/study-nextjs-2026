@@ -2,7 +2,6 @@
 
 import {
   createCellClickSelectionToggleHandler,
-  createInsertCopiedRowButtonCellRenderer,
   numberValueFormatter,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
@@ -16,7 +15,7 @@ import { KeyValueList } from '@common/KeyValueList';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -25,23 +24,11 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type {
-  CellClassParams,
-  ColDef,
-  GridApi,
-  SelectionChangedEvent,
-  EditableCallbackParams,
-  CellEditorSelectorResult,
-} from 'ag-grid-community';
+import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import {
-  rowDataWithTrackingFactory,
-  useEnsureLockedRowsSelected,
-  useHandleSelectionChanged,
-  useGridSelectionChangedHandler,
-  useGridReadyHandler,
   searchButtonRenderer,
   useExpiryCellRenderer,
   editableCellClassRules,
@@ -167,7 +154,7 @@ interface DummyData2Type {
     description: string;
     info: string[];
   };
-  insuredAmount?: string | number | boolean | string[];
+  insuredAmount?: string | number | boolean | string[]; //가입금액
   isSelectedInsuredAmount?: boolean;
   rowCopy?: string | number | boolean;
 
@@ -205,7 +192,7 @@ const DummyData2: DummyData2Type[] = [
     title: '보통약관(화재배상책임)',
     field3: false,
     insuredAmount: '2100',
-    isEditedInsuredAmount: false,
+    isEditedInsuredAmount: true,
     field5: '20년',
     isEditedField5: true,
     field6: '전기납',
@@ -227,7 +214,8 @@ const DummyData2: DummyData2Type[] = [
       '보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)',
     field3: true,
     insuredAmount: '100',
-    isEditedInsuredAmount: false,
+    isEditedInsuredAmount: true,
+    field5: '20년',
     isEditedField5: true,
     field6: '전기납',
     isEditedField6: true,
@@ -247,12 +235,13 @@ const DummyData2: DummyData2Type[] = [
     title: '보통약관(화재배상책임)',
     field3: false,
     insuredAmount: '4100',
-    isEditedInsuredAmount: false,
-    isEditedField5: true,
+    isEditedInsuredAmount: true,
+    field5: '20년',
+    isEditedField5: false,
     field6: '전기납',
-    isEditedField6: true,
+    isEditedField6: false,
     field7: 0,
-    isEditedField7: true,
+    isEditedField7: false,
     titleDetail: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
       description:
@@ -267,6 +256,8 @@ const DummyData2: DummyData2Type[] = [
     title: '보통약관(화재배상책임, 무과실)',
     field3: true,
     insuredAmount: 100,
+    isEditedInsuredAmount: true,
+    field5: '20년',
     isEditedField5: true,
     field6: '전기납',
     isEditedField6: true,
@@ -301,7 +292,6 @@ export function Ltpa350Step2View3() {
   // =====================
   // 상태 및 참조 관리
   // =====================
-  const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -309,11 +299,8 @@ export function Ltpa350Step2View3() {
   const tabListData = TabData;
   const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
-  const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
-  const [rowData2, setRowData2] = useState<AgGridRow2[]>(DummyData2);
-  const pendingSelectIdRef = useRef<string | number | null>(null);
-  const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
-  const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
+  const [rowData] = useState<AgGridRow[]>(DummyData);
+  const [rowData2] = useState<AgGridRow2[]>(DummyData2);
   const [coverageName, setCoverageName] = useState('');
 
   // =====================
@@ -386,46 +373,9 @@ export function Ltpa350Step2View3() {
   // 공용 유틸리티/셀 렌더러
   // =====================
   const getExpiryRenderer = useExpiryCellRenderer();
-  const ensureLockedRowsSelected = useEnsureLockedRowsSelected();
-  const handleSelectionChanged = useHandleSelectionChanged<AgGridRow, number>('id');
-  const handleGridSelectionChanged = useGridSelectionChangedHandler<AgGridRow>({
-    ensureLockedRowsSelected,
-    setRowData,
-    prevSelectedIdsRef,
-    handleSelectionChanged,
-    refreshColumns: ['field5', 'field6', 'rowCopy'],
-  });
-
-  // AgGridRow용 핸들러 별도 선언
-  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow>(), []);
-  const gridReadyHandler = useGridReadyHandler<AgGridRow>(ensureLockedRowsSelected);
-  const handleGridReady = useCallback(
-    (params: { api: GridApi<AgGridRow> }) => {
-      gridApiRef.current = params.api;
-      gridReadyHandler(params);
-    },
-    [gridReadyHandler]
-  );
 
   // AgGridRow2용 핸들러 별도 선언
-  const handleGridCellClickToggle2 = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow2>(), []);
-  // rowData, setRowData 등은 DummyData2와 별도 관리가 필요하다면 분리 필요
-  const handleSelectionChanged2 = useHandleSelectionChanged<AgGridRow2, number>('id');
-  const handleGridSelectionChanged2 = useGridSelectionChangedHandler<AgGridRow2>({
-    ensureLockedRowsSelected,
-    setRowData: setRowData2,
-    prevSelectedIdsRef,
-    handleSelectionChanged: handleSelectionChanged2,
-    refreshColumns: ['field5', 'field6', 'rowCopy'],
-  });
-  const gridReadyHandler2 = useGridReadyHandler<AgGridRow2>(ensureLockedRowsSelected);
-  const handleGridReady2 = useCallback(
-    (params: { api: GridApi<AgGridRow2> }) => {
-      // 필요시 gridApiRef2 등 별도 관리
-      gridReadyHandler2(params);
-    },
-    [gridReadyHandler2]
-  );
+  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow2>(), []);
   // 재물
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
@@ -583,7 +533,8 @@ export function Ltpa350Step2View3() {
         cellClass: 'text-left',
         suppressMovable: true, // 이동 방지
         headerComponent: productNameHeader,
-        // cellRenderer: productNameCellRenderer,
+        cellRenderer: productNameCellRenderer,
+        tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
       },
       {
         headerName: '속성',
@@ -609,6 +560,7 @@ export function Ltpa350Step2View3() {
           isStandard: (params: CellClassParams<AgGridRow2>) => !!params.data?.isStandard?.edit,
           'tooltip-on': (params: CellClassParams<AgGridRow2>) => !!params.data?._tooltipOn,
         },
+        tooltipField: 'insuredAmount',
         cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return undefined;
@@ -795,6 +747,7 @@ export function Ltpa350Step2View3() {
                         enableSelectionWithoutKeys: true,
                       }}
                       selectionColumnDef={{
+                        headerName: '선택',
                         width: 30,
                         // pinned: 'left',
                         cellClass: 'text-center p-0!',
@@ -822,12 +775,15 @@ export function Ltpa350Step2View3() {
                       </TooltipQ>
                     </Grow>
                   </Grow>
-                  <div className={`ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}>
+                  <div
+                    className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                  >
                     <AgGridReact<AgGridRow2>
                       enableCellSpan={true}
                       rowData={rowData2}
                       columnDefs={columnDefs2}
                       getRowId={(params) => String(params.data.id)}
+                      singleClickEdit={true}
                       rowSelection={{
                         mode: 'multiRow' as const,
                         checkboxes: true,
@@ -835,22 +791,19 @@ export function Ltpa350Step2View3() {
                         enableClickSelection: false,
                         enableSelectionWithoutKeys: true,
                       }}
-                      onCellClicked={handleGridCellClickToggle2}
+                      onCellClicked={handleGridCellClickToggle}
                       selectionColumnDef={{
+                        headerName: '선택',
                         width: 30,
                         cellClass: 'text-center p-0!',
                         cellClassRules: {
                           'pointer-events-none': (params) => !!params.data?.locked,
                         },
                       }}
-                      onSelectionChanged={handleGridSelectionChanged2}
-                      onGridReady={handleGridReady2}
                       // onRowDataUpdated={handleRowDataUpdated}
-                      suppressRowHoverHighlight={false}
                       tooltipShowDelay={0}
                       tooltipHideDelay={9999}
                       tooltipMouseTrack={true}
-                      getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       suppressAnimationFrame={true}
                       suppressColumnMoveAnimation={true}
@@ -985,6 +938,9 @@ export function Ltpa350Step2View3() {
               </MainBottomItem>
               <MainBottomItem className="justify-end">
                 <Grow className="gap-1">
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    담보전환
+                  </Button>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     상품비교설계
                   </Button>
