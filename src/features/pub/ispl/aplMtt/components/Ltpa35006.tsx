@@ -1,13 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
-import {
-  createCellClickSelectionToggleHandler,
-  numberValueFormatter,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,8 +16,15 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
+import {
+  createCellClickSelectionToggleHandler,
+  numberValueFormatter,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 
-type Ltpa350Step6GridRow = {
+type Ltpa35006GridRow = {
   id: number;
   field1: string | number;
   field2: string | number;
@@ -35,7 +35,7 @@ type Ltpa350Step6GridRow = {
 };
 
 interface DummyDataType {
-  agGridTable: Ltpa350Step6GridRow[];
+  agGridTable: Ltpa35006GridRow[];
 }
 
 const DummyData: DummyDataType = {
@@ -68,7 +68,7 @@ const DummyData: DummyDataType = {
   ],
 };
 
-export const Ltpa350Step6 = () => {
+export const Ltpa35006 = () => {
   // const [isLtpz014Open, setIsLtpz014Open] = useState(false);
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -99,14 +99,14 @@ export const Ltpa350Step6 = () => {
     type26: '',
   });
 
-  const gridRows = useMemo<Ltpa350Step6GridRow[]>(() => DummyData.agGridTable ?? [], []);
+  const gridRows = useMemo<Ltpa35006GridRow[]>(() => DummyData.agGridTable ?? [], []);
 
   const depositGridRows = useMemo(() => gridRows.filter((row) => !row.isSumRow), [gridRows]);
 
   const [selectedDepositCount, setSelectedDepositCount] = useState(0);
   const [selectedDepositAmount, setSelectedDepositAmount] = useState(0);
 
-  const depositSumRow = useMemo<Ltpa350Step6GridRow[]>(
+  const depositSumRow = useMemo<Ltpa35006GridRow[]>(
     () => [
       {
         id: -1,
@@ -122,7 +122,7 @@ export const Ltpa350Step6 = () => {
   );
 
   // ─── 입금사항 dummy data ──────────────────────────────────────────────────────────
-  const columnDefs = useMemo<ColDef<Ltpa350Step6GridRow>[]>(
+  const columnDefs = useMemo<ColDef<Ltpa35006GridRow>[]>(
     () => [
       {
         headerName: '구분',
@@ -136,7 +136,7 @@ export const Ltpa350Step6 = () => {
         sortable: false,
         width: 140,
         cellClass: 'text-center',
-        cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) => params.value,
+        cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) => params.value,
       },
       {
         headerName: '금액',
@@ -159,13 +159,13 @@ export const Ltpa350Step6 = () => {
     []
   );
 
-  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<Ltpa350Step6GridRow>(), []);
+  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<Ltpa35006GridRow>(), []);
 
-  const handleDepositSelectionChanged = useCallback((event: SelectionChangedEvent<Ltpa350Step6GridRow>) => {
+  const handleDepositSelectionChanged = useCallback((event: SelectionChangedEvent<Ltpa35006GridRow>) => {
     const selectedRows = event.api
       .getSelectedNodes()
       .map((node) => node.data)
-      .filter((row): row is Ltpa350Step6GridRow => row !== undefined && !row.isSumRow);
+      .filter((row): row is Ltpa35006GridRow => row !== undefined && !row.isSumRow);
 
     const nextSelectedAmount = selectedRows.reduce((total, row) => {
       let value = row.field3;
@@ -776,7 +776,7 @@ export const Ltpa350Step6 = () => {
                     </TableFoldHead>
                     <TableFoldBody>
                       <div className="ag-theme-alpine">
-                        <AgGridReact<Ltpa350Step6GridRow>
+                        <AgGridReact<Ltpa35006GridRow>
                           getRowId={(params) => String(params.data.id)}
                           rowData={depositGridRows}
                           pinnedBottomRowData={depositSumRow}
@@ -797,7 +797,7 @@ export const Ltpa350Step6 = () => {
                             headerName: '',
                             width: 50,
                             cellClass: 'text-center p-0!',
-                            cellRenderer: (params: ICellRendererParams<Ltpa350Step6GridRow>) =>
+                            cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) =>
                               params.node.rowPinned ? <b>선택건수</b> : null,
                             cellClassRules: {
                               'pointer-events-none': (params) => !!params.data?.locked,

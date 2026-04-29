@@ -1,16 +1,5 @@
 'use client';
 
-import React from 'react';
-import type { ColDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useRef, useEffect } from 'react';
-
-// 한 페이지 높이(px) - 디자인 기준 41.9rem * 10 (root font-size 10px)
-const PAGE_HEIGHT = 419;
-
-import { useTabs } from '@/shared/hooks/useTabs';
-
 import { Grow, Gcol, Grid, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,17 +9,21 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
-import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
-import { Textarea } from '@uiux/Textarea';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Textarea } from '@uiux/Textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { ColDef } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
+import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import {
-  createTooltipValueGetter,
-} from '@/shared/components/agGridUtils/AgGridUtils';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -273,7 +266,8 @@ const DummyData: AgGridRow[] = [
     id: 5,
     field01: '5',
     field02: '인수기준',
-    field03: '[후유합계(80%)(2107)[전체누적][인수한도: 3000만]][후유합계(80%)(2107)[전체누적][인수한도: 3000만]][후유합계(80%)(2107)[전체누적][인수한도: 3000만]]',
+    field03:
+      '[후유합계(80%)(2107)[전체누적][인수한도: 3000만]][후유합계(80%)(2107)[전체누적][인수한도: 3000만]][후유합계(80%)(2107)[전체누적][인수한도: 3000만]]',
   },
   {
     id: 6,
@@ -291,7 +285,8 @@ type AgGridRow2 = {
 const DummyData2: AgGridRow2[] = [
   {
     id: 1,
-    field01: '보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편)',
+    field01:
+      '보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편)',
   },
   {
     id: 2,
@@ -315,15 +310,7 @@ const DummyData2: AgGridRow2[] = [
   },
 ];
 
-
-interface Ltpa350Step4Props {
-  onSelectPlan?: (planId: number) => void;
-  isWidthExpanded?: boolean;
-  setIsWidthExpanded?: (value: boolean) => void;
-}
-
-export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step4Props) {
-  // 스크롤 페이징 상태
+export function Ltpa35004() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -358,9 +345,7 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
     const pageSize = el.clientHeight;
     const totalPageCount = Math.max(1, Math.ceil(el.scrollHeight / pageSize));
     const isAtEnd = el.scrollTop + pageSize >= el.scrollHeight - 2;
-    const currentPage = isAtEnd
-      ? totalPageCount
-      : Math.min(totalPageCount, Math.floor(el.scrollTop / pageSize) + 1);
+    const currentPage = isAtEnd ? totalPageCount : Math.min(totalPageCount, Math.floor(el.scrollTop / pageSize) + 1);
     return { currentPage, totalPageCount };
   };
 
@@ -430,10 +415,7 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
         flex: 1,
         autoHeight: true,
         cellClass: 'editable-cell text-center',
-        cellStyle: (params) =>
-          params.value === '인수기준'
-            ? { color: 'var(--color-danger-50)' }
-            : undefined,
+        cellStyle: (params) => (params.value === '인수기준' ? { color: 'var(--color-danger-50)' } : undefined),
       },
       {
         headerName: '세부내용',
@@ -463,7 +445,6 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
   );
 
   const [testError, setTestError] = useState(false);
-
 
   return (
     <LayoutTemplateLTPA350MainBody
@@ -526,7 +507,12 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
               )}
             >
               <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-                <FormTable caption="취급자 정보" variant={'head'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} className="w-full">
+                <FormTable
+                  caption="취급자 정보"
+                  variant={'head'}
+                  cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
+                  className="w-full"
+                >
                   <FormRow className="w-full">
                     <FormCell title={'동시설계'} tdStyle={{ flex: 1 }} tdClassName="w-full justify-between gap-4">
                       <RadioGroup
@@ -535,32 +521,32 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                         errorPs="bl"
                         onValueChange={() => {}}
                       >
-                        <RadioGroupItem
-                          color="primary"
-                          id="radio1"
-                          size="md"
-                          value="LA260112297637"
-                          variant="button"
-                        >
+                        <RadioGroupItem color="primary" id="radio1" size="md" value="LA260112297637" variant="button">
                           LA260112297637
                         </RadioGroupItem>
-                        <RadioGroupItem
-                          color="primary"
-                          id="radio2"
-                          size="md"
-                          value="LA260112297660"
-                          variant="button"
-                        >
+                        <RadioGroupItem color="primary" id="radio2" size="md" value="LA260112297660" variant="button">
                           LA260112297660
                         </RadioGroupItem>
                       </RadioGroup>
                       <Grow className="flex items-center gap-1">
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>보장패키지</Button>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>적부결과</Button>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>누적위험</Button>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>위험체크리스트</Button>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>공장업종확인</Button>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>재물실사보고서</Button>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          보장패키지
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          적부결과
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          누적위험
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          위험체크리스트
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          공장업종확인
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          재물실사보고서
+                        </Button>
                       </Grow>
                     </FormCell>
                   </FormRow>
@@ -568,28 +554,14 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                     <FormCell title={'심사구분'} className="w-full">
                       <Input aria-label="신계약" width={70} value={'신계약'} size={'md'} readOnly />
                       <NativeSelect aria-label="설계심사" width={140} size={'md'} readOnly={false} required={false}>
-                        {[
-                          { label: '설계심사', value: 'planA' },
-                        ].map((option) => (
+                        {[{ label: '설계심사', value: 'planA' }].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Input
-                        aria-label="심사요청불가"
-                        width={110}
-                        size={'md'}
-                        value={'심사요청불가'}
-                        readOnly
-                      />
-                      <Input
-                        aria-label=""
-                        width={80}
-                        size={'md'}
-                        value={''}
-                        readOnly
-                      />
+                      <Input aria-label="심사요청불가" width={110} size={'md'} value={'심사요청불가'} readOnly />
+                      <Input aria-label="" width={80} size={'md'} value={''} readOnly />
                       <Checkbox>사후적부 대체</Checkbox>
                     </FormCell>
                     <FormCell title={'심사처리자'} className="w-full">
@@ -607,7 +579,7 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
             </TabPager>
 
             <LayoutMainBody className="h-full overflow-hidden">
-              <LayoutScrollWrap >
+              <LayoutScrollWrap>
                 <LayoutScrollItem>
                   <Grow placement="ss" className="w-full h-full overflow-x-hidden" gap={6}>
                     <Gcol className="w-[calc(100%-30.7rem)] h-full">
@@ -685,9 +657,18 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                       </Gcol>
                     </Gcol>
                     <Gcol className="w-[30.7rem] min-w-[30.7rem] h-full gap-0">
-                      <Grow className="w-full h-[4.1rem] px-2.5 py-5 bg-[var(--color-secondary-50)] rounded-t-lg" placement="bwc" variant="default">
-                        <strong className='text-[1.4rem] text-white'>심사결과안내</strong>
-                        <Button variant={'outlined'} color={'secondary'} size={'md'} className="border-[var(--color-secondary-50)] text-black">
+                      <Grow
+                        className="w-full h-[4.1rem] px-2.5 py-5 bg-[var(--color-secondary-50)] rounded-t-lg"
+                        placement="bwc"
+                        variant="default"
+                      >
+                        <strong className="text-[1.4rem] text-white">심사결과안내</strong>
+                        <Button
+                          variant={'outlined'}
+                          color={'secondary'}
+                          size={'md'}
+                          className="border-[var(--color-secondary-50)] text-black"
+                        >
                           이력상세
                         </Button>
                       </Grow>
@@ -699,10 +680,17 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                         <Gcol className="py-2 gap-4">
                           {/* 심부산 */}
                           <Gcol className="px-3 gap-2">
-                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">심부산GA지점 박하늘별(6012345)</Typo>
-                            <Gcol className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left" gap="2">
+                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">
+                              심부산GA지점 박하늘별(6012345)
+                            </Typo>
+                            <Gcol
+                              className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left"
+                              gap="2"
+                            >
                               <Gcol placement="ss">
-                                <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">심사의뢰</Typo>
+                                <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">
+                                  심사의뢰
+                                </Typo>
                                 <BulletItem
                                   before="ⓐ"
                                   className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-50)]"
@@ -714,16 +702,30 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                   고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다
                                 </BulletItem>
                               </Gcol>
-                              <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left "><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                              <Typo
+                                variant="body-xs"
+                                className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left "
+                              >
+                                <TimeRecordIcon />
+                                2026-02-19 09:32:00
+                              </Typo>
                             </Gcol>
                           </Gcol>
                           {/* UW심사팀 */}
                           <Gcol className="px-3 gap-2">
-                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">UW심사팀 이한화(6020236)</Typo>
+                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">
+                              UW심사팀 이한화(6020236)
+                            </Typo>
                             <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
                               <Gcol>
                                 <Grow className="w-full justify-between">
-                                  <Typo variant="body-xs" className="w-full justify-between align-center text-[1.1rem]" weight="bold">결제완료 / 특별인수조건부인수</Typo>
+                                  <Typo
+                                    variant="body-xs"
+                                    className="w-full justify-between align-center text-[1.1rem]"
+                                    weight="bold"
+                                  >
+                                    결제완료 / 특별인수조건부인수
+                                  </Typo>
                                   <Button
                                     color="primary"
                                     onClick={() => {}}
@@ -745,10 +747,19 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                 >
                                   고지유형:1형(일반고지형)
                                 </BulletItem>
-                                <Gcol placement='ss' className="gap-0.5 pl-2">
-                                  <Typo variant="body-xs" className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]">▶조건부인수</Typo>
-                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]</Typo>
-                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○표준하체(할증)</Typo>
+                                <Gcol placement="ss" className="gap-0.5 pl-2">
+                                  <Typo
+                                    variant="body-xs"
+                                    className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]"
+                                  >
+                                    ▶조건부인수
+                                  </Typo>
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                    ○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]
+                                  </Typo>
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                    ○표준하체(할증)
+                                  </Typo>
                                   <BulletItem
                                     before="ⓐ"
                                     className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
@@ -763,24 +774,41 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                   <Grow className="gap-1 justify-start">
                                     <Grow className="gap-0.5 aligin-center">
                                       <CircleCheckStepIcon />
-                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">감역</Typo>
+                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                        감역
+                                      </Typo>
                                     </Grow>
                                     <Grow className="gap-0.5">
                                       <CircleCheckStepIcon />
-                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">할증</Typo>
+                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                        할증
+                                      </Typo>
                                     </Grow>
                                   </Grow>
                                 </Gcol>
                               </Gcol>
-                              <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                              <Typo
+                                variant="body-xs"
+                                className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"
+                              >
+                                <TimeRecordIcon />
+                                2026-02-19 09:32:00
+                              </Typo>
                             </Gcol>
                           </Gcol>
                           {/* 심부산 */}
                           <Gcol className="px-3 gap-2">
-                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">심부산GA지점 박하늘별(6012345)</Typo>
-                            <Gcol className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left" gap="2">
+                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">
+                              심부산GA지점 박하늘별(6012345)
+                            </Typo>
+                            <Gcol
+                              className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left"
+                              gap="2"
+                            >
                               <Gcol placement="ss">
-                                <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">심사의뢰</Typo>
+                                <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">
+                                  심사의뢰
+                                </Typo>
                                 <BulletItem
                                   before="ⓐ"
                                   className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-50)]"
@@ -792,16 +820,30 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                   고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다
                                 </BulletItem>
                               </Gcol>
-                              <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                              <Typo
+                                variant="body-xs"
+                                className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"
+                              >
+                                <TimeRecordIcon />
+                                2026-02-19 09:32:00
+                              </Typo>
                             </Gcol>
                           </Gcol>
                           {/* UW심사팀 */}
                           <Gcol className="px-3 gap-2">
-                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">UW심사팀 이한화(6020236)</Typo>
+                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">
+                              UW심사팀 이한화(6020236)
+                            </Typo>
                             <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
                               <Gcol>
                                 <Grow className="w-full justify-between">
-                                  <Typo variant="body-xs" className="w-full justify-between align-center text-[1.1rem]" weight="bold">결제완료 / 특별인수조건부인수</Typo>
+                                  <Typo
+                                    variant="body-xs"
+                                    className="w-full justify-between align-center text-[1.1rem]"
+                                    weight="bold"
+                                  >
+                                    결제완료 / 특별인수조건부인수
+                                  </Typo>
                                   <Button
                                     color="primary"
                                     onClick={() => {}}
@@ -823,10 +865,19 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                 >
                                   고지유형:1형(일반고지형)
                                 </BulletItem>
-                                <Gcol placement='ss' className="gap-0.5 pl-2">
-                                  <Typo variant="body-xs" className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]">▶조건부인수</Typo>
-                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]</Typo>
-                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○표준하체(할증)</Typo>
+                                <Gcol placement="ss" className="gap-0.5 pl-2">
+                                  <Typo
+                                    variant="body-xs"
+                                    className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]"
+                                  >
+                                    ▶조건부인수
+                                  </Typo>
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                    ○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]
+                                  </Typo>
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                    ○표준하체(할증)
+                                  </Typo>
                                   <BulletItem
                                     before="ⓐ"
                                     className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
@@ -841,24 +892,41 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                   <Grow className="gap-1 justify-start">
                                     <Grow className="gap-0.5 aligin-center">
                                       <CircleCheckStepIcon />
-                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">감역</Typo>
+                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                        감역
+                                      </Typo>
                                     </Grow>
                                     <Grow className="gap-0.5">
                                       <CircleCheckStepIcon />
-                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">할증</Typo>
+                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                        할증
+                                      </Typo>
                                     </Grow>
                                   </Grow>
                                 </Gcol>
                               </Gcol>
-                              <Typo variant="body-xs" className="w-full flex justify-start items-center  text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                              <Typo
+                                variant="body-xs"
+                                className="w-full flex justify-start items-center  text-[var(--color-gray-50)] align-left"
+                              >
+                                <TimeRecordIcon />
+                                2026-02-19 09:32:00
+                              </Typo>
                             </Gcol>
                           </Gcol>
                           {/* 심부산 */}
                           <Gcol className="px-3 gap-2">
-                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">심부산GA지점 박하늘별(6012345)</Typo>
-                            <Gcol className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left" gap="2">
+                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">
+                              심부산GA지점 박하늘별(6012345)
+                            </Typo>
+                            <Gcol
+                              className="w-[21rem] ml-auto rounded-lg bg-[var(--color-blue-gray-10)] py-2 px-3 align-start justify-start text-left"
+                              gap="2"
+                            >
                               <Gcol placement="ss">
-                                <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">심사의뢰</Typo>
+                                <Typo variant="body-xs" className="justify-start text-[1.1rem]" weight="bold">
+                                  심사의뢰
+                                </Typo>
                                 <BulletItem
                                   before="ⓐ"
                                   className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-50)]"
@@ -870,16 +938,30 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                   고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다
                                 </BulletItem>
                               </Gcol>
-                              <Typo variant="body-xs" className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                              <Typo
+                                variant="body-xs"
+                                className="w-full flex justify-start items-center text-[var(--color-gray-50)] align-left"
+                              >
+                                <TimeRecordIcon />
+                                2026-02-19 09:32:00
+                              </Typo>
                             </Gcol>
                           </Gcol>
                           {/* UW심사팀 */}
                           <Gcol className="px-3 gap-2">
-                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">UW심사팀 이한화(6020236)</Typo>
+                            <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">
+                              UW심사팀 이한화(6020236)
+                            </Typo>
                             <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
                               <Gcol>
                                 <Grow className="w-full justify-between">
-                                  <Typo variant="body-xs" className="w-full justify-between align-center text-[1.1rem]" weight="bold">결제완료 / 특별인수조건부인수</Typo>
+                                  <Typo
+                                    variant="body-xs"
+                                    className="w-full justify-between align-center text-[1.1rem]"
+                                    weight="bold"
+                                  >
+                                    결제완료 / 특별인수조건부인수
+                                  </Typo>
                                   <Button
                                     color="primary"
                                     onClick={() => {}}
@@ -901,10 +983,19 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                 >
                                   고지유형:1형(일반고지형)
                                 </BulletItem>
-                                <Gcol placement='ss' className="gap-0.5 pl-2">
-                                  <Typo variant="body-xs" className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]">▶조건부인수</Typo>
-                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]</Typo>
-                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">○표준하체(할증)</Typo>
+                                <Gcol placement="ss" className="gap-0.5 pl-2">
+                                  <Typo
+                                    variant="body-xs"
+                                    className="w-full justify-between align-center text-[var(--color-gray-70)] leading-[1.7rem]"
+                                  >
+                                    ▶조건부인수
+                                  </Typo>
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                    ○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]
+                                  </Typo>
+                                  <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                    ○표준하체(할증)
+                                  </Typo>
                                   <BulletItem
                                     before="ⓐ"
                                     className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
@@ -919,24 +1010,41 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                                   <Grow className="gap-1 justify-start">
                                     <Grow className="gap-0.5 aligin-center">
                                       <CircleCheckStepIcon />
-                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">감역</Typo>
+                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                        감역
+                                      </Typo>
                                     </Grow>
                                     <Grow className="gap-0.5">
                                       <CircleCheckStepIcon />
-                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">할증</Typo>
+                                      <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                        할증
+                                      </Typo>
                                     </Grow>
                                   </Grow>
                                 </Gcol>
                               </Gcol>
-                              <Typo variant="body-xs" className="w-full flex justify-start items-center  text-[var(--color-gray-50)] align-left"><TimeRecordIcon />2026-02-19 09:32:00</Typo>
+                              <Typo
+                                variant="body-xs"
+                                className="w-full flex justify-start items-center  text-[var(--color-gray-50)] align-left"
+                              >
+                                <TimeRecordIcon />
+                                2026-02-19 09:32:00
+                              </Typo>
                             </Gcol>
                           </Gcol>
                         </Gcol>
                       </div>
                       {/* 페이지 버튼 */}
                       <Gcol className="items-end gap-2 absolute bottom-[13.8rem] right-3 z-50">
-                        <Button variant="outlined" color="link" only="icon" className="w-[4rem] h-[3.7rem] bg-[#EFF8FF]">
-                          <Typo variant="body-lg"><b>{page}</b>/{totalPages}</Typo>
+                        <Button
+                          variant="outlined"
+                          color="link"
+                          only="icon"
+                          className="w-[4rem] h-[3.7rem] bg-[#EFF8FF]"
+                        >
+                          <Typo variant="body-lg">
+                            <b>{page}</b>/{totalPages}
+                          </Typo>
                         </Button>
                         <Grow>
                           <Button
@@ -963,8 +1071,8 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                       </Gcol>
                       {/* 요청자 의견 */}
                       <Gcol className="shrink-0 w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-15)] border-t-1 border-[var(--color-gray-20)]">
-                        <Grow placement='bwc'>
-                          <b className='text-[1.1rem]'>요청자 의견</b>
+                        <Grow placement="bwc">
+                          <b className="text-[1.1rem]">요청자 의견</b>
                           <Button>심사요청</Button>
                         </Grow>
                         <Textarea
@@ -978,7 +1086,6 @@ export function Ltpa350Step4({ onSelectPlan, isWidthExpanded = false, setIsWidth
                   </Grow>
                 </LayoutScrollItem>
               </LayoutScrollWrap>
-                
             </LayoutMainBody>
 
             <LayoutMainFoot>

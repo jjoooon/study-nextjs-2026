@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,8 +18,10 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { useEffect, useState } from 'react';
 
 import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 const DUMMY_DATA = {
   view1: [
@@ -54,13 +54,13 @@ const tooltipContents = [
 ];
 
 type ViewKey = keyof typeof DUMMY_DATA;
-type Ltpa350Step1Props = {
+type Ltpa35001Props = {
   simpleMode: boolean;
   viewKey: ViewKey;
 };
 
 // State & Reducer Types
-export const Ltpa350Step1 = ({ simpleMode: _simpleMode, viewKey }: Ltpa350Step1Props) => {
+export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) => {
   // viewKey만 사용, 상태 제거
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA[viewKey]);
   const [isLtpz014Open, setIsLtpz014Open] = useState(false);
