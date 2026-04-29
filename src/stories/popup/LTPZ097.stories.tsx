@@ -1,13 +1,13 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpa170 } from '@/features/pub/화면으로변환파일(삭제예정)/Ltpa170';
+import { Ltpz097 } from '@/features/pub/components/popups/Ltpz097';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/shared/components/popups/Ltpa170',
-  component: Ltpa170,
+  title: 'app/components/popups/Ltpz097',
+  component: Ltpz097,
 };
 
 export const Default = () => {
@@ -18,7 +18,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpa170 open={open} onOpenChange={setOpen} />
+      <Ltpz097 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };

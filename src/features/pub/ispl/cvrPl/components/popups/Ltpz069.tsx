@@ -1,12 +1,12 @@
 'use client';
 
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpa3500209 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz069 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="sm">
@@ -16,7 +16,7 @@ export const Ltpa3500209 = ({ open, onOpenChange }: PopupBaseProps) => {
               설계복사 선택
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA350)
+              (LTPZ069)
             </Typo>
           </DialogTitle>
         </DialogHeader>
