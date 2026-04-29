@@ -22,11 +22,11 @@ import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
 
-import { Ltpa350Step2View1 } from '../cvrPl/components/Ltpa350Step2View1'; // 02. 담보설계
-import { Ltpa350Step2View2 } from '../cvrPl/components/Ltpa350Step2View2'; // 02. 담보설계
-import { Ltpa350Step2View3 } from '../cvrPl/components/Ltpa350Step2View3'; // 02. 담보설계
-import { Ltpa350Step2View4 } from '../cvrPl/components/Ltpa350Step2View4'; // 02. 담보설계
-import { Ltpa350Step2View5 } from '../cvrPl/components/Ltpa350Step2View5'; // 02. 담보설계
+import { Ltpa35002a } from '../cvrPl/components/Ltpa35002a'; // 02. 담보설계
+import { Ltpa35002b } from '../cvrPl/components/Ltpa35002b'; // 02. 담보설계
+import { Ltpa35002c } from '../cvrPl/components/Ltpa35002c'; // 02. 담보설계
+import { Ltpa35002d } from '../cvrPl/components/Ltpa35002d'; // 02. 담보설계
+import { Ltpa35002e } from '../cvrPl/components/Ltpa35002e'; // 02. 담보설계
 import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
@@ -252,7 +252,7 @@ export default function Ltpa350Section() {
     switch (currentViewKey) {
       case 'view1':
         return (
-          <Ltpa350Step2View1
+          <Ltpa35002a
             isWidthExpanded={isWidthExpanded}
             setIsWidthExpanded={setIsWidthExpanded}
             // viewKey={currentViewKey}
@@ -260,24 +260,24 @@ export default function Ltpa350Section() {
         );
       case 'view2':
         return (
-          <Ltpa350Step2View2
+          <Ltpa35002b
             isWidthExpanded={isWidthExpanded}
             setIsWidthExpanded={setIsWidthExpanded}
             // viewKey={currentViewKey}
           />
         );
       case 'view3':
-        return <Ltpa350Step2View3 />;
+        return <Ltpa35002c />;
       case 'view4':
         return (
-          <Ltpa350Step2View4
+          <Ltpa35002d
             isWidthExpanded={isWidthExpanded}
             setIsWidthExpanded={setIsWidthExpanded}
             // viewKey={currentViewKey}
           />
         );
       case 'view5':
-        return <Ltpa350Step2View5 isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />;
+        return <Ltpa35002e isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />;
       default:
         return null;
     }

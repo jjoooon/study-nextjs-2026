@@ -9,13 +9,11 @@ import {
   AmountWithPopoverCellEditor,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputHash } from '@common/InputHash';
 import { KeyValueList } from '@common/KeyValueList';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { SelectDrop } from '@common/SelectDrop';
-import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
@@ -26,7 +24,6 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   CellClassParams,
   ColDef,
@@ -49,43 +46,10 @@ import {
   useExpiryCellRenderer,
   editableCellClassRules,
   productNameCellRenderer,
-  uwIconRenderer,
   groupEditableButtonRenderer,
 } from '../hooks/useLtpa350Step2';
 
-import { useTabs } from '@/shared/hooks/useTabs';
-
 import '@/shared/lib/agGridPub';
-
-interface TabDataType {
-  id: string | number;
-  name?: string;
-  age?: string | number;
-  gender?: string;
-  value: string;
-  error?: boolean;
-  info: string[];
-}
-const TabData: TabDataType[] = [
-  {
-    id: 1,
-    name: '태아',
-    age: '1',
-    gender: '여',
-    value: 'tab1',
-    error: true,
-    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
-  },
-  {
-    id: 2,
-    name: '반짝빛나리반짝빛나리',
-    age: '2',
-    gender: '남',
-    value: 'tab2',
-    error: true,
-    info: ['추가정보1', '추가정보2', '추가정보3'],
-  },
-];
 
 interface DummyDataType {
   id: number;
@@ -94,41 +58,38 @@ interface DummyDataType {
     group: boolean;
     edit: boolean;
   }; // [isStandard, 기준이 되는 필드명]
-  num: number | null;
-  title?: string | number | boolean | string[] | number[];
-  field2?: string | number | boolean | string[] | number[];
-  insuredAmount?: string | number | boolean | string[] | number[];
-  isSelectedInsuredAmount?: boolean;
-  field4?: string | number | boolean | string[] | number[];
-  field4b?: string | number | boolean | string[] | number[];
-  field5?: string | number | boolean | string[] | number[];
-  field5b?: string | number | boolean | string[] | number[];
-
-  field6?: string | number | boolean | string[] | number[];
-  field7?: string | number | boolean | string[] | number[];
-  field8?: string | number | boolean | string[] | number[];
-  rowCopy?: string | number | boolean | string[] | number[];
+  num?: number | null | undefined;
+  title?: string | number | boolean;
+  field1?: string | number | boolean;
   titleDetail?: {
     title: string;
     description: string;
     info: string[];
   };
+  insuredAmount?: string | number | boolean | string[];
+  isSelectedInsuredAmount?: boolean;
+  rowCopy?: string | number | boolean;
+
+  field2?: string | number | boolean;
+  field4?: string | number | boolean;
+  field5?: string | number | boolean;
+  field6?: string | number | boolean;
+  field7?: string | number | boolean;
+  field8?: string | number | boolean;
 
   isEditedtitle?: boolean;
+  isEditedInsuredAmount?: boolean;
+  isEditedrowCopy?: boolean;
+
   isEditedField2?: boolean;
-  isEditedinsuredAmount?: boolean;
   isEditedField4?: boolean;
-  isEditedField4b?: boolean;
   isEditedField5?: boolean;
-  isEditedField5b?: boolean;
   isEditedField6?: boolean;
   isEditedField7?: boolean;
   isEditedField8?: boolean;
-  isEditedrowCopy?: boolean;
 
   filePath?: string[];
   locked?: boolean;
-  isHighlighted?: boolean;
   isError?: boolean;
   badge?: string[];
   [key: string]: unknown;
@@ -143,23 +104,17 @@ const DummyData: DummyDataType[] = [
       group: false,
       edit: false,
     },
-
     title:
       '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험',
     field2: true,
     insuredAmount: '5000',
     isSelectedInsuredAmount: false,
-
     field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
-
+    isEditedField6: false,
+    field7: 1000,
     field8: '인수가능',
     rowCopy: true,
     titleDetail: {
@@ -187,15 +142,12 @@ const DummyData: DummyDataType[] = [
     field2: true,
     insuredAmount: '3400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 2800,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 8000,
     field8: '인수불가',
     rowCopy: true,
     titleDetail: {
@@ -206,7 +158,7 @@ const DummyData: DummyDataType[] = [
     },
 
     locked: false,
-    isHighlighted: false,
+
     badge: ['갱신'],
     isError: false,
   },
@@ -223,15 +175,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '4400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: true,
     field6: '20년',
     isEditedField6: true,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -242,7 +191,7 @@ const DummyData: DummyDataType[] = [
     },
 
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -260,15 +209,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '4400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -278,7 +224,7 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -296,15 +242,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '4400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -314,7 +257,7 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -332,15 +275,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '5460',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -351,7 +291,7 @@ const DummyData: DummyDataType[] = [
     },
 
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -368,15 +308,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '1천만원',
     isSelectedInsuredAmount: true,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: '380',
+    field5: '80세',
+    isEditedField5: true,
     field6: '20년',
     isEditedField6: true,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -386,7 +323,7 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -404,15 +341,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '4400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -422,7 +356,7 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -440,15 +374,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '5460',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -459,7 +390,7 @@ const DummyData: DummyDataType[] = [
     },
 
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -476,15 +407,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '1400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: '380',
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -494,7 +422,7 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -512,15 +440,12 @@ const DummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: '4400',
     isSelectedInsuredAmount: false,
-    field4: 4500,
-    field4b: 100,
-
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
-
+    field4: 380,
+    field5: '80세',
+    isEditedField5: false,
     field6: '20년',
-    isEditedField6: true,
+    isEditedField6: false,
+    field7: 120,
     field8: '조건부인수',
     rowCopy: true,
     titleDetail: {
@@ -530,7 +455,7 @@ const DummyData: DummyDataType[] = [
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
     locked: false,
-    isHighlighted: false,
+
     badge: ['독립'],
     isError: false,
   },
@@ -572,13 +497,13 @@ type AgGridRow = DummyDataType & {
   isHighlighted?: boolean;
 };
 
-interface Ltpa350Step2Props {
+interface Ltpa35002Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
 }
 
-export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
+export function Ltpa35002e({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
   // =====================
@@ -587,9 +512,6 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [testError, setTestError] = useState(false);
-  const tabListData = TabData;
-  const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
-  const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
   const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
   const pendingSelectIdRef = useRef<string | number | null>(null);
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
@@ -741,8 +663,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
     [gridReadyHandler]
   );
 
-  // ---------------------------------------------------
-  // ColDef 태아
+  // --- 그리드 컬럼 정의 (인보험 뷰) ---
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
       {
@@ -750,7 +671,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
         field: 'field2',
         width: attributeColumnWidth[4],
         cellClass: 'text-center',
-        cellRenderer: searchButtonRenderer,
+        cellRenderer: searchButtonRenderer<AgGridRow>,
         resizable: false,
       },
       {
@@ -795,118 +716,56 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
           return true;
         },
       },
-      {
-        headerGroupComponent: () => (
-          <Grow className="w-full text-[1.3rem]" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
-        children: [
-          {
-            headerName: '출생전',
-            field: 'field4',
-            width: attributeColumnWidth[7],
-            cellClass: 'text-right',
-            valueFormatter: numberValueFormatter<AgGridRow>,
-          },
-          {
-            headerName: '출생후',
-            field: 'field4b',
-            width: attributeColumnWidth[7],
-            cellClass: 'text-right',
-            valueFormatter: numberValueFormatter<AgGridRow>,
-          },
-        ],
-      },
+
       {
         headerName: '만기',
-        children: [
-          {
-            headerName: '출생전',
-            width: attributeColumnWidth[7],
-            cellClassRules: editableCellClassRules<AgGridRow>(),
-            cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
-              return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
-            },
-            editable: (params: EditableCallbackParams) => {
-              return params.data?.isEditedField5 === true;
-            },
-            cellEditor: 'agSelectCellEditor',
-            cellEditorParams: {
-              values: [
-                '01개월',
-                '02개월',
-                '03개월',
-                '04개월',
-                '05개월',
-                '06개월',
-                '07개월',
-                '08개월',
-                '09개월',
-                '10개월',
-                '11개월',
-                '12개월',
-                '무제한',
-              ],
-            },
-            cellRenderer: getExpiryRenderer('left'),
-          },
-          {
-            headerName: '출생후',
-            field: 'field5b',
-            width: attributeColumnWidth[7],
-            cellClassRules: editableCellClassRules<AgGridRow>(),
-            cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
-              return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
-            },
-            editable: (params: EditableCallbackParams) => {
-              return params.data?.isEditedField5 === true;
-            },
-            cellEditor: 'agSelectCellEditor',
-            cellEditorParams: {
-              values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
-            },
-            cellRenderer: getExpiryRenderer('left'),
-          },
-        ],
+        // 행 선택 시에만 편집 가능 클래스 적용
+        field: 'field5',
+        width: attributeColumnWidth[7],
+        cellClassRules: editableCellClassRules<AgGridRow>(),
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'px-[0.2rem]! tracking-tighter';
+          return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
+        },
+        editable: (params: EditableCallbackParams) => {
+          return params.data?.isEditedField5 === true;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+        },
+        cellRenderer: getExpiryRenderer('left'),
       },
       {
         headerName: '납기',
-        children: [
-          {
-            headerName: '출생후',
-            field: 'field6',
-            width: attributeColumnWidth[7],
-            cellClassRules: editableCellClassRules<AgGridRow>(),
-            cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
-              return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
-            },
-            editable: (params: EditableCallbackParams) => {
-              return params.data?.isEditedField6 === true;
-            },
-            cellEditor: 'agSelectCellEditor',
-            cellEditorParams: {
-              values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
-            },
-            cellRenderer: getExpiryRenderer('left'),
-          },
-        ],
+        field: 'field6',
+        width: attributeColumnWidth[7],
+        cellClassRules: editableCellClassRules<AgGridRow>(),
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'px-[0.2rem]! tracking-tighter';
+          return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+        },
+        editable: (params: EditableCallbackParams) => {
+          return params.data?.isEditedField6 === true;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+        },
+        cellRenderer: getExpiryRenderer('left'),
       },
       {
-        headerName: '예상UW',
         headerComponent: () => (
           <Grow className="w-full" placement={'cc'} gap={0}>
-            <span className="text-[1.1rem]">예상</span>UW
+            보험료<span className="text-[1.1rem]">(원)</span>
           </Grow>
         ),
-        field: 'field8',
-        width: attributeColumnWidth[6],
-        cellClass: 'text-center px-0! tracking-tighter',
-        cellRenderer: uwIconRenderer,
+        field: 'field7',
+        width: attributeColumnWidth[9],
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter<AgGridRow>,
       },
+
       {
         headerName: '중복',
         field: 'rowCopy',
@@ -930,123 +789,77 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
         }}
         noValidate
       >
-        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
-          <TabPager
-            data={Tabs}
-            active={TabActive}
-            setActive={TabSetActive}
-            visibleCount={5}
-            error={testError}
-            errorMsg="입력하세요."
-            getValue={(tab) => String(tab.id)}
-            renderTab={(tab) => (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center">
-                    <span className="max-w-20 truncate block">{tab.name}</span>
-                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={8}>
-                  <BulletList className="gap-[0.5rem]">
-                    {tab.info.map((info: string, index: number) => (
-                      <BulletListItem key={index} type="dot">
-                        {info}
-                      </BulletListItem>
-                    ))}
-                  </BulletList>
-                </TooltipContent>
-              </Tooltip>
-            )}
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-              <Button
-                variant={'none'}
-                key={String(tab.id)}
-                onClick={() => {
-                  setActive(String(tab.id));
-                  const idx = data.findIndex((t) => String(t.id) === String(tab.id));
-                  if (idx !== -1) {
-                    const page = Math.floor(idx / visibleCount);
-                    setVisibleStart(page * visibleCount);
-                  }
-                }}
-              >
-                <span className="flex items-start gap-2 w-full">
-                  <span className="block">{tab.name}</span>
-                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                </span>
-              </Button>
-            )}
-          >
-            {/* M1. 간격 및 위치 수정 */}
-            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-              <Grow gap={1.5} placement={'bwc'}>
-                <Grow gap={2}>
-                  <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
-                    <PaperIcon />
-                    보장패키지
-                  </Button>
-                  <Divider dir="col" />
+        <LayoutMain
+          className={`grid ${!isHeightExpanded ? 'grid-rows-[auto_1fr_auto]' : 'grid-rows-[1fr_auto]'} gap-[1rem] h-full`}
+        >
+          {/* M1. 간격 및 위치 수정 */}
+          <Gcol variant={'box-round'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
+            <Grow gap={1.5} placement={'bwc'}>
+              <Grow gap={2}>
+                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                  <PaperIcon />
+                  보장패키지
+                </Button>
+                <Divider dir="col" />
 
-                  <CheckboxGroup
-                    className="gap-[0.4rem] flex-wrap type-small"
-                    color="primary"
-                    minSelected={0}
-                    size="lg"
-                    variant="button"
-                    width="auto"
-                  >
-                    {[
-                      { label: '사망후유', value: '0' },
-                      { label: '진단비', value: '1' },
-                      { label: '입원/통원', value: '2' },
-                      { label: '수술/치료', value: '3' },
-                      { label: '골절/화상', value: '4' },
-                      { label: '검사/지원', value: '5' },
-                      { label: '운전/비용', value: '6' },
-                      { label: '재물/배상', value: '7' },
-                      { label: '기타', value: '8' },
-                    ].map((category) => (
-                      <CheckboxGroupItem key={category.value} value={category.value}>
-                        {category.label}
-                      </CheckboxGroupItem>
-                    ))}
-                  </CheckboxGroup>
-                  <Divider dir="col" />
+                <CheckboxGroup
+                  className="gap-[0.4rem] flex-wrap type-small"
+                  color="primary"
+                  minSelected={0}
+                  size="lg"
+                  variant="button"
+                  width="auto"
+                >
+                  {[
+                    { label: '사망후유', value: '0' },
+                    { label: '진단비', value: '1' },
+                    { label: '입원/통원', value: '2' },
+                    { label: '수술/치료', value: '3' },
+                    { label: '골절/화상', value: '4' },
+                    { label: '검사/지원', value: '5' },
+                    { label: '운전/비용', value: '6' },
+                    { label: '재물/배상', value: '7' },
+                    { label: '기타', value: '8' },
+                  ].map((category) => (
+                    <CheckboxGroupItem key={category.value} value={category.value}>
+                      {category.label}
+                    </CheckboxGroupItem>
+                  ))}
+                </CheckboxGroup>
+                <Divider dir="col" />
 
-                  <CheckboxGroup
-                    className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
-                    color="primary"
-                    minSelected={0}
-                    size="lg"
-                    variant="button"
-                    width="auto"
-                  >
-                    {[
-                      { label: '갱신', value: '1' },
-                      { label: '비갱신', value: '2' },
-                    ].map((category) => (
-                      <CheckboxGroupItem key={category.value} value={category.value}>
-                        {category.label}
-                      </CheckboxGroupItem>
-                    ))}
-                  </CheckboxGroup>
-                </Grow>
-                <Grow placement={'ec'}>
-                  <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
-                    <ResetIcon color="var(--color-gray-500)" />
-                  </Button>
-                </Grow>
+                <CheckboxGroup
+                  className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
+                  color="primary"
+                  minSelected={0}
+                  size="lg"
+                  variant="button"
+                  width="auto"
+                >
+                  {[
+                    { label: '갱신', value: '1' },
+                    { label: '비갱신', value: '2' },
+                  ].map((category) => (
+                    <CheckboxGroupItem key={category.value} value={category.value}>
+                      {category.label}
+                    </CheckboxGroupItem>
+                  ))}
+                </CheckboxGroup>
               </Grow>
-            </Gcol>
-            {/* //M1. 간격 및 위치 수정 */}
-          </TabPager>
+              <Grow placement={'ec'}>
+                <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
+                  <ResetIcon color="var(--color-gray-500)" />
+                </Button>
+              </Grow>
+            </Grow>
+          </Gcol>
+          {/* //M1. 간격 및 위치 수정 */}
 
           <LayoutMainBody>
             <LayoutScrollWrap className="grid-rows-[auto_1fr]">
               <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                 <Grow className="gap-1.5">
-                  <Typo variant="heading-sm">100세만기 · 20년납입 · 월납 · 20년 갱신 · 1형</Typo>
+                  <Typo variant="heading-sm">전기납 · 월납</Typo>
                   <Button variant={'outlined'} color={'gray'} size={'md'}>
                     변경
                   </Button>
@@ -1153,9 +966,9 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                         'pointer-events-none': (params) => !!params.data?.locked,
                       },
                     }}
-                    onSelectionChanged={handleGridSelectionChanged}
+                    onSelectionChanged={onSelectionChanged}
                     onGridReady={handleGridReady}
-                    // onRowDataUpdated={handleRowDataUpdated}
+                    // onRowDataUpdated={handleRowDataUpdated} // 제거: 시그니처 불일치로 미사용
                     suppressRowHoverHighlight={false}
                     tooltipShowDelay={0}
                     tooltipHideDelay={9999}
@@ -1169,7 +982,7 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                       field: 'id',
                       flex: 1,
                       cellClass: (_) => 'text-left !p-0',
-                      cellRenderer: productNameCellRenderer,
+                      cellRenderer: productNameCellRenderer<AgGridRow>,
                       tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
                     }}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1182,139 +995,37 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
               </LayoutScrollItem>
             </LayoutScrollWrap>
           </LayoutMainBody>
+
           <LayoutMainFoot>
-            {/* M1. variant="box" 추가 FormTable className 수정 */}
+            {/* M1. variant="box" 추가 */}
             <MainBottom variant="box">
-              <MainBottomItem className="pl-0! pb-0! pt-0!">
+              <MainBottomItem className="!py-0">
                 <FormTable
-                  className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-[calc(100%+1.2rem)] after:h-px after:bg-[var(--color-gray-15)]"
+                  className="w-full! [&_tr]:justify-between"
                   lineTop={false}
                   variant={'bottom'}
                   cols={[
-                    'min-w-[9.3rem]',
-                    'min-w-[14.4rem]',
+                    'min-w-[9rem]',
+                    'w-[36%]',
+                    'min-w-[8rem]',
                     'w-[30%]',
                     'min-w-[8rem]',
-                    'w-[32%]',
-                    'min-w-[8rem]',
-                    'w-[32%]',
+                    'w-[30%]',
                     'min-w-[8rem]',
                     'min-w-[15rem]',
                   ]}
                 >
-                  <FormRow className="overflow-hidden h-[4.5rem]">
-                    <FormCell
-                      tdNone={true}
-                      className="bg-(--color-primary-10)! rounded-tl-[1rem]!"
-                      title={
-                        <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
-                          출생<b className="text-[#FF5C2E]">전</b>
-                        </Typo>
-                      }
-                    />
-                    <FormCell title="환급금" className="pl-3!">
-                      <Grow className="w-full flex justify-end">
-                        <Input
-                          type="tel"
-                          commaAmount={true}
-                          size={'md'}
-                          value={100000}
-                          width={'full'}
-                          readOnly={true}
-                        />
-                      </Grow>
-                    </FormCell>
-                    <FormCell title="보장보험료">
-                      <Popover>
-                        <PopoverTrigger className="w-full">
-                          <span className="block w-full rounded-[0.4rem] h-[2.5rem] bg-[var(--color-gray-10)] px-2 text-[1.4rem] border border-[0.1rem] border-[var(--color-gray-20)] box-border tracking-[0] leading-[2.5rem] appearance-none truncate text-right cursor-pointer">
-                            {Number(100000).toLocaleString()}
-                          </span>
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[{ key: '일시납보험료', value: '000,000,000원' }]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormCell>
-                    <FormCell title="적립보험료">
+                  <FormRow>
+                    <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
+                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                        예상
+                      </Button>
                       <Input
                         type="tel"
                         commaAmount={true}
                         value={100000}
                         size={'md'}
                         width={'full'}
-                        readOnly={true}
-                        className="text-right"
-                      />
-                    </FormCell>
-                    <FormCell title="합계보험료">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Input
-                            type="tel"
-                            commaAmount={true}
-                            value={0}
-                            clear={true}
-                            width={'full'}
-                            size={'md'}
-                            required={true}
-                            error={testError}
-                            errorMsg={'계약자 입력은 필수입니다.'}
-                            errorPs={'tr'}
-                            className="text-right font-bold"
-                          />
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[
-                              { key: '최소 보험료', value: '000,000,000원' },
-                              { key: '최대 보험료', value: '000,000,000원' },
-                            ]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow className="overflow-hidden">
-                    <FormCell
-                      className="bg-(--color-primary-10)!"
-                      tdNone={true}
-                      title={
-                        <Grow>
-                          <Typo variant="body-sm" weight={'bold'} className="pl-[1rem]">
-                            출생<b className="text-[#FF5C2E]">후</b>
-                          </Typo>
-                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                            설명
-                          </Button>
-                        </Grow>
-                      }
-                    />
-                    <FormCell
-                      className="pl-3! "
-                      title={
-                        <Grow placement="sc">
-                          만기금(환급률)
-                          <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                            예상
-                          </Button>
-                        </Grow>
-                      }
-                    >
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={100000}
-                        width={'full'}
-                        size={'md'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                       />
@@ -1365,9 +1076,9 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                       <Input
                         type="tel"
                         commaAmount={true}
-                        size={'md'}
                         value={100000}
                         width={'full'}
+                        size={'md'}
                         readOnly={true}
                         className="text-right"
                       />
@@ -1381,8 +1092,8 @@ export function Ltpa350Step2View2({ onSelectPlan, isWidthExpanded = false, setIs
                             commaAmount={true}
                             value={0}
                             clear={true}
-                            size={'md'}
                             width={'full'}
+                            size={'md'}
                             required={true}
                             error={testError}
                             errorMsg={'계약자 입력은 필수입니다.'}
