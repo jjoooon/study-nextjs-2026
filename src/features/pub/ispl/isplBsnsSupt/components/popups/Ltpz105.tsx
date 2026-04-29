@@ -1,9 +1,5 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,10 +14,14 @@ import {
   DialogTitle,
   DialogFooterArea,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpa01002 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
   type DummyDataType = {
     id: number;
     field1: string | number;

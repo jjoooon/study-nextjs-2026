@@ -1,14 +1,14 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Typo } from '@atoms';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Typo } from '@atoms';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 type DummyDataType = {
   id: number;
@@ -29,7 +29,7 @@ const DummyData: DummyDataType[] = [
   { id: 10, field1: '시스템관리-권한설정', field2: '시스템 관리자', field3: '조회,등록,수정,삭제' },
 ];
 
-export const Ltpz998 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz993 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -61,7 +61,7 @@ export const Ltpz998 = ({ open, onOpenChange }: PopupBaseProps) => {
               화면권한보기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ998)
+              (LTPZ993)
             </Typo>
           </DialogTitle>
         </DialogHeader>
