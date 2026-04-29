@@ -15,12 +15,14 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { BtnPlusIcon } from '@icons';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useRef } from 'react';
-import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 import '@/shared/lib/agGridPub';
 
@@ -384,7 +386,7 @@ export function Ltpa35004() {
       {
         headerName: '심사구분',
         field: 'field02',
-        flex: 1,
+        width: 150,
         autoHeight: true,
         cellClass: 'editable-cell text-center',
         cellStyle: (params) => (params.value === '인수기준' ? { color: 'var(--color-danger-50)' } : undefined),
@@ -541,76 +543,81 @@ export function Ltpa35004() {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Grid className="w-full h-full grid-cols-[1fr_30.7rem] overflow-x-hidden" gap={6}>
-                  <Grid className="h-full grid-rows-[1fr_1fr] gap-3">
-                    <Gcol>
-                      <ConTit>
-                        <ConTitName>지침세부내용</ConTitName>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>
-                          지침확인
-                        </Button>
-                      </ConTit>
-                      <div className="ag-theme-alpine">
-                        <AgGridReact<AgGridRow>
-                          key={gridKey}
-                          rowData={rowData}
-                          columnDefs={columnDefs}
-                          getRowId={(params) => String(params.data.id)}
-                          singleClickEdit={true}
-                          rowSelection={{
-                            mode: 'multiRow' as const,
-                            checkboxes: false,
-                            headerCheckbox: false,
-                            enableClickSelection: false,
-                            enableSelectionWithoutKeys: true,
-                          }}
-                          suppressRowHoverHighlight={false}
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          domLayout="normal"
-                        />
-                      </div>
-                    </Gcol>
-                    {/* 높이 조절 구분선 */}
-                    {/* <div className="resize-separator" /> */}
-                    <Gcol>
-                      <ConTit>
-                        <ConTitName>조건부 특약 가입</ConTitName>
-                        <Grow>
+                  <ResizablePanelGroup orientation="vertical" className="w-full h-full grid-rows-[1fr_1fr_1fr] gap-3">
+                      {/* <Grid className="h-full grid-rows-[1fr_1fr] gap-3"> */}
+                    <ResizablePanel defaultSize={50}>
+                      <Gcol className="h-full">
+                        <ConTit>
+                          <ConTitName>지침세부내용</ConTitName>
                           <Button variant={'outlined'} color={'gray'} size={'md'}>
-                            상세
+                            지침확인
                           </Button>
-                          <Button variant={'outlined'} color={'gray'} size={'md'}>
-                            무담보이력
-                          </Button>
-                        </Grow>
-                      </ConTit>
-                      <div className="ag-theme-alpine">
-                        <AgGridReact<AgGridRow2>
-                          rowData={rowData2}
-                          columnDefs={columnDefs2}
-                          getRowId={(params) => String(params.data.id)}
-                          singleClickEdit={true}
-                          rowSelection={{
-                            mode: 'multiRow' as const,
-                            checkboxes: true,
-                            headerCheckbox: true,
-                            enableClickSelection: false,
-                            enableSelectionWithoutKeys: true,
-                          }}
-                          selectionColumnDef={{
-                            width: 60,
-                            cellClass: 'text-center p-0!',
-                            cellClassRules: {
-                              'pointer-events-none': (params) => !!params.data?.locked,
-                            },
-                          }}
-                          suppressRowHoverHighlight={false}
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                    </Gcol>
-                  </Grid>
+                        </ConTit>
+                        <div className="ag-theme-alpine">
+                          <AgGridReact<AgGridRow>
+                            key={gridKey}
+                            rowData={rowData}
+                            columnDefs={columnDefs}
+                            getRowId={(params) => String(params.data.id)}
+                            singleClickEdit={true}
+                            rowSelection={{
+                              mode: 'multiRow' as const,
+                              checkboxes: false,
+                              headerCheckbox: false,
+                              enableClickSelection: false,
+                              enableSelectionWithoutKeys: true,
+                            }}
+                            suppressRowHoverHighlight={false}
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
+                            domLayout="normal"
+                          />
+                        </div>
+                      </Gcol>
+                    </ResizablePanel>
+                    <ResizableHandle />
+                    <ResizablePanel defaultSize={50}>
+                      <Gcol className="h-full">
+                        <ConTit>
+                          <ConTitName>조건부 특약 가입</ConTitName>
+                          <Grow>
+                            <Button variant={'outlined'} color={'gray'} size={'md'}>
+                              상세
+                            </Button>
+                            <Button variant={'outlined'} color={'gray'} size={'md'}>
+                              무담보이력
+                            </Button>
+                          </Grow>
+                        </ConTit>
+                        <div className="ag-theme-alpine">
+                          <AgGridReact<AgGridRow2>
+                            rowData={rowData2}
+                            columnDefs={columnDefs2}
+                            getRowId={(params) => String(params.data.id)}
+                            singleClickEdit={true}
+                            rowSelection={{
+                              mode: 'multiRow' as const,
+                              checkboxes: true,
+                              headerCheckbox: true,
+                              enableClickSelection: false,
+                              enableSelectionWithoutKeys: true,
+                            }}
+                            selectionColumnDef={{
+                              width: 60,
+                              cellClass: 'text-center p-0!',
+                              cellClassRules: {
+                                'pointer-events-none': (params) => !!params.data?.locked,
+                              },
+                            }}
+                            suppressRowHoverHighlight={false}
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
+                          />
+                        </div>
+                      </Gcol>
+                    </ResizablePanel>
+                     {/* </Grid> */}
+                  </ResizablePanelGroup>
 
                   {/* 심사결과안내 */}
                   <ChatResult
@@ -664,8 +671,8 @@ export function Ltpa35004() {
           <LayoutMainFoot>
             <MainBottom variant="box">
               <MainBottomItem>
-                <Grow className="gap-1">
-                  {/* <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                <Grow className="gap-1 relative">
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     이미지스캔
                   </Button>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
@@ -677,15 +684,26 @@ export function Ltpa35004() {
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     체크리스트 알림톡
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    진단/적부이력
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant={'outlined'} color={'gray'} size={'xl'} only="icon">
+                    <BtnPlusIcon />
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    외부심사결과지요청$
-                  </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    진단적부예외
-                  </Button> */}
+                    </PopoverTrigger>
+                    <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                      <Grid className="w-full grid-cols-[1fr] gap-1">
+                        <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                          진단/적부이력
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                          외부심사결과지요청$
+                        </Button>
+                        <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                          진단적부예외
+                        </Button>
+                      </Grid>
+                    </PopoverContent>
+                  </Popover>
                 </Grow>
                 <Grow className="gap-1">
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
