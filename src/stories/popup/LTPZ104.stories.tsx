@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { Ltpz104 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz104';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz023 } from '@/features/pub/ispl/cvrPl/components/popups/Ltpz023';
 
 export default {
-  title: 'app/ispl/cvrPl/components/popups/Ltpz023',
-  component: Ltpz023,
+  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz104',
+  component: Ltpz104,
 };
 
 export const Default = () => {
@@ -13,10 +13,10 @@ export const Default = () => {
   return (
     <LayoutDoc>
       <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
-        <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz028 열기</Button>
+        <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpz023 open={open} onOpenChange={setOpen} />
+      <Ltpz104 open={open} onOpenChange={setOpen} />
     </LayoutDoc>
   );
 };

@@ -1,19 +1,10 @@
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
-import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
+import '@/shared/lib/agGridPub';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Grow, Typo } from '@atoms';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -24,623 +15,335 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
-import '@/shared/lib/agGridPub';
+import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-type LTPZ020TabType = {
-  name: string;
-  value: string;
-  label: string;
-};
-
-const DATA_TABS: LTPZ020TabType[] = [
-  {
-    name: '인담보',
-    value: 'humanCoverage',
-    label: '인담보',
-  },
-  {
-    name: '재물담보',
-    value: 'propertyCoverage',
-    label: '재물담보',
-  },
-];
-
-const DATA_SUB_TABS: LTPZ020TabType[] = [
-  {
-    name: '화재담보',
-    value: 'fireCoverage',
-    label: '화재담보',
-  },
-  {
-    name: '화재기타',
-    value: 'fireEtcCoverage',
-    label: '화재기타',
-  },
-];
-
-type InsuredListRow = {
+// 담보패키지 dummy data
+type DummyDataType1 = {
   id: number;
-  name: string;
-  grade: string;
-  gender: string;
-  age: number;
+  isCheck: boolean | false;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  isDetails?: boolean;
+  level?: 2 | 3;
 };
-
-//피보험자
-const insuredListData: InsuredListRow[] = [
-  { id: 1, name: '김한화', grade: '1', gender: '남자', age: 33 },
-  { id: 2, name: '', grade: '', gender: '', age: 0 },
-  { id: 3, name: '', grade: '', gender: '', age: 0 },
-  { id: 4, name: '', grade: '', gender: '', age: 0 },
-];
-
-type CoverageListRow = {
-  id: number;
-  coverageCode: string;
-  coverageName: string;
-  insurancePeriod: string;
-  paymentPeriod: string;
-  designCoverageCode: string;
-  designCoverageName: string;
-};
-//담보목록
-const coverageListData: CoverageListRow[] = [
+const DummyData1: DummyDataType1[] = [
   {
     id: 1,
-    coverageCode: 'CLA05417',
-    coverageName: '보통약관(화재상해후유장해3)',
-    insurancePeriod: '15년만기',
-    paymentPeriod: '전기납',
-    designCoverageCode: 'CLA05417',
-    designCoverageName: '보통약관(화재상해후유장해)',
+    isCheck: true,
+    field01: '사용',
+    field02: '180일한도',
+    field03: '10년 갱신',
   },
   {
     id: 2,
-    coverageCode: '',
-    coverageName: '',
-    insurancePeriod: '',
-    paymentPeriod: '',
-    designCoverageCode: '',
-    designCoverageName: '',
+    isCheck: false,
+    field01: '사용',
+    field02: '180일한도',
+    field03: '10년 갱신',
   },
   {
     id: 3,
-    coverageCode: '',
-    coverageName: '',
-    insurancePeriod: '',
-    paymentPeriod: '',
-    designCoverageCode: '',
-    designCoverageName: '',
+    isCheck: false,
+    field01: '지원',
+    field02: '180일한도',
+    field03: '5년 갱신',
   },
   {
     id: 4,
-    coverageCode: '',
-    coverageName: '',
-    insurancePeriod: '',
-    paymentPeriod: '',
-    designCoverageCode: '',
-    designCoverageName: '',
-  },
-];
-//보험목적물
-type InsuranceObjectRow = {
-  id: number;
-  category: string;
-  grade: string;
-  insurancePeriod: string;
-  subscriptionAmount: number;
-  insuranceObject: string;
-  accommodationPlace: string;
-};
-
-const insuranceObjectData: InsuranceObjectRow[] = [
-  {
-    id: 1,
-    category: '건물(특수)',
-    grade: '1급',
-    insurancePeriod: '15년만기',
-    subscriptionAmount: 999999,
-    insuranceObject: '1층 독수리약국 면적 6021㎡',
-    accommodationPlace: '02',
-  },
-];
-
-//목적물 소유자 및 소재지
-type PropertyListRow = {
-  isCheck: boolean;
-  id: number;
-  owner: string;
-  ownerNo: string;
-  location: string;
-  businessType: string;
-  appliedRate: string;
-  marketCode: string;
-  specialBuilding: string;
-};
-const propertyListData: PropertyListRow[] = [
-  {
     isCheck: false,
-    id: 1,
-    owner: '김한화',
-    ownerNo: '901231-1111111',
-    location: '서울시 강남구 역삼동',
-    businessType: '아파트',
-    appliedRate: '아파트',
-    marketCode: '123',
-    specialBuilding: '1231',
+    field01: '지원',
+    field02: '180일한도',
+    field03: '10년 갱신',
   },
   {
+    id: 6,
     isCheck: false,
-    id: 2,
-    owner: '김한화',
-    ownerNo: '901231-1111111',
-    location: '서울시 강남구 역삼동',
-    businessType: '아파트',
-    appliedRate: '아파트',
-    marketCode: '123',
-    specialBuilding: '1231',
+    field01: '암주요',
+    field02: '기본형',
+    field03: '',
+    level: 2,
+  },
+  {
+    id: 7,
+    isCheck: false,
+    field01: '통합암주요',
+    field02: '체중형',
+    field03: '',
+    level: 2,
+  },
+  {
+    id: 9,
+    isCheck: false,
+    field01: '운전자비용',
+    field02: '',
+    field03: '',
+    level: 2,
   },
 ];
 
-//소재지 별 건물(수용장소)의 목록
-type BuildingByLocationRow = {
+// 담보 dummy data
+type DummyDataType2 = {
   id: number;
-  columnType: string;
-  outerWall: string;
-  aboveGroundFloors: number;
-  belowGroundFloors: number;
-  grossFloorArea: number;
-  etcStructure: string;
-  accommodationPlace: string;
+  isCheck: boolean | null;
+  field01: string | number;
 };
-
-const buildingByLocationData: BuildingByLocationRow[] = [
+const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    columnType: '철골철근콘크리트',
-    outerWall: '콘크리트벽',
-    aboveGroundFloors: 18,
-    belowGroundFloors: 3,
-    grossFloorArea: 322,
-    etcStructure: '철골철근콘크리트',
-    accommodationPlace: '02',
+    isCheck: true,
+    field01: '전이암특정치료비(종합병원)(각연간1회한)',
   },
   {
     id: 2,
-    columnType: '철골철근콘크리트',
-    outerWall: '콘크리트벽',
-    aboveGroundFloors: 18,
-    belowGroundFloors: 3,
-    grossFloorArea: 322,
-    etcStructure: '철골철근콘크리트',
-    accommodationPlace: '02',
+    isCheck: null,
+    field01: '- 전이암특정치료비(종합병원)(각연간1회한)',
   },
   {
     id: 3,
-    columnType: '철골철근콘크리트',
-    outerWall: '콘크리트벽',
-    aboveGroundFloors: 18,
-    belowGroundFloors: 3,
-    grossFloorArea: 322,
-    etcStructure: '철골철근콘크리트',
-    accommodationPlace: '02',
+    isCheck: null,
+    field01: '- 전이암특정치료비(항암방사선치료)(종합병원)(연간1회한)',
   },
   {
     id: 4,
-    columnType: '철골철근콘크리트',
-    outerWall: '콘크리트벽',
-    aboveGroundFloors: 18,
-    belowGroundFloors: 3,
-    grossFloorArea: 322,
-    etcStructure: '철골철근콘크리트',
-    accommodationPlace: '02',
+    isCheck: null,
+    field01: '- 전이암특정치료비(항암방사선치료)(종합병원)(연간1회한)',
+  },
+  {
+    id: 5,
+    isCheck: true,
+    field01: '전이암특정치료비(암전문의료기관(상급종합병원등))(각연간1회한)',
+  },
+  {
+    id: 7,
+    isCheck: null,
+    field01: '- 전이암특정치료비(항암방사선치료)(암전문의료기관(상급종합병원등))(연간1회한)',
+  },
+  {
+    id: 8,
+    isCheck: null,
+    field01: ' - 전이암특정치료비(항암약물치료)(암전문의료기관(상급종합병원등))(연간1회한)',
+  },
+  {
+    id: 9,
+    isCheck: true,
+    field01: '유방,갑상선,여성생식기질환통합치료비(연간1억원한도)',
+  },
+  {
+    id: 10,
+    isCheck: true,
+    field01: '유방,갑상선,여성생식기질환통합치료비(연간5천만원한도)',
+  },
+  {
+    id: 11,
+    isCheck: true,
+    field01: '유방,갑상선,여성생식기질환(일반질환)통합치료비(연간2천만원한도)',
+  },
+  {
+    id: 12,
+    isCheck: true,
+    field01: '유방,갑상선,여성생식기질환(일반질환)통합치료비(연간1천만원한도)',
   },
 ];
 
 export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const insuredListColumnDefs: ColDef<InsuredListRow>[] = [
-    { field: 'name', headerName: '성명', flex: 1, cellClass: 'text-center' },
-    { field: 'grade', headerName: '급수', width: 40, cellClass: 'text-center' },
-    { field: 'gender', headerName: '성별', width: 40, cellClass: 'text-center' },
-    { field: 'age', headerName: '연령', width: 60, cellClass: 'text-center' },
-  ];
-  const coverageListColumnDefs: ColDef<CoverageListRow>[] = [
-    { headerName: '담보코드', field: 'coverageCode', width: 80, cellClass: 'text-center' },
-    { headerName: '담보명', field: 'coverageName', flex: 1 },
-    { headerName: '보험기간', field: 'insurancePeriod', width: 80, cellClass: 'text-center' },
-    { headerName: '납입기간', field: 'paymentPeriod', width: 80, cellClass: 'text-center' },
-    { headerName: '설계담보코드', field: 'designCoverageCode', width: 100, cellClass: 'text-center' },
-    { headerName: '설계담보명', field: 'designCoverageName', flex: 1 },
-  ];
+  const CombinedConstructionHeader = () => {
+    const headerAreaStyle: React.CSSProperties = {
+      width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
+    };
 
-  const propertyListDataColumnDefs: ColDef<PropertyListRow>[] = [
-    {
-      headerName: '순번',
-      field: 'id',
-      width: 50,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '소유자',
-      field: 'owner',
-      width: 120,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '소유자번호',
-      field: 'ownerNo',
-      width: 150,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '소재지',
-      field: 'location',
-      flex: 1,
-    },
-    {
-      headerName: '영위업종',
-      field: 'businessType',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '적용요율',
-      field: 'appliedRate',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '시장코드',
-      field: 'marketCode',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '특수건물',
-      field: 'specialBuilding',
-      width: 100,
-      cellClass: 'text-center',
-    },
-  ];
+    return (
+      <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
+        <div className="flex h-full w-full items-center justify-center text-center">구분</div>
+      </div>
+    );
+  };
 
-  const buildingByLocationColumnDefs: Array<ColDef<BuildingByLocationRow> | ColGroupDef<BuildingByLocationRow>> = [
-    {
-      headerName: '기둥',
-      field: 'columnType',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '외벽',
-      field: 'outerWall',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '건물규모',
-      flex: 1,
-      cellClass: 'text-center',
-      children: [
-        {
-          headerName: '지상(층)',
-          field: 'aboveGroundFloors',
-          width: 60,
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '지하(층)',
-          field: 'belowGroundFloors',
-          width: 60,
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '연 면적(㎡)',
-          field: 'grossFloorArea',
-          width: 70,
-          cellClass: 'text-center',
-          valueFormatter: (params) => params.value?.toLocaleString() ?? '',
-        },
-      ],
-    },
-    {
-      headerName: '기타구조',
-      field: 'etcStructure',
-      cellClass: 'text-center border-l border-[#e5e5e5]',
-    },
-    {
-      headerName: '수용장소',
-      field: 'accommodationPlace',
-      width: 200,
-      cellClass: 'text-center',
-    },
-  ];
+  const CombinedConstructionCell = ({ data }: ICellRendererParams<DummyDataType1>) => {
+    const field01 = data?.field01 ?? '';
+    const field02 = data?.field02 ?? '';
+    const field03 = data?.field03 ?? '';
+    const level = data?.level ?? 3;
 
-  const insuranceObjectColumnDefs: ColDef<InsuranceObjectRow>[] = [
+    // 레벨 2: field02가 있으면 2칸(50/50), 없으면 1칸(전체)
+    if (level === 2) {
+      if (field02) {
+        return (
+          <div className="grid h-full grid-cols-2">
+            <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+              {field01}
+            </div>
+            <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field02}</div>
+          </div>
+        );
+      }
+      return (
+        <div className="flex h-full min-h-[2.5rem] h-[3rem] w-full items-center justify-center px-2 text-center">
+          {field01 || '\u00A0'}
+        </div>
+      );
+    }
+
+    // 레벨 3 (기본): 3칸
+    return (
+      <div className="grid h-full grid-cols-3">
+        <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+          {field01}
+        </div>
+        <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center border-r border-(--ag-border-color) px-2 py-0 text-center">
+          {field02}
+        </div>
+        <div className="flex min-h-[2.5rem] h-[3rem] items-center justify-center px-2 text-center">{field03}</div>
+      </div>
+    );
+  };
+
+  const FullWidthIsDetailsRenderer = ({ data }: ICellRendererParams<DummyDataType1>) => {
+    const content = String(data?.field01 ?? data?.field02 ?? data?.field03 ?? '\u00A0');
+    return (
+      <div className="flex h-full w-full min-h-[2.5rem] items-center justify-center px-2 text-center">{content}</div>
+    );
+  };
+
+  const columnDefs1: ColDef<DummyDataType1>[] = [
     {
       headerName: '구분',
-      field: 'category',
-      width: 140,
-    },
-    {
-      headerName: '급수',
-      field: 'grade',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험기간',
-      field: 'insurancePeriod',
-      width: 120,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'subscriptionAmount',
-      width: 140,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '보험목적물',
-      field: 'insuranceObject',
       flex: 1,
+      autoHeight: true,
+      wrapText: true,
+      cellClass: 'p-0! flex',
+      headerComponent: CombinedConstructionHeader,
+      cellRenderer: CombinedConstructionCell,
     },
+  ];
+  const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      headerName: '수용장소',
-      field: 'accommodationPlace',
-      width: 120,
-      cellClass: 'text-center',
+      headerName: '담보명',
+      field: 'field01',
+      flex: 1,
+      cellClass: 'text-left truncate',
+      tooltipValueGetter: (params) => String(params.data?.field01 ?? ''),
     },
   ];
 
-  const [rowData, setRowData] = React.useState<PropertyListRow[]>(propertyListData);
-  const [, setErrorRows] = React.useState<number[]>(
-    propertyListData.filter((row) => !row.isCheck).map((row) => row.id)
-  );
-
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<PropertyListRow, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
-
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  const { tabs: subTabs, active: subActive, setActive: setSubActive } = useTabs(DATA_SUB_TABS);
-  const [policySearchPart, setPolicySearchPart] = React.useState('');
+  const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
+  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              설계복사
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ020)
+              담보패키지 선택
             </Typo>
           </DialogTitle>
         </DialogHeader>
+
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
-            <FormTable caption="증권번호" cols={['w-[14rem]', 'w-auto']} variant={'head'}>
-              <FormRow>
-                <FormCell title={'증권번호'} className="w-full">
-                  <Grow>
-                    <Input
-                      aria-label="증권번호 검색"
-                      width={100}
-                      value={policySearchPart}
-                      onChange={(e) => setPolicySearchPart(e.target.value)}
-                    />
-                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                    <Input aria-label="" width={300} value={'한화 더 건강한 1040종합'} readOnly />
-                  </Grow>
-                </FormCell>
-              </FormRow>
-            </FormTable>
+          <Grow className="w-full h--full" variant="box-round" placement={'bwe'}>
             <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                조회
-              </Button>
-            </Grow>
-          </Grow>
-
-          <TabPager
-            data={tabs}
-            active={active}
-            setActive={setActive}
-            removable={false}
-            onRemove={handleRemove}
-            visibleCount={4}
-            variant="default"
-            hasTableBelow={true}
-            error={false}
-            errorMsg="에러 메시지 예시"
-            renderButtons={
-              <CheckboxGroup className="gap-3" minSelected={0} defaultValue={['담보복사']}>
+              <RadioGroup className="gap-1" onValueChange={() => {}} width="full" defaultValue="간병인">
                 {[
-                  { value: '피보험자복사', label: '피보험자복사', disabled: false },
-                  { value: '담보복사', label: '담보복사', disabled: true },
+                  { value: '간병인', label: '간병인' },
+                  { value: '암주요', label: '암주요' },
+                  { value: '표적항암', label: '표적항암' },
+                  { value: '1인실', label: '1인실' },
+                  { value: '운전자비용', label: '운전자비용' },
+                  { value: '패키지명', label: '패키지명' },
                 ].map((option) => (
-                  <CheckboxGroupItem key={option.value} value={option.value} disabled={option.disabled}>
+                  <RadioGroupItem value={option.value} variant="button" key={option.value}>
                     {option.label}
-                  </CheckboxGroupItem>
+                  </RadioGroupItem>
                 ))}
-              </CheckboxGroup>
-            }
-            getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => <span>{tab.label}</span>}
-            renderDropdownItem={false}
-          >
-            {active === 'humanCoverage' ? (
-              <ResizablePanelGroup orientation="horizontal" className="w-full pt-2">
-                <ResizablePanel defaultSize={30}>
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="피보험자목록" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine min-h-[15.3rem]">
-                        <AgGridReact<InsuredListRow>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={insuredListData}
-                          columnDefs={insuredListColumnDefs}
-                          defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                          }}
-                          rowSelection={{
-                            mode: 'multiRow',
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            headerName: '선택',
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          domLayout={'normal'}
-                          alwaysShowVerticalScroll={true}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                </ResizablePanel>
-                <ResizableHandle />
-                <ResizablePanel defaultSize={70}>
-                  <TableFold variant={'accordion'}>
-                    <TableFoldHead title="담보목록" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine min-h-[15.3rem]">
-                        <AgGridReact<CoverageListRow>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={coverageListData}
-                          columnDefs={coverageListColumnDefs}
-                          defaultColDef={{
-                            sortable: false,
-                            resizable: false,
-                          }}
-                          animateRows={false}
-                          rowClassRules={{}}
-                          domLayout={'normal'}
-                          alwaysShowVerticalScroll={true}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                </ResizablePanel>
-              </ResizablePanelGroup>
-            ) : (
-              <Grid className="w-full pt-2 grid-rows-[auto_1fr] h-full" gap={5}>
-                <TableFold>
-                  <TableFoldHead title="목적물 소유자 및 소재지" />
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[9.8rem]">
-                      <AgGridReact<PropertyListRow>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={propertyListDataColumnDefs}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                          cellClass: 'p-0',
-                          cellStyle: { padding: 0 },
-                        }}
-                        singleClickEdit={true}
-                        onCellValueChanged={onCellValueChanged}
-                        rowSelection={{
-                          mode: 'singleRow',
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        selectionColumnDef={{
-                          headerName: '선택',
-                          width: 30,
-                          cellClass: 'text-center editable-cell',
-                        }}
-                        onGridReady={(params) => {
-                          params.api.forEachNode((node) => {
-                            if (node.data?.isCheck) {
-                              node.setSelected(true);
-                            }
-                          });
-                        }}
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-                {/* 소재지별건물(수용장소)의 목록 */}
-                {/* 보험목적물 */}
-                <TabPager
-                  data={subTabs}
-                  active={subActive}
-                  setActive={setSubActive}
-                  visibleCount={4}
-                  variant="default"
-                  hasTableBelow={true}
-                  getValue={(tab) => String(tab.value)}
-                  renderTab={(tab) => <span>{tab.label}</span>}
-                  renderDropdownItem={false}
-                >
-                  {subActive === 'fireCoverage' ? (
-                    <Grid className="pt-2 w-full grid-rows-[1fr_1fr] gap-2 h-full">
-                      <TableFold>
-                        <TableFoldHead title="소재지별 건물(수용장소)의 목록" />
-                        <TableFoldBody>
-                          <div className="ag-theme-alpine min-h-[15.3rem]">
-                            <AgGridReact<BuildingByLocationRow>
-                              getRowId={(params) => String(params.data.id)}
-                              noRowsOverlayComponent={AgGridEmptyComponent}
-                              rowData={buildingByLocationData}
-                              columnDefs={buildingByLocationColumnDefs}
-                              defaultColDef={{
-                                sortable: true,
-                                resizable: true,
-                              }}
-                              animateRows={false}
-                            />
-                          </div>
-                        </TableFoldBody>
-                      </TableFold>
-
-                      <TableFold>
-                        <TableFoldHead title="보험목적물" />
-                        <TableFoldBody>
-                          <div className="ag-theme-alpine">
-                            <AgGridReact<InsuranceObjectRow>
-                              getRowId={(params) => String(params.data.id)}
-                              noRowsOverlayComponent={AgGridEmptyComponent}
-                              rowData={insuranceObjectData}
-                              columnDefs={insuranceObjectColumnDefs}
-                              defaultColDef={{
-                                sortable: true,
-                                resizable: true,
-                              }}
-                              animateRows={false}
-                              domLayout="autoHeight"
-                            />
-                          </div>
-                        </TableFoldBody>
-                      </TableFold>
-                    </Grid>
-                  ) : null}
-                </TabPager>
-              </Grid>
-            )}
-          </TabPager>
+              </RadioGroup>
+            </Grow>
+            <Button
+              color={'gray'}
+              only={'icon'}
+              size={'lg'}
+              variant={'outlined'}
+              onClick={() => {}}
+              aria-label="새로고침"
+            >
+              <ResetIcon />
+            </Button>
+          </Grow>
+          <Grow placement="ss" className="w-full h-full" gap={5}>
+            <TableFold variant={'default'} className="w-[40%] shrink-0 h-full">
+              <TableFoldHead title="담보패키지" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[30rem]">
+                  <AgGridReact<DummyDataType1>
+                    // getRowId 적용: id 필드를 고유 식별자로 사용
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData1}
+                    columnDefs={columnDefs1}
+                    enableCellSpan={true}
+                    isFullWidthRow={(params) => params.rowNode.data?.isDetails === true}
+                    fullWidthCellRenderer={FullWidthIsDetailsRenderer}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: false,
+                      checkboxes: (params) => params.data?.isCheck !== null,
+                      hideDisabledCheckboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      cellClass: 'text-center editable-cell',
+                      width: 40,
+                    }}
+                    domLayout="normal"
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold variant={'default'} className="h-full">
+              <TableFoldHead title="담보" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[30rem]">
+                  <AgGridReact<DummyDataType2>
+                    // getRowId 적용: id 필드를 고유 식별자로 사용
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData2}
+                    columnDefs={columnDefs2}
+                    enableCellSpan={true}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: (params) => params.data?.isCheck !== null,
+                      hideDisabledCheckboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      width: 40,
+                      cellClass: 'editable-cell',
+                    }}
+                    tooltipShowDelay={0}
+                    tooltipHideDelay={9999}
+                    tooltipMouseTrack={true}
+                    alwaysShowVerticalScroll={true}
+                    domLayout="normal"
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+          </Grow>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                확인
+                선택
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -649,7 +352,6 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
-          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>
