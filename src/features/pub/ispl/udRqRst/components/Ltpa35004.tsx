@@ -1,6 +1,14 @@
 'use client';
 
-import { Grow, Gcol, Grid, Typo } from '@atoms';
+import React from 'react';
+import type { ColDef } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo, useState, useRef, useEffect } from 'react';
+
+import { useTabs } from '@/shared/hooks/useTabs';
+
+import { Grow, Gcol, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
@@ -15,15 +23,9 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { useMemo, useState, useRef, useEffect } from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -582,8 +584,8 @@ export function Ltpa35004() {
               <LayoutScrollWrap>
                 <LayoutScrollItem>
                   <Grow placement="ss" className="w-full h-full overflow-x-hidden" gap={6}>
-                    <Gcol className="w-[calc(100%-30.7rem)] h-full">
-                      <Gcol className="w-full h-full grid-rows-[auto_1fr]">
+                    <Gcol className="w-[calc(100%-30.7rem)] h-full flex-1 min-h-0" gap={3}>
+                      <Gcol className="w-full h-full flex-1 min-h-0 grid-rows-[auto_1fr]">
                         <Grow placement={'bwc'} className="gap-1 w-full pb-1">
                           <Grow className="gap-1.5">
                             <Typo variant="heading-md">지침세부내용</Typo>
@@ -594,7 +596,7 @@ export function Ltpa35004() {
                             </Button>
                           </Grow>
                         </Grow>
-                        <div className="ag-theme-alpine min-h-[18.4rem]">
+                        <div className="ag-theme-alpine flex-1 h-full min-h-0">
                           <AgGridReact<AgGridRow>
                             key={gridKey}
                             rowData={rowData}
@@ -1036,15 +1038,8 @@ export function Ltpa35004() {
                       </div>
                       {/* 페이지 버튼 */}
                       <Gcol className="items-end gap-2 absolute bottom-[13.8rem] right-3 z-50">
-                        <Button
-                          variant="outlined"
-                          color="link"
-                          only="icon"
-                          className="w-[4rem] h-[3.7rem] bg-[#EFF8FF]"
-                        >
-                          <Typo variant="body-lg">
-                            <b>{page}</b>/{totalPages}
-                          </Typo>
+                        <Button variant="outlined" color="link" only="icon" className="w-[4rem] h-[3.7rem] bg-[#EFF8FF] shadow-[0_2rem_4rem_0_rgba(0,0,0,0.1)]">
+                          <Typo variant="body-lg"><b>{page}</b>/{totalPages}</Typo>
                         </Button>
                         <Grow>
                           <Button
