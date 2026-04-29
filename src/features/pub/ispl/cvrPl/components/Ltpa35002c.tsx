@@ -288,7 +288,7 @@ type AgGridRow2 = DummyData2Type & {
   isHighlighted?: boolean;
 };
 
-export function Ltpa350Step2View3() {
+export function Ltpa35002c() {
   // =====================
   // 상태 및 참조 관리
   // =====================

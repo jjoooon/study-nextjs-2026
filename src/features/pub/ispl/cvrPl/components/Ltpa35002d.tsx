@@ -278,7 +278,6 @@ interface DummyDataType {
 
   field1?: string | number | boolean;
   field2?: string | number | boolean;
-  field3?: string | number | boolean;
   field4?: string | number | boolean;
   field5?: string | number | boolean;
   field6?: string | number | boolean;
@@ -705,13 +704,13 @@ type AgGridRow = DummyDataType & {
   isHighlighted?: boolean;
 };
 
-interface Ltpa350Step2Props {
+interface Ltpa35002Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
 }
 
-export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa350Step2Props) {
+export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
   // =====================
@@ -1217,7 +1216,7 @@ export function Ltpa350Step2View1({ onSelectPlan, isWidthExpanded = false, setIs
               </Grow>
               <LayoutScrollItem>
                 <div
-                  className={`tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                  className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                 >
                   <AgGridReact<AgGridRow>
                     rowData={rowData}
