@@ -40,14 +40,15 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
           <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)] gap-2" placement={'ss'}>
             <BulletList className="w-full" type={'dot'} size={'xs'}>
               <BulletListItem>
-                설계심사 <Divider /> <b className="text-[var(--color-gray-100)]" >특인심사</b>
+                설계심사 <Divider /> <b className="text-[var(--color-gray-100)]">특인심사</b>
               </BulletListItem>
               <BulletListItem>
-                심사상태 <Divider /> <b className="text-[var(--color-gray-100)]" >배정대기</b>
+                심사상태 <Divider /> <b className="text-[var(--color-gray-100)]">배정대기</b>
               </BulletListItem>
               <BulletListItem>
-                [심사운용 시간 이후 요청]<br />
-  심사 자배정대기 중입니다.
+                [심사운용 시간 이후 요청]
+                <br />
+                심사 자배정대기 중입니다.
               </BulletListItem>
             </BulletList>
           </Gcol>
@@ -59,8 +60,9 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
           <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)] gap-2" placement={'ss'}>
             <BulletList className="w-full" type={'dot'} size={'xs'}>
               <BulletListItem>
-                3월 질병 심사기준 안내<br />
-두줄까지 공지사항제목 노출
+                3월 질병 심사기준 안내
+                <br />
+                두줄까지 공지사항제목 노출
               </BulletListItem>
             </BulletList>
           </Gcol>
@@ -188,4 +190,4 @@ export function InfoContract<TData extends InfoContractBaseData = InfoContractBa
       </Gcol>
     </Gcol>
   );
-} 
+}

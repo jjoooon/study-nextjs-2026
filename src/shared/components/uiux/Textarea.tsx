@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { ReSizeIcon } from '@icons';
+import * as React from 'react';
+import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   variant?: 'default' | 'outline';
@@ -12,7 +12,7 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   /** 최소 글자 수 표시 및 에러 조건 연동 */
   showMinLengthCount?: boolean;
-  resize?: boolean; // 리사이즈 가능 여부 (기본값: true)
+  resize?: boolean | 'y' | ''; // 리사이즈 가능 여부 (기본값: true, 'y'는 세로만)
   maxLength?: number; // 최대 글자 수 (optional, but commonly used with textarea)
   restrictChars?: boolean;
 }
@@ -91,7 +91,7 @@ function Textarea({
           variantStyles[variant],
           errorStyle,
           className,
-          resize ? 'resize' : 'resize-none'
+          resize === 'y' ? 'resize-y' : resize ? 'resize' : 'resize-none'
         )}
         value={value}
         onChange={handleChange}

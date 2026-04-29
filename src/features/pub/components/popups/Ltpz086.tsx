@@ -1,11 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -21,6 +16,11 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // dummy data
 type DummyDataType = {

@@ -1,8 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -16,6 +14,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 export const Ltpz014 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (
