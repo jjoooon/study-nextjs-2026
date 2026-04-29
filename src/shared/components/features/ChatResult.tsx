@@ -4,7 +4,7 @@ import { Grow, Gcol, Grid, Typo, ConTit, ConTitName } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import { Textarea } from '@uiux/Textarea';
-import React from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 
 export interface ChatResultItem {
@@ -25,6 +25,37 @@ export interface ChatResultProps {
 }
 
 export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
+
+  // 페이징 상태
+  const [page, setPage] = useState(1); // 1-based
+  const pageCount = chatData.length;
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // 스크롤 시 페이지 계산 (각 페이지별로 내용이 바뀌도록)
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const pageSize = el.clientHeight;
+    // 각 페이지의 시작 위치를 계산
+    const scrollTop = el.scrollTop;
+    const currentPage = Math.min(
+      pageCount,
+      Math.max(1, Math.round(scrollTop / pageSize) + 1)
+    );
+    setPage(currentPage);
+  }, [pageCount]);
+
+  // 버튼 클릭 시 해당 페이지로 스크롤 이동
+  const handlePageBtn = (nextPage: number) => {
+    const safePage = Math.max(1, Math.min(nextPage, pageCount));
+    setPage(safePage);
+    const el = scrollRef.current;
+    if (el) {
+      const pageSize = el.clientHeight;
+      el.scrollTo({ top: pageSize * (safePage - 1), behavior: 'smooth' });
+    }
+  };
+
   return (
     <Grid className="h-full grid-rows-[auto_1fr_auto] gap-0">
       <Grow
@@ -44,11 +75,19 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
       </Grow>
 
       <Gcol className="relative w-full tracking-[-0.13rem] border-l border-r border-[var(--color-gray-20)] gap-0 overflow-hidden">
-        <Gcol className="absolute overflow-y-scroll w-full top-0 h-full" placement="ss">
-          <Gcol className="py-2 gap-4">
-            {chatData.map((item, idx) => (
-              <React.Fragment key={idx}>
-                {/* 심부산 */}
+        <div
+          ref={scrollRef}
+          style={{ overflowY: 'auto', height: '32rem', position: 'relative' }}
+          onScroll={handleScroll}
+        >
+          {/* 모든 chatData를 한 번에 세로로 렌더링하여 스크롤이 항상 보이게 */}
+          {chatData.map((item, idx) => (
+            <div
+              key={idx}
+              style={{ height: '32rem', overflow: 'hidden' }}
+            >
+              {/* 심부산 */}
+              <Gcol className="py-2 gap-4">
                 <Gcol className="px-3 gap-2">
                   <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">
                     {item.name}
@@ -135,10 +174,10 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                     </Typo>
                   </Gcol>
                 </Gcol>
-              </React.Fragment>
-            ))}
-          </Gcol>
-        </Gcol>
+              </Gcol>
+            </div>
+          ))}
+        </div>
         {/* 페이지 버튼 */}
         <Gcol className="w-auto items-end gap-2 absolute bottom-2 right-3 z-50">
           <Button
@@ -146,16 +185,33 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
             color="link"
             only="icon"
             className="w-[4rem] h-[3.7rem] bg-[#EFF8FF] shadow-[0_2rem_4rem_0_rgba(0,0,0,0.1)]"
+            aria-current
           >
             <Typo variant="body-lg">
-              <b>1</b>/{chatData.length}
+              <b>{page}</b>/{pageCount}
             </Typo>
           </Button>
           <Grow>
-            <Button variant="outlined" color="gray" only="icon" size="md">
+            <Button
+              variant="outlined"
+              color="gray"
+              only="icon"
+              size="md"
+              onClick={() => handlePageBtn(page - 1)}
+              disabled={page === 1}
+              aria-label="이전"
+            >
               <ArrowIcon className="rotate-90" />
             </Button>
-            <Button variant="outlined" color="gray" only="icon" size="md">
+            <Button
+              variant="outlined"
+              color="gray"
+              only="icon"
+              size="md"
+              onClick={() => handlePageBtn(page + 1)}
+              disabled={page === pageCount}
+              aria-label="다음"
+            >
               <ArrowIcon className="rotate-270" />
             </Button>
           </Grow>

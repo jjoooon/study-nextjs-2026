@@ -419,7 +419,7 @@ export function Ltpa35004() {
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
-        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
+        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] w-full h-full">
           <TabPager
             data={Tabs}
             active={TabActive}
@@ -570,6 +570,8 @@ export function Ltpa35004() {
                         />
                       </div>
                     </Gcol>
+                    {/* 높이 조절 구분선 */}
+                    {/* <div className="resize-separator" /> */}
                     <Gcol>
                       <ConTit>
                         <ConTitName>조건부 특약 가입</ConTitName>
@@ -627,7 +629,7 @@ export function Ltpa35004() {
                         uw_detail: '상세보기 경로주소',
                       },
                       {
-                        name: '심부산GA지점 박하늘별(6012345)',
+                        name: '2심부산GA지점 박하늘별(6012345)',
                         title: '심사완료',
                         content: '고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다',
                         date: '2024-06-28 14:30',
@@ -640,7 +642,7 @@ export function Ltpa35004() {
                         uw_detail: '상세보기 경로주소',
                       },
                       {
-                        name: '심부산GA지점 박하늘별(6012345)',
+                        name: '3심부산GA지점 박하늘별(6012345)',
                         title: '심사완료',
                         content: '고지보완 중 당뇨는 정상수치로 돌아와 이상없습니다',
                         date: '2024-06-28 14:30',
