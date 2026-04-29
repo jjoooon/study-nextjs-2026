@@ -1272,3 +1272,24 @@ export const CoveragePopover = ({
     </Popover>
   );
 };
+
+/**
+ * 휴대폰 번호 valueFormatter (010-1234-5678, 010-123-4567 등 자동 포맷)
+ */
+export function phoneNumberValueFormatter<T = any>(params: ValueFormatterParams<T>) {
+  if (!params.value) return '';
+  const v = String(params.value).replace(/[^0-9]/g, '');
+  if (v.length === 11) {
+    return `${v.slice(0, 3)}-${v.slice(3, 7)}-${v.slice(7)}`;
+  } else if (v.length === 10) {
+    return `${v.slice(0, 3)}-${v.slice(3, 6)}-${v.slice(6)}`;
+  }
+  return v;
+}
+
+/**
+ * 휴대폰 번호 valueParser (숫자만 추출)
+ */
+export function phoneNumberValueParser(params: { newValue: string }) {
+  return params.newValue.replace(/[^0-9]/g, '');
+}

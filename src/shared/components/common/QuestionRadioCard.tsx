@@ -1,99 +1,78 @@
 'use client';
 
-import { useId, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { Badge } from '@uiux/Badge';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+
+
+
+export const QuestionRadioCardHeader = ({ bg, children, className }: { bg?: string; children: ReactNode; className?: string }) => {
+  return (
+    <Grow
+      className={cn('w-full p-[1rem]', !bg ? 'bg-[#F4F4F4]' : undefined, className)}
+      style={bg ? { background: bg } : undefined}
+      placement="bwc"
+      gap="[1rem]"
+    >
+      {children}
+    </Grow>
+  );
+}
+
+export const QuestionRadioCardHeaderTitle = ({ 
+  badgeLabel,
+  icon,
+  children,
+  className,
+}: { badgeLabel?: string; icon?: ReactNode; children: ReactNode; className?: string }) => {
+  return (
+  <Grow className={cn('flex items-baseline gap-[0.6rem]', className)}>
+    {icon
+      ? <span className="h-[1.8rem] w-[1.8rem] flex items-center justify-center">{icon}</span>
+      : badgeLabel
+        ? <Badge color="secondary" variant="contained" className="h-[1.8rem] w-[1.8rem]">{badgeLabel}</Badge>
+        : null}
+    <Typo tag={'h3'} variant={'body-lg'} className={cn('flex', className)} weight={'bold'}>
+      {children}
+    </Typo>
+  </Grow>
+  );
+}
+
+export const QuestionRadioCardContents = ({ children, className }: { bg?: string; children: ReactNode; className?: string  }) => {
+  return (
+    <Grid className={cn('w-full p-2.5 gap-2', className)}>{children}</Grid>
+  );
+}
+  
 
 type QuestionRadioCardProps = {
-  badgeLabel: string;
-  question: string;
   children?: ReactNode;
   className?: string;
-  contentClassName?: string;
-  radioClassName?: string;
   isRadio?: boolean;
   isValue?: string;
   onValueChange?: (value: string) => void;
-  radioErrorMsg?: string;
-  radioErrorPs?: 'bl' | 'br' | 'tl' | 'tr';
-  disabled?: boolean;
 };
 
-export const QuestionRadioCard = ({
-  badgeLabel,
-  question,
-  children,
-  className,
-  contentClassName,
-  radioClassName,
-  isRadio = true,
-  isValue,
-  onValueChange,
-  radioErrorMsg = '하나를 선택해주세요.',
-  radioErrorPs = 'bl',
-  disabled = false,
-}: QuestionRadioCardProps) => {
-  const radioId = useId();
-  const [internalValue, setInternalValue] = useState<string | undefined>(isValue);
-  const radioValue = onValueChange ? isValue : internalValue;
+import React from 'react';
 
-  const handleRadioChange = (nextValue: string) => {
-    if (onValueChange) {
-      onValueChange(nextValue);
-      return;
-    }
-
-    setInternalValue(nextValue);
-  };
-
-  return (
-    <Gcol
-      className={cn('w-full overflow-hidden rounded-[1.2rem] border border-solid border-[#D8D8D8]', className)}
-      placement="ss"
-    >
-      <Grow className="w-full bg-[#F4F4F4] p-[1rem]" placement="bwc" gap="[1rem]">
-        <Typo tag={'h3'} variant={'body-lg'} className="flex items-baseline gap-[0.6rem]" weight={'bold'}>
-          <Badge color="secondary" variant="contained" className="h-[1.8rem] w-[1.8rem]">
-            {badgeLabel}
-          </Badge>
-          {question}
-        </Typo>
-        {isRadio ? (
-          <RadioGroup
-            className={cn('gap-[1.2rem] w-[11rem]', radioClassName)}
-            errorMsg={radioErrorMsg}
-            errorPs={radioErrorPs}
-            onValueChange={handleRadioChange}
-            value={radioValue}
-            width="auto"
-            disabled={disabled}
-          >
-            <RadioGroupItem
-              color="primary"
-              id={`${radioId}-yes`}
-              size="lg"
-              value="Y"
-              variant="default"
-              disabled={disabled}
-            >
-              예
-            </RadioGroupItem>
-            <RadioGroupItem
-              color="primary"
-              id={`${radioId}-no`}
-              size="lg"
-              value="N"
-              variant="default"
-              disabled={disabled}
-            >
-              아니요
-            </RadioGroupItem>
-          </RadioGroup>
-        ) : null}
-      </Grow>
-      <Grid className={cn('w-full p-[1rem]', contentClassName)}>{children}</Grid>
-    </Gcol>
-  );
-};
+export const QuestionRadioCard = React.forwardRef<HTMLDivElement, QuestionRadioCardProps>(
+  ({
+    children,
+    className,
+    isValue,
+    onValueChange,
+  }, ref) => {
+    const [internalValue, setInternalValue] = useState<string | undefined>(isValue);
+    return (
+      <Gcol
+        className={cn('w-full overflow-hidden rounded-[1.2rem] gap-0 border border-solid border-[#D8D8D8] p-0', className)}
+        placement="ss"
+      >
+        {children}
+      </Gcol>
+    );
+  }
+);
+QuestionRadioCard.displayName = 'QuestionRadioCard';

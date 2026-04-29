@@ -25,7 +25,7 @@ const VARIANT_OPTIONS = [
 ] as const;
 
 const WEIGHT_OPTIONS = ['normal', 'bold', 'semibold'] as const;
-const COLOR_OPTIONS = ['default', 'gray-light', 'gray', 'danger', 'primary', 'secondary', 'information'] as const;
+const COLOR_OPTIONS = ['default', 'gray-light', 'gray', 'danger', 'primary', 'secondary', 'information', 'green'] as const;
 const TAG_OPTIONS = ['span', 'p', 'div', 'strong', 'label', 'h1', 'h2', 'h3'] as const;
 
 const ICON_OPTIONS = [null, 'info', 'warning', 'detail', 'dot', 'dotBig', 'hash', 'dash', 'star'] as const;
@@ -179,7 +179,7 @@ import { Typo } from '@atoms';
     tag: 'span',
     variant: 'body-md',
     weight: 'normal',
-    color: 'default',
+    color: 'default', // green도 선택 가능
     icon: undefined,
     children: '샘플용 Typography 0123<br/>샘플용 Typography 0123',
   },
