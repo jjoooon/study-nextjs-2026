@@ -1,10 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -28,8 +23,12 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;
@@ -106,7 +105,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa170 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz098 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '증권(설계번호)',

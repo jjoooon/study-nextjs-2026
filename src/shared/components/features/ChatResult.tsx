@@ -1,6 +1,6 @@
 'use client';
 
-import { Grow, Gcol, Grid, Typo, ConTit, ConTitName } from '@atoms';
+import { Grow, Gcol, Grid, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import { Textarea } from '@uiux/Textarea';

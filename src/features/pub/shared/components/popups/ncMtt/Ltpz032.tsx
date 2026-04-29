@@ -23,7 +23,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Ltpz03201 } from './Ltpz03201';
+import { Ltpz03201 } from './Ltpz094';
 
 type Ltpz032TabType = {
   name: string;

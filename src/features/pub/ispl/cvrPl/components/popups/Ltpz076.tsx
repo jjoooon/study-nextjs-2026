@@ -1,16 +1,5 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-
-import { TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { TableFold } from '@/shared/components/common/TableFold';
-import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -24,6 +13,17 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+
+import { TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { TableFold } from '@/shared/components/common/TableFold';
+import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
+import { Input } from '@/shared/components/uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';
@@ -153,7 +153,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz01701 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '코드',

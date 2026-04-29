@@ -1,11 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -25,6 +20,11 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -106,7 +106,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa160 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',

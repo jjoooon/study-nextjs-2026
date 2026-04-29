@@ -2,13 +2,13 @@ import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
-import { Ltpa3500302 } from '@/features/pub/ispl/ncMtt/components/popups/Ltpa3500302';
+import { Ltpz044 } from '@/features/pub/ispl/cvrPl/components/popups/Ltpz044';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
-const meta: Meta<typeof Ltpa3500302> = {
-  title: 'app/popup/Ltpa3500302',
-  component: Ltpa3500302,
+const meta: Meta<typeof Ltpz044> = {
+  title: 'app/ispl/cvrPl/components/popups/Ltpz044',
+  component: Ltpz044,
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
@@ -43,7 +43,7 @@ export const Default: Story = {
           </Button>
         </div>
 
-        <Ltpa3500302 open={open} onOpenChange={setOpen} />
+        <Ltpz044 open={open} onOpenChange={setOpen} />
       </LayoutDoc>
     );
   },
