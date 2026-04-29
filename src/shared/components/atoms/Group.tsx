@@ -1,3 +1,4 @@
+import { Typo } from '@atoms';
 import type { CSSProperties, KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiTypes';
@@ -256,3 +257,14 @@ export const Divider = ({ className, variant = 'default', dir = 'col', color = '
     />
   );
 };
+
+export function ConTit({ children }: { children: React.ReactNode }) {
+  return (
+    <Grow placement={'bwc'} className="w-full">
+      {children}
+    </Grow>
+  );
+}
+export function ConTitName({ children }: { children: React.ReactNode }) {
+  return <Typo variant="heading-md">{children}</Typo>;
+}
