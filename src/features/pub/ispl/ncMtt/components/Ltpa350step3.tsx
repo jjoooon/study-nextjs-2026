@@ -9,6 +9,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
+  useAgGridInfiniteAppend,
 } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -30,6 +31,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { TooltipQ } from '@common/TooltipQ';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { TableMore } from '@/shared/components/common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -370,7 +372,7 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
   ];
 
-  // --- Scroll-to-card logic ---
+  
   const scrollToCard = (badgeNum: number) => {
     const anchor = document.getElementById(`question-card-${badgeNum}`);
     if (!anchor) return;
@@ -402,8 +404,10 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
       field: 'field01',
       cellClass: 'text-left',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        // isAuto가 true면 Badge 표시
-        const { isAuto, field01 } = params.data as DummyDataType;
+        // isAuto가 true면 Badge 표시, params.data가 undefined일 때 방어
+        const data = params.data as DummyDataType | undefined;
+        if (!data) return null;
+        const { isAuto, field01 } = data;
         return (
           <span className="flex items-center gap-1">
             {field01}
@@ -422,8 +426,9 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
       headerName: '치료내용',
       flex: 1,
       field: 'field03',
-      cellClass: 'text-left',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
+      cellClass: 'text-left leading-normal!',
+      wrapText: true,
+      autoHeight: true
     },
     {
       headerName: '치료병원',
@@ -467,6 +472,13 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
   const [qAnswerList, setQAnswerList] = React.useState<Array<'Y' | 'N' | ''>>(QuestionDataList);
 
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+
+
+  const pageSize = 4;
+  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
   return (
     <>
       <form
@@ -1011,22 +1023,29 @@ export function Ltpa350Step3({ simpleMode: _simpleMode }: Ltpa350Step3Props) {
                       </QuestionRadioCardHeader>
                       <QuestionRadioCardContents>
                         <Grid className="w-full">
-                        <div className="ag-theme-alpine min-h-[15.3rem]">
+                        <div className="ag-theme-alpine">
                             <AgGridReact<DummyDataType>
                               getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
-                              rowData={rowData}
+                              // rowData={rowData}
                               columnDefs={columnDefs}
                               defaultColDef={{
                                 sortable: true,
                                 resizable: true,
                               }}
-                              domLayout="normal"
                               className="text-center"
-                              tooltipShowMode="whenTruncated"
-                              tooltipShowDelay={0}
+                              domLayout="autoHeight"
+                              rowData={DummyData.slice(0, loadedCount)}
                             />
                           </div>
+                          <TableMore
+                            loadedCount={loadedCount}
+                            totalCount={totalCount}
+                            pageSize={pageSize}
+                            onLoadAll={handleLoadAll}
+                            onLoadNext={handleLoadNext}
+                            onLoadReset={() => setLoadedCount(pageSize)}
+                          />
                         </Grid>
                       </QuestionRadioCardContents>
                     </QuestionRadioCard>

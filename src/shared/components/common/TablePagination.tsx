@@ -25,6 +25,7 @@ interface TableMoreProps {
 
   onLoadAll?: () => void;
   onLoadNext?: () => void;
+  onLoadReset?: () => void;
 }
 
 export function TablePagination({ currentPage, totalPages, onPageChange, itemsPerPage }: TablePaginationProps) {
@@ -124,6 +125,7 @@ export function TableMore({
   onLoadedCountChange,
   onLoadAll,
   onLoadNext,
+  onLoadReset,
 }: TableMoreProps) {
   const hasCountMode =
     typeof loadedCount === 'number' && typeof totalCount === 'number' && typeof pageSize === 'number' && pageSize > 0;
@@ -142,6 +144,19 @@ export function TableMore({
   const isLastPage = resolvedCurrentPage >= resolvedTotalPages;
 
   const handleLoadAll = () => {
+    if (isLastPage) {
+      if (onLoadReset) {
+        onLoadReset();
+        return;
+      }
+      if (hasCountMode && onLoadedCountChange) {
+        onLoadedCountChange(pageSize!);
+        return;
+      }
+      onPageChange?.(1);
+      return;
+    }
+
     if (onLoadAll) {
       onLoadAll();
       return;
@@ -152,7 +167,6 @@ export function TableMore({
       return;
     }
 
-    // 기본 동작: 마지막 페이지로 이동(=전체 조회)
     onPageChange?.(resolvedTotalPages);
   };
 
@@ -182,8 +196,8 @@ export function TableMore({
 
       <Grow>
         {isAll && (
-          <Button variant={'contained'} size={'md'} color={'coolgray'} onClick={handleLoadAll} disabled={isLastPage}>
-            전체조회
+          <Button variant={'contained'} size={'md'} color={'coolgray'} onClick={handleLoadAll}>
+            {isLastPage ? '접기' : '전체보기'}
           </Button>
         )}
         <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleLoadNext} disabled={isLastPage}>
