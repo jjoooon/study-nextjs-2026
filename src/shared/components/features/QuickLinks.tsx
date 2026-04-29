@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { AddIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
+import Link from 'next/link';
 
 type QuickLinkItem = {
   name: string;

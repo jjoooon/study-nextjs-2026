@@ -1,9 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -22,6 +19,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;

@@ -1,9 +1,5 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -18,6 +14,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 

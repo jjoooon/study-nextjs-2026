@@ -2,19 +2,6 @@
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
 
-import type {
-  ColDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellEditorParams,
-  ICellRendererParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback } from 'react';
-import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import {
   AgGridEmptyComponent,
   DatePickerCellEditor,
@@ -36,6 +23,19 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type {
+  ColDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -175,9 +175,7 @@ export default function Ltpa210Section() {
                     onClick={(event) => {
                       event.stopPropagation();
                       setRowData((prev) =>
-                        prev.map((row) =>
-                          row.id === params.data?.id ? { ...row, isField01InputVisible: true } : row
-                        )
+                        prev.map((row) => (row.id === params.data?.id ? { ...row, isField01InputVisible: true } : row))
                       );
 
                       requestAnimationFrame(() => {

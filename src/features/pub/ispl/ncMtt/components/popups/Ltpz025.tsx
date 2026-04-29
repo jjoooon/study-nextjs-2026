@@ -1,7 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -15,12 +13,13 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent } from '@aggrid';
+import * as React from 'react';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import '@/shared/lib/agGridPub';
+import { AgGridEmptyComponent } from '@aggrid';
 
 type DummyDataType = {
   id: number;
@@ -36,7 +35,6 @@ const DummyData: DummyDataType[] = [
     field03: '010-****-5651',
   },
 ];
-
 
 type DummyDataType2 = {
   id: number;
@@ -72,7 +70,6 @@ const DummyData2: DummyDataType2[] = [
     field05: '동의요청',
   },
 ];
-
 
 export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -132,7 +129,7 @@ export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -143,16 +140,22 @@ export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ025)
-             </Typo>
+            </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid-rows-[auto_1fr]'>
-          <Typo tag={'div'} variant={'body-lg'}>심사평가원 동의를 위한 알림톡을 발송합니다.</Typo>
-          <Grid className='grid-rows-[auto_1fr]' gap={3}>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Typo tag={'div'} variant={'body-lg'}>
+            심사평가원 동의를 위한 알림톡을 발송합니다.
+          </Typo>
+          <Grid className="grid-rows-[auto_1fr]" gap={3}>
             <Gcol>
-              <Grow placement='bwc'>
-                <Typo variant={'body-lg'} weight={'bold'}>발송 대상</Typo>
-                <Button variant={'contained'} size={'md'} color={'primary'}>알림톡 전송</Button>
+              <Grow placement="bwc">
+                <Typo variant={'body-lg'} weight={'bold'}>
+                  발송 대상
+                </Typo>
+                <Button variant={'contained'} size={'md'} color={'primary'}>
+                  알림톡 전송
+                </Button>
               </Grow>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
@@ -169,9 +172,8 @@ export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
                 />
               </div>
             </Gcol>
-            <TableFold >
-              <TableFoldHead title="발송이력">
-              </TableFoldHead>
+            <TableFold>
+              <TableFoldHead title="발송이력"></TableFoldHead>
               <TableFoldBody>
                 <div className="ag-theme-alpine min-h-[15.3rem]">
                   <AgGridReact<DummyDataType2>

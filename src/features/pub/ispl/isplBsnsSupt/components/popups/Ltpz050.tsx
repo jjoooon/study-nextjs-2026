@@ -1,8 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import { Textarea } from '@/shared/components/uiux/Textarea';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,6 +15,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import * as React from 'react';
+import { Textarea } from '@/shared/components/uiux/Textarea';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
   return (

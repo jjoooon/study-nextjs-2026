@@ -1,12 +1,10 @@
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, phoneNumberValueFormatter, phoneNumberValueParser } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,8 +15,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { SearchIcon } from '@icons';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -65,7 +65,7 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
       editable: (params) => params.data?.field1 === '계약자',
       cellEditor: 'agTextCellEditor',
       cellEditorParams: {
-        maxLength: 13, 
+        maxLength: 13,
       },
       valueFormatter: phoneNumberValueFormatter,
       valueParser: phoneNumberValueParser,
@@ -73,7 +73,7 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -117,7 +117,9 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Grow>
           </Gcol>
           <Gcol className="w-full" placement="ss" variant="box-warning">
-            <Typo icon="warning" variant="body-sm">계약자 휴대폰 번호는 고객등록화면에서 수정</Typo>
+            <Typo icon="warning" variant="body-sm">
+              계약자 휴대폰 번호는 고객등록화면에서 수정
+            </Typo>
           </Gcol>
           <Gcol className="w-full" placement="ss" variant="box-info">
             <Typo icon="info" variant="body-sm">
@@ -125,10 +127,12 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
             <BulletList>
               <BulletListItem size="sm">
-                보험차익비과세란? - 저축성보험에서 보험차익이 이자소득에 해당되어 과세가 되어야 하나 금융산업을 위해 일정한 조건을 충족하면 이에 대해 비과세를 적용합니다.
+                보험차익비과세란? - 저축성보험에서 보험차익이 이자소득에 해당되어 과세가 되어야 하나 금융산업을 위해
+                일정한 조건을 충족하면 이에 대해 비과세를 적용합니다.
               </BulletListItem>
               <BulletListItem size="sm">
-                저축성보험 비과세 적용 요건 및 가입한도 : 비과세 상품 가입 시 세금우대 등록이 필수입니다. (전 금융권 통합 가입한도 초과여부 관리)
+                저축성보험 비과세 적용 요건 및 가입한도 : 비과세 상품 가입 시 세금우대 등록이 필수입니다. (전 금융권
+                통합 가입한도 초과여부 관리)
                 <BulletList>
                   <BulletListItem size="sm" before="1." type="symbols">
                     월 적립식 저축성보험
@@ -156,9 +160,9 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
                       <BulletListItem size="sm" before="③" type="symbols">
                         비과세 적용 - 세금우대전산망 비과세 등록 시
                       </BulletListItem>
-                    </BulletList>  
+                    </BulletList>
                   </BulletListItem>
-                </BulletList>  
+                </BulletList>
               </BulletListItem>
             </BulletList>
           </Gcol>
