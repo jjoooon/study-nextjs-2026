@@ -273,7 +273,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
           >
             {active === 'tab1' ? (
               <>
-                <Gcol placement="ss" className="w-full pt-2" gap={5}>
+                <Gcol placement="ss" className="w-full pt-3" gap={3}>
                   <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
                     <FormTable
                       variant={'head'}
@@ -326,7 +326,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </FormRow>
                     </FormTable>
                   </Grow>
-                  <Grow placement={'bws'} className="w-full" gap={5}>
+                  <Grow placement={'bws'} className="w-full" gap={3}>
                     <div className="ag-theme-alpine w-full">
                       <AgGridReact<DummyDataType1T1>
                         getRowId={(params) => String(params.data.id)}
@@ -492,12 +492,12 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Gcol>
               </>
             ) : (
-              <Gcol placement="ss" className="w-full h-full pt-2" gap={5}>
+              <Gcol placement="ss" className="w-full h-full pt-2" gap={3}>
                 <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
                   <FormTable
                     variant={'none'}
                     caption="피보험자 정보 테이블"
-                    cols={['w-[5rem]', 'w-[5rem]', 'w-[5rem]', 'w-[11rem]', 'w-[13rem]', 'w-auto']}
+                    cols={['w-[5rem]', 'w-[5rem]', 'w-[5rem]', 'w-[11rem]', 'w-[14rem]', 'w-auto']}
                   >
                     <FormRow>
                       <FormCell title={'피보험자'}>
