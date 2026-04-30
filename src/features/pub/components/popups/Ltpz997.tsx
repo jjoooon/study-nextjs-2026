@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from 
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
-
 type DummyDataType = {
   id: number;
   field1: string;
@@ -17,7 +16,7 @@ const dummyData: DummyDataType[] = [
   { id: 2, field1: '홍길순', field2: '-', field3: '-' },
 ];
 
-export const Ltpz997 = () => {
+const Ltpz997 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
@@ -65,3 +64,5 @@ export const Ltpz997 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz997;

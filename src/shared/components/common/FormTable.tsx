@@ -1,9 +1,9 @@
-import { Typo, Grow } from '@atoms';
-import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Typo, Grow } from '@atoms';
+import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 const FormCellVariants = cva('', {
   variants: {
@@ -162,7 +162,7 @@ export const FormCell = ({
           </dt>
         )}
         {!tdNone && (
-          <dd className={cn(tdClassName)} style={tdStyle}>
+          <dd className={cn('text-[#000]', tdClassName)} style={tdStyle}>
             {children}
           </dd>
         )}
@@ -273,7 +273,7 @@ export const FormTable = ({
 
   if (variant === 'head') {
     return (
-      <div className={cn('formtable-head-root', className)} data-variant={variant}>
+      <div className={cn('formtable-head-root w-full', className)} data-variant={variant}>
         {caption && <div className="a11y-hidden">{caption}</div>}
         <VariantContext.Provider value={variant as FormVariant}>
           <div className="formtable-head-body">{children}</div>
@@ -325,7 +325,7 @@ export const FormRow = ({ children, vertical, cols: _cols, className, style }: F
   if (contextVariant === 'head') {
     return (
       <VerticalContext.Provider value={vertical}>
-        <dl className={cn('flex flex-wrap gap-2', className)} style={style}>
+        <dl className={cn('flex flex-wrap gap-x-6 gap-y-1', className)} style={style}>
           {children}
         </dl>
       </VerticalContext.Provider>

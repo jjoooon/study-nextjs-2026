@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -24,11 +28,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-
 
 type DummyDataType = {
   id: number;
@@ -161,7 +160,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz001 = () => {
+const Ltpz001 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '미리보기',
@@ -236,33 +235,26 @@ export const Ltpz001 = () => {
         <DialogSection className="grid-cols-[1fr_auto]">
           {/* M2. 구조 변경 수정 */}
           <Grid className="grid-rows-[1fr_auto] h-full gap-3">
-            <div className=" w-full h-full relative min-h-[50vh] overflow-y-auto ">
+            <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto ">
               <Gcol gap={5} placement={'ss'} className="absolute">
                 {[0, 1].map((idx) => (
                   <Gcol gap={2} placement={'ss'} key={idx}>
                     <Grow variant={'box-info-line'} className="w-full">
-                      <FormTable variant={'head'} cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}>
+                      <FormTable variant={'head'} className="w-full">
                         <FormRow>
                           <FormCell title={'설계번호'}>
-                            <Typo tag={'b'} variant={'body-lg'}>
-                              {idx === 0 && 'LA26029313558'}
-                              {idx === 1 && 'LA26029313559'}
-                              {idx === 2 && 'LA26029313560'}
-                            </Typo>
+                            <Input value={'LA26029313558'} variant="info" width={120} readOnly />
                           </FormCell>
                           <FormCell title={'계약자명'}>
-                            <Typo tag={'b'} variant={'body-lg'}>
-                              {idx === 0 && '김한화'}
-                              {idx === 1 && '이한화'}
-                              {idx === 2 && '박한화'}
-                            </Typo>
+                            <Input value={'김한화'} readOnly variant="info" width={80} />
                           </FormCell>
                           <FormCell title={'상품명'}>
-                            <Typo tag={'b'} variant={'body-lg'}>
-                              {idx === 0 && '한화시그니처여성 건강 보험 3.0 무배당'}
-                              {idx === 1 && '한화시그니처남성 건강 보험 3.0 무배당'}
-                              {idx === 2 && '한화시그니처어린이 건강 보험 3.0 무배당'}
-                            </Typo>
+                            <Input
+                              value={'한화시그니처여성 건강 보험 3.0 무배당'}
+                              readOnly
+                              variant="info"
+                              width={'full'}
+                            />
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -669,3 +661,5 @@ export const Ltpz001 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz001;

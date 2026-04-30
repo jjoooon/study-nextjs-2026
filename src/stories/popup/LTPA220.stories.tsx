@@ -18,7 +18,7 @@ export const Default = () => {
         </Button>
       </div>
 
-      <Ltpa220 open={open} onOpenChange={setOpen} />
+      <Ltpa220 />
     </LayoutDoc>
   );
 };

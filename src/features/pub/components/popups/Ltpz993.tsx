@@ -1,14 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Typo } from '@atoms';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-
-
+import { AgGridEmptyComponent } from '@aggrid';
+import { Typo } from '@atoms';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 type DummyDataType = {
   id: number;
@@ -29,7 +27,7 @@ const DummyData: DummyDataType[] = [
   { id: 10, field1: '시스템관리-권한설정', field2: '시스템 관리자', field3: '조회,등록,수정,삭제' },
 ];
 
-export const Ltpz993 = () => {
+const Ltpz993 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -74,6 +72,10 @@ export const Ltpz993 = () => {
               rowData={rowData}
               columnDefs={columnDefs}
               domLayout="normal"
+              defaultColDef={{
+                sortable: true,
+                resizable: true,
+              }}
             />
           </div>
         </DialogSection>
@@ -81,3 +83,5 @@ export const Ltpz993 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz993;

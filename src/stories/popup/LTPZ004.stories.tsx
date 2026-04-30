@@ -18,7 +18,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz999 열기</Button>
       </div>
 
-      <Ltpz004 open={open} onOpenChange={setOpen} />
+      <Ltpz004 />
     </LayoutDoc>
   );
 };

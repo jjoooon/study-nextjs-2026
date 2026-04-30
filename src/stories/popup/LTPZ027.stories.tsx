@@ -18,7 +18,7 @@ export const Default = () => {
         </Button>
       </div>
 
-      <Ltpz027 open={open} onOpenChange={setOpen} />
+      <Ltpz027 />
     </LayoutDoc>
   );
 };

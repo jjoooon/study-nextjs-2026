@@ -1,14 +1,14 @@
 'use client';
 
-import { ErrorMsg } from '@common/ErrorMsg';
-import { InputClearIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import { useState } from 'react';
 import * as React from 'react';
 
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { InputClearIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -182,7 +182,7 @@ function Input({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const readonlyStyle2 = readOnly
-    ? 'bg-[transparent] cursor-not-allowed opacity-100 pointer-events-none border-0 px-0'
+    ? 'bg-[transparent] cursor-not-allowed opacity-100 pointer-events-none border-0 px-0 text-[#000] font-bold appearance-none field-sizing-[content]'
     : '';
   const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
@@ -211,7 +211,7 @@ function Input({
   //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
   // }
   return (
-    <div className={cn('relative', className)} style={widthStyle}>
+    <div className={cn('relative', className)} style={variant !== 'info' ? widthStyle : undefined}>
       {before || after ? (
         <div
           className={cn(
@@ -272,26 +272,30 @@ function Input({
         </div>
       ) : (
         <>
-          <input
-            type={type}
-            data-slot="input"
-            className={cn(
-              variantStyles[variant],
-              commaAmount && 'text-right tracking-[-0.13rem]',
-              'w-[100%] [:focus]:px-[0.7rem]'
-            )}
-            required={required}
-            readOnly={readOnly}
-            aria-invalid={error || undefined}
-            aria-describedby={error ? errorId : undefined}
-            value={isControlled ? displayValue : undefined}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            style={mergedInputStyle}
-            placeholder={resolvedPlaceholder}
-            {...inputProps}
-          />
+          {variant === 'info' && readOnly ? (
+            <span className="font-bold text-[#000]">{displayValue}</span>
+          ) : (
+            <input
+              type={type}
+              data-slot="input"
+              className={cn(
+                variantStyles[variant],
+                commaAmount && 'text-right tracking-[-0.13rem]',
+                'w-[100%] [:focus]:px-[0.7rem]'
+              )}
+              required={required}
+              readOnly={readOnly}
+              aria-invalid={error || undefined}
+              aria-describedby={error ? errorId : undefined}
+              value={isControlled ? displayValue : undefined}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              style={mergedInputStyle}
+              placeholder={resolvedPlaceholder}
+              {...inputProps}
+            />
+          )}
           {clear && isInputFocused && displayValue !== '' && (
             <Button
               variant="none"

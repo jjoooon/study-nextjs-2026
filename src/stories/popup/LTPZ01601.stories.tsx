@@ -43,7 +43,7 @@ export const Default: Story = {
           </Button>
         </div>
 
-        <Ltpz01601 open={open} onOpenChange={setOpen} />
+        <Ltpz01601 />
       </LayoutDoc>
     );
   },

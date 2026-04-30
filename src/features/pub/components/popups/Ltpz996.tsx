@@ -1,14 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Typo } from '@atoms';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-
-
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Typo } from '@atoms';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 type DummyDataType = {
   id: number;
@@ -38,7 +36,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz996 = () => {
+const Ltpz996 = () => {
   const rowData = DummyData;
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
@@ -120,3 +118,5 @@ export const Ltpz996 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz996;

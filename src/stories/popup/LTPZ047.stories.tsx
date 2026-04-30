@@ -17,7 +17,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpz047 open={open} onOpenChange={setOpen} />
+      <Ltpz047 />
     </LayoutDoc>
   );
 };

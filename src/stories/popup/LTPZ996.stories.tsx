@@ -1,7 +1,7 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpz996 } from '@/features/pub/components/popups/Ltpz996';
+import Ltpz996 from '@/features/pub/components/popups/Ltpz996';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
@@ -18,7 +18,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz996 열기</Button>
       </div>
 
-      <Ltpz996 open={open} onOpenChange={setOpen} />
+      <Ltpz996 />
     </LayoutDoc>
   );
 };
