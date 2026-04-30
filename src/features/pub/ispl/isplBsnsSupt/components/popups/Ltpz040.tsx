@@ -237,6 +237,7 @@ export const Ltpz040 = () => {
                       headerCheckbox: true,
                       checkboxes: true,
                       enableClickSelection: false,
+                      width: 50
                     }}
                     rowClassRules={{}}
                     onGridReady={(params) => {
