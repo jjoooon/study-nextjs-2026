@@ -237,6 +237,7 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
                       headerCheckbox: true,
                       checkboxes: true,
                       enableClickSelection: false,
+                      width: 50
                     }}
                     rowClassRules={{}}
                     onGridReady={(params) => {
