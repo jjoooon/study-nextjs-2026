@@ -1,13 +1,13 @@
 'use client';
 
-import React from 'react';
-import { useTabsPagination } from '@/shared/hooks/useTabs';
 import { Grow, Typo } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { ArrowIcon, ListIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { Tabs, TabsList, TabsContent, TabsTrigger, TabsLine } from '@uiux/Tabs';
+import React from 'react';
+import { useTabsPagination } from '@/shared/hooks/useTabs';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 interface TabPagerProps<T> {
@@ -163,8 +163,11 @@ export function TabPager<T>({
             {renderAfter}
           </Grow>
         </TabsLine>
-        {children && <TabsContent value={active ?? ''} className={contentClass}>{children}</TabsContent>}
-        
+        {children && (
+          <TabsContent value={active ?? ''} className={contentClass}>
+            {children}
+          </TabsContent>
+        )}
       </Tabs>
     </>
   );

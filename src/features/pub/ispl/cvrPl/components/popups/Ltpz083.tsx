@@ -3,10 +3,6 @@
 // M1. 파일명수정 LTPA070 -> LTPZ083
 // M1. 컴포넌트명수정 LTPA070 -> LTPZ083
 
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 
@@ -24,6 +20,10 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 

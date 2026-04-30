@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol } from '@atoms';
 import { Tabs, TabsList, TabsContent, TabsTrigger } from '@uiux/Tabs';
+import { useState } from 'react';
 import { INITIAL_TABS } from '../constants/insPlanBasicData';
 import type { TabKey } from '../constants/insPlanBasicData';
 import { useForm } from '../hooks/useForm';
 import { InsPlanBasic, InsPlanBasicStep1, InsPlanBasicStep2, InsPlanBasicStep3 } from './Page2Index';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 export default function LniPl020Step1() {
   const [testError, setTestError] = useState(false);

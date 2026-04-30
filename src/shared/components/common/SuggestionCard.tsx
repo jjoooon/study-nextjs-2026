@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Typo } from '@atoms';
 import { AiIcon } from '@icons';
+import Image from 'next/image';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 export interface SuggestionCardProps {
   /** 영역 상단 텍스트 */

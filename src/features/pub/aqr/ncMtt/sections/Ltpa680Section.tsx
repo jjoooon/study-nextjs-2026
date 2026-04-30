@@ -1,36 +1,36 @@
-  // 가이드라인 유형 선택 상태
-  
+// 가이드라인 유형 선택 상태
+
 'use client';
 
 import '@/shared/lib/agGridPub';
 
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 
+import { ChevronDownIcon, FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import React, { useState } from 'react';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
-import { Grow, Grid, Gcol, Typo } from '@atoms';
-import { Input } from '@uiux/Input';
-import { ChevronDownIcon, FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Textarea } from '@uiux/Textarea';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { Badge } from '@uiux/Badge';
 
 type DummyDataType = {
   id: number;
@@ -78,13 +78,13 @@ const DummyData: DummyDataType[] = [
     field01: 'M48.0',
     field02: '염증성척추병증',
   },
-  
+
   {
     id: 8,
     field01: 'M48.0',
     field02: '척추전방전위증',
   },
-  
+
   {
     id: 9,
     field01: 'M48.0',
@@ -221,30 +221,30 @@ const DummyData4: DummyDataType4[] = [
 ];
 
 type DummyDataType5 = {
-    id: number;
-    field1: string | number;
-    field2: boolean;
-    field3: string | number;
-    field4: boolean;
-    field5: string | number;
-    field6: string | number;
-    field7: string | number;
-    field8: string | number;
-    field9: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
-    field20: string | number;
-    field21: string | number;
-    field22: string | number;
-    field23: string | number;
+  id: number;
+  field1: string | number;
+  field2: boolean;
+  field3: string | number;
+  field4: boolean;
+  field5: string | number;
+  field6: string | number;
+  field7: string | number;
+  field8: string | number;
+  field9: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+  field23: string | number;
 };
 
 const DummyData5: DummyDataType5[] = [
@@ -416,8 +416,12 @@ export default function Ltpa680Section() {
   const [surchargeChecks2, setSurchargeChecks2] = useState<string[]>([]);
   // 심사시 고려사항 Textarea readOnly 상태 관리
   const [isConsiderEditMode, setIsConsiderEditMode] = useState(false);
-  const [considerText1, setConsiderText1] = useState('[일반고지형 심사가이드라인]\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)');
-  const [considerText2, setConsiderText2] = useState('① 소견서(진단명, 치료기간, 치료내용, 현재상태 등)\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지');
+  const [considerText1, setConsiderText1] = useState(
+    '[일반고지형 심사가이드라인]\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)\n▶ 상해: 완치 1개월 경과 후 심사(치료기간별 심사)'
+  );
+  const [considerText2, setConsiderText2] = useState(
+    '① 소견서(진단명, 치료기간, 치료내용, 현재상태 등)\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지'
+  );
   const handleConsiderEditClick = () => setIsConsiderEditMode(true);
   const handleConsiderSaveClick = () => setIsConsiderEditMode(false);
   const [searchWord] = useState('척추');
@@ -458,7 +462,9 @@ export default function Ltpa680Section() {
                 <Button only="icon" size={'md'} variant="none">
                   {parts.map((part: string, idx: number) =>
                     part === searchWord ? (
-                      <b key={idx} style={{ fontWeight: 'bold', color: '#ff5c2e' }}>{part}</b>
+                      <b key={idx} style={{ fontWeight: 'bold', color: '#ff5c2e' }}>
+                        {part}
+                      </b>
                     ) : (
                       <React.Fragment key={idx}>{part}</React.Fragment>
                     )
@@ -486,8 +492,8 @@ export default function Ltpa680Section() {
                     </Badge>
                   </Grow>
                   <Typo tag={'p'} className="text-wrap">
-                    경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
-                    간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                    경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및 긴장,
+                    요추의 염좌 및 긴장
                   </Typo>
                 </Gcol>
               </TooltipContent>
@@ -915,23 +921,25 @@ export default function Ltpa680Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-cols-[24.7rem_1fr] h-full" placement='ss' gap={3}>
-            <Grid className='w-full gap-[1.2rem] grid-rows-[1fr_auto]' placement='ss'>
-              <Grid className='h-full grid-rows-[auto_1fr]' variant={'box-round'} placement='ss' gap={2}>
+          <Grid className="grid-cols-[24.7rem_1fr] h-full" placement="ss" gap={3}>
+            <Grid className="w-full gap-[1.2rem] grid-rows-[1fr_auto]" placement="ss">
+              <Grid className="h-full grid-rows-[auto_1fr]" variant={'box-round'} placement="ss" gap={2}>
                 <Grow>
-                  <Input width={195} placeholder='병명 또는 코드 입력'/>
-                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                  <Input width={195} placeholder="병명 또는 코드 입력" />
+                  <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
+                  </Button>
                 </Grow>
-                <Gcol placement='ss'>
+                <Gcol placement="ss">
                   {/* 검색결과가 없을때 */}
                   {/* <Typo className='text-center'>심사 기준이 궁금한 질병을<br></br> KCD코드 또는 질병명으로 검색해보세요.</Typo> */}
                   <Grow>
                     <Typo variant={'body-md'}>총</Typo>
-                    <Typo variant={'body-md'} weight={'bold'} color={'primary'}>{rowData.length}건</Typo>
+                    <Typo variant={'body-md'} weight={'bold'} color={'primary'}>
+                      {rowData.length}건
+                    </Typo>
                   </Grow>
-                  <div className="ag-theme-alpine min-h-144 " >
+                  <div className="ag-theme-alpine min-h-144 ">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -942,15 +950,12 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
               </Grid>
-              <Gcol className='w-full' placement='ss' gap={2}>
-                <Typo variant={'body-lg'} weight={'bold'}>많이 찾는 질병</Typo>
+              <Gcol className="w-full" placement="ss" gap={2}>
+                <Typo variant={'body-lg'} weight={'bold'}>
+                  많이 찾는 질병
+                </Typo>
                 <Gcol variant={'box-round'} placement={'bwc'}>
-                  <RadioGroup
-                    className="gap-1"
-                    onValueChange={setSelectedDisease}
-                    value={selectedDisease}
-                    width="full"
-                  >
+                  <RadioGroup className="gap-1" onValueChange={setSelectedDisease} value={selectedDisease} width="full">
                     {[
                       { value: '대장·직장용종', label: '대장·직장용종' },
                       { value: '척주염좌', label: '척주염좌' },
@@ -963,26 +968,32 @@ export default function Ltpa680Section() {
                       { value: '치액/치질', label: '치액/치질' },
                       { value: '자궁근종', label: '자궁근종' },
                     ].map((option) => (
-                      <RadioGroupItem key={option.value} value={option.value} color="primary" size="lg" variant="button">
+                      <RadioGroupItem
+                        key={option.value}
+                        value={option.value}
+                        color="primary"
+                        size="lg"
+                        variant="button"
+                      >
                         {option.label}
                       </RadioGroupItem>
                     ))}
                   </RadioGroup>
-                </Gcol>  
+                </Gcol>
               </Gcol>
             </Grid>
-            <Gcol placement='ss'>
-              <Grid className='grid-cols-[1fr_1fr_1fr] w-full' placement='ss' gap={3}>
-                <Gcol className='w-full' placement='ss'>
-                  <Grow className='w-full' placement='bwc'>
-                    <Typo variant={'body-lg'} weight={'bold'}>공지사항</Typo>
-                    <Button variant={'outlined'} color={'gray'} size={'sm'} >
-                      더보기 <ChevronDownIcon size={14} color='#545454' className='-rotate-90' />
-                    </Button>  
+            <Gcol placement="ss">
+              <Grid className="grid-cols-[1fr_1fr_1fr] w-full" placement="ss" gap={3}>
+                <Gcol className="w-full" placement="ss">
+                  <Grow className="w-full" placement="bwc">
+                    <Typo variant={'body-lg'} weight={'bold'}>
+                      공지사항
+                    </Typo>
+                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                      더보기 <ChevronDownIcon size={14} color="#545454" className="-rotate-90" />
+                    </Button>
                   </Grow>
-                  <div className="ag-theme-alpine no-header"
-                   style={{ borderTop: '0.2rem solid #000' }}
-                   >
+                  <div className="ag-theme-alpine no-header" style={{ borderTop: '0.2rem solid #000' }}>
                     <AgGridReact<DummyDataType2>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -995,15 +1006,15 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
                 <Gcol>
-                  <Grow className='w-full' placement='bwc'>
-                    <Typo variant={'body-lg'} weight={'bold'}>상품별 심사가이드라인</Typo>
-                    <Button variant={'outlined'} color={'gray'} size={'sm'} >
-                      더보기 <ChevronDownIcon size={14} color='#545454' className='-rotate-90' />
-                    </Button>  
+                  <Grow className="w-full" placement="bwc">
+                    <Typo variant={'body-lg'} weight={'bold'}>
+                      상품별 심사가이드라인
+                    </Typo>
+                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                      더보기 <ChevronDownIcon size={14} color="#545454" className="-rotate-90" />
+                    </Button>
                   </Grow>
-                  <div className="ag-theme-alpine no-header"
-                   style={{ borderTop: '0.2rem solid #000' }}
-                   >
+                  <div className="ag-theme-alpine no-header" style={{ borderTop: '0.2rem solid #000' }}>
                     <AgGridReact<DummyDataType3>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -1016,15 +1027,15 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
                 <Gcol>
-                  <Grow className='w-full' placement='bwc'>
-                    <Typo variant={'body-lg'} weight={'bold'}>UW정보</Typo>
-                    <Button variant={'outlined'} color={'gray'} size={'sm'} >
-                      더보기 <ChevronDownIcon size={14} color='#545454' className='-rotate-90' />
-                    </Button>  
+                  <Grow className="w-full" placement="bwc">
+                    <Typo variant={'body-lg'} weight={'bold'}>
+                      UW정보
+                    </Typo>
+                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                      더보기 <ChevronDownIcon size={14} color="#545454" className="-rotate-90" />
+                    </Button>
                   </Grow>
-                  <div className="ag-theme-alpine no-header"
-                   style={{ borderTop: '0.2rem solid #000' }}
-                   >
+                  <div className="ag-theme-alpine no-header" style={{ borderTop: '0.2rem solid #000' }}>
                     <AgGridReact<DummyDataType4>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -1037,9 +1048,11 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
               </Grid>
-              <Grid className='w-full' variant={'box-line'} placement='ss' gap={2}>
+              <Grid className="w-full" variant={'box-line'} placement="ss" gap={2}>
                 {selectedDisease && (
-                  <Typo variant={'body-lg'} weight={'bold'} color={'primary'}>{selectedDisease}</Typo>
+                  <Typo variant={'body-lg'} weight={'bold'} color={'primary'}>
+                    {selectedDisease}
+                  </Typo>
                 )}
                 <TabPager
                   data={tabs}
@@ -1049,7 +1062,7 @@ export default function Ltpa680Section() {
                   renderTab={(tab) => <span>{tab.label}</span>}
                 >
                   {active === 'tab1' && (
-                    <Gcol className='mt-1' gap={3}>
+                    <Gcol className="mt-1" gap={3}>
                       {/* 가이드라인 유형 선택 상태 */}
                       {/* 상단 useState 선언부에 추가: const [guidelineType, setGuidelineType] = useState('일반고지형'); */}
                       <RadioGroup
@@ -1059,20 +1072,21 @@ export default function Ltpa680Section() {
                         onValueChange={setGuidelineType}
                         width="full"
                         value={guidelineType}
-                      >{[
+                      >
+                        {[
                           { value: '일반고지형', label: '일반고지형' },
                           { value: '간편고지형', label: '간편고지형' },
-                      ].map((option) => (
-                        <RadioGroupItem
-                          key={option.value}
-                          size="lg"
-                          value={option.value}
-                          variant="chipBox"
-                          className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
-                        >
-                          {option.label}
-                        </RadioGroupItem>
-                      ))}  
+                        ].map((option) => (
+                          <RadioGroupItem
+                            key={option.value}
+                            size="lg"
+                            value={option.value}
+                            variant="chipBox"
+                            className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
+                          >
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
                       </RadioGroup>
 
                       {/* 선택된 가이드라인 유형별 영역 */}
@@ -1080,8 +1094,7 @@ export default function Ltpa680Section() {
                         <LayoutScrollItem>
                           <Gcol gap={3}>
                             <TableFold>
-                              <TableFoldHead title="추가질문">
-                              </TableFoldHead>
+                              <TableFoldHead title="추가질문"></TableFoldHead>
                               <TableFoldBody>
                                 <FormTable cols={['w-[18rem]', 'w-auto']}>
                                   <FormRow vertical={false}>
@@ -1112,13 +1125,20 @@ export default function Ltpa680Section() {
                                         ].map((item) => (
                                           <RadioGroupItem key={item.value} value={item.value}>
                                             {item.label}
-                                          </RadioGroupItem> 
+                                          </RadioGroupItem>
                                         ))}
                                       </RadioGroup>
                                     </FormCell>
                                   </FormRow>
                                   <FormRow>
-                                    <FormCell title={<><span>3. 척추질환동반</span><br /> (디스크,관절염,척추만곡 등)</>}>
+                                    <FormCell
+                                      title={
+                                        <>
+                                          <span>3. 척추질환동반</span>
+                                          <br /> (디스크,관절염,척추만곡 등)
+                                        </>
+                                      }
+                                    >
                                       <RadioGroup className="gap-3" onValueChange={() => {}}>
                                         {[
                                           { value: '없음', label: '없음' },
@@ -1126,10 +1146,10 @@ export default function Ltpa680Section() {
                                         ].map((item) => (
                                           <RadioGroupItem key={item.value} value={item.value}>
                                             {item.label}
-                                          </RadioGroupItem> 
+                                          </RadioGroupItem>
                                         ))}
                                       </RadioGroup>
-                                    </FormCell>  
+                                    </FormCell>
                                   </FormRow>
                                 </FormTable>
                               </TableFoldBody>
@@ -1148,7 +1168,12 @@ export default function Ltpa680Section() {
                                   <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleEditClick}>
                                     수정
                                   </Button>
-                                  <Button variant={'contained'} size={'md'} onClick={handleSaveClick} disabled={!isEditMode}>
+                                  <Button
+                                    variant={'contained'}
+                                    size={'md'}
+                                    onClick={handleSaveClick}
+                                    disabled={!isEditMode}
+                                  >
                                     저장
                                   </Button>
                                 </Grow>
@@ -1204,57 +1229,68 @@ export default function Ltpa680Section() {
                                     엑셀가져오기
                                     <FileImportIcon />
                                   </Button>
-                                  <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleConsiderEditClick} disabled={isConsiderEditMode}>
+                                  <Button
+                                    variant={'outlined'}
+                                    size={'md'}
+                                    color={'gray'}
+                                    onClick={handleConsiderEditClick}
+                                    disabled={isConsiderEditMode}
+                                  >
                                     수정
                                   </Button>
-                                  <Button variant={'contained'} size={'md'} onClick={handleConsiderSaveClick} disabled={!isConsiderEditMode}>
+                                  <Button
+                                    variant={'contained'}
+                                    size={'md'}
+                                    onClick={handleConsiderSaveClick}
+                                    disabled={!isConsiderEditMode}
+                                  >
                                     저장
                                   </Button>
                                 </Grow>
                               </TableFoldHead>
                               <TableFoldBody>
-                                <Grow gap={3} placement='ss'>
-                                  <Table className='w-full'>
+                                <Grow gap={3} placement="ss">
+                                  <Table className="w-full">
                                     <TableHeader>
                                       <TableRow>
                                         <TableHead>(질병별) 심사기준</TableHead>
                                       </TableRow>
                                     </TableHeader>
-                                    <TableBody className='px-[0.4rem] py-[0.6rem]'>
+                                    <TableBody className="px-[0.4rem] py-[0.6rem]">
                                       <TableRow>
                                         <TableCell>
                                           <Textarea
-                                            resize='y'
+                                            resize="y"
                                             value={considerText1}
                                             readOnly={!isConsiderEditMode}
-                                            className='h-40 w-full '
-                                            onChange={e => isConsiderEditMode && setConsiderText1(e.target.value)}
+                                            className="h-40 w-full "
+                                            onChange={(e) => isConsiderEditMode && setConsiderText1(e.target.value)}
                                           />
                                         </TableCell>
                                       </TableRow>
                                     </TableBody>
                                   </Table>
-                                  <Table className='w-full'>
+                                  <Table className="w-full">
                                     <TableHeader>
                                       <TableRow>
                                         <TableHead>심사기준</TableHead>
                                       </TableRow>
                                     </TableHeader>
-                                    <TableBody className=''>
+                                    <TableBody className="">
                                       <TableRow>
                                         <TableCell>
                                           <Textarea
-                                            resize='y'
+                                            resize="y"
                                             value={considerText2}
                                             readOnly={!isConsiderEditMode}
-                                            className='h-40'
-                                            onChange={e => isConsiderEditMode && setConsiderText2(e.target.value)}
+                                            className="h-40"
+                                            onChange={(e) => isConsiderEditMode && setConsiderText2(e.target.value)}
                                           />
                                         </TableCell>
                                       </TableRow>
                                     </TableBody>
                                   </Table>
-                                </Grow>  
+                                </Grow>
                               </TableFoldBody>
                             </TableFold>
                           </Gcol>
@@ -1263,23 +1299,28 @@ export default function Ltpa680Section() {
                     </Gcol>
                   )}
                   {active === 'tab2' && (
-                    <TableFold className='mt-1'>
+                    <TableFold className="mt-1">
                       <TableFoldHead title="질병관련 상세정보" />
                       <TableFoldBody>
-                        <Gcol variant={'box-round'} className='h-[12rem]' placement='ss'>
+                        <Gcol variant={'box-round'} className="h-[12rem]" placement="ss">
                           이미지노출
                         </Gcol>
-                      </TableFoldBody>  
+                      </TableFoldBody>
                     </TableFold>
                   )}
                   {active === 'tab3' && (
-                    <TableFold className='mt-1'>
+                    <TableFold className="mt-1">
                       <TableFoldHead title="Mobile용 질병정보"></TableFoldHead>
-                      <TableFoldBody className='gap-3'>
+                      <TableFoldBody className="gap-3">
                         <FormTable cols={['w-[18rem]', 'w-auto']}>
                           <FormRow vertical={false}>
                             <FormCell title={'발생부위'}>
-                              <Input width={'100%'} placeholder="" value={'갑상생 항진증, 갑상선기능항진증,갑상선독증, 고이터'} readOnly />
+                              <Input
+                                width={'100%'}
+                                placeholder=""
+                                value={'갑상생 항진증, 갑상선기능항진증,갑상선독증, 고이터'}
+                                readOnly
+                              />
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -1293,40 +1334,22 @@ export default function Ltpa680Section() {
                                 value={surchargeChecks}
                                 variant="default"
                               >
-                                <CheckboxGroupItem value="a">
-                                  고지할증
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="b">
-                                  전화인터뷰(TI)
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="c">
-                                  모바일인터뷰(MI)
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="d">
-                                  간편소견서
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="e">
-                                  약봉투
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="f">
-                                  서류
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="g">
-                                  할증대상
-                                </CheckboxGroupItem>
+                                <CheckboxGroupItem value="a">고지할증</CheckboxGroupItem>
+                                <CheckboxGroupItem value="b">전화인터뷰(TI)</CheckboxGroupItem>
+                                <CheckboxGroupItem value="c">모바일인터뷰(MI)</CheckboxGroupItem>
+                                <CheckboxGroupItem value="d">간편소견서</CheckboxGroupItem>
+                                <CheckboxGroupItem value="e">약봉투</CheckboxGroupItem>
+                                <CheckboxGroupItem value="f">서류</CheckboxGroupItem>
+                                <CheckboxGroupItem value="g">할증대상</CheckboxGroupItem>
                               </CheckboxGroup>
                             </FormCell>
                           </FormRow>
                           <FormRow>
                             <FormCell title={'부담보'}>
-                              <Checkbox
-                                onCheckedChange={() => {}}
-                                size="lg"
-                                variant="default"
-                              >
+                              <Checkbox onCheckedChange={() => {}} size="lg" variant="default">
                                 단일
                               </Checkbox>
-                            </FormCell>  
+                            </FormCell>
                           </FormRow>
                           <FormRow>
                             <FormCell title={'유병자상품'}>
@@ -1339,60 +1362,56 @@ export default function Ltpa680Section() {
                                 value={surchargeChecks2}
                                 variant="default"
                               >
-                                <CheckboxGroupItem value="a1">
-                                  SI경증
-                                </CheckboxGroupItem>
-                                <CheckboxGroupItem value="a2">
-                                  SI경증(담보제한)
-                                </CheckboxGroupItem>
+                                <CheckboxGroupItem value="a1">SI경증</CheckboxGroupItem>
+                                <CheckboxGroupItem value="a2">SI경증(담보제한)</CheckboxGroupItem>
                               </CheckboxGroup>
-                            </FormCell>  
+                            </FormCell>
                           </FormRow>
                         </FormTable>
-                        <Grow gap={3} placement='ss'>
-                          <Table className='w-full'>
+                        <Grow gap={3} placement="ss">
+                          <Table className="w-full">
                             <TableHeader>
                               <TableRow>
                                 <TableHead>(질병별) 심사기준</TableHead>
                               </TableRow>
                             </TableHeader>
-                            <TableBody className='px-[0.4rem] py-[0.6rem]'>
+                            <TableBody className="px-[0.4rem] py-[0.6rem]">
                               <TableRow>
                                 <TableCell>
                                   <Textarea
-                                    resize='y'
+                                    resize="y"
                                     value={considerText1}
                                     readOnly={!isConsiderEditMode}
-                                    className='h-40 w-full '
-                                    onChange={e => isConsiderEditMode && setConsiderText1(e.target.value)}
+                                    className="h-40 w-full "
+                                    onChange={(e) => isConsiderEditMode && setConsiderText1(e.target.value)}
                                   />
                                 </TableCell>
                               </TableRow>
                             </TableBody>
                           </Table>
-                          <Table className='w-full'>
+                          <Table className="w-full">
                             <TableHeader>
                               <TableRow>
                                 <TableHead>(질병별) 심사기준</TableHead>
                               </TableRow>
                             </TableHeader>
-                            <TableBody className=''>
+                            <TableBody className="">
                               <TableRow>
                                 <TableCell>
                                   <Textarea
-                                    resize='y'
+                                    resize="y"
                                     value={considerText2}
                                     readOnly={!isConsiderEditMode}
-                                    className='h-40'
-                                    onChange={e => isConsiderEditMode && setConsiderText2(e.target.value)}
+                                    className="h-40"
+                                    onChange={(e) => isConsiderEditMode && setConsiderText2(e.target.value)}
                                   />
                                 </TableCell>
                               </TableRow>
                             </TableBody>
                           </Table>
-                        </Grow>  
+                        </Grow>
                       </TableFoldBody>
-                    </TableFold>     
+                    </TableFold>
                   )}
                 </TabPager>
               </Grid>
@@ -1402,8 +1421,7 @@ export default function Ltpa680Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1}>
-              </Grow>
+              <Grow gap={1}></Grow>
               <Grow gap={1}>
                 <Button variant={'contained'} size={'xl'} color={'gray-light'}>
                   저장

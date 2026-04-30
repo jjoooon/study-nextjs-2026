@@ -1,10 +1,5 @@
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -26,6 +21,11 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 

@@ -1,13 +1,13 @@
 'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
 import { Grow, Typo } from '@/shared/components/atoms';
 import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@/shared/components/uiux/Button';
 import {
   Dialog,
@@ -98,13 +98,13 @@ export const Ltpa3500401 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '부담보기간',
       field: 'field3',
-      flex:1, 
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '사유내용',
       field: 'field4',
-      flex:1,
+      flex: 1,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field4' }),
     },

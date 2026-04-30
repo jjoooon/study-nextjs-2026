@@ -1,18 +1,6 @@
 'use client';
 
 // React
-import type {
-  ColDef,
-  ColGroupDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellRendererParams,
-  SuppressKeyboardEventParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback } from 'react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import {
   AgGridEmptyComponent,
   GridHeaderCheckbox,
@@ -38,6 +26,18 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellRendererParams,
+  SuppressKeyboardEventParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -98,7 +98,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
     []
   );
-  
+
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const onCellValueChanged = React.useMemo(
     () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['isAuthcheck1', 'isAuthcheck2']),
@@ -186,7 +186,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           editable: true,
           field: 'isAuthcheck2',
           headerClass: 'border-r-0!',
-          cellClass: (params) => isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center',
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -230,9 +230,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                     onClick={(event) => {
                       event.stopPropagation();
                       setRowData((prev) =>
-                        prev.map((row) =>
-                          row.id === params.data?.id ? { ...row, isField01InputVisible: true } : row
-                        )
+                        prev.map((row) => (row.id === params.data?.id ? { ...row, isField01InputVisible: true } : row))
                       );
 
                       requestAnimationFrame(() => {
