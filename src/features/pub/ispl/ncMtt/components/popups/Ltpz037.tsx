@@ -62,7 +62,7 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
             <Typo variant="body-lg" weight={'bold'}>고객정보</Typo>
             <Table variant="default">
               <colgroup>
-                <col style={{ width: '15rem' }} />
+                <col style={{ width: '10rem' }} />
                 <col style={{ width: 'auto' }} />
               </colgroup>
               <TableBody>
