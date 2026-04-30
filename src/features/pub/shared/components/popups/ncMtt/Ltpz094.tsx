@@ -145,6 +145,7 @@ export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field05',
       width: 80,
       autoHeight: true,
+      cellClass: 'text-center',
       suppressMovable: true,
     },
     {
@@ -152,6 +153,7 @@ export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field06',
       width: 80,
       autoHeight: true,
+      cellClass: 'text-center',
       suppressMovable: true,
     },
   ];
@@ -165,7 +167,7 @@ export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
               질병 상세내용
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz03201)
+              (Ltpz094)
             </Typo>
           </DialogTitle>
         </DialogHeader>
