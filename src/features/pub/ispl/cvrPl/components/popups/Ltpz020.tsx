@@ -152,7 +152,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
   const CombinedConstructionHeader = () => {
     const headerAreaStyle: React.CSSProperties = {
       width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
@@ -235,7 +235,7 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
-  // 검수: 체크시 트리구조 열림.
+  // 검수:체크시 트리구조 열림.
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">
@@ -358,3 +358,5 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz020;

@@ -69,7 +69,7 @@ const DummyData: DummyDataType[] = [
     field07: '71,397',
   },
 ];
-// 검수: 테이블 입력제외
+
 export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
