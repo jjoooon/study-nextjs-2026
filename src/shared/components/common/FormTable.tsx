@@ -151,6 +151,25 @@ export const FormCell = ({
           ? 'default'
           : 'default';
 
+  if (contextVariant === 'head' || usedVariant === 'head') {
+    return (
+      <div className="flex items-center gap-2 items-center">
+        {title !== null && (
+          <dt className={cn('font-bold', className)}>
+            <Typo variant={'body-md'} weight="bold" color={titleTypoColor}>
+              {title}
+            </Typo>
+          </dt>
+        )}
+        {!tdNone && (
+          <dd className={cn(tdClassName)} style={tdStyle}>
+            {children}
+          </dd>
+        )}
+      </div>
+    );
+  }
+
   return (
     <>
       {title !== null && (
@@ -158,7 +177,6 @@ export const FormCell = ({
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
-          // {...(style && { style })}
         >
           <Typo variant={'body-md'} weight="bold" color={titleTypoColor}>
             {title}
@@ -196,7 +214,6 @@ export const FormTable = ({
     default: `table-fixed w-full border-collapse ` + className,
     primary: 'table-fixed data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'table-fixed data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
-
     setting: `table-fixed w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] 
       [&_th]:bg-[transparent] 
       [&_th]:text-[#333] 
@@ -207,7 +224,6 @@ export const FormTable = ({
       [&_th]:border-none 
       [&_td]:border-none! 
       [&_tr]:border-0`,
-
     boxIn: `table-fixed w-full border-none 
       [&_th]:h-auto bg-[transparent] 
       [&_th]:bg-[transparent] 
@@ -220,45 +236,7 @@ export const FormTable = ({
       [&_td]:border-none 
       [&_tr]:border-none 
       [&_td]:p-0`,
-
-    head: `w-full border-none !flex flex-col bg-[transparent] 
-    [&>colgroup]:hidden 
-    [&>table>colgroup]:absolute 
-    [&>table]:flex 
-    [&>table>tbody]:flex 
-    [&>table>tbody>tr]:flex 
-    [&>table>tbody>tr]:items-center 
-    [&>table>tbody>tr]:justify-start 
-    [&>table>tbody>tr]:gap-2 
-    [&>table>tbody>tr]:border-none 
-    [&>table>tbody>tr]:w-full 
-    [&>table>tbody>tr]:flex-wrap  
-    [&>table>tbody>tr~tr>*]:pt-[0.6rem] 
-    [&>table>tbody>tr>th]:flex 
-    [&>table>tbody>tr>th]:shrink-0 
-    [&>table>tbody>tr>th]:items-center 
-    [&>table>tbody>tr>th]:justify-start 
-    [&>table>tbody>tr>th]:gap-2 
-    [&>table>tbody>tr>th]:border-none 
-    [&>table>tbody>tr>th]:w-max
-    [&>table>tbody>tr>th]:h-auto 
-    [&>table>tbody>tr>th]:bg-[transparent] 
-    [&>table>tbody>tr>th]:text-[#333] 
-    [&>table>tbody>tr>th]:font-bold 
-    [&>table>tbody>tr>th]:px-0 
-    [&>table>tbody>tr>th]:py-0 
-    [&>table>tbody>tr>th]:border-none 
-    [&>table>tbody>tr>th]:text-[1.3rem]
-    [&>table>tbody>tr>td]:border-none 
-    [&>table>tbody>tr>td]:p-0 
-    [&>table>tbody>tr>td]:flex 
-    [&>table>tbody>tr>td]:items-center 
-    [&>table>tbody>tr>td]:justify-start 
-    [&>table>tbody>tr>td]:gap-4 
-    [&>table>tbody>tr>td]:h-[auto] 
-    [&>table>tbody>tr>td]:text-[1.3rem] 
-    [&>table>tbody>tr>th+td]:pr-[1.6rem]`,
-
+    head: '', // head는 별도 분기
     none: `table-fixed border-0 bg-transparent 
     [&>table>tbody>tr>th]:bg-transparent 
     [&>table>tbody>tr>th]:border-0 
@@ -273,7 +251,6 @@ export const FormTable = ({
     [&>table>tbody>tr]:border-0! 
     [&>table>tbody>tr>td+th]:pl-[2.4rem] 
     [&>table>tbody>tr~tr>*]:pt-[0.6rem]`,
-
     bottom: `table-fixed border-0 bg-transparent 
     [&>table>tbody>tr>th]:bg-transparent 
     [&>table>tbody>tr>th]:border-0 
@@ -293,6 +270,19 @@ export const FormTable = ({
 
   // variant가 'none'이면 lineTop을 무시
   const showLineTop = lineTop && variant !== 'none';
+
+  if (variant === 'head') {
+    return (
+      <div className={cn('formtable-head-root', className)} data-variant={variant}>
+        {caption && <div className="a11y-hidden">{caption}</div>}
+        <VariantContext.Provider value={variant as FormVariant}>
+          <div className="formtable-head-body">{children}</div>
+        </VariantContext.Provider>
+        {after}
+      </div>
+    );
+  }
+
   return (
     <>
       <Table
@@ -331,6 +321,16 @@ export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
 };
 
 export const FormRow = ({ children, vertical, cols: _cols, className, style }: FormTrProps) => {
+  const contextVariant = useContext(VariantContext);
+  if (contextVariant === 'head') {
+    return (
+      <VerticalContext.Provider value={vertical}>
+        <dl className={cn('flex flex-wrap gap-2', className)} style={style}>
+          {children}
+        </dl>
+      </VerticalContext.Provider>
+    );
+  }
   return (
     <VerticalContext.Provider value={vertical}>
       <tr
