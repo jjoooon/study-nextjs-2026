@@ -17,11 +17,11 @@ import {
 } from '@uiux/Dialog';
 import * as React from 'react';
 import { Textarea } from '@/shared/components/uiux/Textarea';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz050 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz050 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

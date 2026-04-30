@@ -24,7 +24,7 @@ import React from 'react';
 
 import { TabPager } from '@/shared/components/common/TabPager';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type LTPZ060TabType = {
   name: string;
@@ -207,7 +207,7 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa060 = () => {
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -341,7 +341,7 @@ export const Ltpa060 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>

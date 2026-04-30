@@ -21,7 +21,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table'
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -57,7 +57,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz027 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대상',
@@ -113,7 +113,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg" className="">
         <DialogHeader>
           <DialogTitle>

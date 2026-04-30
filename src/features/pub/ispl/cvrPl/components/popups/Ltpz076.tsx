@@ -23,7 +23,7 @@ import { TableFold } from '@/shared/components/common/TableFold';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
 import { Input } from '@/shared/components/uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';
@@ -153,7 +153,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz076 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '코드',
@@ -193,7 +193,7 @@ export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>

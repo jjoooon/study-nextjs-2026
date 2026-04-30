@@ -18,7 +18,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -152,7 +152,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz004 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -178,7 +178,7 @@ export const Ltpz004 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

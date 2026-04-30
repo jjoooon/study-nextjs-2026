@@ -16,9 +16,9 @@ import { useState } from 'react';
 import { ArrowIcon } from '@/shared/components/icons';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { Input } from '@/shared/components/uiux/Input';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz023 = () => {
   // 초기 키워드 값
   const items = [
     {
@@ -96,7 +96,7 @@ export const Ltpz023 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md" className="w-[28rem]!">
         <DialogHeader>
           <DialogTitle>

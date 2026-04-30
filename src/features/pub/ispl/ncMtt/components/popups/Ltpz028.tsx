@@ -19,7 +19,7 @@ import {
   DialogFooterArea,
 } from '@/shared/components/uiux/Dialog';
 import { Input } from '@/shared/components/uiux/Input';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -146,11 +146,11 @@ const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
   },
 ];
 
-export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz028 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DUMMY_DATA);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable size="lg">
         <DialogHeader>
           <DialogTitle>

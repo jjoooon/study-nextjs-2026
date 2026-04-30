@@ -19,9 +19,9 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import * as React from 'react';
 import { EssentialIcon } from '@/shared/components/icons/CommonIcons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz047 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -32,7 +32,7 @@ export const Ltpz047 = ({ open, onOpenChange }: PopupBaseProps) => {
     type07: '',
   });
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

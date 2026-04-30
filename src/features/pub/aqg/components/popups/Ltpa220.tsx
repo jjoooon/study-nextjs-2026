@@ -22,7 +22,6 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -172,7 +171,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa220 = () => {
   // dummy data
 
   const toNumericValue = (value: string | number): number => {
@@ -279,7 +278,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, [rowData]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

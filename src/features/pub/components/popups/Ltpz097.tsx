@@ -24,7 +24,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -106,7 +106,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz097 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -209,7 +209,7 @@ export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

@@ -21,7 +21,7 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType2 = {
   id: number;
@@ -186,7 +186,7 @@ const finalSummaryData: FinalSummaryData[] = [
   },
 ];
 
-export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz012 = () => {
   const isMergedSumRow = (data?: DummyDataType2) => {
     return (
       data?.isSumRow === true &&
@@ -334,7 +334,7 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

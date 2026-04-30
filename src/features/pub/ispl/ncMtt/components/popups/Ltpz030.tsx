@@ -25,7 +25,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -171,7 +171,7 @@ const getUnderwritingDecision = (value: string | number) => {
   return status ? underwritingDecisionMap[status] : null;
 };
 
-export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz030 = () => {
   const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
     () => [
       {
@@ -243,7 +243,7 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
   // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

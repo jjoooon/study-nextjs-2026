@@ -19,9 +19,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz057 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -34,7 +34,7 @@ export const Ltpz057 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

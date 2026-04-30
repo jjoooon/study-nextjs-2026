@@ -19,11 +19,11 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz016 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz016 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>

@@ -18,7 +18,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@/shared/components/agGridUtils';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -39,7 +39,7 @@ const DummyData: DummyDataType[] = [
   { id: 6, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
 ];
 
-export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz085 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
@@ -70,7 +70,7 @@ export const Ltpz085 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, [rowData]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

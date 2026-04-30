@@ -18,7 +18,7 @@ import {
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -34,7 +34,7 @@ const DummyData: DummyDataType[] = [
   { id: 2, isChecked: false, field1: '계약자', field2: '', field3: '' },
 ];
 
-export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz351 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -75,7 +75,7 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

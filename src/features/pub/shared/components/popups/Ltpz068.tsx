@@ -20,7 +20,7 @@ import * as React from 'react';
 
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -239,7 +239,7 @@ const PLAN_COLS: Array<{
   { key: 'C', leftField: 'field07', rightField: 'field08' },
 ];
 
-export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz068 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [selectedPlan, setSelectedPlan] = React.useState<PlanKey>('A');
 
@@ -283,7 +283,7 @@ export const Ltpz068 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, []);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>

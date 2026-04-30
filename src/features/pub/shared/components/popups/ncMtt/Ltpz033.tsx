@@ -14,11 +14,11 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz033 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz033 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

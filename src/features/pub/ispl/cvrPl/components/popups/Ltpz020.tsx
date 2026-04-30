@@ -21,7 +21,6 @@ import * as React from 'react';
 
 import { ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // 담보패키지 dummy data
 type DummyDataType1 = {
@@ -152,7 +151,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz020 = () => {
   const CombinedConstructionHeader = () => {
     const headerAreaStyle: React.CSSProperties = {
       width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
@@ -237,7 +236,7 @@ const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   // 검수:체크시 트리구조 열림.
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>

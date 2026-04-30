@@ -25,7 +25,7 @@ import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -41,7 +41,7 @@ const DummyData: DummyDataType[] = [
   { id: 3, isCheck: true, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
 ];
 
-export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz053 = () => {
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     return (
       // M1. 수정
@@ -86,7 +86,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
   // M1. 추가
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

@@ -23,7 +23,7 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 // dummy data
 type DummyDataType = {
@@ -101,7 +101,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz038 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
@@ -181,7 +181,7 @@ export const Ltpz038 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl" className="">
         <DialogHeader>
           <DialogTitle>

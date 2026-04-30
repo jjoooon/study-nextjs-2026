@@ -37,7 +37,7 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -89,7 +89,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz052 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
 
@@ -301,7 +301,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

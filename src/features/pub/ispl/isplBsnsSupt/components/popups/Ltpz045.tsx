@@ -21,9 +21,9 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz045 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -31,7 +31,7 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
   const [cddEtcValue, setCddEtcValue] = React.useState('');
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>

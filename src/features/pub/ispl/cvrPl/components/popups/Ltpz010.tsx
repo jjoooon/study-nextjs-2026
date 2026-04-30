@@ -33,7 +33,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState, useRef } from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -105,7 +105,7 @@ const dummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz010 = () => {
   const [relationValue, setRelationValue] = useState('');
   const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
   const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
@@ -298,7 +298,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, []);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

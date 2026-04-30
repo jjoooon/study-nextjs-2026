@@ -23,7 +23,7 @@ import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams 
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type Ltpz022TabType = {
   name: string;
@@ -119,7 +119,7 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
 ];
 
-export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz022 = () => {
   type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'criteria'>;
 
   const applyDetailsColor = (html: string): string => {
@@ -239,7 +239,7 @@ export const Ltpz022 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

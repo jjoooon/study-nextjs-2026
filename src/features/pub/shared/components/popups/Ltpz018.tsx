@@ -19,7 +19,7 @@ import {
 } from '@uiux/Dialog';
 import { useMemo, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type MenuItem = {
   code: string;
@@ -161,7 +161,7 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>

@@ -24,7 +24,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -205,7 +205,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa904 = () => {
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -618,7 +618,7 @@ export const Ltpa904 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

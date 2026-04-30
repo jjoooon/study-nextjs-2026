@@ -21,7 +21,7 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -93,7 +93,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz040 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -185,7 +185,7 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

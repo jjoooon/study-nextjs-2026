@@ -21,7 +21,7 @@ import {
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -35,7 +35,7 @@ const DummyData: DummyDataType[] = [
   { id: 2, field1: '', field2: '', field3: '' },
 ];
 
-export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa390 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'No',
@@ -60,7 +60,7 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
   const rowData = DummyData;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md" className="">
         <DialogHeader>
           <DialogTitle>

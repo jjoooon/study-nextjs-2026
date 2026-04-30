@@ -38,7 +38,7 @@ import {
   DialogTrigger,
 } from '@/shared/components/uiux/Dialog';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type CheckTab = {
   name: string;
@@ -949,7 +949,7 @@ export const Ltpz005 = ({ open, onOpenChange, initialActiveTab = 'common' }: Ltp
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl" className="max-h-[calc(100vh-4rem)] h-full">
         <DialogHeader>
           <DialogTitle>

@@ -4,7 +4,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 import { AgGridEmptyComponent, createTooltipValueGetter, } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -183,7 +183,7 @@ const DummyData: DummyDataType[] = [
 
 
 
-export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz091 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   // 각 컬럼별 cellRenderer 예시 명확화
@@ -246,7 +246,7 @@ export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

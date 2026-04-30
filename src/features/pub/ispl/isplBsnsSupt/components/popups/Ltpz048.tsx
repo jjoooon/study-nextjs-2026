@@ -19,7 +19,7 @@ import {
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -45,7 +45,7 @@ const DummyData: DummyDataType[] = [
   { id: 12, field01: '심사처리', field02: '', field03: '김한화' },
 ];
 
-export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz048 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -88,7 +88,7 @@ export const Ltpz048 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { currentPage, totalPages, handleGridReady, handlePageChange } = useAgGridPagination(gridRef, pageSize);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg" className="">
         <DialogHeader>
           <DialogTitle>

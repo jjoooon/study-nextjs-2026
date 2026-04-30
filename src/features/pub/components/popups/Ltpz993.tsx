@@ -8,7 +8,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -29,7 +29,7 @@ const DummyData: DummyDataType[] = [
   { id: 10, field1: '시스템관리-권한설정', field2: '시스템 관리자', field3: '조회,등록,수정,삭제' },
 ];
 
-export const Ltpz993 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz993 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -53,7 +53,7 @@ export const Ltpz993 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

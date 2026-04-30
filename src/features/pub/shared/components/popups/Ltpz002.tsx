@@ -25,7 +25,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -96,7 +96,7 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz002 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -187,7 +187,7 @@ export const Ltpz002 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData2] = useState<DummyDataType2[]>(dummyData2);
   const [rowData3] = useState<DummyDataType2[]>(dummyData2);
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

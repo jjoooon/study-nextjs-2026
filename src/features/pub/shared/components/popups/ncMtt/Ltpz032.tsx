@@ -23,7 +23,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Ltpz094 } from './Ltpz094';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type Ltpz032TabType = {
   name: string;
@@ -322,7 +322,7 @@ const DummyData23: DummyDataType23[] = [
   },
 ];
 
-export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz032 = () => {
   // const [selectedRowId11, setSelectedRowId11] = React.useState<string>(String(DummyData11[0]?.id ?? ''));
   const [isDetailPopupOpen, setIsDetailPopupOpen] = React.useState(false);
 
@@ -1153,7 +1153,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open>
         <DialogContent showCloseButton resizable={true} size="2xl">
           <DialogHeader>
             <DialogTitle>

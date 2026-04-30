@@ -22,7 +22,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -65,7 +65,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz051 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -138,7 +138,7 @@ export const Ltpz051 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

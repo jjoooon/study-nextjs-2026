@@ -20,7 +20,7 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -53,7 +53,7 @@ const simpleNumberFormatter = (value?: number) => {
   return '';
 };
 
-export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa430 = () => {
   // M1. div 추가
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -207,7 +207,7 @@ export const Ltpa430 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl" className="">
         <DialogHeader>
           <DialogTitle>

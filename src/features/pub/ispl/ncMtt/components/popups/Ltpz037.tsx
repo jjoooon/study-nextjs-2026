@@ -14,14 +14,14 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 import { Input } from '@/shared/components/uiux/Input';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
-export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz037 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

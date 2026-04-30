@@ -23,7 +23,7 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -39,7 +39,7 @@ const DummyData: DummyDataType[] = [
   { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
 ];
 
-export const Ltpz083 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz083 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '견종명',
@@ -66,7 +66,7 @@ export const Ltpz083 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, [breedSearch]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

@@ -18,7 +18,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -70,7 +70,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz01001 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '구분',
@@ -180,7 +180,7 @@ export const Ltpz01001 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>

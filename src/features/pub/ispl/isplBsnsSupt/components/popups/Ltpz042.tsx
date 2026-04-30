@@ -23,7 +23,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -147,7 +147,7 @@ const DummyData4: DummyDataType4[] = [
   { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
 ];
 
-export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz042 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -226,7 +226,7 @@ export const Ltpz042 = ({ open, onOpenChange }: PopupBaseProps) => {
   const selectionColumnDef = React.useMemo(() => ({ headerName: '선택' }), []);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl" className="">
         <DialogHeader>
           <DialogTitle>

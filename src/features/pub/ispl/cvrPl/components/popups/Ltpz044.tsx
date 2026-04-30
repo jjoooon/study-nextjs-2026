@@ -20,7 +20,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 
 import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 const parseNumericValue = (value: unknown): number => {
   if (value === null || value === undefined || value === '') return 0;
@@ -70,7 +70,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz044 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '구문',
@@ -144,7 +144,7 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>

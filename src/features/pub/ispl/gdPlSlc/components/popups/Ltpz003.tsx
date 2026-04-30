@@ -20,11 +20,11 @@ import {
   QuestionRadioCardHeaderTitle,
   QuestionRadioCardContents,
 } from '@/shared/components/common/QuestionRadioCard';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpz003 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

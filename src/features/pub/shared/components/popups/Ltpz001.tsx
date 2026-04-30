@@ -28,7 +28,7 @@ import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -161,7 +161,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz001 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '미리보기',
@@ -220,7 +220,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [tabActive, setTabActive] = useState('tab1');
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

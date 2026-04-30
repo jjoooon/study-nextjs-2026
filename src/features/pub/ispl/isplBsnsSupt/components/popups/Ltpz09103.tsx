@@ -4,7 +4,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 import { AgGridEmptyComponent, createTooltipValueGetter, } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -27,10 +27,10 @@ import { Input } from '@uiux/Input';
 import { ResetIcon } from '@icons';
 
 
-export const Ltpz09103 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz09103 = () => {
   
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>

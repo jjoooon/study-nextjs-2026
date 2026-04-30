@@ -17,11 +17,11 @@ import {
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz105 = () => {
   type DummyDataType = {
     id: number;
     field1: string | number;
@@ -116,7 +116,7 @@ export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
   // M2. 신규 페이지
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>

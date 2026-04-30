@@ -21,7 +21,7 @@ import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -63,7 +63,7 @@ const dummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz009 = () => {
   const { rowData, toggleById } = useToggleTopRows({
     rows: dummyData,
     idKey: 'id',
@@ -123,7 +123,7 @@ export const Ltpz009 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>

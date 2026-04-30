@@ -32,7 +32,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 type DummyDataType = {
   id: number;
@@ -176,7 +176,7 @@ const DataTabs2 = [
   { label: '간편고지형', value: 'TAB2_2' },
 ];
 
-export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz031 = () => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
     // Tab1
@@ -809,7 +809,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>

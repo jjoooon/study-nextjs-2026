@@ -18,11 +18,11 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
+
+export const Ltpa401 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>

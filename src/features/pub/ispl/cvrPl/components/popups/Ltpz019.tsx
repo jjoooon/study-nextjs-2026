@@ -28,7 +28,7 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -233,7 +233,7 @@ const DATA_TABS: Ltpz032TabType[] = [
   },
 ];
 
-export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz019 = () => {
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [coverageName, setCoverageName] = useState('');
 
@@ -340,7 +340,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

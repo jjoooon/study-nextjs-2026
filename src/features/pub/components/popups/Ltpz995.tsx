@@ -206,7 +206,7 @@ export default function FileUploader({ open, onOpenChange, resolve }: FileUpload
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <FileUpload
         files={filesForUpload}
         onClickButton={() => {

@@ -127,7 +127,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-const Ltpz999 = () => {
+const Ltpz998 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -146,11 +146,19 @@ const Ltpz999 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton={false} resizable={true} size="md" className="grid-rows-[1fr_auto]">
-        <DialogSection className="grid-rows-[1fr] pt-5 ">
-          <Grow placement="ec" className="text-[var(--color-gray-70)]">
-            코드 LTRE006(trandZomH110)
-          </Grow>
+      <DialogContent showCloseButton resizable={true} size="md">
+        <DialogHeader>
+          <DialogTitle>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              메시지내용
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ998)
+            </Typo>
+          </DialogTitle>
+        </DialogHeader>
+
+        <DialogSection className="grid-rows-[1fr]">
           <div className="ag-theme-alpine min-h-[18.4rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
@@ -188,4 +196,4 @@ const Ltpz999 = () => {
   );
 };
 
-export default Ltpz999;
+export default Ltpz998;

@@ -20,7 +20,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 // dummy data
 type DummyDataType = {
@@ -90,7 +90,7 @@ const DummyData: DummyDataType[] = [
     field10: '1,000',
   },
 ];
-export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz086 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '회사명',
@@ -210,7 +210,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, [rowData]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

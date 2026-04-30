@@ -23,7 +23,7 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -76,7 +76,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa030 = () => {
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -164,7 +164,7 @@ export const Ltpa030 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
