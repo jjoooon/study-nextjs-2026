@@ -15,6 +15,7 @@ export interface ChatResultItem {
   uw_name: string;
   uw_title: string;
   uw_content: string;
+  uw_info: string;
   uw_state: string[];
   uw_date: string;
   uw_detail: string;
@@ -176,11 +177,11 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                     {item.uw_name}
                   </Typo>
                   <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
-                    <Gcol>
+                    <Gcol placement='ss'>
                       <Grow className="w-full justify-between">
                         <Typo
                           variant="body-xs"
-                          className="w-full justify-between align-center text-[1.1rem]"
+                          className="w-full justify-between align-center"
                           weight="bold"
                         >
                           {item.uw_title}
@@ -196,24 +197,36 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                           상세보기
                         </Button>
                       </Grow>
-                      <BulletItem
-                        className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
-                        color="default"
-                        onClick={() => {}}
-                        size="md"
-                        type="dash"
-                        before={undefined}
-                      >
-                        {/* br 태그 처리 */}
-                        <HtmlLineBreak content={item.uw_content} />
-                      </BulletItem>
-                      <Gcol placement="ss" className="gap-0.5 pl-2">
-                        {item.uw_state.map((state, sidx) => (
-                          <Grow className="gap-0.5 aligin-center" key={sidx}>
-                            <CircleCheckStepIcon />
-                            <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">{state}</Typo>
-                          </Grow>
-                        ))}
+                      <Gcol className="gap-0.5">
+                        <BulletItem
+                          className="whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
+                          color="default"
+                          onClick={() => {}}
+                          size="md"
+                          type="dash"
+                          before={undefined}
+                        >
+                          {/* br 태그 처리 */}
+                          <HtmlLineBreak content={item.uw_content} />
+                        </BulletItem>
+                        <BulletItem
+                          className="pl-2.5 whitespace-spaces w-full text-[1.1rem] word-break break-all !text-[var(--color-gray-70)] leading-[1.7rem]"
+                          before="ⓐ"
+                          color="default"
+                          onClick={() => {}}
+                          size="md"
+                          type="ref"
+                        >
+                          <HtmlLineBreak content={item.uw_info} />
+                        </BulletItem>
+                        <Grow placement="ss" className="w-full gap-0.5 pl-2.5">
+                          {item.uw_state.map((state, sidx) => (
+                            <Grow className="gap-0.5 aligin-center" key={sidx}>
+                              <CircleCheckStepIcon />
+                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">{state}</Typo>
+                            </Grow>
+                          ))}
+                        </Grow>
                       </Gcol>
                     </Gcol>
                     <Typo

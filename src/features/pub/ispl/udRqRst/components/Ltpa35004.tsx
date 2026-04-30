@@ -543,7 +543,7 @@ export function Ltpa35004() {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Grid className="w-full h-full grid-cols-[1fr_30.7rem] overflow-x-hidden" gap={6}>
-                  <ResizablePanelGroup orientation="vertical" className="w-full h-full grid-rows-[1fr_1fr_1fr] gap-3">
+                  <ResizablePanelGroup orientation="vertical" className="w-full h-full grid-rows-[1fr_1fr_1fr]">
                       {/* <Grid className="h-full grid-rows-[1fr_1fr] gap-3"> */}
                     <ResizablePanel defaultSize={50}>
                       <Gcol className="h-full">
@@ -630,7 +630,9 @@ export function Ltpa35004() {
                         uw_name: 'UW심사팀 이한화(6020236)',
                         uw_title: '결제완료 / 특별인수조건부인수',
                         uw_content:
-                          '고지유형:1형(일반고지형) <br />고지유형:1형(일반고지형)계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.',
+                          '고지유형:1형(일반고지형)<br /> ▶조건부인수<br /> ○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]<br /> ○표준하체(할증)',
+                        uw_info:
+                          '계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.',
                         uw_state: ['감역', '할증'],
                         uw_date: '2024-06-28 14:30',
                         uw_detail: '상세보기 경로주소',
@@ -643,7 +645,9 @@ export function Ltpa35004() {
                         uw_name: 'UW심사팀 이한화(6020236)',
                         uw_title: '결제완료 / 특별인수조건부인수',
                         uw_content:
-                          '고지유형:1형(일반고지형) <br />고지유형:1형(일반고지형)계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.',
+                          '고지유형:1형(일반고지형)<br /> ▶조건부인수<br /> ○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]<br /> ○표준하체(할증)',
+                        uw_info:
+                          '계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.',
                         uw_state: ['감역', '할증'],
                         uw_date: '2024-06-28 14:30',
                         uw_detail: '상세보기 경로주소',
@@ -656,7 +660,9 @@ export function Ltpa35004() {
                         uw_name: 'UW심사팀 이한화(6020236)',
                         uw_title: '결제완료 / 특별인수조건부인수',
                         uw_content:
-                          '고지유형:1형(일반고지형) <br />고지유형:1형(일반고지형)계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.',
+                          '고지유형:1형(일반고지형)<br /> ▶조건부인수<br /> ○부담보심사[갑상선 (11개월) 유방(유선 포함)(11개월)]<br /> ○표준하체(할증)',
+                        uw_info:
+                          '계약자에게 보장제한 설정범위 및 사유(피보험자의 과거병력)을 설명해주시기 바랍니다.',
                         uw_state: ['감역', '할증'],
                         uw_date: '2024-06-28 14:30',
                         uw_detail: '상세보기 경로주소',
