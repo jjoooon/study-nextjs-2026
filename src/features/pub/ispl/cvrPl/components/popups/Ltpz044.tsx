@@ -14,6 +14,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
@@ -68,7 +69,7 @@ const DummyData: DummyDataType[] = [
     field07: '71,397',
   },
 ];
-
+// 검수: 테이블 입력제외
 export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -191,16 +192,20 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable
-              caption="보험정보"
-              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-              variant="head"
-            >
+            <FormTable variant="head">
               <FormRow>
-                <FormCell title={'설계번호'}>LA26029313558</FormCell>
-                <FormCell title={'보험시기'}>20260112</FormCell>
-                <FormCell title={'적용성별'}>여자</FormCell>
-                <FormCell title={'출산예정일'}>20260301</FormCell>
+                <FormCell title={'설계번호'}>
+                  <Input variant="info" width={'full'} value="3423346645634233466456" readOnly />
+                </FormCell>
+                <FormCell title={'보험시기'}>
+                  <Input variant="info" width={'full'} value="20260301" readOnly />
+                </FormCell>
+                <FormCell title={'적용성별'}>
+                  <Input variant="info" width={'full'} value="여자" readOnly />
+                </FormCell>
+                <FormCell title={'출산예정일'}>
+                  <Input variant="info" width={'full'} value="20260301" readOnly />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>

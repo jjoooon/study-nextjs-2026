@@ -165,7 +165,7 @@ function DialogOverlay({ className, style, ...props }: React.ComponentProps<type
       data-slot="dialog-overlay"
       style={style}
       className={cn(
-        'fixed inset-0 bg-black/60',
+        'fixed inset-0 bg-black/60 pointer-events-none',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
         className

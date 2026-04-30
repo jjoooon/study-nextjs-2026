@@ -137,13 +137,11 @@ export const FormCell = ({
   titleRowSpan,
   tdClassName,
   tdStyle,
-  style,
   tdNone = false,
 }: FormCellProps) => {
   const contextVertical = useContext(VerticalContext);
   const contextVariant = useContext(VariantContext);
   const usedVariant = variant ?? contextVariant ?? 'default';
-  const titleTypoVariant = titleVariant === 'section' ? 'body-xl' : 'body-lg';
   const titleTypoColor =
     titleVariant === 'section'
       ? 'primary'
@@ -162,7 +160,7 @@ export const FormCell = ({
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
           // {...(style && { style })}
         >
-          <Typo variant={titleTypoVariant} weight="bold" color={titleTypoColor}>
+          <Typo variant={'body-md'} weight="bold" color={titleTypoColor}>
             {title}
           </Typo>
         </TableHead>
@@ -223,17 +221,21 @@ export const FormTable = ({
       [&_tr]:border-none 
       [&_td]:p-0`,
 
-    head: `table-fixed  w-full border-none flex flex-col bg-[transparent] 
+    head: `w-full border-none !flex flex-col bg-[transparent] 
     [&>colgroup]:hidden 
     [&>table>colgroup]:absolute 
+    [&>table]:flex 
+    [&>table>tbody]:flex 
     [&>table>tbody>tr]:flex 
     [&>table>tbody>tr]:items-center 
     [&>table>tbody>tr]:justify-start 
     [&>table>tbody>tr]:gap-2 
     [&>table>tbody>tr]:border-none 
     [&>table>tbody>tr]:w-full 
+    [&>table>tbody>tr]:flex-wrap  
     [&>table>tbody>tr~tr>*]:pt-[0.6rem] 
     [&>table>tbody>tr>th]:flex 
+    [&>table>tbody>tr>th]:shrink-0 
     [&>table>tbody>tr>th]:items-center 
     [&>table>tbody>tr>th]:justify-start 
     [&>table>tbody>tr>th]:gap-2 
@@ -246,7 +248,7 @@ export const FormTable = ({
     [&>table>tbody>tr>th]:px-0 
     [&>table>tbody>tr>th]:py-0 
     [&>table>tbody>tr>th]:border-none 
-    [&>table>tbody>tr>th]:text-[1.4rem]
+    [&>table>tbody>tr>th]:text-[1.3rem]
     [&>table>tbody>tr>td]:border-none 
     [&>table>tbody>tr>td]:p-0 
     [&>table>tbody>tr>td]:flex 
@@ -254,8 +256,8 @@ export const FormTable = ({
     [&>table>tbody>tr>td]:justify-start 
     [&>table>tbody>tr>td]:gap-4 
     [&>table>tbody>tr>td]:h-[auto] 
-    [&>table>tbody>tr>td]:text-[1.4rem] 
-    [&>table>tbody>tr>td+th]:pl-[1.6rem]`,
+    [&>table>tbody>tr>td]:text-[1.3rem] 
+    [&>table>tbody>tr>th+td]:pr-[1.6rem]`,
 
     none: `table-fixed border-0 bg-transparent 
     [&>table>tbody>tr>th]:bg-transparent 

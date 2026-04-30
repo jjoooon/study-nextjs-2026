@@ -1,4 +1,3 @@
-// design 반영
 'use client';
 
 import { ErrorMsg } from '@common/ErrorMsg';
@@ -13,7 +12,7 @@ import { UIUXsize } from '@/shared/types/uiTypes';
 
 type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  variant?: 'ghost' | 'default';
+  variant?: 'ghost' | 'default' | 'info';
   size?: UIUXsize;
   required?: boolean;
   readOnly?: boolean;
@@ -155,7 +154,7 @@ function Input({
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 text-[1.4rem] border border-[0.1rem] box-border tracking-[-0.08rem] appearance-none truncate',
+    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.13rem] appearance-none truncate',
     isInvalid || error
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
@@ -163,7 +162,7 @@ function Input({
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
   const ghostStyle = cn(
-    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.08rem] appearance-none truncate'
+    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.13rem] appearance-none truncate'
   );
   const hoverStyle =
     isInvalid || error
@@ -182,12 +181,24 @@ function Input({
   const readonlyStyle = readOnly
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
+  const readonlyStyle2 = readOnly
+    ? 'bg-[transparent] cursor-not-allowed opacity-100 pointer-events-none border-0 px-0'
+    : '';
   const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
+  const infoStyle = cn(
+    'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.13rem] appearance-none truncate',
+    isInvalid || error
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
+      : required
+        ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
+        : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
+  );
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
     ghost: cn(ghostStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
+    info: cn(infoStyle, hoverStyle, focusStyle, readonlyStyle2, disabledStyle, 'h-[2.5rem]'),
   };
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
@@ -209,7 +220,7 @@ function Input({
           )}
         >
           {before && <div>{before}</div>}
-          <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[0] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
+          <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.13rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
             <input
               type={type}
               data-slot="input"
@@ -266,8 +277,8 @@ function Input({
             data-slot="input"
             className={cn(
               variantStyles[variant],
-              commaAmount && 'w-[100%]! text-right tracking-[0]',
-              '[:focus]:px-[0.7rem] w-[100%]!'
+              commaAmount && 'text-right tracking-[-0.13rem]',
+              'w-[100%] [:focus]:px-[0.7rem]'
             )}
             required={required}
             readOnly={readOnly}

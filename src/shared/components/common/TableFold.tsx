@@ -29,7 +29,7 @@ export const TableFold = ({ children, variant = 'accordion', className }: TableF
   const [open, setOpen] = React.useState(true);
   return (
     <TableFoldContext.Provider value={{ variant, open, setOpen }}>
-      <Grid data-table-fold="wrap" gap={1.5} className={cn('w-full grid-rows-[auto_1fr]', className)} placement={'bwc'}>
+      <Grid data-table-fold="wrap" className={cn('w-full grid-rows-[auto_1fr]', className)} placement={'bwc'}>
         {children}
       </Grid>
     </TableFoldContext.Provider>
@@ -43,7 +43,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
     if (v === 'accordion' && context?.setOpen) context.setOpen(!context.open);
   };
   return (
-    <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full', className)}>
+    <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full min-h-[2.5rem]', className)}>
       <div
         role={v === 'accordion' ? 'button' : undefined}
         tabIndex={v === 'accordion' ? 0 : -1}

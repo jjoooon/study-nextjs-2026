@@ -133,7 +133,9 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
             {chatData.map((item, idx) => (
               <div
                 key={idx}
-                ref={(el) => { itemRefs.current[idx] = el; }}
+                ref={(el: HTMLDivElement | null) => {
+                  itemRefs.current[idx] = el;
+                }}
                 style={{ scrollSnapAlign: 'start' }}
               >
                 {/* 심부산 */}

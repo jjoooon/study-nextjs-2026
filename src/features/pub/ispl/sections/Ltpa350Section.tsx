@@ -246,7 +246,7 @@ export default function Ltpa350Section() {
   const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
-  const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view3');
+  const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
 
   const renderStep2 = () => {
     switch (currentViewKey) {

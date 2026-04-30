@@ -235,13 +235,14 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
+  // 검수: 체크시 트리구조 열림.
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              담보패키지 선택
+              보장패키지 선택()
             </Typo>
           </DialogTitle>
         </DialogHeader>

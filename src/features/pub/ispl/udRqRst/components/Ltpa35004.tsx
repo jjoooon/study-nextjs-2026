@@ -8,21 +8,22 @@ import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { TabPager } from '@common/TabPager';
 import { ChatResult } from '@features/ChatResult';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { BtnPlusIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { BtnPlusIcon } from '@icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState, useRef } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 import '@/shared/lib/agGridPub';
 
@@ -289,22 +290,6 @@ const DummyData2: AgGridRow2[] = [
     id: 2,
     field01: '보험료납입면제대상보장(5대유사)(간편)',
   },
-  {
-    id: 3,
-    field01: '상해사망(간편)',
-  },
-  {
-    id: 4,
-    field01: '상해후유장해(3-100%)',
-  },
-  {
-    id: 5,
-    field01: '질병사항(간편)',
-  },
-  {
-    id: 6,
-    field01: '질병사항(간편)',
-  },
 ];
 
 export function Ltpa35004() {
@@ -379,16 +364,16 @@ export function Ltpa35004() {
       {
         headerName: '순번',
         field: 'id',
-        width: 60,
+        width: 50,
         cellClass: 'text-center',
         autoHeight: true,
       },
       {
         headerName: '심사구분',
         field: 'field02',
-        width: 150,
+        width: 100,
         autoHeight: true,
-        cellClass: 'editable-cell text-center',
+        cellClass: 'text-center',
         cellStyle: (params) => (params.value === '인수기준' ? { color: 'var(--color-danger-50)' } : undefined),
       },
       {
@@ -396,7 +381,7 @@ export function Ltpa35004() {
         field: 'field03',
         flex: 1,
         autoHeight: true,
-        cellClass: 'editable-cell text-left',
+        cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<AgGridRow>({ field: 'field03' }),
       },
     ],
@@ -467,15 +452,15 @@ export function Ltpa35004() {
               </Button>
             )}
           >
-            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-              <FormTable
-                caption="취급자 정보"
-                variant={'head'}
-                cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
-                className="w-full"
-              >
-                <FormRow className="w-full">
-                  <FormCell title={'동시설계'} tdStyle={{ flex: 1 }} tdClassName="w-full justify-between gap-4">
+            <Gcol variant={'box-round-b'} placement={'ss'} className={`${!isHeightExpanded ? '' : 'hidden'}`}>
+              <FormTable caption="취급자 정보" variant={'head'}>
+                <FormRow>
+                  <FormCell
+                    title={'동시설계'}
+                    className="min-w-[6.4rem]"
+                    tdStyle={{ width: '100%' }}
+                    tdClassName="justify-between w-full"
+                  >
                     <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}}>
                       <RadioGroupItem color="primary" id="radio1" size="md" value="LA260112297637" variant="button">
                         LA260112297637
@@ -484,9 +469,10 @@ export function Ltpa35004() {
                         LA260112297660
                       </RadioGroupItem>
                     </RadioGroup>
+
                     <Grow className="flex items-center gap-1">
                       <Button variant={'outlined'} color={'gray'} size={'md'}>
-                        보장패키지
+                        진단결과
                       </Button>
                       <Button variant={'outlined'} color={'gray'} size={'md'}>
                         적부결과
@@ -508,31 +494,44 @@ export function Ltpa35004() {
                 </FormRow>
 
                 <FormRow>
-                  <FormCell title={'심사구분'} className="w-full">
-                    <Input aria-label="심사구분1" width={70} value={'신계약'} size={'md'} readOnly />
-                    <NativeSelect aria-label="심사구분2" width={140} size={'md'}>
-                      {[
-                        { label: '설계심사', value: '설계심사' },
-                        { label: '설계심사2', value: '설계심사2' },
-                        { label: '설계심사3', value: '설계심사3' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="심사구분3" width={110} size={'md'} value={'심사요청불가'} readOnly />
-                    <Input aria-label="심사구분4" width={80} size={'md'} value={''} readOnly />
-                    <Checkbox>사후적부 대체</Checkbox>
+                  <FormCell
+                    title={'심사구분'}
+                    className="min-w-[6.4rem]"
+                    tdStyle={{ width: '100%' }}
+                    tdClassName="w-full"
+                  >
+                    <Grid className="w-full grid-cols-[11.3rem_15rem_23.7rem_minmax(19.4rem,1fr)_9.8rem] gap-1">
+                      <Input aria-label="심사구분1" width={'full'} value={'신계약'} size={'md'} readOnly />
+                      <NativeSelect aria-label="심사구분2" width={'full'} size={'md'}>
+                        {[
+                          { label: '설계심사', value: '설계심사' },
+                          { label: '설계심사2', value: '설계심사2' },
+                          { label: '설계심사3', value: '설계심사3' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <Input aria-label="심사구분3" width={'full'} size={'md'} value={'심사요청불가'} readOnly />
+                      <Input aria-label="심사구분4" width={'full'} size={'md'} value={''} readOnly />
+                      <Checkbox>사후적부 대체</Checkbox>
+                    </Grid>
                   </FormCell>
-                  <FormCell title={'심사처리자'} className="w-full">
-                    <Input aria-label="심사처리자1" width={70} value={''} size={'md'} readOnly />
-                    <Input aria-label="심사처리자2" width={70} value={''} size={'md'} readOnly />
-                    <Input aria-label="심사처리자3" width={70} value={''} size={'md'} readOnly />
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'심사처리자'} className="min-w-[6.4rem]" tdStyle={{ flex: 1 }} tdClassName="w-full">
+                    <Grid className="w-full grid-cols-[15rem_15rem_15rem_auto] gap-1">
+                      <Input aria-label="심사처리자1" width={'full'} value={''} size={'md'} readOnly />
+                      <Input aria-label="심사처리자2" width={'full'} value={''} size={'md'} readOnly />
+                      <Input aria-label="심사처리자3" width={'full'} value={''} size={'md'} readOnly />
+                    </Grid>
                   </FormCell>
-                  <FormCell title={'심사상태'} className="w-full">
-                    <Input aria-label="심사상태" width={70} value={''} size={'md'} readOnly />
-                    <Checkbox>심사자배정</Checkbox>
+                  <FormCell title={'심사상태'} className="w-full" tdStyle={{ flex: 1 }} tdClassName="w-full">
+                    <Grid className="w-full grid-cols-[minmax(15.4rem,1fr)_9.8rem] gap-1">
+                      <Input aria-label="심사상태" width={'full'} value={''} size={'md'} readOnly />
+                      <Checkbox>심사자배정</Checkbox>
+                    </Grid>
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -543,81 +542,67 @@ export function Ltpa35004() {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Grid className="w-full h-full grid-cols-[1fr_30.7rem] overflow-x-hidden" gap={6}>
-                  <ResizablePanelGroup orientation="vertical" className="w-full h-full grid-rows-[1fr_1fr_1fr] gap-3">
-                      {/* <Grid className="h-full grid-rows-[1fr_1fr] gap-3"> */}
-                    <ResizablePanel defaultSize={50}>
-                      <Gcol className="h-full">
-                        <ConTit>
-                          <ConTitName>지침세부내용</ConTitName>
+                  <Grid className="h-full grid-rows-[1fr_14rem] gap-3">
+                    <Gcol className="h-full">
+                      <ConTit>
+                        <ConTitName>지침세부내용</ConTitName>
+                        <Button variant={'outlined'} color={'gray'} size={'md'}>
+                          지침확인
+                        </Button>
+                      </ConTit>
+                      <div className="ag-theme-alpine">
+                        <AgGridReact<AgGridRow>
+                          key={gridKey}
+                          rowData={rowData}
+                          columnDefs={columnDefs}
+                          getRowId={(params) => String(params.data.id)}
+                          singleClickEdit={true}
+                          rowSelection={{
+                            mode: 'multiRow' as const,
+                            checkboxes: false,
+                            headerCheckbox: false,
+                            enableClickSelection: false,
+                            enableSelectionWithoutKeys: true,
+                          }}
+                          suppressRowHoverHighlight={false}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
+                          domLayout="normal"
+                        />
+                      </div>
+                    </Gcol>
+
+                    <Gcol className="h-full">
+                      <ConTit>
+                        <ConTitName>조건부 특약 가입</ConTitName>
+                        <Grow>
                           <Button variant={'outlined'} color={'gray'} size={'md'}>
-                            지침확인
+                            상세
                           </Button>
-                        </ConTit>
-                        <div className="ag-theme-alpine">
-                          <AgGridReact<AgGridRow>
-                            key={gridKey}
-                            rowData={rowData}
-                            columnDefs={columnDefs}
-                            getRowId={(params) => String(params.data.id)}
-                            singleClickEdit={true}
-                            rowSelection={{
-                              mode: 'multiRow' as const,
-                              checkboxes: false,
-                              headerCheckbox: false,
-                              enableClickSelection: false,
-                              enableSelectionWithoutKeys: true,
-                            }}
-                            suppressRowHoverHighlight={false}
-                            tooltipShowMode="whenTruncated"
-                            tooltipShowDelay={0}
-                            domLayout="normal"
-                          />
-                        </div>
-                      </Gcol>
-                    </ResizablePanel>
-                    <ResizableHandle />
-                    <ResizablePanel defaultSize={50}>
-                      <Gcol className="h-full">
-                        <ConTit>
-                          <ConTitName>조건부 특약 가입</ConTitName>
-                          <Grow>
-                            <Button variant={'outlined'} color={'gray'} size={'md'}>
-                              상세
-                            </Button>
-                            <Button variant={'outlined'} color={'gray'} size={'md'}>
-                              무담보이력
-                            </Button>
-                          </Grow>
-                        </ConTit>
-                        <div className="ag-theme-alpine">
-                          <AgGridReact<AgGridRow2>
-                            rowData={rowData2}
-                            columnDefs={columnDefs2}
-                            getRowId={(params) => String(params.data.id)}
-                            singleClickEdit={true}
-                            rowSelection={{
-                              mode: 'multiRow' as const,
-                              checkboxes: true,
-                              headerCheckbox: true,
-                              enableClickSelection: false,
-                              enableSelectionWithoutKeys: true,
-                            }}
-                            selectionColumnDef={{
-                              width: 60,
-                              cellClass: 'text-center p-0!',
-                              cellClassRules: {
-                                'pointer-events-none': (params) => !!params.data?.locked,
-                              },
-                            }}
-                            suppressRowHoverHighlight={false}
-                            tooltipShowMode="whenTruncated"
-                            tooltipShowDelay={0}
-                          />
-                        </div>
-                      </Gcol>
-                    </ResizablePanel>
-                     {/* </Grid> */}
-                  </ResizablePanelGroup>
+                          <Button variant={'outlined'} color={'gray'} size={'md'}>
+                            무담보이력
+                          </Button>
+                        </Grow>
+                      </ConTit>
+
+                      <Table>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell className="w-[3rem] text-center">
+                              <Checkbox size="md" disabled />
+                            </TableCell>
+                            <TableCell>특정 신체부위 질병 보장제한부 인수 특별약관</TableCell>
+                          </TableRow>
+                          <TableRow className="bg-[var(--color-gray-5)]">
+                            <TableCell className="w-[3rem] text-center">
+                              <Checkbox size="md" disabled checked />
+                            </TableCell>
+                            <TableCell>특정조건부(표준하체보험표할증) 특별약관</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </Gcol>
+                  </Grid>
 
                   {/* 심사결과안내 */}
                   <ChatResult
@@ -687,8 +672,8 @@ export function Ltpa35004() {
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant={'outlined'} color={'gray'} size={'xl'} only="icon">
-                    <BtnPlusIcon />
-                  </Button>
+                        <BtnPlusIcon />
+                      </Button>
                     </PopoverTrigger>
                     <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                       <Grid className="w-full grid-cols-[1fr] gap-1">

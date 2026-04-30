@@ -240,8 +240,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
                                   <Input
                                     aria-label="주민등록번호 마스킹"
-                                    width={110}
-                                    value={'900101-1******'}
+                                    width={120}
+                                    value={'900101-1234567'}
                                     readOnly
                                   />
                                   <Button
@@ -815,8 +815,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={110}
-                                      value={'900101-1******'}
+                                      width={120}
+                                      value={'900101-1234567'}
                                       readOnly
                                     />
                                     <Button
@@ -979,8 +979,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input aria-label="소유자명" width={75} value={'김환화'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={110}
-                                      value={'900101-1******'}
+                                      width={120}
+                                      value={'900101-1234567'}
                                       readOnly
                                     />
                                     <Button
@@ -1583,7 +1583,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">
                           <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
-                          <Input aria-label="주민등록번호 마스킹" width={110} value={'900101-1******'} readOnly />
+                          <Input aria-label="주민등록번호 마스킹" width={120} value={'900101-1234567'} readOnly />
                           <Button
                             aria-label="피보험자 검색"
                             variant={'outlined'}
@@ -1593,7 +1593,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Checkbox color="primary">개인사업자</Checkbox>
+
+                          <Checkbox color="primary" />
+                          <Button variant={'none'} className="px-0">
+                            개인사업자
+                          </Button>
                         </FormCell>
                         <FormCell title="개인정보취득경로">
                           <NativeSelect aria-label="개인정보취득경로 선택" width={200} required>
