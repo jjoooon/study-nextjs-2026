@@ -118,14 +118,6 @@ export default function Ltpa020Section() {
               value="tabPage1"
               className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]"
             >
-              <Image
-                src={
-                  tabSelectValue === 'tabPage1' ? '/images/Ltpa020/planIcon1.svg' : '/images/Ltpa020/planIcon1_off.svg'
-                }
-                alt="설명"
-                width={22}
-                height={22}
-              />
               상품선택
             </RadioGroupItem>
             <RadioGroupItem
@@ -133,14 +125,6 @@ export default function Ltpa020Section() {
               value="tabPage2"
               className="[&>div]:hidden h-[3rem] bg-[transparent] border-0! flex items-center gap-1 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white px-[1.8rem]"
             >
-              <Image
-                src={
-                  tabSelectValue === 'tabPage2' ? '/images/Ltpa020/planIcon2.svg' : '/images/Ltpa020/planIcon2_off.svg'
-                }
-                alt="설명"
-                width={22}
-                height={22}
-              />
               추천설계
             </RadioGroupItem>
           </RadioGroup>

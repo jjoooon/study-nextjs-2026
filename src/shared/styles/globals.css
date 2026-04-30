@@ -596,7 +596,7 @@
   .ag-picker-field-display,
   input,
   select {
-    letter-spacing: -0.03rem !important;
+    letter-spacing: -0.08rem !important;
   }
 
   [data-layout="doc"] {
@@ -794,6 +794,7 @@
 
 .blink-border {
   animation: blink-border 1s cubic-bezier(0.4, 0, 0.2, 1) 0s 1;
+  animation-iteration-count: 2;
 }
 
 @keyframes blink-border {

@@ -14,6 +14,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
@@ -75,14 +76,12 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
       headerName: '구문',
       field: 'field01',
       width: 70,
-      cellClass: 'text-center bg-[#f4f4f4]!',
+      cellClass: 'text-center bg-[var(--color-gray-5)]',
       autoHeight: true,
       cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-        <Grow className="w-full h-full">
-          <Typo className="w-full whitespace-pre-wrap text-[#000000]" tag="span" variant="body-md" weight="bold">
-            {_params.value}
-          </Typo>
-        </Grow>
+        <Typo tag="b" variant="body-md">
+          {_params.value}
+        </Typo>
       ),
     },
     {
@@ -90,89 +89,55 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field02',
       width: 70,
       cellClass: 'text-center flex',
-      autoHeight: true,
-      editable: true,
-      cellClassRules: {
-        'ag-cell-error-border': (params) => params.value === '' || params.value === undefined,
-      },
+      editable: false,
     },
     {
       headerName: '보장P (일시납외)보장',
       field: 'field03',
       width: 120,
       cellClass: 'text-right',
-      autoHeight: true,
-      editable: true,
+      editable: false,
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
-      cellClassRules: {
-        'ag-cell-error-border': (params) =>
-          params.value === '' || params.value === undefined || Number(params.value) === 0,
-      },
     },
     {
       headerName: '보장P (일시납)',
       field: 'field04',
       width: 90,
       cellClass: 'text-right',
-      autoHeight: true,
-      editable: true,
+      editable: false,
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
-      cellClassRules: {
-        'ag-cell-error-border': (params) =>
-          params.value === '' || params.value === undefined || Number(params.value) === 0,
-      },
     },
     {
       headerName: '적립P',
       field: 'field05',
       width: 80,
       cellClass: 'text-right',
-      autoHeight: true,
-      editable: true,
+      editable: false,
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
-      cellClassRules: {
-        'ag-cell-error-border': (params) =>
-          params.value === '' || params.value === undefined || Number(params.value) === 0,
-      },
     },
     {
       headerName: '합계보험료',
       field: 'field06',
       width: 90,
       cellClass: 'text-right',
-      autoHeight: true,
-      editable: true,
+      editable: false,
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
-      cellClassRules: {
-        'ag-cell-error-border': (params) =>
-          params.value === '' || params.value === undefined || Number(params.value) === 0,
-      },
     },
     {
       headerName: '합계보험료 (=적용보험료)',
       field: 'field07',
       flex: 1,
       cellClass: 'text-right',
-      wrapText: true,
-      autoHeight: true,
-      editable: true,
+      editable: false,
       headerComponent: () => (
-        <div className="w-full text-center whitespace-normal leading-5">
-          합계보험료/
-          <br />
-          (=적용보험료)
-        </div>
+        <div className="w-full text-center whitespace-normal leading-5">합계보험료/ (=적용보험료)</div>
       ),
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
-      cellClassRules: {
-        'ag-cell-error-border': (params) =>
-          params.value === '' || params.value === undefined || Number(params.value) === 0,
-      },
     },
   ];
 
@@ -180,7 +145,7 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="lg">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -191,16 +156,20 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable
-              caption="보험정보"
-              cols={['w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto', 'w-auto']}
-              variant="head"
-            >
+            <FormTable variant="head">
               <FormRow>
-                <FormCell title={'설계번호'}>LA26029313558</FormCell>
-                <FormCell title={'보험시기'}>20260112</FormCell>
-                <FormCell title={'적용성별'}>여자</FormCell>
-                <FormCell title={'출산예정일'}>20260301</FormCell>
+                <FormCell title={'설계번호'}>
+                  <Input variant="info" width={'full'} value="342334664563" readOnly />
+                </FormCell>
+                <FormCell title={'보험시기'}>
+                  <Input variant="info" width={100} value="20260301" readOnly />
+                </FormCell>
+                <FormCell title={'적용성별'}>
+                  <Input variant="info" width={60} value="여자" readOnly />
+                </FormCell>
+                <FormCell title={'출산예정일'}>
+                  <Input variant="info" width={100} value="20260301" readOnly />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
@@ -211,7 +180,6 @@ export const Ltpz044 = ({ open, onOpenChange }: PopupBaseProps) => {
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowData={rowData}
               columnDefs={columnDefs}
-              headerHeight={52}
               defaultColDef={{
                 sortable: true,
                 resizable: true,
