@@ -18,8 +18,14 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Input } from '@/shared/components/uiux/Input';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { BulletItem } from '@/shared/components/common/BulletList';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const [form, setFormField] = useFormFields({
+    type01: '',
+  });
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -35,31 +41,31 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Typo variant="body-lg" weight={'bold'}>
+          <Typo variant="body-lg">
             정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.
           </Typo>
-          <Gcol variant={'box-line'} placement={'ss'} className='w-full'>
+          <Gcol placement={'ss'}>
             <Typo variant="body-lg" weight={'bold'}>취급자 정보</Typo>
             <Typo variant="body-md">질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br>
             </br>이외의 용도로 활용 또는 <b>외부 유출시 법적처벌</b>을 받습니다.</Typo>
-            <Grow>
-              <Input width={130} value={'1234567'} readOnly />
+            <Grow variant={'box-round'} placement={'ss'} className='w-full'>
+              <Input width={116} value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input width={70} value={'김한화'} readOnly />
+              <Input width={85} value={'김한화'} readOnly />
               <Input width={120} value={'010-1234-1234'} readOnly />
             </Grow>
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+            <Gcol variant={'box-warning'} placement={'ss'} className="w-full border border-[#D8D8D8] border-width: 0.1rem; border-style: solid;">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
-                <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
+                <Checkbox color="primary">타인에게 유출되지 않도록 처리하는 것에 동의합니다.</Checkbox>
               </Typo>
-              <Typo variant="body-md">고객 휴대폰번호는 고객등록화면에서 수정해주세요.</Typo>
             </Gcol>
           </Gcol>
-
-          <Gcol variant={'box-line'} placement={'ss'} className='w-full'>
+         
+          <Gcol placement={'ss'}>
             <Typo variant="body-lg" weight={'bold'}>고객정보</Typo>
+            <Typo variant="body-md">고객 휴대폰번호는 고객등록화면에서 수정해주세요.</Typo>
             <Table variant="default">
               <colgroup>
                 <col style={{ width: '10rem' }} />
@@ -68,14 +74,32 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
               <TableBody>
                 <TableRow>
                   <TableHead className="text-left">고객명</TableHead>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    <Grow placement='bwc'>
+                      <Grow>
+                        <Input width={62} value={'김한화'} readOnly />
+                        <Input width={116} value={'900110-1******'} readOnly />
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                      </Grow>
+                       {/* 질병동의 여부 플래그 따라서 Y|N */}
+                      {/* <Badge color="red" size="md" variant="contained">FP질병제공동의 N</Badge> */}
+                      <Badge color="green" size="md" variant="contained">FP질병제공동의 Y</Badge>
+                    </Grow>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead className="text-left">
                     휴대폰번호
                   </TableHead>
                   <TableCell>
-                    
+                    <Grow placement='ss'>
+                      <Input width={120} value={'010-1234-1234'} readOnly />
+                      <Button color="primary" onClick={() => {}} size="lg" variant="contained">
+                        인증번호 발송
+                      </Button>
+                    </Grow>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -83,20 +107,22 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
                     인증번호
                   </TableHead>
                   <TableCell>
-                    
+                    <Grow placement='ss'>
+                      <Input width={120}  value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} readOnly/>
+                      <Button color="gray" onClick={() => {}} size="lg" variant="outlined">
+                        인증확인
+                      </Button>
+                    </Grow>
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </Gcol>
 
-          <Gcol className="w-full" placement="ss" variant="box-info">
-            <Typo icon="info" variant="body-sm">
-              고지 상병별 필요한 심사정보가 있는 경우 추가질문을 운영중이며,<br></br>
-              &quot;이상소견없음&quot;, &quot;완치됨&quot; 등의 내용은 &quot;완치&quot;로 고지하시면 심사에 반영됩니다.
-              <br />
-            </Typo>
-          </Gcol>
+          <Grow className="w-full items-start" placement="bwc" variant="box-info">
+            <BulletItem className='w-full' type="dotBig">최근 동의이력</BulletItem>
+            <Typo className='w-full text-right text-[#006FF2]' weight={'bold'} variant="body-sm">2026-03-19 10:00:00</Typo>
+          </Grow>
         </DialogSection>
 
         <DialogFooter>
