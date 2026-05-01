@@ -1,5 +1,7 @@
 'use client';
 
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -13,14 +15,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
 
-
-ModuleRegistry.registerModules([AllCommunityModule]);
-
-export const Ltpz107 = () => {
+const Ltpz107 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -112,3 +108,5 @@ export const Ltpz107 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz107;

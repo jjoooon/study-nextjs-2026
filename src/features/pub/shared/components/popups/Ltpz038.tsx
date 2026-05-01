@@ -1,6 +1,8 @@
 ﻿'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -21,9 +23,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-
 
 // dummy data
 type DummyDataType = {
@@ -101,7 +100,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz038 = () => {
+const Ltpz038 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
@@ -194,16 +193,11 @@ export const Ltpz038 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable
-              variant={'none'}
-              lineTop={false}
-              caption=""
-              cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
-            >
+          <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
+            <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'보종군'}>
-                  <NativeSelect aria-label="보종군 선택" width={130} required>
+                  <NativeSelect aria-label="보종군 선택" required>
                     {[
                       { value: 'selection', label: '전체' },
                       { value: 'selection2', label: '장기보험' },
@@ -219,8 +213,8 @@ export const Ltpz038 = () => {
                     ))}
                   </NativeSelect>
                 </FormCell>
-                <FormCell title={'조회구분'}>
-                  <NativeSelect aria-label="조회구분 선택" width={130}>
+                <FormCell title={'조회구분'} tdClassName="grid grid-cols-[1fr_auto_auto]">
+                  <NativeSelect aria-label="조회구분 선택">
                     {[
                       { value: 'selection', label: '선택' },
                       { value: 'selection2', label: '피보험자 번호' },
@@ -239,7 +233,7 @@ export const Ltpz038 = () => {
                   </Button>
                 </FormCell>
                 <FormCell title={'설계상태'}>
-                  <NativeSelect aria-label="설계상태 선택" width={100} required>
+                  <NativeSelect aria-label="설계상태 선택" required>
                     {[
                       { value: 'selection', label: '전체' },
                       { value: 'selection2', label: '전체2' },
@@ -252,8 +246,8 @@ export const Ltpz038 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={'설계조직'} colSpan={3}>
-                  <NativeSelect aria-label="설계조직 선택" width={130}>
+                <FormCell title={'설계조직'} colSpan={3} tdClassName="grid grid-cols-[1fr_auto_auto_1fr]">
+                  <NativeSelect aria-label="설계조직 선택">
                     {[
                       { value: 'selection', label: '취급기관' },
                       { value: 'selection2', label: '취급기관2' },
@@ -267,9 +261,9 @@ export const Ltpz038 = () => {
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" width={222} value={'신부산GA지점'} readOnly />
+                  <Input aria-label="" value={'신부산GA지점'} readOnly />
                 </FormCell>
-                <FormCell title={'설계일자'} colSpan={3}>
+                <FormCell title={'설계일자'}>
                   <DatePickerInput
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
@@ -345,3 +339,5 @@ export const Ltpz038 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz038;

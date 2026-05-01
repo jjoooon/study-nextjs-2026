@@ -51,6 +51,7 @@ import '@/shared/styles/globals.css';
 import { AuthHeader } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
 import { SpinnerRoot } from '@common/SpinnerRoot';
+import { Toaster } from '@uiux/Sonner';
 import { Providers } from './providers';
 
 const logger = log.getLogger('Layout');
@@ -86,6 +87,7 @@ export default function RootLayout({
           <AuthGuard>{children}</AuthGuard>
           <DialogRoot />
           <SpinnerRoot />
+          <Toaster style={{ '--z-index': 9999 } as React.CSSProperties} />
         </Providers>
       </body>
     </html>

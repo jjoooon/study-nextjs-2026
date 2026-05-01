@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -14,11 +18,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -152,7 +151,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz004 = () => {
+const Ltpz004 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -238,3 +237,5 @@ export const Ltpz004 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz004;

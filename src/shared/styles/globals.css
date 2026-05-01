@@ -790,6 +790,11 @@
   .type-small [role="checkbox"]>div {
     gap: 0 !important;
   }
+
+  /* [data-sonner-toast][data-styled=true] [data-close-button] {
+    top:2.5rem !important;
+  } */
+
 }
 
 .blink-border {

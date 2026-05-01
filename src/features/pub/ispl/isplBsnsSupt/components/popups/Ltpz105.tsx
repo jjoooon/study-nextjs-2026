@@ -127,7 +127,7 @@ const Ltpz105 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="grid grid-rows-[auto_1fr_1fr]">
           <Gcol className="w-full" placement="ss">
             <Typo variant={'body-lg'} weight={'bold'}>
               설계정보
@@ -148,7 +148,7 @@ const Ltpz105 = () => {
               </FormTable>
             </Grow>
           </Gcol>
-          <Gcol className="w-full" placement="ss" gap={2}>
+          <Gcol className="w-full" placement="ss" gap={1}>
             <div className="ag-theme-alpine min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
@@ -171,7 +171,7 @@ const Ltpz105 = () => {
               </Typo>
             </Gcol>
           </Gcol>
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType2>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}

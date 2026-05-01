@@ -1,5 +1,11 @@
 'use client';
 
+import {
+  QuestionRadioCard,
+  QuestionRadioCardHeader,
+  QuestionRadioCardHeaderTitle,
+  QuestionRadioCardContents,
+} from '@/shared/components/common/QuestionRadioCard';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -14,15 +20,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import {
-  QuestionRadioCard,
-  QuestionRadioCardHeader,
-  QuestionRadioCardHeaderTitle,
-  QuestionRadioCardContents,
-} from '@/shared/components/common/QuestionRadioCard';
 
-
-export const Ltpz003 = () => {
+const Ltpz003 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -385,3 +384,5 @@ export const Ltpz003 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz003;
