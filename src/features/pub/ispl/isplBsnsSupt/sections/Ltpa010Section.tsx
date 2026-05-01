@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -22,9 +25,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -559,13 +559,26 @@ export default function Ltpa010Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
-            <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               {/* M1. variant={'none'} */}
-              <FormTable variant={'none'} lineTop={false} caption="설계번호">
+              <FormTable
+                variant={'none'}
+                lineTop={false}
+                caption="설계번호"
+                cols={[
+                  'w-[1rem]',
+                  'w-auto',
+                  'w-[1rem]',
+                  'min-w-[10.8rem] w-auto',
+                  'w-[1rem]',
+                  'min-w-[10.8rem] w-auto',
+                  'w-[1rem]',
+                  'w-auto',
+                ]}
+              >
                 <FormRow>
-                  <FormCell title={'조회구분'}>
+                  <FormCell title={'조회구분'} tdClassName="grid grid-cols-[auto_1fr]">
                     <NativeSelect
-                      width={137}
                       aria-label="조회구분 선택"
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
@@ -585,21 +598,18 @@ export default function Ltpa010Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection' || form.type01 === 'selection2' ? (
-                      <Grow>
-                        <Input aria-label="" width={157} value={'김현화'} required />
+                      <Grow className="w-full" placement="sc">
+                        <Input aria-label="이름" value={'김현화'} required />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </Grow>
                     ) : (
-                      <Grow>
-                        <Input aria-label="" width={157} value={'김현화'} readOnly />
-                      </Grow>
+                      <Input aria-label="번호" value={'1234556556'} readOnly />
                     )}
                   </FormCell>
                   <FormCell title={'설계구분'}>
                     <NativeSelect
-                      width={108}
                       aria-label="설계구분 선택"
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
@@ -616,7 +626,6 @@ export default function Ltpa010Section() {
                   </FormCell>
                   <FormCell title={'설계상태'}>
                     <NativeSelect
-                      width={108}
                       aria-label="설계상태 선택"
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
@@ -636,7 +645,6 @@ export default function Ltpa010Section() {
                       aria-label="설계경로 선택"
                       value={form.type05}
                       onChange={(e) => setFormField('type05', e.target.value)}
-                      width={108}
                     >
                       {[
                         { value: 'selection', label: '전체' },
@@ -650,10 +658,9 @@ export default function Ltpa010Section() {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'설계조직'} colSpan={3}>
+                  <FormCell title={'설계조직'} colSpan={3} tdClassName="grid grid-cols-[1fr_1fr_auto_1fr]">
                     <NativeSelect
                       aria-label="설계조직 선택"
-                      width={108}
                       value={form.type07}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
@@ -667,11 +674,11 @@ export default function Ltpa010Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input aria-label="" width={59} value={'1301097'} required />
+                    <Input aria-label="" value={'1301097'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={91} value={'신부산GA지점'} readOnly />
+                    <Input aria-label="" value={'신부산GA지점'} readOnly />
                   </FormCell>
                   <FormCell title={'영업가족'}>
                     <NativeSelect
@@ -689,7 +696,7 @@ export default function Ltpa010Section() {
                       ))}
                     </NativeSelect>
                   </FormCell>
-                  <FormCell title={'설계일자'} colSpan={3}>
+                  <FormCell title={'설계일자'} colSpan={3} tdClassName="grid grid-cols-[auto_1fr]">
                     <DatePickerInput
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
@@ -704,7 +711,6 @@ export default function Ltpa010Section() {
                     />
                     <NativeSelect
                       aria-label="설계일자"
-                      width={108}
                       value={form.type09}
                       onChange={(e) => setFormField('type09', e.target.value)}
                     >

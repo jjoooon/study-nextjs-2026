@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -18,11 +22,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -65,7 +65,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz051 = () => {
+const Ltpz051 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -155,19 +155,15 @@ export const Ltpz051 = () => {
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'상품명'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    Text
-                  </Typo>
+                  <Input value={'한화 3N5 더 간편건강보험(세만기형) 무배당 2601'} variant="info" readOnly />
                 </FormCell>
                 <FormCell title={'설계번호'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    LA123123123123
-                  </Typo>
+                  <Input value={'LA123123123123'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={2.5}>
+          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={2}>
             <Gcol variant={'box-info'}>
               <Typo variant="body-sm" icon={'info'}>
                 고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당
@@ -322,3 +318,5 @@ export const Ltpz051 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz051;

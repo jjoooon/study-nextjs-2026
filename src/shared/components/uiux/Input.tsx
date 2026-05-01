@@ -77,7 +77,7 @@ function sanitizeAmountInput(value: string): string {
 function Input({
   size = 'lg',
   variant = 'default',
-  width,
+  width = 'full',
   type,
   required = false,
   readOnly = false,
