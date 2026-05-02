@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridPagination } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -16,10 +19,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -45,7 +44,7 @@ const DummyData: DummyDataType[] = [
   { id: 12, field01: '심사처리', field02: '', field03: '김한화' },
 ];
 
-export const Ltpz048 = () => {
+const Ltpz048 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -100,47 +99,45 @@ export const Ltpz048 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full">
-            <TableFold>
-              <TableFoldHead title="QA 심사이력"></TableFoldHead>
-              <TableFoldBody>
-                <Grow className="w-full" placement="ss" gap={3}>
-                  <Grid className="w-[30rem] shrink-0 h-full grid-rows-[1fr_auto]">
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        domLayout="autoHeight"
-                        pagination={true}
-                        paginationPageSize={pageSize}
-                        suppressPaginationPanel={true}
-                        ref={gridRef}
-                        onGridReady={handleGridReady}
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                      />
-                    </div>
-                    <TablePagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={handlePageChange}
-                      itemsPerPage={pageSize}
+        <DialogSection className="grid-rows-[1fr]">
+          <TableFold variant="default">
+            <TableFoldHead title="QA 심사이력"></TableFoldHead>
+            <TableFoldBody>
+              <Grow className="w-full" placement="ss" gap={3}>
+                <Grid className="w-[30rem] shrink-0 h-full grid-rows-[1fr_auto]">
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      domLayout="autoHeight"
+                      pagination={true}
+                      paginationPageSize={pageSize}
+                      suppressPaginationPanel={true}
+                      ref={gridRef}
+                      onGridReady={handleGridReady}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
-                  </Grid>
-                  <Gcol variant="box-round" placement="ss" className="flex-1 h-[27.6rem]">
-                    [보안]
-                    <br />
-                    1.[15:43]월 보험료 27,130원으로 오안내
-                    <br />
-                    2.건강고지 전산방영되었으나 녹취 미확인
-                  </Gcol>
-                </Grow>
-              </TableFoldBody>
-            </TableFold>
-          </Gcol>
+                  </div>
+                  <TablePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                    itemsPerPage={pageSize}
+                  />
+                </Grid>
+                <Gcol variant="box-round" placement="ss" className="flex-1 h-[27.6rem]">
+                  [보안]
+                  <br />
+                  1.[15:43]월 보험료 27,130원으로 오안내
+                  <br />
+                  2.건강고지 전산방영되었으나 녹취 미확인
+                </Gcol>
+              </Grow>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>
@@ -159,3 +156,5 @@ export const Ltpz048 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz048;

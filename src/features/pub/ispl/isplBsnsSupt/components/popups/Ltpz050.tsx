@@ -1,9 +1,10 @@
 'use client';
 
+import * as React from 'react';
+import { Textarea } from '@/shared/components/uiux/Textarea';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -15,11 +16,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import * as React from 'react';
-import { Textarea } from '@/shared/components/uiux/Textarea';
 
-
-export const Ltpz050 = () => {
+const Ltpz050 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -33,35 +31,37 @@ export const Ltpz050 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
-            <FormTable
-              caption="부실유의계약 선별인수 확인서"
-              cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}
-              lineTop
-              variant="default"
-            >
-              <FormRow>
-                <FormCell title={'상품명'}>Text</FormCell>
-                <FormCell title={'설계번호'}>Text</FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'계약자'}>Text</FormCell>
-                <FormCell title={'주피보험자'}>Text</FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'모집자'} colSpan={3}>
-                  Text
-                </FormCell>
-              </FormRow>
-            </FormTable>
-            <InfoBox bg subTitle="부실유의계약 해당 항목" variant="warning">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: '<strong>단 사유 입력시 DB 암호화  정책에 의거 개인정보 입력불가</strong>',
-                }}
-              />
-            </InfoBox>
+        <DialogSection>
+          <FormTable
+            caption="부실유의계약 선별인수 확인서"
+            cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}
+            lineTop
+            variant="default"
+          >
+            <FormRow>
+              <FormCell title={'상품명'}>Text</FormCell>
+              <FormCell title={'설계번호'}>Text</FormCell>
+            </FormRow>
+            <FormRow>
+              <FormCell title={'계약자'}>Text</FormCell>
+              <FormCell title={'주피보험자'}>Text</FormCell>
+            </FormRow>
+            <FormRow>
+              <FormCell title={'모집자'} colSpan={3}>
+                Text
+              </FormCell>
+            </FormRow>
+          </FormTable>
+          <Gcol>
+            <Gcol variant="box-warning" className="w-full" placement="ss">
+              <Typo variant={'body-sm'} icon={'warning'}>
+                부실유의계약 해당 항목
+              </Typo>
+              <Typo variant={'body-lg'} weight={'bold'}>
+                단 사유 입력시 DB 암호화 정책에 의거 개인정보 입력불가
+              </Typo>
+            </Gcol>
+
             <FormTable caption="부실유의계약 대상 사유" cols={['w-[10rem]', 'w-auto']} lineTop variant="default">
               <FormRow>
                 <FormCell title={'부실유의계약 대상 사유'}>
@@ -113,3 +113,5 @@ export const Ltpz050 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz050;

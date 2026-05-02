@@ -1,11 +1,14 @@
 'use client';
 
-import { useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { useAgGridInfiniteAppend } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
@@ -15,10 +18,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 import '@/shared/lib/agGridPub';
 
@@ -104,12 +103,6 @@ export default function Ltpa330Section() {
   const columnDefs = React.useMemo<ColDef<Ltpa330DummyDataRow>[]>(
     () => [
       {
-        headerName: '',
-        checkboxSelection: true,
-        headerCheckboxSelection: true,
-        width: 50,
-      },
-      {
         headerName: '고객정보',
         field: 'field01',
         flex: 1,
@@ -146,7 +139,7 @@ export default function Ltpa330Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="w-full grid-rows-[auto_1fr] gap-4 h-full">
-            <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
+            <Grow className="w-full items-center" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
                 lineTop={false}
@@ -195,19 +188,10 @@ export default function Ltpa330Section() {
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Grow className="w-[20rem]">
-                <Checkbox
-                  color="primary"
-                  errorMsg="선택은 필수입니다."
-                  errorPs="bl"
-                  onCheckedChange={() => {}}
-                  size="lg"
-                  variant="default"
-                >
-                  정부24시 실시간 조회
-                </Checkbox>
-              </Grow>
               <Grow>
+                <Checkbox>
+                  <span className="whitespace-nowrap mr-4">정부24시 실시간 조회</span>
+                </Checkbox>
                 <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                   조회
                 </Button>
@@ -223,52 +207,55 @@ export default function Ltpa330Section() {
                 </Button>
               </Grow>
             </Grow>
-            <TableFold>
-              {/* <TableFoldHead title="" /> */}
-              <TableFoldBody className="grid-rows-[1fr_auto] gap-1">
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<Ltpa330DummyDataRow>
-                    // noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={(params) => String(params.data.id)}
-                    columnDefs={columnDefs}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                      editable: false,
-                      cellClass: 'text-center',
-                    }}
-                    rowSelection="multiple"
-                    suppressRowClickSelection={true}
-                    rowClassRules={{}}
-                    onGridReady={(params) => {
-                      params.api.forEachNode((node) => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                    selectionColumnDef={{
-                      width: 50,
-                    }}
-                    enableCellSpan={true}
-                    domLayout="normal"
-                    key={loadedCount}
-                    rowModelType="infinite"
-                    cacheBlockSize={pageSize}
-                    maxBlocksInCache={2}
-                    datasource={dataSource}
-                  />
-                </div>
-                <TableMore
-                  loadedCount={loadedCount}
-                  totalCount={totalCount}
-                  pageSize={pageSize}
-                  onLoadAll={handleLoadAll}
-                  onLoadNext={handleLoadNext}
-                  isAll={false}
+
+            <Grid className="grid-rows-[1fr_auto] gap-1">
+              <div className="ag-theme-alpine">
+                <AgGridReact<Ltpa330DummyDataRow>
+                  // noRowsOverlayComponent={AgGridEmptyComponent}
+                  getRowId={(params) => String(params.data.id)}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                    editable: false,
+                    cellClass: 'text-center',
+                  }}
+                  rowClassRules={{}}
+                  onGridReady={(params) => {
+                    params.api.forEachNode((node) => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                  rowSelection={{
+                    mode: 'multiRow', // 다중 선택 모드
+                    headerCheckbox: true, // 헤더(전체 선택) 체크박스 표시
+                    checkboxes: true, // 각 행에 체크박스 표시
+                    enableClickSelection: true,
+                  }}
+                  selectionColumnDef={{
+                    width: 30,
+                    cellClass: 'text-center editable-cell',
+                  }}
+                  enableCellSpan={true}
+                  domLayout="normal"
+                  key={loadedCount}
+                  rowModelType="infinite"
+                  cacheBlockSize={pageSize}
+                  maxBlocksInCache={2}
+                  datasource={dataSource}
                 />
-              </TableFoldBody>
-            </TableFold>
+              </div>
+              <TableMore
+                loadedCount={loadedCount}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onLoadAll={handleLoadAll}
+                onLoadNext={handleLoadNext}
+                isAll={false}
+              />
+            </Grid>
           </Grid>
         }
         mainFoot={
@@ -282,7 +269,7 @@ export default function Ltpa330Section() {
               <Grow>
                 <Typo>설계번호</Typo>
                 <Input
-                  size = {'lg'}
+                  size={'lg'}
                   width={150}
                   value={'LA20233591906000'}
                   onChange={() => {}}

@@ -1,6 +1,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -14,10 +15,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import React from 'react';
 
-
-export const Ltpz014 = () => {
+const Ltpz014 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="sm">
@@ -84,3 +83,5 @@ export const Ltpz014 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz014;

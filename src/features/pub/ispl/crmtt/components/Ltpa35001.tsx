@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,10 +20,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useEffect, useState } from 'react';
-
-import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 const DUMMY_DATA = {
   view1: [
@@ -63,7 +61,6 @@ type Ltpa35001Props = {
 export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) => {
   // viewKey만 사용, 상태 제거
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA[viewKey]);
-  const [isLtpz014Open, setIsLtpz014Open] = useState(false);
 
   // M1. 무한루프에러 수정
   useEffect(() => {
@@ -1699,11 +1696,10 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
             {/* M1. variant="box" 추가 */}
             <MainBottom variant="box">
               <MainBottomItem className="bg-[var(--color-gray-5)]">
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => setIsLtpz014Open(true)}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   동영상매뉴얼
                 </Button>
-                <Ltpz014 open={isLtpz014Open} onOpenChange={setIsLtpz014Open} />
-                <Grow gap={1}>
+                <Grow>
                   <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                     저장
                   </Button>

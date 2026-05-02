@@ -1,6 +1,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,9 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-
 
 type DummyDataType = {
   id: number;
@@ -63,7 +62,7 @@ const dummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz009 = () => {
+const Ltpz009 = () => {
   const { rowData, toggleById } = useToggleTopRows({
     rows: dummyData,
     idKey: 'id',
@@ -141,13 +140,13 @@ export const Ltpz009 = () => {
             <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" value={'LA26020945959594'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <Gcol placement={'ss'} className="w-full gap-6">
+          <Gcol placement={'ss'} className="w-full gap-4">
             <div className="ag-theme-alpine min-h-[12.4rem]">
               <AgGridReact<ToggleTopRow<DummyDataType>>
                 getRowId={(params) => String(params.data.id)}
@@ -168,12 +167,11 @@ export const Ltpz009 = () => {
                 메모 입력
               </Typo>
               <Textarea className="w-full" placeholder="제목을 입력해주세요." maxLength={4000} resize={false} />
-            </Gcol>
-
-            <Gcol placement={'ss'} variant={'box-warning'}>
-              <Typo variant={'body-sm'} icon={'warning'}>
-                정보보안을 위하여 <em>개인정보를 입력할 수 없음.</em> (예: 주민등록번호, 성별, 주소, 휴대폰)
-              </Typo>
+              <Gcol placement={'ss'} variant={'box-warning'}>
+                <Typo variant={'body-sm'} icon={'warning'}>
+                  정보보안을 위하여 <em>개인정보를 입력할 수 없음.</em> (예: 주민등록번호, 성별, 주소, 휴대폰)
+                </Typo>
+              </Gcol>
             </Gcol>
           </Gcol>
         </DialogSection>
@@ -203,3 +201,5 @@ export const Ltpz009 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz009;

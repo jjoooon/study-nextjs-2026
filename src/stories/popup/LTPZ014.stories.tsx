@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz014 } from '@/features/pub/shared/components/popups/Ltpz014';
+import Ltpz014 from '@/features/pub/shared/components/popups/Ltpz014';
 
 export default {
   title: 'app/shared/components/popups/Ltpz014',
