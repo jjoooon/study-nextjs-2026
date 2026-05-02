@@ -38,7 +38,7 @@ const DummyData: DummyDataType[] = [
   { id: 6, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
 ];
 
-export const Ltpz085 = () => {
+const Ltpz085 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
@@ -120,3 +120,5 @@ export const Ltpz085 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz085;

@@ -6,7 +6,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -18,21 +18,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
-
-export const Ltpz057 = () => {
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
-    type05: '',
-    type06: '',
-    type07: '',
-    type08: '',
-  });
-
+const Ltpz057 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -48,7 +35,7 @@ export const Ltpz057 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <FormTable caption="월클릭스켄" cols={['w-[16rem]', 'w-auto']}>
+          <FormTable cols={['w-[15rem]', 'w-auto']}>
             <FormRow>
               <FormCell
                 title={
@@ -59,27 +46,22 @@ export const Ltpz057 = () => {
                 }
               >
                 <Gcol placement="ss" gap={2}>
-                  <Grow>
-                    <Input
-                      aria-label="가입업종"
-                      width={160}
-                      onChange={(e) => setFormField('type01', e.target.value)}
-                      value={form.type01}
-                    />
+                  <Grid className="grid-cols-[auto_auto_1fr] w-full">
+                    <Input aria-label="가입업종" width={160} value={''} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={200} value={'상품명 text'} readOnly />
-                  </Grow>
+                    <Input aria-label="" value={'상품명 text'} readOnly />
+                  </Grid>
                   <Grow>
-                    <Checkbox size="md">가입업종 외 건물 내 다른업종 없음</Checkbox>
+                    <Checkbox>가입업종 외 건물 내 다른업종 없음</Checkbox>
                   </Grow>
                 </Gcol>
               </FormCell>
             </FormRow>
           </FormTable>
 
-          <FormTable caption="월클릭스켄" cols={['w-[16rem]', 'w-auto']}>
+          <FormTable cols={['w-[15rem]', 'w-auto']}>
             <FormRow>
               <FormCell
                 title={
@@ -90,53 +72,49 @@ export const Ltpz057 = () => {
                 }
               >
                 <CheckboxGroup
-                  className=""
-                  color="primary"
                   errorMsg="2개 이상 선택해 주세요."
                   errorPs="bl"
                   minSelected={2}
-                  onValueChange={() => {}}
-                  value={[]}
-                  variant="default"
+                  defaultValue={['Industry2', 'Industry4']}
                 >
-                  <Grid className="grid-cols-5 gap-x-4 gap-y-2">
+                  <Grid className="grid-cols-[1.2fr_1fr_1fr_1fr_1fr] gap-x-4 gap-y-2 w-full">
                     {[
-                      '이용원, 미용원, 기타미용실',
-                      '학원(기관 및 교육목적)',
-                      '소형판매시설',
-                      '대형판매시설',
-                      '목욕탕',
-                      '여관, 여인숙, 유스호스텔',
-                      '금융업소, 부동산',
-                      '휴게음식점',
-                      '일반음식점',
-                      '오피스텔',
-                      '금속기계기구제조(금속가공)',
-                      '예식장, 장례식장',
-                      '공연장(극장, 영화관)',
-                      '사찰',
-                      '교회, 성당',
-                      '창고시설(보통품)',
-                      '목공, 목재가공',
-                      '비디오감상실 전화방',
-                      '단란주점',
-                      '유흥주점',
-                      '컴퓨터 게임장(전자오락실)',
-                      '직물재단 및 재봉',
-                      '세탁소(드라이클리닝)',
-                      '시장',
-                      '의원, 병원',
-                    ].map((label, idx) => (
-                      <Checkbox size="md" value={`chk${idx + 1}`} key={label + idx}>
-                        {label}
-                      </Checkbox>
+                      { value: 'Industry1', label: '이용원, 미용원, 기타미용실' },
+                      { value: 'Industry2', label: '학원(기관 및 교육목적)' },
+                      { value: 'Industry3', label: '소형판매시설' },
+                      { value: 'Industry4', label: '대형판매시설' },
+                      { value: 'Industry5', label: '목욕탕' },
+                      { value: 'Industry6', label: '여관, 여인숙, 유스호스텔' },
+                      { value: 'Industry7', label: '금융업소, 부동산' },
+                      { value: 'Industry8', label: '휴게음식점' },
+                      { value: 'Industry9', label: '일반음식점' },
+                      { value: 'Industry10', label: '오피스텔' },
+                      { value: 'Industry11', label: '금속기계기구제조(금속가공)' },
+                      { value: 'Industry12', label: '예식장, 장례식장' },
+                      { value: 'Industry13', label: '공연장(극장, 영화관)' },
+                      { value: 'Industry14', label: '사찰' },
+                      { value: 'Industry15', label: '교회, 성당' },
+                      { value: 'Industry16', label: '창고시설(보통품)' },
+                      { value: 'Industry17', label: '목공, 목재가공' },
+                      { value: 'Industry18', label: '비디오감상실 전화방' },
+                      { value: 'Industry19', label: '단란주점' },
+                      { value: 'Industry20', label: '유흥주점' },
+                      { value: 'Industry21', label: '컴퓨터 게임장(전자오락실)' },
+                      { value: 'Industry22', label: '직물재단 및 재봉' },
+                      { value: 'Industry23', label: '세탁소(드라이클리닝)' },
+                      { value: 'Industry24', label: '시장' },
+                      { value: 'Industry25', label: '의원, 병원' },
+                    ].map((item) => (
+                      <CheckboxGroupItem value={item.value} key={item.value}>
+                        {item.label}
+                      </CheckboxGroupItem>
                     ))}
                   </Grid>
                 </CheckboxGroup>
               </FormCell>
             </FormRow>
           </FormTable>
-          <FormTable caption="월클릭스켄" cols={['w-[16rem]', 'w-auto']}>
+          <FormTable cols={['w-[15rem]', 'w-auto']}>
             <FormRow>
               <FormCell
                 title={
@@ -146,100 +124,57 @@ export const Ltpz057 = () => {
                   </Gcol>
                 }
               >
-                <Grid className="grid-cols-3 gap-x-6 gap-y-2">
-                  <Grow>
-                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
-                    <Input
-                      aria-label="주변업종 직접 검색"
-                      width={160}
-                      onChange={(e) => setFormField('type02', e.target.value)}
-                      value={form.type02}
-                    />
+                <Grid className="grid-cols-[1fr_1fr_1fr] gap-x-6 gap-y-2 w-full">
+                  <Grid className="grid-cols-[auto_1fr_auto]">
+                    <Checkbox aria-label="주변업종 선택"></Checkbox>
+                    <Input aria-label="주변업종 직접 검색" />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                  </Grow>
-                  <Grow>
-                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
-                    <Input
-                      aria-label="주변업종 직접 검색"
-                      width={160}
-                      onChange={(e) => setFormField('type03', e.target.value)}
-                      value={form.type03}
-                    />
+                  </Grid>
+                  <Grid className="grid-cols-[auto_1fr_auto]">
+                    <Checkbox aria-label="주변업종 선택"></Checkbox>
+                    <Input aria-label="주변업종 직접 검색" />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                  </Grow>
-                  <Grow>
-                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
-                    <Input
-                      aria-label="주변업종 직접 검색"
-                      width={160}
-                      onChange={(e) => setFormField('type04', e.target.value)}
-                      value={form.type04}
-                    />
+                  </Grid>
+                  <Grid className="grid-cols-[auto_1fr_auto]">
+                    <Checkbox aria-label="주변업종 선택"></Checkbox>
+                    <Input aria-label="주변업종 직접 검색" />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                  </Grow>
-                  <Grow>
-                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
-                    <Input
-                      aria-label="주변업종 직접 검색"
-                      width={160}
-                      onChange={(e) => setFormField('type05', e.target.value)}
-                      value={form.type05}
-                    />
+                  </Grid>
+                  <Grid className="grid-cols-[auto_1fr_auto]">
+                    <Checkbox aria-label="주변업종 선택"></Checkbox>
+                    <Input aria-label="주변업종 직접 검색" />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                  </Grow>
-                  <Grow>
-                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
-                    <Input
-                      aria-label="주변업종 직접 검색"
-                      width={160}
-                      onChange={(e) => setFormField('type06', e.target.value)}
-                      value={form.type06}
-                    />
+                  </Grid>
+                  <Grid className="grid-cols-[auto_1fr_auto]">
+                    <Checkbox aria-label="주변업종 선택"></Checkbox>
+                    <Input aria-label="주변업종 직접 검색" />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                  </Grow>
-                  <Grow>
-                    <Checkbox size="md" aria-label="주변업종 선택"></Checkbox>
-                    <Input
-                      aria-label="주변업종 직접 검색"
-                      width={160}
-                      onChange={(e) => setFormField('type07', e.target.value)}
-                      value={form.type07}
-                    />
+                  </Grid>
+                  <Grid className="grid-cols-[auto_1fr_auto]">
+                    <Checkbox aria-label="주변업종 선택"></Checkbox>
+                    <Input aria-label="주변업종 직접 검색" />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                  </Grow>
+                  </Grid>
                 </Grid>
               </FormCell>
             </FormRow>
           </FormTable>
-          <FormTable caption="월클릭스켄" cols={['w-[16rem]', 'w-auto']}>
+          <FormTable caption="월클릭스켄" cols={['w-[15rem]', 'w-auto']}>
             <FormRow>
-              <FormCell
-                title={
-                  <Gcol className="items-start">
-                    <b>오율적용업종</b>
-                  </Gcol>
-                }
-              >
-                <Grow>
-                  <Input
-                    aria-label=""
-                    width={'20rem'}
-                    onChange={(e) => setFormField('type08', e.target.value)}
-                    value={form.type08}
-                  />
-                </Grow>
+              <FormCell title="오율적용업종">
+                <Input />
               </FormCell>
             </FormRow>
           </FormTable>
@@ -264,3 +199,5 @@ export const Ltpz057 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz057;

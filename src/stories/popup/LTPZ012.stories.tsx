@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz012 } from '@/features/pub/shared/components/popups/cvrPl/Ltpz012';
+import Ltpz012 from '@/features/pub/shared/components/popups/cvrPl/Ltpz012';
 
 export default {
   title: 'app/shared/components/popups/cvrPl/Ltpz012',

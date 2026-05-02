@@ -1,10 +1,10 @@
 'use client';
 
-import { Grid } from '@atoms';
-import { CloseIcon } from '@icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grid } from '@atoms';
+import { CloseIcon } from '@icons';
 
 type DialogSizeValue = number | string;
 
@@ -21,8 +21,9 @@ type DialogSizeConfig = {
 
 type DialogSize = DialogSizePreset | DialogSizeConfig;
 
-// const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
-const DEFAULT_DIALOG_CONTENT_Z_INDEX = 50;
+const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
+const DEFAULT_DIALOG_CONTENT_Z_INDEX = 51;
+const DIALOG_Z_INDEX_STEP = 2;
 const DIALOG_VIEWPORT_GAP = '2.4rem';
 const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
 const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
@@ -138,7 +139,7 @@ function Dialog({
     <DialogDepthContext.Provider value={newDepth}>
       <DialogPrimitive.Root
         data-slot="dialog"
-        open={openProp}
+        open={isOpen}
         defaultOpen={defaultOpen}
         onOpenChange={handleOpenChange}
         {...props}
@@ -202,10 +203,8 @@ function DialogContent({
   };
 }) {
   const depth = React.useContext(DialogDepthContext);
-  // depth 기반 z-index: 상위 다이얼로그 content 위에 하위 암막/content가 올라옴
-  // 암막과 content가 항상 동일한 z-index를 갖도록 조정 (첫 번째 50, 두 번째 51 ...)
-  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (depth - 1);
-  // const overlayZIndex = autoContentZIndex;
+  // depth 기반 z-index: 1단계 50/51, 2단계 52/53 ...
+  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (depth - 1) * DIALOG_Z_INDEX_STEP;
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [maxOpenDepth, setMaxOpenDepth] = React.useState(_getMaxOpenDepth);
@@ -220,16 +219,13 @@ function DialogContent({
     []
   );
 
-  // 병렬 구조 지원: 열린 모달이 있다면 자동으로 zIndex를 더 높게 할당
-  const parallelZIndex = React.useMemo(() => {
-    // zIndex prop가 명시되면 그대로 사용
-    if (zIndex !== undefined) return zIndex;
-    // 병렬 구조에서 여러 모달가 열려 있으면, 열린 개수만큼 zIndex 증가
-    if (openCount > 1) {
-      return DEFAULT_DIALOG_CONTENT_Z_INDEX + openCount - 1;
-    }
-    return autoContentZIndex;
-  }, [zIndex, openCount, autoContentZIndex]);
+  // 각 다이얼로그는 자신의 depth만으로 z-index를 결정 (첫번째 51 고정, 두번째 53 고정)
+  const parallelZIndex = zIndex !== undefined ? zIndex : autoContentZIndex;
+
+  const overlayZIndex = React.useMemo(() => {
+    if (zIndex !== undefined) return zIndex - 1;
+    return DEFAULT_DIALOG_OVERLAY_Z_INDEX + (depth - 1) * DIALOG_Z_INDEX_STEP;
+  }, [depth, zIndex]);
 
   // 단일 팝업 → 항상 암막 표시 / 중첩 → 가장 위(depth === maxOpenDepth)만 표시
   const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || depth >= maxOpenDepth);
@@ -277,6 +273,7 @@ function DialogContent({
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
       if (isFullSize) return;
+      e.stopPropagation();
       const target = e.target as HTMLElement;
       const resizeHandle = target.closest('[data-slot="resize-handle"]');
       const dialogHeader = target.closest('[data-slot="dialog-header"]');
@@ -377,7 +374,7 @@ function DialogContent({
 
   return (
     <DialogPortal data-slot="dialog-portal">
-      {resolvedShowOverlay && <DialogOverlay style={{ zIndex: parallelZIndex }} className={overlayClassName} />}
+      {resolvedShowOverlay && <DialogOverlay style={{ zIndex: overlayZIndex }} className={overlayClassName} />}
       <DialogPrimitive.Content
         ref={contentRef}
         data-slot="dialog-content"
