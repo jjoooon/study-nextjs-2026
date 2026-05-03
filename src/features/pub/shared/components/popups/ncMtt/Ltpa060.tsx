@@ -2,6 +2,11 @@
 
 import '@/shared/lib/agGridPub';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { TabPager } from '@/shared/components/common/TabPager';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,13 +23,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-
-import { TabPager } from '@/shared/components/common/TabPager';
-import { useTabs } from '@/shared/hooks/useTabs';
-
 
 type LTPZ060TabType = {
   name: string;

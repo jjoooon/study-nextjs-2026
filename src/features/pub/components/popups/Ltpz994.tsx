@@ -15,7 +15,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 
-
 const fileList = [
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1344024', fileAddress: 'file-address' },
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '103324', fileAddress: 'file-address' },

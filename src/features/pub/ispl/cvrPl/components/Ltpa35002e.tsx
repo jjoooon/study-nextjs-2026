@@ -775,7 +775,7 @@ export function Ltpa35002e({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
     ],
-    [attributeColumnWidth, duplicateRenderer]
+    [attributeColumnWidth, duplicateRenderer, getExpiryRenderer]
   );
 
   return (

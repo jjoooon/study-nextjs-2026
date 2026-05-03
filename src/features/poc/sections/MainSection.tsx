@@ -8,13 +8,13 @@
  * - 고객찾기 팝업 테스트 버튼 포함
  */
 
-import { Button } from '@uiux/Button';
 import { useState } from 'react';
 import type { CustomerSearchDialogResult } from '@/features/poc/components/popups/CustomerSearchDialog';
 import useMounted from '@/shared/hooks/useMounted';
 import log from '@/shared/utils/logger';
 import { popup } from '@/shared/utils/popup/popupApi';
 import { registerDialog } from '@/shared/utils/popup/popupRegistry';
+import { Button } from '@uiux/Button';
 
 const logger = log.getLogger('Poc');
 

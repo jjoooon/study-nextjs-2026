@@ -1,11 +1,11 @@
 'use client';
 
+import React, { useRef, useState } from 'react';
+import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Grow, Gcol, Grid, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import { Textarea } from '@uiux/Textarea';
-import React, { useRef, useState } from 'react';
-import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 
 export interface ChatResultItem {
   name: string;
@@ -179,13 +179,9 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                     {item.uw_name}
                   </Typo>
                   <Gcol className="ml-auto rounded-lg bg-[var(--color-warning-10)] py-2 px-3 align-start justify-start text-left gap-2">
-                    <Gcol placement='ss'>
+                    <Gcol placement="ss">
                       <Grow className="w-full justify-between">
-                        <Typo
-                          variant="body-xs"
-                          className="w-full justify-between align-center"
-                          weight="bold"
-                        >
+                        <Typo variant="body-xs" className="w-full justify-between align-center" weight="bold">
                           {item.uw_title}
                         </Typo>
                         <Button
@@ -225,7 +221,9 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                           {item.uw_state.map((state, sidx) => (
                             <Grow className="gap-0.5 aligin-center" key={sidx}>
                               <CircleCheckStepIcon />
-                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">{state}</Typo>
+                              <Typo className="text-[1.1rem] text-[var(--color-gray-70)] leading-[1.7rem]">
+                                {state}
+                              </Typo>
                             </Grow>
                           ))}
                         </Grow>

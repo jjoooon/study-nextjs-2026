@@ -48,9 +48,8 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
 
   React.useEffect(() => {
-    if (!open) return;
     setActive(initialActiveTab);
-  }, [initialActiveTab, open, setActive]);
+  }, [initialActiveTab, setActive]);
 
   const getTabIcon = (value: CheckTab['value']) => {
     if (value === 'common') return <CommonIcon />;

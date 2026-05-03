@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,9 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-
 
 export const Ltpz106 = () => {
   // items 상태로 관리

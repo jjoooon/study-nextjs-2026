@@ -1,7 +1,7 @@
 'use client';
 
-import { Grow } from '@atoms';
 import * as React from 'react';
+import { Grow } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
 
 import iaHsh from './ia-hsh.json';
@@ -88,7 +88,7 @@ export function IAListWithPreview() {
         phase,
       };
     });
-  }, [ROWS, pubInfoList]);
+  }, []);
 
   const visibleRows = React.useMemo(() => {
     const filtered = rowsWithPubInfo.filter((row) => row.dep1 === '차세대가입설계');

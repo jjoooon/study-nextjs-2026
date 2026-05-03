@@ -27,9 +27,9 @@
  * }
  */
 
+import { useState } from 'react';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@uiux/Dialog';
-import { useState } from 'react';
 
 // ============================================================================
 // TYPE DEFINITIONS

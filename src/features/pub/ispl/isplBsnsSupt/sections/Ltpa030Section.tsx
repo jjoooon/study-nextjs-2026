@@ -1,5 +1,12 @@
 'use client';
 // M1. 전체 수정
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
+import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import {
   AgGridEmptyComponent,
   createFieldRenderer,
@@ -7,7 +14,7 @@ import {
   editableSelectCellRenderer,
   useAgGridInfiniteAppend,
 } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Gcol, Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -20,19 +27,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
-import type {
-  ColDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellEditorParams,
-  ICellRendererParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 
 import '@/shared/lib/agGridPub';
 
@@ -474,27 +468,28 @@ export default function Ltpa030Section() {
     if (selectedIds.size === 0) return;
 
     setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
-  }, []);
+  }, [setRowData]);
 
   // 첫번째 agGrid 행추가
   const handleAddRow = React.useCallback(() => {
-    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
-    const newRow: DummyDataType = {
-      id: nextId,
-      isCheck: false,
-      isNew: true,
-      field01: '',
-      field02: '',
-      field03: '',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-      field08: false,
-      field09: '',
-    };
-
-    setRowData((prev) => [...prev, newRow]);
+    setRowData((prev) => {
+      const nextId = prev.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+      const newRow: DummyDataType = {
+        id: nextId,
+        isCheck: false,
+        isNew: true,
+        field01: '',
+        field02: '',
+        field03: '',
+        field04: '',
+        field05: '',
+        field06: '',
+        field07: '',
+        field08: false,
+        field09: '',
+      };
+      return [...prev, newRow];
+    });
 
     requestAnimationFrame(() => {
       const gridApi = gridApiRef.current;
@@ -506,7 +501,7 @@ export default function Ltpa030Section() {
       const rowIndex = gridApi.getDisplayedRowCount() - 1;
       gridApi.ensureIndexVisible(rowIndex, 'bottom');
     });
-  }, [rowData]);
+  }, [setRowData]);
 
   // 두번째 agGrid 행삭제
   const handleDeleteRow2 = React.useCallback(() => {
@@ -522,27 +517,28 @@ export default function Ltpa030Section() {
     if (selectedIds.size === 0) return;
 
     setRowData2((prev) => prev.filter((row) => !selectedIds.has(row.id)));
-  }, []);
+  }, [setRowData2]);
 
   // 두번째 agGrid 행추가
   const handleAddRow2 = React.useCallback(() => {
-    const nextId = rowData2.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
-    const newRow: DummyDataType2 = {
-      id: nextId,
-      isNew: true,
-      isCheck: false,
-      field01: '',
-      field02: '',
-      isField02InputVisible: false,
-      field03: '',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-      field08: '',
-    };
-
-    setRowData2((prev) => [...prev, newRow]);
+    setRowData2((prev) => {
+      const nextId = prev.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+      const newRow: DummyDataType2 = {
+        id: nextId,
+        isNew: true,
+        isCheck: false,
+        field01: '',
+        field02: '',
+        isField02InputVisible: false,
+        field03: '',
+        field04: '',
+        field05: '',
+        field06: '',
+        field07: '',
+        field08: '',
+      };
+      return [...prev, newRow];
+    });
 
     requestAnimationFrame(() => {
       const gridApi = gridApiRef2.current;
@@ -554,7 +550,7 @@ export default function Ltpa030Section() {
       const rowIndex = gridApi.getDisplayedRowCount() - 1;
       gridApi.ensureIndexVisible(rowIndex, 'bottom');
     });
-  }, [rowData2]);
+  }, [setRowData2]);
 
   return (
     <>
