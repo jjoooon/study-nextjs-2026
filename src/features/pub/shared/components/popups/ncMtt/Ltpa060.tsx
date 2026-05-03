@@ -21,6 +21,7 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
@@ -566,14 +567,11 @@ export const Ltpa060 = () => {
               <Button variant={'contained'} size={'xl'}>
                 알릴사항 반영하기
               </Button>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

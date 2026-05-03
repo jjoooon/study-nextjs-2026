@@ -17,6 +17,7 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
@@ -121,14 +122,11 @@ export const Ltpz01002 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

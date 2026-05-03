@@ -15,6 +15,7 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@/shared/components/uiux/Dialog';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -213,14 +214,11 @@ export const Ltpa3500401 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
