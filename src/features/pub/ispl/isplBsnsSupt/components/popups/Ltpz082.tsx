@@ -1,7 +1,6 @@
 'use client';
 
 import { Grow, Gcol, Grid, Typo } from '@atoms';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, Checkbox } from '@uiux/Checkbox';
 import {
@@ -14,14 +13,12 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
-
-export const Ltpz082 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz082 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -30,39 +27,30 @@ export const Ltpz082 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <TableFold className="gap-0">
-            <TableFoldBody className="gap-0">
-              <Gcol className="border border-[var(--color-gray-15)] rounded-[.8rem] gap-0">
-                <Grow placement="ss" variant="default" className="w-full h-[4.1rem] p-2.5 bg-[var(--color-gray-5)] rounded-t-[.8rem] gap-0">
-                  <Typo variant="heading-md">고객님께서 이보험을 가입하신 목적은 무엇입니다?(복수 응답가능)</Typo>
-                </Grow>
-                <CheckboxGroup
-                  color="primary"
-                  errorMsg="2개 이상 선택해 주세요."
-                  errorPs="bl"
-                  minSelected={2}
-                  onValueChange={() => {}}
-                  size="lg"
-                  value={[]}
-                  variant="default"
-                >
-                  <Grid className="grid-cols-2 gap-y-2 w-full px-5 py-2.5">
-                    {[ 
-                      '사망,진단 수술 등 보장 목적',
-                      '노후연금목적',
-                      '목돈마련 목적',
-                      '상속,증여목적' 
-                    ].map((label, idx) => (
-                    <Checkbox size="lg" value={`chk${idx + 1}`} key={label + idx}>
-                      {label}
-                    </Checkbox>
-                  ))}
-                  </Grid>
-                </CheckboxGroup>
-              </Gcol>
-            </TableFoldBody>
-          </TableFold>
+        <DialogSection>
+          <Gcol className="border border-[var(--color-gray-15)] rounded-[.8rem] gap-0">
+            <Grow
+              placement="ss"
+              variant="default"
+              className="w-full h-[4.1rem] p-2.5 bg-[var(--color-gray-5)] rounded-t-[.8rem] gap-0"
+            >
+              <Typo variant="heading-md">고객님께서 이보험을 가입하신 목적은 무엇입니다?(복수 응답가능)</Typo>
+            </Grow>
+            <CheckboxGroup minSelected={2} onValueChange={() => {}} size="lg" value={[]} variant="default">
+              <Grid className="grid-cols-2 gap-y-2 w-full px-5 py-2.5">
+                {[
+                  { value: 'check1', label: '사망,진단 수술 등 보장 목적' },
+                  { value: 'check2', label: '노후연금목적' },
+                  { value: 'check3', label: '목돈마련 목적' },
+                  { value: 'check4', label: '상속,증여목적' },
+                ].map((item, idx) => (
+                  <Checkbox size="lg" value={item.value} key={item.label + idx}>
+                    {item.label}
+                  </Checkbox>
+                ))}
+              </Grid>
+            </CheckboxGroup>
+          </Gcol>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
@@ -82,3 +70,5 @@ export const Ltpz082 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz082;

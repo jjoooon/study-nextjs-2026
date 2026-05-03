@@ -1,6 +1,13 @@
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback, useState } from 'react';
+import { TableMore } from '@/shared/components/common/TablePagination';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -14,7 +21,7 @@ import {
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { CheckIcon, ChevronDownIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
+import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -24,14 +31,6 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback, useState } from 'react';
-import { TableMore } from '@/shared/components/common/TablePagination';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -463,8 +462,6 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
       cellClass: 'text-center',
     },
   ];
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',

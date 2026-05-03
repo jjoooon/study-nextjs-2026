@@ -2,7 +2,7 @@ import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
-import { Ltpz011 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz011';
+import Ltpz011 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz011';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 

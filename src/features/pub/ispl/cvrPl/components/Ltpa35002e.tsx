@@ -1,29 +1,6 @@
 'use client';
 
-import {
-  createCellClickSelectionToggleHandler,
-  createInsertCopiedRowButtonCellRenderer,
-  numberValueFormatter,
-  useDynamicColumnWidths,
-  AgGridEmptyComponent,
-  AmountWithPopoverCellEditor,
-} from '@aggrid';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InputHash } from '@common/InputHash';
-import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { SelectDrop } from '@common/SelectDrop';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { Accordion } from '@uiux/Accordion';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import type {
   CellClassParams,
   ColDef,
@@ -34,6 +11,30 @@ import type {
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import {
+  createCellClickSelectionToggleHandler,
+  createInsertCopiedRowButtonCellRenderer,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
+} from '@aggrid';
+import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InputHash } from '@common/InputHash';
+import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { SelectDrop } from '@common/SelectDrop';
+import { TextSelectChange } from '@common/TextSelectChange';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { Accordion } from '@uiux/Accordion';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 // Shared AgGrid generic utilities & cell renderers
 import {
   rowDataWithTrackingFactory,
@@ -858,12 +859,18 @@ export function Ltpa35002e({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           <LayoutMainBody>
             <LayoutScrollWrap className="grid-rows-[auto_1fr]">
               <Grow placement={'bwc'} className="gap-1 w-full pb-1">
-                <Grow className="gap-1.5">
-                  <Typo variant="heading-sm">전기납 · 월납</Typo>
-                  <Button variant={'outlined'} color={'gray'} size={'md'}>
-                    변경
-                  </Button>
-                </Grow>
+                <TextSelectChange
+                  items={[
+                    [
+                      { checked: false, label: '100세만기', value: '100세만기' },
+                      { checked: true, label: '30세만기', value: '30세만기' },
+                    ],
+                    [
+                      { checked: false, label: '월납', value: '월납' },
+                      { checked: true, label: '연납', value: '연납' },
+                    ],
+                  ]}
+                />
                 <Grow className="gap-2.5">
                   {/* M1. 담보초기화 삭제 */}
                   <Checkbox>플랜기본값</Checkbox>
@@ -1006,54 +1013,57 @@ export function Ltpa35002e({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   variant={'bottom'}
                   cols={[
                     'min-w-[9rem]',
-                    'w-[36%]',
+                    'w-[25%]',
                     'min-w-[8rem]',
-                    'w-[30%]',
+                    'w-[20%]',
                     'min-w-[8rem]',
-                    'w-[30%]',
+                    'w-[20%]',
                     'min-w-[8rem]',
-                    'min-w-[15rem]',
+                    'w-[20%]',
                   ]}
                 >
                   <FormRow>
                     <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
-                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                        예상
-                      </Button>
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={100000}
-                        size={'md'}
-                        width={'full'}
-                        readOnly={true}
-                        className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
-                      />
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Input
-                            type="text"
-                            commaAmount={true}
-                            value={39.4}
-                            size={'md'}
-                            width={60}
-                            className="[&_input]:text-right shrink-0 cursor-pointer"
-                          />
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[
-                              { key: '총압입보험료', value: '000,000,000원' },
-                              { key: '중도환급금', value: '0원' },
-                              { key: '만기환급금', value: '000,000,000원' },
-                            ]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      %
+                      <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
+                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                          예상
+                        </Button>
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value={100000}
+                          size={'md'}
+                          readOnly={true}
+                          className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <>
+                              <Input
+                                type="text"
+                                commaAmount={true}
+                                value={39.4}
+                                size={'md'}
+                                width={44}
+                                className="[&_input]:text-right shrink-0 cursor-pointer"
+                              />
+                              %
+                            </>
+                          </PopoverTrigger>
+                          <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                            <KeyValueList
+                              direction="col"
+                              variant="amount"
+                              data={[
+                                { key: '총압입보험료', value: '000,000,000원' },
+                                { key: '중도환급금', value: '0원' },
+                                { key: '만기환급금', value: '000,000,000원' },
+                              ]}
+                              className="w-full"
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </Grid>
                     </FormCell>
                     <FormCell title="보장보험료">
                       <Popover>

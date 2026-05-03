@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { createTooltipValueGetter } from '@aggrid';
 import { Grow, Gcol, Grid, ConTit, ConTitName } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -17,13 +21,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
+import { Table, TableBody, TableRow, TableCell } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState, useRef } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -275,73 +274,7 @@ const DummyData: AgGridRow[] = [
   },
 ];
 
-// 두번째 agGrid
-type AgGridRow2 = {
-  id: number;
-  field01: string;
-};
-const DummyData2: AgGridRow2[] = [
-  {
-    id: 1,
-    field01:
-      '보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편) 보통약관(상해80%이상후유장해)(간편)',
-  },
-  {
-    id: 2,
-    field01: '보험료납입면제대상보장(5대유사)(간편)',
-  },
-];
-
 export function Ltpa35004() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  // 버튼으로 이동 중인지 여부 (smooth 스크롤 중 handleScroll 간섭 방지)
-  const isScrollingRef = useRef(false);
-  const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // 스크롤 위치 → 현재 페이지 계산
-  const calcCurrentPage = (el: HTMLDivElement) => {
-    const pageSize = el.clientHeight;
-    const totalPageCount = Math.max(1, Math.ceil(el.scrollHeight / pageSize));
-    const isAtEnd = el.scrollTop + pageSize >= el.scrollHeight - 2;
-    const currentPage = isAtEnd ? totalPageCount : Math.min(totalPageCount, Math.floor(el.scrollTop / pageSize) + 1);
-    return { currentPage, totalPageCount };
-  };
-
-  // 수동 스크롤 시 페이지 계산 (버튼 이동 중에는 무시)
-  const handleScroll = () => {
-    if (isScrollingRef.current) return;
-    const el = scrollRef.current;
-    if (!el) return;
-    const { currentPage, totalPageCount } = calcCurrentPage(el);
-    setTotalPages(totalPageCount);
-    setPage(currentPage);
-  };
-
-  // 버튼 클릭: 즉시 page 반영 + smooth 스크롤, 스크롤 끝나면 lock 해제
-  const scrollToPage = (nextPage: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const pageSize = el.clientHeight;
-    const totalPageCount = Math.max(1, Math.ceil(el.scrollHeight / pageSize));
-    const safePage = Math.max(1, Math.min(nextPage, totalPageCount));
-
-    // 즉시 state 반영
-    setPage(safePage);
-    setTotalPages(totalPageCount);
-
-    // smooth 스크롤 중 handleScroll 차단
-    isScrollingRef.current = true;
-    el.scrollTo({ top: pageSize * (safePage - 1), behavior: 'smooth' });
-
-    // scrollend 이벤트가 없는 환경 대비: 150ms 후 lock 해제
-    if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
-    scrollEndTimerRef.current = setTimeout(() => {
-      isScrollingRef.current = false;
-    }, 600);
-  };
-
   // 1) INLINED STATE (default)
   const [isHeightExpanded] = useState(false);
   const [gridKey] = useState(0);
@@ -356,7 +289,6 @@ export function Ltpa35004() {
 
   // 3) Grid data
   const [rowData] = useState<AgGridRow[]>(DummyData);
-  const [rowData2] = useState<AgGridRow2[]>(DummyData2);
 
   // 첫번째 agGrid 컬럼
   const columnDefs = useMemo<ColDef<AgGridRow>[]>(
@@ -383,21 +315,6 @@ export function Ltpa35004() {
         autoHeight: true,
         cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<AgGridRow>({ field: 'field03' }),
-      },
-    ],
-    []
-  );
-
-  // 두번째 agGrid 컬럼
-  const columnDefs2 = useMemo<ColDef<AgGridRow2>[]>(
-    () => [
-      {
-        headerName: '담보명',
-        field: 'field01',
-        flex: 1,
-        cellClass: 'editable-cell text-left',
-        autoHeight: true,
-        tooltipValueGetter: createTooltipValueGetter<AgGridRow2>({ field: 'field01' }),
       },
     ],
     []

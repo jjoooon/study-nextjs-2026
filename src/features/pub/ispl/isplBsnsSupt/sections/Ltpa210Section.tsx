@@ -2,11 +2,17 @@
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
 
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import {
   AgGridEmptyComponent,
   DatePickerCellEditor,
   useAgGridInfiniteAppend,
-  createFieldRenderer,
   editableSelectCellRenderer,
 } from '@aggrid';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
@@ -23,19 +29,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type {
-  ColDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellEditorParams,
-  ICellRendererParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -112,10 +105,6 @@ export default function Ltpa210Section() {
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
     []
   );
-  const existingRowFieldRenderer = React.useMemo(
-    () => createFieldRenderer<DummyDataType>('field02', 'field03', 'row'),
-    []
-  );
 
   const expiryCellRenderer = useCallback(
     (align: 'left' | 'center' | 'right' = 'right') =>
@@ -129,7 +118,7 @@ export default function Ltpa210Section() {
     {
       headerName: '구분',
       field: 'field01',
-      flex: 1,
+      width: 120,
       cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
@@ -145,7 +134,7 @@ export default function Ltpa210Section() {
     {
       headerName: '대상',
       field: 'field02',
-      flex: 1,
+      width: 160,
       suppressNavigable: true,
       cellClass: 'editable-cell text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
@@ -211,7 +200,7 @@ export default function Ltpa210Section() {
     {
       headerName: '적용시작일자',
       field: 'field04',
-      flex: 1,
+      width: 120,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
       cellEditor: DatePickerCellEditor,
@@ -219,7 +208,7 @@ export default function Ltpa210Section() {
     {
       headerName: '적용종료일자',
       field: 'field05',
-      flex: 1,
+      width: 120,
       cellClass: 'flex! items-center! justify-center!',
       editable: isEditableNewRow,
       cellEditor: DatePickerCellEditor,
@@ -227,7 +216,7 @@ export default function Ltpa210Section() {
     {
       headerName: '상태',
       field: 'field06',
-      flex: 0.8,
+      width: 80,
       cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       editable: isEditableNewRow,
       cellEditor: 'agSelectCellEditor',
@@ -251,7 +240,7 @@ export default function Ltpa210Section() {
     {
       headerName: '등록자',
       field: 'field08',
-      flex: 0.7,
+      width: 120,
       cellClass: 'flex! items-center! justify-center!',
     },
   ];
@@ -264,6 +253,8 @@ export default function Ltpa210Section() {
   });
 
   // agGrid 행삭제
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
     if (!gridApi) return;
@@ -277,28 +268,28 @@ export default function Ltpa210Section() {
     if (selectedIds.size === 0) return;
 
     setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
-  }, []);
+  }, [setRowData]);
 
   // agGrid 행추가
-  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const handleAddRow = React.useCallback(() => {
-    const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
-    const newRow: DummyDataType = {
-      id: nextId,
-      isCheck: false,
-      isNew: true,
-      field01: '',
-      field02: '',
-      isField01InputVisible: false,
-      field03: '',
-      field04: '',
-      field05: '',
-      field06: '',
-      field07: '',
-      field08: '김한화',
-    };
-
-    setRowData((prev) => [...prev, newRow]);
+    setRowData((prev) => {
+      const nextId = prev.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
+      const newRow: DummyDataType = {
+        id: nextId,
+        isCheck: false,
+        isNew: true,
+        field01: '',
+        field02: '',
+        isField01InputVisible: false,
+        field03: '',
+        field04: '',
+        field05: '',
+        field06: '',
+        field07: '',
+        field08: '김한화',
+      };
+      return [...prev, newRow];
+    });
 
     requestAnimationFrame(() => {
       const gridApi = gridApiRef.current;
@@ -310,7 +301,7 @@ export default function Ltpa210Section() {
       const rowIndex = gridApi.getDisplayedRowCount() - 1;
       gridApi.ensureIndexVisible(rowIndex, 'bottom');
     });
-  }, [rowData]);
+  }, [setRowData]);
 
   return (
     <>
@@ -329,7 +320,7 @@ export default function Ltpa210Section() {
               <FormTable
                 variant={'head'}
                 caption="장기보험 모집자 설계 조회 테이블"
-                cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
+                cols={['w-1', 'w-1', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'등록항목'}>
@@ -376,7 +367,7 @@ export default function Ltpa210Section() {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input aria-label="" width={120} value={'김한화'} readOnly />
-                    <Grow className="ml-4">
+                    <Grow className="ml-6">
                       <NativeSelect
                         aria-label="선택"
                         width={90}

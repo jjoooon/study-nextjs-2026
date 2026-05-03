@@ -162,7 +162,7 @@ export const FormCell = ({
           </dt>
         )}
         {!tdNone && (
-          <dd className={cn('text-[#000]', tdClassName)} style={tdStyle}>
+          <dd className={cn('text-[#000] flex items-center gap-1', tdClassName)} style={tdStyle}>
             {children}
           </dd>
         )}
@@ -325,7 +325,7 @@ export const FormRow = ({ children, vertical, cols: _cols, className, style }: F
   if (contextVariant === 'head') {
     return (
       <VerticalContext.Provider value={vertical}>
-        <dl className={cn('flex flex-wrap gap-x-6 gap-y-1', className)} style={style}>
+        <dl className={cn('flex flex-wrap gap-x-6 gap-y-1 [&+dl]:mt-2', className)} style={style}>
           {children}
         </dl>
       </VerticalContext.Provider>

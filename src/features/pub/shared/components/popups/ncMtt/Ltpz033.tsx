@@ -15,8 +15,7 @@ import {
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
-
-export const Ltpz033 = () => {
+const Ltpz033 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -28,7 +27,7 @@ export const Ltpz033 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection>
           <Typo variant="body-lg">
             <b>기타치료</b>란에 입력하는 경우 <b className="text-[#E43939]">자동심사가 불가능</b>하며, 우선심사순서에
             따라 <b>후순위로 배정</b>되어 심사결과 안내까지 시간이 소요될 수 있습니다.
@@ -126,3 +125,5 @@ export const Ltpz033 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz033;

@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -21,11 +25,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
-
 
 type DummyDataType = {
   id: number;
@@ -96,7 +95,7 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz002 = () => {
+const Ltpz002 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -276,7 +275,7 @@ export const Ltpz002 = () => {
                 </Grow>
               </Grow>
 
-              <Grid gap={2.5} className="grid-rows-[auto_1fr_auto_auto]">
+              <Grid gap={3} className="grid-rows-[auto_1fr_auto_auto]">
                 <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'동일모집인'}>
@@ -294,7 +293,7 @@ export const Ltpz002 = () => {
                   </FormRow>
                 </FormTable>
 
-                <div className="ag-theme-alpine min-h-[15rem]">
+                <div className="ag-theme-alpine min-h-[12.4rem]">
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -440,3 +439,5 @@ export const Ltpz002 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz002;

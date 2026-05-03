@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,11 +23,6 @@ import {
 
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -147,7 +146,7 @@ const DummyData4: DummyDataType4[] = [
   { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
 ];
 
-export const Ltpz042 = () => {
+const Ltpz042 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -240,7 +239,7 @@ export const Ltpz042 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable variant={'head'} lineTop={false} caption="">
+            <FormTable variant={'head'} lineTop={false}>
               <FormRow>
                 <FormCell title={'조회구분'}>
                   <NativeSelect
@@ -375,3 +374,5 @@ export const Ltpz042 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz042;

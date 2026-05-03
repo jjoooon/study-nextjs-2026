@@ -1,5 +1,12 @@
 'use client';
 
+import type { ColDef, GridApi } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
+import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -11,14 +18,6 @@ import { ArrowDoubleIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
-import type { ColDef, GridApi } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 
 import '@/shared/lib/agGridPub';
 
@@ -222,12 +221,7 @@ export default function Ltpa110Section() {
         mainBody={
           <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable
-                variant={'head'}
-                lineTop={false}
-                caption="다태아 설계연계관리 조회 테이블"
-                cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
-              >
+              <FormTable variant={'head'} lineTop={false}>
                 <FormRow>
                   <FormCell title={'보종군'}>
                     <NativeSelect aria-label="항목 선택" width={100} required>
@@ -260,8 +254,7 @@ export default function Ltpa110Section() {
                       ))}
                     </NativeSelect>
                   </FormCell>
-                </FormRow>
-                <FormRow>
+
                   <FormCell title={'임산부 정보'}>
                     <Input aria-label="" width={100} value={'김한화'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
@@ -290,91 +283,88 @@ export default function Ltpa110Section() {
                 </Button>
               </Grow>
             </Grow>
-            <ResizablePanelGroup orientation="vertical" className="w-full h-full">
-              <ResizablePanel defaultSize={30}>
-                <TableFold>
-                  <TableFoldHead title="기본사항" />
-                  <TableFoldBody className="gap-2">
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        enableCellSpan={true}
-                        singleClickEdit={true}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          headerCheckbox: false,
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        selectionColumnDef={{
-                          headerName: '선택',
-                          width: 30,
-                        }}
-                        onGridReady={(params) => {
-                          gridApiRef.current = params.api;
-                        }}
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                        domLayout="autoHeight"
-                      />
-                    </div>
-                    <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-                      <Typo variant={'body-sm'} icon={'info'}>
-                        등록사항을 확인하여 주십시오
-                      </Typo>
-                      <BulletList>
-                        <BulletListItem size={'sm'} type={'dash'}>
-                          설계번호(LA123123123) - 설계중
-                        </BulletListItem>
-                      </BulletList>
-                    </Gcol>
-                  </TableFoldBody>
-                </TableFold>
-                <Grow className="w-full py-1">
-                  <Button color="primary" onClick={() => {}} only="icon" size="lg" variant="outlined">
-                    <ArrowDoubleIcon />
-                  </Button>
-                </Grow>
-                <TableFold className="h-full grid-rows-[auto_1fr]">
-                  <TableFoldHead title="선택설계">
-                    <Grow>
-                      <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
-                        행삭제
-                      </Button>
-                    </Grow>
-                  </TableFoldHead>
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.4rem]">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData2}
-                        columnDefs={columnDefs2}
-                        enableCellSpan={true}
-                        singleClickEdit={true}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          headerCheckbox: false,
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        selectionColumnDef={{
-                          headerName: '선택',
-                          width: 30,
-                        }}
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                        domLayout="autoHeight"
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-              </ResizablePanel>
-              <ResizableHandle />
-            </ResizablePanelGroup>
+            <Gcol>
+              <TableFold>
+                <TableFoldHead title="기본사항" />
+                <TableFoldBody className="gap-2">
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      enableCellSpan={true}
+                      singleClickEdit={true}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 30,
+                      }}
+                      onGridReady={(params) => {
+                        gridApiRef.current = params.api;
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      domLayout="autoHeight"
+                    />
+                  </div>
+                  <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                    <Typo variant={'body-sm'} icon={'info'}>
+                      등록사항을 확인하여 주십시오
+                    </Typo>
+                    <BulletList>
+                      <BulletListItem size={'sm'} type={'dash'}>
+                        설계번호(LA123123123) - 설계중
+                      </BulletListItem>
+                    </BulletList>
+                  </Gcol>
+                </TableFoldBody>
+              </TableFold>
+              <Grow className="w-full py-1">
+                <Button color="primary" onClick={() => {}} only="icon" size="lg" variant="outlined">
+                  <ArrowDoubleIcon />
+                </Button>
+              </Grow>
+              <TableFold className="h-full grid-rows-[auto_1fr]">
+                <TableFoldHead title="선택설계">
+                  <Grow>
+                    <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
+                      행삭제
+                    </Button>
+                  </Grow>
+                </TableFoldHead>
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData2}
+                      columnDefs={columnDefs2}
+                      enableCellSpan={true}
+                      singleClickEdit={true}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 30,
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      domLayout="autoHeight"
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+            </Gcol>
           </Grid>
         }
         mainFoot={

@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -15,12 +19,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-
 
 const parseNumericValue = (value: unknown): number => {
   if (value === null || value === undefined || value === '') return 0;
@@ -70,7 +68,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz044 = () => {
+const Ltpz044 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '구문',
@@ -217,3 +215,5 @@ export const Ltpz044 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz044;

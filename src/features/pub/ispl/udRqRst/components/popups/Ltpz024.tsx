@@ -1,6 +1,6 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,8 +19,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
-
-export const Ltpz024 = () => {
+const Ltpz024 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -35,24 +34,23 @@ export const Ltpz024 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr_auto]">
-          <Gcol gap={5}>
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Gcol gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
-              <FormTable caption="보험정보" cols={['w-[6rem]', 'w-flex']} variant={'head'}>
+              <FormTable variant={'head'} lineTop={false} caption="">
                 <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Input width={130} value={'LA260209313558'} readOnly />
-                    {/* M1. disabled 삭제 */}
+                  <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1 w-full">
+                    <Input width={120} value={'LA260209313558'} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input width={70} value={'김한화'} readOnly />
+                    <Input value={'김한화'} readOnly />
                     <Input width={120} value={'010-1234-1234'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
-            <Gcol gap={2.5}>
+            <Gcol>
               <Grow placement={'ss'} className="w-full">
                 <Typo variant={'body-lg'}>알릴 의무 대체 서비스 이용을 위한 알림톡 발송 서비스입니다.</Typo>
               </Grow>
@@ -105,19 +103,21 @@ export const Ltpz024 = () => {
                   <FormTable caption="고객정보 수정 테이블" cols={['w-[10rem] flex-1']}>
                     <FormRow>
                       <FormCell title={'고객명'}>
-                        <Input placeholder="" value="김한화" width={70} readOnly />
-                        <Input placeholder="" value="900101-1******" width={120} readOnly />
-                        {/* M1. 수정 */}
-                        <Button
-                          aria-label="검색"
-                          variant={'outlined'}
-                          only="icon"
-                          size={'lg'}
-                          color={'gray-light'}
-                          disabled
-                        >
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
+                        <Grid className="grid-cols-[1fr_auto_auto] items-center gap-1 w-full">
+                          <Input placeholder="" value="김한화" readOnly />
+                          <Input placeholder="" value="900101-1******" width={120} readOnly />
+                          {/* M1. 수정 */}
+                          <Button
+                            aria-label="검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                        </Grid>
                       </FormCell>
                     </FormRow>
                     <FormRow>
@@ -135,7 +135,6 @@ export const Ltpz024 = () => {
               </Gcol>
             </TableFoldBody>
           </TableFold>
-          <Gcol></Gcol>
         </DialogSection>
 
         <DialogFooter>
@@ -157,3 +156,5 @@ export const Ltpz024 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz024;

@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -24,11 +28,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -233,7 +232,7 @@ const DATA_TABS: Ltpz032TabType[] = [
   },
 ];
 
-export const Ltpz019 = () => {
+const Ltpz019 = () => {
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [coverageName, setCoverageName] = useState('');
 
@@ -355,23 +354,19 @@ export const Ltpz019 = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="현재 상품" cols={['w-1', 'w-auto', 'w-1', 'w-auto']} variant="head">
+            <FormTable variant="head">
               <FormRow>
                 <FormCell title={'현재 상품'}>
-                  <Typo variant={'body-lg'} weight={'bold'}>
-                    (LTPZ019)한화 시그니처 여성 건강보험40 2504
-                  </Typo>
+                  <Input value="한화 시그니처 여성 건강보험40 2504" readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'현재 고객'}>
-                  <Typo variant={'body-lg'} weight={'bold'}>
-                    홍길순 외 0명
-                  </Typo>
+                  <Input value="홍길순 외 0명" readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <Gcol placement={'ss'} className="w-full" gap={5}>
+          <Gcol placement={'ss'} className="w-full" gap={3}>
             {/* 간편설계인 경우 */}
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
@@ -387,8 +382,7 @@ export const Ltpz019 = () => {
                 </Badge>
                 현재 고객을 대상으로 다른 상품을 설계하시겠어요?
               </Typo>
-              <RadioGroup className="gap-2 ml-[1rem]" onValueChange={() => {}} width="full">
-                {' '}
+              <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
                 {[
                   { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
                   { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
@@ -524,3 +518,5 @@ export const Ltpz019 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz019;

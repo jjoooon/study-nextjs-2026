@@ -1,6 +1,9 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Input } from '@/shared/components/uiux/Input';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -13,13 +16,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
 
-import { Input } from '@/shared/components/uiux/Input';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-
-export const Ltpz037 = () => {
+const Ltpz037 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -38,18 +37,22 @@ export const Ltpz037 = () => {
           <Typo variant="body-lg" weight={'bold'}>
             정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.
           </Typo>
-          <Gcol variant={'box-line'} placement={'ss'} className='w-full'>
-            <Typo variant="body-lg" weight={'bold'}>취급자 정보</Typo>
-            <Typo variant="body-md">질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br>
-            </br>이외의 용도로 활용 또는 <b>외부 유출시 법적처벌</b>을 받습니다.</Typo>
-            <Grow>
-              <Input width={130} value={'1234567'} readOnly />
+          <Gcol placement={'ss'} className="w-full">
+            <Typo variant="body-lg" weight={'bold'}>
+              취급자 정보
+            </Typo>
+            <Typo variant="body-md">
+              질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br></br>이외의 용도로 활용 또는{' '}
+              <b>외부 유출시 법적처벌</b>을 받습니다.
+            </Typo>
+            <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1">
+              <Input value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input width={70} value={'김한화'} readOnly />
-              <Input width={120} value={'010-1234-1234'} readOnly />
-            </Grow>
+              <Input value={'김한화'} readOnly />
+              <Input value={'010-1234-1234'} readOnly />
+            </Grid>
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
                 <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
@@ -58,8 +61,10 @@ export const Ltpz037 = () => {
             </Gcol>
           </Gcol>
 
-          <Gcol variant={'box-line'} placement={'ss'} className='w-full'>
-            <Typo variant="body-lg" weight={'bold'}>고객정보</Typo>
+          <Gcol placement={'ss'} className="w-full">
+            <Typo variant="body-lg" weight={'bold'}>
+              고객정보
+            </Typo>
             <Table variant="default">
               <colgroup>
                 <col style={{ width: '15rem' }} />
@@ -71,20 +76,12 @@ export const Ltpz037 = () => {
                   <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableHead className="text-left">
-                    휴대폰번호
-                  </TableHead>
-                  <TableCell>
-                    
-                  </TableCell>
+                  <TableHead className="text-left">휴대폰번호</TableHead>
+                  <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableHead className="text-left">
-                    인증번호
-                  </TableHead>
-                  <TableCell>
-                    
-                  </TableCell>
+                  <TableHead className="text-left">인증번호</TableHead>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -115,3 +112,5 @@ export const Ltpz037 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz037;

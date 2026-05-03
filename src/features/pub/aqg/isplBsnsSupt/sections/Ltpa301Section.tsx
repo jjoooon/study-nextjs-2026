@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -15,10 +19,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 type Ltpa301DummyDataRow = {
   id: number;
@@ -157,7 +157,7 @@ export default function Ltpa301Section() {
     {
       headerName: '처리내용',
       field: 'field14',
-      flex: 1,
+      width: 150,
     },
   ];
 
@@ -173,7 +173,7 @@ export default function Ltpa301Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={5}>
+          <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                 <FormRow>
@@ -202,36 +202,36 @@ export default function Ltpa301Section() {
               </Grow>
             </Grow>
 
-            <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={5}>
+            <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
               <TableFold variant={'accordion'}>
                 <TableFoldHead title="정액담보점검내역" />
                 <TableFoldBody>
                   <FormTable caption="정액담보점검내역 테이블" cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}>
                     <FormRow>
                       <FormCell title={'증권번호'}>
-                        <Input aria-label="증권번호 입력" width={160} readOnly />
+                        <Input aria-label="증권번호 입력" readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <ArrowNext color={'var(--color-primary-50)'} />
                         </Button>
                       </FormCell>
                       <FormCell title={'계약방법'}>
-                        <Input aria-label="계약방법 입력" width={160} readOnly />
+                        <Input aria-label="계약방법 입력" readOnly />
                       </FormCell>
                     </FormRow>
                     <FormRow>
                       <FormCell title={'점검일자'}>
-                        <Input aria-label="점검일자 입력" width={160} readOnly />
+                        <Input aria-label="점검일자 입력" readOnly />
                       </FormCell>
                       <FormCell title={'점검방법'}>
-                        <Input aria-label="점검방법 입력" width={160} readOnly />
+                        <Input aria-label="점검방법 입력" readOnly />
                       </FormCell>
                     </FormRow>
                     <FormRow>
                       <FormCell title={'점검상태'}>
-                        <Input aria-label="점검상태 입력" width={160} readOnly />
+                        <Input aria-label="점검상태 입력" readOnly />
                       </FormCell>
                       <FormCell title={'점검이력순번'}>
-                        <Input aria-label="점검이력순번 입력" width={160} readOnly />
+                        <Input aria-label="점검이력순번 입력" readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -314,7 +314,7 @@ export default function Ltpa301Section() {
               </TableFold>
             </Grid>
 
-            <Gcol className="w-full" gap={2}>
+            <Gcol className="w-full">
               <Gcol className="s-full" variant={'box-warning'} placement="ss">
                 <Typo variant={'body-sm'} icon={'warning'}>
                   <b>누적계산기준</b>

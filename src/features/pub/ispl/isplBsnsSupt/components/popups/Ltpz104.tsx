@@ -22,7 +22,7 @@ import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpz104 = () => {
+const Ltpz104 = () => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -77,7 +77,8 @@ export const Ltpz104 = () => {
             <FormTable caption="설계번호" variant="none" cols={['w-[1rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input value={'LA123123123123-1 테아'} variant="info" readOnly />
+                  <Input value={'LA123123123123-1'} variant="info" readOnly />
+                  <Input value={'테아'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -117,3 +118,5 @@ export const Ltpz104 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz104;

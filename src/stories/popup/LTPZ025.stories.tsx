@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz025 } from '@/features/pub/ispl/ncMtt/components/popups/Ltpz025';
+import Ltpz025 from '@/features/pub/ispl/ncMtt/components/popups/Ltpz025';
 
 export default {
   title: 'app/ispl/ncMtt/components/popups/Ltpz025',

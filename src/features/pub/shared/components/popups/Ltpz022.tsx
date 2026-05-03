@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,11 +23,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-
 
 type Ltpz022TabType = {
   name: string;
@@ -119,7 +118,7 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
 ];
 
-export const Ltpz022 = () => {
+const Ltpz022 = () => {
   type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'criteria'>;
 
   const applyDetailsColor = (html: string): string => {
@@ -254,7 +253,7 @@ export const Ltpz022 = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="설계정보 테이블" variant={'none'} cols={['w-[6rem]', 'flex-1']}>
+            <FormTable variant={'none'}>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={'23rem'} value={'LA260305361023'} readOnly />
@@ -345,3 +344,5 @@ export const Ltpz022 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz022;

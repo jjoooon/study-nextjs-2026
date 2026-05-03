@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -23,10 +26,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Table, TableBody, TableHead, TableHeader, TableCell, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -186,7 +185,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa130 = () => {
+const Ltpa130 = () => {
   const renderConsentCell = (params: ICellRendererParams<DummyDataType>) => {
     const value = String(params.value ?? '');
 
@@ -385,7 +384,7 @@ export const Ltpa130 = () => {
             <FormTable variant={'none'} cols={['w-[6rem]', 'w-[20rem]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'조직구분'}>
-                  <NativeSelect width={100}>
+                  <NativeSelect width={180}>
                     {[
                       { value: '전체', label: '전체' },
                       { value: '취급기관', label: '취급기관' },
@@ -397,7 +396,7 @@ export const Ltpa130 = () => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input value={'1301097'} width={80} />
+                  <Input value={'1301097'} width={120} />
                   <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
@@ -509,7 +508,7 @@ export const Ltpa130 = () => {
                   <FileExportIcon />
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine radio-selection min-h-[18.3rem]">
+              <div className="ag-theme-alpine radio-selection min-h-[19.8rem]">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -604,3 +603,5 @@ export const Ltpa130 = () => {
     </Dialog>
   );
 };
+
+export default Ltpa130;

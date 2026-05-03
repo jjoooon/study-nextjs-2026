@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createFieldRenderer, renderTbodyTh, numberValueFormatter } from '@aggrid';
 
 import { Gcol, Grow, Typo } from '@atoms';
@@ -17,10 +20,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -53,7 +52,7 @@ const simpleNumberFormatter = (value?: number) => {
   return '';
 };
 
-export const Ltpa430 = () => {
+const Ltpa430 = () => {
   // M1. div 추가
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -222,14 +221,16 @@ export const Ltpa430 = () => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'head'} lineTop={false} caption="설계번호">
+              <FormTable variant="none" cols={['w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                  <FormCell
+                    title={'설계번호'}
+                    tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
+                  >
+                    <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
                     -
                     <Input aria-label="" width={30} value={'1'} readOnly />
-                    <Typo variant={'body-sm'}>무배당 1등 엄마의 똑똑한 자녀보힘 1404</Typo>
-                    <Typo variant={'body-sm'}>1형(345간편고지형)</Typo>
+                    <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -284,3 +285,5 @@ export const Ltpa430 = () => {
     </Dialog>
   );
 };
+
+export default Ltpa430;

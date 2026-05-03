@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -16,11 +20,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -142,19 +142,24 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz039 = () => {
+const Ltpz039 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '경과시간',
-      width: 80,
+      headerComponent: () => (
+        <Grow className="w-full" placement="cc">
+          경과
+          <br />
+          시간
+        </Grow>
+      ),
+      width: 50,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
       headerName: '기본계약 및 특약담보(실손의료비 제외)',
-      width: 1000,
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       headerClass: 'ag-header-right-divider',
       autoHeight: true,
@@ -162,13 +167,12 @@ export const Ltpz039 = () => {
         {
           headerName: '납입보험료',
           field: 'field02',
-          width: 180,
+          flex: 1,
           cellClass: 'text-right flex [&>div>span]:h-auto!',
           autoHeight: true,
         },
         {
           headerName: '최저보증이율 적용시',
-          width: 310,
           cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
           headerClass: 'ag-header-right-divider',
           autoHeight: true,
@@ -176,7 +180,7 @@ export const Ltpz039 = () => {
             {
               headerName: '적립부분',
               field: 'field03',
-              width: 100,
+              width: 70,
               cellClass: 'text-right flex [&>div>span]:h-auto!',
               autoHeight: true,
             },
@@ -197,7 +201,7 @@ export const Ltpz039 = () => {
             {
               headerName: '환급율',
               field: 'field06',
-              width: 70,
+              width: 50,
               cellClass: 'text-center flex [&>div>span]:h-auto!',
               autoHeight: true,
             },
@@ -205,7 +209,6 @@ export const Ltpz039 = () => {
         },
         {
           headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
-          width: 310,
           cellClass: 'text-right flex [&>div>span]:h-auto!',
           headerClass: 'ag-header-right-divider',
           autoHeight: true,
@@ -213,7 +216,7 @@ export const Ltpz039 = () => {
             {
               headerName: '적립부분',
               field: 'field07',
-              width: 100,
+              width: 70,
               cellClass: 'text-right flex [&>div>span]:h-auto!',
               autoHeight: true,
             },
@@ -234,7 +237,7 @@ export const Ltpz039 = () => {
             {
               headerName: '환급율',
               field: 'field10',
-              width: 70,
+              width: 50,
               cellClass: 'text-center flex [&>div>span]:h-auto!',
               autoHeight: true,
             },
@@ -242,7 +245,6 @@ export const Ltpz039 = () => {
         },
         {
           headerName: '평균공시이율(1.5%) 적용시',
-          width: 310,
           cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
           headerClass: 'ag-header-right-divider',
           autoHeight: true,
@@ -250,7 +252,7 @@ export const Ltpz039 = () => {
             {
               headerName: '적립부분',
               field: 'field11',
-              width: 100,
+              width: 70,
               cellClass: 'text-right flex [&>div>span]:h-auto!',
               autoHeight: true,
             },
@@ -271,7 +273,7 @@ export const Ltpz039 = () => {
             {
               headerName: '환급율',
               field: 'field14',
-              width: 70,
+              width: 50,
               cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
               autoHeight: true,
             },
@@ -321,12 +323,8 @@ export const Ltpz039 = () => {
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    LA123123123123
-                  </Typo>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    설계번호의 상품명 text
-                  </Typo>
+                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly variant="info" />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'경과기간세부산출(n년)'}>
                   <Checkbox color="primary" onCheckedChange={() => {}}>
@@ -393,3 +391,5 @@ export const Ltpz039 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz039;

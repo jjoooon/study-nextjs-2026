@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -23,10 +26,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -105,7 +105,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz098 = () => {
+const Ltpz098 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '증권(설계번호)',
@@ -203,7 +203,9 @@ export const Ltpz098 = () => {
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'head'} lineTop={false} caption="누적조회">
               <FormRow>
-                <FormCell title={'피보험자'}>김한화</FormCell>
+                <FormCell title={'피보험자'}>
+                  <Input value={'김한화'} variant="info" readOnly />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
@@ -253,7 +255,7 @@ export const Ltpz098 = () => {
               </TableFoldHead>
               <TableFoldBody>
                 <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <div className="ag-theme-alpine min-h-[16rem]">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       ref={gridRef}
@@ -310,3 +312,5 @@ export const Ltpz098 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz098;

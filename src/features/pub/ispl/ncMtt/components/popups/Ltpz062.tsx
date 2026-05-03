@@ -1,4 +1,7 @@
 'use client';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -13,11 +16,8 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -89,7 +89,7 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz062 = () => {
+const Ltpz062 = () => {
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -191,7 +191,7 @@ export const Ltpz062 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr_1fr] gap-5">
+        <DialogSection className="grid-rows-[auto_1fr_1fr]">
           <Typo tag={'p'} variant={'body-lg'}>
             보험금지급이력을 기반으로 필요한 정보를 예상하여 자동입력합니다.
           </Typo>
@@ -277,14 +277,11 @@ export const Ltpz062 = () => {
               <Button variant={'contained'} size={'xl'}>
                 알릴사항 반영하기
               </Button>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
@@ -293,3 +290,5 @@ export const Ltpz062 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz062;

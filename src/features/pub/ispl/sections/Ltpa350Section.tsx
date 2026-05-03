@@ -17,7 +17,7 @@ import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
-import { Ltpz005 } from '../../shared/components/popups/Ltpz005';
+import Ltpz005 from '../../shared/components/popups/Ltpz005';
 import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계

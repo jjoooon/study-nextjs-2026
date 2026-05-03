@@ -3,6 +3,9 @@
 // M1. 파일명수정 LTPA070 -> LTPZ083
 // M1. 컴포넌트명수정 LTPA070 -> LTPZ083
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 
@@ -20,10 +23,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
 
 import '@/shared/lib/agGridPub';
 
@@ -39,7 +38,7 @@ const DummyData: DummyDataType[] = [
   { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
 ];
 
-export const Ltpz083 = () => {
+const Ltpz083 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '견종명',
@@ -118,3 +117,5 @@ export const Ltpz083 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz083;

@@ -1,7 +1,10 @@
 'use client';
 
+import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Grow, Typo } from '@atoms';
+import { Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -15,10 +18,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -89,7 +89,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz049 = () => {
+const Ltpz049 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -164,41 +164,39 @@ export const Ltpz049 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr] gap-5">
+        <DialogSection className="grid-rows-[auto_1fr] gap-3">
           <Grow className="w-full" variant="box-round">
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    LA123123123123
-                  </Typo>
+                  <Input value={'LA123123123123'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'피보험자'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    김한화(901212-1111111)
-                  </Typo>
+                  <Input value={'김한화(901212-1111111)'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine min-h-[18.4rem]">
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              rowData={rowData}
-              columnDefs={columnDefs}
-              pinnedBottomRowData={sumRow}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              defaultColDef={{
-                sortable: true,
-                resizable: true,
-                autoHeight: true,
-              }}
-              domLayout="normal"
-            />
-          </div>
-          <Typo icon="info">
-            할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
-          </Typo>
+          <Gcol placement="ss">
+            <div className="ag-theme-alpine min-h-[18.4rem]">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                pinnedBottomRowData={sumRow}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                defaultColDef={{
+                  sortable: true,
+                  resizable: true,
+                  autoHeight: true,
+                }}
+                domLayout="normal"
+              />
+            </div>
+            <Typo icon="info">
+              할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
+            </Typo>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>
@@ -222,3 +220,5 @@ export const Ltpz049 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz049;

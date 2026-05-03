@@ -20,8 +20,7 @@ import {
 
 import { Input } from '@uiux/Input';
 
-
-export const Ltpz016 = () => {
+const Ltpz016 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
@@ -38,13 +37,16 @@ export const Ltpz016 = () => {
 
         <DialogSection>
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
+            <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                <FormCell
+                  title={'설계번호'}
+                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
+                >
+                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
-                  <b>한화 더 건강한 한여름좋합 보험 2601</b>
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -52,15 +54,10 @@ export const Ltpz016 = () => {
           <TableFold>
             <TableFoldHead title="가족일상생활배상책임Ⅲ(대물 20만원(누수50만원)공제)(갱신형)" />
             <TableFoldBody className="gap-2">
-              <FormTable caption="설계번호" cols={['w-[24rem]', 'w-[auto]']}>
+              <FormTable caption="설계번호" cols={['w-[21rem]', 'w-[auto]']}>
                 <FormRow>
                   <FormCell title={'자택주소동일'}>
-                    <Input
-                      aria-label=""
-                      width={400}
-                      value={'서울 영등포구 63로 328호(여의도동, 은하아파트)'}
-                      readOnly
-                    />
+                    <Input value={'서울 영등포구 63로 328호(여의도동, 은하아파트)'} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -75,7 +72,7 @@ export const Ltpz016 = () => {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={368} value={''} readOnly />
+                    <Input aria-label="" value={''} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -87,13 +84,13 @@ export const Ltpz016 = () => {
                       </Grow>
                     }
                   >
-                    <Input aria-label="" width={198} value={''} readOnly />
-                    <Input aria-label="" width={198} value={''} readOnly />
+                    <Input aria-label="" value={''} readOnly />
+                    <Input aria-label="" value={''} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'전체주소'}>
-                    <Input aria-label="" width={400} value={''} readOnly />
+                    <Input aria-label="" value={''} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -126,3 +123,5 @@ export const Ltpz016 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz016;
